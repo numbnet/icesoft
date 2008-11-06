@@ -80,7 +80,7 @@ public class MessageUtils {
     }
     
    
-    private static ClassLoader getClassLoader(Object fallback) {
+    public static ClassLoader getClassLoader(Object fallback) {
         ClassLoader classLoader = Thread.currentThread()
                                     .getContextClassLoader();
         if (classLoader == null) {

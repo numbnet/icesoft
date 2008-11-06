@@ -234,6 +234,7 @@
   <!ENTITY ice-cust-panelPositioned-props SYSTEM "ice_cust_properties/cust-panelPositioned-props.xml">
   <!ENTITY ice-cust-portlet-props SYSTEM "ice_cust_properties/cust-portlet-props.xml">
   <!ENTITY ice-cust-panelLayout-props SYSTEM "ice_cust_properties/cust-panelLayout-props.xml">
+  <!ENTITY ice-cust-loadbundle-props SYSTEM "ice_cust_properties/cust-loadbundle-props.xml">  
   <!--
   <!ENTITY ice-cust-inputOutputText-props SYSTEM "ice_cust_properties/cust-inputOutputText-props.xml">
   -->
@@ -459,6 +460,10 @@
   <!ENTITY panelCollapsible-component SYSTEM "custom/panelCollapsible-component.xml">
   <!ENTITY panelCollapsible-renderer SYSTEM "custom/panelCollapsible-renderer.xml">
 
+  <!ENTITY loadbundle-component   SYSTEM "custom/loadbundle-component.xml">
+  <!ENTITY loadbundle-renderer    SYSTEM "custom/loadbundle-renderer.xml">
+  
+
 <!ENTITY ice-cust-effect-props SYSTEM "ice_cust_properties/cust-effect-props.xml">
   <!ENTITY effect-component SYSTEM "custom/effect-component.xml">
   <!ENTITY effect-renderer SYSTEM "custom/effect-renderer.xml">          
@@ -568,6 +573,8 @@
     &effect-component;
     &outputMedia-component;
     &panelLayout-component;
+    &loadbundle-component;    
+    
     <!-- &inputOutputText-component; -->
     
     <render-kit>
@@ -652,6 +659,8 @@
         &effect-renderer;
         &outputMedia-renderer;	
         &panelLayout-renderer;
+        &loadbundle-renderer;        
+        
         <!-- &inputOutputText-renderer; -->
     </render-kit>
 

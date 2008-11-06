@@ -843,6 +843,10 @@
         <component-class>com.icesoft.faces.component.ext.RowSelector</component-class>
     </component>
     
+    <component>
+        <component-type>com.icesoft.faces.LoadBundle</component-type>
+        <component-class>com.icesoft.faces.component.loadbundle.LoadBundle</component-class>
+    </component>    
     <!--
     <component>
         <component-type>com.icesoft.faces.Map</component-type>
