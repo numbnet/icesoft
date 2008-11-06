@@ -38,15 +38,14 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.env.AcegiAuthWrapper;
-import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
+import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,7 +57,6 @@ import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -195,7 +193,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         this.commandQueue = commandQueue;
         // ICE-3549
         this.standardScope = SeamUtilities.isSeamEnvironment() ||
-                             configuration.getAttributeAsBoolean("standardRequestScope", false);
+                configuration.getAttributeAsBoolean("standardRequestScope", false);
     }
 
     public abstract String getRequestURI();
@@ -308,7 +306,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected void resetRequestMap() {
         if (standardScope) {
             DisposeBeans.in(requestMap);
-            if (!requestMap.isEmpty())requestMap.clear();
+            if (!requestMap.isEmpty()) requestMap.clear();
         }
     }
 
@@ -459,14 +457,14 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
         if ((AuthenticationClass != null) && ((null == principal) ||
                 AuthenticationClass.isInstance(principal))) {
-                
-            if (null != SpringAuthenticationClass)  {
+
+            if (null != SpringAuthenticationClass) {
                 return SpringAuthWrapper.getVerifier(request);
-            } else { 
+            } else {
                 // (null != AcegiAuthenticationClass) 
                 return AcegiAuthWrapper.getVerifier(request);
             }
-                
+
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
@@ -492,21 +490,4 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
         return UserInfoNotAvailable;
     }
-
-    //ICE-2990, JBSEAM-3426
-    protected void copySeamRequestAttributes(RequestAttributes source, RequestAttributes destination) {
-        Enumeration names = source.getAttributeNames();
-        while (names.hasMoreElements()) {
-            String name = (String) names.nextElement();
-            Object value = source.getAttribute(name);
-            destination.setAttribute(name, value);
-        }
-
-        //For some reason, this attribute must be present and not-null or Seam won't like it
-        //so we make sure it is injected no matter what.
-        if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null) {
-            destination.setAttribute("org.jboss.seam.web.requestPathInfo", "");
-        }
-    }
-
 }

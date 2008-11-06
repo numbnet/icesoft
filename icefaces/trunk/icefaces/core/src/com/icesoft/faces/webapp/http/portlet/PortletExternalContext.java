@@ -11,7 +11,6 @@ import com.icesoft.faces.webapp.http.servlet.ServletRequestAttributes;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 import com.icesoft.util.SeamUtilities;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -353,34 +352,35 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void release() {
-        //ICE-2990, JBSEAM-3426:  We need to save the request attributes before the release()
-        //and restore them after the release() in order to support Seam redirection.
-        RequestAttributes tempAttributes = null;
-        if (SeamUtilities.isSeamEnvironment()) {
-            tempAttributes = SimpleRequestAttributes;
-            copySeamRequestAttributes(requestAttributes,tempAttributes);
-        }
-
+        /**
+         * ICE-2990/JBSEAM-3426:- have to save the seam request variables
+         * for seam redirection
+         */
+        String requestServletPath = (String) requestAttributes.getAttribute("org.jboss.seam.web.requestServletPath");
+        String requestContextPath = (String) requestAttributes.getAttribute("org.jboss.seam.web.requestContextPath");
         super.release();
-        
         initialRequest.repopulatePseudoAPIAttributes();
         allowMode = DoNotAllow;
         authenticationVerifier = releaseVerifier(authenticationVerifier);
         dispatcher = RequestNotAvailable;
         if (SeamUtilities.isSeamEnvironment()) {
-            //ICE-2990, JBSEAM-3426
-            copySeamRequestAttributes(tempAttributes,requestAttributes);
+            // put them back in
+            requestAttributes.setAttribute("org.jboss.seam.web.requestServletPath", requestServletPath);
+            requestAttributes.setAttribute("org.jboss.seam.web.requestContextPath", requestContextPath);
+            requestAttributes.setAttribute("org.jboss.seam.web.requestPathInfo", "");
         } else {
             requestAttributes = NOOPRequestAttributes;
         }
     }
+
     /**
      * called from PersistentFacesState.execute() as these request attributes give problems
      * to ajax-push with Seam.
      */
-    public void removeSeamAttributes(){
-    	 requestAttributes = NOOPRequestAttributes;
+    public void removeSeamAttributes() {
+        requestAttributes = NOOPRequestAttributes;
     }
+
     //Identical code to BridgeExternalContext.createAuthenticationVerifier
     //but request is a PortletRequest
     private static AuthenticationVerifier createAuthenticationVerifier(final PortletRequest request) {
