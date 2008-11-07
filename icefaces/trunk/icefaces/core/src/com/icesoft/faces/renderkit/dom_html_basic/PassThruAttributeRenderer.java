@@ -466,7 +466,7 @@ public class PassThruAttributeRenderer {
         return false;
     }
 
-    private static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
+    public static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
             Element targetElement, String[] nonBooleanhtmlAttributes) {
 
         Object nextPassThruAttributeName = null;

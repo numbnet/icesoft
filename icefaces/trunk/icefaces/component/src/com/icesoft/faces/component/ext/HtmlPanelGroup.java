@@ -108,6 +108,16 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private String panelTooltip;
     
     private Object contextValue;
+    private String onclick;
+    private String ondblclick;
+    private String onmousedown;
+    private String onkeyup;
+    private String onkeydown;
+    private String onkeypress;
+    private String onmouseout;
+    private String onmouseover;
+    private String onmousemove;
+    private String onmouseup;
     /**
      *
      */
@@ -648,7 +658,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[32];
+        Object values[] = new Object[42];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -681,6 +691,16 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[29] = renderedStyle;
         values[30] = dragOptions;
         values[31] = hoverclass; 
+        values[32] = onclick;       
+        values[33] = ondblclick;
+        values[34] = onmousedown;
+        values[35] = onkeyup;
+        values[36] = onkeydown;
+        values[37] = onkeypress;
+        values[38] = onmouseout;
+        values[39] = onmouseover;
+        values[40] = onmousemove;
+        values[41] = onmouseup;        
         return values;
 
     }
@@ -722,7 +742,17 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         contextValue = values[28];
         renderedStyle = (String)values[29];
         dragOptions = (String)values[30];
-        hoverclass = (String)values[31];        
+        hoverclass = (String)values[31];    
+        onclick = (String)values[32];  
+        ondblclick = (String)values[33];
+        onmousedown= (String)values[34];
+        onkeyup= (String)values[35];
+        onkeydown= (String)values[36];
+        onkeypress= (String)values[37] ;
+        onmouseout= (String)values[38];
+        onmouseover= (String)values[39];
+        onmousemove= (String)values[40];
+        onmouseup= (String)values[41];          
     }
 
     /**
@@ -846,5 +876,186 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         ValueBinding vb = getValueBinding("contextValue");
         return vb != null ? vb.getValue(getFacesContext()) : null;
     }
+    
+    /**
+     * <p>Return the value of the <code>onclick</code> property.</p>
+     */
+    public String getOnclick() {
+        if (onclick != null) {
+            return onclick;
+        }
+        ValueBinding vb = getValueBinding("onclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onclick</code> property.</p>
+     */
+    public void setOnclick(String onclick) {
+        this.onclick = onclick;
+    }
+    
+    /**
+     * <p>Return the value of the <code>ondblclick</code> property.</p>
+     */
+    public String getOndblclick() {
+        if (ondblclick != null) {
+            return ondblclick;
+        }
+        ValueBinding vb = getValueBinding("ondblclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>ondblclick</code> property.</p>
+     */
+    public void setOndblclick(String ondblclick) {
+        this.ondblclick = ondblclick;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmousedown</code> property.</p>
+     */
+    public String getOnmousedown() {
+        if (onmousedown != null) {
+            return onmousedown;
+        }
+        ValueBinding vb = getValueBinding("onmousedown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmousedown</code> property.</p>
+     */
+    public void setOnmousedown(String onmousedown) {
+        this.onmousedown = onmousedown;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseup</code> property.</p>
+     */
+    public String getOnmouseup() {
+        if (onmouseup != null) {
+            return onmouseup;
+        }
+        ValueBinding vb = getValueBinding("onmouseup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseup</code> property.</p>
+     */
+    public void setOnmouseup(String onmouseup) {
+        this.onmouseup = onmouseup;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmousemove</code> property.</p>
+     */
+    public String getOnmousemove() {
+        if (onmousemove != null) {
+            return onmousemove;
+        }
+        ValueBinding vb = getValueBinding("onmousemove");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmousemove</code> property.</p>
+     */
+    public void setOnmousemove(String onmousemove) {
+        this.onmousemove = onmousemove;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseover</code> property.</p>
+     */
+    public String getOnmouseover() {
+        if (onmouseover != null) {
+            return onmouseover;
+        }
+        ValueBinding vb = getValueBinding("onmouseover");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseover</code> property.</p>
+     */
+    public void setOnmouseover(String onmouseover) {
+        this.onmouseover = onmouseover;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseout</code> property.</p>
+     */
+    public String getOnmouseout() {
+        if (onmouseout != null) {
+            return onmouseout;
+        }
+        ValueBinding vb = getValueBinding("onmouseout");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseout</code> property.</p>
+     */
+    public void setOnmouseout(String onmouseout) {
+        this.onmouseout = onmouseout;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeypress</code> property.</p>
+     */
+    public String getOnkeypress() {
+        if (onkeypress != null) {
+            return onkeypress;
+        }
+        ValueBinding vb = getValueBinding("onkeypress");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeypress</code> property.</p>
+     */
+    public void setOnkeypress(String onkeypress) {
+        this.onkeypress = onkeypress;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeydown</code> property.</p>
+     */
+    public String getOnkeydown() {
+        if (onkeydown != null) {
+            return onkeydown;
+        }
+        ValueBinding vb = getValueBinding("onkeydown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeydown</code> property.</p>
+     */
+    public void setOnkeydown(String onkeydown) {
+        this.onkeydown = onkeydown;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeyup</code> property.</p>
+     */
+    public String getOnkeyup() {
+        if (onkeyup != null) {
+            return onkeyup;
+        }
+        ValueBinding vb = getValueBinding("onkeyup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeyup</code> property.</p>
+     */
+    public void setOnkeyup(String onkeyup) {
+        this.onkeyup = onkeyup;
+    }
+    
 }
 
