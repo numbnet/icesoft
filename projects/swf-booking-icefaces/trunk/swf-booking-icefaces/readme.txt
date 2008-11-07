@@ -7,8 +7,11 @@ and ICEfaces code:
 svn checkout http://anonsvn.icefaces.org/repo/icefaces/trunk/icefaces/
 svn checkout https://springframework.svn.sourceforge.net/svnroot/springframework/spring-webflow/tags/spring-webflow-2.0.3.RELEASE
 
-In spring-webflow-2.0.3.RELEASE/spring-webflow-samples add an external link 
-to this demo:
+In trunk/spring-webflow-samples add an external link to this demo (this step 
+is also essential for building spring-webflow without errors as it replaces 
+the password protected externals definitions for other sample applications 
+in spring-webflow) :
+
 
 svn propset svn:externals "swf-booking-icefaces http://anonsvn.icefaces.org/repo/projects/swf-booking-icefaces/trunk/swf-booking-icefaces" .
 svn update
