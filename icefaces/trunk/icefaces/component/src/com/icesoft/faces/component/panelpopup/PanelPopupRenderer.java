@@ -66,10 +66,15 @@ public class PanelPopupRenderer extends GroupRenderer {
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =
         new String[] { HTML.STYLE_ATTR };
+    
+    private static final String[] PASSTHRU_JS_EVENTS = LocalEffectEncoder.maskEvents(
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_PANELPOPUP));
     private static final String[] PASSTHRU =
-        ExtendedAttributeConstants.getAttributes(
-            ExtendedAttributeConstants.ICE_PANELPOPUP,
-            PASSTHRU_EXCLUDE);
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_PANELPOPUP,
+                new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});    
+    
     
     /*
 	 * (non-Javadoc)
@@ -161,8 +166,6 @@ public class PanelPopupRenderer extends GroupRenderer {
 			log.error("Error rendering Modal Panel Popup ", e);
 		}
         JavascriptContext.fireEffect(uiComponent, facesContext);
-        LocalEffectEncoder
-                .encodeLocalEffects(uiComponent, root, facesContext);
 		
 		// get tables , our table is the first and only one
 		NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
@@ -172,7 +175,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 		// clean out child nodes and build a fresh selectinputdate
 		DOMContext.removeChildrenByTagName(table, HTML.TR_ELEM);
         
-        doPassThru(facesContext, uiComponent);
+        doPassThru(facesContext, uiComponent, root);
 		String handleId = null;
 		if (panelPopup.getHeader() != null) {
 			Element headerTr = domContext.createElement(HTML.TR_ELEM);
@@ -281,9 +284,12 @@ public class PanelPopupRenderer extends GroupRenderer {
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
     
-    protected void doPassThru(FacesContext facesContext, UIComponent uiComponent) {
-        PassThruAttributeRenderer.renderHtmlAttributes(
-            facesContext, uiComponent, PASSTHRU);
+    protected void doPassThru(FacesContext facesContext, UIComponent uiComponent,
+            Element root) {
+        PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent,
+                root, PASSTHRU);
+        LocalEffectEncoder.encode(
+                facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, root, null);                
     }
 
 	private String modalJavascript(Boolean modal, Boolean visible,

@@ -36,6 +36,8 @@
 &ice-ext-core-styled-props;
 &ice-att-title-props;
 &base-props;
+&ice-effects-props;
+&events-props;
 
 <property>
 	<description>Used to render a resizable popup.</description>
