@@ -86,14 +86,6 @@ public class GroupRenderer
             ExtendedAttributeConstants.getAttributes(
                 ExtendedAttributeConstants.ICE_PANELGROUP,
                 new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
-        
-        private static Map rendererJavascriptDraggable;
-        static {
-            rendererJavascriptDraggable = new HashMap();
-            rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
-                    "Draggable.removeMe(this.id);");
-        }
-        
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -136,6 +128,10 @@ public class GroupRenderer
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
                 String call = addJavascriptCalls(uiComponent, dndType, null, facesContext);
+                
+                Map rendererJavascriptDraggable =new HashMap();
+                rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
+                            "Draggable.removeMe(this.id);");
                 rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call);
                 LocalEffectEncoder.encode(
                         facesContext, uiComponent, PASSTHRU_JS_EVENTS, 
