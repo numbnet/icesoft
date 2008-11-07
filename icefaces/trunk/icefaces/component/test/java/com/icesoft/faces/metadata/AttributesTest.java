@@ -1,8 +1,9 @@
-package com.icesoft.jsfmeta;
+package com.icesoft.faces.metadata;
 
 import com.sun.rave.jsfmeta.beans.ComponentBean;
 import com.sun.rave.jsfmeta.beans.FacesConfigBean;
 import com.sun.rave.jsfmeta.beans.PropertyBean;
+import com.icesoft.jsfmeta.MetadataXmlParser;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -24,7 +25,7 @@ import org.xml.sax.SAXException;
 
 public class AttributesTest extends TestCase{
     
-    private String METADATA_XML = "extended-faces-config.xml";
+    private String METADATA_XML = "..\\..\\..\\..\\component-metadata\\src\\main\\resources\\conf\\extended-faces-config.xml";
     private FacesConfigBean facesConfigBean;
     private static List extendedComponents = new ArrayList();
     private static Map customComponents = new HashMap();    
@@ -102,7 +103,8 @@ public class AttributesTest extends TestCase{
         customComponents.put("com.icesoft.faces.TreeNode", "com.icesoft.faces.component.tree.TreeNode");   
         customComponents.put("com.icesoft.faces.TreeView", "com.icesoft.faces.component.tree.Tree");        
         customComponents.put("com.icesoft.faces.dragdrop.PanelPositioned", "com.icesoft.faces.component.panelpositioned.PanelPositioned");   
-        customComponents.put("com.icesoft.faces.series", "com.icesoft.faces.component.panelseries.UISeries");   
+        customComponents.put("com.icesoft.faces.series", "com.icesoft.faces.component.panelseries.UISeries");
+        customComponents.put("com.icesoft.faces.LoadBundle", "com.icesoft.faces.component.loadbundle.LoadBundle");        
     }
     
     public static Test suite() {
@@ -169,11 +171,12 @@ public class AttributesTest extends TestCase{
                 if (customComp == null) {
                     System.out.println("\r\n\r\n\r\n "+ componentClass + " is null"); 
                     continue;
-                }                
-                customCompPropMap = getProperties(customComp);
+                }       
+                 customCompPropMap = getProperties(customComp);
             }
             System.out.println("\r\n\r\n\r\n\t\t\t\t-= "+ componentClass + " =-"); 
-            
+
+          
             PropertyBean[] propertyBeans = componentBeans[i].getProperties();
             for(int j=0; j<propertyBeans.length; j++){
                 PropertyBean property = propertyBeans[j];
@@ -220,6 +223,7 @@ public class AttributesTest extends TestCase{
    
                 
             }//for
+        
         }
         }catch (Exception e){}
     }
@@ -317,7 +321,10 @@ public class AttributesTest extends TestCase{
                 }
             }    
             return PropMap;
-        } catch (Exception e ){ return Collections.EMPTY_MAP;}
+        } catch (Exception e ){
+            System.out.println("-->>> Failed" );
+            return Collections.EMPTY_MAP;
+            }
     }
     
     private boolean attributeValueIsSentinel(String value) {
