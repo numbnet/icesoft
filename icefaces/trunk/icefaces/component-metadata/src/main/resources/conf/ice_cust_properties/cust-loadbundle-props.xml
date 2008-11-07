@@ -35,7 +35,7 @@
 
   <property>
 	<description>
-		basename
+		Base name of the resource bundle to be loaded.
 	</description>
     <property-name>basename</property-name>
     <property-class>java.lang.String</property-class>
@@ -46,7 +46,7 @@
 
   <property>
 	<description>
-		var
+		Name of a request scope attribute under which the resource bundle will be exposed.
 	</description>
     <property-name>var</property-name>
     <property-class>java.lang.String</property-class>
