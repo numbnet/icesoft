@@ -44,7 +44,9 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.DragDrop;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.DnDCache;
 import org.apache.commons.logging.Log;
@@ -57,6 +59,9 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.icesoft.util.pooling.ClientIdPool;
@@ -72,15 +77,27 @@ public class GroupRenderer
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =
         new String[] { HTML.STYLE_ATTR };
-    private static final String[] PASSTHRU =
-        ExtendedAttributeConstants.getAttributes(
-            ExtendedAttributeConstants.ICE_PANELGROUP,
-            PASSTHRU_EXCLUDE);
+   
+    
+    private static final String[] PASSTHRU_JS_EVENTS = LocalEffectEncoder.maskEvents(
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_PANELGROUP));
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_PANELGROUP,
+                new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
+        
+        private static Map rendererJavascriptDraggable;
+        static {
+            rendererJavascriptDraggable = new HashMap();
+            rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
+                    "Draggable.removeMe(this.id);");
+        }
+        
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         try {
-
             String viewID = facesContext.getViewRoot().getViewId();
 
             String style = ((HtmlPanelGroup) uiComponent).getStyle();
@@ -119,9 +136,13 @@ public class GroupRenderer
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
                 String call = addJavascriptCalls(uiComponent, dndType, null, facesContext);
-                rootSpan.setAttribute(HTML.ONMOUSEMOVE_ATTR, call);
-                rootSpan.setAttribute(HTML.ONMOUSEOUT_ATTR, "Draggable.removeMe('"+ 
-                		uiComponent.getClientId(facesContext)+"');");
+                rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call);
+                LocalEffectEncoder.encode(
+                        facesContext, uiComponent, PASSTHRU_JS_EVENTS, 
+                                    rendererJavascriptDraggable, rootSpan, null);                
+            } else {
+                LocalEffectEncoder.encode(
+                        facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, rootSpan, null);                
             }
 
 
@@ -129,9 +150,6 @@ public class GroupRenderer
                 rootSpan.setAttribute("class", styleClass);
             }
             JavascriptContext.fireEffect(uiComponent, facesContext);
-
-            LocalEffectEncoder
-                    .encodeLocalEffects(uiComponent, rootSpan, facesContext);
             String extraStyle = null;
             String scrollWidth =
                     (String) uiComponent.getAttributes().get("scrollWidth");
@@ -156,6 +174,8 @@ public class GroupRenderer
 
             CurrentStyle.apply(facesContext, uiComponent, null, extraStyle);
             MenuPopupHelper.renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
+            PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent, 
+                                            rootSpan, passThruAttributes);           
             domContext.stepInto(uiComponent);
             // domContext.stepOver();
         } catch (Exception e) {

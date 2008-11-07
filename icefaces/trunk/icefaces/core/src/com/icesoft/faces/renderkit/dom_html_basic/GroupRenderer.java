@@ -79,9 +79,6 @@ public class GroupRenderer extends DomBasicRenderer {
             DOMContext.removeChildren(rootSpan);
             renderStyleAndStyleClass(style, styleClass, rootSpan);
         }
-        Element rootSpan = (Element) domContext.getRootNode();
-        LocalEffectEncoder
-                .encodeLocalEffects(uiComponent, rootSpan, facesContext);
         domContext.stepInto(uiComponent);
     }
 

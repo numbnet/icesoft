@@ -1,6 +1,9 @@
 
 package com.icesoft.faces.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 /**
@@ -258,7 +261,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[31] = (ICE_PANELGRID);
            final String[] ICE_PANELGROUP = 
-               new String[]{ HTML.STYLE_ATTR };                        
+               new String[]{ HTML.STYLE_ATTR, HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR };                        
            attributes[32] = (ICE_PANELGROUP);
            final String[] ICE_RADIO = 
                new String[]{};
@@ -387,6 +390,17 @@ public class ExtendedAttributeConstants {
             return null;
         }
         return (String[])attributes[i];
+    }
+    
+    public static String[] getAttributes(int index, String[][] remove) {
+        List removeArrays = new ArrayList();
+        for (int i = 0; i < remove.length; i++) {
+            for (int j=0; j < remove[i].length; j++) {
+                removeArrays.add(remove[i][j]);
+                
+            }
+        }
+        return getAttributes(index,(String[]) removeArrays.toArray(new String[]{})) ;
     }
     
     /**
