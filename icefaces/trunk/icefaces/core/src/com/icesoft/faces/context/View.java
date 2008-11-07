@@ -14,6 +14,7 @@ import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +48,7 @@ public class View implements CommandQueue {
             boolean reloded = path.equals(lastPath);
             lastPath = path;
             //reuse FacesContext on reload -- this preserves the ViewRoot in case forward navigation rules were executed           
-            if (reloded) {
+            if (reloded && !SeamUtilities.isSeamEnvironment()) {
                 facesContext.reload(request);
             } else {
                 if (facesContext != null) {
