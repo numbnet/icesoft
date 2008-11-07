@@ -36,7 +36,8 @@
 &ice-ext-core-styled-props;
 &base-props;
 &ice-att-displayListener-props;
-
+&ice-effects-props;
+&events-props;
 
 <property>
 	<description>

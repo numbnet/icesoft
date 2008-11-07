@@ -339,7 +339,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.STYLE_ATTR };                        
            attributes[57] = (ICE_PANELLAYOUT);
            final String[] ICE_PANELPOPUP = 
-               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR };                        
            attributes[58] = (ICE_PANELPOPUP);
            final String[] ICE_PANELSERIES = 
                new String[]{ HTML.ROWS_ATTR,  HTML.STYLE_ATTR };                        
@@ -354,7 +354,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ROWS_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[62] = (ICE_PANELTABSET);
            final String[] ICE_PANELTOOLTIP = 
-               new String[]{ HTML.STYLE_ATTR };                        
+               new String[]{ HTML.STYLE_ATTR, HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR };                        
            attributes[63] = (ICE_PANELTOOLTIP);
            final String[] ICE_PORTLET = 
                new String[]{ HTML.STYLE_ATTR };                        
