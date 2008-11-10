@@ -46,6 +46,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
+import javax.faces.render.RenderKitFactory;
 import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
@@ -807,7 +808,20 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public String calculateRenderKitId(FacesContext context) {
-        return delegate.calculateRenderKitId(context);
+        if (delegateView(context)) {
+            return delegate.calculateRenderKitId(context);
+        }
+        
+        Map requestParamMap = context.getExternalContext().getRequestParameterMap();
+        String renderKitId = (String) requestParamMap.get("javax.faces.RenderKitId");
+        // The key difference is checking for non-null but empty strings
+        if (renderKitId == null || renderKitId.trim().length() == 0) {
+            renderKitId = context.getApplication().getDefaultRenderKitId();
+            if (renderKitId == null) {
+                renderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;                
+            }
+        }
+        return renderKitId;
     }
 
     public static boolean isValueReference(String value) {
