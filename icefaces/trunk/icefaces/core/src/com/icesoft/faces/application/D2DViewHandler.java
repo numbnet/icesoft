@@ -42,7 +42,6 @@ import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
-import com.sun.faces.util.Util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,7 +57,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.RenderKitFactory;
 import java.beans.Beans;
 import java.io.IOException;
 import java.io.InputStream;
@@ -271,13 +269,14 @@ public class D2DViewHandler extends ViewHandler {
         // Do 1/2 state saving if Seam environment. TEMPORARY 
         if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() ) {
 
-            System.out.println("Going to restore view! ");
             String renderKitId =
                     calculateRenderKitId(context);
             long start = System.nanoTime();
-            UIViewRoot viewRoot = Util.getStateManager(context).restoreView(context,
-                                                                              viewId,
-                                                                              renderKitId);
+
+            Application a = context.getApplication();
+            StateManager sm = a.getStateManager();
+
+            UIViewRoot viewRoot = sm.restoreView(context, viewId, renderKitId);
 
             if (log.isDebugEnabled() ) {
                 log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime()-start)/1e9f);
@@ -335,7 +334,8 @@ public class D2DViewHandler extends ViewHandler {
 
     public String getActionURL(FacesContext context, String viewId) {
         //Maybe should always use delegate
-        // Temporary solution for ICE-3035, to use our 1.6.x check for .iface
+        // Temporary solution for ICE-30ot1mot1ponaa
+        // , to use our 1.6.x check for .iface
         boolean ifaceSuffix =
             ( (viewId != null) && viewId.endsWith(".iface") );
         if (delegateView(context) && !ifaceSuffix) {
@@ -728,7 +728,6 @@ public class D2DViewHandler extends ViewHandler {
     public void writeState(FacesContext context) throws IOException {
 
         if (delegateView(context)) {
-            System.out.println("++ Write State has a delegater");
             delegate.writeState(context);
             return;
         }
@@ -743,10 +742,12 @@ public class D2DViewHandler extends ViewHandler {
             return;
         }
 
-        StateManager stateManager = Util.getStateManager(context);
+        Application a = context.getApplication();
+        StateManager sm = a.getStateManager();
+
         long start = System.nanoTime();
 
-        StateManager.SerializedView sv = stateManager.saveSerializedView( context );
+        StateManager.SerializedView sv = sm.saveSerializedView( context );
         if (log.isDebugEnabled()) {
             log.debug("Saved serialized state in: " + (System.nanoTime()-start)/1e9f + "seconds");
         }
@@ -766,7 +767,7 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         // get JSF to write state (captured by DOMResponseWriter)
-        stateManager.writeState(context, sv );
+        sm.writeState(context, sv );
 
         // turn off state saving node capture
         if (writer != null && (writer instanceof DOMResponseWriter)) {
@@ -777,8 +778,6 @@ public class D2DViewHandler extends ViewHandler {
         if (log.isDebugEnabled()) {
             log.debug("State saved and serialized in " + (System.nanoTime()-start)/1e9f + " seconds");
         }
-        System.out.println("State saved and serialized in " + (System.nanoTime()-start)/1e9f + " seconds");
-
     }
 
     public Locale calculateLocale(FacesContext context) {
