@@ -119,7 +119,6 @@ public class GroupRenderer
                                                          uiComponent, DROP);
                     rootSpan.appendChild(targetID);
                 }
-
             }
 
             Element rootSpan = (Element) domContext.getRootNode();
@@ -166,7 +165,6 @@ public class GroupRenderer
                                   scrollHeight + ";overflow:auto;";
                 }
             }
-
 
             CurrentStyle.apply(facesContext, uiComponent, null, extraStyle);
             MenuPopupHelper.renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
