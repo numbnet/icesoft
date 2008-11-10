@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 
 public class AttributesTest extends TestCase{
     
-    private String METADATA_XML = "..\\..\\..\\..\\component-metadata\\src\\main\\resources\\conf\\extended-faces-config.xml";
+    private String METADATA_XML = "../../../../component-metadata/src/main/resources/conf/extended-faces-config.xml";
     private FacesConfigBean facesConfigBean;
     private static List extendedComponents = new ArrayList();
     private static Map customComponents = new HashMap();    
