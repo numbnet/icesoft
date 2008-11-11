@@ -163,13 +163,12 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             });
 
             connection.onSend(function() {
-                Ice.Focus.userInterupt = false;
                 statusManager.busy.on();
+            }, function() {
+                statusManager.busy.off();
             });
 
             connection.onReceive(function(response) {
-                statusManager.busy.off();
-
                 var mimeType = response.getResponseHeader('Content-Type');
                 if (mimeType.startsWith('text/html')) {
                     replaceContainerHTML(response.content());

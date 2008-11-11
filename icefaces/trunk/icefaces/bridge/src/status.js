@@ -75,6 +75,23 @@
         }
     });
 
+    This.OverlappingStateProtector = Object.subclass({
+        initialize: function(indicator) {
+            this.indicator = indicator;
+            this.counter = 0;
+        },
+
+        on: function() {
+            if (this.counter < 1) this.indicator.on();
+            ++this.counter;
+        },
+
+        off: function() {
+            --this.counter;
+            if (this.counter < 1) this.indicator.off();
+        }
+    });
+
     This.ToggleIndicator = Object.subclass({
         initialize: function(onElement, offElement) {
             this.onElement = onElement;
@@ -220,7 +237,7 @@
             var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
             var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
 
-            this.busy = new This.PointerIndicator(container);
+            this.busy = new This.OverlappingStateProtector(new This.PointerIndicator(container));
             this.sessionExpired = this.sessionExpiredRedirect ? this.sessionExpiredRedirect : new This.OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, this)
             this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new This.OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, this);
             this.serverError = new This.OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, this)
@@ -267,7 +284,7 @@
             var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
             var busyIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
 
-            this.busy = displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator;
+            this.busy = new Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
             this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);
             if (showPopups) {
                 this.dsm = defaultStatusManager;

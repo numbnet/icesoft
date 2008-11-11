@@ -39,6 +39,7 @@
             this.receiveChannel = new Ajax.Client(this.logger.child('blocking'));
             this.defaultQuery = defaultQuery;
             this.onSendListeners = [];
+            this.onReceiveFromSendListeners = [];
             this.onReceiveListeners = [];
             this.onServerErrorListeners = [];
             this.connectionDownListeners = [];
@@ -228,14 +229,16 @@
             this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 Connection.FormPost(request);
                 request.on(Connection.OK, this.receiveCallback);
+                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
                 request.on(Connection.ServerError, this.serverErrorCallback);
                 request.on(Connection.OK, Connection.Close);
-                this.onSendListeners.broadcast(request);
+                this.onSendListeners.broadcast();
             }.bind(this));
         },
 
-        onSend: function(callback) {
-            this.onSendListeners.push(callback);
+        onSend: function(sendCallback, receiveCallback) {
+            this.onSendListeners.push(sendCallback);
+            if (receiveCallback) this.onReceiveFromSendListeners.push(receiveCallback);
         },
 
         onReceive: function(callback) {
@@ -265,7 +268,7 @@
             } catch (e) {
                 //ignore, we really need to shutdown
             } finally {
-                [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners ].eachWithGuard(function(listeners) {
+                [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners, this.onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
                     listeners.clear();
                 });
                 this.listener.abort();
