@@ -46,6 +46,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class InputFileRenderer extends Renderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -55,7 +57,7 @@ public class InputFileRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         StringWriter iframeContentWriter = new StringWriter();
         c.renderIFrame(iframeContentWriter, facesContext);
-        String frameName = id + ":uploadFrame";
+        String frameName = ClientIdPool.get(id + ":uploadFrame");
         String pseudoURL = "javascript: document.write('" + iframeContentWriter.toString().replaceAll("\"", "%22") + "'); document.close();";
 
         writer.startElement("iframe", c);
