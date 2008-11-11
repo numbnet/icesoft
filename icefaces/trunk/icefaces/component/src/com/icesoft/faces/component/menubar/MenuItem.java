@@ -46,6 +46,7 @@ import javax.faces.event.ActionEvent;
 import java.util.List;
 import javax.faces.context.FacesContext;
 
+import com.icesoft.util.pooling.CSSNamePool;
 
 /**
  * MenuItem is a JSF component class that represent an ICEfaces menuItem.
@@ -451,11 +452,11 @@ public class MenuItem extends MenuItemBase {
         String disSuffix = isDisabled()? "-dis" : "";
         
         if (styleClass != null) {
-            return parentClass + disSuffix + " " +styleClass + subClass + disSuffix; 
+            return CSSNamePool.get(parentClass + disSuffix + " " +styleClass + subClass + disSuffix); 
         }
         
         ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? parentClass + disSuffix + " " + (String) vb.getValue(getFacesContext()) + subClass + disSuffix : parentClass + disSuffix;
+        return vb != null ? parentClass + disSuffix + " " + (String) vb.getValue(getFacesContext()) + subClass + disSuffix : CSSNamePool.get(parentClass + disSuffix);
     }
     
     /**

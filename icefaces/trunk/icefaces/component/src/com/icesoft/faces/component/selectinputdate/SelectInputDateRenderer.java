@@ -84,6 +84,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import com.icesoft.util.pooling.CSSNamePool;
+
 /**
  * <p> The SelectInputDateRenderer class is an ICEfaces D2D renderer for the
  * SelectInputDate component. Note: This class originally was derived from the
@@ -936,7 +939,7 @@ public class SelectInputDateRenderer
                 }                
             }
             
-            String cellStyle = inputComponent.getDayCellClass() + " " + inputComponent.getHighlightDayCellClass();            
+            String cellStyle = CSSNamePool.get(inputComponent.getDayCellClass() + " " + inputComponent.getHighlightDayCellClass());            
             
             
             if ((cal.get(Calendar.DAY_OF_MONTH) == day) &&
@@ -1139,7 +1142,7 @@ public class SelectInputDateRenderer
         link.encodeBegin(facesContext);
         link.encodeChildren(facesContext);
         link.encodeEnd(facesContext);
-        td.setAttribute(HTML.ID_ATTR, link.getClientId(facesContext) + "td");
+        td.setAttribute(HTML.ID_ATTR, CSSNamePool.get(link.getClientId(facesContext) + "td"));
         try {
             Integer.parseInt(content);
             ((SelectInputDate) component).getLinkMap()

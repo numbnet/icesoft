@@ -56,6 +56,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.*;
 
+import com.icesoft.util.pooling.ClientIdPool;
+import com.icesoft.util.pooling.CSSNamePool;
 
 public class TableRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TableRenderer {
@@ -95,12 +97,12 @@ public class TableRenderer
         replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");
     	if (((String[]) getHeaderStyleClasses(uiComponent)).length <= 0) {
             String[] headerStyles = new String[2];
-            headerStyles[0] = Util.getQualifiedStyleClass(uiComponent,
+            headerStyles[0] = CSSNamePool.get(Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS1) + ((headerClass.length() > 0)
-                    ? headerClass : "");
-            headerStyles[1] =Util.getQualifiedStyleClass(uiComponent,
+                    ? headerClass : ""));
+            headerStyles[1] = CSSNamePool.get(Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS2)+ ((headerClass.length() > 0)
-                            ? headerClass : "");
+                            ? headerClass : ""));
 
             return headerStyles;
         } else {
@@ -304,7 +306,7 @@ public class TableRenderer
                 } else {
                     rowStyleClass = baseClass.replaceAll(sourceClass, sourceClass+"Row ") + rowStyleClass;
                 }
-                tr.setAttribute(HTML.CLASS_ATTR, rowStyleClass);
+                tr.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(rowStyleClass));
                 String rowStyle = ((HeaderRow)child).getStyle();
                 if (rowStyle != null) {
                     tr.setAttribute(HTML.STYLE_ATTR, rowStyle);
@@ -344,7 +346,7 @@ public class TableRenderer
                             }
                         }
                     }
-                    th.setAttribute(HTML.CLASS_ATTR, styleClass);
+                    th.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(styleClass));
                     Integer colspan = null;
                     try {
                         colspan = Integer.valueOf(((com.icesoft.faces.component.ext.UIColumn)
@@ -638,7 +640,7 @@ public class TableRenderer
                      "', '"+ formId +"', '"+ paramId +"');");
             }
             String id = uiComponent.getClientId(facesContext);
-            tr.setAttribute(HTML.ID_ATTR, id);
+            tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
@@ -654,7 +656,7 @@ public class TableRenderer
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
             selectedClass = getPortletAlternateRowClass(selectedClass, rowIndex);
-            tr.setAttribute(HTML.CLASS_ATTR, selectedClass);
+            tr.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(selectedClass));
 
             if(rowStylesMaxIndex >= 0){ // Thanks denis tsyplakov
                if (++rowStyleIndex > rowStylesMaxIndex) {
@@ -737,9 +739,9 @@ public class TableRenderer
                         if (iceColumnStyleClass != null) {
                             String existingStyleClass = td.getAttribute(HTML.CLASS_ATTR);
                             if (existingStyleClass != null) {
-                                td.setAttribute(HTML.CLASS_ATTR, existingStyleClass + " "+ iceColumnStyleClass);
+                                td.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(existingStyleClass + " "+ iceColumnStyleClass));
                             } else {
-                                td.setAttribute(HTML.CLASS_ATTR, iceColumnStyleClass);
+                                td.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(iceColumnStyleClass));
                             }
                         }
 
@@ -968,12 +970,12 @@ public class TableRenderer
         replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");
        String[] headerClasses = getStyleClasses(uiComponent, "headerClasses");
        for (int i=0; i < headerClasses.length; i++) {
-           headerClasses[i] = Util.getQualifiedStyleClass(uiComponent,
+           headerClasses[i] = CSSNamePool.get(Util.getQualifiedStyleClass(uiComponent,
                    headerClasses[i],
                          CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS,
                          "headerClasses"
                                       )+ ((headerClass.length() > 0)
-                                              ? headerClass : "");
+                                              ? headerClass : ""));
        }
        return headerClasses;
     }

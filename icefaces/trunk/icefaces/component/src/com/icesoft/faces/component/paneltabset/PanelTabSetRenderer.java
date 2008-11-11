@@ -63,6 +63,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.icesoft.util.pooling.ClientIdPool;
+import com.icesoft.util.pooling.CSSNamePool;
 
 /**
  * <p>PanelTabSetRenderer extends DomBasicRenderer and is responsible for
@@ -623,35 +624,35 @@ public class PanelTabSetRenderer
             }
         }
 
-        td_top_left.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+        td_top_left.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_LEFT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix);
-        td_top_mid.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix));
+        td_top_mid.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_MIDDLE + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix);
-        td_top_right.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix));
+        td_top_right.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_RIGHT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix);
+                .PANEL_TAB_SET_DEFAULT_TOP + disableStyleClassSuffix));
 
-        td_mid_left.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+        td_mid_left.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_LEFT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix);
-        td_mid_mid.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix));
+        td_mid_mid.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_MIDDLE + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix);
-        td_mid_right.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix));
+        td_mid_right.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_RIGHT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix);
+                .PANEL_TAB_SET_DEFAULT_MIDDLE + disableStyleClassSuffix));
 
-        td_bot_left.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+        td_bot_left.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_LEFT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix);
-        td_bot_mid.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix));
+        td_bot_mid.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_MIDDLE + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix);
-        td_bot_right.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT
+                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix));
+        td_bot_right.setAttribute(HTML.CLASS_ATTR, CSSNamePool.get(CSS_DEFAULT
                 .PANEL_TAB_SET_DEFAULT_RIGHT + CSS_DEFAULT
-                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix);
+                .PANEL_TAB_SET_DEFAULT_BOTTOM + disableStyleClassSuffix));
 
         tr_top.appendChild(td_top_left);
         tr_top.appendChild(td_top_mid);
