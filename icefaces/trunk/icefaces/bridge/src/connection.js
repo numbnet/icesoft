@@ -59,6 +59,7 @@
             this.channel = new Ajax.Client(this.logger);
             this.defaultQuery = defaultQuery;
             this.onSendListeners = [];
+            this.onReceiveFromSendListeners = [];
             this.onReceiveListeners = [];
             this.onServerErrorListeners = [];
             this.connectionDownListeners = [];
@@ -107,6 +108,7 @@
             this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 This.FormPost(request);
                 request.on(Connection.OK, this.receiveCallback);
+                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
                 request.on(Connection.BadResponse, this.badResponseCallback);
                 request.on(Connection.ServerError, this.serverErrorCallback);
                 request.on(Connection.OK, Connection.Close);
@@ -114,8 +116,9 @@
             }.bind(this));
         },
 
-        onSend: function(callback) {
-            this.onSendListeners.push(callback);
+        onSend: function(sendCallback, receiveCallback) {
+            this.onSendListeners.push(sendCallback);
+            if (receiveCallback) this.onReceiveFromSendListeners.push(receiveCallback);
         },
 
         onReceive: function(callback) {
@@ -137,7 +140,7 @@
             this.shutdown = Function.NOOP;
             //avoid sending XMLHTTP requests that might create new sessions on the server
             this.send = Function.NOOP;
-            [ this.onSendListeners, this.onReceiveListeners, this.onServerErrorListeners, this.connectionDownListeners ].eachWithGuard(function(listeners) {
+            [ this.onSendListeners, this.onReceiveListeners, this.onServerErrorListeners, this.connectionDownListeners, this.onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
                 listeners.clear();
             });
         }
