@@ -36,28 +36,24 @@ package com.icesoft.faces.application;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
-import javax.faces.render.RenderKitFactory;
 import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.StateHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.RenderKitFactory;
 import java.beans.Beans;
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,7 +129,7 @@ public class D2DViewHandler extends ViewHandler {
         this.delegate = delegate;
     }
 
-    public void initView(FacesContext facesContext)  {
+    public void initView(FacesContext facesContext) {
         //TODO implement ExternalContext.setRequestCharacterEncoding
         //so that this method can use the default implementation on
         //JSF 1.2
@@ -192,37 +188,20 @@ public class D2DViewHandler extends ViewHandler {
 
         // #3422 Needs to be a public class instantiable by JSF
         UIViewRoot root = new SettableLocaleViewRoot();
-
-        
-        Locale locale = null;
         String renderKitId = null;
         UIViewRoot oldRoot = context.getViewRoot();
         if (oldRoot != null) {
-            locale = oldRoot.getLocale();
             renderKitId = oldRoot.getRenderKitId();
-        }
-        if (locale == null) {
-            // For some reason the RI goes back to the top level ViewHandler
-            // Something about decorated implementations
-            locale = context.getApplication().getViewHandler().
-                calculateLocale(context);
         }
         if (renderKitId == null) {
             // For some reason the RI goes back to the top level ViewHandler
             // Something about decorated implementations
-            renderKitId = context.getApplication().getViewHandler().
-                calculateRenderKitId(context);
+            renderKitId = context.getApplication().getViewHandler().calculateRenderKitId(context);
         }
-        root.setLocale(locale);
         root.setRenderKitId(renderKitId);
-        
-        root.setViewId(null == viewId ? "default" : viewId);
-        
-        String renderedViewId = getRenderedViewId(context, root.getViewId());
-        root.setViewId(renderedViewId);
-
+        root.setViewId(getRenderedViewId(context, null == viewId ? "default" : viewId));
         stateWritten = false;
-        
+
         return root;
     }
 
@@ -268,7 +247,7 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         // Do 1/2 state saving if Seam environment. TEMPORARY 
-        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() ) {
+        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment()) {
 
             String renderKitId =
                     calculateRenderKitId(context);
@@ -279,22 +258,22 @@ public class D2DViewHandler extends ViewHandler {
 
             UIViewRoot viewRoot = sm.restoreView(context, viewId, renderKitId);
 
-            if (log.isDebugEnabled() ) {
-                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime()-start)/1e9f);
-            } 
+            if (log.isDebugEnabled()) {
+                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime() - start) / 1e9f);
+            }
             stateWritten = false;
             return viewRoot;
         } else {
 
             UIViewRoot currentRoot = context.getViewRoot();
             // For spring webflow
-            if (SeamUtilities.isSpringEnvironment() ) {
+            if (SeamUtilities.isSpringEnvironment()) {
                 return currentRoot;
             }
             if (null != currentRoot &&
-                getRenderedViewId(context, viewId)
-                        .equals( getRenderedViewId(context,
-                                                   currentRoot.getViewId()))) {
+                    getRenderedViewId(context, viewId)
+                            .equals(getRenderedViewId(context,
+                                    currentRoot.getViewId()))) {
                 return currentRoot;
             } else {
                 return null;
@@ -338,7 +317,7 @@ public class D2DViewHandler extends ViewHandler {
         // Temporary solution for ICE-30ot1mot1ponaa
         // , to use our 1.6.x check for .iface
         boolean ifaceSuffix =
-            ( (viewId != null) && viewId.endsWith(".iface") );
+                ((viewId != null) && viewId.endsWith(".iface"));
         if (delegateView(context) && !ifaceSuffix) {
             return delegate.getActionURL(context, viewId);
         }
@@ -560,7 +539,7 @@ public class D2DViewHandler extends ViewHandler {
 
         if (!component.isRendered()) {
             return;
-        } 
+        }
 
         // UIViewRoot.encodeBegin(FacesContext) resets its counter for
         //   createUniqueId(), which we don't want, or else we get
@@ -652,7 +631,7 @@ public class D2DViewHandler extends ViewHandler {
         if (rendererType != null) {
             open.append(" renderer: ");
             Object renderer = context.getRenderKit().getRenderer(
-                component.getFamily(), rendererType);
+                    component.getFamily(), rendererType);
             if (renderer == null)
                 open.append("null");
             else {
@@ -712,16 +691,14 @@ public class D2DViewHandler extends ViewHandler {
      * Its intent was to write the component tree and state into the response. Either
      * the entire state is written if client side state saving is configured, or
      * a token is written if server side saving is configured.
-     *
+     * <p/>
      * This method will be called once per form on the page, and so should take care
      * to filter the number of times state is retrieved via the JSF methods.
-     *
+     * <p/>
      * When this method is called, it will call DOMResponseWriter.saveNextNode()
      * to capture the next nodes written to the ResponseWriter. JSF does something similar,
      * where their ResponseWriter saves the next writes into a temporary output stream
      * for subsequent copying into the real output stream potentially several times.
-     *
-     *
      *
      * @param context
      * @throws IOException
@@ -735,7 +712,7 @@ public class D2DViewHandler extends ViewHandler {
 
         if (!CoreUtils.isJSFStateSaving()) {
             return;
-        } 
+        }
 
         // We only need to capture the state once per rendering request. It is
         // possible to be inserted once per form in the response.
@@ -748,16 +725,16 @@ public class D2DViewHandler extends ViewHandler {
 
         long start = System.nanoTime();
 
-        StateManager.SerializedView sv = sm.saveSerializedView( context );
+        StateManager.SerializedView sv = sm.saveSerializedView(context);
         if (log.isDebugEnabled()) {
-            log.debug("Saved serialized state in: " + (System.nanoTime()-start)/1e9f + "seconds");
+            log.debug("Saved serialized state in: " + (System.nanoTime() - start) / 1e9f + "seconds");
         }
 
         if (SeamUtilities.isSeamEnvironment()) {
             return;
-        } 
+        }
 
-        Object [] structureAndState = new Object[2];
+        Object[] structureAndState = new Object[2];
         structureAndState[0] = sv.getStructure();
         structureAndState[1] = sv.getState();
 
@@ -768,16 +745,16 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         // get JSF to write state (captured by DOMResponseWriter)
-        sm.writeState(context, sv );
+        sm.writeState(context, sv);
 
         // turn off state saving node capture
         if (writer != null && (writer instanceof DOMResponseWriter)) {
-                    ((DOMResponseWriter) writer).setSaveNextNode(false);
+            ((DOMResponseWriter) writer).setSaveNextNode(false);
         }
 
         stateWritten = true;
         if (log.isDebugEnabled()) {
-            log.debug("State saved and serialized in " + (System.nanoTime()-start)/1e9f + " seconds");
+            log.debug("State saved and serialized in " + (System.nanoTime() - start) / 1e9f + " seconds");
         }
     }
 
@@ -811,14 +788,14 @@ public class D2DViewHandler extends ViewHandler {
         if (delegateView(context)) {
             return delegate.calculateRenderKitId(context);
         }
-        
+
         Map requestParamMap = context.getExternalContext().getRequestParameterMap();
         String renderKitId = (String) requestParamMap.get("javax.faces.RenderKitId");
         // The key difference is checking for non-null but empty strings
         if (renderKitId == null || renderKitId.trim().length() == 0) {
             renderKitId = context.getApplication().getDefaultRenderKitId();
             if (renderKitId == null) {
-                renderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;                
+                renderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;
             }
         }
         return renderKitId;
@@ -950,8 +927,8 @@ public class D2DViewHandler extends ViewHandler {
         } catch (NumberFormatException e) {
             reloadInterval = reloadIntervalDefault * 1000;
         }
-        CoreUtils.setJSFStateSaving( Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
-                                     SeamUtilities.isSeamEnvironment());
+        CoreUtils.setJSFStateSaving(Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
+                SeamUtilities.isSeamEnvironment());
         if (!CoreUtils.isJSFStateSaving()) {
             log.debug("JSF State Management not provided");
         }
@@ -963,7 +940,7 @@ public class D2DViewHandler extends ViewHandler {
      * in whatever form it came from the servlet, and appends the default suffix
      * parameter instead
      *
-     * @param context current FacesContext
+     * @param context  current FacesContext
      * @param actionId current view action id.
      * @return The viewId with the proper suffix
      */
@@ -987,7 +964,7 @@ public class D2DViewHandler extends ViewHandler {
                                     getDefaultSuffix() + "</param-value>\n" +
                                     "</context-param>");
                 }
-                viewSuffix = ViewHandler.DEFAULT_SUFFIX; 
+                viewSuffix = ViewHandler.DEFAULT_SUFFIX;
             }
 
             int lastPeriod = actionId.lastIndexOf('.');
@@ -1002,8 +979,8 @@ public class D2DViewHandler extends ViewHandler {
 
     /**
      * Allow subclasses to override the suffix for logging purposes
-     *  
-     * @return  Default suffix for this technology type
+     *
+     * @return Default suffix for this technology type
      */
     protected String getDefaultSuffix() {
         return ViewHandler.DEFAULT_SUFFIX;
