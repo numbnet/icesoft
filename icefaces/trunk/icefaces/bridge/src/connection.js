@@ -42,16 +42,16 @@
 
     This.BadResponse = function(response) {
         return response.statusCode() == 0;
-    }
+    };
 
     This.ServerError = function(response) {
         var code = response.statusCode();
         return code >= 500 && code < 600;
-    }
+    };
 
     This.OK = function(response) {
         return response.statusCode() == 200;
-    }
+    };
 
     This.SyncConnection = Object.subclass({
         initialize: function(logger, configuration, defaultQuery) {
