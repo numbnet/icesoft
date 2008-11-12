@@ -69,7 +69,7 @@ public class ICECompsListHelper {
             MetadataXmlParser jsfMetaParser = new MetadataXmlParser();
             try {
                 String extRelativePath = GeneratorUtil.getWorkingFolder();
-                String component_faces_config = "file:" + extRelativePath + "../../../component/conf/META-INF/faces-config.xml";
+                String component_faces_config = "file:" + extRelativePath + "../../../component-metadata/src/main/resources/conf/faces-config.xml";
                 URL url = new URL(component_faces_config);
                 facesConfigBean = jsfMetaParser.parse(url);
             } catch (IOException e) {

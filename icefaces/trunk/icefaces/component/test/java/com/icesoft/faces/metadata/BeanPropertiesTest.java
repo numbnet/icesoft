@@ -1,6 +1,5 @@
 package com.icesoft.faces.metadata;
 
-import com.icesoft.faces.metadata.ICECompsTestCase;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
