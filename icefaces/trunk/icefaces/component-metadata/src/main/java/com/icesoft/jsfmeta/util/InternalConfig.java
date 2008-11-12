@@ -44,7 +44,7 @@ import java.util.Properties;
 
 /**
  *
- * @author frank
+ * @author fye
  */
 public class InternalConfig {
     

@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author frank
+ * @author fye
  */
 public class MetadataTest extends TestCase{
     

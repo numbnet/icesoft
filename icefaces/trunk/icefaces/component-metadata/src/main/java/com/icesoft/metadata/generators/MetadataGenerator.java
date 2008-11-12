@@ -134,7 +134,7 @@ public final class MetadataGenerator {
 
             exclude();
 
-            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "../../../component/conf/META-INF/faces-config.xml";
+            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/faces-config.xml";
             String extended_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/extended-faces-config.xml";
             String[] urlList = new String[]{component_faces_config, extended_faces_config};
             parseXML(urlList);
