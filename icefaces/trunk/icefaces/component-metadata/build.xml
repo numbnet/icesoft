@@ -67,9 +67,6 @@
             <srcfiles dir="${maven.build.directory}/classes/conf">
                 <include name="**/*.xml" />
             </srcfiles>
-            <srcfiles dir="${maven.build.directory}/../../component/conf/META-INF">
-                <include name="faces-config.xml" />
-            </srcfiles>
         </uptodate>
     </target>
     
