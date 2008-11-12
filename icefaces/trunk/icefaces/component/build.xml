@@ -140,6 +140,7 @@
     <target name="jar.components" depends="gen.facelets.file, test">
         <build.jar>
             <add.metainfs>
+                <metainf dir="../component-metadata/src/main/resources/conf" includes="*faces-config.xml"/>
                 <metainf dir="conf/META-INF" excludes="myfaces/"/>
                 <metainf dir="./build/generate/src/" includes="*.tld"/>
             </add.metainfs>
