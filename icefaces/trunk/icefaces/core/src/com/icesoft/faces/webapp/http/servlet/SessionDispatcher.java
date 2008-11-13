@@ -1,27 +1,18 @@
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.util.ThreadLocalUtility;
-import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import javax.servlet.http.*;
+import java.util.*;
 
 public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
@@ -29,6 +20,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     private final static Map SessionMonitors = new HashMap();
     private final static CurrentServer CurrentSessionBoundServer = new CurrentServer();
     private final Map sessionBoundServers = new HashMap();
+    private final Map activeRequests = new HashMap();
     private ServletContext context;
 
     public SessionDispatcher(Configuration configuration, ServletContext context) {
@@ -51,9 +43,16 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         HttpSession session = request.getSession(true);
         checkSession(session);
         //attach session bound server to the current thread -- this is a lock-free strategy
-        CurrentSessionBoundServer.attach(lookupServer(session));
-        super.service(request, response);
-        CurrentSessionBoundServer.detach();
+        try {
+            CurrentSessionBoundServer.attach(lookupServer(session));
+            //put the request in the pool of active request in case HttpServletRequest.isUserInRole need to be called
+            addRequest(request);
+            super.service(request, response);
+        } finally {
+            //remove the request from the active requests pool
+            removeRequest(request);
+            CurrentSessionBoundServer.detach();
+        }
     }
 
     public void shutdown() {
@@ -64,7 +63,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         }
     }
 
-    protected abstract Server newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
+    protected abstract Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) throws Exception;
 
     protected void checkSession(HttpSession session) {
         try {
@@ -83,7 +82,11 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
             synchronized (sessionBoundServers) {
                 if (!sessionBoundServers.containsKey(id)) {
-                    sessionBoundServers.put(id, this.newServer(session, monitor));
+                    sessionBoundServers.put(id, this.newServer(session, monitor, new Authorization() {
+                        public boolean isUserInRole(String role) {
+                            return inRole(id, role);
+                        }
+                    }));
                 }
             }
         } catch (Exception e) {
@@ -106,6 +109,46 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
     private void sessionDestroy(HttpSession session) {
         sessionBoundServers.remove(session.getId());
+    }
+
+    private void addRequest(HttpServletRequest request) {
+        String key = request.getRequestedSessionId();
+        synchronized (activeRequests) {
+            if (activeRequests.containsKey(key)) {
+                List requests = (List) activeRequests.get(key);
+                requests.add(request);
+            } else {
+                List requests = new ArrayList();
+                requests.add(request);
+                activeRequests.put(key, requests);
+            }
+        }
+    }
+
+    private void removeRequest(HttpServletRequest request) {
+        String key = request.getRequestedSessionId();
+        synchronized (activeRequests) {
+            List requests = (List) activeRequests.get(key);
+            requests.remove(request);
+            if (requests.isEmpty()) {
+                activeRequests.remove(key);
+            }
+        }
+    }
+
+    private boolean inRole(String sessionID, String role) {
+        Iterator i = new ArrayList((Collection) activeRequests.get(sessionID)).iterator();
+        while (i.hasNext()) {
+            try {
+                HttpServletRequest request = (HttpServletRequest) i.next();
+                if (request.isUserInRole(role)) {
+                    return true;
+                }
+            } catch (Throwable t) {
+                //ignore
+            }
+        }
+        return false;
     }
 
     /**

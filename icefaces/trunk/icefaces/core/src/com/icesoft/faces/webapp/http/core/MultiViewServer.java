@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -18,8 +19,9 @@ public class MultiViewServer implements Server {
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private ResourceDispatcher resourceDispatcher;
+    private Authorization authorization;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher, Authorization authorization) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -27,6 +29,7 @@ public class MultiViewServer implements Server {
         this.asynchronouslyUpdatedViews = asynchronouslyUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
+        this.authorization = authorization;
     }
 
     public void service(Request request) throws Exception {
@@ -55,7 +58,7 @@ public class MultiViewServer implements Server {
 
     private View createView() throws Exception {
         String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, authorization);
         views.put(viewNumber, view);
         return view;
     }

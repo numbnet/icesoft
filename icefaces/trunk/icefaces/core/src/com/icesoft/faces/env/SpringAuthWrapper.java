@@ -33,38 +33,30 @@
 
 package com.icesoft.faces.env;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-
-import java.security.Principal;
-
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.HttpSessionContextIntegrationFilter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.Authentication;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.context.HttpSessionContextIntegrationFilter;
+import org.springframework.security.context.SecurityContext;
 
 import java.security.Principal;
+import java.util.Map;
 
-public class SpringAuthWrapper implements AuthenticationVerifier {
-    private static Log Log = LogFactory.getLog(SpringAuthWrapper.class);
-
-    Authentication authentication;
+public class SpringAuthWrapper implements Authorization {
+    private final static Log Log = LogFactory.getLog(SpringAuthWrapper.class);
+    private final Authentication authentication;
 
     public SpringAuthWrapper(Principal principal) {
         this.authentication = (Authentication) principal;
     }
 
     public boolean isUserInRole(String role) {
-        if (null == authentication)  {
+        if (null == authentication) {
             return false;
         }
-        if (Log.isTraceEnabled()) {
-            Log.trace("isUserInRole ROLE: "+role);
-        }
+        Log.trace("isUserInRole ROLE: " + role);
+
         GrantedAuthority[] authorities = authentication.getAuthorities();
         if (authentication.getPrincipal() == null || authorities == null) {
             return false;
@@ -78,31 +70,14 @@ public class SpringAuthWrapper implements AuthenticationVerifier {
 
         return false;
     }
-    
-    public boolean isReusable()  {
-        //this object can be re-used across multiple requests
-        //because it contains a reference to the Principal only,
-        //not the actual request object
-        return true;
-    }
 
-    public static AuthenticationVerifier getVerifier(HttpServletRequest request)  {
-        Principal principal = request.getUserPrincipal();
-        
-        if (principal instanceof Authentication)  {
+    public static Authorization getVerifier(Principal principal, Map sessionMap) {
+        if (principal instanceof Authentication) {
             return new SpringAuthWrapper(principal);
+        } else {
+            SecurityContext sc = (SecurityContext) sessionMap.get(HttpSessionContextIntegrationFilter.SPRING_SECURITY_CONTEXT_KEY);
+            return new SpringAuthWrapper(sc == null ? null : sc.getAuthentication());
         }
-        
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            SecurityContext sc = (SecurityContext) session.getAttribute(
-                HttpSessionContextIntegrationFilter.SPRING_SECURITY_CONTEXT_KEY);
-            if (sc != null) {
-                return new SpringAuthWrapper(sc.getAuthentication());
-            }
-        }
-        
-        return new SpringAuthWrapper(null); 
     }
 
 }

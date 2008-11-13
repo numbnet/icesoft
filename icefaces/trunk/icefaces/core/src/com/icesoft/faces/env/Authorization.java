@@ -1,7 +1,5 @@
 package com.icesoft.faces.env;
 
-public interface AuthenticationVerifier {
-
+public interface Authorization {
     boolean isUserInRole(String role);
-    boolean isReusable();
 }

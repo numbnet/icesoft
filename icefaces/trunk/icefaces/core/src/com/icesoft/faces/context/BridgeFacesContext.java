@@ -34,6 +34,7 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -75,16 +76,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
@@ -112,15 +104,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ELContext elContext;
     private DocumentStore documentStore;
 
-    public BridgeFacesContext(Request request, final String viewIdentifier, String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor) throws Exception {
+    public BridgeFacesContext(Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final Authorization authorization) throws Exception {
         setCurrentInstance(this);
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
-                externalContext = new ServletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor);
+                externalContext = new ServletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, authorization);
             }
 
             public void portlet(Object request, Object response, Object portletConfig) {
-                externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig);
+                externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig, authorization);
             }
         });
         this.viewNumber = viewIdentifier;
@@ -373,7 +365,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
         // if we're doing state management, we always clear the viewRoot between requests.
         // Don't erase saved viewRoot if half state saving TEMPORARY
-        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() ) {
+        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment()) {
             this.viewRoot = null;
         }
 
@@ -564,7 +556,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
                 //#2139 Don't insert a false postback key if state saving is configured,
                 // as this will overwrite the real state saving key
-                if (!CoreUtils.isJSFStateSaving() || SeamUtilities.isSeamEnvironment() ) {
+                if (!CoreUtils.isJSFStateSaving() || SeamUtilities.isSeamEnvironment()) {
                     externalContext.insertPostbackKey();
                 }
             }

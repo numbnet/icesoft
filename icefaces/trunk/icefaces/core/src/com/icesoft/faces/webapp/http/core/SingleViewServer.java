@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -18,8 +19,9 @@ public class SingleViewServer implements Server {
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private ResourceDispatcher resourceDispatcher;
+    private Authorization authorization;
 
-    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher, Authorization authorization) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -27,6 +29,7 @@ public class SingleViewServer implements Server {
         this.allUpdatedViews = allUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
+        this.authorization = authorization;
     }
 
     //synchronize to avoid concurrent state modifications of the single View
@@ -37,7 +40,7 @@ public class SingleViewServer implements Server {
             if (views.containsKey(viewNumber)) {
                 view = (View) views.get(viewNumber);
             } else {
-                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, authorization);
                 views.put(viewNumber, view);
             }
         }
