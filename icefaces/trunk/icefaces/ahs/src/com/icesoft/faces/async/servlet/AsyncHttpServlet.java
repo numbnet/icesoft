@@ -7,6 +7,7 @@ import com.icesoft.faces.async.common.UpdatedViewsManager;
 import com.icesoft.faces.async.common.messaging.MessageService;
 import com.icesoft.faces.async.server.AsyncHttpServer;
 import com.icesoft.faces.async.server.AsyncHttpServerSettings;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -111,13 +112,13 @@ public class AsyncHttpServlet
                 }
                 final ExecuteQueue _executeQueue = new ExecuteQueue();
                 SessionDispatcher _sessionDispatcher = new SessionDispatcher(_servletContextConfiguration, getServletContext()) {
-                    protected Server newServer(final HttpSession httpSession, final Monitor monitor) {
+                    protected Server newServer(final HttpSession httpSession, final Monitor monitor, Authorization authorization) {
                         return new SessionBoundServlet(
-                                        _servletContextConfiguration,
-                                        _sessionManager,
-                                        _executeQueue,
-                                        monitor,
-                                        servletConfig.getServletContext());
+                                _servletContextConfiguration,
+                                _sessionManager,
+                                _executeQueue,
+                                monitor,
+                                servletConfig.getServletContext());
                     }
                 };
                 pathDispatcher.dispatchOn(".*", _sessionDispatcher);
