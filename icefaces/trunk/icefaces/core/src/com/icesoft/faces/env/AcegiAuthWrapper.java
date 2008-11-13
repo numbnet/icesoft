@@ -33,38 +33,30 @@
 
 package com.icesoft.faces.env;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-
-import java.security.Principal;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
-
-import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
-
+import org.acegisecurity.context.SecurityContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.security.Principal;
+import java.util.Map;
 
-public class AcegiAuthWrapper implements AuthenticationVerifier {
-    private static Log Log = LogFactory.getLog(AcegiAuthWrapper.class);
-
-    Authentication authentication;
+public class AcegiAuthWrapper implements Authorization {
+    private final static Log Log = LogFactory.getLog(AcegiAuthWrapper.class);
+    private final Authentication authentication;
 
     public AcegiAuthWrapper(Principal principal) {
         this.authentication = (Authentication) principal;
     }
 
     public boolean isUserInRole(String role) {
-        if (null == authentication)  {
+        if (null == authentication) {
             return false;
         }
-        if (Log.isTraceEnabled()) {
-            Log.trace("isUserInRole ROLE: "+role);
-        }
+        Log.trace("isUserInRole ROLE: " + role);
+
         GrantedAuthority[] authorities = authentication.getAuthorities();
         if (authentication.getPrincipal() == null || authorities == null) {
             return false;
@@ -78,31 +70,14 @@ public class AcegiAuthWrapper implements AuthenticationVerifier {
 
         return false;
     }
-    
-    public boolean isReusable()  {
-        //this object can be re-used across multiple requests
-        //because it contains a reference to the Principal only,
-        //not the actual request object
-        return true;
-    }
 
-    public static AuthenticationVerifier getVerifier(HttpServletRequest request)  {
-        Principal principal = request.getUserPrincipal();
-        
-        if (principal instanceof Authentication)  {
+    public static Authorization getVerifier(Principal principal, Map sessionMap) {
+        if (principal instanceof Authentication) {
             return new AcegiAuthWrapper(principal);
+        } else {
+            SecurityContext sc = (SecurityContext) sessionMap.get(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+            return new AcegiAuthWrapper(sc == null ? null : sc.getAuthentication());
         }
-        
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            SecurityContext sc = (SecurityContext) session.getAttribute(
-                HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
-            if (sc != null) {
-                return new AcegiAuthWrapper(sc.getAuthentication());
-            }
-        }
-        
-        return new AcegiAuthWrapper(null); 
     }
 
 }

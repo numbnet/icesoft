@@ -1,17 +1,12 @@
 package com.icesoft.faces.webapp.http.portlet;
 
-import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
 
-import javax.portlet.PortalContext;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.WindowState;
+import javax.portlet.*;
 import java.util.*;
 
 public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest implements RenderRequest {
@@ -35,9 +30,11 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
     private ArrayList responseContentTypes;
     private Map properties;
     private Map pseudoAPIAttributes;
+    private Authorization authorization;
 
-    public PortletEnvironmentRenderRequest(PortletSession session, RenderRequest request, Configuration configuration) {
+    public PortletEnvironmentRenderRequest(PortletSession session, RenderRequest request, Configuration configuration, Authorization auth) {
         portletSession = session;
+        authorization = auth;
         portletMode = request.getPortletMode();
         windowState = request.getWindowState();
         portletPreferences = request.getPreferences();
@@ -146,7 +143,7 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
     }
 
     public boolean isUserInRole(String string) {
-        return authenticationVerifier().isUserInRole(string);
+        return authorization.isUserInRole(string);
     }
 
     public String getResponseContentType() {
@@ -168,8 +165,6 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
     }
 
     public abstract AllowMode allowMode();
-
-    public abstract AuthenticationVerifier authenticationVerifier();
 
     public abstract RequestAttributes requestAttributes();
 

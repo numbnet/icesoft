@@ -1,5 +1,6 @@
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -54,7 +55,7 @@ public class View implements CommandQueue {
                 if (facesContext != null) {
                     facesContext.dispose();
                 }
-                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor);
+                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization);
             }
 
             makeCurrent();
@@ -75,14 +76,16 @@ public class View implements CommandQueue {
     private final ResourceDispatcher resourceDispatcher;
     private Runnable dispose;
     private final ViewQueue allServedViews;
+    private Authorization authorization;
 
-    public View(final String viewIdentifier, String sessionID, HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
+    public View(final String viewIdentifier, String sessionID, HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Authorization authorization) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
         this.resourceDispatcher = resourceDispatcher;
         this.allServedViews = allServedViews;
+        this.authorization = authorization;
         this.persistentFacesState = new PersistentFacesState(this, viewListeners, configuration);
         ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewIdentifier));
         //fail fast if environment cannot be detected

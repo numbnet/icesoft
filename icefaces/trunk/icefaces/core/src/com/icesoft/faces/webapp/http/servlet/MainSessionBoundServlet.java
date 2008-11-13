@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
@@ -11,18 +12,7 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
-import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
-import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.webapp.http.core.DisposeViews;
-import com.icesoft.faces.webapp.http.core.MultiViewServer;
-import com.icesoft.faces.webapp.http.core.ReceivePing;
-import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
-import com.icesoft.faces.webapp.http.core.RequestVerifier;
-import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.webapp.http.core.SendUpdates;
-import com.icesoft.faces.webapp.http.core.SingleViewServer;
-import com.icesoft.faces.webapp.http.core.UploadServer;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
@@ -31,12 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 //todo: rename to MainSessionBoundServer and move in com.icesoft.faces.webapp.http.core
 public class MainSessionBoundServlet implements Server {
@@ -65,7 +50,7 @@ public class MainSessionBoundServlet implements Server {
     private final String sessionID;
     private Runnable shutdown;
 
-    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
+    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService, Authorization authorization) {
         this.sessionID = restoreOrCreateSessionID(session, idGenerator);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
@@ -73,7 +58,7 @@ public class MainSessionBoundServlet implements Server {
         final Server disposeViews;
         final MessageHandler handler;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
+            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, authorization);
             if (messageService == null) {
                 disposeViews = new DisposeViews(sessionID, views);
                 handler = null;
@@ -94,7 +79,7 @@ public class MainSessionBoundServlet implements Server {
                 messageService.addMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
             }
         } else {
-            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
+            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, authorization);
             disposeViews = OKServer;
             handler = null;
         }

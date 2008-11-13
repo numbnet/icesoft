@@ -1,7 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
-import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -23,28 +23,21 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
 
     private final ServletContext context;
     private final HttpSession session;
-    private AuthenticationVerifier authenticationVerifier;
     private RequestAttributes requestAttributes;
     private HttpServletRequest initialRequest;
     private HttpServletResponse response;
     private Dispatcher dispatcher;
     private List locales;
 
-    public ServletExternalContext(String viewIdentifier, final Object req, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
-        super(viewIdentifier, commandQueue, configuration);
+    public ServletExternalContext(String viewIdentifier, final Object req, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, Authorization authorization) {
+        super(viewIdentifier, commandQueue, configuration, authorization);
         HttpServletRequest request = (HttpServletRequest) req;
         session = new InterceptingServletSession(request.getSession(), sessionMonitor);
         context = session.getServletContext();
@@ -107,7 +100,6 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
         requestAttributes = new ServletRequestAttributes(request);
         locales = Collections.list(request.getLocales());
-        authenticationVerifier = createAuthenticationVerifier(request);
         dispatcher = CannotDispatchOnXMLHTTPRequest;
         this.response = response;
     }
@@ -116,13 +108,10 @@ public class ServletExternalContext extends BridgeExternalContext {
         final HttpServletRequest servletRequest = (HttpServletRequest) request;
         final HttpServletResponse servletResponse = (HttpServletResponse) response;
 
-        initialRequest = new ServletEnvironmentRequest(request, session) {
+        detectedAuthorization = detectAuthorization(servletRequest.getUserPrincipal());
+        initialRequest = new ServletEnvironmentRequest(request, session, detectedAuthorization) {
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
-            }
-
-            public AuthenticationVerifier authenticationVerifier() {
-                return authenticationVerifier;
             }
 
             public Enumeration getLocales() {
@@ -238,10 +227,6 @@ public class ServletExternalContext extends BridgeExternalContext {
         return initialRequest.getUserPrincipal();
     }
 
-    public boolean isUserInRole(String role) {
-        return initialRequest.isUserInRole(role);
-    }
-
     public Writer getWriter(String encoding) throws IOException {
         try {
             return new OutputStreamWriter(response.getOutputStream(), encoding);
@@ -295,7 +280,6 @@ public class ServletExternalContext extends BridgeExternalContext {
             requestAttributes = NOOPRequestAttributes;
         }
         dispatcher = RequestNotAvailable;
-        authenticationVerifier = releaseVerifier(authenticationVerifier);
     }
 
     /**

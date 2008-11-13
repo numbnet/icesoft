@@ -33,7 +33,7 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.jasper.Constants;
@@ -49,11 +49,7 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A wrapper for HttpServletRequest.
@@ -91,10 +87,12 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private String localAddr;
     private int localPort;
     private HttpSession session;
+    private Authorization authorization;
 
-    public ServletEnvironmentRequest(Object request, HttpSession session) {
+    public ServletEnvironmentRequest(Object request, HttpSession session, Authorization authorization) {
         HttpServletRequest initialRequest = (HttpServletRequest) request;
         this.session = session;
+        this.authorization = authorization;
         //Copy common data
         authType = initialRequest.getAuthType();
         contextPath = initialRequest.getContextPath();
@@ -204,7 +202,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public boolean isUserInRole(String role) {
-        return authenticationVerifier().isUserInRole(role);
+        return authorization.isUserInRole(role);
     }
 
     public Cookie[] getCookies() {
@@ -363,6 +361,4 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public abstract RequestAttributes requestAttributes();
-
-    public abstract AuthenticationVerifier authenticationVerifier();
 }

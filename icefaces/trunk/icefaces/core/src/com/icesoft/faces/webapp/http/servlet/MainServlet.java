@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.async.render.RenderManager;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
@@ -68,8 +69,8 @@ public class MainServlet extends HttpServlet {
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             PseudoServlet sessionDispatcher = new SessionDispatcher(configuration, context) {
-                protected Server newServer(HttpSession session, Monitor sessionMonitor) {
-                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient);
+                protected Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
+                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient, authorization);
                 }
             };
             if (SeamUtilities.isSpringEnvironment()) {
@@ -123,12 +124,12 @@ public class MainServlet extends HttpServlet {
 
     private void setUpMessageServiceClient(final Configuration configuration) {
         String blockingRequestHandler =
-            configuration.getAttribute(
-                "blockingRequestHandler",
-                configuration.getAttributeAsBoolean(
-                    "async.server",
-                    false) ?
-                        "icefaces-ahs" : "icefaces");
+                configuration.getAttribute(
+                        "blockingRequestHandler",
+                        configuration.getAttributeAsBoolean(
+                                "async.server",
+                                false) ?
+                                "icefaces-ahs" : "icefaces");
         if (LOG.isInfoEnabled()) {
             LOG.info("Blocking Request Handler: " + blockingRequestHandler);
         }
@@ -137,7 +138,7 @@ public class MainServlet extends HttpServlet {
             LOG.info("JMS API available: " + isJMSAvailable);
         }
         if (!blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") ||
-            !isJMSAvailable) {
+                !isJMSAvailable) {
 
             return;
         }

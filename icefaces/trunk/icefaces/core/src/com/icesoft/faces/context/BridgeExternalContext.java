@@ -38,7 +38,7 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.env.AcegiAuthWrapper;
-import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -63,12 +63,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class is supposed to provide a generic interface to the
@@ -140,15 +135,6 @@ public abstract class BridgeExternalContext extends ExternalContext {
             throw new IOException("Cannot dispatch on XMLHTTP request.");
         }
     };
-    protected static final AuthenticationVerifier UserInfoNotAvailable = new AuthenticationVerifier() {
-        public boolean isUserInRole(String role) {
-            throw new RuntimeException("Cannot determine if user in role. User information is not available.");
-        }
-
-        public boolean isReusable() {
-            return true;
-        }
-    };
     protected static final Dispatcher RequestNotAvailable = new Dispatcher() {
         public void dispatch(String path) throws IOException, FacesException {
             throw new IOException("No request available for dispatch.");
@@ -170,8 +156,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     }
 
-    protected String viewIdentifier;
-    protected CommandQueue commandQueue;
+    protected final String viewIdentifier;
+    protected final CommandQueue commandQueue;
+    protected final Authorization defaultAuthorization;
+    protected Authorization detectedAuthorization;
     protected boolean standardScope;
     protected Map applicationMap;
     protected Map sessionMap;
@@ -188,9 +176,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Map requestHeaderMap;
     protected Map requestHeaderValuesMap;
 
-    protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration) {
+    protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration, Authorization authorization) {
         this.viewIdentifier = viewIdentifier;
         this.commandQueue = commandQueue;
+        this.defaultAuthorization = authorization;
         // ICE-3549
         this.standardScope = SeamUtilities.isSeamEnvironment() ||
                 configuration.getAttributeAsBoolean("standardRequestScope", false);
@@ -209,6 +198,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public abstract void updateOnPageLoad(Object request, Object response);
 
     public abstract void removeSeamAttributes();
+
+    public boolean isUserInRole(String role) {
+        return detectedAuthorization.isUserInRole(role);
+    }
 
     public void addCookie(Cookie cookie) {
         responseCookieMap.put(cookie.getName(), cookie);
@@ -452,42 +445,11 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     }
 
-    protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
-        Principal principal = request.getUserPrincipal();
-
-        if ((AuthenticationClass != null) && ((null == principal) ||
-                AuthenticationClass.isInstance(principal))) {
-
-            if (null != SpringAuthenticationClass) {
-                return SpringAuthWrapper.getVerifier(request);
-            } else {
-                // (null != AcegiAuthenticationClass) 
-                return AcegiAuthWrapper.getVerifier(request);
-            }
-
+    protected Authorization detectAuthorization(final Principal principal) {
+        if (AuthenticationClass != null && (null == principal || AuthenticationClass.isInstance(principal))) {
+            return SpringAuthenticationClass == null ? AcegiAuthWrapper.getVerifier(principal, sessionMap) : SpringAuthWrapper.getVerifier(principal, sessionMap);
         } else {
-            return new AuthenticationVerifier() {
-                public boolean isUserInRole(String role) {
-
-                    if (Log.isTraceEnabled()) {
-                        Log.trace("request.isUserInRole(role) is " + role);
-                    }
-
-                    return request.isUserInRole(role);
-                }
-
-                public boolean isReusable() {
-                    return false;
-                }
-            };
+            return defaultAuthorization;
         }
-    }
-
-    protected static AuthenticationVerifier releaseVerifier(
-            AuthenticationVerifier verifier) {
-        if (verifier.isReusable()) {
-            return verifier;
-        }
-        return UserInfoNotAvailable;
     }
 }

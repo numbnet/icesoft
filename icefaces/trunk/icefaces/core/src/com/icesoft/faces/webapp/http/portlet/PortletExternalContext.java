@@ -1,8 +1,7 @@
 package com.icesoft.faces.webapp.http.portlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
-import com.icesoft.faces.env.AcegiAuthWrapper;
-import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -15,15 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.WindowState;
+import javax.portlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,14 +23,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
@@ -66,7 +50,6 @@ public class PortletExternalContext extends BridgeExternalContext {
     private PortletEnvironmentRenderRequest initialRequest;
     private RenderResponse response;
     private AllowMode allowMode;
-    private AuthenticationVerifier authenticationVerifier;
     private Dispatcher dispatcher;
     private RequestAttributes requestAttributes;
     private Configuration configuration;
@@ -75,8 +58,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     public static final String INACTIVE_INCREMENT = "inactiveIncrement";
     private boolean adjustPortletSessionInactiveInterval = true;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig) {
-        super(viewIdentifier, commandQueue, configuration);
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig, Authorization authorization) {
+        super(viewIdentifier, commandQueue, configuration, authorization);
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
 
@@ -158,7 +141,6 @@ public class PortletExternalContext extends BridgeExternalContext {
         }
         allowMode = DoNotAllow;
         requestAttributes = new ServletRequestAttributes(request);
-        authenticationVerifier = createAuthenticationVerifier(request);
         dispatcher = CannotDispatchOnXMLHTTPRequest;
     }
 
@@ -203,21 +185,17 @@ public class PortletExternalContext extends BridgeExternalContext {
         locales = Collections.list(request.getLocales());
         allowMode = new PortletRequestAllowMode(request);
         requestAttributes = new PortletRequestAttributes(request);
-        authenticationVerifier = createAuthenticationVerifier(request);
-
         this.response = response;
     }
 
     public void updateOnPageLoad(Object request, Object response) {
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
-        initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest, configuration) {
+
+        detectedAuthorization = detectAuthorization(renderRequest.getUserPrincipal());
+        initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest, configuration, detectedAuthorization) {
             public AllowMode allowMode() {
                 return allowMode;
-            }
-
-            public AuthenticationVerifier authenticationVerifier() {
-                return authenticationVerifier;
             }
 
             public RequestAttributes requestAttributes() {
@@ -328,10 +306,6 @@ public class PortletExternalContext extends BridgeExternalContext {
         return initialRequest.getUserPrincipal();
     }
 
-    public boolean isUserInRole(String role) {
-        return initialRequest.isUserInRole(role);
-    }
-
     public Writer getWriter(String encoding) throws IOException {
         return response.getWriter();
     }
@@ -361,7 +335,6 @@ public class PortletExternalContext extends BridgeExternalContext {
         super.release();
         initialRequest.repopulatePseudoAPIAttributes();
         allowMode = DoNotAllow;
-        authenticationVerifier = releaseVerifier(authenticationVerifier);
         dispatcher = RequestNotAvailable;
         if (SeamUtilities.isSeamEnvironment()) {
             // put them back in
@@ -380,30 +353,4 @@ public class PortletExternalContext extends BridgeExternalContext {
     public void removeSeamAttributes() {
         requestAttributes = NOOPRequestAttributes;
     }
-
-    //Identical code to BridgeExternalContext.createAuthenticationVerifier
-    //but request is a PortletRequest
-    private static AuthenticationVerifier createAuthenticationVerifier(final PortletRequest request) {
-        Principal principal = request.getUserPrincipal();
-        if ((AuthenticationClass != null) && ((null == principal) ||
-                AuthenticationClass.isInstance(principal))) {
-            return new AcegiAuthWrapper(principal);
-        } else {
-            return new AuthenticationVerifier() {
-                public boolean isUserInRole(String role) {
-
-                    if (Log.isTraceEnabled()) {
-                        Log.trace("request.isUserInRole(role) is " + role);
-                    }
-
-                    return request.isUserInRole(role);
-                }
-
-                public boolean isReusable() {
-                    return false;
-                }
-            };
-        }
-    }
-
 }
