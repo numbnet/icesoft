@@ -505,24 +505,4 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
         return UserInfoNotAvailable;
     }
-
-    //ICE-2990, JBSEAM-3426
-    protected void copySeamRequestAttributes(RequestAttributes source,RequestAttributes destination){
-        Enumeration names = source.getAttributeNames();
-        while(names.hasMoreElements()){
-            String name = (String)names.nextElement();
-            Object value = source.getAttribute(name);
-            destination.setAttribute(name,value);
-        }
-
-        //For some reason, this attribute must be present and not-null or Seam won't like it
-        //so we make sure it is injected no matter what.
-        if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null ){
-            destination.setAttribute("org.jboss.seam.web.requestPathInfo","");
-        }
-    	
-    }
-    
-   
-
 }
