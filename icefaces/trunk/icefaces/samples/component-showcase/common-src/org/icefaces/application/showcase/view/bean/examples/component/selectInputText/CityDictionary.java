@@ -138,17 +138,25 @@ public class CityDictionary implements Serializable {
         }
 
         try {
-
+            SelectItem searchItem = new SelectItem("", searchWord); 
             int insert = Collections.binarySearch(
                     cityDictionary,
-                    new SelectItem("", searchWord),
+                    searchItem,
                     LABEL_COMPARATOR);
 
             // less then zero if we have a partial match
             if (insert < 0) {
                 insert = Math.abs(insert) - 1;
             }
-
+            else {
+                // If there are duplicates in a list, ensure we start from the first one
+                if(insert != cityDictionary.size() && LABEL_COMPARATOR.compare(searchItem, cityDictionary.get(insert)) == 0) {
+                    while(insert > 0 && LABEL_COMPARATOR.compare(searchItem, cityDictionary.get(insert-1)) == 0) {
+                        insert = insert - 1;
+                    }
+                }
+            }
+            
             for (int i = 0; i < maxMatches; i++) {
                 // quit the match list creation if the index is larger than
                 // max entries in the cityDictionary if we have added maxMatches.

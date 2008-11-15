@@ -59,7 +59,8 @@ import java.util.Set;
 import com.icesoft.util.pooling.ClientIdPool;
 
 public class SelectInputTextRenderer extends DomBasicInputRenderer {
-    private final String AUTOCOMPLETE_DIV = "autoCompleteDiv";
+    private static final String AUTOCOMPLETE_DIV = "_div";
+    static final String AUTOCOMPLETE_INDEX = "_idx";
     private static final Log log =
             LogFactory.getLog(SelectInputTextRenderer.class);
 
@@ -115,6 +116,13 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 div.setAttribute(HTML.CLASS_ATTR, listClass);
             }
             root.appendChild(div);
+            
+            Element index = domContext.createElement(HTML.INPUT_ELEM);
+            index.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
+            String indexId = ClientIdPool.get(clientId + AUTOCOMPLETE_INDEX);
+            index.setAttribute(HTML.NAME_ATTR, indexId);
+            root.appendChild(index);
+            
             String rootStyle = component.getStyle();
             if(rootStyle != null && rootStyle.length() > 0)
                 root.setAttribute(HTML.STYLE_ATTR, rootStyle);
