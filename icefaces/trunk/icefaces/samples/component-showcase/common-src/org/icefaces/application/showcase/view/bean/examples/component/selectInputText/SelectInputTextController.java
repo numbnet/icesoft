@@ -40,7 +40,6 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * <p>The SelectInputTextController class is responsible handling the auto
@@ -100,15 +99,14 @@ public class SelectInputTextController extends BaseBean {
             // if there is a selected item then find the city object of the
             // same name
             if (autoComplete.getSelectedItem() != null) {
-                selectedCity = getFindCityMatch(
-                        autoComplete.getSelectedItem().getLabel());
+                selectedCity = (City) autoComplete.getSelectedItem().getValue();
                 // fire effect to draw attention
                 valueChangeEffect.setFired(false);
             }
             // if there was no selection we still want to see if a proper
             // city was typed and update our selectedCity instance.
             else{
-                City tmp = getFindCityMatch(autoComplete.getValue().toString());
+                City tmp = getFindCityMatch(newWord);
                 if (tmp != null){
                     selectedCity = tmp;
                      // fire effect to draw attention
