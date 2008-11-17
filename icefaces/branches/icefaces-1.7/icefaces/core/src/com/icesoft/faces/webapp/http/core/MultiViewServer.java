@@ -48,8 +48,6 @@ public class MultiViewServer implements Server {
                     view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
                     views.put(redirectViewNumber, view);
                     ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
-                } else {
-                    view.updateOnPageRequest(request);
                 }
             }
         } else {

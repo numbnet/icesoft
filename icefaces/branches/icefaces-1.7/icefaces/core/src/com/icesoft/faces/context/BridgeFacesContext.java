@@ -240,8 +240,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     public void switchToNormalMode() {
         try {
-            //ICE-3424 - clear viewRoot to force JSF lifecycle into creating a new one
-            viewRoot = null;
             domSerializer = new NormalModeSerializer(this, externalContext.getWriter("UTF-8"));
         } catch (IOException e) {
             throw new RuntimeException(e);
