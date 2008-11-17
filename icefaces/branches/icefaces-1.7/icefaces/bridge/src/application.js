@@ -61,19 +61,15 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
         }
     };
 
-    var disposeView = function(session, view) {
+    var delistView = function(session, view) {
         views = views.reject(function(i) {
             return i.name == session && i.value == view;
         });
-        sendDisposeViews([new Ice.Parameter.Association(session, view)]);
     };
 
-    var disposeSessionViews = function(session) {
-        var sessionViews = views.select(function(i) {
-            return i.name == session;
-        });
-        views = views.complement(sessionViews);
-        sendDisposeViews(sessionViews);
+    var disposeView = function(session, view) {
+        delistView(session, view);
+        sendDisposeViews([new Ice.Parameter.Association(session, view)]);
     };
 
     var disposeWindowViews = function() {
@@ -109,7 +105,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 dispose = Function.NOOP;
                 documentSynchronizer.shutdown();
                 connection.shutdown();
-            }
+            };
 
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
@@ -161,9 +157,8 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
-                //implicit protocol for session expiry
-                //todo: verify if still needed
-                //disposeSessionViews(sessionID);
+                //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
+                delistView(sessionID, viewID);
                 dispose();
             });
 
