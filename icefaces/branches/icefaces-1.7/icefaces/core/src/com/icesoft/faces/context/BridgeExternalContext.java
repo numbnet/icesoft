@@ -394,22 +394,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         } catch (URISyntaxException exception) {
             throw new RuntimeException(exception);
         }
-        final String redirectURI;
-        if (uri.isAbsolute()) {
-            redirectURI = uri.toString();
-        } else {
-            String query = uri.getQuery();
-            if (query == null) {
-                redirectURI = uri + "?rvn=" + viewIdentifier;
-            } else {
-                if (query.matches(".*rvn=.*")) {
-                    redirectURI = uri.toString();
-                } else {
-                    redirectURI = uri + "&rvn=" + viewIdentifier;
-                }
-            }
-        }
-        redirector.redirect(redirectURI);
+        redirector.redirect(uri.toString());
         // #3172 FacesContext may be null if we're currently logging out.  
         FacesContext fc = FacesContext.getCurrentInstance();
         if (fc != null) {

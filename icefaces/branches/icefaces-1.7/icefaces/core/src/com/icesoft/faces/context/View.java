@@ -23,11 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.lifecycle.Lifecycle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class View implements CommandQueue {
     private static final Log Log = LogFactory.getLog(View.class);
@@ -36,34 +32,41 @@ public class View implements CommandQueue {
         public void run() {
         }
     };
-    private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
-        public void respond(Response response) throws Exception {
-            super.respond(response);
-            com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            switchToNormalMode();
-            LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
-            switchToPushMode();
+    private final Page lifecycleExecutedPage = new Page() {
+        private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
+            public void respond(Response response) throws Exception {
+                super.respond(response);
+                com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
+                switchToNormalMode();
+                LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
+                switchToPushMode();
+            }
+        };
+
+        public void serve(Request request) throws Exception {
+            updateOnPageRequest(request);
+            request.respondWith(lifecycleResponseHandler);
         }
     };
-    private ResponseHandler responseHandler = lifecycleResponseHandler;
-
-    private ReentrantLock queueLock = new ReentrantLock();
-    private ReentrantLock lifecycleLock = new ReentrantLock();
+    private Page page = lifecycleExecutedPage;
+    private final ReentrantLock queueLock = new ReentrantLock();
+    private final ReentrantLock lifecycleLock = new ReentrantLock();
     private BridgeExternalContext externalContext;
     private BridgeFacesContext facesContext;
     private PersistentFacesState persistentFacesState;
     private Map bundles = Collections.EMPTY_MAP;
     private Command currentCommand = NOOP;
-    private String viewIdentifier;
-    private ArrayList onPutListeners = new ArrayList();
-    private ArrayList onTakeListeners = new ArrayList();
-    private Collection viewListeners = new ArrayList();
-    private String sessionID;
-    private Configuration configuration;
-    private SessionDispatcher.Monitor sessionMonitor;
-    private ResourceDispatcher resourceDispatcher;
+    private final String viewIdentifier;
+    private final ArrayList onPutListeners = new ArrayList();
+    private final ArrayList onTakeListeners = new ArrayList();
+    private final Collection viewListeners = new ArrayList();
+    private final String sessionID;
+    private final Configuration configuration;
+    private final SessionDispatcher.Monitor sessionMonitor;
+    private final ResourceDispatcher resourceDispatcher;
+    private final Lifecycle lifecycle;
     private Runnable dispose;
-    private Lifecycle lifecycle;
+    private String lastPath;
 
     public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Lifecycle lifecycle) throws Exception {
         this.sessionID = sessionID;
@@ -113,12 +116,6 @@ public class View implements CommandQueue {
         Log.debug("Created " + this);
     }
 
-    private void acquireLifecycleLock() {
-        if (!lifecycleLock.isHeldByCurrentThread()) {
-            lifecycleLock.lock();
-        }
-    }
-
     public void updateOnXMLHttpRequest(Request request) throws Exception {
         acquireLifecycleLock();
         request.detectEnvironment(new Request.Environment() {
@@ -135,21 +132,32 @@ public class View implements CommandQueue {
         makeCurrent();
     }
 
-    public void updateOnPageRequest(Request request) throws Exception {
+    //this is the page load request
+    public void servePage(Request request) throws Exception {
         acquireLifecycleLock();
+        page.serve(request);
+    }
+
+    private void updateOnPageRequest(final Request request) throws Exception {
         request.detectEnvironment(new Request.Environment() {
-            public void servlet(Object request, Object response) {
-                if (differentURI((HttpServletRequest) request)) {
+            public void servlet(Object servletRequest, Object servletResponse) {
+                String path = request.getURI().getPath();
+                boolean reloded = path.equals(lastPath);
+                lastPath = path;
+
+                //reuse FacesContext on reload -- this preserves the ViewRoot in case forward navigation rules were executed
+                if (reloded && !SeamUtilities.isSeamEnvironment()) {
+                    //page reload
+                    externalContext.updateOnPageLoad(servletRequest, servletResponse);
+                    facesContext.renderResponse();
+                } else {
                     //page redirect
                     externalContext.dispose();
-                    externalContext = new ServletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor);
+                    externalContext = new ServletExternalContext(viewIdentifier, servletRequest, servletResponse, View.this, configuration, sessionMonitor);
                     facesContext.dispose();
                     facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher);
-                    //reuse  PersistentFacesState instance when page redirects occur                    
+                    //reuse  PersistentFacesState instance when page redirects occur
                     persistentFacesState.setFacesContext(facesContext);
-                } else {
-                    //page reload
-                    externalContext.updateOnPageLoad(request, response);
                 }
             }
 
@@ -159,19 +167,6 @@ public class View implements CommandQueue {
             }
         });
         makeCurrent();
-    }
-
-    /**
-     * Check to see if the URI is different in any material (or Seam) way.
-     *
-     * @param request ServletRequest
-     * @return true if the URI is considered different
-     */
-    public boolean differentURI(HttpServletRequest request) {
-        // As a temporary fix, all GET requests are non-faces requests, and thus,
-        // are considered different to force a new ViewRoot to be constructed.
-        return SeamUtilities.isSeamEnvironment() ||
-                !request.getRequestURI().equals(((HttpServletRequest) externalContext.getRequest()).getRequestURI());
     }
 
     public void put(Command command) {
@@ -240,10 +235,29 @@ public class View implements CommandQueue {
         facesContext.applyBrowserDOMChanges();
     }
 
+    private void acquireLifecycleLock() {
+        if (!lifecycleLock.isHeldByCurrentThread()) {
+            lifecycleLock.lock();
+        }
+    }
+
     private void switchToNormalMode() {
         acquireLifecycleLock();
         facesContext.switchToNormalMode();
         externalContext.switchToNormalMode();
+    }
+
+    public String toString() {
+        return "View[" + sessionID + ":" + viewIdentifier + "]";
+    }
+
+    void preparePage(final ResponseHandler handler) {
+        page = new Page() {
+            public void serve(Request request) throws Exception {
+                request.respondWith(handler);
+                page = lifecycleExecutedPage;
+            }
+        };
     }
 
     private void switchToPushMode() {
@@ -266,20 +280,7 @@ public class View implements CommandQueue {
         }
     }
 
-    public String toString() {
-        return "View[" + sessionID + ":" + viewIdentifier + "]";
-    }
-
-    public void servePage(Request request) throws Exception {
-        request.respondWith(responseHandler);
-    }
-
-    void preparePage(final ResponseHandler handler) {
-        responseHandler = new ResponseHandler() {
-            public void respond(Response response) throws Exception {
-                handler.respond(response);
-                responseHandler = lifecycleResponseHandler;
-            }
-        };
+    private interface Page {
+        void serve(Request request) throws Exception;
     }
 }

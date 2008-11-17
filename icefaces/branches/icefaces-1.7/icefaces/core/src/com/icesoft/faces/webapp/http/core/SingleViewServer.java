@@ -44,8 +44,6 @@ public class SingleViewServer implements Server {
             view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
-        } else {
-            view.updateOnPageRequest(request);
         }
 
         try {
