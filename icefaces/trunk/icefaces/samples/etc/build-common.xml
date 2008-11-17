@@ -329,7 +329,7 @@ Combinations:
         for application deployment on server, Glassfishv2, pe9, and JBoss4.2
         </echo>
     </target>
-    <target name="build.myfaces.war" >
+    <target name="myfaces" description="war file for myfaces version">
         <antcall target="build.war">
             <param name="myfaces" value=""/>
         </antcall>
