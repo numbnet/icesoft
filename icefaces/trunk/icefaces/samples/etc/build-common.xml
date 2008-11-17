@@ -223,6 +223,7 @@
                 </fileset>
             </copy>
             
+
             <war basedir="@{portlet.web.content.dir}" destfile="${dist.dir}/@{war.file.name}" duplicate="fail"
                  webxml="@{portlet.web.content.dir}/WEB-INF/web.xml" excludes="WEB-INF/web.xml">
                 <add.filesets/>
@@ -329,17 +330,11 @@ Combinations:
         for application deployment on server, Glassfishv2, pe9, and JBoss4.2
         </echo>
     </target>
-    <target name="myfaces" description="war file for myfaces version">
+
+    <target name="myfaces" description="war file for myfaces version" depends="clean">
         <antcall target="build.war">
             <param name="myfaces" value=""/>
         </antcall>
-    </target>
-    
-    <target name="build.jsf1.2.war">
-        <antcall target="build.war">
-            <param name="jsf12" value=""/>
-        </antcall>
-        
     </target>
     
     <!-- server specified -->
