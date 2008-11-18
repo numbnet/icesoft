@@ -5,10 +5,7 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
@@ -24,7 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 //todo: rename to MainSessionBoundServer and move in com.icesoft.faces.webapp.http.core
-public class MainSessionBoundServlet implements Server {
+public class MainSessionBoundServlet implements Server, PageTest {
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final String ResourcePrefix = "/block/resource/";
     private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
@@ -48,6 +45,7 @@ public class MainSessionBoundServlet implements Server {
     private final Collection synchronouslyUpdatedViews = new HashSet();
     private final PathDispatcherServer dispatcher = new PathDispatcherServer();
     private final String sessionID;
+    private boolean pageLoaded = false;
     private Runnable shutdown;
 
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService, Authorization authorization) {
@@ -95,7 +93,7 @@ public class MainSessionBoundServlet implements Server {
             receivePing = OKServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService));
+            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
             sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views));
             receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
         }
@@ -110,7 +108,12 @@ public class MainSessionBoundServlet implements Server {
         dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
         dispatcher.dispatchOn(ResourceRegex, resourceDispatcher);
         dispatcher.dispatchOn(".*uploadHtml", upload);
-        dispatcher.dispatchOn(".*", viewServlet);
+        dispatcher.dispatchOn(".*", new ServerProxy(viewServlet) {
+            public void service(Request request) throws Exception {
+                pageLoaded = true;
+                super.service(request);
+            }
+        });
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
@@ -159,6 +162,10 @@ public class MainSessionBoundServlet implements Server {
 
     public void shutdown() {
         shutdown.run();
+    }
+
+    public boolean isLoaded() {
+        return pageLoaded;
     }
 
     public Map getViews() {

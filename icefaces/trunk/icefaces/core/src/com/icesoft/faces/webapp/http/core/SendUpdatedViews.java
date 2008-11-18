@@ -1,11 +1,8 @@
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.util.MonitorRunner;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
@@ -30,39 +27,34 @@ public class SendUpdatedViews implements Server, Runnable {
     };
     //Define here to avoid classloading problems after application exit
     private static final ResponseHandler NoopHandler = NOOPResponse.Handler;
-    private static final Server AfterShutdown = new Server() {
-        public void service(Request request) throws Exception {
-            request.respondWith(CloseResponse);
-        }
-
-        public void shutdown() {
-            //do nothing
-        }
-    };
+    private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private final ViewQueue allUpdatedViews;
     private final Collection synchronouslyUpdatedViews;
     private final String sessionID;
     private final long timeoutInterval;
+    private final MonitorRunner monitorRunner;
     private long responseTimeoutTime;
-    private Server server;
+    private Server activeServer;
 
-    public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner, Configuration configuration) {
+    public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner, Configuration configuration, final PageTest pageTest) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
         this.sessionID = sessionID;
         this.allUpdatedViews = allUpdatedViews;
         this.synchronouslyUpdatedViews = synchronouslyUpdatedViews;
-        this.allUpdatedViews.onPut(new Runnable() {
+        this.monitorRunner = monitorRunner;
+
+        allUpdatedViews.onPut(new Runnable() {
             public void run() {
                 respondIfViewsAvailable();
             }
         });
-
         //add monitor
-        monitorRunner.registerMonitor(SendUpdatedViews.this);
-        //initialize blocking server
-        this.server = new Server() {
+        monitorRunner.registerMonitor(this);
+
+        //define blocking server
+        final Server blockingServer = new Server() {
             public void service(final Request request) throws Exception {
                 responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
                 respondIfPendingRequest(CloseResponse);
@@ -71,22 +63,40 @@ public class SendUpdatedViews implements Server, Runnable {
             }
 
             public void shutdown() {
-                //remove monitor
-                monitorRunner.unregisterMonitor(SendUpdatedViews.this);
-                allUpdatedViews.onPut(NOOP);
                 //avoid creating new blocking connections after shutdown
-                server = AfterShutdown;
+                activeServer = AfterShutdown;
                 respondIfPendingRequest(CloseResponse);
+            }
+        };
+
+        //setup server that switches to blocking server after first request
+        activeServer = new ServerProxy(blockingServer) {
+            public void service(Request request) throws Exception {
+                //after first request switch to blocking server
+                activeServer = blockingServer;
+
+                //ICE-3493 -- test if there was a previous request made for loading the page,
+                //if not assume that this request was meant for a failed cluster node
+                if (pageTest.isLoaded()) {
+                    //page was loaded from this node, so use the blocking server
+                    super.service(request);
+                } else {
+                    //this is probably a failed-over request, send a NOOP command together with the new session cookie
+                    request.respondWith(NoopHandler);
+                }
             }
         };
     }
 
     public void service(final Request request) throws Exception {
-        server.service(request);
+        activeServer.service(request);
     }
 
     public void shutdown() {
-        server.shutdown();
+        //remove monitor
+        monitorRunner.unregisterMonitor(this);
+        allUpdatedViews.onPut(NOOP);
+        activeServer.shutdown();
     }
 
     public void run() {
