@@ -6,11 +6,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.MonitorRunner;
-
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Collection;
 
 public class AsyncServerDetector implements Server {
     private static final Log LOG = LogFactory.getLog(AsyncServerDetector.class);
@@ -22,24 +21,24 @@ public class AsyncServerDetector implements Server {
     private Server server;
 
     public AsyncServerDetector(
-        final String icefacesID, final Collection synchronouslyUpdatedViews,
-        final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner,
-        final Configuration configuration,
-        final MessageServiceClient messageServiceClient) {
+            final String icefacesID, final Collection synchronouslyUpdatedViews,
+            final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner,
+            final Configuration configuration,
+            final MessageServiceClient messageServiceClient, final PageTest pageTest) {
 
         if (factory == null) {
             synchronized (LOCK) {
                 if (factory == null) {
                     String blockingRequestHandler =
-                        configuration.getAttribute(
-                            "blockingRequestHandler",
-                            configuration.getAttributeAsBoolean(
-                                "async.server", false) ?
-                                "icefaces-ahs" :
-                                "icefaces");
+                            configuration.getAttribute(
+                                    "blockingRequestHandler",
+                                    configuration.getAttributeAsBoolean(
+                                            "async.server", false) ?
+                                            "icefaces-ahs" :
+                                            "icefaces");
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Blocking Request Handler: " +
-                            blockingRequestHandler);
+                                blockingRequestHandler);
                     }
                     // checking if Asynchronous HTTP Service is available...
                     boolean isJMSAvailable = isJMSAvailable();
@@ -48,11 +47,11 @@ public class AsyncServerDetector implements Server {
                     }
                     if (blockingRequestHandler.
                             equalsIgnoreCase("icefaces-ahs") &&
-                        isJMSAvailable) {
+                            isJMSAvailable) {
 
                         LOG.info(
-                            "Adapting to Asynchronous HTTP Service " +
-                                "environment.");
+                                "Adapting to Asynchronous HTTP Service " +
+                                        "environment.");
                         factory = new AsyncHttpServerAdaptingServletFactory();
                         fallbackFactory = new SendUpdatedViewsFactory();
                     } else {
@@ -63,9 +62,9 @@ public class AsyncServerDetector implements Server {
             }
         }
         server =
-            factory.newServer(
-                icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                monitorRunner, configuration, messageServiceClient);
+                factory.newServer(
+                        icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
+                        monitorRunner, configuration, messageServiceClient, pageTest);
     }
 
     public void service(final Request request) throws Exception {
@@ -79,7 +78,7 @@ public class AsyncServerDetector implements Server {
     private boolean isJMSAvailable() {
         try {
             this.getClass().getClassLoader().loadClass(
-                "javax.jms.TopicConnectionFactory");
+                    "javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
@@ -88,61 +87,64 @@ public class AsyncServerDetector implements Server {
 
     private static interface ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
-            final ViewQueue allUpdatedViews,
-            final MonitorRunner monitorRunner,
-            final Configuration configuration,
-            final MessageServiceClient messageServiceClient);
+                final String icefacesID, final Collection synchronouslyUpdatedViews,
+                final ViewQueue allUpdatedViews,
+                final MonitorRunner monitorRunner,
+                final Configuration configuration,
+                final MessageServiceClient messageServiceClient,
+                final PageTest pageTest);
     }
 
     private static class AsyncHttpServerAdaptingServletFactory
-    implements ServerFactory {
+            implements ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
-            final ViewQueue allUpdatedViews,
-            final MonitorRunner monitorRunner,
-            final Configuration configuration,
-            final MessageServiceClient messageServiceClient) {
+                final String icefacesID, final Collection synchronouslyUpdatedViews,
+                final ViewQueue allUpdatedViews,
+                final MonitorRunner monitorRunner,
+                final Configuration configuration,
+                final MessageServiceClient messageServiceClient,
+                final PageTest pageTest) {
 
             try {
                 return
-                    new AsyncHttpServerAdaptingServlet(
-                        icefacesID,
-                        synchronouslyUpdatedViews,
-                        allUpdatedViews,
-                        messageServiceClient);
+                        new AsyncHttpServerAdaptingServlet(
+                                icefacesID,
+                                synchronouslyUpdatedViews,
+                                allUpdatedViews,
+                                messageServiceClient);
             } catch (Exception exception) {
                 // Possible exceptions: MessageServiceException
                 LOG.warn(
-                    "Failed to adapt to Asynchronous HTTP Service " +
-                        "environment. Falling back to Send Updated Views " +
-                        "environment.",
-                    exception);
+                        "Failed to adapt to Asynchronous HTTP Service " +
+                                "environment. Falling back to Send Updated Views " +
+                                "environment.",
+                        exception);
                 synchronized (LOCK) {
                     factory = fallbackFactory;
                     fallbackFactory = null;
                 }
                 return
-                    factory.newServer(
-                        icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                        monitorRunner, configuration, messageServiceClient);
+                        factory.newServer(
+                                icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
+                                monitorRunner, configuration, messageServiceClient, pageTest);
             }
         }
     }
 
     private static class SendUpdatedViewsFactory
-    implements ServerFactory {
+            implements ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
-            final ViewQueue allUpdatedViews,
-            final MonitorRunner monitorRunner,
-            final Configuration configuration,
-            final MessageServiceClient messageServiceClient) {
+                final String icefacesID, final Collection synchronouslyUpdatedViews,
+                final ViewQueue allUpdatedViews,
+                final MonitorRunner monitorRunner,
+                final Configuration configuration,
+                final MessageServiceClient messageServiceClient,
+                final PageTest pageTest) {
 
             return
-                new SendUpdatedViews(
-                    icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                    monitorRunner, configuration);
+                    new SendUpdatedViews(
+                            icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
+                            monitorRunner, configuration, pageTest);
         }
     }
 }
