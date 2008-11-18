@@ -74,7 +74,7 @@ import java.util.Map;
  * conditions if this code is coupled with a third party framework
  * (eg. Spring Framework) that does its own resource locking.
  */
-public class PersistentFacesState implements Serializable {
+public abstract class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final InheritableThreadLocal localInstance = new InheritableThreadLocal();
@@ -84,17 +84,15 @@ public class PersistentFacesState implements Serializable {
     private final boolean synchronousMode;
     private final Collection viewListeners;
     private final ReentrantLock lifecycleLock;
-    private BridgeFacesContext facesContext;
     private boolean disposed;
 
-    public PersistentFacesState(BridgeFacesContext facesContext, ReentrantLock lifecycleLock, Collection viewListeners, Configuration configuration) {
+    public PersistentFacesState(ReentrantLock lifecycleLock, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
         this.renderableClassLoader = Thread.currentThread().getContextClassLoader();
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-        this.facesContext = facesContext;
         this.lifecycleLock = lifecycleLock;
         this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
@@ -143,14 +141,7 @@ public class PersistentFacesState implements Serializable {
      *
      * @return the FacesContext for this instance
      */
-    public FacesContext getFacesContext() {
-        return facesContext;
-    }
-
-    //todo: try to remove this method in the future
-    public void setFacesContext(BridgeFacesContext facesContext) {
-        this.facesContext = facesContext;
-    }
+    public abstract BridgeFacesContext getFacesContext();
 
     /**
      * Returns whether the current view is in synchronous mode, which means
@@ -169,6 +160,7 @@ public class PersistentFacesState implements Serializable {
     public void render() throws RenderingException {
         failIfDisposed();
         warnIfSynchronous();
+        BridgeFacesContext facesContext = getFacesContext();
         try {
             acquireLifecycleLock();
             installThreadLocals();
@@ -218,6 +210,7 @@ public class PersistentFacesState implements Serializable {
             acquireLifecycleLock();
             installThreadLocals();
 
+            BridgeFacesContext facesContext = getFacesContext();
             if (ImplementationUtil.isJSF12()) {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
@@ -286,7 +279,7 @@ public class PersistentFacesState implements Serializable {
         try {
             acquireLifecycleLock();
             installThreadLocals();
-            facesContext.getExternalContext().redirect(uri);
+            getFacesContext().getExternalContext().redirect(uri);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -306,6 +299,7 @@ public class PersistentFacesState implements Serializable {
         try {
             acquireLifecycleLock();
             installThreadLocals();
+            FacesContext facesContext = getFacesContext();
             facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, facesContext.getViewRoot().getViewId(), outcome);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -423,12 +417,12 @@ public class PersistentFacesState implements Serializable {
     }
 
     private void installThreadLocals() {
-        facesContext.setCurrentInstance();
+        getFacesContext().setCurrentInstance();
         setCurrentInstance();
     }
 
     private void testSession() throws IllegalStateException {
-        Object o = facesContext.getExternalContext().getSession(false);
+        Object o = getFacesContext().getExternalContext().getSession(false);
         if (o != null) {
             if (o instanceof HttpSession) {
                 HttpSession session = (HttpSession) o;
@@ -441,19 +435,19 @@ public class PersistentFacesState implements Serializable {
     }
 
     private void fatalRenderingException() throws FatalRenderingException {
-        final String message = "fatal render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "fatal render failure for viewNumber " + getFacesContext().getViewNumber();
         log.debug(message);
         throw new FatalRenderingException(message);
     }
 
     private void fatalRenderingException(Exception e) throws FatalRenderingException {
-        final String message = "fatal render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "fatal render failure for viewNumber " + getFacesContext().getViewNumber();
         log.debug(message, e);
         throw new FatalRenderingException(message, e);
     }
 
     private void transientRenderingException(Exception e) throws TransientRenderingException {
-        final String message = "transient render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "transient render failure for viewNumber " + getFacesContext().getViewNumber();
         log.debug(message, e);
         throw new TransientRenderingException(message, e);
     }
