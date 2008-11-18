@@ -76,19 +76,11 @@ public class View implements CommandQueue {
         this.resourceDispatcher = resourceDispatcher;
         this.lifecycle = lifecycle;
 
-        //fail fast if environment cannot be detected
-        this.externalContext = new UnknownExternalContext(this, configuration);
-        request.detectEnvironment(new Request.Environment() {
-            public void servlet(Object request, Object response) {
-                externalContext = new ServletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor);
+        this.persistentFacesState = new PersistentFacesState(lifecycleLock, viewListeners, configuration) {
+            public BridgeFacesContext getFacesContext() {
+                return facesContext;
             }
-
-            public void portlet(Object request, Object response, Object portletConfig) {
-                externalContext = new PortletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor, portletConfig);
-            }
-        });
-        this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration, resourceDispatcher);
-        this.persistentFacesState = new PersistentFacesState(facesContext, lifecycleLock, viewListeners, configuration);
+        };
         this.onPut(new Runnable() {
             public void run() {
                 try {
@@ -139,33 +131,43 @@ public class View implements CommandQueue {
     }
 
     private void updateOnPageRequest(final Request request) throws Exception {
-        request.detectEnvironment(new Request.Environment() {
-            public void servlet(Object servletRequest, Object servletResponse) {
-                String path = request.getURI().getPath();
-                boolean reloded = path.equals(lastPath);
-                lastPath = path;
+        String path = request.getURI().getPath();
+        boolean reloded = path.equals(lastPath);
+        lastPath = path;
 
-                //reuse FacesContext on reload -- this preserves the ViewRoot in case forward navigation rules were executed
-                if (reloded && !SeamUtilities.isSeamEnvironment()) {
-                    //page reload
+        //reuse FacesContext on reload -- this preserves the ViewRoot in case forward navigation rules were executed
+        if (reloded && !SeamUtilities.isSeamEnvironment()) {
+            //page reload
+            request.detectEnvironment(new Request.Environment() {
+                public void servlet(Object servletRequest, Object servletResponse) {
                     externalContext.updateOnPageLoad(servletRequest, servletResponse);
-                    facesContext.renderResponse();
-                } else {
-                    //page redirect
-                    externalContext.dispose();
-                    externalContext = new ServletExternalContext(viewIdentifier, servletRequest, servletResponse, View.this, configuration, sessionMonitor);
-                    facesContext.dispose();
-                    facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher);
-                    //reuse  PersistentFacesState instance when page redirects occur
-                    persistentFacesState.setFacesContext(facesContext);
                 }
-            }
 
-            public void portlet(Object request, Object response, Object config) {
-                //page reload
-                externalContext.updateOnPageLoad(request, response);
+                public void portlet(Object request, Object response, Object config) {
+                    externalContext.updateOnPageLoad(request, response);
+                }
+            });
+            facesContext.renderResponse();
+        } else {
+            //page redirect
+            if (externalContext != null) {
+                externalContext.dispose();
             }
-        });
+            request.detectEnvironment(new Request.Environment() {
+                public void servlet(Object servletRequest, Object servletResponse) {
+                    externalContext = new ServletExternalContext(viewIdentifier, servletRequest, servletResponse, View.this, configuration, sessionMonitor);
+                }
+
+                public void portlet(Object portletRequest, Object portletResponse, Object portletConfig) {
+                    externalContext = new PortletExternalContext(viewIdentifier, portletRequest, portletResponse, View.this, configuration, sessionMonitor, portletConfig);
+                }
+            });
+            if (facesContext != null) {
+                facesContext.dispose();
+            }
+            facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher);
+        }
+
         makeCurrent();
     }
 
