@@ -37,11 +37,10 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewListener;
-import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
@@ -175,11 +174,11 @@ public class PersistentFacesState implements Serializable {
             facesContext.setFocusId("");
             lifecycle.render(facesContext);
         } catch (Exception e) {
-            release();
             throwRenderingException(e);
         } finally {
             facesContext.release();
             release();
+            view.releaseLifecycleLock();
         }
     }
 
@@ -211,7 +210,7 @@ public class PersistentFacesState implements Serializable {
      *
      * @deprecated this method should not be exposed
      */
-    public void execute() throws RenderingException {                               
+    public void execute() throws RenderingException {
         failIfDisposed();
         try {
             view.acquireLifecycleLock();
@@ -239,13 +238,13 @@ public class PersistentFacesState implements Serializable {
                 String postback;
                 if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() && stateRestorationId != null) {
                     postback = stateRestorationId;
-                } else{
+                } else {
                     postback = "not reload";
                 }
 
                 facesContext.getExternalContext().
                         getRequestParameterMap().
-                        put( BridgeExternalContext.PostBackKey, postback);
+                        put(BridgeExternalContext.PostBackKey, postback);
 
             } else {
                 facesContext.renderResponse();
@@ -254,6 +253,7 @@ public class PersistentFacesState implements Serializable {
 
         } catch (Exception e) {
             release();
+            view.releaseLifecycleLock();
             throwRenderingException(e);
         }
     }
@@ -299,6 +299,7 @@ public class PersistentFacesState implements Serializable {
             throw new RuntimeException(e);
         } finally {
             release();
+            view.releaseLifecycleLock();
         }
     }
 
@@ -320,6 +321,7 @@ public class PersistentFacesState implements Serializable {
             throw new RuntimeException(e);
         } finally {
             release();
+            view.releaseLifecycleLock();
         }
     }
 
@@ -332,7 +334,6 @@ public class PersistentFacesState implements Serializable {
      */
     public void release() {
         localInstance.set(null);
-        view.releaseLifecycleLock();
     }
 
     public void installContextClassLoader() {
@@ -464,6 +465,7 @@ public class PersistentFacesState implements Serializable {
         if (disposed) {
             //ICE-3073 Clear threadLocal in all paths
             release();
+            view.releaseLifecycleLock();
             fatalRenderingException();
         }
     }
@@ -476,7 +478,7 @@ public class PersistentFacesState implements Serializable {
      * JSF state saving requires a state id token written into the contents of
      * the forms in the client. For server push, however, this field has to be updated each
      * time state is serialized so that the subsequent push operation can artificially
-     * insert the id into the request map for JSF code to find. 
+     * insert the id into the request map for JSF code to find.
      *
      * @param stateRestorationId The state id
      */

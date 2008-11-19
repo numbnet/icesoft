@@ -96,13 +96,13 @@ public class View implements CommandQueue {
                 Log.debug("Disposing " + this);
                 installThreadLocals();
                 notifyViewDisposal();
-                release();
+                releaseAll();
+                releaseLifecycleLockUnconditionally();
                 persistentFacesState.dispose();
                 facesContext.dispose();
                 allServedViews.remove(viewIdentifier);
             }
         };
-        acquireLifecycleLock();
         Log.debug("Created " + this);
     }
 
@@ -121,8 +121,11 @@ public class View implements CommandQueue {
 
     public void put(Command command) {
         queueLock.lock();
-        currentCommand = currentCommand.coalesceWith(command);
-        queueLock.unlock();
+        try {
+            currentCommand = currentCommand.coalesceWith(command);
+        } finally {
+            queueLock.unlock();
+        }
         try {
             allServedViews.put(viewIdentifier);
         } catch (InterruptedException e) {
@@ -131,14 +134,23 @@ public class View implements CommandQueue {
     }
 
     public Command take() {
+        Command command = null;
         queueLock.lock();
-        Command command = currentCommand;
-        currentCommand = NOOP;
-        queueLock.unlock();
+        try {
+            command = currentCommand;
+            currentCommand = NOOP;
+        } finally {
+            queueLock.unlock();
+        }
         return command;
     }
 
     public void release() {
+        releaseAll();
+        releaseLifecycleLock();
+    }
+
+    private void releaseAll() {
         facesContext.release();
         persistentFacesState.release();
     }
@@ -169,7 +181,11 @@ public class View implements CommandQueue {
     public void releaseLifecycleLock() {
         lifecycleLock.lock();
         //release all locks corresponding to current thread!
-        for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
+        releaseLifecycleLockUnconditionally();
+    }
+
+    private void releaseLifecycleLockUnconditionally() {
+        while (lifecycleLock.getHoldCount() > 0) {
             lifecycleLock.unlock();
         }
     }
