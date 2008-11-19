@@ -68,7 +68,7 @@ public class View implements CommandQueue {
     private Runnable dispose;
     private String lastPath;
 
-    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Lifecycle lifecycle) throws Exception {
+    public View(final String viewIdentifier, String sessionID, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Lifecycle lifecycle) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
@@ -95,7 +95,8 @@ public class View implements CommandQueue {
                 Log.debug("Disposing " + this);
                 installThreadLocals();
                 notifyViewDisposal();
-                release();
+                releaseAll();
+                releaseLifecycleLockUnconditionally();
                 persistentFacesState.dispose();
                 facesContext.dispose();
                 externalContext.dispose();
@@ -104,7 +105,6 @@ public class View implements CommandQueue {
                 dispose = DoNothing;
             }
         };
-        acquireLifecycleLock();
         Log.debug("Created " + this);
     }
 
@@ -173,16 +173,23 @@ public class View implements CommandQueue {
 
     public void put(Command command) {
         queueLock.lock();
-        currentCommand = currentCommand.coalesceWith(command);
-        queueLock.unlock();
+        try {
+            currentCommand = currentCommand.coalesceWith(command);
+        } finally {
+            queueLock.unlock();
+        }
         broadcastTo(onPutListeners);
     }
 
     public Command take() {
+        Command command = null;
         queueLock.lock();
-        Command command = currentCommand;
-        currentCommand = NOOP;
-        queueLock.unlock();
+        try {
+            command = currentCommand;
+            currentCommand = NOOP;
+        } finally {
+            queueLock.unlock();
+        }
         broadcastTo(onTakeListeners);
         return command;
     }
@@ -208,9 +215,8 @@ public class View implements CommandQueue {
     }
 
     public void release() {
-        facesContext.release();
-        externalContext.release();
-        persistentFacesState.release();
+        releaseAll();
+        releaseLifecycleLock();
     }
 
     public BridgeFacesContext getFacesContext() {
@@ -231,10 +237,15 @@ public class View implements CommandQueue {
     }
 
     private void makeCurrent() {
-        acquireLifecycleLock();
         installThreadLocals();
         externalContext.injectBundles(bundles);
         facesContext.applyBrowserDOMChanges();
+    }
+
+    private void releaseAll() {
+        facesContext.release();
+        externalContext.release();
+        persistentFacesState.release();
     }
 
     private void acquireLifecycleLock() {
@@ -243,8 +254,18 @@ public class View implements CommandQueue {
         }
     }
 
+    private void releaseLifecycleLock() {
+        lifecycleLock.lock();
+        releaseLifecycleLockUnconditionally();
+    }
+
+    private void releaseLifecycleLockUnconditionally() {
+        while (lifecycleLock.getHoldCount() > 0) {
+            lifecycleLock.unlock();
+        }
+    }
+
     private void switchToNormalMode() {
-        acquireLifecycleLock();
         facesContext.switchToNormalMode();
         externalContext.switchToNormalMode();
     }
@@ -263,7 +284,6 @@ public class View implements CommandQueue {
     }
 
     private void switchToPushMode() {
-        acquireLifecycleLock();
         //collect bundles put by Tag components when the page is parsed
         bundles = externalContext.collectBundles();
         facesContext.switchToPushMode();

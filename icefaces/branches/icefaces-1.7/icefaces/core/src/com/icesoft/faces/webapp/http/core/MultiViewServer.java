@@ -7,10 +7,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import javax.servlet.http.HttpSession;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.lifecycle.Lifecycle;
 import javax.faces.FactoryFinder;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class MultiViewServer implements Server {
@@ -45,14 +45,14 @@ public class MultiViewServer implements Server {
             synchronized (views) {
                 view = (View) views.get(redirectViewNumber);
                 if (view == null) {
-                    view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+                    view = new View(redirectViewNumber, sessionID, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
                     views.put(redirectViewNumber, view);
                     ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
                 }
             }
         } else {
             String viewNumber = String.valueOf(++viewCount);
-            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+            view = new View(viewNumber, sessionID, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         }
