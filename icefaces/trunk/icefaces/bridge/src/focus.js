@@ -38,11 +38,6 @@ function setFocus(id) {
     currentFocus = id;
 }
 
-window.onScroll(function() {
-    currentFocus = null;
-    window.focus();
-});
-
 [ Ice.Focus = new Object ].as(function(This) {
     function isValidID(id) {
         return /^\w[\w\-\:]*$/.test(id);
