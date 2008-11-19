@@ -168,11 +168,10 @@ public abstract class PersistentFacesState implements Serializable {
             facesContext.setFocusId("");
             lifecycle.render(facesContext);
         } catch (Exception e) {
-            release();
             throwRenderingException(e);
         } finally {
             facesContext.release();
-            release();
+            releaseAll();
         }
     }
 
@@ -238,7 +237,7 @@ public abstract class PersistentFacesState implements Serializable {
                 facesContext.resetResponseComplete();
             }
         } catch (Exception e) {
-            release();
+            releaseAll();
             throwRenderingException(e);
         }
     }
@@ -283,8 +282,13 @@ public abstract class PersistentFacesState implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            release();
+            releaseAll();
         }
+    }
+
+    private void releaseAll() {
+        release();
+        releaseLifecycleLock();
     }
 
     /**
@@ -304,7 +308,7 @@ public abstract class PersistentFacesState implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            release();
+            releaseAll();
         }
     }
 
@@ -317,7 +321,6 @@ public abstract class PersistentFacesState implements Serializable {
      */
     public void release() {
         localInstance.set(null);
-        releaseLifecycleLock();
     }
 
     public void installContextClassLoader() {
@@ -375,7 +378,7 @@ public abstract class PersistentFacesState implements Serializable {
     private void releaseLifecycleLock() {
         lifecycleLock.lock();
         //release all locks corresponding to current thread!
-        for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
+        while (lifecycleLock.getHoldCount() > 0) {
             lifecycleLock.unlock();
         }
     }
@@ -467,7 +470,7 @@ public abstract class PersistentFacesState implements Serializable {
     private void failIfDisposed() throws FatalRenderingException {
         if (disposed) {
             //ICE-3073 Clear threadLocal in all paths
-            release();
+            releaseAll();
             fatalRenderingException();
         }
     }
