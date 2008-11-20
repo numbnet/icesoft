@@ -82,13 +82,18 @@
         },
 
         on: function() {
-            if (this.counter < 1) this.indicator.on();
+            if (this.counter == 0) {
+                this.indicator.on();
+            }
             ++this.counter;
         },
 
         off: function() {
-            --this.counter;
-            if (this.counter < 1) this.indicator.off();
+            if (this.counter == 0) {
+                this.indicator.off();
+            } else {
+                --this.counter;
+            }
         }
     });
 
