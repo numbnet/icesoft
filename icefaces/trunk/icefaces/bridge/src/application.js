@@ -105,7 +105,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 dispose = Function.NOOP;
                 documentSynchronizer.shutdown();
                 connection.shutdown();
-            }
+            };
 
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
