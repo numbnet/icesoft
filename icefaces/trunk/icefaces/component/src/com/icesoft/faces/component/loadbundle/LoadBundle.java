@@ -1,8 +1,16 @@
 package com.icesoft.faces.component.loadbundle;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -17,7 +25,7 @@ public class LoadBundle extends UIOutput{
     transient private Locale oldLocale;
     transient private String oldBasename = new String();
     transient private ResourceBundle bundle;
-    
+    transient private Map map;
     
     public LoadBundle() {
         setRendererType(null);
@@ -28,6 +36,7 @@ public class LoadBundle extends UIOutput{
     }
     
     public void encodeBegin(FacesContext context) throws IOException {
+        setRendererType(null);
         String newBasename = getBasename();
         Locale currentLocale = context.getViewRoot().getLocale();
         boolean reloadRequired = !((oldLocale != null) && 
@@ -36,8 +45,103 @@ public class LoadBundle extends UIOutput{
         if (reloadRequired) {
             bundle = ResourceBundle.getBundle(newBasename.trim(),
                     currentLocale,
-                    MessageUtils.getClassLoader(this));   
-            context.getExternalContext().getRequestMap().put(getVar(), bundle); 
+                    MessageUtils.getClassLoader(this)); 
+            map = new Map() {
+
+                public void clear() {
+                    throw new UnsupportedOperationException();
+                }
+
+                public boolean containsKey(Object key) {
+                    return (null == key)?  false : (null != bundle.getObject(key.toString())) ;
+                }
+
+                public boolean containsValue(Object value) {
+                    boolean found = false;
+                    Object currentValue = null;
+                    Enumeration keys = bundle.getKeys();
+                    while (keys.hasMoreElements()) {
+                        currentValue = bundle.getObject((String) keys.nextElement());
+                        if ( (value == currentValue) ||
+                                ((null != currentValue) && currentValue.equals(value))) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    return found;
+                }
+
+                public Set entrySet() {
+                    HashMap entries = new HashMap();
+                    Enumeration keys = bundle.getKeys();
+                    while (keys.hasMoreElements()) {
+                        Object key = keys.nextElement();
+                        Object value = bundle.getObject((String)key);
+                        entries.put(key, value);
+                    }
+                    return entries.entrySet();
+                }
+
+                public Object get(Object key) {
+                    if (null == key) return null;
+                    Object result = null;
+                    try {
+                        result = bundle.getObject(key.toString());
+                    } catch (MissingResourceException mre) {
+                        result = "???"+ key + "???";
+                    }
+                    return result;
+                }
+
+                public boolean isEmpty() {
+                    return !bundle.getKeys().hasMoreElements();
+                }
+
+                public Set keySet() {
+                    Set keySet = new HashSet();
+                    Enumeration keys = bundle.getKeys();
+                    while (keys.hasMoreElements()) {
+                        keySet.add(keys.nextElement());
+                    }
+                    return keySet;
+                }
+
+                public Object put(Object key, Object value) {
+                    throw new UnsupportedOperationException();
+                }
+
+                public void putAll(Map t) {
+                    throw new UnsupportedOperationException();                }
+
+                public Object remove(Object key) {
+                    throw new UnsupportedOperationException();
+                }
+
+                public int size() {
+                    int size = 0;
+                    Enumeration keys = bundle.getKeys();
+                    while (keys.hasMoreElements()) {
+                        keys.nextElement();
+                        size++;
+                    }
+                    return size;
+                }
+
+                public Collection values() {
+                    ArrayList values = new ArrayList();
+                    Enumeration keys = bundle.getKeys();
+                    while(keys.hasMoreElements()) {
+                        values.add(bundle.getObject((String)keys.nextElement()));
+                    }
+                    return values;
+                }
+                
+                public int hashCode() {
+                    return bundle.hashCode();
+                }
+                
+            };
+            context.getExternalContext().getRequestMap().put(getVar(), map); 
         }
         oldBasename = newBasename;
         oldLocale = currentLocale;
