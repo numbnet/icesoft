@@ -17,7 +17,7 @@ public class SettableLocaleViewRoot extends UIViewRoot {
             String className = ste[i].getClassName().toLowerCase();
             String methodName = ste[i].getMethodName().toLowerCase();
 
-            if (className.contains("restoreviewphase") && methodName.contains("execute")) {
+            if (className.contains("restoreview") && methodName.contains("execute")) {
                 return;
             }
 
