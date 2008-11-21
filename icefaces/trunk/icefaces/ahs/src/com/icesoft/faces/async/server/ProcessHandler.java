@@ -134,6 +134,8 @@ implements Handler, Runnable {
     private SequenceNumbers sequenceNumbers;
     private List updatedViewsList = new ArrayList();
 
+    private boolean respondWithEmptyResponse = false;
+
     /**
      * <p>
      *   Constructs a <code>ProcessHandler</code> object.
@@ -264,6 +266,19 @@ implements Handler, Runnable {
                     break;
                 }
                 extractSequenceNumbers();
+                // checking pending request...
+                ProcessHandler _processHandler =
+                    (ProcessHandler)
+                        asyncHttpServer.getSessionManager().getRequestManager().
+                            pull(iceFacesIdSet);
+                if (_processHandler != null) {
+                    // respond to pending request.
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Respond to previous pending request");
+                    }
+                    _processHandler.setRespondWithEmptyResponse(true);
+                    _processHandler.handle();
+                }
                 state = STATE_WAITING_FOR_RESPONSE;
             case STATE_WAITING_FOR_RESPONSE :
                 if (LOG.isTraceEnabled()) {
@@ -272,6 +287,15 @@ implements Handler, Runnable {
                 if (asyncHttpServer.getSessionManager().
                         isValid(iceFacesIdSet)) {
 
+                    if (respondWithEmptyResponse) {
+                        _httpResponse =
+                            new HttpResponse(
+                                HttpResponse.HTTP_11,
+                                HttpResponse.OK,
+                                "OK");
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
                     updatedViewsList =
                         asyncHttpServer.getSessionManager().
                             getUpdatedViewsManager().pull(
@@ -327,6 +351,10 @@ implements Handler, Runnable {
         }
     }
 
+    private void setRespondWithEmptyResponse(boolean respondWithEmptyResponse) {
+        this.respondWithEmptyResponse = respondWithEmptyResponse;
+    }
+
     private boolean acceptable() {
         HttpRequest _httpRequest =
             httpConnection.getTransaction().getHttpRequest();
@@ -369,7 +397,7 @@ implements Handler, Runnable {
     private void addEntityBody() {
         HttpResponse _httpResponse =
             httpConnection.getTransaction().getHttpResponse();
-        if (_httpResponse.isSuccessful()) {
+        if (_httpResponse.isSuccessful() && !respondWithEmptyResponse) {
             byte[] _entityBody = getEntityBody();
             if (_entityBody.length != 0 &&
                 !_httpResponse.containsHeader(HttpResponse.X_CONNECTION)) {
@@ -445,7 +473,7 @@ implements Handler, Runnable {
             httpConnection.getTransaction().getHttpRequest();
         HttpResponse _httpResponse =
             httpConnection.getTransaction().getHttpResponse();
-        if (_httpResponse.isSuccessful()) {
+        if (_httpResponse.isSuccessful() && !respondWithEmptyResponse) {
             byte[] _entityBody = getEntityBody();
             if (_entityBody.length != 0 &&
                 !_httpResponse.containsHeader(HttpResponse.X_CONNECTION)) {
@@ -542,7 +570,7 @@ implements Handler, Runnable {
 //            httpConnection.getTransaction().getHttpRequest();
         HttpResponse _httpResponse =
             httpConnection.getTransaction().getHttpResponse();
-        if (_httpResponse.isSuccessful()) {
+        if (_httpResponse.isSuccessful() && !respondWithEmptyResponse) {
             if (!_httpResponse.containsHeader(HttpResponse.X_CONNECTION)) {
                 _httpResponse.putHeader(
                     HttpResponse.X_SET_WINDOW_COOKIE,
