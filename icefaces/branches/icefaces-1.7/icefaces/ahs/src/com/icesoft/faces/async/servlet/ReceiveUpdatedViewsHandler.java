@@ -41,19 +41,19 @@ implements Handler, Runnable {
                 response.setHeader("X-Connection", "close");
             }
         };
-    private static final ResponseHandler EMPTY_RESPONSE_HANDLER =
-        new ResponseHandler() {
-            public void respond(final Response response)
-            throws Exception {
-                response.setStatus(200);
-                // general header fields
-                response.setHeader("Pragma", "no-cache");
-                response.setHeader("Cache-Control", "no-cache, no-store");
-                // entity header fields
-                response.setHeader("Content-Length", 0);
-                response.setHeader("Content-Type", "text/xml");
-            }
-        };
+//    private static final ResponseHandler EMPTY_RESPONSE_HANDLER =
+//        new ResponseHandler() {
+//            public void respond(final Response response)
+//            throws Exception {
+//                response.setStatus(200);
+//                // general header fields
+//                response.setHeader("Pragma", "no-cache");
+//                response.setHeader("Cache-Control", "no-cache, no-store");
+//                // entity header fields
+//                response.setHeader("Content-Length", 0);
+//                response.setHeader("Content-Type", "text/xml");
+//            }
+//        };
 
     private final SessionManager sessionManager;
     private final Request request;
@@ -120,7 +120,7 @@ implements Handler, Runnable {
                     // respond to pending request.
                     try {
                         _receiveUpdatedViewsHandler.request.respondWith(
-                            EMPTY_RESPONSE_HANDLER);
+                            CLOSE_RESPONSE_HANDLER);
                     } catch (Exception exception) {
                         if (LOG.isErrorEnabled()) {
                             LOG.error(
