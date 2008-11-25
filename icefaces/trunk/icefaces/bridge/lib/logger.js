@@ -285,7 +285,7 @@
             this.handle('red', 'error', category, message, exception)
         },
 
-    //private
+        //private
         handle: function(colorName, priorityName, category, message, exception) {
             if (this.categoryMatcher.test(category.join('.'))) {
                 var elementDocument = this.log.ownerDocument;
@@ -306,7 +306,7 @@
             this.clearPreviousEvents();
         },
 
-    //private
+        //private
         clearPreviousEvents: function() {
             var nodes = $A(this.log.childNodes);
             nodes.copyFrom(0, nodes.length - this.lines).each(function(node) {
@@ -314,7 +314,7 @@
             }.bind(this));
         },
 
-    //private
+        //private
         clearAllEvents: function() {
             $A(this.log.childNodes).each(function(node) {
                 this.log.removeChild(node)
@@ -337,6 +337,7 @@
         enable: function() {
             this.console = window.console;
             this.logger.threshold(This.Priority.DEBUG);
+            this.logger.warn('Firebug (version < 1.2) logging can cause increased memory consumption when running for a long period of time!');
         },
 
         disable: function() {
@@ -362,7 +363,7 @@
             exception ? this.console.error(this.format(category, message), exception) : this.console.error(this.format(category, message));
         },
 
-    //private
+        //private
         format: function(category, message) {
             return '[' + category.join('.') + '] ' + message;
         }
