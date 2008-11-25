@@ -122,7 +122,7 @@
             this.priority = thresholdPriority;
             this.children.each(function(logger) {
                 logger.threshold(thresholdPriority);
-            })
+            });
         },
 
         handleWith: function(handler) {
