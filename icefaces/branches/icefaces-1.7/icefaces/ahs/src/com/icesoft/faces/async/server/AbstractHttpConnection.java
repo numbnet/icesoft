@@ -153,7 +153,7 @@ implements HttpConnection {
         this.exception = exception;
     }
 
-    public void setThrowable(final Throwable exception) {
+    public void setThrowable(final Throwable throwable) {
         this.throwable = throwable;
     }
 
