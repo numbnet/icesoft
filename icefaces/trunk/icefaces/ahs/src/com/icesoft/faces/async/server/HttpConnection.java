@@ -93,6 +93,8 @@ public interface HttpConnection {
 
     public SocketAddress getRemoteSocketAddress();
 
+    public Throwable getThrowable();
+
     /**
      * <p>
      *   Gets the current transaction, containing the possible HTTP Request and
@@ -104,7 +106,9 @@ public interface HttpConnection {
     public Transaction getTransaction();
 
     public boolean hasException();
-    
+
+    public boolean hasThrowable();
+
     /**
      * <p>
      *   Checks to see if a close has been requested to close the
@@ -320,6 +324,8 @@ public interface HttpConnection {
      * @see        #getException()
      */
     public void setException(final Exception exception);
+
+    public void setThrowable(final Throwable throwable);
 
     /**
      * <p>

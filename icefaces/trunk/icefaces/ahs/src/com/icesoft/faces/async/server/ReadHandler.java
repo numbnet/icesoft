@@ -115,8 +115,8 @@ implements Handler, Runnable {
     }
 
     public void run() {
-        inputStream = httpConnection.getInputStream();
         try {
+            inputStream = httpConnection.getInputStream();
             switch (state) {
                 case STATE_UNINITIALIZED :
                     if (LOG.isTraceEnabled()) {
@@ -140,9 +140,9 @@ implements Handler, Runnable {
                                         getHttpRequest().getICEfacesIDSet());
                             }
                             httpConnection.reset();
-                            if (LOG.isTraceEnabled()) {
-                                LOG.trace(
-                                    "Close: User-Agent closed the connection!");
+                            if (LOG.isInfoEnabled()) {
+                                LOG.info(
+                                    "!ALARM! :: Close: User-Agent closed the connection!");
                             }
                             return;
                         } else if (length == 0) {
@@ -301,6 +301,9 @@ implements Handler, Runnable {
                                     ":\r\n\r\n" +
                                         httpRequest.getMessage(true));
                     }
+                    if (httpRequest == null) {
+                        LOG.info("!ALARM! :: httpRequest == null");
+                    }
                     httpConnection.getTransaction().setHttpRequest(httpRequest);
                     break;
                 default :
@@ -322,6 +325,12 @@ implements Handler, Runnable {
                     exception);
             }
             httpConnection.setException(exception);
+        } catch (Throwable throwable) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "Unexpected exception or error caught!", throwable);
+            }
+            httpConnection.setThrowable(throwable);
         } finally {
             if (!httpConnection.isCloseRequested() && inputStream != null) {
                 try {
@@ -337,7 +346,7 @@ implements Handler, Runnable {
                     if (LOG.isErrorEnabled()) {
                         LOG.error(throwable);
                     }
-                }
+                }                      
             }
         }
         ProcessHandler _processHandler =
