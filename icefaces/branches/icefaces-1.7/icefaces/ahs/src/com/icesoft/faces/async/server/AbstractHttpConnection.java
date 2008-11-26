@@ -50,6 +50,7 @@ implements HttpConnection {
     protected InputStream inputStream;
     protected OutputStream outputStream;
     protected Transaction transaction = new Transaction();
+    protected Throwable throwable;
 
     protected AbstractHttpConnection() {
         // do nothing.
@@ -92,12 +93,20 @@ implements HttpConnection {
         return new WrapperOutputStream(outputStream);
     }
 
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
     public Transaction getTransaction() {
         return transaction;
     }
 
     public boolean hasException() {
         return exception != null;
+    }
+
+    public boolean hasThrowable() {
+        return throwable != null;
     }
 
     public boolean isCloseRequested() {
@@ -140,6 +149,14 @@ implements HttpConnection {
         }
     }
 
+    public void setException(final Exception exception) {
+        this.exception = exception;
+    }
+
+    public void setThrowable(final Throwable exception) {
+        this.throwable = throwable;
+    }
+
     public void write(final int b)
     throws IOException, NullPointerException {
         if (outputStream == null) {
@@ -165,10 +182,6 @@ implements HttpConnection {
         }
         outputStream.write(bytes, offset, length);
         outputStream.flush();
-    }
-
-    public void setException(final Exception exception) {
-        this.exception = exception;
     }
 
     private static class WrapperInputStream

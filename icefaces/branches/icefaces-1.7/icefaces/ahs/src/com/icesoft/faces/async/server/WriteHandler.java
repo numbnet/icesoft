@@ -93,6 +93,24 @@ implements Handler, Runnable {
                         "An I/O error occurred while writing HTTP Response!",
                         exception);
                 }
+                /*
+                 * An IOException occurred while writing the HTTP Response.
+                 * Close the connection from the server end, as the User-Agent
+                 * cannot be informed of the error at this point.
+                 */
+                httpConnection.requestClose();
+            } catch (Throwable throwable) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "Unexpected exception or error caught!",
+                        throwable);
+                }
+                /*
+                 * An Exception or Error occurred while writing the HTTP
+                 * Response. Close the connection from the server end, as the
+                 * User-Agent cannot be informed of the error at this point.
+                 */
+                httpConnection.requestClose();
             }
             httpConnection.reset();
         }

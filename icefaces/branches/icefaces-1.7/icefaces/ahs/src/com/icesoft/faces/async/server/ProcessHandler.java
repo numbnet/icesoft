@@ -39,7 +39,6 @@ import com.icesoft.faces.net.http.HttpResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ProtocolException;
 import java.net.URLDecoder;
@@ -149,186 +148,193 @@ implements Handler, Runnable {
 
     public void run() {
         HttpResponse _httpResponse = null;
-        switch (state) {
-            case STATE_UNINITIALIZED :
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("State: Uninitialized");
-                }
-                state = STATE_PROCESSING_REQUEST;
-            case STATE_PROCESSING_REQUEST :
-                if (httpConnection.hasException()) {
-                    _httpResponse = handleException();
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                HttpRequest _httpRequest =
-                    httpConnection.getTransaction().getHttpRequest();
-                if (!_httpRequest.getMethod().
-                        equalsIgnoreCase(HttpRequest.GET) &&
-                    !_httpRequest.getMethod().
-                        equalsIgnoreCase(HttpRequest.POST)) {
-
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "501 Not Implemented (" +
-                                "Method: " + _httpRequest.getMethod() + ")");
-                    }
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.NOT_IMPLEMENTED,
-                            "Not Implemented");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                String _httpVersion = _httpRequest.getHttpVersion();
-                if (!_httpVersion.equalsIgnoreCase(HttpRequest.HTTP_10) &&
-                    !_httpVersion.equalsIgnoreCase(HttpRequest.HTTP_11)) {
-
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "505 HTTP Version Not Supported (" +
-                                "HTTP-Version: " + _httpVersion + ")");
-                    }
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.HTTP_VERSION_NOT_SUPPORTED,
-                            "HTTP Version Not Supported");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                if (!acceptable()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("406 Not Acceptable");
-                    }
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.NOT_ACCEPTABLE,
-                            "Not Acceptable");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                String _requestUri = _httpRequest.getRequestUri();
-                String _path;
-                if (_httpRequest.getMethod().
-                        equalsIgnoreCase(HttpRequest.GET)) {
-
-                    int _index = _requestUri.indexOf("?");
-                    if (_index != -1) {
-                        _path = _requestUri.substring(0, _index);
-                    } else {
-                        _path = _requestUri;
-                    }
-                } else if (
-                    _httpRequest.getMethod().
-                        equalsIgnoreCase(HttpRequest.POST)) {
-
-                    _path = _requestUri;
-                } else {
-                    _path = null;
-                }
-                if (
-                    _path == null ||
-                    (
-                        !_path.endsWith("/block/receive-updated-views") &&
-                        !_path.endsWith("/block/receive-updated-views/")
-                    )) {
-
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "404 Not Found (" +
-                                "Request-URI: " + _requestUri + ")");
-                    }
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.NOT_FOUND,
-                            "Not Found");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                extractICEfacesIDs();
-                if (iceFacesIdSet.isEmpty()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "404 Not Found (" +
-                                "ICEfaces ID(s): " +
-                                    iceFacesIdSet + ")");
-                    }
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.NOT_FOUND,
-                            "Not Found");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-                extractSequenceNumbers();
-                // checking pending request...
-                ProcessHandler _processHandler =
-                    (ProcessHandler)
-                        asyncHttpServer.getSessionManager().getRequestManager().
-                            pull(iceFacesIdSet);
-                if (_processHandler != null) {
-                    // respond to pending request.
+        try {
+            switch (state) {
+                case STATE_UNINITIALIZED :
                     if (LOG.isTraceEnabled()) {
-                        LOG.trace("Respond to previous pending request");
+                        LOG.trace("State: Uninitialized");
                     }
-                    _processHandler.setRespondWithCloseResponse(true);
-                    _processHandler.handle();
-                }
-                state = STATE_WAITING_FOR_RESPONSE;
-            case STATE_WAITING_FOR_RESPONSE :
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("State: Waiting for Response");
-                }
-                if (asyncHttpServer.getSessionManager().
-                        isValid(iceFacesIdSet)) {
-
-                    if (respondWithCloseResponse) {
-                        _httpResponse =
-                            new HttpResponse(
-                                HttpResponse.HTTP_11,
-                                HttpResponse.OK,
-                                "OK");
-                        _httpResponse.putHeader(
-                            HttpResponse.X_CONNECTION, "close");
+                    state = STATE_PROCESSING_REQUEST;
+                case STATE_PROCESSING_REQUEST :
+                    if (httpConnection.hasThrowable()) {
+                        _httpResponse = handleThrowable();
                         state = STATE_RESPONSE_IS_READY;
                         break;
                     }
-                    updatedViewsList =
-                        asyncHttpServer.getSessionManager().
-                            getUpdatedViewsManager().pull(
-                                iceFacesIdSet, sequenceNumbers);
-                    if (updatedViewsList == null ||
-                        updatedViewsList.isEmpty()) {
+                    if (httpConnection.hasException()) {
+                        _httpResponse = handleException();
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    HttpRequest _httpRequest =
+                        httpConnection.getTransaction().getHttpRequest();
+                    if (!_httpRequest.getMethod().
+                            equalsIgnoreCase(HttpRequest.GET) &&
+                        !_httpRequest.getMethod().
+                            equalsIgnoreCase(HttpRequest.POST)) {
 
-                        asyncHttpServer.getSessionManager().getRequestManager().
-                            push(iceFacesIdSet, this);
-                        return;
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "501 Not Implemented (" +
+                                    "Method: " + _httpRequest.getMethod() + ")");
+                        }
+                        _httpResponse = new NotImplementedResponse();
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    String _httpVersion = _httpRequest.getHttpVersion();
+                    if (!_httpVersion.equalsIgnoreCase(HttpRequest.HTTP_10) &&
+                        !_httpVersion.equalsIgnoreCase(HttpRequest.HTTP_11)) {
+
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "505 HTTP Version Not Supported (" +
+                                    "HTTP-Version: " + _httpVersion + ")");
+                        }
+                        _httpResponse = new HttpVersionNotSupportedResponse();
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    if (!acceptable()) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("406 Not Acceptable");
+                        }
+                        _httpResponse =
+                            new HttpResponse(
+                                HttpResponse.HTTP_11,
+                                HttpResponse.NOT_ACCEPTABLE,
+                                "Not Acceptable");
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    String _requestUri = _httpRequest.getRequestUri();
+                    String _path;
+                    if (_httpRequest.getMethod().
+                            equalsIgnoreCase(HttpRequest.GET)) {
+
+                        int _index = _requestUri.indexOf("?");
+                        if (_index != -1) {
+                            _path = _requestUri.substring(0, _index);
+                        } else {
+                            _path = _requestUri;
+                        }
+                    } else if (
+                        _httpRequest.getMethod().
+                            equalsIgnoreCase(HttpRequest.POST)) {
+
+                        _path = _requestUri;
+                    } else {
+                        _path = null;
+                    }
+                    if (
+                        _path == null ||
+                        (
+                            !_path.endsWith("/block/receive-updated-views") &&
+                            !_path.endsWith("/block/receive-updated-views/")
+                        )) {
+
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "404 Not Found (" +
+                                    "Request-URI: " + _requestUri + ")");
+                        }
+                        _httpResponse =
+                            new HttpResponse(
+                                HttpResponse.HTTP_11,
+                                HttpResponse.NOT_FOUND,
+                                "Not Found");
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    extractICEfacesIDs();
+                    if (iceFacesIdSet.isEmpty()) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "404 Not Found (" +
+                                    "ICEfaces ID(s): " +
+                                        iceFacesIdSet + ")");
+                        }
+                        _httpResponse =
+                            new HttpResponse(
+                                HttpResponse.HTTP_11,
+                                HttpResponse.NOT_FOUND,
+                                "Not Found");
+                        state = STATE_RESPONSE_IS_READY;
+                        break;
+                    }
+                    extractSequenceNumbers();
+                    // checking pending request...
+                    ProcessHandler _processHandler =
+                        (ProcessHandler)
+                            asyncHttpServer.getSessionManager().getRequestManager().
+                                pull(iceFacesIdSet);
+                    if (_processHandler != null) {
+                        // respond to pending request.
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("Respond to previous pending request");
+                        }
+                        _processHandler.setRespondWithCloseResponse(true);
+                        _processHandler.handle();
+                    }
+                    state = STATE_WAITING_FOR_RESPONSE;
+                case STATE_WAITING_FOR_RESPONSE :
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("State: Waiting for Response");
+                    }
+                    if (asyncHttpServer.getSessionManager().
+                            isValid(iceFacesIdSet)) {
+
+                        if (respondWithCloseResponse) {
+                            _httpResponse =
+                                new HttpResponse(
+                                    HttpResponse.HTTP_11,
+                                    HttpResponse.OK,
+                                    "OK");
+                            _httpResponse.putHeader(
+                                HttpResponse.X_CONNECTION, "close");
+                            state = STATE_RESPONSE_IS_READY;
+                            break;
+                        }
+                        updatedViewsList =
+                            asyncHttpServer.getSessionManager().
+                                getUpdatedViewsManager().pull(
+                                    iceFacesIdSet, sequenceNumbers);
+                        if (updatedViewsList == null ||
+                            updatedViewsList.isEmpty()) {
+
+                            asyncHttpServer.getSessionManager().getRequestManager().
+                                push(iceFacesIdSet, this);
+                            return;
+                        } else {
+                            _httpResponse =
+                                new HttpResponse(
+                                    HttpResponse.HTTP_11,
+                                    HttpResponse.OK,
+                                    "OK");
+                            state = STATE_RESPONSE_IS_READY;
+                            break;
+                        }
                     } else {
                         _httpResponse =
                             new HttpResponse(
                                 HttpResponse.HTTP_11,
                                 HttpResponse.OK,
                                 "OK");
+                        _httpResponse.putHeader(HttpResponse.X_CONNECTION, "close");
                         state = STATE_RESPONSE_IS_READY;
                         break;
                     }
-                } else {
-                    _httpResponse =
-                        new HttpResponse(
-                            HttpResponse.HTTP_11,
-                            HttpResponse.OK,
-                            "OK");
-                    _httpResponse.putHeader(HttpResponse.X_CONNECTION, "close");
-                    state = STATE_RESPONSE_IS_READY;
-                    break;
-                }
-            default :
-                // this should never happen!
+                default :
+                    // this should never happen!
+            }
+        } catch (Throwable throwable) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "Unexpected exception or error caught!", throwable);
+            }
+            _httpResponse = new InternalServerErrorResponse(throwable);
+            httpConnection.requestClose();
+            state = STATE_RESPONSE_IS_READY;
         }
         switch (state) {
             case STATE_RESPONSE_IS_READY :
@@ -336,8 +342,23 @@ implements Handler, Runnable {
                     LOG.trace("State: Response is Ready");
                 }
                 httpConnection.getTransaction().setHttpResponse(_httpResponse);
-                addHeaderFields();
-                addEntityBody();
+                if (!_httpResponse.isServerError()) {
+                    try {
+                        addHeaderFields();
+                        addEntityBody();
+                    } catch (Throwable throwable) {
+                        if (LOG.isErrorEnabled()) {
+                            LOG.error(
+                                "Unexpected exception or error caught!",
+                                throwable);
+                        }
+                        _httpResponse =
+                            new InternalServerErrorResponse(throwable);
+                        httpConnection.getTransaction().
+                            setHttpResponse(_httpResponse);
+                        httpConnection.requestClose();
+                    }
+                }
                 WriteHandler _writeHandler =
                     new WriteHandler(executeQueue, asyncHttpServer);
                 _writeHandler.setHttpConnection(httpConnection);
@@ -552,14 +573,6 @@ implements Handler, Runnable {
              */
             _httpResponse.putHeader(
                 HttpResponse.EntityBody.CONTENT_LENGTH, 0, true);
-        } else if (_httpResponse.isServerError()) {
-            /*
-            * Note: Firefox and Safari both seem to need the Content-Length
-            *       header eventhough there is no Entity-Body and
-            *       "Connection: close" is specified.
-            */
-            _httpResponse.putHeader(
-                HttpResponse.EntityBody.CONTENT_LENGTH, 0, true);
         }
     }
 
@@ -661,14 +674,7 @@ implements Handler, Runnable {
             }
         } else if (_httpResponse.isClientError()) {
             _httpResponse.putHeader(HttpResponse.CONNECTION, "close", true);
-            if (_httpResponse.containsHeader(HttpResponse.PROXY_CONNECTION)) {
-                _httpResponse.putHeader(
-                    HttpResponse.PROXY_CONNECTION, "close", true);
-            }
-            httpConnection.requestClose();
-        } else if (_httpResponse.isServerError()) {
-            _httpResponse.putHeader(HttpResponse.CONNECTION, "close", true);
-            if (_httpResponse.containsHeader(HttpResponse.PROXY_CONNECTION)) {
+            if (_httpRequest.containsHeader(HttpResponse.PROXY_CONNECTION)) {
                 _httpResponse.putHeader(
                     HttpResponse.PROXY_CONNECTION, "close", true);
             }
@@ -832,33 +838,22 @@ implements Handler, Runnable {
                 LOG.debug(
                     "500 Internal Server Error (IOException)", _exception);
             }
-            _httpResponse =
-                new HttpResponse(
-                    HttpResponse.HTTP_11,
-                    HttpResponse.INTERNAL_SERVER_ERROR,
-                    "Internal Server Error");
-            ByteArrayOutputStream _byteArrayOutputStream =
-                new ByteArrayOutputStream();
-            _exception.printStackTrace(new PrintStream(_byteArrayOutputStream));
-            _httpResponse.setEntityBody(
-                new HttpResponse.EntityBody(
-                    _byteArrayOutputStream.toByteArray()));
+            _httpResponse = new InternalServerErrorResponse(_exception);
+            httpConnection.requestClose();
         } else {
             if (LOG.isErrorEnabled()) {
                 LOG.error("Unhandled exception: " + _exception, _exception);
             }
-            _httpResponse =
-                new HttpResponse(
-                    HttpResponse.HTTP_11,
-                    HttpResponse.INTERNAL_SERVER_ERROR,
-                    "Internal Server Error");
-            ByteArrayOutputStream _byteArrayOutputStream =
-                new ByteArrayOutputStream();
-            _exception.printStackTrace(new PrintStream(_byteArrayOutputStream));
-            _httpResponse.setEntityBody(
-                new HttpResponse.EntityBody(
-                    _byteArrayOutputStream.toByteArray()));
+            _httpResponse = new InternalServerErrorResponse(_exception);
+            httpConnection.requestClose();
         }
+        return _httpResponse;
+    }
+
+    private HttpResponse handleThrowable() {
+        HttpResponse _httpResponse =
+            new InternalServerErrorResponse(httpConnection.getThrowable());
+        httpConnection.requestClose();
         return _httpResponse;
     }
 

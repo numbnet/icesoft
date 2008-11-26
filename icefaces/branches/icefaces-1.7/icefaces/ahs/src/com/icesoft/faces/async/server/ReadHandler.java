@@ -115,8 +115,8 @@ implements Handler, Runnable {
     }
 
     public void run() {
-        inputStream = httpConnection.getInputStream();
         try {
+            inputStream = httpConnection.getInputStream();
             switch (state) {
                 case STATE_UNINITIALIZED :
                     if (LOG.isTraceEnabled()) {
@@ -322,6 +322,12 @@ implements Handler, Runnable {
                     exception);
             }
             httpConnection.setException(exception);
+        } catch (Throwable throwable) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "Unexpected exception or error caught!", throwable);
+            }
+            httpConnection.setThrowable(throwable);
         } finally {
             if (!httpConnection.isCloseRequested() && inputStream != null) {
                 try {
@@ -337,7 +343,7 @@ implements Handler, Runnable {
                     if (LOG.isErrorEnabled()) {
                         LOG.error(throwable);
                     }
-                }
+                }                      
             }
         }
         ProcessHandler _processHandler =
