@@ -79,7 +79,7 @@ public class MainServlet extends HttpServlet {
             }
             //don't create new sessions for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher));
-            dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
+            dispatcher.dispatchOn(".*(\\/$|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
             throw new ServletException(e);
