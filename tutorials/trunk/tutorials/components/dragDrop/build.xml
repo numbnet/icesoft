@@ -4,7 +4,7 @@
        Builds child projects 
     </description>
 
-    <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+    <property name="build-common.xml" value="../../../build-common.xml"/>
 
 
     <!--
