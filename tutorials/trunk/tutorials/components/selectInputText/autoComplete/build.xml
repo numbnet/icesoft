@@ -14,19 +14,19 @@
             />
     <patternset id="deployment.icefaces.lib.jars.to.include"
                 includes="
-        backport-util-concurrent.jar
-        commons-beanutils.jar
-        commons-collections.jar
-        commons-digester.jar
-        commons-discovery.jar
-        commons-el.jar
-        commons-fileupload.jar
-        commons-logging.jar
-        el-api.jar
-        jstl.jar
-        standard.jar
-        xercesImpl.jar
-        xml-apis.jar
+            backport-util-concurrent.jar
+            commons-beanutils.jar
+            commons-collections.jar
+            commons-digester.jar
+            commons-discovery.jar
+		commons-el.jar
+            commons-fileupload.jar
+            commons-logging.jar
+            el-api.jar
+            jstl.jar
+            standard.jar
+            xercesImpl.jar
+            xml-apis.jar
     "
             />
     <patternset id="additional.compile.lib.jars"
