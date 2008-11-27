@@ -93,7 +93,7 @@
     </ice:ant>
 
     <ice:ant antfile="ahs/build.xml">
-    	<target name="build.servlet.jboss.war"/>
+    	<target name="build.servlet.jboss4.0.war"/>
     </ice:ant>
 
     <ice:subant target="tomcat6.0">
