@@ -4,7 +4,7 @@
     <property file="build.properties"/>
 
     <!-- list of properties -->
-    <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+    <property name="build-common.xml" value="${basedir}/build-common.xml"/>
 
 
     <property name="compile.source" value="1.5"/>
