@@ -7,8 +7,9 @@ import com.icesoft.faces.context.effects.Highlight;
  * A basic backing bean for effect component.  </p>
  */
 public class BasicEffects{
-
+        //Effect used to highlight the text
 	 private Highlight effectOutputText = new Highlight("#ffff99");
+         //displayed input text
          private String text;
 
  /* Returns the text effect
