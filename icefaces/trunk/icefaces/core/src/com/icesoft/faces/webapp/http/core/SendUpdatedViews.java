@@ -81,8 +81,8 @@ public class SendUpdatedViews implements Server, Runnable {
                     //page was loaded from this node, so use the blocking server
                     super.service(request);
                 } else {
-                    //this is probably a failed-over request, send a NOOP command together with the new session cookie
-                    request.respondWith(NoopHandler);
+                    //this is probably a failed-over request, send a Reload command together with the new session cookie
+                    request.respondWith(new ReloadResponse("") );
                 }
             }
         };
