@@ -249,6 +249,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     }
 
     public static class Monitor {
+        private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
         private Set contexts = new HashSet();
         private HttpSession session;
         private long lastAccess;
@@ -268,9 +269,25 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
         public boolean isExpired() {
             long elapsedInterval = System.currentTimeMillis() - lastAccess;
-            long maxInterval = session.getMaxInactiveInterval() * 1000;
-            //shutdown the session a bit (15s) before session actually expires
-            return elapsedInterval + 15000 > maxInterval;
+            int maxInterval = session.getMaxInactiveInterval();
+
+            Object o = session.getAttribute( POSITIVE_SESSION_TIMEOUT );
+
+            // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
+            // But if it was originally negative, it should stay that way.
+            if (maxInterval > 0) {
+
+                if (o == null) {
+                    session.setAttribute( POSITIVE_SESSION_TIMEOUT, new Integer( maxInterval));
+                }
+            } else {
+                if (o != null) {
+                    maxInterval = ((Integer)o).intValue();
+                    session.setMaxInactiveInterval( maxInterval );
+                }
+            }
+
+            return elapsedInterval + 15000 > maxInterval * 1000;
         }
 
         public void shutdown() {
