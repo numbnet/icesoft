@@ -124,8 +124,12 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     window.location.reload();
                 } else {
                     var view = element.getAttribute('view');
-                    var queryPrefix = url.contains('?') ? '&' : '?';
-                    window.location.href = url + queryPrefix + 'rvn=' + view;
+                    if (view == '') {
+                        window.location.reload();
+                    } else {
+                        var queryPrefix = url.contains('?') ? '&' : '?';
+                        window.location.href = url + queryPrefix + 'rvn=' + view;
+                    }
                 }
             });
             commandDispatcher.register('macro', function(message) {
