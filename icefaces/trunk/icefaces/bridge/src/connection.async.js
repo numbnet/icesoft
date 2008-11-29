@@ -174,22 +174,50 @@
             }.bind(this);
 
             //monitor if the blocking connection needs to be started
-            //
-            //the blocking connection will be started by the window noticing
-            //that the connection is not started
+            var pollingPeriod = 1000;
             var fullViewID = sessionID + ':' + viewID;
+            var leaseCookie = Cookie.lookup('ice.lease', (new Date).getTime().toString());
+            var connectionCookie = this.listening = Cookie.lookup('bconn', '-');
+            function updateLease() {
+                leaseCookie.saveValue((new Date).getTime() + pollingPeriod * 2);
+            }
+            function isLeaseExpired() {
+                return leaseCookie.loadValue().asNumber() < (new Date).getTime();
+            }
+            function shouldEstablishBlockingConnection() {
+                return !Cookie.exists('bconn') || !Cookie.lookup('bconn').value.startsWith(sessionID);
+            }
+            function offerCandidature() {
+                connectionCookie.saveValue(fullViewID);
+            }
+            function isWinningCandidate() {
+                return connectionCookie.loadValue().startsWith(fullViewID);
+            }
+            function markAsOwned() {
+                connectionCookie.saveValue(fullViewID + ':acquired');
+            }
+            function hasOwner() {
+                return connectionCookie.loadValue().endsWith(':acquired');
+            }
             this.blockingConnectionMonitor = function() {
-                try {
-                    this.listening = Cookie.lookup('bconn');
-                    if (this.listening.value == fullViewID) {
-                        this.listening.saveValue('acquired');
-                        //start blocking connection since no other window has started it
-                        initializeConnection();
+                if (shouldEstablishBlockingConnection()) {
+                    offerCandidature();
+                    this.logger.info('blocking connection not initialized...candidate for its creation');
+                } else {
+                    if (isWinningCandidate()) {
+                        if (!hasOwner()) {
+                            markAsOwned();
+                            //start blocking connection since no other view has started it
+                            initializeConnection();
+                        }
+                        updateLease();
                     }
-                } catch (e) {
-                    this.listening = new Cookie('bconn', fullViewID);
+                    if (hasOwner() && isLeaseExpired()) {
+                        offerCandidature();
+                        this.logger.info('blocking connection lease expired...candidate for its creation');
+                    }
                 }
-            }.bind(this).repeatExecutionEvery(1000);
+            }.bind(this).repeatExecutionEvery(pollingPeriod);
 
             var pickUpdates = function() {
                 this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
@@ -201,7 +229,7 @@
 
             //pick any updates that might be generated in between bridge re-initialization
             //todo: replace heuristic with more exact solution
-            pickUpdates.delayExecutionFor(1000);
+            pickUpdates.delayExecutionFor(pollingPeriod);
 
             //monitor & pick updates for this view
             this.updatesMonitor = function() {
