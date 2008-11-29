@@ -42,15 +42,23 @@
         });
     };
 
-    This.Cookie.lookup = function(name) {
+    This.Cookie.lookup = function(name, value) {
         var foundTuple = This.Cookie.parse().detect(function(tuple) {
             return name == tuple[0];
         });
         if (foundTuple) {
-            return new This.Cookie(foundTuple[0], foundTuple[1]);
+            return new This.Cookie(name, foundTuple[1]);
         } else {
-            throw 'Cannot find cookie named: ' + name;
+            if (value) {
+                return new This.Cookie(name, value);
+            } else {
+                throw 'Cannot find cookie named: ' + name;
+            }
         }
+    };
+
+    This.Cookie.exists = function(name) {
+        return document.cookie.contains(name + '=');
     };
 
     //private
