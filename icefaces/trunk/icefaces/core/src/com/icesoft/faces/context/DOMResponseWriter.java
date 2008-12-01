@@ -326,6 +326,7 @@ public class DOMResponseWriter extends ResponseWriter {
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         ResourceBundle localizedBundle = bridgeMessageResolver.bundleFor(context.getViewRoot().getLocale());
+        //todo: build startup script only once on aplication startup
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
                         "window.disposeViewsURI = '" + ahsContextPath + "block/dispose-views';\n" +
@@ -336,6 +337,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
                         "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
                         "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
+                        "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "2000 4000 8000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
