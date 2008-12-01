@@ -98,7 +98,7 @@
                         try {
                             self.callbacks[i](self);
                         } catch (e) {
-                            logger.warn('connection closed prematurely');
+                            logger.warn('connection closed prematurely', e);
                             self.close();
                         }
                     }
