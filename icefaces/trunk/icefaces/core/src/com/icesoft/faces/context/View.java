@@ -15,6 +15,7 @@ import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
@@ -153,6 +154,7 @@ public class View implements CommandQueue {
     private void releaseAll() {
         facesContext.release();
         persistentFacesState.release();
+        ((BridgeExternalContext)facesContext.getExternalContext()).release();
     }
 
     public BridgeFacesContext getFacesContext() {
