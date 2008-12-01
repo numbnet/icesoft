@@ -217,6 +217,13 @@ public class D2DViewHandler extends ViewHandler {
      */
     public UIViewRoot restoreView(FacesContext context, String viewId) {
         this.initializeParameters(context);
+        if (SeamUtilities.isSpringEnvironment()) {
+            context = BridgeFacesContext.unwrap(context);
+            if (context instanceof BridgeFacesContext) {
+                ((BridgeFacesContext) context).setCurrentInstance();
+            }
+        }
+
         if (delegateView(context)) {
             return delegate.restoreView(context, viewId);
         }
