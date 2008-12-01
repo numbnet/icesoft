@@ -185,7 +185,6 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 }
             });
 
-            var errorRetries = configuration.serverErrorRetries || [2000, 4000, 8000];
             var reload = function() {
                 logger.info('Trying to reload page');
                 var url = window.location.href;
@@ -197,10 +196,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     window.location.href = url + queryPrefix + 'rvn=' + viewID;
                 }
             };
-            var errorCallbacks = errorRetries.collect(function(interval) {
-                return reload.delayFor(interval);
-            });
-            errorCallbacks.push(function(response) {
+            var abort = function(response) {
                 logger.warn('server side error');
                 disposeView(sessionID, viewID);
                 if (response.isEmpty()) {
@@ -209,7 +205,14 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     replaceContainerHTML(response.content());
                 }
                 dispose();
+            };
+
+            //build up retry actions 
+            var errorCallbacks = (configuration.serverErrorRetryTimeouts || [2000, 4000, 8000]).collect(function(interval) {
+                return reload.delayFor(interval);
             });
+            errorCallbacks.push(abort);
+            //save retry action index value into a cookie to survive reloads
             var indexCookie;
             try {
                 indexCookie = Ice.Cookie.lookup('ice.error');
