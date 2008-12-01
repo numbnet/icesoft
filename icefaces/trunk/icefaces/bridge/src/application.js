@@ -116,6 +116,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 logger.info('Redirecting to ' + url);
                 window.location.href = url;
             });
+
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
                 var url = window.location.href;
@@ -184,7 +185,22 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 }
             });
 
-            connection.onServerError(function (response) {
+            var errorRetries = configuration.serverErrorRetries || [2000, 4000, 8000];
+            var reload = function() {
+                logger.info('Trying to reload page');
+                var url = window.location.href;
+                deregisterAllViews();
+                if (url.contains('rvn=')) {
+                    window.location.reload();
+                } else {
+                    var queryPrefix = url.contains('?') ? '&' : '?';
+                    window.location.href = url + queryPrefix + 'rvn=' + viewID;
+                }
+            };
+            var errorCallbacks = errorRetries.collect(function(interval) {
+                return reload.delayFor(interval);
+            });
+            errorCallbacks.push(function(response) {
                 logger.warn('server side error');
                 disposeView(sessionID, viewID);
                 if (response.isEmpty()) {
@@ -193,6 +209,20 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     replaceContainerHTML(response.content());
                 }
                 dispose();
+            });
+            var indexCookie;
+            try {
+                indexCookie = Ice.Cookie.lookup('ice.error');
+                if (indexCookie.value.asNumber() >= errorCallbacks.length) indexCookie.saveValue(0);
+            } catch (e) {
+                indexCookie = new Ice.Cookie('ice.error', 0);
+            }
+            connection.onServerError(function(response) {
+                var index = indexCookie.loadValue().asNumber();
+                if (index < errorCallbacks.length) {
+                    indexCookie.saveValue(index + 1);
+                    errorCallbacks[index](response);
+                }
             });
 
             connection.whenDown(function() {
