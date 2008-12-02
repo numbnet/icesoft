@@ -65,7 +65,7 @@
 
         synchronize: function() {
             try {
-                this.historyFrame.location.hash = '#reload';
+                this.historyFrame.location.replace(this.historyFrame.location + '#reload');
                 this.logger.debug('mark document as modified');
                 this.synchronize = Function.NOOP;
             } catch(e) {
