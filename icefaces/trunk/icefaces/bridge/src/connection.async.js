@@ -119,6 +119,21 @@
                 //do nothing
             }
 
+            //build up retry actions
+            var timedRetryAbort = function (retryAction, abortAction, timeouts) {
+                var index = 0;
+                var errorCallbacks = timeouts.inject([abortAction], function(callbacks, interval) {
+                    callbacks.unshift(retryAction.delayFor(interval));
+                    return callbacks;
+                });
+                return function(response) {
+                    if (index < errorCallbacks.length) {
+                        errorCallbacks[index](response);
+                        index++;
+                    }
+                };
+            };
+
             this.connect = function() {
                 this.logger.debug("closing previous connection...");
                 this.listener.close();
@@ -130,7 +145,7 @@
                 this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
                     this.sendXWindowCookie(request);
                     Connection.FormPost(request);
-                    request.on(Connection.ServerError, this.serverErrorCallback);
+                    request.on(Connection.ServerError, retryOnServerError);
                     request.on(Connection.OK, this.receiveXWindowCookie);
                     request.on(Connection.OK, function(response) {
                         if (!response.isEmpty()) {
@@ -143,6 +158,9 @@
                     request.on(Connection.OK, Connection.Close);
                 }.bind(this));
             }.bind(this);
+
+            //build callbacks only after this.connetion function was defined
+            var retryOnServerError = timedRetryAbort(this.connect, this.serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
             //avoid error messages for 'pong' messages that arrive after blocking connection is closed
             commandDispatcher.register('pong', Function.NOOP);
