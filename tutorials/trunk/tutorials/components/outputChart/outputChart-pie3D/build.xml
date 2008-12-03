@@ -1,7 +1,7 @@
 <project name="outputChart-pie3D-tutorial" default="build.war">
 
     <!-- location of common build file -->
-    <property name="build-common.xml" value="../../../build-common.xml"/>
+    <property name="build-common.xml" value="../../../../icefaces/samples/etc/build-common.xml"/>
     <import file="${build-common.xml}"/>
 
     <patternset id="common.icefaces.lib.jars.to.include"
