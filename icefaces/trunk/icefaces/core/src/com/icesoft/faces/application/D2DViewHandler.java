@@ -89,6 +89,8 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.reloadInterval";
     private final static String DO_JSF_STATE_MANAGEMENT =
             "com.icesoft.faces.doJSFStateManagement";
+    private final static String STATE_WRITTEN =
+            "com.icesoft.faces.stateWritten";
 
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -106,10 +108,6 @@ public class D2DViewHandler extends ViewHandler {
 
     protected Parser parser;
     private ViewHandler delegate;
-
-    // hmmm this seems to be a per user variable? By this time, the code
-    // has been narrowed down to just one thread anyway. 
-    private boolean stateWritten;
 
     public D2DViewHandler() {
         try {
@@ -159,11 +157,6 @@ public class D2DViewHandler extends ViewHandler {
         }
         renderResponse(context);
 
-//        if ( CoreUtils.isJSFStateSaving() ) {
-//            StateManager stateMgr = context.getApplication().getStateManager();
-//            stateMgr.saveSerializedView(context);
-//             JSF 1.1 removes transient components here, but I don't think that 1.2 does
-//        }
     }
 
 
@@ -200,7 +193,6 @@ public class D2DViewHandler extends ViewHandler {
         }
         root.setRenderKitId(renderKitId);
         root.setViewId(getRenderedViewId(context, null == viewId ? "default" : viewId));
-        stateWritten = false;
 
         return root;
     }
@@ -268,7 +260,10 @@ public class D2DViewHandler extends ViewHandler {
             if (log.isDebugEnabled()) {
                 log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime() - start) / 1e9f);
             }
-            stateWritten = false;
+            if (viewRoot != null) {
+                Map m = viewRoot.getAttributes();
+                m.remove( STATE_WRITTEN );
+            } 
             return viewRoot;
         } else {
 
@@ -723,7 +718,7 @@ public class D2DViewHandler extends ViewHandler {
 
         // We only need to capture the state once per rendering request. It is
         // possible to be inserted once per form in the response.
-        if (stateWritten) {
+        if ( context.getViewRoot().getAttributes().containsKey(STATE_WRITTEN) ) { 
             return;
         }
 
@@ -759,7 +754,7 @@ public class D2DViewHandler extends ViewHandler {
             ((DOMResponseWriter) writer).setSaveNextNode(false);
         }
 
-        stateWritten = true;
+        context.getViewRoot().getAttributes().put( STATE_WRITTEN, Boolean.TRUE );
         if (log.isDebugEnabled()) {
             log.debug("State saved and serialized in " + (System.nanoTime() - start) / 1e9f + " seconds");
         }
