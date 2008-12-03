@@ -32,6 +32,9 @@
  */
 package com.icesoft.faces.presenter.document;
 
+import javax.servlet.ServletContext;
+import javax.faces.context.FacesContext;
+
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
@@ -56,9 +59,15 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
     private static Log log = LogFactory.getLog(PptPresentationDocument.class);
 
     public static  String MS_PPT_PATH = "Microsoft PowerPoint";
+    public static  String SCRIPT_PATH = "/WEB-INF/PowerPointExport.scpt";
+
+    private String scriptPath = null;
 
     public PptPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
+        Object servletContext = FacesContext.getCurrentInstance()
+                .getExternalContext().getContext();
+        scriptPath = ((ServletContext) servletContext).getRealPath(SCRIPT_PATH);
     }
 
     public boolean isLoaded() {
@@ -191,8 +200,10 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
         
 	    private void fileCreator(String fullPath, String baseDirectory) throws Exception{
             String baseDirectoryMac = baseDirectory.replaceFirst(File.separator,"");
+            String fullPathMac = fullPath.replaceAll(File.separator,":");
+            String baseDirectoryTemp = baseDirectory.replaceAll(File.separator,"");
             baseDirectoryMac = baseDirectoryMac.replaceAll(File.separator,":");
-	    	
+
 	        String[] command = {
 	                "osascript",
 	                "-e",
@@ -208,13 +219,25 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
 	                "-e",
 	               "end tell"
 	            };
-	            
+
+            // TODO: PowerPoint2008 support
+            //checked-in script is functional but loses
+            //"save" directory after opening file
+            /*
+            String command = new String[] {
+                "osascript",
+                scriptPath,
+                fullPathMac,
+                baseDirectoryTemp
+            };
+            */
+                
 	            Runtime rt = Runtime.getRuntime();
 	            Process p = null;
 	
 	            p = rt.exec (command);
 	            p.waitFor();    	
-	    	
+
 	    }
 	
 	    private Slide[] slideCreator(File[] files, String base, boolean mobile){
