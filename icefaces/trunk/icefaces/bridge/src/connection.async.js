@@ -126,9 +126,9 @@
                     callbacks.unshift(retryAction.delayFor(interval));
                     return callbacks;
                 });
-                return function(response) {
+                return function() {
                     if (index < errorCallbacks.length) {
-                        errorCallbacks[index](response);
+                        errorCallbacks[index].apply(this, arguments);
                         index++;
                     }
                 };

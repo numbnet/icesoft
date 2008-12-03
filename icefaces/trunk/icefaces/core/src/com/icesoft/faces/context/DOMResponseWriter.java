@@ -337,7 +337,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
                         "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
                         "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
-                        "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "2000 4000 8000").trim().replaceAll("\\s+", ",") + "], " +
+                        "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
