@@ -1,9 +1,9 @@
-<project name="JAXB-tree" default="build.examples">
+<project name="spring-authentication" default="build.examples">
 
     <description>
-        Builds child projects 
+        Builds child projects
     </description>
-	
+
     <property name="build-common.xml" value="../../../../tutorials/build-common.xml"/>
 
 
