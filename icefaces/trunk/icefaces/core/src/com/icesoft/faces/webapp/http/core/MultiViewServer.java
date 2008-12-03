@@ -37,8 +37,8 @@ public class MultiViewServer implements Server {
         final View view;
         synchronized (views) {
             if (request.containsParameter("rvn")) {
-                String viewIdentifier = request.getParameter("rvn");
-                if (views.containsKey(viewIdentifier)) {
+                final String viewIdentifier = request.getParameter("rvn");
+                if (isInteger(viewIdentifier) && views.containsKey(viewIdentifier)) {
                     view = (View) views.get(viewIdentifier);
                 } else {
                     view = createView();
@@ -64,5 +64,14 @@ public class MultiViewServer implements Server {
     }
 
     public void shutdown() {
+    }
+
+    private static boolean isInteger(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
