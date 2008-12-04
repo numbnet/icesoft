@@ -32,22 +32,16 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.inputFile;
 
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.inputfile.InputFile;
-import com.icesoft.faces.context.DisposableBean;
-import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.faces.component.inputfile.FileInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.util.*;
 import java.io.Serializable;
+import java.io.File;
 
 /**
  * <p>The InputFileController is responsible for the file upload
@@ -82,11 +76,11 @@ public class InputFileController implements Serializable {
      */
     public void uploadFile(ActionEvent event) {
         InputFile inputFile = (InputFile) event.getSource();
-        if (inputFile.getStatus() == InputFile.SAVED) {
+        FileInfo fileInfo = inputFile.getFileInfo();
+        if (fileInfo.getStatus() == FileInfo.SAVED) {
             // reference our newly updated file for display purposes and
             // added it to our history file list.
-            currentFile = new InputFileData(inputFile.getFileInfo(),
-                    inputFile.getFile());
+            currentFile = new InputFileData(fileInfo);
 
             synchronized (fileList) {
                 fileList.add(currentFile);

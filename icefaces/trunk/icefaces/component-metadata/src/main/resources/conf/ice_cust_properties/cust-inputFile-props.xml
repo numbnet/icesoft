@@ -311,13 +311,20 @@
         <b>com.icesoft.faces.async.render.RenderManager</b> in conjunction with the 
         <b>com.icesoft.faces.async.render.OnDemandRenderer</b>, to do a server push, 
         to update the view in the browser with the current progress.</p>
-        <p>But now, you can just set <b>progressRender="true"</b>, and the server 
+        <p>As of ICEfaces 1.7.1, you can just set <b>progressRender="true"</b>, and the server 
         push will happen for you, without setting up all that glue code in the bean. 
         You still have to set your <b>outputProgress</b> component's progress percent 
         in the bean via the <b>progressListener</b>, and you have to enabled asynchronous 
         mode, by setting the <b>com.icesoft.faces.synchronousUpdate</b> context parameter 
         to false.</p>
-        <p>Note: The default value is false.</p>
+        <p>As of ICEfaces 1.8 DR#2, the RenderManager method is completely outdated, 
+        since now the inputFile requires a full JSF lifecycle for each progress event,
+        meaning that now it automatically renders itself. Neither is it necessary to set 
+        <b>progressRender="true"</b>, since it is true by default. It's possible to 
+        set <b>progressRender="false"</b>, to disable the lifecycles, but that will also 
+        disable the <b>progressListener</b> and <b>actionListener</b> MethodBindings and 
+        the <b>file</b> settable ValueBinding, since these all happen within JSF lifecycles.</p>
+        <p>Note: The default value is true.</p>
 		]]>
     </description>
     <property-name>progressRender</property-name>

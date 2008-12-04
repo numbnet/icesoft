@@ -35,20 +35,25 @@ package com.icesoft.faces.component.inputfile;
 
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.utils.MessageUtils;
-import org.apache.commons.fileupload.FileUploadBase;
+import com.icesoft.faces.component.inputfile.UploadConfig;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
 import com.icesoft.util.pooling.ClientIdPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class InputFileRenderer extends Renderer {
+    private static final Log log = LogFactory.getLog(InputFileRenderer.class);
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         String id = component.getClientId(context);
@@ -57,9 +62,14 @@ public class InputFileRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         StringWriter iframeContentWriter = new StringWriter();
         c.renderIFrame(iframeContentWriter, facesContext);
+        String iframeContent = iframeContentWriter.toString();
         String frameName = ClientIdPool.get(id + ":uploadFrame");
-        String pseudoURL = "javascript: document.write('" + iframeContentWriter.toString().replaceAll("\"", "%22") + "'); document.close();";
-
+        String pseudoURL = "javascript: document.write('" + iframeContent.replaceAll("\"", "%22") + "'); document.close();";
+        
+        UploadConfig uploadConfig =
+            c.asyncModeInstallComponentUploadConfigIntoSession(
+                facesContext, iframeContent, id);
+        
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
         writer.writeAttribute("id", frameName, null);
@@ -114,27 +124,42 @@ public class InputFileRenderer extends Renderer {
                         "setTimeout(register, 0);", null);
             writer.endElement("script");
         }
-
-        Throwable uploadException = c.getUploadException();
-        if (uploadException != null) {
-            try {
-                throw uploadException;
-            } catch (FileUploadBase.FileSizeLimitExceededException e) {
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
-            } catch (FileUploadBase.UnknownSizeException e) {
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
-            } catch (FileUploadBase.InvalidContentTypeException e) {
-                String fileName = c.getFileInfo().getFileName();
-                if (fileName == null) {
-                    File file = c.getFile();
-                    if (file != null)
-                        fileName = file.getName();
-                }
-                if (fileName == null)
-                    fileName = "";
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
-            } catch (Throwable t) {
-                //ignore
+        
+        FileInfo fileInfo = c.getFileInfo();
+        if (log.isDebugEnabled())
+            log.debug("InputFileRenderer  fileInfo: " + fileInfo);
+        if (fileInfo.isFailed()) {
+            String fileName = fileInfo.getFileName();
+            if (fileName == null) {
+                //TODO What condition was getFile() useful but getFileName() not, in the old approach?
+                File file = fileInfo.getFile();
+                if (file != null)
+                    fileName = file.getName();
+            }
+            if (fileName == null)
+                fileName = "";
+            
+            int status = fileInfo.getStatus();
+            if (status == FileInfo.INVALID) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
+            }
+            else if (status == FileInfo.SIZE_LIMIT_EXCEEDED) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
+            }
+            else if (status == FileInfo.UNKNOWN_SIZE) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
+            }
+            else if (status == FileInfo.INVALID_NAME_PATTERN) {
+                String fileNamePattern = uploadConfig.getFileNamePattern();
+                if (fileNamePattern == null)
+                    fileNamePattern = "";
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, fileNamePattern}));
+            }
+            else if (status == FileInfo.UNSPECIFIED_NAME) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNSPECIFIED_NAME_MESSAGE_ID));
+            }
+            else if (status == FileInfo.INVALID_CONTENT_TYPE) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_CONTENT_TYPE_MESSAGE_ID));
             }
         }
     }
@@ -142,16 +167,33 @@ public class InputFileRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent component) {
         super.decode(facesContext, component);
         
+        Map parameter = facesContext.getExternalContext().getRequestParameterMap();
         InputFile inputFile = (InputFile) component;
+        String clientId = component.getClientId(facesContext);
+        
+        UploadStateHolder stateHolder =
+            (UploadStateHolder) parameter.get(clientId);
+        if (stateHolder != null) {
+            inputFile.setFileInfo(stateHolder.getFileInfo());
+            inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
+            if (stateHolder.getFileInfo().isSaved()) {
+                inputFile.queueEvent( new InputFileSetFileEvent(inputFile) );
+            }
+            if (stateHolder.getFileInfo().isFinished()) {
+                ActionEvent event = new ActionEvent(inputFile);
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                inputFile.queueEvent(event);
+            }
+        }
+        
         inputFile.setPreUpload(false);
         inputFile.setPostUpload(false);
         
-        Map parameter = facesContext.getExternalContext().getRequestParameterMap();
-        String clientId = component.getClientId(facesContext);
         String preUpload = (String) parameter.get("ice.inputFile.preUpload");
         String postUpload = (String) parameter.get("ice.inputFile.postUpload");
         if (preUpload != null && preUpload.length() > 0) {
             if (preUpload.equals(clientId)) {
+                inputFile.reset();
                 inputFile.setPreUpload(true);
                 inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
             }

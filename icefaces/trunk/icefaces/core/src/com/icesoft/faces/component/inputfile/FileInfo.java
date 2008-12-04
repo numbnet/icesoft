@@ -36,17 +36,33 @@ package com.icesoft.faces.component.inputfile;
 import com.icesoft.faces.util.CoreUtils;
 
 import java.io.Serializable;
+import java.io.File;
 
 public class FileInfo implements Cloneable, Serializable {
+    public static final int DEFAULT = 0;
+    public static final int UPLOADING = 1;
+    public static final int SAVED = 2;
+    public static final int INVALID = 3;
+    public static final int SIZE_LIMIT_EXCEEDED = 4;
+    public static final int UNKNOWN_SIZE = 5;
+    public static final int INVALID_NAME_PATTERN = 6;
+    public static final int UNSPECIFIED_NAME = 7;
+    public static final int INVALID_CONTENT_TYPE = 8;
+    
+    private int status = DEFAULT;
     private long size = 0;
     private String fileName = null;
     private String contentType = null;
-    private String physicalPath = null;
+    private File file = null;
     private int percent = 0;
     private Exception exception = null;
     private boolean preUpload = false;
     private boolean postUpload = false;
 
+    public FileInfo() {
+        super();
+    }
+    
     public String getContentType() {
         return contentType;
     }
@@ -62,19 +78,30 @@ public class FileInfo implements Cloneable, Serializable {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
+    
+    public File getFile() {
+        return file;
+    }
+    
+    public void setFile(File file) {
+        this.file = file;
+    }
+    
     public String getPhysicalPath() {
-        return physicalPath;
+        if (file != null) {
+            return file.getAbsolutePath();
+        }
+        return null;
     }
 
-    public void setPhysicalPath(String path) {
-        this.physicalPath = path;
+    public int getStatus() {
+        return status;
     }
-
-    public FileInfo() {
-        super();
+    
+    public void setStatus(int status) {
+        this.status = status;
     }
-
+    
     public long getSize() {
         return size;
     }
@@ -91,6 +118,13 @@ public class FileInfo implements Cloneable, Serializable {
         this.percent = percent;
     }
 
+    /**
+     * It used to be that for commons-upload FileUploadIOException exceptions,
+     * FileInfo.getException() would return a FileUploadIOException, and
+     * InputFile.getUploadException() would return the actual useful
+     * subclass, gotten from FileInfo.getException().getCause(). Now, they
+     * both return the same useful subclass.
+     */
     public Exception getException() {
         return exception;
     }
@@ -128,24 +162,35 @@ public class FileInfo implements Cloneable, Serializable {
     public void setPostUpload(boolean post) {
         postUpload = post;
     }
+
+    /**
+     * @return If the file was successfully uploaded
+     */
+    public boolean isSaved() {
+        return status == SAVED;
+    }
     
-    void reset() {
-        size = 0;
-        fileName = null;
-        contentType = null;
-        physicalPath = null;
-        percent = 0;
-        exception = null;
-        preUpload = false;
-        postUpload = false;
+    /**
+     * @return If the file upload operation has finished, either successfully, or due to a failure
+     */
+    public boolean isFinished() {
+        return status >= SAVED;
+    }
+    
+    /**
+     * @return If the file upload operation failed
+     */
+    public boolean isFailed() {
+        return (status >= INVALID && status <= INVALID_CONTENT_TYPE);
     }
     
     public Object clone() {
         FileInfo fi = new FileInfo();
+        fi.status       = this.status;
         fi.size         = this.size;
         fi.fileName     = this.fileName;
         fi.contentType  = this.contentType;
-        fi.physicalPath = this.physicalPath;
+        fi.file         = this.file;
         fi.percent      = this.percent;
         fi.exception    = this.exception;
         fi.preUpload    = this.preUpload;
@@ -161,9 +206,11 @@ public class FileInfo implements Cloneable, Serializable {
             ",\n  postUpload=" + postUpload +
             ",\n  exception=" + exception +
             ",\n  fileName=" + fileName +
-            ",\n  physicalPath=" + physicalPath +
+            ",\n  file=" + file +
+            ",\n  physicalPath=" + getPhysicalPath() +
             ",\n  contentType=" + contentType +
             ",\n  size=" + size +
+            ",\n  status=" + status +
             "\n}";        
     }
 
@@ -173,6 +220,7 @@ public class FileInfo implements Cloneable, Serializable {
 
         FileInfo fileInfo = (FileInfo) o;
 
+        if (status != fileInfo.status) return false;
         if (percent != fileInfo.percent) return false;
         if (postUpload != fileInfo.postUpload) return false;
         if (preUpload != fileInfo.preUpload) return false;
@@ -182,7 +230,7 @@ public class FileInfo implements Cloneable, Serializable {
 //        if (exception != null ? !exception.equals(fileInfo.exception) : fileInfo.exception != null) return false;
         if (!CoreUtils.throwablesEqual(exception, fileInfo.exception)) return false;
         if (fileName != null ? !fileName.equals(fileInfo.fileName) : fileInfo.fileName != null) return false;
-        if (physicalPath != null ? !physicalPath.equals(fileInfo.physicalPath) : fileInfo.physicalPath != null)
+        if (file != null ? !file.equals(fileInfo.file) : fileInfo.file != null)
             return false;
 
         return true;
@@ -191,9 +239,10 @@ public class FileInfo implements Cloneable, Serializable {
     public int hashCode() {
         int result;
         result = (int) (size ^ (size >>> 32));
+        result = 31 * result + status;
         result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
         result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
-        result = 31 * result + (physicalPath != null ? physicalPath.hashCode() : 0);
+        result = 31 * result + (file != null ? file.hashCode() : 0);
         result = 31 * result + percent;
         result = 31 * result + (exception != null ? exception.hashCode() : 0);
         result = 31 * result + (preUpload ? 1 : 0);
