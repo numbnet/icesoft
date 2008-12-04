@@ -34,17 +34,12 @@
 package com.icesoft.faces.component.inputfile;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.FileUploadComponent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.util.CoreUtils;
-import com.icesoft.faces.utils.MessageUtils;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.util.SeamUtilities;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.commons.fileupload.util.Streams;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,35 +55,38 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.FacesException;
-import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
  * InputFile is a JSF component class representing an ICEfaces inputFile.
  */
-public class InputFile extends UICommand implements Serializable, FileUploadComponent {
+public class InputFile extends UICommand implements Serializable {
     private static final Log log = LogFactory.getLog(InputFile.class);
 
-    public static final int DEFAULT = 0;
-    public static final int UPLOADING = 1;
-    public static final int SAVED = 2;
-    public static final int INVALID = 3;
-    public static final int SIZE_LIMIT_EXCEEDED = 4;
-    public static final int UNKNOWN_SIZE = 5;
-    public static final int INVALID_NAME_PATTERN = 6;
+    public static final int DEFAULT = FileInfo.DEFAULT;
+    public static final int UPLOADING = FileInfo.UPLOADING;
+    public static final int SAVED = FileInfo.SAVED;
+    public static final int INVALID = FileInfo.INVALID;
+    public static final int SIZE_LIMIT_EXCEEDED = FileInfo.SIZE_LIMIT_EXCEEDED;
+    public static final int UNKNOWN_SIZE = FileInfo.UNKNOWN_SIZE;
+    public static final int INVALID_NAME_PATTERN = FileInfo.INVALID_NAME_PATTERN;
+    public static final int UNSPECIFIED_NAME = FileInfo.UNSPECIFIED_NAME;
+    public static final int INVALID_CONTENT_TYPE = FileInfo.INVALID_CONTENT_TYPE;
 
     public static final String INVALID_FILE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.INVALID_FILE";
-    public static final String INVALID_NAME_PATTERN_MESSAGE_ID = "com.icesoft.faces.component.inputfile.INVALID_NAME_PATTERN";
     public static final String SIZE_LIMIT_EXCEEDED_MESSAGE_ID = "com.icesoft.faces.component.inputfile.SIZE_LIMIT_EXCEEDED";
     public static final String UNKNOWN_SIZE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.UNKNOWN_SIZE";
+    public static final String INVALID_NAME_PATTERN_MESSAGE_ID = "com.icesoft.faces.component.inputfile.INVALID_NAME_PATTERN";
+    public static final String UNSPECIFIED_NAME_MESSAGE_ID = "com.icesoft.faces.component.inputfile.UNSPECIFIED_NAME";
+    public static final String INVALID_CONTENT_TYPE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.INVALID_CONTENT_TYPE";
 
     public static final String FILE_UPLOAD_PREFIX = "fileUpload";
     
@@ -113,11 +111,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     private boolean uniqueFolderSet = false;
     private String uploadDirectory;
     private Boolean uploadDirectoryAbsolute;
-    private Throwable uploadException;
-    private int status = DEFAULT;
     private FileInfo fileInfo = new FileInfo();
-    private int progress = 0;
-    private File file;
     private long sizeMax;
     private MethodBinding progressListener;
     private Boolean progressRender;
@@ -146,165 +140,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     public String getFamily() {
         return "com.icesoft.faces.File";
     }
-
-    public void upload(
-            FileItemStream stream,
-            String uploadDirectory,
-            boolean uploadDirectoryAbsolute,
-            long maxSize,
-            ServletContext servletContext,
-            String sessionId,
-            PersistentFacesState state)
-            throws IOException {
-        reset();        
-        this.uploadException = null;
-        this.status = UPLOADING;
-        this.sizeMax = maxSize;
-        FacesContext context = FacesContext.getCurrentInstance();
-        // InputFile uploadDirectory attribute takes precedence,
-        //  but if it's not given, then default to the
-        //  com.icesoft.faces.uploadDirectory context-param
-        String folder = getUploadDirectory();
-        if (folder == null) {
-            folder = uploadDirectory;
-        }
-        // InputFile uploadDirectoryAbsolute attribute takes precedence,
-        //  but if it's not given, then default to the
-        //  com.icesoft.faces.uploadDirectoryAbsolute context-param
-        Boolean folderAbs = getUploadDirectoryAbsolute();
-        if (folderAbs == null) {
-            folderAbs = uploadDirectoryAbsolute ? Boolean.TRUE : Boolean.FALSE;
-        }
-        if (!folderAbs.booleanValue()) {
-            folder = servletContext.getRealPath(folder);
-        }
-        if (isUniqueFolder()) {
-            String FILE_SEPARATOR = System.getProperty("file.separator");
-            folder = folder + FILE_SEPARATOR + sessionId;
-        }
-
-        String namePattern = getFileNamePattern().trim();
-        String fileName = stream.getName();
-        // If server is Unix and file name has full Windows path info. (JIRA ICE-1868)
-        if (File.separatorChar == '/' && fileName.matches("^[a-zA-Z]:\\\\.*?|^\\\\\\\\.*?")) {
-            // Strip the path info. Keep the base file name
-            fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
-        }
-        try {
-            if (fileName != null && fileName.length() > 0) {
-                // IE gives us the whole path on the client, but we just
-                //  want the client end file name, not the path
-                File tempFileName = new File(fileName);
-                fileName = tempFileName.getName();
-            } else {
-                throw new FileUploadBase.FileUploadIOException(
-                        new FileUploadBase.InvalidContentTypeException());
-            }
-
-            fileInfo.setFileName(fileName);
-            fileInfo.setContentType(stream.getContentType());
-            if (fileName != null && fileName.trim().matches(namePattern)) {
-                File folderFile = new File(folder);
-                if (!folderFile.exists())
-                    folderFile.mkdirs();
-                file = new File(folder, fileName);
-////System.out.println("upload(-)  fileName: " + fileName);
-                OutputStream output = new FileOutputStream(file);
-                Streams.copy(stream.openStream(), output, true);
-                long fileLength = file.length();
-                if (fileLength == 0) {
-////System.out.println("upload(-)  fileLength is zero");
-                    setProgressSafely(state, 0);
-                    file.delete();
-                    throw new FileUploadBase.FileUploadIOException(
-                            new FileUploadBase.InvalidContentTypeException());
-                }
-                status = SAVED;
-                fileInfo.setPhysicalPath(file.getAbsolutePath());
-                fileInfo.setSize( fileLength );
-////System.out.println("upload(-)  SAVED");
-                notifyDoneSafely(state, true);
-////System.out.println("upload(-)  ActionListeners");
-            } else {
-                fileInfo.reset();
-                file = null;
-                status = INVALID_NAME_PATTERN;
-                context.addMessage(getClientId(context), MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
-                notifyDoneSafely(state, false);
-            }
-        } catch (FileUploadBase.FileUploadIOException uploadException) {
-            this.uploadException = uploadException.getCause();
-            try {
-                throw this.uploadException;
-            } catch (FileUploadBase.FileSizeLimitExceededException e) {
-                status = SIZE_LIMIT_EXCEEDED;
-            } catch (FileUploadBase.UnknownSizeException e) {
-                status = UNKNOWN_SIZE;
-            } catch (FileUploadBase.InvalidContentTypeException e) {
-////System.out.println("upload(-)  INVALID :: InvalidContentType: " + e.getMessage());
-                status = INVALID;
-            } catch (Throwable t) {
-////System.out.println("upload(-)  INVALID :: Throwable: " + t.getMessage());
-////t.printStackTrace();
-                status = INVALID;
-            }
-            fileInfo.setException(uploadException);
-            if (file != null)
-                file.delete();
-            notifyDoneSafely(state, false);
-            throw uploadException;
-        }
-        catch (IOException e) { // Eg: If creating the saved file fails
-            this.uploadException = e;
-////System.out.println("upload(-)  INVALID :: IOException: " + e.getMessage());
-////e.printStackTrace();
-            status = INVALID;
-            fileInfo.setException(e);
-            if (file != null)
-                file.delete();
-            notifyDoneSafely(state, false);
-            throw e;
-        }
-        
-////System.out.println("upload(-)  Method bottom");
-        renderIfAppropriate(state, true);
-    }
-    
-    protected void notifyDoneSafely(PersistentFacesState state, boolean updateFile) {
-        state.acquireUploadLifecycleLock();
-        try {
-            state.setAllCurrentInstances();
-            if (updateFile) {
-                updateFileValueBinding();
-            }
-            notifyDone();
-        }
-        finally {
-            state.releaseUploadLifecycleLock();
-        }
-    }
-    
-    protected void notifyDone() {
-        ActionEvent event = new ActionEvent(this);
-
-        //this is true for JSF 1.1 only
-        MethodBinding actionListener = getActionListener();
-        if (actionListener != null) {
-            actionListener.invoke(
-                    FacesContext.getCurrentInstance(),
-                    new Object[]{event});
-        }
-
-        //this is true for JSF 1.2 only
-        ActionListener[] actionListeners = getActionListeners();
-        for (int i = 0; i < actionListeners.length; i++) {
-            actionListeners[i].processAction(event);
-        }
-        MethodBinding action = getAction();
-        if (action != null) {
-            action.invoke(FacesContext.getCurrentInstance(), null);
-        }
-    }
     
     /**
      * @see javax.faces.component.UIComponentBase#broadcast(javax.faces.event.FacesEvent)
@@ -313,13 +148,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         super.broadcast(event);
 
         if (event instanceof InputFileProgressEvent) {
-            // Later, InputFile.upload(-) does a reset(), but if we're getting
-            //  a pre-upload progress event, we want things reset() here too
-            if(fileInfo.isPreUpload()) {
-                reset();
-                fileInfo.setPreUpload(true);
-            }
-            
             if(progressListener != null) {
                 progressListener.invoke(
                     FacesContext.getCurrentInstance(),
@@ -329,6 +157,71 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             setPreUpload(false);
             setPostUpload(false);
         }
+        else if (event instanceof InputFileSetFileEvent) {
+            updateFileValueBinding();
+        }
+    }
+
+    /**
+     * After file upload finishes, we get our IFRAME response for the current
+     * upload, and the UploadConfig for any subsequent file upload. When in 
+     * asynchronous mode InputFileRenderer uses this method to do so.
+     * 
+     * @return The UploadConfig that was put into the session
+     */
+    UploadConfig asyncModeInstallComponentUploadConfigIntoSession(
+        BridgeFacesContext facesContext,
+        String iframeContent,
+        String clientId)
+    {
+        // This is called every render, so we have to see if it's the render
+        // after the file upload has completed, and the listeners have fired.
+        // If not, don't set the iframeContent into the session.
+        Map parameterMap =
+            facesContext.getExternalContext().getRequestParameterMap();
+        UploadStateHolder uploadState =
+            (UploadStateHolder) parameterMap.get(clientId);
+        if (uploadState == null || !uploadState.getFileInfo().isFinished()) {
+            iframeContent = null;
+        }
+        return installComponentUploadConfigIntoSession(
+            facesContext, iframeContent);
+    }
+    
+    /**
+     * We leave the InputFile's most up-to-date configuration in the
+     * session, so that when a file upload starts, we'll already have what
+     * we need to begin processing it.
+     *
+     * When we're rendering after the actionListener has fired, in the
+     * last lifecycle for a file upload, capture the iframeContent,
+     * so we can send that back as the UploadServer response.
+     * 
+     * @param facesContext BridgeFacesContext
+     * @param iframeContent The content that renderIFrame(-) generates
+     * @return The UploadConfig that was put into the session
+     */
+    private UploadConfig installComponentUploadConfigIntoSession(BridgeFacesContext facesContext, String iframeContent) {
+        if (log.isDebugEnabled())
+            log.debug("InputFile.installComponentUploadConfigIntoSession");
+        UploadConfig uploadConfig = getComponentUploadConfig();
+        Object sessionObj = facesContext.getExternalContext().getSession(false);
+        if (sessionObj != null) {
+            synchronized(sessionObj) {
+                Map map = (Map) facesContext.getExternalContext().getSessionMap();
+                String clientId = getClientId(facesContext);
+                String key = facesContext.getViewNumber() + " " + clientId;
+                if (log.isDebugEnabled())
+                    log.debug("  session map key: " + key);
+                if (iframeContent != null) {
+                    uploadConfig.setIframeContent(iframeContent);
+                }
+                map.put(key, uploadConfig);
+            }
+        }
+        if (log.isDebugEnabled())
+            log.debug("  uploadConfig: " + uploadConfig);
+        return uploadConfig;
     }
     
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
@@ -384,8 +277,11 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             return requestContextPath + "/uploadHtml";
     }
 
+    /**
+     * @deprecated use getFileInfo().getException() instead. 
+     */
     public Throwable getUploadException() {
-        return uploadException;
+        return fileInfo.getException();
     }
 
     /**
@@ -420,6 +316,21 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             return (Boolean.TRUE.equals(vb.getValue(getFacesContext())));
         }
         return true;
+    }
+
+    /**
+     * This is for internal use, so we can tell when this property has not been
+     * set on the component.
+     */
+    protected Boolean getUniqueFolder() {
+        if (this.uniqueFolderSet) {
+            return Boolean.valueOf(this.uniqueFolder);
+        }
+        ValueBinding vb = getValueBinding("uniqueFolder");
+        if (vb != null) {
+            return (Boolean) vb.getValue(getFacesContext());
+        }
+        return null;
     }
 
     /**
@@ -517,7 +428,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     
     public boolean renderOnProgress() {
         Boolean progRend = getProgressRender();
-        return (progRend != null) ? progRend.booleanValue() : false;
+        return (progRend != null) ? progRend.booleanValue() : true;
     }
     
     public void setSubmitOnUpload(String submitOnUpload) {
@@ -619,7 +530,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[34];
+        Object values[] = new Object[30];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -637,23 +548,21 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         values[14] = uniqueFolderSet ? Boolean.TRUE : Boolean.FALSE;
         values[15] = uploadDirectory;
         values[16] = uploadDirectoryAbsolute;
-        values[17] = uploadException;
-        values[18] = new Integer(status);
-        values[19] = fileInfo;
-        values[20] = new Integer(progress);
-        values[21] = file;
-        values[22] = new Long(sizeMax);
-        values[23] = saveAttachedState(context, progressListener);
-        values[24] = progressRender;
-        values[25] = submitOnUpload;
-        values[26] = tabindex;
-        values[27] = onchange;
-        values[28] = accesskey;
-        values[29] = onfocus;
-        values[30] = accept;
-        values[31] = onblur;
-        values[32] = buttonClass;
-        values[33] = size;
+        if (log.isDebugEnabled())
+            log.debug("#### InputFile.saveState()  fileInfo: " + fileInfo);
+        values[17] = fileInfo;
+        values[18] = new Long(sizeMax);
+        values[19] = saveAttachedState(context, progressListener);
+        values[20] = progressRender;
+        values[21] = submitOnUpload;
+        values[22] = tabindex;
+        values[23] = onchange;
+        values[24] = accesskey;
+        values[25] = onfocus;
+        values[26] = accept;
+        values[27] = onblur;
+        values[28] = buttonClass;
+        values[29] = size;
         return ((Object) (values));
     }
 
@@ -680,23 +589,21 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         uniqueFolderSet = ((Boolean) values[14]).booleanValue();
         uploadDirectory = (String) values[15];
         uploadDirectoryAbsolute = (Boolean) values[16];
-        uploadException = (Throwable) values[17];
-        status = ((Integer) values[18]).intValue();
-        fileInfo = (FileInfo) values[19];
-        progress = ((Integer) values[20]).intValue();
-        file = (File) values[21];
-        sizeMax = ((Long) values[22]).longValue();
-        progressListener = (MethodBinding) restoreAttachedState(context, values[23]);
-        progressRender = (Boolean) values[24];
-        submitOnUpload = (String) values[25];
-        tabindex = (String)values[26];
-        onchange = (String)values[27];
-        accesskey = (String)values[28];
-        onfocus = (String)values[29];
-        accept = (String)values[30];
-        onblur = (String)values[31];
-        buttonClass = (String)values[32];
-        size = (String) values[33];
+        fileInfo = (FileInfo) values[17];
+        if (log.isDebugEnabled())
+            log.debug("#### InputFile.restoreState()  fileInfo: " + fileInfo);
+        sizeMax = ((Long) values[18]).longValue();
+        progressListener = (MethodBinding) restoreAttachedState(context, values[19]);
+        progressRender = (Boolean) values[20];
+        submitOnUpload = (String) values[21];
+        tabindex = (String)values[22];
+        onchange = (String)values[23];
+        accesskey = (String)values[24];
+        onfocus = (String)values[25];
+        accept = (String)values[26];
+        onblur = (String)values[27];
+        buttonClass = (String)values[28];
+        size = (String) values[29];
     }
 
     /**
@@ -842,26 +749,67 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Return the value of the <code>fileInfo</code> property. </p>
      */
     public FileInfo getFileInfo() {
-        if (fileInfo == null)
-            return null;
         return (FileInfo) fileInfo.clone();
     }
 
+    /**
+     * Not to be called by applications. Used internally between the
+     * UploadServer, InputFile and InputFileRenderer.
+     */
     void setFileInfo(FileInfo fileInfo) {
-        //do nothing
+        if (log.isDebugEnabled())
+            log.debug("#### InputFile.setFileInfo()  fileInfo: " + fileInfo);
+        this.fileInfo = fileInfo;
+    }
+    
+
+    /**
+     * This is the configuration, as represented by the values specified on
+     * this InputFile component. Some of the values take precedence over
+     * context-params, if they're non-null here, the combination of which
+     * will produce a final configuration for the UploadServer to use.
+     * 
+     * Not intended for use by application use.
+     */
+    public UploadConfig getComponentUploadConfig() {
+        FacesContext context = FacesContext.getCurrentInstance(); 
+        String clientId = getClientId(context);
+        UIComponent form = DomBasicRenderer.findForm(this);
+        String formClientId = (form != null) ? form.getClientId(context) : null;
+        Long sizeMax = null; //TODO Make an attrib on InputFile. UploadServer uses before gets this UploadConfig though 
+        String fileNamePattern = getFileNamePattern();
+        Boolean uniqueFolder = getUniqueFolder();
+        String uploadDirectory = getUploadDirectory();
+        Boolean uploadDirectoryAbsolute = getUploadDirectoryAbsolute();
+        boolean progressRender = renderOnProgress();
+        boolean progressListener = (getProgressListener() != null);
+        
+        UploadConfig uploadConfig = new UploadConfig(
+            clientId,
+            formClientId,
+            sizeMax,
+            fileNamePattern,
+            uniqueFolder,
+            uploadDirectory,
+            uploadDirectoryAbsolute,
+            progressRender,
+            progressListener);
+        return uploadConfig;
     }
 
     /**
      * <p/>
      * Return the value of the <code>file</code> property. </p>
+     * @deprecated use getFileInfo().getFile() instead.
      */
     public File getFile() {
-        return file;
+        return fileInfo.getFile();
     }
 
     /**
      * <p/>
      * Set the value of the <code>file<code> property. </p>
+     * @deprecated This should be a read-only property
      */
     public void setFile(File file) {
         //do nothing
@@ -883,8 +831,12 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
     }
 
+    /**
+     * @return DEFAULT, UPLOADING, SAVED, or one of the error statuses.
+     * @deprecated use getFileInfo().getStatus() instead.
+     */
     public int getStatus() {
-        return status;
+        return fileInfo.getStatus();
     }
 
     /**
@@ -899,7 +851,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     /**
      * <p>Set the value of the <code>fileName</code> property.</p>
      *
-     * @deprecated use getFileInfo().setFileName() instead.
+     * @deprecated This should be a read-only property
      */
     public void setFilename(String filename) {
         fileInfo.setFileName(filename);
@@ -916,6 +868,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
     /**
      * <p>Set the value of the <code>size</code> property.</p>
+     * @deprecated This should be a read-only property
      */
     public void setFilesize(long filesize) {
         fileInfo.setSize(filesize);
@@ -934,65 +887,19 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
 
     public int getProgress() {
-        return progress;
-    }
-
-    protected void setProgressSafely(PersistentFacesState state, int i) {
-        state.acquireUploadLifecycleLock();
-        try {
-            state.setAllCurrentInstances();
-            setProgress(i);
-        }
-        finally {
-            state.releaseUploadLifecycleLock();
-        }
-    }
-    
-    public void setProgress(int i) {
-
-        progress = i;
-        fileInfo.setPercent(i);
-        if (getProgressListener() != null)
-            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new InputFileProgressEvent(this)});
+        return fileInfo.getPercent();
     }
 
     /**
-     * To be called by the UploadServer, allowing us to move the progressRender
-     * functionality right into the InputFile component 
-     * @param i The progress percentage
+     * @deprecated This is not used internally any more, and it's hard to
+     * imagine a valid scenario for the application to call this method.
+     * Potentially applications, written before the addition of the
+     * reset() method, may use this?
      */
-    public void updateProgress(PersistentFacesState state, int i) {
-////System.out.println("updateProgress()  progress: " + i);
-        setProgressSafely(state, i);
-        renderIfAppropriate(state, renderOnProgress());
-    }
-    
-    private void renderIfAppropriate(PersistentFacesState state, boolean appropriate) {
-////System.out.println("renderIfAppropriate()  appropriate: " + appropriate);
-        if (!appropriate)
-            return;
-        
-        // If we can do server push
-        if (!state.isSynchronousMode()) {
-            try{
-////System.out.println("renderIfAppropriate()    Seam: " + SeamUtilities.isSeamEnvironment());
-////System.out.println("renderIfAppropriate()    Spring: " + SeamUtilities.isSpringEnvironment());
-                // Seam throws spurious exceptions with PFS.renderLater
-                //  so we'll work-around that for now. Fix later.
-                if (SeamUtilities.isSeamEnvironment() ||
-                    SeamUtilities.isSpringEnvironment()) {
-                    state.setupAndExecuteAndRender();
-                    state.setAllCurrentInstances();
-                }
-                else {
-                    state.renderLater();
-                }
-////System.out.println("renderIfAppropriate()    Rendered");
-            }
-            catch(Exception e) {
-                log.warn("Problem rendering view during file upload", e);
-            }
-        }
+    public void setProgress(int i) {
+        fileInfo.setPercent(i);
+        if (getProgressListener() != null)
+            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new InputFileProgressEvent(this)});
     }
     
     void setPreUpload(boolean p) {
@@ -1146,11 +1053,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
 
     public void reset() {
-        uploadException = null;
-        status = DEFAULT;
         fileInfo = new FileInfo();
-        progress = 0;
-        file = null;
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
@@ -1165,14 +1068,24 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
     }
     
-    /*
-    // Usefull for debugging
-    public void dump() {
-        System.out.println("InputFile  file: " + file);
-        System.out.println("InputFile  progress: " + progress);
-        System.out.println("InputFile  status: " + status);
-        System.out.println("InputFile  uploadException: " + uploadException);
-        System.out.println("InputFile  " + fileInfo);
+    //TODO Remove this method
+    public void processDecodes(FacesContext context) {
+        if (log.isDebugEnabled())
+            log.debug("InputFile.processDecode()  clientId: " + getClientId(context));
+        super.processDecodes(context);
     }
-    */
+    
+    //TODO Remove this method
+    public void processUpdates(FacesContext context) {
+        if (log.isDebugEnabled())
+            log.debug("InputFile.processUpdates()  clientId: " + getClientId(context));
+        super.processUpdates(context);
+    }
+    
+    //TODO Remove this method
+    public void processValidators(FacesContext context) {
+        if (log.isDebugEnabled())
+            log.debug("InputFile.processValidators()  clientId: " + getClientId(context));
+        super.processValidators(context);
+    }
 }

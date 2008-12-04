@@ -50,7 +50,6 @@ Once the file is uploaded, information about the file is displayed.
 
         <!-- file upload usage with progress callback. -->
         <ice:inputFile id="inputFileName"
-                       progressRender="true"
                        progressListener="#{inputFileController.fileUploadProgress}"
                        actionListener="#{inputFileController.uploadFile}"/>
         <!-- progress bar, percent value is upated via progressListener-->
