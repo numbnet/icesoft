@@ -220,18 +220,16 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
 	               "end tell"
 	            };
 
-            // TODO: PowerPoint2008 support
-            //checked-in script is functional but loses
-            //"save" directory after opening file
+            //PowerPoint2008 support
             /*
-            String command = new String[] {
+            String[] command = {
                 "osascript",
                 scriptPath,
                 fullPathMac,
-                baseDirectoryTemp
+                fullPath,
+                baseDirectory
             };
-            */
-                
+            *
 	            Runtime rt = Runtime.getRuntime();
 	            Process p = null;
 	

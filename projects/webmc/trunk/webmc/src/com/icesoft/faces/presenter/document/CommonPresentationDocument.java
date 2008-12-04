@@ -25,7 +25,19 @@ public class CommonPresentationDocument {
     protected Slide[] slides;
     protected Slide[] slidesMobile;
     
-    protected static String ROOT_CONTEXT = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("");
+    protected static String ROOT_CONTEXT = "";
+    
+    static {
+        try {
+        ROOT_CONTEXT = new File( ((ServletContext) FacesContext
+                .getCurrentInstance().getExternalContext()
+                .getContext()).getRealPath("") ).getCanonicalPath();
+        } catch (Exception e)  {
+            if (log.isErrorEnabled()) {
+                log.error("Could not initialize presentation storage", e);
+            }
+        }
+    }
     
     /**
      * Method to retrieve the Slide object corresponding to the passed slide
