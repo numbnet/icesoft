@@ -36,6 +36,8 @@ package org.icefaces.application.showcase.util;
 import org.icefaces.application.showcase.view.bean.NavigationNames;
 
 import javax.faces.model.SelectItem;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -138,12 +140,12 @@ public class StyleBean implements Serializable {
      *
      * @return the reload navigation attribute
      */
-    public String changeStyle() {
+    public void changeStyle(ValueChangeEvent e) throws java.io.IOException{
+        tempStyle = (String)e.getNewValue();
         if (!currentStyle.equalsIgnoreCase(tempStyle)) {
             currentStyle = tempStyle;
-            return NavigationNames.THEME_CHANGE;
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/component-showcase/index.jsp");
         }
-        return null;
     }
 
     /**
