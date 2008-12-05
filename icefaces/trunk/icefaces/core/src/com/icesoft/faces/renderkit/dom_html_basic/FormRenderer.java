@@ -221,8 +221,8 @@ public class FormRenderer extends DomBasicRenderer {
                 node = node.getFirstChild();
                 boolean nextField = false;
                 while(node != null) {
-
-                    if ( node.getNodeValue().endsWith("javax.faces.ViewState\" value=\"")) {
+                    String nodeValue = node.getNodeValue(); 
+                    if (nodeValue != null && nodeValue.endsWith("javax.faces.ViewState\" value=\"")) {
                         nextField = true;
                     } else if (nextField) {
 
