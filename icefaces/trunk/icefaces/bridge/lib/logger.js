@@ -142,9 +142,9 @@
             this.closeOnExit = true;
             this.toggle();
 
-            this.parentWindow.onKeyPress(function(e) {
+            this.parentWindow.onKeyUp(function(e) {
                 var key = e.keyCode();
-                if ((key == 20 || key == 84) && e.isCtrlPressed() && e.isShiftPressed()) {
+                if ((key == 20 || key == 84) && (e.isCtrlPressed() || e.isAltPressed()) && e.isShiftPressed()) {
                     this.enable();
                 }
             }.bind(this));

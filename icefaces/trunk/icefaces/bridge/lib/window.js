@@ -82,3 +82,12 @@ window.onKeyPress = function(listener) {
         listener(Ice.EventModel.Event.adaptToKeyEvent(e));
     };
 };
+window.onKeyUp = function(listener) {
+    var previousListener = document.onkeyup;
+    document.onkeyup = previousListener ? function(e) {
+        listener(Ice.EventModel.Event.adaptToEvent(e));
+        previousListener(e);
+    } : function(e) {
+        listener(Ice.EventModel.Event.adaptToKeyEvent(e));
+    };
+};
