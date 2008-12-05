@@ -452,4 +452,9 @@ public abstract class BridgeExternalContext extends ExternalContext {
             return defaultAuthorization;
         }
     }
+
+    public void setRequestCharacterEncoding(String encoding) {
+        //to avoid UnsupportedOperationException with rave ViewHandler
+    }
+
 }
