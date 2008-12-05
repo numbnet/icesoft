@@ -5,23 +5,23 @@ import java.io.Writer;
 
 public interface Command {
 
-    Command coalesceWith(Command command);
+    Command coalesceWithNext(Command command);
 
-    Command coalesceWith(Macro macro);
+    Command coalesceWithPrevious(Macro macro);
 
-    Command coalesceWith(UpdateElements updateElements);
+    Command coalesceWithPrevious(UpdateElements updateElements);
 
-    Command coalesceWith(Redirect redirect);
+    Command coalesceWithPrevious(Redirect redirect);
 
-    Command coalesceWith(Reload reload);
+    Command coalesceWithPrevious(Reload reload);
 
-    Command coalesceWith(SessionExpired sessionExpired);
+    Command coalesceWithPrevious(SessionExpired sessionExpired);
 
-    Command coalesceWith(SetCookie setCookie);
+    Command coalesceWithPrevious(SetCookie setCookie);
 
-    Command coalesceWith(Pong pong);
+    Command coalesceWithPrevious(Pong pong);
 
-    Command coalesceWith(NOOP noop);
+    Command coalesceWithPrevious(NOOP noop);
 
     void serializeTo(Writer writer) throws IOException;
 }

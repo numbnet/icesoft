@@ -6,14 +6,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class UpdateElements implements Command {
+public class UpdateElements extends AbstractCommand {
     private final static Pattern START_CDATA = Pattern.compile("<\\!\\[CDATA\\[");
     private final static Pattern END_CDATA = Pattern.compile("\\]\\]>");
     private Element[] updates;
@@ -22,7 +21,7 @@ public class UpdateElements implements Command {
         this.updates = updates;
     }
 
-    public Command coalesceWith(UpdateElements updateElementsCommand) {
+    public Command coalesceWithPrevious(UpdateElements updateElementsCommand) {
         Set coallescedUpdates = new HashSet();
         Element[] previousUpdates = updateElementsCommand.updates;
 
@@ -43,35 +42,42 @@ public class UpdateElements implements Command {
         return new UpdateElements((Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
     }
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Macro macro) {
-        return new Macro(macro, this);
+    public Command coalesceWithPrevious(Macro macro) {
+        macro.addCommand(this);
+        return macro;
     }
 
-    public Command coalesceWith(Redirect redirect) {
-        return new Macro(redirect, this);
+    public Command coalesceWithPrevious(Redirect redirect) {
+        return redirect;
     }
 
-    public Command coalesceWith(Reload reload) {
-        return new Macro(reload, this);
+    public Command coalesceWithPrevious(Reload reload) {
+        return reload;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return sessionExpired;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
-        return new Macro(setCookie, this);
+    public Command coalesceWithPrevious(SetCookie setCookie) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(setCookie);
+        return macro;
     }
 
-    public Command coalesceWith(Pong pong) {
-        return new Macro(pong, this);
+    public Command coalesceWithPrevious(Pong pong) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(pong);
+        return macro;
     }
 
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return this;
     }
 
@@ -112,15 +118,5 @@ public class UpdateElements implements Command {
             writer.write("</update>");
         }
         writer.write("</updates>");
-    }
-
-    public String toString() {
-        try {
-            StringWriter writer = new StringWriter();
-            serializeTo(writer);
-            return writer.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

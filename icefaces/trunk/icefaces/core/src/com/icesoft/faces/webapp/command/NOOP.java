@@ -3,41 +3,41 @@ package com.icesoft.faces.webapp.command;
 import java.io.IOException;
 import java.io.Writer;
 
-public class NOOP implements Command {
+public class NOOP extends AbstractCommand {
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Macro macro) {
+    public Command coalesceWithPrevious(Macro macro) {
         return macro;
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
         return updateElements;
     }
 
-    public Command coalesceWith(Redirect redirect) {
+    public Command coalesceWithPrevious(Redirect redirect) {
         return redirect;
     }
 
-    public Command coalesceWith(Reload reload) {
+    public Command coalesceWithPrevious(Reload reload) {
         return reload;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return sessionExpired;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
+    public Command coalesceWithPrevious(SetCookie setCookie) {
         return setCookie;
     }
 
-    public Command coalesceWith(Pong pong) {
+    public Command coalesceWithPrevious(Pong pong) {
         return pong;
     }
 
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return noop;
     }
 

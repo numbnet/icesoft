@@ -3,41 +3,41 @@ package com.icesoft.faces.webapp.command;
 import java.io.IOException;
 import java.io.Writer;
 
-public class SessionExpired implements Command {
+public class SessionExpired extends AbstractCommand {
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Redirect redirect) {
+    public Command coalesceWithPrevious(Redirect redirect) {
         return redirect;
     }
 
-    public Command coalesceWith(Reload reload) {
+    public Command coalesceWithPrevious(Reload reload) {
         return this;
     }
 
-    public Command coalesceWith(Macro macro) {
+    public Command coalesceWithPrevious(Macro macro) {
         return this;
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
         return this;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return this;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
+    public Command coalesceWithPrevious(SetCookie setCookie) {
         return this;
     }
 
-    public Command coalesceWith(Pong pong) {
+    public Command coalesceWithPrevious(Pong pong) {
         return this;
     }
 
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return this;
     }
 

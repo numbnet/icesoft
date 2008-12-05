@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class SetCookie implements Command {
+public class SetCookie extends AbstractCommand {
     private final static DateFormat CookieDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z");
 
     static {
@@ -21,40 +21,59 @@ public class SetCookie implements Command {
         this.cookie = cookie;
     }
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Macro macro) {
+    public Command coalesceWithPrevious(Macro macro) {
         macro.addCommand(this);
         return macro;
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
-        return new Macro(updateElements, this);
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(updateElements);
+        return macro;
     }
 
-    public Command coalesceWith(Redirect redirect) {
-        return new Macro(redirect, this);
+    public Command coalesceWithPrevious(Redirect redirect) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(redirect);
+        return macro;
     }
 
-    public Command coalesceWith(Reload reload) {
-        return new Macro(reload, this);
+    public Command coalesceWithPrevious(Reload reload) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(reload);
+        return macro;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return sessionExpired;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
-        return new Macro(setCookie, this);
+    public Command coalesceWithPrevious(SetCookie setCookie) {
+        if (setCookie.cookie.getName().equals(cookie.getName())) {
+            return this;
+        } else {
+            Macro macro = new Macro();
+            macro.addCommand(setCookie);
+            macro.addCommand(this);
+            return macro;
+        }
     }
 
-    public Command coalesceWith(Pong pong) {
-        return new Macro(pong, this);
+    public Command coalesceWithPrevious(Pong pong) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(pong);
+        return macro;
     }
 
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return this;
     }
 
