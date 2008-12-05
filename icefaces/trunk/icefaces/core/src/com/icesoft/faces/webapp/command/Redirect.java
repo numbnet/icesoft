@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
 
-public class Redirect implements Command {
+public class Redirect extends AbstractCommand {
     private URI uri;
 
     public Redirect(URI uri) {
@@ -17,39 +17,43 @@ public class Redirect implements Command {
         this.uri = URI.create(uri);
     }
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Macro macro) {
+    public Command coalesceWithPrevious(Macro macro) {
+        macro.addCommand(this);
+        return macro;
+    }
+
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
         return this;
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
+    public Command coalesceWithPrevious(Redirect redirect) {
         return this;
     }
 
-    public Command coalesceWith(Redirect redirect) {
+    public Command coalesceWithPrevious(Reload reload) {
         return this;
     }
 
-    public Command coalesceWith(Reload reload) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return this;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SetCookie setCookie) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(setCookie);
+        return macro;
+    }
+
+    public Command coalesceWithPrevious(Pong pong) {
         return this;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
-        return new Macro(setCookie, this);
-    }
-
-    public Command coalesceWith(Pong pong) {
-        return new Macro(pong, this);
-    }
-
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return this;
     }
 

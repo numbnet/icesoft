@@ -1,48 +1,67 @@
 package com.icesoft.faces.webapp.command;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 
-public class Pong implements Command {
+public class Pong extends AbstractCommand {
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Command coalesceWith(Macro macro) {
+    public Command coalesceWithPrevious(Macro macro) {
         macro.addCommand(this);
         return macro;
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
-        return new Macro(updateElements, this);
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(updateElements);
+        return macro;
     }
 
-    public Command coalesceWith(Redirect redirect) {
+    public Command coalesceWithPrevious(Redirect redirect) {
         return redirect;
     }
 
-    public Command coalesceWith(Reload reload) {
+    public Command coalesceWithPrevious(Reload reload) {
         return reload;
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
         return sessionExpired;
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
-        return new Macro(setCookie, this);
+    public Command coalesceWithPrevious(SetCookie setCookie) {
+        Macro macro = new Macro();
+        macro.addCommand(this);
+        macro.addCommand(setCookie);
+        return macro;
     }
 
-    public Command coalesceWith(NOOP noop) {
+    public Command coalesceWithPrevious(NOOP noop) {
         return this;
     }
 
-    public Command coalesceWith(Pong pong) {
+    public Command coalesceWithPrevious(Pong pong) {
         return pong;
     }
 
     public void serializeTo(Writer writer) throws IOException {
         writer.write("<pong/>");
+    }
+
+    public String toString() {
+        StringWriter w = new StringWriter();
+        try {
+            serializeTo(w);
+        } catch (IOException e) {
+            //do nothing
+        } finally {
+            w.flush();
+        }
+        return w.toString();
     }
 }

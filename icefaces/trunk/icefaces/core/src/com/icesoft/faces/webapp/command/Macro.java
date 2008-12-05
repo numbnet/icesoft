@@ -3,74 +3,94 @@ package com.icesoft.faces.webapp.command;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 
-public class Macro implements Command {
-    private Collection commands = new ArrayList();
+class Macro extends AbstractCommand {
+    //see http://krijnhoetmer.nl/stuff/javascript/maximum-cookies/
+    private static final int MaxNumberOfCookies = 50;
+    private Command updateElements;
+    private Command pong;
+    private Command redirect;
+    private Command reload;
+    private ArrayList setCookies = new ArrayList();
 
-    public Macro(Command commandA, Command commandB) {
-        commands.add(commandA);
-        commands.add(commandB);
+    public Command coalesceWithNext(Command command) {
+        return command.coalesceWithPrevious(this);
     }
 
-    public Macro(Command[] commands) {
-        this.commands.addAll(Arrays.asList(commands));
+    public Command coalesceWithPrevious(UpdateElements updateElements) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(Command command) {
-        return command.coalesceWith(this);
+    public Command coalesceWithPrevious(Redirect redirect) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(UpdateElements updateElements) {
-        commands.add(updateElements);
-        return this;
+    public Command coalesceWithPrevious(Reload reload) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(Redirect redirect) {
-        commands.add(redirect);
-        return this;
+    public Command coalesceWithPrevious(SessionExpired sessionExpired) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(Reload reload) {
-        commands.add(reload);
-        return this;
+    public Command coalesceWithPrevious(Macro macro) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(SessionExpired sessionExpired) {
-        return sessionExpired;
+    public Command coalesceWithPrevious(SetCookie setCookie) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(Macro macro) {
-        commands.addAll(macro.commands);
-        return this;
+    public Command coalesceWithPrevious(Pong pong) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public void addCommand(Command command) {
-        commands.add(command);
+    public Command coalesceWithPrevious(NOOP noop) {
+        throw new IllegalStateException("Macro commands are constructed only as result of coalescing ");
     }
 
-    public Command coalesceWith(SetCookie setCookie) {
-        commands.add(setCookie);
-        return this;
+    public void addCommand(UpdateElements updateElements) {
+        if (redirect == null && reload == null) {
+            this.updateElements = this.updateElements == null ? updateElements : this.updateElements.coalesceWithNext(updateElements);
+        }
     }
 
-    public Command coalesceWith(Pong pong) {
-        commands.add(pong);
-        return this;
+    public void addCommand(Pong pong) {
+        this.pong = pong;
     }
 
-    public Command coalesceWith(NOOP noop) {
-        return this;
+    public void addCommand(SetCookie setCookie) {
+        if (setCookies.size() > MaxNumberOfCookies) {
+            setCookies.remove(0);
+        }
+        setCookies.add(setCookie);
+    }
+
+    public void addCommand(Redirect redirect) {
+        this.redirect = redirect;
+        this.reload = null;
+        this.pong = null;
+        this.updateElements = null;
+    }
+
+    public void addCommand(Reload reload) {
+        if (redirect == null) {
+            this.reload = reload;
+            this.pong = null;
+            this.updateElements = null;
+        }
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        Iterator i = commands.iterator();
         writer.write("<macro>");
+        if (updateElements != null) updateElements.serializeTo(writer);
+        if (pong != null) pong.serializeTo(writer);
+        if (redirect != null) redirect.serializeTo(writer);
+        if (reload != null) reload.serializeTo(writer);
+        Iterator i = setCookies.iterator();
         while (i.hasNext()) {
-            Command command = (Command) i.next();
-            command.serializeTo(writer);
+            ((Command) i.next()).serializeTo(writer);
         }
         writer.write("</macro>");
     }
