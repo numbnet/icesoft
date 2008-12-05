@@ -49,6 +49,7 @@ import javax.faces.FacesException;
 import javax.faces.render.ResponseStateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -207,16 +208,13 @@ public class FormRenderer extends DomBasicRenderer {
             Node copy;
             if (node != null) {
 
+                // Prepend the div's id with the id of the form for uniqueness 
+                copy = node.cloneNode(true);
+                ((Element) copy).setAttribute("id", formClientId +
+                       NamingContainer.SEPARATOR_CHAR + ((Element)copy).getAttribute("id")  );
                 // Append the div, but now go search through it for the child that contains the actual
                 // id so we can preserve this for any future server push operations
-
-                // that's not working because the node child relationships are being broken
-                // from the first root when I add it to the 4th, so it's not the id,
-                // it's that there are only one set of objects created, that's what's changed. 
-
-                copy = node.cloneNode(true);
                 root.appendChild(copy);
-
 
                 node = node.getFirstChild();
                 boolean nextField = false;
@@ -230,7 +228,6 @@ public class FormRenderer extends DomBasicRenderer {
                             log.debug("State id for server push state saving: " + node.getNodeValue() +
                                                ", node name: " + node.getNodeName());
                         }
-
                         PersistentFacesState.getInstance().setStateRestorationId( node.getNodeValue() );
                         break;
                     }
