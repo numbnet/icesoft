@@ -40,7 +40,7 @@
         <ice:panelGroup style="float:left;">
             <ice:selectOneMenu id="currentStyle"
                        styleClass="themeSelectOneMenu"
-                       value="#{styleBean.currentStyle}">
+                       value="#{styleBean.currentStyle}" valueChangeListener="#{styleBean.changeStyle}" partialSubmit="true">
                 <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
                               itemValue="rime"/>
                 <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
@@ -50,14 +50,11 @@
             </ice:selectOneMenu>
         </ice:panelGroup>
 
-        <ice:panelGroup style="float:left;"
-                styleClass="changeThemeButton">
-            <ice:commandLink
-                    id="changeStyle"
-                    value="#{msgs['theme.title']}"
-                    action="#{styleBean.changeStyle}" />
-        </ice:panelGroup>
-
+            <ice:panelGroup style="float:right">
+               <ice:selectOneMenu styleClass="themeSelectOneMenu" valueChangeListener="#{localeBean.changeLanguage}" value="#{localeBean.currentLanguage}" partialSubmit="true">
+                    <f:selectItems value="#{localeBean.availableLocales}"/>
+               </ice:selectOneMenu>
+            </ice:panelGroup>
     </ice:panelGroup>
 
 </ice:form>

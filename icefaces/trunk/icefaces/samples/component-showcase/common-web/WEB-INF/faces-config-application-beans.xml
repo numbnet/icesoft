@@ -36,6 +36,19 @@
 <faces-config xmlns="http://java.sun.com/JSF/Configuration">
 
     
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
+            <supported-locale>es</supported-locale>
+        </locale-config>
+    </application>
+    <managed-bean>
+        <managed-bean-name>localeBean</managed-bean-name>
+        <managed-bean-class>org.icefaces.application.showcase.util.LocaleBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <managed-bean>
         <managed-bean-name>employeeServiceImpl</managed-bean-name>
         <managed-bean-class>org.icefaces.application.showcase.model.service.impl.EmployeeServiceImpl</managed-bean-class>

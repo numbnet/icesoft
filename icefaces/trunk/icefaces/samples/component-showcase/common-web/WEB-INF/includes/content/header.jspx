@@ -40,12 +40,5 @@
              width="463" height="100"
              title="Component Suite Showcase"
              alt="Component Suite Showcase" style="float:left"/>
-        <ice:form partialSubmit="true">
-            <ice:panelGroup style="display:inline;padding-right:200px;float:right;">
-               <ice:selectOneMenu valueChangeListener="#{localeBean.changeLanguage}" value="#{localeBean.currentLanguage}">
-                    <f:selectItems value="#{localeBean.availableLocales}"/>
-               </ice:selectOneMenu>
-            </ice:panelGroup>
-        </ice:form>
     </div>
 </div>
