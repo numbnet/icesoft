@@ -35,7 +35,7 @@
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <f:loadBundle
+    <ice:loadBundle
           basename="org.icefaces.application.showcase.view.resources.messages"
           var="msgs"/>
 

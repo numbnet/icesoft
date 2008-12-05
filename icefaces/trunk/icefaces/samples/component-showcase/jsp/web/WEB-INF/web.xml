@@ -65,8 +65,7 @@
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>/WEB-INF/faces-config-application-beans.xml,
             /WEB-INF/faces-config-example-beans.xml,
-            /WEB-INF/faces-config-navigation.xml
-        </param-value>
+            /WEB-INF/faces-config-navigation.xml,/faces-config.xml</param-value>
     </context-param>
 
     <context-param>

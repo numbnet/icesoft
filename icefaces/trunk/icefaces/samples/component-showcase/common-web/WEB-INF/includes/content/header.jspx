@@ -30,11 +30,22 @@
 ~ this file under either the MPL or the LGPL License."
 ~
 -->
-<div class="header_container">
+<div xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        class="header_container">
     <div class="header_content">
         <img src="./css/images/banner_hdr_compsuite.jpg"
              width="463" height="100"
              title="Component Suite Showcase"
-             alt="Component Suite Showcase"/>
+             alt="Component Suite Showcase" style="float:left"/>
+        <ice:form partialSubmit="true">
+            <ice:panelGroup style="display:inline;padding-right:200px;float:right;">
+               <ice:selectOneMenu valueChangeListener="#{localeBean.changeLanguage}" value="#{localeBean.currentLanguage}">
+                    <f:selectItems value="#{localeBean.availableLocales}"/>
+               </ice:selectOneMenu>
+            </ice:panelGroup>
+        </ice:form>
     </div>
 </div>

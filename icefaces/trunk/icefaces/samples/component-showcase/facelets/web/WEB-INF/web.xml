@@ -58,11 +58,9 @@
     <!-- Facelet Config  -->
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>
-            /WEB-INF/faces-config-application-beans.xml,
+        <param-value>/WEB-INF/faces-config-application-beans.xml,
             /WEB-INF/faces-config-example-beans.xml,
-            /WEB-INF/faces-config-navigation.xml
-        </param-value>
+            /WEB-INF/faces-config-navigation.xml,/faces-config.xml</param-value>
     </context-param>
 
     <context-param>
@@ -259,6 +257,14 @@
     <servlet-mapping>
         <servlet-name>SourceCode Reader</servlet-name>
         <url-pattern>/sourcecodeStream.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
 
     <session-config>
