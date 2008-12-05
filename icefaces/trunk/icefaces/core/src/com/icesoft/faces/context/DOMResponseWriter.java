@@ -82,8 +82,6 @@ public class DOMResponseWriter extends ResponseWriter {
     public static final String DOCTYPE_OUTPUT = "com.icesoft.doctype.output";
     public static final String DOCTYPE_PRETTY_PRINTING = "com.icesoft.doctype.prettyprinting";
 
-    private int temporaryIdVar;
-
     private static final BundleResolver bridgeMessageResolver = new FailoverBundleResolver("bridge-messages", new ListResourceBundle() {
         protected Object[][] getContents() {
             return new Object[][]{
@@ -574,8 +572,7 @@ public class DOMResponseWriter extends ResponseWriter {
             // which is usually the containing form. This results in all the Forms children being
             // serialized.
             cursor = document.createElement("div");
-            ((Element) cursor).setAttribute("id", "stateSavingId_" +
-                    Integer.toString(++temporaryIdVar));
+            ((Element) cursor).setAttribute("id", "stateSavingDiv" ); 
 
         } else {
             // swap cursor with savedNode
