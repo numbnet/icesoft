@@ -287,23 +287,27 @@
 
         //private
         handle: function(colorName, priorityName, category, message, exception) {
-            if (this.categoryMatcher.test(category.join('.'))) {
-                var elementDocument = this.log.ownerDocument;
-                var timestamp = (new Date()).toTimestamp();
-                var categoryName = category.join('.');
-                ('[' + categoryName + '] : ' + message +
-                 (exception ? ('\n' + exception) : '')).split('\n').each(function(line) {
-                    if (line.containsWords()) {
-                        var eventNode = elementDocument.createElement('div');
-                        eventNode.style.padding = '3px';
-                        eventNode.style.color = colorName;
-                        eventNode.setAttribute("title", timestamp + ' | ' + priorityName)
-                        this.log.appendChild(eventNode).appendChild(elementDocument.createTextNode(line));
-                    }
-                }.bind(this));
-                this.log.scrollTop = this.log.scrollHeight;
+            try {
+                if (this.categoryMatcher.test(category.join('.'))) {
+                    var elementDocument = this.log.ownerDocument;
+                    var timestamp = (new Date()).toTimestamp();
+                    var categoryName = category.join('.');
+                    ('[' + categoryName + '] : ' + message +
+                     (exception ? ('\n' + exception) : '')).split('\n').each(function(line) {
+                        if (line.containsWords()) {
+                            var eventNode = elementDocument.createElement('div');
+                            eventNode.style.padding = '3px';
+                            eventNode.style.color = colorName;
+                            eventNode.setAttribute("title", timestamp + ' | ' + priorityName)
+                            this.log.appendChild(eventNode).appendChild(elementDocument.createTextNode(line));
+                        }
+                    }.bind(this));
+                    this.log.scrollTop = this.log.scrollHeight;
+                }
+                this.clearPreviousEvents();
+            } catch (e) {
+                this.disable();
             }
-            this.clearPreviousEvents();
         },
 
         //private
