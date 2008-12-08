@@ -30,6 +30,7 @@ import java.net.URI;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
+    private static final CurrentContextPath currentContextPath = new CurrentContextPath();
 
     static {
         final String headless = "java.awt.headless";
@@ -39,14 +40,13 @@ public class MainServlet extends HttpServlet {
     }
 
     private PathDispatcher dispatcher = new PathDispatcher();
-    private String contextPath;
     private ServletContext context;
     private MonitorRunner monitorRunner;
     private MessageServiceClient messageServiceClient;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        this.context = servletConfig.getServletContext();
+        context = servletConfig.getServletContext();
         try {
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
             final IdGenerator idGenerator = new IdGenerator(context.getResource("/WEB-INF/web.xml").getPath());
@@ -57,7 +57,7 @@ public class MainServlet extends HttpServlet {
             };
             final FileLocator localFileLocator = new FileLocator() {
                 public File locate(String path) {
-                    URI contextURI = URI.create(contextPath);
+                    URI contextURI = URI.create(currentContextPath.lookup());
                     URI pathURI = URI.create(path);
                     String result = contextURI.relativize(pathURI).getPath();
                     String fileLocation = context.getRealPath(result);
@@ -87,13 +87,15 @@ public class MainServlet extends HttpServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        contextPath = request.getContextPath();
         try {
+            currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             throw new ServletException(e);
+        } finally {
+            currentContextPath.detach();
         }
     }
 
@@ -102,15 +104,6 @@ public class MainServlet extends HttpServlet {
         DisposeBeans.in(context);
         dispatcher.shutdown();
         tearDownMessageServiceClient();
-    }
-
-    private boolean isAsyncHttpServiceAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
     }
 
     private boolean isJMSAvailable() {
@@ -123,13 +116,8 @@ public class MainServlet extends HttpServlet {
     }
 
     private void setUpMessageServiceClient(final Configuration configuration) {
-        String blockingRequestHandler =
-                configuration.getAttribute(
-                        "blockingRequestHandler",
-                        configuration.getAttributeAsBoolean(
-                                "async.server",
-                                false) ?
-                                "icefaces-ahs" : "icefaces");
+        String blockingRequestHandler = configuration.getAttribute("blockingRequestHandler",
+                configuration.getAttributeAsBoolean("async.server", false) ? "icefaces-ahs" : "icefaces");
         if (LOG.isInfoEnabled()) {
             LOG.info("Blocking Request Handler: " + blockingRequestHandler);
         }
@@ -137,9 +125,7 @@ public class MainServlet extends HttpServlet {
         if (LOG.isInfoEnabled()) {
             LOG.info("JMS API available: " + isJMSAvailable);
         }
-        if (!blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") ||
-                !isJMSAvailable) {
-
+        if (!blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") || !isJMSAvailable) {
             return;
         }
         try {
@@ -161,6 +147,22 @@ public class MainServlet extends HttpServlet {
             messageServiceClient.stop();
         } catch (MessageServiceException exception) {
             LOG.error("Failed to close connection due to some internal error!", exception);
+        }
+    }
+
+
+    //todo: factor out into a ServletContextDispatcher
+    private static class CurrentContextPath extends ThreadLocal {
+        public String lookup() {
+            return (String) get();
+        }
+
+        public void attach(String path) {
+            set(path);
+        }
+
+        public void detach() {
+            set(null);
         }
     }
 }
