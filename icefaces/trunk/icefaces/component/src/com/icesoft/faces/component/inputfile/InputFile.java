@@ -37,17 +37,23 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.NamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
@@ -259,6 +265,28 @@ public class InputFile extends UICommand implements Serializable {
         if (buttonClass != null) writer.write(" class=\"" + buttonClass + "\"");
         if (isDisabled()) writer.write(" disabled=\"disabled\"");
         writer.write("/>");
+
+        // Retrieve the Node created by that state saving operation and
+        // add it to the form root (otherwise it winds up outside the Form)
+        ResponseWriter responseWriter = context.getResponseWriter();
+        Node node =  ((DOMResponseWriter) responseWriter).getSavedNode();  // this will be the containing <div>
+        Node copy;
+        // #
+        if (node != null) {
+
+            // Prepend the div's id with the id of the form for uniqueness. This
+            // has to match that above.
+            copy = node.cloneNode(true);
+            ((Element) copy).setAttribute("id", "fileUploadForm" +
+                                                NamingContainer.SEPARATOR_CHAR + ((Element)copy).getAttribute("id")  );
+
+            String divAsString = DOMUtils.nodeToString( copy );
+            if (log.isDebugEnabled()) {
+                log.debug("State saving view contents: " + divAsString);
+            } 
+            writer.write(divAsString);
+        }
+        
         writer.write("</form>");
         writer.write("</body></html>");
     }
