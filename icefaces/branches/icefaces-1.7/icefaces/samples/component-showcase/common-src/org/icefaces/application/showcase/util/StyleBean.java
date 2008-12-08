@@ -158,7 +158,7 @@ public class StyleBean implements Serializable {
     /**
      * Utility class to manage different cssPath and imageDir namd
      */
-    public class StylePath implements Serializable{
+    public class StylePath {
 
         private String cssPath;
         private String imageDirPath;
@@ -178,3 +178,4 @@ public class StyleBean implements Serializable {
     }
 
 }
+
