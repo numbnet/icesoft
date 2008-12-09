@@ -96,7 +96,7 @@
         
     </target>
     
-    <target name="build.src.bundle" depends="clean, jar, build.servlet.jboss4.0.war">
+    <target name="build.src.bundle" depends="clean, jar, build.servlet.jboss4.2.war">
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
         
@@ -129,12 +129,6 @@
         <replaceregexp file="${web.xml}" match="param-value>weblogic.properties" replace="param-value>${property.config}" byline="true"/>
         <replaceregexp file="${web.xml}" match="param-value>websphere.properties" replace="param-value>${property.config}" byline="true"/>
         <replaceregexp file="${web.xml}" match="param-value>websphere_ha.properties" replace="param-value>${property.config}" byline="true"/>
-<!--
-        <replaceregexp file="${web.xml}" match="param-value>jboss4.0_ha.properties" replace="param-value>${property.config}" byline="true"/>
-        <replaceregexp file="${web.xml}" match="param-value>jboss4.2_ha.properties" replace="param-value>${property.config}" byline="true"/>
-        <replaceregexp file="${web.xml}" match="param-value>jboss4.0.properties" replace="param-value>${property.config}" byline="true"/>
-        <replaceregexp file="${web.xml}" match="param-value>jboss4.2.properties" replace="param-value>${property.config}" byline="true"/>
--->
     </target>
 	<!-- JBoss config -->    
     <target name="build.server.jboss4.0.war">

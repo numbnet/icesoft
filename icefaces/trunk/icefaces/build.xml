@@ -93,7 +93,7 @@
     </ice:ant>
 
     <ice:ant antfile="ahs/build.xml">
-    	<target name="build.servlet.jboss4.0.war"/>
+    	<target name="build.servlet.jboss4.2.war"/>
     </ice:ant>
 
     <ice:subant target="tomcat6.0">
@@ -148,10 +148,7 @@
 <target name="build.common">
     <ice:subant>
            <filelist dir="." files="core, component, component-metadata"/>
-       </ice:subant>
-
-
-
+    </ice:subant>
 </target>
 
 <target name="build.src.bundle">
