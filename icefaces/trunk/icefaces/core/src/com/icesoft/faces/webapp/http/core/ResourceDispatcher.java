@@ -16,6 +16,7 @@ import com.icesoft.util.encoding.Base64;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.IOException;
 
 public class ResourceDispatcher implements Server {
     private static final ResourceLinker.Handler NOOPHandler = new ResourceLinker.Handler() {
@@ -47,8 +48,15 @@ public class ResourceDispatcher implements Server {
 
     public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
     	if( handler == null )
-    		handler = NOOPHandler;
-    	final String name = prefix + encode(resource) + "/";
+            handler = NOOPHandler;
+        final FileNameOption options = new FileNameOption();
+        try {
+            resource.withOptions(options);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        final String filename = options.getFileName();
+        final String name = prefix + encode(resource) + "/" + (filename != null && !filename.equals("") ? filename : "");
         if (!registered.contains(name)) {
             registered.add(name);
             dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(resource));
@@ -158,6 +166,30 @@ public class ResourceDispatcher implements Server {
         public void registerRelativeResource(String path, Resource relativeResource) {
             String pathExpression = (name + path).replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
             dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(relativeResource));
+        }
+    }
+
+    private class FileNameOption implements Resource.Options {
+        private String fileName;
+
+        public String getFileName() {
+            return fileName;
+        }
+
+        public void setAsAttachement() {
+        }
+
+        public void setExpiresBy(Date date) {
+        }
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public void setLastModified(Date date) {
+        }
+
+        public void setMimeType(String mimeType) {
         }
     }
 }
