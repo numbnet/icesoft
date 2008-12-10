@@ -33,11 +33,11 @@
 <ice:form xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <ice:panelGroup
+    <ice:panelGroup id="pnlGrp1"
             styleClass="themeControlContainer"
             style="vertical-align: middle;">
 
-        <ice:panelGroup style="float:left;">
+        <ice:panelGroup id="pnlGrp2" style="float:left;">
             <ice:selectOneMenu id="currentStyle"
                        styleClass="themeSelectOneMenu"
                        value="#{styleBean.currentStyle}" valueChangeListener="#{styleBean.changeStyle}" partialSubmit="true">
