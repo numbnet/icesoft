@@ -34,7 +34,6 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.util.DOMUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -71,7 +70,7 @@ public class MessagesRenderer extends DomBasicRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         } else {
             domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent); 
+                DOMContext.reattachDOMContext(facesContext, uiComponent); 
         }
 
         // retrieve the messages
@@ -115,7 +114,15 @@ public class MessagesRenderer extends DomBasicRenderer {
         boolean isVisible = visible == null || visible.booleanValue() ;
         if (!isVisible || !messagesIterator.hasNext()) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
 
-
+        if (renderLater) {
+            UIComponent uiform = findForm(uiComponent);
+            //second request has been made successfully, now remove the info 
+            if (uiform != null) {
+                uiform.getAttributes().remove("$ice-msgs$");
+                uiComponent.getAttributes().remove("$render-later$");
+            }                
+        }
+        
         if (!messagesIterator.hasNext()) {
             Element emptyChild = null;
             if (tableLayout) {
@@ -136,17 +143,6 @@ public class MessagesRenderer extends DomBasicRenderer {
             return;
         }
         
-        if (renderLater) {
-            UIComponent uiform = findForm(uiComponent);
-            //second request has been made successfully, now remove the info 
-            if (uiform != null) {
-                uiform.getAttributes().remove("$ice-msgs$");
-                uiComponent.getAttributes().remove("$render-later$");
-            }                
-        }
-        
-
-
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
 

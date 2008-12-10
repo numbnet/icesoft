@@ -132,6 +132,33 @@ public class DOMContext implements java.io.Serializable {
 
         return context;
     }
+    
+    public static DOMContext reattachDOMContext(FacesContext facesContext,
+                                                UIComponent component) {
+        ResponseWriter responseWriter = facesContext.getResponseWriter();
+        DOMResponseWriter domWriter;
+        if (responseWriter instanceof DOMResponseWriter) {
+            domWriter = (DOMResponseWriter) responseWriter;
+        } else {
+            domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
+        }
+        Document doc = domWriter.getDocument();
+        Map domContexts = domWriter.getDomContexts();
+        DOMContext context = null;
+        String clientId = component.getClientId(FacesContext.getCurrentInstance());
+        if (domContexts.containsKey(clientId)) {
+            context = (DOMContext) domContexts.get(clientId);
+        }
+        if (null == context) {
+            Node cursorParent = domWriter.getCursorParent();
+            context = new DOMContext(domWriter, doc, cursorParent);
+            domContexts.put(clientId, context);
+        }
+        else {
+            domWriter.setCursorParent(context.getRootNode());
+        }
+        return context;
+    }
 
     private static DOMResponseWriter createTemporaryDOMResponseWriter(
             ResponseWriter responseWriter, FacesContext facesContext) {
