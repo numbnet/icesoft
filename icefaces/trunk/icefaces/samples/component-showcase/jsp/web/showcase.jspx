@@ -61,7 +61,7 @@
 
             <div class="body_content">
 
-                <ice:outputConnectionStatus
+                <ice:outputConnectionStatus id="connectStat"
                             styleClass="navConnectionStatus"
                             showPopupOnDisconnect="true" displayHourglassWhenActive="true"/>
 
