@@ -48,6 +48,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -89,7 +90,7 @@ public class ApplicationBuilder implements Serializable {
     /**
      * File name of the application meta data.
      */
-    public static final String META_DATA_FILE_NAME = "application_structure.xml";
+    public static final String META_DATA_FILE_NAME = "application_structure";
 
     // Reference to the application object tree
     private Application application;
@@ -124,7 +125,7 @@ public class ApplicationBuilder implements Serializable {
             application = (Application)
                     unmarshaller.unmarshal(new StreamSource(
                             getResourceStream(
-                                    META_DATA_RESOURCE_PATH + "/" + META_DATA_FILE_NAME)));
+                                    META_DATA_RESOURCE_PATH + "/" + META_DATA_FILE_NAME + "_" + FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage() + ".xml")));
 
         } catch (JAXBException e) {
             logger.error("JAXB Exception during unmarshalling:", e);
