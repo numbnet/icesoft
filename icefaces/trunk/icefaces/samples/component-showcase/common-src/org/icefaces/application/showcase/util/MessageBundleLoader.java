@@ -75,7 +75,7 @@ public class MessageBundleLoader {
     /**
      * Initialize internationalization.
      */
-    private static void init() {
+    public static void init() {
         Locale locale =
                 FacesContext.getCurrentInstance().getViewRoot().getLocale();
         // assign a default locale if the faces context has none, shouldn't happen
