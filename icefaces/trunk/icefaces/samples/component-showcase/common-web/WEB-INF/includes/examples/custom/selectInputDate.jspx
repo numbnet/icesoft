@@ -43,80 +43,89 @@ the click of a button.
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <!-- Standard Calendar -->
-    <ice:panelGroup styleClass="synopsisBox selectInputDateContainer">
-        <ice:outputText
-                value="#{msgs['page.selectInputDate.synopsis']}"/>
-        <ice:outputText
-                value="#{msgs['page.selectInputDate.instructions']}"/>
-    </ice:panelGroup>
+    <ice:panelBorder>
+        <f:facet name="west">
+            <!-- Standard Calendar -->
+            <ice:panelGroup styleClass="synopsisBox selectInputDateContainer">
+                <ice:outputText
+                        value="#{msgs['page.selectInputDate.synopsis']}"/>
+                <ice:outputText
+                        value="#{msgs['page.selectInputDate.instructions']}"/>
+            </ice:panelGroup>
 
-    <ice:panelGroup styleClass="clearer" />
+            <ice:panelGroup styleClass="clearer"/>
 
-    <ice:panelGroup styleClass="exampleBox firstChildTitle" >
+            <ice:panelGroup styleClass="exampleBox firstChildTitle">
 
-        <ice:outputText
-                value="#{msgs['page.selectInputDate.nonPopup.label']}"/>
-        <br /><br />
+                <ice:outputText
+                        value="#{msgs['page.selectInputDate.nonPopup.label']}"/>
+                <br/><br/>
 
-        <!-- display regular selectInputDate bean values-->
-        <ice:outputLabel
-                value="#{msgs['page.selectInputDate.selectedDate.label']}" />
-        <ice:outputText id="defaultSelectedDate"
-                        effect="#{dateSelect.valueChangeEffect}"
-                        value="#{dateSelect.date1}">
-            <f:convertDateTime pattern="MM/dd/yyyy"
-                               timeZone="#{dateSelect.timeZone}"/>
-        </ice:outputText>
-
-        <!-- Calendar Component -->
-        <ice:selectInputDate id="date1"
-                             value="#{dateSelect.date1}"
-                             valueChangeListener="#{dateSelect.effectChangeListener}"
-                             highlightClass="weekend: august:"
-                             highlightUnit="DAY_OF_WEEK: MONTH"
-                             highlightValue="1,7: 8">
-            <f:convertDateTime pattern="MM/dd/yyyy"
-                               timeZone="#{dateSelect.timeZone}"/>
-        </ice:selectInputDate>
-
-        <ice:panelGroup style="text-align:right;margin-top:10px;">
-            Weekends have dark gray backgrounds<br />
-            August days are bold <br />
-        </ice:panelGroup>
-
-    </ice:panelGroup>
-
-
-    <!-- Popup Calendar -->
-    <ice:panelGroup styleClass="exampleBox firstChildTitle">
-
-        <ice:outputText id="popupSelectedDate"
-                        value="#{msgs['page.selectInputDate.popup.label']}"/>
-
-        <!-- display popup selectInputDate bean values-->
-        <br /><br />
-        <ice:outputLabel id="popupSelectedDateTxt"
+                <!-- display regular selectInputDate bean values-->
+                <ice:outputLabel
                         value="#{msgs['page.selectInputDate.selectedDate.label']}"/>
-        <ice:outputText value="#{dateSelect.date2}"
-                        effect="#{dateSelect.valueChangeEffect2}">
-            <f:convertDateTime pattern="MM/dd/yyyy"
-                               timeZone="#{dateSelect.timeZone}"/>
-        </ice:outputText>
+                <ice:outputText id="defaultSelectedDate"
+                                effect="#{dateSelect.valueChangeEffect}"
+                                value="#{dateSelect.date1}">
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:outputText>
 
-        <!-- Calendar Component -->
-        <ice:selectInputDate id="date2"
-                     renderMonthAsDropdown="true" renderYearAsDropdown="true"
-                     value="#{dateSelect.date2}"
-                     valueChangeListener="#{dateSelect.effect2ChangeListener}"
-                     title="#{msgs['page.selectInputDate.popup.title']}"
-                     renderAsPopup="true">
-            <f:convertDateTime pattern="MM/dd/yyyy"
-                               timeZone="#{dateSelect.timeZone}"/>
-        </ice:selectInputDate>
-        <ice:messages/>
-    </ice:panelGroup>
+                <!-- Calendar Component -->
+                <ice:selectInputDate id="date1"
+                                     value="#{dateSelect.date1}"
+                                     valueChangeListener="#{dateSelect.effectChangeListener}"
+                                     highlightClass="weekend: august:"
+                                     highlightUnit="DAY_OF_WEEK: MONTH"
+                                     highlightValue="1,7: 8">
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:selectInputDate>
 
-    <ice:panelGroup styleClass="clearer" />
-    
+                <ice:panelGroup style="text-align:right;margin-top:10px;">
+                    Weekends have dark gray backgrounds<br/>
+                    August days are bold <br/>
+                </ice:panelGroup>
+
+            </ice:panelGroup>
+        </f:facet>
+
+
+        <!-- Popup Calendar -->
+        <f:facet name="center">
+            <ice:panelGroup styleClass="exampleBox firstChildTitle">
+
+                <ice:outputText id="popupSelectedDate"
+                                value="#{msgs['page.selectInputDate.popup.label']}"/>
+
+                <!-- display popup selectInputDate bean values-->
+                <br/><br/>
+                <ice:outputLabel id="popupSelectedDateTxt"
+                                 value="#{msgs['page.selectInputDate.selectedDate.label']}"/>
+                <ice:outputText value="#{dateSelect.date2}"
+                                effect="#{dateSelect.valueChangeEffect2}">
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:outputText>
+
+                <!-- Calendar Component -->
+                <ice:selectInputDate id="date2"
+                                     renderMonthAsDropdown="true" renderYearAsDropdown="true"
+                                     value="#{dateSelect.date2}"
+                                     valueChangeListener="#{dateSelect.effect2ChangeListener}"
+                                     title="#{msgs['page.selectInputDate.popup.title']}"
+                                     renderAsPopup="true">
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:selectInputDate>
+            </ice:panelGroup>
+        </f:facet>
+        <f:facet name="south">
+
+            <ice:panelGroup>
+                <ice:messages/>
+            </ice:panelGroup>
+        </f:facet>
+
+    </ice:panelBorder>
 </ice:panelGroup>
