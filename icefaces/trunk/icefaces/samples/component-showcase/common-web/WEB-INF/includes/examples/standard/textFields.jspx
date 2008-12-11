@@ -55,22 +55,38 @@ when the user presses the Enter key or tabs out of a field.
             <ice:outputLabel for="TxtName"
                              value="#{msgs['page.textFields.name']}"/>
             <ice:inputText id="TxtName"
-                           size="25"
-                           maxlength="25"
+                           size="30"
+                           maxlength="30"
                            valueChangeListener="#{textFields.effectChangeListener}"
                            value="#{textFields.name}"
-                           partialSubmit="true"/>
+                           partialSubmit="true"
+                           required="true">
+                <f:validateLength minimum="3" maximum="25"/>
+            </ice:inputText>
+        </ice:panelGrid>
+        <ice:message for="TxtName" showDetail="false" showSummary="true"/>
+        <ice:panelGrid columns="2"
+                styleClass="verticalAlignTop"
+                rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
 
             <ice:outputLabel for="TxtPw"
                              value="#{msgs['page.textFields.password']}"/>
             <ice:inputSecret id="TxtPw"
-                             maxlength="10"
-                             size="10"
+                             maxlength="20"
+                             size="20"
                              valueChangeListener="#{textFields.effectChangeListener}"
                              value="#{textFields.password}"
                              partialSubmit="true"
-                             redisplay="true"/>
+                             redisplay="true"
+                             required="true">
+                <f:validateLength minimum="3" maximum="10"/>
+            </ice:inputSecret>
 
+        </ice:panelGrid>
+        <ice:message for="TxtPw" showDetail="false" showSummary="true"/>
+        <ice:panelGrid columns="2"
+                styleClass="verticalAlignTop"
+                rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
             <ice:outputLabel for="TxtName"
                              value="#{msgs['page.textFields.comments']}"/>
             <ice:inputTextarea id="TxtCmt"
@@ -78,7 +94,8 @@ when the user presses the Enter key or tabs out of a field.
                                cols="20" rows="4"
                                partialSubmit="true"
                                valueChangeListener="#{textFields.effectChangeListener}"
-                               style="width:280px;height:80px;overflow: auto;" />
+                               style="width:280px;height:80px;overflow: auto;">
+            </ice:inputTextarea>
         </ice:panelGrid>
     </ice:panelGroup>
 
