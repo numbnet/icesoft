@@ -6,6 +6,7 @@ import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
 import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.Resource.Options;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 
@@ -31,8 +32,8 @@ import java.util.zip.ZipInputStream;
 public class InputRichText extends UIInput {
     public static final String COMPONENET_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
-    private static final Resource ICE_FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
-    private static final Resource FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
+    private static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
+    private static final Resource FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
     private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
     private static final Date lastModified = new Date();
     private static final Map ZipEntryCache = new HashMap();
@@ -390,5 +391,16 @@ public class InputRichText extends UIInput {
         style = (String) values[9];
         toolbar = (String) values[10];
         width = (String) values[11];
+    }
+}
+
+class FCKJarResource extends JarResource {
+
+    public FCKJarResource(String path) {
+        super(path);
+    }
+    
+    public void withOptions(Options options) throws IOException {
+    
     }
 }
