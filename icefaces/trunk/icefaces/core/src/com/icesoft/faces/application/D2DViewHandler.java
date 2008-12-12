@@ -89,8 +89,6 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.reloadInterval";
     private final static String DO_JSF_STATE_MANAGEMENT =
             "com.icesoft.faces.doJSFStateManagement";
-    private final static String STATE_WRITTEN =
-            "com.icesoft.faces.stateWritten";
 
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -156,7 +154,6 @@ public class D2DViewHandler extends ViewHandler {
                     "viewToRender.getViewId(): " + viewToRender.getViewId());
         }
         renderResponse(context);
-
     }
 
 
@@ -245,8 +242,7 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
-        // Do 1/2 state saving if Seam environment. TEMPORARY 
-        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment()) {
+        if (CoreUtils.isJSFStateSaving()) {
 
             String renderKitId =
                     calculateRenderKitId(context);
@@ -260,10 +256,6 @@ public class D2DViewHandler extends ViewHandler {
             if (log.isDebugEnabled()) {
                 log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime() - start) / 1e9f);
             }
-            if (viewRoot != null) {
-                Map m = viewRoot.getAttributes();
-                m.remove( STATE_WRITTEN );
-            } 
             return viewRoot;
         } else {
 
@@ -522,14 +514,22 @@ public class D2DViewHandler extends ViewHandler {
                 }
                 //JSF 1.2 ViewTag does not invoke rendering
                 responseWriter.startDocument();
+
                 renderResponse(context, root);
+                // make state saving changes to DOM before ending document
+                invokeStateSaving( context );
+
                 responseWriter.endDocument();
                 tracePrintComponentTree(context);
             }
 
         } else {
             responseWriter.startDocument();
+
             renderResponse(context, root);
+            // make state saving changes to DOM before ending document
+            invokeStateSaving( context );
+
             responseWriter.endDocument();
             tracePrintComponentTree(context);
         }
@@ -694,13 +694,10 @@ public class D2DViewHandler extends ViewHandler {
      * the entire state is written if client side state saving is configured, or
      * a token is written if server side saving is configured.
      * <p/>
-     * This method will be called once per form on the page, and so should take care
-     * to filter the number of times state is retrieved via the JSF methods.
-     * <p/>
-     * When this method is called, it will call DOMResponseWriter.saveNextNode()
-     * to capture the next nodes written to the ResponseWriter. JSF does something similar,
-     * where their ResponseWriter saves the next writes into a temporary output stream
-     * for subsequent copying into the real output stream potentially several times.
+     *
+     * Because the way the FormRenderer doesn't currently use the DOMResponseWriter
+     * the view from the DOMResponseWriter is not up to date with what the
+     * FormRenderer is currently doing to the DOM, so this method will do nothing
      *
      * @param context
      * @throws IOException
@@ -709,18 +706,22 @@ public class D2DViewHandler extends ViewHandler {
 
         if (delegateView(context)) {
             delegate.writeState(context);
-            return;
         }
+    }
+
+    /**
+     * This method invokes state saving on the stateManager. It also instructs
+     * the DOMResponseWriter to save the DOM nodes written during writeState()
+     * a method on the stateManager for the purposes of copying them to marker
+     * nodes later.  
+     *
+     * @param context FacesContext
+     */
+    protected void invokeStateSaving(FacesContext context) {
 
         if (!CoreUtils.isJSFStateSaving()) {
             return;
-        }
-
-        // We only need to capture the state once per rendering request. It is
-        // possible to be inserted once per form in the response.
-        if ( context.getViewRoot().getAttributes().containsKey(STATE_WRITTEN) ) { 
-            return;
-        }
+        } 
 
         Application a = context.getApplication();
         StateManager sm = a.getStateManager();
@@ -729,11 +730,7 @@ public class D2DViewHandler extends ViewHandler {
 
         StateManager.SerializedView sv = sm.saveSerializedView(context);
         if (log.isDebugEnabled()) {
-            log.debug("Saved serialized state in: " + (System.nanoTime() - start) / 1e9f + "seconds");
-        }
-
-        if (SeamUtilities.isSeamEnvironment()) {
-            return;
+            log.debug("Serialized state saved in: " + (System.nanoTime() - start) / 1e9f + "seconds");
         }
 
         Object[] structureAndState = new Object[2];
@@ -746,19 +743,26 @@ public class D2DViewHandler extends ViewHandler {
             ((DOMResponseWriter) writer).setSaveNextNode(true);
         }
 
+        try {
         // get JSF to write state (captured by DOMResponseWriter)
-        sm.writeState(context, sv);
+            start = System.nanoTime();
+            sm.writeState(context, sv);
+            if (log.isDebugEnabled()) {
+                log.debug("Serialized state written in: " + (System.nanoTime() - start) / 1e9f + "seconds");
+            }
+        } catch (IOException ioe) {
+            log.error("IOException saving state: ",  ioe);
+        } finally {
 
-        // turn off state saving node capture
-        if (writer != null && (writer instanceof DOMResponseWriter)) {
-            ((DOMResponseWriter) writer).setSaveNextNode(false);
-        }
-
-        context.getViewRoot().getAttributes().put( STATE_WRITTEN, Boolean.TRUE );
-        if (log.isDebugEnabled()) {
-            log.debug("State saved and serialized in " + (System.nanoTime() - start) / 1e9f + " seconds");
-        }
+           // turn off state saving node capture
+            if (writer != null && (writer instanceof DOMResponseWriter)) {
+                ((DOMResponseWriter) writer).setSaveNextNode(false);
+                ((DOMResponseWriter) writer).copyStateNodesToMarkers();                
+            }
+        } 
     }
+
+
 
     public Locale calculateLocale(FacesContext context) {
         Application application = context.getApplication();
