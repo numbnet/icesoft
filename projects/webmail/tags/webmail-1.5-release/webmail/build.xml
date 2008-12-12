@@ -1,0 +1,139 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+  -->
+<project name="webmail" default="build.war" >
+
+    <!-- The basic build.properties file for customization -->
+    <property file="build.properties"/>
+
+    <!-- compile settings overridden from -->
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
+
+    <!-- path to applicaiton libraries -->
+    <property name="proj.lib.dir" location="lib/"/>
+
+    <property name="common.build.dir" location="../../../../icefaces/trunk/icefaces/samples/etc/" />
+
+    <patternset id="additional.compile.lib.jars"
+            includes="servlet-api.jar " />
+
+    <patternset id="additional.icefaces.lib.jars.to.include"
+        includes="krysalis-jCharts-1.0.0-alpha-1.jar" />
+	
+    <!-- common application build include -->
+    <import file="${common.build.dir}/build-common.xml"/>
+
+     <!-- jars needed for form Facelets -->
+    <patternset id="facelets.jars"
+                includes="
+        icefaces-facelets.jar
+        el-api.jar
+        el-ri.jar
+        "
+            />
+	
+    <!-- jars needed for form validation -->
+    <patternset id="validation.jars"
+                includes="
+        commons-validator-1.2.0.jar
+        oro-gump-28042006.jar
+        "
+            />
+    <!-- jars needed for JavaMail -->
+    <patternset id="javaMail.jars"
+                includes="
+        dsn.jar
+        imap.jar
+        mail.jar
+        mailapi.jar
+        pop3.jar
+        smtp.jar
+        activation.jar
+        "
+            />
+
+    <!-- jars needed for hibernate -->
+    <patternset id="hibernate.jars"
+                includes="
+        ehcache-1.1.jar
+        commons-logging-1.0.4.jar
+        c3p0-0.9.0.jar
+        asm-attrs.jar
+        dom4j-1.6.1.jar
+        antlr-2.7.6rc1.jar
+        cglib-2.1.3.jar
+        asm.jar
+        commons-collections-2.1.1.jar
+        hibernate3.jar
+        jta.jar
+        jdbc2_0-stdext.jar
+        jboss-cache.jar
+        jboss-common.jar
+        jboss-jmx.jar
+        jboss-system.jar
+    "
+            />
+
+    <target name="clean" depends="common.clean">
+        <delete quiet="true">
+            <fileset dir="${app.lib.dir}" includes="*.jar" />
+        </delete>
+        <delete dir="${app.lib.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <compile>
+            <add.javac.elements >
+                <classpath>
+                    <fileset dir="${proj.lib.dir}" includes="*.jar"/>
+                </classpath>
+            </add.javac.elements>
+        </compile>
+    </target>
+
+    <target name="build.war" depends="compile">
+        
+        <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <fileset dir="${proj.lib.dir}">
+				<patternset refid="facelets.jars"/>
+                <patternset refid="hibernate.jars"/>
+                <patternset refid="validation.jars"/>
+                <patternset refid="javaMail.jars"/>
+            </fileset>
+        </copy>
+
+        <build.war web.xml="web/WEB-INF/web.xml"/>
+    </target>
+
+</project>

@@ -1,0 +1,26 @@
+<!--
+The webmail splash page is responsible for providing a summary of account
+data.  This will be the default view, but can be changed in the settings
+array of the applications.
+-->
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:panelGrid
+            styleClass="contentLayoutGridStyle"
+            columnClasses="contentLayoutGridColumn"
+            columns="1" border="0">      
+            
+            <p><b>Webmail Feature Notes</b></p>
+            <ul>
+                <li>Incoming messages trigger an asynchronous update to the UI, notifying the user of new messages in the Inbox.</li>
+                <li>Contact list is automatically updated with a new contact when a message is sent to a new address.</li>
+                <li>Contacts can be added, edited, deleted and new compositions launched directly from the UI.</li>
+                <li>The user never has to hit the refresh button, a 'get mail' button or be redirected to another page to manage their mail and contacts.</li>
+                <li>Messages can be moved by dragging the envelope icon. </li>
+            </ul>
+
+    </ice:panelGrid>
+</ice:form>
+

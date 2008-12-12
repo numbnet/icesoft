@@ -1,0 +1,122 @@
+<f:view
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+    
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />    
+    
+    <!-- Setup internationalization  resouces files-->
+    <f:loadBundle
+        basename="com.icesoft.applications.faces.webmail.resources.messages"
+        var="msgs"/>
+    <html>
+        <head>
+            <meta http-equiv="Content-Type"
+                  content="text/html; charset=UTF-8"></meta>
+            <title><ice:outputText value="#{msgs['webmail.title']}"/></title>
+            <h:outputText value="#{styleBean.style}" escape="false"/>
+            <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+        </head>
+        
+        <body valign="middle" align="center">
+            
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" >
+                <tr><img src="images/spacer.gif" width="1" height="125" alt=""/></tr>
+                <tr><td align="center" valign="middle">
+                        <table border="0" cellpadding="5" cellspacing="0" width="425px"
+                               style="border: 1px solid #DEDEDE;">
+                            <tr>
+                                <!-- Branding logo-->
+                                <td align="left" width="480px" ><img src="images/header_logo.jpg"
+                                                                         width="243"
+                                                                         height="57"
+                                                                     border="0" alt="ICEsoft Webmail"/></td>
+                                <td align="left" valign="top" >
+                                    <!-- Conneciton status -->
+                                    <ice:outputConnectionStatus styleClass="outputConnectionStatus" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="2">
+                                    <table border="0" cellpadding="5" cellspacing="0">
+                                        <tr>
+                                            <td align="left">
+                                                <ice:form id="loginForm" >
+                                                    <ice:panelGrid columns="2">
+                                                        
+                                                        <ice:outputText value="Name:"/>
+                                                        <ice:inputText value="#{loginManager.loginBeanFactory.loginBean.userName}"
+                                                            style="width: 150px;height: 16px;" />
+                                                        
+                                                        <ice:outputText value="Password:"/>
+                                                        <ice:inputSecret value="#{loginManager.loginBeanFactory.loginBean.userPassword}"
+                                                            redisplay="true"
+                                                            style="width: 150px;height: 16px;" />
+                                                        <ice:outputText/>
+                                                        <!--
+                                            Login listener is called when the button is pressed
+                                            action is called after and dictates the navigation.
+                                         -->
+                                                        <ice:commandButton value="Login"
+                                                                           title="#{msgs['webmail.login.loginButton']}"
+                                                                           actionListener="#{webMailMediator.startWebmail}" />                                                        
+                                                        
+                                                        <!-- Process bar popup window section-->
+                                                        <ice:panelPopup
+                                                            draggable="true"            
+                                                            rendered="#{mailManager.showModalPanel}"
+                                                            visible="#{mailManager.showModalPanel}"
+                                                            modal="true"
+                                                            style="z-index: 1000; position: middle; width: 350px; height: 150px;">
+                                                            
+                                                            <f:facet name="header">
+                                                                <ice:panelGrid width="100%" cellpadding="0"
+                                                                               cellspacing="0" columns="2"
+                                                                               columnClasses="dummy, popupButton">
+                                                                    <ice:outputText style="color:#000000;font-size:14px;"
+                                                                                    value="Login...."/>
+                                                                    
+                                                                    <ice:commandButton id="popupClose" type="button"
+                                                                                       image="images/popupclose.gif"
+                                                                                       actionListener="#{mailManager.closeModalPopup}"
+                                                                                       style="cursor: pointer; position:absolute; top: 0px; right: 0px;"/>
+                                                                    
+                                                                </ice:panelGrid>
+                                                            </f:facet>
+                                                            
+                                                            <f:facet name="body">
+                                                                <ice:panelGrid width="100%" cellpadding="0"
+                                                                               cellspacing="0" columns="1"
+                                                                               styleClass="popupModalBody">
+                                                                    <ice:outputText
+                                                                        value="#{mailManager.processText}" 
+                                                                        style="color:#000000 ;font-size:14px;"/>
+                                                                    <ice:outputProgress
+                                                                        value="#{mailManager.process}"/>
+                                                                </ice:panelGrid>
+                                                            </f:facet>
+                                                            
+                                                        </ice:panelPopup>
+                                                    </ice:panelGrid>
+                                                    <ice:inputHidden id="errorMessage"/>
+                                                    <ice:message for="errorMessage" style="color:red"/>
+                                                    <ice:inputHidden id="loadingMessage"/>
+                                                    <ice:message for="loadingMessage" style="color:green"/>
+                                                </ice:form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table border="0" cellpadding="5" cellspacing="0" width="425px">
+                            <tr><td align="right">2006 ICEsoft Technologies Inc.</td></tr>
+                        </table>
+                        
+                </td></tr>
+            </table>
+        </body>
+    </html>
+</f:view>

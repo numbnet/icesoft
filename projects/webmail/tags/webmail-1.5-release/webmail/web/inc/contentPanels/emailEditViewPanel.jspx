@@ -1,0 +1,120 @@
+<!--
+The edit email page, alls the mailManager.selectedMailAccount.selectedMessageBean
+to be modified or sent.
+-->
+<ice:form
+        id="emailEditForm"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:panelGrid width="100%" columns="1" border="0">
+
+        <!-- Controls for sending, saving (move to drafts) and cancel -->
+        <ice:panelGrid columns="4"  border="0"
+                       cellpadding="2" styleClass="emailControls" >
+            <!-- send the current email, as long as there is a To: and Subject: field-->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        action="#{mailManager.sendSelectedMessage}"
+                        title="#{msgs['webmail.email.edit.sendCommand']}"
+                        styleClass="commandLink">
+                    <ice:graphicImage
+                            url="images/send_n.gif"
+                            alt="#{msgs['webmail.email.edit.sendCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- save the current message in the draft folder, no navigation -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        title="#{msgs['webmail.email.edit.saveCommand']}"
+                        actionListener="#{mailManager.saveSelectedMessage}"
+                        action="#{mailManager.navigateToMessageList}"
+                        styleClass="commandLink">
+                    <ice:graphicImage
+                            url="images/save_n.gif"
+                            alt="#{msgs['webmail.email.edit.saveCommand']}"
+                            width="30" height="30" styleClass="noborder" />
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- cancels the current message, the message will not be saved -->
+            <ice:commandButton
+                        action="#{mailManager.navigateToMessageList}"
+                        title="#{msgs['webmail.email.edit.cancelCommand']}"
+                        actionListener="#{mailManager.cancelSelectedMessage}"
+                        value="#{msgs['webmail.email.edit.cancelCommand']}"/>
+
+            <!-- add more recepients to list -->
+            <ice:commandButton value="#{msgs['webmail.email.edit.addMore']}"
+                actionListener="#{mailManager.addMoreRecipients}"/>
+        </ice:panelGrid>
+
+         <!-- new, foward, reply and reply all message template -->
+        <ice:panelGrid columns="1" >
+
+       		<!-- data table of recipients -->
+            <ice:panelGroup scrollWidth="420px" scrollHeight="120px" style="border: 1px solid #DEDEDE;" >
+                <ice:dataTable
+                           value="#{mailManager.selectedMailAccount.selectedMessageBean.recipientTable}"
+                           var="recipient"
+                           rows="#{mailManager.selectedMailAccount.selectedMessageBean.tableSize}" >
+                    <ice:column>
+
+                        <ice:selectOneMenu value="#{recipient.type}" partialSubmit="true">
+                            <f:selectItems value="#{mailManager.selectedMailAccount.selectedMessageBean.recipientTypes}" />
+                        </ice:selectOneMenu>
+                    </ice:column>
+
+                    <ice:column>
+                        <ice:selectInputText value="#{recipient.value}"
+                         rows="5" width="400" listVar="contact"
+                         listValue="#{recipient.matchList}"
+                         valueChangeListener="#{recipient.updateContactList}"
+                         partialSubmit="true">
+                            <f:facet name="selectInputText">
+                                <ice:panelGrid columns="2" columnClasses="acName,acEmail" style="width:100%;">
+                                    <h:outputText value="#{contact.displayName}" />
+                                    <h:outputText value="#{contact.primaryEmail}" />
+                                </ice:panelGrid>
+                            </f:facet>
+
+                        </ice:selectInputText>
+                    </ice:column>
+
+               </ice:dataTable>
+           </ice:panelGroup>
+
+        </ice:panelGrid>
+
+       <ice:panelGrid columns="2"  border="0" cellpadding="2"
+               columnClasses="emailLableColumn, emailValueColumn">
+            <!-- Subject -->
+            <ice:outputText value="#{msgs['webmail.email.edit.subject']}" />
+            <ice:inputText
+                    id="subjectField"
+                    partialSubmit="true"
+                    style="width:410px;"
+                    onblur="javascript:iceSubmitPartial(form,this,event); return false;"
+                    value="#{mailManager.selectedMailAccount.selectedMessageBean.subject}" />
+
+            <!-- Email message -->
+            <ice:outputText value="#{msgs['webmail.email.edit.body']}" />
+            <ice:inputTextarea
+                id="messageField"
+                rows="12" cols="51"
+                style="overflow: auto"
+                value="#{mailManager.selectedMailAccount.selectedMessageBean.plainTextContent}" />
+
+        </ice:panelGrid>
+
+        <!-- error messages on send -->
+        <ice:panelGrid columns="1"  border="0" >
+            <ice:inputHidden id="errorMessage"/>
+            <ice:message for="errorMessage" style="color:red"/>
+        </ice:panelGrid>
+
+    </ice:panelGrid>
+</ice:form>

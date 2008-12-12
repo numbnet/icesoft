@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+
+    <application>
+        <view-handler>
+            com.icesoft.faces.facelets.D2DFaceletViewHandler
+        </view-handler>
+    </application>
+
+    <managed-bean>
+        <description>
+            Manages render calls to the Faces Context.
+        </description>
+        <managed-bean-name>renderManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.faces.async.render.RenderManager
+        </managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>styleBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.StyleBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <!--
+        The mediator is responsible for the initialization of the applications
+        classes.  It also tries to keep each of the managers from having to
+        know to much about each other.
+      -->
+    <managed-bean>
+        <description>
+            The webmailMediator is responsible for managing the login and
+            logoff processes.  It is also provides easy access to all the sub
+            manager.
+        </description>
+        <managed-bean-name>webMailMediator</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.WebmailMediator
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>loginManager</property-name>
+            <value>#{loginManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>tasksManager</property-name>
+            <value>#{tasksManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>contactManager</property-name>
+            <value>#{contactManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>mailManager</property-name>
+            <value>#{mailManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>navigationManager</property-name>
+            <value>#{navigationManager}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>renderManager</property-name>
+            <value>#{renderManager}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The RegisterLoginBean, used for registered users.
+        </description>
+        <managed-bean-name>registeredLoginBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.login.RegisteredLoginBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The LoginBeanFactory is responsible for generating login beans.
+        </description>
+        <managed-bean-name>loginBeanFactory</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.login.LoginBeanFactory
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The loginManager is responsible for login related tasks
+        </description>
+        <managed-bean-name>loginManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.login.LoginManager
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>loginBeanFactory</property-name>
+            <value>#{loginBeanFactory}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The contactManager is responsible for contact related tasks
+        </description>
+        <managed-bean-name>contactManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.contacts.ContactManager
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The tasksManager is responsible for tasks related tasks
+        </description>
+        <managed-bean-name>tasksManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.tasks.TasksManager
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The mailManager is responsible for mail related tasks
+        </description>
+        <managed-bean-name>mailManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.mail.MailManager
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            The navigation is responsible for navigation related tasks
+        </description>
+        <managed-bean-name>navigationManager</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.webmail.navigation.NavigationManager
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <converter>
+            <converter-id>longString</converter-id>
+            <converter-class>
+                com.icesoft.applications.faces.webmail.util.converter.LongStringConverter
+            </converter-class>
+    </converter>
+
+    <!--
+        ICEfaces navigation rules.  Navigation for this applications is quite
+        simple, if login verification is successfull the users navigates to the
+        ./webmail/webamail.ifaces page. If the login verification fales then
+        the user stays on the login.ifaces page.
+     -->
+    <!-- Successful login -->
+    <navigation-rule>
+        <from-view-id>/login.iface</from-view-id>
+        <navigation-case>
+            <from-outcome>loginSuccess</from-outcome>
+            <to-view-id>/webmail.iface</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <!-- Login failure -->
+        <navigation-case>
+            <from-outcome>loginFailure</from-outcome>
+            <to-view-id>/login.iface</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <!-- Logout button -->
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>logoutSuccess</from-outcome>
+            <to-view-id>/index.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+</faces-config>
