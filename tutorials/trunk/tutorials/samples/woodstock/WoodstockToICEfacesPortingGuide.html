@@ -1,0 +1,98 @@
+w<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Woodstock to ICEfaces Porting Guide</title>
+  <link href="css/woodstock-styles.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+</style>
+</head>
+<body>
+<h2>Woodstock to ICEfaces Porting Guide<br>
+</h2>
+<p>This document will guide you through the process of porting Woodstock
+applications to ICEfaces.&nbsp; The porting process is devised to be
+evolutionary in nature, allowing you to maintain a functional Woodstock
+application, while incrementally porting Woodstock pages to
+ICEfaces.&nbsp; The ultimate goal of the porting process is to entirely
+eliminate Woodstock from the application, leaving you with a pure
+ICEfaces application where you can take full advantage of all the rich
+features provided in the ICEfaces framework.<br>
+<br>
+The migration support in ICEfaces is based on project-level coexistence
+with Woodstock, which means ICEfaces and Woodstock pages can
+coexist in the same web application.&nbsp; The approach is <span
+ style="font-weight: bold;">NOT</span> intended to support page-level
+coexistence of ICEfaces and Woodstock, where components from both
+frameworks are included in the same
+page.&nbsp; That being said, subsequent releases of ICEfaces will
+include selectively ported Woodstock components that will exist as
+first-class citizens of the ICEfaces framework.&nbsp; The availability
+of these components will ease the page-level porting effort, but not
+eliminate it.&nbsp; <br>
+<br>
+The majority of Woodstock applications are based on the Visual JSF
+project type in NetBeans, so this guide focuses on this particular
+migration path.&nbsp; If your application leverages Woodstock in some
+other programming model like Facelets, most of the concepts presented
+here will still apply.&nbsp; The guide is presented in three parts.<br>
+<ul>
+  <li><a href="PortingGuidePart1.html">Part 1</a><span
+ style="font-weight: bold;"> </span>covers all the basics related to
+the porting process, including:</li>
+  <ul>
+    <li>Adding the ICEfaces plugins to NetBeans</li>
+    <li>Adding ICEfaces to an existing Woodstock application</li>
+    <li>Refactoring the data model to eliminate component bindings<br>
+    </li>
+    <li>Adding ICEfaces pages to an existing Woodstock application</li>
+    <li>Component by component porting of a Woodstock page to ICEfaces</li>
+    <li>Navigation between ICEfaces and Woodstock Pages</li>
+    <li>Leveraging Automatic Ajax features in ICEfaces<br>
+      <br>
+    </li>
+  </ul>
+  
+  <li><a href="PortingGuidePart2.html">Part 2</a> focuses on issues
+      related to porting data tables, including:</li>
+  <ul>
+    <li>Eliminating component bindings</li>
+    <li>Creating an ICEfaces data table</li>
+    <li>Porting the working example to use the new data table</li>
+    <li>Modifying the navigation</li>
+    <li>Working with sortable headers in the data table<br>
+      <br>
+    </li>
+  </ul>
+  <li><a href="PortingGuidePart3.html">Part 3</a> examines Single Page
+    Interfaces and illustrates techniques in ICEfaces to achieve
+    them.&nbsp; <br>
+    <span style="font-style: italic;">Note: Part 3 of the guide is
+    still under construction and will be available soon.</span><br
+ style="font-style: italic;">
+  </li>
+</ul>
+Other resources related to this guide include:<br>
+<ul>
+  <li><a
+ href="TwoPageCrudTable_Part1.zip">Part
+1 NetBeans project download</a><br>
+  </li>
+  <li><a
+ href="TwoPageCrudTable_Part2.zip">Part
+2 NetBeans project download</a><br>
+  </li>
+  <li><a
+ href="http://www.icefaces.org/main/resources/woodstock-icefaces-mapping.iface" target="_blank">Woodstock
+to ICEfaces Component Mapping Matrix</a></li>
+  <li><a
+ href="http://www.icefaces.org/JForum/forums/show/27.page" target="_blank">Woodstock
+to ICEfaces Migration Forum</a></li>
+  <li><a
+ href="http://component-showcase.icefaces.org/component-showcase/showcase.iface" target="_blank">ICEfaces
+Component Showcase</a></li>
+  <li><a href="http://www.icefaces.org/main/resources/tutorials.iface" target="_blank">Other
+ICEfaces Tutorials</a></li>
+</ul>
+</body>
+</html>

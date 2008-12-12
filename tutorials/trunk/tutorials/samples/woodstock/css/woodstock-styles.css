@@ -1,0 +1,171 @@
+/* Component Tutorial Style Sheet */
+
+
+/*
+Generic site wide styles
+*/
+body {
+	color: #666666;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	margin: 10px 10px 10px 10px;
+	font-size: 14px;
+}
+
+.style2 {font-size: 14px}
+
+.style3 {font-family: "Courier New", Courier, monospace}
+
+.style4 {font-family: Arial, Helvetica, sans-serif; font-size: 12; font-weight: bold}
+
+.style5 {font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold}
+
+/* default anchor style */
+a.nodec, a:link, a:visited, a:hover  {
+   color: #0000FF;
+   font-weight: normal;
+   text-decoration: underline;
+}
+
+a:hover{
+    color: #666666;
+}
+
+/* header styles */
+h1{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 18px;
+    font-style: Normal;
+    font-weight: bold;
+	color: #666666
+}
+
+/* Default paragraph text */
+p, li{
+    font-size: 12px;
+    color: #000000;
+    line-height: 150%;
+}
+
+/* default iamges */
+img{
+    border: 0px;
+}
+
+/* special case formating rules */
+
+/* code blocks */
+.code-java, .code-jsf, .code-html, .code-xml, .object-name, .object-attribute{
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+	color: #333333;
+	background-color: CCCCCC;
+}
+
+.object-attribute{
+    font-style: italic;	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+	color: #333333;
+	border: 1px solid black;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+	background-color: #EFEFEF;
+}
+.object-attribute-table{
+    font-style: normal;	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+	color: #333333;
+	border: 1px solid black;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+	background-color: #EFEFEF;
+}
+
+/* image includes */
+.screenshot{
+    text-align: center;
+}
+
+/* demo instructions */
+.demo-instruction {
+    border: 1px solid black;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    background-color: #EFEFEF;
+    padding-left: 10px;
+	font-weight: normal
+}
+
+.demo-instruction h3{
+    font-size: 14px;
+    color: #000000;
+    font-weight: bold;
+}
+.demo-instruction ul li{
+
+}
+
+/* Examples table */
+.examplesTable {
+    border: 1px solid black;
+}
+
+/* TLD table */
+.tldTable {
+	border: 1px solid #333333;
+	width: 1000px;
+
+
+    cellpadding="2";
+    cellspacing="2";
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #666666;
+	border: thin solid #CCCCCC;
+	font-weight: normal;
+}
+.tldTableHeader {
+	font-size: 18px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	text-align: center;
+
+	cellpadding="8";
+	line-height: 200%;
+	border: thin solid #999999;
+}
+
+.tldTableHeaderRow {
+	colspan="3";
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+	line-height: 200%;
+	
+}
+
+.headerTitle, .bodyExample, .bodyNotes, .bodySource {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.headerTitle{
+    font-weight: bold;
+    color: #666666;
+    text-align: Left;
+    font-style: normal;
+}
+
+.bodyExample, .bodyNotes, .bodySource{
+    font-size: 12px;
+    color: #000000;
+}
+
+
+/* header footer formating */
+.tutorialHeaderText, .tutorialFooterText{
+
+}
