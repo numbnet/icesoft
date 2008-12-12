@@ -588,6 +588,18 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     /**
+     * Retrieve the parent Node of the JSF state saving set of nodes. May be null
+     * if the state saving method has not been turned on (and state written) in the
+     * event that full JSF state saving is not configured.
+     *
+     * @return <div> node parent containing JSF state saving children
+     */
+    public Node getSavedNode() {
+        return savedJSFStateCursor;
+    }
+
+
+    /**
      * Copy the one generated stateSaving branch into all the marker (one per form)
      * node areas. <p>
      * This method shouldn't be called if state saving is not enabled 
