@@ -34,6 +34,8 @@
 <div class="exampleBox  splashContainer"
      style="background: url('./xmlhttp/css/rime/css-images/contentContainer_bg.gif') top repeat-x">
     
+<h4><pre>Traducci&oacute;n al espa&ntilde;ol ser&aacute; siempre la mayor brevedad</pre></h4>
+
     <p>The ICEfaces Component Suite provides a complete set of enhanced
         standard and custom JavaServer Faces (JSF) components. These
         components provide the following additional benefits over other JSF
