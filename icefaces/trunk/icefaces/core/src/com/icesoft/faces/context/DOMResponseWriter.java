@@ -39,6 +39,7 @@ import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
@@ -69,6 +70,7 @@ import java.util.ListResourceBundle;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.List;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -81,6 +83,8 @@ public class DOMResponseWriter extends ResponseWriter {
     public static final String DOCTYPE_ROOT = "com.icesoft.doctype.root";
     public static final String DOCTYPE_OUTPUT = "com.icesoft.doctype.output";
     public static final String DOCTYPE_PRETTY_PRINTING = "com.icesoft.doctype.prettyprinting";
+
+    private List markerNodes = new ArrayList();
 
     private static final BundleResolver bridgeMessageResolver = new FailoverBundleResolver("bridge-messages", new ListResourceBundle() {
         protected Object[][] getContents() {
@@ -571,8 +575,9 @@ public class DOMResponseWriter extends ResponseWriter {
             // breaks because it ascends the hierarchy until it finds a node that does have an Id
             // which is usually the containing form. This results in all the Forms children being
             // serialized.
+                                                                 
             cursor = document.createElement("div");
-            ((Element) cursor).setAttribute("id", "stateSavingDiv" ); 
+            ((Element) cursor).setAttribute("id", "stateSavingDiv" );
 
         } else {
             // swap cursor with savedNode
@@ -582,15 +587,62 @@ public class DOMResponseWriter extends ResponseWriter {
         }
     }
 
+    /**
+     * Copy the one generated stateSaving branch into all the marker (one per form)
+     * node areas. <p>
+     * This method shouldn't be called if state saving is not enabled 
+     */
+    public void copyStateNodesToMarkers() {
+
+        Iterator i = markerNodes.iterator();
+        while (i.hasNext()) {
+
+            Node n = (Node) i.next();
+            if ((n != null) && (savedJSFStateCursor != null)) {
+
+                String nodeValue;
+
+                // The View state consists of 4 sibling text nodes. We need to find the one
+                // with the actual id, and preserve that ID in the PersistentFacesState object
+                // so that server push operations can restore state as well.
+
+                for (Node child = savedJSFStateCursor.getFirstChild(); child != null; child = child.getNextSibling() ) {
+
+                    nodeValue = child.getNodeValue();
+                    if (nodeValue != null && nodeValue.indexOf("j_id") > -1) {
+                        PersistentFacesState.getInstance().setStateRestorationId( nodeValue );
+                        if (log.isDebugEnabled()) {
+                            log.debug("State id for server push state saving: " + nodeValue );
+                        }
+                    }
+                    n.appendChild( child.cloneNode( true ));
+                }
+            }
+        }
+        markerNodes.clear();
+    }
 
     /**
-     * Retrieve the parent Node of the JSF state saving set of nodes. May be null
-     * if the state saving method has not been turned on (and state written) in the
-     * event that full JSF state saving is not configured.
-     *
-     * @return <div> node parent containing JSF state saving children
+     * Keep the marker nodes (1 per form) in a structure so that at the end
+     * of the lifecycle we can copy the state saving information into each
+     * one.
+     * 
+     * @param n Placeholding node inside the form to hold state saving info
      */
-    public Node getSavedNode() {
-        return savedJSFStateCursor;
+    public void trackMarkerNode(Node n) {
+       markerNodes.add( n );
+    } 
+
+
+
+    private void displayParent(Node n) {
+        System.out.println("Node: " + n);
+        Node parent = n.getParentNode();
+        if (parent != null) {
+            displayParent(parent);
+        } else {
+            System.out.println("-- done");
+        }
+
     }
-}
+} 
