@@ -166,6 +166,7 @@ public class DOMResponseWriter extends ResponseWriter {
         }
         document = null;
         cursor = null;
+        savedJSFStateCursor = null;
     }
 
     public void flush() throws IOException {
