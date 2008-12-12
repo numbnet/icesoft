@@ -189,15 +189,6 @@ store.remove(request.getParameter("remove")); %>
 
 <p>The page is completely refreshed upon the addition or removal of each item. </p>
 
-<div class="demo-instruction">
-    <h3>See the demo:</h3>
-    <ul>
-        <li>See the jspStorePart1 demo for your self by clicking
-            <a href="/jspStorePart1/" target="_blank">here</a>.
-        </li>
-    </ul>
-</div>
-
 <a  name="part2" ></a>
 <h2>Part II: Partial ICEfaces Inclusion</h2>
 
@@ -282,15 +273,6 @@ Now we will use a new file, cart.jsp, for an ICEfaces include. Since we are usin
 
 <p>The cart portion will now update without a page refresh, updating its values via the ICEfaces bridge. The shop will still require a page refresh to reflect the changes made by the cart.</p>
 
-<div class="demo-instruction">
-    <h3>See the demo:</h3>
-    <ul>
-        <li>See the jspStorePart2 demo for your self by clicking
-            <a href="/jspStorePart2/" target="_blank">here</a>.
-        </li>
-    </ul>
-</div>
-
 <a  name="part3" ></a>
 <h2>Part III: Multiple ICEfaces Includes</h2>
 <p>
@@ -371,15 +353,6 @@ The contents of cart.jsp is almost identical to the new file shop.jsp. Instead o
 
 <p>The store is now entirely fueled by ICEfaces. Addition and removal of items results in flicker-free page updates without refreshing.</p>
 
-<div class="demo-instruction">
-    <h3>See the demo:</h3>
-    <ul>
-        <li>See the jspStorePart3 demo for your self by clicking
-            <a href="/jspStorePart3/" target="_blank">here</a>.
-        </li>
-    </ul>
-</div>
-
 <a  name="part4" ></a>
 <h2>Part IV: Server-Initiated Rendering</h2>
 
@@ -444,15 +417,6 @@ state = PersistentFacesState.getInstance();
 // add the bean to store's onDemandRenderer
 storeBean.addRenderBean(this);
 </pre>
-
-<div class="demo-instruction">
-    <h3>See the demo:</h3>
-    <ul>
-        <li>See the jspStorePart4 demo for your self by clicking
-            <a href="/jspStorePart4/" target="_blank">here</a>.
-        </li>
-    </ul>
-</div>
 
 <!-- footer section -->
 <hr/>
