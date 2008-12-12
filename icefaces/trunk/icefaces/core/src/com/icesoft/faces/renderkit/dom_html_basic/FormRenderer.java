@@ -37,8 +37,7 @@ import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +45,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.faces.FacesException;
-import javax.faces.render.ResponseStateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.NamingContainer;
@@ -56,7 +54,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.List;
 
 public class FormRenderer extends DomBasicRenderer {
 
@@ -65,6 +62,8 @@ public class FormRenderer extends DomBasicRenderer {
     private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY =
             "com.icesoft.faces.FormRequiredHidden";
     private static final Log log = LogFactory.getLog(FormRenderer.class);
+
+    public static final String STATE_SAVING_MARKER = "stateSavingMarker";
     
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
     
@@ -199,42 +198,23 @@ public class FormRenderer extends DomBasicRenderer {
         }
 
         facesContext.getApplication().getViewHandler().writeState(facesContext);
-        // Retrieve the Node created by that state saving operation and
-        // add it to the form root (otherwise it winds up outside the Form)
+        // Currently we have to put the marker node in the DOM here, because
+        // the DOMResponseWriter doesn't have the same View of the DOM as this object does,
+        // because this object isn't using the DOMResponseWriter. 
         ResponseWriter writer = facesContext.getResponseWriter();
-        if (writer != null && (writer instanceof DOMResponseWriter)) {
 
-            Node  node =  ((DOMResponseWriter) writer).getSavedNode();  // this will be the containing <div>
-            Node copy;
-            if (node != null) {
+        if (CoreUtils.isJSFStateSaving() && (writer instanceof DOMResponseWriter)) {
+            DOMResponseWriter domWriter = (DOMResponseWriter) writer;
+            Node n = domContext.createElement("div");
 
-                // Prepend the div's id with the id of the form for uniqueness 
-                copy = node.cloneNode(true);
-                ((Element) copy).setAttribute("id", formClientId +
-                       NamingContainer.SEPARATOR_CHAR + ((Element)copy).getAttribute("id")  );
-                // Append the div, but now go search through it for the child that contains the actual
-                // id so we can preserve this for any future server push operations
-                root.appendChild(copy);
+            String id = formClientId +
+                        NamingContainer.SEPARATOR_CHAR +STATE_SAVING_MARKER;
 
-                node = node.getFirstChild();
-                boolean nextField = false;
-                while(node != null) {
-                    String nodeValue = node.getNodeValue(); 
-                    if (nodeValue != null && nodeValue.endsWith("javax.faces.ViewState\" value=\"")) {
-                        nextField = true;
-                    } else if (nextField) {
-
-                        if (log.isDebugEnabled()) {
-                            log.debug("State id for server push state saving: " + node.getNodeValue() +
-                                               ", node name: " + node.getNodeName());
-                        }
-                        PersistentFacesState.getInstance().setStateRestorationId( node.getNodeValue() );
-                        break;
-                    }
-                    node = node.getNextSibling();
-                }
-            } 
+            root.appendChild( n );
+            ((Element) n).setAttribute( "id", id );
+            domWriter.trackMarkerNode( n );
         }
+
         domContext.stepInto(uiComponent);
     }
 
