@@ -182,7 +182,6 @@ public class CoreUtils {
     }
     
     public static void setJSFStateSaving(boolean isJSFStateSaved) {
-        System.out.println("--> Setting jsf state saving to : " + isJSFStateSaved );
         jsfStateSaving = isJSFStateSaved;
     }
 
