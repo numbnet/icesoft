@@ -173,7 +173,7 @@
                          <ice:panelGroup id="selectInputDateContentPanel" >
                              <f:subview id="sdSub">
                                  <!-- Calendar Component include -->
-                                 <!--jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputDate.jspx" /-->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputDate.jspx" />
                              </f:subview>
                          </ice:panelGroup>
 
