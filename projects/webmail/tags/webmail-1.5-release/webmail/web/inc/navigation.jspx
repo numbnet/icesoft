@@ -1,0 +1,45 @@
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        id="n">
+    <!--
+        The construction of the tree navigation.  The mail account folders
+        are added dynamically to to the tree depending on the user settings.
+        The rest of the nodes are are always visible for such links as contacts,
+        tasks.
+    -->
+    <ice:panelGrid columns="1" styleClass="navigationParentBorder" >
+        <ice:tree
+                value="#{navigationManager.navigationTree.model}"
+                var="item"
+                binding="#{navigationManager.navigationTree.treeComponent}">
+            <ice:treeNode>
+                <!--
+                    Display tree nodes text command links which changes the
+                    navigation panel stack.
+                 -->
+                <f:facet name="content">
+                    <ice:panelGroup styleClass="navigationItems"
+                            effect="#{item.userObject.dropEffect}"
+                            dropTarget="#{item.userObject.enableDnd}"
+                            dropMask="hover_start"
+                            dropListener="#{item.userObject.navigationDropAction}" >
+                        <ice:graphicImage value="#{item.userObject.icon}"
+                                          style="border: 0px"/>
+                        <ice:commandLink
+                                styleClass="navigationTreeLink"
+                                actionListener="#{item.userObject.contentVisibleAction}" >
+                            <ice:outputText escape="false"
+                                    value="#{item.userObject.menuDisplayText}"/>
+                        </ice:commandLink>
+                    </ice:panelGroup>
+                </f:facet>
+            </ice:treeNode>
+        </ice:tree>
+    </ice:panelGrid>
+    
+    <ice:message for="checkMessage" style="color:green"/>
+    <ice:inputHidden id="checkMessage"/>
+
+</ice:form>

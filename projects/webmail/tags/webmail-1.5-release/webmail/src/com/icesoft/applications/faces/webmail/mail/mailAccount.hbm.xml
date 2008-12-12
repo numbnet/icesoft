@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.icesoft.applications.faces.webmail.mail.MailAccountBean"
+           table="mail_accounts">
+
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="userName" column="username"/>
+        <property name="protocol" column="protocol"/>
+        <property name="host" column="host"/>
+
+        <property name="incomingHost" column="incoming_host"/>
+        <property name="incomingPort" column="incoming_port"/>
+        <property name="incomingSsl" column="incoming_ssl" type="boolean"/>
+
+        <property name="outgoingVerification" column="outgoing_verification"
+                  type="boolean"/>
+        <property name="outgoingHost" column="outgoing_host"/>
+        <property name="outgoingPort" column="outgoing_port"/>
+        <property name="outgoingSsl" column="outgoing_ssl" type="boolean"/>
+
+        <property name="mailUsername" column="mail_username"/>
+        <property name="password" column="password"/>
+    </class>
+</hibernate-mapping>

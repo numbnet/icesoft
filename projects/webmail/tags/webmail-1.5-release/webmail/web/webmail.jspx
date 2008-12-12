@@ -1,0 +1,151 @@
+<f:view
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<!-- Setup internationalization  resouces files-->
+<f:loadBundle
+        basename="com.icesoft.applications.faces.webmail.resources.messages"
+        var="msgs"/>
+
+<ice:outputDeclaration doctypeRoot="HTML"
+		doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+		doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+<html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8"></meta>
+    <title><ice:outputText value="#{msgs['webmail.title']}"/></title>
+    <h:outputText value="#{styleBean.style}" escape="false"/>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body >
+
+<!--
+    This is the main formating table which represents a layout view for
+    the webmail applicaiton.  The components are pretty straight forward,
+    header, left menu, and body components.  The body components visibility is
+    controlled by the Navigation Manager.  Follow the includes
+    to see each individual component's makeup.
+-->
+
+<ice:panelBorder layout="hide east"
+                 border="0"
+                 cellpadding="1"
+                 cellspacing="1"
+                 styleClass="mainBorderLayout">
+
+    <f:facet name="north">
+        <ice:panelGroup>
+        <f:subview id="headerInclude">
+            <ui:include src="./inc/header.jspx"/>
+        </f:subview>
+        <f:subview id="controlsInclude">
+            <ui:include src="./inc/controls.jspx"/>
+        </f:subview>
+        </ice:panelGroup>
+    </f:facet>
+
+    <f:facet name="west">
+        <f:subview id="navInc">
+            <ui:include src="./inc/navigation.jspx"/>
+        </f:subview>
+    </f:facet>
+
+    <f:facet name="center">
+        <ice:panelGroup>
+
+            <!--
+               Main Component content;
+               controls which template will be viewed
+            -->
+            <ui:include src="#{navigationManager.navigationSelectionBean.selectedPanel.templateName}"/>
+
+        </ice:panelGroup>
+    </f:facet>
+
+    <f:facet name="south">
+
+        <ice:panelGrid columns="2" width="100%"
+                       columnClasses="folderViewAlignLeft, folderViewAlignRight" >
+
+            <!-- copyright and company stuff -->
+            <ice:panelGroup>
+                <table width="100%" cellpadding="0" cellspacing="0"><tr>
+                    <td align="center">
+                        &#169; 2006 ICEsoft Technologies Inc.
+                        &#160; &#8226; &#160; Toll Free: 1-877-263-3822 USA and
+                        Canada</td>
+                </tr></table>
+            </ice:panelGroup>
+
+            
+
+        </ice:panelGrid>
+    </f:facet>
+
+</ice:panelBorder>
+<!-- PRELOAD IMAGES need for roleovers and layout in general -->
+<div style="display: none">
+    <img src="./xmlhttp/css/xp/css-images/spacer.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-left-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-mid-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-right-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-left-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-mid-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-right-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-left-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-mid-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/on-right-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-left-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-mid-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-right-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-left-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-mid-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-right-mid.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-left-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-mid-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/off-right-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-left-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-mid-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-right-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-left-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-mid-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-off-right-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-left-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-mid-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-right-top.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-left-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-mid-bot.gif"/>
+    <img src="./xmlhttp/css/xp/css-images/tbot-on-right-bot.gif"/>
+    <!-- images for tree-->
+    <img src="./images/envelop_active.gif"/>
+    <img src="./images/folderclosed.gif"/>
+    <!-- images specific to viewing emails -->
+    <img src="./images/minus_green.gif"/>
+    <img src="./images/message_header.gif"/>
+    <!-- images specific to image state -->
+    <img src="./images/contact_delete_n.gif"/>
+    <img src="./images/contact_edit_d.gif"/>
+    <img src="./images/contact_new_d.gif"/>
+    <img src="./images/delete_n.gif"/>
+    <img src="./images/forward_n.gif"/>
+    <img src="./images/newmail_d.gif"/>
+    <img src="./images/priority_1.gif"/>
+    <img src="./images/priority_2.gif"/>
+    <img src="./images/priority_3.gif"/>
+    <img src="./images/reply_n.gif"/>
+    <img src="./images/replyall_n.gif"/>
+    <img src="./images/save_d.gif"/>
+    <img src="./images/send_d.gif"/>
+    <img src="./images/task_delete_n.gif"/>
+    <img src="./images/task_edit_n.gif"/>
+    <img src="./images/task_new_d.gif"/>
+</div>
+</body>
+</html>
+</f:view>

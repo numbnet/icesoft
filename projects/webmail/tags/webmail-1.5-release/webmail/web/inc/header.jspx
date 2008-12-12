@@ -1,0 +1,65 @@
+<!--
+The header include is pretty simple.  It provides a basic branding logo for the
+webmail applicaiton as well as the following links:
+
+- applications settings
+- logoff
+
+-->
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <!-- Branding logo-->
+            <td width="250" rowspan="2"><img src="images/header_logo.jpg"
+                                             width="243" height="57"
+                                             border="0" alt="ICEsoft Webmail"/>
+            </td>
+            <td rowspan="2">
+                <!-- Current title -->
+                <ice:outputText
+                        styleClass="headerTitleText"
+                        value="#{navigationManager.navigationSelectionBean.selectedPanel.menuContentTitle}"/>
+            </td>
+            <td align="right">
+                <ice:outputText
+                        styleClass="headerUserText"
+                        value="#{loginManager.loginBeanFactory.verifiedUser.firstName} #{loginManager.loginBean.verifiedUser.lastName}"/>
+            </td>
+
+        </tr>
+        <tr>
+            <td valign="top" align="right">
+
+                <!-- Navigate to settings panel -->
+                <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                    <ice:commandLink
+                            id="settingsButton"
+                            action="#{mailManager.navigateToSettings}"
+                            title="#{msgs['webmail.settingsCommand']}">
+                        <ice:graphicImage value="images/settings.gif"
+                                width="68" height="24"
+                                alt="#{msgs['webmail.settingsCommand']}"
+                                styleClass="noborder" />
+                   </ice:commandLink>
+                </ice:panelGroup>
+
+                <!-- logoff button -->
+                <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                    <ice:commandLink
+                            id="logoutButton"
+                            action="#{webMailMediator.shutdownWebmail}"
+                            title="#{msgs['webmail.logoutCommand']}"
+                            style="border-width: 0px;" >
+                        <ice:graphicImage value="images/logout.gif"
+                                width="67" height="23"
+                                alt="#{msgs['webmail.logoutCommand']}"
+                                styleClass="noborder" />
+                   </ice:commandLink>
+                </ice:panelGroup>
+            </td>
+        </tr>
+    </table>
+</ice:form>

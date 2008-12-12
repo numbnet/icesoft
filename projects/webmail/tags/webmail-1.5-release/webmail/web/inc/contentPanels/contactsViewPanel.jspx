@@ -1,0 +1,271 @@
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        >
+
+<ice:panelGrid columns="1" width="100%" style="text-align: left" >
+
+    <ice:panelGrid columns="2" width="100%"
+                   columnClasses="folderViewAlignLeft, folderViewAlignRight" >
+
+        <ice:panelGroup>
+            <!-- Add Contact -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder">
+                <ice:commandLink
+                        title="#{msgs['webmail.contact.select.add']}"
+                        actionListener="#{contactManager.contactListBean.addContact}"
+                        action="#{contactManager.navigateToEditContact}"
+                        rendered="#{!contactManager.contactListBean.searchMode}"
+                        styleClass="commandLink">
+                    <ice:graphicImage
+                            url="images/contact_new_n.gif"
+                            alt="#{msgs['webmail.contact.select.add']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Edit Contact -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder">
+                <ice:commandLink
+                        title="#{msgs['webmail.contact.select.edit']}"
+                        actionListener="#{contactManager.contactListBean.editContact}"
+                        action="#{contactManager.navigateToEditContact}"
+                        styleClass="commandLink"
+                        disabled="#{contactManager.contactListBean.checkCount != 1}">
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount == 1}"
+                            alt="#{msgs['webmail.contact.select.edit']}"
+                            url="images/contact_edit_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount != 1}"
+                            alt="#{msgs['webmail.contact.select.edit']}"
+                            url="images/contact_edit_d.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Delete Contact -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder">
+                <ice:commandLink
+                        title="#{msgs['webmail.contact.select.delete']}"
+                        actionListener="#{contactManager.contactListBean.deleteContact}"
+                        action="#{contactManager.navigateToContactList}"
+                        styleClass="commandLink"
+                        disabled="#{contactManager.contactListBean.checkCount == 0}">
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount > 0}"
+                            alt="#{msgs['webmail.contact.select.delete']}"
+                            url="images/contact_delete_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount == 0}"
+                            alt="#{msgs['webmail.contact.select.delete']}"
+                            url="images/contact_delete_d.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+            
+            <!--Send email with Contact -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder">
+            	<ice:commandLink
+                        title="#{msgs['webmail.contact.select.sendEmail']}"
+                        actionListener="#{contactManager.sendEmailWithContact}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        styleClass="commandLink"
+                        disabled="#{contactManager.contactListBean.checkCount == 0}">            		
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount > 0}"
+                            alt="#{msgs['webmail.contact.select.sendEmail']}"
+                            url="images/newmail_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            rendered="#{contactManager.contactListBean.checkCount == 0}"
+                            alt="#{msgs['webmail.contact.select.sendEmail']}"
+                            url="images/newmail_d.gif"
+                            width="30" height="30" styleClass="noborder"/>            
+            	</ice:commandLink>
+            </ice:panelGroup>
+        </ice:panelGroup>
+
+        <ice:panelGrid columns="3">
+
+            <ice:outputText value="#{msgs['webmail.contact.select.search']}" />
+
+            <!-- search area -->
+            <ice:panelGroup rendered="#{!contactManager.contactListBean.searchMode}">
+                <ice:inputText partialSubmit="true"
+                               value="#{contactManager.contactListBean.searchString}"/>
+                <ice:selectOneMenu partialSubmit="true"
+                                   value="#{contactManager.contactListBean.searchType}"
+                                   style="width: 140px;">
+                    <f:selectItems
+                            value="#{contactManager.contactListBean.searchTypeItems}"/>
+                </ice:selectOneMenu>
+
+                <ice:commandButton value="#{msgs['webmail.contact.select.search']}"
+                                   actionListener="#{contactManager.contactListBean.findContact}"
+                                   action="#{contactManager.navigateToSearchList}"
+                        />
+            </ice:panelGroup>
+
+            <!-- search button -->
+            <ice:commandButton rendered="#{contactManager.contactListBean.searchMode}"
+                               value="#{msgs['webmail.contact.select.backToContact']}"
+                               action="#{contactManager.navigateFromSearchList}"/>
+        </ice:panelGrid>
+
+    </ice:panelGrid>
+
+    <ice:panelGrid columns="1" width="100%" >
+        <ice:outputText value="#{msgs['webmail.contact.search.result']}"
+                        rendered="#{contactManager.contactListBean.result}"/>
+    </ice:panelGrid>
+
+    <ice:panelGrid columns="1" width="100%"  >
+        <ice:dataTable id="sortedList"
+                       width="100%"
+                       value="#{contactManager.contactListBean.contactTable}"
+                       var="contact"
+                       rows="10"
+                       rendered="#{!contactManager.contactListBean.noResult}"
+                       styleClass="taskScrollerTable"
+                       columnClasses="emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
+                       sortColumn="#{contactManager.contactListBean.sort}"
+                       sortAscending="#{contactManager.contactListBean.ascending}">
+                       
+            
+            <ice:column>
+
+                <ice:rowSelector value="#{contact.flag}" 
+                             multiple="#{contactManager.contactListBean.multipleSelection}"
+                             selectionListener="#{contactManager.contactListBean.rowSelection}"/>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="displayName" arrow="true">
+                        <ice:outputText
+                                value="#{msgs['webmail.contact.table.header.displayName']}" />
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:menuPopup id="contactsPopupMenu">
+                        <ice:menuItem id="addContact"
+                                      value="#{msgs['webmail.contact.select.add']}"
+                                      actionListener="#{contactManager.contactListBean.addContact}"
+                                      action="#{contactManager.navigateToEditContact}"
+                                      rendered="#{!contactManager.contactListBean.searchMode}"/>
+                        <ice:menuItem id="editContact"
+                                      value="#{msgs['webmail.contact.select.edit']}"
+                                      actionListener="#{contactManager.contactListBean.editContact}"
+                                      action="#{contactManager.navigateToEditContact}"
+                                      rendered="#{contactManager.contactListBean.checkCount == 1}"/>
+                        <ice:menuItem id="deleteContact"
+                                      value="#{msgs['webmail.contact.select.delete']}"
+                                      actionListener="#{contactManager.contactListBean.deleteContact}"
+                                      action="#{contactManager.navigateToContactList}"
+                                      rendered="#{contactManager.contactListBean.checkCount > 0}"/>
+                        <ice:menuItem id="mailContact"
+                                      value="#{msgs['webmail.contact.select.sendEmail']}"
+                                      actionListener="#{contactManager.sendEmailWithContact}"
+                                      action="#{mailManager.navigateToEditMessage}"
+                                      rendered="#{contactManager.contactListBean.checkCount > 0}"/>
+                    </ice:menuPopup>
+                    <!--<ice:commandLink action="#{contactManager.navigateToEditContact}"
+                                 styleClass="dataTableLink"
+                                 actionListener="#{contact.selectThisContact}">-->
+                    <ice:outputText value="#{contact.model.displayName}&#160;" escape="false" />
+                    <!--</ice:commandLink>-->
+                </ice:panelGroup>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="phoneNo" arrow="true">
+                        <ice:outputText
+                                value="#{msgs['webmail.contact.table.header.phoneNumber']}"/>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:commandLink action="#{contactManager.navigateToEditContact}"
+                                     styleClass="dataTableLink"
+                                     actionListener="#{contact.selectThisContact}">
+                        <ice:outputText value="#{contact.model.primaryPhone}&#160;" escape="false" />
+                    </ice:commandLink>
+                </ice:panelGroup>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="email" arrow="true">
+                        <ice:outputText
+                                value="#{msgs['webmail.contact.table.header.email']}"/>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:commandLink action="#{contactManager.navigateToEditContact}"
+                                     styleClass="dataTableLink"
+                                     actionListener="#{contact.selectThisContact}">
+                        <ice:outputText value="#{contact.model.primaryEmail}&#160;" escape="false" />
+                    </ice:commandLink>
+                </ice:panelGroup>                
+            </ice:column>
+
+        </ice:dataTable>
+    </ice:panelGrid>
+
+    <ice:panelGrid columns="2" width="100%" >
+        <ice:panelGroup rendered="#{!contactManager.contactListBean.noResult}">
+            <ice:commandButton
+                    id="contactSelectAllButton"
+                    value="#{msgs['webmail.label.selectAll']}"
+                    actionListener="#{contactManager.contactListBean.selectAll}"
+                    />
+            <ice:commandButton
+                    id="contactDeselectAllButton"
+                    value="#{msgs['webmail.label.deselectAll']}"
+                    actionListener="#{contactManager.contactListBean.deselectAll}"
+                    />
+        </ice:panelGroup>
+
+        <ice:dataPaginator id="contactPaginator"
+                           for="sortedList"
+                           fastStep="3"
+                           paginator="true"
+                           paginatorMaxPages="3" >
+
+            <f:facet name="first">
+                <ice:graphicImage url="images/back_all.gif"
+                                  style="border:none;" title="first page"/>
+            </f:facet>
+            <f:facet name="last">
+                <ice:graphicImage url="images/forward_all.gif"
+                                  style="border:none;" title="last page"/>
+            </f:facet>
+            <f:facet name="previous">
+                <ice:graphicImage url="images/back_single.gif"
+                                  style="border:none;" title="previous page"/>
+            </f:facet>
+            <f:facet name="next">
+                <ice:graphicImage url="images/forward_single.gif"
+                                  style="border:none;" title="next page"/>
+            </f:facet>
+            <f:facet name="fastforward">
+                <ice:graphicImage url="images/forward_double.gif"
+                                  style="border:none;" title="fast forward"/>
+            </f:facet>
+            <f:facet name="fastrewind">
+                <ice:graphicImage url="images/back_double.gif"
+                                  style="border:none;" title="fast backward"/>
+            </f:facet>
+        </ice:dataPaginator>
+    </ice:panelGrid>
+
+    <!-- Error messages -->
+    <ice:panelGrid
+            width="100%"
+            rendered="#{contactManager.contactListBean.error}">
+        <ice:outputText value="#{msgs['webmail.contact.search.error']}"/>
+    </ice:panelGrid>
+
+</ice:panelGrid>
+</ice:form>

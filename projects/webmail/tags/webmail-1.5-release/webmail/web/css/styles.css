@@ -1,0 +1,414 @@
+/*
+ Permanently enable Scroll Bars for smoother page transitions
+*/
+html {
+    overflow: scroll;
+}
+
+/*
+Generic site wide changes
+*/
+body {
+    background-color: #FFFFFF;
+    color: #666666;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    margin: 0;
+}
+
+
+/*input[disabled] {*/
+    /*background-color: rgb( 220, 220, 220 );*/
+    /*border: thin solid rgb( 190, 190, 190 );*/
+/*}*/
+
+.dropdown {
+    width: 120px;
+}
+
+/* Override style of calendar input text field */
+.iceSelInpDate{
+    width: 75px;
+}
+
+.noborder {
+    border-width: 0;
+    text-align: center;
+}
+
+.imageButton {
+    width: 26px;
+    height: 26px;
+}
+
+.commandButtonBorder {
+    padding: 2px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    margin: 4px;
+    display: inline;
+    vertical-align: top;
+    border: 1px solid rgb( 200, 200, 200 );
+}
+
+.commandButtonBorder a {
+    vertical-align: middle;
+    border: 0 solid red;
+}
+.commandButtonBorder img {
+    vertical-align: middle;
+}
+
+
+.smallCommandButtonBorder {
+    padding: 0;
+    display: inline;
+}
+
+.headerTitleText {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.pageContentIncludeTitle, .headerUserText {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Main content include stack*/
+.webmailContentPanelStack {
+    vertical-align: top;
+    width: 100%;
+    height: 500px;
+}
+/* override default panel stack state */
+.icePnlStkRow, .icePnlStkCol {
+    vertical-align: top;
+}
+
+.contentLayoutGridStyle {
+/*border: 1px solid #DEDEDE;*/
+    width: 100%; /*table-layout: fixed;*/
+}
+
+.contentLayoutGridColumn {
+    vertical-align: top;
+}
+
+/* main border layout styles, we overide properties on west, center and north from themes */
+
+.mainBorderLayout {
+    vertical-align: top;
+    width: 100%;
+}
+
+.icePnlBrdrNorth {
+    background-color: #FFFFFF;
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
+}
+
+.icePnlBrdrWest {
+    background-color: #FFFFFF;
+    vertical-align: top;
+    text-align: left;
+    width: 30%;
+    padding: 5px;
+}
+
+.icePnlBrdrCenter{
+    background-color: #FFFFFF;
+    vertical-align: top;
+    text-align: left;
+    width: 70%;
+}
+
+/* Folder view styles */
+.folderViewAlignLeft {
+    text-align: left;
+}
+
+.folderViewAlignRight {
+    text-align: right;
+}
+
+/* task data table view  */
+
+.taskScrollerTable {
+    width: 100%;
+    text-align: center;
+    border: 1px solid #DEDEDE;
+}
+
+/* email message view  */
+.emailHeader {
+    border: 1px solid #DEDEDE;
+    text-align: left;
+    width: 95%;
+}
+.emailControls {
+    border: 1px solid #DEDEDE;
+}
+
+.emailContent {
+    border: 1px solid #DEDEDE;
+
+}
+
+.infoBox table {
+    border-style: ridge;
+    border-width: 1px;
+    width: 100%;
+    padding: 10px;
+    background-color: #eee;
+
+}
+
+.infoBox {
+    width: 300px;
+    background-color: silver;
+    margin-bottom: 30px;
+}
+
+.infoBox h3 {
+    text-align: center;
+    color: white;
+    background-color: orange;
+    margin: 0;
+}
+
+.infoBox input:hover {
+    background-color: #66CCFF;
+}
+
+
+/* feed back frorm */
+.feebackFormLink {
+    color: blue;
+    font-size: 12px;
+    vertical-align:text-top;
+}
+
+/* email view column sytles */
+
+.emailColumnLeftAlign, .emailColumnRightAlign, .emailColumnCenterAlign {
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 0;
+}
+
+.emailColumnCenterAlign {
+    text-align: center;
+}
+
+.emailColumnLeftAlign {
+    text-align: left;
+}
+
+.emailColumnRightAlign {
+    text-align: right;
+}
+
+.taskColumnLeftAlign, .taskColumnRightAlign, .taskColumnCenterAlign {
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 0;
+}
+
+.taskColumnCenterAlign {
+    text-align: center;
+}
+
+.taskColumnLeftAlign {
+    text-align: left;
+}
+
+.taskColumnRightAlign {
+    text-align: right;
+}
+
+.contactColumnLeftAlign, .contactColumnRightAlign, .contactColumnCenterAlign {
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 0;
+}
+
+.contactColumnCenterAlign {
+    text-align: center;
+}
+
+.contactColumnLeftAlign {
+    text-align: left;
+}
+
+.contactColumnRightAlign {
+    text-align: right;
+}
+
+/* progress bar tweak */
+.bgStyleClass {
+    width: 50px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    border-collapse: collapse;
+}
+
+.settingPanelTab {
+    width: 100%;
+    height: 350px;
+}
+
+.accountSettingsTabLayout {
+
+}
+
+.emailLableColumn{
+    vertical-align: top;
+}
+.emailValueColumn{
+
+}
+
+.navigationParentBorder{
+    width: 290px;
+    height: 450px;
+    border: 1px solid #DEDEDE;
+    text-align: left;
+    table-layout: fixed;
+}
+
+.navigationParentBorder td{
+    width: 290px;
+    height: 450px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.navigationItems{
+    display: inline;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+
+.navigationTreeLink.nodec, .dataTableLink.nodec, .commandLink.nodec {
+   color: #0000FF;
+   font-family: Arial, sans-serif;
+   font-weight: normal;
+   text-decoration: none;
+}
+.navigationTreeLink:link, .dataTableLink:link, .commandLink:link {
+   color: #0000FF;
+   font-family: Arial, sans-serif;
+   font-weight: normal;
+   text-decoration: none;
+}
+.navigationTreeLink:visited, .dataTableLink:visited, .commandLink:visited {
+   color: #0000FF;
+   font-family: Arial, sans-serif;
+   font-weight: normal;
+   text-decoration: none;
+}
+.navigationTreeLink:hover, .dataTableLink:hover, .commandLink:hover {
+   color: #0000A0;
+   font-family: Arial, sans-serif;
+   text-decoration: underline;
+   font-weight: normal;
+}
+
+.navigationTreeLink:hover{
+    background-color: #DEDEDE;
+}
+
+.iceDatPgrScrCol a, .iceDatPgrScrCol a{
+    text-decoration:none;
+    font-weight:normal;
+    background-color:#FFFFFF;
+    color:#333333;
+    display:block;
+    padding-left:5px;
+    padding-right:5px;
+    border:1px solid #FFFFFF;
+}
+/* override the attributes for the currently selected page */
+.iceDatPgrScrCol a{
+    color:#FFFFFF;
+    border:1px solid #999999;
+    background-color:#999999;
+}
+/* set the attributes for the mouseover on none-current pages */
+.iceDatPgrScrCol a:hover{
+    color:#000000;
+    border:1px solid #666666;
+}
+
+.outputConnectionStatus {
+    width: 25px;
+    height: 25px;
+}
+
+.iceOutProg{
+    padding: 0;
+    margin: 0;
+}
+/* over ride defeault width of 300px */
+.iceOutProgBackground{
+  width: 50px;
+}
+
+.acName{
+width:50%;
+}
+
+.acEmail{
+width:50%;
+}
+
+.iceSelInpTxtRow, .iceSelInpTxtSelRow {
+    height: 15px;
+}
+
+.iceSelInpTxtSelRow {
+    color: #FFFFFF;
+}
+
+/* Styling for the MenuPopup Components */
+.iceMnuPopVrtTopSubMenu {
+    width:100px;
+}
+
+.iceMnuPopVrtItem {
+    width:100px;
+}
+
+.iceMnuPopVrtItem a {
+    text-align :left ;
+}
+
+.iceMnuPopVrtItem a div span {
+    color: #000000;
+    
+}
+
+
+.iceMnuItmImage, .iceMnuBarItemImage {
+    display :none ;
+}

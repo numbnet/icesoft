@@ -1,0 +1,239 @@
+<!--
+The tasks folder page, should list all tasks in database
+-->
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:panelGrid columns="1" width="100%">
+
+<!-- Task List controls, add, edit, delete -->
+<ice:panelGroup >
+
+    <!-- New task -->
+    <ice:panelGroup styleClass="smallCommandButtonBorder" >
+        <ice:commandLink
+                id="addTaskButton"
+                title="#{msgs['webmail.tasks.control.add']}"
+                actionListener="#{tasksManager.tasksBean.createNewTask}"
+                action="#{tasksManager.navigateToEditTask}"
+                styleClass="commandLink" >
+            <ice:graphicImage
+                    url="images/task_new_n.gif"
+                    alt="#{msgs['webmail.tasks.control.add']}"
+                    width="30" height="30" styleClass="noborder"/>
+        </ice:commandLink>
+    </ice:panelGroup>
+
+    <!-- Edit task -->
+    <ice:panelGroup styleClass="smallCommandButtonBorder" >
+        <ice:commandLink
+                id="editTaskButton"
+                title="#{msgs['webmail.tasks.control.edit']}"
+                disabled="#{tasksManager.tasksBean.checkedCount != 1}"
+                actionListener="#{tasksManager.tasksBean.editTasks}"
+                action="#{tasksManager.navigateToEditTask}"
+                styleClass="commandLink" >
+            <ice:graphicImage
+                    url="images/task_edit_n.gif"
+                    alt="#{msgs['webmail.tasks.control.edit']}"
+                    rendered="#{tasksManager.tasksBean.checkedCount == 1}"
+                    width="30" height="30" styleClass="noborder"/>
+            <ice:graphicImage
+                    url="images/task_edit_d.gif"
+                    alt="#{msgs['webmail.tasks.control.edit']}"
+                    rendered="#{tasksManager.tasksBean.checkedCount != 1}"
+                    width="30" height="30" styleClass="noborder"/>
+        </ice:commandLink>
+    </ice:panelGroup>
+
+    <!-- delete task -->
+    <ice:panelGroup styleClass="smallCommandButtonBorder" >
+        <ice:commandLink
+                id="deleteTaskButton"
+                title="#{msgs['webmail.tasks.control.delete']}"
+                actionListener="#{tasksManager.tasksBean.deleteTasks}"
+                styleClass="commandLink"
+                disabled="#{tasksManager.tasksBean.checkedCount == 0}" >
+            <ice:graphicImage
+                    url="images/task_delete_n.gif"
+                    alt="#{msgs['webmail.tasks.control.delete']}"
+                    rendered="#{tasksManager.tasksBean.checkedCount > 0 }"
+                    width="30" height="30" styleClass="noborder"/>
+            <ice:graphicImage
+                    url="images/task_delete_d.gif"
+                    alt="#{msgs['webmail.tasks.control.delete']}"
+                    rendered="#{tasksManager.tasksBean.checkedCount == 0 }"
+                    width="30" height="30" styleClass="noborder"/>
+        </ice:commandLink>
+    </ice:panelGroup>
+
+</ice:panelGroup>
+
+<!-- Taks list page controls -->
+<ice:dataPaginator id="taskScroller"
+                   for="tasksTable"
+                   fastStep="3"
+                   pageCountVar="pageCount"
+                   pageIndexVar="pageIndex"
+                   paginator="true"
+                   paginatorMaxPages="5"
+                   style="text-align: right;">
+            <f:facet name="first">
+                <ice:graphicImage url="images/back_all.gif"
+                                  style="border:none;" title="first page"/>
+            </f:facet>
+            <f:facet name="last">
+                <ice:graphicImage url="images/forward_all.gif"
+                                  style="border:none;" title="last page"/>
+            </f:facet>
+            <f:facet name="previous">
+                <ice:graphicImage url="images/back_single.gif"
+                                  style="border:none;" title="previous page"/>
+            </f:facet>
+            <f:facet name="next">
+                <ice:graphicImage url="images/forward_single.gif"
+                                  style="border:none;" title="next page"/>
+            </f:facet>
+            <f:facet name="fastforward">
+                <ice:graphicImage url="images/forward_double.gif"
+                                  style="border:none;" title="fast forward"/>
+            </f:facet>
+            <f:facet name="fastrewind">
+                <ice:graphicImage url="images/back_double.gif"
+                                  style="border:none;" title="fast backward"/>
+            </f:facet>
+</ice:dataPaginator>
+
+<!-- Task List output -->
+<ice:dataTable
+        id="tasksTable"
+        value="#{tasksManager.tasksBean.taskList}"
+        var="task"
+        rows="10"
+        styleClass="taskScrollerTable"
+        columnClasses="taskColumnCenterAlign, taskColumnLeftAlign, taskColumnLeftAlign, taskColumnLeftAlign, taskColumnLeftAlign, taskColumnLeftAlign"
+        sortColumn="#{tasksManager.tasksBean.sort}"
+        sortAscending="#{tasksManager.tasksBean.ascending}">
+  
+    <ice:column>
+        
+           <ice:rowSelector value="#{task.selected}" 
+                             multiple="#{tasksManager.tasksBean.multipleSelection}"
+                             selectionListener="#{tasksManager.tasksBean.rowSelection}"/>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="priorityColumn"
+                                   arrow="true">
+                <ice:outputText value="Priority"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:panelGroup menuPopup="taskPopup">
+            <ice:graphicImage
+                value="images/priority_#{task.priority}.gif"/>
+            <ice:menuPopup id="taskPopup" >
+                <ice:menuItem id="addMenuItem"
+                              value="#{msgs['webmail.tasks.control.add']}"
+                              actionListener="#{tasksManager.tasksBean.createNewTask}"
+                              action="#{tasksManager.navigateToEditTask}"/>
+                <ice:menuItem id="editMenuItem"
+                              value="#{msgs['webmail.tasks.control.edit']}"
+                              actionListener="#{tasksManager.tasksBean.editTasks}"
+                              action="#{tasksManager.navigateToEditTask}"
+                              rendered="#{tasksManager.tasksBean.checkedCount == 1}"/>
+                <ice:menuItem id="deleteMenuItem" 
+                              value="#{msgs['webmail.tasks.control.delete']}"
+                              actionListener="#{tasksManager.tasksBean.deleteTasks}"
+                              rendered="#{tasksManager.tasksBean.checkedCount > 0 }"/>
+            </ice:menuPopup>
+        </ice:panelGroup>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="nameColumn"
+                                   arrow="true">
+                <ice:outputText value="Name"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:panelGroup menuPopup="taskPopup">
+            <ice:commandLink
+                styleClass="dataTableLink"
+                action="#{tasksManager.navigateToEditTask}"
+                actionListener="#{task.changeSelectedTask}" >
+                <ice:outputText value="#{task.name}&#160;" escape="false" />
+            </ice:commandLink>
+        </ice:panelGroup>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="startDateColumn"
+                                   arrow="true">
+                <ice:outputText value="Start Date"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:panelGroup menuPopup="taskPopup">
+            <ice:commandLink action="#{tasksManager.navigateToEditTask}"
+                             styleClass="dataTableLink"
+                             actionListener="#{task.changeSelectedTask}">
+                <ice:outputText value="#{task.startDate}&#160;" escape="false" />
+            </ice:commandLink>
+        </ice:panelGroup>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="endDateColumn"
+                                   arrow="true">
+                <ice:outputText value="End Date"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:panelGroup menuPopup="taskPopup">
+            <ice:commandLink action="#{tasksManager.navigateToEditTask}"
+                             styleClass="dataTableLink"
+                             actionListener="#{task.changeSelectedTask}" >
+                <ice:outputText value="#{task.endDate}&#160;" escape="false" />
+            </ice:commandLink>
+        </ice:panelGroup>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="statusColumn"
+                                   arrow="true">
+                <ice:outputText value="Status"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:panelGroup menuPopup="taskPopup">
+            <ice:commandLink action="#{tasksManager.navigateToEditTask}"
+                             styleClass="dataTableLink"
+                             actionListener="#{task.changeSelectedTask}" >
+                <ice:outputText value="#{task.statusAsString}&#160;" escape="false" />
+            </ice:commandLink>
+        </ice:panelGroup>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">
+            <ice:commandSortHeader columnName="percentColumn"
+                                   arrow="true">
+                <ice:outputText value="Percent"/>
+            </ice:commandSortHeader>
+        </f:facet>
+        <ice:outputProgress value="#{task.percentComplete}"
+                            label="#{task.percentComplete}%"
+                            labelPosition="embed"/>
+    </ice:column>
+</ice:dataTable>
+
+<ice:panelGroup>
+	<ice:commandButton 
+			id="taskSelectAllButton"
+			value="#{msgs['webmail.label.selectAll']}"		  
+			actionListener="#{tasksManager.tasksBean.selectAll}"
+	/>
+	<ice:commandButton
+			id="taskDeselectAllButton"
+			value="#{msgs['webmail.label.deselectAll']}"
+			actionListener="#{tasksManager.tasksBean.deselectAll}"
+	/>
+</ice:panelGroup>
+
+</ice:panelGrid>
+</ice:form>

@@ -1,0 +1,172 @@
+<!--
+The email view splash page, should list all contacts in database
+-->
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:panelGrid
+            columns="1" border="0" width="90%">
+
+        <!-- Email controls, add, edit, delete -->
+        <ice:panelGroup>
+            <!-- edit to message  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        title="#{msgs['webmail.email.view.editCommand']}"
+                        rendered="#{mailManager.selectedMailAccount.selectedMailFolder.fullName == 'Drafts'}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.editSelectedMessage}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/newmail_n.gif"
+                            alt="#{msgs['webmail.email.view.editCommand']}"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.fullName == 'Drafts'}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Reply to  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="replyButton"
+                        title="#{msgs['webmail.email.view.replyCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.replyToSelectedMessage}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/reply_n.gif"
+                            alt="#{msgs['webmail.email.view.replyCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Reply to message  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="replyAllButton"
+                        title="#{msgs['webmail.email.view.replyAllCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.replyToAllSelectedMessage}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/replyall_n.gif"
+                            alt="#{msgs['webmail.email.view.replyAllCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- forward message  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="forwardButton"
+                        title="#{msgs['webmail.email.view.forwardCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.forwardSelectedMessage}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/forward_n.gif"
+                            alt="#{msgs['webmail.email.view.forwardCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- delete message  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="deleteButton"
+                        title="#{msgs['webmail.email.view.deleteCommand']}"
+                        action="#{mailManager.navigateToMessageList}"
+                        actionListener="#{mailManager.deleteCurrentMessage}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/delete_n.gif"
+                            alt="#{msgs['webmail.email.view.deleteCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- add contact to address book  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="addContactButton"
+                        title="#{msgs['webmail.email.view.addContactCommand']}"
+                        action="#{mailManager.navigateToContact}"
+                        actionListener="#{mailManager.addSender}"
+                        styleClass="commandLink" >
+                    <ice:graphicImage
+                            url="images/contact_new_n.gif"
+                            alt="#{msgs['webmail.email.view.addContactCommand']}"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+        </ice:panelGroup>
+
+
+        <!-- Message information, collapsible -->
+        <ice:panelGroup >
+            <!-- icon to collapse message details -->
+            <ice:panelGrid columns="1"  border="0"
+                           cellpadding="2" styleClass="emailHeader">
+
+                <!-- Subject and message meta data -->
+                <ice:panelGroup>
+                    <ice:panelGrid columns="2"  border="0">
+                        <ice:commandButton
+                            image="#{mailManager.selectedMailAccount.selectedMessageBean.imageSource}"
+                            action="#{mailManager.selectedMailAccount.selectedMessageBean.toggleHeaderDetails}"
+                            title="#{msgs['webmail.email.view.showHideHeader']}" />
+
+                        <ice:panelGroup >
+                            <ice:outputText value="#{msgs['webmail.email.view.subject']}" />
+                            <ice:outputText
+                                value="#{mailManager.selectedMailAccount.selectedMessageBean.subject}" />
+                        </ice:panelGroup>
+                    </ice:panelGrid>
+                </ice:panelGroup>
+
+                <!-- Message meta data-->
+                <ice:panelGroup
+                        rendered="#{mailManager.selectedMailAccount.selectedMessageBean.renderHeaderDetails}">
+                    <ice:panelGrid columns="2" cellpadding="2"
+                            columnClasses="" >
+                        <!-- from -->
+                        <ice:outputText value="#{msgs['webmail.email.view.from']}" />
+                        <ice:outputText value="#{mailManager.selectedMailAccount.selectedMessageBean.sender}" />
+                        <!-- Date -->
+                        <ice:outputText value="#{msgs['webmail.email.view.date']}" />
+                        <ice:outputText value="#{mailManager.selectedMailAccount.selectedMessageBean.sendDate}" />
+                        <!-- To -->
+                        <ice:outputText value="#{msgs['webmail.email.view.to']}" />
+                        <ice:outputText escape="false" converter="longString" value="#{mailManager.selectedMailAccount.selectedMessageBean.recipientsTo}" />
+                    	<!-- Cc -->
+                    	<ice:outputText value="#{msgs['webmail.email.view.cc']}" rendered="#{mailManager.selectedMailAccount.selectedMessageBean.ccRendered}"/>
+                    	<ice:outputText escape="false" converter="longString" 
+                    	value="#{mailManager.selectedMailAccount.selectedMessageBean.recipientsCc}" 
+                    	rendered="#{mailManager.selectedMailAccount.selectedMessageBean.ccRendered}"
+                    	/>
+                    	<!-- Bcc -->
+                    	<ice:outputText value="#{msgs['webmail.email.view.bcc']}" rendered="#{mailManager.selectedMailAccount.selectedMessageBean.bccRendered}"/>
+                    	<ice:outputText escape="false" converter="longString" 
+                    	value="#{mailManager.selectedMailAccount.selectedMessageBean.recipientsBcc}" 
+                    	rendered="#{mailManager.selectedMailAccount.selectedMessageBean.bccRendered}"
+                    	/>                    	
+                    </ice:panelGrid>
+                </ice:panelGroup>
+            </ice:panelGrid>
+        </ice:panelGroup>
+
+        <!-- Message Body -->
+        <ice:panelGroup
+                styleClass="emailContent"
+                scrollWidth="95%"
+                scrollHeight="350px" >
+
+            <ice:outputText
+                    escape="false"
+                    value="#{mailManager.selectedMailAccount.selectedMessageBean.content}" />
+        </ice:panelGroup>
+
+    </ice:panelGrid>
+</ice:form>

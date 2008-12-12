@@ -1,0 +1,351 @@
+<!--
+The email folder page, should list all mail in the respective current folder in database
+-->
+
+<ice:panelGroup
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:form id="emailSearchForm" partialSubmit="true">
+<ice:panelGrid
+        styleClass="contentLayoutGridStyle"
+        columnClasses="contentLayoutGridColumn"
+        columns="1" border="0">
+
+    <!-- foler name and stub for search pane-->
+    <ice:panelGroup>
+        <ice:panelGrid
+                columns="2"
+                width="100%"
+                columnClasses="folderViewAlignLeft, folderViewAlignRight">
+            <ice:outputText
+                    styleClass="pageContentIncludeTitle"
+                    value="#{mailManager.selectedMailAccount.selectedMailFolder.fullName}"/>
+
+            <ice:panelGroup>
+                <ice:outputText value="#{msgs['webmail.email.folder.view.search']}"/>
+                <!-- search type, from, subject and body -->
+                <ice:selectOneMenu
+                        partialSubmit="true"
+                        immediate="true"
+                        value="#{mailManager.searchType}"
+                        styleClass="dropdown">
+                    <f:selectItems value="#{mailManager.searchList}"/>
+                </ice:selectOneMenu>
+                <!-- Search input text -->
+                <ice:inputText size="30"
+                               partialSubmit="true"
+                               immediate="true"
+                               value="#{mailManager.searchTerm}"/>
+                <ice:commandButton value="#{msgs['webmail.email.folder.view.search.find']}"
+                		   action="#{mailManager.navigateToViewMessageSearch}"
+                                   actionListener="#{mailManager.searchFolder}" />
+            </ice:panelGroup>
+        </ice:panelGrid>
+    </ice:panelGroup>
+    <!-- error messages on search -->
+    <ice:inputHidden id="errorMessage"/>
+    <ice:message for="errorMessage" style="color:red"/>
+</ice:panelGrid>
+</ice:form>
+
+<ice:form  partialSubmit="true" >
+
+    <ice:panelGrid
+                columns="2"
+                width="100%"
+                columnClasses="folderViewAlignLeft, folderViewAlignRight">
+
+        <!-- Email List controls, add, edit, delete -->
+        <ice:panelGroup  >
+             <!-- New Message -->
+             <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="newMailMessage"
+                        title="#{msgs['webmail.controls.newMail']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.createNewMessage}"
+                        styleClass="imageButton" >
+                    <ice:graphicImage
+                            url="images/newmail_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Reply to message  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="replyButton"
+                        disabled="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                        title="#{msgs['webmail.email.folder.view.replyCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.replyToSelectedMessage}"
+                        styleClass="imageButton" >
+                    <ice:graphicImage
+                            url="images/reply_n.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            url="images/reply_d.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Reply to all button  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="replyAllButton"
+                        disabled="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                        title="#{msgs['webmail.email.folder.view.replyAllCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.replyToAllSelectedMessage}"
+                        styleClass="imageButton" >
+                    <ice:graphicImage
+                            url="images/replyall_n.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            url="images/replyall_d.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Forward button  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="forwardButton"
+                        disabled="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                        title="#{msgs['webmail.email.folder.view.forwardCommand']}"
+                        action="#{mailManager.navigateToEditMessage}"
+                        actionListener="#{mailManager.forwardSelectedMessage}"
+                        styleClass="imageButton" >
+                    <ice:graphicImage
+                            url="images/forward_n.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            url="images/forward_d.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 1 }"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!-- Delete button  -->
+            <ice:panelGroup styleClass="smallCommandButtonBorder" >
+                <ice:commandLink
+                        id="deleteButton"
+                        title="#{msgs['webmail.email.folder.view.deleteCommand']}"
+                        disabled="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 0 }"
+                        action="#{mailManager.navigateToMessageList}"
+                        actionListener="#{mailManager.deleteSelectedMessage}"
+                        styleClass="imageButton" >
+                    <ice:graphicImage
+                            url="images/delete_n.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount > 0 }"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            url="images/delete_d.gif"
+                            rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 0 }"
+                            width="30" height="30" styleClass="noborder"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+        </ice:panelGroup>
+
+
+        <!-- page controls -->
+        <ice:panelGroup>
+            <ice:dataPaginator id="messagesScroller"
+                               for="messagesTable"
+                               fastStep="3"
+                               pageCountVar="pageCount"
+                               pageIndexVar="pageIndex"
+                               paginator="true"
+                               paginatorMaxPages="5"
+                               style="text-align: right;">
+                <f:facet name="first">
+                    <ice:graphicImage url="images/back_all.gif"
+                                      style="border:none;" title="first page"/>
+                </f:facet>
+                <f:facet name="last">
+                    <ice:graphicImage url="images/forward_all.gif"
+                                      style="border:none;" title="last page"/>
+                </f:facet>
+                <f:facet name="previous">
+                    <ice:graphicImage url="images/back_single.gif"
+                                      style="border:none;" title="previous page"/>
+                </f:facet>
+                <f:facet name="next">
+                    <ice:graphicImage url="images/forward_single.gif"
+                                      style="border:none;" title="next page"/>
+                </f:facet>
+                <f:facet name="fastforward">
+                    <ice:graphicImage url="images/forward_double.gif"
+                                      style="border:none;" title="fast forward"/>
+                </f:facet>
+                <f:facet name="fastrewind">
+                    <ice:graphicImage url="images/back_double.gif"
+                                      style="border:none;" title="fast backward"/>
+                </f:facet>
+            </ice:dataPaginator>
+        </ice:panelGroup>
+    </ice:panelGrid>
+
+    <!-- Email List output -->
+    <!--  Table with RowSelector table-->
+    <ice:dataTable
+            id="messagesTable"
+            styleClass="taskScrollerTable"
+            columnClasses="emailColumnCenterAlign, emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
+            sortColumn="#{mailManager.selectedMailAccount.selectedMailFolder.sort}"
+            sortAscending="#{mailManager.selectedMailAccount.selectedMailFolder.ascending}"
+            value="#{mailManager.selectedMailAccount.selectedMailFolder.messageList}"
+            var="msg"
+            rows="10">
+ 
+        <!-- Drageable mail folder column -->
+        <ice:column>
+             <ice:rowSelector value="#{msg.selected}" 
+                              multiple="#{mailManager.selectedMailAccount.selectedMailFolder.multipleSelection}"
+                              selectionListener="#{mailManager.selectedMailAccount.selectedMailFolder.rowSelection}"/>
+           
+             <f:facet name="header">
+                <ice:outputText value="move"/>
+            </f:facet>
+            <ice:panelGroup
+                    menuPopup="mailMenuPopup"
+                    draggable="true"
+                    dragValue="#{msg}"
+                    dragMask="dragging,drag_cancel,hover_start,hover_end"
+                    dragOptions="dragGhost" >
+                <ice:graphicImage value="images/message_header.gif"/>
+                <ice:menuPopup id="mailMenuPopup">
+                    <ice:menuItem id="newEmail"
+                                  value="#{msgs['webmail.controls.newMail']}"
+                                  actionListener="#{mailManager.createNewMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"/>
+                    <ice:menuItem id="replyEmail"
+                                  value="#{msgs['webmail.email.folder.view.replyCommand']}"
+                                  actionListener="#{mailManager.replyToSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="replyAllEmail"
+                                  value="#{msgs['webmail.email.folder.view.replyAllCommand']}"
+                                  actionListener="#{mailManager.replyToAllSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="forwardEmail"
+                                  value="#{msgs['webmail.email.folder.view.forwardCommand']}"
+                                  actionListener="#{mailManager.forwardSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="deleteEmail"
+                                  value="#{msgs['webmail.email.folder.view.deleteCommand']}"
+                                  actionListener="#{mailManager.deleteSelectedMessage}"
+                                  action="#{mailManager.navigateToMessageList}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 0 }"/>
+                </ice:menuPopup>
+            </ice:panelGroup>
+        </ice:column>
+        <!-- Sender column -->
+        <ice:column rendered="#{!mailManager.selectedMailAccount.selectedMailFolder.sentFolder}">
+            <f:facet name="header">
+                <ice:commandSortHeader columnName="senderColumn" arrow="true">
+                    <ice:outputText value="#{msgs['webmail.email.folder.view.senderColumn']}"/>
+                </ice:commandSortHeader>
+            </f:facet>
+            <ice:panelGroup menuPopup="mailMenuPopup">
+                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                        styleClass="dataTableLink"
+                        actionListener="#{msg.changeSelectedMessage}">
+                    <ice:outputText value="#{msg.wrappedHtmlSender}&#160;" escape="false" />
+                </ice:commandLink>
+            </ice:panelGroup>
+        </ice:column>
+        <!--To column-->
+        <ice:column rendered="#{mailManager.selectedMailAccount.selectedMailFolder.sentFolder}">
+	    <f:facet name="header">
+	        <ice:commandSortHeader columnName="toColumn" arrow="true">
+	                    <ice:outputText value="#{msgs['webmail.email.folder.view.toColumn']}"/>
+	                </ice:commandSortHeader>
+	            </f:facet>
+	            <ice:panelGroup menuPopup="emailMenuPopup">
+	                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                                     styleClass="dataTableLink"
+                                     actionListener="#{msg.changeSelectedMessage}">
+	                 	<ice:outputText value="#{msg.wrappedHtmlRecipientsTo}&#160;" escape="false" />
+	                </ice:commandLink>
+	            </ice:panelGroup>
+        </ice:column>
+        <!-- Subject column -->
+        <ice:column>
+            <f:facet name="header">
+                <ice:commandSortHeader columnName="subjectColumn" arrow="true">
+                    <ice:outputText value="#{msgs['webmail.email.folder.view.subjectColumn']}"/>
+                </ice:commandSortHeader>
+            </f:facet>
+            <ice:panelGroup menuPopup="emailMenuPopup">
+                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                                 styleClass="dataTableLink"
+                                 actionListener="#{msg.changeSelectedMessage}">
+                    <ice:outputText value="#{msg.wrappedHtmlSubject}&#160;" escape="false" />
+                </ice:commandLink>
+            </ice:panelGroup>
+        </ice:column>
+        <!-- Date column -->
+        <ice:column>
+            <f:facet name="header">
+                <ice:commandSortHeader columnName="dateColumn" arrow="true">
+                    <ice:outputText value="#{msgs['webmail.email.folder.view.dateColumn']}"/>
+                </ice:commandSortHeader>
+            </f:facet>
+            <ice:panelGroup menuPopup="emailMenuPopup">
+                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                                 styleClass="dataTableLink"
+                                 actionListener="#{msg.changeSelectedMessage}">
+                    <ice:outputText value="#{msg.wrappedHtmlSendDateString}&#160;" escape="false" />
+                </ice:commandLink>
+            </ice:panelGroup>
+        </ice:column>
+    </ice:dataTable>
+
+<ice:panelGrid columns="2"
+    columnClasses="folderViewAlignLeft, folderViewAlignRight">
+
+    <!-- select all buttons -->
+    <ice:panelGroup>
+        <ice:commandButton
+                id="selectAllButton"
+                value="#{msgs['webmail.label.selectAll']}"
+                actionListener="#{mailManager.selectedMailAccount.selectedMailFolder.selectAll}"/>
+        <ice:commandButton
+                id="deselectAllButton"
+                value="#{msgs['webmail.label.deselectAll']}"
+                actionListener="#{mailManager.selectedMailAccount.selectedMailFolder.deselectAll}"/>
+    </ice:panelGroup>
+
+    <!-- Display email counts for the given folder -->
+    <ice:dataPaginator for="messagesTable"
+                      rowsCountVar="rowsCount"
+                      displayedRowsCountVar="displayedRowsCountVar"
+                      firstRowIndexVar="firstRowIndex"
+                      lastRowIndexVar="lastRowIndex"
+                      pageCountVar="pageCount"
+                      pageIndexVar="pageIndex"
+                      styleClass="dataScrollerTable">
+        <ice:outputFormat
+                value="{0} messages. Page {1} / {2}"
+                styleClass="standard">
+            <f:param value="#{rowsCount}"/>
+            <f:param value="#{pageIndex}"/>
+            <f:param value="#{pageCount}"/>
+        </ice:outputFormat>
+    </ice:dataPaginator>
+
+</ice:panelGrid>
+
+</ice:form>
+</ice:panelGroup>
