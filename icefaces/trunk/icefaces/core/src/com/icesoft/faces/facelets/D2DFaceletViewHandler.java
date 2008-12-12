@@ -280,6 +280,8 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
 
             responseWriter.startDocument();
             renderResponse(context, viewToRender);
+            // make stateSaving changes to DOM before ending document
+            invokeStateSaving(context);
             responseWriter.endDocument();
         }
         /*
