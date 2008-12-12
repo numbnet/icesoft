@@ -1,0 +1,1003 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Woodstock to ICEfaces Porting Guide - Part 2</title>
+  <link href="css/woodstock-styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h2>Woodstock to ICEfaces Porting Guide - Part 2<br>
+</h2>
+<span style="font-weight: bold;"></span><p>Part 2 of this guide builds on
+the work completed in <a href="PortingGuidePart1.html">Part 1</a>.&nbsp;
+At the completion of Part 1, the Woodstock <span
+ style="font-style: italic;">CreatePage</span> was replaced with the
+ICEfaces <span style="font-style: italic;">IceCreatePage</span>.&nbsp;
+This part of the porting guide focuses on porting data tables, and is
+based on<span style="font-style: italic;"> Page1</span> in the working
+example.&nbsp;&nbsp;&nbsp; The following topics are
+discussed:<br>
+<ul>
+  <li><a href="#Eliminating_component_bindings">Eliminating the
+component bindings in the working example</a></li>
+  <li><a href="#Building_an_icefaces_data_table_">Creating an ICEfaces
+data table</a></li>
+  <li><a href="#Completing_the_working_example">Completing the working
+example</a></li>
+  <ul>
+    <li><a href="#Porting_the_remainer_of_the_page">Porting the
+remainder of the page</a></li>
+    <li><a href="#Modifying_the_backing_bean">Modifying the backing bean</a></li>
+    <li><a href="#Modifying_the_backing_bean">Modifying the navigation</a></li>
+    <li><a href="#Data_table_sortable_header">Working with sortable
+columns</a><br>
+    </li>
+  </ul>
+</ul>
+<p>At the completion of this guide you will understand how to port data
+tables in a Woodstock application to ICEfaces.&nbsp; Beyond this
+guide, you can examine issues related to creating Single Page
+Interfaces with ICEfaces in <a href="PortingGuidePart3.html">Woodstock
+to ICEfaces Porting Guide -
+Part 3</a>.&nbsp; The completed project for this step of the guide is
+available <a
+ href="TwoPageCrudTable_Part2.zip">here</a>.<br>
+<h3><a name="Eliminating_component_bindings"></a>Eliminating Component
+Bindings in the Working Example<br>
+</h3>
+<p>As with the previous page port, we begin by eliminating the component
+binding in our working example.&nbsp; In the case of <span
+ style="font-style: italic;">Page1.jsp</span> there are two component
+bindings that need to be addressed, one in the <span
+ style="font-style: italic;">dropDown</span>, and one in the <span
+ style="font-style: italic;">tableRowGroup.</span><br>
+<br>
+To begin with there are a bunch of com.sun.webui.jsf import statements
+that can be eliminated.&nbsp; All of the following can be removed.
+<p><strong>import
+  com.sun.webui.jsf.component.Body;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Button;</strong><span style="font-weight: bold"><br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.DropDown;<br
+ style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Form;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Head;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Html;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Label;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Link;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.MessageGroup;<br
+ style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Page;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.StaticText;<br
+ style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.Table;<br style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.TableColumn;<br
+ style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.component.TableRowGroup;<br
+ style="font-weight: bold;">
+  import
+  com.sun.webui.jsf.model.DefaultTableDataProvider;</span>
+
+<td class="object-attribute-table">&nbsp;</td>
+</div>
+<p>Most of the remaining code changes occur inside the Managed Component
+Definition fold.&nbsp; For the <span style="font-style: italic;">dropDown</span>
+we eliminate
+the component bindings in <span style="font-style: italic;">Page1.java</span>
+as follows.<br>
+<ol>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span>Replace&nbsp;<span
+ style="font-style: italic;">DropDown</span> bean property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private
+DropDown personDropDown = new DropDown();<br>
+&nbsp;&nbsp;&nbsp; public DropDown getPersonDropDown() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return personDropDown;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setPersonDropDown(DropDown dd) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.personDropDown = dd;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    </span>with <span style="font-style: italic;">String</span> bean
+property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp; private Integer
+currentPersonId;<br>
+&nbsp;&nbsp;&nbsp; public Integer getCurrentPersonId() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return currentPersonId;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setCurrentPersonId(Integer
+currentPersonId) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.currentPersonId =
+currentPersonId;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    </span></li>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>Remove
+the unneeded personDropDownConverter<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private
+IntegerConverter personDropDownConverter = new IntegerConverter();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public
+IntegerConverter getPersonDropDownConverter() {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return personDropDownConverter;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setPersonDropDownConverter(IntegerConverter ic) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.personDropDownConverter = ic;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br style="font-weight: bold;">
+  </li>
+  <li><span style="font-weight: bold;"></span>In the <span
+ style="font-style: italic;">init()</span> function modify the logic
+for restoring the current person and trip&nbsp; by replacing<span
+ style="font-style: italic;"><br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+personDropDown.setSelected(pid);</span><span style="font-style: italic;"><br>
+    </span><span style="font-weight: bold;"></span>with<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+setCurrentPersonId(pid);<br>
+    <br>
+    </span></li>
+  <li>In <span style="font-style: italic;">personDropDown_processValueChange()</span>
+replace<span style="font-style: italic;"><br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp; Integer
+newPersonId = (Integer) personDropDown.getSelected();<br>
+&nbsp;</span>with<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp; Integer newPersonId =
+(Integer)(event.getNewValue());<br>
+    </span></li>
+</ol>
+<p>And finally, back in the JSP
+code we modify the <span style="font-style: italic;">dropDown</span>
+declarations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;webuijsf:dropDown <span style="font-weight: bold;">binding="#{Page1.personDropDown}"
+converter="#{Page1.personDropDownConverter}"</span> id=.../&gt;<br>
+with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;webuijsf:dropDown <span style="font-weight: bold;">selected="#{Page1.currentPersonId}"</span>
+id=.../&gt;<br>
+<br>
+The&nbsp; <span style="font-style: italic;">tableRowGroup </span>component
+binding is used to get the current RowKey so it gets replaced as
+follows..<br>
+<ol>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span>Replace<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private
+TableRowGroup tableRowGroup1 = new TableRowGroup();<br>
+&nbsp;&nbsp;&nbsp; public TableRowGroup getTableRowGroup1() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return tableRowGroup1;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setTableRowGroup1(TableRowGroup trg) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.tableRowGroup1 = trg;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    </span>with<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private RowKey
+currentRowKey;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public RowKey
+getCurrentRowKey() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return currentRowKey;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setCuurentRowKey(RowKey currentRowKey) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.currentRowKey = currentRowKey;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li><span style="font-weight: bold;"></span>In the <span
+ style="font-style: italic;">updateButton_action()</span>, and <span
+ style="font-style: italic;">deleteButton_action()</span> replace<span
+ style="font-style: italic;"><br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; RowKey
+rowKey = tableRowGroup1.getRowKey();<br>
+    </span>with<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; RowKey rowKey =
+getCurrentRowKey();<br>
+    <br>
+    </span></li>
+  <li>In the <span style="font-style: italic;">createButton_action()</span>
+replace<span style="font-style: italic;"><br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+getSessionBean1().setCurrentPersonId((Integer)
+personDropDown.getValue());<br>
+    </span>with<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+getSessionBean1().setCurrentPersonId(currentPersonId);</span></li>
+</ol>
+<p>Next, we make the necessary changes in <span
+ style="font-style: italic;">Page1.jsp</span> as follows.<br>
+<ol>
+  <li>Remove component binding in <span style="font-style: italic;">tableRowGroup</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:tableRowGroup <span
+ style="font-weight: bold;">binding="#{Page1.tableRowGroup1}"</span>
+id="tableRowGroup1" .../&gt;<br>
+becomes<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:tableRowGroup&nbsp;<span
+ style="font-weight: bold;"></span>id="tableRowGroup1" .../&gt;<br>
+    <br>
+  </li>
+  <li>Set the current row associated with the <span
+ style="font-style: italic;">Update</span> and <span
+ style="font-style: italic;">Delete</span> buttons using a <span
+ style="font-style: italic;">&lt;f:setPropertyActionListener/&gt;</span>.<br>
+&nbsp;&nbsp; &lt;webuijsf:button
+actionExpression="#{Page1.updateButton_action}" id="updateButton"
+text="Update"&gt;<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:setPropertyActionListener target="#{Page1.currentRowKey}"
+value="#{currentRow.tableRow}" /&gt;</span><br
+ style="font-weight: bold;">
+&nbsp;&nbsp; &lt;/webuijsf:button&gt;<br>
+&nbsp;&nbsp; &lt;webuijsf:button
+actionExpression="#{Page1.deleteButton_action}" id="deleteButton"
+text="Delete"&gt;<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:setPropertyActionListener target="#{Page1.currentRowKey}"
+value="#{currentRow.tableRow}" /&gt;</span><br
+ style="font-weight: bold;">
+&nbsp;&nbsp; &lt;/webuijsf:button&gt;<br>
+  </li>
+</ol>
+<p>That completes the refactoring from component to value bindings.&nbsp;
+You can run the project to prove that everything still works as
+expected.&nbsp;
+We can now move on to porting the page to ICEfaces.<br>
+<h3><a name="Building_an_icefaces_data_table_"></a>Building An ICEfaces
+Data Table</h3>
+<p>Because the JSP markup and Java data model for an ICEfaces <span
+ style="font-style: italic;">dataTable</span> is significantly
+different than a Woodstock <span style="font-style: italic;">dataTable,</span>
+doing a manual port in the JSP and Java code is not the most effective
+way to proceed.&nbsp; Instead, we will use the NetBeans Visual Design
+capabilities to build a replacement ICEfaces <span
+ style="font-style: italic;">dataTable</span>, and port the rest of the
+page around that. The following steps are taken to create the new
+ICEfaces <span style="font-style: italic;">dataTable</span>.<br>
+<ol>
+  <li>Start with the existing <span style="font-style: italic;">IcePage1.jsp</span>
+that was created when the ICEfaces framework was added to the
+project.&nbsp; Open it in Visual Design mode, and delete the <span
+ style="font-style: italic;">inputTextArea</span> that was created as
+part of the default page template.</li>
+  <li>From the ICEfaces palette drag a <span
+ style="font-style: italic;">dataTable</span> onto the page.</li>
+  <li>Right click the <span style="font-style: italic;">dataTable</span>
+and from the context menu select <span style="font-style: italic;">Bind
+to Database...</span>.&nbsp; This will bring up a dialog showing the
+existing RowSets that can be bound to.&nbsp; Select <span
+ style="font-style: italic;">tripRowSet</span> as illustrated below.<br>
+<br>
+    <center><img style="width: 410px; height: 268px;"
+ alt="Bind To Database Dialog" src="images/BindToDatabase.png"></center><br>
+    <br>
+This will auto-generate all of the columns available in the RowSet, as
+illustrated below.<br>
+<br>
+    <center><img style="width: 919px; height: 311px;"
+ alt="Trip RowSet Data Table" src="images/TripRowSetDataTable.png"></center><br>
+    <br>
+  </li>
+  <li>Right click the <span style="font-style: italic;">dataTable</span>
+and from the context menu select <span style="font-style: italic;">Add
+Sort Header...</span>,
+which will add sortable header capabilities.&nbsp; You won't see any
+visual change in the designer, but the data model for the table will be
+adjusted.&nbsp; More on the <a href="#Data_table_sortable_header">sortable
+header</a> later.&nbsp; <span style="font-style: italic;">Note:</span>
+It is important to do this prior to any other modification of the data
+table, because doing it after will undo those modifications.<br>
+  </li>
+  <li>Right click the <span style="font-style: italic;">dataTable</span>
+and from the context menu select <span style="font-style: italic;">Table
+Layout...</span>, which will bring up a dialog for manipulating the
+columns to be displayed in the table.&nbsp; From here you can remove
+columns 1,2,6 and 7.&nbsp; Next, modify the Header text for the
+remaining columns to "Date", "From", "To", and "Type".&nbsp; Finally,
+add a new column for the buttons, and clear it's header text.&nbsp; The
+completed dialog is illustrated below.<br>
+<br>
+    <center><img style="width: 510px; height: 468px;" alt="Table Layout"
+ src="images/TableLayout.png"></center><br>
+    <br>
+Once the dialog is completed, the design view looks like.<br>
+<br>
+    <center><img style="width: 776px; height: 344px;"
+ alt="Table Deisgh - Part 1" src="images/DesignView1.png"></center><br>
+    <br>
+  </li>
+  <li>We now have superfluous <span style="font-style: italic;">outputText</span>
+components in the column facet headers that can be removed to clean up
+the header titles.</li>
+  <li>Drag 2 ICEfaces <span style="font-style: italic;">commandButtons</span>
+into the last column of the <span style="font-style: italic;">dataTable</span>,
+and modify the button names to Update and Delete.&nbsp; The resulting
+design view is illustrated below.<br>
+<br>
+    <center><img style="width: 776px; height: 344px;"
+ alt="Table Design - Part 2" src="images/DesignView2.png"></center><br>
+    <br>
+  </li>
+  <li>From the <span style="font-style: italic;">dataTable</span>
+context menu select <span style="font-style: italic;">Add Header...</span>,
+which will create a <span style="font-style: italic;">panelGrid</span>
+in a facet to the <span style="font-style: italic;">dataTable</span>
+called "header".&nbsp; Into this panel drag an ICEfaces <span
+ style="font-style: italic;">outputText</span> component and change its
+value to "Trips".&nbsp; The completed table design is illustrated below.<br>
+<br>
+    <center><img style="width: 776px; height: 344px;"
+ alt="Table Design - Part 3" src="images/DesignView3.png"></center><br>
+  </li>
+</ol>
+<p>We will now examine the JSP code that has been created for the <span
+ style="font-style: italic;">dataTable</span>. The table declaration is:<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;ice:dataTable
+id="dataTable1"
+sortAscending="#{IcePage1.dataTable1SortableDataModel.ascending}"</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sortColumn="#{IcePage1.dataTable1SortableDataModel.sort}" style="left:
+14px; top: 14px; position: absolute"</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+value="#{IcePage1.dataTable1SortableDataModel}" var="currentRow"&gt;</span><br
+ style="font-weight: bold;">
+<br>
+The <span style="font-style: italic;">sortAscending</span> and<span
+ style="font-style: italic;"> sortColumn</span> attributes are related
+to the sortable header which is discussed<a
+ href="#Data_table_sortable_header"> later</a>.&nbsp; The <span
+ style="font-style: italic;">style</span>
+attribute defines absolute positioning, and can be removed once the
+table is place in a <span style="font-style: italic;">panelGrid</span>
+in the complete page.&nbsp; The value is bound to a sortable data model
+of type <span style="font-weight: bold;">com.icesoft.faces.component.jsfcl.data.CachedRowSetSortableDataModel,
+</span>and the iteration variable is defined as "currentRow".<br>
+<br>
+The basic structure for the data columns is:<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;ice:column
+id="column3"&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;f:facet name="header"&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;ice:commandSortHeader
+arrow="true" columnName="TRIP.DEPDATE" id="commandSortHeader3"
+value="Date"/&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;/f:facet&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:outputText id="outputText6"
+value="#{currentRow['TRIP.DEPDATE']}"/&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;/ice:column&gt;</span><br
+ style="font-weight: bold;">
+<br>
+Each <span style="font-style: italic;">column</span> contains a header
+facet containing a <span style="font-style: italic;">commandSortHeader</span>
+used for sorting the column, and a header <span
+ style="font-style: italic;">value</span> for column title.&nbsp; Each
+cell in the column contains an <span style="font-style: italic;">outputText</span>
+that is bound back into the trip data provider.<br>
+<br>
+The column containing the buttons looks slightly different.<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;ice:column
+id="column1"&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;f:facet name="header"&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;ice:outputText id="outputText2" value=""/&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;/f:facet&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton id="button1" value="Update"/&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton id="button2" value="Delete"/&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;/ice:column&gt;</span><br
+ style="font-weight: bold;">
+<br>
+In this case, the header facet contains only a title, as it is not a
+sortable column.&nbsp; The table cells contain Update and Delete
+buttons that require action bindings and should be modified to look
+like:<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton id="button1" value="Update"
+action="#{IcePage1.updateButtonAction}"/&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton id="button2" value="Delete" </span><span
+ style="font-weight: bold;">action="#{IcePage1.deleteButtonAction}"</span><span
+ style="font-weight: bold;">/&gt;</span><br style="font-weight: bold;">
+<h3><a name="Completing_the_working_example"></a>Completing The Working
+Example<br>
+</h3>
+<p>With the newly created ICEfaces <span style="font-style: italic;">dataTable</span>
+in place, we can now complete the port from <span
+ style="font-style: italic;">Page1.jsp</span> to <span
+ style="font-style: italic;">IcePage1.jsp</span>.&nbsp; The work
+required includes:<br>
+<ol>
+  <li><a href="#Porting_the_remainer_of_the_page">Port the rest of the <span
+ style="font-style: italic;">Page1.jsp</span>
+around the ICEfaces <span style="font-style: italic;">dataTable</span></a></li>
+  <li><a href="#Modifying_the_backing_bean">Modify the backing bean to
+support the page changes</a></li>
+  <li><a href="#Modifying_the_navigation">Modify the page navigation</a></li>
+  <li><a href="#Data_table_sortable_header">Add the necessary sortable
+header logic</a><br>
+  </li>
+</ol>
+<h4><a name="Porting_the_remainer_of_the_page"></a>Porting the
+remainder of the page</h4>
+<p>The basic page structure from <span style="font-style: italic;">Page1.jsp</span>
+can be cut and pasted around the new ICEfaces <span
+ style="font-style: italic;">dataTable</span> and ported to ICEfaces in
+the same manner as was done in <a href="PortingGuidePart1.html">Part 1</a>.&nbsp;
+After the cut and paste exercise the basic page structure looks like:
+<p><center><img
+ style="width: 1063px; height: 423px;" alt="Page1 Structure"
+ src="images/Page1Structure.png"></center><br>
+  <br>
+  In order to maintain a consistent layout between <span
+ style="font-style: italic;">IcePage1</span>, and <span style="font-style: italic;">IceCreatePage</span>, the style for
+  the <span style="font-style: italic;">body</span>, and <span
+ style="font-style: italic;">panelGrid</span>s are modified to
+  match those in <span style="font-style: italic;">IceCreatePage</span>,
+  so we have:<br>
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;body id="outputBody1" style="-rave-layout: grid"&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;ice:form id="form1"&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;div style="position: absolute; left: 0px; top: 0px"&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;jsp:directive.include file="iceMasthead.jspf"/&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/div&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;h:panelGrid id="mainPanel" style="margin: 5px; padding: 5px; left:
+  0px; top: 160px; position: absolute; width: 760px"&gt;</span><br
+ style="font-weight: bold;">
+  <br>
+  The following steps are needed to complete the port.<br>
+<ol>
+  <li>The panelGrid containing the <span style="font-style: italic;">dropDown</span>
+is modified to look like:<br>
+    <div style="margin-left: 40px;"><span style="font-weight: bold;">&nbsp;&lt;h:panelGrid
+columns="4" id="personPanel" style=""&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;ice:outputLabel id="label1" value="Person"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;ice:selectOneMenu
+value="#{IcePage1.currentPersonId}" id="personDropDown"
+partialSubmit="true"</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+valueChangeListener="#{IcePage1.personDropDownProcessValueChange}"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;f:converter converterId="javax.faces.Integer"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;f:selectItems id="personSelect"
+value="#{IcePage1.personDataProvider.options['PERSON.PERSONID,PERSON.NAME']}"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &lt;/ice:selectOneMenu&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;ice:outputLabel id="label2" value="Job
+Title"/&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;ice:outputText id="jobTitleText"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&lt;/h:panelGrid&gt;</span><br
+ style="font-weight: bold;">
+    </div>
+The <span style="font-style: italic;">selectOneMenu</span> has <span
+ style="font-style: italic;">partialSubmit="true" </span>which will
+cause the form to submit as the user selects a name from the
+list.&nbsp; It also has a <span style="font-style: italic;">valueChangeListener</span>
+that will be used to update the data displayed in the table when the
+name changes.<br>
+  </li>
+  <li>The <span style="font-style: italic;">panelGrid</span>
+containing the <span style="font-style: italic;">dataTable</span> is
+modified to look like:<br>
+    <div style="margin-left: 40px; font-weight: bold;">&nbsp;&lt;h:panelGrid
+id="tablePanel" style=""&gt;<br>
+    </div>
+    <div style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;
+&lt;ice:dataTable&gt;...&lt;/ice:dataTable&gt;<br>
+    </div>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.createButton_action}"
+id="createButton" value="Create"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:messages id="messageGroup1" layout="table"
+style="color:red;"/&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/h:panelGrid&gt;<br>
+    <span style="font-weight: bold;"></span></span>The <span
+ style="font-style: italic;">commandButton</span> is bound to an action
+listener in the bean that will be used to cause the navigation to <span
+ style="font-style: italic;">IceCreatePage.jsp</span>.&nbsp; In this
+case we will be reusing the logic in <span style="font-style: italic;">Page1.java</span>.<span
+ style="font-weight: bold;"><span style="font-weight: bold;"></span><br>
+    </span></li>
+  <li><span style="font-weight: bold;"></span>In the <span
+ style="font-style: italic;">dataTable</span> itself, the <span
+ style="font-style: italic;">style</span> attribute containing the
+absolute positioning can be removed.</li>
+</ol>
+<h4><a name="Modifying_the_backing_bean"></a>Modifying the backing bean</h4>
+<p>We now turn our attention to the Java code in the backing bean <span
+ style="font-style: italic;">IcePage1.java</span>.&nbsp; During the
+visual design process for the <span style="font-style: italic;">dataTable</span>,
+the backing bean code was automatically created, but only includes the
+data model for the <span style="font-style: italic;">dataTable</span>
+itself.&nbsp; The rest of the now-portable data model for the page
+exists in <span style="font-style: italic;">Page1.java </span>after
+the refactoring to <a href="#Eliminating_component_bindings">remove
+the component bindings</a>.&nbsp; With the
+motivation to reuse this code as much as possible, we will modify <span
+ style="font-style: italic;">IcePage1</span> to extend <span
+ style="font-style: italic;">Page1, </span>and inherit the existing
+data model and logic, so <br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public class
+IcePage1 extends AbstractPageBean {</span><br style="font-weight: bold;">
+becomes<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public class
+IcePage1 extends Page1 {</span><br style="font-weight: bold;">
+<br>
+With this modification <span style="font-style: italic;">preprocess()</span>,
+<span style="font-style: italic;">prerender()</span>, and <span
+ style="font-style: italic;">destroy()</span> methods in <span
+ style="font-style: italic;">IcePage1</span> should be modified to call
+the superclass counterparts. Next, we will add the necessary action and
+value changed listeners with the following steps.<br>
+<ol>
+  <li>The value change listener associated with the <span
+ style="font-style: italic;">selectOneMenu</span> is implemented as
+follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+personDropDownProcessValueChange(ValueChangeEvent event) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+super.personDropDown_processValueChange(event);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+Basically, this listener relies on the logic from the <span
+ style="font-style: italic;">Page1</span> superclass, except that we
+need to refresh the data model in our table based on the name selected
+by calling <span style="font-style: italic;">setWrappedData()</span>
+on our sortable data model.</li>
+  <li>The action listener for the Update button is implemented as
+follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+updateButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TreeMap map = (TreeMap) dataTable1SortableDataModel.getRowData();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer tripID = (Integer) map.get("TRIP.TRIPID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setCurrentRowKey(getTripDataProvider().findFirst("TRIP.TRIPID",
+tripID));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return(super.updateButton_action());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+Because of the sortable nature of our data table, we cannot assume the
+row number in the table matches the row number in our data provider, so
+it is necessary to find it based on the trip id.&nbsp; Once the <span
+ style="font-style: italic;">currentRowSet</span> is established, we
+can rely on the <span style="font-style: italic;">Page1</span>
+superclass logic to handle the action.&nbsp; Because this action will
+ultimately cause a page navigation, there is no need to update the <span
+ style="font-style: italic;">dataTable</span> model.</li>
+  <li>The action listener for the Delete button is implemented as
+follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+deleteButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TreeMap map = (TreeMap) dataTable1SortableDataModel.getRowData();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer tripID = (Integer) map.get("TRIP.TRIPID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setCurrentRowKey(getTripDataProvider().findFirst("TRIP.TRIPID",
+tripID));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String returnVal = super.deleteButton_action();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return returnVal;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+The <span style="font-style: italic;">currentRowKey</span> is
+established as it was for the Update button, and then the <span
+ style="font-style: italic;">Page1</span> superclass handles the
+action.&nbsp; In the case of delete, it is necessary to call <span
+ style="font-style: italic;">setWrappedData()</span> in order to update
+the
+contents of the <span style="font-style: italic;">dataTable</span> to
+reflect the changes.</li>
+  <li>The action listener for the Create button can simply rely on the
+logic in the <span style="font-style: italic;">Page1</span> superclass
+and is bound directly to <span style="font-style: italic;">createButton_action()</span>
+in that class.<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">
+&lt;ice:commandButton action="#{IcePage1.createButton_action}"
+id="createButton" value="Create"/&gt;</span></li>
+  <li>While functionally unnecessary, for Design View to work properly,
+the following getters and setters are required in the base class <span
+ style="font-style: italic;">IcePage1</span>.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public
+CachedRowSetDataProvider getPersonDataProvider() {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return super.getPersonDataProvider();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setPersonDataProvider(CachedRowSetDataProvider crsdp) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+super.setPersonDataProvider(crsdp);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public Integer
+getCurrentPersonId() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return super.getCurrentPersonId();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setCurrentPersonId(Integer currentPersonId) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+super.setCurrentPersonId(currentPersonId);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+    <span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></li>
+  <li>Fix the imports as necessary<br>
+    <span style="font-weight: bold;"><span style="font-weight: bold;"></span>&nbsp;&nbsp;&nbsp;
+import java.util.TreeMap;<br>
+&nbsp;&nbsp;&nbsp; import javax.faces.FacesException;<br>
+&nbsp;&nbsp;&nbsp; import javax.faces.event.ValueChangeEvent;<br>
+    </span></li>
+</ol>
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span><p>With
+all these changes in place, it is now possible to view the page in
+Design View again, as illustrated below.<br>
+<br>
+<center><img
+ style="width: 816px; height: 508px;" alt="Design View - Part 4"
+ src="images/DesignView4.png"></center><br>
+<br>
+Now we can try running it.&nbsp; From the project context menu select <span
+ style="font-style: italic;">properties,</span> and then modify the <span
+ style="font-style: italic;">Run</span> properties as illustrated.
+<p><center><img
+ style="width: 741px; height: 457px;" alt="Project Run Properties"
+ src="images/RunProperties.png"></center><br>
+  <br>
+  When you run the project, the rendered page should now look like:<br>
+  <br>
+  <center><img style="width: 784px; height: 555px;" alt="IcePage1"
+ src="images/IcePage1.png"></center><br>
+  <br>
+  You will noticed a marked improvement in the rendering of this page
+compared with the original Woodstock page.&nbsp; As you select
+different people for the <span style="font-style: italic;">selectOneMenu</span>,
+the <span style="font-style: italic;">dataTable</span> updates
+smoothly with only the minimum re-rendering required, unlike the
+Woodstock page that re-renders most everything.&nbsp; We can now move
+on
+to cleaning up the navigation rules.<br>
+<h4><a name="Modifying_the_navigation"></a>Modifying the Navigation</h4>
+<p>With our primary page now an ICEfaces page, we need to modify the
+navigation rules as follows.<br>
+<ol>
+  <li><span style="font-style: italic;">IcePage1</span> to <span
+ style="font-style: italic;">IceCreatePage</span> is now ICEfaces to
+ICEfaces, so redirect is not required.&nbsp; The same applies in the
+reverse direction.</li>
+  <li><span style="font-style: italic;">IcePage1</span> to <span
+ style="font-style: italic;">UpdatePage</span> is now ICEfaces to
+Woodstock, so redirect is required.&nbsp; The same applies in the
+reverse direction.</li>
+</ol>
+The modified navigation rules are:<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;navigation-rule&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-view-id&gt;/IcePage1.jsp&lt;/from-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;createCase&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/IceCreatePage.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;redirect/&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;updateCase&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/faces/UpdatePage.jsp&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;redirect/&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/navigation-rule&gt;<br>
+<br style="font-weight: bold;">
+</span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;navigation-rule&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-view-id&gt;/IceCreatePage.jsp&lt;/from-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;created&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/IcePage1.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;canceled&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/IcePage1.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/navigation-rule&gt;<br>
+<br style="font-weight: bold;">
+</span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;navigation-rule&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-view-id&gt;/UpdatePage.jsp&lt;/from-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;updated&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/IcePage1.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;redirect/&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;from-outcome&gt;noUpdate&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;to-view-id&gt;/IcePage1.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;redirect/&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/navigation-rule&gt;</span><br style="font-weight: bold;">
+<br>
+<p>With the navigation rules in place, we once again have a fully
+functional version
+of the application, with 2 of the 3 Woodstock pages ported to
+ICEfaces.&nbsp; There is one task left to
+get the sort headers working in the <span style="font-style: italic;">dataTable</span>.<br>
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>
+<h4><a name="Data_table_sortable_header"></a>DataTable sortable header</h4>
+<p>Re-examining the declaration of the dataTable shows 2 attributes <span
+ style="font-style: italic;">sortAssending</span>, and <span
+ style="font-style: italic;">sortColumn</span> are bound into the
+<span style="font-style: italic;">dataTableSortableDataModel</span>, as
+shown below.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:dataTable id="dataTable1" <span
+ style="font-weight: bold;">sortAscending="#{IcePage1.dataTable1SortableDataModel.ascending}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">sortColumn="#{IcePage1.dataTable1SortableDataModel.sort}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+value="#{IcePage1.dataTable1SortableDataModel}" var="currentRow"&gt;<br>
+<br>
+As you would expect, these properties identify what column the sort
+occurs on, and
+if that sort is ascending or descending.&nbsp; Because these bindings
+are into a request scoped bean, the current sort header state will be
+lost between requests.&nbsp; Since the working example is currently
+using standard request scope, it is necessary to maintain this state
+in session scope for it to exist across requests.&nbsp; <span
+ style="font-style: italic;">It is important to note, that when we
+examine single page interfaces in <a href="PortingGuidePart3.html">Part
+3</a> of this guide, we will be
+moving to ICEfaces extended request scope, and will be looking to move
+session scoped state back into request scope, thereby allowing us to
+build a multi-document application, but for now session scope
+will have to do.</span>&nbsp; The necessary steps to implement the
+sortable header are:<br>
+<ol>
+  <li>Add the needed state to <span style="font-style: italic;">SessionBean1.java</span><br>
+    <span style="font-weight: bold;">&nbsp;&nbsp; private boolean
+sortAscending; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; public boolean
+isSortAscending() { </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return sortAscending; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; } </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; public void
+setSortAscending(boolean sortAscending) { </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.sortAscending = sortAscending; </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; } </span><br
+ style="font-weight: bold;">
+    <br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; private String
+sortColumn; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; public String
+getSortColumn() { </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return sortColumn; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; } </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; public void
+setSortColumn (String sortColumn) { </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.sortColumn = sortColumn; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp; } </span><br
+ style="font-weight: bold;">
+  </li>
+  <li>Add the following getters and setters to <span
+ style="font-style: italic;">IcePage1.java</span><br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public boolean
+isSortAscending() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return
+getSessionBean1().isSortAscending();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setSortAscending(boolean ascending) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getSessionBean1().setSortAscending(ascending);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (ascending !=
+dataTable1SortableDataModel.isAscending()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setAscending(ascending);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(getSessionBean1().getSortColumn() != null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setSort(getSessionBean1().getSortColumn());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public String getSortColumn() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return
+getSessionBean1().getSortColumn();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setSortColumn(String sortColumn) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getSessionBean1().setSortColumn(sortColumn);<br>
+&nbsp;&nbsp;&nbsp; }</span><span style="font-weight: bold;"></span><br
+ style="font-weight: bold;">
+  </li>
+  <li>Modify the bindings in the <span style="font-style: italic;">dataTable</span>
+declaration in <span style="font-style: italic;">IcePage1.jsp</span>.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:dataTable id="dataTable1" <span
+ style="font-weight: bold;">sortAscending="#{IcePage1.sortAscending}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">sortColumn="#{IcePage1.sortColumn}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+value="#{IcePage1.dataTable1SortableDataModel}" var="currentRow"&gt;</li>
+</ol>
+<p>You can now rerun the example and test the table sorting.&nbsp; You
+will notice that the page updates very smoothly as you apply different
+sorting, and that the sort state persists across page navigations.<br>
+<h3><a name="Finished_part_2"></a>Finished Part 2<br>
+</h3>
+<p>You have now completed Part 2 of the Woodstock to ICEfaces Porting
+Guide.&nbsp; The completed project for this step of the guide is
+available <a
+ href="TwoPageCrudTable_Part2.zip">here</a>.&nbsp;
+At
+this point you can go back to the <a
+ href="WoodstockToICEfacesPortingGuide.html">table of contents</a> or <a
+ href="PortingGuidePart1.html">Part 1</a> of the guide, or
+move on to <a href="PortingGuidePart3.html">Part 3</a> of the guide,
+which focuses on aspects of creating a Single Page Interface using
+ICEfaces.&nbsp;
+<br>
+<br>
+</body>
+</html>

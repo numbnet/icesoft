@@ -1,0 +1,1031 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Woodstock to ICEfaces Porting Guide</title>
+  <link href="css/woodstock-styles.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+</style>
+</head>
+<body>
+<h2>Woodstock to ICEfaces Porting Guide - Part 1<br>
+</h2>
+<span style="font-weight: bold;"></span><p>Part 1 of this guide examines
+the steps required to port a single page in an existing Woodstock
+application to an ICEfaces page.&nbsp; The following topics are
+discussed:<br>
+<ul>
+  <li><a href="#Installing_the_ICEfaces_Plugins_in">Adding the ICEfaces
+plugins to NetBeans</a></li>
+  <li><a href="#Working_Example">Establishing a working example</a><br>
+  </li>
+  <li><a href="#Adding_The_ICEfaces_Framework">Adding ICEfaces to an
+existing Woodstock application</a></li>
+  <li><a href="#The_ICEfaces_Page_Template">Understanding the ICEfaces
+page template</a><br>
+  </li>
+  <li><a href="#Woodstock_Component_Bindings">Refactoring the data
+model to eliminate component bindings</a><br>
+  </li>
+  <li><a href="#Creating_a_New_ICEfaces_Page_">Creating ICEfaces pages</a></li>
+  <li><a href="#Page_Porting_Basics_">Page porting basics</a><br>
+  </li>
+  <li><a href="#Component-by-component_Porting">Component by component
+porting</a></li>
+  <li><a href="#Porting_the_Working_Example_Page">Porting the working
+example</a><br>
+  </li>
+  <li><a href="#Page_Navigation">Navigation between ICEfaces and
+Woodstock pages</a></li>
+  <li><a href="#Automatic_Ajax_">Leveraging Automatic Ajax features in
+ICEfaces</a></li>
+</ul>
+<p>At the completion of this guide you will be well-positioned to begin
+porting your Woodstock application to ICEfaces.&nbsp; Beyond this
+guide, you can examine issues related to porting data tables in <a
+ href="PortingGuidePart2.html">Woodstock to ICEfaces Porting Guide -
+Part 2</a>.&nbsp; The completed project for this step of the guide is
+available <a
+ href="TwoPageCrudTable_Part1.zip">here</a>.<br>
+<br>
+<h3><a name="Installing_the_ICEfaces_Plugins_in"></a>Installing the
+ICEfaces Plugins in NetBeans</h3>
+<p>Woodstock migration support is available for the first time in the
+ICEfaces 1.7.2SP1 release, which is aligned with the NetBeans 6.5
+release.&nbsp; Prior to embarking on a porting exercise you will need
+to upgrade to NetBeans 6.5, import your Woodstock Visual JSF project,
+and install the ICEfaces plugins for NetBeans. The steps required to
+install the ICEfaces plugins are:<br>
+<ol>
+  <li>Registered ICEfaces community members can download the
+ICEfaces/NetBeans integration bundle <a
+ href="http://www.icefaces.org/main/downloads/os-downloads.iface?category=NetBeans" target="_blank">here</a>.&nbsp;
+The bundle is located under <span style="font-style: italic;">IDE Tool
+Integrations &gt; NetBeans</span>, and is called <span
+ style="font-style: italic;">ICEfaces-1.7.2-SP1-NetBeans-6.5-modules.zip.&nbsp;
+    </span>Unpack the bundle somewhere that you can access it from
+NetBeans.<br>
+  </li>
+  <li>Install the ICEfaces plugins into NetBeans from the <span
+ style="font-style: italic;">Tools &gt; Plugins</span> dialog, using
+the <span style="font-style: italic;">Downloaded</span> tab.&nbsp; The
+    <span style="font-style: italic;">Add Plugins</span> button is used
+to select the ICEfaces plugins which are called <span
+ style="font-style: italic;">com-icesoft-faces-vwp-ide.nbm</span> and <span
+ style="font-style: italic;">com-icesoft-ide-netbeans-libs-module.nbm</span>.&nbsp;
+Once you have selected the plugins, you should see something like this,
+and just need to hit the <span style="font-style: italic;">Install</span>
+button.<br>
+<br>
+<center><img style="width: 847px; height: 526px;"
+ alt="Add ICEfaces Plugins to NetBeans" src="images/AddPlugins.png"><span
+ style="font-weight: bold;"></center></span></li>
+</ol>
+<span style="font-weight: bold;"></span>
+<h3><a name="Working_Example"></a>Working Example</h3>
+<p>The working example for this guide is based on a readily available
+NetBeans sample project call <span style="font-style: italic;">Two
+Page CRUD With Table</span>.&nbsp; It is chosen for it's relative
+simplicity, and because it is a multi-page application with
+navigation.&nbsp; Over the course of the migration we will add the
+ICEfaces framework, add ICEfaces pages, and port existing Woodstock
+pages to ICEfaces. We will also establish navigation between ICEfaces
+and Woodstock pages.&nbsp; You can get your own working copy of the
+example using the <span style="font-style: italic;">File &gt; New
+Project</span> dialog and choosing from <span
+ style="font-style: italic;">Samples &gt; Java Web (Visual JSF) &gt;
+Two Page CRUD With Table</span>, as illustrated below.<br>
+<br>
+<center><img
+ style="width: 731px; height: 492px;"
+ alt="New Project for Working Example"
+ src="images/NewWorkingExample.png"></center><br>
+<h3><a name="Adding_The_ICEfaces_Framework"></a>Adding The ICEfaces
+Framework</h3>
+<p>The first step in the porting process is to add the ICEfaces framework
+to the project using the following steps.<br>
+<ol>
+  <li>Access the <span style="font-style: italic;">Project Properties
+Dialog</span> by right clicking the <span style="font-style: italic;">TwoPageCrudTable</span>
+project and selecting <span style="font-style: italic;">Properties</span>
+from the context menu.<br>
+  </li>
+  <li>From the <span style="font-style: italic;">Project Properties
+Dialog</span> select<span style="font-style: italic;"> Frameworks</span>
+and click the <span style="font-style: italic;">Add</span>
+button.&nbsp; From the <span style="font-style: italic;">Add a
+Framework Dialog</span> select the <span style="font-style: italic;">Visual
+Web
+ICEfaces</span> frameworks as illustrated below.<br>
+<br>
+    <center><img style="width: 800px; height: 403px;"
+ alt="Add ICEfaces Framework" src="images/AddICEfacesFramework.png"></center><br>
+    <br>
+  </li>
+  <li>Complete the dialog by selecting <span
+ style="font-style: italic;">Synchronous Update</span> in the ICEfaces
+Settings and hitting the <span style="font-style: italic;">OK</span>
+button, as illustrated below.&nbsp;&nbsp; Synchronous updates simplify
+the client/server communications in applications where ICEfaces <a
+ href="http://www.icefaces.org/main/product/ajaxpush.iface">Ajax Push</a>
+capabilities are not being leveraged.&nbsp; Synchronous updates most
+closely match the existing&nbsp; behavior of the application.&nbsp; The
+other setting, <span style="font-style: italic;">Concurrent DOM View</span>,
+is discussed in <a href="PortingGuidePart3.html">Part 3</a> of this
+guide.&nbsp; For now, it should be left unchecked<br>
+<br>
+.<center><img
+ style="width: 910px; height: 604px;" alt="Project Properties Dialog"
+ src="images/ProjectPropertiesComplete.png"></center><span
+ style="color: rgb(255, 0, 0);"></span><br>
+  </li>
+</ol>
+<p>Adding the ICEfaces framework to the project results in a number of
+changes, including:<br>
+<ol>
+  <li>Configuration in web.xml is modified to include:</li>
+  <ul>
+    <li>ICEfaces-specific context parameters</li>
+    <li>ICEfaces Servlets</li>
+    <li>ICEfaces Servlet mappings</li>
+  </ul>
+  <li>ICEfaces design and run time libraries are added.<br>
+  </li>
+  <li>A template ICEfaces page called <span style="font-style: italic;">IcePage1.jsp</span>
+is created.</li>
+  <li>A template <span style="font-style: italic;">index.html</span>
+page is created.<br>
+  </li>
+</ol>
+<p>The project should be runnable as is, but with the introduction of the <span
+ style="font-style: italic;">index.html</span>, you need to either:<br>
+<ul>
+  <li>Adjust the <span style="font-style: italic;">Run</span>
+properties in the Project Properties to specify a relative URL of <span
+ style="font-style: italic;">/faces/Page1.jsp, </span>or</li>
+  <li>Modify the <span style="font-style: italic;">index.html</span>
+to redirect to the appropriate page, something like...<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&lt;meta
+http-equiv="refresh" content="0;url=faces/Page1.jsp"&gt;</span><br>
+  </li>
+</ul>
+<h3><a name="The_ICEfaces_Page_Template" id="The_ICEfaces_Page_Template"></a>The ICEfaces Page Template</h3>
+<p>The ICEfaces NetBeans plugin provides JSF Visual Design capabilities
+similar to the Woodstock-based JSF Visual Design capabilities that your
+existing project is based on.&nbsp; The ICEfaces page template strongly
+resembles the Woodstock template as illustrated below in a diff of
+these two pages.<br>
+<br>
+<center><img style="width: 1027px; height: 395px;"
+ alt="Page Template Differences" src="images/PageTemplateDiff.png"></center><br>
+<br>
+As of NetBeans 6.5 the standard HTML tags&nbsp; <span
+ style="font-style: italic;">&lt;html&gt;</span>, <span
+ style="font-style: italic;">&lt;head&gt;</span>, and <span
+ style="font-style: italic;">&lt;body&gt;</span><span
+ style="font-style: italic;"> </span>are supported in design view so
+ICEfaces replacements are not required for <span
+ style="font-style: italic;">&lt;webuijsf:html&gt;</span>, <span
+ style="font-style: italic;">&lt;webuijsf:head&gt;</span>, and <span
+ style="font-style: italic;">&lt;webuijsf:body&gt;</span> and the
+standard HTML tags are used in the ICEfaces page template.&nbsp; Any
+page porting
+exercise will involve migrating the page content in the <span
+ style="font-style: italic;">&lt;webuijsf:form&gt;</span> of the
+Woodstock page to the <span style="font-style: italic;">&lt;ice:form&gt;</span>
+in the replacement ICEfaces page.<br>
+<h3><a name="Woodstock_Component_Bindings"></a>Woodstock Component
+Bindings</h3>
+<p>Before you start porting Woodstock pages to ICEfaces pages, there is a
+potential problem with the application data model that you might need
+to address.&nbsp; If your JSF Visual Project was created prior to the
+NetBeans 6.1 release, and you have not already refactored to eliminate
+the component bindings, it will be necessary to do so.&nbsp; In the
+case of our working example, that refactoring has not occurred, so we
+will use it to describe the process of achieving this refactoring.<br>
+<br>
+A quick review of JSF component bindings vs. value bindings is in order
+before proceeding.&nbsp; A component binding binds the view component
+to a component instance in the backing bean as illustrated below: <br>
+<br>
+The view component definition,<br>
+<span style="font-weight: bold;">&lt;h:outputText
+binding="#{myBean.someOutputText}" /&gt;<br>
+</span>is bound to an instance of <span style="font-style: italic;">HtmlOutputText</span>
+in the backing bean.<br>
+<span style="font-weight: bold;"></span><span style="font-weight: bold;">public
+class MyBean {</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; HtmlOutputText
+someOutputText;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public
+HtmlOutputText getSomeOutputText() {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; return someOutputText;<br>
+&nbsp;&nbsp;&nbsp; }<br style="font-weight: bold;">
+</span> <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public
+void setSomeOutputText(HtmlOutputText outputText) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; someOutputText = outputText;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br style="font-weight: bold;">
+</span> <span style="font-weight: bold;"></span><span
+ style="font-weight: bold;"></span><br>
+While component binds facilitate manipulation of the component directly
+from Java code, the view and the model become tightly coupled through
+the component class itself.&nbsp; When you consider porting away from a
+particular component you are forced to port the model as well, because
+the component instance will no longer be present.&nbsp; In contrast,
+value
+bindings bind the view component to a property in the backing bean as
+illustrated below:<br>
+<br>
+The view component definition,<br>
+<span style="font-weight: bold;">&lt;h:outputText
+value="#{myBean.someText}" /&gt;<br>
+</span>is value bound to an instance of <span
+ style="font-style: italic;">String</span> in the backing bean.<br>
+<span style="font-weight: bold;"></span><span style="font-weight: bold;">public
+class MyBean {</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">String someText;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+getSomeText() {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; return someText;<br>
+&nbsp;&nbsp;&nbsp; }<br style="font-weight: bold;">
+</span> <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public
+void setSomeText(String text) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; someText = text;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+</span><br>
+This completely separates the view from the model, and ensures that the
+backing bean can be represented as a portable POJO.&nbsp; This is the
+essence of the refactoring that must occur prior to porting the page to
+ICEfaces.<br>
+<h4>Eliminating Component Bindings in the Working Example</h4>
+<p>We will work with the simplest page, <span style="font-style: italic;">CreatePage.jsp</span>,
+in the working example to fully illustrate the process of factoring out
+the component bindings.&nbsp; A quick look at the page illustrates that
+it contains a calendar input, a couple input texts, and a drop down
+menu as the input controls requiring a backing model.
+<p><center><img
+ style="width: 783px; height: 365px;" alt="CreatePage.jsp"
+ src="images/CreatePage.png"></center><br>
+  <br>
+  And you can see in <span style="font-style: italic;">CreatePage.jsp</span>,
+  these input components currently have component bindings.<br>
+  <br>
+  <center><img
+ style="width: 969px; height: 237px;" alt="Component Bindings"
+ src="images/ComponentBindings.png"></center><br>
+  <br>
+  We will start with the calendar, and eliminate the component bindings
+  from <span style="font-style: italic;">CreatePage.java</span> as
+  follows:<br>
+<ol>
+  <li>Replace the <span style="font-style: italic;">Calendar</span>
+component import statement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">import com.sun.webui.jsf.component.Calendar;</span>
+    <br>
+with a standard Java <span style="font-style: italic;">Date</span>
+import statement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">import java.util.Date;</span><br>
+    <span style="font-weight: bold;"><span style="font-weight: bold;"></span><br>
+    </span></li>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span>Replace <span
+ style="font-style: italic;">dateCalendar</span> bean property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private Calendar dateCalendar = new Calendar(); </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public Calendar getDateCalendar() { </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return dateCalendar; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public void setDateCalendar(Calendar c) { </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.dateCalendar = c; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} </span><br style="font-weight: bold;">
+with <span style="font-style: italic;">date</span> bean property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private Date depDate = new Date(); </span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public Date getDate() { </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return depDate; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public void setDate(Date d) { </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.depDate = d; </span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} </span><br style="font-weight: bold;">
+    <br>
+  </li>
+  <li>In the <span style="font-style: italic;">addButton_action()</span>
+listener remove the line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">java.util.Date depDate = (java.util.Date)
+dateCalendar.getValue(); <br>
+    </span></li>
+</ol>
+<span style="font-weight: bold;"></span><p>Now we can return to the JSP
+code and modify the calendar component declaration<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:calendar <span
+ style="font-weight: bold;">binding="#{CreatePage.dateCalendar}"</span>
+id="dateCalendar" ... /&gt;<br>
+with<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:calendar&nbsp; <span
+ style="font-weight: bold;">selectedDate="#{CreatePage.date}"</span>
+id="dateCalendar" ... /&gt;<br>
+At this point we have a functional <span style="font-style: italic;">CreatePage.jsp</span>
+where the <span style="font-style: italic;">calendar</span>
+binding has been converted from a component to a value binding.&nbsp;
+From here we move on to the <span style="font-style: italic;">textField</span>
+components with a similar set of modifications.<br>
+<ol>
+  <li>Remove the <span style="font-style: italic;">TextField</span>
+component import statement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">import
+com.sun.webui.jsf.component.TextField;</span> <br>
+    <span style="font-weight: bold;"><br>
+    </span></li>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span>Replace&nbsp;<span
+ style="font-style: italic;">TextField</span> bean property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private TextField fromCity = new TextField();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public TextField
+getFromCity() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return fromCity;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void
+setFromCity(TextField tf) {<br>
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; this.fromCity = tf;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private TextField toCity =
+new TextField();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public TextField getToCity()
+{<br>
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return toCity;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; public void setToCity(TextField tf) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; this.toCity = tf;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+    </span>with <span style="font-style: italic;">String</span> bean
+property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private String fromCity = "";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public String getFromCity() {<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return fromCity;<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void
+setFromCity(String s) {<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; this.fromCity = s;<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; private String toCity = "";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public String getToCity() {<br>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return toCity;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; public void setToCity(String s) {<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.fromCity
+= s;<br>
+&nbsp;&nbsp; &nbsp; &nbsp; }<br>
+    </span><br>
+  </li>
+  <li>In the <span style="font-style: italic;">addButton_action()</span>
+listener modify the lines<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DEPCITY", rowKey, fromCity.getValue());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DESTCITY", rowKey, toCity.getValue());</span><br
+ style="font-weight: bold;">
+to use the String bean properties directly<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DEPCITY", rowKey, fromCity);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DESTCITY", rowKey, toCity);</span></li>
+</ol>
+<span style="font-weight: bold;"></span><p>And back in the JSP
+code we modify the <span style="font-style: italic;">textField</span>
+declarations<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:textField <span
+ style="font-weight: bold;">binding="#{CreatePage.fromCity}"</span>
+id="fromCity"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:textField <span
+ style="font-weight: bold;">binding="#{CreatePage.toCity}"</span>
+id="toCity"/&gt;<br>
+with<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:textField <span
+ style="font-weight: bold;">text="#{CreatePage.fromCity}"</span>
+id="fromCity"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;webuijsf:textField <span
+ style="font-weight: bold;">text="#{CreatePage.toCity}"</span>
+id="toCity"/&gt;<br>
+<br>
+At this point we again have a functional <span
+ style="font-style: italic;">CreatePage.jsp</span> where four of the
+five component bindings have been converted to value bindings.&nbsp;
+The last step is to modify the <span style="font-style: italic;">dropDown</span>
+in a similar fashion.&nbsp; <br>
+<ol>
+  <li>Remove the <span style="font-style: italic;">DropDown</span>
+component import statement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">import
+com.sun.webui.jsf.component.DropDown;</span> <br>
+    <span style="font-weight: bold;"><br>
+    </span></li>
+  <li><span style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span><span
+ style="font-weight: bold;"><span style="font-weight: bold;"><span
+ style="font-weight: bold;"></span></span></span>Replace&nbsp;<span
+ style="font-style: italic;">DropDown</span> bean property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private DropDown tripType = new DropDown();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public DropDown
+getTripType() {<br>
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return tripType;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; public void setTripType(DropDown dd) {<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.tripType
+= dd;<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; }<br>
+    </span>with <span style="font-style: italic;">String</span> bean
+property code<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+private String tripType = "";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public String getTripType() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; return tripType;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public void setTripType(String s) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; this.tripType = s;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+    <br>
+    </span></li>
+  <li>In the <span style="font-style: italic;">addButton_action()</span>
+listener modify the line<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.TRIPTYPEID", rowKey,
+tripType.getSelected());<br>
+    </span>to use the <span style="font-style: italic;">tripType</span>
+bean properties directly<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.TRIPTYPEID", rowKey, tripType);<br>
+    </span><span style="font-weight: bold;"></span></li>
+</ol>
+<p>And finally, back in the JSP
+code we modify the <span style="font-style: italic;">dropDown</span>
+declarations<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;webuijsf:dropDown <span
+ style="font-weight: bold;">binding="#{CreatePage.tripType}"
+id="tripType"</span> items=... /&gt; <br>
+with<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;webuijsf:dropDown <span
+ style="font-weight: bold;">selected="#{CreatePage.tripType}"</span>
+<span style="font-weight: bold;">id="tripType1"</span> items=... /&gt;
+<br>
+<br>
+Now we have a functionally equivalent <span style="font-style: italic;">CreatePage.java</span>
+backing bean that
+has no Woodstock-specific component bindings and is portable enough to
+proceed with the page conversion to ICEfaces.<br>
+<br>
+<span style="font-style: italic;">Notes:</span> <br>
+<ol>
+  <li>For some reason the
+NetBeans visual editor would not render the dropDown because the id <span
+ style="font-style: italic;">tripType</span> matched the selected value
+    <span style="font-style: italic;">tripType</span>.&nbsp; This was
+corrected by modifying the id to eliminate the match.</li>
+  <li>The <span style="font-style: italic;">IntegerConverter</span> is
+no longer required on the page, but it is used in a binding from <span
+ style="font-style: italic;">UpdatePage.jsp</span>, so it is left in
+the code.</li>
+</ol>
+<h3><a name="Creating_a_New_ICEfaces_Page_"></a>Creating a New ICEfaces
+Page<br>
+</h3>
+<p>Before we begin the process of porting a Woodstock page to ICEfaces, we
+need a template ICEfaces page to port into. The context menu&nbsp; <span
+ style="font-style: italic;">Web Pages &gt; New &gt; ICEfaces Visual
+Web JSF Page...</span> will result in a new page dialog as illustrated
+below.&nbsp; For our working example, the page is called <span
+ style="font-style: italic;">IceCreatePage.jsp</span>.
+<p><center><img
+ style="width: 740px; height: 363px;" alt="Create ICEfaces Page"
+ src="images/CreateICEfacesPage.png"></center><br>
+  <br>
+<h3><a name="Page_Porting_Basics_"></a>Page Porting Basics<br>
+</h3>
+<p>There are two likely scenarios that will be encountered when embarking
+on a page porting exercise.<br>
+<ol>
+  <li>If the new page design is significantly different than the
+existing page design and will take advantage of the extended features
+and components available in ICEfaces,&nbsp; the recommenced approach is
+to build an entirely new ICEfaces page using the visual editor and not
+attempt to port the existing Woodstock page.&nbsp; It is likely that
+the existing backing beans can be reused, but it may be necessary to
+augment those beans to support the new page functionality.<br>
+    <br>
+  </li>
+  <li>If the new ICEfaces page will initially remain the same, with the
+intent of adding additional features only after the existing
+functionality has been reproduced, you will want to preserve the
+original page structure as much as possible, and reuse the existing
+backing beans.&nbsp; The recommended approach is to use the JSP editor
+to cut the page contents from the old page, and paste it in to the new
+ICEfaces page.&nbsp; From there you can perform component-by-component
+conversion using the JSP editor.&nbsp; Considering our working example
+with <span style="font-style: italic;">CreatePage.jsp</span> being
+ported to <span style="font-style: italic;">IceCreatePage.jsp</span>,
+the resulting starting point for the page conversion is illustrated
+below.<br>
+<br>
+    <center><img style="width: 859px; height: 665px;"
+ alt="Woodstock Initial Paste" src="images/WoodstockPaste.png"></center><br>
+  </li>
+</ol>
+<h3><a name="Component-by-component_Porting"></a>Component-by-component
+Porting</h3>
+<p>Porting away from Woodstock components to ICEfaces components must be
+addressed on a component by component basis. To assist in this process
+a <a
+ href="http://www.icefaces.org/main/resources/woodstock-icefaces-mapping.iface" target="_blank">Component
+Mapping Matrix</a> is available that provides
+component to component mappings, and attribute comparisons.&nbsp; We
+now examine the variations on component porting that you will likely
+encounter.<br>
+<h4>Standard JSF Component Porting</h4>
+<p>Components from the standard JSF namespaces <span
+ style="font-style: italic;">xmlns:f="http://java.sun.com/jsf/core"</span>
+and xmlns:h="http://java.sun.com/jsf/html" do not require porting as
+they can coexist with other ICEfaces components in the page.&nbsp; In
+the case of the<span style="font-style: italic;"> h:</span> components,
+ICEfaces also provides direct replacements from the <span
+ style="font-style: italic;">ice:</span> namespace, so you can simply
+change the prefix on these components to get the extended ICEfaces
+versions.&nbsp; The advantage to the <span style="font-style: italic;">ice:</span>
+versions is they support all the ICEfaces automatic Ajax features such
+as partial submit.&nbsp; A general rule of thumb is, if the <span
+ style="font-style: italic;">h:</span> component has any dynamic
+behavior associated with it, it is a candidate for conversion to an <span
+ style="font-style: italic;">ice:</span> component.&nbsp; If, on the
+other hand, it is static element in the page, there is no real
+advantage to converting it.<br>
+<h4>Woodstock Component Porting</h4>
+<p>With the ICEfaces 1.7.2SP1 release all components from the Woodstock
+namespace <span style="font-style: italic;">xmlns:webuijsf="http://www.sun.com/webui/webuijsf"</span>
+must be ported to ICEfaces components.&nbsp; In subsequent ICEfaces
+releases a certain subset of <span style="font-style: italic;">webuijsf:</span>
+components may be directly supported and will not require porting, but
+until then you must consider porting all of them.&nbsp; During the
+porting process you will encounter two likely scenarios.<br>
+<ol>
+  <li>There is a direct replacement in the ICEfaces component suite
+for the Woodstock component being replaced.&nbsp; A simple example is <span
+ style="font-style: italic;">&lt;ice:outputLabel/&gt;</span> replacing <span
+ style="font-style: italic;">&lt;webuijsf:label/&gt;</span>.&nbsp; In
+this case, it will be necessary to adjust the attributes list to match
+those available in the ICEfaces component.&nbsp; Although you are
+dealing with a direct component replacement, it is important to
+understand that the components may not have the exact same feature set
+so adjustments may be necessary. The component porting matrix
+identifies attribute similarities and differences, and provides general
+guidance related to behavioral differences between the ICEfaces and
+Woodstock counterpart.<br>
+    <br>
+  </li>
+  <li>There is no direct replacement in the ICEfaces component suite
+for the Woodstock component being replaced.&nbsp; An example of this is
+    <span style="font-style: italic;">&lt;wiebuijsf:addRemove&gt;</span>
+that includes two lists and a mechanism to move element back and forth
+between the lists.&nbsp; In this case, a group of ICEfaces components
+may have to be combined to achieve the functional equivalent.&nbsp;
+Again, the component porting matrix will identify these components and
+provide guidance on how to achieve a port to ICEfaces.&nbsp; As an
+aside, some subset of this class of components will likely be
+prioritized for inclusion as first-class components in subsequent
+releases of ICEfaces.</li>
+</ol>
+<h3><a name="Porting_the_Working_Example_Page"></a>Porting the Working
+Example Page</h3>
+<p>Several different strategies can be taken when porting a page from
+Woodstock to ICEfaces.&nbsp; You could copy the entire page and its
+backing beans to a new page and do your porting there, or you could
+build a new JSP page, and reuse the existing backing bean as is.&nbsp;
+For the working example we will take the later approach and reuse the
+exising <span style="font-style: italic;">Page1.java</span> backing
+bean.&nbsp; To complete the page port we need to:<br>
+<ol>
+  <li>Port the <span style="font-style: italic;">masthead.jspf</span><br>
+  </li>
+  <li>Port the main panelGrid in <span style="font-style: italic;">CreatePage.jsp</span><span
+ style="font-weight: bold;"><br>
+    </span></li>
+</ol>
+<h4>Porting the masthead<br>
+</h4>
+<p>The first step in porting the page is to port the Masthead which is
+included at the top of each page.&nbsp; To achieve this we need to copy
+the existing <span style="font-style: italic;">Masthead.jspf</span> to
+<span style="font-style: italic;">iceMasthead.jspf</span> and ported to
+ICEfaces by simply replacing the <span style="font-style: italic;">webuijsf:</span>
+components with corresponding <span style="font-style: italic;">ice:</span>
+components, as illustrated in the diff below.
+<p><center><img
+ style="width: 1029px; height: 473px;" alt="Masthead Differences"
+ src="images/MastheadDiff.png"></center><br>
+  <br>
+  The specific changes in the port include:<br>
+<ol>
+  <li>Modification of the namespace from <br>
+&lt;div style="height: 155px; width: 760px; -rave-layout: grid"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html" <span style="font-weight: bold;">xmlns:webuijsf="http://www.sun.com/webui/webuijsf"</span>&gt;<br>
+to<br>
+&lt;div style="height: 155px; width: 760px; -rave-layout: grid"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"<br>
+    <span style="font-weight: bold;">xmlns:ice="http://www.icesoft.com/icefaces/component"</span>&gt;<br>
+    <br>
+  </li>
+  <li>&nbsp;Change <span style="font-style: italic;">&lt;webuijdf:staticText</span>/<span
+ style="font-style: italic;">&gt; </span>declarations in the <span
+ style="font-style: italic;">title</span> panelGrid from<br>
+&lt;<span style="font-weight: bold;">webuijsf:staticText</span>
+id="appName" style="color: rgb(255, 255, 255); font-family:
+Georgia,'Times New Roman',times,serif; font-size: 24px; font-weight:
+bold" <span style="font-weight: bold;">text="Two Page CRUD With Table"</span>/&gt;<br>
+&lt;<span style="font-weight: bold;">webuijsf:staticText</span>
+id="poweredBy" style="color: #ffffff; font-family: font-family:
+Georgia,'Times New Roman',times,serif; font-size: 10px" <span
+ style="font-weight: bold;">text="Empowered by NetBeans 6"</span>/&gt;<br>
+to<br>
+&lt;<span style="font-weight: bold;">ice:outputText</span> id="appName"
+style="color: rgb(255, 255, 255); font-family: Georgia,'Times New
+Roman',times,serif; font-size: 24px; font-weight: bold" <span
+ style="font-weight: bold;">value="Two Page CRUD With Table"</span>/&gt;<br>
+&lt;<span style="font-weight: bold;">ice:outputText</span>
+id="poweredBy" style="color: #ffffff; font-family: font-family:
+Georgia,'Times New Roman',times,serif; font-size:
+10px"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span style="font-weight: bold;">value="Empowered by NetBeans 6"</span>/&gt;<br>
+    <br>
+  </li>
+  <li>Change &lt;<span style="font-style: italic;">webuijsf:imageHyperlink</span>/<span
+ style="font-style: italic;"></span>&gt; declarations in the <span
+ style="font-style: italic;">navPanel</span> panelGrid from<br>
+    <span style="font-weight: bold;">&lt;webuijsf:imageHyperlink
+id="home" imageURL="/resources/home.gif" target="_blank" text="Home"
+url="http://visualweb.netbeans.org/"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&lt;webuijsf:imageHyperlink
+id="help" imageURL="/resources/help.gif" target="_blank" text="Help"
+url="readme.html"/&gt;</span><br style="font-weight: bold;">
+to<br>
+    <span style="font-weight: bold;">&lt;ice:outputLink id="home"
+target="_blank" value="http://visualweb.netbeans.org/"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:graphicImage id="graphic1" value="./resources/home.gif"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputText id="out1" value="home"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&lt;/ice:outputLink&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&lt;ice:outputLink id="help"
+target="_blank" value="readme.html"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:graphicImage id="graphic2" value="./resources/help.gif"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputText id="out2" value="help"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&lt;/ice:outputLink&gt;<br>
+    </span>In this case we use multiple ICEfaces component to replace a
+single Woodstock component.<br>
+  </li>
+</ol>
+<h4>Porting the page body<br>
+</h4>
+<p>The following diff illustrates the changes required
+to port the content in the main panel grid.<br>
+<br>
+<center><img style="width: 1012px; height: 525px;" alt="Main Panel Difference"
+ src="images/MainPanelDiff.png"></center><br>
+<br>
+The resulting JSP code looks like:<br>
+<br>
+<span style="font-weight: bold;">&lt;ice:form id="form1"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;div style="position: absolute; left: 0px; top:
+0px"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;jsp:directive.include
+file="iceMasthead.jspf"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/div&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h:panelGrid id="mainPanel" style="margin: 5px;
+padding: 5px; left: 0px; top: 160px; position: absolute; width:
+760px"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h:panelGrid columns="2"
+id="tripPanel" style=""&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label1" value="Date"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:selectInputDate value="#{CreatePage.date}" id="dateCalendar"
+renderAsPopup="true"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:convertDateTime timeZone="MST"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:selectInputDate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label2" value="From"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:inputText value="#{CreatePage.fromCity}" id="fromCity"
+partialSubmit="true" required="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label3" value="To"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:inputText value="#{CreatePage.toCity}" id="toCity"
+partialSubmit="true" required="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label4" value="Trip Type"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:selectOneMenu value="#{CreatePage.tripType}" id="tripType1"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:selectItems id="tripSelect"
+value="#{CreatePage.triptypeDataProvider.options['TRIPTYPE.TRIPTYPEID,TRIPTYPE.NAME']}"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:selectOneMenu&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/h:panelGrid&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h:panelGrid columns="2"
+id="buttonPanel" style=""&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{CreatePage.addButton_action}"
+id="addButton" value="Add"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{CreatePage.cancel_action}" id="cancel"
+value="Cancel" immediate="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/h:panelGrid&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ice:messages
+id="messageGroup1" layout="table" style="color:red;"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/h:panelGrid&gt;<br>
+&lt;/ice:form&gt;<br>
+</span><span style="font-weight: bold;"></span><br>
+The specific changes in the port include:<br>
+<ol>
+  <li>The jsp include directive now specifies <span
+ style="font-style: italic;">iceMasthead.jspf</span><br>
+    <span style="font-style: italic;"><span style="font-style: italic;"></span></span><span
+ style="font-family: monospace;"></span><span
+ style="font-style: italic;"></span></li>
+  <li><span style="font-style: italic;">&lt;webuijsf:label/&gt; </span>is
+replaced with <span style="font-style: italic;">&lt;ice:outputLabel/&gt;</span>,
+and value binding attribute name is changed from <span
+ style="font-style: italic;">text</span> to <span
+ style="font-style: italic;">value</span>.<br>
+  </li>
+  <li>&nbsp;<span style="font-style: italic;">&lt;webuijdf:calendar</span>/<span
+ style="font-style: italic;">&gt; </span>is replaced with <span
+ style="font-style: italic;">&lt;ice:selectInputDate</span>/<span
+ style="font-style: italic;"></span><span style="font-style: italic;">&gt;</span>.&nbsp;
+In this case there is no direct replacement for the maximum and minimum
+date values, so it would be necessary to add a validator to the
+ICEfaces component to match the functionality in the Woodstock
+component. This is an exercise left to the reader.&nbsp; One other
+issue related to <span style="font-style: italic;">selectInputDate</span>
+is managing the timezone properly.&nbsp; A lengthy discussion is beyond
+the scope of this guide, so for simplicity we use a standard
+f:convertDataTime and specify a fixed timezone that match the timezone
+the server is running in.&nbsp; For accurate results modify this to
+your timezone.<br>
+  </li>
+  <li>&nbsp;<span style="font-style: italic;">&lt;webuijdf:textField</span>/<span
+ style="font-style: italic;">&gt; </span>is replaced with <span
+ style="font-style: italic;">&lt;ice:inputText</span>/<span
+ style="font-style: italic;"></span><span style="font-style: italic;">&gt;,
+    </span>and value binding attribute name is changed from <span
+ style="font-style: italic;">text</span> to <span
+ style="font-style: italic;">value</span>..&nbsp; <br>
+  </li>
+  <li>&lt;<span style="font-style: italic;">webuijsf:dropDown</span>/<span
+ style="font-style: italic;"></span>&gt; is replaces with &lt;<span
+ style="font-style: italic;">ice:selectOneMenu</span>/<span
+ style="font-style: italic;"></span>&gt; containing a child &lt;<span
+ style="font-style: italic;">f:selectItems</span>/<span
+ style="font-style: italic;"></span>&gt; for the list value binding.</li>
+  <li><span style="font-style: italic;">&lt;webuijsf:button/&gt; </span>is
+replaced with <span style="font-style: italic;">&lt;ice:commandButon/&gt;</span>,
+and value binding attribute name is changed from <span
+ style="font-style: italic;">text</span> to <span
+ style="font-style: italic;">value</span>.&nbsp; The <span
+ style="font-style: italic;">actionExpression</span> attribute is also
+changed to an <span style="font-style: italic;">action</span>.</li>
+  <li><span style="font-style: italic;">&lt;webuijsf:messageGroup/&gt; </span>is
+replaced with <span style="font-style: italic;">&lt;ice:messages/&gt;.&nbsp;
+    </span>Layout and style attributes have been added to <span
+ style="font-style: italic;">&lt;ice:messages/&gt; </span>to closely
+mimic <span style="font-style: italic;">&lt;webuijsf:messageGroup/&gt;</span><span
+ style="font-style: italic;">.</span></li>
+  <li><span style="font-style: italic;"><span
+ style="font-style: italic;"></span></span>One minor change to the
+style of the<span style="font-style: italic;"> panelGrid
+id="mainPanelGrid"</span> is required.&nbsp; For the page to render
+properly <span style="font-style: italic;">height:100%</span> must be
+removed from the <span style="font-style: italic;">style</span>
+attribute.<span style="font-style: italic;"><span
+ style="font-style: italic;"></span><br>
+    </span></li>
+</ol>
+<p>We now have a fully function ICEfaces replacement page for <span
+ style="font-style: italic;">CreatePage.jsp</span>.&nbsp; The next step
+is to modify the navigation rules to go to and from <span
+ style="font-style: italic;">IceCreatePage.jsp</span>.<br>
+<h3><a name="Page_Navigation"></a>Page Navigation</h3>
+<p>With Woodstock the request path is defined by the Servlet mapping&nbsp;
+<span style="font-style: italic;">/faces/*</span> through the standard <span
+ style="font-style: italic;">Faces Servlet</span>.&nbsp; With ICEfaces
+the request path is defined by the Servlet mapping<span
+ style="font-style: italic;">*.iface</span> through the ICEfaces <span
+ style="font-style: italic;">Persistent Faces Servlet.</span><span
+ style="font-style: italic;"></span>&nbsp; Because different Servlets
+are used for these request paths, it is necessary to use redirects when
+navigating to and from ICEfaces pages.&nbsp; The changes required to
+modify the navigation rules for the working example are illustrated
+below.
+<p> <center><img style="width: 1083px; height: 518px;"
+ alt="Navigation Rules Differences" src="images/NavRulesDiff.png"></center><br>
+  <br>
+  The resulting navigation rules are:<br>
+  <br>
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+  &lt;navigation-rule&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-view-id&gt;/Page1.jsp&lt;/from-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-outcome&gt;createCase&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;to-view-id&gt;/IceCreatePage.iface&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;redirect/&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-outcome&gt;updateCase&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;to-view-id&gt;/UpdatePage.jsp&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-rule&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+  &lt;navigation-rule&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-view-id&gt;/IceCreatePage.jsp&lt;/from-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-outcome&gt;created&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;to-view-id&gt;/faces/Page1.jsp&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;redirect/&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;from-outcome&gt;canceled&lt;/from-outcome&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;to-view-id&gt;/faces/Page1.jsp&lt;/to-view-id&gt;</span><br
+ style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;redirect/&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+  &lt;/navigation-rule&gt;</span><br style="font-weight: bold;">
+  <br>
+  As you can see, <span style="font-style: italic;">Page1.jsp</span> now
+  navigates to<span style="font-style: italic;"> IceCreatePage.iface</span> using a redirect as the outcome of the Create button, and <span
+ style="font-style: italic;">IceCreatePage.jsp</span> navigates back to <span style="font-style: italic;">Page1.jsp</span> using a redirect as
+  the outcome of the Create and Cancel buttons.<br>
+  <br>
+  <span style="font-style: italic;">Note:</span> You cannot use the
+  visual page flow designer to make the necessary changes to incorporate
+  ICEfaces navigation rules.<br>
+<h3><a name="Automatic_Ajax_"></a>Automatic Ajax&nbsp;</h3>
+<p>With the functional ICEfaces page now in place you can begin to explore
+some of the Automatic Ajax features that the framework delivers -
+without you altering a single line of code.&nbsp; Intelligent form
+processing is one such feature, where the application can react to the
+user on a field by field basis instead of processing the entire form
+when it is submitted.&nbsp; As an example, simple type some gibberish
+into the date field and then tab out of that field to the next.&nbsp;
+You will see that validation on the date field runs immediately and
+informs you that an invalid date has been entered, as illustrated below.
+<p><center><img
+ style="width: 801px; height: 306px;" alt="Date Validation"
+ src="images/DateValidation.png"></center><br>
+  <br>
+  A capability called partial submit is responsible for this
+behavior.&nbsp; Basically, a partial submit occurs as focus leaves the
+date field, which causes the JSF lifecycle to run.&nbsp; The submit is
+partial in that it will not validate the entire form, so you don't see
+validation messages for fields that have not been visited yet.&nbsp;
+Because the lifecycle runs it is possible to add business logic that
+analyzes the users input and adjust the form accordingly.&nbsp; In our
+case we have simply allowed the validation to run on the date
+input.&nbsp; <br>
+<br>
+We will now extend the intelligent form processing by requiring that
+the <span style="font-style: italic;">From</span> and <span
+ style="font-style: italic;">To</span> city fields are filled in prior
+to submitting the form.&nbsp; This is achieved by turning on the <span
+ style="font-style: italic;">partialSubmit</span> and <span
+ style="font-style: italic;">required</span> attributes in the
+inputText fields, as illustrated below.<br>
+<br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &lt;ice:inputText
+value="#{CreatePage.fromCity}" id="fromCity" <span
+ style="font-weight: bold;">partialSubmit="true" required="true"</span>/&gt;</span><br
+ style="font-style: italic;">
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &lt;ice:inputText
+value="#{CreatePage.toCity}" id="toCity" <span
+ style="font-weight: bold;">partialSubmit="true" required="true"</span>/&gt;</span><br
+ style="font-style: italic;">
+<br style="font-style: italic;">
+If you rerun the application now, enter a valid date and then tab
+through the From City <span style="font-style: italic;">inputText,</span> you will see validation occurring immediately as illustrated below.
+<p><center><img
+ style="width: 801px; height: 306px;" alt="City Validation"
+ src="images/CityValidation.png"></center><br>
+  <br>
+  So you can see a more interactive form can be presented to the user
+with very little effort using ICEfaces.&nbsp; Of course you could add
+more sophisticated processing like checking the city against a database
+of valid destinations, and disabling the <span
+ style="font-style: italic;">Add</span> button until a valid form has
+been completed.&nbsp; Have a look at the&nbsp;<a
+ href="http://address.icefaces.org/address/" target="_blank">ICEfaces Address Form Demo</a> as another example of intelligent form processing.<br>
+<h3>Finished Part 1<br>
+</h3>
+<p>You have now completed Part 1 of the Woodstock to ICEfaces Porting
+Guide.&nbsp; The complete project up to this point can be downloaded
+<a
+ href="TwoPageCrudTable_Part1.zip">here</a>.&nbsp;
+At
+this point you can go back to the <a
+ href="WoodstockToICEfacesPortingGuide.html">table of contents</a>, or
+move on to <a href="PortingGuidePart2.html">Part 2</a> of the guide,
+which focuses on porting a data table from Woodstock to ICEfaces.&nbsp;
+<br>
+<br>
+</body>
+</html>
