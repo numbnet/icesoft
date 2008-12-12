@@ -1,7 +1,9 @@
 package com.icesoft.faces.component.paneltooltip;
 
+import java.io.Serializable;
 
-public class TooltipInfo {
+
+public class TooltipInfo implements Serializable {
     private String src = new String();
     private String state = "hide";
     private String x = "0px";
