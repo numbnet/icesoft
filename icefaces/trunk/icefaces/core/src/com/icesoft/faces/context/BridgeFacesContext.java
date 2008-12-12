@@ -575,7 +575,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.updateOnPageLoad(request, response);
             }
         });
-        renderResponse();
+        if (!CoreUtils.isJSFStateSaving()) {
+            //skip restore view phase since view is still around
+            renderResponse();
+        }
     }
 
     public void injectBundles() {
