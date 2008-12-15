@@ -49,9 +49,7 @@ when the user presses the Enter key or tabs out of a field.
     
     <!-- Text Field input -->
     <ice:panelGroup styleClass="exampleBox textEntryContainer">
-        <ice:panelGrid columns="2"
-                styleClass="verticalAlignTop"
-                rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
+        <ice:panelGrid columns="3" columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
             <ice:outputLabel for="TxtName"
                              value="#{msgs['page.textFields.name']}"/>
             <ice:inputText id="TxtName"
@@ -60,17 +58,16 @@ when the user presses the Enter key or tabs out of a field.
                            valueChangeListener="#{textFields.effectChangeListener}"
                            value="#{textFields.name}"
                            partialSubmit="true"
-                           required="true">
+                           required="true"
+                           >
                 <f:validateLength minimum="3" maximum="25"/>
             </ice:inputText>
+            <ice:message for="TxtName" style="color:red"/>
         </ice:panelGrid>
-        <ice:message for="TxtName" showDetail="false" showSummary="true"/>
-        <ice:panelGrid columns="2"
-                styleClass="verticalAlignTop"
-                rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
+        <ice:panelGrid columns="3" styleClass="verticalAlignTop"  columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
 
             <ice:outputLabel for="TxtPw"
-                             value="#{msgs['page.textFields.password']}"/>
+                             value="#{msgs['page.textFields.password']}" />
             <ice:inputSecret id="TxtPw"
                              maxlength="20"
                              size="20"
@@ -81,12 +78,11 @@ when the user presses the Enter key or tabs out of a field.
                              required="true">
                 <f:validateLength minimum="3" maximum="10"/>
             </ice:inputSecret>
-
+            <ice:message for="TxtPw" style="color:red"/>
         </ice:panelGrid>
-        <ice:message for="TxtPw" showDetail="false" showSummary="true"/>
-        <ice:panelGrid columns="2"
+        <ice:panelGrid columns="3"
                 styleClass="verticalAlignTop"
-                rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
+                 columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
             <ice:outputLabel for="TxtName"
                              value="#{msgs['page.textFields.comments']}"/>
             <ice:inputTextarea id="TxtCmt"
