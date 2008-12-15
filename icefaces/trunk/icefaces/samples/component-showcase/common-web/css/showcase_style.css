@@ -994,3 +994,12 @@ div.verticalAlignMdl{
 
 /* end media exmaple*/
 
+.pnlGrdClass {
+    width:70px;
+    text-align:left;
+}
+.pnlGrdClassLong {
+    width:200px;
+    text-align:left;
+}
+
