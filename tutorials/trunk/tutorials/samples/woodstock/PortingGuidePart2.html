@@ -473,15 +473,14 @@ the same manner as was done in <a href="PortingGuidePart1.html">Part 1</a>.&nbsp
 After the cut and paste exercise the basic page structure looks like:
 <p><center><img
  style="width: 1063px; height: 423px;" alt="Page1 Structure"
- src="images/Page1Structure.png"></center><br>
-  <br>
-  In order to maintain a consistent layout between <span
+ src="images/Page1Structure.png"></center>
+  <p>In order to maintain a consistent layout between <span
  style="font-style: italic;">IcePage1</span>, and <span style="font-style: italic;">IceCreatePage</span>, the style for
   the <span style="font-style: italic;">body</span>, and <span
  style="font-style: italic;">panelGrid</span>s are modified to
   match those in <span style="font-style: italic;">IceCreatePage</span>,
-  so we have:<br>
-  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  so we have:</p>
+  <p><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &lt;body id="outputBody1" style="-rave-layout: grid"&gt;</span><br
  style="font-weight: bold;">
   <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -496,10 +495,8 @@ After the cut and paste exercise the basic page structure looks like:
   &lt;/div&gt;</span><br style="font-weight: bold;">
   <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &lt;h:panelGrid id="mainPanel" style="margin: 5px; padding: 5px; left:
-  0px; top: 160px; position: absolute; width: 760px"&gt;</span><br
- style="font-weight: bold;">
-  <br>
-  The following steps are needed to complete the port.<br>
+  0px; top: 160px; position: absolute; width: 760px"&gt;</span></p>
+  <p>The following steps are needed to complete the port.</p>
 <ol>
   <li>The panelGrid containing the <span style="font-style: italic;">dropDown</span>
 is modified to look like:<br>
@@ -734,28 +731,24 @@ Design View again, as illustrated below.<br>
 <br>
 <center><img
  style="width: 816px; height: 508px;" alt="Design View - Part 4"
- src="images/DesignView4.png"></center><br>
-<br>
-Now we can try running it.&nbsp; From the project context menu select <span
+ src="images/DesignView4.png"></center>
+<p>Now we can try running it.&nbsp; From the project context menu select <span
  style="font-style: italic;">properties,</span> and then modify the <span
- style="font-style: italic;">Run</span> properties as illustrated.
+ style="font-style: italic;">Run</span> properties as illustrated.</p>
 <p><center><img
  style="width: 741px; height: 457px;" alt="Project Run Properties"
- src="images/RunProperties.png"></center><br>
-  <br>
-  When you run the project, the rendered page should now look like:<br>
-  <br>
+ src="images/RunProperties.png"></center>
+  <p>When you run the project, the rendered page should now look like:</p>
   <center><img style="width: 784px; height: 555px;" alt="IcePage1"
- src="images/IcePage1.png"></center><br>
-  <br>
-  You will noticed a marked improvement in the rendering of this page
+ src="images/IcePage1.png"></center>
+  <p>You will notice a marked improvement in the rendering of this page
 compared with the original Woodstock page.&nbsp; As you select
 different people for the <span style="font-style: italic;">selectOneMenu</span>,
 the <span style="font-style: italic;">dataTable</span> updates
 smoothly with only the minimum re-rendering required, unlike the
 Woodstock page that re-renders most everything.&nbsp; We can now move
 on
-to cleaning up the navigation rules.<br>
+to cleaning up the navigation rules.</p>
 <h4><a name="Modifying_the_navigation"></a>Modifying the Navigation</h4>
 <p>With our primary page now an ICEfaces page, we need to modify the
 navigation rules as follows.<br>
@@ -769,9 +762,8 @@ reverse direction.</li>
 Woodstock, so redirect is required.&nbsp; The same applies in the
 reverse direction.</li>
 </ol>
-The modified navigation rules are:<br>
-<br>
-<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+<p>The modified navigation rules are:</p>
+<p><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
 &lt;navigation-rule&gt;</span><br style="font-weight: bold;">
 <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &lt;from-view-id&gt;/IcePage1.jsp&lt;/from-view-id&gt;</span><br
@@ -861,8 +853,7 @@ The modified navigation rules are:<br>
 <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
 <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
-&lt;/navigation-rule&gt;</span><br style="font-weight: bold;">
-<br>
+&lt;/navigation-rule&gt;</span></p>
 <p>With the navigation rules in place, we once again have a fully
 functional version
 of the application, with 2 of the 3 Woodstock pages ported to
