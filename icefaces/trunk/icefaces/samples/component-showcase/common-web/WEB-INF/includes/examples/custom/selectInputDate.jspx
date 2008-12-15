@@ -81,8 +81,11 @@ the click of a button.
         </ice:selectInputDate>
 
         <ice:panelGroup style="text-align:right;margin-top:10px;">
-            Weekends have dark gray backgrounds<br/>
-            August days are bold <br/>
+            <ice:outputText
+                value="#{msgs['page.selectInputDate.comment.weekends']}"/><br/>
+            <ice:outputText
+                value="#{msgs['page.selectInputDate.comment.august']}"/><br/>
+
         </ice:panelGroup>
 
     </ice:panelGroup>
