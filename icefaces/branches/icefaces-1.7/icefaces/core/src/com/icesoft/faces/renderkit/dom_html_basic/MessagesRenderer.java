@@ -34,7 +34,6 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.util.DOMUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -62,7 +61,7 @@ public class MessagesRenderer extends DomBasicRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UIMessages.class);
-        //this property will only be true when there wasn't any message found 
+        //this property will only be true when there wasn't any message found
         //on first rendering request of this component.
         boolean renderLater = uiComponent.getAttributes().containsKey("$render-later$");
         DOMContext domContext = null;
@@ -71,7 +70,7 @@ public class MessagesRenderer extends DomBasicRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         } else {
             domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent); 
+                DOMContext.reattachDOMContext(facesContext, uiComponent);
         }
         if (domContext.isStreamWriting()) {
             writeStream(facesContext, uiComponent);
@@ -87,10 +86,10 @@ public class MessagesRenderer extends DomBasicRenderer {
         } else {
             messagesIterator = facesContext.getMessages();
         }
-        
+
         // the target element to which messages are appended; either td or span
         Element parentTarget = null;
-        
+
         // layout
         boolean tableLayout = false; // default layout is list
         String layout = (String) uiComponent.getAttributes().get("layout");
@@ -110,6 +109,14 @@ public class MessagesRenderer extends DomBasicRenderer {
         boolean isVisible = visible == null || visible.booleanValue() ;
         if (!isVisible || !messagesIterator.hasNext()) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
 
+        if (renderLater) {
+            UIComponent uiform = findForm(uiComponent);
+            //second request has been made successfully, now remove the info
+            if (uiform != null) {
+                uiform.getAttributes().remove("$ice-msgs$");
+                uiComponent.getAttributes().remove("$render-later$");
+            }
+        }
 
         if (!messagesIterator.hasNext()) {
             Element emptyChild = null;
@@ -130,17 +137,6 @@ public class MessagesRenderer extends DomBasicRenderer {
             domContext.stepOver();
             return;
         }
-        
-        if (renderLater) {
-            UIComponent uiform = findForm(uiComponent);
-            //second request has been made successfully, now remove the info 
-            if (uiform != null) {
-                uiform.getAttributes().remove("$ice-msgs$");
-                uiComponent.getAttributes().remove("$render-later$");
-            }                
-        }
-        
-
 
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
