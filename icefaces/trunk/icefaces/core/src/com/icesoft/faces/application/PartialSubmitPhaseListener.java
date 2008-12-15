@@ -73,6 +73,14 @@ public class PartialSubmitPhaseListener implements PhaseListener  {
                 requestMap.put(ALTERED_KEY, alteredRequiredComponents);
             }
         }
+    }
+
+    public void beforePhase(PhaseEvent phaseEvent)  {
+
+        // ICE-3884 restore required-flags before state saving
+        // writes the component state in stone 
+        FacesContext facesContext = phaseEvent.getFacesContext();
+        ExternalContext externalContext= facesContext.getExternalContext();
         if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId())  {
             Map requestMap = externalContext.getRequestMap();
             Map alteredComponents = (Map) requestMap.get(ALTERED_KEY);
@@ -81,9 +89,6 @@ public class PartialSubmitPhaseListener implements PhaseListener  {
                 requestMap.remove(ALTERED_KEY);
             }
         }
-    }
-
-    public void beforePhase(PhaseEvent phaseEvent)  {
     }
 
     public PhaseId getPhaseId()  {
