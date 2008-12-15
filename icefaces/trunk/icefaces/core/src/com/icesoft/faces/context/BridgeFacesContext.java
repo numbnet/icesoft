@@ -102,6 +102,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
     private DocumentStore documentStore;
+    private String lastViewID;
 
     public BridgeFacesContext(Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final Authorization authorization) throws Exception {
         setCurrentInstance(this);
@@ -277,6 +278,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // #3424. Allow viewRoot to be set to null. On page reload, this object
         // is reused, but viewRoot must be nullable 
         this.viewRoot = viewRoot;
+        lastViewID = viewRoot.getViewId();
         if (viewRoot != null) {
             final String path = viewRoot.getViewId();
             if (PageTemplatePattern.matcher(path).matches()) {
@@ -578,6 +580,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         if (!CoreUtils.isJSFStateSaving()) {
             //skip restore view phase since view is still around
             renderResponse();
+        } else {
+            //fake a forwarded request to restore the last rendered view
+            externalContext.getRequestMap().put("javax.servlet.include.path_info", lastViewID);
         }
     }
 
