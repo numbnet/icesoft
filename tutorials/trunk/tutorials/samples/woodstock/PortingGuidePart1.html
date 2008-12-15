@@ -179,7 +179,7 @@ these two pages.<br>
 <center><img style="width: 1027px; height: 395px;"
  alt="Page Template Differences" src="images/PageTemplateDiff.png"></center><br>
 <br>
-As of NetBeans 6.5 the standard HTML tags&nbsp; <span
+<p>As of NetBeans 6.5 the standard HTML tags&nbsp; <span
  style="font-style: italic;">&lt;html&gt;</span>, <span
  style="font-style: italic;">&lt;head&gt;</span>, and <span
  style="font-style: italic;">&lt;body&gt;</span><span
@@ -193,7 +193,7 @@ page porting
 exercise will involve migrating the page content in the <span
  style="font-style: italic;">&lt;webuijsf:form&gt;</span> of the
 Woodstock page to the <span style="font-style: italic;">&lt;ice:form&gt;</span>
-in the replacement ICEfaces page.<br>
+in the replacement ICEfaces page.</p>
 <h3><a name="Woodstock_Component_Bindings"></a>Woodstock Component
 Bindings</h3>
 <p>Before you start porting Woodstock pages to ICEfaces pages, there is a
@@ -268,18 +268,15 @@ it contains a calendar input, a couple input texts, and a drop down
 menu as the input controls requiring a backing model.
 <p><center><img
  style="width: 783px; height: 365px;" alt="CreatePage.jsp"
- src="images/CreatePage.png"></center><br>
-  <br>
-  And you can see in <span style="font-style: italic;">CreatePage.jsp</span>,
-  these input components currently have component bindings.<br>
-  <br>
+ src="images/CreatePage.png"></center>
+  <p>And you can see in <span style="font-style: italic;">CreatePage.jsp</span>,
+  these input components currently have component bindings.</p>
   <center><img
  style="width: 969px; height: 237px;" alt="Component Bindings"
  src="images/ComponentBindings.png"></center><br>
-  <br>
-  We will start with the calendar, and eliminate the component bindings
+  <p>We will start with the calendar, and eliminate the component bindings
   from <span style="font-style: italic;">CreatePage.java</span> as
-  follows:<br>
+  follows:</p>
 <ol>
   <li>Replace the <span style="font-style: italic;">Calendar</span>
 component import statement<br>
@@ -546,7 +543,6 @@ below.&nbsp; For our working example, the page is called <span
 <p><center><img
  style="width: 740px; height: 363px;" alt="Create ICEfaces Page"
  src="images/CreateICEfacesPage.png"></center><br>
-  <br>
 <h3><a name="Page_Porting_Basics_"></a>Page Porting Basics<br>
 </h3>
 <p>There are two likely scenarios that will be encountered when embarking
@@ -667,9 +663,8 @@ components with corresponding <span style="font-style: italic;">ice:</span>
 components, as illustrated in the diff below.
 <p><center><img
  style="width: 1029px; height: 473px;" alt="Masthead Differences"
- src="images/MastheadDiff.png"></center><br>
-  <br>
-  The specific changes in the port include:<br>
+ src="images/MastheadDiff.png"></center>
+  <p>The specific changes in the port include:</p>
 <ol>
   <li>Modification of the namespace from <br>
 &lt;div style="height: 155px; width: 760px; -rave-layout: grid"
@@ -747,11 +742,9 @@ single Woodstock component.<br>
 to port the content in the main panel grid.<br>
 <br>
 <center><img style="width: 1012px; height: 525px;" alt="Main Panel Difference"
- src="images/MainPanelDiff.png"></center><br>
-<br>
-The resulting JSP code looks like:<br>
-<br>
-<span style="font-weight: bold;">&lt;ice:form id="form1"&gt;<br>
+ src="images/MainPanelDiff.png"></center>
+<p>The resulting JSP code looks like:</p>
+<p><span style="font-weight: bold;">&lt;ice:form id="form1"&gt;<br>
 &nbsp;&nbsp;&nbsp; &lt;div style="position: absolute; left: 0px; top:
 0px"&gt;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;jsp:directive.include
@@ -804,8 +797,8 @@ value="Cancel" immediate="true"/&gt;<br>
 id="messageGroup1" layout="table" style="color:red;"/&gt;<br>
 &nbsp;&nbsp;&nbsp; &lt;/h:panelGrid&gt;<br>
 &lt;/ice:form&gt;<br>
-</span><span style="font-weight: bold;"></span><br>
-The specific changes in the port include:<br>
+</span></p>
+<p>The specific changes in the port include:</p>
 <ol>
   <li>The jsp include directive now specifies <span
  style="font-style: italic;">iceMasthead.jspf</span><br>
@@ -887,11 +880,9 @@ navigating to and from ICEfaces pages.&nbsp; The changes required to
 modify the navigation rules for the working example are illustrated
 below.
 <p> <center><img style="width: 1083px; height: 518px;"
- alt="Navigation Rules Differences" src="images/NavRulesDiff.png"></center><br>
-  <br>
-  The resulting navigation rules are:<br>
-  <br>
-  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+ alt="Navigation Rules Differences" src="images/NavRulesDiff.png"></center>
+  <p>The resulting navigation rules are:</p>
+  <p><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
   &lt;navigation-rule&gt;</span><br style="font-weight: bold;">
   <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &lt;from-view-id&gt;/Page1.jsp&lt;/from-view-id&gt;</span><br
@@ -950,16 +941,14 @@ below.
   <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &lt;/navigation-case&gt;</span><br style="font-weight: bold;">
   <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
-  &lt;/navigation-rule&gt;</span><br style="font-weight: bold;">
-  <br>
-  As you can see, <span style="font-style: italic;">Page1.jsp</span> now
+  &lt;/navigation-rule&gt;</span><br style="font-weight: bold;"></p>
+  <p>As you can see, <span style="font-style: italic;">Page1.jsp</span> now
   navigates to<span style="font-style: italic;"> IceCreatePage.iface</span> using a redirect as the outcome of the Create button, and <span
  style="font-style: italic;">IceCreatePage.jsp</span> navigates back to <span style="font-style: italic;">Page1.jsp</span> using a redirect as
-  the outcome of the Create and Cancel buttons.<br>
-  <br>
-  <span style="font-style: italic;">Note:</span> You cannot use the
+  the outcome of the Create and Cancel buttons.</p>
+  <p><span style="font-style: italic;">Note:</span> You cannot use the
   visual page flow designer to make the necessary changes to incorporate
-  ICEfaces navigation rules.<br>
+  ICEfaces navigation rules.</p>
 <h3><a name="Automatic_Ajax_"></a>Automatic Ajax&nbsp;</h3>
 <p>With the functional ICEfaces page now in place you can begin to explore
 some of the Automatic Ajax features that the framework delivers -
@@ -973,8 +962,7 @@ informs you that an invalid date has been entered, as illustrated below.
 <p><center><img
  style="width: 801px; height: 306px;" alt="Date Validation"
  src="images/DateValidation.png"></center><br>
-  <br>
-  A capability called partial submit is responsible for this
+  <p>A capability called partial submit is responsible for this
 behavior.&nbsp; Basically, a partial submit occurs as focus leaves the
 date field, which causes the JSF lifecycle to run.&nbsp; The submit is
 partial in that it will not validate the entire form, so you don't see
@@ -982,38 +970,34 @@ validation messages for fields that have not been visited yet.&nbsp;
 Because the lifecycle runs it is possible to add business logic that
 analyzes the users input and adjust the form accordingly.&nbsp; In our
 case we have simply allowed the validation to run on the date
-input.&nbsp; <br>
-<br>
-We will now extend the intelligent form processing by requiring that
+input.</p>
+<p>We will now extend the intelligent form processing by requiring that
 the <span style="font-style: italic;">From</span> and <span
  style="font-style: italic;">To</span> city fields are filled in prior
 to submitting the form.&nbsp; This is achieved by turning on the <span
  style="font-style: italic;">partialSubmit</span> and <span
  style="font-style: italic;">required</span> attributes in the
-inputText fields, as illustrated below.<br>
-<br>
-<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &lt;ice:inputText
+inputText fields, as illustrated below.</p>
+<p><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &lt;ice:inputText
 value="#{CreatePage.fromCity}" id="fromCity" <span
  style="font-weight: bold;">partialSubmit="true" required="true"</span>/&gt;</span><br
  style="font-style: italic;">
 <span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &lt;ice:inputText
 value="#{CreatePage.toCity}" id="toCity" <span
  style="font-weight: bold;">partialSubmit="true" required="true"</span>/&gt;</span><br
- style="font-style: italic;">
-<br style="font-style: italic;">
-If you rerun the application now, enter a valid date and then tab
-through the From City <span style="font-style: italic;">inputText,</span> you will see validation occurring immediately as illustrated below.
+ style="font-style: italic;"></p>
+<p>If you rerun the application now, enter a valid date and then tab
+through the From City <span style="font-style: italic;">inputText,</span> you will see validation occurring immediately as illustrated below.</p>
 <p><center><img
  style="width: 801px; height: 306px;" alt="City Validation"
- src="images/CityValidation.png"></center><br>
-  <br>
-  So you can see a more interactive form can be presented to the user
+ src="images/CityValidation.png"></center>
+  <p>So you can see a more interactive form can be presented to the user
 with very little effort using ICEfaces.&nbsp; Of course you could add
 more sophisticated processing like checking the city against a database
 of valid destinations, and disabling the <span
  style="font-style: italic;">Add</span> button until a valid form has
 been completed.&nbsp; Have a look at the&nbsp;<a
- href="http://address.icefaces.org/address/" target="_blank">ICEfaces Address Form Demo</a> as another example of intelligent form processing.<br>
+ href="http://address.icefaces.org/address/" target="_blank">ICEfaces Address Form Demo</a> as another example of intelligent form processing.</p>
 <h3>Finished Part 1<br>
 </h3>
 <p>You have now completed Part 1 of the Woodstock to ICEfaces Porting
