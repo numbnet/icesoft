@@ -516,7 +516,7 @@ public class HtmlInputTextarea
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[22];
+        Object values[] = new Object[23];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -537,6 +537,7 @@ public class HtmlInputTextarea
         values[19] = currentStyle;
         values[20] = visible;
         values[21] = autocomplete;
+        values[22] = getSubmittedValue();
         return ((Object) (values));
     }
 
@@ -566,6 +567,7 @@ public class HtmlInputTextarea
         currentStyle = (CurrentStyle) values[19];
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
+        setSubmittedValue(values[22]);
     }
 }
    
