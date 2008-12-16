@@ -71,6 +71,17 @@ public class RowSelectController extends DataTableBase {
         // clear our list, so that we can build a new one
         selectedEmployees.clear();
 
+        /* If application developers rely on validation to control submission of the form or use the result of
+           the selection in cascading control set up the may want to defer procession of the event to
+           INVOKE_APPLICATION stage by using this code fragment
+		    if (event.getPhaseId() != PhaseId.INVOKE_APPLICATION) {
+		       event.setPhaseId( PhaseId.INVOKE_APPLICATION );
+		       event.queue();
+		       return;
+		    }
+
+         */
+
         // build the new selected list
         Employee employee;
         for(int i = 0, max = employees.size(); i < max; i++){
@@ -79,6 +90,11 @@ public class RowSelectController extends DataTableBase {
                 selectedEmployees.add(employee);
             }
         }
+        /* If application developers do not rely on validation and want to bypass UPDATE_MODEL and
+           INVOKE_APPLICATION stages, they may be able to use the following statement:
+           FacesContext.getCurrentInstance().renderResponse();
+           to send application to RENDER_RESPONSE phase shortening the app. cycle
+         */
     }
 
     /**
