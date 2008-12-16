@@ -2,23 +2,21 @@ package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.util.encoding.Base64;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.IOException;
 
 public class ResourceDispatcher implements Server {
+    private static final Log log = LogFactory.getLog(ResourceDispatcher.class);
     private static final ResourceLinker.Handler NOOPHandler = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
             //do nothing!
@@ -39,7 +37,16 @@ public class ResourceDispatcher implements Server {
     }
 
     public void service(Request request) throws Exception {
-        compressResource.service(request);
+        try {
+            compressResource.service(request);
+        } catch (IOException e) {
+            //capture & log Tomcat specific exception
+            if (e.getClass().getName().contains("ClientAbortException")) {
+                log.debug("Browser closed the connection prematurely for " + request.getURI());
+            } else {
+                throw e;
+            }
+        }
     }
 
     public URI registerResource(Resource resource) {
@@ -47,7 +54,7 @@ public class ResourceDispatcher implements Server {
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
-    	if( handler == null )
+        if (handler == null)
             handler = NOOPHandler;
         final FileNameOption options = new FileNameOption();
         try {

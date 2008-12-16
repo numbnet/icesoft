@@ -1,8 +1,6 @@
 package com.icesoft.faces.webapp.http.common.standard;
 
 import com.icesoft.faces.webapp.http.common.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 public class CompressingServer implements Server {
-    private static final Log log = LogFactory.getLog(CompressingServer.class);
     private Server server;
     private MimeTypeMatcher mimeTypeMatcher;
     private List noCompressForMimeTypes;
@@ -53,13 +50,9 @@ public class CompressingServer implements Server {
         public void respondWith(final ResponseHandler handler) throws Exception {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {
-                    try {
-                        CompressingResponse compressingResponse = new CompressingResponse(response);
-                        handler.respond(compressingResponse);
-                        compressingResponse.finishCompression();
-                    } catch (IOException e) {
-                        log.debug("Browser closed the connection prematurely for " + getURI());
-                    }
+                    CompressingResponse compressingResponse = new CompressingResponse(response);
+                    handler.respond(compressingResponse);
+                    compressingResponse.finishCompression();
                 }
             });
         }

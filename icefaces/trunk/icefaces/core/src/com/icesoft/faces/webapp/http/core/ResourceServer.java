@@ -1,15 +1,16 @@
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.FileLocator;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.CacheControlledServer;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
 
 public class ResourceServer implements Server {
+    private static final Log log = LogFactory.getLog(ResourceServer.class);
     private Server dispatcher;
 
     public ResourceServer(Configuration configuration, MimeTypeMatcher mimeTypeMatcher, FileLocator fileLocator) {
@@ -28,7 +29,16 @@ public class ResourceServer implements Server {
     }
 
     public void service(Request request) throws Exception {
-        dispatcher.service(request);
+        try {
+            dispatcher.service(request);
+        } catch (IOException e) {
+            //capture & log Tomcat specific exception            
+            if (e.getClass().getName().contains("ClientAbortException")) {
+                log.debug("Browser closed the connection prematurely for " + request.getURI());
+            } else {
+                throw e;
+            }
+        }
     }
 
     public void shutdown() {
