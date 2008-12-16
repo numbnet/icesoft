@@ -997,9 +997,11 @@ div.verticalAlignMdl{
 .pnlGrdClass {
     width:70px;
     text-align:left;
+    vertical-align:middle;
 }
 .pnlGrdClassLong {
     width:200px;
     text-align:left;
+    vertical-align:middle;
 }
 
