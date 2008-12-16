@@ -1,7 +1,6 @@
 package com.icesoft.faces.webapp.command;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 
 public class Pong extends AbstractCommand {
@@ -51,17 +50,5 @@ public class Pong extends AbstractCommand {
 
     public void serializeTo(Writer writer) throws IOException {
         writer.write("<pong/>");
-    }
-
-    public String toString() {
-        StringWriter w = new StringWriter();
-        try {
-            serializeTo(w);
-        } catch (IOException e) {
-            //do nothing
-        } finally {
-            w.flush();
-        }
-        return w.toString();
     }
 }
