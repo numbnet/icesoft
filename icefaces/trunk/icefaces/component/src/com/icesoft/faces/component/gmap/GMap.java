@@ -23,7 +23,7 @@ public class GMap extends UIPanel{
 
 
     private Boolean locateAddress ;
-    private transient boolean initilized = false;
+    private boolean initilized = false;
     private String address;
     private String type;
     private String style = null;
@@ -297,11 +297,12 @@ public class GMap extends UIPanel{
         latitude = (String)values[7];
         address = (String)values[8];
         locateAddress = (Boolean)values[9];
+        initilized =  ((Boolean)values[10]).booleanValue();
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[10];
+            values = new Object[11];
         }
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
@@ -312,7 +313,8 @@ public class GMap extends UIPanel{
         values[6] = style;
         values[7] = latitude;
         values[8] = address;
-        values[9] = locateAddress;        
+        values[9] = locateAddress;   
+        values[10] = initilized? Boolean.TRUE : Boolean.FALSE;
         return values;
     }
 }
