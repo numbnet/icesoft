@@ -1,13 +1,6 @@
 package com.icesoft.faces.webapp.http.common.standard;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.RequestProxy;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.ResponseProxy;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,9 +58,7 @@ public class CompressingServer implements Server {
                         handler.respond(compressingResponse);
                         compressingResponse.finishCompression();
                     } catch (IOException e) {
-                        //a ClientAbortException (cause: SocketException) might be thrown if the browser closed
-                        //the connection before consuming the entire stream
-                        log.warn("Connection aborted", e);
+                        log.debug("Browser closed the connection prematurely for " + getURI());
                     }
                 }
             });

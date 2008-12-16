@@ -76,9 +76,7 @@ public class NormalModeSerializer implements DOMSerializer {
 
             writer.flush();
         } catch (IOException e) {
-            //a ClientAbortException (cause: SocketException) might be thrown if the browser closed
-            //the connection before consuming the entire stream
-            log.info("Connection aborted by client", e);
+            log.debug("Browser closed the connection prematurely");
         }
     }
 }
