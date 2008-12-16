@@ -228,8 +228,9 @@ public class TestDataProvider {
         if (Number.class.isAssignableFrom(clazz) || Boolean.class.equals(clazz)) {
             return getPrimitiveTestObject(clazz, bVal);
         }
-if (true) throw new InstantiationException("Default constructor for: " + clazz.getName());
-        return clazz.newInstance();
+        throw new InstantiationException("Default constructor for: " + clazz.getName());
+        // If we fall back on the default constructor, we end up not catching all data types
+        // return clazz.newInstance();
     }
 
     private static Object getPrimitiveTestObject(Class clazz, boolean bVal) {
