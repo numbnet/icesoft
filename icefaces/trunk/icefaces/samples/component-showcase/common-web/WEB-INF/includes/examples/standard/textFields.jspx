@@ -60,11 +60,10 @@ when the user presses the Enter key or tabs out of a field.
                            partialSubmit="true"
                            required="true"
                            >
-                <f:validateLength minimum="3" maximum="25"/>
             </ice:inputText>
             <ice:message for="TxtName" style="color:red"/>
         </ice:panelGrid>
-        <ice:panelGrid columns="3" styleClass="verticalAlignTop"  columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
+        <ice:panelGrid columns="3" columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
 
             <ice:outputLabel for="TxtPw"
                              value="#{msgs['page.textFields.password']}" />
@@ -76,12 +75,11 @@ when the user presses the Enter key or tabs out of a field.
                              partialSubmit="true"
                              redisplay="true"
                              required="true">
-                <f:validateLength minimum="3" maximum="10"/>
+                <f:validateLength minimum="6" maximum="10"/>
             </ice:inputSecret>
             <ice:message for="TxtPw" style="color:red"/>
         </ice:panelGrid>
         <ice:panelGrid columns="3"
-                styleClass="verticalAlignTop"
                  columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
             <ice:outputLabel for="TxtName"
                              value="#{msgs['page.textFields.comments']}"/>
