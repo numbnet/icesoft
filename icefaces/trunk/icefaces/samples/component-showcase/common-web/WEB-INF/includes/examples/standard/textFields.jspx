@@ -61,7 +61,7 @@ when the user presses the Enter key or tabs out of a field.
                            required="true"
                            >
             </ice:inputText>
-            <ice:message for="TxtName" style="color:red"/>
+            <ice:message id="nameMsg" for="TxtName" style="color:red"/>
         </ice:panelGrid>
         <ice:panelGrid columns="3" columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
 
@@ -77,7 +77,7 @@ when the user presses the Enter key or tabs out of a field.
                              required="true">
                 <f:validateLength minimum="6" maximum="10"/>
             </ice:inputSecret>
-            <ice:message for="TxtPw" style="color:red"/>
+            <ice:message id="pwMsg" for="TxtPw" style="color:red"/>
         </ice:panelGrid>
         <ice:panelGrid columns="3"
                  columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
