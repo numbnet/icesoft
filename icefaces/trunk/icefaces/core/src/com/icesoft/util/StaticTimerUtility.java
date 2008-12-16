@@ -3,6 +3,8 @@ package com.icesoft.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.lang.reflect.Method;
+
 /**
  * A class for keeping track of the time that a job takes to complete.
  * The job may be a single execution task, or it may be made up of subjobs that
@@ -32,9 +34,7 @@ import org.apache.commons.logging.LogFactory;
 public class StaticTimerUtility {
 
     private static int timerIndex;
-
     public static Log Log = LogFactory.getLog(StaticTimerUtility.class);
-
     private static int jobId;
 
     // Overall subJob count
@@ -43,15 +43,23 @@ public class StaticTimerUtility {
     // overall startJobTmer time.
     private static long startTime;
 
-
     // keeping track of the time for each sub job and overall job time.
     private static long timerStartTime;
     private static long timerAccumulatedTime;
 
     // number that are done
     private static int timersCompleted;
+    private static Method timerMethod;
 
+    private static boolean hiRes;
 
+    static {
+        try {
+            timerMethod = System.class.getMethod("currentTimeMillis", null);
+            timerMethod = System.class.getMethod("nanoTime", null);
+            hiRes=true;
+        } catch (NoSuchMethodException nsm) {}
+    } 
     /**
      * Start a new Timer job. This defines the conceptual start (no timers are started)
      * and allows configuration of the number of subjobs making up the job
@@ -89,7 +97,12 @@ public class StaticTimerUtility {
      * of overall time to completion starts from this point
      */
     public static void startJobTmer() {
-        startTime = System.nanoTime();
+
+        try {
+            startTime = ((Long)timerMethod.invoke(null, null)).longValue();
+        } catch (Exception e) {
+        } 
+
         timerAccumulatedTime = 0;
     }
 
@@ -98,7 +111,10 @@ public class StaticTimerUtility {
      * Call this when a single timeable event is about to startJobTmer
      */
     public static void startSubjobTimer() {
-        timerStartTime = System.nanoTime();
+        try {
+            timerStartTime = ((Long)timerMethod.invoke(null, null)).longValue();
+        } catch (Exception e) {
+        }
     }
 
 
@@ -117,9 +133,10 @@ public class StaticTimerUtility {
         // count can be greater than total if new users join during rendering
         if (++timersCompleted >= totalTimerCount) {
 
+            float factor = (hiRes) ? 1e9f : 1000f;
             Log.trace(" ==> Timer job: " + jobId + " containing: " + totalTimerCount + " subjobs" + 
-                               ", elapsed real time: " + (System.nanoTime()- startTime)/1e9f + " seconds");
-            Log.trace("   ==> Timer job: " + jobId + " accumulated cpu time: " + timerAccumulatedTime /1e9f + " seconds");
+                               ", elapsed real time: " + (System.nanoTime()- startTime) / factor + " seconds");
+            Log.trace("   ==> Timer job: " + jobId + " accumulated cpu time: " + timerAccumulatedTime / factor + " seconds");
             Log.trace("============================");
 
             reset();
