@@ -3,6 +3,7 @@ package com.icesoft.faces.mock.test;
 import com.icesoft.faces.mock.test.container.MockTestCase;
 import com.icesoft.faces.mock.test.container.MockSerializedView;
 import com.icesoft.faces.component.ext.HtmlForm;
+import com.icesoft.faces.util.CoreUtils;
 import com.sun.faces.application.StateManagerImpl;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +23,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import junit.framework.AssertionFailedError;
@@ -34,18 +36,26 @@ import junit.framework.TestSuite;
  * @author fye
  */
 public class SerializedViewFieldTest extends MockTestCase {
+    private static Method SelectItem_isEscape;
+    static {
+        try {
+            SelectItem_isEscape = javax.faces.model.SelectItem.class.getMethod("isEscape", new Class[] {});
+        }
+        catch(Exception e) { // JSF 1.1
+        }
+    }
 
     public static Test suite() {
         return new TestSuite(SerializedViewFieldTest.class);
     }
     
-    private void normalRules(UIComponent uiComponent, Map resultMap, boolean bVal) {
-System.out.println("normalRules()  uiComponent: " + uiComponent.getClass().getName());
+    private boolean normalRules(UIComponent uiComponent, Map resultMap, boolean bVal) {
+//System.out.println("normalRules()  uiComponent: " + uiComponent.getClass().getName());
+        boolean success = true;
         Field[] stateFields = CompPropsUtils.getStateFieldsForComponent(uiComponent);
-
         for(int i = 0; i < stateFields.length; i++) {
             Field field = stateFields[i];
-System.out.println("normalRules()    field: " + field.getName());
+//System.out.println("normalRules()    field: " + field.getName());
             Object value = null;
             try {
                 value = TestDataProvider.getSimpleTestObject(field.getType(), bVal);
@@ -53,31 +63,37 @@ System.out.println("normalRules()    field: " + field.getName());
             }
             catch(IllegalAccessException e) {
                 Logger.getLogger(SerializedViewFieldTest.class.getName()).log(Level.SEVERE, "Problem accessing field", e);
-                fail("Problem accessing field" + e.getMessage());
+                success = false;
             }
             catch(InstantiationException e) {
                 String msg = "For " + uiComponent.getClass().getName() + "." + field.getName() + ", with type: " + field.getType() + ", could not instantiate test value";
                 Logger.getLogger(SerializedViewFieldTest.class.getName()).log(Level.SEVERE, msg, e);
-                fail(msg);
+                success = false;
             }
             catch(IllegalArgumentException e) {
                 String msg = "For " + uiComponent.getClass().getName() + "." + field.getName() + ", with type: " + field.getType() + ", could not set value: " + value;
                 Logger.getLogger(SerializedViewFieldTest.class.getName()).log(Level.SEVERE, msg, e);
-                fail(msg);
+                success = false;
             }
             resultMap.put(field.getName(), value);
         }
+        return success;
     }
 
     private void setDefaultTestDataProvider(UIComponent[] allComps, UIComponent form, Map expectedMap, boolean bVal) {
+        boolean completeSuccess = true;
         for (int i = 0; i < allComps.length; i++) {
             Map classesMap = new HashMap();
             UIComponent uiComponent = allComps[i];
-            normalRules(uiComponent, classesMap, bVal);
+            boolean success = normalRules(uiComponent, classesMap, bVal);
+            if (!success)
+                completeSuccess = false;
             form.getChildren().add(uiComponent);
 
             expectedMap.put(uiComponent.getClass().getName(), classesMap);
         }
+        if (!completeSuccess)
+            fail();
     }
     
     public void testBothSerializedSaveState() {
@@ -208,7 +224,7 @@ System.out.println("normalRules()    field: " + field.getName());
             }
         }
         if (failed) {
-            //fail("Verification failed");
+            fail("Verification failed");
         }
     }
     
@@ -235,6 +251,49 @@ System.out.println("normalRules()    field: " + field.getName());
                 if (msg != null) {
                     return "["+i+"]" + (msg.startsWith("[") ? "" : " :: ") + msg;
                 }
+            }
+            return null;
+        }
+        if (javax.faces.model.SelectItem.class.equals(clazz)) {
+            javax.faces.model.SelectItem sv = (javax.faces.model.SelectItem) storedValue;
+            javax.faces.model.SelectItem rv = (javax.faces.model.SelectItem) restoredValue;
+            Object svf, rvf;
+            StringBuffer sb = null;
+            String msg = null;
+            if (null != (msg = compareValues(java.lang.String.class, svf = sv.getValue(), rvf = rv.getValue()))) {
+                if (sb == null) sb = new StringBuffer(128);
+                sb.append("Stored SelectItem.value was " + svf + ", but restored SelectItem.value is " + rvf);
+            }
+            if (null != (msg = compareValues(java.lang.String.class, svf = sv.getLabel(), rvf = rv.getLabel()))) {
+                if (sb == null) sb = new StringBuffer(128);
+                sb.append("Stored SelectItem.label was " + svf + ", but restored SelectItem.value is " + rvf);
+            }
+            if (null != (msg = compareValues(java.lang.String.class, svf = sv.getDescription(), rvf = rv.getDescription()))) {
+                if (sb == null) sb = new StringBuffer(128);
+                sb.append("Stored SelectItem.description was " + svf + ", but restored SelectItem.description is " + rvf);
+            }
+            if (sv.isDisabled() != rv.isDisabled()) {
+                if (sb == null) sb = new StringBuffer(128);
+                sb.append("Stored SelectItem.disabled was " + sv.isDisabled() + ", but restored SelectItem.description is " + rv.isDisabled());
+            }
+            if (SelectItem_isEscape != null) {
+                try {
+                    svf = SelectItem_isEscape.invoke(sv, new Object[0]);
+                    rvf = SelectItem_isEscape.invoke(rv, new Object[0]);
+                    if (null != (msg = compareValues(java.lang.Boolean.class, svf, rvf))) {
+                        if (sb == null) sb = new StringBuffer(128);
+                        sb.append("Stored SelectItem.escape was " + svf + ", but restored SelectItem.escape is " + rvf);
+                    }
+                }
+                catch(Exception e) {
+                    return "Problem comparing SelectItem.escape: " + e.getMessage();
+                }
+            }
+            return null;
+        }
+        if (java.lang.Throwable.class.equals(clazz)) {
+            if (!CoreUtils.throwablesEqual((Throwable)storedValue, (Throwable)restoredValue)) {
+                return "Stored Throwable was " + storedValue + ", but restored Throwable is " + restoredValue;
             }
             return null;
         }

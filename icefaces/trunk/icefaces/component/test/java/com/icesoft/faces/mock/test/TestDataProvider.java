@@ -16,6 +16,15 @@ import java.lang.reflect.Array;
  * @author fye
  */
 public class TestDataProvider {
+    private static java.lang.reflect.Constructor SelectItem_ctor;
+    static {
+        try {
+            SelectItem_ctor = javax.faces.model.SelectItem.class.getConstructor(new Class[] {
+				Object.class, String.class, String.class,  Boolean.TYPE, Boolean.TYPE});
+        }
+        catch(Exception e) { // JSF 1.1
+        }
+    }
 
     private final static String[] keyStrings = new String[]{
         "com.icesoft.faces.mock.test.data.MockDataObject",
@@ -36,7 +45,7 @@ public class TestDataProvider {
         "javax.faces.component.UIComponent",
         "com.icesoft.faces.utils.UpdatableProperty",
 
-    };       
+    };
     private final static Object[] valueObjects = new Object[]{
         new MockDataObject("empty"),
         new MockDataList(),
@@ -44,7 +53,7 @@ public class TestDataProvider {
         "test1",
         Boolean.FALSE,
         new com.icesoft.faces.context.effects.Move(),
-        new MockDataObject("objectValue"),        
+        new MockDataObject("objectValue"),
         new MockMethodBinding("#{mock.methodBinding}"),
         9,
         new Integer(99),
@@ -94,10 +103,10 @@ public class TestDataProvider {
         }
         return -1;
     }
-    
+
     public static Object getSimpleTestObject(Class clazz, boolean bVal)
         throws InstantiationException, IllegalAccessException {
-        
+
         if (clazz.isPrimitive()) {
             return getPrimitiveTestObject(clazz, bVal);
         }
@@ -129,13 +138,26 @@ public class TestDataProvider {
         if (com.icesoft.faces.utils.UpdatableProperty.class.equals(clazz)) {
             return new com.icesoft.faces.utils.UpdatableProperty("Test" + counter++);
         }
+        if (com.icesoft.faces.component.inputfile.FileInfo.class.equals(clazz)) {
+			com.icesoft.faces.component.inputfile.FileInfo fileInfo =
+				new com.icesoft.faces.component.inputfile.FileInfo();
+			fileInfo.setStatus(counter++);
+			fileInfo.setSize((long)counter++);
+			fileInfo.setFileName("FileName" + counter++);
+			fileInfo.setContentType("ContentType" + counter++);
+			fileInfo.setFile( new java.io.File("File" + counter++) );
+			fileInfo.setPercent(counter++);
+			fileInfo.setPreUpload(bVal);
+			fileInfo.setPostUpload(bVal);
+            return fileInfo;
+        }
         if (java.io.File.class.equals(clazz)) {
             return new java.io.File("File" + counter++);
         }
         if (java.net.URI.class.equals(clazz)) {
             java.net.URI uri = null;
             try {
-                uri = new java.net.URI("http://host/uri" + counter++); 
+                uri = new java.net.URI("http://host/uri" + counter++);
             }
             catch(Exception e) {
                 throw new InstantiationException("URI is invalid: " + e.getMessage());
@@ -144,24 +166,24 @@ public class TestDataProvider {
         }
         if (com.icesoft.faces.context.effects.Effect.class.equals(clazz)) {
             com.icesoft.faces.context.effects.Pulsate effect =
-                new com.icesoft.faces.context.effects.Pulsate(); 
+                new com.icesoft.faces.context.effects.Pulsate();
             effect.setDuration((float) (counter++ % 10));
             return effect;
         }
         if (com.icesoft.faces.context.effects.CurrentStyle.class.equals(clazz)) {
             com.icesoft.faces.context.effects.CurrentStyle cs =
-                new com.icesoft.faces.context.effects.CurrentStyle("iceCssStyleClass" + counter++); 
+                new com.icesoft.faces.context.effects.CurrentStyle("iceCssStyleClass" + counter++);
             return cs;
         }
         if (com.icesoft.faces.component.outputchart.ChartResource.class.equals(clazz)) {
             com.icesoft.faces.component.outputchart.ChartResource cr =
-                new com.icesoft.faces.component.outputchart.ChartResource(new byte[] {0, 1, 0, 1}); 
+                new com.icesoft.faces.component.outputchart.ChartResource(new byte[] {0, 1, 0, 1});
             return cr;
         }
         if (com.icesoft.faces.context.Resource.class.equals(clazz)) {
             com.icesoft.faces.context.Resource cr =
                 new com.icesoft.faces.context.ByteArrayResource(
-                    new byte[] {0, 1, 2, 4}); 
+                    new byte[] {0, 1, 2, 4});
             return cr;
         }
         //com.icesoft.faces.component.outputchart.ChartResource
@@ -178,12 +200,38 @@ public class TestDataProvider {
             map.put("Map", new Integer(counter++));
             return map;
         }
+        if (java.util.Date.class.equals(clazz)) {
+			return new java.util.Date((long)counter++);
+		}
+		if (javax.faces.model.SelectItem.class.equals(clazz)) {
+			if (SelectItem_ctor != null) {
+				try {
+					return SelectItem_ctor.newInstance(new Object[] {
+						"Value" + counter++,
+						"Label" + counter++,
+						"Description" + counter++,
+						Boolean.valueOf(bVal),
+						Boolean.valueOf(bVal)});
+				}
+				catch(java.lang.reflect.InvocationTargetException e) {
+					throw new InstantiationException("Could not invoke JSF 1.2 constructor for SelectItem: " + e.getMessage());
+				}
+			}
+			else {
+				return new javax.faces.model.SelectItem(
+					"Value" + counter++,
+					"Label" + counter++,
+					"Description" + counter++,
+					bVal);
+			}
+		}
         if (Number.class.isAssignableFrom(clazz) || Boolean.class.equals(clazz)) {
             return getPrimitiveTestObject(clazz, bVal);
         }
+if (true) throw new InstantiationException("Default constructor for: " + clazz.getName());
         return clazz.newInstance();
     }
-    
+
     private static Object getPrimitiveTestObject(Class clazz, boolean bVal) {
 //System.out.println("getPrimitiveTestObject()  clazz: " + clazz);
         if (clazz.equals(Boolean.TYPE) || clazz.equals(Boolean.class)) {
@@ -212,6 +260,6 @@ public class TestDataProvider {
         }
         return new Integer(counter++);
     }
-    
+
     private static int counter = 23; // a prime example of a non-default value :)
 }
