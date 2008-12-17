@@ -188,6 +188,15 @@ public class CoreUtils {
     public static boolean isJSFStateSaving() {
         return jsfStateSaving;
     }
+
+    private static boolean serverSideStateSaving;
+    public static void setServerSideStateSaving(boolean isServerSide) {
+        serverSideStateSaving = isServerSide;
+    }
+
+    public static boolean isServerSideStateSaving() {
+        return serverSideStateSaving;
+    } 
     
     public static boolean objectsEqual(Object ob1, Object ob2) {
         if (ob1 == null && ob2 == null) {
