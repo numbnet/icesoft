@@ -182,6 +182,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 } else {
                     logger.warn('unknown content in response');
                 }
+                statusManager.connectionTrouble.off();
             });
 
             connection.onServerError(function (response) {
