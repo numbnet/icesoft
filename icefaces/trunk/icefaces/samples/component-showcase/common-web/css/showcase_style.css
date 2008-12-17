@@ -868,7 +868,7 @@ div.verticalAlignMdl{
 }
 
 .positionPanelContainer div.container{
-    background: #FFF url( '../xmlhttp/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
     color: #484848;
     padding-left: 5px;
     font-weight: normal;
