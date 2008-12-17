@@ -437,6 +437,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 }
             }
         }
+        documentStore.save(document);
     }
 
     public URI loadJavascriptCode(final Resource resource) {
