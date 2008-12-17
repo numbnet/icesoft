@@ -927,6 +927,7 @@ public class D2DViewHandler extends ViewHandler {
         ExternalContext ec = context.getExternalContext();
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
         String jsfStateManagementParameter = ec.getInitParameter(DO_JSF_STATE_MANAGEMENT);
+        String stateManagementServerSide = ec.getInitParameter(StateManager.STATE_SAVING_METHOD_PARAM_NAME);
         actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
         try {
             reloadInterval = Long.parseLong(reloadIntervalParameter) * 1000;
@@ -935,6 +936,10 @@ public class D2DViewHandler extends ViewHandler {
         }
         CoreUtils.setJSFStateSaving(Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
                 SeamUtilities.isSeamEnvironment());
+
+        CoreUtils.setServerSideStateSaving( (stateManagementServerSide == null) ||
+                                            stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER) );
+
         if (!CoreUtils.isJSFStateSaving()) {
             log.debug("JSF State Management not provided");
         }
