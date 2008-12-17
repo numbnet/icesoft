@@ -58,18 +58,21 @@ public class ReceiveSendUpdates implements Server {
             } else {
                 try {
                     view.processPostback(request);
-                    synchronouslyUpdatedViews.add(request.getParameter("ice.view"));
                     sessionMonitor.touchSession();
-                    renderCycle(view.getFacesContext());
-                    request.respondWith(new SendUpdates.Handler(views, request));
 
-                    // String pools usage logging
+                    //mark that updates for this view are sent on the UI connection
+                    //this avoids unblocking the blocking connection for updates generated during the execution of JSF lifecycle
+                    synchronouslyUpdatedViews.add(viewNumber);
+                    renderCycle(view.getFacesContext());
+                    synchronouslyUpdatedViews.remove(viewNumber);
+
+                    request.respondWith(new SendUpdates.Handler(views, request));
+                    //String pools usage logging
                     log.debug("String intern pools sizes:"
                             + "\nClientIdPool: " + ClientIdPool.getSize()
                             + "\nCSSNamePool: " + CSSNamePool.getSize()
                             + "\nELPool: " + ELPool.getSize()
                             + "\nXhtmlPool: " + XhtmlPool.getSize());
-
                 } catch (FacesException e) {
                     //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
                     Throwable nestedException = e.getCause();
