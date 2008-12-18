@@ -51,7 +51,7 @@ when the user presses the Enter key or tabs out of a field.
     <ice:panelGroup styleClass="exampleBox textEntryContainer">
         <ice:panelGrid columns="3" columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
             <ice:outputLabel for="TxtName"
-                             value="#{msgs['page.textFields.name']}"/>
+                             value="#{msgs['page.textFields.name']}" style="line-height:200%"/>
             <ice:inputText id="TxtName"
                            size="30"
                            maxlength="30"
@@ -61,12 +61,12 @@ when the user presses the Enter key or tabs out of a field.
                            required="true"
                            >
             </ice:inputText>
-            <ice:message id="nameMsg" for="TxtName" style="color:red"/>
+            <ice:message for="TxtName" style="color:red; line-height:200%"/>
         </ice:panelGrid>
         <ice:panelGrid columns="3" columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
 
             <ice:outputLabel for="TxtPw"
-                             value="#{msgs['page.textFields.password']}" />
+                             value="#{msgs['page.textFields.password']}" style="line-height:200%"/>
             <ice:inputSecret id="TxtPw"
                              maxlength="20"
                              size="20"
@@ -77,12 +77,12 @@ when the user presses the Enter key or tabs out of a field.
                              required="true">
                 <f:validateLength minimum="6" maximum="10"/>
             </ice:inputSecret>
-            <ice:message id="pwMsg" for="TxtPw" style="color:red"/>
+            <ice:message for="TxtPw" style="color:red; line-height:200%"/>
         </ice:panelGrid>
         <ice:panelGrid columns="3"
                  columnClasses="pnlGrdClass, pnlGrdClass, pnlGrdClassLong">
             <ice:outputLabel for="TxtName"
-                             value="#{msgs['page.textFields.comments']}"/>
+                             value="#{msgs['page.textFields.comments']}" style="line-height:200%"/>
             <ice:inputTextarea id="TxtCmt"
                                value="#{textFields.comments}"
                                cols="20" rows="4"
