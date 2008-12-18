@@ -473,7 +473,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
         link.setAttribute(HTML.HREF_ATTR, "javascript:;");
         PassThruAttributeRenderer.renderOnFocus(scroller, link);
-        PassThruAttributeRenderer.renderOnBlur(link);
+        PassThruAttributeRenderer.renderOnBlur(scroller, link);
         return link;
     }
 
@@ -484,17 +484,29 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 
         HtmlCommandLink link = (HtmlCommandLink) application
                 .createComponent(HtmlCommandLink.COMPONENT_TYPE);
-        link.setId(scroller.getId() + facetName);
+        String id = scroller.getId() + facetName;
+        link.setId(id);
         link.setTransient(true);
         UIParameter parameter = (UIParameter) application
                 .createComponent(UIParameter.COMPONENT_TYPE);
-        parameter.setId(scroller.getId() + facetName + "_param");
+        parameter.setId(id + "_param");
         parameter.setTransient(true);
         parameter.setName(scroller.getClientId(facesContext));
         parameter.setValue(facetName);
         //getChildren doesn't need any check for the childCount
         List children = link.getChildren();
         children.add(parameter);
+        
+        // For some reason, these components being marked transient isn't 
+        // resulting in them going away, so we'll explicitly remove old ones
+        for(int i = 0; i < scroller.getChildCount(); i++) {
+            UIComponent comp = (UIComponent) scroller.getChildren().get(i);
+            if (comp.getId().equals(id)) {
+                scroller.getChildren().remove(i);
+                break;
+            }
+        }
+        
         scroller.getChildren().add(link);
         return link;
     }
