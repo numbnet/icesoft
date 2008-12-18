@@ -473,7 +473,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
         link.setAttribute(HTML.HREF_ATTR, "javascript:;");
         PassThruAttributeRenderer.renderOnFocus(scroller, link);
-        PassThruAttributeRenderer.renderOnBlur(scroller, link);
+        PassThruAttributeRenderer.renderOnBlur(link);
         return link;
     }
 
