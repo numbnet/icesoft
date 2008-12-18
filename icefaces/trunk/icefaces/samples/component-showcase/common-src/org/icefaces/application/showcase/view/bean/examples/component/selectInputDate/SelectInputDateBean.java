@@ -54,8 +54,8 @@ public class SelectInputDateBean extends BaseBean {
     /**
      * Variables to store the selected dates.
      */
-    private Date date1;
-    private Date date2;
+    private Date date1=new Date();
+    private Date date2=new Date();
 
     // effect is fired when dat2 value is changed.  
     protected Effect valueChangeEffect2;
@@ -64,7 +64,7 @@ public class SelectInputDateBean extends BaseBean {
         super();
         valueChangeEffect2 = new Highlight("#fda505");
         valueChangeEffect2.setFired(true);
-        date2 = new GregorianCalendar(1867, 6, 1).getTime();
+        date2 = new GregorianCalendar().getTime();
     }
 
     /**
