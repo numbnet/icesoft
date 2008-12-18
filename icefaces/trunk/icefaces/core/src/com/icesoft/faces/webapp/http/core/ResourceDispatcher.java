@@ -54,7 +54,7 @@ public class ResourceDispatcher implements Server {
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
-        if (handler == null)
+    	if( handler == null )
             handler = NOOPHandler;
         final FileNameOption options = new FileNameOption();
         try {
@@ -62,17 +62,25 @@ public class ResourceDispatcher implements Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        final String filename = options.getFileName();
-        final String name = prefix + encode(resource) + "/" + (filename != null && !filename.equals("") ? filename : "");
+        String filename = options.getFileName();
+        String dispatchFilename, uriFilename;
+        if (filename == null || filename.trim().equals("")) {
+            dispatchFilename = uriFilename = "";
+        } else {
+            filename = java.net.URLEncoder.encode(filename);
+            dispatchFilename = filename.replaceAll("\\+", "\\\\+");
+            uriFilename = filename;
+        }
+        final String name = prefix + encode(resource) + "/";
         if (!registered.contains(name)) {
             registered.add(name);
-            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(resource));
+            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", new ResourceServer(resource));
             if (handler != NOOPHandler) {
                 handler.linkWith(new RelativeResourceLinker(name));
             }
         }
 
-        return URI.create(name);
+        return URI.create(name + uriFilename);
     }
 
     public void shutdown() {
@@ -122,7 +130,7 @@ public class ResourceDispatcher implements Server {
             response.setHeader("Last-Modified", options.lastModified);
             response.setHeader("Expires", options.expiresBy);
             if (options.attachement) {
-                response.setHeader("Content-Disposition", "attachment; filename=" + options.fileName);
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + options.fileName + "\"");
             }
             response.writeBodyFrom(resource.open());
         }
