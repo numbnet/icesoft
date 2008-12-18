@@ -68,7 +68,6 @@ the click of a button.
             <f:convertDateTime pattern="MM/dd/yyyy"
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:outputText>
-
         <!-- Calendar Component -->
         <ice:selectInputDate id="date1"
                              value="#{dateSelect.date1}"
@@ -82,9 +81,9 @@ the click of a button.
 
         <ice:panelGroup style="text-align:right;margin-top:10px;">
             <ice:outputText
-                value="#{msgs['page.selectInputDate.comment.weekends']}"/><br/>
+                    value="#{msgs['page.selectInputDate.comment.weekends']}"/><br/>
             <ice:outputText
-                value="#{msgs['page.selectInputDate.comment.august']}"/><br/>
+                    value="#{msgs['page.selectInputDate.comment.august']}"/><br/>
 
         </ice:panelGroup>
 
@@ -106,7 +105,6 @@ the click of a button.
             <f:convertDateTime pattern="MM/dd/yyyy"
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:outputText>
-
         <!-- Calendar Component -->
         <ice:selectInputDate id="date2"
                              renderMonthAsDropdown="true" renderYearAsDropdown="true"
