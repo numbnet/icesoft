@@ -939,10 +939,17 @@ public class D2DViewHandler extends ViewHandler {
 
         CoreUtils.setServerSideStateSaving( (stateManagementServerSide == null) ||
                                             stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER) );
+        if (!CoreUtils.isServerSideStateSaving()) {
+            log.fatal("Client side state saving is not supported");
+            throw new UnsupportedOperationException("Client side state saving is not supported");
+        } 
 
         if (!CoreUtils.isJSFStateSaving()) {
-            log.debug("JSF State Management not provided");
+            log.debug("JSF State Management not configured");
+        } else {
+            log.debug("JSF State Management enabled - server side state saving");
         }
+            
         parametersInitialized = true;
     }
 
