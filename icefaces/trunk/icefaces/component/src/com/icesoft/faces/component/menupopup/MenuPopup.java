@@ -129,7 +129,10 @@ public class MenuPopup extends MenuBar {
 //System.out.println("MenuPopup.queueEvent()  contextValue: " + contextValue);
             getAttributes().remove("contextTarget");
             getAttributes().remove("contextValue");
-            e = new ContextActionEvent(e.getComponent(), contextTarget, contextValue);
+            FacesEvent tempEvent = new ContextActionEvent(e.getComponent(), contextTarget, contextValue);
+            //preserve phaseId
+            tempEvent.setPhaseId(e.getPhaseId()); 
+            e = tempEvent;
         }
         super.queueEvent(e);
     }
