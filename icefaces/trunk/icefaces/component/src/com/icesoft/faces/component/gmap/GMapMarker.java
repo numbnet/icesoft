@@ -20,7 +20,7 @@ public class GMapMarker extends UIPanel{
 	private Boolean draggable;
     private String longitude;
     private String latitude;	
-    private transient List point = new ArrayList();
+    private List point = new ArrayList();
     
 	public GMapMarker() {
 		setRendererType(null);
@@ -134,16 +134,18 @@ public class GMapMarker extends UIPanel{
         latitude = (String)values[1];
         longitude = (String)values[2];
         draggable = (Boolean)values[3];        
+        point = (List) values[4];        
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[4];
+            values = new Object[5];
         }
         values[0] = super.saveState(context);
         values[1] = latitude;
         values[2] = longitude;
         values[3] = draggable;        
+        values[4] = point;        
         return values;
     }
 
