@@ -441,6 +441,8 @@ public class JspPageToDocument {
             //look for myfaces-impl.jar
             URL tagURL = JspPageToDocument.class.getClassLoader()
                     .getResource(MYFACES_TAG_CLASS);
+            //May need similar special case here for MyFaces on OSGi
+            //as below
             if (null != tagURL) {
                 location = scanJar((JarURLConnection) tagURL.openConnection(),
                                    namespaceURL);
@@ -459,8 +461,19 @@ public class JspPageToDocument {
                 URLConnection conn = tagURL.openConnection();
                 if (conn instanceof JarURLConnection) {
                     location = scanJar((JarURLConnection) conn, namespaceURL);
+                } else {
+                    //OSGi-based servers (such as GlassFishv3 do not provide 
+                    //JarURLConnection to their resources so we handle the JSF
+                    //TLDs as a special case
+                    if (namespaceURL.endsWith("html")) {
+                        location = getBundleLocation(tagURL, 
+                                "META-INF/html_basic.tld");
+                    } else if (namespaceURL.endsWith("core")) {
+                        location = getBundleLocation(tagURL, 
+                                "META-INF/jsf_core.tld");
+                    }
                 }
-            }
+          }
         }
 
         if (null == location) {
@@ -509,8 +522,14 @@ public class JspPageToDocument {
             }
         }
 
+
         if (!location[0].endsWith("jar")) {
-            return context.getResourceAsStream(location[0]);
+            InputStream tldStream = context.getResourceAsStream(location[0]);
+            if (null == tldStream)  {
+                tldStream = (new URL(location[0])).openConnection()
+                        .getInputStream();
+            }
+            return tldStream;
         } else {
             // Tag library is packaged in JAR file
             URL jarFileUrl = new URL("jar:" + location[0] + "!/");
@@ -524,6 +543,24 @@ public class JspPageToDocument {
         }
 
     }
+
+    /**
+     * Construct a full URL to the specified path given the URL
+     * to some other resource in the bundle
+     *
+     * @param url
+     * @param path
+     * @return locaion
+     */
+
+    private static String[] getBundleLocation(URL url, String path)  {
+        String protocol = url.getProtocol(); 
+        String host = url.getHost();
+        String port = String.valueOf(url.getPort());
+        String urlString = protocol + "://" + host + ":" + port + "/" + path;
+        return new String[]{urlString, null};
+    }
+
 
     /**
      * @param source
