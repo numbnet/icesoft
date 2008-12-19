@@ -546,6 +546,23 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                     .invoke(facesContext, (Object[]) null);
             if (delegate instanceof BridgeFacesContext) {
                 result = (FacesContext) delegate;
+                // #3668 fetch messages from Spring
+                Iterator clientIdIterator = facesContext.getClientIdsWithMessages();
+                FacesMessage message;
+                String clientId;
+                while(clientIdIterator.hasNext()){
+                    clientId = (String)clientIdIterator.next();
+                    Iterator facesMessagesForClientId = facesContext.getMessages(clientId);
+                    while(facesMessagesForClientId.hasNext()){
+                        message = (FacesMessage)facesMessagesForClientId.next();
+                        result.addMessage(clientId, message);
+                    }
+                }
+                Iterator facesMessagesWithNoId = facesContext.getMessages(null);
+                while(facesMessagesWithNoId.hasNext()){
+                    message = (FacesMessage)facesMessagesWithNoId.next();
+                    result.addMessage("", message);
+                }
                 if (log.isDebugEnabled()) {
                     log.debug("BridgeFacesContext delegate of " + facesContext);
                 }
