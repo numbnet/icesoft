@@ -934,7 +934,8 @@ public class D2DViewHandler extends ViewHandler {
         } catch (NumberFormatException e) {
             reloadInterval = reloadIntervalDefault * 1000;
         }
-        CoreUtils.setJSFStateSaving((jsfStateManagementParameter == null) ||
+        CoreUtils.setJSFStateSaving((jsfStateManagementParameter == null &&
+                                     ImplementationUtil.isJSF12()) ||
                                     Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
                                     SeamUtilities.isSeamEnvironment());
 
