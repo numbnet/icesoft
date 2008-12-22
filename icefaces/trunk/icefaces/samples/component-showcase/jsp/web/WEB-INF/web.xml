@@ -83,7 +83,7 @@
      environment, this parameter must be set to true. -->
     <context-param>
         <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
     </context-param>
 
 <!-- Specifies to the ICEfaces framework that synchronous update mode is to be 
