@@ -57,65 +57,65 @@ public class AxisChart extends AbstractChart {
         super(uiComponent);
     }
 
-    protected void buildChart() throws Throwable {
+    protected void buildChart(OutputChart outputChart) throws Throwable {
         getData(outputChart.getData());
-        if (type.equalsIgnoreCase(OutputChart.AREA_CHART_TYPE)) {
-            buildAreaChart();
-        } else if (type.equalsIgnoreCase(OutputChart.AREA_STACKED_CHART_TYPE)) {
-            buildAreaStackedChart();
-        } else if (type.equalsIgnoreCase(OutputChart.BAR_CHART_TYPE)) {
-            buildBarChart();
-        } else if (type.equalsIgnoreCase(OutputChart.BAR_STACKED_CHART_TYPE)) {
-            buildBarStackedChart();
+        if (outputChart.getType().equalsIgnoreCase(OutputChart.AREA_CHART_TYPE)) {
+            buildAreaChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.AREA_STACKED_CHART_TYPE)) {
+            buildAreaStackedChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.BAR_CHART_TYPE)) {
+            buildBarChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.BAR_STACKED_CHART_TYPE)) {
+            buildBarStackedChart(outputChart);
         } else
-        if (type.equalsIgnoreCase(OutputChart.BAR_CLUSTERED_CHART_TYPE)) {
-            buildBarClusteredChart();
-        } else if (type.equalsIgnoreCase(OutputChart.LINE_CHART_TYPE)) {
-            buildLineChart();
-        } else if (type.equalsIgnoreCase(OutputChart.POINT_CHART_TYPE)) {
-            buildPointChart();
+        if (outputChart.getType().equalsIgnoreCase(OutputChart.BAR_CLUSTERED_CHART_TYPE)) {
+            buildBarClusteredChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.LINE_CHART_TYPE)) {
+            buildLineChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.POINT_CHART_TYPE)) {
+            buildPointChart(outputChart);
         }
     }
 
-    private void buildAreaChart() throws Throwable {
+    private void buildAreaChart(OutputChart outputChart) throws Throwable {
         AreaChartProperties areaChartProperties = new AreaChartProperties();
-        buildAxisChart(ChartType.AREA, areaChartProperties);
+        buildAxisChart(ChartType.AREA, areaChartProperties, outputChart);
     }
 
-    private void buildAreaStackedChart() throws Throwable {
+    private void buildAreaStackedChart(OutputChart outputChart) throws Throwable {
         StackedAreaChartProperties areaChartProperties =
                 new StackedAreaChartProperties();
-        buildAxisChart(ChartType.AREA_STACKED, areaChartProperties);
+        buildAxisChart(ChartType.AREA_STACKED, areaChartProperties, outputChart);
     }
 
-    private void buildBarChart() throws Throwable {
+    private void buildBarChart(OutputChart outputChart) throws Throwable {
         BarChartProperties barChartProperties = new BarChartProperties();
-        buildAxisChart(ChartType.BAR, barChartProperties);
+        buildAxisChart(ChartType.BAR, barChartProperties, outputChart);
     }
 
-    private void buildBarStackedChart() throws Throwable {
+    private void buildBarStackedChart(OutputChart outputChart) throws Throwable {
         StackedBarChartProperties barChartProperties =
                 new StackedBarChartProperties();
-        buildAxisChart(ChartType.BAR_STACKED, barChartProperties);
+        buildAxisChart(ChartType.BAR_STACKED, barChartProperties, outputChart);
     }
 
-    private void buildBarClusteredChart() throws Throwable {
+    private void buildBarClusteredChart(OutputChart outputChart) throws Throwable {
         ClusteredBarChartProperties barChartProperties =
                 new ClusteredBarChartProperties();
-        buildAxisChart(ChartType.BAR_CLUSTERED, barChartProperties);
+        buildAxisChart(ChartType.BAR_CLUSTERED, barChartProperties, outputChart);
     }
 
-    private void buildLineChart() throws Throwable {
+    private void buildLineChart(OutputChart outputChart) throws Throwable {
         Stroke[] strokes = new Stroke[data.length];
         for (int i = 0; i < data.length; i++) {
             strokes[i] = LineChartProperties.DEFAULT_LINE_STROKE;
         }
         LineChartProperties lineChartProperties = new LineChartProperties(
                 strokes, getShapes(outputChart.getShapes()));
-        buildAxisChart(ChartType.LINE, lineChartProperties);
+        buildAxisChart(ChartType.LINE, lineChartProperties, outputChart);
     }
 
-    private void buildPointChart() throws Throwable {
+    private void buildPointChart(OutputChart outputChart) throws Throwable {
         Paint[] outlinePaints = TestDataGenerator.getRandomPaints(data.length);
         boolean[] fillPointFlags = new boolean[data.length];
         for (int i = 0; i < data.length; i++) {
@@ -124,11 +124,13 @@ public class AxisChart extends AbstractChart {
         PointChartProperties pointChartProperties = new PointChartProperties(
                 getShapes(outputChart.getShapes()), fillPointFlags,
                 outlinePaints);
-        buildAxisChart(ChartType.POINT, pointChartProperties);
+        buildAxisChart(ChartType.POINT, pointChartProperties, outputChart);
     }
 
     void buildAxisChart(ChartType chartType,
-                        ChartTypeProperties chartTypeProperties)
+                        ChartTypeProperties chartTypeProperties,
+                        OutputChart outputChart
+                        )
             throws Throwable {
         DataSeries dataSeries = new DataSeries(
                 getAsXaxisLabelsArray(outputChart.getXaxisLabels()),
@@ -152,7 +154,7 @@ public class AxisChart extends AbstractChart {
         chart = new org.krysalis.jcharts.axisChart.AxisChart(dataSeries,
                                                              new ChartProperties(),
                                                              axisProperties,
-                                                             getLegendProperties(),
+                                                             getLegendProperties(outputChart),
                                                              new Integer(
                                                                      outputChart.getWidth()).intValue(),
                                                              new Integer(

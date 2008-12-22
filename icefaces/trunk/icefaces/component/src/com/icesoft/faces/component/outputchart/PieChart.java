@@ -53,12 +53,12 @@ public class PieChart extends AbstractChart {
         super(outputChart);
     }
 
-    protected void buildChart() {
+    protected void buildChart(OutputChart outputChart) {
         try {
-            if (type.equalsIgnoreCase("pie2d")) {
-                chart = getPie2dChart();
-            } else if (type.equalsIgnoreCase("pie3d")) {
-                chart = getPie3dChart();
+            if (outputChart.getType().equalsIgnoreCase("pie2d")) {
+                chart = getPie2dChart(outputChart);
+            } else if (outputChart.getType().equalsIgnoreCase("pie3d")) {
+                chart = getPie3dChart(outputChart);
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class PieChart extends AbstractChart {
         return getPaints(obj, data.length);
     }
 
-    private Chart getPie2dChart() throws Throwable {
+    private Chart getPie2dChart(OutputChart outputChart) throws Throwable {
         PieChart2DProperties pieChart2DProperties = new PieChart2DProperties();
         PieChartDataSet pieChartDataSet;
         pieChartDataSet = new PieChartDataSet(outputChart.getChartTitle(),
@@ -102,14 +102,14 @@ public class PieChart extends AbstractChart {
                                               pieChart2DProperties);
 
         return new PieChart2D(pieChartDataSet,
-        					  getLegendProperties(),
+        					  getLegendProperties(outputChart),
                               new ChartProperties(),
                               new Integer(outputChart.getWidth()).intValue(),
                               new Integer(outputChart.getHeight()).intValue());
 
     }
 
-    private Chart getPie3dChart() throws Throwable {
+    private Chart getPie3dChart(OutputChart outputChart) throws Throwable {
         PieChart3DProperties pieChart3DProperties = new PieChart3DProperties();
         pieChart3DProperties.setDepth(30);
         pieChart3DProperties.setBorderChartStroke(

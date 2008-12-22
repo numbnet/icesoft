@@ -364,9 +364,9 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
 	                if (getType().equalsIgnoreCase(OutputChart.CUSTOM_CHART_TYPE)) {
                         evaluateRenderOnSubmit(context);
 	                }
-	                getAbstractChart().encode(context);
+	                getAbstractChart().encode(context, this);
 	            } else if (evaluateRenderOnSubmit(context).booleanValue()) {
-	            	getAbstractChart().encode(context);
+	            	getAbstractChart().encode(context, this);
 	            }
 	        } catch (Throwable e) {
 	            e.printStackTrace();

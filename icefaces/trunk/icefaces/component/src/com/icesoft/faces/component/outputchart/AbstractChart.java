@@ -55,26 +55,22 @@ import java.util.Map;
 
 public abstract class AbstractChart {
     private final Log log = LogFactory.getLog(AbstractChart.class);
-    protected OutputChart outputChart = null;
     protected Chart chart = null;
     private Chart userDefinedChart = null;
     private static ColorMap colorMap = new ColorMap();
     private static ShapeMap shapeMap = new ShapeMap();
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
     private ImageMapArea clickedImageMapArea;
-    String type = null;
 
     public AbstractChart(UIComponent uiComponent) throws Throwable {
-        this.outputChart = (OutputChart) uiComponent;
-        this.type = outputChart.getType();
     }
 
-    public void encode(FacesContext context) throws Throwable {
+    public void encode(FacesContext context, OutputChart outputChart) throws Throwable {
         //if type is dynamic here we should update it
-        this.type = outputChart.getType();
+        String type = outputChart.getType();
         Chart currentChart = getChart();
         if (chart == currentChart) {
-            buildChart();
+            buildChart(outputChart);
         }
         if (getChart() != null) {
             if (outputChart.isClientSideImageMap()) {
@@ -108,7 +104,7 @@ public abstract class AbstractChart {
         }
     }
 
-    protected abstract void buildChart() throws Throwable;
+    protected abstract void buildChart(OutputChart outputChart) throws Throwable;
 
     static AbstractChart createChart(UIComponent uiComponent) throws Throwable {
         String type = ((OutputChart) uiComponent).getType();
@@ -284,7 +280,7 @@ public abstract class AbstractChart {
         return colorMap.getColor(color);
     }
 
-    public LegendProperties getLegendProperties() {
+    public LegendProperties getLegendProperties(OutputChart outputChart) {
         String legendPlacement = (String) outputChart.getLegendPlacement();
         if (legendPlacement.equals("none")) {
             return null;
