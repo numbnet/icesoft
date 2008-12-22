@@ -128,14 +128,14 @@ public class StaticTimerUtility {
             return;
         }
 
-        timerAccumulatedTime += (System.nanoTime() - timerStartTime);
+        timerAccumulatedTime += (getSystemTime() - timerStartTime);
 
         // count can be greater than total if new users join during rendering
         if (++timersCompleted >= totalTimerCount) {
 
             float factor = (hiRes) ? 1e9f : 1000f;
             Log.trace(" ==> Timer job: " + jobId + " containing: " + totalTimerCount + " subjobs" + 
-                               ", elapsed real time: " + (System.nanoTime()- startTime) / factor + " seconds");
+                               ", elapsed real time: " + (getSystemTime- startTime) / factor + " seconds");
             Log.trace("   ==> Timer job: " + jobId + " accumulated cpu time: " + timerAccumulatedTime / factor + " seconds");
             Log.trace("============================");
 
@@ -149,5 +149,14 @@ public class StaticTimerUtility {
         totalTimerCount = 0;
         timerAccumulatedTime = 0;
         startTime = 0;
-    } 
+    }
+
+    private static Long getSystemTime() {
+
+         try {
+            return ((Long)timerMethod.invoke(null, null)).longValue();
+        } catch (Exception e) {
+             return System.currentTimeMillis();
+         }
+    }
 }
