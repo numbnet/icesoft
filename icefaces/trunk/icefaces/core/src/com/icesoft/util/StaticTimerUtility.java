@@ -151,7 +151,7 @@ public class StaticTimerUtility {
         startTime = 0;
     }
 
-    private static Long getSystemTime() {
+    private static long getSystemTime() {
 
          try {
             return ((Long)timerMethod.invoke(null, null)).longValue();
