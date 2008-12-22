@@ -16,35 +16,28 @@
 
 	<body>
 	<ice:form>
-		<ice:panelGroup styleClass="componentBox">
-			<!-- Popup Calendar -->
-			<ice:panelGroup styleClass="exampleBox firstChildTitle">
+		<!-- Popup Calendar -->
+		<panelGrid columns="1">
 
-				<ice:outputLabel id="popupSelectedDateTxt"
-					value="Selected Date: " />
-				<ice:outputText value="#{dateSelect.date2}"
-					effect="#{dateSelect.valueChangeEffect2}">
-					<f:convertDateTime pattern="MM/dd/yyyy"
-						timeZone="#{dateSelect.timeZone}" />
-				</ice:outputText>
-				<!-- Calendar Component -->
-				<ice:selectInputDate id="date2" renderMonthAsDropdown="true"
-					renderYearAsDropdown="true" value="#{dateSelect.date2}"
-					valueChangeListener="#{dateSelect.effect2ChangeListener}"
-					title="#{msgs['page.selectInputDate.popup.title']}"
-					renderAsPopup="true">
-					<f:convertDateTime pattern="MM/dd/yyyy"
-						timeZone="#{dateSelect.timeZone}" />
-					<f:validator validatorId="dateRangeValidator" />
-				</ice:selectInputDate>
+		<ice:outputLabel id="popupSelectedDateTxt" value="Selected Date: " />
+		<ice:outputText value="#{dateSelect.date2}"
+			effect="#{dateSelect.valueChangeEffect2}">
+			<f:convertDateTime pattern="MM/dd/yyyy"
+				timeZone="#{dateSelect.timeZone}" />
+		</ice:outputText>
+		<!-- Calendar Component -->
+		<ice:selectInputDate id="date2" renderMonthAsDropdown="true"
+			renderYearAsDropdown="true" value="#{dateSelect.date2}"
+			valueChangeListener="#{dateSelect.effect2ChangeListener}"
+			title="#{msgs['page.selectInputDate.popup.title']}"
+			renderAsPopup="true">
+			<f:convertDateTime pattern="MM/dd/yyyy"
+				timeZone="#{dateSelect.timeZone}" />
+			<f:validator validatorId="dateRangeValidator" />
+		</ice:selectInputDate>
 
-			</ice:panelGroup>
-
-			<ice:panelGroup styleClass="clearer" />
-		</ice:panelGroup>
-		<ice:panelGroup styleClass="selectInputDateContainer">
-			<ice:messages />
-		</ice:panelGroup>
+		<ice:messages />
+		</panelGrid>
 	</ice:form>
 	</body>
 	</html>
