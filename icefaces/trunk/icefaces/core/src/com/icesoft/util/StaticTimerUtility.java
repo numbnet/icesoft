@@ -135,7 +135,7 @@ public class StaticTimerUtility {
 
             float factor = (hiRes) ? 1e9f : 1000f;
             Log.trace(" ==> Timer job: " + jobId + " containing: " + totalTimerCount + " subjobs" + 
-                               ", elapsed real time: " + (getSystemTime- startTime) / factor + " seconds");
+                               ", elapsed real time: " + (getSystemTime() - startTime) / factor + " seconds");
             Log.trace("   ==> Timer job: " + jobId + " accumulated cpu time: " + timerAccumulatedTime / factor + " seconds");
             Log.trace("============================");
 
