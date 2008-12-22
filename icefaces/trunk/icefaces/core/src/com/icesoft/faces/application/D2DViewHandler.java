@@ -246,7 +246,7 @@ public class D2DViewHandler extends ViewHandler {
 
             String renderKitId =
                     calculateRenderKitId(context);
-            long start = System.nanoTime();
+            long start = System.currentTimeMillis();
 
             Application a = context.getApplication();
             StateManager sm = a.getStateManager();
@@ -254,7 +254,7 @@ public class D2DViewHandler extends ViewHandler {
             UIViewRoot viewRoot = sm.restoreView(context, viewId, renderKitId);
 
             if (log.isDebugEnabled()) {
-                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime() - start) / 1e9f);
+                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.currentTimeMillis() - start) / 1000f);
             }
             return viewRoot;
         } else {
@@ -726,11 +726,11 @@ public class D2DViewHandler extends ViewHandler {
         Application a = context.getApplication();
         StateManager sm = a.getStateManager();
 
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
 
         StateManager.SerializedView sv = sm.saveSerializedView(context);
         if (log.isDebugEnabled()) {
-            log.debug("Serialized state saved in: " + (System.nanoTime() - start) / 1e9f + "seconds");
+            log.debug("Serialized state saved in: " + (System.currentTimeMillis() - start) / 1000f + "seconds");
         }
 
         Object[] structureAndState = new Object[2];
@@ -745,10 +745,10 @@ public class D2DViewHandler extends ViewHandler {
 
         try {
         // get JSF to write state (captured by DOMResponseWriter)
-            start = System.nanoTime();
+            start = System.currentTimeMillis();
             sm.writeState(context, sv);
             if (log.isDebugEnabled()) {
-                log.debug("Serialized state written in: " + (System.nanoTime() - start) / 1e9f + "seconds");
+                log.debug("Serialized state written in: " + (System.currentTimeMillis() - start) / 1e9f + "seconds");
             }
         } catch (IOException ioe) {
             log.error("IOException saving state: ",  ioe);
