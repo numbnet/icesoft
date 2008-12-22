@@ -267,10 +267,10 @@ public class UploadServer implements Server {
                     }
                     
                     long now = System.currentTimeMillis();
-                    if ((now - startTime) >= 5000L) {
+                    if ((now - startTime) >= 10000L) {
                         break;
                     }
-                    try { Thread.sleep(100L); } catch(InterruptedException e) {}
+                    try { Thread.sleep(10L); } catch(InterruptedException e) {}
                 } while(later);
                 return iframeContent;
             }
