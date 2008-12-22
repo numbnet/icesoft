@@ -17,11 +17,13 @@ public class SettableLocaleViewRoot extends UIViewRoot {
             String className = ste[i].getClassName().toLowerCase();
             String methodName = ste[i].getMethodName().toLowerCase();
 
-            if (className.contains("restoreview") && methodName.contains("execute")) {
+            if (className.indexOf("restoreview") > -1 &&
+                methodName.indexOf("execute") > -1) {
                 return;
             }
 
-            if (className.contains("viewtag") && methodName.contains("setproperties")) {
+            if (className.indexOf("viewtag") > -1 &&
+                methodName.indexOf("setproperties") > -1) {
                 return;
             }
         }
