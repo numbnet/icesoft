@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Calendar Component Tutorials</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Lesson:</b> Using calendar component
+</p>
+
+<!-- tutorial content section -->
+
+<h1>How to Use the ICEfaces Calendar Component</h1>
+
+<p>
+	Often applications require users to insert date, such as Date-of-Birth, Start Date 
+	of employment and so on. <span class="object-name">selectInputDate</span> component
+	allows programmers to offer user safe and convenient way of entering date without
+	worrying about format, locale and other features, which may vary from place 
+	to place.
+
+	This tutorial will show how to create a basic calendar object and also how to change
+	it in order to adhere to corporate and architectural presentation standards. As all
+	other ICEFaces components, selectInputDate is designed to use CSS styles. You will
+	see how easy it can be to apply CSS to various parts of the component.  
+</p>
+
+<p>This tutorial will discuss the following topics related to the use of the
+    <span class="object-name">selectInputDate</span> component:</p>
+<ul>
+    <li><a href="#creatingasimplecal">Creating a Simple Calendar</a></li>
+    <li><a href="#creatingapopupcal">Creating a Popup Calendar</a>
+    </li>
+    <li><a href="#useofconverters">Use of Converters and Validators</a></li>
+    <li><a href="#customisingcalendarcssstyle">Customising Calendar's 
+        CSS style</a></li>
+    </li>
+</ul>
+
+<a name="creatingasimplecal">&nbsp;</a>
+
+<h2>Creating a Simple Calendar</h2>
+
+<p>
+	Creating a simple calendar must be very straightforward. Below is the presentation of the 
+	simple calendar. Please, note, that text fields above and below are not part of
+	the calendar control
+</p>
+
+<div class="screenshot">
+    <img src="images/calendarSimple.png"
+         title="Basic dataTable Example"
+         alt="Basic dataTable Example" width="350" height="320"/>
+</div>
+<br/>
+
+<div class="demo-instruction">
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the dataTable-basic source code <a
+                href="selectInputDate-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+<p>
+In order to add a calendar on the page, you must include the following snippet 
+of code:
+<pre>
+	&lt;ice:selectInputDate id="date1" value="#{dateSelect.date1}"/&gt;
+</pre>
+</p>
+<p>
+This is your first and very basic calendar. Selected value is stored in the backing bean
+as date1 property. 
+</p>
+
+<a name="creatingapopupcal">&nbsp;</a>
+
+<h2>Creating a Popup Calendar</h2>
+
+<p>
+    Sometimes developers do not have enough real estate on the screen to place 
+    full calendar. selectInputDate component declaration can be modified to show
+    a popup version of the calendar, which looks like this
+</p>
+
+<div class="screenshot">
+    <img src="images/calendarPopup.jpg"
+         title="Popup Calendar Example"
+         alt="Popup Calendar Example" width="520" height="250"/>
+</div>
+<p>
+In order to create a popup calendar, you must insert the following statement into
+your page code:
+<pre>
+	&lt;ice:selectInputDate id="date2" value="#{dateSelect.date2}" renderAsPopup="true"/&gt;
+</pre>
+</p>
+<p>
+	As you can see, basic calendar and popup calendar are in fact the same component. 
+	renderAsPopup attribute controls the way of how the component is displayed.
+</p>
+
+<div class="demo-instruction">
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the calendar-popup source code <a
+                href="selectInputDate-popup-tutorial.zip">here</a>.
+</div>
+
+<a name="useofconverters">&nbsp;</a>
+
+<h2>Using Converters and Validators</h2>
+
+<p>
+	This part of tutorial shows how to use converters and validators together with
+	calendar control. If you are not familiar with basics of using a validator, you 
+	can refer to validators tutorial. Converter and validator can be added to both 
+	basic and popup calendar. 
+</p>
+
+<p>
+	Converter is used in selectInputDate component in order to change the representation 
+	of date. We will use a common North American date presentation of MM/dd/yyyy
+<pre>
+	&lt;ice:selectInputDate id="date1" value="#{dateSelect.date1}"&gt;
+		&lt;f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{dateSelect.timeZone}"/&gt;
+	&lt;/ice:selectInputDate&gt;
+</pre>
+</p>
+<p>
+	In this example, we chose the pattern of how the date will be presented and 
+	we also chose time zone using standard java TimeZone class. If you create a 
+	corporate web site for the workers in the different time zones, this feature 
+	may be very handy. 
+</p>
+
+<p>
+	Often programmers need to restrict users on which dates they can insert. If it's a 
+	birthday it must be in the past, if this is a flight it must be in the future, and
+	so on. While users are on their own at the time of selection, the programmers 
+	can restrict the use of the improper dates by using validators.
+<pre>
+	&lt;ice:selectInputDate id="date1" value="#{dateSelect.date1}"&gt;
+		&lt;f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{dateSelect.timeZone}"/&gt;
+		&lt;f:validator validatorId="dateRangeValidator" /&gt;
+	&lt;/ice:selectInputDate&gt;
+</pre>
+</p>
+<p>
+	Validator also requires additional setup in faces-config.xml, where we tie 
+	validatorId with actual class.
+<pre>
+    &lt;validator&gt;
+        &lt;validator-id&gt;dateRangeValidator&lt;/validator-id&gt;
+        &lt;validator-class&gt;mypackage.DateRangeValidator&lt;/validator-class&gt;
+    &lt;/validator&gt;
+</pre>
+The snippet of java code is the actual code of the validator, used in the sample. 
+Value parameter of validate() method is a date object. If you decide that dates, not 
+passing validation, must stop form from submitting, just throw a ValidatorException
+<pre>
+	public void validate(FacesContext context, UIComponent component, Object value)
+			throws ValidatorException {
+		Date myDate = (Date)value;
+		Date today = new Date();
+		if (myDate.before(today)) {
+            FacesMessage message = new FacesMessage();
+            message.setDetail("Date is in the past");
+            message.setSummary("Date is in the past");
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+		}
+	}
+</pre> 
+</p>
+<a name="customisingcalendarcssstyle">&nbsp;</a>
+
+<h2>Customizing Calendar Style</h2>
+selectInputDate is easily customised. First of all, it makes use of ICEFaces themes 
+to define its appearance. You may also use internal parameters of the component to change
+its appearance
+<ul>
+	<li>
+		renderMonthAsDropdown, renderYearAsDropdown are set to false by default. If you
+		change them to true, control over month and year selection will be through
+		dropdowns and not left-right arrows
+	</li>
+	<li>
+		highlightUnit, highlightValue, highlightClass regulate appearance of the highlighted items
+		<ul>
+		<li>
+		<b>highlightUnit</b> defines which parts of the calendar are highlighted. For example, 
+		highlightUnit="DAY_OF_WEEK: MONTH" shows that days of the week and months are 
+		to be highlighted
+		</li>
+		<li>
+		<b>highlightValue</b> sets the values of the elements, listed in the highlight 
+		class. For Example: highlightValue="1,7: 8" will highlight Saturday and Sunday 
+		of each week in the calendar and month of August(8) will also be highlighted
+		</li>
+		<li>
+		<b>highlightClass</b> defines css classes for the highlighted components. 
+		example highlightClass="weekend: august:" shows that 2 classes are defined 
+		in css file called weekend and august. Highlights will appear based on the classes.
+		</li>
+	</li>
+</ul>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

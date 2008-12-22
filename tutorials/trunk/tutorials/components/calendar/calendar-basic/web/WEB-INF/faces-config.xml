@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config>
+	<application>
+		<locale-config>
+			<default-locale>en_US</default-locale>
+		</locale-config>
+	</application>
+    <validator>
+        <validator-id>dateRangeValidator</validator-id>
+        <validator-class>com.icesoft.icefaces.tutorial.component.selectinputdate.DateRangeValidator</validator-class>
+    </validator>
+	<managed-bean>
+		<description> Backing bean for dateSelect example.</description>
+		<managed-bean-name>dateSelect</managed-bean-name>
+		<managed-bean-class>
+			com.icesoft.icefaces.tutorial.component.selectinputdate.SelectInputDateBean 
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+</faces-config>

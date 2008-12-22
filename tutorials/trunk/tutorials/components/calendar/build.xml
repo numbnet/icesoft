@@ -1,0 +1,31 @@
+<project name="calendar-tutorial" default="build.examples">
+
+    <description>
+        Builds child projects 
+    </description>
+
+    <property name="build-common.xml" value="../../../../icefaces/samples/etc/build-common.xml"/>
+
+    <!--
+        builds the examples
+    -->
+    <target name="build.examples" >
+
+        <subant target="build.deployable">
+            <property name="build-common.xml" value="${build-common.xml}"/>
+            <fileset dir="." includes="*/build.xml" />
+        </subant>
+    </target>
+
+    <!--
+       Cleans only the copied wars from build.examples.
+    -->
+    <target name="clean">
+        <subant target="clean">
+            <property name="build-common.xml" value="${build-common.xml}"/>
+            <fileset dir="." includes="*/build.xml" />
+        </subant>
+    </target>
+
+</project>
+

@@ -1,0 +1,73 @@
+<project name="calendar-popup-tutorial" default="build.war">
+
+    <!-- location of common build file -->
+    <property name="build-common.xml" value="../../../../icefaces/samples/etc/build-common.xml"/>
+    <import file="${build-common.xml}"/>
+
+    <patternset id="common.icefaces.lib.jars.to.include"
+                includes="
+        icefaces.jar
+        icefaces-comps.jar
+    "
+            />
+    <patternset id="deployment.icefaces.lib.jars.to.include"
+                includes="
+            backport-util-concurrent.jar
+            commons-beanutils.jar
+            commons-collections.jar
+            commons-digester.jar
+            commons-discovery.jar
+		commons-el.jar
+            commons-fileupload.jar
+            commons-logging.jar
+            el-api.jar
+            jstl.jar
+            standard.jar
+            xercesImpl.jar
+            xml-apis.jar
+    "
+            />
+
+    <target name="clean" depends="common.clean">
+        <delete quiet="true">
+            <fileset dir="${app.lib.dir}">
+                <patternset refid="deployment.icefaces.lib.jars.to.include" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="build.war" depends="compile">
+
+        <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <fileset dir="${icefaces.lib.dir}">
+                <patternset refid="common.icefaces.lib.jars.to.include"/>
+                <patternset refid="deployment.icefaces.lib.jars.to.include"/>
+            </fileset>
+        </copy>
+
+        <build.war web.xml="conf/web.sunri.icefaces.xml"/>
+    </target>
+
+    <target name="build.minimal.war" depends="compile">
+
+        <fileset dir="${icefaces.lib.dir}">
+            <patternset refid="common.icefaces.lib.jars.to.include"/>
+        </fileset>
+
+        <build.war web.xml="conf/web.sunri.icefaces.xml"
+                   war.file.name="${ant.project.name}.war"/>
+    </target>
+
+    <!--
+        Zip of source code and save in documents folder
+    -->
+    <target name="copy.zip.src" >
+        <mkdir dir="${dist.dir}"/>
+        <zip basedir="." destfile="${dist.dir}/${ant.project.name}.zip" />
+    </target>
+
+    <target name="build.deployable"
+            depends="clean, copy.zip.src, build.minimal.war"/>
+
+</project>
+
