@@ -82,7 +82,6 @@ Containers</a></li>
 <li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
 <li><a href="#KIPortlets">Portlets</a></li>
-
 <li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
@@ -147,28 +146,39 @@ combinations please contact <a href="http://www.icefaces.org/main/support/reques
 <ul>
 <li><span style="font-weight: bold;">Support
 for JSF State-Saving</span>.
-In previous releases ICEfaces used a persistent component-tree model but
+In previous releases ICEfaces used a persistent component-tree model
+but
 starting with this release JSF state-saving is now
 supported.&nbsp;</li>
 <ul>
-<li>ICEfaces now uses state-saving by default when running in JSF1.2 runtime environments (equiv.
+<li>ICEfaces now uses state-saving by default when
+running in JSF1.2 runtime environments (equiv.
 to&nbsp;<span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement="true"</span>
 in web.xml).</li>
-<li>State-saving is neither supported, nor enabled by default, in JSF1.1 environments.</li>
+<li>State-saving is neither supported, nor enabled by
+default, in JSF1.1 environments.</li>
 <li>Client-side state-saving is not supported.</li>
-<li>ICEfaces support for state-saving has not been optimized in this release.</li>
+<li>ICEfaces support for state-saving has not been
+optimized in this release.</li>
 </ul>
 </ul>
 </li>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">JSF 1.2 Support. </span>ICEfaces
+<li><span style="font-weight: bold;">JSF 1.2
+Support. </span>ICEfaces
 can now be used in JSF 1.2 environments utilizing the JSF 1.2 document
 schemas for the faces-config.xml and web.xml files when used with Sun
 JSF 1.2_09 or greater. Previous ICEfaces versions (and&nbsp; 1.7.2+
 used with older JSF 1.2 runtimes) still require the use of the JSF 1.1
-document DTDs (so-called "compatibility mode").<span style="font-weight: bold;"><br></span></li></ul></ul><ul><ul><li><span style="font-weight: bold;">SessionRenderer
+document DTDs (so-called "compatibility mode").<span style="font-weight: bold;"><br>
+</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">SessionRenderer
 is now an official API. </span>&nbsp;The SessionRenderer API
 was introduced as an experimental API in ICEfaces 1.7.1. Based on
 positive feedback from the community it has been <span style="font-weight: bold;">repackaged</span> and is
@@ -1016,6 +1026,14 @@ environments.&nbsp;Client-side state-saving is not supported.</p>
 </ul>
 <h3><a name="KIGeneral"></a>General</h3>
 <ul>
+<li>In this release, exception redirection is not working correctly
+when state-saving is enabled, which is the default configuration for
+JSF1.2 (doJSFStateManagement=true).
+A work-around is to disable JSF state-saving by specifying
+doJSFStateManagement=false in the web.xml file. See <a href="http://jira.icefaces.org/browse/ICE-3921" target="_blank">ICE-3921</a>.
+</li>
+</ul>
+<ul>
 <li>If at any time the asynchronous connection
 between the browser
 and the server is lost due to a network interruption, reloading the
@@ -1147,6 +1165,18 @@ ice:form</span>, <span style="font-family: monospace;">h:form</span>,
 or <span style="font-family: monospace;">ui:form</span>).</li>
 </ul>
 <ul>
+<li>dataTable
+<ul>
+<li>In this release there is a known issue with the
+scrollable dataTable when used with IE7.
+Occasionally, when a scrollable dataTable is initially renderered in
+the
+browser the scrollbar will not display. In this case, resizing the
+browser window will cause the scrollbars to display. See <a href="http://jira.icefaces.org/browse/ICE-3919" target="_blank">ICE-3919</a>.</li>
+</ul>
+</li>
+</ul>
+<ul>
 <li>Effects (various components)
 <ul>
 <li>In Internet Explorer the Fade,
@@ -1256,7 +1286,8 @@ portal container and portal theme being used.&nbsp;The
 primary intention is to show component functionality in a portlet
 context. It may be necessary to customize the specific styles being
 used to work well within the portal theme, etc.</li>
-</ul><h3><a name="KISampleApps"></a>Sample
+</ul>
+<h3><a name="KISampleApps"></a>Sample
 Applications</h3>
 <ul>
 <li>Of the
@@ -1278,7 +1309,6 @@ Servers</h3>
 <ul style="font-weight: bold;">
 <li>General</li>
 </ul>
-
 <ul>
 <ul>
 <li>Due to an apparent
