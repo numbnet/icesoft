@@ -169,7 +169,7 @@ public class HtmlDataTable
         values[9] = headerClassesArray;
         values[10] = resizable;
         values[11] = resizableTblColumnsWidth;
-        values[12] = Integer.valueOf(resizableTblColumnsWidthIndex);
+        values[12] = new Integer(resizableTblColumnsWidthIndex);
         values[13] = scrollable;
         values[14] = Boolean.valueOf(isResizableColumnWidthsSet);
         return ((Object) (values));
