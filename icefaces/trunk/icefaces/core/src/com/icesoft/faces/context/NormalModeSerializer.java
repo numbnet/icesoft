@@ -77,7 +77,7 @@ public class NormalModeSerializer implements DOMSerializer {
             writer.flush();
         } catch (IOException e) {
             //capture & log Tomcat specific exception
-            if (e.getClass().getName().contains("ClientAbortException")) {
+            if (e.getClass().getName().endsWith("ClientAbortException")) {
                 log.debug("Browser closed the connection prematurely.");
             } else {
                 throw e;
