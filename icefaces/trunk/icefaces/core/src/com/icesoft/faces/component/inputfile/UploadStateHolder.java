@@ -41,7 +41,7 @@ public class UploadStateHolder implements Runnable {
      */
     public static UploadStateHolder take() {
         UploadStateHolder current = (UploadStateHolder) holder.get();
-        holder.remove();
+        holder.set(null);
         return current;
     }
 

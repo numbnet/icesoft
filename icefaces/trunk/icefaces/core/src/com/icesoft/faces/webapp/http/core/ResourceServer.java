@@ -33,7 +33,7 @@ public class ResourceServer implements Server {
             dispatcher.service(request);
         } catch (IOException e) {
             //capture & log Tomcat specific exception            
-            if (e.getClass().getName().contains("ClientAbortException")) {
+            if (e.getClass().getName().endsWith("ClientAbortException")) {
                 log.debug("Browser closed the connection prematurely for " + request.getURI());
             } else {
                 throw e;
