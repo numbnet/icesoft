@@ -189,7 +189,16 @@
         <default-value>true</default-value>         
     </property-extension>
 </property>
-
-
-
-
+<property>
+<description>
+    Value of the target attribute when resource is rendered as a link. Default is "_blank".
+</description>
+<property-name>target</property-name>
+<property-class>java.lang.String</property-class>
+<property-extension>
+    <category>ICE_COMPONENT</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+</property-extension>
+</property>

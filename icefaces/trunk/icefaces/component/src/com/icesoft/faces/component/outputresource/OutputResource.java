@@ -37,6 +37,7 @@ public class OutputResource extends UIComponentBase {
 	private transient int lastResourceHashCode;	
 	transient String path;
 	private Boolean shared;
+    private String target;
 
 	public static final String TYPE_IMAGE = "image";
 	public static final String TYPE_BUTTON = "button";
@@ -64,7 +65,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public Resource getResource() {
-		ValueBinding vb = getValueBinding("resource");
+        ValueBinding vb = getValueBinding("resource");
 		if (vb == null) {
 		    if (log.isInfoEnabled()) {
 		        log.info("The \"resource\" is not defined");
@@ -73,7 +74,7 @@ public class OutputResource extends UIComponentBase {
 		}
 		final Resource resource = (Resource) vb.getValue(getFacesContext());
 		final String fileName = getFileName();
-		if( resource != null ){
+        if( resource != null ){
 			int newResourceHashCode = resource.hashCode();
 			if( lastResourceHashCode != newResourceHashCode ){
 				Resource r = new Resource() {
@@ -87,7 +88,7 @@ public class OutputResource extends UIComponentBase {
 						return resource.open();
 					}
 					public void withOptions(Resource.Options options) {
-						if (fileName != null)
+                        if (fileName != null)
 							options.setFileName(fileName);
 						else if (resource instanceof FileResource)
 							options.setFileName(((FileResource) resource).getFile()
@@ -98,7 +99,7 @@ public class OutputResource extends UIComponentBase {
 							options.setLastModified(getLastModified());
 						if (getMimeType() != null)
 							options.setMimeType(getMimeType());
-						if (isAttachment())
+                        if (isAttachment())
 							options.setAsAttachement();
 					}
 				};
@@ -114,7 +115,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getMimeType() {
-		if (mimeType != null) {
+        if (mimeType != null) {
 			return mimeType;
 		}
 		ValueBinding vb = getValueBinding("mimeType");
@@ -282,7 +283,7 @@ public class OutputResource extends UIComponentBase {
 	 * </p>
 	 */
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[13];
+		Object values[] = new Object[14];
 		values[0] = super.saveState(context);
 		values[1] = resource;
 		values[2] = mimeType;
@@ -296,6 +297,7 @@ public class OutputResource extends UIComponentBase {
 		values[10] = renderedOnUserRole;
 		values[11] = attachment;
 		values[12] = shared;
+		values[13] = target;
 		return ((Object) (values));
 	}
 
@@ -320,7 +322,8 @@ public class OutputResource extends UIComponentBase {
 		renderedOnUserRole = (String) values[10];
 		attachment = (Boolean) values[11];
 		shared = (Boolean)values[12];
-	}
+        target = (String) values[13];
+    }
 
 	public boolean getAttachment() {
 		return this.isAttachment();
@@ -350,4 +353,16 @@ public class OutputResource extends UIComponentBase {
 		this.shared = Boolean.valueOf(s);
 	}
 
+    public String getTarget() {
+        if (target != null) return target;
+        ValueBinding vb = getValueBinding("target");
+        if (vb == null) return "_blank";
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return "_blank";
+        return (String) value;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
 }
