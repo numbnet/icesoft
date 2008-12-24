@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 public class OutputResourceRenderer extends DomBasicInputRenderer {
 
@@ -46,8 +47,8 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 			else{
 				resource = domContext.createElement(HTML.ANCHOR_ELEM);
 				resource.setAttribute(HTML.HREF_ATTR, outputResource.getPath());
-				resource.setAttribute("target", "blank");
-							
+                PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent, resource, new String[]{"target"});
+
 				if( outputResource.getImage() != null ){
 					Element img = domContext.createElement(HTML.IMG_ELEM);
 					String image = outputResource.getImage();
