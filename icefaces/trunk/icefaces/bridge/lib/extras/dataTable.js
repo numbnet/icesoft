@@ -53,6 +53,10 @@ Ice.dataTable.DataTable = Class.create({
 
         var borderLeftWidth = body.getStyle("borderLeftWidth");
         var borderRightWidth = body.getStyle("borderRightWidth");
+        if (Prototype.Browser.IE && body.scrollHeight > body.clientHeight) {
+            body.style.overflowX = "hidden";
+            body.style.overflowY = "scroll";
+        }
         var width=body.getWidth();
         var scrollWidth=width - body.clientWidth;
 	
