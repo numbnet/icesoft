@@ -1,0 +1,482 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+  <head>
+    <title>Lazy Loading DataTable with JPA</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+      <!-- header section -->
+      <p class="tutoralHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      <hr/>
+
+      <!-- tutorial content section -->
+
+      <h1>Lazy Loading DataTable with JPA</h1>
+
+      <p>
+          This tutorial will display an editable dataTable using ICEfaces and JPA.  All records displayed in the GUI will
+          be lazily loaded.  Most importantly, when a record is updated, the ICEfaces rendering api will push updates out
+          to all users currenlty viewing the updated record.
+      </p>
+      <p>
+          The Java Persistence API (JPA), is a Java programming language framework that allows developers to manage
+          relational data inside a Java EE 5 application server or outside an EJB container in a Java Standard
+          Edition (Java SE) 5 application.  Many features of third-party persistence frameworks were incorporated into the
+          Java Persistence API, and projects like Hibernate and Open-Source Version TopLink Essentials are now
+          implementations of the Java Persistence API.  For this tutorial we use the Hibernate JPA implementation and
+          include notes on any divergence between this implementation and TopLink Essentials.  Hibernate allows us to
+          package our database in the tutorial web application using HSQLDB and an import.sql file to populate records.
+      </p>
+
+      <p>
+          Lazy loading is used to defer initialization of an object to the point when it is required, so the program will
+          operate more efficiently.  In the case of a dataTable, although we might bind a list of hundreds if not
+          thousands of records to a component (for instance, an employee list) we only want to retrieve records from
+          the database that the user is currently viewing.  Our sample application will use an ICEfaces ice:dataTable
+          component in conjunction with an ice:dataPaginator to display a subset of lazily loaded data in the GUI.
+      </p>
+
+      <p>
+          Finally, our tutorial dataTable is editable and if we want our users to be informed of record updates, we will
+          have to bring our GUI to life.  When a single user updates a record, ICEfaces will push this update out to all
+          other users viewing that record.  This is made possible with the ICEfaces rendering api.
+      </p>
+
+      <p>
+          This tutorial will discuss the following topics related to Lazy Loading a DataTable with JPA:
+      </p>
+      <ul>
+          <li><a href="#jpa">Creating Entity Bean and other JPA Classes</a></li>
+          <li><a href="#page">Creating the Web Page</a></li>
+          <li><a href="#webApp">Creating Web Application Classes</a></li>
+          <li><a href="#examples">Example Application</a></li>
+      </ul>
+
+      <a name="jpa">&nbsp;</a>
+
+      <h2>Creating Entity Bean and other JPA Classes</h2>
+
+      <p>
+          JPA uses a persistence.xml file to define connection settings to the database.  This tutorial uses
+          JPA stand-alone (outside an EJB container) with Tomcat.  This means an application managed (rather
+          than injected) Entity Manager is used and we will not have support for JTA.  Without support for JTA, we must
+          specify a resource-local entity manager in the persistence.xml:
+      </p>
+
+      <pre>
+&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                                 http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0"&gt;
+
+    &lt;persistence-unit name="tutorialPU" transaction-type="RESOURCE_LOCAL"&gt;
+
+        &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
+
+        &lt;properties&gt;
+            &lt;property name="hibernate.archive.autodetection"
+                      value="class, hbm"/&gt;
+
+            &lt;property name="hibernate.show_sql"
+                      value="true"/&gt;
+            &lt;property name="hibernate.format_sql"
+                      value="true"/&gt;
+
+            &lt;property name="hibernate.connection.driver_class"
+                      value="org.hsqldb.jdbcDriver"/&gt;
+            &lt;property name="hibernate.connection.url"
+                      value="jdbc:hsqldb:mem:tutorialPU"/&gt;
+            &lt;property name="hibernate.connection.username"
+                      value="sa"/&gt;
+            &lt;property name="hibernate.dialect"
+                      value="org.hibernate.dialect.HSQLDialect"/&gt;
+
+            &lt;property name="hibernate.hbm2ddl.auto"
+                      value="create-drop"/&gt;
+        &lt;/properties&gt;
+
+    &lt;/persistence-unit&gt;
+
+&lt;/persistence&gt;
+      </pre>
+
+      <p>
+          Inclusion of the hibernate.archive.autodetection property means Hibernate will automatically find our entity
+          classes, the classes do not need to be explicitly listed in this file.  The hibernate.hbm2ddl.auto setting results
+          in our in-memory database schema being dropped when the SessionFactory is closed explicitly.
+      </p>
+
+      <p>
+          For comparison, here is a more minimal persistence.xml file without Hibernate specific settings, using TopLink
+          Essentials and a Derby database:
+      </p>
+      <pre>
+&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                                 http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0"&gt;
+
+    &lt;persistence-unit name="tutorialPU" transaction-type="RESOURCE_LOCAL"&gt;
+
+        &lt;provider&gt;oracle.toplink.essentials.PersistenceProvider&lt;/provider&gt;
+
+        &lt;class&gt;com.icesoft.icefaces.samples.datatable.jpa.Customer&lt;/class&gt;
+
+        &lt;properties&gt;
+            &lt;property name="toplink.jdbc.user"
+                      value="app"/&gt;
+            &lt;property name="toplink.jdbc.password"
+                      value="app"/&gt;
+            &lt;property name="toplink.jdbc.url"
+                      value="jdbc:derby://localhost:1527/sample"/&gt;
+            &lt;property name="toplink.jdbc.driver"
+                      value="org.apache.derby.jdbc.ClientDriver"/&gt;
+        &lt;/properties&gt;
+
+    &lt;/persistence-unit&gt;
+
+&lt;/persistence&gt;
+      </pre>
+
+      <p>
+          Here is our Customer Entity with JPA annotations detailing the database table and column names associated with
+          the entity properties.
+      </p>
+
+      <pre>
+@Entity
+@Table(name = "CUSTOMER", uniqueConstraints = {})
+public class Customer implements java.io.Serializable {
+
+
+    private Integer customernumber;
+    private String contactlastname;
+    private String contactfirstname;
+
+    // Constructors
+
+    /** default constructor */
+    public Customer() {
+    }
+
+    /** minimal constructor */
+    public Customer(Integer customernumber) {
+        this.customernumber = customernumber;
+    }
+
+    /** full constructor */
+    public Customer(Integer customernumber,
+            String contactlastname, String contactfirstname) {
+        this.customernumber = customernumber;
+        this.contactlastname = contactlastname;
+        this.contactfirstname = contactfirstname;
+    }
+
+    // Property accessors
+    @Id
+    @Column(name = "CUSTOMERNUMBER", unique = true, nullable = false, insertable = true, updatable = true)
+    public Integer getCustomernumber() {
+        return this.customernumber;
+    }
+
+    public void setCustomernumber(Integer customernumber) {
+        this.customernumber = customernumber;
+    }
+
+    @Column(name = "CONTACTLASTNAME", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
+    public String getContactlastname() {
+        return this.contactlastname;
+    }
+
+    public void setContactlastname(String contactlastname) {
+        this.contactlastname = contactlastname;
+    }
+
+    @Column(name = "CONTACTFIRSTNAME", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
+    public String getContactfirstname() {
+        return this.contactfirstname;
+    }
+
+    public void setContactfirstname(String contactfirstname) {
+        this.contactfirstname = contactfirstname;
+    }
+      </pre>
+
+
+      <p>
+          The EntityManagerHelper class is used to manage our entities.  This is an example of an
+          application managed Entity Manager used outside of an EJB3 container.
+      </p>
+
+      <pre>
+public class EntityManagerHelper {
+
+    private static final EntityManagerFactory emf;
+    private static final ThreadLocal<EntityManager> threadLocal;
+
+    static {
+        emf = Persistence.createEntityManagerFactory("tutorialPU");
+        threadLocal = new ThreadLocal<EntityManager>();
+    }
+
+    public static EntityManager getEntityManager() {
+        EntityManager manager = threadLocal.get();
+        if (manager == null || !manager.isOpen()) {
+            manager = emf.createEntityManager();
+            threadLocal.set(manager);
+        }
+        return manager;
+    }
+
+    public static void closeEntityManager() {
+        EntityManager em = threadLocal.get();
+        threadLocal.set(null);
+        if (em != null) em.close();
+    }
+
+    public static void beginTransaction() {
+        getEntityManager().getTransaction().begin();
+    }
+
+    public static void commit() {
+        getEntityManager().getTransaction().commit();
+    }
+      </pre>
+
+      <p>
+          The CustomerDAO class makes use of the EntityManager to interact with the database.
+      </p>
+
+      <pre>
+public class CustomerDAO implements ICustomerDAO{
+
+    private EntityManager getEntityManager() {
+        return EntityManagerHelper.getEntityManager();
+    }
+
+    public Customer update(Customer detachedInstance) {
+        try {
+            Customer result = getEntityManager().merge(detachedInstance);
+            return result;
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Customer> findPageCustomers(String sortColumnName, boolean sortAscending, int startRow, int maxResults) {
+        try {
+            String queryString = "select c from Customer c order by c." + sortColumnName + " " + (sortAscending?"asc":"desc");
+            // In the next statement a Hint is required with TopLink to force an update from the database.
+            // This prevents stale data being assigned from the l2 cache when we push updates out from the server.
+            // With Hibernate, we refresh the l1 cache by calling EntityManagerHelper.getEntityManager().clear() in the SessionBean.
+            return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).getResultList();
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Long findTotalNumberCustomers() {
+        try {
+            String queryString = "select count(c) from Customer c";
+            return (Long)getEntityManager().createQuery(queryString).getSingleResult();
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    }
+
+}
+      </pre>
+
+      <p>
+          Since Hibernate 3.1 you can include a file called "import.sql" in the runtime classpath of Hibernate. At the time
+          of schema export it will execute the SQL statements contained in that file after the schema has been exported.
+          This is one of the reasons we chose Hibernate JPA for this tutorial.  The import.sql file allows us to insert
+          the same 100 records into the in-memory HSQLDB database each time we run the web application.
+      </p>
+
+      <p>
+          This concludes the summary of our JPA classes, the bridge between our database and the web application.
+      </p>
+
+      <a name="page">&nbsp;</a>
+
+      <h2>Creating the Web Page</h2>
+
+      <p>
+          This is our page, tutorial.jspx.  There is nothing out of the ordinary in this page which consists of html,
+          standard jsf and ICEfaces tags.  Please review the component showcase or some of the other tutorials for a more
+          thorough understanding of how the components work.
+      </p>
+
+      <pre>
+&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
+&lt;jsp:root version="1.2"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:ice="http://www.icesoft.com/icefaces/component"&gt;
+    &lt;jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" /&gt;
+    &lt;f:view&gt;
+        &lt;ice:outputDeclaration doctypeRoot="html"
+                               doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                               doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" /&gt;
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;ICEfaces, Ajax for Java EE&lt;/title&gt;
+            &lt;link rel="stylesheet" type="text/css" href="./xmlhttp/css/xp/xp.css"/&gt;
+            &lt;link rel="stylesheet" type="text/css" href="./tutorial.css"/&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+
+            &lt;ice:outputText value="Thank you for using ICEfaces." /&gt;
+            &lt;ice:outputConnectionStatus /&gt;
+
+            &lt;ice:form partialSubmit="true" &gt;
+
+                &lt;ice:dataPaginator for="customerdatatable"
+                                   paginator="true"
+                                   fastStep="3" &gt;
+                    &lt;f:facet name="first"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-first.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                    &lt;f:facet name="last"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-last.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                    &lt;f:facet name="previous"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-previous.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                    &lt;f:facet name="next"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-next.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                    &lt;f:facet name="fastforward"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-ff.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                    &lt;f:facet name="fastrewind"&gt;
+                        &lt;ice:graphicImage style="border:none;"
+                            url="./xmlhttp/css/xp/css-images/arrow-fr.gif"&gt;&lt;/ice:graphicImage&gt;
+                    &lt;/f:facet&gt;
+                &lt;/ice:dataPaginator&gt;
+
+                &lt;ice:dataTable cellspacing="1"
+                               value="#{sessionBean.data}"
+                               id="customerdatatable"
+                               rows="#{sessionBean.pageSize}"
+                               sortAscending="#{sessionBean.sortAscending}"
+                               sortColumn="#{sessionBean.sortColumnName}"
+                               width="750px"
+                               rowClasses="evenRow,oddRow"
+                               var="customerbean"&gt;
+                    &lt;ice:column&gt;
+
+                        &lt;ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false"/&gt;
+
+                        &lt;!-- HEADER --&gt;
+                        &lt;f:facet name="header"&gt;
+                            &lt;ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="headerColumn" &gt;
+                                &lt;ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTFIRSTNAME}"&gt;
+                                    &lt;ice:outputText value="#{sessionBean.FIRSTCOLUMNNAME}"/&gt;
+                                &lt;/ice:commandSortHeader&gt;
+                                &lt;ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTLASTNAME}"&gt;
+                                    &lt;ice:outputText value="#{sessionBean.SECONDCOLUMNNAME}"/&gt;
+                                &lt;/ice:commandSortHeader&gt;
+                            &lt;/ice:panelGrid&gt;
+                        &lt;/f:facet&gt;
+
+                        &lt;!-- TABLE CONTENT ROW --&gt;
+                        &lt;ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="dataColumn"&gt;
+                            &lt;ice:commandLink actionListener="#{customerbean.toggleSelected}"&gt;
+                                &lt;ice:outputText value="#{customerbean.customer.contactfirstname}"/&gt;
+                            &lt;/ice:commandLink&gt;
+                            &lt;ice:commandLink actionListener="#{customerbean.toggleSelected}"&gt;
+                                &lt;ice:outputText value="#{customerbean.customer.contactlastname}"/&gt;
+                            &lt;/ice:commandLink&gt;
+                        &lt;/ice:panelGrid&gt;
+
+                        &lt;!-- EDITABLE ROW  --&gt;
+                        &lt;ice:panelGrid columns="4" rendered="#{customerbean.expanded}" width="100%" columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn"&gt;
+                            &lt;ice:inputText value="#{customerbean.tempcontactfirstname}" /&gt;
+                            &lt;ice:inputText value="#{customerbean.tempcontactlastname}" /&gt;
+                            &lt;ice:commandButton value="Commit" actionListener="#{customerbean.commit}" /&gt;
+                            &lt;ice:commandButton value="Cancel" actionListener="#{customerbean.cancel}" /&gt;
+                        &lt;/ice:panelGrid&gt;
+
+                    &lt;/ice:column&gt;
+
+                &lt;/ice:dataTable&gt;
+                &lt;ice:messages /&gt;
+            &lt;/ice:form&gt;
+
+        &lt;/body&gt;
+    &lt;/html&gt;
+    &lt;/f:view&gt;
+&lt;/jsp:root&gt;
+
+      </pre>
+
+      <p>
+          The page contains a single column dataTable with a panelGrid of table content and another panelGrid containing
+          the editable row.  The editable row is rendered when the table content row has been clicked.  The source of this
+          click is the ice:commandLink that nests the content in the row.  This decision was made because the editable row
+          contains buttons and input components that should not fire the ice:rowSelector toggleOnClick.  As a result, we
+          set the ice:rowSelector toggleOnClick attribute to "false" and use the ice:commandLinks to toggle the rendering
+          of the editable rows.  This means the ice:rowSelector component is relegated to applying the appropriate styles
+          to our rows, based on it's bound value.
+      </p>
+
+      <p>
+          We will now see what happens with the component value bindings and actionListeners in the web application beans.
+      </p>
+
+      <a name="webApp">&nbsp;</a>
+
+      <h2>Creating Web Application Classes</h2>
+
+      <p>
+
+      </p>
+
+      <a name="examples">&nbsp;</a>
+
+      <h2>Example</h2>
+
+      <table cellpadding="1" cellspacing="0" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">dataTable-JPA</td>
+                  <td class="bodySource"><a href="dataTable-JPA-tutorial.zip">dataTable-JPA source code</a></td>
+                  <td class="bodyNotes">Connects to an in-memory HSQLDB database through Hibernate JPA.</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <!-- footer section -->
+
+      <hr/>
+
+      <p class="tutorialFooterText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+
+      <p>Copyright 2009 ICEsoft Technologies Inc. All rights reserved.</p>
+
+  </body>
+</html>
