@@ -62,7 +62,7 @@
 				               var="customerbean">
 					<ice:column>					
 	
-					    <ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false"></ice:rowSelector>
+					    <ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false" />
 	
 	                       <!-- HEADER -->
 	                       <f:facet name="header">
