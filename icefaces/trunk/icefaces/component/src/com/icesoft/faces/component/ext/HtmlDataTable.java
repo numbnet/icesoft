@@ -43,6 +43,8 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
+
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -69,7 +71,8 @@ public class HtmlDataTable
     private String scrollHeight = null;
     private String headerClasses = null;
     private Boolean clientOnly = null;
-    private Boolean scrollFooter = null;    
+    private Boolean scrollFooter = null;
+    private int oldRows = -1;
     public HtmlDataTable() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -103,6 +106,11 @@ public class HtmlDataTable
         return super.isRendered();
     }
 
+    public void encodeBegin(FacesContext context) throws IOException {
+        super.encodeBegin(context);
+        oldRows = getRows();
+    }
+    
     /**
      * <p>Return the value of the <code>sortColumn</code> property.</p>
      */
@@ -326,6 +334,9 @@ public class HtmlDataTable
             kid.processValidators(context);
         } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
             kid.processUpdates(context);
+            if (oldRows != -1 && oldRows != getRows()) {
+                setFirst(0);
+            }
         } else {
             throw new IllegalArgumentException();
         }
