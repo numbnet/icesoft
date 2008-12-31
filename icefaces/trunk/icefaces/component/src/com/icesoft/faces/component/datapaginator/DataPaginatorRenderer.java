@@ -363,7 +363,16 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                 (HtmlCommandLink) getLink(facesContext, scroller, facetName);
 
         if (scroller.isDisabled() ||
-            (!scroller.isModelResultSet() && scroller.getPageCount() <= 1)) {
+            (!scroller.isModelResultSet() && scroller.getPageCount() <= 1) ||
+            (scroller.getPageIndex() == 1 && (DataPaginator.FACET_FAST_REWIND.equals(facetName) ||
+            DataPaginator.FACET_FIRST.equals(facetName) ||
+            DataPaginator.FACET_PREVIOUS.equals(facetName) 
+             )) ||
+             (scroller.getPageIndex() == scroller.getPageCount() && (DataPaginator.FACET_FAST_FORWARD.equals(facetName) ||
+             DataPaginator.FACET_LAST.equals(facetName) ||
+             DataPaginator.FACET_NEXT.equals(facetName) 
+             ))
+            ) {
             link.setDisabled(true);
         } else {
             link.setDisabled(false);
