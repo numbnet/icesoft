@@ -10,12 +10,12 @@ import org.hibernate.CacheMode;
 
 /**
  * Data access object (DAO) for domain model class Customer.
- * 
+ *
  * @see org.icefaces.jpa.Customer
  * @author MyEclipse Persistence Tools
  */
 
-public class CustomerDAO implements ICustomerDAO{
+public class CustomerDAO {
 	// property constants
 	public static final String CUSTOMERNAME = "customername";
 	public static final String CONTACTLASTNAME = "contactlastname";
@@ -29,7 +29,7 @@ public class CustomerDAO implements ICustomerDAO{
 	public static final String COUNTRY = "country";
 	public static final String SALESREPEMPLOYEENUMBER = "salesrepemployeenumber";
 	public static final String CREDITLIMIT = "creditlimit";
-    
+
 	private EntityManager getEntityManager() {
 		return EntityManagerHelper.getEntityManager();
 	}
@@ -152,16 +152,16 @@ public class CustomerDAO implements ICustomerDAO{
 				null);
 		try {
 			String queryString = "select c from Customer c order by c." + sortColumnName + " " + (sortAscending?"asc":"desc");
-			// Hint required with TopLink to force update from database, which 
+			// Hint required with TopLink to force update from database, which
 			// prevents stale data being assigned from the l2 cache.
-			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).getResultList(); 
+			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).getResultList();
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find all failed", Level.SEVERE, re);
 			;
 			throw re;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Long findTotalNumberCustomers() {
 		EntityManagerHelper.log("finding number of Customer instances", Level.INFO, null);
