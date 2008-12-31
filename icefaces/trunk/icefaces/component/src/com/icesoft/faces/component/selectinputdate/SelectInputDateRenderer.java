@@ -270,6 +270,9 @@ public class SelectInputDateRenderer
                 if (selectInputDate.isDisabled()) {
                     dateText.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
                 }
+                if (selectInputDate.isReadonly()) {
+                    dateText.setAttribute(HTML.READONLY_ATTR, HTML.READONLY_ATTR);
+                }
                 root.appendChild(dateText);
                 Element calendarButton =
                         domContext.createElement(HTML.INPUT_ELEM);
@@ -295,6 +298,9 @@ public class SelectInputDateRenderer
                 calendarButton.setAttribute(HTML.ONCLICK_ATTR, onClick);
                 if (selectInputDate.isDisabled()) {
                     calendarButton.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
+                }
+                if (selectInputDate.isReadonly()) {
+                    calendarButton.setAttribute(HTML.READONLY_ATTR, HTML.READONLY_ATTR);
                 }
                 root.appendChild(calendarButton);
                 // render a hidden field to manage the popup state; visible || hidden
@@ -697,7 +703,7 @@ public class SelectInputDateRenderer
         dropDown.setPartialSubmit(true);
         dropDown.setTransient(true);
         dropDown.setImmediate(component.isImmediate());
-        dropDown.setDisabled(component.isDisabled());
+        dropDown.setDisabled(component.isDisabled() || component.isReadonly());
         dropDown.setStyleClass(component.getMonthYearDropdownClass());
 
         UISelectItem selectItem;
@@ -744,7 +750,7 @@ public class SelectInputDateRenderer
         dropDown.setPartialSubmit(true);
         dropDown.setTransient(true);
         dropDown.setImmediate(component.isImmediate());
-        dropDown.setDisabled(component.isDisabled());
+        dropDown.setDisabled(component.isDisabled() || component.isReadonly());
         dropDown.setStyleClass(component.getMonthYearDropdownClass());
 
         int timeKeeperYear = timeKeeper.get(Calendar.YEAR);
@@ -1081,7 +1087,7 @@ public class SelectInputDateRenderer
         link.setPartialSubmit(true);
         link.setTransient(true);
         link.setImmediate(component.isImmediate());
-        link.setDisabled(((SelectInputDate) component).isDisabled());
+        link.setDisabled(((SelectInputDate) component).isDisabled() || component.isReadonly());
 
         if (imgSrc != null) {
             HtmlGraphicImage img = new HtmlGraphicImage();

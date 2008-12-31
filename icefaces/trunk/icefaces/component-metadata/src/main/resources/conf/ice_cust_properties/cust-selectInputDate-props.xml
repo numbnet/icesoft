@@ -48,6 +48,7 @@
 &pass-thru-title-props;
 &pass-thru-tabindex-props;
 &actionsource-props;
+&pass-thru-readonly-props;
 <property>
 	<description>
 		Set directory for location of the button images. Deprecated. Use styleClass instead.
