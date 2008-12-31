@@ -6,10 +6,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-/**
- * @author MyEclipse Persistence Tools
- */
+
 public class EntityManagerHelper {
 	
 	private static final EntityManagerFactory emf; 
@@ -45,10 +42,6 @@ public class EntityManagerHelper {
     public static void commit() {
     	getEntityManager().getTransaction().commit();
     }  
-    
-    public static Query createQuery(String query) {
-		return getEntityManager().createQuery(query);
-	}
 	
 	public static void log(String info, Level level, Throwable ex) {
     	logger.log(level, info, ex);
