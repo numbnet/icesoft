@@ -259,7 +259,7 @@ public class TaskListBean extends TaskList implements WebmailBase {
      * Listener method called when a task on the page is selected
      * The method will update the current selected tasks count
      */
-   public synchronized void rowSelection(RowSelectorEvent event) {
+   public void rowSelection(RowSelectorEvent event) {
         // Maintain a count of selected messages
         if (event.isSelected()) {
             checkedCount++;
