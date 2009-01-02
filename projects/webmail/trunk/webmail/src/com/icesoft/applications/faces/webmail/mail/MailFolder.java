@@ -223,7 +223,7 @@ public class MailFolder extends SortableList {
      *
      * @param mode to open this folder with.
      */
-    public synchronized void open(int mode) {
+    public void open(int mode) {
         if (folder != null) {
             try {
                 // open the folder with the new permission
@@ -258,7 +258,7 @@ public class MailFolder extends SortableList {
      *
      * @param expunge expunges all deleted messages if this flag is true
      */
-    public synchronized void close(boolean expunge) {
+    public void close(boolean expunge) {
         if (folder != null) {
             try {
                 if (folder.isOpen()) {
