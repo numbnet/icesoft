@@ -164,7 +164,7 @@ public class MailFolderBean extends MailFolder
      *
      * @param messages messages to at to this folder.
      */
-    public synchronized void addMessage(javax.mail.Message[] messages) {
+    public void addMessage(javax.mail.Message[] messages) {
         if (messageList == null) {
             messageList = new ArrayList();
         }
@@ -197,7 +197,7 @@ public class MailFolderBean extends MailFolder
      * @return total number of messages. -1 may be returned if an Messaging
      *          Exception is encountered.
      */
-    public synchronized int getUnreadMessageCount(){
+    public int getUnreadMessageCount(){
 
         if (folder != null){
             // make sure the folder is open
@@ -233,7 +233,7 @@ public class MailFolderBean extends MailFolder
      *
      * @param messages message that are to be removed.
      */
-    public synchronized void removeMessage(Object[] messages) {
+    public void removeMessage(Object[] messages) {
         if (messageList == null) {
             messageList = new ArrayList();
         }
@@ -273,7 +273,7 @@ public class MailFolderBean extends MailFolder
      * Utility method to removed any expunged message from message list.  This
      * ensures partially delete emssage get into the message list.
      */
-    public synchronized void removeExpunged(){
+    public void removeExpunged(){
         if (messageList != null){
             // make sure the folder is open
             if(!isOpen()){
@@ -295,7 +295,7 @@ public class MailFolderBean extends MailFolder
     /**
      * Refreshed the messageList content.
      */
-    private synchronized void refreshIceMessageList() {
+    private void refreshIceMessageList() {
 
         try {
             // check for a null folder, this should only happen on searches
@@ -363,7 +363,7 @@ public class MailFolderBean extends MailFolder
      * Listener method called when a message on the page is selected
      * The method will update the current selected message count
      */
-   public synchronized void rowSelection(RowSelectorEvent event) {
+   public void rowSelection(RowSelectorEvent event) {
         // Maintain a count of selected messages
         if (event.isSelected()) {
             checkedCount++;
@@ -430,7 +430,7 @@ public class MailFolderBean extends MailFolder
      * @param message message to search for.
      * @return found MessageBean object if any, null otherwise.
      */
-    public synchronized MessageBean findMessage(Message message) {
+    public MessageBean findMessage(Message message) {
 
         if (message == null)
             return null;
