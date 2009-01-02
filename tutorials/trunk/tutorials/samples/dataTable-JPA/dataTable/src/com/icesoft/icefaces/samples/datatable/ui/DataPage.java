@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * A simple class that represents a "page" of data out of a longer set, ie
  * a list of objects together with info to indicate the starting row and
- * the full size of the dataset. EJBs can return instances of this type
+ * the full size of the dataset. Business methods can return instances of this type
  * when returning subsets of available data.
  */
 public class DataPage<T> {

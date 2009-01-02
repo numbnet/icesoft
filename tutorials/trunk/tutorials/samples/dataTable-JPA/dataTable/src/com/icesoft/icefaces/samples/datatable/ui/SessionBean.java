@@ -179,7 +179,8 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 		// cleared or closed objects are cached and stale objects will show up 
 		// in the table.
 		// This way, the detached objects are reread from the database.
-		// This call is not required with TopLink JPA.
+		// This call is not required with TopLink JPA, which uses a Query Hint
+		// to clear the l2 cache in CustomerDAO.
 		EntityManagerHelper.getEntityManager().clear();
 		
 		return new DataPage<CustomerBean>(totalNumberCustomers,startRow,uiCustomerBeans);
