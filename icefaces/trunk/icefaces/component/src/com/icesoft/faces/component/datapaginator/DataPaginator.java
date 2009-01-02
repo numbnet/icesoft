@@ -150,10 +150,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      */
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
-
         if (event instanceof PaginatorActionEvent) {
             PaginatorActionEvent scrollerEvent = (PaginatorActionEvent) event;
-            broadcastToActionListener(scrollerEvent);
             UIData uiData = getUIData();
             if (uiData == null) {
                 return;
@@ -175,6 +173,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                 } else if (FACET_LAST.equals(facet)) {
                     gotoLastPage();
                 }
+                scrollerEvent.setPageIndex(getPageIndex());
             } else {
                 int pageCount = getPageCount();
                 if (pageindex > pageCount) {
@@ -184,6 +183,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                 }
                 uiData.setFirst(uiData.getRows() * (pageindex - 1));
             }
+            broadcastToActionListener(scrollerEvent);            
         }
     }
 

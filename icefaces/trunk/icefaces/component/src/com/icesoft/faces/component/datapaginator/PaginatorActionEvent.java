@@ -31,7 +31,7 @@ public class PaginatorActionEvent extends ActionEvent {
 
     private final String mScrollerfacet;
 
-    private final int mPageIndex;
+    private int mPageIndex;
 
     /**
      * @param component
@@ -62,11 +62,14 @@ public class PaginatorActionEvent extends ActionEvent {
     public String getScrollerfacet() {
         return mScrollerfacet;
     }
-
     /**
      * @return int
      */
     public int getPageIndex() {
         return mPageIndex;
+    }
+    
+    void setPageIndex(int pageIndex) {
+        mPageIndex = pageIndex;
     }
 }
