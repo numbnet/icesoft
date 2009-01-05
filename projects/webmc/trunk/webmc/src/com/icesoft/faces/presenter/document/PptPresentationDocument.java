@@ -229,7 +229,7 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
                 fullPath,
                 baseDirectory
             };
-            *
+            */
 	            Runtime rt = Runtime.getRuntime();
 	            Process p = null;
 	
