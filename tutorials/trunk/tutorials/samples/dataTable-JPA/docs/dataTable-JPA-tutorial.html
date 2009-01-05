@@ -49,9 +49,14 @@
           This tutorial will discuss the following topics related to Lazy Loading a DataTable with JPA:
       </p>
       <ul>
-          <li><a href="#jpa">Creating Entity Bean and other JPA Classes</a></li>
-          <li><a href="#page">Creating the Web Page</a></li>
-          <li><a href="#webApp">Creating Web Application Classes</a></li>
+          <li><a href="#jpa">JPA Classes</a></li>
+          <ul>
+              <li><a href="#jpaone">1: persistence.xml File</a></li>
+              <li><a href="#jpatwo">2: Entity</a></li>
+              <li><a href="#jpathree">3: EntityManager</a></li>
+          </ul>
+          <li><a href="#page">Web Page</a></li>
+          <li><a href="#webApp">Web Application Classes</a></li>
           <ul>
               <li><a href="#one">1: Web Page Bindings</a></li>
               <li><a href="#two">2: Lazy Loading</a></li>
@@ -63,7 +68,11 @@
 
       <a name="jpa">&nbsp;</a>
 
-      <h2>Creating Entity Bean and other JPA Classes</h2>
+      <h2>JPA Classes</h2>
+
+      <a name="jpaone">&nbsp;</a>
+
+      <h3>1: persistence.xml File</h3>
 
       <p>
           JPA uses a persistence.xml file to define connection settings to the database.  This tutorial uses
@@ -157,6 +166,10 @@
 &lt;/persistence&gt;
       </pre>
 
+      <a name="jpatwo">&nbsp;</a>
+
+      <h3>2: Entity</h3>
+
       <p>
           Here is our Customer Entity with JPA annotations detailing the database table and column names associated with
           the entity properties.
@@ -221,6 +234,9 @@ public class Customer implements java.io.Serializable {
     }
       </pre>
 
+      <a name="jpathree">&nbsp;</a>
+
+      <h3>3: Entity Manager</h3>
 
       <p>
           The EntityManagerHelper class is used to manage our entities.  This is an example of an
@@ -314,7 +330,7 @@ public class CustomerDAO implements ICustomerDAO{
 
       <a name="page">&nbsp;</a>
 
-      <h2>Creating the Web Page</h2>
+      <h2>Web Page</h2>
 
       <p>
           This is our page, tutorial.jspx.  There is nothing out of the ordinary in this page which consists of html,
@@ -448,7 +464,7 @@ public class CustomerDAO implements ICustomerDAO{
 
       <a name="webApp">&nbsp;</a>
 
-      <h2>Creating Web Application Classes</h2>
+      <h2>Web Application Classes</h2>
 
       <a name="one">&nbsp;</a>
 
@@ -1000,7 +1016,7 @@ public abstract class PagedListDataModel<T> extends DataModel {
       to from faces-config.xml.  When a call is made to joinRenderGroups(), the RenderManager is used to retrieve or
       create an OnDemandRenderer for the specified Customer object (a call to RenderManager.getOnDemandRenderer(String customernumber)
       will create the OnDemandRenderer if the name is not found).  After the OnDemandRenderer is created or retrieved, the
-      SessionBean Renderable is added to the Customer render group.  The SessionBean implements Renderable, so it's member
+      SessionBean Renderable is added to the Customer render group.  The SessionBean implements Renderable, so its member
       PersistentFacesState will ensure it receives a push from the server when a render call is made to this render group.
       After the commit button is pressed in the GUI and a successful update is performed, a render call is made to the
       updated Customer's render group.  Please consult the ICEfaces documentation for more information on the rendering api.
