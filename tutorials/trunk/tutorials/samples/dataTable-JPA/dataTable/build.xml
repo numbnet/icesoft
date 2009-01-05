@@ -24,16 +24,15 @@
 	        <fileset dir="${icefaces.home}/lib">
 	              <include name="backport-util-concurrent.jar" />	
 		      <include name="commons-beanutils.jar"/>
-		      <include name="commons-collections.jar"/>
+
 		      <include name="commons-digester.jar"/>
 		      <include name="commons-discovery.jar"/>
 		      <include name="commons-el.jar"/>
 		      <include name="commons-fileupload.jar"/> 
-	              <include name="commons-logging*.jar"/>
+
                       <include name="icefaces-comps.jar" />
                       <include name="icefaces.jar" />
-		     
-		     <include name="commons-lang.jar" />
+
 		      <include name="jsf-api-1.2.jar" />
 		      <include name="jsf-impl-1.2.jar" />		     
 		      <include name="jstl.jar" />
