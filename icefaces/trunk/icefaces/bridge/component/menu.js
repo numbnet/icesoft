@@ -290,7 +290,7 @@ Ice.Menu = {
     isInMenu: function(element, rootID) {
         if (element.id == rootID) return true;
         if (element == undefined || element == document) return false;
-        return this.isInMenu(element.parentNode, rootID);
+        return Ice.Menu.isInMenu(element.parentNode, rootID);
     }
 }
 
