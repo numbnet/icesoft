@@ -202,7 +202,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
               }
         }
         if (menuComponent instanceof MenuPopup) {
-            topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+            topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
         }
         String title = ((MenuItem) uiComponent).getTitle();
         if(title != null && title.length() > 0)
@@ -595,7 +595,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
         if (menuComponent instanceof MenuPopup) {
         subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR,
-            "Ice.Menu.removeHoverClasses(this);");
+            "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
         }
         String title = nextSubMenuItem.getTitle();
         if(title != null && title.length() > 0)
