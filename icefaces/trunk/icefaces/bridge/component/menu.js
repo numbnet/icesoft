@@ -271,6 +271,26 @@ Ice.Menu = {
     hidePopupMenu:function() {
         Ice.Menu.hideAll();
         Event.stopObserving(document, "click", Ice.Menu.hidePopupMenu);
+    },
+    hideOnMouseOut: function(rootID, event) {
+        if (!event) {
+        	event = window.event;
+        }
+        if (event) {
+            var element;
+            element = event.relatedTarget;
+            if (!element) element = event.toElement;
+            if (element) {
+                if (!Ice.Menu.isInMenu(element, rootID)) {
+                    Ice.Menu.hideAll();
+                }
+            }
+        }
+    },
+    isInMenu: function(element, rootID) {
+        if (element.id == rootID) return true;
+        if (element == undefined || element == document) return false;
+        return this.isInMenu(element.parentNode, rootID);
     }
 }
 

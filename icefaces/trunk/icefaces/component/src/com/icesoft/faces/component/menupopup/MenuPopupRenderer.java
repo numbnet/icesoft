@@ -57,6 +57,7 @@ public class MenuPopupRenderer extends MenuBarRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         Element menuDiv = (Element) domContext.getRootNode();
         if(menuDiv != null) {
+            menuDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + uiComponent.getClientId(facesContext) + "',event);");
             //String style = (String) uiComponent.getAttributes().get("style");
             //style = CurrentStyle.modifyStyleWithVisibility(style, false);
             //CurrentStyle.setStyleOnElement(style, menuDiv);
