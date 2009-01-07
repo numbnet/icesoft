@@ -87,3 +87,33 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+            <p>
+        The following are the valid values for the hideOn attribute:
+            <ul>
+                <li> mouseout </li>
+                <li> mousedown </li>
+            </ul> 
+            </p>
+            <p>
+            <h3>  mouseout :</h3> the popup menu will be hidden when the user moves the mouse out of any part of the menu. 
+            </p>
+            
+            <p>
+            <h3>  mousedown :</h3> the tooltip will be hidden when the user clicks any area outside of the menu. 
+            </p>  
+        ]]>        
+    </description>
+    <property-name>hideOn</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+        <default-value>"mousedown"</default-value>
+    </property-extension>
+</property>
