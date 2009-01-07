@@ -32,14 +32,13 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.outputResource;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Date;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
-import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.Resource;
 
 public class OutputResourceBean{
@@ -48,15 +47,14 @@ public class OutputResourceBean{
 	private Resource pdfResource;
 	private Resource pdfResourceDynFileName;
 	private String fileName = "Choose-a-new-file-name";
-	private static final String RESOURCE_PATH = "/WEB-INF/classes/org/icefaces/application/showcase/view/resources/";
+	public static final String RESOURCE_PATH = "org/icefaces/application/showcase/view/resources/";
 		
 
 	public OutputResourceBean(){
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try{
-			imgResource = new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "logo.jpg")));
-			pdfResource =  new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "WP_Security_Whitepaper.pdf")));
-			pdfResourceDynFileName = new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "WP_Security_Whitepaper.pdf")));
+			imgResource = new MyResource("logo.jpg");
+			pdfResource =  new MyResource("WP_Security_Whitepaper.pdf");
+			pdfResourceDynFileName = new MyResource("WP_Security_Whitepaper.pdf");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -69,9 +67,9 @@ public class OutputResourceBean{
 
 	
 	public Resource getPdfResource(){
-		return this.pdfResource;
+		return pdfResource;
 	}
-	
+	   
 	public static byte[] toByteArray(InputStream input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buf = new byte[4096];
@@ -96,3 +94,29 @@ public class OutputResourceBean{
 		this.pdfResourceDynFileName = pdfResourceDynFileName;
 	}
 }
+
+class MyResource implements Resource, Serializable{
+    private String resourceName;
+    private InputStream inputStream;
+    private final Date lastModified;
+    public MyResource(String resourceName) {
+        this.resourceName = resourceName;
+        this.lastModified = new Date();        
+    }
+    public InputStream open() throws IOException {
+        if (inputStream == null) {
+            inputStream = new ByteArrayInputStream( OutputResourceBean.toByteArray( Thread.currentThread().getContextClassLoader().getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName)));
+        }
+        return inputStream;
+    }
+    public String calculateDigest() {
+        return resourceName;
+    }
+    public Date lastModified() {
+        return lastModified;
+    }
+    public void withOptions(Options arg0) throws IOException {
+    }
+}   
+
+
