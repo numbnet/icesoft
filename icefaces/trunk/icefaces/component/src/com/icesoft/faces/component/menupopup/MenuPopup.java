@@ -42,6 +42,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
 
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;;
+
 
 /**
  * MenuPopup is a JSF component class representing the ICEfaces context menu popup.
@@ -135,6 +138,48 @@ public class MenuPopup extends MenuBar {
             e = tempEvent;
         }
         super.queueEvent(e);
+    }
+    
+    //
+    // hideOn attribute
+    //
+    private String hideOn;
+    
+    /**
+     * <p>Set the value of the <code>hideOn</code> property.</p>
+     *
+     * @param hideOn
+     */
+    public void setHideOn(String hideOn) {
+        this.hideOn = hideOn;
+    }
+
+    /**
+     * <p>Return the value of the <code>hideOn</code> property.</p>
+     *
+     * @return String hideOn
+     */
+    public String getHideOn() {
+        if (hideOn != null) {
+            return hideOn;
+        }
+        ValueBinding vb = getValueBinding("hideOn");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    public Object saveState(FacesContext context) {
+    
+        Object values[] = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = hideOn;
+        return values;
+    }
+    
+    public void restoreState(FacesContext context, Object state) {
+    
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        hideOn = (String) values[1];
     }
 }
 

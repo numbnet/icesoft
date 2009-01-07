@@ -202,7 +202,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
               }
         }
         if (menuComponent instanceof MenuPopup) {
-            topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+            if (((MenuPopup)menuComponent).getHideOn() != null) {
+                if (((MenuPopup)menuComponent).getHideOn().equals("mouseout")) {
+                    topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+                } else {
+                    topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+                }
+            } else {
+                topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+            }
         }
         String title = ((MenuItem) uiComponent).getTitle();
         if(title != null && title.length() > 0)
@@ -594,8 +602,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
         }
         if (menuComponent instanceof MenuPopup) {
-        subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR,
-            "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+            if (((MenuPopup)menuComponent).getHideOn() != null) {
+                if (((MenuPopup)menuComponent).getHideOn().equals("mouseout")) {
+                    subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+                } else {
+                    subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+                }
+            } else {
+                subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+            }
         }
         String title = nextSubMenuItem.getTitle();
         if(title != null && title.length() > 0)
