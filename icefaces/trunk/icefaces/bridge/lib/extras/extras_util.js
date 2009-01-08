@@ -37,8 +37,26 @@ Ice.util = {
         var n = a.nodeName.toLowerCase();
         if (n == 'form') return a;
         return this.findForm(a.parentNode);
+    },
+    //used by the selectInputDate component
+    adjustMyPosition: function(element, containerElement) {
+        var elementHeight = $(element).getHeight();
+        var elementCumulativeTop = Element.cumulativeOffset($(element)).top;
+        var documentX = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
+        var containerElementTop = Element.cumulativeOffset($(containerElement)).top ;
+        var diff = elementCumulativeTop - containerElementTop ;
+        var elementX = elementCumulativeTop + $(element).getHeight();
+        var newElementX = elementHeight + diff;
+      
+        if (documentX < elementX && 
+              newElementX < documentX && 
+               elementHeight < containerElementTop) {
+            $(element).parentNode.style.position = "absolute";
+            $(element).parentNode.style.top =  "-" + newElementX + "px";
+        }
     }
 };
+
 var IE = (Try.these(
         function() {
             new ActiveXObject('Msxml2.XMLHTTP');
