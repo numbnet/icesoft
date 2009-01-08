@@ -137,8 +137,5 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
     </property-extension>
 </property>
