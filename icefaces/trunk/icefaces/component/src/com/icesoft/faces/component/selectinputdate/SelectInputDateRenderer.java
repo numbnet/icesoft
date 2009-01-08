@@ -57,6 +57,7 @@ import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 //import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -308,7 +309,7 @@ public class SelectInputDateRenderer
                         facesContext, uiComponent));
                 String resolvedSrc;
                 if (popupState) {
-
+                    JavascriptContext.addJavascriptCall(facesContext, "Ice.util.adjustMyPosition('"+ clientId + CALENDAR_TABLE +"', '"+ clientId + ROOT_DIV +"');");
                     if (selectInputDate.isImageDirSet()) {
                         resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
                                 selectInputDate.getImageDir() + selectInputDate.getClosePopupImage());
@@ -377,7 +378,9 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.ONMOUSEMOVE_ATTR, mouseMove);
                 addAttributeToElementFromResource(facesContext,
                     POPUP_CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
-                calendarDiv.appendChild(table);
+                Element positionDiv = domContext.createElement(HTML.DIV_ELEM);
+                positionDiv.appendChild(table);
+                calendarDiv.appendChild(positionDiv);
                 Text iframe = domContext.createTextNode("<!--[if lte IE"+
                         " 6.5]><iframe src='"+ CoreUtils.resolveResourceURL
                         (FacesContext.getCurrentInstance(),"/xmlhttp/blank")+ 
