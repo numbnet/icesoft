@@ -110,6 +110,14 @@ public class PanelTab
      * The current icon.
      */
     private Boolean iconAlignRight = Boolean.FALSE;
+    /**
+     * The current labelWidth value.
+     */
+    private String labelWidth = null;
+    /**
+     * The current labelWrap state.
+     */
+    private Boolean labelWrap = Boolean.FALSE;
 
 
     /* (non-Javadoc)
@@ -251,7 +259,7 @@ public class PanelTab
      */
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[22];
+            values = new Object[24];
         }
         values[0] = super.saveState(context);
         values[1] = label;
@@ -274,7 +282,9 @@ public class PanelTab
         values[18] = onkeydown;
         values[19] = onkeyup;
         values[20] = icon;
-        values[21] = iconAlignRight;        
+        values[21] = iconAlignRight;
+        values[22] = labelWidth;
+        values[23] = labelWrap;
         
         return ((Object) (values));
     }
@@ -305,7 +315,9 @@ public class PanelTab
         onkeydown = (String) values[18];
         onkeyup = (String) values[19];
         icon = (String)values[20];
-        iconAlignRight = (Boolean)values[21];        
+        iconAlignRight = (Boolean)values[21];
+        labelWidth = (String) values[22];
+        labelWrap = (Boolean) values[23];
     }
 
     /* (non-Javadoc)
@@ -619,10 +631,27 @@ public class PanelTab
         Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
         Element labelTd = (Element) domContext.createElement(HTML.TD_ELEM);
         table.appendChild(tr);
-        parent.appendChild(table);
-        labelTd.appendChild(child);
+        
+        Element div = (Element) domContext.createElement(HTML.DIV_ELEM);
+        parent.appendChild(div);
+        div.appendChild(table);
+        
+        if (getLabelWidth() != null) {
+            div.setAttribute(HTML.STYLE_ATTR, "width:"+getLabelWidth()+"px;overflow:hidden;");
+            
+            if (isLabelWrap()) {
+                labelTd.setAttribute(HTML.STYLE_ATTR, "white-space: normal;width:"+getLabelWidth()+"px;");
+                Element innerDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
+                innerDiv.setAttribute(HTML.STYLE_ATTR, "max-width:"+getLabelWidth()+"px;text-align:left;");
+                labelTd.appendChild(innerDiv);
+                innerDiv.appendChild(child);
+            } else {
+                labelTd.appendChild(child);
+            }
+        } else {
+            labelTd.appendChild(child);
+        }
 
-        parent.appendChild(table);
         if (getIcon() == null) {
             tr.appendChild(labelTd);
             return;
@@ -665,5 +694,43 @@ public class PanelTab
         return Util.getQualifiedStyleClass(this, 
                 CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_TABOVERCLASS +
                 placement);    
+    }
+    
+    /**
+     * @param labelWidth
+     */
+    public void setLabelWidth(String labelWidth) {
+        this.labelWidth = labelWidth;
+    }
+
+    /**
+     * @return labelWidth
+     */
+    public String getLabelWidth() {
+        if (labelWidth != null) {
+            return labelWidth;
+        }
+        ValueBinding vb = getValueBinding("labelWidth");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * @param labelWrap
+     */
+    public void setLabelWrap(boolean labelWrap) {
+        this.labelWrap = new Boolean(labelWrap);
+    }
+
+    /**
+     * @return labelWrap
+     */
+    public boolean isLabelWrap() {
+        if (labelWrap != null) {
+            return labelWrap.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("labelWrap");
+        return vb != null ?
+               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+               false;
     }
 }

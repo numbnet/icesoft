@@ -118,3 +118,27 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>Integer value representing the width (in pixels) of the label text. If the actual width of the text turns out to be greater than the one specified, the text will be clipped.</description>
+    <property-name>labelWidth</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+
+<property>
+    <description>If this attribute is set to true, then the label text will wrap to multiple lines instead of beling clipped when the width of the text is greater than the one specified by the labelWidth attribute.</description>
+    <property-name>labelWrap</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

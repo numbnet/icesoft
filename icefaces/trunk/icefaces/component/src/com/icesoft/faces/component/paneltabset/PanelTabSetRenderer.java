@@ -114,10 +114,12 @@ public class PanelTabSetRenderer
         // if the domContext has not been initialized
         // initialize it, create the Root Element
         if (!domContext.isInitialized()) {
-            Element table = domContext.createRootElement(HTML.TABLE_ELEM);
+            Element divWrapper = domContext.createRootElement(HTML.DIV_ELEM);
+            Element table = domContext.createElement(HTML.TABLE_ELEM);
             table.setAttribute(HTML.CELLPADDING_ATTR, "0");
             table.setAttribute(HTML.CELLSPACING_ATTR, "0");
             table.setAttribute(HTML.ID_ATTR, tabSet.getClientIdForRootElement(facesContext));
+            divWrapper.appendChild(table);
         }
 
         FormRenderer.addHiddenField(facesContext,
@@ -156,9 +158,14 @@ public class PanelTabSetRenderer
                 return;
             }
         }
+        
+        if (tabSet.getWidth() != null) {
+            Element divWrapper = (Element) domContext.getRootNode();
+            divWrapper.setAttribute(HTML.STYLE_ATTR, "width:"+tabSet.getWidth()+"px;overflow:hidden;");
+        }
 
         // get table
-        Element table = (Element) domContext.getRootNode();
+        Element table = (Element) domContext.getRootNode().getFirstChild();
         // render table pass thru attributes
         for (int i = 0; i < HTML.TABLE_PASSTHROUGH_ATTRIBUTES.length; i++) {
             if (HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]
@@ -536,6 +543,9 @@ public class PanelTabSetRenderer
         if (tabSet.getTabPlacement()
                 .equalsIgnoreCase(PanelTabSet.TABPLACEMENT_BOTTOM)) {
             tabPlacement = CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_BOTTOM;
+            td.setAttribute(HTML.STYLE_ATTR, "vertical-align:top;");
+        } else {
+            td.setAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;");
         }
 
         // create a table for the tab
