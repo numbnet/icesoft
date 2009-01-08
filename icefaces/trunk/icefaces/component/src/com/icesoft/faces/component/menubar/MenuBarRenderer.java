@@ -42,6 +42,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.component.menupopup.MenuPopup;
 
 import org.w3c.dom.Element;
 
@@ -73,7 +74,9 @@ public class MenuBarRenderer extends DomBasicRenderer {
                              uiComponent.getClientId(facesContext));
         MenuBar menuComponent = (MenuBar) uiComponent;
 
-        
+        if (!(uiComponent instanceof MenuPopup) && (!((MenuBar)uiComponent).isDisplayOnClick())) {
+            menuDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + uiComponent.getClientId(facesContext) + "',event);");
+        }
 
         String defaultStyle = menuComponent.getComponentRootStyle();
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
