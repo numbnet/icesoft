@@ -635,7 +635,14 @@ public class TableRenderer
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound && toggleOnClick) {
-                 tr.setAttribute("onclick", rowSelectionFunctionName +
+                String toggleClass;
+                if (Boolean.TRUE.equals(rowSelector.getValue())) {
+                    toggleClass = selectedClass + " " + rowSelector.getStyleClass();
+                } else {
+                    toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
+                }
+                toggleClass = CSSNamePool.get(getPortletAlternateRowClass(toggleClass, rowIndex));
+                tr.setAttribute("onclick", "this.className='" + toggleClass + "';this.onmouseover=null;this.onmouseout=null;" + rowSelectionFunctionName +
                      "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
                      "', '"+ formId +"', '"+ paramId +"');");
             }
