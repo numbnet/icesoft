@@ -201,6 +201,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                                        "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
               }
         }
+        
         if (menuComponent instanceof MenuPopup) {
             if (((MenuPopup)menuComponent).getHideOn() != null) {
                 if (((MenuPopup)menuComponent).getHideOn().equals("mouseout")) {
@@ -211,7 +212,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             } else {
                 topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
             }
+        } else {
+            if (!menuComponent.isDisplayOnClick()) {
+                topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+            }
         }
+        
         String title = ((MenuItem) uiComponent).getTitle();
         if(title != null && title.length() > 0)
             topLevelDiv.setAttribute(HTML.TITLE_ATTR, title);
@@ -611,6 +617,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             } else {
                 subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
             }
+        } else {
+            if (!menuComponent.isDisplayOnClick()) {
+                subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
+            }        
         }
         String title = nextSubMenuItem.getTitle();
         if(title != null && title.length() > 0)
