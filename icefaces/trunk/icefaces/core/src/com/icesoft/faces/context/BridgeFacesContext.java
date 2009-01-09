@@ -600,13 +600,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.updateOnPageLoad(request, response);
             }
         });
-        if (CoreUtils.isJSFStateSaving()) {
-            //fake a forwarded request to restore the last rendered view
-            externalContext.getRequestMap().put("javax.servlet.include.path_info", lastViewID);
-        } else {
-            //skip restore view phase since view is still around
-            renderResponse();
-        }
+        //fake a forwarded request to restore the last rendered view
+        externalContext.getRequestMap().put("javax.servlet.include.path_info", lastViewID);
     }
 
     public void injectBundles() {
