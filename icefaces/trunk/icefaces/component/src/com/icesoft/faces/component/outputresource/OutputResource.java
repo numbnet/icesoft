@@ -77,32 +77,7 @@ public class OutputResource extends UIComponentBase {
         if( resource != null ){
 			int newResourceHashCode = resource.hashCode();
 			if( lastResourceHashCode != newResourceHashCode ){
-				Resource r = new Resource() {
-					public String calculateDigest() {
-						return resource.calculateDigest() + (isShared() ? "" : String.valueOf(this.hashCode()));
-					}
-					public Date lastModified() {
-						return lastModified;
-					}
-					public InputStream open() throws IOException {
-						return resource.open();
-					}
-					public void withOptions(Resource.Options options) {
-                        if (fileName != null)
-							options.setFileName(fileName);
-						else if (resource instanceof FileResource)
-							options.setFileName(((FileResource) resource).getFile()
-									.getName());
-						else if( getLabel() != null )
-							options.setFileName(getLabel().replace(' ', '_'));
-						if (getLastModified() != null)
-							options.setLastModified(getLastModified());
-						if (getMimeType() != null)
-							options.setMimeType(getMimeType());
-                        if (isAttachment())
-							options.setAsAttachement();
-					}
-				};
+				Resource r = new RegisteredResource(this, resource, fileName);
 				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
 						r).getPath();
 			}
@@ -364,5 +339,53 @@ public class OutputResource extends UIComponentBase {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+}
+
+class RegisteredResource implements Resource {
+    private final Resource resource;
+    private final String fileName;
+    private String label;
+    private Date lastModified;
+    private String mimeType;
+    private boolean isAttachment;
+    private boolean isShared;
+
+    public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
+        this.resource = resource;
+        this.fileName = fileName;
+        label = outputResource.getLabel();
+        lastModified = outputResource.getLastModified();
+        mimeType = outputResource.getMimeType();
+        isAttachment = outputResource.isAttachment();
+        isShared = outputResource.isShared();
+    }
+
+    public String calculateDigest() {
+        return resource.calculateDigest() + (isShared ? "" : String.valueOf(this.hashCode()));
+    }
+
+    public Date lastModified() {
+        return lastModified;
+    }
+
+    public InputStream open() throws IOException {
+        return resource.open();
+    }
+
+    public void withOptions(Options options) {
+        if (fileName != null)
+            options.setFileName(fileName);
+        else if (resource instanceof FileResource)
+            options.setFileName(((FileResource) resource).getFile()
+                    .getName());
+        else if (label != null)
+            options.setFileName(label.replace(' ', '_'));
+        if (lastModified != null)
+            options.setLastModified(lastModified);
+        if (mimeType != null)
+            options.setMimeType(mimeType);
+        if (isAttachment)
+            options.setAsAttachement();
     }
 }
