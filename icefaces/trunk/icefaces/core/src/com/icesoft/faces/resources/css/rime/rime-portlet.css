@@ -2531,11 +2531,11 @@ Disabled classes for the calendar controls
     color: white;
 }
 .iceRowSelMouseOver {
-    color: white;
+    color: #FFA326;
     background: #4591A1;
 }
 .iceRowSelMouseOver .iceOutTxt {
-    color: white;
+    color: #FFA326;
 }
 
 .portlet-section-body-hover .iceRowSelSelectedMouseOver {
