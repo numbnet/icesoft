@@ -77,8 +77,10 @@ public class MainServlet extends HttpServlet {
                 //Need to dispatch to the Spring resource server
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
-            //don't create new sessions for XMLHTTPRequests identified by "block/*" prefixed paths
-            dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher));
+            //don't create new session for resources belonging to expired user sessions
+            dispatcher.dispatchOn(".*(block\\/resource\\/)", new SessionVerifier(sessionDispatcher, false));
+            //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
+            dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
             dispatcher.dispatchOn(".*(\\/$|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
