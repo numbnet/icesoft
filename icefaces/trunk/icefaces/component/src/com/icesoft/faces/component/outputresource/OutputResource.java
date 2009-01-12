@@ -374,18 +374,60 @@ class RegisteredResource implements Resource {
     }
 
     public void withOptions(Options options) {
-        if (fileName != null)
+        ResourceOptions resourceOptions = new ResourceOptions();
+        try {
+            resource.withOptions(resourceOptions);
+        } catch (IOException e) {
+        }
+        if (resourceOptions.fileName != null)
+            options.setFileName(resourceOptions.fileName);
+        else if (fileName != null)
             options.setFileName(fileName);
         else if (resource instanceof FileResource)
             options.setFileName(((FileResource) resource).getFile()
                     .getName());
         else if (label != null)
             options.setFileName(label.replace(' ', '_'));
-        if (lastModified != null)
+
+        if (resourceOptions.lastModified != null)
+            options.setLastModified(resourceOptions.lastModified);
+        else if (lastModified != null)
             options.setLastModified(lastModified);
-        if (mimeType != null)
+
+        if (resourceOptions.mimeType != null)
+            options.setMimeType(resourceOptions.mimeType);
+        else if (mimeType != null)
             options.setMimeType(mimeType);
-        if (isAttachment)
+
+        if (resourceOptions.isAttachment)
             options.setAsAttachement();
+        else if (isAttachment)
+            options.setAsAttachement();
+    }
+
+    private class ResourceOptions implements Resource.Options {
+        private Date lastModified;
+        private String mimeType;
+        private String fileName;
+        private boolean isAttachment;
+
+        public void setMimeType(String mimeType) {
+            this.mimeType = mimeType;
+        }
+
+        public void setLastModified(Date lastModified) {
+            this.lastModified = lastModified;
+        }
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public void setExpiresBy(Date date) {
+        }
+
+        public void setAsAttachement() {
+            isAttachment = true;
+        }
     }
 }
