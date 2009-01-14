@@ -36,7 +36,9 @@ import org.icefaces.application.showcase.view.bean.examples.component.dataTable.
 import org.icefaces.application.showcase.model.entity.Employee;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.RowSelectorEvent;
 
 import javax.faces.event.ValueChangeEvent;
@@ -55,8 +57,9 @@ public class RowSelectController extends DataTableBase {
     private ArrayList selectedEmployees;
 
     // flat to indicate multiselect row enabled.
-    private boolean multiRowSelect;
-
+    private String multiRowSelect = "Single";
+    private boolean multiple;
+    private boolean enhancedMultiple;
     public RowSelectController() {
         selectedEmployees = new ArrayList();
     }
@@ -70,7 +73,7 @@ public class RowSelectController extends DataTableBase {
     public void rowSelectionListener(RowSelectorEvent event) {
         // clear our list, so that we can build a new one
         selectedEmployees.clear();
-
+        
         /* If application developers rely on validation to control submission of the form or use the result of
            the selection in cascading control set up the may want to defer procession of the event to
            INVOKE_APPLICATION stage by using this code fragment
@@ -102,9 +105,11 @@ public class RowSelectController extends DataTableBase {
      *
      * @param event jsf action event.
      */
-    public void rowSelectionListener(ValueChangeEvent event) {
-        // if multi select then want to make sure we clear the selected states
-        if (!((Boolean) event.getNewValue()).booleanValue()) {
+    public void changeSelectionMode(ValueChangeEvent event) {
+        String newValue = event.getNewValue().toString(); 
+        multiple = false;
+        enhancedMultiple = false;
+        if ("Single".equals(newValue)){
             selectedEmployees.clear();
 
             // build the new selected list
@@ -113,6 +118,10 @@ public class RowSelectController extends DataTableBase {
                 employee = (Employee)employees.get(i);
                 employee.setSelected(false);
             }
+        } else if ("Multiple".equals(newValue)){
+            multiple = true;
+        } else if ("Enhanced Multiple".equals(newValue)){
+            enhancedMultiple = true;
         }
     }
 
@@ -124,7 +133,7 @@ public class RowSelectController extends DataTableBase {
         this.selectedEmployees = selectedEmployees;
     }
 
-    public boolean isMultiRowSelect() {
+    public String getMultiRowSelect() {
         return multiRowSelect;
     }
 
@@ -134,7 +143,23 @@ public class RowSelectController extends DataTableBase {
      * @param multiRowSelect true indicates multi-row select and false indicates
      *                       single row selection mode.
      */
-    public void setMultiRowSelect(boolean multiRowSelect) {
+    public void setMultiRowSelect(String multiRowSelect) {
         this.multiRowSelect = multiRowSelect;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
+
+    public boolean isEnhancedMultiple() {
+        return enhancedMultiple;
+    }
+
+    public void setEnhancedMultiple(boolean enhancedMultiple) {
+        this.enhancedMultiple = enhancedMultiple;
     }
 }

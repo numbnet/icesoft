@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.component.ext;
 
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
@@ -46,7 +48,7 @@ public class RowSelectorEvent extends FacesEvent {
 
     private int row;
     private boolean selected;
-
+    private List selectedRows;
     public RowSelectorEvent(UIComponent uiComponent, int row,
                             boolean selected) {
         super(uiComponent);
@@ -67,5 +69,13 @@ public class RowSelectorEvent extends FacesEvent {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public List getSelectedRows() {
+        return selectedRows;
+    }
+
+    void setSelectedRows(List selectedRows) {
+        this.selectedRows = selectedRows;
     }
 }

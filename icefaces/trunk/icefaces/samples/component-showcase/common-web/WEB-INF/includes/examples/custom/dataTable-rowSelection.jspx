@@ -50,13 +50,23 @@ a control on the data to hide/show the table columns.
 
         <ice:panelGroup>
             <!-- clear the list if some change the multiselect state -->
-            <ice:selectBooleanCheckbox id="multipleSelection"
+            <ice:outputLabel value="#{msgs['page.rowSelector.multiple']}"/>
+
+            <ice:selectOneRadio id="multipleSelection"
                                        value="#{rowSelectController.multiRowSelect}"
                                        partialSubmit="true"
-                                       valueChangeListener="#{rowSelectController.rowSelectionListener}"/>
-            <ice:outputLabel for="multipleSelection"
-                             value="#{msgs['page.rowSelector.multiple']}"/>
-
+                                       valueChangeListener="#{rowSelectController.changeSelectionMode}">
+                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemSingle']}" itemValue="#{msgs['page.rowSelector.ItemSingle']}" />
+                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemMultiple']}" itemValue="#{msgs['page.rowSelector.ItemMultiple']}" />
+                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemEnhancedMultiple']}" itemValue="#{msgs['page.rowSelector.ItemEnhancedMultiple']}" />
+            </ice:selectOneRadio> 
+            <ice:panelGroup rendered="#{rowSelectController.enhancedMultiple}">                          
+	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleHeading']}"/> <br/>
+	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleDoc1']}"/><br/>
+	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleDoc2']}"/><br/>
+	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleDoc3']}"/><br/>
+	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleDoc4']}"/><br/>                               
+            </ice:panelGroup>
         </ice:panelGroup>
     </ice:panelGroup>
 
@@ -80,7 +90,8 @@ a control on the data to hide/show the table columns.
  -->
                 <ice:rowSelector id="selected"
                                  value="#{employee.selected}"
-                                 multiple="#{rowSelectController.multiRowSelect}"
+                                 multiple="#{rowSelectController.multiple}"
+                                 enhancedMultiple="#{rowSelectController.enhancedMultiple}"                                 
                                  selectionListener="#{rowSelectController.rowSelectionListener}"/>
                 <f:facet name="header">
                     <ice:outputText id="column1"
