@@ -103,7 +103,7 @@
             </p>
             
             <p>
-            <h3>  mousedown :</h3> the tooltip will be hidden when the user clicks any area outside of the menu. 
+            <h3>  mousedown :</h3> the popup menu will be hidden when the user clicks any area outside of the menu. 
             </p>  
         ]]>        
     </description>
