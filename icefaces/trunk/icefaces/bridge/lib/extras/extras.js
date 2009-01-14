@@ -156,6 +156,14 @@ Ice.PanelCollapsible = {
 }
 
 Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
+    var ctrlKyFld = $(hdnFld+'ctrKy');
+    var sftKyFld = $(hdnFld+'sftKy');  
+    if (ctrlKyFld && event){
+        ctrlKyFld.value = event.ctrlKey;
+    } 
+    if (sftKyFld && event){
+        sftKyFld.value = event.shiftKey;
+    }      
     try {
         if( useEvent ) {
             var targ;

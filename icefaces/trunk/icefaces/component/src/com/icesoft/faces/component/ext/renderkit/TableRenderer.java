@@ -603,6 +603,18 @@ public class TableRenderer
         String formId = form == null ? "" : form.getClientId(facesContext);
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
+            Element ctrlKeyEle = domContext.createElement(HTML.INPUT_ELEM);
+            ctrlKeyEle.setAttribute(HTML.TYPE_ATTR, "hidden");
+            ctrlKeyEle.setAttribute(HTML.ID_ATTR, paramId + "ctrKy");
+            ctrlKeyEle.setAttribute(HTML.NAME_ATTR, paramId + "ctrKy"); 
+            
+            Element shiftKeyEle = domContext.createElement(HTML.INPUT_ELEM);
+            shiftKeyEle.setAttribute(HTML.TYPE_ATTR, "hidden");
+            shiftKeyEle.setAttribute(HTML.ID_ATTR, paramId + "sftKy");
+            shiftKeyEle.setAttribute(HTML.NAME_ATTR, paramId + "sftKy"); 
+            tBody.appendChild(ctrlKeyEle);
+            tBody.appendChild(shiftKeyEle);
+            
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
                     domContext.createElement(HTML.INPUT_ELEM);
