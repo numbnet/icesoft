@@ -110,8 +110,10 @@ public class PanelPopup extends HtmlPanelGroup {
      * The current clientOnly state.
      */
     private Boolean clientOnly = null;
-	
-	
+    private Boolean positionOnLoadOnly = null;
+
+    private boolean dragged;
+
 
 	public boolean isAutoCentre() {
 		if (autoCentre != null) {
@@ -139,7 +141,21 @@ public class PanelPopup extends HtmlPanelGroup {
 
     public void setClientOnly(boolean clientOnly) {
         this.clientOnly = Boolean.valueOf(clientOnly);
-    }	
+    }
+
+    public boolean isPositionOnLoadOnly() {
+        if (positionOnLoadOnly != null) {
+            return positionOnLoadOnly.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("positionOnLoadOnly");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setPositionOnLoadOnly(boolean positionOnLoadOnly) {
+        this.positionOnLoadOnly = Boolean.valueOf(positionOnLoadOnly);
+    }
 
 	private String autoPosition = null;
 
@@ -302,7 +318,7 @@ public class PanelPopup extends HtmlPanelGroup {
 	public Object saveState(FacesContext context) {
 
             if(values == null){
-                values = new Object[9];
+                values = new Object[11];
             }
 		values[0] = super.saveState(context);
 		values[1] = styleClass;
@@ -313,6 +329,8 @@ public class PanelPopup extends HtmlPanelGroup {
         values[6] = autoPosition;
         values[7] = clientOnly;  
         values[8] = autoCentre;            
+        values[9] = positionOnLoadOnly;
+        values[10] = Boolean.valueOf(dragged);
 		return ((Object) (values));
 	}
 
@@ -332,8 +350,9 @@ public class PanelPopup extends HtmlPanelGroup {
 		title = (String) values[5];
 		autoPosition = (String)values[6];
         clientOnly = (Boolean)values[7]; 
-        autoCentre = (Boolean)values[8]; 
-        
+        autoCentre = (Boolean)values[8];
+        positionOnLoadOnly = (Boolean) values[9];
+        dragged = ((Boolean) values[10]).booleanValue();        
 	}
 
 	private String title = null;
@@ -390,4 +409,12 @@ public class PanelPopup extends HtmlPanelGroup {
 			root.removeAttribute(HTML.STYLE_ATTR);
         CurrentStyle.apply(facesContext, this);
 	}
+
+    public boolean isDragged() {
+        return dragged;
+    }
+
+    public void setDragged(boolean dragged) {
+        this.dragged = dragged;
+    }
 }
