@@ -251,7 +251,9 @@ public class PanelPopupRenderer extends GroupRenderer {
 
 		// autoPosition handling
 		String autoPositionJS = null;
-		if (panelPopup.getAutoPosition() != null) {
+        boolean positionOnLoadOnly = panelPopup.isPositionOnLoadOnly();
+        boolean dragged = panelPopup.isDragged();
+        if (panelPopup.getAutoPosition() != null && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			String positions = panelPopup.getAutoPosition();
 			if( positions.indexOf(',') < 1 ){
 				log.warn("The autoPosition attribute should be used with an "
@@ -272,7 +274,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 		// autoCentre handling
 		boolean autoCentre = panelPopup.isAutoCentre();
 		String centreJS;
-		if (autoCentre) {
+        if (autoCentre && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			centreJS = "Ice.autoCentre.start('" + clientId + "');";
 
 		} else {

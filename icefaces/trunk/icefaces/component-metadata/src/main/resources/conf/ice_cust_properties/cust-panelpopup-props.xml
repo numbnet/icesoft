@@ -156,3 +156,14 @@
         <default-value>false</default-value>
     </property-extension>
 </property>
+<property>
+<description>
+    Centre or position popup once on load only. Any drag and drop will disable autocentre or autoposition.
+</description>
+<property-name>positionOnLoadOnly</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_LAYOUT</category>
+    <default-value>false</default-value>
+</property-extension>
+</property>

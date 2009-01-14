@@ -39,6 +39,7 @@ import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.panelpopup.PanelPopup;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.DragDrop;
@@ -265,6 +266,15 @@ public class GroupRenderer
             log.trace("GroupRenderer:decode");
         }
         MenuPopupHelper.decodeMenuContext(context, component);
+        if (component instanceof PanelPopup) {
+            String dndType = getDndType(component);
+            if ("dragdrop".equals(dndType) || "DRAG".equals(dndType)) {
+                PanelPopup panel = (PanelPopup) component;
+                if (panel.getAutoPosition() != null || panel.isAutoCentre()) {
+                    panel.setDragged(true);
+                }
+            }
+        }
         if (component instanceof HtmlPanelGroup) {
             HtmlPanelGroup panel = (HtmlPanelGroup) component;
             String dndType = getDndType(component);
