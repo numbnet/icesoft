@@ -156,7 +156,6 @@ public class SelectInputDate
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
     private String inputTitle = null;
-    private DateTimeConverter dateTimeConverter;
 
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
@@ -167,9 +166,6 @@ public class SelectInputDate
 
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        //converter might have changed using value binding, get it once for a 
-        //render cycle
-        dateTimeConverter = _resolveDateTimeConverter(context);
         buildHighlightMap();
         
     }
@@ -250,16 +246,6 @@ public class SelectInputDate
      * @return DateTimeConverter
      */
     public DateTimeConverter resolveDateTimeConverter(FacesContext context) {
-            //this will be refresh by the encodeBegin in every render cycle, to 
-            //respect the dynamic change of converter if any.
-            if (dateTimeConverter == null) {
-                dateTimeConverter = _resolveDateTimeConverter(context);
-            }
-        return dateTimeConverter;        
-    }
-    
-
-    public DateTimeConverter _resolveDateTimeConverter(FacesContext context) {
         DateTimeConverter converter = null;
         Converter compConverter = getConverter();
         if (compConverter instanceof DateTimeConverter) {
