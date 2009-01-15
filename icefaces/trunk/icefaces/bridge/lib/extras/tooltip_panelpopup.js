@@ -92,6 +92,7 @@ ToolTipPanelPopup = Class.create({
         tooltip.style.left = this.x+"px";
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
+        ToolTipPanelPopupUtil.adjustPosition(tooltip);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
     this.addToVisibleList();    
@@ -264,7 +265,27 @@ ToolTipPanelPopupUtil = {
             }else {
             }
         }
-        visibleTooltipList = newList;  
+        visibleTooltipList = newList;
+    },
+    adjustPosition: function(id) {
+        var element = $(id);
+        var viewportDimensions = document.viewport.getDimensions();
+        var elementDimensions = element.getDimensions();
+        var viewportOffset = element.viewportOffset();
+        var positionedOffset = element.positionedOffset();
+        var widthDiff = viewportDimensions.width - viewportOffset.left - elementDimensions.width;
+        var heightDiff = viewportDimensions.height - viewportOffset.top - elementDimensions.height;
+
+        if (viewportOffset.left < 0) {
+            element.style.left = positionedOffset.left - viewportOffset.left + "px";
+        } else if (widthDiff < 0) {
+            element.style.left = positionedOffset.left + widthDiff + "px";
+        }
+        if (viewportOffset.top < 0) {
+            element.style.top = positionedOffset.top - viewportOffset.top + "px";
+        } else if (heightDiff < 0) {
+            element.style.top = positionedOffset.top + heightDiff + "px";
+        }
     }
 }
     
