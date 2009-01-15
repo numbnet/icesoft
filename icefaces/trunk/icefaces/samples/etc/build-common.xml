@@ -65,6 +65,7 @@
         <exclude name="xercesImpl.jar" if="jsf12" />
         <exclude name="xml-apis.jar"   if="jsf12" />
         <exclude name="icefaces.jar" if="just-ice" />
+        <include name="grizzly-compat.jar" if="glassfish" />
     </patternset>
     
     <patternset id="additional.icefaces.lib.jars.to.include">
@@ -393,6 +394,7 @@ Combinations:
     </target>
     <target name="glassfishv2" description="build war file for SUN Glassfish V2">
         <antcall target="build.war">
+            <param name="glassfish" value=""/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
         </antcall>
