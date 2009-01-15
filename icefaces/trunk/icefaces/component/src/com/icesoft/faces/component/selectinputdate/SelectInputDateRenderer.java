@@ -75,6 +75,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.DateTimeConverter;
 import javax.faces.event.ActionEvent;
 
 import java.io.IOException;
@@ -441,7 +442,8 @@ public class SelectInputDateRenderer
 //System.out.println("CustomComponentUtils.getDateValue: " + value);
         }
         
-        TimeZone tz = selectInputDate.resolveTimeZone(facesContext);
+        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(facesContext);
+        TimeZone tz = converter.getTimeZone();
         Locale currentLocale = selectInputDate.resolveLocale(facesContext);
         
         Calendar timeKeeper = Calendar.getInstance(tz, currentLocale);
@@ -502,7 +504,8 @@ public class SelectInputDateRenderer
 	                                 selectInputDate, timeKeeper,
 	                                 currentDay, tr1,
 	                                 selectInputDate.getMonthYearRowClass(),
-                                     currentLocale, months, weekdays, weekdaysLong);
+                                     currentLocale, months, weekdays, weekdaysLong,
+                                     converter);
 	
 	            Element tr2 = domContext.createElement(HTML.TR_ELEM);
 	            table.appendChild(tr2);
@@ -510,14 +513,14 @@ public class SelectInputDateRenderer
 	            writeWeekDayNameHeader(domContext, weekStartsAtDayIndex, weekdays,
 	                                   facesContext, writer, selectInputDate, tr2,
 	                                   selectInputDate.getWeekRowClass(),
-                                       timeKeeper, months, weekdaysLong);
+                                       timeKeeper, months, weekdaysLong, converter);
 	
 	            writeDays(domContext, facesContext, writer, selectInputDate,
 	                      timeKeeper,
 	                      currentDay, weekStartsAtDayIndex,
 	                      weekDayOfFirstDayOfMonth,
 	                      lastDayInMonth, table,
-                          months, weekdays, weekdaysLong);
+                          months, weekdays, weekdaysLong, converter);
 
 
         } else {
@@ -536,14 +539,16 @@ public class SelectInputDateRenderer
                                  selectInputDate, timeKeeper,
                                  currentDay, tr1,
                                  selectInputDate.getMonthYearRowClass(),
-                                 currentLocale, months, weekdays, weekdaysLong);
+                                 currentLocale, months, weekdays, weekdaysLong,
+                                 converter);
 
             Element tr2 = domContext.createElement(HTML.TR_ELEM);
 
             writeWeekDayNameHeader(domContext, weekStartsAtDayIndex, weekdays,
                                    facesContext, writer, selectInputDate, tr2,
                                    selectInputDate.getWeekRowClass(),
-                                   timeKeeper, months, weekdaysLong);
+                                   timeKeeper, months, weekdaysLong,
+                                   converter);
 
             table.appendChild(tr2);
 
@@ -552,7 +557,8 @@ public class SelectInputDateRenderer
                       currentDay, weekStartsAtDayIndex,
                       weekDayOfFirstDayOfMonth,
                       lastDayInMonth, table,
-                      months, weekdays, weekdaysLong);
+                      months, weekdays, weekdaysLong,
+                      converter);
 
         }
 
@@ -570,7 +576,8 @@ public class SelectInputDateRenderer
                                       Calendar timeKeeper,
                                       int currentDay, Element headerTr,
                                       String styleClass, Locale currentLocale,
-                                      String[] months, String[] weekdays, String[] weekdaysLong)
+                                      String[] months, String[] weekdays, String[] weekdaysLong,
+                                      Converter converter)
             throws IOException {
 
         Element table = domContext.createElement(HTML.TABLE_ELEM);
@@ -604,14 +611,16 @@ public class SelectInputDateRenderer
         }
         // first render month with navigation back and forward
         if (inputComponent.isRenderMonthAsDropdown()) {
-            writeMonthDropdown(facesContext, domContext, inputComponent, tr, months, timeKeeper, currentDay, styleClass);
+            writeMonthDropdown(facesContext, domContext, inputComponent, tr,
+                               months, timeKeeper, currentDay, styleClass,
+                               converter);
         } else {
             Calendar cal = shiftMonth(facesContext, timeKeeper, currentDay, -1);
             writeCell(domContext, facesContext, writer, inputComponent,
                       "<", cal.getTime(), styleClass, tr,
                       inputComponent.getImageDir() +
                       inputComponent.getMovePreviousImage(), -1,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
 
             Element td = domContext.createElement(HTML.TD_ELEM);
             td.setAttribute(HTML.CLASS_ATTR, styleClass);
@@ -643,7 +652,7 @@ public class SelectInputDateRenderer
                       ">", cal.getTime(), styleClass, tr,
                       inputComponent.getImageDir() +
                       inputComponent.getMoveNextImage(), -1,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
         }
 
         // second add an empty td
@@ -656,7 +665,8 @@ public class SelectInputDateRenderer
 
         // third render year with navigation back and forward
         if (inputComponent.isRenderYearAsDropdown()) {
-            writeYearDropdown(facesContext, domContext, inputComponent, tr, timeKeeper, currentDay, styleClass);
+            writeYearDropdown(facesContext, domContext, inputComponent, tr,
+                              timeKeeper, currentDay, styleClass, converter);
         } else {
             Calendar cal = shiftYear(facesContext, timeKeeper, currentDay, -1);
 
@@ -664,7 +674,7 @@ public class SelectInputDateRenderer
                       "<<", cal.getTime(), styleClass, tr,
                       inputComponent.getImageDir() +
                       inputComponent.getMovePreviousImage(), -1,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
 
             Element yeartd = domContext.createElement(HTML.TD_ELEM);
             yeartd.setAttribute(HTML.CLASS_ATTR, styleClass);
@@ -680,7 +690,7 @@ public class SelectInputDateRenderer
                       ">>", cal.getTime(), styleClass, tr,
                       inputComponent.getImageDir() +
                       inputComponent.getMoveNextImage(), -1,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
         }
 
     }
@@ -692,7 +702,8 @@ public class SelectInputDateRenderer
                                     String[] months,
                                     Calendar timeKeeper,
                                     int currentDay,
-                                    String styleClass) throws IOException {
+                                    String styleClass,
+                                    Converter converter) throws IOException {
         Element td = domContext.createElement(HTML.TD_ELEM);
         if (styleClass != null) {
             td.setAttribute(HTML.CLASS_ATTR, styleClass);
@@ -712,7 +723,6 @@ public class SelectInputDateRenderer
         UISelectItem selectItem;
         Calendar calendar;
         int currentMonth = timeKeeper.get(Calendar.MONTH);
-        Converter converter = component.resolveDateTimeConverter(facesContext);
         for (int i = 0; i < months.length; i++) {
             selectItem = new UISelectItem();
             calendar = shiftMonth(facesContext, timeKeeper, currentDay, i - currentMonth);
@@ -739,7 +749,8 @@ public class SelectInputDateRenderer
                                    Element tr,
                                    Calendar timeKeeper,
                                    int currentDay,
-                                   String styleClass) throws IOException {
+                                   String styleClass,
+                                   Converter converter) throws IOException {
         Element td = domContext.createElement(HTML.TD_ELEM);
         if (styleClass != null) {
             td.setAttribute(HTML.CLASS_ATTR, styleClass);
@@ -758,7 +769,6 @@ public class SelectInputDateRenderer
 
         int timeKeeperYear = timeKeeper.get(Calendar.YEAR);
         int startYear = timeKeeperYear - yearListSize / 2; // not perfectly centered if size is even
-        Converter converter = component.resolveDateTimeConverter(facesContext);
         UISelectItem selectItem;
         Calendar calendar;
         String itemValue, itemLabel;
@@ -836,14 +846,15 @@ public class SelectInputDateRenderer
                                         SelectInputDate inputComponent, Element tr,
                                         String styleClass,
                                         Calendar timeKeeper,
-                                        String[] months, String[] weekdaysLong)
+                                        String[] months, String[] weekdaysLong,
+                                        Converter converter)
             throws IOException {
         // the week can start with Sunday (index 0) or Monday (index 1)
         for (int i = weekStartsAtDayIndex; i < weekdays.length; i++) {
             writeCell(domContext, facesContext,
                       writer, inputComponent, weekdays[i], null, styleClass, tr,
                       null, i,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
         }
 
         // if week start on Sunday this block is not executed
@@ -851,7 +862,7 @@ public class SelectInputDateRenderer
         for (int i = 0; i < weekStartsAtDayIndex; i++) {
             writeCell(domContext, facesContext, writer,
                       inputComponent, weekdays[i], null, styleClass, tr, null, i,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
         }
     }
 
@@ -861,7 +872,8 @@ public class SelectInputDateRenderer
                            int currentDay, int weekStartsAtDayIndex,
                            int weekDayOfFirstDayOfMonth, int lastDayInMonth,
                            Element table, String[] months,
-                           String[] weekdays, String[] weekdaysLong)
+                           String[] weekdays, String[] weekdaysLong,
+                           Converter converter)
             throws IOException {
         Calendar cal;
 
@@ -886,7 +898,7 @@ public class SelectInputDateRenderer
             writeCell(domContext, facesContext, writer, inputComponent, "&nbsp;",
                       null, inputComponent.getDayCellClass(), tr1, null,
                       (weekStartsAtDayIndex + i) % 7,
-                      timeKeeper, months, weekdaysLong);
+                      timeKeeper, months, weekdaysLong, converter);
             columnIndexCounter++;
         }
 
@@ -970,13 +982,13 @@ public class SelectInputDateRenderer
                 writeCell(domContext, facesContext, writer,
                           inputComponent, String.valueOf(i + 1), cal.getTime(),
                           cellStyle, tr1, null, i,
-                          timeKeeper, months, weekdaysLong);
+                          timeKeeper, months, weekdaysLong, converter);
             } else {
                 // write to new row
                 writeCell(domContext, facesContext, writer,
                           inputComponent, String.valueOf(i + 1), cal.getTime(),
                           cellStyle, tr2, null, i,
-                          timeKeeper, months, weekdaysLong);
+                          timeKeeper, months, weekdaysLong, converter);
             }
 
             columnIndexCounter++;
@@ -993,7 +1005,7 @@ public class SelectInputDateRenderer
                           inputComponent, "&nbsp;", null,
                           inputComponent.getDayCellClass(), tr2, null,
                           (weekStartsAtDayIndex + i) % 7,
-                          timeKeeper, months, weekdaysLong);
+                          timeKeeper, months, weekdaysLong, converter);
              }
         }
 
@@ -1005,7 +1017,8 @@ public class SelectInputDateRenderer
                            Date valueForLink, String styleClass, Element tr,
                            String imgSrc, int weekDayIndex,
                            Calendar timeKeeper,
-                           String[] months, String[] weekdaysLong)
+                           String[] months, String[] weekdaysLong,
+                           Converter converter)
             throws IOException {
         Element td = domContext.createElement(HTML.TD_ELEM);
         tr.appendChild(td);
@@ -1025,7 +1038,7 @@ public class SelectInputDateRenderer
             domContext.setCursorParent(td);
             writeLink(content, component, facesContext, valueForLink,
                       styleClass, imgSrc, td, timeKeeper,
-                      months, weekdaysLong);
+                      months, weekdaysLong, converter);
             // steps to the position where the next sibling should be rendered
             domContext.stepOver();
         }
@@ -1040,10 +1053,10 @@ public class SelectInputDateRenderer
                            String imgSrc,
                            Element td,
                            Calendar timeKeeper,
-                           String[] months, String[] weekdaysLong)
+                           String[] months, String[] weekdaysLong,
+                           Converter converter)
             throws IOException {
 
-        Converter converter = component.resolveDateTimeConverter(facesContext);
         HtmlCommandLink link = new HtmlCommandLink();
         Calendar cal = copyCalendar(facesContext, timeKeeper);
         cal.setTime(valueForLink);
