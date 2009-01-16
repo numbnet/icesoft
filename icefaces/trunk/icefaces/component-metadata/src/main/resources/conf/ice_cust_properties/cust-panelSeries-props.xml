@@ -37,6 +37,7 @@
 
 &core-props;
 &uidata-props;
+&ice-att-varStatus-props;
 
 <property>
     <description>
