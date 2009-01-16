@@ -94,6 +94,9 @@ public class JspPageToDocument {
             "org/apache/myfaces/taglib/core/ViewTag.class";
     static String SUN_TAG_CLASS = "com/sun/faces/taglib/jsf_core/ViewTag.class";
 
+    static String HTML_TLD_SUFFIX = "META-INF/html_basic.tld";
+    static String CORE_TLD_SUFFIX = "META-INF/jsf_core.tld";
+
     private static final Log log = LogFactory.getLog(JspPageToDocument.class);
 
     public static void main(String[] args) {
@@ -459,6 +462,23 @@ public class JspPageToDocument {
                 // Not all app servers (ie WebLogic 8.1) return
                 // an actual JarURLConnection.
                 URLConnection conn = tagURL.openConnection();
+
+                //ICE-3683: Special processing for JBoss 5 micro-container with VFS
+                if( tagURL.getProtocol().equals("vfszip")){
+                    String tagPath = tagURL.toExternalForm();
+                    String jarPath = tagPath.substring(0,tagPath.indexOf(SUN_TAG_CLASS));
+
+                    String tldPath = jarPath;
+                    if (namespaceURL.endsWith("html")) {
+                        tldPath += HTML_TLD_SUFFIX;
+                    } else if (namespaceURL.endsWith("core")) {
+                        tldPath += CORE_TLD_SUFFIX;
+                    }
+
+                    URL tldURL = new URL(tldPath);
+                    return tldURL.openConnection().getInputStream();
+                }
+
                 if (conn instanceof JarURLConnection) {
                     location = scanJar((JarURLConnection) conn, namespaceURL);
                 } else {
@@ -466,11 +486,9 @@ public class JspPageToDocument {
                     //JarURLConnection to their resources so we handle the JSF
                     //TLDs as a special case
                     if (namespaceURL.endsWith("html")) {
-                        location = getBundleLocation(tagURL, 
-                                "META-INF/html_basic.tld");
+                        location = getBundleLocation(tagURL, HTML_TLD_SUFFIX);
                     } else if (namespaceURL.endsWith("core")) {
-                        location = getBundleLocation(tagURL, 
-                                "META-INF/jsf_core.tld");
+                        location = getBundleLocation(tagURL, CORE_TLD_SUFFIX);
                     }
                 }
           }
