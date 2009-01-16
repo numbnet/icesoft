@@ -442,7 +442,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 }
             }
         }
-        documentStore.save(document);
+        documentStore.cache(document);
     }
 
     public URI loadJavascriptCode(final Resource resource) {
@@ -697,6 +697,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     public static interface DocumentStore {
         void save(Document document) throws IOException;
 
+        /* Keep the Document in a more efficient form for
+           fast loading 
+        */
+        void cache(Document document) throws IOException;
+
         Document load() throws IOException;
     }
 
@@ -704,6 +709,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         private Document document;
 
         public void save(Document document) {
+            this.document = document;
+        }
+        
+        public void cache(Document document) {
             this.document = document;
         }
 
@@ -714,17 +723,25 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     private static class FastInfosetDocumentStore implements DocumentStore {
         private byte[] data = new byte[0];
+        private Document document = null;
 
         public void save(Document document) throws IOException {
             DOMDocumentSerializer serializer = new DOMDocumentSerializer();
             ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
             serializer.setOutputStream(out);
             serializer.serialize(document);
-
             data = out.toByteArray();
+            this.document = null;
+        }
+
+        public void cache(Document document)  {
+            this.document = document;
         }
 
         public Document load() throws IOException {
+            if (null != document)  {
+                return document;
+            }
             if (data.length == 0) return null;
 
             Document document = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
