@@ -33,6 +33,7 @@
   -->
 &base-props; 
 &series-value-props;
+&ice-att-varStatus-props;
 
 <property>
 	<description>

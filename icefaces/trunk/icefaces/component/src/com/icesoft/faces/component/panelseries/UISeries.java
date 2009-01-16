@@ -84,6 +84,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     protected Map savedChildren = new HashMap();
     protected Map savedSeriesState = new HashMap();
     private String var = null;
+    private String varStatus;
 
 
     public UISeries() {
@@ -141,26 +142,38 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         DataModel model = getDataModel();
         model.setRowIndex(rowIndex);
 
-        if (var != null) {
+        if (var != null || varStatus != null) {
             Map requestMap = facesContext.getExternalContext().getRequestMap();
             if (rowIndex == -1) {
-                loadRowToRequestMap(requestMap, false);
+                removeRowFromRequestMap(requestMap);
             } else if (isRowAvailable()) {
-                loadRowToRequestMap(requestMap, true);
+                // Indexes are inclusive
+                int firstIndex = getFirst();
+                int lastIndex = firstIndex + getRows() - 1;
+                loadRowToRequestMap(requestMap, firstIndex, lastIndex, rowIndex);
             } else {
-                loadRowToRequestMap(requestMap, false);
+                removeRowFromRequestMap(requestMap);
             }
         }
     }
 
-    private void loadRowToRequestMap(Map requestMap, boolean loadRow) {
-        if (loadRow) {
+    private void loadRowToRequestMap(Map requestMap, int begin, int end, int index) {
+        if (var != null) {
             requestMap.put(var, getRowData());
-        } else {
-            requestMap.remove(var);
+        }
+        if (varStatus != null) {
+            requestMap.put(varStatus, new VarStatus(begin, end, index));
         }
     }
 
+    private void removeRowFromRequestMap(Map requestMap) {
+        if (var != null) {
+            requestMap.remove(var);
+        }
+        if (varStatus != null) {
+            requestMap.remove(varStatus);
+        }
+    }
 
     /**
      * @see javax.faces.component.UIData#getVar()
@@ -177,6 +190,18 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         this.var = var;
     }
 
+    /**
+     * @return The name of the entry is the request map,
+     * where the VarStatus object will be put.
+     */
+    public String getVarStatus() {
+        return this.varStatus;
+    }
+    
+    public void setVarStatus(String varStatus) {
+        this.varStatus = varStatus;
+    }
+    
     /**
      * @see javax.faces.component.UIData#setValue(Object)
      */
@@ -565,12 +590,13 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[5];
+        Object values[] = new Object[6];
         values[0] = super.saveState(context);
         values[1] = new Integer(rowIndex);
         values[2] = savedChildren;
         values[3] = savedSeriesState;
         values[4] = var;
+        values[5] = varStatus;
         return (values);
     }
 
@@ -582,6 +608,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         savedChildren = (Map) values[2];
         savedSeriesState = (Map) values[3];
         var = (String) values[4];
+        varStatus = (String) values[5];
     }
 
     private boolean isValid(String id) {

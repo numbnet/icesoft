@@ -41,6 +41,7 @@
 &events-props;
 &ice-att-partialsubmit-true-props;
 &ice-att-immediate-props;
+&ice-att-varStatus-props;
 <property>
 	<description>
 		Sets or retrieves which field of a given data source, as

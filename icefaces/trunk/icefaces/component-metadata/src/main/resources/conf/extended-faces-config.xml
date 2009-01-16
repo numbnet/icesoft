@@ -142,6 +142,7 @@
   <!ENTITY ice-att-menuPopup-props SYSTEM "ice_properties/ice-att-menuPopup-props.xml">
   <!ENTITY ice-att-contextValue-props SYSTEM "ice_properties/ice-att-contextValue-props.xml">
   <!ENTITY ice-att-displayListener-props SYSTEM "ice_properties/ice-att-displayListener-props.xml">
+  <!ENTITY ice-att-varStatus-props SYSTEM "ice_properties/ice-att-varStatus-props.xml">
   <!ENTITY ice-att-title-props SYSTEM "ice_properties/ice-att-title-props.xml">
   <!ENTITY ice-att-immediate-props SYSTEM "ice_properties/ice-att-immediate-props.xml">
   <!ENTITY ice-att-autoComplete-props SYSTEM "ice_properties/ice-att-autoComplete-props.xml">

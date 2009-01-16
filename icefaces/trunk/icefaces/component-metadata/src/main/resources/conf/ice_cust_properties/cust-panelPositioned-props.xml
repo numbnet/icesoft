@@ -35,6 +35,7 @@
 &base-props;
 &ice-att-userrole-rendered-props;
 &ice-att-userrole-enabled-props;
+&ice-att-varStatus-props;
 <property>
 	<description>
          <![CDATA[	
