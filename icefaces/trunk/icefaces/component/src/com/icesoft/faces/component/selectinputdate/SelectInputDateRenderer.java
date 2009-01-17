@@ -113,6 +113,8 @@ public class SelectInputDateRenderer
     private static final String NEXT_MONTH = "_nm";
     private static final String PREV_YEAR = "_py";
     private static final String NEXT_YEAR = "_ny";
+    private static final String SELECT_HR = "_hr";
+    private static final String SELECT_MIN = "_min";    
 
     // constant for selectinputdate links
     private static final String CALENDAR = "_c_";
@@ -211,7 +213,32 @@ public class SelectInputDateRenderer
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         SelectInputDate selectInputDate = (SelectInputDate) uiComponent;
+        if (selectInputDate.isTime(facesContext)) {
+            selectInputDate.getHours(facesContext);
+        }
+        Date value;
 
+        if (selectInputDate.isNavEvent()) {
+            if (log.isTraceEnabled()) {
+                log.trace("Rendering Nav Event");
+            }
+            value = selectInputDate.getNavDate();
+//System.out.println("navDate: " + value);
+        } else {
+            if (log.isTraceEnabled()) {
+                log.trace("Logging non nav event");
+            }
+            value = CustomComponentUtils.getDateValue(selectInputDate);
+//System.out.println("CustomComponentUtils.getDateValue: " + value);
+        }
+        
+        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(facesContext);
+        TimeZone tz = converter.getTimeZone();
+        Locale currentLocale = selectInputDate.resolveLocale(facesContext);
+        
+        Calendar timeKeeper = Calendar.getInstance(tz, currentLocale);
+        timeKeeper.setTime(value != null ? value : new Date());
+        
         // get the parentForm
         UIComponent parentForm = findForm(selectInputDate);
         // if there is no parent form - ERROR
@@ -377,6 +404,82 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.ONMOUSEOUT_ATTR, mouseOut);
                 String mouseMove = selectInputDate.getOnmousemove();
                 table.setAttribute(HTML.ONMOUSEMOVE_ATTR, mouseMove);
+                if (selectInputDate.isTime(facesContext)) {
+                    Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
+                    Element tr = domContext.createElement(HTML.TR_ELEM);
+                    Element td = domContext.createElement(HTML.TD_ELEM);
+                    td.setAttribute(HTML.COLSPAN_ATTR, "7");
+                    td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
+                    Element hours = domContext.createElement(HTML.SELECT_ELEM);
+                    hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HR);
+                    hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HR);
+                    hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                    int hrs[] = selectInputDate.getHours(facesContext);
+                    int hr = 0;
+                    if (hrs.length > 12) {
+                        hr = timeKeeper.get(Calendar.HOUR_OF_DAY);
+                    } else {
+                        hr = timeKeeper.get(Calendar.HOUR);
+                    }
+                    int min = timeKeeper.get(Calendar.MINUTE);
+
+                    for (int i = 0; i < hrs.length; i++ ) {
+                        Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
+                        Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
+                        hoursOption.appendChild(hourText);
+                        if (hrs[i] == hr) {
+                            hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                        }
+                        hours.appendChild(hoursOption);
+                    }
+                    Element minutes = domContext.createElement(HTML.SELECT_ELEM);
+                    minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
+                    minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
+                    minutes.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+
+                    for (int i = 0; i < 60; i++ ) {
+                        Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
+                        Text minuteText = domContext.createTextNode(String.valueOf(i));
+                        minutesOption.appendChild(minuteText);
+                        if (i == min) {
+                            minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                        }
+                        minutes.appendChild(minutesOption);
+                    }
+                    
+                    Text colon = domContext.createTextNode(":"); 
+                    tfoot.appendChild(tr);
+                    tr.appendChild(td);
+                    td.appendChild(hours);
+                    td.appendChild(colon);
+                    td.appendChild(minutes);
+                    
+                    int amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+                    if (selectInputDate.isAmPm(facesContext)){
+                        Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
+                        amPmElement.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                         
+                        amPmElement.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
+                        amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+
+                        Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
+                        Text amPmElementText = domContext.createTextNode("AM");
+                        amPmElementOption.appendChild(amPmElementText);
+
+                        Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
+                        Text amPmElementText2 = domContext.createTextNode("PM");
+                        amPmElementOption2.appendChild(amPmElementText2);
+                        if (amPm == 0) {
+                            amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                        } else {
+                            amPmElementOption2.setAttribute(HTML.SELECTED_ATTR, "true");                                
+                        }
+                        amPmElement.appendChild(amPmElementOption);                            
+                        amPmElement.appendChild(amPmElementOption2);
+                        td.appendChild(amPmElement);
+                    }
+                    table.appendChild(tfoot);
+                }                
+                
                 addAttributeToElementFromResource(facesContext,
                     POPUP_CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
                 Element positionDiv = domContext.createElement(HTML.DIV_ELEM);
@@ -426,28 +529,7 @@ public class SelectInputDateRenderer
         }
         clientId = uiComponent.getClientId(facesContext);
 
-        Date value;
 
-        if (selectInputDate.isNavEvent()) {
-            if (log.isTraceEnabled()) {
-                log.trace("Rendering Nav Event");
-            }
-            value = selectInputDate.getNavDate();
-//System.out.println("navDate: " + value);
-        } else {
-            if (log.isTraceEnabled()) {
-                log.trace("Logging non nav event");
-            }
-            value = CustomComponentUtils.getDateValue(selectInputDate);
-//System.out.println("CustomComponentUtils.getDateValue: " + value);
-        }
-        
-        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(facesContext);
-        TimeZone tz = converter.getTimeZone();
-        Locale currentLocale = selectInputDate.resolveLocale(facesContext);
-        
-        Calendar timeKeeper = Calendar.getInstance(tz, currentLocale);
-        timeKeeper.setTime(value != null ? value : new Date());
 
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
@@ -1335,6 +1417,15 @@ public class SelectInputDateRenderer
         Object eventCapturedId = requestParameterMap.get("ice.event.captured");
         String monthClientId = clientId + SELECT_MONTH;
         String yearClientId = clientId + SELECT_YEAR;
+        String hoursClientId = clientId + SELECT_HR;
+        String minutesClientId = clientId + SELECT_MIN;
+        if (requestParameterMap.containsKey(hoursClientId)) {
+            dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
+        }
+        
+        if (requestParameterMap.containsKey(minutesClientId)) {
+            dateSelect.setMinutesSubmittedValue(requestParameterMap.get(minutesClientId));            
+        }
         if (monthClientId.equals(eventCapturedId)) {
             dateSelect.setNavEvent(true);
             dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(monthClientId)));
@@ -1396,6 +1487,8 @@ public class SelectInputDateRenderer
                 }
                 decodeInputText(facesContext, component);
                 if (enterKeyPressed) {
+                    dateSelect.setHoursSubmittedValue(null);
+                    dateSelect.setMinutesSubmittedValue(null);
                     component.queueEvent(new ActionEvent(component));
                 }
             }

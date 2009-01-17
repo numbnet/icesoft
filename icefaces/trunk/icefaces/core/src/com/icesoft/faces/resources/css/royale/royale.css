@@ -163,7 +163,7 @@ input {
     margin: 2px;
 }
 
-.iceSelInpDateMonthYear {
+.iceSelInpDateMonthYear, .iceSelInpDateTime{
     background-color: #026AFF;
     background-image: url( "./css-images/table_col_header.gif" );
     background-position: top;
@@ -177,7 +177,13 @@ input {
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
 }
 
-.iceSelInpDateMoYrDropdown {
+.iceSelInpDateTime{
+    border-left: 1px solid #2A6CC2;
+    border-bottom: 1px solid #2A6CC2;
+    border-right: 1px solid #2A6CC2;       
+}
+
+.iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
     background-color: #026AFF;
     font-weight: bold;
     color: #FFFFFF;

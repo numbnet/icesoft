@@ -202,7 +202,7 @@ table.iceSelInpDate tbody tr td table{
     margin-left: 5px;
 }
 
-.iceSelInpDateMonthYear {
+.iceSelInpDateMonthYear, .iceSelInpDateTime{
     background: #F5F5F5;
     font-weight: bold;
     text-align: center;
@@ -214,7 +214,13 @@ table.iceSelInpDate tbody tr td table{
 
 }
 
-.iceSelInpDateMoYrDropdown {
+.iceSelInpDateTime{
+    border-left: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;        
+}
+
+.iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
     background: #F5F5F5;
     font-weight: bold;
     color: #666;
