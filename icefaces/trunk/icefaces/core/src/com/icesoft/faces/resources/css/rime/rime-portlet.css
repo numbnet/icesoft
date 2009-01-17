@@ -177,7 +177,7 @@ input.iceSelInpDateClosePopup {
     vertical-align: middle;
 }
 
-.iceSelInpDateMonthYear {
+.iceSelInpDateMonthYear, .iceSelInpDateTime{
     background: #F5F5F5;
     font-weight: bold;
     text-align: center;
@@ -189,7 +189,13 @@ input.iceSelInpDateClosePopup {
 
 }
 
-.iceSelInpDateMoYrDropdown {
+.iceSelInpDateTime{
+    border-left: 1px solid #2A6CC2;
+    border-bottom: 1px solid #2A6CC2;
+    border-right: 1px solid #2A6CC2;       
+}
+
+.iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
     background: #F5F5F5;
     font-weight: bold;
     color: #666;

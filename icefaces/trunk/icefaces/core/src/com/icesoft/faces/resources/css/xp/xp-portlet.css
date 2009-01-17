@@ -156,7 +156,7 @@ input.iceSelInpDateClosePopup {
     height: 16px;
 }
 
-.iceSelInpDateMonthYear {
+.iceSelInpDateMonthYear, .iceSelInpDateTime{
     background-color: #EFEFEF;
     background-image: url(css-images/table_col_header.gif);
     background-position: bottom;
@@ -170,7 +170,13 @@ input.iceSelInpDateClosePopup {
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
 }
 
-.iceSelInpDateMoYrDropdown {
+.iceSelInpDateTime{
+    border-left: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;        
+}
+
+.iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
     background-color: #EFEFEF;
     font-weight: bold;
     color: #000000;

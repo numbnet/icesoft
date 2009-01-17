@@ -246,6 +246,8 @@ public class CSS_DEFAULT {
     public final static String DEFAULT_YEARMONTHHEADER_CLASS =
             "MonthYear";  // iceCalMonthYear Originally was "monthYearRowClass"
     public final static String DEFAULT_MO_YR_DROPDOWN_CLASS = "MoYrDropdown";
+    public final static String DEFAULT_TIME_CLASS = "Time";
+    public final static String DEFAULT_TIME_DRP_DWN_CLASS = "TimeDropDown";    
     /**
      * The default style class name for the row containg the names of the days
      * of the week.

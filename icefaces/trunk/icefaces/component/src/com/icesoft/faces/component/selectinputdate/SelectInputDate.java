@@ -41,10 +41,16 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * SelectInputDate is a JSF component class that represents an ICEfaces input
@@ -156,7 +162,10 @@ public class SelectInputDate
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
     private String inputTitle = null;
-
+    private static final Pattern timePattern = Pattern.compile("[aHkKhmsS]");
+    transient private Matcher timeMatcher;
+    private Integer submittedHours = null;
+    private Integer submittedMinutes = null;
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
@@ -259,7 +268,7 @@ public class SelectInputDate
                 converter = new DateTimeConverter();
             }
         }
-
+      //  System.out.println("ReolveDate");
         // For backwards compatibility, if they specify the popupDateFormat
         //  attribute, then that takes precedence over the DateTimeConverter's
         //  original pattern or other settings relating to its DateFormat
@@ -374,6 +383,17 @@ public class SelectInputDate
         return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_MO_YR_DROPDOWN_CLASS, isDisabled());
     }
 
+    public String getTimeClass() {
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_TIME_CLASS,
+                isDisabled());
+    }
+    
+    public String getTimeDropDownClass() {
+        return "iceSelOneMnu " + Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_TIME_DRP_DWN_CLASS,
+                isDisabled());
+    }
     /**
      * Returns the style class name of the weekRowClass The style class is
      * defined in an external style sheet.
@@ -633,7 +653,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[25];
+        Object values[] = new Object[27];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -659,7 +679,8 @@ public class SelectInputDate
         values[22] = linkMap;
         values[23] = selectedDayLink;
         values[24] = showPopup;
-        
+        values[25] = submittedHours;
+        values[26] = submittedMinutes;        
         return ((Object) (values));
     }
 
@@ -693,6 +714,8 @@ public class SelectInputDate
         linkMap = (Map) values[22];
         selectedDayLink = (String) values[23];
         showPopup = (List) values[24];
+        submittedHours = (Integer)values[25];
+        submittedMinutes = (Integer)values[26];        
     }
 
     private Map linkMap = new HashMap();
@@ -1027,5 +1050,70 @@ public class SelectInputDate
             }
             return Integer.parseInt(super.get(key).toString());
         }
+    }
+    
+    boolean isTime(FacesContext context) {
+        if (resolveDateTimeConverter(context).getPattern()== null) return false;
+        timeMatcher = timePattern.matcher(resolveDateTimeConverter(context).getPattern());
+       return timeMatcher.find();
+    }
+    
+    int[] getHours(FacesContext context) {
+        String pattern = resolveDateTimeConverter(context).getPattern();
+        int start = 0;
+        int end = 23;
+        if (pattern.indexOf("H") > 0) {
+            start = 0;
+            end = 23;
+        } else if (pattern.indexOf("h") > 0) {
+            start = 1;
+            end = 12;
+        } else if (pattern.indexOf("k") > 0) {
+            start = 1;
+            end = 24;
+        } else if(pattern.indexOf("K") > 0) {
+            start = 0;
+            end = 11;            
+        }
+        int base = (start==0?1:0);
+        int[] hours = new int[end + base];
+        for (int i=0; i < hours.length; i ++) {
+            hours[i] = i + (start==1?1:0);
+        }
+        return hours;
+    } 
+    
+    boolean isAmPm(FacesContext context) {
+        String pattern = resolveDateTimeConverter(context).getPattern();        
+        return pattern.indexOf("a") > 0 ||
+        pattern.indexOf("h")> 0||
+        pattern.indexOf("k")> 0;
+    }
+    
+    protected Object getConvertedValue(FacesContext context,
+            Object newSubmittedValue) throws ConverterException {
+        Object date = super.getConvertedValue(context, newSubmittedValue);
+        if (submittedHours != null) {
+            ((Date)date).setHours(submittedHours.intValue());
+        }
+        if (submittedMinutes != null) {
+            ((Date)date).setMinutes(submittedMinutes.intValue());    
+        }
+        return date;
+    }
+    
+    
+    void setHoursSubmittedValue(Object submittedHours) {
+        if (submittedHours == null)
+            this.submittedHours = null;
+        else
+            this.submittedHours = new Integer(submittedHours.toString());
+    }    
+    
+    void setMinutesSubmittedValue(Object submittedMinutes) {
+        if (submittedMinutes == null)
+            this.submittedMinutes = null;
+        else        
+            this.submittedMinutes = new Integer(submittedMinutes.toString());
     }
 }
