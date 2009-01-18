@@ -35,7 +35,9 @@ package org.icefaces.application.showcase.view.bean.examples.component.selectInp
 
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.GregorianCalendar;
 
@@ -43,6 +45,7 @@ import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 /**
  * <p>The SelectInputDateBean Class is used to store the selected dates from the
@@ -56,7 +59,9 @@ public class SelectInputDateBean extends BaseBean {
      */
     private Date date1=new Date();
     private Date date2=new Date();
-
+    private Date date3=new Date();
+    private String pattern ="date";
+    private List patterns = new ArrayList();
     // effect is fired when dat2 value is changed.  
     protected Effect valueChangeEffect2;
 
@@ -65,6 +70,8 @@ public class SelectInputDateBean extends BaseBean {
         valueChangeEffect2 = new Highlight("#fda505");
         valueChangeEffect2.setFired(true);
         date2 = new GregorianCalendar().getTime();
+        patterns.add(new SelectItem("date", "MM/dd/yyyy"));
+        patterns.add(new SelectItem("dateTime", "MMM/dd/yyyy HH:mm"));  
     }
 
     /**
@@ -128,6 +135,33 @@ public class SelectInputDateBean extends BaseBean {
      * @param event JSF value change event. 
      */
     public void effect2ChangeListener(ValueChangeEvent event){
+        System.out.println("Value change fired "+ event.getOldValue() + " : " + event.getNewValue());
         valueChangeEffect2.setFired(false);
     }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public List getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(List patterns) {
+        this.patterns = patterns;
+    }
+
+    public Date getDate3() {
+        return date3;
+    }
+
+    public void setDate3(Date date3) {
+        this.date3 = date3;
+    }
+    
+    
 }
