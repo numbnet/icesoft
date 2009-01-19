@@ -160,6 +160,10 @@
 
         <antcall target="jsf12" /> 
 
+        <available file="${lib.dir}/ext/jsf-api-2.0.jar" 
+                   property="jsf2.present" />
+        <antcall target="jsf2" /> 
+
     </target>
 
     <target name="jsf12" >
@@ -168,7 +172,18 @@
             <classpath location="${lib.dir}/jsf-api-1.2.jar"/>
             <classpath refid="compile.run.classpath"/>
             <src location="${src.dir}"/>
-            <include name="com/icesoft/faces/webapp/parser/ELSetPropertiesRule.java"/> 
+            <include name="com/icesoft/faces/webapp/parser/ELSetPropertiesRule.java"/>
+        </javac>
+    </target>
+
+    <target name="jsf2" if="jsf2.present" >
+        <javac destdir="${build.classes.dir}" sourcepath=""
+               debug="${compile.debug}" source="1.5" target="1.5" failonerror="false">
+            <classpath location="${lib.dir}/ext/jsf-api-2.0.jar"/>
+            <classpath location="${lib.dir}/ext/jsf-impl-2.0.jar"/>
+            <classpath refid="compile.run.classpath"/>
+            <src location="${src.dir}"/>
+            <include name="org/icefaces/x/context/BridgeFacesContext2.java"/>
         </javac>
     </target>
 
@@ -184,6 +199,7 @@
             <exclude name="com/icesoft/faces/webapp/parser/ELSetPropertiesRule.java"/>
             <exclude name="com/icesoft/faces/webapp/http/servlet/TomcatPushServlet.java"/>
             <exclude name="com/icesoft/faces/webapp/http/servlet/GrizzlyPushServlet.java"/>
+            <exclude name="org/icefaces/x/context/BridgeFacesContext2.java"/>
         </javac>
 
         <antcall target="compile15" />
