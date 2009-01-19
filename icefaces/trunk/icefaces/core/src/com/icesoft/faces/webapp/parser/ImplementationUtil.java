@@ -65,6 +65,7 @@ public class ImplementationUtil {
     private static boolean isRI = false;
     private static boolean isMyFaces = false;
     private static boolean isJSF12 = false;
+    private static boolean isJSF2 = false;
 
     /**
      * Marker classes whose presence we used to detect which implementation we
@@ -76,6 +77,8 @@ public class ImplementationUtil {
             "org.apache.myfaces.application.ApplicationImpl";
     private static String JSF12_MARKER =
             "javax.faces.webapp.UIComponentELTag";
+    private static String JSF2_MARKER =
+            "javax.faces.context.PartialViewContext";
 
     /**
      * In a couple of places, we need to access the component stack from the
@@ -118,6 +121,17 @@ public class ImplementationUtil {
             log.trace("JSF-12: " + isJSF12);
         }
 
+        //Test for JSF 2
+        try {
+            Class.forName(JSF2_MARKER);
+            isJSF2 = true;
+        } catch (Throwable t) {
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace("JSF-2: " + isJSF2);
+        }
+
     }
 
     /**
@@ -150,6 +164,14 @@ public class ImplementationUtil {
         return isJSF12;
     }
 
+    /**
+     * Identifies if the JSF implementation we are running in is JSF 2.x
+     *
+     * @return true if the JSF implementation is JSF 2.x
+     */
+    public static boolean isJSF2() {
+        return isJSF2;
+    }
 
     /**
      * Returns the key used to get the component stack from the PageContext. The

@@ -281,6 +281,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         lastViewID = viewRoot.getViewId();
         if (viewRoot != null) {
             final String path = viewRoot.getViewId();
+            //Likely an error condition, but allows JSF 2.0 to run
+            if (null == path)  { return; }
             if (PageTemplatePattern.matcher(path).matches()) {
                 //pointing this FacesContext to the new view
                 responseWriter = null;

@@ -15,11 +15,13 @@ import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.lang.reflect.Constructor;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,9 +57,14 @@ public class View implements CommandQueue {
                 if (facesContext != null) {
                     facesContext.dispose();
                 }
+            }
+            if (ImplementationUtil.isJSF2())  {
+                Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
+                Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
+                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[] {request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization});
+            } else {
                 facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization);
             }
-
             makeCurrent();
             request.respondWith(lifecycleResponseHandler);
         }
