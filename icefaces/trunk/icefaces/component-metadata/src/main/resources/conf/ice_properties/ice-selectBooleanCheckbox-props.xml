@@ -54,7 +54,7 @@
 </property>
 
 <property>
-<property-name>onclick</property-name>
+<property-name>onkeypress</property-name>
 <property-class>java.lang.String</property-class>
 <property-extension>
     <category>JAVASCRIPT</category>
