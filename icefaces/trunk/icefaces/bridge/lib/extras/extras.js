@@ -185,7 +185,8 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
                 if( tname == 'input' ||
                     tname == 'select' ||
                     tname == 'option' ||
-                    tname == 'a' )
+                    tname == 'a' ||
+                    tname == 'textarea')
                 {
                     return;
                 }
