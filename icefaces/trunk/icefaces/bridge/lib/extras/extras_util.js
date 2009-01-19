@@ -54,6 +54,11 @@ Ice.util = {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.top =  "-" + newElementX + "px";
         }
+    },
+    radioCheckboxEnter: function(form, component, evt) {
+        if (evt.keyCode == Event.KEY_RETURN) {
+            iceSubmit(form, component, evt);
+        }
     }
 };
 
