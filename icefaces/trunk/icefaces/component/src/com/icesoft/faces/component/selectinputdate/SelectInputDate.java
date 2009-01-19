@@ -166,6 +166,7 @@ public class SelectInputDate
     transient private Matcher timeMatcher;
     private Integer submittedHours = null;
     private Integer submittedMinutes = null;
+    private String submittedAmPm= null;    
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
@@ -653,7 +654,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[27];
+        Object values[] = new Object[28];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -680,7 +681,9 @@ public class SelectInputDate
         values[23] = selectedDayLink;
         values[24] = showPopup;
         values[25] = submittedHours;
-        values[26] = submittedMinutes;        
+        values[26] = submittedMinutes;  
+        values[27] = submittedAmPm;         
+        
         return ((Object) (values));
     }
 
@@ -715,7 +718,8 @@ public class SelectInputDate
         selectedDayLink = (String) values[23];
         showPopup = (List) values[24];
         submittedHours = (Integer)values[25];
-        submittedMinutes = (Integer)values[26];        
+        submittedMinutes = (Integer)values[26];  
+        submittedAmPm = (String)values[27];         
     }
 
     private Map linkMap = new HashMap();
@@ -1093,11 +1097,20 @@ public class SelectInputDate
     protected Object getConvertedValue(FacesContext context,
             Object newSubmittedValue) throws ConverterException {
         Object date = super.getConvertedValue(context, newSubmittedValue);
-        if (submittedHours != null) {
-            ((Date)date).setHours(submittedHours.intValue());
-        }
-        if (submittedMinutes != null) {
-            ((Date)date).setMinutes(submittedMinutes.intValue());    
+        if (isTime(context)) {
+            if (submittedHours != null) {
+                int[] hrs = getHours(context);
+                if (hrs.length < 13 &&submittedAmPm != null  && 
+                            "PM".equalsIgnoreCase(submittedAmPm.toString())) {
+                    ((Date)date).setHours(submittedHours.intValue() + 12);
+                } else {
+                    ((Date)date).setHours(submittedHours.intValue());
+                }
+                
+            }
+            if (submittedMinutes != null) {
+                ((Date)date).setMinutes(submittedMinutes.intValue());    
+            }
         }
         return date;
     }
@@ -1116,4 +1129,11 @@ public class SelectInputDate
         else        
             this.submittedMinutes = new Integer(submittedMinutes.toString());
     }
+    
+    void setAmPmSubmittedValue(Object submittedAmPm) {
+        if (submittedAmPm == null)
+            this.submittedAmPm = null;
+        else        
+            this.submittedAmPm = submittedAmPm.toString();
+    }    
 }

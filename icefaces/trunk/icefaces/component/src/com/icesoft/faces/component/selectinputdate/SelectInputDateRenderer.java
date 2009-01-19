@@ -114,7 +114,8 @@ public class SelectInputDateRenderer
     private static final String PREV_YEAR = "_py";
     private static final String NEXT_YEAR = "_ny";
     private static final String SELECT_HR = "_hr";
-    private static final String SELECT_MIN = "_min";    
+    private static final String SELECT_MIN = "_min";  
+    private static final String SELECT_AM_PM = "_amPm";    
 
     // constant for selectinputdate links
     private static final String CALENDAR = "_c_";
@@ -456,8 +457,8 @@ public class SelectInputDateRenderer
                     int amPm = timeKeeper.get(Calendar.AM_PM) ;                    
                     if (selectInputDate.isAmPm(facesContext)){
                         Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
-                        amPmElement.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                         
-                        amPmElement.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
+                        amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
+                        amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
                         amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
 
                         Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
@@ -1418,6 +1419,7 @@ public class SelectInputDateRenderer
         String yearClientId = clientId + SELECT_YEAR;
         String hoursClientId = clientId + SELECT_HR;
         String minutesClientId = clientId + SELECT_MIN;
+        String amPmClientId = clientId + SELECT_AM_PM;        
         if (requestParameterMap.containsKey(hoursClientId)) {
             dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
         }
@@ -1425,6 +1427,13 @@ public class SelectInputDateRenderer
         if (requestParameterMap.containsKey(minutesClientId)) {
             dateSelect.setMinutesSubmittedValue(requestParameterMap.get(minutesClientId));            
         }
+        
+        if (requestParameterMap.containsKey(amPmClientId)) {
+            dateSelect.setAmPmSubmittedValue(requestParameterMap.get(amPmClientId));            
+        } else {
+            dateSelect.setAmPmSubmittedValue(null);            
+        }
+        
         if (monthClientId.equals(eventCapturedId)) {
             dateSelect.setNavEvent(true);
             dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(monthClientId)));
