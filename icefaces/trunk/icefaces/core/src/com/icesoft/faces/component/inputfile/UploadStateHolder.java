@@ -15,6 +15,8 @@ public class UploadStateHolder implements Runnable {
     
     private UploadConfig uploadConfig;
     private FileInfo fileInfo;
+    private boolean asyncLifecycle;
+    private String iframeContent;
     
     public UploadStateHolder(UploadConfig uploadConfig, FileInfo fileInfo) {
         this.uploadConfig = uploadConfig;
@@ -27,6 +29,22 @@ public class UploadStateHolder implements Runnable {
     
     public FileInfo getFileInfo() {
         return fileInfo;
+    }
+    
+    public boolean isAsyncLifecycle() {
+        return asyncLifecycle;
+    }
+    
+    public void setAsyncLifecycle(boolean asyncLifecycle) {
+        this.asyncLifecycle = asyncLifecycle;
+    }
+        
+    public String getIframeContent() {
+        return iframeContent;
+    }
+    
+    public void setIframeContent(String iframeContent) {
+        this.iframeContent = iframeContent;
     }
 
     /**

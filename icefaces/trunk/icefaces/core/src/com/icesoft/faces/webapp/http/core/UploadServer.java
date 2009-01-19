@@ -113,8 +113,8 @@ public class UploadServer implements Server {
                                 uploadConfig,
                                 servletRequest.getSession().getServletContext(),
                                 servletRequest.getRequestedSessionId());
-                            boolean later = progressCalculator.doLifecycle();
-                            iframeContent = getResultingIframeContent(context, key, later);
+                            UploadStateHolder stateHolder = progressCalculator.doLifecycle();
+                            iframeContent = getResultingIframeContent(context, stateHolder);
                         } catch (IOException e) {
                             log.warn("File upload problem", e);
                         } catch (Throwable t) {
@@ -242,36 +242,27 @@ public class UploadServer implements Server {
                 log.debug("upload(-)  Method bottom");
             }
             
-            protected String getResultingIframeContent(BridgeFacesContext context, String key, boolean later) {
+            protected String getResultingIframeContent(BridgeFacesContext context, UploadStateHolder stateHolder) {
                 String iframeContent = null;
                 long startTime = System.currentTimeMillis();
                 do {
-                    UploadConfig finishedUploadConfig = null;
-                    Object sessionObj = context.getExternalContext().getSession(false);
-                    if (sessionObj != null) {
-                        synchronized(sessionObj) {
-                            Map map = context.getExternalContext().getSessionMap();
-                            finishedUploadConfig = (UploadConfig) map.get(key);
-                        }
-                    }
-                    iframeContent = finishedUploadConfig.getIframeContent();
+                    iframeContent = stateHolder.getIframeContent();
                     if (log.isDebugEnabled()) {
                         log.debug("getResultingIframeContent()");
                         log.debug("vvvvvvvvvvvvvvvvvvvvvvvvvvv");
                         log.debug(iframeContent);
                         log.debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                     }
-                    finishedUploadConfig.setIframeContent(null);
                     if (iframeContent != null) {
                         break;
                     }
                     
                     long now = System.currentTimeMillis();
-                    if ((now - startTime) >= 10000L) {
+                    if ((now - startTime) >= 5000L) {
                         break;
                     }
-                    try { Thread.sleep(10L); } catch(InterruptedException e) {}
-                } while(later);
+                    try { Thread.sleep(100L); } catch(InterruptedException e) {}
+                } while(stateHolder.isAsyncLifecycle());
                 return iframeContent;
             }
             
@@ -355,10 +346,12 @@ public class UploadServer implements Server {
         }
 
         /**
-         * @return true if the lifecycle will happen on another thread, asynchronously
+         * @return UploadStateHolder encapsulating whether the lifecycle will 
+         * happen on another thread, asynchronously, as well as the rendered 
+         * IFRAME content, which is necessary for the Servlet Response
          */
-        public boolean doLifecycle() {
-            boolean later = false;
+        public UploadStateHolder doLifecycle() {
+            UploadStateHolder stateHolder = null;
             try {
                 if (log.isDebugEnabled())
                     log.debug("UploadServer  doLifecycle :: " + uploadConfig.getClientId() + " in form '"+uploadConfig.getFormClientId()+"'" + " -> " + fileInfo);
@@ -369,26 +362,28 @@ public class UploadServer implements Server {
                 // but that can cause the SAVED actionListener to be called
                 // more than once, which can corrupt the applications's
                 // data model.
-                UploadStateHolder stateHolder = new UploadStateHolder(
+                stateHolder = new UploadStateHolder(
                     uploadConfig, (FileInfo) fileInfo.clone());
                 
                 // Seam throws spurious exceptions with PFS.renderLater
                 //  so we'll work-around that for now. Fix later.
                 if (SeamUtilities.isSeamEnvironment() ||
                     SeamUtilities.isSpringEnvironment()) {
+                    stateHolder.setAsyncLifecycle(false);
                     stateHolder.install();
                     state.setupAndExecuteAndRender();
                     state.setAllCurrentInstances();
                 }
                 else {
+                    stateHolder.setAsyncLifecycle(true);
                     state.renderLater(stateHolder, false);
-                    later = true;
+                    Thread.yield();
                 }
             }
             catch(Exception e) {
                 log.warn("Problem rendering view during file upload", e);
             }
-            return later;
+            return stateHolder;
         }
     }
 }

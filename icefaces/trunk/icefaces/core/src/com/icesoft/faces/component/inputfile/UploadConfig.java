@@ -26,8 +26,6 @@ public class UploadConfig implements Serializable {
     private Boolean uploadDirectoryAbsolute;
     private boolean progressRender;
     private boolean progressListener;
-    
-    private String iframeContent;
 
     /**
      * InputFile uses this for publishing its own property configuration
@@ -134,14 +132,6 @@ public class UploadConfig implements Serializable {
         return progressListener;
     }
     
-    public String getIframeContent() {
-        return iframeContent;
-    }
-    
-    public void setIframeContent(String content) {
-        iframeContent = content;
-    }
-    
     public String toString() {
         return
             "UploadConfig: {" +
@@ -154,7 +144,6 @@ public class UploadConfig implements Serializable {
             ",\n  uploadDirectoryAbsolute=" + uploadDirectoryAbsolute +
             ",\n  progressRender=" + progressRender +
             ",\n  progressListener=" + progressListener +
-            ",\n  iframeContent.length=" + ((iframeContent == null) ? -1 : iframeContent.length()) +
             "\n}";        
     }
 }
