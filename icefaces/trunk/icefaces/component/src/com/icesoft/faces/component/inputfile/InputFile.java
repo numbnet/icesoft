@@ -169,59 +169,39 @@ public class InputFile extends UICommand implements Serializable {
     }
 
     /**
-     * After file upload finishes, we get our IFRAME response for the current
-     * upload, and the UploadConfig for any subsequent file upload. When in 
-     * asynchronous mode InputFileRenderer uses this method to do so.
+     * When we're rendering after the actionListener has fired, in the
+     * last lifecycle for a file upload, capture the iframeContent,
+     * so we can send that back in the passed-in UploadStateHolder.
+     * 
+     * We leave the InputFile's most up-to-date configuration in the
+     * session, so that when a file upload starts, we'll already have what
+     * we need to begin processing it.
      * 
      * @return The UploadConfig that was put into the session
      */
-    UploadConfig asyncModeInstallComponentUploadConfigIntoSession(
+    protected UploadConfig storeContentAndConfig(
         BridgeFacesContext facesContext,
-        String iframeContent,
-        String clientId)
+        String clientId,
+        String iframeContent)
     {
         // This is called every render, so we have to see if it's the render
         // after the file upload has completed, and the listeners have fired.
-        // If not, don't set the iframeContent into the session.
+        // If not, don't set the iframeContent into the UploadStateHolder.
         Map parameterMap =
             facesContext.getExternalContext().getRequestParameterMap();
         UploadStateHolder uploadState =
             (UploadStateHolder) parameterMap.get(clientId);
-        if (uploadState == null || !uploadState.getFileInfo().isFinished()) {
-            iframeContent = null;
+        if (uploadState != null && uploadState.getFileInfo().isFinished()) {
+            uploadState.setIframeContent(iframeContent);
         }
-        return installComponentUploadConfigIntoSession(
-            facesContext, iframeContent);
-    }
-    
-    /**
-     * We leave the InputFile's most up-to-date configuration in the
-     * session, so that when a file upload starts, we'll already have what
-     * we need to begin processing it.
-     *
-     * When we're rendering after the actionListener has fired, in the
-     * last lifecycle for a file upload, capture the iframeContent,
-     * so we can send that back as the UploadServer response.
-     * 
-     * @param facesContext BridgeFacesContext
-     * @param iframeContent The content that renderIFrame(-) generates
-     * @return The UploadConfig that was put into the session
-     */
-    private UploadConfig installComponentUploadConfigIntoSession(BridgeFacesContext facesContext, String iframeContent) {
-        if (log.isDebugEnabled())
-            log.debug("InputFile.installComponentUploadConfigIntoSession");
         UploadConfig uploadConfig = getComponentUploadConfig();
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {
                 Map map = (Map) facesContext.getExternalContext().getSessionMap();
-                String clientId = getClientId(facesContext);
                 String key = facesContext.getViewNumber() + " " + clientId;
                 if (log.isDebugEnabled())
                     log.debug("  session map key: " + key);
-                if (iframeContent != null) {
-                    uploadConfig.setIframeContent(iframeContent);
-                }
                 map.put(key, uploadConfig);
             }
         }
@@ -230,7 +210,7 @@ public class InputFile extends UICommand implements Serializable {
         return uploadConfig;
     }
     
-    public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
+    protected void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
         writer.write("<html style=\"overflow:hidden;\">");
         ArrayList outputStyleComponents = findOutputStyleComponents(context.getViewRoot());
         if (outputStyleComponents != null) {

@@ -67,8 +67,8 @@ public class InputFileRenderer extends Renderer {
         String pseudoURL = "javascript: document.write('" + iframeContent.replaceAll("\"", "%22") + "'); document.close();";
         
         UploadConfig uploadConfig =
-            c.asyncModeInstallComponentUploadConfigIntoSession(
-                facesContext, iframeContent, id);
+            c.storeContentAndConfig(
+                facesContext, id, iframeContent);
         
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
