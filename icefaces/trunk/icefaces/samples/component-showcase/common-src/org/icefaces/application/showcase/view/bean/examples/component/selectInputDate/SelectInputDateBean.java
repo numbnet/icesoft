@@ -60,6 +60,7 @@ public class SelectInputDateBean extends BaseBean {
     private Date date1=new Date();
     private Date date2=new Date();
     private Date date3=new Date();
+    private Date date4=new Date();    
     private String pattern ="date";
     private List patterns = new ArrayList();
     // effect is fired when dat2 value is changed.  
@@ -71,7 +72,10 @@ public class SelectInputDateBean extends BaseBean {
         valueChangeEffect2.setFired(true);
         date2 = new GregorianCalendar().getTime();
         patterns.add(new SelectItem("date", "MM/dd/yyyy"));
-        patterns.add(new SelectItem("dateTime", "MMM/dd/yyyy HH:mm"));  
+        patterns.add(new SelectItem("dateTime", "MMM/dd/yyyy HH:mm"));
+        patterns.add(new SelectItem("dateTimeAmPm", "MMM/dd/yyyy hh:mm a"));
+
+        
     }
 
     /**
@@ -161,6 +165,14 @@ public class SelectInputDateBean extends BaseBean {
 
     public void setDate3(Date date3) {
         this.date3 = date3;
+    }
+
+    public Date getDate4() {
+        return date4;
+    }
+
+    public void setDate4(Date date4) {
+        this.date4 = date4;
     }
     
     
