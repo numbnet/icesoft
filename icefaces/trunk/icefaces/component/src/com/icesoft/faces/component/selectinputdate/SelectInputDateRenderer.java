@@ -422,12 +422,11 @@ public class SelectInputDateRenderer
                         hr = timeKeeper.get(Calendar.HOUR);
                     }
                     int min = timeKeeper.get(Calendar.MINUTE);
-
                     for (int i = 0; i < hrs.length; i++ ) {
                         Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
                         Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
                         hoursOption.appendChild(hourText);
-                        if (hrs[i] == hr) {
+                        if ((hrs[0]==1 && hr == 0) || hrs[i] == hr) {
                             hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
                         }
                         hours.appendChild(hoursOption);
