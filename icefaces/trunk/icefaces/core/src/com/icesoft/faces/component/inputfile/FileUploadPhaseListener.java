@@ -3,11 +3,14 @@ package com.icesoft.faces.component.inputfile;
 import javax.faces.event.PhaseListener;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.ActionEvent;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.icesoft.faces.application.D2DViewHandler;
 
 /**
  * @author mcollette
@@ -39,8 +42,23 @@ public class FileUploadPhaseListener implements PhaseListener {
                     FacesContext context = phaseEvent.getFacesContext();
                     Map parameterMap = context.getExternalContext().
                         getRequestParameterMap();
-                    parameterMap.put(formClientId, formClientId);
+                    //parameterMap.put(formClientId, formClientId);
                     parameterMap.put(clientId, stateHolder);
+                    
+                    UIComponent inputFile = D2DViewHandler.findComponent(
+                        clientId, phaseEvent.getFacesContext().getViewRoot());
+                    if (inputFile != null) {
+                        inputFile.getAttributes().put("fileInfo", fileInfo);
+                        inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
+                        if (fileInfo.isSaved()) {
+                            inputFile.queueEvent( new InputFileSetFileEvent(inputFile) );
+                        }
+                        if (fileInfo.isFinished()) {
+                            ActionEvent event = new ActionEvent(inputFile);
+                            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                            inputFile.queueEvent(event);
+                        }
+                    }
                 }
             }
         }

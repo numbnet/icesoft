@@ -762,9 +762,9 @@ public class InputFile extends UICommand implements Serializable {
 
     /**
      * Not to be called by applications. Used internally between the
-     * UploadServer, InputFile and InputFileRenderer.
+     * UploadServer, InputFile and FileUploadPhaseListener.
      */
-    void setFileInfo(FileInfo fileInfo) {
+    public void setFileInfo(FileInfo fileInfo) {
         if (log.isDebugEnabled())
             log.debug("#### InputFile.setFileInfo()  fileInfo: " + fileInfo);
         this.fileInfo = fileInfo;
@@ -1076,24 +1076,23 @@ public class InputFile extends UICommand implements Serializable {
         }
     }
     
-    //TODO Remove this method
+    /*
     public void processDecodes(FacesContext context) {
         if (log.isDebugEnabled())
             log.debug("InputFile.processDecode()  clientId: " + getClientId(context));
         super.processDecodes(context);
     }
     
-    //TODO Remove this method
     public void processUpdates(FacesContext context) {
         if (log.isDebugEnabled())
             log.debug("InputFile.processUpdates()  clientId: " + getClientId(context));
         super.processUpdates(context);
     }
     
-    //TODO Remove this method
     public void processValidators(FacesContext context) {
         if (log.isDebugEnabled())
             log.debug("InputFile.processValidators()  clientId: " + getClientId(context));
         super.processValidators(context);
     }
+    */
 }
