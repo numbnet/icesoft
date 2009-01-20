@@ -103,7 +103,9 @@ public class InputFileRenderer extends Renderer {
             writer.writeAttribute("id", id, null);
             writer.writeText(
                 "var register = function() {" +
-                        "var frame = document.getElementById('" + frameName + "').contentWindow;" +
+                        "var frameElem = document.getElementById('" + frameName + "');" +
+                        "if(!frameElem) { return; }" +
+                        "var frame = frameElem.contentWindow;" +
                         "var submit = function() { " +
                             "if(arguments.length == 1 && arguments[0] == 1) { " +
                                 ( postUpload
@@ -114,7 +116,7 @@ public class InputFileRenderer extends Renderer {
                                 ( preUpload
                                   ? ("Ice.InputFileIdPreUpload = '" + id + "'; Ice.InputFileIdPostUpload = null;")
                                   : "return;" ) +
-                            " } try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
+                            " } try { if(document.getElementById('"+id+"')) { '" + id + "'.asExtendedElement().form().submit(); } } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
                         //trigger form submit when the upload starts
                         "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
                         //trigger form submit when the upload ends and re-register handlers
