@@ -167,28 +167,12 @@ public class InputFileRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent component) {
         super.decode(facesContext, component);
         
-        Map parameter = facesContext.getExternalContext().getRequestParameterMap();
         InputFile inputFile = (InputFile) component;
-        String clientId = component.getClientId(facesContext);
-        
-        UploadStateHolder stateHolder =
-            (UploadStateHolder) parameter.get(clientId);
-        if (stateHolder != null) {
-            inputFile.setFileInfo(stateHolder.getFileInfo());
-            inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
-            if (stateHolder.getFileInfo().isSaved()) {
-                inputFile.queueEvent( new InputFileSetFileEvent(inputFile) );
-            }
-            if (stateHolder.getFileInfo().isFinished()) {
-                ActionEvent event = new ActionEvent(inputFile);
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-                inputFile.queueEvent(event);
-            }
-        }
-        
         inputFile.setPreUpload(false);
         inputFile.setPostUpload(false);
         
+        Map parameter = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = component.getClientId(facesContext);
         String preUpload = (String) parameter.get("ice.inputFile.preUpload");
         String postUpload = (String) parameter.get("ice.inputFile.postUpload");
         if (preUpload != null && preUpload.length() > 0) {
