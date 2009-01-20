@@ -53,3 +53,16 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+<property-name>onkeypress</property-name>
+<property-class>java.lang.String</property-class>
+<property-extension>
+    <category>JAVASCRIPT</category>
+    <is-hidden>true</is-hidden>
+    <editor-class>
+        &javascriptEditor;
+    </editor-class>
+    <default-value>"Ice.util.radioCheckboxEnter(form,this,event);"</default-value>    
+</property-extension>
+</property>
