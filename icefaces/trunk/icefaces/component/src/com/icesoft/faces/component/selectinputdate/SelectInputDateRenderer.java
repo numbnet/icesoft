@@ -59,6 +59,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 //import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -255,6 +256,8 @@ public class SelectInputDateRenderer
             clientId = uiComponent.getClientId(facesContext);
             if (uiComponent.getId() != null)
                 root.setAttribute("id", clientId + ROOT_DIV);
+
+            Element table = domContext.createElement(HTML.TABLE_ELEM);            
             if (selectInputDate.isRenderAsPopup()) {
                 if (log.isTraceEnabled()) {
                     log.trace("Render as popup");
@@ -390,7 +393,6 @@ public class SelectInputDateRenderer
                           "position:absolute;z-index:10;");
                 addAttributeToElementFromResource(facesContext,
                     POPUP_CALENDAR_TITLE, calendarDiv, HTML.TITLE_ATTR);
-                Element table = domContext.createElement(HTML.TABLE_ELEM);
                 table.setAttribute(HTML.ID_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.NAME_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.CLASS_ATTR,
@@ -405,80 +407,6 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.ONMOUSEOUT_ATTR, mouseOut);
                 String mouseMove = selectInputDate.getOnmousemove();
                 table.setAttribute(HTML.ONMOUSEMOVE_ATTR, mouseMove);
-                if (selectInputDate.isTime(facesContext)) {
-                    Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
-                    Element tr = domContext.createElement(HTML.TR_ELEM);
-                    Element td = domContext.createElement(HTML.TD_ELEM);
-                    td.setAttribute(HTML.COLSPAN_ATTR, "7");
-                    td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
-                    Element hours = domContext.createElement(HTML.SELECT_ELEM);
-                    hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HR);
-                    hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HR);
-                    hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-                    int hrs[] = selectInputDate.getHours(facesContext);
-                    int hr = 0;
-                    if (hrs.length > 12) {
-                        hr = timeKeeper.get(Calendar.HOUR_OF_DAY);
-                    } else {
-                        hr = timeKeeper.get(Calendar.HOUR);
-                    }
-                    int min = timeKeeper.get(Calendar.MINUTE);
-                    for (int i = 0; i < hrs.length; i++ ) {
-                        Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
-                        Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
-                        hoursOption.appendChild(hourText);
-                        if ((hrs[0]==1 && hr == 0) || hrs[i] == hr) {
-                            hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
-                        }
-                        hours.appendChild(hoursOption);
-                    }
-                    Element minutes = domContext.createElement(HTML.SELECT_ELEM);
-                    minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
-                    minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
-                    minutes.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-
-                    for (int i = 0; i < 60; i++ ) {
-                        Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
-                        Text minuteText = domContext.createTextNode(String.valueOf(i));
-                        minutesOption.appendChild(minuteText);
-                        if (i == min) {
-                            minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
-                        }
-                        minutes.appendChild(minutesOption);
-                    }
-                    
-                    Text colon = domContext.createTextNode(":"); 
-                    tfoot.appendChild(tr);
-                    tr.appendChild(td);
-                    td.appendChild(hours);
-                    td.appendChild(colon);
-                    td.appendChild(minutes);
-                    
-                    int amPm = timeKeeper.get(Calendar.AM_PM) ;                    
-                    if (selectInputDate.isAmPm(facesContext)){
-                        Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
-                        amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
-                        amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
-                        amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-
-                        Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
-                        Text amPmElementText = domContext.createTextNode("AM");
-                        amPmElementOption.appendChild(amPmElementText);
-
-                        Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
-                        Text amPmElementText2 = domContext.createTextNode("PM");
-                        amPmElementOption2.appendChild(amPmElementText2);
-                        if (amPm == 0) {
-                            amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
-                        } else {
-                            amPmElementOption2.setAttribute(HTML.SELECTED_ATTR, "true");                                
-                        }
-                        amPmElement.appendChild(amPmElementOption);                            
-                        amPmElement.appendChild(amPmElementOption2);
-                        td.appendChild(amPmElement);
-                    }
-                    table.appendChild(tfoot);
-                }                
                 
                 addAttributeToElementFromResource(facesContext,
                     POPUP_CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
@@ -496,7 +424,6 @@ public class SelectInputDateRenderer
                 if (log.isTraceEnabled()) {
                     log.trace("Select input Date Normal");
                 }
-                Element table = domContext.createElement(HTML.TABLE_ELEM);
                 table.setAttribute(HTML.ID_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.NAME_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.CLASS_ATTR,
@@ -526,6 +453,84 @@ public class SelectInputDateRenderer
                                       clientId + SelectInputDate.CALENDAR_INPUTTEXT);
                 root.appendChild(dateText);
             }
+
+            if (selectInputDate.isTime(facesContext)) {
+                Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
+                Element tr = domContext.createElement(HTML.TR_ELEM);
+                Element td = domContext.createElement(HTML.TD_ELEM);
+                td.setAttribute(HTML.COLSPAN_ATTR, "7");
+                td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
+                Element hours = domContext.createElement(HTML.SELECT_ELEM);
+                hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HR);
+                hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HR);
+                hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                hours.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                int hrs[] = selectInputDate.getHours(facesContext);
+                int hr = 0;
+                if (hrs.length > 12) {
+                    hr = timeKeeper.get(Calendar.HOUR_OF_DAY);
+                } else {
+                    hr = timeKeeper.get(Calendar.HOUR);
+                }
+                int min = timeKeeper.get(Calendar.MINUTE);
+                for (int i = 0; i < hrs.length; i++ ) {
+                    Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
+                    Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
+                    hoursOption.appendChild(hourText);
+                    if ((hrs[0]==1 && hr == 0) || hrs[i] == hr) {
+                        hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                    }
+                    hours.appendChild(hoursOption);
+                }
+                Element minutes = domContext.createElement(HTML.SELECT_ELEM);
+                minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
+                minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
+                minutes.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                minutes.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                for (int i = 0; i < 60; i++ ) {
+                    Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
+                    Text minuteText = domContext.createTextNode(String.valueOf(i));
+                    minutesOption.appendChild(minuteText);
+                    if (i == min) {
+                        minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                    }
+                    minutes.appendChild(minutesOption);
+                }
+                
+                Text colon = domContext.createTextNode(":"); 
+                tfoot.appendChild(tr);
+                tr.appendChild(td);
+                td.appendChild(hours);
+                td.appendChild(colon);
+                td.appendChild(minutes);
+                
+                int amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+                if (selectInputDate.isAmPm(facesContext)){
+                    Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
+                    amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
+                    amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
+                    amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                    amPmElement.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+
+                    Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
+                    Text amPmElementText = domContext.createTextNode("AM");
+                    amPmElementOption.appendChild(amPmElementText);
+
+                    Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
+                    Text amPmElementText2 = domContext.createTextNode("PM");
+                    amPmElementOption2.appendChild(amPmElementText2);
+                    if (amPm == 0) {
+                        amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                    } else {
+                        amPmElementOption2.setAttribute(HTML.SELECTED_ATTR, "true");                                
+                    }
+                    amPmElement.appendChild(amPmElementOption);                            
+                    amPmElement.appendChild(amPmElementOption2);
+                    td.appendChild(amPmElement);
+                }
+                table.appendChild(tfoot);
+            }                
+            
         }
         clientId = uiComponent.getClientId(facesContext);
 
