@@ -101,7 +101,19 @@ The following example shows how to override the default calendar images using th
 	renderAsPopup="true" /&gt;
 
 </pre>
+<p>
+<div style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
+ Time Entery: </div> Having time pattern letters in date converter, brings input elements for time.
+ </p>
+<pre>
+        &lt;ice:selectInputDate id="calendar"
+                             value="#{testBean.date}"
+                        &gt;
+            &lt;f:convertDateTime pattern="MM/dd/yyyy hh:mm a"
+                               timeZone="#{testBean.timeZone}"/&gt;
+        &lt;/ice:selectInputDate&gt;
 
+</pre>
 <div
 style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
 Tag Summary<span
