@@ -159,7 +159,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
     var ctrlKyFld = $(hdnFld+'ctrKy');
     var sftKyFld = $(hdnFld+'sftKy');  
     if (ctrlKyFld && event){
-        ctrlKyFld.value = event.ctrlKey;
+        ctrlKyFld.value = event.ctrlKey || event.metaKey;
     } 
     if (sftKyFld && event){
         sftKyFld.value = event.shiftKey;
