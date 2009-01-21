@@ -268,7 +268,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 facesContext, uiComponent,
                 inputElement, rootTable,
                 selectManyCheckboxPassThruAttributes);
-      
+
+        inputElement.setAttribute("onkeypress", combinedPassThru((String) uiComponent.getAttributes().get("onkeypress"),
+                "Ice.util.radioCheckboxEnter(form,this,event);"));
     }
 
     protected void renderOption(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -337,7 +339,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 facesContext,
                 uiComponent,
                 input,
-                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ;  
+                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ;
+        input.setAttribute("onkeypress", combinedPassThru((String) selectMany.getAttributes().get("onkeypress"),
+                "Ice.util.radioCheckboxEnter(form,this,event);"));
         rootNode.appendChild(input);
         rootNode.appendChild(label);
 

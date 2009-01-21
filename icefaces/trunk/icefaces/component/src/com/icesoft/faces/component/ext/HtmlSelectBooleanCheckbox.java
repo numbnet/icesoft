@@ -566,15 +566,6 @@ public class HtmlSelectBooleanCheckbox
         visible = (Boolean) values[21];
         autocomplete = (String) values[22];
     }
-
-    public String getOnkeypress() {
-        String onkeypress = super.getOnkeypress();
-        if (onkeypress == null) onkeypress = "";
-        onkeypress = onkeypress.trim();
-        if (onkeypress.length() > 0) onkeypress += ";";
-        onkeypress += "Ice.util.radioCheckboxEnter(form,this,event);";
-        return onkeypress;
-    }
 }
 
 
