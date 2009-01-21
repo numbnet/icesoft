@@ -248,15 +248,16 @@
 </property>
 <property>
     <description>
-        <![CDATA[<p> When enhancedMultiple is true, it allows following selection:
+        <![CDATA[<p> When enhancedMultiple is true, it allows following selection
+        behaviour:
             <ul>
                 <li> "Click" selects clicked row and deselects rest </li>
                 <li> "Click + Ctrl" flip the selection of clicked row and keeps 
                 previous selection intact</li>
-                <li> "Click + Shift" selects all rows from last clicked rows to 
+                <li> "Click + Shift" selects all rows from last clicked row to 
                 newly clicked row, and deselect rest</li>
                 <li> "Click + Shift + Ctrl" selects all rows from last clicked 
-                rows to newly clicked row and keeps previous selection intact</li>
+                row to newly clicked row and keeps previous selection intact</li>
             </ul>          
         </p>]]>
     </description>
