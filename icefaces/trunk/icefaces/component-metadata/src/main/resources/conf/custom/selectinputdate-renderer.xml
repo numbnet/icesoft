@@ -72,8 +72,12 @@
             </p>            
             
 			NOTE: all 3 highlight attributes should have a corresponding values.<br/>
-		          The action and actionListener will only be fired, when "enter" being pressed on a input text in a popup mode.	
-            </p>
+                  The action and actionListener will only be fired, when "enter" 
+                  being pressed on a input text in a popup mode.<br/><br/> 
+
+            Time Entery: Having time pattern letters in date converter, brings input 
+		      elements for time.	
+
             ]]>
 	</description>
 	<component-family>javax.faces.Input</component-family>
