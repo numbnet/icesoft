@@ -35,14 +35,17 @@ package com.icesoft.faces.component.menupopup;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ContextActionEvent;
+import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.menubar.MenuBar;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 import javax.faces.component.UIComponent;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
 
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;;
 
 
@@ -66,6 +69,9 @@ import javax.faces.el.ValueBinding;;
  * @author Mark Collette
  */
 public class MenuPopup extends MenuBar {
+
+    private MethodBinding displayListener;
+    final static String PROGRESS_LISTENER_ID = "_dynamic"; 
     /**
      * default no args constructor
      */
@@ -169,9 +175,10 @@ public class MenuPopup extends MenuBar {
     
     public Object saveState(FacesContext context) {
     
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = hideOn;
+        values[2] = saveAttachedState(context, displayListener);        
         return values;
     }
     
@@ -180,6 +187,31 @@ public class MenuPopup extends MenuBar {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         hideOn = (String) values[1];
+        displayListener = (MethodBinding)restoreAttachedState(context, values[2]);
+        
     }
+    
+    /**
+     * <p>Return the value of the <code>displayListener</code> property.</p>
+     */
+    public MethodBinding getDisplayListener() {
+        return displayListener;
+    }
+
+    /**
+     * <p>Set the value of the <code>displayListener</code> property.</p>
+     */
+    public void setDisplayListener(MethodBinding displayListener) {
+        this.displayListener = displayListener;
+   }
+    
+    public void broadcast(FacesEvent event)
+    throws AbortProcessingException {
+        super.broadcast(event);
+        if (displayListener != null) {
+            Object[] displayEvent = {(DisplayEvent) event};
+            displayListener.invoke(getFacesContext(), displayEvent);
+        }
+    }    
 }
 

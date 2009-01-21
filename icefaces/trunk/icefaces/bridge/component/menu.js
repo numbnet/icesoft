@@ -107,6 +107,7 @@ Ice.Menu = {
             Ice.Menu.showMenuWithId(submenu);
             var styleLeft = showX + "px";
             submenu.style.left = styleLeft;
+            
             var styleTop = showY  + "px";
             submenu.style.top = styleTop;
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
@@ -127,7 +128,8 @@ Ice.Menu = {
         }
         iframe.clonePosition(menuDiv).show();
     },
-    contextMenuPopup: function(event, popupMenu) {
+    contextMenuPopup: function(event, popupMenu, targComp) {
+        var dynamic = $(popupMenu + "_dynamic");
         if(!event) {
         	event = window.event;
         }
@@ -151,11 +153,24 @@ Ice.Menu = {
                 posy = event.clientY + document.body.scrollTop
                     + document.documentElement.scrollTop;
             }
+            if (dynamic) {
+                    dynamic.value = posx +", "+ posy + ", "+ popupMenu + ", "+ targComp;
+                try {
+                    var form = Ice.util.findForm(dynamic);
+                    iceSubmitPartial(form,dynamic,event);
+                } catch (e) {logger.info("Form not found" + e);}
+                return;
+            }
             
-            Ice.Menu.showPopup(posx, posy, popupMenu);
-            Event.observe(document, "click", Ice.Menu.hidePopupMenu);
+           Ice.Menu.showIt(posx, posy, popupMenu, targComp);
         }
     },
+    showIt: function(posx, posy, popupMenu, targComp) {
+            Ice.Menu.showPopup(posx, posy, popupMenu.strip());
+            Event.observe(document, "click", Ice.Menu.hidePopupMenu);
+            Ice.Menu.setMenuContext(targComp.strip());    
+    },
+    
     setMenuContext: function(mnuCtx) {
         if(Ice.Menu.menuContext == null) {
             Ice.Menu.menuContext = mnuCtx;
