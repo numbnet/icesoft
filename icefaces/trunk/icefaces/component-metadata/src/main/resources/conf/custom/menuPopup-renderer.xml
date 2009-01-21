@@ -35,7 +35,14 @@
 <renderer>
 	<description>
         <![CDATA[
-        <p>menuPopup</p>
+        <p> A context sensitive popup menu providing popup nested child menus</p>
+        <p> By default the menuPopup doesn't cause any submit when displayed by 
+        the right click, that is why its contents can be static only but it could be 
+        dynamic by just registering the displayListener on it. The displayEvent 
+        gives the target component as well as the clientId of the target 
+        component in form of contextValue, which then can be use to produce dynamic 
+        contents.
+        </p>
         ]]>
 	</description>
 	<component-family>com.icesoft.faces.MenuPopup</component-family>

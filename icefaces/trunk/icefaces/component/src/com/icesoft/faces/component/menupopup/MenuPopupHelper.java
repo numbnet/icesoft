@@ -20,16 +20,13 @@ public class MenuPopupHelper {
         UIComponent menuPopup = findMenuPopup(comp);
         if(menuPopup != null) {
             String menuPopupClientId = menuPopup.getClientId(facesContext);
+            String originatorClientId = comp.getClientId(facesContext);
 //System.out.println("MenuPopupHelper.renderMenuPopupHandler()  menuPopupClientId: " + menuPopupClientId);
             handler.append("Ice.Menu.contextMenuPopup(event, '");
             handler.append(menuPopupClientId);
-            handler.append("_sub');");
-            
-            String originatorClientId = comp.getClientId(facesContext);
-            handler.append("Ice.Menu.setMenuContext('");
-            handler.append(originatorClientId);
-            handler.append("');");
-            
+            handler.append("_sub', '");
+            handler.append(originatorClientId);            
+            handler.append("');");            
             handler.append("return false;");
         }
         

@@ -32,6 +32,7 @@
   ~
   -->
 &ice-cust-menu-props;
+&ice-att-displayListener-props;
 <property>
     <description>
         <![CDATA[
