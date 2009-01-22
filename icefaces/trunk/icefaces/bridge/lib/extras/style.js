@@ -238,9 +238,9 @@ Ice.autoCentre = {
     start:function(target) {
         Ice.autoCentre.id = target;
         var s = document.getElementById(target).style;
-        s.visibility = 'hidden';
+        if (!Prototype.Browser.IE) s.visibility = 'hidden';
         Ice.autoCentre.keepCentred();
-        s.visibility = 'visible';
+        if (!Prototype.Browser.IE) s.visibility = 'visible';
         Event.observe(window, 'resize', Ice.autoCentre.keepCentred);
         Event.observe(window, 'scroll', Ice.autoCentre.keepCentred);
     },
@@ -274,9 +274,9 @@ Ice.autoPosition = {
         Ice.autoPosition.xPos = x;
         Ice.autoPosition.yPos = y;
         var s = document.getElementById(target).style;
-        s.visibility = 'hidden';
+        if (!Prototype.Browser.IE) s.visibility = 'hidden';
         Ice.autoPosition.keepPositioned();
-        s.visibility = 'visible';
+        if (!Prototype.Browser.IE) s.visibility = 'visible';
         Event.observe(window, 'scroll', Ice.autoPosition.keepPositioned);
     },
     stop:function(target) {
