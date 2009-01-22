@@ -2587,11 +2587,11 @@ Disabled classes for the calendar controls
     color: white;
 }
 .iceRowSelMouseOver {
-    color: #FFA326;
+    color: white;
     background: #4591A1;
 }
 .iceRowSelMouseOver .iceOutTxt {
-    color: #FFA326;
+    color: white;
 }
 
 /*
