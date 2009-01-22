@@ -93,9 +93,9 @@ The calendar images must be named as follows;
 The following example shows how to override the default calendar images using the imageDir tag attribute.
 </p>
 
-<pre>
+<pre class="Preformatted">
 
-&lt; ice:selectInputDate id="calendar2"
+&lt;ice:selectInputDate id="calendar2"
 	value="#{testBean.date2}"
 	imageDir="./images/"
 	renderAsPopup="true" /&gt;
@@ -103,15 +103,14 @@ The following example shows how to override the default calendar images using th
 </pre>
 <p>
 <div style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
- Time Entery: </div> Having time pattern letters in date converter, brings input elements for time.
+ Time Entry: </div> Specifying time pattern letters in the date converter add input elements for time to the component.
  </p>
-<pre>
-        &lt;ice:selectInputDate id="calendar"
-                             value="#{testBean.date}"
-                        &gt;
-            &lt;f:convertDateTime pattern="MM/dd/yyyy hh:mm a"
-                               timeZone="#{testBean.timeZone}"/&gt;
-        &lt;/ice:selectInputDate&gt;
+<pre class="Preformatted">
+ &lt;ice:selectInputDate id="calendar"
+ 	value="#{testBean.date}"&gt;
+	&lt;f:convertDateTime pattern="MM/dd/yyyy hh:mm a"
+			timeZone="#{testBean.timeZone}"/&gt;
+ &lt;/ice:selectInputDate&gt;
 
 </pre>
 <div
