@@ -208,10 +208,16 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void writeText(Object text, String componentPropertyName)
             throws IOException {
+        if ("".equals(text))  {
+            return;
+        }
         appendToCursor(document.createTextNode(String.valueOf(text)));
     }
 
     public void writeText(char text[], int off, int len) throws IOException {
+        if (0 == len)  {
+            return;
+        }
         appendToCursor(document.createTextNode(new String(text, off, len)));
     }
 
@@ -236,6 +242,9 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void write(char[] cbuf, int off, int len) throws IOException {
+        if (0 == len)  {
+            return;
+        }
         appendToCursor(document.createTextNode(new String(cbuf, off, len)));
     }
 
@@ -244,10 +253,16 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void write(String str) throws IOException {
+        if ("".equals(str))  {
+            return;
+        }
         appendToCursor(document.createTextNode(str));
     }
 
     public void write(String str, int off, int len) throws IOException {
+        if (0 == len)  {
+            return;
+        }
         appendToCursor(document.createTextNode(str.substring(off, len)));
     }
 
@@ -631,6 +646,9 @@ public class DOMResponseWriter extends ResponseWriter {
                     n.appendChild( child.cloneNode( true ));
                 }
             }
+            //avoids unnecessary DOM diff due to normalization during
+            //FastInfoset compression
+            n.normalize();
         }
         markerNodes.clear();
     }

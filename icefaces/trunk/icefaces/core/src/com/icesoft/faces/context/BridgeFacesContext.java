@@ -50,7 +50,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jvnet.fastinfoset.FastInfosetException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.NodeList;
 
 import javax.el.ELContext;
@@ -418,8 +420,16 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             String id = textareaElement.getAttribute("id");
             if (!"".equals(id) && parameters.containsKey(id)) {
                 String value = ((String[]) parameters.get(id))[0];
-                textareaElement.getFirstChild()
-                        .setNodeValue(value);//set value on the Text node
+                Node firstChild = textareaElement.getFirstChild();
+                if (null != firstChild)  {
+                    //set value on the Text node
+                    firstChild.setNodeValue(value);
+                } else {
+                    //DOM brought back from compression may have no
+                    //child for empty TextArea
+                    textareaElement.appendChild(document.createTextNode(value));
+                }
+                
             }
         }
 
