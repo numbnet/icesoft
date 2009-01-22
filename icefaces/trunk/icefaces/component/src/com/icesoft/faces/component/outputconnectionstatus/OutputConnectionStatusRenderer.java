@@ -109,6 +109,9 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
         if (!visible) {
             div.setAttribute(HTML.STYLE_ATTR, "visibility: hidden;");
         }
+        if ( (null == label) || ("".equals(label)) )  {
+            return div;
+        }
         if (label != null) {
             label = DOMUtils.escapeAnsi(label);
         }
