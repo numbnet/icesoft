@@ -234,6 +234,7 @@
                 <file name="resizablePanelGrid.js"/>
                 <file name="keyboardNavigator.js"/>
                 <file name="dataTable.js"/>
+                <file name="calendar.js"/>
             </filelist>
             <filelist dir="${build.dir}/component">
                 <file name="menu.js"/>

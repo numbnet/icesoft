@@ -327,7 +327,12 @@ public class SelectInputDateRenderer
                                  "'].value='toggle';"
                                  + "iceSubmitPartial( document.forms['" +
                                  parentForm.getClientId(facesContext) +
-                                 "'], this,event); return false;";
+                                 "'], this,event);"
+                                 + "Ice.Calendar.addCloseListener('"
+                                 + clientId + "','" + parentForm.getClientId(facesContext) + "','"
+                                 + this.getLinkId(facesContext, uiComponent) + "','"
+                                 + getHiddenFieldName(facesContext, uiComponent) + "');"
+                                 + "return false;";
                 calendarButton.setAttribute(HTML.ONCLICK_ATTR, onClick);
                 if (selectInputDate.isDisabled()) {
                     calendarButton.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
