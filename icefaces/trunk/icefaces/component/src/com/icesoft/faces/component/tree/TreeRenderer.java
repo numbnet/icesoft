@@ -515,6 +515,8 @@ public class TreeRenderer extends DomBasicRenderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        treeNodeDiv.normalize();
     }
 
     /**
