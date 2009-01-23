@@ -942,8 +942,8 @@ public class D2DViewHandler extends ViewHandler {
         CoreUtils.setServerSideStateSaving( (stateManagementServerSide == null) ||
                                             stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER) );
         if (!CoreUtils.isServerSideStateSaving()) {
-            log.fatal("Client side state saving is not supported");
-            throw new UnsupportedOperationException("Client side state saving is not supported");
+            log.fatal("Client side state saving is not supported with ICEfaces");
+            throw new UnsupportedOperationException("Client side state saving is not supported with ICEfaces");
         } 
 
         if (!CoreUtils.isJSFStateSaving()) {
