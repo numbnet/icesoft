@@ -87,8 +87,6 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.actionURLSuffix";
     private final static String RELOAD_INTERVAL =
             "com.icesoft.faces.reloadInterval";
-    private final static String DO_JSF_STATE_MANAGEMENT =
-            "com.icesoft.faces.doJSFStateManagement";
 
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -242,37 +240,17 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
-        if (CoreUtils.isJSFStateSaving()) {
+        String renderKitId =
+                calculateRenderKitId(context);
+        long start = System.currentTimeMillis();
+        Application a = context.getApplication();
+        StateManager sm = a.getStateManager();
+        UIViewRoot viewRoot = sm.restoreView(context, viewId, renderKitId);
 
-            String renderKitId =
-                    calculateRenderKitId(context);
-            long start = System.currentTimeMillis();
-
-            Application a = context.getApplication();
-            StateManager sm = a.getStateManager();
-
-            UIViewRoot viewRoot = sm.restoreView(context, viewId, renderKitId);
-
-            if (log.isDebugEnabled()) {
-                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.currentTimeMillis() - start) / 1000f);
-            }
-            return viewRoot;
-        } else {
-
-            UIViewRoot currentRoot = context.getViewRoot();
-            // For spring webflow
-            if (SeamUtilities.isSpringEnvironment()) {
-                return currentRoot;
-            }
-            if (null != currentRoot &&
-                    getRenderedViewId(context, viewId)
-                            .equals(getRenderedViewId(context,
-                                    currentRoot.getViewId()))) {
-                return currentRoot;
-            } else {
-                return null;
-            }
+        if (log.isDebugEnabled()) {
+            log.debug("Restored ViewRoot from state management: " + viewRoot + " in " + (System.currentTimeMillis() - start) / 1000f);
         }
+        return viewRoot;
     }
 
     public static String getServletRequestPath(FacesContext context) {
@@ -719,23 +697,12 @@ public class D2DViewHandler extends ViewHandler {
      */
     protected void invokeStateSaving(FacesContext context) {
 
-        if (!CoreUtils.isJSFStateSaving()) {
-            return;
-        } 
-
-        Application a = context.getApplication();
-        StateManager sm = a.getStateManager();
-
+        StateManager sm =context.getApplication().getStateManager();
         long start = System.currentTimeMillis();
-
         StateManager.SerializedView sv = sm.saveSerializedView(context);
         if (log.isDebugEnabled()) {
-            log.debug("Serialized state saved in: " + (System.currentTimeMillis() - start) / 1000f + "seconds");
+            log.debug("Serialized state saved in: " + (System.currentTimeMillis() - start) / 1000f + " seconds");
         }
-
-        Object[] structureAndState = new Object[2];
-        structureAndState[0] = sv.getStructure();
-        structureAndState[1] = sv.getState();
 
         // Tell the DOMResponseWriter to capture the nodes created by JSF
         ResponseWriter writer = context.getResponseWriter();
@@ -926,7 +893,6 @@ public class D2DViewHandler extends ViewHandler {
 
         ExternalContext ec = context.getExternalContext();
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
-        String jsfStateManagementParameter = ec.getInitParameter(DO_JSF_STATE_MANAGEMENT);
         String stateManagementServerSide = ec.getInitParameter(StateManager.STATE_SAVING_METHOD_PARAM_NAME);
         actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
         try {
@@ -934,10 +900,6 @@ public class D2DViewHandler extends ViewHandler {
         } catch (NumberFormatException e) {
             reloadInterval = reloadIntervalDefault * 1000;
         }
-        CoreUtils.setJSFStateSaving((jsfStateManagementParameter == null &&
-                                     ImplementationUtil.isJSF12()) ||
-                                    Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
-                                    SeamUtilities.isSeamEnvironment());
 
         CoreUtils.setServerSideStateSaving( (stateManagementServerSide == null) ||
                                             stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER) );
@@ -945,13 +907,6 @@ public class D2DViewHandler extends ViewHandler {
             log.fatal("Client side state saving is not supported with ICEfaces");
             throw new UnsupportedOperationException("Client side state saving is not supported with ICEfaces");
         } 
-
-        if (!CoreUtils.isJSFStateSaving()) {
-            log.debug("JSF State Management not configured");
-        } else {
-            log.debug("JSF State Management enabled - server side state saving");
-        }
-            
         parametersInitialized = true;
     }
 
