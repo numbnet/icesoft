@@ -22,21 +22,46 @@ Ice.Calendar.CloseListener = Class.create({
     },
     closePopupOnClickOutside: function(event) {
         if (this.getPopup()) {
+            if (this.isMenuOption(event)) {
+                return;
+            }
             if (this.isWithin(this.getPopup(),event)) {
                 return;
             }
-        
             if (this.isWithin(this.getButton(),event)) {
                 this.dispose();
                 return;
             }
-
+                
             this.submit(event);
             this.dispose();
         }
     },
     isWithin: function(element,event) {
         return Position.within(element, Event.pointerX(event), Event.pointerY(event));
+    },
+    isMenuOption: function(event) {
+        var element = event.element();
+        if (element.tagName.toLowerCase() == 'option') {
+            return this.matchesId(element.parentNode.id);
+        } else if (element.tagName.toLowerCase() == 'select') {
+            return this.matchesId(element.id);
+        } else {
+            return false;
+        }
+    },
+    matchesId: function(id) {
+        var monthMenuId = this.calendarId + '_sm';
+        var yearMenuId = this.calendarId + '_sy';
+        var hourMenuId = this.calendarId + '_hr';
+        var minuteMenuId = this.calendarId + '_min';
+        var ampmMenuId = this.calendarId + '_amPm';
+        if (id == monthMenuId || id == yearMenuId || id == hourMenuId || 
+            id == minuteMenuId || id == ampmMenuId) {
+            return true;
+        } else {
+            return false;
+        }    
     },
     dispose: function() {
         Ice.Calendar.listeners[this.calendarId] = null;
