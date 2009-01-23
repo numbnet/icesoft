@@ -393,7 +393,7 @@ public class RenderManager implements Disposable {
                 final String name, final int type)
                 throws IllegalArgumentException {
 
-            if (CoreUtils.isJSFStateSaving() && !CoreUtils.isServerSideStateSaving()) {
+            if (!CoreUtils.isServerSideStateSaving()) {
                 throw new UnsupportedOperationException("Server Push is not supported in Client side state saving environment");
             }
             if (name == null || name.trim().length() == 0) {
