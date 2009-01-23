@@ -39,6 +39,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -46,6 +47,7 @@ import javax.faces.convert.DateTimeConverter;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import java.io.IOException;
 import java.util.*;
@@ -133,7 +135,8 @@ public class SelectInputDate
      * The current navigation date of the component.
      */
     private Date navDate = null;
-
+    private Date popupDate = null;
+    
     // declare default style classes
     /**
      * The default directory where the images used by this component can be
@@ -230,6 +233,11 @@ public class SelectInputDate
     }
 
     public String getTextToRender() {
+        if (getPopupDate() != null && 
+                isRenderAsPopup() && 
+                  !isEnterKeyPressed(getFacesContext())) {
+            return formatDate(getPopupDate());
+        }        
         Object submittedValue = getSubmittedValue();
         if (submittedValue != null) {
             if (submittedValue instanceof Date)
@@ -654,7 +662,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[28];
+        Object values[] = new Object[29];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -683,7 +691,7 @@ public class SelectInputDate
         values[25] = submittedHours;
         values[26] = submittedMinutes;  
         values[27] = submittedAmPm;         
-        
+        values[28] = popupDate;        
         return ((Object) (values));
     }
 
@@ -719,7 +727,8 @@ public class SelectInputDate
         showPopup = (List) values[24];
         submittedHours = (Integer)values[25];
         submittedMinutes = (Integer)values[26];  
-        submittedAmPm = (String)values[27];         
+        submittedAmPm = (String)values[27];
+        popupDate = (Date) values[28];        
     }
 
     private Map linkMap = new HashMap();
@@ -754,18 +763,6 @@ public class SelectInputDate
         this.selectedDayLink = selectedDayLink;
     }
 
-    //this component was throwing an exception in popup mode, if the component has no binding for value attribute
-    //so here we returning current date in this case.
-    /* (non-Javadoc)
-     * @see javax.faces.component.ValueHolder#getValue()
-     */
-    public Object getValue() {
-        if (super.getValue() == null) {
-            return null;
-        } else {
-            return super.getValue();
-        }
-    }
     
     public boolean getPartialSubmit() {
         if (partialSubmit != null) {
@@ -1097,7 +1094,7 @@ public class SelectInputDate
     protected Object getConvertedValue(FacesContext context,
             Object newSubmittedValue) throws ConverterException {
         Object date = super.getConvertedValue(context, newSubmittedValue);
-        if (isTime(context)) {
+        if (date!= null && isTime(context)) {
             if (submittedHours != null) {
                 int[] hrs = getHours(context);
                 if (hrs.length < 13 &&submittedAmPm != null  && 
@@ -1120,14 +1117,22 @@ public class SelectInputDate
         if (submittedHours == null)
             this.submittedHours = null;
         else
-            this.submittedHours = new Integer(submittedHours.toString());
+            try {
+                this.submittedHours = new Integer(submittedHours.toString());
+            } catch (NumberFormatException e) {
+                this.submittedHours = new Integer("0");
+            }
     }    
     
     void setMinutesSubmittedValue(Object submittedMinutes) {
         if (submittedMinutes == null)
             this.submittedMinutes = null;
-        else        
-            this.submittedMinutes = new Integer(submittedMinutes.toString());
+        else
+            try {
+                this.submittedMinutes = new Integer(submittedMinutes.toString());
+            } catch (NumberFormatException e) {
+                this.submittedMinutes = new Integer("0");
+            }                
     }
     
     void setAmPmSubmittedValue(Object submittedAmPm) {
@@ -1135,5 +1140,60 @@ public class SelectInputDate
             this.submittedAmPm = null;
         else        
             this.submittedAmPm = submittedAmPm.toString();
+    } 
+    
+
+    //this component was throwing an exception in popup mode, if the component has no binding for value attribute
+    //so here we returning current date in this case.
+    /* (non-Javadoc)
+     * @see javax.faces.component.ValueHolder#getValue()
+     */
+    public Object getValue() {
+        if (getPopupDate() != null && 
+                isRenderAsPopup() && 
+                  !isEnterKeyPressed(getFacesContext())) {
+            return getPopupDate();
+        }          
+        
+        if (super.getValue() == null) {
+            return null;
+        } else {
+            return super.getValue();
+        }
+    }
+
+    public void validate(FacesContext context) {
+        Object submittedValue = getSubmittedValue();
+        if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
+            Object newValue = getConvertedValue(context, submittedValue);
+            setPopupDate((Date)newValue);
+            setSubmittedValue(null);
+        }
+        super.validate(context);
+        setSubmittedValue(submittedValue);
     }    
+    
+    boolean isEnterKeyPressed(FacesContext facesContext) {
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId= this.getClientId(facesContext);
+        boolean enterKeyPressed = false;
+        if (requestParameterMap.get("ice.event.target") != null ) {
+            enterKeyPressed =  requestParameterMap.get("ice.event.target")
+            .equals(clientId + SelectInputDate.CALENDAR_INPUTTEXT) && 
+            ("13".equalsIgnoreCase(String.valueOf
+                    (requestParameterMap.get("ice.event.keycode"))) ||
+                         "onblur".equalsIgnoreCase(String.valueOf
+                                (requestParameterMap.get("ice.event.type"))));
+        }
+        return enterKeyPressed;
+    }
+
+    Date getPopupDate() {
+        return popupDate;
+    }
+
+    void setPopupDate(Date popupDate) {
+        this.popupDate = popupDate;
+    }
+    
 }
