@@ -131,8 +131,6 @@ public class DOMResponseWriter extends ResponseWriter {
                     "ICEfaces requires the PersistentFacesServlet. " +
                             "Please check your web.xml servlet mappings");
         }
-        boolean streamWritingParam = configuration.getAttributeAsBoolean("streamWriting", false);
-        isStreamWritingFlag = Beans.isDesignTime() || streamWritingParam;
     }
 
     Map getDomContexts() {
