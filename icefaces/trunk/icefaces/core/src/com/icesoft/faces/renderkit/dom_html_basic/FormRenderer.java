@@ -203,7 +203,7 @@ public class FormRenderer extends DomBasicRenderer {
         // because this object isn't using the DOMResponseWriter. 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        if (CoreUtils.isJSFStateSaving() && (writer instanceof DOMResponseWriter)) {
+        if (writer instanceof DOMResponseWriter) {
             DOMResponseWriter domWriter = (DOMResponseWriter) writer;
             Node n = domContext.createElement("div");
 
