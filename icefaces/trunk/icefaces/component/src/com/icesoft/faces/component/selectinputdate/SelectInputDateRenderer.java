@@ -226,6 +226,9 @@ public class SelectInputDateRenderer
             }
             value = selectInputDate.getNavDate();
 //System.out.println("navDate: " + value);
+        } else if (selectInputDate.isRenderAsPopup() && !selectInputDate.isEnterKeyPressed(facesContext)) { 
+            value = selectInputDate.getPopupDate();  
+            
         } else {
             if (log.isTraceEnabled()) {
                 log.trace("Logging non nav event");
@@ -480,6 +483,7 @@ public class SelectInputDateRenderer
                 int min = timeKeeper.get(Calendar.MINUTE);
                 for (int i = 0; i < hrs.length; i++ ) {
                     Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
+                    hoursOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(hrs[i]));
                     Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
                     hoursOption.appendChild(hourText);
                     if ((hrs[0]==1 && hr == 0) || hrs[i] == hr) {
@@ -494,6 +498,7 @@ public class SelectInputDateRenderer
                 minutes.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
                 for (int i = 0; i < 60; i++ ) {
                     Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
+                    minutesOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
                     Text minuteText = domContext.createTextNode(String.valueOf(i));
                     minutesOption.appendChild(minuteText);
                     if (i == min) {
@@ -518,10 +523,12 @@ public class SelectInputDateRenderer
                     amPmElement.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
 
                     Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
+                    amPmElementOption.setAttribute(HTML.VALUE_ATTR, "AM");
                     Text amPmElementText = domContext.createTextNode("AM");
                     amPmElementOption.appendChild(amPmElementText);
 
                     Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
+                    amPmElementOption2.setAttribute(HTML.VALUE_ATTR, "PM");                  
                     Text amPmElementText2 = domContext.createTextNode("PM");
                     amPmElementOption2.appendChild(amPmElementText2);
                     if (amPm == 0) {
@@ -1494,15 +1501,7 @@ public class SelectInputDateRenderer
                 if (log.isDebugEnabled()) {
                     log.debug("-------------InputText enterkey Event ??----");
                 }
-                boolean enterKeyPressed = false;
-                if (requestParameterMap.get("ice.event.target") != null ) {
-                    enterKeyPressed =  requestParameterMap.get("ice.event.target")
-                    .equals(clientId + SelectInputDate.CALENDAR_INPUTTEXT) && 
-                    ("13".equalsIgnoreCase(String.valueOf
-                            (requestParameterMap.get("ice.event.keycode"))) ||
-                                 "onblur".equalsIgnoreCase(String.valueOf
-                                        (requestParameterMap.get("ice.event.type"))));
-                }
+                boolean enterKeyPressed = dateSelect.isEnterKeyPressed(facesContext);
                 decodeInputText(facesContext, component);
                 if (enterKeyPressed) {
                     dateSelect.setHoursSubmittedValue(null);
@@ -1547,6 +1546,10 @@ public class SelectInputDateRenderer
 
             dateSelect.setShowPopup(!dateSelect.isShowPopup());
         }
+        String clientId =  dateSelect.getClientId(facesContext);
+        facesContext.getExternalContext().getRequestMap().put("icesoft_javascript_focus_app", clientId + SelectInputDate.CALENDAR_INPUTTEXT);
+        JavascriptContext.addJavascriptCall(facesContext, "logger.info('SETTTING FOCUS');$('" + 
+                clientId + SelectInputDate.CALENDAR_INPUTTEXT + "').focus();");
         // not a nav event
         dateSelect.setNavEvent(false);
     }
@@ -1564,13 +1567,13 @@ public class SelectInputDateRenderer
             log.debug("selectDate::showPopup" + showPopup);
             log.debug("#################################");
         }
-        if (showPopup != null) {
-            if (showPopup.equalsIgnoreCase("true")) {
-                dateSelect.setShowPopup(true);
-            } else {
-                dateSelect.setShowPopup(false);
-            }
-        }
+//        if (showPopup != null) {
+//            if (showPopup.equalsIgnoreCase("true")) {
+//                dateSelect.setShowPopup(true);
+//            } else {
+//                dateSelect.setShowPopup(false);
+//            }
+//        }
         if (log.isDebugEnabled()) {
             log.debug("decodeUIInput::");
             log.debug("#################################");
@@ -1607,17 +1610,17 @@ public class SelectInputDateRenderer
                 log.debug("decoding InputText EnterKey::");
                 log.debug("###################################");
             }
-            if (showPopup != null) {
-                if (checkLink((String) clickedLink, clientId) != IS_NOT) {
-                    if (showPopup.equalsIgnoreCase("true")) {
-//System.out.println("SIDR.decodeInputText()  setShowPopup( true )");
-                        dateSelect.setShowPopup(true);
-                    } else {
-//System.out.println("SIDR.decodeInputText()  setShowPopup( false )");
-                        dateSelect.setShowPopup(false);
-                    }
-                }
-            }
+//            if (showPopup != null) {
+//                if (checkLink((String) clickedLink, clientId) != IS_NOT) {
+//                    if (showPopup.equalsIgnoreCase("true")) {
+////System.out.println("SIDR.decodeInputText()  setShowPopup( true )");
+//                        dateSelect.setShowPopup(true);
+//                    } else {
+////System.out.println("SIDR.decodeInputText()  setShowPopup( false )");
+//                        dateSelect.setShowPopup(false);
+//                    }
+//                }
+//            }
             Object inputTextDate = requestParameterMap.get(inputTextDateId);
 //System.out.println("SIDR.decodeInputText()  inputTextDate: " + inputTextDate);
             if (inputTextDate == null) {
@@ -1652,4 +1655,5 @@ public class SelectInputDateRenderer
         
         return o;
     }
+    
 }
