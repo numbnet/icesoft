@@ -369,9 +369,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
 
         // if we're doing state management, we always clear the viewRoot between requests.
-        if (CoreUtils.isJSFStateSaving()) {
+//        if (CoreUtils.isJSFStateSaving()) {
             this.viewRoot = null;
-        }
+//        }
 
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
@@ -591,9 +591,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
                 //#2139 Don't insert a false postback key if state saving is configured,
                 // as this will overwrite the real state saving key
-                if (!CoreUtils.isJSFStateSaving()) {
-                    externalContext.insertPostbackKey();
-                }
+//                if (!CoreUtils.isJSFStateSaving()) {
+//                    externalContext.insertPostbackKey();
+//                }
             }
 
             public void portlet(Object request, Object response, Object config) {
