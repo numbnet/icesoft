@@ -265,7 +265,7 @@ public class PersistentFacesState implements Serializable {
                 // cause the JSF lifecycle to run, which we want to do for
                 // consistency.
                 String postback;
-                if (CoreUtils.isJSFStateSaving() && stateRestorationId != null) {
+                if (stateRestorationId != null) {
                     postback = stateRestorationId;
                 } else {
                     postback = "not reload";
