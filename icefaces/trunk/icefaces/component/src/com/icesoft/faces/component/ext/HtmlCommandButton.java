@@ -86,6 +86,8 @@ public class HtmlCommandButton
     private Effect onkeyupeffect;
     private CurrentStyle currentStyle;
 
+    private String panelConfirmation = null;
+    
     /**
      * default no args constructor
      */
@@ -583,6 +585,28 @@ public class HtmlCommandButton
     public void setCurrentStyle(CurrentStyle currentStyle) {
         this.currentStyle = currentStyle;
     }
+    
+    /**
+     * <p>Set the value of the <code>panelConfirmation</code> property.</p>
+     *
+     * @param panelConfirmation
+     */
+    public void setPanelConfirmation(String panelConfirmation) {
+        this.panelConfirmation = panelConfirmation;
+    }
+
+    /**
+     * <p>Return the value of the <code>panelConfirmation</code> property.</p>
+     *
+     * @return String panelConfirmation
+     */
+    public String getPanelConfirmation() {
+        if (panelConfirmation != null) {
+            return panelConfirmation;
+        }
+        ValueBinding vb = getValueBinding("panelConfirmation");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
 
     /**
@@ -593,7 +617,7 @@ public class HtmlCommandButton
      * @return Object values[]
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = enabledOnUserRole;
         values[2] = renderedOnUserRole;
@@ -614,6 +638,7 @@ public class HtmlCommandButton
         values[17] = partialSubmit;
         values[18] = disabled ? Boolean.TRUE : Boolean.FALSE;
         values[19] = disabled_set ? Boolean.TRUE : Boolean.FALSE;
+        values[20] = panelConfirmation;
         return ((Object) (values));
     }
 
@@ -646,6 +671,7 @@ public class HtmlCommandButton
         partialSubmit = (Boolean) values[17];
         disabled = ((Boolean) values[18]).booleanValue();
         disabled_set = ((Boolean) values[19]).booleanValue();
+        panelConfirmation = (String) values[20];
     }
 
     /**
