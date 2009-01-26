@@ -45,7 +45,6 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>Confirm</default-value> 
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -62,7 +61,6 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>Confirm</default-value> 
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -88,7 +86,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>normal</default-value> 
+        <default-value>"normal"</default-value> 
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -105,7 +103,6 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>Accept</default-value> 
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -122,7 +119,6 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>Cancel</default-value> 
 		<editor-class>
 			&stringEditor;
 		</editor-class>
