@@ -216,6 +216,7 @@
   <!ENTITY ice-cust-menu-props SYSTEM "ice_cust_properties/cust-menu-props.xml">
   <!ENTITY ice-cust-menuPopup-props SYSTEM "ice_cust_properties/cust-menuPopup-props.xml">
   <!ENTITY ice-cust-outputConnectionStatus-props SYSTEM "ice_cust_properties/cust-outputConnectionStatus-props.xml">
+  <!ENTITY ice-cust-panelconfirmation-props SYSTEM "ice_cust_properties/cust-panelconfirmation-props.xml">
   <!ENTITY ice-cust-panelpopup-props SYSTEM "ice_cust_properties/cust-panelpopup-props.xml">
   <!ENTITY ice-cust-panelDivider-props SYSTEM "ice_cust_properties/cust-panelDivider-props.xml">  
   <!ENTITY ice-cust-paneltooltip-props SYSTEM "ice_cust_properties/cust-paneltooltip-props.xml">
@@ -402,7 +403,10 @@
   
   <!ENTITY treenode-component   SYSTEM "custom/treenode-component.xml">
   <!ENTITY treenode-renderer    SYSTEM "custom/treenode-renderer.xml">   
-  
+
+  <!ENTITY panelconfirmation-component   SYSTEM "custom/panelconfirmation-component.xml">
+  <!ENTITY panelconfirmation-renderer    SYSTEM "custom/panelconfirmation-renderer.xml">
+
   <!ENTITY panelpopup-component   SYSTEM "custom/panelpopup-component.xml">
   <!ENTITY panelpopup-renderer    SYSTEM "custom/panelpopup-renderer.xml">
 
@@ -551,6 +555,7 @@
 	&paneltabset-component;
 	&tree-component;
 	&treenode-component;
+	&panelconfirmation-component;
 	&panelpopup-component;
     &panelDivider-component;	
     &paneltooltip-component;
@@ -637,6 +642,7 @@
 		&paneltabset-renderer;
 		&tree-renderer;
 		&treenode-renderer;
+		&panelconfirmation-renderer;
 		&panelpopup-renderer;
         &panelDivider-renderer;		
         &paneltooltip-renderer;	

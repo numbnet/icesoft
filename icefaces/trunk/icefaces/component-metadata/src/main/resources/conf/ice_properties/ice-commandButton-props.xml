@@ -66,5 +66,19 @@
     </property-extension>
 </property>
 
-
+<property>
+    <description>
+        <![CDATA[
+		The id of the ice:panelConfirmation component linked to this button.
+		]]>
+    </description>
+    <property-name>panelConfirmation</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &styleClassEditor;
+        </editor-class>
+    </property-extension>
+</property>
 
