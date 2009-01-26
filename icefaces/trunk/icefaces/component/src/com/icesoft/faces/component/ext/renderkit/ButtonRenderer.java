@@ -37,7 +37,7 @@ import com.icesoft.faces.component.ext.HtmlCommandButton;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
-
+import com.icesoft.faces.component.panelconfirmation.PanelConfirmationRenderer;
 
 public class ButtonRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ButtonRenderer {
@@ -51,8 +51,13 @@ public class ButtonRenderer
         } else {
             submitCode = this.ICESUBMIT + "return false;";
         }
-        root.setAttribute("onclick", combinedPassThru(onclick, submitCode));
-
+        
+        if (null != uiComponent.getAttributes().get("panelConfirmation")) {
+            root.setAttribute("onclick", PanelConfirmationRenderer.renderOnClickString(
+                uiComponent, combinedPassThru(onclick, submitCode)));
+        } else {
+            root.setAttribute("onclick", combinedPassThru(onclick, submitCode));
+        }
     }
 
 }
