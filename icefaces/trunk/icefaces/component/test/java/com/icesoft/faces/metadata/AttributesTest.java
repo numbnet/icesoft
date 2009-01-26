@@ -86,6 +86,7 @@ public class AttributesTest extends TestCase{
         customComponents.put("com.icesoft.faces.OutputResource", "com.icesoft.faces.component.outputresource.OutputResource");   
         customComponents.put("com.icesoft.faces.OutputStyleComp", "com.icesoft.faces.component.style.OutputStyle");   
         customComponents.put("com.icesoft.faces.PanelCollapsible", "com.icesoft.faces.component.panelcollapsible.PanelCollapsible");        
+        customComponents.put("com.icesoft.faces.PanelConfirmation", "com.icesoft.faces.component.panelconfirmation.PanelConfirmation");
         customComponents.put("com.icesoft.faces.PanelDivider", "com.icesoft.faces.component.paneldivider.PanelDivider");   
         customComponents.put("com.icesoft.faces.PanelLayout", "com.icesoft.faces.component.panellayout.PanelLayout");   
         customComponents.put("com.icesoft.faces.PanelPopup", "com.icesoft.faces.component.panelpopup.PanelPopup");   
