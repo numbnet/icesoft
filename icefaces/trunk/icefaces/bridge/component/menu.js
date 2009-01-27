@@ -89,12 +89,31 @@ Ice.Menu = {
             if (menu && menu.style.display=='') return;
             Ice.Menu.showMenuWithId(submenu);
             if (submenuDiv) {
-                 // ICE-3196
-                submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supermenu.offsetWidth});
-                submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                // ICE-3196, ICE-3620
+                if (supermenu.viewportOffset().left + supermenu.offsetWidth + submenu.offsetWidth < document.viewport.getWidth()) {
+                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supermenu.offsetWidth});
+                } else {
+                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submenu.offsetWidth});
+                }
+                if (submenuDiv.viewportOffset().top + submenu.offsetHeight < document.viewport.getHeight()) {
+                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                } else {
+                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                        offsetTop:- submenu.offsetHeight + submenuDiv.offsetHeight});
+                }
             } else {
-                 // ICE-3196
-                submenu.clonePosition(supermenu, {setWidth:false, setHeight:false, offsetTop:supermenu.offsetHeight});
+                // ICE-3196, ICE-3620
+                if (supermenu.viewportOffset().left + submenu.offsetWidth < document.viewport.getWidth()) {
+                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+                } else {
+                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
+                        offsetLeft:document.viewport.getWidth() - supermenu.viewportOffset().left - submenu.offsetWidth});
+                }
+                if (supermenu.viewportOffset().top + supermenu.offsetHeight + submenu.offsetHeight < document.viewport.getHeight()) {
+                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supermenu.offsetHeight});
+                } else {
+                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.offsetHeight});
+                }
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
