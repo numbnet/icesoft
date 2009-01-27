@@ -244,7 +244,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
                 Object value = entry.getValue();
                 if (value != null) {
                     String className = value.getClass().getName();
-                    if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
+                    if ((className.indexOf("LoadBundle") > 0) ||  //Sun RI or ICEfaces
                             (className.indexOf("BundleMap") > 0)) {     //MyFaces
                         result.put(entry.getKey(), value);
                     }
