@@ -894,6 +894,15 @@ public class D2DViewHandler extends ViewHandler {
         ExternalContext ec = context.getExternalContext();
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
         String stateManagementServerSide = ec.getInitParameter(StateManager.STATE_SAVING_METHOD_PARAM_NAME);
+
+        // #3980 This enables state saving to work in jsf1.1 environment with the default settings
+        // (since state saving is always on now)
+        if ( !ImplementationUtil.isJSF12()) {
+            Application a = context.getApplication();
+            StateManager sm = a.getStateManager();
+            a.setStateManager(new ViewRootStateManagerImpl(sm));
+        } 
+
         actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
         try {
             reloadInterval = Long.parseLong(reloadIntervalParameter) * 1000;
