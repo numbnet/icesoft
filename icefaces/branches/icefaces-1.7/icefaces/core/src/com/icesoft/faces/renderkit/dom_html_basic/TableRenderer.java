@@ -94,6 +94,7 @@ public class TableRenderer extends DomBasicRenderer {
             td.appendChild(mainDiv);
             Element headerDiv = domContext.createElement("div");
             Element headerTable = domContext.createElement("table");
+            headerTable.setAttribute("style","width:100%;");
             headerDiv.appendChild(headerTable);
 
             mainDiv.appendChild(headerDiv);
@@ -101,9 +102,10 @@ public class TableRenderer extends DomBasicRenderer {
             String height =
                     (String) uiComponent.getAttributes().get("scrollHeight");
             bodyDiv.setAttribute("style",
-                                 "overflow:auto;height:" + height + ";");
+                                 "overflow:auto;width:100%;"+ (height!=null&&height.length()>0?"height:" + height + ";":""));
 
             Element bodytable = domContext.createElement("table");
+            bodytable.setAttribute("style","width:100%;");
             bodyDiv.appendChild(bodytable);
             mainDiv.appendChild(bodyDiv);
             Object scollFooter = uiComponent.getAttributes().get("scrollFooter");
