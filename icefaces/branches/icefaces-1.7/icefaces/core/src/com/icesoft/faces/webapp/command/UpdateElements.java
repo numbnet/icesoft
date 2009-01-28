@@ -8,9 +8,8 @@ import org.w3c.dom.NamedNodeMap;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class UpdateElements implements Command {
@@ -23,20 +22,24 @@ public class UpdateElements implements Command {
     }
 
     public Command coalesceWith(UpdateElements updateElementsCommand) {
-        Set coallescedUpdates = new HashSet();
+        ArrayList coallescedUpdates = new ArrayList();
         Element[] previousUpdates = updateElementsCommand.updates;
 
         for (int i = 0; i < previousUpdates.length; i++) {
             Element previousUpdate = previousUpdates[i];
-            Element selectedUpdate = previousUpdate;
+            boolean overriden = false;
+            //test if any of the new updates is replacing the same element
             for (int j = 0; j < updates.length; j++) {
                 Element update = updates[j];
                 if (update.getAttribute("id").equals(previousUpdate.getAttribute("id"))) {
-                    selectedUpdate = update;
+                    overriden = true;
                     break;
                 }
             }
-            coallescedUpdates.add(selectedUpdate);
+            //drop overriden updates
+            if (!overriden) {
+                coallescedUpdates.add(previousUpdate);
+            }
         }
         coallescedUpdates.addAll(Arrays.asList(updates));
 
