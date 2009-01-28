@@ -499,7 +499,13 @@ public class SelectInputDateRenderer
                 for (int i = 0; i < 60; i++ ) {
                     Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
                     minutesOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
-                    Text minuteText = domContext.createTextNode(String.valueOf(i));
+                    String digits;
+                    if (i < 10) {
+                        digits = "0" + String.valueOf(i);
+                    } else {
+                        digits = String.valueOf(i);
+                    }
+                    Text minuteText = domContext.createTextNode(digits);
                     minutesOption.appendChild(minuteText);
                     if (i == min) {
                         minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
