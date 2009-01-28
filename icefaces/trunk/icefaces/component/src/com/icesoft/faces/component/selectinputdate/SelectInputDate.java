@@ -1151,7 +1151,8 @@ public class SelectInputDate
     public Object getValue() {
         if (getPopupDate() != null && 
                 isRenderAsPopup() && 
-                  !isEnterKeyPressed(getFacesContext())) {
+                  !isEnterKeyPressed(getFacesContext())
+                    && isShowPopup()) { // Art: if popup was closed, return real value
             return getPopupDate();
         }          
         
@@ -1167,7 +1168,7 @@ public class SelectInputDate
         if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
             Object newValue = getConvertedValue(context, submittedValue);
             setPopupDate((Date)newValue);
-            setSubmittedValue(null);
+            if (isShowPopup()) setSubmittedValue(null); // Art: if popup was closed, process submitted value
         }
         super.validate(context);
         setSubmittedValue(submittedValue);
