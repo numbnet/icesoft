@@ -75,9 +75,7 @@
                   The action and actionListener will only be fired, when "enter" 
                   being pressed on a input text in a popup mode.<br/><br/> 
 
-            Time Entery: Having time pattern letters in date converter, brings input 
-		      elements for time.	
-
+            Time Entry: When the f:convertDateTime is configured to show time, the calendar will include a time editing UI.  
             ]]>
 	</description>
 	<component-family>javax.faces.Input</component-family>

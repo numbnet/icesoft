@@ -67,16 +67,14 @@ attributes</p>
 style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
   Example</div>
 
-<p >The following code shows how to create a simple inputText
-component with partialSubmit enabled:</p>
+<p>The following code shows how to create a rowSelector component with either single or multiple selection, custom styling, and a selectionListener that is invoked in the INVOKE_APPLICATION phase:</p>
 <pre class="Preformatted">
     &lt;ice:dataTable var="person" value="#{scrollerList.persons}"
-                   rows="15" columnClasses="tableCol"
-            &gt;
+                   rows="15" columnClasses="tableCol"&gt;
         &lt;ice:column rendered="#{table.renderFirstName}"&gt;
             &lt;ice:rowSelector value="#{person.selected}" multiple="#{table.multipleSelection}"
                              selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver"
-                             selectionListener="#{table.rowSelection}"/&gt;
+                             immediate="false" selectionListener="#{table.rowSelection}"/&gt;
             &lt;f:facet name="header"&gt;
                 &lt;ice:outputText value="#{msgs['component.table.column1']}"/&gt;
             &lt;/f:facet&gt;
