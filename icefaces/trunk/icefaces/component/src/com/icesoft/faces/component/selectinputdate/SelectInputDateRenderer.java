@@ -1547,10 +1547,19 @@ public class SelectInputDateRenderer
             log.debug("decodePopup::" + showPopup);
             log.debug("#################################");
         }
+        
         // check showPopup
         if (showPopup != null) {
 
             dateSelect.setShowPopup(!dateSelect.isShowPopup());
+            // Art: if popup has been closed, submit value {
+            if (!dateSelect.isShowPopup()) {
+                decodeInputText(facesContext, component);
+                dateSelect.setHoursSubmittedValue(null);
+                dateSelect.setMinutesSubmittedValue(null);
+                component.queueEvent(new ActionEvent(component));
+            }
+            // Art: }
         }
         String clientId =  dateSelect.getClientId(facesContext);
         facesContext.getExternalContext().getRequestMap().put("icesoft_javascript_focus_app", clientId + SelectInputDate.CALENDAR_INPUTTEXT);
