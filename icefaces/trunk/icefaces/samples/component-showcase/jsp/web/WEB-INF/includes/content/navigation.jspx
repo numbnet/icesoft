@@ -100,6 +100,13 @@
                 value="#{msgs['node.outputConnectionStatus.label']}"/>
     </ice:commandLink>
     <br/>
+    <ice:commandLink id="outputResourceContentPanel"
+                     actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="outputResourceContentPanel" />
+        <ice:outputText
+                value="#{msgs['node.outputResource.label']}"/>
+    </ice:commandLink>
+    <br />
     <ice:commandLink id="dragDropContentPanel"
                      actionListener="#{navigation.navigationStackChange}">
         <f:param name="stackName" value="dragDropContentPanel" />
@@ -121,13 +128,20 @@
                 value="#{msgs['node.inputFile.label']}"/>
     </ice:commandLink>
     <br/>
-    <ice:commandLink id="inputRichTextPanel"
+    <ice:commandLink id="gMapContentPanel"
                      actionListener="#{navigation.navigationStackChange}">
-        <f:param name="stackName" value="inputRichTextPanel" />
+        <f:param name="stackName" value="gMapContentPanel" />
         <ice:outputText
-                value="#{msgs['node.inputRichText.label']}"/>
+                value="#{msgs['node.gMap.label']}"/>
     </ice:commandLink>
-    <br/>
+    <br />
+    <ice:commandLink id="outputMediaContentPanel"
+                     actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="outputMediaContentPanel" />
+        <ice:outputText
+                value="#{msgs['node.outputMedia.label']}"/>
+    </ice:commandLink>
+     <br />
     <ice:commandLink id="menuBarContentPanel"
                      actionListener="#{navigation.navigationStackChange}">
         <f:param name="stackName" value="menuBarContentPanel" />
@@ -149,32 +163,25 @@
                 value="#{msgs['node.outputProgress.label']}"/>
     </ice:commandLink>
     <br/>
+    <ice:commandLink id="inputRichTextPanel"
+                     actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="inputRichTextPanel" />
+        <ice:outputText
+                value="#{msgs['node.inputRichText.label']}"/>
+    </ice:commandLink>
+    <br/>
+    <ice:commandLink id="setEventPhasePanel"
+                     actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="setEventPhasePanel" />
+        <ice:outputText
+                value="#{msgs['node.setEventPhase.label']}"/>
+    </ice:commandLink>
+    <br />
     <ice:commandLink id="treeContentPanel"
                      actionListener="#{navigation.navigationStackChange}">
         <f:param name="stackName" value="treeContentPanel" />
         <ice:outputText
                 value="#{msgs['node.tree.label']}"/>
-    </ice:commandLink>
-    <br />
-    <ice:commandLink id="outputMediaContentPanel"
-                     actionListener="#{navigation.navigationStackChange}">
-        <f:param name="stackName" value="outputMediaContentPanel" />
-        <ice:outputText
-                value="#{msgs['node.outputMedia.label']}"/>
-    </ice:commandLink>
-     <br />
-    <ice:commandLink id="outputResourceContentPanel"
-                     actionListener="#{navigation.navigationStackChange}">
-        <f:param name="stackName" value="outputResourceContentPanel" />
-        <ice:outputText
-                value="#{msgs['node.outputResource.label']}"/>
-    </ice:commandLink>
-    <br />
-    <ice:commandLink id="gMapContentPanel"
-                     actionListener="#{navigation.navigationStackChange}">
-        <f:param name="stackName" value="gMapContentPanel" />
-        <ice:outputText
-                value="#{msgs['node.gMap.label']}"/>
     </ice:commandLink>
     <br />
     <!-- Tables Collapsible Panel -->

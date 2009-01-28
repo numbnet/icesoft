@@ -576,6 +576,13 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>setEventPhase</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.SetEventPhase</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>commandSortHeader</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.SortHeader</component-type>
