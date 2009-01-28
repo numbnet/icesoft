@@ -1165,10 +1165,14 @@ public class SelectInputDate
 
     public void validate(FacesContext context) {
         Object submittedValue = getSubmittedValue();
-        if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
-            Object newValue = getConvertedValue(context, submittedValue);
-            setPopupDate((Date)newValue);
-            if (isShowPopup()) setSubmittedValue(null); // Art: if popup was closed, process submitted value
+        try {
+            if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
+                Object newValue = getConvertedValue(context, submittedValue);
+                setPopupDate((Date)newValue);
+                if (isShowPopup()) setSubmittedValue(null); // Art: if popup was closed, process submitted value
+            }
+        } catch (ConverterException ce) {
+            //faces message will be handled by the super class
         }
         super.validate(context);
         setSubmittedValue(submittedValue);
