@@ -100,6 +100,14 @@
                 value="#{msgs['node.outputConnectionStatus.label']}"/>
     </ice:commandLink>
     <br/>
+    <!-- Output Resource -->
+    <ice:commandLink id="outputResourcePanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputResource.jspx" />
+        <ice:outputText
+                value="#{msgs['node.outputResource.label']}"/>
+    </ice:commandLink>
+    <br/>
     <ice:commandLink id="dragDropContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dragDrop.jspx" />
@@ -121,13 +129,20 @@
                 value="#{msgs['node.inputFile.label']}"/>
     </ice:commandLink>
     <br/>
-    <ice:commandLink id="inputRichTextPanel"
+    <ice:commandLink id="gMapContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
-        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/inputRichText.jspx" />
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/gmap.jspx" />
         <ice:outputText
-                value="#{msgs['node.inputRichText.label']}"/>
+                value="#{msgs['node.gMap.label']}"/>
     </ice:commandLink>
-    <br/>
+    <br />
+    <ice:commandLink id="outputMediaContentPanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
+        <ice:outputText
+                value="#{msgs['node.outputMedia.label']}"/>
+    </ice:commandLink>
+    <br />
     <ice:commandLink id="menuBarContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuBar.jspx" />
@@ -149,6 +164,20 @@
                 value="#{msgs['node.outputProgress.label']}"/>
     </ice:commandLink>
     <br/>
+    <ice:commandLink id="inputRichTextPanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/inputRichText.jspx" />
+        <ice:outputText
+                value="#{msgs['node.inputRichText.label']}"/>
+    </ice:commandLink>
+    <br/>
+    <ice:commandLink id="setEventPhasePanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/setEventPhase.jspx" />
+        <ice:outputText
+                value="#{msgs['node.setEventPhase.label']}"/>
+    </ice:commandLink>
+    <br />
     <ice:commandLink id="treeContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/tree.jspx" />
@@ -156,28 +185,6 @@
                 value="#{msgs['node.tree.label']}"/>
     </ice:commandLink>
     <br />
-    <ice:commandLink id="outputMediaContentPanel"
-                     actionListener="#{navigation.navigationPathChange}">
-        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
-        <ice:outputText
-                value="#{msgs['node.outputMedia.label']}"/>
-    </ice:commandLink>
-    <br />
-    <ice:commandLink id="gMapContentPanel"
-                     actionListener="#{navigation.navigationPathChange}">
-        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/gmap.jspx" />
-        <ice:outputText
-                value="#{msgs['node.gMap.label']}"/>
-    </ice:commandLink>
-    <br />
-    <!-- Output Resource -->
-    <ice:commandLink id="outputResourcePanel"
-                     actionListener="#{navigation.navigationPathChange}">
-        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputResource.jspx" />
-        <ice:outputText
-                value="#{msgs['node.outputResource.label']}"/>
-    </ice:commandLink>
-    <br/>
     <!-- Tables Collapsible Panel -->
     <ice:panelCollapsible id="tableCompClpsbl" expanded="false" styleClass="navPnlClpsbl" >
         <f:facet name="header">

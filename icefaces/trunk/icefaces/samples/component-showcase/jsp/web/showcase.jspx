@@ -280,6 +280,12 @@
                                  <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
                              </f:subview>
                          </ice:panelGroup>
+                         
+                         <ice:panelGroup id="setEventPhasePanel">
+                             <f:subview id="setEventPhaseSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/setEventPhase.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
 
                          <!--               -->
                          <!-- layout panels -->

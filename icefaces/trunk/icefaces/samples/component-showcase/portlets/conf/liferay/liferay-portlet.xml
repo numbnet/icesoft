@@ -268,6 +268,17 @@
     </portlet>
 
     <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: setEventPhase                              -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_setEventPhase</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    
+    <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: Table - Columns                        -->
     <!-- =================================================================== -->
 

@@ -77,6 +77,10 @@
                       label="node.outputConnectionStatus.label"
                       leaf="true" link="true"
                       contentRef="outputConnectionStatusContentDesc"/>
+                <node id="outputResourceNode"
+                      label="node.outputResource.label"
+                      leaf="true" link="true"
+                      contentRef="outputResourceContentDesc"/>
                 <node id="dragDropNode"
                       label="node.dragDrop.label"
                       leaf="true" link="true"
@@ -97,10 +101,6 @@
                       label="node.outputMedia.label"
                       leaf="true" link="true"
                       contentRef="outputMediaContentDesc"/>
-                <node id="outputResourceNode"
-                      label="node.outputResource.label"
-                      leaf="true" link="true"
-                      contentRef="outputResourceContentDesc"/>
                 <node id="menuBarNode"
                       label="node.menuBar.label"
                       leaf="true" link="true"
@@ -117,6 +117,10 @@
                       label="node.inputRichText.label"
                       leaf="true" link="true"
                       contentRef="inputRichTextContentDesc"/>
+                <node id="setEventPhaseNode"
+                      label="node.setEventPhase.label"
+                      leaf="true" link="true"
+                      contentRef="setEventPhaseContentDesc"/>
                 <node id="treeNode"
                       label="node.tree.label"
                       leaf="true" link="true"
@@ -1173,7 +1177,7 @@
         </content-descriptor>
         
          <content-descriptor
-                id="outputResourceContentDesc" title="node.outputResource.label"
+                id="outputResourceContentDesc" title="node.outputResource.title"
                 templateRef="tabbedContainer">
             <example>
                 <resource-reference
@@ -1253,6 +1257,43 @@
                     <resource-reference
                             label="Tree"
                             resourceRef="treeTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
+        <content-descriptor
+                id="setEventPhaseContentDesc" title="node.setEventPhase.title"
+                templateRef="tabbedContainer">
+            <example>
+                <resource-reference
+                        resourceRef="setEventPhaseExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                 <jspx-pages>
+                    <resource-reference
+                            label="setEventPhase.jspx"
+                            resourceRef="setEventPhaseExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="SetEventPhaseBean.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.setEventPhase.SetEventPhaseBean"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="Set Event Phase"
+                            resourceRef="setEventPhaseDoc"/>
+                </documents>
+                <tlds>
+                    <resource-reference
+                            label="Set Event Phase"
+                            resourceRef="setEventPhaseTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Tutorials"
+                            resourceRef="generalTutorial"/>
                 </tutorials>
             </documentation>
         </content-descriptor>
@@ -1748,6 +1789,8 @@
                       path="/WEB-INF/includes/examples/custom/outputResource.jspx"/>
             <resource id="treeExplResc"
                       path="/WEB-INF/includes/examples/custom/tree.jspx"/>
+            <resource id="setEventPhaseExplResc"
+                      path="/WEB-INF/includes/examples/custom/setEventPhase.jspx"/>
             <resource id="outputConnectionStatusExplResc"
                       path="/WEB-INF/includes/examples/custom/outputConnectionStatus.jspx"/>
             <resource id="dataPaginatorExplResc"
@@ -1871,6 +1914,9 @@
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/tree/NodeUserObject.java"/>
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.tree.TreeController"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/tree/TreeController.java"/>
+            <!-- setEventPhase -->
+            <resource id="org.icefaces.application.showcase.view.bean.examples.component.setEventPhase.SetEventPhaseBean"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/setEventPhase/SetEventPhaseBean.java"/>
             <!-- DataTable Paging example -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataPaginator.DataScrollingModel"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataPaginator/DataScrollingModel.java"/>
@@ -2062,6 +2108,9 @@
             <resource id="treeDoc"
                       pathType="include"
                       path="/docs/es/treeDoc.html"/>
+            <resource id="setEventPhaseDoc"
+                      pathType="include"
+                      path="/docs/es/setEventPhase.html"/>
             <!-- tutorials -->
             <resource id="generalTutorial"
                       pathType="external"
@@ -2296,6 +2345,9 @@
             <resource id="treeTld"
                       pathType="include"
                       path="/docs/tld/ice/tree.html"/>
+            <resource id="setEventPhaseTld"
+                      pathType="include"
+                      path="/docs/tld/ice/setEventPhase.html"/>
             <resource id="treeNodeTld"
                       pathType="include"
                       path="/docs/tld/ice/treeNode.html"/>

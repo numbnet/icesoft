@@ -140,6 +140,7 @@
 <!ENTITY ice-Tree-component SYSTEM "ice/components/Tree-component.xml">
 <!ENTITY ice-PanelPositioned-component SYSTEM "ice/components/PanelPositioned-component.xml">
 <!ENTITY ice-UISeries-component SYSTEM "ice/components/UISeries-component.xml">
+<!ENTITY ice-SetEventPhase-component SYSTEM "ice/components/SetEventPhase-component.xml">
   ]>
 <faces-config>
     <render-kit>
@@ -283,5 +284,6 @@
     &ice-Tree-component;
     &ice-PanelPositioned-component;
     &ice-UISeries-component;
+    &ice-SetEventPhase-component;
 
 </faces-config>

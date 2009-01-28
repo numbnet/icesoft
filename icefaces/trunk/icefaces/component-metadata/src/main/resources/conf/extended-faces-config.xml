@@ -241,6 +241,7 @@
   <!ENTITY ice-cust-inputOutputText-props SYSTEM "ice_cust_properties/cust-inputOutputText-props.xml">
   -->
   <!ENTITY ice-cust-outputMedia-props SYSTEM "ice_cust_properties/cust-outputMedia-props.xml">
+  <!ENTITY ice-cust-setEventPhase-props SYSTEM "ice_cust_properties/cust-setEventPhase-props.xml">
 
   <!-- ICE Extended components -->
   <!ENTITY ice-outputHtml-component   SYSTEM "components/ice-outputHtml-component.xml">
@@ -490,7 +491,10 @@
 
   <!ENTITY panelLayout-component   SYSTEM "custom/panelLayout-component.xml">
   <!ENTITY panelLayout-renderer    SYSTEM "custom/panelLayout-renderer.xml">
-
+  
+  <!ENTITY setEventPhase-component   SYSTEM "custom/setEventPhase-component.xml">
+  <!ENTITY setEventPhase-renderer    SYSTEM "custom/setEventPhase-renderer.xml">
+  
   <!ENTITY % property-editors SYSTEM "dtd/property-editors.dtd">
   %property-editors;
     
@@ -580,6 +584,7 @@
     &outputMedia-component;
     &panelLayout-component;
     &loadbundle-component;    
+    &setEventPhase-component;
     
     <!-- &inputOutputText-component; -->
     
@@ -667,6 +672,7 @@
         &outputMedia-renderer;	
         &panelLayout-renderer;
         &loadbundle-renderer;        
+        &setEventPhase-renderer;
         
         <!-- &inputOutputText-renderer; -->
     </render-kit>

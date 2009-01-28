@@ -415,5 +415,13 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
+    <!-- Set Event Phase -->
+    <managed-bean>
+        <managed-bean-name>setEventPhaseBean</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.application.showcase.view.bean.examples.component.setEventPhase.SetEventPhaseBean
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
    
 </faces-config>
