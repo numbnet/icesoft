@@ -4,6 +4,8 @@ Directory of metadata (src/main/resources):
 -- conf
 -- -- component (extended standard component)
 -- -- custom (custom component)
+-- -- ice/components (component-type  definition)
+-- -- ice/renderers (renderer-type definition)
 -- -- ice_cust_properties (custom component properties)
 -- -- ice_properties (extended component properties)
 -- -- properties (Sun's RI properties, normally comes from baseline component)
@@ -12,14 +14,13 @@ IDE needs both grammar and metadata information for JSF components in
 order to provide a design-time experience.  
 
 
-faces-config.xml ( grammar information and a minimal set of metadata for 
+faces-config-base.xml ( grammar information and a minimal set of metadata for 
 components, attributes, properties, facets, and renderers )
 
 The following files extending the metadata in faces-config.xml. (Schema is based on Creator 2 dtd, TODO xsd). 
 It is defined with data for generating tag class,  tld file and beainfo specifc to IDE.
 
 extended-faces-config.xml (Netbeans VWP specifc)
-extended-faces-config-creator2.xml (Creator 2 specific )
 
 Generator Configuration file:
 main/resources/conf/config.properties
@@ -118,14 +119,19 @@ faces-config
 renderer-kit
 &ice-style-renderer
 
-#4 add component and render in faces-config.xml (component/conf/META-INF/faces-config.xml)
+#4 add component and render in faces-config.xml (component-metadata/main/resources/conf/faces-config-base.xml)
 
+<!ENTITY ice-OutputStyle-component SYSTEM "ice/components/OutputStyle-component.xml">
+<!ENTITY ice-OutputStyle-renderer SYSTEM "ice/renderers/OutputStyle-renderer.xml">
+
+      ice/renderers/OutputStyle-renderer.xml
       <renderer>
             <component-family>com.icesoft.faces.OutputStyle</component-family>
             <renderer-type>com.icesoft.faces.style.OutputStyleRenderer</renderer-type>
             <renderer-class>com.icesoft.faces.component.style.OutputStyleRenderer</renderer-class>
       </renderer>
 
+    ice/components/OutputStyle-component.xml
     <component>
       <component-type>com.icesoft.faces.OutputStyleComp</component-type>
       <component-class>com.icesoft.faces.component.style.OutputStyle</component-class>
