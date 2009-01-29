@@ -37,7 +37,6 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewListener;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
@@ -266,7 +265,7 @@ public class PersistentFacesState implements Serializable {
                 // cause the JSF lifecycle to run, which we want to do for
                 // consistency.
                 String postback;
-                if (stateRestorationId != null) {
+                if (ImplementationUtil.isJSFStateSaving() && stateRestorationId != null) {
                     postback = stateRestorationId;
                 } else {
                     postback = "not reload";
