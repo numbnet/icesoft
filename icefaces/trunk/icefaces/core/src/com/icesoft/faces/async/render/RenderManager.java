@@ -34,7 +34,6 @@
 package com.icesoft.faces.async.render;
 
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -393,9 +392,6 @@ public class RenderManager implements Disposable {
                 final String name, final int type)
                 throws IllegalArgumentException {
 
-            if (!CoreUtils.isServerSideStateSaving()) {
-                throw new UnsupportedOperationException("Server Push is not supported in Client side state saving environment");
-            }
             if (name == null || name.trim().length() == 0) {
                 throw
                         new IllegalArgumentException(
