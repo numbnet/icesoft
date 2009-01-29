@@ -30,17 +30,17 @@
  *  this file under either the MPL or the LGPL License."
  *
  */
-
-package com.icesoft.metadata.generators;
+package com.icesoft.jsfmeta.templates;
 
 import com.icesoft.jsfmeta.util.GeneratorUtil;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import com.icesoft.jsfmeta.MetadataXmlParser;
+
+import com.icesoft.jsfmeta.templates.jsf11.TempGenRTFacesConfig11;
 import com.icesoft.jsfmeta.util.ConfigStorage;
 import com.icesoft.jsfmeta.util.InternalConfig;
 import com.sun.rave.jsfmeta.beans.ComponentBean;
@@ -48,81 +48,67 @@ import com.sun.rave.jsfmeta.beans.ConverterBean;
 import com.sun.rave.jsfmeta.beans.FacesConfigBean;
 import com.sun.rave.jsfmeta.beans.RendererBean;
 import com.sun.rave.jsfmeta.beans.ValidatorBean;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.SAXException;
 
-public final class MetadataGenerator {
-    
+public final class TemplateMetadataGenerator {
+
     private static Logger logger = Logger.getLogger("com.icesoft.metadata.generators.MetadataGenerator");
-    
     private FacesConfigBean config;
-    
     private List excludes;
-    
-    private List includes;
-    
-    private List listeners;
-    
+
     private MetadataXmlParser parser;
-    
-    private List validators;
-    
     private InternalConfig internalConfig;
-    
-    public MetadataGenerator() {
-        
+
+    public TemplateMetadataGenerator() {
+
         parser = new MetadataXmlParser();
         config = new FacesConfigBean();
         excludes = new ArrayList();
-        includes = new ArrayList();
-        listeners = new ArrayList();
-        validators = new ArrayList();
     }
-    
-    
+
     public static void main(String args[]) throws Exception {
-        
-        MetadataGenerator main = new MetadataGenerator();
+
+        TemplateMetadataGenerator main = new TemplateMetadataGenerator();
         main.loadProps();
         main.execute(args);
     }
-    
-    private void parseXML(String[] urlList){
-        
-        for(int i=0; i< urlList.length; i++){
+
+    private void parseXML(String[] urlList) {
+
+        for (int i = 0; i < urlList.length; i++) {
             String url = urlList[i];
             try {
                 parser.parse(new URL(url), config);
             } catch (MalformedURLException ex) {
-                System.out.println("Please check following: url="+url);
+                System.out.println("Please check following: url=" + url);
                 ex.printStackTrace();
                 System.exit(1);
             } catch (IOException ex) {
-                System.out.println("Please check following: url="+url);
+                System.out.println("Please check following: url=" + url);
                 ex.printStackTrace();
                 System.exit(1);
             } catch (SAXException ex) {
-                System.out.println("Please check following: url="+url);
+                System.out.println("Please check following: url=" + url);
                 ex.printStackTrace();
                 System.exit(1);
             }
         }
     }
-    
+
     //TODO: filter version from ICEfaces core
-    private void loadProps(){
-        
+    private void loadProps() {
+
         init();
-        String fileName = GeneratorUtil.getWorkingFolder()+"conf/config.properties";
+        String fileName = GeneratorUtil.getWorkingFolder() + "conf/config.properties";
         Properties props = ConfigStorage.getInstance(fileName).loadProperties();
         internalConfig = new InternalConfig(props);
     }
-    
+
     //TODO: move to catalog
-    private void init(){
+    private void init() {
         try {
 
             String standard_html_renderkit = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
@@ -134,159 +120,77 @@ public final class MetadataGenerator {
 
             exclude();
 
-            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/faces-config-base.xml";
-            String extended_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/extended-faces-config.xml";
+            String extRelativePath = GeneratorUtil.getWorkingFolder();
+            String component_faces_config = "file:" + extRelativePath + "conf/faces-config-base.xml";
+            String extended_faces_config = "file:" + extRelativePath + "conf/extended-faces-config.xml";
             String[] urlList = new String[]{component_faces_config, extended_faces_config};
             parseXML(urlList);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(MetadataGenerator.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
+            Logger.getLogger(TemplateMetadataGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
-    
+
     private void execute(String args[]) throws Exception {
-        
+
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
-            
-            if (arg.equals("--cpBeanInfoBase")) {
-                componentBeanInfo();
-                continue;
-            }
-            if (arg.equals("--cpTestBeanInfo")) {
-                componentTestBeanInfo();
-                continue;
-            }
-            if (arg.equals("--cpClassBase")) {
-                component();
-                continue;
-            }
-            if (arg.equals("--tlClass")) {
-                tagLibrary();
-                continue;
-            }
-            if (arg.equals("--cpCreatorBeanInfoBase")) {
-                componentBeanInfo();
-                continue;
-            }
-            if (arg.equals("--tlDescriptor")) {
-                descriptor();
+
+            if (arg.equals("--templateGenJsf11")) {
+                templateGenJsf11();
+            } else if (arg.equals("--templateGenJsf12")) {
+                //templateGenJsf12();
             } else {
                 usage();
                 throw new IllegalArgumentException(arg);
             }
         }
     }
-    
-    private void tagLibrary() throws Exception {
+
+    private void templateGenJsf11() throws Exception {
         try {
-            TagLibraryGenerator generator = new TagLibraryGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/taglib/main/java"));
-            generator.setConfig(config);
-            generator.generate();
+
+            TempGenRTFacesConfig11 genFacesConfig = new TempGenRTFacesConfig11();
+            genFacesConfig.setInternalConfig(internalConfig);
+            genFacesConfig.setFacesConfigBean(config);
+            genFacesConfig.genConf();;
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(1);
         }
     }
-    
-    private void component() throws Exception {
-        
-        try {
-            BaseComponentGenerator generator = new BaseComponentGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/component/main/java"));
-            generator.setConfig(config);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-        
-    private void componentCreatorBeanInfo() throws Exception {
-                       
-        try {
-            IDEComponentBeanInfoGenerator generator = new IDEComponentBeanInfoGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/beaninfo/main/java"));
-            generator.setConfig(config);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-    private void componentBeanInfo() throws Exception {
-        
-        try {
-            IDEComponentBeanInfoGenerator generator = new IDEComponentBeanInfoGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/beaninfo/main/java"));
-            generator.setConfig(config);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-    private void componentTestBeanInfo() throws Exception {
-        try {
-            ComponentTestBeanInfoGenerator generator = new ComponentTestBeanInfoGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/testbeaninfo/main/java"));
-            generator.setConfig(config);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-    private void descriptor() throws Exception {
-        try {
-            TLDGenerator generator = new TLDGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/tld"));
-            generator.setConfig(config);
-            generator.setVerbose(true);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-    
-    
+
     private void exclude() {
-        
+
         ComponentBean cpb[] = config.getComponents();
-        for (int i = 0; i < cpb.length; i++)
+        for (int i = 0; i < cpb.length; i++) {
             excludes.add(cpb[i].getComponentClass());
-        
+        }
+
         ConverterBean cvb1[] = config.getConvertersByClass();
-        for (int i = 0; i < cvb1.length; i++)
+        for (int i = 0; i < cvb1.length; i++) {
             excludes.add(cvb1[i].getConverterClass());
-        
+        }
+
         ConverterBean cvb2[] = config.getConvertersById();
-        for (int i = 0; i < cvb2.length; i++)
+        for (int i = 0; i < cvb2.length; i++) {
             excludes.add(cvb2[i].getConverterClass());
-        
+        }
+
         RendererBean rb[] = config.getRenderKit("HTML_BASIC").getRenderers();
-        for (int i = 0; i < rb.length; i++){
+        for (int i = 0; i < rb.length; i++) {
             excludes.add(rb[i].getRendererClass());
         }
-        
+
         ValidatorBean vb[] = config.getValidators();
-        for (int i = 0; i < vb.length; i++){
+        for (int i = 0; i < vb.length; i++) {
             excludes.add(vb[i].getValidatorClass());
         }
     }
-    
+
     //TODO:
     private void usage() {
         String info = "TODO";
         logger.info(info);
     }
-    
 }

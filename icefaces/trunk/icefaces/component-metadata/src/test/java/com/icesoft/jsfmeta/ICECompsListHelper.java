@@ -1,7 +1,7 @@
 /*
  * Helper
  */
-package com.icesoft.faces.metadata;
+package com.icesoft.jsfmeta;
 
 import com.icesoft.jsfmeta.MetadataXmlParser;
 import com.icesoft.jsfmeta.util.GeneratorUtil;
@@ -69,7 +69,7 @@ public class ICECompsListHelper {
             MetadataXmlParser jsfMetaParser = new MetadataXmlParser();
             try {
                 String extRelativePath = GeneratorUtil.getWorkingFolder();
-                String component_faces_config = "file:" + extRelativePath + "../../../component-metadata/src/main/resources/conf/faces-config-base.xml";
+                String component_faces_config = "file:" + extRelativePath + "conf/faces-config-base.xml";
                 URL url = new URL(component_faces_config);
                 facesConfigBean = jsfMetaParser.parse(url);
             } catch (IOException e) {
@@ -78,7 +78,7 @@ public class ICECompsListHelper {
             } catch (SAXException e) {
                 e.printStackTrace();
                 System.exit(1);
-            } 
+            }
         }
         return facesConfigBean;
     }

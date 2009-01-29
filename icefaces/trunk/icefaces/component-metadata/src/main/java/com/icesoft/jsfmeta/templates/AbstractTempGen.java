@@ -15,6 +15,8 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -332,5 +334,47 @@ public abstract class AbstractTempGen {
             tmp = s.substring(word.length());
         }
         return tmp;
+    }
+
+    public ComponentBean[] getSortedComponentBeans(ComponentBean[] origcbs) {
+
+        ComponentBean[] cbs = new ComponentBean[origcbs.length];
+        System.arraycopy(origcbs, 0, cbs, 0, origcbs.length);
+        String[] compClasses = new String[cbs.length];
+        for (int i = 0; i < compClasses.length; i++) {
+            compClasses[i] = cbs[i].getComponentType();
+        }
+        Arrays.sort(compClasses);
+        ArrayList<ComponentBean> sortedCompList = new ArrayList<ComponentBean>();
+        for (int i = 0; i < compClasses.length; i++) {
+            sortedCompList.add(getFacesConfigBean().getComponent(compClasses[i]));
+        }
+
+        return sortedCompList.toArray(new ComponentBean[cbs.length]);
+    }
+
+    public RendererBean[] getSortedRendererBeans(ComponentBean[] rdbs) {
+        String[] renderClassesKey = new String[rdbs.length];
+        for (int i = 0; i < renderClassesKey.length; i++) {
+            renderClassesKey[i] = rdbs[i].getComponentFamily() + "|" + rdbs[i].getRendererType();
+        }
+        Arrays.sort(renderClassesKey);
+        ArrayList<RendererBean> sortedRenderBeanList = new ArrayList<RendererBean>();
+        RenderKitBean renderKitBean = getFacesConfigBean().getRenderKit(
+                getDefaultRenderKitId());
+        for (int i = 0; i < renderClassesKey.length; i++) {
+
+            int index = renderClassesKey[i].indexOf("|");
+            String componentFamily = renderClassesKey[i].substring(0, index);
+            String rendererType = renderClassesKey[i].substring(index + 1);
+            RendererBean rendererBean = renderKitBean.getRenderer(componentFamily, rendererType);
+            if (rendererBean != null && rendererBean.getRendererType() != null && rendererBean.getRendererClass() != null) {
+                sortedRenderBeanList.add(rendererBean);
+            }
+        }
+        RendererBean[] orignrb = sortedRenderBeanList.toArray(new RendererBean[sortedRenderBeanList.size()]);
+        RendererBean[] sortedrb = new RendererBean[sortedRenderBeanList.size()];
+        System.arraycopy(orignrb, 0, sortedrb, 0, sortedRenderBeanList.size());
+        return sortedrb;
     }
 }
