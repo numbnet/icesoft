@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "dtd/web-facesconfig_1_1.dtd">
 <faces-config xmlns="http://java.sun.com/JSF/Configuration">
-    
+
 <component>
     <component-type>com.icesoft.faces.ApplyEffect</component-type>
     <component-class>com.icesoft.faces.component.effect.ApplyEffect</component-class>
@@ -894,6 +894,12 @@
     <component-family>com.icesoft.faces.dragdrop.PanelPositionedFamily</component-family>
     <renderer-type>com.icesoft.faces.dragdrop.PanelPositionedRenderer</renderer-type>
     <renderer-class>com.icesoft.faces.component.panelpositioned.PanelPositionedRenderer</renderer-class>
+</renderer>
+
+<renderer>
+   <component-family>com.icesoft.faces.MenuPopup</component-family>
+   <renderer-type>com.icesoft.faces.View</renderer-type>
+   <renderer-class>com.icesoft.faces.component.menupopup.MenuPopupRenderer</renderer-class>
 </renderer>
 
     </render-kit>
