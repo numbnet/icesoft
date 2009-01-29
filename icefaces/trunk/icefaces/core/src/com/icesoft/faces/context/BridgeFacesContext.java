@@ -35,7 +35,6 @@ package com.icesoft.faces.context;
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.env.Authorization;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
@@ -43,6 +42,7 @@ import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.jasper.Constants;
 import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
@@ -369,9 +369,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
 
         // if we're doing state management, we always clear the viewRoot between requests.
-//        if (CoreUtils.isJSFStateSaving()) {
+        if (ImplementationUtil.isJSFStateSaving()) {
             this.viewRoot = null;
-//        }
+        }
 
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
@@ -591,9 +591,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
                 //#2139 Don't insert a false postback key if state saving is configured,
                 // as this will overwrite the real state saving key
-//                if (!CoreUtils.isJSFStateSaving()) {
-//                    externalContext.insertPostbackKey();
-//                }
+                if (!ImplementationUtil.isJSFStateSaving()) {
+                    externalContext.insertPostbackKey();
+                }
             }
 
             public void portlet(Object request, Object response, Object config) {
