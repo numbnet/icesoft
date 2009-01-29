@@ -37,7 +37,7 @@ import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -203,7 +203,7 @@ public class FormRenderer extends DomBasicRenderer {
         // because this object isn't using the DOMResponseWriter. 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        if (writer instanceof DOMResponseWriter) {
+        if (ImplementationUtil.isJSFStateSaving() && (writer instanceof DOMResponseWriter)) {
             DOMResponseWriter domWriter = (DOMResponseWriter) writer;
             Node n = domContext.createElement("div");
 
