@@ -1,14 +1,11 @@
 package com.icesoft.faces.util;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.w3c.dom.Element;
 
@@ -20,8 +17,6 @@ public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
 	private static Boolean portletEnvironment;
 
-    private static boolean jsfStateSaving;
-	
     public static String resolveResourceURL(FacesContext facesContext, String path) {
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
@@ -180,24 +175,7 @@ public class CoreUtils {
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
         rootElement.setAttribute("onmouseover", onmouseover);
     }
-    
-    public static void setJSFStateSaving(boolean isJSFStateSaved) {
-        jsfStateSaving = isJSFStateSaved;
-    }
-
-    public static boolean isJSFStateSaving() {
-        return jsfStateSaving;
-    }
-
-    private static boolean serverSideStateSaving;
-    public static void setServerSideStateSaving(boolean isServerSide) {
-        serverSideStateSaving = isServerSide;
-    }
-
-    public static boolean isServerSideStateSaving() {
-        return serverSideStateSaving;
-    } 
-    
+   
     public static boolean objectsEqual(Object ob1, Object ob2) {
         if (ob1 == null && ob2 == null) {
             return true;
