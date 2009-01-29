@@ -126,7 +126,13 @@
             <arg line="--cpBeanInfoBase" />
             <classpath refid="build.classpath" />
         </java>
-        
+
+        <!-- generate IDE beaninfo base -->
+        <java classname="com.icesoft.jsfmeta.templates.TemplateMetadataGenerator" failonerror="true" fork="true">
+            <arg line="--templateGenJsf11" />
+            <classpath refid="build.classpath" />
+        </java>
+
         <touch file="${project.build.directory}/generated-sources/created" />
     </target>
     
