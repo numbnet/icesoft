@@ -59,6 +59,7 @@ public class OutputChartRenderer extends DomBasicRenderer {
             Element table = domContext.createElement(HTML.TABLE_ELEM);
             domContext.setRootNode(table);
             setRootElementId(facesContext, table, uiComponent);
+            Element tbody = (Element) domContext.createElement(HTML.TBODY_ELEM);
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             Element td = (Element) domContext.createElement(HTML.TD_ELEM);
             table.setAttribute(HTML.CLASS_ATTR, outputChart.getStyleClass());
@@ -67,16 +68,17 @@ public class OutputChartRenderer extends DomBasicRenderer {
                 table.setAttribute(HTML.STYLE_ATTR, style);
             else
                 table.removeAttribute(HTML.STYLE_ATTR);
-            table.appendChild(tr);
+            table.appendChild(tbody);
+            tbody.appendChild(tr);
             tr.appendChild(td);
         }
         Element table = (Element)domContext.getRootNode();
         Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
         hiddenField.setAttribute(HTML.NAME_ATTR, "iceChartComponent");
         hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-        table.appendChild(hiddenField);
         
         Element td = (Element) domContext.getRootNode(). //table
+                getFirstChild().//tbody Art: 
                 getFirstChild().//tr
                 getFirstChild();//td
         DOMContext.removeChildren(td);
@@ -94,6 +96,7 @@ public class OutputChartRenderer extends DomBasicRenderer {
             outputChart.generateClientSideImageMap(domContext, map);
             td.appendChild(map);
         }
+        td.appendChild(hiddenField);
         domContext.stepOver();
     }
 }

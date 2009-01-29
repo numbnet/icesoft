@@ -474,12 +474,12 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
                 Text areaNode = domContext.createTextNode(areaMap.toHTML(
                         "title ='" + areaMap.getLengendLabel() +
-                        "' href=\"return false;\" onclick=\"document.forms['" +
+                        "' href=\"javascript:;\" onclick=\"document.forms['" +
                         getParentFormId() + "']['" + ICE_CHART_COMPONENT +
                         "'].value='" + getClientId(getFacesContext()) +
                         "id-key" + areaMap.hashCode() +
                         "';iceSubmitPartial(document.forms['" +
-                        getParentFormId() + "'],this,event); return false;\""));
+                        getParentFormId() + "'],this,event);return false;\""));
                 map.appendChild(areaNode);
             }
         } else {
