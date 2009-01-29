@@ -393,21 +393,33 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         Document document = documentStore.load();
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
+System.out.println(parameters);
 
         NodeList inputElements = document.getElementsByTagName("input");
         int inputElementsLength = inputElements.getLength();
         for (int i = 0; i < inputElementsLength; i++) {
             Element inputElement = (Element) inputElements.item(i);
             String id = inputElement.getAttribute("id");
-            if (!"".equals(id) && parameters.containsKey(id)) {
-                String value = ((String[]) parameters.get(id))[0];
-                //empty string is implied (default) when 'value' attribute is missing
-                if (!"".equals(value)) {
-                    if (inputElement.hasAttribute("value")) {
-                        inputElement.setAttribute("value", value);
+            if (!"".equals(id)) {
+                if (parameters.containsKey(id)) {
+                    String value = ((String[]) parameters.get(id))[0];
+                    //empty string is implied (default) when 'value' attribute is missing
+                    if (!"".equals(value)) {
+                        if (inputElement.hasAttribute("value")) {
+                            inputElement.setAttribute("value", value);
+                        }
+                        else if (inputElement.getAttribute("type").equals("checkbox")) {
+                            inputElement.setAttribute("checked", "checked");
+                        }
                     }
-                    else if (inputElement.getAttribute("type").equals("checkbox")) {
-                        inputElement.setAttribute("checked", "checked");
+                    else {
+                        inputElement.setAttribute("value", "");
+                    }
+                }
+                else {
+                    if (inputElement.getAttribute("type").equals("checkbox")) {
+                        ////inputElement.setAttribute("checked", "");
+                        inputElement.removeAttribute("checked");
                     }
                 }
             }
