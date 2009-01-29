@@ -37,6 +37,7 @@
 <!ENTITY ice-MenuItem-renderer SYSTEM "ice/renderers/MenuItem-renderer.xml">
 <!ENTITY ice-MenuItemSeparator-renderer SYSTEM "ice/renderers/MenuItemSeparator-renderer.xml">
 <!ENTITY ice-MenuItems-renderer SYSTEM "ice/renderers/MenuItems-renderer.xml">
+<!ENTITY ice-MenuPopup-renderer SYSTEM "ice/renderers/MenuPopup-renderer.xml">
 <!ENTITY ice-OutputBody-renderer SYSTEM "ice/renderers/OutputBody-renderer.xml">
 <!ENTITY ice-OutputChart-renderer SYSTEM "ice/renderers/OutputChart-renderer.xml">
 <!ENTITY ice-OutputConnectionStatus-renderer SYSTEM "ice/renderers/OutputConnectionStatus-renderer.xml">
@@ -257,6 +258,7 @@
             &ice-MenuItem-renderer;
             &ice-MenuItemSeparator-renderer;
             &ice-MenuItems-renderer;
+            &ice-MenuPopup-renderer;            
             &ice-OutputBody-renderer;
             &ice-OutputChart-renderer;
             &ice-OutputConnectionStatus-renderer;
