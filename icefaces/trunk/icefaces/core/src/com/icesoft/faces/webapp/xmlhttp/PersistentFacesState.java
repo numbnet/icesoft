@@ -44,6 +44,7 @@ import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -77,7 +78,7 @@ import java.util.Map;
  */
 public class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
     private static final InheritableThreadLocal localInstance = new InheritableThreadLocal();
 
     private final ClassLoader renderableClassLoader;
@@ -419,6 +420,20 @@ public class PersistentFacesState implements Serializable {
             } catch (IllegalStateException e) {
                 log.debug("renderLater failed ", e);
             }
+        }
+    }
+    
+    private static class DaemonThreadFactory implements ThreadFactory {
+        private ThreadFactory defaultThreadFactory;
+        
+        private DaemonThreadFactory() {
+            defaultThreadFactory = Executors.defaultThreadFactory();
+        }
+
+        public Thread newThread(Runnable runnable) {
+            Thread thread = defaultThreadFactory.newThread(runnable);
+            thread.setDaemon(true);
+            return thread;
         }
     }
 
