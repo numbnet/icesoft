@@ -393,7 +393,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         Document document = documentStore.load();
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
-System.out.println(parameters);
 
         NodeList inputElements = document.getElementsByTagName("input");
         int inputElementsLength = inputElements.getLength();
