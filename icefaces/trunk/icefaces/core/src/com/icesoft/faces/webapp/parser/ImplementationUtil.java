@@ -41,7 +41,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.jsp.PageContext;
 import java.util.List;
 
-import com.icesoft.faces.webapp.parser.ComponentRuleSet;
 
 /**
  * For ICEfaces to support JSF-RI, MyFaces, or any other future JSF
@@ -66,6 +65,7 @@ public class ImplementationUtil {
     private static boolean isMyFaces = false;
     private static boolean isJSF12 = false;
     private static boolean isJSF2 = false;
+    private static boolean jsfStateSaving;
 
     /**
      * Marker classes whose presence we used to detect which implementation we
@@ -218,6 +218,14 @@ public class ImplementationUtil {
         }
         return list;
 
+    }
+
+    public static void setJSFStateSaving(boolean isJSFStateSaved) {
+        jsfStateSaving = isJSFStateSaved;
+    }
+
+    public static boolean isJSFStateSaving() {
+        return jsfStateSaving;
     }
 }
 
