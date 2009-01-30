@@ -43,7 +43,7 @@ public class HtmlInputHidden
 
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlInputHidden";
-    public static final String RENDERER_TYPE = "javax.faces.Hidden";
+    public static final String RENDERER_TYPE = "com.icesoft.faces.Hidden";
 
     public HtmlInputHidden() {
         super();

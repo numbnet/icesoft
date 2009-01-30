@@ -48,7 +48,7 @@ public class HtmlOutputFormat
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlOutputFormat";
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
-    public static final String RENDERER_TYPE = "javax.faces.Format";
+    public static final String RENDERER_TYPE = "com.icesoft.faces.Format";
     private String styleClass = null;
     private String lang;
     private String dir;

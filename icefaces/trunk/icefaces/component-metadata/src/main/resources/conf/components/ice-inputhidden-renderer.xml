@@ -47,7 +47,7 @@
 	</description>
 	<component-family>javax.faces.Input</component-family>
 
-	<renderer-type>javax.faces.Hidden</renderer-type>
+	<renderer-type>com.icesoft.faces.Hidden</renderer-type>
 
 	<renderer-extension>
 		<instance-name>inputHidden</instance-name>
