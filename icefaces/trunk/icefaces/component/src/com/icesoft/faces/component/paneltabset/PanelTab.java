@@ -77,7 +77,7 @@ public class PanelTab
     /**
      * The default renderer type.
      */
-    private static final String DEFAULT_RENDERER_TYPE = "javax.faces.Group";
+    private static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.TabbedPaneTab";
     /**
      * The current enabledOnUserRole state.
      */

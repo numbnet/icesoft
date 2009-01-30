@@ -47,7 +47,7 @@
 	<component-extension>
         <base-component-type>com.sun.faces.Component</base-component-type>
 		<component-family>com.icesoft.faces.PanelConfirmation</component-family>
-		<renderer-type>com.icesoft.faces.PanelConfirmation</renderer-type>
+		<renderer-type>com.icesoft.faces.PanelConfirmationRenderer</renderer-type>
 	</component-extension>
 
 </component>

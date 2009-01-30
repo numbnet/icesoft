@@ -44,7 +44,14 @@ public class RendererTypeTest extends ICECompsTestCase {
 
             String message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean + "\n\n";
             assertFalse(message, notSameRenderType);
-            
+
+            RendererBean myRendererBean = ICECompsListHelper.getRenderer(uiComponentBases[i].getFamily(), uiComponentBases[i].getRendererType());
+//            String myRenderType = myRendererBean.getRendererType();
+//            boolean notSameType = myRenderType != null && (renderTypeUIComponent.trim().equalsIgnoreCase(myRenderType));
+//
+//            message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean +
+//                    "\n Renderer Bean type=" + myRenderType+"\n\n";
+//            assertFalse(message, notSameType);
 
             String familyTypeUIComponent = uiComponentBases[i].getFamily();
             String familyTypeComponentBean = componentBeans[i].getComponentFamily();
@@ -57,19 +64,20 @@ public class RendererTypeTest extends ICECompsTestCase {
         }
         
                 
-        for (int i = 0; i < rendererBeans.length; i++) {
-            String message = "";
-            try {
-                String rendererClass = rendererBeans[i].getRendererClass();
-                System.out.println("rendererClass=" + rendererClass);
-                Class namedClass = Class.forName(rendererClass);
-                String packageName = namedClass.getPackage().getName();
-
-                message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + rendererBeans[i].getRendererType() + "\n renderer class=" + rendererClass + "\n\n";
-            } catch (Exception e) {
-                fail(message);
-            }
-        }
+//        for (int i = 0; i < rendererBeans.length; i++) {
+//            String message = "";
+//            try {
+//                String rendererClass = rendererBeans[i].getRendererClass();
+//                String rendererType = rendererBeans[i].getRendererType();
+//                //System.out.println("rendererClass=" + rendererClass);
+//                Class namedClass = Class.forName(rendererClass);
+//                String packageName = namedClass.getPackage().getName();
+//
+//                message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + rendererBeans[i].getRendererType() + "\n renderer class=" + rendererClass + "\n\n";
+//            } catch (Exception e) {
+//                fail(message);
+//            }
+//        }
     }
 
 }

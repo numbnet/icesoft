@@ -29,7 +29,7 @@
 		</component>
 	</tag>
 	<tag>
-		<tag-name>columnGroup</tag-name>
+		<tag-name>gMapControl</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.ColumnGroup</component-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
@@ -63,13 +63,6 @@
 		<component>
 			<component-type>com.icesoft.faces.GMap</component-type>
 			<renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>
-			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
-		</component>
-	</tag>
-	<tag>
-		<tag-name>gMapControl</tag-name>
-		<component>
-			<component-type>com.icesoft.faces.GMapControl</component-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -110,13 +103,6 @@
 		<component>
 			<component-type>com.icesoft.faces.GMapMarker</component-type>
 			<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
-			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
-		</component>
-	</tag>
-	<tag>
-		<tag-name>headerRow</tag-name>
-		<component>
-			<component-type>com.icesoft.faces.HeaderRow</component-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -185,7 +171,7 @@
 		</component>
 	</tag>
 	<tag>
-		<tag-name>inputText</tag-name>
+		<tag-name>selectInputText</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlInputText</component-type>
 			<renderer-type>com.icesoft.faces.Text</renderer-type>
@@ -380,7 +366,7 @@
 		<tag-name>menuPopup</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.MenuPopup</component-type>
-			<renderer-type>com.icesoft.faces.MenuPopup</renderer-type>
+			<renderer-type>com.icesoft.faces.View</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -468,7 +454,7 @@
 		<tag-name>panelConfirmation</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.PanelConfirmation</component-type>
-			<renderer-type>com.icesoft.faces.PanelConfirmation</renderer-type>
+			<renderer-type>com.icesoft.faces.PanelConfirmationRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -564,14 +550,6 @@
 		<component>
 			<component-type>com.icesoft.faces.SelectInputDate</component-type>
 			<renderer-type>com.icesoft.faces.Calendar</renderer-type>
-			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
-		</component>
-	</tag>
-	<tag>
-		<tag-name>selectInputText</tag-name>
-		<component>
-			<component-type>com.icesoft.faces.SelectInputText</component-type>
-			<renderer-type>com.icesoft.faces.SelectInputText</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>

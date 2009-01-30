@@ -45,7 +45,7 @@
 
 	<component-family>com.icesoft.faces.PanelConfirmation</component-family>
 
-	<renderer-type>com.icesoft.faces.PanelConfirmation</renderer-type>
+	<renderer-type>com.icesoft.faces.PanelConfirmationRenderer</renderer-type>
 
 	<renderer-extension>
 		<instance-name>panelConfirmation</instance-name>
