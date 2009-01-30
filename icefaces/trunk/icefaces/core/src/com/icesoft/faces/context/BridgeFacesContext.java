@@ -211,19 +211,25 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return ((Vector) obj).iterator();
     }
 
+    RenderKit renderKit = null;
+    String renderKitId = null;
+
     public RenderKit getRenderKit() {
         UIViewRoot viewRoot = getViewRoot();
         if (null == viewRoot) {
             return (null);
         }
-        String renderKitId = viewRoot.getRenderKitId();
-        if (null == renderKitId) {
+        String rootKitId = viewRoot.getRenderKitId();
+        if (null == rootKitId) {
             return (null);
         }
 
-        RenderKitFactory renderKitFactory = (RenderKitFactory)
-                FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-        RenderKit renderKit = renderKitFactory.getRenderKit(this, renderKitId);
+        if (!rootKitId.equals(renderKitId))  {
+            renderKitId = rootKitId;
+            RenderKitFactory renderKitFactory = (RenderKitFactory)
+                    FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+            renderKit = renderKitFactory.getRenderKit(this, renderKitId);
+        }
         return (renderKit);
     }
 
@@ -367,6 +373,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         maxSeverity = null;
         renderResponse = false;
         responseComplete = false;
+        renderKit = null;
+        renderKitId = null;
 
         // if we're doing state management, we always clear the viewRoot between requests.
         if (ImplementationUtil.isJSFStateSaving()) {
