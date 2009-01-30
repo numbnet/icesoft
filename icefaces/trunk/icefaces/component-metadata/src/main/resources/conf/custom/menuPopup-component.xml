@@ -45,7 +45,7 @@
 	<component-extension>
 		<base-component-type>javax.faces.Command</base-component-type>
 		<component-family>com.icesoft.faces.MenuPopup</component-family>
-		<renderer-type>com.icesoft.faces.MenuPopup</renderer-type>
+		<renderer-type>com.icesoft.faces.View</renderer-type>
 	</component-extension>
 
 </component>
