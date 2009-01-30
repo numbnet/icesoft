@@ -69,6 +69,7 @@ public class HtmlCommandLink
     private Boolean disabled = null;
     private static final boolean DEFAULT_VISIBLE = true;
     private Boolean partialSubmit = null;
+    private String panelConfirmation = null;
 
     private String styleClass = null;
     private Effect onclickeffect;
@@ -600,7 +601,28 @@ public class HtmlCommandLink
     public void setCurrentStyle(CurrentStyle currentStyle) {
         this.currentStyle = currentStyle;
     }
+    
+    /**
+     * <p>Set the value of the <code>panelConfirmation</code> property.</p>
+     *
+     * @param panelConfirmation
+     */
+    public void setPanelConfirmation(String panelConfirmation) {
+        this.panelConfirmation = panelConfirmation;
+    }
 
+    /**
+     * <p>Return the value of the <code>panelConfirmation</code> property.</p>
+     *
+     * @return String panelConfirmation
+     */
+    public String getPanelConfirmation() {
+        if (panelConfirmation != null) {
+            return panelConfirmation;
+        }
+        ValueBinding vb = getValueBinding("panelConfirmation");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
@@ -610,7 +632,7 @@ public class HtmlCommandLink
      * @return Object values[]
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[23];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = enabledOnUserRole;
         values[2] = renderedOnUserRole;
@@ -631,6 +653,7 @@ public class HtmlCommandLink
         values[20] = disabled;
         values[21] = Boolean.valueOf(focus);
         values[22] = partialSubmit;
+        values[23] = panelConfirmation;
         return ((Object) (values));
     }
 
@@ -663,6 +686,7 @@ public class HtmlCommandLink
         disabled = (Boolean) values[20];
         focus = ((Boolean) values[21]).booleanValue();
         partialSubmit = (Boolean) values[22];
+        panelConfirmation = (String) values[23];
     }
 }
    

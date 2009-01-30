@@ -44,6 +44,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
 
+import com.icesoft.faces.component.panelconfirmation.PanelConfirmationRenderer;
+
 public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         super.encodeBegin(facesContext, uiComponent);
@@ -54,17 +56,25 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
         if (link.isDisabled()) {
             root.removeAttribute("onclick");
             root.removeAttribute("href");
-        } else if (link.getPartialSubmit()) {
+        } else {
             UIComponent uiForm = findForm(uiComponent);
             if (uiForm == null) {
                 throw new FacesException("CommandLink must be contained in a form");
             }
             Object passThruOnClick = uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
             // if onClick attribute set by the user, pre append it.
-            String rendererOnClick = this.getJavaScriptPartialOnClickString(facesContext, uiComponent, parameters);
-            root.setAttribute("onclick", combinedPassThru((String) passThruOnClick, rendererOnClick));
-        } else {
-            super.renderOnClick(facesContext, uiComponent, root, parameters);
+            String rendererOnClick;
+            if (link.getPartialSubmit()) {
+                rendererOnClick = getJavaScriptPartialOnClickString(facesContext, uiComponent, parameters);
+            } else {
+                rendererOnClick = getJavaScriptOnClickString(facesContext, uiComponent, parameters);
+            }
+            if (null != link.getPanelConfirmation()) {
+                root.setAttribute("onclick", PanelConfirmationRenderer.renderOnClickString(
+                    uiComponent, combinedPassThru((String) passThruOnClick, rendererOnClick)));
+            } else {
+                root.setAttribute("onclick", combinedPassThru((String) passThruOnClick, rendererOnClick));
+            }
         }
     }
 
@@ -72,5 +82,11 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
                 "return iceSubmitPartial(form,this,event);";
+    }
+
+    private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
+        return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
+                .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
+                "return iceSubmit(form,this,event);";
     }
 }
