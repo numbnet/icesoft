@@ -65,24 +65,30 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public Resource getResource() {
-        ValueBinding vb = getValueBinding("resource");
-		if (vb == null) {
-		    if (log.isInfoEnabled()) {
-		        log.info("The \"resource\" is not defined");
-		    }
-		    return null;
-		}
-		final Resource resource = (Resource) vb.getValue(getFacesContext());
+	    final Resource currResource;
+	    if (this.resource != null) {
+	        currResource = this.resource;
+	    }else {
+            ValueBinding vb = getValueBinding("resource");
+    		if (vb == null) {
+    		    if (log.isInfoEnabled()) {
+    		        log.info("The \"resource\" is not defined");
+    		    }
+    		    return null;
+    		}
+    		currResource = (Resource) vb.getValue(getFacesContext());
+	    }
+	    if (currResource == null) return null;
 		final String fileName = getFileName();
-        if( resource != null ){
-			int newResourceHashCode = resource.hashCode();
+        if( currResource != null ){
+			int newResourceHashCode = currResource.hashCode();
 			if( lastResourceHashCode != newResourceHashCode ){
-				Resource r = new RegisteredResource(this, resource, fileName);
+				Resource r = new RegisteredResource(this, currResource, fileName);
 				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
 						r).getPath();
 			}
 		}
-		return resource;
+		return currResource;
 	}
 
 	public void setResource(Resource resource) {

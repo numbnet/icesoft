@@ -235,6 +235,8 @@
   <!ENTITY ice-cust-portlet-props SYSTEM "ice_cust_properties/cust-portlet-props.xml">
   <!ENTITY ice-cust-panelLayout-props SYSTEM "ice_cust_properties/cust-panelLayout-props.xml">
   <!ENTITY ice-cust-loadbundle-props SYSTEM "ice_cust_properties/cust-loadbundle-props.xml">  
+  <!ENTITY ice-cust-dataExporter-props SYSTEM "ice_cust_properties/cust-dataExporter-props.xml">
+  
   <!--
   <!ENTITY ice-cust-inputOutputText-props SYSTEM "ice_cust_properties/cust-inputOutputText-props.xml">
   -->
@@ -387,7 +389,7 @@
           
   <!ENTITY datapaginator-component   SYSTEM "custom/datapaginator-component.xml">
   <!ENTITY datapaginator-renderer    SYSTEM "custom/datapaginator-renderer.xml">
-                         
+
   <!ENTITY sortheader-component   SYSTEM "custom/sortheader-component.xml">
   <!ENTITY sortheader-renderer    SYSTEM "custom/sortheader-renderer.xml">
     
@@ -466,7 +468,9 @@
 
   <!ENTITY loadbundle-component   SYSTEM "custom/loadbundle-component.xml">
   <!ENTITY loadbundle-renderer    SYSTEM "custom/loadbundle-renderer.xml">
-  
+
+  <!ENTITY dataExporter-component   SYSTEM "custom/dataExporter-component.xml">
+  <!ENTITY dataExporter-renderer    SYSTEM "custom/dataExporter-renderer.xml">     
 
 <!ENTITY ice-cust-effect-props SYSTEM "ice_cust_properties/cust-effect-props.xml">
   <!ENTITY effect-component SYSTEM "custom/effect-component.xml">
@@ -551,7 +555,8 @@
 	&outputresource-component;
 	&panelBorder-component;
 	&outputConnectionStatus-component;
-	&datapaginator-component;
+    &datapaginator-component;
+	&dataExporter-component;
 	&sortheader-component;
 	&paneltab-component;
 	&paneltabset-component;
@@ -640,6 +645,7 @@
 		&panelBorder-renderer;
 		&outputConnectionStatus-renderer;
 		&datapaginator-renderer;
+        &dataExporter-renderer;
 		&sortheader-renderer;
 		&paneltab-renderer;
 		&paneltabset-renderer;

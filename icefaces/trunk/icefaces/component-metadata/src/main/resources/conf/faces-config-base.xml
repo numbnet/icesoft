@@ -65,6 +65,7 @@
 <!ENTITY ice-TreeNode-renderer SYSTEM "ice/renderers/TreeNode-renderer.xml">
 <!ENTITY ice-Tree-renderer SYSTEM "ice/renderers/Tree-renderer.xml">
 <!ENTITY ice-PanelPositioned-renderer SYSTEM "ice/renderers/PanelPositioned-renderer.xml">
+<!ENTITY ice-DataExporter-renderer SYSTEM "ice/renderers/DataExporter-renderer.xml">
 <!ENTITY ice-ApplyEffect-component SYSTEM "ice/components/ApplyEffect-component.xml">
 <!ENTITY ice-PanelBorder-component SYSTEM "ice/components/PanelBorder-component.xml">
 <!ENTITY ice-UIColumn-component SYSTEM "ice/components/UIColumn-component.xml">
@@ -143,6 +144,7 @@
 <!ENTITY ice-Tree-component SYSTEM "ice/components/Tree-component.xml">
 <!ENTITY ice-PanelPositioned-component SYSTEM "ice/components/PanelPositioned-component.xml">
 <!ENTITY ice-UISeries-component SYSTEM "ice/components/UISeries-component.xml">
+<!ENTITY ice-DataExporter-component SYSTEM "ice/components/DataExporter-component.xml">
   ]>
 <faces-config>
     &ice-ApplyEffect-component;
@@ -223,6 +225,7 @@
     &ice-Tree-component;
     &ice-PanelPositioned-component;
     &ice-UISeries-component;
+    &ice-DataExporter-component;    
     <render-kit>
             &ice-ApplyEffect-renderer;
             &ice-PanelBorder-renderer;
@@ -286,5 +289,6 @@
             &ice-TreeNode-renderer;
             &ice-Tree-renderer;
             &ice-PanelPositioned-renderer;
+            &ice-DataExporter-renderer;            
     </render-kit>
 </faces-config>
