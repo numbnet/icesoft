@@ -291,7 +291,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         
         Object[] submittedValue = getSubmittedSelectedValues(uiComponent);
         Object componentValue = (submittedValue != null) ? null :
-            getCurrentSelectedValues(uiComponent);
+            getCurrentSelectedValues(forComponent);
 
         UISelectMany selectMany = (UISelectMany) forComponent;
         int checkboxIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
