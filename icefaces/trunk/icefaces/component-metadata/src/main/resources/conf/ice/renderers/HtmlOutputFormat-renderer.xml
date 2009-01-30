@@ -1,6 +1,6 @@
 
 <renderer>
     <component-family>javax.faces.Output</component-family>
-    <renderer-type>javax.faces.Format</renderer-type>
-    <renderer-class>com.sun.faces.renderkit.html_basic.OutputMessageRenderer</renderer-class>
+    <renderer-type>com.icesoft.faces.Format</renderer-type>
+    <renderer-class>com.icesoft.faces.renderkit.dom_html_basic.OutputMessageRenderer</renderer-class>
 </renderer>

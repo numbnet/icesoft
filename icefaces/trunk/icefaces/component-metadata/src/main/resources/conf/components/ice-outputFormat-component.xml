@@ -47,6 +47,6 @@
 			javax.faces.HtmlOutputFormat
 		</base-component-type>
 		<component-family>javax.faces.Output</component-family>
-		<renderer-type>javax.faces.Format</renderer-type>
+		<renderer-type>com.icesoft.faces.Format</renderer-type>
 	</component-extension>
 </component>
