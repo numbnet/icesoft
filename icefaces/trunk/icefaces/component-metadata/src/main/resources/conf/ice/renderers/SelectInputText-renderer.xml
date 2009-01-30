@@ -1,6 +1,6 @@
 
 <renderer>
     <component-family>javax.faces.Input</component-family>
-    <renderer-type>com.icesoft.faces.SelectInputText</renderer-type>
+    <renderer-type>com.icesoft.faces.Text</renderer-type>
     <renderer-class>com.icesoft.faces.component.selectinputtext.SelectInputTextRenderer</renderer-class>
 </renderer>

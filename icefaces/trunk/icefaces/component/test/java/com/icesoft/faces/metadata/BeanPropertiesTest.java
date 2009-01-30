@@ -34,6 +34,9 @@ public class BeanPropertiesTest extends ICECompsTestCase {
 
         for (int j = 0; j < components.length; j++) {
             try {
+                if(!components[j].getClass().getName().startsWith("come.icesoft")){
+                    continue;
+                }
                 Class beanInfoClass = Class.forName(components[j].getClass().getName() + "BeanInfo");
                 Object object = beanInfoClass.newInstance();
                 if (object instanceof SimpleBeanInfo) {
