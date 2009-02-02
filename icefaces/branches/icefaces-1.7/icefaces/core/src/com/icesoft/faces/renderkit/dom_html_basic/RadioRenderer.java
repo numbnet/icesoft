@@ -153,9 +153,9 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
             throw new IllegalStateException("Could not find select items for UISelectOne component.");
         }
         
-        Object[] submittedValue = getSubmittedSelectedValues(uiComponent);
+        Object[] submittedValue = getSubmittedSelectedValues(forComponent);
         Object componentValue = (submittedValue != null) ? null :
-            getCurrentSelectedValues(uiComponent);
+            getCurrentSelectedValues(forComponent);
 
         UISelectOne selectOne = (UISelectOne) forComponent;
         int radioIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
