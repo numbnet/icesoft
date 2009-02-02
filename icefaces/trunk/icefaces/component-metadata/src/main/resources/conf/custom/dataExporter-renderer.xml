@@ -34,7 +34,18 @@
 
 <renderer>
 	<description>
-		<![CDATA[          ]]>
+		<![CDATA[<p> The DataExporter component allows to export data in various 
+		formats, to access the data it has to be linked with the dataTable. 
+		There are following two formats supported by the component:
+		<ul>
+		   <li>Excel
+		   <li>CSV
+		</ul>
+		
+		The outputTypeHandler attribute allows developer to define custom output
+		formats.
+		</p>
+		         ]]>
 	</description>
 	<component-family>com.icesoft.faces.DataExporter</component-family>		
 	<renderer-type>com.icesoft.faces.DataExporterRenderer</renderer-type>
