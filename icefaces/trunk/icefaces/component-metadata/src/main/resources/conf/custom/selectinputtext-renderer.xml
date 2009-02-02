@@ -49,7 +49,7 @@
 	</description>
 	<component-family>javax.faces.Input</component-family>
 
-	<renderer-type>com.icesoft.faces.Text</renderer-type>
+	<renderer-type>com.icesoft.faces.SelectInputText</renderer-type>
 
 	<renderer-extension>
 		<instance-name>selectInputText</instance-name>
