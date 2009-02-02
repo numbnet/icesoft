@@ -142,8 +142,8 @@ public class DataExporterRenderer extends OutputResourceRenderer {
 			if (oe.getOutputTypeHandler() != null)
 				outputHandler = oe.getOutputTypeHandler();
 			else if (DataExporter.EXCEL_TYPE.equals(oe.getType())) {
-//				outputHandler = new ExcelOutputHandler(pathWithoutExt + ".xls",
-//						fc, uiData.getId());
+				outputHandler = new ExcelOutputHandler(pathWithoutExt + ".xls",
+						fc, uiData.getId());
 			} else if (DataExporter.CSV_TYPE.equals(oe.getType())) {
 				outputHandler = new CSVOutputHandler(pathWithoutExt + ".csv");
 			}
