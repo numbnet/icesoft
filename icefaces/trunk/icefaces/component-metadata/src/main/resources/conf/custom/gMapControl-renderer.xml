@@ -42,7 +42,7 @@
            &lt;/ice:gMap&gt;<br/>      
         ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
+	<component-family>com.icesoft.faces.GMap</component-family>
 
 	<renderer-type>null</renderer-type>
 

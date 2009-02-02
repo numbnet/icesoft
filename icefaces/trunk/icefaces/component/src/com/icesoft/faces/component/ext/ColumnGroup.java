@@ -9,8 +9,12 @@ import com.icesoft.faces.component.ext.taglib.Util;
 
 public class ColumnGroup extends UIPanel{
     public static final String COMPONENT_TYPE = "com.icesoft.faces.ColumnGroup";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.Column";
     private String renderedOnUserRole = null;
 
+    public String getFamily() {
+        return (COMPONENT_FAMILY);
+    }
     public String getComponentType() {
         return COMPONENT_TYPE;
     }

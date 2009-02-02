@@ -9,12 +9,16 @@ import com.icesoft.faces.component.ext.taglib.Util;
 
 public class HeaderRow extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.HeaderRow";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.Header";
     private String style = null;
     private String styleClass = null;
     private String colspan = null;
     private String rowspan = null;
     private String renderedOnUserRole = null;
-    
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
