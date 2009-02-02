@@ -289,7 +289,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             throw new IllegalStateException("Could not find select items for UISelectMany component.");
         }
         
-        Object[] submittedValue = getSubmittedSelectedValues(uiComponent);
+        Object[] submittedValue = getSubmittedSelectedValues(forComponent);
         Object componentValue = (submittedValue != null) ? null :
             getCurrentSelectedValues(forComponent);
 
