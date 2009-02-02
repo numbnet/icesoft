@@ -75,7 +75,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
 
     //private properties for style classes
     private String styleClass;
-
+    public static final String RENDERER_TYPE = "com.icesoft.faces.SelectInputText";
 
     /**
      * A request-scope attribute under which the model data for the row selected
@@ -113,6 +113,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
 
     public SelectInputText() {
         super();
+        setRendererType(RENDERER_TYPE);
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
                                      FacesContext.getCurrentInstance());
     }
