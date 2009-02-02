@@ -75,7 +75,7 @@
 		</p>]]>
 	</description>
 
-	<component-family>com.icesoft.faces.HeaderRow</component-family>
+	<component-family>com.icesoft.faces.Header</component-family>
 	<renderer-type>null</renderer-type>
 
 	<renderer-extension>

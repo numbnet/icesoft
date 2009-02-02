@@ -80,7 +80,7 @@
 		]]>
 	</description>
 
-	<component-family>com.icesoft.faces.ColumnGroup</component-family>
+	<component-family>com.icesoft.faces.Column</component-family>
 	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
