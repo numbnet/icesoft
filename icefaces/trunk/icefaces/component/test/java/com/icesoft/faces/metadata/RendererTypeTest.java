@@ -1,7 +1,5 @@
 package com.icesoft.faces.metadata;
 
-
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -11,7 +9,6 @@ import com.sun.rave.jsfmeta.beans.RendererBean;
 import javax.faces.component.UIComponent;
 
 public class RendererTypeTest extends ICECompsTestCase {
-
 
     public static Test suite() {
         return new TestSuite(RendererTypeTest.class);
@@ -31,10 +28,7 @@ public class RendererTypeTest extends ICECompsTestCase {
         UIComponent[] uiComponentBases = new UIComponent[oldUIComponentBases.length];
         System.arraycopy(oldUIComponentBases, 0, uiComponentBases, 0, oldUIComponentBases.length);
 
-        RendererBean[] oldRendererBeans = getRendererBean();
-        RendererBean[] rendererBeans = new RendererBean[oldRendererBeans.length];
-        System.arraycopy(oldRendererBeans, 0, rendererBeans, 0, oldRendererBeans.length);
-        
+
         for (int i = 0; i < componentBeans.length; i++) {
             String renderTypeUIComponent = uiComponentBases[i].getRendererType();
             String renderTypeComponentBean = componentBeans[i].getRendererType();
@@ -46,12 +40,13 @@ public class RendererTypeTest extends ICECompsTestCase {
             assertFalse(message, notSameRenderType);
 
             RendererBean myRendererBean = ICECompsListHelper.getRenderer(uiComponentBases[i].getFamily(), uiComponentBases[i].getRendererType());
-//            String myRenderType = myRendererBean.getRendererType();
-//            boolean notSameType = myRenderType != null && (renderTypeUIComponent.trim().equalsIgnoreCase(myRenderType));
-//
-//            message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean +
-//                    "\n Renderer Bean type=" + myRenderType+"\n\n";
-//            assertFalse(message, notSameType);
+
+            if (myRendererBean != null && myRendererBean.getRendererType() != null) {
+                boolean notSameType = renderTypeUIComponent != null && !(renderTypeUIComponent.trim().equalsIgnoreCase(myRendererBean.getRendererType()));
+                message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean +
+                        "\n Renderer Bean type=" + myRendererBean.getRendererType() + "\n\n";
+                assertFalse(message, notSameType);
+            }
 
             String familyTypeUIComponent = uiComponentBases[i].getFamily();
             String familyTypeComponentBean = componentBeans[i].getComponentFamily();
@@ -62,22 +57,6 @@ public class RendererTypeTest extends ICECompsTestCase {
             String messageTwo = "FamilyType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component familyType=" + familyTypeUIComponent + "\n faces-config declared familyType=" + familyTypeComponentBean + "\n\n";
             assertFalse(messageTwo, notSameRenderTypeTwo);
         }
-        
-                
-//        for (int i = 0; i < rendererBeans.length; i++) {
-//            String message = "";
-//            try {
-//                String rendererClass = rendererBeans[i].getRendererClass();
-//                String rendererType = rendererBeans[i].getRendererType();
-//                //System.out.println("rendererClass=" + rendererClass);
-//                Class namedClass = Class.forName(rendererClass);
-//                String packageName = namedClass.getPackage().getName();
-//
-//                message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + rendererBeans[i].getRendererType() + "\n renderer class=" + rendererClass + "\n\n";
-//            } catch (Exception e) {
-//                fail(message);
-//            }
-//        }
-    }
 
+    }
 }
