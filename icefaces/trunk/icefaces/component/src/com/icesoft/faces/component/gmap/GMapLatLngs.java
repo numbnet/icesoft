@@ -12,14 +12,20 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.component.ext.UIColumns;
 
 public class GMapLatLngs extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapLatLngs";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapLatLngs";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapLatLngs";
+
 	private List value;
 	public GMapLatLngs() {
 		setRendererType(null);
 	}
-	
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public void encodeBegin(FacesContext context) throws IOException {

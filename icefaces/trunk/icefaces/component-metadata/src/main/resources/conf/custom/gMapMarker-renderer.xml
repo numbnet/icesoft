@@ -38,8 +38,8 @@
             This component uses the google map's GMarker API, which displays the points on the map.
          ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
+	<component-family>com.icesoft.faces.GMapMarker</component-family>
+	<renderer-type>null</renderer-type>
 	<renderer-extension>
 		<instance-name>gMapMarker</instance-name>
 		<is-container>false</is-container>

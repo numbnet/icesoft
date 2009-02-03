@@ -38,8 +38,8 @@
             The gMapDirection component uses the google map's GDirections API to get the direction from point A to point B. This component must need to be a child of ice:gMap component.
          ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GMapDirectionRenderer</renderer-type>
+	<component-family>com.icesoft.faces.GMapDirection</component-family>
+	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
 		<instance-name>gMapDirection</instance-name>

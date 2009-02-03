@@ -19,7 +19,8 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.utils.MessageUtils;
 
 public class LoadBundle extends UIOutput{
-    public static final String COMPONENET_TYPE = "com.icesoft.faces.LoadBundle";
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.LoadBundle";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.LoadBundle";
     private String basename;
     private String var;
     transient private Locale oldLocale;
@@ -30,9 +31,13 @@ public class LoadBundle extends UIOutput{
     public LoadBundle() {
         setRendererType(null);
     }
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
     
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public void encodeBegin(FacesContext context) throws IOException {

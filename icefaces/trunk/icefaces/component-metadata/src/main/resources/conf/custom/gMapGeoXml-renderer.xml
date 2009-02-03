@@ -41,9 +41,9 @@
           &lt;/ice:gMap&gt;<br/>
         ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
+	<component-family>com.icesoft.faces.GMapGeoXml</component-family>
 
-	<renderer-type>com.icesoft.faces.GMapGeoXmlRenderer</renderer-type>
+	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
 		<instance-name>gMapGeoXml</instance-name>

@@ -16,7 +16,8 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class GMapDirection extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapDirection";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapDirection";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapDirection";
 	private Boolean locateAddress;
     private boolean initilized = false;
     private String from;
@@ -29,9 +30,13 @@ public class GMapDirection extends UIPanel{
 	public GMapDirection() {
 		setRendererType(null);
 	}
-	
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public void encodeBegin(FacesContext context) throws IOException {

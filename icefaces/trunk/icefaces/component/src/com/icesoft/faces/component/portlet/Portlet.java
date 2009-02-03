@@ -20,11 +20,21 @@ import java.util.Map;
 public class Portlet extends UINamingContainer {
 
     private static Log log = LogFactory.getLog(Portlet.class);
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.Portlet";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.Portlet";
 
     private String namespace;
 
     private String style;
     private String styleClass;
+
+    public String getComponentType() {
+        return COMPONENT_TYPE;
+    }
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
     public String getId() {
         String ns = getNamespace();

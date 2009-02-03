@@ -38,8 +38,8 @@
             This component is a wrapper of google map's GLatLng API. Can be child of gMapMarker component.
          ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GMapLatLngRenderer</renderer-type>
+	<component-family>com.icesoft.faces.GMapLatLng</component-family>
+	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
 		<instance-name>gMapLatLng</instance-name>

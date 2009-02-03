@@ -38,8 +38,8 @@
         This component can be a child of gMapMarker component and its value attribute can be a list of gMapLatLng component. 
          ]]>
 	</description>
-	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GMapLatLngsRenderer</renderer-type>
+	<component-family>com.icesoft.faces.GMapLatLngs</component-family>
+	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
 		<instance-name>gMapLatLngs</instance-name>

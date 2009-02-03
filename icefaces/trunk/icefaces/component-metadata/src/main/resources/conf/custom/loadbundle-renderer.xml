@@ -43,9 +43,9 @@
 		</p>
             ]]>
 	</description>
-	<component-family>javax.faces.Output</component-family>
+	<component-family>com.icesoft.faces.LoadBundle</component-family>
 
-	<renderer-type>com.icesoft.faces.LoadBundle</renderer-type>
+	<renderer-type>null</renderer-type>
 
 	<renderer-extension>
 		<instance-name>loadBundle</instance-name>
