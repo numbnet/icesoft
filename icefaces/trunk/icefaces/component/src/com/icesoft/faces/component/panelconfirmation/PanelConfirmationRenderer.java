@@ -220,8 +220,9 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
             panelConfirmationId = panelConfirmation.getClientId(facesContext);
             String autoCentre = panelConfirmation.isAutoCentre() ? "true" : "false";
             String draggable = panelConfirmation.isDraggable() ? "true" : "false";
+            String displayAtMouse = panelConfirmation.isDisplayAtMouse() ? "true" : "false";
             return "new Ice.PanelConfirmation(this,event,'" + panelConfirmationId + "',"
-                + autoCentre + "," + draggable + ","
+                + autoCentre + "," + draggable + "," + displayAtMouse + ","
                 + "'" + CoreUtils.resolveResourceURL(facesContext,"/xmlhttp/blank") + "',"
                 + "function(event){" + originalOnClick + "});return false;";
         } else {
