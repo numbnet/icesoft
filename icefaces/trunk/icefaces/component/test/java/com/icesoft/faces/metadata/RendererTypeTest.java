@@ -43,25 +43,21 @@ public class RendererTypeTest extends ICECompsTestCase {
             RendererBean myRendererBean = ICECompsListHelper.getRenderer(uiComponentBases[i].getFamily(), uiComponentBases[i].getRendererType());
 
             if (myRendererBean == null || myRendererBean.getRendererType() == null || myRendererBean.getRendererType() == null) {
-                //TODO fail this situation.
                 message = "No Renderer defined for " + uiComponentBases[i].getClass().getName();
-            //System.out.println(""+message);
-            //fail(message);
-            } else {
-                if (renderTypeUIComponent == null) {
-                    if (!tagNameMap.containsKey(myRendererBean.getTagName())) {
-                        tagNameMap.put(myRendererBean.getTagName(), myRendererBean.getTagName());
-                    } else {
-                        message = "Tag name="+myRendererBean.getTagName()+" already defined, please check component =" + uiComponentBases[i].getClass().getName();
-                        fail(message);
-                    }
-                }
-            }
+                fail(message);
+            } 
             if (myRendererBean != null && myRendererBean.getRendererType() != null) {
                 boolean notSameType = renderTypeUIComponent != null && !(renderTypeUIComponent.trim().equalsIgnoreCase(myRendererBean.getRendererType()));
                 message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean +
                         "\n Renderer Bean type=" + myRendererBean.getRendererType() + "\n\n";
                 assertFalse(message, notSameType);
+
+                if (!tagNameMap.containsKey(myRendererBean.getTagName())) {
+                    tagNameMap.put(myRendererBean.getTagName(), myRendererBean.getTagName());
+                } else {
+                    message = "Tag name=" + myRendererBean.getTagName() + " already defined, please check component =" + uiComponentBases[i].getClass().getName();
+                    fail(message);
+                }
             }
 
             String familyTypeUIComponent = uiComponentBases[i].getFamily();

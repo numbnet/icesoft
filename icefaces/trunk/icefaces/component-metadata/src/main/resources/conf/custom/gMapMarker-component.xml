@@ -48,8 +48,8 @@
 		<base-component-type>
 			javax.faces.Panel
 		</base-component-type>
-		<component-family>javax.faces.Panel</component-family>
-		<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
+		<component-family>com.icesoft.faces.GMapMarker</component-family>
+		<renderer-type>null</renderer-type>
 	</component-extension>
 
 </component>

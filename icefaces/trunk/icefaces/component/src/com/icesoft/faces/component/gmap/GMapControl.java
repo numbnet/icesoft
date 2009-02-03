@@ -9,8 +9,8 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class GMapControl extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapControl";
-    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMap";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapControl";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapControl";
 
 	public GMapControl() {
 		setRendererType(null);
@@ -21,7 +21,7 @@ public class GMapControl extends UIPanel{
     }
 
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     private String name;

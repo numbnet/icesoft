@@ -29,7 +29,7 @@
 		</component>
 	</tag>
 	<tag>
-		<tag-name>gMapControl</tag-name>
+		<tag-name>columnGroup</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.ColumnGroup</component-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
@@ -39,6 +39,14 @@
 		<tag-name>columns</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Columns</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>dataExporter</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.DataExporter</component-type>
+			<renderer-type>com.icesoft.faces.DataExporterRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -67,10 +75,16 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>gMapControl</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapControl</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>gMapDirection</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.GMapDirection</component-type>
-			<renderer-type>com.icesoft.faces.GMapDirectionRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -78,7 +92,6 @@
 		<tag-name>gMapGeoXml</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.GMapGeoXml</component-type>
-			<renderer-type>com.icesoft.faces.GMapGeoXmlRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -86,7 +99,6 @@
 		<tag-name>gMapLatLng</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.GMapLatLng</component-type>
-			<renderer-type>com.icesoft.faces.GMapLatLngRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -94,7 +106,6 @@
 		<tag-name>gMapLatLngs</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.GMapLatLngs</component-type>
-			<renderer-type>com.icesoft.faces.GMapLatLngsRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -102,7 +113,13 @@
 		<tag-name>gMapMarker</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.GMapMarker</component-type>
-			<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>headerRow</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HeaderRow</component-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -158,7 +175,7 @@
 		<tag-name>inputHidden</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlInputHidden</component-type>
-			<renderer-type>javax.faces.Hidden</renderer-type>
+			<renderer-type>com.icesoft.faces.Hidden</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -171,7 +188,7 @@
 		</component>
 	</tag>
 	<tag>
-		<tag-name>selectInputText</tag-name>
+		<tag-name>inputText</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlInputText</component-type>
 			<renderer-type>com.icesoft.faces.Text</renderer-type>
@@ -206,7 +223,7 @@
 		<tag-name>outputFormat</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlOutputFormat</component-type>
-			<renderer-type>javax.faces.Format</renderer-type>
+			<renderer-type>com.icesoft.faces.Format</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -326,7 +343,6 @@
 		<tag-name>loadBundle</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.LoadBundle</component-type>
-			<renderer-type>com.icesoft.faces.LoadBundle</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -526,7 +542,6 @@
 		<tag-name>portlet</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Portlet</component-type>
-			<renderer-type>com.icesoft.faces.Portlet</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -550,6 +565,14 @@
 		<component>
 			<component-type>com.icesoft.faces.SelectInputDate</component-type>
 			<renderer-type>com.icesoft.faces.Calendar</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>selectInputText</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.SelectInputText</component-type>
+			<renderer-type>com.icesoft.faces.SelectInputText</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>

@@ -7,7 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 public class GMapLatLng extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapLatLng";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapLatLng";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapLatLng";
+
     private String longitude;
     private String latitude;
     private String localeLng;
@@ -21,9 +23,13 @@ public class GMapLatLng extends UIPanel{
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-	
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public void encodeBegin(FacesContext context) throws IOException {

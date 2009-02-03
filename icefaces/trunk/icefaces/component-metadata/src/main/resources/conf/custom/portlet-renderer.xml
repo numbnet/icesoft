@@ -40,8 +40,8 @@
         the value of the "class" attribute.
     ]]>
     </description>
-    <component-family>javax.faces.NamingContainer</component-family>
-    <renderer-type>com.icesoft.faces.Portlet</renderer-type>
+    <component-family>com.icesoft.faces.Portlet</component-family>
+    <renderer-type>null</renderer-type>
     <renderer-extension>
         <instance-name>portlet</instance-name>
         <is-container>true</is-container>

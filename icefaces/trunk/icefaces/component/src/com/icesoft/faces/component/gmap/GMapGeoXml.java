@@ -9,15 +9,20 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class GMapGeoXml extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapGeoXml";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapGeoXml";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapGeoXml";
 	private String url;
 	
 	public GMapGeoXml() {
 		setRendererType(null);
 	}
-	
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public void encodeBegin(FacesContext context) throws IOException {

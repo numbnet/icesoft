@@ -16,7 +16,9 @@ import javax.faces.el.ValueBinding;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class GMapMarker extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapMarker";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapMarker";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapMarker";
+    
 	private Boolean draggable;
     private String longitude;
     private String latitude;	
@@ -25,9 +27,13 @@ public class GMapMarker extends UIPanel{
 	public GMapMarker() {
 		setRendererType(null);
 	}
-	
+	 
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
     public boolean getRendersChildren() {
