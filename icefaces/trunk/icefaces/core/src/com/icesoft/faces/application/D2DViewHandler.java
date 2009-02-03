@@ -102,7 +102,7 @@ public class D2DViewHandler extends ViewHandler {
     private boolean parametersInitialized = false;
 
     protected Parser parser;
-    private ViewHandler delegate;
+    protected ViewHandler delegate;
 
     public D2DViewHandler() {
         try {
