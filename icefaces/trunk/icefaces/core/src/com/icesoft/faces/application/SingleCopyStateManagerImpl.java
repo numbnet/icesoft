@@ -123,12 +123,6 @@ public class SingleCopyStateManagerImpl extends StateManager {
             return null;
         }
 
-        // We need to clone the tree, otherwise we run the risk
-        // of being left in a state where the restored
-        // UIComponent instances are in the session instead
-        // of the TreeNode instances.  This is a problem
-        // for servers that persist session data since
-        // UIComponent instances are not serializable.
         viewRoot = Util.restoreTree( (Object[]) ((Object[])stateArray[0]).clone(), classMap );
         viewRoot.processRestoreState(context, handleRestoreState(stateArray[1]));
         return viewRoot;
@@ -155,10 +149,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
             log.debug("Begin creating serialized view for "
                       + viewRoot.getViewId());
         }
-        List treeList = new ArrayList(32);
         Object state = viewRoot.processSaveState(context);
-        Util.captureChild(treeList, 0, viewRoot);
-        Object[] tree = treeList.toArray();
+        Util.CaptureArray tree = new Util.CaptureArray();
+        Util.captureChildNode(tree, 0, viewRoot);
+        Object objTree = tree.toArray();
 
         if (log.isDebugEnabled()) {
             log.debug("End creating serialized view " + viewRoot.getViewId());
@@ -176,7 +170,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
         StateManager sm = context.getApplication().getStateManager();
         result = sm.new SerializedView( viewNumber, null );
-        stateMap.put( viewNumber, new Object[] { tree, handleSaveState(state) } );
+        stateMap.put( viewNumber, new Object[] { objTree, handleSaveState(state) } );
         return result;
     }
 
@@ -190,10 +184,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
     /*
         The following methods come from the eventual ResponseStateManager.
         Standard boilerplate disclaimer. We want to eventually support fully
-        the RenderKit implementation. There's no way to 'use' the existing JSF
-        implementations without linking in the jsf-ri jars at compile time, so
-        to keep myfaces compatibility we are forced to copy it and implement
-        the portions we want.
+        the RenderKit implementation.
      */
 
 
@@ -324,25 +315,25 @@ public class SingleCopyStateManagerImpl extends StateManager {
         }
     }
 
-    // necessary to override the abstract 1.1 implementation
+    // override the abstract 1.1 implementation
     public void restoreComponentState(FacesContext context,
                                       UIViewRoot viewRoot,
                                       String renderKitId) {
     }
 
-    // necessary to override the abstract 1.1 implementation
+    // override the abstract 1.1 implementation
     protected UIViewRoot restoreTreeStructure(FacesContext context,
                                               String viewId,
                                               String renderKitId) {
         return null;
     }
 
-    // necessary to override the abstract 1.1 implementation
+    // override the abstract 1.1 implementation
     protected Object getComponentStateToSave(FacesContext context) {
         return null;
     }
 
-    // necessary to override the abstract 1.1 implementation
+    // override the abstract 1.1 implementation
     protected Object getTreeStructureToSave(FacesContext context) {
         return null;
     }

@@ -41,7 +41,7 @@ public class ViewRootStateManagerImpl extends StateManager {
      * @param renderKitId
      * @return The restored ViewRoot, null if none saved for this ICEfaces viewNumber
      */
-   public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
+    public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
 
         if ( !(context instanceof BridgeFacesContext) ) {
             throw new IllegalStateException("FacesContext not instance of BridgeFacesContext");
@@ -106,13 +106,10 @@ public class ViewRootStateManagerImpl extends StateManager {
 
 
     /*
-        The following methods come from the eventual ResponseStateManager.
-        Standard boilerplate disclaimer. We want to eventually support fully
-        the RenderKit implementation. There's no way to 'use' the existing JSF
-        implementations without linking in the jsf-ri jars at compile time, so
-        to keep myfaces compatibility we are forced to copy it and implement
-        the portions we want.
-     */
+       The following methods come from the eventual ResponseStateManager.
+       Standard boilerplate disclaimer. We want to eventually support fully
+       the RenderKit implementation.
+    */
     final java.lang.String VIEW_STATE_PARAM = "javax.faces.ViewState";
 
     final char[] STATE_FIELD_START =
@@ -127,7 +124,6 @@ public class ViewRootStateManagerImpl extends StateManager {
 
 
     /**
-     * Do this here until we implement the full RenderKit deal.  
      *
      * @param context
      * @param view
