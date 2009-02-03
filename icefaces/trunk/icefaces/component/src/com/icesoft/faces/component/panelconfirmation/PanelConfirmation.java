@@ -55,6 +55,7 @@ public class PanelConfirmation extends UIComponentBase {
     private String cancelLabel = null;
     private Boolean autoCentre = null;
     private Boolean draggable = null;
+    private Boolean displayAtMouse = null;
     
     private String style = null;
     private String styleClass = null;
@@ -212,7 +213,7 @@ public class PanelConfirmation extends UIComponentBase {
 		ValueBinding vb = getValueBinding("autoCentre");
 		Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
 				: null;
-		return boolVal != null ? boolVal.booleanValue() : true;
+		return boolVal != null ? boolVal.booleanValue() : false;
 	}
 	
     /**
@@ -232,14 +233,34 @@ public class PanelConfirmation extends UIComponentBase {
 		ValueBinding vb = getValueBinding("draggable");
 		Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
 				: null;
-		return boolVal != null ? boolVal.booleanValue() : true;
+		return boolVal != null ? boolVal.booleanValue() : false;
+	}
+	
+    /**
+     * <p>Set the value of the <code>displayAtMouse</code> property.</p>
+     */    
+	public void setDisplayAtMouse(boolean displayAtMouse) {
+		this.displayAtMouse = Boolean.valueOf(displayAtMouse);
+	}
+    
+    /**
+     * <p>Return the value of the <code>displayAtMouse</code> property.</p>
+     */
+	public boolean isDisplayAtMouse() {
+		if (displayAtMouse != null) {
+			return displayAtMouse.booleanValue();
+		}
+		ValueBinding vb = getValueBinding("displayAtMouse");
+		Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+				: null;
+		return boolVal != null ? boolVal.booleanValue() : false;
 	}
 
     private transient Object states[];
 
     public Object saveState(FacesContext context) {
         if(states == null) {
-            states = new Object[10];
+            states = new Object[11];
         }
         states[0] = super.saveState(context);
         states[1] = title;
@@ -251,6 +272,7 @@ public class PanelConfirmation extends UIComponentBase {
         states[7] = styleClass;
         states[8] = autoCentre;
         states[9] = draggable;
+        states[10] = displayAtMouse;
         return states;
     }
     
@@ -266,5 +288,6 @@ public class PanelConfirmation extends UIComponentBase {
         styleClass = (String) states[7];
         autoCentre = (Boolean) states[8];
         draggable = (Boolean) states[9];
+        displayAtMouse = (Boolean) states[10];
     }
 }

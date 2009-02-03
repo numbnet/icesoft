@@ -1,28 +1,33 @@
 Ice.PanelConfirmation = Class.create({
-    initialize: function(trigger,e,confirmationPanelId,autoCentre,draggable,iframeUrl,handler) {
+    initialize: function(trigger,e,confirmationPanelId,autoCentre,draggable,displayAtMouse,iframeUrl,handler) {
         this.srcComp = trigger;
         this.event = e;
         this.panel = $(confirmationPanelId);
         this.url = iframeUrl;
         this.srcHandler = handler;
         
-        this.auto = autoCentre;
+        this.isAutoCentre = autoCentre;
         this.isDraggable = draggable;
+        this.isAtMouse = displayAtMouse;
         
         Ice.PanelConfirmation.current = this;
         this.showPanel();
     },
     showPanel: function() {
         Ice.modal.start(this.panel.id,this.url);
+        Ice.iFrameFix.start(this.panel.id,this.url);
         this.panel.style.display = '';
         this.handleDraggableObject();
         Ice.autoPosition.stop(this.panel.id);
-        if (this.auto) {
-            Ice.autoCentre.start(this.panel.id);
+        if (this.isAtMouse) {
+            this.panel.style.left = parseInt(Event.pointerX(this.event)) + "px";
+            this.panel.style.top = parseInt(Event.pointerY(this.event)) + "px"; 
         } else {
+            Ice.autoCentre.start(this.panel.id);
+        }
+        if (!this.isAutoCentre) {
             Ice.autoCentre.stop(this.panel.id);
         }
-        Ice.iFrameFix.start(this.panel.id,this.url);
         this.setDefaultFocus();
     },
     accept: function() {

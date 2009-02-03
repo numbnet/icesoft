@@ -129,14 +129,14 @@
 	<description>
         <![CDATA[
 		Used to keep the popup centred on the screen through scrolling
-		and window resizing events. Default value is 'true'.
+		and window resizing events. Default value is 'false'.
 		]]>
 	</description>
 	<property-name>autoCentre</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-        <default-value>true</default-value>
+        <default-value>false</default-value>
     </property-extension>
 </property>
 
@@ -144,13 +144,28 @@
 	<description>
         <![CDATA[
         When set to 'true' this panel is draggable. The user will be able to drag the panel to any position 
-        on the page. Default value is 'true'.
+        on the page. Default value is 'false'.
         ]]>
 	</description>
 	<property-name>draggable</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-        <default-value>true</default-value>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
+
+<property>
+	<description>
+        <![CDATA[
+        When set to 'true' this panel will pop up near the mouse pointer position at the moment of triggering
+        the event. It overrides the autoCentre property. Default value is 'false'.
+        ]]>
+	</description>
+	<property-name>displayAtMouse</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
     </property-extension>
 </property>
