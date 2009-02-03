@@ -9,6 +9,7 @@
     <application>
         <view-handler>com.icesoft.faces.application.D2DViewHandler</view-handler>
         <default-render-kit-id>ICEfacesRenderKit</default-render-kit-id>
+        <state-manager>com.icesoft.faces.application.ViewRootStateManagerImpl</state-manager>
     </application>
     
     <factory>
