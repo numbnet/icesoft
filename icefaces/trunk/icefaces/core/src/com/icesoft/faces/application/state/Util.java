@@ -18,45 +18,44 @@ import java.io.ObjectInput;
  */
 public class Util {
 
-      public static  UIComponent newInstance(TreeCaptureNode n, Map classMap)
+      public static  UIComponent newInstance(TreeCaptureNode tcn, Map classMap)
             throws FacesException {
 
         try {
-            Class t = (Class) ((classMap != null) ? classMap.get(n.className) : null);
+            Class t = (Class) ((classMap != null) ? classMap.get(tcn.className) : null);
             if (t == null) {
-                t = loadClass(n.className, n);
+                t = loadClass(tcn.className, tcn);
                 if (t != null && classMap != null) {
-                    classMap.put(n.className, t);
+                    classMap.put(tcn.className, t);
                 } else {
                     throw new NullPointerException();
                 }
             }
 
-            UIComponent c = (UIComponent) t.newInstance();
-            c.setId(n.id);
+            UIComponent comp = (UIComponent) t.newInstance();
+            comp.setId(tcn.id);
+            return comp;
 
-            return c;
         } catch (Exception e) {
             throw new FacesException(e);
         }
-
     }
 
     /**
      * Capture a Node of the tree structure in an object that is serializable. 
      * @param tree
      * @param parent
-     * @param c
+     * @param component
      */
     public static void captureChildNode(CaptureArray tree,
                                      int parent,
-                                     UIComponent c) {
+                                     UIComponent component) {
 
-        if (!c.isTransient()) {
-            TreeCaptureNode n = new TreeCaptureNode(parent, c);
+        if (!component.isTransient()) {
+            TreeCaptureNode tcn = new TreeCaptureNode(parent, component);
             int pos = tree.index;
-            tree.capture(n);
-            captureAll(tree, pos, c);
+            tree.capture(tcn);
+            captureAll(tree, pos, component);
         }
     }
 
@@ -65,17 +64,15 @@ public class Util {
     public static void captureFacetNode(CaptureArray tree,
                                      int parent,
                                      String name,
-                                     UIComponent c) {
+                                     UIComponent component) {
 
-        if (!c.isTransient()) {
-            FacetCaptureNode n = new FacetCaptureNode(parent, name, c);
+        if (!component.isTransient()) {
+            FacetCaptureNode fcn = new FacetCaptureNode(parent, name, component);
             int pos = tree.index;
-            tree.capture(n);
-            captureAll(tree, pos, c);
+            tree.capture(fcn);
+            captureAll(tree, pos, component);
         }
-
     }
-
 
     public static void captureAll(CaptureArray tree,
                                     int pos,
@@ -123,7 +120,6 @@ public class Util {
                return loader.loadClass(name);
            }
         }
-    
 
     public static UIViewRoot restoreTree(Object[] tree, Map classMap)
                 throws FacesException {
@@ -152,7 +148,6 @@ public class Util {
             }
             return (UIViewRoot) tree[0];
         }
-
 
     /**
      * TreeCaptureNode captures the id of the component, the index of the parentIdx within the list
@@ -204,9 +199,7 @@ public class Util {
                 id = null;
             }
         }
-
     }
-
 
     private static final class FacetCaptureNode extends TreeCaptureNode {
 
@@ -227,7 +220,6 @@ public class Util {
 
             super(parent, c);
             this.facetName = name;
-
         }
 
 
