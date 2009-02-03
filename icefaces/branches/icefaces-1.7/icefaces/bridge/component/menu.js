@@ -127,35 +127,49 @@ Ice.Menu = {
         }
         iframe.clonePosition(menuDiv).show();
     },
-    contextMenuPopup: function(event, popupMenu) {
+    contextMenuPopup: function(event, popupMenu, targComp) {
+        var dynamic = $(popupMenu + "_dynamic");
         if(!event) {
-        	event = window.event;
+            event = window.event;
         }
         if(event) {
-        	event.returnValue = false;
-        	event.cancelBubble  = true;
+            event.returnValue = false;
+            event.cancelBubble  = true;
 
             if(event.stopPropagation) {
-            	event.stopPropagation();
+                event.stopPropagation();
             }
             
             var posx = 0; // Mouse position relative to
             var posy = 0; //  the document
-            if (event.pageX || event.pageY) 	{
+            if (event.pageX || event.pageY)     {
                 posx = event.pageX;
                 posy = event.pageY;
             }
-            else if (event.clientX || event.clientY) 	{
+            else if (event.clientX || event.clientY)    {
                 posx = event.clientX + document.body.scrollLeft
                     + document.documentElement.scrollLeft;
                 posy = event.clientY + document.body.scrollTop
                     + document.documentElement.scrollTop;
             }
+            if (dynamic) {
+                    dynamic.value = posx +", "+ posy + ", "+ popupMenu + ", "+ targComp;
+                try {
+                    var form = Ice.util.findForm(dynamic);
+                    iceSubmitPartial(form,dynamic,event);
+                } catch (e) {logger.info("Form not found" + e);}
+                return;
+            }
             
-            Ice.Menu.showPopup(posx, posy, popupMenu);
-            Event.observe(document, "click", Ice.Menu.hidePopupMenu);
+           Ice.Menu.showIt(posx, posy, popupMenu, targComp);
         }
     },
+    showIt: function(posx, posy, popupMenu, targComp) {
+            Ice.Menu.showPopup(posx, posy, popupMenu.strip());
+            Event.observe(document, "click", Ice.Menu.hidePopupMenu);
+            Ice.Menu.setMenuContext(targComp.strip());    
+    },
+
     setMenuContext: function(mnuCtx) {
         if(Ice.Menu.menuContext == null) {
             Ice.Menu.menuContext = mnuCtx;

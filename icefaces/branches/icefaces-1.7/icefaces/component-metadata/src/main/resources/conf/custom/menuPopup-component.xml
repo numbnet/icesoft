@@ -40,7 +40,7 @@
 	<display-name>Menu Popup</display-name>
 	<component-type>com.icesoft.faces.MenuPopup</component-type>
 
-	&ice-cust-menu-props;
+	&ice-cust-menuPopup-props;
 
 	<component-extension>
 		<base-component-type>javax.faces.Command</base-component-type>
