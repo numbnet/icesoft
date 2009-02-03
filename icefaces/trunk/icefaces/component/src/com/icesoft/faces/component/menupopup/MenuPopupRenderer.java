@@ -59,12 +59,12 @@ public class MenuPopupRenderer extends MenuBarRenderer {
         Map requestMap =
             facesContext.getExternalContext().getRequestParameterMap();
         String clientId = uiComponent.getClientId(facesContext);
-        String progressListenerId = clientId + "_sub" + MenuPopup.PROGRESS_LISTENER_ID;
-        if (requestMap.containsKey(progressListenerId) && 
-                requestMap.get("ice.event.captured").equals(progressListenerId) ) {
-            String progressListenerValue = (String) requestMap.get(progressListenerId);
-            if (progressListenerValue != null) {
-                String xy[] = progressListenerValue.split(",");
+        String displayListenerId = clientId + "_sub" + MenuPopup.DISPLAY_LISTENER_ID;
+        if (requestMap.containsKey(displayListenerId) && 
+                requestMap.get("ice.event.captured").equals(displayListenerId) ) {
+            String displayListenerValue = (String) requestMap.get(displayListenerId);
+            if (displayListenerValue != null) {
+                String xy[] = displayListenerValue.split(",");
                 if (xy.length < 3) return;
                 JavascriptContext.addJavascriptCall(facesContext, "Ice.Menu.showIt('"+
                             xy[0]+"', '"+ xy[1] +"', '"+ xy[2]+ "', '"+ xy[3] +"');");
@@ -97,8 +97,8 @@ public class MenuPopupRenderer extends MenuBarRenderer {
             
             if (menuPopup.getDisplayListener() != null) {
                 Element progressListenerFld = domContext.createElement(HTML.INPUT_ELEM);
-                progressListenerFld.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.PROGRESS_LISTENER_ID);
-                progressListenerFld.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.PROGRESS_LISTENER_ID);            
+                progressListenerFld.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.DISPLAY_LISTENER_ID);
+                progressListenerFld.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.DISPLAY_LISTENER_ID);            
                 progressListenerFld.setAttribute(HTML.TYPE_ATTR, "hidden");
                 progressListenerFld.setAttribute(HTML.STYLE_ATTR, "display:none;");
                 progressListenerFld.setAttribute(HTML.VALUE_ATTR, "");
