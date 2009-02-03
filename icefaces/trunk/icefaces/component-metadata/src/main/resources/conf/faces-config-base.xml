@@ -20,6 +20,7 @@
 <!ENTITY ice-HtmlMessage-renderer SYSTEM "ice/renderers/HtmlMessage-renderer.xml">
 <!ENTITY ice-HtmlMessages-renderer SYSTEM "ice/renderers/HtmlMessages-renderer.xml">
 <!ENTITY ice-HtmlOutputLabel-renderer SYSTEM "ice/renderers/HtmlOutputLabel-renderer.xml">
+<!ENTITY ice-HtmlOutputFormat-renderer SYSTEM "ice/renderers/HtmlOutputFormat-renderer.xml">
 <!ENTITY ice-HtmlOutputLink-renderer SYSTEM "ice/renderers/HtmlOutputLink-renderer.xml">
 <!ENTITY ice-HtmlOutputText-renderer SYSTEM "ice/renderers/HtmlOutputText-renderer.xml">
 <!ENTITY ice-HtmlPanelGrid-renderer SYSTEM "ice/renderers/HtmlPanelGrid-renderer.xml">
@@ -243,6 +244,7 @@
             &ice-HtmlInputTextarea-renderer;
             &ice-HtmlMessage-renderer;
             &ice-HtmlMessages-renderer;
+            &ice-HtmlOutputFormat-renderer;
             &ice-HtmlOutputLabel-renderer;
             &ice-HtmlOutputLink-renderer;
             &ice-HtmlOutputText-renderer;
