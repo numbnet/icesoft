@@ -13,21 +13,20 @@ import java.io.IOException;
 import java.io.ObjectInput;
 
 /**
- * This code copyright JSF 1.2
- *
- *
+ *  This class contains utility classes for converting a UIComponentTree
+ * to a fully serializeable version and back. 
  */
 public class Util {
 
-      public static  UIComponent newInstance(TreeNode n, Map classMap)
+      public static  UIComponent newInstance(TreeCaptureNode n, Map classMap)
             throws FacesException {
 
         try {
-            Class t = (Class) ((classMap != null) ? classMap.get(n.componentType) : null);
+            Class t = (Class) ((classMap != null) ? classMap.get(n.className) : null);
             if (t == null) {
-                t = loadClass(n.componentType, n);
+                t = loadClass(n.className, n);
                 if (t != null && classMap != null) {
-                    classMap.put(n.componentType, t);
+                    classMap.put(n.className, t);
                 } else {
                     throw new NullPointerException();
                 }
@@ -43,63 +42,65 @@ public class Util {
 
     }
 
-
-    public static void captureChild(List tree,
+    /**
+     * Capture a Node of the tree structure in an object that is serializable. 
+     * @param tree
+     * @param parent
+     * @param c
+     */
+    public static void captureChildNode(CaptureArray tree,
                                      int parent,
                                      UIComponent c) {
 
         if (!c.isTransient()) {
-            TreeNode n = new TreeNode(parent, c);
-            int pos = tree.size();
-            tree.add(n);
-            captureRest(tree, pos, c);
+            TreeCaptureNode n = new TreeCaptureNode(parent, c);
+            int pos = tree.index;
+            tree.capture(n);
+            captureAll(tree, pos, c);
         }
-
     }
 
 
-    public static void captureFacet(List tree,
+    // There can be children of facet nodes, as this method captures the parentIdx.
+    public static void captureFacetNode(CaptureArray tree,
                                      int parent,
                                      String name,
                                      UIComponent c) {
 
         if (!c.isTransient()) {
-            FacetNode n = new FacetNode(parent, name, c);
-            int pos = tree.size();
-            tree.add(n);
-            captureRest(tree, pos, c);
+            FacetCaptureNode n = new FacetCaptureNode(parent, name, c);
+            int pos = tree.index;
+            tree.capture(n);
+            captureAll(tree, pos, c);
         }
 
     }
 
 
-    public static void captureRest(List tree,
+    public static void captureAll(CaptureArray tree,
                                     int pos,
                                     UIComponent c) {
 
-        // store children
         int sz = c.getChildCount();
         if (sz > 0) {
             List child = c.getChildren();
             for (int i = 0; i < sz; i++) {
-                captureChild(tree, pos, (UIComponent) child.get(i));
+                captureChildNode(tree, pos, (UIComponent) child.get(i));
             }
         }
 
-        // store facets
         Map m = c.getFacets();
         if (m.size() > 0) {
             Set s = m.entrySet();
             Iterator i = s.iterator();
             while (i.hasNext()) {
                 Map.Entry entry = (Map.Entry) i.next();
-                captureFacet(tree,
+                captureFacetNode(tree,
                              pos,
                              (String) entry.getKey(),
                              (UIComponent) entry.getValue() );
             }
         }
-
     }
 
      public static ClassLoader getCurrentLoader(Object fallbackClass) {
@@ -115,21 +116,7 @@ public class Util {
                                      Object fallbackClass)
            throws ClassNotFoundException {
            ClassLoader loader = getCurrentLoader(fallbackClass);
-           // Where to begin...
-           // JDK 6 introduced CR 6434149 where one couldn't pass
-           // in a literal for an array type ([Ljava.lang.String) and
-           // get the Class representation using ClassLoader.loadClass().
-           // It was recommended to use Class.forName(String, boolean, ClassLoader)
-           // for all ClassLoading requests.
-           // HOWEVER, when trying to eliminate the need for .groovy extensions
-           // being specified in the faces-config.xml for Groovy-based artifacts,
-           // by using a an adapter to the GroovyScriptEngine, I found that the class
-           // instance was cached somewhere, so that no matter what change I made,
-           // Class.forName() always returned the same instance.  I haven't been
-           // able to determine why this happens in the appserver environment
-           // as the same adapter in a standalone program works as one might expect.
-           // So, for now, if the classname starts with '[', then use Class.forName()
-           // to avoid CR 643419 and for all other cases, use ClassLoader.loadClass().
+
            if (name.charAt(0) == '[') {
                return Class.forName(name, true, loader);
            } else {
@@ -142,69 +129,67 @@ public class Util {
                 throws FacesException {
 
             UIComponent c;
-            FacetNode fn;
-            TreeNode tn;
+            FacetCaptureNode fn;
+            TreeCaptureNode tn;
             for (int i = 0; i < tree.length; i++) {
-                if (tree[i]instanceof FacetNode) {
-                    fn = (FacetNode) tree[i];
+                if (tree[i]instanceof FacetCaptureNode) {
+                    fn = (FacetCaptureNode) tree[i];
                     c = newInstance(fn, classMap);
                     tree[i] = c;
-                    if (i != fn.parent) {
-                        ((UIComponent) tree[fn.parent]).getFacets()
+                    if (i != fn.parentIdx) {
+                        ((UIComponent) tree[fn.parentIdx]).getFacets()
                                 .put(fn.facetName, c);
                     }
 
                 } else {
-                    tn = (TreeNode) tree[i];
+                    tn = (TreeCaptureNode) tree[i];
                     c = newInstance(tn, classMap);
                     tree[i] = c;
-                    if (i != tn.parent) {
-                        ((UIComponent) tree[tn.parent]).getChildren().add(c);
+                    if (i != tn.parentIdx) {
+                        ((UIComponent) tree[tn.parentIdx]).getChildren().add(c);
                     }
                 }
             }
             return (UIViewRoot) tree[0];
-
         }
 
 
-    private static class TreeNode implements Externalizable {
+    /**
+     * TreeCaptureNode captures the id of the component, the index of the parentIdx within the list
+     * and the name of the class.
+     */
+    private static class TreeCaptureNode implements Externalizable {
 
-        private static final String NULL_ID = "";
+        private static final String NO_ID = "";
 
-        public String componentType;
+        public String className;
         public String id;
 
-        public int parent;
+        public int parentIdx;
+        static final long serialVersionUID = -214427652801663237L;
 
-        private static final long serialVersionUID = -835775352718473281L;
+        public TreeCaptureNode() { }
 
+        /**
+         * Describe a node with a parentIdx
+         * @param parent Parent position in the Array
+         * @param c The component to capture
+         */
+        public TreeCaptureNode(int parent, UIComponent c) {
 
-        // ------------------------------------------------------------ Constructors
-
-
-        public TreeNode() { }
-
-
-        public TreeNode(int parent, UIComponent c) {
-
-            this.parent = parent;
+            this.parentIdx = parent;
             this.id = c.getId();
-            this.componentType = c.getClass().getName();
-
+            this.className = c.getClass().getName();
         }
-
-
-        // --------------------------------------------- Methods From Externalizable
 
         public void writeExternal(ObjectOutput out) throws IOException {
 
-            out.writeInt(this.parent);
-            out.writeUTF(this.componentType);
+            out.writeInt(this.parentIdx);
+            out.writeUTF(this.className);
             if (this.id != null) {
                 out.writeUTF(this.id);
             } else {
-                out.writeUTF(NULL_ID);
+                out.writeUTF(NO_ID);
             }
         }
 
@@ -212,8 +197,8 @@ public class Util {
         public void readExternal(ObjectInput in)
                 throws IOException, ClassNotFoundException {
 
-            this.parent = in.readInt();
-            this.componentType = in.readUTF();
+            this.parentIdx = in.readInt();
+            this.className = in.readUTF();
             this.id = in.readUTF();
             if (id.length() == 0) {
                 id = null;
@@ -223,19 +208,20 @@ public class Util {
     }
 
 
-    private static final class FacetNode extends TreeNode {
-
+    private static final class FacetCaptureNode extends TreeCaptureNode {
 
         public String facetName;
+        private static final long serialVersionUID = -4529208165281928474L;
 
-        private static final long serialVersionUID = -3777170310958005106L;
+        public FacetCaptureNode() { }
 
-
-        // ------------------------------------------------------------ Constructors
-
-        public FacetNode() { }
-
-        public FacetNode(int parent,
+        /**
+         *
+         * @param parent Parent node position in array
+         * @param name Name of Facet
+         * @param c Component containing facet
+         */
+        public FacetCaptureNode(int parent,
                          String name,
                          UIComponent c) {
 
@@ -245,8 +231,6 @@ public class Util {
         }
 
 
-        // ---------------------------------------------------------- Public Methods
-
         public void readExternal(ObjectInput in)
                 throws IOException, ClassNotFoundException {
 
@@ -255,9 +239,40 @@ public class Util {
         }
 
         public void writeExternal(ObjectOutput out) throws IOException {
-
             super.writeExternal(out);
             out.writeUTF(this.facetName);
+        }
+    }
+
+    /**
+     * Capture the details in an array directly 
+     */
+    public static class CaptureArray {
+        int index;
+        Object[] capturedNodes;
+
+        public CaptureArray() {
+            capturedNodes = new Object[64];
+        } 
+
+        private void expand() {
+            Object[] newArray = new Object[ capturedNodes.length*2 ];
+            System.arraycopy(capturedNodes, 0, newArray, 0, capturedNodes.length);
+            capturedNodes = newArray;
+        }
+
+        
+        public void capture(Object n) {
+            if (index == capturedNodes.length) {
+                expand();
+            }
+            capturedNodes[index++] = n;
+        }
+
+        public Object[] toArray() {
+            Object[] returnVal = new Object[index];
+            System.arraycopy(capturedNodes, 0, returnVal, 0, index);
+            return returnVal;
         }
     }
 }
