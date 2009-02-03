@@ -71,7 +71,7 @@ import javax.faces.el.ValueBinding;;
 public class MenuPopup extends MenuBar {
 
     private MethodBinding displayListener;
-    final static String PROGRESS_LISTENER_ID = "_dynamic"; 
+    final static String DISPLAY_LISTENER_ID = "_dynamic"; 
     /**
      * default no args constructor
      */
