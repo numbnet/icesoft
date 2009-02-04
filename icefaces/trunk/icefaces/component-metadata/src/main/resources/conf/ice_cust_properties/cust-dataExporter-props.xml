@@ -68,10 +68,9 @@
         must be a type of com.icesoft.faces.component.dataexporter.OutputTypeHandler
 	</description>
     <property-name>outputTypeHandler</property-name>
-
+    <property-class>com.icesoft.faces.component.dataexporter.OutputTypeHandler</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
-      <default-value>true</default-value>
     </property-extension>
   </property>
 

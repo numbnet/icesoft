@@ -140,7 +140,7 @@
         ]]>       
     </description>
     <property-name>xaxisLabels</property-name>
-    <property-class>java.lang.String</property-class>
+    <property-class>java.lang.Object</property-class>
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>

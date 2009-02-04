@@ -38,7 +38,7 @@
 <property>
 	<description>A java.util.List of MenuItem objects.</description>
 	<property-name>value</property-name>
-	<property-class>java.lang.Object</property-class>
+	<property-class>java.lang.String</property-class>
 	<property-extension>
 		<category>DATA</category>
 		<editor-class>

@@ -34,7 +34,7 @@ public class BeanPropertiesTest extends ICECompsTestCase {
 
         for (int j = 0; j < components.length; j++) {
             try {
-                if(!components[j].getClass().getName().startsWith("come.icesoft")){
+                if(!components[j].getClass().getName().startsWith("com.icesoft")){
                     continue;
                 }
                 Class beanInfoClass = Class.forName(components[j].getClass().getName() + "BeanInfo");
@@ -74,6 +74,7 @@ public class BeanPropertiesTest extends ICECompsTestCase {
             e.printStackTrace();
             fail(e.getMessage());
         }
+        //System.out.println("Component under test="+uiComponent.getClass().getName());
         String[] names = getMethodArray(uiComponent);
         for (int i = 0; i < pds.length; i++) {
             try {
@@ -82,7 +83,6 @@ public class BeanPropertiesTest extends ICECompsTestCase {
                 boolean methodIndexBoolean = getMethodIndex(pds[i].getReadMethod().getName(), names) == -1;
                 String message = " failed class name= " + uiComponent.getClass().getName() + " method name= " + propertyName + "\n" + tmp;
                 assertEquals(" " + message + "", false, methodIndexBoolean);
-                
                 String expectedPropertyType = pds[i].getPropertyType().getName();
                 String actualType = PropertyUtils.getPropertyType(uiComponent, propertyName).getName();
                 assertEquals(message, expectedPropertyType, actualType);
@@ -93,7 +93,6 @@ public class BeanPropertiesTest extends ICECompsTestCase {
             } catch (NoSuchMethodException ex) {
                 Logger.getLogger(BeanPropertiesTest.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
