@@ -170,6 +170,7 @@
 <property>
 	<description>The Javascript Effect</description>
 	<property-name>effect</property-name>
+	<property-class>com.icesoft.faces.context.effects.Effect</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
 	</property-extension>

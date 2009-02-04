@@ -103,7 +103,7 @@
 <property>
 
 	<property-name>navDate</property-name>
-	<property-class>java.lang.Object</property-class>
+	<property-class>java.util.Date</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
 		<editor-class>

@@ -21,7 +21,7 @@ public class RendererTypeTest extends ICECompsTestCase {
 
     public void testNamingType() {
 
-        ComponentBean[] oldComponentBeans = getComponentBeanInfo();
+        ComponentBean[] oldComponentBeans = getComponentBean();
         ComponentBean[] componentBeans = new ComponentBean[oldComponentBeans.length];
         System.arraycopy(oldComponentBeans, 0, componentBeans, 0, oldComponentBeans.length);
 
@@ -42,7 +42,7 @@ public class RendererTypeTest extends ICECompsTestCase {
 
             RendererBean myRendererBean = ICECompsListHelper.getRenderer(uiComponentBases[i].getFamily(), uiComponentBases[i].getRendererType());
 
-            if (myRendererBean == null || myRendererBean.getRendererType() == null || myRendererBean.getRendererType() == null) {
+            if (myRendererBean == null || myRendererBean.getRendererType() == null) {
                 message = "No Renderer defined for " + uiComponentBases[i].getClass().getName();
                 fail(message);
             } 
