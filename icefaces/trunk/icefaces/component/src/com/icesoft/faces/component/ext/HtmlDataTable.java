@@ -108,7 +108,11 @@ public class HtmlDataTable
 
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        oldRows = getRows();
+        int currentRows = getRows();
+        if (oldRows != -1 && oldRows != currentRows) {
+            setFirst(0);
+        }
+        oldRows = currentRows;
     }
     
     /**
@@ -336,9 +340,6 @@ public class HtmlDataTable
             kid.processValidators(context);
         } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
             kid.processUpdates(context);
-            if (oldRows != -1 && oldRows != getRows()) {
-                setFirst(0);
-            }
         } else {
             throw new IllegalArgumentException();
         }
