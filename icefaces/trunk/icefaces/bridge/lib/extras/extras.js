@@ -155,7 +155,7 @@ Ice.PanelCollapsible = {
     }
 }
 
-Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
     var ctrlKyFld = $(hdnFld+'ctrKy');
     var sftKyFld = $(hdnFld+'sftKy');  
     if (ctrlKyFld && event){
@@ -197,6 +197,16 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
                     break;
                 }
             }
+        }
+        var evt = Event.extend(event);
+        var row = evt.element();
+        if (row.tagName.toLowerCase() != "tr") {
+            row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
+        }
+        if (row) {
+            row.className = toggleClassNames;
+            row.onmouseover = Prototype.emptyFunction;
+            row.onmouseout = Prototype.emptyFunction;
         }
         var fld = document.forms[formId][hdnFld];
         fld.value = rowid;

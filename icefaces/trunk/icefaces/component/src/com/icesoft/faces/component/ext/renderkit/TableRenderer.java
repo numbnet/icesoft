@@ -654,9 +654,9 @@ public class TableRenderer
                     toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
                 }
                 toggleClass = CSSNamePool.get(getPortletAlternateRowClass(toggleClass, rowIndex));
-                tr.setAttribute("onclick", "this.className='" + toggleClass + "';this.onmouseover=null;this.onmouseout=null;" + rowSelectionFunctionName +
-                     "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                     "', '"+ formId +"', '"+ paramId +"');");
+                tr.setAttribute("onclick", rowSelectionFunctionName +
+                        "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
+                        "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
