@@ -17,6 +17,14 @@ Ice.Calendar.CloseListener = Class.create({
         this.commandLinkId = commandLink;
         this.hiddenFieldId = hiddenField;
         
+        this.popupId = this.calendarId + '_ct';
+        this.buttonId = this.calendarId + '_cb'
+        this.monthMenuId = this.calendarId + '_sm';
+        this.yearMenuId = this.calendarId + '_sy';
+        this.hourMenuId = this.calendarId + '_hr';
+        this.minuteMenuId = this.calendarId + '_min';
+        this.ampmMenuId = this.calendarId + '_amPm';
+        
         this.handler = this.closePopupOnClickOutside.bindAsEventListener(this);
         Event.observe(document, "click" , this.handler);
     },
@@ -28,7 +36,7 @@ Ice.Calendar.CloseListener = Class.create({
             if (this.isWithin(this.getPopup(),event)) {
                 return;
             }
-            if (this.isWithin(this.getButton(),event)) {
+            if (event.element() == this.getButton()) {
                 this.dispose();
                 return;
             }
@@ -51,13 +59,8 @@ Ice.Calendar.CloseListener = Class.create({
         }
     },
     matchesId: function(id) {
-        var monthMenuId = this.calendarId + '_sm';
-        var yearMenuId = this.calendarId + '_sy';
-        var hourMenuId = this.calendarId + '_hr';
-        var minuteMenuId = this.calendarId + '_min';
-        var ampmMenuId = this.calendarId + '_amPm';
-        if (id == monthMenuId || id == yearMenuId || id == hourMenuId || 
-            id == minuteMenuId || id == ampmMenuId) {
+        if (id == this.monthMenuId || id == this.yearMenuId || id == this.hourMenuId || 
+            id == this.minuteMenuId || id == this.ampmMenuId) {
             return true;
         } else {
             return false;
@@ -73,9 +76,9 @@ Ice.Calendar.CloseListener = Class.create({
         iceSubmitPartial(document.forms[this.formId],this.getButton(),event);
     },
     getPopup: function() {
-        return $(this.calendarId + '_ct');
+        return $(this.popupId);
     },
     getButton: function() {
-        return $(this.calendarId + '_cb');
+        return $(this.buttonId);
     }
 });
