@@ -219,14 +219,14 @@ public class SelectInputDateRenderer
             selectInputDate.getHours(facesContext);
         }
         Date value;
-
         if (selectInputDate.isNavEvent()) {
             if (log.isTraceEnabled()) {
                 log.trace("Rendering Nav Event");
             }
             value = selectInputDate.getNavDate();
 //System.out.println("navDate: " + value);
-        } else if (selectInputDate.isRenderAsPopup() && !selectInputDate.isEnterKeyPressed(facesContext)) { 
+        } else if (selectInputDate.isRenderAsPopup() &&
+                !selectInputDate.isEnterKeyPressed(facesContext) ) { 
             value = selectInputDate.getPopupDate();  
             
         } else {
