@@ -233,7 +233,8 @@ public class SelectInputDate
     }
 
     public String getTextToRender() {
-        if (getPopupDate() != null && 
+        if (getValue()!= null &&
+                getPopupDate() != null && 
                 isRenderAsPopup() && 
                   !isEnterKeyPressed(getFacesContext())) {
             return formatDate(getPopupDate());
@@ -1175,7 +1176,6 @@ public class SelectInputDate
             //faces message will be handled by the super class
         }
         super.validate(context);
-        setSubmittedValue(submittedValue);
     }    
     
     boolean isEnterKeyPressed(FacesContext facesContext) {
