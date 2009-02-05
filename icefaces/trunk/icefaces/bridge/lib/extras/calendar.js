@@ -19,18 +19,13 @@ Ice.Calendar.CloseListener = Class.create({
         
         this.popupId = this.calendarId + '_ct';
         this.buttonId = this.calendarId + '_cb'
-        this.monthMenuId = this.calendarId + '_sm';
-        this.yearMenuId = this.calendarId + '_sy';
-        this.hourMenuId = this.calendarId + '_hr';
-        this.minuteMenuId = this.calendarId + '_min';
-        this.ampmMenuId = this.calendarId + '_amPm';
         
         this.handler = this.closePopupOnClickOutside.bindAsEventListener(this);
-        Event.observe(document, "click" , this.handler);
+        Event.observe(document,'click',this.handler);
     },
     closePopupOnClickOutside: function(event) {
         if (this.getPopup()) {
-            if (this.isMenuOption(event)) {
+            if (this.isInPopup(event.element())) {
                 return;
             }
             if (this.isWithin(this.getPopup(),event)) {
@@ -45,30 +40,17 @@ Ice.Calendar.CloseListener = Class.create({
             this.dispose();
         }
     },
+    isInPopup: function(element) {
+        if (element.id == this.popupId) return true;
+        if (element == undefined || element == document) return false;
+        return this.isInPopup(element.parentNode);
+    },
     isWithin: function(element,event) {
         return Position.within(element, Event.pointerX(event), Event.pointerY(event));
     },
-    isMenuOption: function(event) {
-        var element = event.element();
-        if (element.tagName.toLowerCase() == 'option') {
-            return this.matchesId(element.parentNode.id);
-        } else if (element.tagName.toLowerCase() == 'select') {
-            return this.matchesId(element.id);
-        } else {
-            return false;
-        }
-    },
-    matchesId: function(id) {
-        if (id == this.monthMenuId || id == this.yearMenuId || id == this.hourMenuId || 
-            id == this.minuteMenuId || id == this.ampmMenuId) {
-            return true;
-        } else {
-            return false;
-        }    
-    },
     dispose: function() {
         Ice.Calendar.listeners[this.calendarId] = null;
-        Event.stopObserving(document, "click" , this.handler);
+        Event.stopObserving(document,'click',this.handler);
     },
     submit: function(event) {
         document.forms[this.formId][this.commandLinkId].value=this.getButton().id;
