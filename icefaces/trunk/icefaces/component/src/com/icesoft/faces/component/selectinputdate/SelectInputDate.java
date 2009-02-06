@@ -1098,11 +1098,19 @@ public class SelectInputDate
         if (date!= null && isTime(context)) {
             if (submittedHours != null) {
                 int[] hrs = getHours(context);
-                if (hrs.length < 13 &&submittedAmPm != null  && 
-                            "PM".equalsIgnoreCase(submittedAmPm.toString())) {
+                if (hrs.length < 13 && submittedAmPm != null  && 
+                            "PM".equalsIgnoreCase(submittedAmPm.toString()) &&
+                            submittedHours.intValue() != 12) {
+                    
                     ((Date)date).setHours(submittedHours.intValue() + 12);
                 } else {
-                    ((Date)date).setHours(submittedHours.intValue());
+                    if (submittedAmPm != null && 
+                            "AM".equalsIgnoreCase(submittedAmPm.toString()) && 
+                            submittedHours.intValue() == 12) {
+                        ((Date)date).setHours(0);                        
+                    } else {
+                        ((Date)date).setHours(submittedHours.intValue());
+                    }
                 }
                 
             }
