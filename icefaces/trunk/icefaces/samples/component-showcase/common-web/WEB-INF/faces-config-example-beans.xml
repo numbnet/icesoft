@@ -423,5 +423,12 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-   
+
+    <managed-bean>
+        <managed-bean-name>export</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.application.showcase.view.bean.examples.common.dataexporter.DataExporter
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>   
 </faces-config>

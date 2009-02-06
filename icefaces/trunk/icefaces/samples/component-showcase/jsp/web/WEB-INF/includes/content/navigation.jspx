@@ -239,6 +239,13 @@
             <ice:outputText
                     value="#{msgs['node.rowSelector.label']}"/>
         </ice:commandLink>
+        <br/>        
+        <ice:commandLink id="dataExporterContentPanel"
+                         actionListener="#{navigation.navigationStackChange}">
+            <f:param name="stackName" value="dataExporterContentPanel" />
+            <ice:outputText
+                    value="#{msgs['node.dataExpoter.label']}"/>
+        </ice:commandLink>        
     </ice:panelCollapsible>
 </ice:panelCollapsible>
 

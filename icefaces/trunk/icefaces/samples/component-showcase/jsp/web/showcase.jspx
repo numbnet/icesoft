@@ -233,6 +233,13 @@
                                  <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-expandable.jspx" />
                              </f:subview>
                          </ice:panelGroup>
+                         
+                         <ice:panelGroup id="dataExporterContentPanel" >
+                             <f:subview id="dtExSub">
+                                 <!-- DataExporter include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataExporter.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>                         
 
                          <ice:panelGroup id="commandSortHeaderContentPanel"  >
                              <f:subview id="shSub">

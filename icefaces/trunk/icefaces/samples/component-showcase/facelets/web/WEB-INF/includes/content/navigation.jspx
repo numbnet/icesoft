@@ -240,6 +240,13 @@
             <ice:outputText
                     value="#{msgs['node.rowSelector.label']}"/>
         </ice:commandLink>
+      <br/>
+        <ice:commandLink id="dataExporterContentPanel"
+                         actionListener="#{navigation.navigationPathChange}">
+            <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataExporter.jspx" />
+            <ice:outputText
+                    value="#{msgs['node.dataExporter.label']}"/>
+        </ice:commandLink>        
     </ice:panelCollapsible>
 </ice:panelCollapsible>
 
