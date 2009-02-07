@@ -104,7 +104,6 @@ public class View implements CommandQueue {
                 //dispose view only once
                 dispose = DoNothing;
                 Log.debug("Disposing " + this);
-                System.out.println("Disposing of View. ViewId: "+ viewIdentifier + ", viewNumber: " + facesContext.getViewNumber());;
                 installThreadLocals();
                 notifyViewDisposal();
                 releaseAll();
@@ -233,23 +232,14 @@ public class View implements CommandQueue {
             }
         }
         // Clean up View state maps on View disposal
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-        if (session != null) {
-            try {
-                Map m = (Map) session.getAttribute(ICEFACES_STATE_MAPS);
-                if (m != null) {
-                    m.remove( facesContext.getViewNumber() );
-                    StringBuffer sb = new StringBuffer();
-                    Iterator it = m.keySet().iterator();
-                    while (it.hasNext()) {
-                        sb.append( it.next().toString()).append(", ");
-                    }
-                    System.out.println("--< Remaining ViewId's: " + sb);
-                }
-
-            } catch (Exception e) {
-                System.out.println("Exception cleaning up ViewStateMaps (session expired?): " + e);
+        Map sessionMap = facesContext.getExternalContext().getSessionMap();
+        try {
+            Map m = (Map) sessionMap.get(ICEFACES_STATE_MAPS);
+            if (m != null) {
+                m.remove( facesContext.getViewNumber() );
             }
+        } catch (Exception e) {
+            Log.error("Exception cleaning up State Saving Map: " + e);
         }
     }
 
