@@ -27,8 +27,8 @@ public class ViewRootStateManagerImpl extends StateManager {
     private StateManager delegate;
 
     public ViewRootStateManagerImpl(StateManager delegate) {
-        if (log.isDebugEnabled()) {
-            log.debug("ViewRootStateManagerImpl constructed with Delegate: " + delegate);
+        if (log.isInfoEnabled()) {
+            log.info("ViewRootStateManagerImpl constructed with Delegate: " + delegate);
         }
         this.delegate = delegate;
     }
@@ -53,11 +53,11 @@ public class ViewRootStateManagerImpl extends StateManager {
             log.debug("RestoreView called for View: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
         } 
 
-        HttpSession session = (HttpSession) bfc.getExternalContext().getSession(false);
-        Map stateMap = (Map) session.getAttribute(  View.ICEFACES_STATE_MAPS );
+        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
-            session.setAttribute( View.ICEFACES_STATE_MAPS, stateMap );
+            sessionMap.put( View.ICEFACES_STATE_MAPS, stateMap );
         }
 
         UIViewRoot root;
@@ -87,11 +87,11 @@ public class ViewRootStateManagerImpl extends StateManager {
         BridgeFacesContext bfc = (BridgeFacesContext) context;
         String viewNumber = bfc.getViewNumber();
 
-        HttpSession session = (HttpSession) bfc.getExternalContext().getSession(false);
-        Map stateMap = (Map) session.getAttribute(  View.ICEFACES_STATE_MAPS );
+        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
-            session.setAttribute(View.ICEFACES_STATE_MAPS, stateMap );
+            sessionMap.put(View.ICEFACES_STATE_MAPS, stateMap );
         }
         stateMap.put( viewNumber, root );
 

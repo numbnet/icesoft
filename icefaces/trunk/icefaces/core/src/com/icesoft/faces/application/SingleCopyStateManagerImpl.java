@@ -57,8 +57,8 @@ public class SingleCopyStateManagerImpl extends StateManager {
      */
     public SingleCopyStateManagerImpl(StateManager delegate ) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Constructing SingleCopyStateManagerImpl with delegate: " + delegate);
+        if (log.isInfoEnabled()) {
+            log.info("Constructing SingleCopyStateManagerImpl with delegate: " + delegate);
         }
         this.delegate = delegate;
     }
@@ -93,14 +93,6 @@ public class SingleCopyStateManagerImpl extends StateManager {
                                   String renderKitId) {
         UIViewRoot viewRoot;
         ExternalContext externalCtx = context.getExternalContext();
-        Object sessionObj = externalCtx.getSession(false);
-
-        // stop evaluating if the session is not available
-        if (sessionObj == null) {
-            log.error("Can't Restore Server View State, session expired for view number:" +
-                               viewId);
-            return null;
-        }
 
         Object [] stateArray;
         Map viewMap = (Map) externalCtx.getSessionMap().get(View.ICEFACES_STATE_MAPS);
@@ -161,11 +153,12 @@ public class SingleCopyStateManagerImpl extends StateManager {
         BridgeFacesContext bfc = (BridgeFacesContext) context;
         String viewNumber = bfc.getViewNumber();
 
-        HttpSession session = (HttpSession) bfc.getExternalContext().getSession(false);
-        Map stateMap = (Map) session.getAttribute( View.ICEFACES_STATE_MAPS );
+        Map sessionMap = bfc.getExternalContext().getSessionMap();
+
+        Map stateMap = (Map) sessionMap.get( View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
-            session.setAttribute( View.ICEFACES_STATE_MAPS, stateMap );
+            sessionMap.put( View.ICEFACES_STATE_MAPS, stateMap );
         }
 
         StateManager sm = context.getApplication().getStateManager();
