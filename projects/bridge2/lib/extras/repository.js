@@ -52,7 +52,7 @@ Ice.Repository = {
 
     remove:function(_id) {
         var removeArray = new Array();
-        for (key in JSObjects) {
+        for (var key in JSObjects) {
             if (key == _id) {
                 //	JSObjects["iceIndex"] = parseInt(JSObjects["iceIndex"]) - 1;
                 continue;
@@ -65,7 +65,7 @@ Ice.Repository = {
     getAll:function() {
         var tempArray = new Array();
         var i = 0;
-        for (key in JSObjects) {
+        for (var key in JSObjects) {
             if (key.indexOf(':') > 0) {
                 tempArray[i++] = JSObjects[key];
             }
