@@ -1,26 +1,29 @@
+var register = operator();
+var deserializeAndExecute = operator();
+
 [ Ice.Command = new Object ].as(function(This) {
+    This.Dispatcher = function() {
+        var commands = [];
 
-    This.Dispatcher = Object.subclass({
-        initialize: function() {
-            this.commands = new Object;
-        },
+        return object(function(method) {
+            method(register, function(self, messageName, command) {
+                commands = reject(commands, function(cell) {
+                    return key(cell) == messageName;
+                });
+                append(commands, Cell(messageName, command));
+            });
 
-        register: function(messageName, command) {
-            this.commands[messageName] = command;
-        },
-
-        deserializeAndExecute: function(message) {
-            var messageName = message.tagName;
-            for (var commandName in this.commands) {
-                if (commandName == messageName) {
-                    this.commands[messageName](message);
-                    return;
-                }
-            }
-
-            throw 'Unknown message received: ' + messageName;
-        }
-    });
+            method(deserializeAndExecute, function(self, message) {
+                var messageName = message.tagName;
+                var found = detect(commands, function(cell) {
+                    return key(cell) == messageName;
+                }, function() {
+                    throw 'Unknown message received: ' + messageName;
+                });
+                value(found)(message);
+            });
+        });
+    };
 
     This.SetCookie = function(message) {
         document.cookie = message.firstChild.data;
