@@ -52,7 +52,7 @@ clicks a selection or tabs out of a field.
         <ice:panelGroup styleClass="clearer" />
 
         <ice:panelGroup styleClass="exampleBox selectionContainer" >
-            <ice:panelGrid columns="2" >
+            <ice:panelGrid columns="2" styleClass="verticalAlignTop" >
                 <!-- Select one list boxes - select countries and city -->
                 <ice:outputLabel
                         for="sepCnty"
@@ -62,14 +62,14 @@ clicks a selection or tabs out of a field.
                         <ice:selectOneListbox id="sepCnty"
                                               value="#{setEventPhaseBean.selectedCountry}"
                                               partialSubmit="true"
-                                              style="overflow: auto;"
+                                              style="overflow: auto;height:75px"
                                               valueChangeListener="#{setEventPhaseBean.countryChanged}">
                             <f:selectItems value="#{setEventPhaseBean.countryItems}"/>
                         </ice:selectOneListbox>
                     </ice:setEventPhase>
                     <ice:selectManyListbox partialSubmit="true"
                                            value="#{setEventPhaseBean.selectedCities}"
-                                           style="overflow: auto;"
+                                           style="overflow: auto;width:110px;height:75px"
                                            valueChangeListener="#{setEventPhaseBean.cityChanged}">
                         <f:selectItems value="#{setEventPhaseBean.cityItems}"/>
                     </ice:selectManyListbox>

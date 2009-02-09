@@ -58,7 +58,7 @@ clicks a selection or tabs out of a field.
 
         <!-- selection tags -->
         <ice:panelGroup styleClass="exampleBox selectionContainer" >
-            <ice:panelGrid columns="2" >
+            <ice:panelGrid columns="2" styleClass="verticalAlignTop" >
                 <!-- Check box - new user -->
                 <ice:outputLabel
                         for="SlctUsr"
@@ -129,7 +129,7 @@ clicks a selection or tabs out of a field.
                     <ice:selectOneListbox id="SlctCnty"
                                           value="#{selectionTags.selectedCountry}"
                                           partialSubmit="true"
-                                          style="overflow: auto;"
+                                          style="overflow: auto;height:75px"
                                           valueChangeListener="#{selectionTags.countryChanged}">
                         <f:selectItems id="SlctCntyItms"
                                         value="#{selectionTags.countryItems}"/>
@@ -137,7 +137,7 @@ clicks a selection or tabs out of a field.
                     <ice:selectManyListbox id="citiesListBox"
                                            partialSubmit="true"
                                            value="#{selectionTags.selectedCities}"
-                                           style="overflow: auto;"
+                                           style="overflow: auto;width:110px;height:75px"
                                            valueChangeListener="#{selectionTags.cityChanged}">
                         <f:selectItems id="SlctCtyItms"
                                         value="#{selectionTags.cityItems}"/>
