@@ -2602,3 +2602,53 @@ Disabled classes for the calendar controls
     border-bottom: 1px solid #ABABAB;
     cursor: n-resize;
 }
+
+/*
+----------- PanelConfirmation ----------
+*/
+
+.icePnlCnf {
+    border-top: 1px solid #ABABAB;
+    border-right: 2px solid #ABABAB;
+    border-left: 1px solid #ABABAB;
+    border-bottom: 2px solid #ABABAB;
+    background-color: #DDDDDD;
+    padding: 0;
+    width: 300px;
+    z-index: 1000;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.icePnlCnfHdr {
+    background-color: #DEDEDE;
+    background-image: url( "./css-images/window_top.gif" );
+    background-position: top;
+    background-repeat: repeat-x;
+    height: auto;
+    color: #FFFFFF;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 4px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.icePnlCnfBody {
+    padding: 10px 10px 5px 10px;
+    background-color: #DDDDDD;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.icePnlCnfBtns {
+    padding: 5px 10px 10px 10px;
+    background-color: #DDDDDD;
+    text-align: center;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.icePnlCnfBtns input {
+    margin: 0 20px 0 20px;
+}
