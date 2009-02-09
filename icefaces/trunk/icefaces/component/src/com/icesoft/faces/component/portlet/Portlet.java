@@ -31,6 +31,7 @@ public class Portlet extends UINamingContainer {
         super();
         setRendererType("com.icesoft.faces.Portlet");
     }
+
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
