@@ -163,11 +163,11 @@ function FormPost(request) {
             });
 
             onReceive(connection, function(response) {
-                var mimeType = response.getResponseHeader('Content-Type');
-                if (mimeType.startsWith('text/html')) {
-                    replaceContainerHTML(response.content());
-                } else if (mimeType.startsWith('text/xml')) {
-                    deserializeAndExecute(commandDispatcher, response.contentAsDOM().documentElement);
+                var mimeType = getHeader(response, 'Content-Type');
+                if (mimeType && startsWith(mimeType, 'text/html')) {
+                    replaceContainerHTML(contentAsText(response));
+                } else if (mimeType && startsWith(mimeType, 'text/xml')) {
+                    deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
                     documentSynchronizer.synchronize();
                 } else {
                     logger.warn('unknown content in response');
@@ -178,10 +178,10 @@ function FormPost(request) {
             onServerError(connection, function (response) {
                 logger.warn('server side error');
                 disposeView(sessionID, viewID);
-                if (response.isEmpty()) {
+                if (blank(contentAsText(response))) {
                     statusManager.serverError.on();
                 } else {
-                    replaceContainerHTML(response.content());
+                    replaceContainerHTML(contentAsText(response));
                 }
                 dispose();
             });
