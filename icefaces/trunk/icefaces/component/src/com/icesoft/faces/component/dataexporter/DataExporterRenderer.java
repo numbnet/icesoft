@@ -34,7 +34,8 @@ public class DataExporterRenderer extends OutputResourceRenderer {
 	public void encodeBegin(FacesContext fc, UIComponent uiC)
 			throws IOException {
 		DataExporter oe = (DataExporter) uiC;
-		if (oe.getUIData() != null && oe.getType() != null) {
+		if (oe.getUIData() != null && (oe.getType() != null
+		        && oe.getType().length() > 0)) {
 
 			if (oe.isReadyToExport()) {
 				if (oe.getResource() == null) {
