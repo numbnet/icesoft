@@ -39,7 +39,7 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Reliability.Heartbeat, Ice.Cookie ].as(function(This, Connection, Heartbeat, Cookie) {
+[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Reliability.Heartbeat ].as(function(This, Connection, Heartbeat) {
     This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
         var logger = logger.child('async-connection');
         var sendChannel = Client(true);
@@ -58,7 +58,9 @@ var shutdown = operator();
             method(close, noop);
             method(abort, noop);
         });
-        var listening = { remove: Function.NOOP };
+        var listening = object(function(method) {
+            method(remove, noop);
+        });
         var timeoutBomb = { cancel: Function.NOOP };
         var heartbeat = { stop: Function.NOOP };
 
@@ -84,28 +86,26 @@ var shutdown = operator();
         };
         var sendXWindowCookie = noop;
         var receiveXWindowCookie = function (response) {
-            var xWindowCookie = response.getResponseHeader("X-Set-Window-Cookie");
+            var xWindowCookie = getHeader(response, "X-Set-Window-Cookie");
             if (xWindowCookie) {
                 sendXWindowCookie = function(request) {
-                    request.setRequestHeader("X-Window-Cookie", xWindowCookie);
+                    setHeader(request, "X-Window-Cookie", xWindowCookie);
                 };
             }
         };
 
         //read/create cookie that contains the updated views
-        var updatedViews;
-        try {
-            updatedViews = Cookie.lookup('updates');
-        } catch (e) {
-            updatedViews = new Cookie('updates', '');
-        }
+        var updatedViews = lookupCookie('updates', function() {
+            return Cookie('updates', '');
+        });
 
         //register command that handles the updated-views message
         register(commandDispatcher, 'updated-views', function(message) {
-            var views = updatedViews.loadValue().split(' ');
+            logger.info("Views update: " + value(updatedViews));
+            var views = split(value(updatedViews), ' ');
             var text = message.firstChild;
-            if (text && !text.data.blank()) {
-                updatedViews.saveValue(views.concat(text.data.split(' ')).asSet().join(' '));
+            if (text && !blank(text.data)) {
+                update(updatedViews, join(asSet(concatenate(views, split(text.data, ' '))), ' '));
             } else {
                 logger.warn("No updated views were returned.");
             }
@@ -118,8 +118,8 @@ var shutdown = operator();
         //this strategy is mainly employed to fix the window.onunload issue
         //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
         try {
-            listening = Cookie.lookup('bconn');
-            listening.remove();
+            listening = lookupCookie('bconn');
+            remove(listening);
         } catch (e) {
             //do nothing
         }
@@ -145,22 +145,24 @@ var shutdown = operator();
             logger.debug("connect...");
             listener = postAsynchronously(receiveChannel, receiveURI, function(q) {
                 each(window.sessions, curry(addNameValue, q, 'ice.session'));
-            }, FormPost, $witch(function (condition) {
+            }, function(request) {
+                FormPost(request);
+                //sendXWindowCookie(request);
+            }, $witch(function (condition) {
                 condition(OK, function(response) {
                     if (notEmpty(contentAsText(response))) {
                         receiveCallback(response);
                     }
+                    //receiveXWindowCookie(response);
                     if (getHeader(response, 'X-Connection') != 'close') {
                         connect();
                     }
                 });
                 condition(ServerInternalError, retryOnServerError);
             }));
-            //                sendXWindowCookie(request);
-            //                request.on(Connection.OK, receiveXWindowCookie);
         };
 
-        //build callbacks only after this.connetion function was defined
+        //build callbacks only after this.connection function was defined
         var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
         //avoid error messages for 'pong' messages that arrive after blocking connection is closed
@@ -197,28 +199,32 @@ var shutdown = operator();
         //monitor if the blocking connection needs to be started
         var pollingPeriod = 1000;
         var fullViewID = sessionID + ':' + viewID;
-        var leaseCookie = Cookie.lookup('ice.lease', (new Date).getTime().toString());
-        var connectionCookie = listening = Cookie.lookup('bconn', '-');
+        var leaseCookie = lookupCookie('ice.lease', function() {
+            return Cookie('ice.lease', asString((new Date).getTime()));
+        });
+        var connectionCookie = listening = lookupCookie('bconn', function() {
+            return Cookie('bconn', '-');
+        });
         function updateLease() {
-            leaseCookie.saveValue((new Date).getTime() + pollingPeriod * 2);
+            update(leaseCookie, (new Date).getTime() + pollingPeriod * 2);
         }
         function isLeaseExpired() {
-            return leaseCookie.loadValue().asNumber() < (new Date).getTime();
+            return asNumber(value(leaseCookie)) < (new Date).getTime();
         }
         function shouldEstablishBlockingConnection() {
-            return !Cookie.exists('bconn') || !Cookie.lookup('bconn').value.startsWith(sessionID);
+            return !existsCookie('bconn') || !startsWith(lookupCookieValue('bconn'), sessionID);
         }
         function offerCandidature() {
-            connectionCookie.saveValue(fullViewID);
+            update(connectionCookie, fullViewID);
         }
         function isWinningCandidate() {
-            return connectionCookie.loadValue().startsWith(fullViewID);
+            return startsWith(value(connectionCookie), fullViewID);
         }
         function markAsOwned() {
-            connectionCookie.saveValue(fullViewID + ':acquired');
+            update(connectionCookie, fullViewID + ':acquired');
         }
         function hasOwner() {
-            return connectionCookie.loadValue().endsWith(':acquired');
+            return endsWith(value(connectionCookie), ':acquired');
         }
         var blockingConnectionMonitor = function() {
             if (shouldEstablishBlockingConnection()) {
@@ -257,10 +263,10 @@ var shutdown = operator();
         //monitor & pick updates for this view
         var updatesMonitor = function() {
             try {
-                var views = updatedViews.loadValue().split(' ');
-                if (views.include(fullViewID)) {
+                var views = split(value(updatedViews), ' ');
+                if (contains(views, fullViewID)) {
                     pickUpdates();
-                    updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
+                    update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
                 }
             } catch (e) {
                 logger.warn('failed to listen for updates', e);
@@ -327,15 +333,12 @@ var shutdown = operator();
                 } catch (e) {
                     //ignore, we really need to shutdown
                 } finally {
-                    [ onSendListeners, onReceiveListeners, connectionDownListeners, onServerErrorListeners, onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
-                        listeners.clear();
-                    });
+                    each([onSendListeners, onReceiveListeners, connectionDownListeners, onServerErrorListeners, onReceiveFromSendListeners], empty);
                     abort(listener);
-
                     [ updatesMonitor, blockingConnectionMonitor ].eachWithGuard(function(monitor) {
                         monitor.cancel();
                     });
-                    listening.remove();
+                    remove(listening);
                 }
             });
         });
