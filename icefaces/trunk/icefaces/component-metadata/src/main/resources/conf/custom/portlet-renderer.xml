@@ -41,7 +41,7 @@
     ]]>
     </description>
     <component-family>com.icesoft.faces.Portlet</component-family>
-    <renderer-type>null</renderer-type>
+    <renderer-type>com.icesoft.faces.Portlet</renderer-type>
     <renderer-extension>
         <instance-name>portlet</instance-name>
         <is-container>true</is-container>
