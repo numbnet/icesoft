@@ -39,15 +39,14 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Cookie, Ice.Parameter.Query ].as(function(This, Connection, Ajax, Heartbeat, Cookie, Query) {
+[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Reliability.Heartbeat, Ice.Cookie ].as(function(This, Connection, Heartbeat, Cookie) {
     This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
         var logger = logger.child('async-connection');
-        var sendChannel = new Ajax.Client(logger.child('ui'));
-        var receiveChannel = new Ajax.Client(logger.child('blocking'));
-        var defaultQuery = Ice.Parameter.Query.create(function(q) {
-            q.add('ice.view', viewID);
-            q.add('ice.session', sessionID);
-        });
+        var sendChannel = Client(true);
+        var receiveChannel = Client(true);
+        var defaultQuery = Query();
+        addNameValue(defaultQuery, 'ice.view', viewID);
+        addNameValue(defaultQuery, 'ice.session', sessionID);
         var onSendListeners = [];
         var onReceiveFromSendListeners = [];
         var onReceiveListeners = [];
@@ -55,7 +54,10 @@ var shutdown = operator();
         var connectionDownListeners = [];
         var connectionTroubleListeners = [];
 
-        var listener = { close: Function.NOOP, abort: Function.NOOP };
+        var listener = object(function(method) {
+            method(close, noop);
+            method(abort, noop);
+        });
         var listening = { remove: Function.NOOP };
         var timeoutBomb = { cancel: Function.NOOP };
         var heartbeat = { stop: Function.NOOP };
@@ -139,27 +141,23 @@ var shutdown = operator();
 
         var connect = function() {
             logger.debug("closing previous connection...");
-            listener.close();
+            close(listener);
             logger.debug("connect...");
-            var query = new Query();
-            window.sessions.each(function(sessionID) {
-                query.add('ice.session', sessionID);
-            });
-            listener = receiveChannel.postAsynchronously(receiveURI, query.asURIEncodedString(), function(request) {
-                sendXWindowCookie(request);
-                Connection.FormPost(request);
-                request.on(Connection.ServerError, retryOnServerError);
-                request.on(Connection.OK, receiveXWindowCookie);
-                request.on(Connection.OK, function(response) {
-                    if (!response.isEmpty()) {
+            listener = postAsynchronously(receiveChannel, receiveURI, function(q) {
+                each(window.sessions, curry(addNameValue, q, 'ice.session'));
+            }, FormPost, $witch(function (condition) {
+                condition(OK, function(response) {
+                    if (notEmpty(contentAsText(response))) {
                         receiveCallback(response);
                     }
-                    if (response.getResponseHeader('X-Connection') != 'close') {
+                    if (getHeader(response, 'X-Connection') != 'close') {
                         connect();
                     }
                 });
-                request.on(Connection.OK, Connection.Close);
-            });
+                condition(ServerInternalError, retryOnServerError);
+            }));
+            //                sendXWindowCookie(request);
+            //                request.on(Connection.OK, receiveXWindowCookie);
         };
 
         //build callbacks only after this.connetion function was defined
@@ -180,7 +178,9 @@ var shutdown = operator();
                 register(commandDispatcher, 'pong', function() {
                     ping.pong();
                 });
-                sendChannel.postAsynchronously(pingURI, defaultQuery.asURIEncodedString(), Connection.FormPost);
+                postAsynchronously(sendChannel, pingURI, function(q) {
+                    addQuery(q, defaultQuery);
+                }, FormPost, noop);
             });
 
             heartbeat.onLostPongs(connectionDownListeners.broadcaster(), heartbeatRetries);
@@ -241,11 +241,13 @@ var shutdown = operator();
         }.repeatExecutionEvery(pollingPeriod);
 
         var pickUpdates = function() {
-            sendChannel.postAsynchronously(getURI, defaultQuery.asURIEncodedString(), function(request) {
-                Connection.FormPost(request);
-                request.on(Connection.OK, receiveCallback);
-                request.on(Connection.OK, Connection.Close);
-            });
+            postAsynchronously(sendChannel, getURI, function(q) {
+                addQuery(q, defaultQuery);
+            }, FormPost, $witch(function(condition) {
+                condition(OK, function(response) {
+                    if (notEmpty(contentAsText(response))) receiveCallback(response);
+                });
+            }));
         };
 
         //pick any updates that might be generated in between bridge re-initialization
@@ -269,27 +271,24 @@ var shutdown = operator();
 
         return object(function(method) {
             method(send, function(self, query) {
-                var compoundQuery = new Query();
-                compoundQuery.addQuery(query);
-                compoundQuery.addQuery(defaultQuery);
-                compoundQuery.add('ice.focus', window.currentFocus);
-
-                logger.debug('send > ' + compoundQuery.asString());
-                sendChannel.postAsynchronously(sendURI, compoundQuery.asURIEncodedString(), function(request) {
-                    Connection.FormPost(request);
-
-                    timeoutBomb.cancel();
-                    timeoutBomb = connectionDownListeners.broadcaster().delayExecutionFor(timeout);
-                    request.on(Connection.OK, function() {
+                timeoutBomb.cancel();
+                timeoutBomb = connectionDownListeners.broadcaster().delayExecutionFor(timeout);
+                broadcast(onSendListeners);
+                logger.debug('send > ' + sendURI);
+                postAsynchronously(sendChannel, sendURI, function(q) {
+                    addQuery(q, query);
+                    addQuery(q, defaultQuery);
+                    addNameValue(q, 'ice.focus', window.currentFocus);
+                    logger.debug(asURIEncodedString(q));
+                }, FormPost, $witch(function(condition) {
+                    condition(OK, function(response, request) {
                         timeoutBomb.cancel();
+                        receiveCallback(response);
+                        broadcast(onReceiveFromSendListeners, arguments);
                     });
 
-                    request.on(Connection.OK, receiveCallback);
-                    request.on(Connection.OK, onReceiveFromSendListeners.broadcaster());
-                    request.on(Connection.ServerError, serverErrorCallback);
-                    request.on(Connection.OK, Connection.Close);
-                    onSendListeners.broadcast();
-                });
+                    condition(ServerInternalError, serverErrorCallback);
+                }));
             });
 
             method(onSend, function(self, sendCallback, receiveCallback) {
@@ -331,7 +330,7 @@ var shutdown = operator();
                     [ onSendListeners, onReceiveListeners, connectionDownListeners, onServerErrorListeners, onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
                         listeners.clear();
                     });
-                    listener.abort();
+                    abort(listener);
 
                     [ updatesMonitor, blockingConnectionMonitor ].eachWithGuard(function(monitor) {
                         monitor.cancel();

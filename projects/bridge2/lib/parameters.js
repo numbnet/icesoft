@@ -65,7 +65,11 @@
         },
 
         sendOn: function(connection) {
-            connection.send(this);
+            var q = Query();
+            each(this.parameters, function(p) {
+                addNameValue(q, p.name, p.value);
+            });
+            send(connection, q);
         },
 
         serializeOn: function(query) {
