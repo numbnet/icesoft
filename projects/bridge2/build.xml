@@ -102,6 +102,7 @@
     <fileset id="munge.js.files" dir=".">
         <include name="src/**/*.js"/>
         <include name="lib/**/*.js"/>
+        <include name="newlib/**/*.js"/>
         <include name="component/**/*.js"/>
         <exclude name="component/keyboardNavigator.js"/>
         <exclude name="component/resizblePanelGrid.js"/>
@@ -159,6 +160,15 @@
                 <file name="number.js"/>
                 <file name="hash.js"/>
                 <file name="range.js"/>
+            </filelist>
+            <filelist dir="${build.dir}/newlib">
+                <file name="functional.js"/>
+                <file name="oo.js"/>
+                <file name="collection.js"/>
+                <file name="string.js"/>
+                <file name="window.js"/>
+                <file name="http.js"/>
+                <file name="cookie.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib">
                 <file name="namespace.js"/>
