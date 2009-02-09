@@ -37,6 +37,7 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.RendererUtil;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 
 import org.w3c.dom.Element;
 
@@ -44,6 +45,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class is responsible for the rendering of html pass thru attributes.
@@ -206,13 +208,11 @@ public class PassThruAttributeRenderer {
             nodeName.equalsIgnoreCase(HTML.INPUT_ELEM) ||
             nodeName.equalsIgnoreCase(HTML.SELECT_ELEM)) {
             String original =
-                    (String) uiComponent.getAttributes().get("onfocus");
+                    (String) uiComponent.getAttributes().get(HTML.ONFOCUS_ATTR);
             String onfocus = "setFocus(this.id);";
-
-            if (original == null) {
-                original = "";
-            }
-            root.setAttribute(HTML.ONFOCUS_ATTR, onfocus + original);
+            // Used to be: onfocus + original
+            String together = DomBasicRenderer.combinedPassThru(original, onfocus);
+            root.setAttribute(HTML.ONFOCUS_ATTR, together);
         }
     }
 
@@ -232,11 +232,9 @@ public class PassThruAttributeRenderer {
             nodeName.equalsIgnoreCase(HTML.SELECT_ELEM)) {
             String original = root.getAttribute("onblur");
             String onblur = "setFocus('');";
-
-            if (original == null) {
-                original = "";
-            }
-            root.setAttribute(HTML.ONBLUR_ATTR, onblur + original);
+            // Used to be: onblur + original
+            String together = DomBasicRenderer.combinedPassThru(original, onblur);
+            root.setAttribute(HTML.ONBLUR_ATTR, together);
         }
     }
 
@@ -393,7 +391,7 @@ public class PassThruAttributeRenderer {
      *
      * @param facesContext
      * @param uiComponent
-     * @param included nonBooleanHtmlAttributes
+     * @param nonBooleanHtmlAttributes
      */
     public static void renderHtmlAttributes(FacesContext facesContext,
                                         UIComponent uiComponent,
@@ -422,7 +420,7 @@ public class PassThruAttributeRenderer {
      * @param uiComponent
      * @param attributeElement
      * @param styleElement The Element to apply styling on
-     * @param included nonBooleanHtmlAttributes
+     * @param htmlAttributes
      */
     public static void renderHtmlAttributes(FacesContext facesContext,
                                         UIComponent uiComponent,
@@ -441,12 +439,25 @@ public class PassThruAttributeRenderer {
             }
             attributeElement = rootElement;
         }
-        renderNonBooleanHtmlAttributes(uiComponent, attributeElement, htmlAttributes);  
+        
+        // For now, we just support accelerating h: component rendering
+        boolean stockAttribTracking =
+            ImplementationUtil.isStockAttributeTracking();
+        boolean attribTracking =
+            stockAttribTracking &&
+            uiComponent.getClass().getName().startsWith("javax.faces.component.");
+        List attributesThatAreSet = (!attribTracking) ? null :
+            (List) uiComponent.getAttributes().get(
+                "javax.faces.component.UIComponentBase.attributesThatAreSet");
+        
+        renderNonBooleanHtmlAttributes(uiComponent, attributeElement, 
+            htmlAttributes, attribTracking, attributesThatAreSet);  
         
         //TODO remove the following:        
         CurrentStyle.apply(facesContext, uiComponent, styleElement, null);              
-        LocalEffectEncoder
-                .encodeLocalEffects(uiComponent, attributeElement, facesContext);
+        LocalEffectEncoder.encodeLocalEffects(
+            uiComponent, attributeElement, facesContext,
+            null, attribTracking, attributesThatAreSet);
         renderOnFocus(uiComponent, attributeElement);
         renderOnBlur(attributeElement);
     }        
@@ -465,15 +476,32 @@ public class PassThruAttributeRenderer {
         }
         return false;
     }
-
+    
     public static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
             Element targetElement, String[] nonBooleanhtmlAttributes) {
+        renderNonBooleanHtmlAttributes(
+            uiComponent, targetElement, nonBooleanhtmlAttributes, false, null);
+    }
+    
+    public static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
+            Element targetElement, String[] nonBooleanhtmlAttributes,
+            boolean attribTracking, List attributesThatAreSet) {
+        if (attribTracking &&
+            (attributesThatAreSet == null ||
+             attributesThatAreSet.size() == 0)) {
+            return;
+        }
 
         Object nextPassThruAttributeName = null;
         Object nextPassThruAttributeValue = null;
-
+        
         for (int i = 0; i < nonBooleanhtmlAttributes.length; i++) {
             nextPassThruAttributeName = nonBooleanhtmlAttributes[i];
+            if (attribTracking &&
+                (attributesThatAreSet == null ||
+                 !attributesThatAreSet.contains(nextPassThruAttributeName))) {
+                continue;
+            }
             nextPassThruAttributeValue =
                     uiComponent.getAttributes().get(nextPassThruAttributeName);
             // Only render non-null attributes.

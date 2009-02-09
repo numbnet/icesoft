@@ -39,6 +39,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -387,7 +388,7 @@ public class PassThruAttributeWriter {
                                         UIComponent uiComponent,
                                         String[] htmlAttributes)
             throws IOException {
-                if (writer == null) {
+        if (writer == null) {
             throw new FacesException("Null pointer exception");
         }
 
@@ -395,24 +396,43 @@ public class PassThruAttributeWriter {
             throw new FacesException("Component instance is null");
         }
 
-        Object nextPassThruAttributeName = null;
-        Object nextPassThruAttributeValue = null;
+        // For now, we just support accelerating h: component rendering
+        boolean stockAttribTracking =
+            ImplementationUtil.isStockAttributeTracking();
+        boolean attribTracking =
+            stockAttribTracking &&
+            uiComponent.getClass().getName().startsWith("javax.faces.component.");
+        List attributesThatAreSet = (!attribTracking) ? null :
+            (List) uiComponent.getAttributes().get(
+                "javax.faces.component.UIComponentBase.attributesThatAreSet");
+        
+        if (!attribTracking ||
+            (attributesThatAreSet != null &&
+             attributesThatAreSet.size() > 0)) {
 
-        for (int i = 0; i < htmlAttributes.length; i++) {
-            nextPassThruAttributeName = htmlAttributes[i];
-            nextPassThruAttributeValue =
+            String nextPassThruAttributeName = null;
+            Object nextPassThruAttributeValue = null;
+
+            for (int i = 0; i < htmlAttributes.length; i++) {
+                nextPassThruAttributeName = htmlAttributes[i];
+                if (attribTracking &&
+                    (attributesThatAreSet == null ||
+                     !attributesThatAreSet.contains(nextPassThruAttributeName))) {
+                    continue;
+                }
+                nextPassThruAttributeValue =
                     uiComponent.getAttributes().get(nextPassThruAttributeName);
-            // Only render non-null attributes.
-            // Some components have integer attribute values
-            // set to the Wrapper classes' minimum value - don't render
-            // an attribute with this sentinel value.
-            if (nextPassThruAttributeValue != null && !valueIsIntegerSentinelValue(nextPassThruAttributeValue)) {
-                writer.writeAttribute(
-                        nextPassThruAttributeName.toString(),
+                // Only render non-null attributes.
+                // Some components have integer attribute values
+                // set to the Wrapper classes' minimum value - don't render
+                // an attribute with this sentinel value.
+                if (nextPassThruAttributeValue != null &&
+                    !valueIsIntegerSentinelValue(nextPassThruAttributeValue)) {
+                    writer.writeAttribute(
+                        nextPassThruAttributeName,
                         nextPassThruAttributeValue,
                         nextPassThruAttributeValue.toString());
-            //remove the else clause that was here; it's trying to remove a node
-            //that doesn't exist
+                }
             }
         }
         //this call maintains the css related changes made by the effects on the client
