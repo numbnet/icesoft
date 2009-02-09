@@ -149,7 +149,14 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             } else if (isRowAvailable()) {
                 // Indexes are inclusive
                 int firstIndex = getFirst();
-                int lastIndex = firstIndex + getRows() - 1;
+                int lastIndex;
+                int rows = getRows();
+                if (rows == 0) {
+                    lastIndex = model.getRowCount() - 1;
+                }
+                else {
+                    lastIndex = firstIndex + rows - 1;
+                }
                 loadRowToRequestMap(requestMap, firstIndex, lastIndex, rowIndex);
             } else {
                 removeRowFromRequestMap(requestMap);
