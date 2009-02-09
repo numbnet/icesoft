@@ -542,6 +542,7 @@
 		<tag-name>portlet</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Portlet</component-type>
+			<renderer-type>com.icesoft.faces.Portlet</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>

@@ -48,6 +48,6 @@
 			javax.faces.NamingContainer
 		</base-component-type>
 		<component-family>com.icesoft.faces.Portlet</component-family>
-		<renderer-type>null</renderer-type>
+		<renderer-type>com.icesoft.faces.Portlet</renderer-type>
 	</component-extension>
 </component>
