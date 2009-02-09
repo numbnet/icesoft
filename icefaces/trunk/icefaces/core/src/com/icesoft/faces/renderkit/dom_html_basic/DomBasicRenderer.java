@@ -67,7 +67,8 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class DomBasicRenderer extends Renderer {
-
+    public static final String ATTRIBUTES_THAT_ARE_SET_KEY =
+        "javax.faces.component.UIComponentBase.attributesThatAreSet";
 
     // iceSubmitPartial
     public final static String ICESUBMITPARTIAL =

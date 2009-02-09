@@ -66,6 +66,17 @@ public class ImplementationUtil {
     private static boolean isJSF12 = false;
     private static boolean isJSF2 = false;
     private static boolean jsfStateSaving;
+    
+    /**
+     * Whether stock JSF components' set attributes are tracked.
+     * @see #isAttributeTracking
+     */
+    private static boolean isStockAttributeTracking = false;
+    /**
+     * Whether 3rd party components' set attributes are tracked.
+     * @see #isAttributeTracking
+     */
+    private static boolean isAnyAttributeTracking = false;
 
     /**
      * Marker classes whose presence we used to detect which implementation we
@@ -132,6 +143,58 @@ public class ImplementationUtil {
             log.trace("JSF-2: " + isJSF2);
         }
 
+        try {
+            javax.faces.component.html.HtmlOutputText comp =
+                new javax.faces.component.html.HtmlOutputText();
+            isStockAttributeTracking = isAttributeTracking(comp);
+            
+            comp = (javax.faces.component.html.HtmlOutputText) Class.forName(
+                "com.icesoft.faces.component.ext.HtmlOutputText").newInstance();
+            //TODO List seting will happen in our component constructors, not in this test
+            //comp.getAttributes().put(
+            //    "javax.faces.component.UIComponentBase.attributesThatAreSet",
+            //    new java.util.ArrayList(6));
+            isAnyAttributeTracking = isAttributeTracking(comp);
+        } catch(Throwable t) {
+        }
+    }
+
+    /**
+     * For stock JSF components, all setting of attributes, whether by setter 
+     * methods, or by puts on the the attribute map (which can delegate to 
+     * setter methods), result in List UIComponent.attributesThatAreSet, aka 
+     * UIComponentBase.getAttributes().get(
+     *     "javax.faces.component.UIComponentBase.attributesThatAreSet")
+     * containing that attribute name, as of JSF RI 1.2_05. This optimisation 
+     * is disabled for components not in javax.faces.component.* packages, 
+     * even if the component extend the stock ones. Meaning that the stock 
+     * attributes become decellerated in third party components. It's possible 
+     * to create the attributesThatAreSet List for 3rd party components, and 
+     * have it track attribute maps puts for attributes that do not have 
+     * setter methods. But setter method tracking is only enabled as of 
+     * //TODO// JSF RI 1.2_xx, so we need to ascertain that separately, for ICEfaces 
+     * extended and custom component rendering.
+     * 
+     * @param comp An arbitrary component whose attributes are known 
+     * @return If the JSF implementation tracks this component's set attributes
+     */
+    private static boolean isAttributeTracking(
+        javax.faces.component.html.HtmlOutputText comp) {
+        boolean tracked = false;
+        comp.setTitle("value");
+        comp.getAttributes().put("lang", "value");
+        comp.getAttributes().put("no_method", "value");
+        List attributesThatAreSet = (List) comp.getAttributes().get(
+            "javax.faces.component.UIComponentBase.attributesThatAreSet");
+//System.out.println(comp.getClass().getName() + " :: attributesThatAreSet: " + attributesThatAreSet);
+        if (attributesThatAreSet != null &&
+            attributesThatAreSet.contains("title") &&
+            attributesThatAreSet.contains("lang") &&
+            attributesThatAreSet.contains("no_method")) {
+//System.out.println(comp.getClass().getName() + " :: attributesThatAreSet ENABLED");
+            tracked = true;
+        }
+        return tracked;
     }
 
     /**
@@ -171,6 +234,22 @@ public class ImplementationUtil {
      */
     public static boolean isJSF2() {
         return isJSF2;
+    }
+    
+    /**
+     * @return Whether stock JSF components' set attributes are tracked.
+     * @see #isAttributeTracking
+     */
+    public static boolean isStockAttributeTracking() {
+        return isStockAttributeTracking;
+    }
+    
+    /**
+     * @return Whether 3rd party components' set attributes are tracked.
+     * @see #isAttributeTracking
+     */
+    public static boolean isAnyAttributeTracking() {
+        return isAnyAttributeTracking;
     }
 
     /**

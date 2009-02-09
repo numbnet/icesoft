@@ -42,6 +42,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import java.util.Map;
+import java.util.List;
 
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
@@ -202,11 +203,24 @@ public class LocalEffectEncoder {
         }
     }
     
-    public static void encodeLocalEffects(UIComponent comp, Element rootNode,
-                                          FacesContext facesContext, ResponseWriter writer) {
+    public static void encodeLocalEffects(
+            UIComponent comp, Element rootNode, FacesContext facesContext,
+            ResponseWriter writer, boolean attribTracking,
+            List attributesThatAreSet) {
+        if (attribTracking &&
+            (attributesThatAreSet == null ||
+             attributesThatAreSet.size() == 0)) {
+            return;
+        }
+        
         Map atts = comp.getAttributes();
         try {
             for (int i = 0; i < EVENTS.length; i++) {
+                if (attribTracking &&
+                    (attributesThatAreSet == null ||
+                     !attributesThatAreSet.contains(EFFECTS[i]))) {
+                    continue;
+                }
                 Effect fx = (Effect) atts.get(EFFECTS[i]);
                 if (fx == null) {
                     // in some cases the value binding can be null on the initial render
@@ -223,14 +237,22 @@ public class LocalEffectEncoder {
                                                                          facesContext),
                                                                  facesContext);
 
-                    String original = (String) atts.get(ATTRIBUTES[i]);
-                    if (original == null) {
-                        original = "";
+                    String original;
+                    if (attribTracking &&
+                        (attributesThatAreSet == null ||
+                         !attributesThatAreSet.contains(ATTRIBUTES[i]))) {
+                        original = null;
                     }
-                    if (rootNode != null) {
-                        rootNode.setAttribute(ATTRIBUTES[i], value + original);
-                    } else if (writer != null) {
-                        writer.writeAttribute(ATTRIBUTES[i], value + original, null);                       
+                    else {
+                        original = (String) atts.get(ATTRIBUTES[i]);
+                    }
+                    String together = DomBasicRenderer.combinedPassThru(value, original);
+                    if (together != null) {
+                        if (rootNode != null) {
+                            rootNode.setAttribute(ATTRIBUTES[i], together);
+                        } else if (writer != null) {
+                            writer.writeAttribute(ATTRIBUTES[i], together, null);              
+                        }
                     }
                 }
             }
@@ -244,12 +266,12 @@ public class LocalEffectEncoder {
     
     public static void encodeLocalEffects(UIComponent comp, Element rootNode,
             FacesContext facesContext) {
-        encodeLocalEffects(comp, rootNode, facesContext, null);
+        encodeLocalEffects(comp, rootNode, facesContext, null, false, null);
     }
     
     public static void encodeLocalEffects(UIComponent comp, ResponseWriter writer,
             FacesContext facesContext) {
-        encodeLocalEffects(comp, null, facesContext, writer);
+        encodeLocalEffects(comp, null, facesContext, writer, false, null);
     }
     
     public static void encodeLocalEffect(String id, Effect fx, String event, FacesContext facesContext){
