@@ -176,7 +176,9 @@ public class SelectInputDateRenderer
     //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTDATE);
     //handled title
     private static final String[] passThruAttributes = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
-           
+    //required for popup calendar
+    private static final String[] passThruAttributesWithoutTabindex = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR, HTML.TITLE_ATTR };                        
+
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
     */
@@ -337,6 +339,18 @@ public class SelectInputDateRenderer
                                  + getHiddenFieldName(facesContext, uiComponent) + "');"
                                  + "return false;";
                 calendarButton.setAttribute(HTML.ONCLICK_ATTR, onClick);
+                if( selectInputDate.getTabindex() != null ){
+                    try {
+                        int tabIndex = Integer.valueOf(selectInputDate.getTabindex()).intValue();
+                        tabIndex+=1;
+                        calendarButton.setAttribute(HTML.TABINDEX_ATTR, String.valueOf(tabIndex));            
+                    } catch (NumberFormatException e) {
+                        if (log.isInfoEnabled()) {
+                            log.info("NumberFormatException on tabindex");
+                        }
+                    }
+                }
+                
                 if (selectInputDate.isDisabled()) {
                     calendarButton.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
                 }
@@ -384,7 +398,7 @@ public class SelectInputDateRenderer
                     FormRenderer.addHiddenField(
                         facesContext,
                         parentForm.getClientId(facesContext)+ ":_idcl");
-                    PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+                    PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributesWithoutTabindex);
                     domContext.stepOver();
                     return ;
                 }
@@ -600,7 +614,7 @@ public class SelectInputDateRenderer
             // assumption we want the first table in tables. there should only be one
             Element table = (Element) tables.item(0);
 
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributesWithoutTabindex);
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
 
