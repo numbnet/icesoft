@@ -145,7 +145,6 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                                          File.separator + EXTRACTED_FOLDER +
                                          File.separator + presentation.getPrefix() +
                                          ourTimestamp + File.separator;
-System.out.println("zip baseDirectory " + baseDirectory);
 
                 mobileDirectory = baseDirectory + "mobile" + File.separator;
                 
