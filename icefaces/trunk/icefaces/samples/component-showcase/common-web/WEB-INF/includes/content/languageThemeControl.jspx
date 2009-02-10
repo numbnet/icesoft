@@ -39,22 +39,31 @@
 
         <ice:panelGroup style="float:left;">
             <ice:selectOneMenu id="currentStyle"
-                       styleClass="themeSelectOneMenu"
-                       value="#{styleBean.currentStyle}" valueChangeListener="#{styleBean.changeStyle}" partialSubmit="true">
+                               styleClass="themeSelectOneMenu"
+                               value="#{styleBean.currentStyle}"
+                               valueChangeListener="#{styleBean.changeStyle}"
+                               partialSubmit="true">
                 <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
                               itemValue="rime"/>
                 <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
                               itemValue="xp"/>
-                <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
+                <f:selectItem id="royaleTheme"
+                              itemLabel="#{msgs['theme.royale.title']}"
                               itemValue="royale"/>
             </ice:selectOneMenu>
         </ice:panelGroup>
 
-            <ice:panelGroup style="float:right">
-               <ice:selectOneMenu id="currentLang" styleClass="themeSelectOneMenu" valueChangeListener="#{localeBean.changeLanguage}" value="#{localeBean.currentLanguage}" partialSubmit="true">
+        <ice:panelGroup style="float:right">
+            <!--<ice:setEventPhase events="ValueChangeListener"-->
+                               <!--phase="INVOKE_APPLICATION">-->
+                <ice:selectOneMenu id="currentLang" styleClass="themeSelectOneMenu"
+                                   valueChangeListener="#{localeBean.changeLanguage}"
+                                   value="#{localeBean.currentLanguage}"
+                                   partialSubmit="true">
                     <f:selectItems value="#{localeBean.availableLocales}"/>
-               </ice:selectOneMenu>
-            </ice:panelGroup>
+                </ice:selectOneMenu>
+            <!--</ice:setEventPhase>-->
+        </ice:panelGroup>
     </ice:panelGroup>
 
 </ice:form>

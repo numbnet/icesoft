@@ -55,7 +55,7 @@
     </head>
     <body>
 
-        <jsp:directive.include file="/WEB-INF/includes/content/en/header.jspx" />
+        <jsp:directive.include file="/WEB-INF/includes/content/header.jspx" />
 
          <div class="body_container">
 
@@ -66,7 +66,7 @@
                             showPopupOnDisconnect="true" displayHourglassWhenActive="true"/>
 
                 <div class="navigationContainer">
-                    <jsp:directive.include file="/WEB-INF/includes/content/en/themeControl.jspx" />
+                    <jsp:directive.include file="/WEB-INF/includes/content/languageThemeControl.jspx" />
                     <jsp:directive.include file="/WEB-INF/includes/content/navigation.jspx" />
                 </div>
 
@@ -90,14 +90,14 @@
                          <ice:panelGroup id="splashPanel" >
                              <f:subview id="scSub" >
                                  <!-- Components Splash include -->
-                                 <jsp:directive.include file="/WEB-INF/includes/content/en/splash.jspx" />
+                                 <jsp:directive.include file="/WEB-INF/includes/content/splash.jspx" />
                              </f:subview>
                          </ice:panelGroup>
 
                          <ice:panelGroup id="themesPanel" >
                              <f:subview id="stSub">
                                  <!-- Themes Splash include -->
-                                 <jsp:directive.include file="/WEB-INF/includes/content/en/themes.jspx" />
+                                 <jsp:directive.include file="/WEB-INF/includes/content/themes.jspx" />
                              </f:subview>
                          </ice:panelGroup>
 
@@ -376,7 +376,7 @@
         </div>
 
 
-         <jsp:directive.include file="/WEB-INF/includes/content/en/footer.jspx"/>
+         <jsp:directive.include file="/WEB-INF/includes/content/footer.jspx"/>
           <!--
           PRELOAD IMAGES need for roleovers and layout in general, javascript is only
           loaded once per refresh which is good enough.  This improves overall user

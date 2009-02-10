@@ -30,31 +30,22 @@
   ~ this file under either the MPL or the LGPL License."
   ~
   -->
-<ice:form id="icefrm" xmlns:h="http://java.sun.com/jsf/html"
-          xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <ice:panelGroup
-            styleClass="themeControlContainer"
-            style="vertical-align: middle;">
-
-        <ice:panelGroup style="float:left;">
-            <ice:selectOneMenu id="currentStyle"
-                       styleClass="themeSelectOneMenu"
-                       value="#{styleBean.currentStyle}" valueChangeListener="#{styleBean.changeStyle}" partialSubmit="true">
-                <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
-                              itemValue="rime"/>
-                <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
-                              itemValue="xp"/>
-                <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
-                              itemValue="royale"/>
-            </ice:selectOneMenu>
-        </ice:panelGroup>
-
-            <ice:panelGroup style="float:right">
-               <ice:selectOneMenu id="currentLang" styleClass="themeSelectOneMenu" valueChangeListener="#{localeBean.changeLanguage}" value="#{localeBean.currentLanguage}" partialSubmit="true">
-                    <f:selectItems value="#{localeBean.availableLocales}"/>
-               </ice:selectOneMenu>
-            </ice:panelGroup>
-    </ice:panelGroup>
-
-</ice:form>
+<div xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        class="footer_container">
+    <div class="footer_content">
+        <div style="width:400px">
+            <ice:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
+            <ice:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
+            <a href="http://www.icesoft.com/" target="_blank">
+                <ice:outputText value="#{msgs['template.common.icesoft']}" nospan="true" escape="false" />
+            </a>
+        </div>
+        <div style="float:right;width:250px;">
+            <i><ice:outputText value="#{msgs['template.footer.poweredBy']}" nospan="true" escape="false" />
+            <a href="http://www.icefaces.org/" target="_blank">
+            <ice:outputText value="#{msgs['template.common.icefaces']}" nospan="true" escape="false" /></a></i>
+        </div>
+    </div>
+</div>

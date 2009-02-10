@@ -50,13 +50,16 @@
 		<ice:panelGroup style="float:left;margin-right:5px;margin-bottom:10px;font-size:larger;">
 			<ice:outputText value="#{msgs['page.outputResource.label']}" />
 		</ice:panelGroup>
+
 		<ice:panelGrid style="float:left;" columns="2">
-			<ice:outputLabel for="imgRsource"
+
+            <ice:outputLabel for="imgRsource"
 				value="Display an image resource produced from a dynamic file stream:" />
-			<ice:outputResource id="imgRsource"
+            <ice:outputResource id="imgRsource"
 				resource="#{resourceBean.imgResource}" label="Click to load image"
 				fileName="icefaces.jpg" mimeType="image/jpeg" attachment="false" />
-			<ice:outputLabel for="pdfResourceFileName"
+
+            <ice:outputLabel for="pdfResourceFileName"
 				value="Download a pdf file resource with a dynamic filename:" />
 			<ice:panelGroup>
 				<ice:inputText id="pdfResourceFileName"
@@ -66,13 +69,15 @@
 					value="Click to load pdf" fileName="#{resourceBean.fileName}.pdf" 
 					shared="false"/>
 			</ice:panelGroup>
-			<ice:outputLabel for="pdf-button"
+			
+            <ice:outputLabel for="pdf-button"
 				value="Download a pdf file resource with a button display:" />
 			<ice:outputResource id="pdf-button"
 				resource="#{resourceBean.pdfResource}" mimeType="application/pdf"
 				value="Click to load pdf"
 				fileName="Enterprise-Ajax-Security-with-ICEfaces.pdf" type="button" />
-			<ice:outputLabel for="pdf-image"
+
+            <ice:outputLabel for="pdf-image"
 				value="Download a pdf file resource with an image display:" />
 			<ice:outputResource id="pdf-image"
 				resource="#{resourceBean.pdfResource}" mimeType="application/pdf"
