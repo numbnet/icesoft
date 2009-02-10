@@ -36,6 +36,7 @@ package com.icesoft.faces.component.panelpopup;
 import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
@@ -281,6 +282,10 @@ public class PanelPopupRenderer extends GroupRenderer {
 			centreJS = "Ice.autoCentre.stop('" + clientId + "');";
 		}
 		JavascriptContext.addJavascriptCall(facesContext, centreJS);
+
+        if (panelPopup instanceof PanelTooltip) {
+            JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
+        }
 
         JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
