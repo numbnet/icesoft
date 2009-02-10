@@ -46,6 +46,7 @@ var append = operator($witch(function(condition) {
 var insert = operator($witch(function(condition) {
     condition(isArray, function(items, item) {
         items.unshift(item);
+        return items;
     });
 
     condition(any, operationNotSupported);

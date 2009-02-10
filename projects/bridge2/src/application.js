@@ -114,14 +114,14 @@ function FormPost(request) {
                 logger.info('Reloading');
                 var url = window.location.href;
                 delistWindowViews();
-                if (url.contains('rvn=')) {
+                if (containsSubstring(url, 'rvn=')) {
                     window.location.reload();
                 } else {
                     var view = element.getAttribute('view');
                     if (view == '') {
                         window.location.reload();
                     } else {
-                        var queryPrefix = url.contains('?') ? '&' : '?';
+                        var queryPrefix = containsSubstring(url, '?') ? '&' : '?';
                         window.location.href = url + queryPrefix + 'rvn=' + view;
                     }
                 }
