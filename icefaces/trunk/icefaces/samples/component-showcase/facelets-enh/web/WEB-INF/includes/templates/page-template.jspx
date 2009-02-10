@@ -34,7 +34,8 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:c="http://java.sun.com/jstl/core"
-        xmlns:ui="http://java.sun.com/jsf/facelets" locale="#{localeBean.usedLocale}" >
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        locale="#{localeBean.usedLocale}" >
 
     <ice:loadBundle
           basename="org.icefaces.application.showcase.view.resources.messages"
@@ -60,7 +61,7 @@
     <body>
 
         <ui:insert name="header">
-            <ui:include src="/WEB-INF/includes/content/#{localeBean.currentLanguage}/header.jspx" />
+            <ui:include src="/WEB-INF/includes/content/header.jspx" />
         </ui:insert>
 
 
@@ -74,7 +75,7 @@
 
                 <div class="navigationContainer">
                     <ui:insert name="navigation">
-                        <ui:include src="/WEB-INF/includes/content/#{localeBean.currentLanguage}/themeControl.jspx" />
+                        <ui:include src="/WEB-INF/includes/content/languageThemeControl.jspx" />
                         <ui:include src="/WEB-INF/includes/content/navigation.jspx" />
                     </ui:insert>
                 </div>
@@ -94,7 +95,7 @@
         </div>
 
          <ui:insert name="footer">
-            <ui:include src="/WEB-INF/includes/content/#{localeBean.currentLanguage}/footer.jspx"/>
+            <ui:include src="/WEB-INF/includes/content/footer.jspx"/>
          </ui:insert>
           <!--
           PRELOAD IMAGES need for roleovers and layout in general, javascript is only

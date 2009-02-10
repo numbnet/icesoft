@@ -46,7 +46,7 @@ import java.util.Map;
 public class NavigationBean {
 
     // selected include contents.
-    private String selectedIncludePath = "/WEB-INF/includes/content/" + FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage() + "/splash.jspx";
+    private String selectedIncludePath = "/WEB-INF/includes/content/splash.jspx";
 
     /**
      * Gets the currently selected content include path.

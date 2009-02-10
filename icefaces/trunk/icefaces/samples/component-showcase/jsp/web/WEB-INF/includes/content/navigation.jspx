@@ -244,7 +244,7 @@
                          actionListener="#{navigation.navigationStackChange}">
             <f:param name="stackName" value="dataExporterContentPanel" />
             <ice:outputText
-                    value="#{msgs['node.dataExpoter.label']}"/>
+                    value="#{msgs['node.dataExporter.label']}"/>
         </ice:commandLink>        
     </ice:panelCollapsible>
 </ice:panelCollapsible>

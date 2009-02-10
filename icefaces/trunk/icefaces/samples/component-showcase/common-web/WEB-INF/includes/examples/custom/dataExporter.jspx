@@ -51,19 +51,19 @@ with more data than can be displayed in a single page.
     <!-- Paginator layout, horizontal/vertical -->
     <ice:panelGroup styleClass="exampleBox dataScrollingContainer">
             <ice:selectOneMenu id="type" value="#{export.type}" partialSubmit="true"
-                valueChangeListener="#{export.typeChangeListener}"
-            >
+                valueChangeListener="#{export.typeChangeListener}" >
                 <f:selectItem itemLabel="Select a type" itemValue=""/>
                <!-- <f:selectItem itemLabel="MS Excel" itemValue="excel"/> -->
                 <f:selectItem itemLabel="CSV (comma separated values)" itemValue="csv"/>
             </ice:selectOneMenu>
         <br/>
        <ice:panelGroup effect="#{export.changeEffect}" style="width:180px;"> 
-            <ice:dataExporter id="exp" for="data"  label ="Click to download #{export.type} file"  
-                type="#{export.type}" clickToCreateFileText="Click to create #{export.type} file "/>  
+            <ice:dataExporter id="exp" for="data"
+                label="Click to download #{export.type} file"
+                type="#{export.type}"
+                clickToCreateFileText="Click to create #{export.type} file "/>
        </ice:panelGroup>          
  </ice:panelGroup>
-
 
     <ice:panelGroup styleClass="exampleBox dataScrollingContainer" style="clear: left;">
 
