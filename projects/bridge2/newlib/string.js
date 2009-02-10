@@ -33,7 +33,7 @@ var blank = function(s) {
 };
 
 var split = function(s, separator) {
-    return isEmpty(s) ? [] : s.split(separator);
+    return s.length == 0 ? [] : s.split(separator);
 };
 
 var replace = function(s, regex, replace) {

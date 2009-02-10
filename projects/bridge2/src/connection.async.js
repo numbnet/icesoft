@@ -76,14 +76,8 @@ var shutdown = operator();
 
         var timeout = configuration.timeout ? configuration.timeout : 60000;
 
-        var serverErrorCallback = onServerErrorListeners.broadcaster();
-        var receiveCallback = function(response) {
-            try {
-                onReceiveListeners.broadcast(response);
-            } catch (e) {
-                logger.error('receive broadcast failed', e);
-            }
-        };
+        var serverErrorCallback = broadcaster(onServerErrorListeners);
+        var receiveCallback = broadcaster(onReceiveListeners);
         var sendXWindowCookie = noop;
         var receiveXWindowCookie = function (response) {
             var xWindowCookie = getHeader(response, "X-Set-Window-Cookie");
@@ -125,21 +119,21 @@ var shutdown = operator();
         }
 
         //build up retry actions
-        var timedRetryAbort = function (retryAction, abortAction, timeouts) {
+        function timedRetryAbort(retryAction, abortAction, timeouts) {
             var index = 0;
-            var errorCallbacks = timeouts.inject([abortAction], function(callbacks, interval) {
-                callbacks.unshift(retryAction.delayFor(interval));
-                return callbacks;
+            var errorActions = inject(timeouts, [abortAction], function(actions, interval) {
+                return insert(actions, retryAction.delayFor(interval));
             });
             return function() {
-                if (index < errorCallbacks.length) {
-                    errorCallbacks[index].apply(this, arguments);
+                if (index < errorActions.length) {
+                    errorActions[index].apply(this, arguments);
                     index++;
                 }
             };
-        };
+        }
+        ;
 
-        var connect = function() {
+        function connect() {
             logger.debug("closing previous connection...");
             close(listener);
             logger.debug("connect...");
@@ -147,20 +141,21 @@ var shutdown = operator();
                 each(window.sessions, curry(addNameValue, q, 'ice.session'));
             }, function(request) {
                 FormPost(request);
-                //sendXWindowCookie(request);
+                sendXWindowCookie(request);
             }, $witch(function (condition) {
                 condition(OK, function(response) {
                     if (notEmpty(contentAsText(response))) {
                         receiveCallback(response);
                     }
-                    //receiveXWindowCookie(response);
+                    receiveXWindowCookie(response);
                     if (getHeader(response, 'X-Connection') != 'close') {
                         connect();
                     }
                 });
                 condition(ServerInternalError, retryOnServerError);
             }));
-        };
+        }
+        ;
 
         //build callbacks only after this.connection function was defined
         var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
@@ -171,7 +166,7 @@ var shutdown = operator();
         var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 50000;
         var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
         var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
-        var initializeConnection = function() {
+        function initializeConnection() {
             //stop the previous heartbeat instance
             heartbeat.stop();
             heartbeat = new Heartbeat(heartbeatInterval, heartbeatTimeout, logger);
@@ -194,7 +189,7 @@ var shutdown = operator();
 
             heartbeat.start();
             connect();
-        };
+        }
 
         //monitor if the blocking connection needs to be started
         var pollingPeriod = 1000;
@@ -246,7 +241,7 @@ var shutdown = operator();
             }
         }.repeatExecutionEvery(pollingPeriod);
 
-        var pickUpdates = function() {
+        function pickUpdates() {
             postAsynchronously(sendChannel, getURI, function(q) {
                 addQuery(q, defaultQuery);
             }, FormPost, $witch(function(condition) {
@@ -254,7 +249,7 @@ var shutdown = operator();
                     if (notEmpty(contentAsText(response))) receiveCallback(response);
                 });
             }));
-        };
+        }
 
         //pick any updates that might be generated in between bridge re-initialization
         //todo: replace heuristic with more exact solution
@@ -285,7 +280,8 @@ var shutdown = operator();
                     addQuery(q, query);
                     addQuery(q, defaultQuery);
                     addNameValue(q, 'ice.focus', window.currentFocus);
-                    logger.debug(asURIEncodedString(q));
+
+                    logger.debug('\n' + asString(q));
                 }, FormPost, $witch(function(condition) {
                     condition(OK, function(response, request) {
                         timeoutBomb.cancel();
@@ -298,28 +294,29 @@ var shutdown = operator();
             });
 
             method(onSend, function(self, sendCallback, receiveCallback) {
-                onSendListeners.push(sendCallback);
-                if (receiveCallback) onReceiveFromSendListeners.push(receiveCallback);
+                append(onSendListeners, sendCallback);
+                if (receiveCallback)
+                    append(onReceiveFromSendListeners, receiveCallback);
             });
 
             method(onReceive, function(self, callback) {
-                onReceiveListeners.push(callback);
+                append(onReceiveListeners, callback);
             });
 
             method(onReceive, function(self, callback) {
-                onReceiveListeners.push(callback);
+                append(onReceiveListeners, callback);
             });
 
             method(onServerError, function(self, callback) {
-                onServerErrorListeners.push(callback);
+                append(onServerErrorListeners, callback);
             });
 
             method(whenDown, function(self, callback) {
-                connectionDownListeners.push(callback);
+                append(connectionDownListeners, callback);
             });
 
             method(whenTrouble, function(self, callback) {
-                connectionTroubleListeners.push(callback);
+                append(connectionTroubleListeners, callback);
             });
 
             method(shutdown, function(self) {
