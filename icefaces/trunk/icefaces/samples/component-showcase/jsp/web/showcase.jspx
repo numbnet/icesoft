@@ -237,7 +237,7 @@
                          <ice:panelGroup id="dataExporterContentPanel" >
                              <f:subview id="dtExSub">
                                  <!-- DataExporter include -->
-                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataExporter.jspx" />
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-dataExporter.jspx" />
                              </f:subview>
                          </ice:panelGroup>                         
 

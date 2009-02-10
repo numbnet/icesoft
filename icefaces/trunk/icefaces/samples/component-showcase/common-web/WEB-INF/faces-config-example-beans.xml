@@ -424,11 +424,23 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <!-- data exporter -->
     <managed-bean>
-        <managed-bean-name>export</managed-bean-name>
+        <managed-bean-name>dataExporter</managed-bean-name>
         <managed-bean-class>
-            org.icefaces.application.showcase.view.bean.examples.common.dataexporter.DataExporter
+            org.icefaces.application.showcase.view.bean.examples.component.dataExporter.DataExporter
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>   
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>dataExportData</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>employeeService</property-name>
+            <value>#{employeeServiceImpl}</value>
+        </managed-property>
+    </managed-bean>
 </faces-config>

@@ -130,34 +130,39 @@
                   label="node.dataTableParent.label" expanded="false"
                   leaf="false" link="false"
                   contentRef="splashPageDesc">
-                <node id="dataScrollingNode"
-                      label="node.dataScrolling.label"
-                      leaf="true" link="true"
-                      contentRef="dataScrollingContentDesc"/>
-                <node id="commandSortHeaderNode"
-                      label="node.commandSortHeader.label"
-                      leaf="true" link="true"
-                      contentRef="commandSortHeaderContentDesc"/>
-                <node id="rowSelectorNode"
-                      label="node.rowSelector.label"
-                      leaf="true" link="true"
-                      contentRef="rowSelectorContentDesc"/>
-                <node id="expandableDataTableNode"
-                      label="node.expandableDataTable.label"
-                      leaf="true" link="true"
-                      contentRef="expandableDataTableContentDesc"/>
                 <node id="columnsNode"
                       label="node.columns.label"
                       leaf="true" link="true"
                       contentRef="columnsContentDesc"/>
+                <node id="dataExporterNode"
+                      label="node.dataExporter.label"
+                      leaf="true" link="true"
+                      contentRef="dataExportContentDesc"/>
+                <node id="dataScrollingNode"
+                      label="node.dataScrolling.label"
+                      leaf="true" link="true"
+                      contentRef="dataScrollingContentDesc"/>
+                <node id="expandableDataTableNode"
+                      label="node.expandableDataTable.label"
+                      leaf="true" link="true"
+                      contentRef="expandableDataTableContentDesc"/>
                 <node id="groupingNode"
                       label="node.grouping.label"
                       leaf="true" link="true"
                       contentRef="groupingContentDesc"/>
+                <node id="rowSelectorNode"
+                      label="node.rowSelector.label"
+                      leaf="true" link="true"
+                      contentRef="rowSelectorContentDesc"/>
                 <node id="resizableNode"
                       label="node.resizable.label"
                       leaf="true" link="true"
                       contentRef="resizableContentDesc"/>
+                <node id="commandSortHeaderNode"
+                      label="node.commandSortHeader.label"
+                      leaf="true" link="true"
+                      contentRef="commandSortHeaderContentDesc"/>
+                
             </node>
         </node>
         <node id="layoutPanelsNode"
@@ -1570,6 +1575,49 @@
             </documentation>
         </content-descriptor>
         <content-descriptor
+                id="dataExportContentDesc" title="node.dataExporter.title"
+                templateRef="tabbedContainer" >
+            <example>
+                <resource-reference
+                        resourceRef="dataExportExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                 <jspx-pages>
+                    <resource-reference
+                            label="dataTable-dataExporter.jspx"
+                            resourceRef="dataExportExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="DataExporter.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.dataExporter.DataExporter"/>
+                    <resource-reference
+                            label="DataTableBase.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="Data Table"
+                            resourceRef="dataTableDoc"/>
+                </documents>
+                <tlds>
+                    <resource-reference
+                            label="dataExport"
+                            resourceRef="dataExportTld"/>
+                    <resource-reference
+                            label="dataTable"
+                            resourceRef="dataTableTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Data Table"
+                            resourceRef="dataTableTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
+        <content-descriptor
                 id="groupingContentDesc" title="node.grouping.title"
                 templateRef="tabbedContainer">
             <example>
@@ -1803,6 +1851,8 @@
                       path="/WEB-INF/includes/examples/custom/dataTable-expandable.jspx"/>
             <resource id="columnsExplResc"
                       path="/WEB-INF/includes/examples/custom/dataTable-columns.jspx"/>
+            <resource id="dataExportExplResc"
+                      path="/WEB-INF/includes/examples/custom/dataTable-dataExporter.jspx"/>
             <resource id="groupingExplResc"
                       path="/WEB-INF/includes/examples/custom/dataTable-grouping.jspx"/>
             <resource id="resizableExplResc"
@@ -1940,6 +1990,9 @@
             <!-- DataTable columns -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.columns.ColumnsBean"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/columns/ColumnsBean.java"/>
+            <!-- DataTable data export -->
+            <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataExporter.DataExporter"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataExporter/DataExporter.java"/>
             <!-- DataTable columns -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.columnGroup.GroupingModel"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/columnGroup/GroupingModel.java"/>
@@ -2168,6 +2221,9 @@
             <resource id="columnsTld"
                       pathType="include"
                       path="/docs/tld/ice/columns.html"/>
+            <resource id="dataExportTld"
+                      pathType="include"
+                      path="/docs/tld/ice/dataExporter.html"/>
             <resource id="commandButtonTld"
                       pathType="include"
                       path="/docs/tld/ice/commandButton.html"/>
