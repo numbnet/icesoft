@@ -169,6 +169,7 @@
                 <file name="window.js"/>
                 <file name="http.js"/>
                 <file name="cookie.js"/>
+                <file name="delay.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib">
                 <file name="namespace.js"/>
