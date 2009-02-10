@@ -141,10 +141,11 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                 long ourTimestamp = System.currentTimeMillis();
 
                 // Setup the base directory
-                baseDirectory = externalConverterFile.getParentFile() +
+                baseDirectory = externalConverterFile.getParentFile().getCanonicalPath() +
                                          File.separator + EXTRACTED_FOLDER +
                                          File.separator + presentation.getPrefix() +
                                          ourTimestamp + File.separator;
+System.out.println("zip baseDirectory " + baseDirectory);
 
                 mobileDirectory = baseDirectory + "mobile" + File.separator;
                 

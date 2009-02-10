@@ -143,7 +143,7 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
 
                 fileCreator(fullPath,baseDirectory);
 
-                File dest = new File(externalConverterFile.getParentFile() + 
+                File dest = new File(externalConverterFile.getParentFile().getCanonicalPath() + 
                         File.separator + hashString);
                 dest.deleteOnExit();
                 directoryStructure.renameTo(dest);
