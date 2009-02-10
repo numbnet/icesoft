@@ -54,7 +54,7 @@ public class DataExporter extends OutputResource {
     
 	public UIData getUIData() {
 		String forStr = getFor();
-		UIData forComp = (UIData)D2DViewHandler.findComponent(forStr, DomBasicRenderer.findForm(this));
+		UIData forComp = (UIData)D2DViewHandler.findComponent(forStr, this);
 
 		if (forComp == null) {
 			throw new IllegalArgumentException(
