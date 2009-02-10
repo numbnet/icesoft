@@ -14,6 +14,7 @@
 <!ENTITY ice-HtmlDataTable-renderer SYSTEM "ice/renderers/HtmlDataTable-renderer.xml">
 <!ENTITY ice-HtmlForm-renderer SYSTEM "ice/renderers/HtmlForm-renderer.xml">
 <!ENTITY ice-HtmlGraphicImage-renderer SYSTEM "ice/renderers/HtmlGraphicImage-renderer.xml">
+<!ENTITY ice-HtmlInputHidden-renderer SYSTEM "ice/renderers/HtmlInputHidden-renderer.xml">
 <!ENTITY ice-HtmlInputSecret-renderer SYSTEM "ice/renderers/HtmlInputSecret-renderer.xml">
 <!ENTITY ice-HtmlInputText-renderer SYSTEM "ice/renderers/HtmlInputText-renderer.xml">
 <!ENTITY ice-HtmlInputTextarea-renderer SYSTEM "ice/renderers/HtmlInputTextarea-renderer.xml">
@@ -239,7 +240,8 @@
             &ice-HtmlDataTable-renderer;
             &ice-HtmlForm-renderer;
             &ice-HtmlGraphicImage-renderer;
-            &ice-HtmlInputSecret-renderer;
+            &ice-HtmlInputHidden-renderer;
+	    &ice-HtmlInputSecret-renderer;
             &ice-HtmlInputText-renderer;
             &ice-HtmlInputTextarea-renderer;
             &ice-HtmlMessage-renderer;
