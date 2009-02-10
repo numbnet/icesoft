@@ -15,7 +15,7 @@
 ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
 ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
 ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
-~
+~                                                                     sorry
 ~ Contributor(s): _____________________.
 ~
 ~ Alternatively, the contents of this file may be used under the terms of
@@ -50,26 +50,26 @@ with more data than can be displayed in a single page.
 
     <!-- Paginator layout, horizontal/vertical -->
     <ice:panelGroup styleClass="exampleBox dataScrollingContainer">
-            <ice:selectOneMenu id="type" value="#{export.type}" partialSubmit="true"
-                valueChangeListener="#{export.typeChangeListener}" >
-                <f:selectItem itemLabel="Select a type" itemValue=""/>
-               <!-- <f:selectItem itemLabel="MS Excel" itemValue="excel"/> -->
-                <f:selectItem itemLabel="CSV (comma separated values)" itemValue="csv"/>
-            </ice:selectOneMenu>
+        <ice:selectOneMenu id="type" value="#{dataExporter.type}" partialSubmit="true"
+            valueChangeListener="#{dataExporter.typeChangeListener}" >
+            <f:selectItem itemLabel="Select a type" itemValue=""/>
+            <f:selectItem itemLabel="MS Excel" itemValue="excel"/>
+            <f:selectItem itemLabel="CSV (comma separated values)" itemValue="csv"/>
+        </ice:selectOneMenu>
         <br/>
-       <ice:panelGroup effect="#{export.changeEffect}" style="width:180px;"> 
-            <ice:dataExporter id="exp" for="data"
-                label="Click to download #{export.type} file"
-                type="#{export.type}"
-                clickToCreateFileText="Click to create #{export.type} file "/>
-       </ice:panelGroup>          
+       <ice:panelGroup effect="#{dataExporter.changeEffect}" style="width:180px;">
+            <ice:dataExporter for="dataExportTable"
+                label="Click to download #{dataExporter.type} file"
+                type="#{dataExporter.type}"
+                clickToCreateFileText="Click to create #{dataExporter.type} file "/>
+       </ice:panelGroup>
  </ice:panelGroup>
 
     <ice:panelGroup styleClass="exampleBox dataScrollingContainer" style="clear: left;">
 
-        <ice:dataTable id="data"
+        <ice:dataTable id="dataExportTable"
                var="employee"
-               value="#{dataScrollingModel.employees}"
+               value="#{dataExportData.employees}"
                rows="10"
                styleClass="dataPaginatorDataTable"
                cellpadding="0">
