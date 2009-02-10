@@ -36,6 +36,10 @@ Ice.Calendar.CloseListener = Class.create({
                 return;
             }
                 
+            var id = event.element().id;
+            if (id) setFocus(id);
+            else setFocus('');
+            
             this.submit(event);
             this.dispose();
         }

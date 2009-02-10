@@ -1572,10 +1572,6 @@ public class SelectInputDateRenderer
             dateSelect.setMinutesSubmittedValue(null);
             component.queueEvent(new ActionEvent(component));
         }
-        String clientId =  dateSelect.getClientId(facesContext);
-        facesContext.getExternalContext().getRequestMap().put("icesoft_javascript_focus_app", clientId + SelectInputDate.CALENDAR_INPUTTEXT);
-        JavascriptContext.addJavascriptCall(facesContext, "logger.info('SETTTING FOCUS');$('" + 
-                clientId + SelectInputDate.CALENDAR_INPUTTEXT + "').focus();");
         // not a nav event
         dateSelect.setNavEvent(false);
     }
@@ -1605,12 +1601,6 @@ public class SelectInputDateRenderer
             log.debug("#################################");
         }
         String clientId = component.getClientId(facesContext); 
-        String inputDateTextId = clientId + SelectInputDate.CALENDAR_INPUTTEXT;
-        if (requestParameterMap.containsKey(inputDateTextId)) {
-            String inputDateButtonId = component.getClientId(facesContext) +
-                CALENDAR_BUTTON;
-            ((BridgeFacesContext)facesContext).setFocusId(inputDateButtonId);
-        }
         CustomComponentUtils.decodeUIInput(facesContext, component, clientId+CALENDAR_CLICK);
         // not a navigation event
         dateSelect.setNavEvent(false);
