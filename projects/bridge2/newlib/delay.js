@@ -17,10 +17,12 @@ function Delay(f, milliseconds) {
             } : f;
 
             id = setInterval(call, milliseconds);
+
+            return self;
         });
 
         method(runOnce, function(self) {
-            run(self, 1);
+            return run(self, 1);
         });
 
         method(stop, function(self) {

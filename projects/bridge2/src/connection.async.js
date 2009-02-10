@@ -43,7 +43,7 @@ var shutdown = operator();
     This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
         var logger = logger.child('async-connection');
         var sendChannel = Client(true);
-        var receiveChannel = Client(true);
+        var receiveChannel = Client(false);
         var defaultQuery = Query();
         addNameValue(defaultQuery, 'ice.view', viewID);
         addNameValue(defaultQuery, 'ice.session', sessionID);
@@ -61,7 +61,9 @@ var shutdown = operator();
         var listening = object(function(method) {
             method(remove, noop);
         });
-        var timeoutBomb = { cancel: Function.NOOP };
+        var timeoutBomb = object(function(method) {
+            method(stop, noop);
+        });
         var heartbeat = { stop: Function.NOOP };
 
         var pingURI = configuration.context.current + 'block/ping';
@@ -131,7 +133,6 @@ var shutdown = operator();
                 }
             };
         }
-        ;
 
         function connect() {
             logger.debug("closing previous connection...");
@@ -155,7 +156,6 @@ var shutdown = operator();
                 condition(ServerInternalError, retryOnServerError);
             }));
         }
-        ;
 
         //build callbacks only after this.connection function was defined
         var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
@@ -221,7 +221,7 @@ var shutdown = operator();
         function hasOwner() {
             return endsWith(value(connectionCookie), ':acquired');
         }
-        var blockingConnectionMonitor = function() {
+        var blockingConnectionMonitor = run(Delay(function() {
             if (shouldEstablishBlockingConnection()) {
                 offerCandidature();
                 logger.info('blocking connection not initialized...candidate for its creation');
@@ -239,7 +239,7 @@ var shutdown = operator();
                     logger.info('blocking connection lease expired...candidate for its creation');
                 }
             }
-        }.repeatExecutionEvery(pollingPeriod);
+        }, pollingPeriod));
 
         function pickUpdates() {
             postAsynchronously(sendChannel, getURI, function(q) {
@@ -253,10 +253,10 @@ var shutdown = operator();
 
         //pick any updates that might be generated in between bridge re-initialization
         //todo: replace heuristic with more exact solution
-        pickUpdates.delayExecutionFor(pollingPeriod);
+        runOnce(Delay(pickUpdates, pollingPeriod));
 
         //monitor & pick updates for this view
-        var updatesMonitor = function() {
+        var updatesMonitor = run(Delay(function() {
             try {
                 var views = split(value(updatedViews), ' ');
                 if (contains(views, fullViewID)) {
@@ -266,14 +266,14 @@ var shutdown = operator();
             } catch (e) {
                 logger.warn('failed to listen for updates', e);
             }
-        }.repeatExecutionEvery(300);
+        }, 300));
 
         logger.info('asynchronous mode');
 
         return object(function(method) {
             method(send, function(self, query) {
-                timeoutBomb.cancel();
-                timeoutBomb = connectionDownListeners.broadcaster().delayExecutionFor(timeout);
+                stop(timeoutBomb);
+                timeoutBomb = runOnce(Delay(broadcaster(connectionDownListeners), timeout));
                 broadcast(onSendListeners);
                 logger.debug('send > ' + sendURI);
                 postAsynchronously(sendChannel, sendURI, function(q) {
@@ -284,7 +284,7 @@ var shutdown = operator();
                     logger.debug('\n' + asString(q));
                 }, FormPost, $witch(function(condition) {
                     condition(OK, function(response, request) {
-                        timeoutBomb.cancel();
+                        stop(timeoutBomb);
                         receiveCallback(response);
                         broadcast(onReceiveFromSendListeners, arguments);
                     });
@@ -332,9 +332,7 @@ var shutdown = operator();
                 } finally {
                     each([onSendListeners, onReceiveListeners, connectionDownListeners, onServerErrorListeners, onReceiveFromSendListeners], empty);
                     abort(listener);
-                    [ updatesMonitor, blockingConnectionMonitor ].eachWithGuard(function(monitor) {
-                        monitor.cancel();
-                    });
+                    each([ updatesMonitor, blockingConnectionMonitor ], stop);
                     remove(listening);
                 }
             });
