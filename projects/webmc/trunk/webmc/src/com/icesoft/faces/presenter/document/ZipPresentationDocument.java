@@ -191,7 +191,9 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                 // After loading new slides, trigger preload of slides in the clients.
                 presentation.preload();
                 // Delete the uploaded file here once we are done extraction.
-                externalConverterFile.delete();
+                if (deleteOnExit())  {
+                    externalConverterFile.delete();
+                }
 
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +

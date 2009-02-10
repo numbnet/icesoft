@@ -96,6 +96,26 @@ public class CommonPresentationDocument {
         presentation.getModerator().updateStatus(message);
     }
     
+    private boolean isDeleteOnExit;
+
+    /**
+     * Method to get the deletion status of this document
+     *
+     * @return whether to delete the presentation on exit
+     */
+    public boolean deleteOnExit()  {
+        return isDeleteOnExit;
+    }
+
+    /**
+     * Method to get the deletion status of this document
+     *
+     * @param flag true to delete the presentation once converted
+     */
+    public void setDeleteOnExit(boolean flag)  {
+        isDeleteOnExit = flag;
+    }
+
     /**
      * Internal class used to compare two slides and check for differences
      */
