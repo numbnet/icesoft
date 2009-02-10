@@ -539,7 +539,9 @@ public class Presentation extends PresentationInfo {
     	
     	parentFile = toLoad;
         // delete the file when the app server shuts down.
-        parentFile.deleteOnExit();
+        if (!isDefault)  {
+            parentFile.deleteOnExit();
+        }
 
         log.info("Loading slideshow \'" + parentFile.getName() + "\' for " + name);
 
@@ -549,6 +551,8 @@ public class Presentation extends PresentationInfo {
 
         // Get a new document from the factory, based on the input file
         document = DocumentFactory.createDocument(parentFile, this);
+        //do not delete the built-in presentations
+        document.setDeleteOnExit(!isDefault);
         document.load(parentFile);
 
         // If the presentation format is unknown / invalid, clear the document

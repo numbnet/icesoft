@@ -86,6 +86,20 @@ public interface PresentationDocument {
     public int getNumberOfSlides();
 
     /**
+     * Method to get the deletion status of this document
+     *
+     * @return whether to delete the presentation on exit
+     */
+    public boolean deleteOnExit();
+
+    /**
+     * Method to get the deletion status of this document
+     *
+     * @param flag true to delete the presentation once converted
+     */
+    public void setDeleteOnExit(boolean flag);
+
+    /**
      * Dispose of the existing document and any slides created during the
      * conversion
      */
