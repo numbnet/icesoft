@@ -64,7 +64,9 @@ var shutdown = operator();
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });
-        var heartbeat = { stop: Function.NOOP };
+        var heartbeat = object(function(method) {
+            method(stopBeat, noop);
+        });
 
         var pingURI = configuration.context.current + 'block/ping';
         var getURI = configuration.context.current + 'block/receive-updates';
@@ -168,26 +170,30 @@ var shutdown = operator();
         var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
         function initializeConnection() {
             //stop the previous heartbeat instance
-            heartbeat.stop();
-            heartbeat = new Heartbeat(heartbeatInterval, heartbeatTimeout, logger);
-            heartbeat.onPing(function(ping) {
+            stopBeat(heartbeat);
+            heartbeat = Heartbeat(heartbeatInterval, heartbeatTimeout, logger);
+            onPing(heartbeat, function(pong) {
                 //re-register a pong command on every ping
-                register(commandDispatcher, 'pong', function() {
-                    ping.pong();
-                });
+                register(commandDispatcher, 'pong', pong);
                 postAsynchronously(sendChannel, pingURI, function(q) {
                     addQuery(q, defaultQuery);
                 }, FormPost, noop);
             });
 
-            heartbeat.onLostPongs(connectionDownListeners.broadcaster(), heartbeatRetries);
-            heartbeat.onLostPongs(connectionTroubleListeners.broadcaster());
-            heartbeat.onLostPongs(function() {
-                logger.debug('retry to connect...');
-                connect();
+            onLostPongs(heartbeat, broadcaster(connectionDownListeners), heartbeatRetries);
+            onLostPongs(heartbeat, broadcaster(connectionTroubleListeners));
+            onLostPongs(heartbeat, connect);
+
+            startBeat(heartbeat);
+            //wire up keyboard shortcut to toggle heartbeat 
+            var heartbeatStarted = true;
+            onKeyPress(window, function(e) {
+                if (e.keyCode() == 46 && e.isCtrlPressed() && e.isShiftPressed()) {
+                    heartbeatStarted ? stopBeat(heartbeat) : startBeat(heartbeat);
+                    heartbeatStarted = !heartbeatStarted;
+                }
             });
 
-            heartbeat.start();
             connect();
         }
 
@@ -326,7 +332,7 @@ var shutdown = operator();
                     //avoid sending XMLHTTP requests that might create new sessions on the server
                     method(send, noop);
                     connect = noop;
-                    heartbeat.stop();
+                    stopBeat(heartbeat);
                 } catch (e) {
                     //ignore, we really need to shutdown
                 } finally {

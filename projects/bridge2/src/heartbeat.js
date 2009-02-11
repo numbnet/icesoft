@@ -30,110 +30,77 @@
  * this file under either the MPL or the LGPL License."
  *
  */
+var startBeat = operator();
+var stopBeat = operator();
+var onPing = operator();
+var onLostPongs = operator();
 
 [ Ice.Reliability = new Object ].as(function(This) {
-    This.Heartbeat = Object.subclass({
-        initialize: function(period, timeout, logger) {
-            this.period = period;
-            this.logger = logger.child('heartbeat');
-            this.pingListeners = [];
-            this.lostPongListeners = [];
-
-            this.beat = function() {
-                var timeoutBomb = function() {
-                    this.logger.warn('pong lost');
-                    this.lostPongListeners.each(function(listener) {
-                        listener.notify();
-                    });
-                }.bind(this).delayExecutionFor(timeout);
-
-                this.pingListeners.broadcast(new This.Ping(timeoutBomb, this, this.logger));
-            }.bind(this);
-
-
-            window.onKeyPress(function(e) {
-                if (e.keyCode() == 46 && e.isCtrlPressed() && e.isShiftPressed()) {
-                    this.beatPID ? this.stop() : this.start();
+    var notify = operator();
+    var reset = operator();
+    This.CoalescingListener = function(retries, callback) {
+        var count = 0;
+        return object(function(method) {
+            method(notify, function(self) {
+                if (++count == retries) {
+                    try {
+                        callback();
+                    } finally {
+                        reset(self);
+                    }
                 }
-            }.bind(this));
-        },
-
-        start: function() {
-            this.beatPID = this.beat.repeatExecutionEvery(this.period);
-            this.logger.info('heartbeat started');
-            return this;
-        },
-
-        stop: function() {
-            try {
-                this.beatPID.cancel();
-                this.beatPID = null;
-                this.pingListeners.clear();
-                this.lostPongListeners.each(function(listener) {
-                    listener.ignoreNotifications();
-                });
-                this.logger.info('heartbeat stopped');
-            } catch (e) {
-                this.logger.warn('heartbeat not started', e);
-            }
-            return this;
-        },
-
-        reset: function() {
-            this.lostPongListeners.each(function(listener) {
-                listener.reset();
             });
-        },
 
-        onPing: function(callback) {
-            this.pingListeners.push(callback);
-        },
+            method(reset, function(self) {
+                count = 0;
+            });
+        });
+    };
 
-        onLostPongs: function(callback, lostPongs) {
-            var retries = lostPongs || 1;
-            this.lostPongListeners.push(new This.CoalescingListener(retries, callback));
-        }
-    });
+    This.Heartbeat = function(period, timeout, logger) {
+        var logger = logger.child('heartbeat');
+        var pingListeners = [];
+        var lostPongListeners = [];
 
-    This.Ping = Object.subclass({
-        initialize: function(pid, heartbeat, logger) {
-            this.pid = pid;
-            this.heartbeat = heartbeat;
-            this.logger = logger;
-            this.logger.info('ping');
-        },
+        var beat = Delay(function() {
+            var timeoutBomb = runOnce(Delay(function() {
+                logger.warn('pong lost');
+                each(lostPongListeners, notify);
+            }, timeout));
 
-        pong: function() {
-            if (this.pid) {
-                this.heartbeat.reset();
-                this.pid.cancel();
-                this.pong = Function.NOOP;
-                this.logger.info('pong');
-            }
-        }
-    });
+            logger.info('ping');
+            broadcast(pingListeners, [function() {
+                logger.info('pong');
+                each(lostPongListeners, reset);
+                stop(timeoutBomb);
+            }]);
+        }, period);
 
-    This.CoalescingListener = Object.subclass({
-        initialize: function(retries, callback) {
-            this.count = 0;
-            this.retries = retries;
-            this.callback = callback;
-        },
+        return object(function(method) {
+            method(startBeat, function(self) {
+                run(beat);
+                logger.info('heartbeat started');
 
-        notify: function() {
-            this.count += 1;
-            if (this.count == this.retries) {
-                this.callback();
-                this.reset();
-            }
-        },
+                return self;
+            });
 
-        ignoreNotifications: function() {
-            this.notify = Function.NOOP;
-        },
+            method(stopBeat, function(self) {
+                stop(beat);
 
-        reset: function() {
-            this.count = 0;
-        }
-    });
+                empty(pingListeners);
+                empty(lostPongListeners);
+                logger.info('heartbeat stopped');
+
+                return self;
+            });
+
+            method(onPing, function(self, callback) {
+                append(pingListeners, callback);
+            });
+
+            method(onLostPongs, function(self, callback, lostPongsCount) {
+                append(lostPongListeners, This.CoalescingListener(lostPongsCount || 1, callback));
+            });
+        });
+    };
 });
