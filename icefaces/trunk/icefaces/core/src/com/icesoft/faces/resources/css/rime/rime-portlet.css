@@ -2562,13 +2562,13 @@ Disabled classes for the calendar controls
     border: none;
 }
 
-.icePnlClpsblHdr {
+.icePnlClpsblHdr, .icePnlClpsblHdr-dis {
     font: 11px tahoma;
     color: #484848;
     padding: 6px 0 0 8px;
     font-weight: bold;
     height: 20px;
-    background: #FFF url(css-images/PnlHdr_bgslice.gif) repeat-x top left;
+    background: #FFF url( './css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
     border-bottom: 1px solid #d9d9d9;
 }
 
@@ -2580,7 +2580,7 @@ Disabled classes for the calendar controls
 	font-weight: bold;
 }
 
-.icePnlClpsblCnt {
+.icePnlClpsblCnt, .icePnlClpsblCnt-dis {
     font: 11px / 17px tahoma;
     color: #494949;
     background: #f5f5f5;
@@ -2622,7 +2622,6 @@ Disabled classes for the calendar controls
     padding: 0 0 0 10px;
 }
 
-
 .icePnlClpsblColpsd {
     border: 1px solid #d9d9d9;
 }
@@ -2631,27 +2630,31 @@ Disabled classes for the calendar controls
     border: none;
 }
 
-.icePnlClpsblColpsdHdr {
+.icePnlClpsblColpsdHdr, .icePnlClpsblColpsdHdr-dis {
     font: 11px tahoma;
     color: #484848;
     padding: 6px 0 0 8px;
     font-weight: bold;
     height: 20px;
-    background: #FFF url(css-images/PnlHdr_bgslice.gif) repeat-x top left;
+    background: #FFF url( './css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
     border-bottom: none;
 }
 
-.icePnlClpsblColpsdHdr .iceOutTxt,
-    .icePnlClpsblHdr .iceOutTxt {
+.icePnlClpsblColpsdHdr .iceOutTxt, .icePnlClpsblHdr .iceOutTxt, 
+.icePnlClpsblColpsdHdr-dis .iceOutTxt, .icePnlClpsblHdr-dis .iceOutTxt {
     padding-left: 22px;
 }
 
-.icePnlClpsblColpsdCnt {
+.icePnlClpsblColpsdCnt, .icePnlClpsblColpsdCnt-dis {
     border: none;
 }
 
-.icePnlClpsblHdr, .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr, .icePnlClpsblColpsdHdr-dis {
+.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
     cursor: pointer;
+}
+
+.icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
+    cursor: default;
 }
 
 .icePnlClpsblHdr div, .icePnlClpsblHdr-dis div, .icePnlClpsblColpsdHdr div, .icePnlClpsblColpsdHdr-dis div {
@@ -2661,15 +2664,21 @@ Disabled classes for the calendar controls
 }
 
 .icePnlClpsblHdr div, .icePnlClpsblHdr-dis div {
-    background: url(css-images/PnlHdr_down.gif) no-repeat top left;
+    background: url( './css-images/PnlHdr_down.gif' ) no-repeat top left;
     padding: 2px 0 0 5px;
     margin: -2px 0 0 -3px;
 }
 
 .icePnlClpsblColpsdHdr div, .icePnlClpsblColpsdHdr-dis div {
-    background: url(css-images/PnlHdr_collapsed.gif) no-repeat top left;
+    background: url( './css-images/PnlHdr_collapsed.gif' ) no-repeat top left;
     padding: 2px 0 0 5px;
     margin: -2px 0 0 -3px;
+}
+
+.icePnlClpsbl-dis, .icePnlClpsblHdr-dis, .icePnlClpsblCnt-dis,
+.icePnlClpsblColpsd-dis, .icePnlClpsblColpsdHdr-dis, .icePnlClpsblColpsdCnt-dis{
+    filter: alpha(opacity=40);
+    opacity: 0.4;
 }
 
 /*
