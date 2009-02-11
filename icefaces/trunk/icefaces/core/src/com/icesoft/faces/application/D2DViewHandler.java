@@ -333,45 +333,11 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public String getResourceURL(FacesContext context, String path) {
-        //Context and resource must be non-null
-        if (context == null) {
-            throw new IllegalArgumentException("context cannot be null");
-        }
-
-        if (path == null) {
-            throw new IllegalArgumentException("path cannot be null");
-        }
-
-        ExternalContext externalContext = context.getExternalContext();
-        //The URI class doesn't like resource with illegal characters so
-        //we need to do our own encoding.
-        String resourcePath = path.trim().replaceAll(" ", "%20");
-        // Components that render out links to resources like images, CSS,
-        // JavaScript, etc. must do it correctly.
-        String contextPath = externalContext.getRequestContextPath();
-
-        if (resourcePath.startsWith("/")) {
-            //absolute references are handled differently, we just
-            //need to stick the context in front.
-            return contextPath + resourcePath;
+        ExternalContext extContext = context.getExternalContext();
+        if (path.startsWith("/")) {
+            return (extContext.getRequestContextPath() + path);
         } else {
-            //for relative paths, we need to resolve them to the full path
-            String servletPath = externalContext.getRequestServletPath();
-            String base = contextPath + servletPath;
-            try {
-                URI baseURI = new URI(base);
-                URI resourceURI = new URI(resourcePath);
-                URI resolvedURI = baseURI.resolve(resourceURI);
-                return resolvedURI.toString();
-            } catch (URISyntaxException e) {
-                if (log.isWarnEnabled()) {
-                    log.warn("could not resolve URI's based on" +
-                            "\n  context : " + contextPath +
-                            "\n  path    : " + servletPath +
-                            "\n  resource: " + resourcePath, e);
-                }
-                return resourcePath;
-            }
+            return path;
         }
     }
 
