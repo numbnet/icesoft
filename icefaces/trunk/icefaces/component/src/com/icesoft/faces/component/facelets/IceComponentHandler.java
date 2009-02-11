@@ -52,6 +52,9 @@ public class IceComponentHandler extends ComponentHandler {
             else if( tag.getLocalName().equals("panelTooltip") ) {
                 m.addRule( new MethodRule("displayListener", null, new Class[] {DisplayEvent.class}) );
             }
+            else if( tag.getLocalName().equals("menuPopup") ) {
+                m.addRule( new MethodRule("displayListener", null, new Class[] {DisplayEvent.class}) );
+            }
             else if( tag.getLocalName().equals("selectInputText") ) {
                 m.addRule( new MethodRule("textChangeListener", null, new Class[] {TextChangeEvent.class}) );
             }
