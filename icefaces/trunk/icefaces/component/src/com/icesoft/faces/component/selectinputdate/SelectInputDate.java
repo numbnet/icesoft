@@ -53,6 +53,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * SelectInputDate is a JSF component class that represents an ICEfaces input
@@ -166,7 +168,6 @@ public class SelectInputDate
     private Boolean _renderYearAsDropdown;
     private String inputTitle = null;
     private static final Pattern timePattern = Pattern.compile("[aHkKhmsS]");
-    transient private Matcher timeMatcher;
     private Integer submittedHours = null;
     private Integer submittedMinutes = null;
     private String submittedAmPm= null;    
@@ -290,7 +291,11 @@ public class SelectInputDate
 
     public TimeZone resolveTimeZone(FacesContext context) {
         DateTimeConverter converter = resolveDateTimeConverter(context);
-        return converter.getTimeZone();
+        TimeZone tz = converter.getTimeZone();
+        if (tz == null) { // DateTimeConverter should already do this
+            tz = TimeZone.getTimeZone("GMT");
+        }
+        return tz;
     }
 
     public Locale resolveLocale(FacesContext context) {
@@ -1054,73 +1059,97 @@ public class SelectInputDate
         }
     }
     
-    boolean isTime(FacesContext context) {
-        if (resolveDateTimeConverter(context).getPattern()== null) return false;
-        timeMatcher = timePattern.matcher(resolveDateTimeConverter(context).getPattern());
-       return timeMatcher.find();
+    static boolean isTime(DateTimeConverter converter) {
+        String pattern = getDateTimeConverterPattern(converter); 
+        if (pattern == null)
+            return false;
+        Matcher timeMatcher = timePattern.matcher(pattern);
+        return timeMatcher.find();
     }
     
-    int[] getHours(FacesContext context) {
-        String pattern = resolveDateTimeConverter(context).getPattern();
+    boolean isTime(FacesContext context) {
+        return isTime(resolveDateTimeConverter(context)); 
+    }
+    
+    static int[] getHours(DateTimeConverter converter) {
+        String pattern = getDateTimeConverterPattern(converter);
         int start = 0;
         int end = 23;
-        if (pattern.indexOf("H") > 0) {
+        if (pattern.indexOf("H") >= 0) {
             start = 0;
             end = 23;
-        } else if (pattern.indexOf("h") > 0) {
+        } else if (pattern.indexOf("h") >= 0) {
             start = 1;
             end = 12;
-        } else if (pattern.indexOf("k") > 0) {
+        } else if (pattern.indexOf("k") >= 0) {
             start = 1;
             end = 24;
-        } else if(pattern.indexOf("K") > 0) {
+        } else if(pattern.indexOf("K") >= 0) {
             start = 0;
             end = 11;            
         }
         int base = (start==0?1:0);
         int[] hours = new int[end + base];
         for (int i=0; i < hours.length; i ++) {
-            hours[i] = i + (start==1?1:0);
+            hours[i] = i + start;
         }
         return hours;
+    }
+    
+    int[] getHours(FacesContext context) {
+        return getHours(resolveDateTimeConverter(context));
     } 
     
     boolean isAmPm(FacesContext context) {
-        String pattern = resolveDateTimeConverter(context).getPattern();        
-        return pattern.indexOf("a") > 0 ||
-        pattern.indexOf("h")> 0||
-        pattern.indexOf("k")> 0;
+        String pattern = getDateTimeConverterPattern(resolveDateTimeConverter(context));        
+        return pattern.indexOf("a") >= 0 ||
+               pattern.indexOf("h") >= 0 ||
+               pattern.indexOf("k") >= 0;
     }
-    
-    protected Object getConvertedValue(FacesContext context,
-            Object newSubmittedValue) throws ConverterException {
-        Object date = super.getConvertedValue(context, newSubmittedValue);
-        if (date!= null && isTime(context)) {
-            if (submittedHours != null) {
-                int[] hrs = getHours(context);
-                if (hrs.length < 13 && submittedAmPm != null  && 
-                            "PM".equalsIgnoreCase(submittedAmPm.toString()) &&
-                            submittedHours.intValue() != 12) {
-                    
-                    ((Date)date).setHours(submittedHours.intValue() + 12);
-                } else {
-                    if (submittedAmPm != null && 
-                            "AM".equalsIgnoreCase(submittedAmPm.toString()) && 
-                            submittedHours.intValue() == 12) {
-                        ((Date)date).setHours(0);                        
-                    } else {
-                        ((Date)date).setHours(submittedHours.intValue());
-                    }
-                }
-                
-            }
-            if (submittedMinutes != null) {
-                ((Date)date).setMinutes(submittedMinutes.intValue());    
-            }
+
+    /**
+     * This method is necesary since DateTimeConverter.getDateFormat(Locale) is private  
+     */
+    private static String getDateTimeConverterPattern(DateTimeConverter converter) {
+        Locale locale = converter.getLocale();
+        String pattern = converter.getPattern();
+        String type = converter.getType();
+        String dateStyle = converter.getDateStyle();
+        String timeStyle = converter.getTimeStyle();
+        
+        DateFormat df;
+        if (pattern != null) {
+            df = new SimpleDateFormat(pattern, locale);
+        } else if (type.equals("both")) {
+            df = DateFormat.getDateTimeInstance
+                 (getDateTimeConverterStyle(dateStyle), getDateTimeConverterStyle(timeStyle), locale);
+        } else if (type.equals("date")) {
+            df = DateFormat.getDateInstance(getDateTimeConverterStyle(dateStyle), locale);
+        } else if (type.equals("time")) {
+            df = DateFormat.getTimeInstance(getDateTimeConverterStyle(timeStyle), locale);
+        } else {
+            // PENDING(craigmcc) - i18n
+            throw new IllegalArgumentException("Invalid type: " + type);
         }
-        return date;
+        df.setLenient(false);
+        
+        // In the underlying code, it is always a SimpleDateFormat
+        if (df instanceof SimpleDateFormat) {
+            return ((SimpleDateFormat)df).toPattern();
+        }
+        return "";
     }
     
+    /**
+     * This method is necesary since DateTimeConverter.getStylet(String) is private  
+     */
+    private static int getDateTimeConverterStyle(String name) {
+        if      ("short".equals(name))  return DateFormat.SHORT;
+        else if ("medium".equals(name)) return DateFormat.MEDIUM;
+        else if ("long".equals(name))   return DateFormat.LONG;
+        else if ("full".equals(name))   return DateFormat.FULL;
+        else                            return DateFormat.DEFAULT;
+    }
     
     void setHoursSubmittedValue(Object submittedHours) {
         if (submittedHours == null)
@@ -1129,9 +1158,13 @@ public class SelectInputDate
             try {
                 this.submittedHours = new Integer(submittedHours.toString());
             } catch (NumberFormatException e) {
-                this.submittedHours = new Integer("0");
+                this.submittedHours = null;
             }
     }    
+    
+    Integer getHoursSubmittedValue() {
+        return submittedHours;
+    }
     
     void setMinutesSubmittedValue(Object submittedMinutes) {
         if (submittedMinutes == null)
@@ -1140,8 +1173,12 @@ public class SelectInputDate
             try {
                 this.submittedMinutes = new Integer(submittedMinutes.toString());
             } catch (NumberFormatException e) {
-                this.submittedMinutes = new Integer("0");
+                this.submittedMinutes = null;
             }                
+    }
+    
+    Integer getMinutesSubmittedValue() {
+        return submittedMinutes;
     }
     
     void setAmPmSubmittedValue(Object submittedAmPm) {
@@ -1149,7 +1186,11 @@ public class SelectInputDate
             this.submittedAmPm = null;
         else        
             this.submittedAmPm = submittedAmPm.toString();
-    } 
+    }
+    
+    String getAmPmSubmittedValue() {
+        return submittedAmPm;
+    }
     
 
     //this component was throwing an exception in popup mode, if the component has no binding for value attribute
@@ -1165,18 +1206,17 @@ public class SelectInputDate
             return getPopupDate();
         }          
         
-        if (super.getValue() == null) {
-            return null;
-        } else {
-            return super.getValue();
-        }
+        return super.getValue();
     }
 
     public void validate(FacesContext context) {
+//System.out.println("SID.validate()  ");
         Object submittedValue = getSubmittedValue();
+//System.out.println("SID.validate()  submittedValue: " + submittedValue);
         try {
             if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
                 Object newValue = getConvertedValue(context, submittedValue);
+//System.out.println("SID.validate()  converted: " + newValue);
                 setPopupDate((Date)newValue);
                 if (isShowPopup()) setSubmittedValue(null); // if popup was closed, process submitted value
             }
