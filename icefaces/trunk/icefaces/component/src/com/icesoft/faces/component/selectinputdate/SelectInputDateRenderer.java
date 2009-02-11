@@ -114,7 +114,7 @@ public class SelectInputDateRenderer
     private static final String NEXT_MONTH = "_nm";
     private static final String PREV_YEAR = "_py";
     private static final String NEXT_YEAR = "_ny";
-    private static final String SELECT_HR = "_hr";
+    private static final String SELECT_HOUR = "_hr";
     private static final String SELECT_MIN = "_min";  
     private static final String SELECT_AM_PM = "_amPm";    
 
@@ -130,6 +130,9 @@ public class SelectInputDateRenderer
     private static final int IS_NEXT_MONTH      = 4;
     private static final int IS_PREV_YEAR       = 5;
     private static final int IS_NEXT_YEAR       = 6;
+    private static final int IS_HOUR            = 7;
+    private static final int IS_MIN             = 8;
+    private static final int IS_AM_PM           = 9;
     
     private static final String INPUT_TEXT_TITLE =
         "com.icesoft.faces.component.selectinputdate.INPUT_TEXT_TITLE";
@@ -217,10 +220,9 @@ public class SelectInputDateRenderer
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         SelectInputDate selectInputDate = (SelectInputDate) uiComponent;
-        if (selectInputDate.isTime(facesContext)) {
-            selectInputDate.getHours(facesContext);
-        }
+        
         Date value;
+        boolean actuallyHaveTime = false;
         if (selectInputDate.isNavEvent()) {
             if (log.isTraceEnabled()) {
                 log.trace("Rendering Nav Event");
@@ -229,19 +231,28 @@ public class SelectInputDateRenderer
 //System.out.println("navDate: " + value);
         } else if (selectInputDate.isRenderAsPopup() &&
                 !selectInputDate.isEnterKeyPressed(facesContext) ) { 
-            value = selectInputDate.getPopupDate();  
-            
+            value = selectInputDate.getPopupDate();
+            if (value != null) {
+                actuallyHaveTime = true;
+            }
         } else {
             if (log.isTraceEnabled()) {
                 log.trace("Logging non nav event");
             }
             value = CustomComponentUtils.getDateValue(selectInputDate);
+            if (value != null) {
+                actuallyHaveTime = true;
+            }
 //System.out.println("CustomComponentUtils.getDateValue: " + value);
         }
         
         DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(facesContext);
-        TimeZone tz = converter.getTimeZone();
+        TimeZone tz = selectInputDate.resolveTimeZone(facesContext);
         Locale currentLocale = selectInputDate.resolveLocale(facesContext);
+        DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
+        
+//System.out.println("SIDR.encodeEnd()  timezone: " + tz);
+//System.out.println("SIDR.encodeEnd()  locale: " + currentLocale);
         
         Calendar timeKeeper = Calendar.getInstance(tz, currentLocale);
         timeKeeper.setTime(value != null ? value : new Date());
@@ -475,32 +486,78 @@ public class SelectInputDateRenderer
                                       clientId + SelectInputDate.CALENDAR_INPUTTEXT);
                 root.appendChild(dateText);
             }
-
-            if (selectInputDate.isTime(facesContext)) {
+            
+//System.out.println("SIDR.encodeEnd()  isTime? " + SelectInputDate.isTime(converter));
+            if (SelectInputDate.isTime(converter)) {
                 Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
                 Element tr = domContext.createElement(HTML.TR_ELEM);
                 Element td = domContext.createElement(HTML.TD_ELEM);
                 td.setAttribute(HTML.COLSPAN_ATTR, "7");
                 td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
                 Element hours = domContext.createElement(HTML.SELECT_ELEM);
-                hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HR);
-                hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HR);
+                hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HOUR);
+                hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HOUR);
                 hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
                 hours.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                
+                // Convert from an hour to an index into the list of hours
                 int hrs[] = selectInputDate.getHours(facesContext);
-                int hr = 0;
-                if (hrs.length > 12) {
-                    hr = timeKeeper.get(Calendar.HOUR_OF_DAY);
-                } else {
-                    hr = timeKeeper.get(Calendar.HOUR);
+//System.out.println("SIDR.encodeEnd()  hrs: " + hrs[0] + ", " + hrs[hrs.length-1]);
+                int hourIndex;
+                int min;
+                int amPm;                    
+//System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
+                if (!actuallyHaveTime &&
+                    selectInputDate.getHoursSubmittedValue() != null &&
+                    selectInputDate.getMinutesSubmittedValue() != null)
+                {
+//System.out.println("SIDR.encodeEnd()  Using submitted hours and minutes");
+                    hourIndex = selectInputDate.getHoursSubmittedValue().intValue();
+//System.out.println("SIDR.encodeEnd()  hour: " + hourIndex);
+                    min = selectInputDate.getMinutesSubmittedValue().intValue();
+//System.out.println("SIDR.encodeEnd()  min: " + min);
+                    String amPmStr = selectInputDate.getAmPmSubmittedValue(); 
+//System.out.println("SIDR.encodeEnd()  amPmStr: " + amPmStr);
+                    if (amPmStr != null) {
+                        amPm = amPmStr.equalsIgnoreCase("PM") ? 1 : 0;
+                    }
+                    else {
+                        amPm = (hourIndex >= 12) ? 1 : 0;
+                    }
+//System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
+                    if (hrs[0] == 1) {
+                        hourIndex--;
+                        if (hourIndex < 0) {
+                            hourIndex = hrs.length - 1;
+                        }
+                    }
+//System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
                 }
-                int min = timeKeeper.get(Calendar.MINUTE);
+                else {
+                    if (hrs.length > 12) {
+                        hourIndex = timeKeeper.get(Calendar.HOUR_OF_DAY);
+//System.out.println("SIDR.encodeEnd()  hour 24: " + hourIndex);
+                    } else {
+                        hourIndex = timeKeeper.get(Calendar.HOUR);
+//System.out.println("SIDR.encodeEnd()  hour 12: " + hourIndex);
+                    }
+                    if (hrs[0] == 1) {
+                        hourIndex--;
+                        if (hourIndex < 0) {
+                            hourIndex = hrs.length - 1;
+                        }
+                    }
+//System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
+
+                    min = timeKeeper.get(Calendar.MINUTE);
+                    amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+                }
                 for (int i = 0; i < hrs.length; i++ ) {
                     Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
                     hoursOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(hrs[i]));
                     Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
                     hoursOption.appendChild(hourText);
-                    if ((hrs[0]==1 && hr == 0) || hrs[i] == hr) {
+                    if (i == hourIndex) {
                         hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
                     }
                     hours.appendChild(hoursOption);
@@ -513,11 +570,9 @@ public class SelectInputDateRenderer
                 for (int i = 0; i < 60; i++ ) {
                     Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
                     minutesOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
-                    String digits;
+                    String digits = String.valueOf(i);
                     if (i < 10) {
-                        digits = "0" + String.valueOf(i);
-                    } else {
-                        digits = String.valueOf(i);
+                        digits = "0" + digits;
                     }
                     Text minuteText = domContext.createTextNode(digits);
                     minutesOption.appendChild(minuteText);
@@ -534,22 +589,22 @@ public class SelectInputDateRenderer
                 td.appendChild(colon);
                 td.appendChild(minutes);
                 
-                int amPm = timeKeeper.get(Calendar.AM_PM) ;                    
                 if (selectInputDate.isAmPm(facesContext)){
                     Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
                     amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
                     amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
                     amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
                     amPmElement.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
-
+                    String[] symbolsAmPm = symbols.getAmPmStrings();
+                    
                     Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
                     amPmElementOption.setAttribute(HTML.VALUE_ATTR, "AM");
-                    Text amPmElementText = domContext.createTextNode("AM");
+                    Text amPmElementText = domContext.createTextNode(symbolsAmPm[0]);
                     amPmElementOption.appendChild(amPmElementText);
 
                     Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
                     amPmElementOption2.setAttribute(HTML.VALUE_ATTR, "PM");                  
-                    Text amPmElementText2 = domContext.createTextNode("PM");
+                    Text amPmElementText2 = domContext.createTextNode(symbolsAmPm[1]);
                     amPmElementOption2.appendChild(amPmElementText2);
                     if (amPm == 0) {
                         amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
@@ -566,9 +621,6 @@ public class SelectInputDateRenderer
         }
         clientId = uiComponent.getClientId(facesContext);
 
-
-
-        DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
         String[] weekdays = mapWeekdays(symbols);
         String[] weekdaysLong = mapWeekdaysLong(symbols);
@@ -1413,8 +1465,19 @@ public class SelectInputDateRenderer
         return formId + ":_idcl";
     }
 
-    private int checkLink(String clickedLink, String clientId) {
-        if (clickedLink == null) {
+    private int checkLink(Object eventCapturedId, String clickedLink, String clientId) {
+//System.out.println("checkLink()  clickedLink: " + clickedLink);
+        if (clickedLink == null || clickedLink.length() == 0) {
+//System.out.println("checkLink()  eventCapturedId: " + eventCapturedId);
+            if( (clientId+SELECT_HOUR).equals(eventCapturedId) ) {
+                return IS_HOUR;
+            }
+            else if( (clientId+SELECT_MIN).equals(eventCapturedId) ) {
+                return IS_MIN;
+            }
+            else if( (clientId+SELECT_AM_PM).equals(eventCapturedId) ) {
+                return IS_AM_PM;
+            }
             return IS_NOT;
         }
         else if( (clientId+CALENDAR_BUTTON).equals(clickedLink) ) {
@@ -1454,20 +1517,24 @@ public class SelectInputDateRenderer
         Object eventCapturedId = requestParameterMap.get("ice.event.captured");
         String monthClientId = clientId + SELECT_MONTH;
         String yearClientId = clientId + SELECT_YEAR;
-        String hoursClientId = clientId + SELECT_HR;
+        String hoursClientId = clientId + SELECT_HOUR;
         String minutesClientId = clientId + SELECT_MIN;
         String amPmClientId = clientId + SELECT_AM_PM;        
         if (requestParameterMap.containsKey(hoursClientId)) {
+//System.out.println("SIDR.decode()    Hours: " + requestParameterMap.get(hoursClientId));
             dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
         }
         
         if (requestParameterMap.containsKey(minutesClientId)) {
+//System.out.println("SIDR.decode()    Minutes: " + requestParameterMap.get(minutesClientId));
             dateSelect.setMinutesSubmittedValue(requestParameterMap.get(minutesClientId));            
         }
         
         if (requestParameterMap.containsKey(amPmClientId)) {
+//System.out.println("SIDR.decode()    AmPm: " + requestParameterMap.get(amPmClientId));
             dateSelect.setAmPmSubmittedValue(requestParameterMap.get(amPmClientId));            
         } else {
+//System.out.println("SIDR.decode()    NOT  AmPm");
             dateSelect.setAmPmSubmittedValue(null);            
         }
         
@@ -1486,7 +1553,22 @@ public class SelectInputDateRenderer
             }
             
             String sclickedLink = (String) clickedLink;
-            int check = checkLink(sclickedLink, clientId); 
+            int check = checkLink(eventCapturedId, sclickedLink, clientId);
+/*
+String[] checkStrings = new String[] {
+    "IS_NOT",
+    "IS_CALENDAR_BUTTON",
+    "IS_CALENDAR",
+    "IS_PREV_MONTH",
+    "IS_NEXT_MONTH",
+    "IS_PREV_YEAR",
+    "IS_NEXT_YEAR",
+    "IS_HOUR",
+    "IS_MIN",
+    "IS_AM_PM"
+};
+System.out.println("SIDR.decode()    link: " + checkStrings[check]);
+*/
             if (check != IS_NOT) {
                 if (log.isDebugEnabled()) {
                     log.debug("---------------------------------");
@@ -1516,12 +1598,17 @@ public class SelectInputDateRenderer
                                 "-------------Popup Event-------------------");
                     }
                     decodePopup(facesContext, component);
+                } else if (check == IS_HOUR ||
+                           check == IS_MIN ||
+                           check == IS_AM_PM) {
+                    decodeTime(facesContext, component);
                 }
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("-------------InputText enterkey Event ??----");
                 }
                 boolean enterKeyPressed = dateSelect.isEnterKeyPressed(facesContext);
+//System.out.println("SIDR.decode()    enterKeyPressed: " + enterKeyPressed);
                 decodeInputText(facesContext, component);
                 if (enterKeyPressed) {
                     dateSelect.setHoursSubmittedValue(null);
@@ -1602,6 +1689,15 @@ public class SelectInputDateRenderer
         }
         String clientId = component.getClientId(facesContext); 
         CustomComponentUtils.decodeUIInput(facesContext, component, clientId+CALENDAR_CLICK);
+        Object submittedValue = dateSelect.getSubmittedValue();
+        if (submittedValue instanceof String &&
+            submittedValue.toString().trim().length() > 0)
+        {
+            String inputTextDateAndTime = mergeTimeIntoDateString(
+                facesContext, dateSelect, clientId, submittedValue.toString());
+            dateSelect.setSubmittedValue(inputTextDateAndTime);
+        }
+
         // not a navigation event
         dateSelect.setNavEvent(false);
     }
@@ -1642,15 +1738,109 @@ public class SelectInputDateRenderer
             if (inputTextDate == null) {
                 dateSelect.setSubmittedValue(null);
             }
-            else if (String.valueOf(inputTextDate).trim().length() == 0) {
-                dateSelect.setSubmittedValue("");
-            }
             else {
-                dateSelect.setSubmittedValue(inputTextDate);
+                String inputTextDateStr = String.valueOf(inputTextDate);
+                if (inputTextDateStr.trim().length() == 0) {
+                    dateSelect.setSubmittedValue("");
+                }
+                else {
+                    String inputTextDateAndTime = mergeTimeIntoDateString(
+                        facesContext, dateSelect, clientId, inputTextDateStr);
+                    dateSelect.setSubmittedValue(inputTextDateAndTime);
+                }
             }
         }
     }
+    
+    private String mergeTimeIntoDateString(
+        FacesContext facesContext, SelectInputDate dateSelect, String clientId, String submittedDate) {
+        
+//System.out.println("mergeTimeIntoDateString()  clientId: " + clientId);
+//System.out.println("mergeTimeIntoDateString()    submittedDate: " + submittedDate);
+        DateTimeConverter converter = dateSelect.resolveDateTimeConverter(facesContext);
+        if (SelectInputDate.isTime(converter)) {
+//System.out.println("mergeTimeIntoDateString()    TIME");
+            Map requestParameterMap =
+                facesContext.getExternalContext().getRequestParameterMap();
 
+            String hoursClientId = clientId + SELECT_HOUR;
+            String minutesClientId = clientId + SELECT_MIN;
+            String amPmClientId = clientId + SELECT_AM_PM;
+
+            int setMilitaryHour = -1;
+            int setMinute = -1;
+            int setSecond = -1;
+            long setMillis = -1L;
+
+            try {
+                if (requestParameterMap.containsKey(hoursClientId)) {
+                    int hour = Integer.parseInt(
+                        requestParameterMap.get(hoursClientId).toString());
+//System.out.println("mergeTimeIntoDateString()    hour: " + hour);
+                    
+                    // Make hour 24 hour clock normalised
+                    if (requestParameterMap.containsKey(amPmClientId)) {
+                        String amPm = requestParameterMap.get(
+                            amPmClientId).toString();
+//System.out.println("mergeTimeIntoDateString()    am/pm: " + amPm);
+                        if (hour <= 11 && amPm.equals("PM")) {
+                            hour += 12;
+                        }
+//System.out.println("mergeTimeIntoDateString()    hour (24 hour): " + hour);
+                    }
+                    if (hour == 24) {
+                        hour = 0;
+                    }
+//System.out.println("mergeTimeIntoDateString()    hour (0-23 hour): " + hour);
+                    
+                    setMilitaryHour = hour;
+                }
+                if (requestParameterMap.containsKey(minutesClientId)) {
+                    setMinute = Integer.parseInt(
+                        requestParameterMap.get(minutesClientId).toString());
+//System.out.println("mergeTimeIntoDateString()    setMinute: " + setMinute);
+                }
+            }
+            catch(NumberFormatException e) {
+                // We use drop down menus for the hours and minutes, so this shouldn't be possible
+                if (log.isDebugEnabled()) {
+                    log.debug("Invalid hour ("+
+                        requestParameterMap.get(hoursClientId)+") or minute ("+
+                        requestParameterMap.get(minutesClientId)+")");
+                }
+                setMilitaryHour = -1;
+                setMinute = -1;
+            }
+            
+            if (setMilitaryHour != -1 || setMinute != -1) {
+                Date date = (Date) converter.getAsObject(facesContext, dateSelect, submittedDate);
+//System.out.println("mergeTimeIntoDateString()    before calendar date: " + date);
+                if (date != null) {
+                    TimeZone tz = dateSelect.resolveTimeZone(facesContext);
+                    Locale currentLocale = dateSelect.resolveLocale(facesContext);
+                    Calendar timeKeeper = Calendar.getInstance(tz, currentLocale);
+                    timeKeeper.setTime(date);
+
+                    if (setMilitaryHour != -1) {
+                        timeKeeper.set(Calendar.HOUR_OF_DAY, setMilitaryHour);
+                    }
+                    if (setMinute != -1) {
+                        timeKeeper.set(Calendar.MINUTE, setMinute);
+                    }
+                    date = timeKeeper.getTime();
+//System.out.println("mergeTimeIntoDateString()    after calendar date: " + date);
+                    submittedDate = converter.getAsString(facesContext, dateSelect, date);
+//System.out.println("mergeTimeIntoDateString()    merged date: " + submittedDate);
+                }
+            }
+        }
+        
+        return submittedDate;
+    }
+    
+    private void decodeTime(FacesContext facesContext, UIComponent component) {
+        decodeInputText(facesContext, component);
+    }
     /* (non-Javadoc)
      * @see com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer#getConvertedValue(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
      */
