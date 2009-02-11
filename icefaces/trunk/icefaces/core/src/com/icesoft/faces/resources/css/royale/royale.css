@@ -2552,8 +2552,10 @@ Disabeld classes for the calendar controls
 .icePnlClpsblHdr .iceOutTxt, .icePnlClpsblColpsdHdr .iceOutTxt {
 	color:#FFFFFF;
 }
-.icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis{
-    color: #999999;
+
+.icePnlClpsbl-dis, .icePnlClpsblColpsd-dis {
+    filter:alpha(opacity=40);
+    opacity:0.4;
 }
 
 .icePnlClpsblCnt, .icePnlClpsblColpsdCnt,
@@ -2563,6 +2565,14 @@ Disabeld classes for the calendar controls
     border-top: none;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
+    cursor: pointer;
+}
+
+.icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
+    cursor: default;
 }
 
 .iceGmp{}

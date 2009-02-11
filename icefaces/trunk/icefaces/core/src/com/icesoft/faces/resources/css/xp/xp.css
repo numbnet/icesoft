@@ -2571,6 +2571,11 @@ Disabled classes for the calendar controls
     color: #999999;
 }
 
+.icePnlClpsbl-dis, .icePnlClpsblColpsd-dis {
+    filter:alpha(opacity=40);
+    opacity:0.4;
+}
+
 .icePnlClpsblCnt, .icePnlClpsblColpsdCnt,
     .icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis {
     background-color: #EFEFEF;
@@ -2578,6 +2583,14 @@ Disabled classes for the calendar controls
     border-top: none;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
+    cursor: pointer;
+}
+
+.icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
+    cursor: default;
 }
 
 .iceGmp{}
