@@ -220,12 +220,15 @@ implements MessageServiceAdapter {
                 }
                 executorService.shutdown();
                 topicConnectionFactory = null;
-                try {
-                    initialContext.close();
-                } catch (NamingException exception) {
-                    throw new MessageServiceException(exception);
+                if (initialContext != null) {
+                    try {
+                        initialContext.close();
+                    } catch (NamingException exception) {
+                        throw new MessageServiceException(exception);
+                    } finally {
+                        initialContext = null;
+                    }
                 }
-                initialContext = null;
 //            }
 //        }
     }
