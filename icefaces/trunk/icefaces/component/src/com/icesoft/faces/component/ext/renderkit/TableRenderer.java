@@ -840,7 +840,7 @@ public class TableRenderer
             if (null != rowSelectorHiddenField)  {
                 td.appendChild(rowSelectorHiddenField);
             }
-            if (width != null) {
+            if (width != null && !width.equals("100%")) {
 
                 td.setAttribute("style",
                                 "width:" + width + ";overflow:hidden;");
