@@ -66,7 +66,7 @@
 					value="#{resourceBean.fileName}" onfocus="this.select();" partialSubmit="true"/>
 				<ice:outputResource id="pdfResource1"
 					resource="#{resourceBean.pdfResourceDynFileName}" mimeType="application/pdf"
-					value="Click to load pdf" fileName="#{resourceBean.fileName}.pdf" 
+					fileName="#{resourceBean.fileName}.pdf" 
 					shared="false"/>
 			</ice:panelGroup>
 			
@@ -74,14 +74,12 @@
 				value="Download a pdf file resource with a button display:" />
 			<ice:outputResource id="pdf-button"
 				resource="#{resourceBean.pdfResource}" mimeType="application/pdf"
-				value="Click to load pdf"
 				fileName="Enterprise-Ajax-Security-with-ICEfaces.pdf" type="button" />
 
             <ice:outputLabel for="pdf-image"
 				value="Download a pdf file resource with an image display:" />
 			<ice:outputResource id="pdf-image"
 				resource="#{resourceBean.pdfResource}" mimeType="application/pdf"
-				value="Click to load pdf"
 				fileName="Enterprise-Ajax-Security-with-ICEfaces.pdf"
 				image="./images/button-submit.gif" />
 		</ice:panelGrid>
