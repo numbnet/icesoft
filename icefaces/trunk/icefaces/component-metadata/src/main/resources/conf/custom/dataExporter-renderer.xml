@@ -34,8 +34,8 @@
 
 <renderer>
 	<description>
-		<![CDATA[<p> The DataExporter component allows to export data in various 
-		formats, to access the data it has to be linked with the dataTable. 
+		<![CDATA[<p> The ice:dataExporter component can be used to export the 
+		data contents of an ice:dataTable component into a variety of formats.<br/>
 		There are following two formats supported by the component:
 		<ul>
 		   <li>Excel
