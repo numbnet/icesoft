@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8 DR#2 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8 RC1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -44,10 +44,10 @@ font-size: 110%
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
 <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8
-DR#2
+RC1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">December
-23rd, 2008</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">February
+12th, 2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -59,8 +59,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="ReleaseNotes.html#Changes_18RC1">Changes
+in v1.8 RC1 (This Release)</a></li>
 <li><a href="ReleaseNotes.html#Changes_18DR2">Changes
-in v1.8 DR#2 (This Release)</a></li>
+in v1.8 DR#2</a></li>
 <li><a href="#Changes_18DR1">Changes
 in v1.8 DR#1</a></li>
 <li><a href="#Supported_Platforms">Supported
@@ -93,8 +95,251 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_18RC1"></a>Changes
+in&nbsp;v1.8 RC1 (This Release)</h2>
+<br>
+ICEfaces v1.8 RC#1 is a release-candidate build that provides a
+feature-complete preview of the new features, enhancements, and fixes
+that will be included in the upcoming ICEfaces v1.8 release. Although
+this build has successfully completed regression testing issues may
+still exist, thus, it is not recommended for production use. <br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release. Please report any issues with this build
+to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback</a> forum.<br>
+<br>
+This release includes over 100 fixes and enhancements since 1.8 DR#2.
+Refer
+to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10143">ICEfaces
+JIRA Change Log</a> for detailed information on
+all the changes included in this release.
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite&nbsp;</span><br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">New
+Confirmation Panel component</span></li>
+<ul>
+<li>A new ice:panelConfirmation component has been added.
+This component can be used to display a client-side confirmation dialog
+panel when the user triggers an action event on the ice:commandLink or
+ice:commandButton components. If the user cancels the action no action
+event will be fired.</li>
+<li>Simple to configure and can contain custom titles,
+labels, and button configurations.</li>
+</ul>
+</ul>
+<br>
+<ul>
+<li><span style="font-weight: bold;">New Data
+Export component</span>&nbsp;</li>
+<ul>
+<li>A new ice:dataExporter component can be used to
+provide user-downloadable exports of ice:dataTable data contents.</li>
+<li>Supports exporting of data in various formats via an
+extensible outputTypeHandler.</li>
+<li>CSV and Excel outputTypeHandlers are provided with
+the component,&nbsp;developers can define custom output formats by
+creating new&nbsp;outputTypeHandler implementations.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New JSF
+Lifecycle Event Phase manipulation component</span></li>
+<ul>
+<li><span style="font-weight: bold;"></span>A
+new ice:setEventPhase component has been added. This component can be
+used to specify the JSF lifecycle phase that certain events will be
+broadcasted in&nbsp;for events originating from child components of
+this component.</li><li>This
+component is useful in cases where a&nbsp;valueChangeListener for one
+component needs to affect the value of another input component. By
+controlling the JSF life-cycle phase that the ValueChangeEvent is
+processed in, it is possible to prevent a submitted value from
+superceding a value change applied by the valueChangeListener.</li><li>For
+more information, see the "Set Event Phase" demo on the Component
+Showcase sample application and the TLD documentation for this
+component. </li>
+
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New support
+for Date &amp; Time entry</span>&nbsp;</li>
+<ul>
+<li>The ice:selectInputDate component has been enhanced to
+optionally support entering just dates, or dates and times, in either
+24 or 12-hour formats.</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Improved
+Popup Component positioning</span></li>
+<ul>
+<li>The following components have been improved to
+automatically position their "popup" elements such that they remain
+visible on the screen/viewport without the need for scrolling.</li>
+<ul>
+<li>ice:menuBar (sub-menus now position intelligently
+relative to the current window position, available space)</li>
+<li>ice:menuPopup</li>
+<li>ice:panelTooltip</li>
+<li>ice:selectInputDate (popup mode)</li>
+
+</ul><li>See <a href="http://jira.icefaces.org/browse/ICE-3512" target="_blank">ICE-3512</a>
+for more information.</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New Keyboard Support for dataTable Row Selection</span>&nbsp;</li>
+<ul>
+<li>The ice:rowSelector component now provides an optional usage-mode
+that supports using the keyboard in conjunction with the mouse to
+enable multiple row selection, range selection, etc. based on
+industry-standard key combinations.</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Improved support for Dynamic Popup Menus</span></li>
+<ul>
+<li>The ice:menuPopup component has been enhanced with the addition of
+a displayListener. The displayListener can be used to modify the popup
+menu contents immediately prior to the menu becoming visible.</li>
+</ul>
+</ul>
+</ul><ul><ul><li><span style="font-weight: bold;">Improved Localization Support.</span> Thanks to community contributions the icefaces-comps.jar now includes the following&nbsp;language resource files:</li><ul><li>Arabic (new)</li><li>English</li><li>Dutch</li><li>French</li><li>German (new)</li><li>Spanish (revised)</li></ul></ul></ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Miscellaneous Improvements </span>&nbsp;</li>
+<ul>
+<li>The ice:panelPopup component has been improved to support using
+both "autoCentre" or "autoPosition" and "draggable" attributes at the
+same time. When either "autoCentre" or "autoPosition" are set to true
+as well as "draggable=true", the panelPopup will initially be
+positioned as defined by "autoCentre" or "autoPosition". However, if
+the panelPopup is subsequently moved&nbsp;by the user (via dragging) it
+will no longer autocentre or autoposition.</li><li>The ice:menuBar
+component has been improved to hide any displayed menus when the mouse
+leaves the menu area, when "displayOnClick=false". This aligns better
+with the "display on hover" / "hide on hover exit" user-interface
+standard for popup menus than the previous behavior which required the
+user to click on the page outside of the menu area to hide the menu.</li><li>&nbsp;A
+new "varStatus" attribute has been added to the ice:panelSeries
+component. The varStatus can be used as a convenience in determing the
+current&nbsp;index, first, last, etc. when iterating through the
+panelSeries during rendering. See the TLD document for more details.</li><li>A
+new "target" attribute has been added to the ice:outputResource
+component. The target attribute can be used to control which browser
+window should be used for a specific resource download operation.</li><li>The
+percieved responsiveness of the ice:rowSelector has been improved by
+applying row selection style changes in the client prior to the server
+roundtrip associated with the row selection event. </li>
+</ul>
+</ul>
+</ul><ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework&nbsp;</span><br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">Improvements to JSF State-Saving Support</span>.
+Support for JSF state saving has been optimized in this release to
+improve memory consumption and CPU utilization, resulting in the
+following changes to how ICEfaces is configured for state-saving:</li>
+<ul>
+<li>ICEfaces now provides two custom JSF State Manager implementations:</li><ul><li>ViewRootStateManagerImpl.java
+preserves the UIViewRoot between requests. This is the traditional
+&nbsp;approach taken by previous ICEfaces releases (though not
+previously implemented as a custom StateManager) and offers the fastest
+and most memory efficient way to save state. A limitation of this
+approach is that the UIComponent structure is not serialized and
+therefore, failover cannot be supported when using this approach.</li><li>SingleCopyStateManagerImpl.java
+implements virtually the same algorithm that the default JSF State
+Manager uses, with the exception that it only saves one copy per View,
+and makes some accomodations for ICEfaces unique Ajax Push features.
+This approach is required in deployments where serialization of the
+saved state is required, such as in clustered fail-over deployments.
+Note that this state saving implementation consumes significantly more
+server memory and CPU resources than the ViewRootStateManager, so it
+should be used only as required. </li></ul><li>The ViewRootStateManager is configured by default in the faces-config.xml included in the icefaces.jar.</li><li>The ICEfaces configuration parameter <span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement </span>is no longer valid or required (deprecated).</li>
+<li>State-saving is not supported in JSF1.1 environments, the legacy
+approach of retaining the view root is automatically used&nbsp;when
+running in a JSF 1.1 environment.</li>
+<li>Client-side state-saving is not supported.</li>
+
+</ul>
+</ul>
+</li>
+</ul>
+
+
+<ul>
+<ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Improved Application Server Support. </span>This version of ICEfaces has been certified on the following recently-released application servers:</li>
+<ul>
+<li>Sun Glassfish v2.1</li><li>Sun Glassfish v3 "Prelude"</li><li>JBoss v5.0</li><li>IBM WebSphere v7.0</li></ul>
+</ul>
+</ul><ul><ul><li><span style="font-weight: bold;">Clustered Fail-Over Support for JBoss.</span>
+Support for clustered fail-over deployments of asynchronous ICEfaces
+applications on JBoss application servers has been added in this
+release.</li></ul></ul><ul><ul><li><span style="font-weight: bold;">Support for </span><span style="font-weight: bold;">Glassfish v3&nbsp;Prelude </span><span style="font-weight: bold;">"Grizzly" ARP.</span>
+Support for&nbsp;"Grizzly" Asynchronous Request Processing (ARP) on Glassfish v3&nbsp;Prelude has been added in this release.</li></ul></ul>
+<ul>
+<li><span style="font-weight: bold;">3rd Party
+Libraries</span></li>
+<ul>
+<li>The Sun JSF 1.2 runtime libraries included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to JSF1.2_12.</li>
+<li>The commons-beansutils.jar included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to v1.8.0.</li><li>The commons-discovery.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to v0.4.</li><li>The jstl.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to v1.1.2.</li></ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Documentation</span>
+<br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">ICEfaces Developer's Guide</span>.
+The ICEfaces Developer's Guide has been revised for changes in 1.8. It should be considered in draft form in this release.</li></ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Sample
+Applications</span>
+<br>
+<br>
+<ul><li>Component Showcase</li>
+<ul>
+<li>Added preliminary&nbsp;demos for the following new components:</li><ul><li>ice:dataExporter</li><li>ice:setEventPhase</li></ul><li>Enhanced
+the Download Resources demo to illustrate a use-case whereby a resource
+file is dynamically generated after the user requests it.</li><li>Added a German language translation resource file for the Component Showcase sample applications.
+We are
+seeking community contributors to provide additional
+language&nbsp;language translation files. If you are interested see
+the <a href="http://www.icefaces.org/main/community/contribute.iface" target="_blank">How To Contribute</a> page for more
+information.</li></ul></ul></li></ul><br>
 <h2><a name="Changes_18DR2"></a>Changes
-in&nbsp;v1.8 DR#2 (This Release)</h2>
+in&nbsp;v1.8 DR#2&nbsp;</h2>
 <br>
 ICEfaces v1.8 DR#2 is a Development Build that provides an early-access
 preview of new features, enhancements, and fixes that will be included
@@ -128,7 +373,8 @@ are seamlessly transferred to another node in the cluster
 </ul>
 <ul>
 <ul>
-<li>Fail-over is generally supported for synchronous mode
+<li>Fail-over is generally supported for synchronous
+mode
 applications (<span style="font-family: monospace;">com.icesoft.faces.synchronousUpdate="true"</span>
 in web.xml).</li>
 <li>For asynchronous mode (Ajax Push) applications,
@@ -246,7 +492,8 @@ and <span style="font-family: monospace;">just-ice.jar</span>
 libraries. Previously the standalone <span style="font-family: monospace;">icefaces-ahs.jar</span>
 was required to use AHS.&nbsp;&nbsp;</li>
 <ul>
-<li>In order to configure your application to use AHS you
+<li>In order to configure your application to use AHS
+you
 must now specify "<span style="font-family: monospace;">icefaces-ahs</span>"
 as the blockingRequestHandler in the web.xml file via the <span style="font-family: monospace;">com.icesoft.faces.blockingRequestHandler</span>
 configuration parameter. Previously, AHS would be auto-configured for
@@ -276,7 +523,8 @@ directory.</li>
 <br>
 <li>Component Showcase</li>
 <ul>
-<li>Added support&nbsp;for user-selectable languages
+<li>Added support&nbsp;for user-selectable
+languages
 (dynamic locale change) in the Component Showcase sample applications.
 This release includes resource files for English and Spanish. We are
 seeking community contributors to provide additional
@@ -547,7 +795,7 @@ Application
 Server<br>
 </td>
 <td style="vertical-align: top; text-align: right;">4.0.5,
-4.2.x<br>
+4.2.x, 5.0<br>
 </td>
 </tr>
 <tr>
@@ -557,7 +805,7 @@ Server<br>
 Application Server<br>
 </td>
 <td style="vertical-align: top; text-align: right;">6.0.2,
-6.1<br>
+6.1, 7.0<br>
 </td>
 </tr>
 <tr>
@@ -584,7 +832,8 @@ Container for J2EE (OC4J)<br>
 </td>
 <td style="vertical-align: top;">GlassFish <br>
 </td>
-<td style="vertical-align: top; text-align: right;">v2<br>
+<td style="vertical-align: top; text-align: right;">v2.x,
+v3 Prelude<br>
 </td>
 </tr>
 <tr>
@@ -732,307 +981,20 @@ tracker.
 <li><span style="font-weight: bold;">ICEfaces
 Getting Started Guide</span>&nbsp;</li>
 </ul>
-<ul style="margin-left: 40px;">
-<li>Page 12 of&nbsp;the&nbsp;ICEfaces Getting
-Started
-Guide
-incorrectly indicates that the path to the Component Showcase
-applications is "/icefaces/samples/componentshowcase2/...". The correct
-path to the Component Showcase applications is
-"/icefaces/samples/componentshowcase/...".</li>
+<ul style="margin-left: 40px;"><li>The ICEfaces Getting Started Guide has not been updated
+to
+reflect changes in 1.8 in this release.</li>
 </ul>
 <ul class="contentIndent">
 <li><span style="font-weight: bold;">ICEfaces
 Developer's Guide</span>&nbsp;</li>
 </ul>
 <ul style="margin-left: 40px;">
-<li>Page 84 of the ICEfaces Developer's Guide contains an
-incorrect JNDI name reference. The "Glassfish v2" section under
-"Configuring the
-Asynchronous HTTP Server" in the "Advanced Topics" chapter should be
-changed as follows: </li>
-</ul>
-<ul style="margin-left: 40px;">
-<ul>
-<li>Under "Configuring JMS for GlassFish v2", step 7
-incorrectly&nbsp;states:&nbsp;</li>
-<ul>
-<li>"Enter "icefaces<span style="font-weight: bold;">Content</span>EventTopic"
-as the JNDI Name and Physical Destination Name, select javax.jms.Topic
-as the Resource Type, and click OK."</li>
-</ul>
-<li>The correct configuration instruction is:</li>
-<ul>
-<li>"Enter "icefaces<span style="font-weight: bold;">Context</span>EventTopic"
-as the JNDI Name and Physical Destination Name, select javax.jms.Topic
-as the Resource Type, and click OK."&nbsp;</li>
-</ul>
-</ul>
-</ul>
-<div style="margin-left: 40px;">
-<ul>
-<li>Since ICEfaces 1.7.1 the "Glassfish v2" section
-under "Optimizing Asynchronous
-Communications for Scalability" in the "Advanced Topics" chapter (on
-pg. 54) should be&nbsp;changed as follows:&nbsp;</li>
-</ul>
-</div>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li>Remove Step 1 (configuring the GrizzlyPushServlet)
-under
-"To configure ICEfaces to use Grizzly:". Beginning with ICEfaces 1.7.1
-this configuration step is no longer required or
-supported.&nbsp;Note that Step&nbsp;2 ("Add the cometSupport
-property to your http-listener") is still required.</li>
-<li>ICEfaces will now auto-detect GlassFish + Grizzly and
-will try to use the ARP capabilities of Grizzly if they are enabled. To
-disable using the ARP facilities of Glassfish Grizzly and Jetty, the
-com.icesoft.faces.useARP property can be set to false inside the
-web.xml. Note that the previous&nbsp;Jetty-specific
-com.icesoft.faces.useJettyContinuations configuration parameter can
-still be used but is now deprecated.</li>
-<li>If this auto-configuration fails, ICEfaces will
-revert
-to
-using the traditional Thread Blocking async IO mechanism. You can
-verify that ICEfaces is using the Grizzly ARP mechanism by reviewing
-the ICEfaces log file (at INFO level). The following log messages may
-be present:</li>
-</ul>
-<ul>
-<ul>
-<li style="font-family: Courier New,Courier,monospace;">GlassFish
-ARP available: true</li>
-<li style="font-family: Courier New,Courier,monospace;">Adapting
-to GlassFish ARP environment</li>
-<li style="font-family: Courier New,Courier,monospace;">Failed
-to add Comet handler... (if ARP configuration fails only)<span style="font-family: Courier New,Courier,monospace;"></span></li>
-<li style="font-family: Courier New,Courier,monospace;"><span style="font-family: Courier New,Courier,monospace;">Falling
-back to Thread Blocking environment (if ARP configuration fails only)</span></li>
-</ul>
-</ul>
-</ul>
-<div style="margin-left: 40px;">
-<ul>
-<li>Since ICEfaces 1.7.2 the following configuration
-parameters, from Appendix B of
-the
-Developer's Guide (pg. 128), have been added or modified in this
-release:&nbsp;</li>
-</ul>
-</div>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.connectionLostRedirectURI</span></big>,
-default value = null.
-<p>Specifies a page URI to redirect the client to when
-an
-asynchronous connection is lost. The parameter value must be surrounded
-by single quotes and an ice:outputConnectionStatus component must be
-present on the page. Note: This parameter is only applicable to
-asynchronous&nbsp; applications as it is the async connection lost
-event that triggers the
-redirect&nbsp;(com.icesoft.faces.synchronousUpdate=false,
-which is the ICEfaces default).&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressResources</span></big>,
-default value = true.
-<p>The compressResources setting is used to tell the
-ICEfaces framework whether or not to compress (i.e. gzip)
-internal resources that are served directly by the framework. This
-includes theme CSS stylesheets, images, JavaScript,&nbsp; etc. Some
-browsers can have difficulty with compression (notably IE 6) and
-compression can be redundant for resources that are already compressed.
-As of this release, ICEfaces, bu default,&nbsp;applies a list of
-mime-types to exclude from compression, even if the value is set to
-true. This list includes:&nbsp;
-</p>
-<ul>
-<li>application/java-archive</li>
-<li>application/pdf</li>
-<li>application/x-compress</li>
-<li>application/x-gzip</li>
-<li>application/zip</li>
-<li>audio/x-mpeg</li>
-<li>image/gif</li>
-<li>image/jpeg</li>
-<li>image/png</li>
-<li>image/tiff</li>
-<li>video/mp4</li>
-<li>video/mpeg</li>
-<li>video/x-sgi-movie</li>
-</ul>
-<p>If you wish to override or supplement this list and
-provide your own mime-types to be excluded from compression, use the <big><span style="font-family: monospace;">com.icesoft.faces.compressResourcesExclusions</span></big>
-parameter.<br>
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressResourcesExclusions</span></big>,
-default value = "image/gif image/png image/jpeg image/tiff
-application/pdf application/zip application/x-compress
-application/x-gzip application/java-archive video/x-sgi-movie
-audio/x-mpeg video/mp4 video/mpeg".
-<p>This parameter is used to override or supplement the
-default list of mime-types that are excluded from
-compression by ICEfaces. The compressResourcesExclusions parameter
-takes a space delimited list of mime types for which compression will
-not be applied. Please note that if you use this parameter, you are
-overriding the default list of mime-types that ICEfaces excludes by
-default and you'll need to specify all the mime-types that you want to
-exclude, including any of the &nbsp;mime-types excluded by default.
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.<span style="font-family: monospace;">sessionExpiredRedirectURI</span></span></big>,
-default value = null.
-<p>Specifies a page URI to redirect the client to upon
-session expiry.
-Redirection will occur immediately when using asynchronous mode, or
-upon the first partial or full-submit after the session expires in
-synchronous mode.</p>
-</li>
-</ul>
-</ul>
-<div style="margin-left: 40px;">
-<ul>
-<li>Since ICEfaces 1.8DR#1 the following configuration
-parameters, from
-Appendix B of
-the
-Developer's Guide (pg. 128), have been added or modified:&nbsp;</li>
-</ul>
-</div>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressDOM</span></big>,
-default value = false.
-<p>Specifies whether or not the server-side DOM should
-be
-compressed between view renders to reduce the amount of server heap
-memory required. Enabling this feature can provide significant memory
-consumption savings at the cost of some additional CPU cycles to
-perform the compression.&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.clientIdPoolMaxSize</span></big>,
-default value = 100000.
-<p>Specifies the size of the String pool used for
-caching
-client ID strings. The default value of 100,000 requires approx. 1MB of
-Java heap. Specifying an integer value of 0 will disable the client ID
-String pool.&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.cssNamePoolMaxSize</span></big>,
-default value = 100000.
-<p>Specifies the size of the String pool used for
-caching
-CSS class names strings. The default value of 100,000 requires approx.
-1MB of
-Java heap. Specifying an integer value of 0 will disable the CSS
-class-name String pool.&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.elPoolMaxSize</span></big>,
-default value = 100000.
-<p>Specifies the size of the String pool used for
-caching
-EL expression strings. The default value of 100,000 requires approx.
-1MB of
-Java heap. Specifying an integer value of 0 will disable the EL
-expression String pool.&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.xhtmlPoolMaxSize</span></big>,
-default value = 100000.
-<p>Specifies the size of the String pool used for
-caching
-literal XHTML tags and attributes strings. The default value of 100,000
-requires approx.
-1MB of
-Java heap. Specifying an integer value of 0 will disable
-the&nbsp;XHTML tags and attributes String pool.&nbsp;
-</p>
-</li>
-</ul>
-</ul>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li>
-<big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.standardRequestScope</span></big>,
-default value = false.
-<p>The behaviour of the standardRequestScope parameter
-has
-been slightly modified. The default value is false but, since the Seam
-framework requires that this be set to true, the ICEfaces framework now
-checks for Seam integration at runtime and sets standardRequestScope to
-true if Seam is detected.</p>
-</li>
-</ul>
-</ul>
-<div style="margin-left: 40px;">
-<ul>
-<li>Since ICEfaces 1.8DR#2 the following configuration
-parameters, from
-Appendix B of
-the
-Developer's Guide (pg. 128), have been added or modified:&nbsp;</li>
-</ul>
-</div>
-<ul style="margin-left: 40px;" class="contentIndent">
-<ul>
-<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement</span></big>,
-default value = true.
-<p>Specifies whether or not ICEfaces uses JSF
-state-saving
-to persist component state between renders. The default value is
-'true'. When set to 'false' ICEfaces will revert to a long-lived
-component-tree model which does note utilize JSF state-saving
-mechanisms.</p>
-<p><span style="font-weight: bold;">Note:</span>
-JSF state-saving is not supported for JSF1.1 runtime
-environments.&nbsp;Client-side state-saving is not supported.</p>
-</li>
-</ul>
+<li>The ICEfaces Developer's Guide has been updated to
+reflect
+changes in 1.8 in this release. It should be considered in Draft form. </li>
 </ul>
 <h3><a name="KIGeneral"></a>General</h3>
-<ul>
-<li>In this release, exception redirection is not working correctly
-when state-saving is enabled, which is the default configuration for
-JSF1.2 (doJSFStateManagement=true).
-A work-around is to disable JSF state-saving by specifying
-doJSFStateManagement=false in the web.xml file. See <a href="http://jira.icefaces.org/browse/ICE-3921" target="_blank">ICE-3921</a>.
-</li>
-</ul>
 <ul>
 <li>If at any time the asynchronous connection
 between the browser
@@ -1070,6 +1032,22 @@ the following alternative syntax:<br>
 the <code>((BridgeExternalContext)
 FacesContext.getCurrentInstance().getExternalContext()).addCookie(new
 Cookie("test","test"));</code> method. </li>
+</ul>
+<ul>
+<li>If you are using the Sun JSF 1.2 RI and experience the
+following exception:<br>
+<small>"javax.faces.application.ViewExpiredException:
+viewId:/xxx.iface - View /xxx.iface could not be restored. at
+com.sun.faces.lifecycle.RestoreViewPhase.execute(RestoreViewPhase.java:xxx)"</small><br>
+It may be necessary to include the following configuration in web.xml:<br>
+<br>
+<code>&lt;context-param&gt; <br>
+&nbsp;
+&nbsp;&lt;param-name&gt;com.sun.faces.enableRestoreView11Compatibility&lt;/param-name&gt;
+<br>
+&nbsp;
+&nbsp;&lt;param-value&gt;true&lt;/param-value&gt; <br>
+&lt;/context-param&gt;</code></li>
 </ul>
 <h3><a name="KIJSPMarkup"></a>JSP Markup </h3>
 <ul>
@@ -1387,7 +1365,13 @@ for this issue include not configuring the optional Tomcat NIO
 connector and configuring the ICEfaces AHS server configuration for NIO
 asynchronous communications instead.</li>
 </ul>
-</ul>
+</ul><ul style="font-weight: bold;"><li>Sun Glassfish v2.1</li></ul>
+<ul><ul><li>Due to a bug in the JSF RI included in the Glassfish v2.1
+distribution (v1.2_04), exception redirection may not work correctly
+with ICEfaces. The work-around is to install or use&nbsp;Sun JSF RI
+1.2_05 or newer.</li></ul></ul>
+
+
 <ul style="font-weight: bold;">
 <li>BEA
 Weblogic Server 9</li>
@@ -1510,6 +1494,6 @@ Notice</h2>
 directory.</p>
 <p class="Body"><small><br>
 © Copyright
-2005-2008 ICEsoft Technologies, Inc.</small></p>
+2005-2009 ICEsoft Technologies, Inc.</small></p>
 </div>
 </body></html>
