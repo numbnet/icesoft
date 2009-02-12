@@ -55,7 +55,7 @@
 
     This.SyncConnection = Object.subclass({
         initialize: function(logger, configuration, defaultQuery) {
-            this.logger = logger.child('sync-connection');
+            this.logger = childLogger(logger, 'sync-connection');
             this.channel = new Ajax.Client(this.logger);
             this.defaultQuery = defaultQuery;
             this.onSendListeners = [];
@@ -64,7 +64,7 @@
             this.onServerErrorListeners = [];
             this.connectionDownListeners = [];
             this.timeoutBomb = { cancel: Function.NOOP };
-            this.logger.info('synchronous mode');
+            this.info(logger, 'synchronous mode');
             this.sendURI = configuration.context.current + 'block/send-receive-updates';
             var timeout = configuration.timeout ? configuration.timeout : 60000;
 
@@ -104,7 +104,7 @@
             compoundQuery.addQuery(this.defaultQuery);
             compoundQuery.add('ice.focus', window.currentFocus);
 
-            this.logger.debug('send > ' + compoundQuery.asString());
+            this.debug(logger, 'send > ' + compoundQuery.asString());
             this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 This.FormPost(request);
                 request.on(Connection.OK, this.receiveCallback);

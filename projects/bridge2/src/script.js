@@ -3,7 +3,7 @@
     //todo: should this code be part of Element.replaceHtml method?    
     This.Loader = Object.subclass({
         initialize: function(logger) {
-            this.logger = logger.child('script-loader');
+            this.logger = childLogger(logger, 'script-loader');
             this.referencedScripts = [];
             //list of urls
             this.client = new Client(this.logger);
@@ -23,26 +23,26 @@
             var uri = script.src;
             if (uri) {
                 if (!this.referencedScripts.include(script.src)) {
-                    this.logger.debug('loading : ' + uri);
+                    debug(this.logger, 'loading : ' + uri);
                     this.client.getSynchronously(uri, '', function(request) {
                         request.on(Ice.Connection.OK, function() {
                             this.referencedScripts.push(uri);
-                            this.logger.debug('evaluating script at : ' + uri);
+                            debug(this.logger, 'evaluating script at : ' + uri);
                             try {
                                 eval(request.content());
                             } catch (e) {
-                                this.logger.warn('Failed to evaluate script located at: ' + uri, e);
+                                warn(this.logger, 'Failed to evaluate script located at: ' + uri, e);
                             }
                         }.bind(this));
                     }.bind(this));
                 }
             } else {
                 var code = script.innerHTML;
-                this.logger.debug('evaluating script : ' + code);
+                debug(this.logger, 'evaluating script : ' + code);
                 try {
                     eval(code);
                 } catch (e) {
-                    this.logger.warn('Failed to evaluate script: \n' + code, e);
+                    warn(this.logger, 'Failed to evaluate script: \n' + code, e);
                 }
             }
         }

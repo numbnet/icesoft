@@ -58,19 +58,19 @@ var onLostPongs = operator();
     };
 
     This.Heartbeat = function(period, timeout, logger) {
-        var logger = logger.child('heartbeat');
+        var logger = childLogger(logger, 'heartbeat');
         var pingListeners = [];
         var lostPongListeners = [];
 
         var beat = Delay(function() {
             var timeoutBomb = runOnce(Delay(function() {
-                logger.warn('pong lost');
+                warn(logger, 'pong lost');
                 each(lostPongListeners, notify);
             }, timeout));
 
-            logger.info('ping');
+            info(logger, 'ping');
             broadcast(pingListeners, [function() {
-                logger.info('pong');
+                info(logger, 'pong');
                 each(lostPongListeners, reset);
                 stop(timeoutBomb);
             }]);
@@ -79,7 +79,7 @@ var onLostPongs = operator();
         return object(function(method) {
             method(startBeat, function(self) {
                 run(beat);
-                logger.info('heartbeat started');
+                info(logger, 'heartbeat started');
 
                 return self;
             });
@@ -89,7 +89,7 @@ var onLostPongs = operator();
 
                 empty(pingListeners);
                 empty(lostPongListeners);
-                logger.info('heartbeat stopped');
+                info(logger, 'heartbeat stopped');
 
                 return self;
             });

@@ -41,7 +41,7 @@ var shutdown = operator();
 
 [ Ice.Community.Connection = new Object, Ice.Connection, Ice.Reliability.Heartbeat ].as(function(This, Connection, Heartbeat) {
     This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
-        var logger = logger.child('async-connection');
+        var logger = childLogger(logger, 'async-connection');
         var sendChannel = Client(true);
         var receiveChannel = Client(false);
         var defaultQuery = Query();
@@ -99,13 +99,13 @@ var shutdown = operator();
 
         //register command that handles the updated-views message
         register(commandDispatcher, 'updated-views', function(message) {
-            logger.info("Views update: " + value(updatedViews));
+            info(logger, "Views update: " + value(updatedViews));
             var views = split(value(updatedViews), ' ');
             var text = message.firstChild;
             if (text && !blank(text.data)) {
                 update(updatedViews, join(asSet(concatenate(views, split(text.data, ' '))), ' '));
             } else {
-                logger.warn("No updated views were returned.");
+                warn(logger, "No updated views were returned.");
             }
         });
 
@@ -137,9 +137,9 @@ var shutdown = operator();
         }
 
         function connect() {
-            logger.debug("closing previous connection...");
+            debug(logger, "closing previous connection...");
             close(listener);
-            logger.debug("connect...");
+            debug(logger, "connect...");
             listener = postAsynchronously(receiveChannel, receiveURI, function(q) {
                 each(window.sessions, curry(addNameValue, q, 'ice.session'));
             }, function(request) {
@@ -230,7 +230,7 @@ var shutdown = operator();
         var blockingConnectionMonitor = run(Delay(function() {
             if (shouldEstablishBlockingConnection()) {
                 offerCandidature();
-                logger.info('blocking connection not initialized...candidate for its creation');
+                info(logger, 'blocking connection not initialized...candidate for its creation');
             } else {
                 if (isWinningCandidate()) {
                     if (!hasOwner()) {
@@ -242,7 +242,7 @@ var shutdown = operator();
                 }
                 if (hasOwner() && isLeaseExpired()) {
                     offerCandidature();
-                    logger.info('blocking connection lease expired...candidate for its creation');
+                    info(logger, 'blocking connection lease expired...candidate for its creation');
                 }
             }
         }, pollingPeriod));
@@ -270,24 +270,24 @@ var shutdown = operator();
                     update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
                 }
             } catch (e) {
-                logger.warn('failed to listen for updates', e);
+                warn(logger, 'failed to listen for updates', e);
             }
         }, 300));
 
-        logger.info('asynchronous mode');
+        info(logger, 'asynchronous mode');
 
         return object(function(method) {
             method(send, function(self, query) {
                 stop(timeoutBomb);
                 timeoutBomb = runOnce(Delay(broadcaster(connectionDownListeners), timeout));
                 broadcast(onSendListeners);
-                logger.debug('send > ' + sendURI);
+                debug(logger, 'send > ' + sendURI);
                 postAsynchronously(sendChannel, sendURI, function(q) {
                     addQuery(q, query);
                     addQuery(q, defaultQuery);
                     addNameValue(q, 'ice.focus', window.currentFocus);
 
-                    logger.debug('\n' + asString(q));
+                    debug(logger, '\n' + asString(q));
                 }, FormPost, $witch(function(condition) {
                     condition(OK, function(response, request) {
                         stop(timeoutBomb);
