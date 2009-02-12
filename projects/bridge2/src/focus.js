@@ -52,14 +52,14 @@ function setFocus(id) {
                 if (e) {
                     e.focus();
                 } else {
-                    logger.info('Cannot set focus, no element for id [' + id + "]");
+                    info(logger, 'Cannot set focus, no element for id [' + id + "]");
                 }
-                logger.debug('Focus Set on [' + id + "]");
+                debug(logger, 'Focus Set on [' + id + "]");
             } catch(e) {
-                logger.info('Cannot set focus, no element for id [' + id + ']', e);
+                info(logger, 'Cannot set focus, no element for id [' + id + ']', e);
             }
         } else {
-            logger.debug('Focus interupted. Not Set on [' + id + ']');
+            debug(logger, 'Focus interupted. Not Set on [' + id + ']');
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }).delayFor(100);

@@ -45,7 +45,7 @@
 
     This.Synchronizer = Object.subclass({
         initialize: function(logger, sessionID, viewID) {
-            this.logger = logger.child('synchronizer');
+            this.logger = childLogger(logger, 'synchronizer');
             this.ajax = new Ajax.Client(this.logger);
             var id = 'history-frame:' + sessionID + ':' + viewID;
             try {
@@ -59,23 +59,23 @@
             try {
                 if (this.historyFrame.location.hash.length > 0) this.reload();
             } catch (e) {
-                this.logger.error("History frame reload failed: " + e);
+                error(this.logger, "History frame reload failed: " + e);
             }
         },
 
         synchronize: function() {
             try {
                 this.historyFrame.location.replace(this.historyFrame.location + '#reload');
-                this.logger.debug('mark document as modified');
+                debug(this.logger, 'mark document as modified');
                 this.synchronize = Function.NOOP;
             } catch(e) {
-                this.logger.warn('could not mark document as modified', e);
+                warn(this.logger, 'could not mark document as modified', e);
             }
         },
 
         reload: function() {
             try {
-                this.logger.info('synchronize body');
+                this.info(logger, 'synchronize body');
                 this.ajax.getAsynchronously(document.URL, '', function(request) {
                     request.setRequestHeader('Connection', 'close');
                     request.on(Connection.OK, function(response) {
@@ -83,7 +83,7 @@
                     });
                 });
             } catch (e) {
-                this.logger.error('failed to reload body', e);
+                error(this.logger, 'failed to reload body', e);
             }
         },
 

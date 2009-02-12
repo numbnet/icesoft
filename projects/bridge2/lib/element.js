@@ -396,7 +396,7 @@
                 try {
                     this.element.setAttribute(name, value);
                 } catch (e) {
-                    logger.error('failed to set attribute ' + name + ':' + value, e);
+                    error(logger, 'failed to set attribute ' + name + ':' + value, e);
                 }
             }.bind(this));
         },
