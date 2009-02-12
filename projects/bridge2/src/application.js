@@ -38,6 +38,11 @@ function FormPost(request) {
     setHeader(request, 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 }
 
+var connection = operator();
+var attachStatusManager = operator();
+var disposeBridge = operator();
+var disposeBridgeAndNotify = operator();
+
 [ Ice.Community ].as(function(This) {
     var client = Client(true);
     var views = window.views = window.views ? window.views : [];
@@ -79,140 +84,147 @@ function FormPost(request) {
 
     onBeforeUnload(window, disposeWindowViews);
 
-    This.Application = Object.subclass({
-        initialize: function(configuration, container) {
-            var sessionID = configuration.session;
-            var viewID = configuration.view;
-            enlistView(sessionID, viewID);
-            var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
-            var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
-            var scriptLoader = new Ice.Script.Loader(logger);
-            var commandDispatcher = Ice.Command.Dispatcher();
-            var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
-            var replaceContainerHTML = function(html) {
-                Ice.Document.replaceContainerHTML(container, html);
-                scriptLoader.searchAndEvaluateScripts(container);
-            };
+    This.Application = function(configuration, container) {
+        var sessionID = configuration.session;
+        var viewID = configuration.view;
+        enlistView(sessionID, viewID);
+        var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
+        var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
+        var scriptLoader = new Ice.Script.Loader(logger);
+        var commandDispatcher = Ice.Command.Dispatcher();
+        var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
+        var replaceContainerHTML = function(html) {
+            Ice.Document.replaceContainerHTML(container, html);
+            scriptLoader.searchAndEvaluateScripts(container);
+        };
 
-            var connection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
-            var dispose = function() {
-                dispose = noop;
-                documentSynchronizer.shutdown();
-                shutdown(connection);
-            };
+        var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
+        var dispose = function() {
+            dispose = noop;
+            documentSynchronizer.shutdown();
+            shutdown(asyncConnection);
+        };
 
-            register(commandDispatcher, 'noop', noop);
-            register(commandDispatcher, 'set-cookie', Ice.Command.SetCookie);
-            register(commandDispatcher, 'parsererror', Ice.Command.ParsingError);
-            register(commandDispatcher, 'redirect', function(element) {
-                //replace ampersand entities incorrectly decoded by Safari 2.0.4
-                var url = element.getAttribute("url").replace(/&#38;/g, "&");
-                logger.info('Redirecting to ' + url);
-                window.location.href = url;
-            });
-            register(commandDispatcher, 'reload', function(element) {
-                logger.info('Reloading');
-                var url = window.location.href;
-                delistWindowViews();
-                if (containsSubstring(url, 'rvn=')) {
+        register(commandDispatcher, 'noop', noop);
+        register(commandDispatcher, 'set-cookie', Ice.Command.SetCookie);
+        register(commandDispatcher, 'parsererror', Ice.Command.ParsingError);
+        register(commandDispatcher, 'redirect', function(element) {
+            //replace ampersand entities incorrectly decoded by Safari 2.0.4
+            var url = element.getAttribute("url").replace(/&#38;/g, "&");
+            logger.info('Redirecting to ' + url);
+            window.location.href = url;
+        });
+        register(commandDispatcher, 'reload', function(element) {
+            logger.info('Reloading');
+            var url = window.location.href;
+            delistWindowViews();
+            if (containsSubstring(url, 'rvn=')) {
+                window.location.reload();
+            } else {
+                var view = element.getAttribute('view');
+                if (view == '') {
                     window.location.reload();
                 } else {
-                    var view = element.getAttribute('view');
-                    if (view == '') {
-                        window.location.reload();
-                    } else {
-                        var queryPrefix = containsSubstring(url, '?') ? '&' : '?';
-                        window.location.href = url + queryPrefix + 'rvn=' + view;
+                    var queryPrefix = containsSubstring(url, '?') ? '&' : '?';
+                    window.location.href = url + queryPrefix + 'rvn=' + view;
+                }
+            }
+        });
+        register(commandDispatcher, 'macro', function(message) {
+            each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
+        });
+        register(commandDispatcher, 'updates', function(element) {
+            each(element.getElementsByTagName('update'), function(updateElement) {
+                try {
+                    var address = updateElement.getAttribute('address');
+                    var update = new Ice.ElementModel.Update(updateElement);
+                    address.asExtendedElement().updateDOM(update);
+                    logger.debug('applied update : ' + update.asString());
+                    scriptLoader.searchAndEvaluateScripts(address.asElement());
+                    if (Ice.StateMon) {
+                        Ice.StateMon.checkAll();
+                        Ice.StateMon.rebuild();
                     }
+                } catch (e) {
+                    logger.error('failed to insert element: ' + update.asString(), e);
                 }
             });
-            register(commandDispatcher, 'macro', function(message) {
-                each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
-            });
-            register(commandDispatcher, 'updates', function(element) {
-                each(element.getElementsByTagName('update'), function(updateElement) {
-                    try {
-                        var address = updateElement.getAttribute('address');
-                        var update = new Ice.ElementModel.Update(updateElement);
-                        address.asExtendedElement().updateDOM(update);
-                        logger.debug('applied update : ' + update.asString());
-                        scriptLoader.searchAndEvaluateScripts(address.asElement());
-                        if (Ice.StateMon) {
-                            Ice.StateMon.checkAll();
-                            Ice.StateMon.rebuild();
-                        }
-                    } catch (e) {
-                        logger.error('failed to insert element: ' + update.asString(), e);
-                    }
-                });
-            });
-            register(commandDispatcher, 'session-expired', function() {
-                logger.warn('Session has expired');
-                statusManager.sessionExpired.on();
-                //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
-                delistView(sessionID, viewID);
-                dispose();
-            });
+        });
+        register(commandDispatcher, 'session-expired', function() {
+            logger.warn('Session has expired');
+            statusManager.sessionExpired.on();
+            //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
+            delistView(sessionID, viewID);
+            dispose();
+        });
 
-            onUnload(window, dispose);
+        onUnload(window, dispose);
 
-            onSend(connection, function() {
-                statusManager.busy.on();
-            }, function() {
-                statusManager.busy.off();
+        onSend(asyncConnection, function() {
+            statusManager.busy.on();
+        }, function() {
+            statusManager.busy.off();
+        });
+
+        onReceive(asyncConnection, function(response) {
+            var mimeType = getHeader(response, 'Content-Type');
+            if (mimeType && startsWith(mimeType, 'text/html')) {
+                replaceContainerHTML(contentAsText(response));
+            } else if (mimeType && startsWith(mimeType, 'text/xml')) {
+                deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
+                documentSynchronizer.synchronize();
+            } else {
+                logger.warn('unknown content in response');
+            }
+            statusManager.connectionTrouble.off();
+        });
+
+        onServerError(asyncConnection, function (response) {
+            logger.warn('server side error');
+            disposeView(sessionID, viewID);
+            if (blank(contentAsText(response))) {
+                statusManager.serverError.on();
+            } else {
+                replaceContainerHTML(contentAsText(response));
+            }
+            dispose();
+        });
+
+        whenDown(asyncConnection, function() {
+            logger.warn('connection to server was lost');
+            statusManager.connectionLost.on();
+            dispose();
+        });
+
+        whenTrouble(asyncConnection, function() {
+            logger.warn('connection in trouble');
+            statusManager.connectionTrouble.on();
+        });
+
+        logger.info('bridge loaded!');
+
+        return object(function(method) {
+            //public method
+            method(connection, function(self) {
+                return asyncConnection;
             });
-
-            onReceive(connection, function(response) {
-                var mimeType = getHeader(response, 'Content-Type');
-                if (mimeType && startsWith(mimeType, 'text/html')) {
-                    replaceContainerHTML(contentAsText(response));
-                } else if (mimeType && startsWith(mimeType, 'text/xml')) {
-                    deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
-                    documentSynchronizer.synchronize();
-                } else {
-                    logger.warn('unknown content in response');
-                }
-                statusManager.connectionTrouble.off();
-            });
-
-            onServerError(connection, function (response) {
-                logger.warn('server side error');
-                disposeView(sessionID, viewID);
-                if (blank(contentAsText(response))) {
-                    statusManager.serverError.on();
-                } else {
-                    replaceContainerHTML(contentAsText(response));
-                }
-                dispose();
-            });
-
-            whenDown(connection, function() {
-                logger.warn('connection to server was lost');
-                statusManager.connectionLost.on();
-                dispose();
-            });
-
-            whenTrouble(connection, function() {
-                logger.warn('connection in trouble');
-                statusManager.connectionTrouble.on();
-            });
-
             //public method used to modify bridge's status manager
-            this.attachStatusManager = function(setup) {
+            method(attachStatusManager, function(self, setup) {
                 statusManager.off();
                 statusManager = setup(new Ice.Status.DefaultStatusManager(configuration, container));
                 logger.info("status indicators were updated");
-            };
-            //public methods
-            this.connection = connection;
-            this.dispose = dispose;
-            this.disposeAndNotify = function() {
+            });
+            //public method
+            method(disposeBridge, function(self) {
+                dispose();
+            });
+            //public method
+            method(disposeBridgeAndNotify, function(self) {
                 disposeView(sessionID, viewID);
                 dispose();
-            };
-            logger.info('bridge loaded!');
-        }
-    });
+            });
+        });
+    };
 });
 
 onKeyPress(document, function(ev) {

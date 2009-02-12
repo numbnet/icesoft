@@ -201,7 +201,7 @@
         },
 
         findConnection: function() {
-            return this.findBridge().connection;
+            return connection(this.findBridge());
         },
 
         findContainerFor: function(property) {
