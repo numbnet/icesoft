@@ -60,6 +60,9 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
     private final String AUTOCOMPLETE_DIV = "autoCompleteDiv";
     private static final Log log =
             LogFactory.getLog(SelectInputTextRenderer.class);
+    private static final String[] passThruAttributeExceptions = new String[] {
+        HTML.ONBLUR_ATTR, HTML.ONFOCUS_ATTR, HTML.ONKEYDOWN_ATTR, HTML.ONKEYUP_ATTR
+    };
 
     public boolean getRendersChildren() {
         return true;
@@ -129,12 +132,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         clientId);
             }
         }
-        Set excludes = new HashSet();
-        excludes.add(HTML.ONKEYDOWN_ATTR);
-        excludes.add(HTML.ONKEYUP_ATTR);
-        excludes.add(HTML.ONFOCUS_ATTR);
-        excludes.add(HTML.ONBLUR_ATTR);
-        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
+        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, passThruAttributeExceptions);
         if (!component.isDisabled() && !component.isReadonly()) {
             JavascriptContext.addJavascriptCall(facesContext, call);
         }
@@ -147,9 +145,23 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         SelectInputText component = (SelectInputText) uiComponent;
         Element input = (Element) domContext.getRootNode().getFirstChild();
-
-        input.setAttribute("onfocus", "setFocus(this.id);");
-        input.setAttribute("onblur", "setFocus('');");
+        
+        String combinedValue = "setFocus(this.id);";
+        Object appValue = uiComponent.getAttributes().get("onfocus");
+        if (appValue != null)
+            combinedValue += appValue.toString();
+        input.setAttribute("onfocus", combinedValue);
+        
+        combinedValue = "setFocus('');";
+        appValue = uiComponent.getAttributes().get("onblur");
+        if (appValue != null)
+            combinedValue += appValue.toString();
+        input.setAttribute("onblur", combinedValue);
+        
+        appValue = uiComponent.getAttributes().get("onchange");
+        if (appValue != null)
+            input.setAttribute("onchange", appValue.toString());
+        
         // this would prevent, when first valueChangeListener fires with null value
 //System.out.println("SelectInputTextRenderer.encodeChildren()  clientId: " + uiComponent.getClientId(facesContext));
         String value = getValue(facesContext, uiComponent);

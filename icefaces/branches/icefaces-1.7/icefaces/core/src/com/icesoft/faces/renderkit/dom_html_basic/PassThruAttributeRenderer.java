@@ -107,6 +107,7 @@ public class PassThruAttributeRenderer {
         passThruAttributeNames.add("usemap");
         passThruAttributeNames.add("width");
         passThruAttributeNames.add("width");
+        /*
         passThruAttributeNames.add("onclickeffect");
         passThruAttributeNames.add("ondblclickeffect");
         passThruAttributeNames.add("onmousedowneffect");
@@ -120,6 +121,7 @@ public class PassThruAttributeRenderer {
         passThruAttributeNames.add("onkeypresseffect");
         passThruAttributeNames.add("onkeydowneffect");
         passThruAttributeNames.add("onkeyupeffect");
+        */
         passThruAttributeNames.add("autocomplete");
 
         booleanPassThruAttributeNames.add("disabled");
