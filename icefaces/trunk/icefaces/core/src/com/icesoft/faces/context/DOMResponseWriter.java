@@ -42,7 +42,12 @@ import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -53,10 +58,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.beans.Beans;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ListResourceBundle;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.List;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -192,14 +206,14 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void writeText(Object text, String componentPropertyName)
             throws IOException {
-        if ("".equals(text)) {
+        if ("".equals(text))  {
             return;
         }
         appendToCursor(document.createTextNode(String.valueOf(text)));
     }
 
     public void writeText(char text[], int off, int len) throws IOException {
-        if (0 == len) {
+        if (0 == len)  {
             return;
         }
         appendToCursor(document.createTextNode(new String(text, off, len)));
@@ -226,7 +240,7 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void write(char[] cbuf, int off, int len) throws IOException {
-        if (0 == len) {
+        if (0 == len)  {
             return;
         }
         appendToCursor(document.createTextNode(new String(cbuf, off, len)));
@@ -237,14 +251,14 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void write(String str) throws IOException {
-        if ("".equals(str)) {
+        if ("".equals(str))  {
             return;
         }
         appendToCursor(document.createTextNode(str));
     }
 
     public void write(String str, int off, int len) throws IOException {
-        if (0 == len) {
+        if (0 == len)  {
             return;
         }
         appendToCursor(document.createTextNode(str.substring(off, len)));
@@ -333,7 +347,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
                         "window.disposeViewsURI = '" + ahsContextPath + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
-                        "container.bridge = Ice.Community.Application({" +
+                        "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
@@ -575,9 +589,9 @@ public class DOMResponseWriter extends ResponseWriter {
             // breaks because it ascends the hierarchy until it finds a node that does have an Id
             // which is usually the containing form. This results in all the Forms children being
             // serialized.
-
+                                                                 
             cursor = document.createElement("div");
-            ((Element) cursor).setAttribute("id", "stateSavingDiv");
+            ((Element) cursor).setAttribute("id", "stateSavingDiv" );
 
         } else {
             // swap cursor with savedNode
@@ -602,7 +616,7 @@ public class DOMResponseWriter extends ResponseWriter {
     /**
      * Copy the one generated stateSaving branch into all the marker (one per form)
      * node areas. <p>
-     * This method shouldn't be called if state saving is not enabled
+     * This method shouldn't be called if state saving is not enabled 
      */
     public void copyStateNodesToMarkers() {
 
@@ -618,16 +632,16 @@ public class DOMResponseWriter extends ResponseWriter {
                 // with the actual id, and preserve that ID in the PersistentFacesState object
                 // so that server push operations can restore state as well.
 
-                for (Node child = savedJSFStateCursor.getFirstChild(); child != null; child = child.getNextSibling()) {
+                for (Node child = savedJSFStateCursor.getFirstChild(); child != null; child = child.getNextSibling() ) {
 
                     nodeValue = child.getNodeValue();
                     if (nodeValue != null && nodeValue.indexOf("j_id") > -1) {
-                        PersistentFacesState.getInstance().setStateRestorationId(nodeValue);
+                        PersistentFacesState.getInstance().setStateRestorationId( nodeValue );
                         if (log.isDebugEnabled()) {
-                            log.debug("State id for server push state saving: " + nodeValue);
+                            log.debug("State id for server push state saving: " + nodeValue );
                         }
                     }
-                    n.appendChild(child.cloneNode(true));
+                    n.appendChild( child.cloneNode( true ));
                 }
             }
             //avoids unnecessary DOM diff due to normalization during
@@ -641,12 +655,13 @@ public class DOMResponseWriter extends ResponseWriter {
      * Keep the marker nodes (1 per form) in a structure so that at the end
      * of the lifecycle we can copy the state saving information into each
      * one.
-     *
+     * 
      * @param n Placeholding node inside the form to hold state saving info
      */
     public void trackMarkerNode(Node n) {
-        markerNodes.add(n);
-    }
+       markerNodes.add( n );
+    } 
+
 
 
     private void displayParent(Node n) {
