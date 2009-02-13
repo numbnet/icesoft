@@ -41,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,8 +109,8 @@ public class RenderManager implements Disposable {
      */
     public DelayRenderer getDelayRenderer(final String rendererName) {
         return
-                internalRenderManager != null ?
-                        internalRenderManager.getDelayRenderer(rendererName) : null;
+            internalRenderManager != null ?
+                internalRenderManager.getDelayRenderer(rendererName) : null;
     }
 
     public static RenderManager getInstance() {
@@ -132,8 +133,8 @@ public class RenderManager implements Disposable {
      */
     public IntervalRenderer getIntervalRenderer(final String rendererName) {
         return
-                internalRenderManager != null ?
-                        internalRenderManager.getIntervalRenderer(rendererName) : null;
+            internalRenderManager != null ?
+                internalRenderManager.getIntervalRenderer(rendererName) : null;
     }
 
     /**
@@ -152,8 +153,8 @@ public class RenderManager implements Disposable {
      */
     public OnDemandRenderer getOnDemandRenderer(final String rendererName) {
         return
-                internalRenderManager != null ?
-                        internalRenderManager.getOnDemandRenderer(rendererName) : null;
+            internalRenderManager != null ?
+                internalRenderManager.getOnDemandRenderer(rendererName) : null;
     }
 
     /**
@@ -166,14 +167,20 @@ public class RenderManager implements Disposable {
      */
     public AsyncRenderer getRenderer(final String rendererName) {
         return
-                internalRenderManager != null ?
-                        internalRenderManager.getRenderer(rendererName) : null;
+            internalRenderManager != null ?
+                internalRenderManager.getRenderer(rendererName) : null;
+    }
+
+    public ServletContext getServletContext() {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getServletContext() : null;
     }
 
     public boolean isBroadcasted() {
         return
-                internalRenderManager != null &&
-                        internalRenderManager.isBroadcasted();
+            internalRenderManager != null &&
+                internalRenderManager.isBroadcasted();
     }
 
     /**
@@ -211,10 +218,7 @@ public class RenderManager implements Disposable {
 
         if (internalRenderManager == null) {
             internalRenderManager =
-                    new InternalRenderManager(
-                            new ServletContextConfiguration(
-                                    "com.icesoft.faces.async.render",
-                                    servletConfig.getServletContext()));
+                new InternalRenderManager(servletConfig.getServletContext());
         }
     }
 
@@ -243,8 +247,8 @@ public class RenderManager implements Disposable {
      */
     ScheduledThreadPoolExecutor getScheduledService() {
         return
-                internalRenderManager != null ?
-                        internalRenderManager.getScheduledService() : null;
+            internalRenderManager != null ?
+                internalRenderManager.getScheduledService() : null;
     }
 
     void requestRender(final AsyncRenderer renderer) {
@@ -254,24 +258,29 @@ public class RenderManager implements Disposable {
     }
 
     private static class InternalRenderManager
-            extends RenderManager
-            implements Disposable {
+    extends RenderManager
+    implements Disposable {
         private static final Log LOG =
-                LogFactory.getLog(InternalRenderManager.class);
+            LogFactory.getLog(InternalRenderManager.class);
 
+        private final ServletContext servletContext;
         private final RenderHub renderHub;
         private final BroadcastHub broadcastHub = new BroadcastHub();
         private final Map rendererGroupMap =
-                Collections.synchronizedMap(new HashMap());
+            Collections.synchronizedMap(new HashMap());
         private final ContextDestroyedListener shutdownListener =
-                new ContextDestroyedListener(this);
+            new ContextDestroyedListener(this);
 
         private boolean broadcasted;
 
-        private InternalRenderManager(final Configuration configuration) {
+        private InternalRenderManager(final ServletContext servletContext) {
+            this.servletContext = servletContext;
+            Configuration configuration =
+                new ServletContextConfiguration(
+                    "com.icesoft.faces.async.render", this.servletContext);
             renderHub = new RenderHub(configuration);
             setBroadcasted(
-                    configuration.getAttributeAsBoolean("broadcasted", false));
+                configuration.getAttributeAsBoolean("broadcasted", false));
             ContextEventRepeater.addListener(shutdownListener);
             broadcastHub.setRenderManager(this);
         }
@@ -286,9 +295,9 @@ public class RenderManager implements Disposable {
                  * to remove itself from the official groupMap.
                  */
                 Iterator renderers =
-                        new ArrayList(rendererGroupMap.values()).iterator();
+                    new ArrayList(rendererGroupMap.values()).iterator();
                 while (renderers.hasNext()) {
-                    AsyncRenderer renderer = (AsyncRenderer) renderers.next();
+                    AsyncRenderer renderer = (AsyncRenderer)renderers.next();
                     renderer.dispose();
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Renderer disposed: " + renderer);
@@ -302,22 +311,26 @@ public class RenderManager implements Disposable {
         }
 
         public DelayRenderer getDelayRenderer(final String rendererName) {
-            return (DelayRenderer) getRenderer(rendererName, DELAY);
+            return (DelayRenderer)getRenderer(rendererName, DELAY);
         }
 
         public IntervalRenderer getIntervalRenderer(final String rendererName) {
-            return (IntervalRenderer) getRenderer(rendererName, INTERVAL);
+            return (IntervalRenderer)getRenderer(rendererName, INTERVAL);
         }
 
         public OnDemandRenderer getOnDemandRenderer(final String rendererName) {
-            return (OnDemandRenderer) getRenderer(rendererName, ON_DEMAND);
+            return (OnDemandRenderer)getRenderer(rendererName, ON_DEMAND);
         }
 
         public AsyncRenderer getRenderer(final String rendererName) {
             if (rendererName == null) {
                 return null;
             }
-            return (AsyncRenderer) rendererGroupMap.get(rendererName);
+            return (AsyncRenderer)rendererGroupMap.get(rendererName);
+        }
+
+        public ServletContext getServletContext() {
+            return servletContext;
         }
 
         public boolean isBroadcasted() {
@@ -389,24 +402,24 @@ public class RenderManager implements Disposable {
          *                                  empty, or if the <code>type</code> is illegal.
          */
         private synchronized AsyncRenderer getRenderer(
-                final String name, final int type)
-                throws IllegalArgumentException {
+            final String name, final int type)
+        throws IllegalArgumentException {
 
             if (name == null || name.trim().length() == 0) {
                 throw
-                        new IllegalArgumentException(
-                                "Illegal renderer name: " + name);
+                    new IllegalArgumentException(
+                        "Illegal renderer name: " + name);
             }
             if (type < MIN || type > MAX) {
                 throw
-                        new IllegalArgumentException(
-                                "Illegal renderer type: " + type);
+                    new IllegalArgumentException(
+                        "Illegal renderer type: " + type);
             }
             if (rendererGroupMap.containsKey(name)) {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("Existing renderer retrieved: " + name);
                 }
-                return (AsyncRenderer) rendererGroupMap.get(name);
+                return (AsyncRenderer)rendererGroupMap.get(name);
             }
             AsyncRenderer renderer;
             switch (type) {

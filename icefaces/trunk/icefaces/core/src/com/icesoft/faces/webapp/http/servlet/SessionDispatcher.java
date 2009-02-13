@@ -196,6 +196,10 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         return lookupSessionDispatcher(applicationMap).lookupServer(sessionId);
     }
 
+    public static Server getSingletonSessionServer(final String sessionId, final ServletContext servletContext) {
+        return lookupSessionDispatcher(servletContext).lookupServer(sessionId);
+    }
+
     public static class Listener implements ServletContextListener, HttpSessionListener {
         private boolean run = true;
 
