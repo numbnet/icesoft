@@ -35,13 +35,10 @@ package com.icesoft.faces.component.menupopup;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ContextActionEvent;
-import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.menubar.MenuBar;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 import javax.faces.component.UIComponent;
-import javax.faces.el.MethodBinding;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
 
@@ -66,9 +63,6 @@ import javax.faces.event.ActionEvent;
  * @author Mark Collette
  */
 public class MenuPopup extends MenuBar {
-
-    private MethodBinding displayListener;
-    final static String DISPLAY_LISTENER_ID = "_dynamic"; 
     /**
      * default no args constructor
      */
@@ -138,29 +132,6 @@ public class MenuPopup extends MenuBar {
             e = new ContextActionEvent(e.getComponent(), contextTarget, contextValue);
         }
         super.queueEvent(e);
-    }
-    
-    /**
-     * <p>Return the value of the <code>displayListener</code> property.</p>
-     */
-    public MethodBinding getDisplayListener() {
-        return displayListener;
-    }
-
-    /**
-     * <p>Set the value of the <code>displayListener</code> property.</p>
-     */
-    public void setDisplayListener(MethodBinding displayListener) {
-        this.displayListener = displayListener;
-   }
-    
-    public void broadcast(FacesEvent event)
-    throws AbortProcessingException {
-        super.broadcast(event);
-        if (displayListener != null) {
-            Object[] displayEvent = {(DisplayEvent) event};
-            displayListener.invoke(getFacesContext(), displayEvent);
-        }
     }
 }
 

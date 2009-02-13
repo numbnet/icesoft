@@ -33,14 +33,11 @@
 
 package com.icesoft.faces.component.menupopup;
 
-import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.menubar.MenuBarRenderer;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -51,35 +48,8 @@ import org.w3c.dom.Element;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.Map;
 
 public class MenuPopupRenderer extends MenuBarRenderer {
-
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        super.decode(facesContext, uiComponent);
-        Map requestMap =
-            facesContext.getExternalContext().getRequestParameterMap();
-        String clientId = uiComponent.getClientId(facesContext);
-        String displayListenerId = clientId + "_sub" + MenuPopup.DISPLAY_LISTENER_ID;
-        if (requestMap.containsKey(displayListenerId) && 
-                requestMap.get("ice.event.captured").equals(displayListenerId) ) {
-            String displayListenerValue = (String) requestMap.get(displayListenerId);
-            if (displayListenerValue != null) {
-                String xy[] = displayListenerValue.split(",");
-                if (xy.length < 3) return;
-                JavascriptContext.addJavascriptCall(facesContext, "Ice.Menu.showIt('"+
-                            xy[0]+"', '"+ xy[1] +"', '"+ xy[2]+ "', '"+ xy[3] +"');");
-                UIComponent targetComponent = D2DViewHandler.findComponent(xy[3].trim(), 
-                        facesContext.getViewRoot());
-                uiComponent.queueEvent(new DisplayEvent(uiComponent,
-                        targetComponent,
-                        xy[3].trim(),
-                        true
-                        ));
-            }
-        }
-    }
-
     protected void trailingEncodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
@@ -88,16 +58,6 @@ public class MenuPopupRenderer extends MenuBarRenderer {
             //String style = (String) uiComponent.getAttributes().get("style");
             //style = CurrentStyle.modifyStyleWithVisibility(style, false);
             //CurrentStyle.setStyleOnElement(style, menuDiv);
-            MenuPopup menuPopup = (MenuPopup) uiComponent;            
-            if (menuPopup.getDisplayListener() != null) {
-                Element progressListenerFld = domContext.createElement(HTML.INPUT_ELEM);
-                progressListenerFld.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.DISPLAY_LISTENER_ID);
-                progressListenerFld.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "_sub" + MenuPopup.DISPLAY_LISTENER_ID);            
-                progressListenerFld.setAttribute(HTML.TYPE_ATTR, "hidden");
-                progressListenerFld.setAttribute(HTML.STYLE_ATTR, "display:none;");
-                progressListenerFld.setAttribute(HTML.VALUE_ATTR, "");
-                menuDiv.appendChild(progressListenerFld);
-            }
             
             // Put the top level menu items into a separate child div
             Element submenuDiv = domContext.createElement(HTML.DIV_ELEM);
