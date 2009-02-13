@@ -115,7 +115,9 @@ implements MessageServiceAdapter {
         if (this.jmsProviderConfigurations == null) {
             String _serverInfo = servletContext.getServerInfo();
             LOG.info("Server Info: " + _serverInfo);
-            if (_serverInfo.startsWith("Sun Java System Application Server")) {
+            if (_serverInfo.startsWith("Sun Java System Application Server") ||
+                // as of GlassFish V2.1 Final:
+                _serverInfo.startsWith("Sun GlassFish Enterprise Server")) {
                 // GlassFish
                 LOG.info("Messaging Properties: glassfish.properties");
                 this.jmsProviderConfigurations =
