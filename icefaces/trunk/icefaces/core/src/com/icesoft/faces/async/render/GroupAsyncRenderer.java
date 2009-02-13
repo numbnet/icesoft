@@ -48,7 +48,6 @@ import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -278,8 +277,6 @@ implements AsyncRenderer {
          * Invocation from a non-JSF thread currently cannot invoke a render
          * on sessions.
          */
-        boolean fromJSFThread = FacesContext.getCurrentInstance() != null;
-        boolean containsSessions = false;
         for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
             /*
              * From the CopyOnWriteArraySet:
@@ -296,23 +293,9 @@ implements AsyncRenderer {
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
-                containsSessions = true;
-                if (fromJSFThread) {
-                    requestRender((HttpSession)object);
-                }
+                requestRender((HttpSession)object);
             } else if (object instanceof PortletSession) {
-                containsSessions = true;
-                if (fromJSFThread) {
-                    requestRender((PortletSession)object);
-                }
-            }
-        }
-        if (!fromJSFThread && containsSessions) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(
-                    "Render request done from non-JSF thread. Session(s) " +
-                        "contained in group '" + name + "' did not receive a " +
-                        "render.");
+                requestRender((PortletSession)object);
             }
         }
     }
@@ -423,8 +406,7 @@ implements AsyncRenderer {
                     SessionDispatcher.
                         getSingletonSessionServer(
                             sessionId,
-                            FacesContext.getCurrentInstance().
-                                getExternalContext().getApplicationMap())
+                            RenderManager.getInstance().getServletContext())
                 ).getViews().values().iterator();
             i.hasNext();
             ) {
