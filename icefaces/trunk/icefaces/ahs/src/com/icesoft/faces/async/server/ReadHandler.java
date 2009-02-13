@@ -310,11 +310,11 @@ implements Handler, Runnable {
                     // This should never happen!
             }
         } catch (ProtocolException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(
-                    "An error occurred while " +
-                        "parsing the incoming HTTP request!",
-                    exception);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Connection broken by client.", exception);
+            } else if (LOG.isDebugEnabled()) {
+                LOG.debug(
+                    "Connection broken by client: " + exception.getMessage());
             }
             httpConnection.setException(exception);
         } catch (IOException exception) {

@@ -124,8 +124,12 @@ implements HttpConnectionAcceptor {
                         _registration.selectionKey.interestOps() |
                             _registration.operations);
                 } catch (CancelledKeyException exception) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Selection Key got cancelled!", exception);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Connection broken by client.", exception);
+                    } else if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Connection broken by client: " +
+                                exception.getMessage());
                     }
                 }
             }

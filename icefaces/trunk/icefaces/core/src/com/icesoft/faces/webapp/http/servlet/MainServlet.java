@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.SocketException;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
@@ -92,6 +93,17 @@ public class MainServlet extends HttpServlet {
         try {
             currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
+        } catch (SocketException e) {
+            if ("Broken pipe".equals(e.getMessage())) {
+                // client left the page
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Connection broken by client.", e);
+                } else if (LOG.isDebugEnabled()) {
+                    LOG.debug("Connection broken by client: " + e.getMessage());
+                }
+            } else {
+                throw new ServletException(e);
+            }
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

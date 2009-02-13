@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.MultipartStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.logging.Log;
@@ -62,67 +63,75 @@ public class UploadServer implements Server {
                 FileItemIterator iter = uploader.getItemIterator(servletRequest);
                 String viewIdentifier = null;
                 String componentID = null;
-                while (iter.hasNext()) {
-                    FileItemStream item = iter.next();
-                    if (item.isFormField()) {
-                        String name = item.getFieldName();
-                        if ("ice.component".equals(name)) {
-                            componentID = Streams.asString(item.openStream());
-                        } else if ("ice.view".equals(name)) {
-                            viewIdentifier = Streams.asString(item.openStream());
-                        }
-                    } else {
-                        final View view = (View) views.get(viewIdentifier);
-                        view.installThreadLocals();
-                        final PersistentFacesState state = view.getPersistentFacesState(); 
-                        final BridgeFacesContext context = view.getFacesContext();
-                        
-                        if (log.isDebugEnabled()) {
-                            log.debug("UploadServer");
-                            log.debug("  viewIdentifier: " + viewIdentifier);
-                            log.debug("  componentID: " + componentID);
-                        }
-                        
-                        UploadConfig componentUploadConfig = null;
-                        String key = viewIdentifier + " " + componentID;
-                        Object sessionObj = context.getExternalContext().getSession(false);
-                        if (sessionObj != null) {
-                            synchronized(sessionObj) {
-                                Map map = context.getExternalContext().getSessionMap();
-                                componentUploadConfig = (UploadConfig) map.get(key);
+                try {
+                    while (iter.hasNext()) {
+                        FileItemStream item = iter.next();
+                        if (item.isFormField()) {
+                            String name = item.getFieldName();
+                            if ("ice.component".equals(name)) {
+                                componentID = Streams.asString(item.openStream());
+                            } else if ("ice.view".equals(name)) {
+                                viewIdentifier = Streams.asString(item.openStream());
+                            }
+                        } else {
+                            final View view = (View) views.get(viewIdentifier);
+                            view.installThreadLocals();
+                            final PersistentFacesState state = view.getPersistentFacesState();
+                            final BridgeFacesContext context = view.getFacesContext();
+
+                            if (log.isDebugEnabled()) {
+                                log.debug("UploadServer");
+                                log.debug("  viewIdentifier: " + viewIdentifier);
+                                log.debug("  componentID: " + componentID);
+                            }
+
+                            UploadConfig componentUploadConfig = null;
+                            String key = viewIdentifier + " " + componentID;
+                            Object sessionObj = context.getExternalContext().getSession(false);
+                            if (sessionObj != null) {
+                                synchronized(sessionObj) {
+                                    Map map = context.getExternalContext().getSessionMap();
+                                    componentUploadConfig = (UploadConfig) map.get(key);
+                                }
+                            }
+                            UploadConfig uploadConfig = new UploadConfig(
+                                componentUploadConfig, componentID,
+                                maxSize, uniqueFolder,
+                                uploadDirectory, uploadDirectoryAbsolute);
+                            if (log.isDebugEnabled()) {
+                                log.debug("  session map key: " + key);
+                                log.debug("  componentUploadConfig: " + componentUploadConfig);
+                                log.debug("  uploadConfig: " + uploadConfig);
+                            }
+                            FileInfo fileInfo = new FileInfo();
+                            fileInfo.setStatus(FileInfo.UPLOADING);
+                            progressCalculator.setLifecycleState(
+                                state, uploadConfig, fileInfo);
+                            String iframeContent = null;
+                            try {
+                                upload(
+                                    item,
+                                    fileInfo,
+                                    uploadConfig,
+                                    servletRequest.getSession().getServletContext(),
+                                    servletRequest.getRequestedSessionId());
+                                UploadStateHolder stateHolder = progressCalculator.doLifecycle();
+                                iframeContent = getResultingIframeContent(context, stateHolder);
+                            } catch (IOException e) {
+                                log.warn("File upload problem", e);
+                            } catch (Throwable t) {
+                                log.warn("File upload issue", t);
+                            } finally {
+                                request.respondWith(new StringContentHandler(
+                                        "text/html", "UTF-8", iframeContent));
                             }
                         }
-                        UploadConfig uploadConfig = new UploadConfig(
-                            componentUploadConfig, componentID,
-                            maxSize, uniqueFolder,
-                            uploadDirectory, uploadDirectoryAbsolute);
-                        if (log.isDebugEnabled()) {
-                            log.debug("  session map key: " + key);
-                            log.debug("  componentUploadConfig: " + componentUploadConfig);
-                            log.debug("  uploadConfig: " + uploadConfig);
-                        }
-                        FileInfo fileInfo = new FileInfo();
-                        fileInfo.setStatus(FileInfo.UPLOADING);
-                        progressCalculator.setLifecycleState(
-                            state, uploadConfig, fileInfo);
-                        String iframeContent = null;
-                        try {
-                            upload(
-                                item,
-                                fileInfo,
-                                uploadConfig,
-                                servletRequest.getSession().getServletContext(),
-                                servletRequest.getRequestedSessionId());
-                            UploadStateHolder stateHolder = progressCalculator.doLifecycle();
-                            iframeContent = getResultingIframeContent(context, stateHolder);
-                        } catch (IOException e) {
-                            log.warn("File upload problem", e);
-                        } catch (Throwable t) {
-                            log.warn("File upload issue", t);
-                        } finally {
-                            request.respondWith(new StringContentHandler(
-                                    "text/html", "UTF-8", iframeContent));
-                        }
+                    }
+                } catch (MultipartStream.MalformedStreamException exception) {
+                    if (log.isTraceEnabled()) {
+                        log.trace("Connection broken by client.", exception);
+                    } else if (log.isDebugEnabled()) {
+                        log.debug("Connection broken by client: " + exception.getMessage());
                     }
                 }
             }
