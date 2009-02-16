@@ -1,30 +1,17 @@
-function registerWindowListener(eventType, w, listener) {
-    var previousListener = w[eventType];
+function registerListener(eventType, obj, listener) {
+    var previousListener = obj[eventType];
     if (previousListener) {
-        w[eventType] = function() {
+        obj[eventType] = function() {
             previousListener();
             listener();
         };
     } else {
-        w[eventType] = listener;
+        obj[eventType] = listener;
     }
 }
 
-var onLoad = curry(registerWindowListener, 'onload');
-var onUnload = curry(registerWindowListener, 'onunload');
-var onBeforeUnload = curry(registerWindowListener, 'onbeforeunload');
-
-function registerDocumentListener(eventType, w, listener) {
-    var previousListener = w[eventType];
-    if (previousListener) {
-        w[eventType] = function(e) {
-            previousListener(e);
-            listener(e);
-        };
-    } else {
-        w[eventType] = listener;
-    }
-}
-
-var onKeyPress = curry(registerDocumentListener, 'onkeypress')
-var onKeyUp = curry(registerDocumentListener, 'onkeyup') 
+var onLoad = curry(registerListener, 'onload');
+var onUnload = curry(registerListener, 'onunload');
+var onBeforeUnload = curry(registerListener, 'onbeforeunload');
+var onKeyPress = curry(registerListener, 'onkeypress')
+var onKeyUp = curry(registerListener, 'onkeyup')
