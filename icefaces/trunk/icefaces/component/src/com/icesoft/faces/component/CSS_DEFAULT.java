@@ -370,4 +370,8 @@ public class CSS_DEFAULT {
     public static final String PANEL_DIVIDER_SPLITTER = "Spt"; 
     public static final String PANEL_DIVIDER_CONTAINER = "Cnt";    
     
+    public static final String PANEL_CONFIRMATION_BASE = "icePnlCnf";
+    public static final String PANEL_CONFIRMATION_HEADER = "Hdr";
+    public static final String PANEL_CONFIRMATION_BODY = "Body";
+    public static final String PANEL_CONFIRMATION_BUTTONS = "Btns";
 }

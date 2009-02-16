@@ -39,6 +39,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.CSS_DEFAULT;
 
 public class PanelConfirmation extends UIComponentBase {
 
@@ -189,11 +191,28 @@ public class PanelConfirmation extends UIComponentBase {
      * <p>Return the value of the <code>styleClass</code> property.</p>
      */
     public String getStyleClass() {
-        if (styleClass != null) {
-            return styleClass;
-        }
-        ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return Util.getQualifiedStyleClass(this, styleClass, CSS_DEFAULT.PANEL_CONFIRMATION_BASE, "styleClass");
+    }
+    
+    /**
+     * <p>Return the value of the <code>headerClass</code> property.</p>
+     */
+    public String getHeaderClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.PANEL_CONFIRMATION_HEADER);
+    }
+    
+    /**
+     * <p>Return the value of the <code>bodyClass</code> property.</p>
+     */
+    public String getBodyClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.PANEL_CONFIRMATION_BODY);
+    }
+    
+    /**
+     * <p>Return the value of the <code>buttonsClass</code> property.</p>
+     */
+    public String getButtonsClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.PANEL_CONFIRMATION_BUTTONS);
     }
 
     /**

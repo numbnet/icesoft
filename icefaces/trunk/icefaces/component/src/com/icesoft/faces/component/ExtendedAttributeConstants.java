@@ -161,8 +161,10 @@ public class ExtendedAttributeConstants {
     public final static int ICE_TREE = 71;
 
     public final static int ICE_PANELPOSITIONED = 72;
+    
+    public final static int ICE_PANELCONFIRMATION = 73;
 
-    private final static Object[] attributes = new Object[73];
+    private final static Object[] attributes = new Object[74];
     static{
            final String[] ICE_EFFECT = 
                new String[]{};
@@ -383,6 +385,9 @@ public class ExtendedAttributeConstants {
            final String[] ICE_PANELPOSITIONED = 
                new String[]{ HTML.ROWS_ATTR,  HTML.STYLE_ATTR };                        
            attributes[72] = (ICE_PANELPOSITIONED);
+           final String[] ICE_PANELCONFIRMATION =
+               new String[]{ HTML.STYLE_ATTR, HTML.TITLE_ATTR };
+           attributes[73] = (ICE_PANELCONFIRMATION);
     }
 
     public static String[] getAttributes(int i){

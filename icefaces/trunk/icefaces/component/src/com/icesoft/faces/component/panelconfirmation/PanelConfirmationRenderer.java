@@ -37,7 +37,6 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.util.CoreUtils;
@@ -50,14 +49,14 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class PanelConfirmationRenderer extends DomBasicRenderer {
 
-    private static final String[] passThruAttributes = new String[]{ HTML.STYLE_ATTR, HTML.TITLE_ATTR };
-    
-    public static final String PANEL_CONFIRMATION_DEFAULT_STYLE_CLASS = "icePnlCnf";
-    public static final String HEADER = "Hdr";
-    public static final String BODY = "Body";
-    public static final String BUTTONS = "Btns";
+    // everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE = new String[]{ HTML.STYLE_ATTR, HTML.TITLE_ATTR };
+    private static final String[] PASSTHRU = ExtendedAttributeConstants.getAttributes(
+        ExtendedAttributeConstants.ICE_PANELCONFIRMATION, PASSTHRU_EXCLUDE);
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -86,15 +85,16 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
             rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
         }
         
-        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, passThruAttributes);
-        
         String id = panelConfirmation.getClientId(facesContext);
         
         rootDiv.setAttribute(HTML.ID_ATTR, id);
-        String style = panelConfirmation.getStyle() != null ? panelConfirmation.getStyle() : "";
-        rootDiv.setAttribute(HTML.STYLE_ATTR, "display: none;" + style);
-        String styleClass = panelConfirmation.getStyleClass() != null ? " " + panelConfirmation.getStyleClass() : "";
-        rootDiv.setAttribute(HTML.CLASS_ATTR, PANEL_CONFIRMATION_DEFAULT_STYLE_CLASS + styleClass);
+        String style = panelConfirmation.getStyle();
+        if (style != null) {
+            rootDiv.setAttribute(HTML.STYLE_ATTR, style + "display: none;");
+        } else {
+            rootDiv.setAttribute(HTML.STYLE_ATTR, "display: none;");
+        }
+        rootDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getStyleClass());
         
         Element table = domContext.createElement(HTML.TABLE_ELEM);
         table.setAttribute(HTML.CELLPADDING_ATTR, "0");
@@ -106,8 +106,8 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         Element headerTr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(headerTr);
         Element headerTd = domContext.createElement(HTML.TD_ELEM);
-        headerTd.setAttribute(HTML.ID_ATTR, id + "-handle");
-        headerTd.setAttribute(HTML.CLASS_ATTR, PANEL_CONFIRMATION_DEFAULT_STYLE_CLASS + HEADER);
+        headerTd.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-handle"));
+        headerTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getHeaderClass());
         headerTr.appendChild(headerTd);
         
         String title = panelConfirmation.getTitle();
@@ -118,7 +118,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
             title = "Confirm";
         }
         Element titleSpan = domContext.createElement(HTML.SPAN_ELEM);
-        titleSpan.setAttribute(HTML.ID_ATTR, id + "-title");
+        titleSpan.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-title"));
         headerTd.appendChild(titleSpan);
         Text titleText = domContext.createTextNode(title);
         titleSpan.appendChild(titleText);
@@ -127,8 +127,8 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         Element bodyTr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(bodyTr);
         Element bodyTd = domContext.createElement(HTML.TD_ELEM);
-        bodyTd.setAttribute(HTML.ID_ATTR, id + "-message");
-        bodyTd.setAttribute(HTML.CLASS_ATTR, PANEL_CONFIRMATION_DEFAULT_STYLE_CLASS + BODY);
+        bodyTd.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-message"));
+        bodyTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getBodyClass());
         bodyTr.appendChild(bodyTd);
         
         String message = panelConfirmation.getMessage();
@@ -144,7 +144,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         Element buttonsTr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(buttonsTr);
         Element buttonsTd = domContext.createElement(HTML.TD_ELEM);
-        buttonsTd.setAttribute(HTML.CLASS_ATTR, PANEL_CONFIRMATION_DEFAULT_STYLE_CLASS + BUTTONS);
+        buttonsTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getButtonsClass());
         buttonsTr.appendChild(buttonsTd);
         
         String type = panelConfirmation.getType();
@@ -189,7 +189,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         Element acceptButton = domContext.createElement(HTML.INPUT_ELEM);
         acceptButton.setAttribute(HTML.VALUE_ATTR, acceptLabel);
         acceptButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
-        acceptButton.setAttribute(HTML.ID_ATTR, id + "-accept");
+        acceptButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-accept"));
         acceptButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.accept();return false;");
         td.appendChild(acceptButton);
     }
@@ -206,7 +206,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         Element cancelButton = domContext.createElement(HTML.INPUT_ELEM);
         cancelButton.setAttribute(HTML.VALUE_ATTR, cancelLabel);
         cancelButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
-        cancelButton.setAttribute(HTML.ID_ATTR, id + "-cancel");
+        cancelButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-cancel"));
         cancelButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.cancel();return false;");
         td.appendChild(cancelButton);
     }
