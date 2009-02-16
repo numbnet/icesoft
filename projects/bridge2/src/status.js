@@ -31,282 +31,281 @@
  *
  */
 
+var on = operator();
+var off = operator();
+
 [ Ice.Status = new Object ].as(function(This) {
-    This.NOOPIndicator = {
-        on: Function.NOOP,
-        off: Function.NOOP
+    This.NOOPIndicator = object(function (method) {
+        method(on, noop);
+
+        method(off, noop);
+    });
+
+    This.RedirectIndicator = function(uri) {
+        return object(function (method) {
+            method(on, function(self) {
+                window.location.href = uri;
+            });
+
+            method(off, noop);
+        });
     };
 
-    This.RedirectIndicator = Object.subclass({
-        initialize: function(uri) {
-            this.uri = uri;
-        },
-
-        on: function() {
-            window.location.href = this.uri;
-        },
-
-        off: Function.NOOP
-    });
-
-    This.ElementIndicator = Object.subclass({
-        initialize: function(elementID, indicators) {
-            this.elementID = elementID;
-            this.indicators = indicators;
-            this.indicators.push(this);
-            this.off();
-        },
-
-        on: function() {
-            this.indicators.each(function(indicator) {
-                if (indicator != this) indicator.off();
-            }.bind(this));
-            var e = this.elementID.asElement();
-            if (e) {
-                e.style.visibility = 'visible';
-            }
-        },
-
-        off: function() {
-            var e = this.elementID.asElement();
-            if (e) {
-                e.style.visibility = 'hidden';
-            }
-        }
-    });
-
-    This.OverlappingStateProtector = Object.subclass({
-        initialize: function(indicator) {
-            this.indicator = indicator;
-            this.counter = 0;
-        },
-
-        on: function() {
-            if (this.counter == 0) this.indicator.on();
-            ++this.counter;
-        },
-
-        off: function() {
-            if (this.counter < 1) return;
-            if (this.counter == 1) this.indicator.off();
-            --this.counter;
-        }
-    });
-
-    This.ToggleIndicator = Object.subclass({
-        initialize: function(onElement, offElement) {
-            this.onElement = onElement;
-            this.offElement = offElement;
-            this.off();
-        },
-
-        on: function() {
-            this.onElement.on();
-            this.offElement.off();
-        },
-
-        off: function() {
-            this.onElement.off();
-            this.offElement.on();
-        }
-    });
-
-    This.MuxIndicator = Object.subclass({
-        initialize: function(a, b) {
-            this.a = a;
-            this.b = b;
-            this.off();
-        },
-
-        on: function() {
-            this.a.on();
-            this.b.on();
-        },
-
-        off: function() {
-            this.a.off();
-            this.b.off();
-        }
-    });
-
-    This.PointerIndicator = Object.subclass({
-        initialize: function(element) {
-            this.toggle = function() {
-                //block any other action from triggering the indicator before being in 'off' state again
-                this.on = Function.NOOP;
-                //prepare cursor shape rollback 
-                var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ], function(result, type) {
-                    return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
-                }).collect(function(e) {
-                    var c = e.style.cursor;
-                    e.style.cursor = 'wait';
-                    return function() {
-                        e.style.cursor = c;
-                    };
+    This.ElementIndicator = function(elementID, indicators) {
+        var instance = object(function (method) {
+            method(on, function(self) {
+                each(indicators, function(indicator) {
+                    if (indicator != self) off(indicator);
                 });
-
-                this.off = function() {
-                    cursorRollbacks.broadcast();
-
-                    this.on = this.toggle;
-                    this.off = Function.NOOP;
-                };
-            };
-
-            this.on = /Safari/.test(navigator.userAgent) ? Function.NOOP : this.toggle;
-            this.off = Function.NOOP;
-        }
-    });
-
-    This.OverlayIndicator = Object.subclass({
-        initialize: function(message, description, buttonText, iconPath, panel) {
-            this.message = message;
-            this.description = description;
-            this.buttonText = buttonText;
-            this.iconPath = iconPath;
-            this.panel = panel;
-        },
-
-        on: function() {
-            this.panel.on();
-            var messageContainer = document.createElement('div');
-            var messageContainerStyle = messageContainer.style;
-            messageContainerStyle.position = 'absolute';
-            messageContainerStyle.textAlign = 'center';
-            messageContainerStyle.zIndex = '28001';
-            messageContainerStyle.color = 'black';
-            messageContainerStyle.backgroundColor = 'white';
-            messageContainerStyle.paddingLeft = '0';
-            messageContainerStyle.paddingRight = '0';
-            messageContainerStyle.paddingTop = '15px';
-            messageContainerStyle.paddingBottom = '15px';
-            messageContainerStyle.borderBottomColor = 'gray';
-            messageContainerStyle.borderRightColor = 'gray';
-            messageContainerStyle.borderTopColor = 'silver';
-            messageContainerStyle.borderLeftColor = 'silver';
-            messageContainerStyle.borderWidth = '2px';
-            messageContainerStyle.borderStyle = 'solid';
-            messageContainerStyle.width = '270px';
-            document.body.appendChild(messageContainer);
-
-            var messageElement = document.createElement('div');
-            messageElement.appendChild(document.createTextNode(this.message));
-            var messageElementStyle = messageElement.style;
-            messageElementStyle.marginLeft = '30px';
-            messageElementStyle.textAlign = 'left';
-            messageElementStyle.fontSize = '14px';
-            messageElementStyle.fontSize = '14px';
-            messageElementStyle.fontWeight = 'bold';
-            messageContainer.appendChild(messageElement);
-
-            var descriptionElement = document.createElement('div');
-            descriptionElement.appendChild(document.createTextNode(this.description));
-            var descriptionElementStyle = descriptionElement.style;
-            descriptionElementStyle.fontSize = '11px';
-            descriptionElementStyle.marginTop = '7px';
-            descriptionElementStyle.marginBottom = '7px';
-            descriptionElementStyle.fontWeight = 'normal';
-            messageElement.appendChild(descriptionElement);
-
-            var buttonElement = document.createElement('input');
-            buttonElement.type = 'button';
-            buttonElement.value = this.buttonText;
-            var buttonElementStyle = buttonElement.style;
-            buttonElementStyle.fontSize = '11px';
-            buttonElementStyle.fontWeight = 'normal';
-            buttonElement.onclick = function() {
-                window.location.reload();
-            };
-            messageContainer.appendChild(buttonElement);
-            var resize = function() {
-                messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
-                messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
-            }.bind(this);
-            resize();
-            window.onResize(resize);
-        },
-
-        off: Function.NOOP
-    });
-
-    This.DefaultStatusManager = Object.subclass({
-        initialize: function(configuration, container) {
-            this.container = container;
-            this.connectionLostRedirect = configuration.connectionLostRedirectURI ? new This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
-            this.sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? new This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
-            var messages = configuration.messages;
-            var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
-            var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
-
-            this.busy = new This.OverlappingStateProtector(new This.PointerIndicator(container));
-            this.sessionExpired = this.sessionExpiredRedirect ? this.sessionExpiredRedirect : new This.OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, this)
-            this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new This.OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, this);
-            this.serverError = new This.OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, this)
-            this.connectionTrouble = { on: Function.NOOP, off: Function.NOOP };
-        },
-
-        on: function() {
-            var overlay = this.container.ownerDocument.createElement('iframe');
-            overlay.setAttribute('src', 'about:blank');
-            overlay.setAttribute('frameborder', '0');
-            var overlayStyle = overlay.style;
-            overlayStyle.position = 'absolute';
-            overlayStyle.display = 'block';
-            overlayStyle.visibility = 'visible';
-            overlayStyle.backgroundColor = 'white';
-            overlayStyle.zIndex = '28000';
-            overlayStyle.top = '0';
-            overlayStyle.left = '0';
-            overlayStyle.opacity = 0.22;
-            overlayStyle.filter = 'alpha(opacity=22)';
-            this.container.appendChild(overlay);
-
-            var resize = this.container.tagName.toLowerCase() == 'body' ?
-                         function() {
-                             overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                             overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                         } :
-                         function() {
-                             overlayStyle.width = this.container.offsetWidth + 'px';
-                             overlayStyle.height = this.container.offsetHeight + 'px';
-                         };
-            resize();
-            window.onResize(resize);
-        },
-
-        off: Function.NOOP
-    });
-
-    This.ComponentStatusManager = Object.subclass({
-        initialize: function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
-            var indicators = [];
-            var connectionWorking = new Ice.Status.ElementIndicator(workingID, indicators);
-            var connectionIdle = new Ice.Status.ElementIndicator(idleID, indicators);
-            var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
-            var busyIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
-
-            this.busy = new Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
-            this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);
-            if (showPopups) {
-                this.dsm = defaultStatusManager;
-                this.connectionLost = new Ice.Status.MuxIndicator(connectionLost, this.dsm.connectionLost);
-                this.sessionExpired = new Ice.Status.MuxIndicator(connectionLost, this.dsm.sessionExpired);
-                this.serverError = new Ice.Status.MuxIndicator(connectionLost, this.dsm.serverError);
-            } else {
-                this.connectionLost = defaultStatusManager.connectionLostRedirect ? defaultStatusManager.connectionLostRedirect : connectionLost;
-                this.sessionExpired = defaultStatusManager.sessionExpiredRedirect ? defaultStatusManager.sessionExpiredRedirect : connectionLost;
-                this.serverError = connectionLost;
-            }
-        },
-
-        on: function() {
-            this.dsm.on();
-        },
-
-        off: function() {
-            [this.busy, this.sessionExpired, this.serverError, this.connectionLost, this.connectionTrouble].eachWithGuard(function(indicator) {
-                indicator.off();
+                var e = elementID.asElement();
+                if (e) {
+                    e.style.visibility = 'visible';
+                }
             });
+
+            method(off, function(self) {
+                var e = elementID.asElement();
+                if (e) {
+                    e.style.visibility = 'hidden';
+                }
+            });
+        });
+
+        append(indicators, instance);
+        off(instance);
+
+        return instance;
+    };
+
+    This.OverlappingStateProtector = function(indicator) {
+        var counter = 0;
+
+        return object(function (method) {
+            method(on, function() {
+                if (counter == 0) on(indicator);
+                ++counter;
+            });
+
+            method(off, function() {
+                if (counter < 1) return;
+                if (counter == 1) off(indicator);
+                --counter;
+            });
+        });
+    };
+
+    This.ToggleIndicator = function(onElement, offElement) {
+        var instance = object(function (method) {
+            method(on, function(self) {
+                on(onElement);
+                off(offElement);
+            });
+
+            method(off, function(self) {
+                off(onElement);
+                on(offElement);
+            });
+        });
+
+        off(instance);
+        return instance;
+    };
+
+    This.MuxIndicator = function(a, b) {
+        var indicators = arguments;
+        var instance = object(function (method) {
+            method(on, function(self) {
+                each(indicators, on);
+            });
+
+            method(off, function(self) {
+                each(indicators, off);
+            });
+        });
+
+        off(instance);
+        return instance;
+    };
+
+    This.PointerIndicator = function(element) {
+        var privateOff = noop;
+
+        function toggle() {
+            //block any other action from triggering the indicator before being in 'off' state again
+            privateOn = noop;
+            //prepare cursor shape rollback
+            function toggleElementCursor(e) {
+                var c = e.style.cursor;
+                e.style.cursor = 'wait';
+                return function() {
+                    e.style.cursor = c;
+                };
+            }
+            var cursorRollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [ toggleElementCursor(element) ], function(result, type) {
+                each(element.getElementsByTagName(type), function(e) {
+                    append(result, toggleElementCursor(e));
+                });
+                return result;
+            });
+
+            privateOff = function() {
+                broadcast(cursorRollbacks);
+                privateOn = toggle;
+                privateOff = noop;
+            };
         }
-    });
+
+        var privateOn = toggle;
+
+        return object(function (method) {
+            method(on, /Safari/.test(navigator.userAgent) ? noop : function(self) {
+                privateOn();
+            });
+
+            method(off, function(self) {
+                privateOff();
+            });
+        });
+    };
+
+    This.OverlayIndicator = function(message, description, buttonText, iconPath, panel) {
+        return object(function (method) {
+            method(on, function(self) {
+                on(panel);
+                var messageContainer = document.createElement('div');
+                var messageContainerStyle = messageContainer.style;
+                messageContainerStyle.position = 'absolute';
+                messageContainerStyle.textAlign = 'center';
+                messageContainerStyle.zIndex = '28001';
+                messageContainerStyle.color = 'black';
+                messageContainerStyle.backgroundColor = 'white';
+                messageContainerStyle.paddingLeft = '0';
+                messageContainerStyle.paddingRight = '0';
+                messageContainerStyle.paddingTop = '15px';
+                messageContainerStyle.paddingBottom = '15px';
+                messageContainerStyle.borderBottomColor = 'gray';
+                messageContainerStyle.borderRightColor = 'gray';
+                messageContainerStyle.borderTopColor = 'silver';
+                messageContainerStyle.borderLeftColor = 'silver';
+                messageContainerStyle.borderWidth = '2px';
+                messageContainerStyle.borderStyle = 'solid';
+                messageContainerStyle.width = '270px';
+                document.body.appendChild(messageContainer);
+
+                var messageElement = document.createElement('div');
+                messageElement.appendChild(document.createTextNode(message));
+                var messageElementStyle = messageElement.style;
+                messageElementStyle.marginLeft = '30px';
+                messageElementStyle.textAlign = 'left';
+                messageElementStyle.fontSize = '14px';
+                messageElementStyle.fontSize = '14px';
+                messageElementStyle.fontWeight = 'bold';
+                messageContainer.appendChild(messageElement);
+
+                var descriptionElement = document.createElement('div');
+                descriptionElement.appendChild(document.createTextNode(description));
+                var descriptionElementStyle = descriptionElement.style;
+                descriptionElementStyle.fontSize = '11px';
+                descriptionElementStyle.marginTop = '7px';
+                descriptionElementStyle.marginBottom = '7px';
+                descriptionElementStyle.fontWeight = 'normal';
+                messageElement.appendChild(descriptionElement);
+
+                var buttonElement = document.createElement('input');
+                buttonElement.type = 'button';
+                buttonElement.value = buttonText;
+                var buttonElementStyle = buttonElement.style;
+                buttonElementStyle.fontSize = '11px';
+                buttonElementStyle.fontWeight = 'normal';
+                buttonElement.onclick = function() {
+                    window.location.reload();
+                };
+                messageContainer.appendChild(buttonElement);
+                var resize = function() {
+                    messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
+                    messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
+                };
+                resize();
+                onResize(window, resize);
+            });
+
+            method(off, noop);
+        });
+    };
+
+    This.DefaultStatusManager = function(configuration, container) {
+        var connectionLostRedirect = configuration.connectionLostRedirectURI ? This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
+        var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
+        var messages = configuration.messages;
+        var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
+        var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+        var overlay = object(function(method) {
+            method(on, function(self) {
+                var overlay = container.ownerDocument.createElement('iframe');
+                overlay.setAttribute('src', 'about:blank');
+                overlay.setAttribute('frameborder', '0');
+                var overlayStyle = overlay.style;
+                overlayStyle.position = 'absolute';
+                overlayStyle.display = 'block';
+                overlayStyle.visibility = 'visible';
+                overlayStyle.backgroundColor = 'white';
+                overlayStyle.zIndex = '28000';
+                overlayStyle.top = '0';
+                overlayStyle.left = '0';
+                overlayStyle.opacity = 0.22;
+                overlayStyle.filter = 'alpha(opacity=22)';
+                container.appendChild(overlay);
+
+                var resize = container.tagName.toLowerCase() == 'body' ?
+                             function() {
+                                 overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                                 overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                             } :
+                             function() {
+                                 overlayStyle.width = container.offsetWidth + 'px';
+                                 overlayStyle.height = container.offsetHeight + 'px';
+                             };
+                resize();
+                onResize(window, resize);
+            });
+
+            method(off, noop);
+        });
+
+        return {
+            busy: This.OverlappingStateProtector(This.PointerIndicator(container)),
+            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : This.OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
+            connectionLost: connectionLostRedirect ? connectionLostRedirect : This.OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            serverError: This.OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            connectionTrouble: This.NOOPIndicator
+        };
+    };
+
+    This.ComponentStatusManager = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
+        var indicators = [];
+        var connectionWorking = Ice.Status.ElementIndicator(workingID, indicators);
+        var connectionIdle = Ice.Status.ElementIndicator(idleID, indicators);
+        var connectionLost = Ice.Status.ElementIndicator(lostID, indicators);
+        var busyIndicator = Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
+
+        var busy = Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
+        var connectionTrouble = Ice.Status.ElementIndicator(troubleID, indicators);
+        if (showPopups) {
+            return {
+                busy: busy,
+                connectionTrouble: connectionTrouble,
+                connectionLost: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.connectionLost),
+                sessionExpired: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.sessionExpired),
+                serverError: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.serverError)
+            }
+        } else {
+            return {
+                busy: busy,
+                connectionTrouble: connectionTrouble,
+                connectionLost: defaultStatusManager.connectionLostRedirect ? defaultStatusManager.connectionLostRedirect : connectionLost,
+                sessionExpired: defaultStatusManager.sessionExpiredRedirect ? defaultStatusManager.sessionExpiredRedirect : connectionLost,
+                serverError: connectionLost
+            }
+        }
+    };
 });

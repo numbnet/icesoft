@@ -13,5 +13,6 @@ function registerListener(eventType, obj, listener) {
 var onLoad = curry(registerListener, 'onload');
 var onUnload = curry(registerListener, 'onunload');
 var onBeforeUnload = curry(registerListener, 'onbeforeunload');
+var onResize = curry(registerListener, 'onresize');
 var onKeyPress = curry(registerListener, 'onkeypress')
 var onKeyUp = curry(registerListener, 'onkeyup')

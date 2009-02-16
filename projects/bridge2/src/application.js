@@ -33,6 +33,8 @@
 
 var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
 window.logger = Logger([ 'window' ], handler);
+
+//adapt to old style logger
 window.logger.debug = function() {
     apply(curry(window.debug, window.logger), arguments);
 };
@@ -101,21 +103,21 @@ var disposeBridgeAndNotify = operator();
         var viewID = configuration.view;
         enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
-        var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
+        var statusManager = Ice.Status.DefaultStatusManager(configuration, container);
         var scriptLoader = new Ice.Script.Loader(logger);
         var commandDispatcher = Ice.Command.Dispatcher();
         var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
-        var replaceContainerHTML = function(html) {
+        function replaceContainerHTML(html) {
             Ice.Document.replaceContainerHTML(container, html);
             scriptLoader.searchAndEvaluateScripts(container);
-        };
+        }
 
         var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
-        var dispose = function() {
+        function dispose() {
             dispose = noop;
             documentSynchronizer.shutdown();
             shutdown(asyncConnection);
-        };
+        }
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'set-cookie', Ice.Command.SetCookie);
@@ -153,6 +155,7 @@ var disposeBridgeAndNotify = operator();
                     address.asExtendedElement().updateDOM(update);
                     debug(logger, 'applied update : ' + update.asString());
                     scriptLoader.searchAndEvaluateScripts(address.asElement());
+                    //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();
                         Ice.StateMon.rebuild();
@@ -164,7 +167,7 @@ var disposeBridgeAndNotify = operator();
         });
         register(commandDispatcher, 'session-expired', function() {
             warn(logger, 'Session has expired');
-            statusManager.sessionExpired.on();
+            on(statusManager.sessionExpired);
             //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
             delistView(sessionID, viewID);
             dispose();
@@ -173,9 +176,9 @@ var disposeBridgeAndNotify = operator();
         onUnload(window, dispose);
 
         onSend(asyncConnection, function() {
-            statusManager.busy.on();
+            on(statusManager.busy);
         }, function() {
-            statusManager.busy.off();
+            off(statusManager.busy);
         });
 
         onReceive(asyncConnection, function(response) {
@@ -188,14 +191,14 @@ var disposeBridgeAndNotify = operator();
             } else {
                 warn(logger, 'unknown content in response');
             }
-            statusManager.connectionTrouble.off();
+            off(statusManager.connectionTrouble);
         });
 
         onServerError(asyncConnection, function (response) {
             warn(logger, 'server side error');
             disposeView(sessionID, viewID);
             if (blank(contentAsText(response))) {
-                statusManager.serverError.on();
+                on(statusManager.serverError);
             } else {
                 replaceContainerHTML(contentAsText(response));
             }
@@ -204,13 +207,13 @@ var disposeBridgeAndNotify = operator();
 
         whenDown(asyncConnection, function() {
             warn(logger, 'connection to server was lost');
-            statusManager.connectionLost.on();
+            on(statusManager.connectionLost);
             dispose();
         });
 
         whenTrouble(asyncConnection, function() {
             warn(logger, 'connection in trouble');
-            statusManager.connectionTrouble.on();
+            on(statusManager.connectionTrouble);
         });
 
         info(logger, 'bridge loaded!');
@@ -222,8 +225,8 @@ var disposeBridgeAndNotify = operator();
             });
             //public method used to modify bridge's status manager
             method(attachStatusManager, function(self, setup) {
-                statusManager.off();
-                statusManager = setup(new Ice.Status.DefaultStatusManager(configuration, container));
+                each([statusManager.busy, statusManager.sessionExpired, statusManager.serverError, statusManager.connectionLost, statusManager.connectionTrouble], off);
+                statusManager = setup(Ice.Status.DefaultStatusManager(configuration, container));
                 info(logger, "status indicators were updated");
             });
             //public method
