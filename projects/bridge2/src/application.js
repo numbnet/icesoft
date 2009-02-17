@@ -49,7 +49,7 @@ function FormPost(request) {
 }
 
 var connection = operator();
-var attachStatusManager = operator();
+var resetIndicators = operator();
 var disposeBridge = operator();
 var disposeBridgeAndNotify = operator();
 
@@ -100,14 +100,14 @@ var disposeBridgeAndNotify = operator();
         var viewID = configuration.view;
         enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
-        var statusManager = Ice.Status.DefaultStatusManager(configuration, container);
-        var searchAndEvaluateScripts = Ice.Script.Loader(logger);
+        var indicators = Ice.Status.DefaultIndicators(configuration, container);
+        var evaluateScripts = Ice.Script.Loader(logger);
         var commandDispatcher = Ice.Command.Dispatcher();
         var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
 
         function replaceContainerHTML(html) {
             Ice.Document.replaceContainerHTML(container, html);
-            searchAndEvaluateScripts(container);
+            evaluateScripts(container);
         }
 
         var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
@@ -153,7 +153,7 @@ var disposeBridgeAndNotify = operator();
                     var update = new Ice.ElementModel.Update(updateElement);
                     address.asExtendedElement().updateDOM(update);
                     debug(logger, 'applied update : ' + update.asString());
-                    searchAndEvaluateScripts(address.asElement());
+                    evaluateScripts(address.asElement());
                     //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();
@@ -166,7 +166,7 @@ var disposeBridgeAndNotify = operator();
         });
         register(commandDispatcher, 'session-expired', function() {
             warn(logger, 'Session has expired');
-            on(statusManager.sessionExpired);
+            on(indicators.sessionExpired);
             //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
             delistView(sessionID, viewID);
             dispose();
@@ -175,9 +175,9 @@ var disposeBridgeAndNotify = operator();
         onUnload(window, dispose);
 
         onSend(asyncConnection, function() {
-            on(statusManager.busy);
+            on(indicators.busy);
         }, function() {
-            off(statusManager.busy);
+            off(indicators.busy);
         });
 
         onReceive(asyncConnection, function(response) {
@@ -190,14 +190,14 @@ var disposeBridgeAndNotify = operator();
             } else {
                 warn(logger, 'unknown content in response');
             }
-            off(statusManager.connectionTrouble);
+            off(indicators.connectionTrouble);
         });
 
         onServerError(asyncConnection, function (response) {
             warn(logger, 'server side error');
             disposeView(sessionID, viewID);
             if (blank(contentAsText(response))) {
-                on(statusManager.serverError);
+                on(indicators.serverError);
             } else {
                 replaceContainerHTML(contentAsText(response));
             }
@@ -206,13 +206,13 @@ var disposeBridgeAndNotify = operator();
 
         whenDown(asyncConnection, function() {
             warn(logger, 'connection to server was lost');
-            on(statusManager.connectionLost);
+            on(indicators.connectionLost);
             dispose();
         });
 
         whenTrouble(asyncConnection, function() {
             warn(logger, 'connection in trouble');
-            on(statusManager.connectionTrouble);
+            on(indicators.connectionTrouble);
         });
 
         info(logger, 'bridge loaded!');
@@ -223,9 +223,9 @@ var disposeBridgeAndNotify = operator();
                 return asyncConnection;
             });
             //public method used to modify bridge's status manager
-            method(attachStatusManager, function(self, setup) {
-                each([statusManager.busy, statusManager.sessionExpired, statusManager.serverError, statusManager.connectionLost, statusManager.connectionTrouble], off);
-                statusManager = setup(Ice.Status.DefaultStatusManager(configuration, container));
+            method(resetIndicators, function(self, setup) {
+                each([indicators.busy, indicators.sessionExpired, indicators.serverError, indicators.connectionLost, indicators.connectionTrouble], off);
+                indicators = setup(Ice.Status.DefaultIndicators(configuration, container));
                 info(logger, "status indicators were updated");
             });
             //public method
