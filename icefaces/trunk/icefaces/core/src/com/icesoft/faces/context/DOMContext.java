@@ -36,7 +36,6 @@
  */
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.util.HalterDump;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import org.w3c.dom.DOMException;
@@ -56,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.Method;
 
 /**
  * <p><strong>DOMContext</strong> provides a component specific interface to the
@@ -162,6 +162,18 @@ public class DOMContext implements java.io.Serializable {
 
     private static DOMResponseWriter createTemporaryDOMResponseWriter(
             ResponseWriter responseWriter, FacesContext facesContext) {
+        try {
+            //try to unwrap the DOMResponseWriter, if available
+            Method delegateMethod = responseWriter.getClass()
+                    .getDeclaredMethod("getWrapped", new Class[]{});
+            delegateMethod.setAccessible(true);
+            Object delegate = delegateMethod
+                    .invoke(responseWriter, (Object[]) null);
+            if (delegate instanceof DOMResponseWriter)  {
+                return (DOMResponseWriter) delegate;
+            }
+        } catch (Exception e)  {
+        }
         DOMResponseWriter domWriter;
         domWriter = new DOMResponseWriter(facesContext, null, new Configuration() {
             public String getName() {
