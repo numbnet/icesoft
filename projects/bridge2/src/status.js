@@ -141,6 +141,7 @@ var off = operator();
                     e.style.cursor = c;
                 };
             }
+
             var cursorRollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [ toggleElementCursor(element) ], function(result, type) {
                 each(element.getElementsByTagName(type), function(e) {
                     append(result, toggleElementCursor(e));
@@ -233,7 +234,7 @@ var off = operator();
         });
     };
 
-    This.DefaultStatusManager = function(configuration, container) {
+    This.DefaultIndicators = function(configuration, container) {
         var connectionLostRedirect = configuration.connectionLostRedirectURI ? This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
         var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
         var messages = configuration.messages;
@@ -281,7 +282,7 @@ var off = operator();
         };
     };
 
-    This.ComponentStatusManager = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
+    This.ComponentIndicators = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
         var indicators = [];
         var connectionWorking = Ice.Status.ElementIndicator(workingID, indicators);
         var connectionIdle = Ice.Status.ElementIndicator(idleID, indicators);
@@ -297,7 +298,7 @@ var off = operator();
                 connectionLost: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.connectionLost),
                 sessionExpired: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.sessionExpired),
                 serverError: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.serverError)
-            }
+            };
         } else {
             return {
                 busy: busy,
@@ -305,7 +306,7 @@ var off = operator();
                 connectionLost: defaultStatusManager.connectionLostRedirect ? defaultStatusManager.connectionLostRedirect : connectionLost,
                 sessionExpired: defaultStatusManager.sessionExpiredRedirect ? defaultStatusManager.sessionExpiredRedirect : connectionLost,
                 serverError: connectionLost
-            }
+            };
         }
     };
 });
