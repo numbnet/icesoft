@@ -109,8 +109,17 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private static boolean isStreamWritingFlag = false;
+    private static boolean isDOMChecking = false;
     private final Map domContexts = new HashMap();
-    private Document document = DOCUMENT_BUILDER.newDocument();
+    private Document document;
+    {
+        document = DOCUMENT_BUILDER.newDocument();
+        if (!isDOMChecking)  {
+            if (document instanceof com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl)  {
+                ((com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl) document).setErrorChecking(false);
+            }
+        }
+    }
     private final BridgeFacesContext context;
     private final DOMSerializer serializer;
     private final Configuration configuration;
@@ -143,6 +152,10 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public Document getDocument() {
         return document;
+    }
+
+    public static void setDOMErrorChecking(boolean flag)  {
+        isDOMChecking = flag;
     }
 
     public String getContentType() {
