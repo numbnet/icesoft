@@ -144,7 +144,9 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                         var update = new Ice.ElementModel.Update(updateElement);
                         address.asExtendedElement().updateDOM(update);
                         logger.debug('applied update : ' + update.asString());
-                        scriptLoader.searchAndEvaluateScripts(address.asElement());
+                        var updatedElement = address.asElement();
+                        Ice.Focus.captureFocusIn(updatedElement);
+                        scriptLoader.searchAndEvaluateScripts(updatedElement);
                         if (Ice.StateMon) {
                             Ice.StateMon.checkAll();
                             Ice.StateMon.rebuild();

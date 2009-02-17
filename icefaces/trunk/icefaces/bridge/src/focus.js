@@ -44,7 +44,7 @@ function setFocus(id) {
     }
 
     This.setFocus = (function(id) {
-        if (id && isValidID(id)) {
+        if (id && id != currentFocus && isValidID(id)) {
             try {
                 id.asExtendedElement().focus();
                 setFocus(id);
@@ -63,5 +63,33 @@ function setFocus(id) {
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }).delayFor(100);
-});
 
+    function registerElementListener(element, eventType, listener) {
+        var previousListener = element[eventType];
+        if (previousListener) {
+            element[eventType] = function(e) {
+                previousListener(e);
+                listener(e);
+            };
+        } else {
+            element[eventType] = listener;
+        }
+    }
+
+    function setFocusListener(e) {
+        var element = e.target || e.srcElement;
+        setFocus(element.id);
+    }
+
+    This.captureFocusIn = function(root) {
+        $enumerate(['select', 'input', 'button', 'a']).each(function(type) {
+            $enumerate(root.getElementsByTagName(type)).each(function(element) {
+                registerElementListener(element, 'onfocus', setFocusListener);
+            });
+        });
+    };
+
+    window.onLoad(function() {
+        This.captureFocusIn(document);
+    });
+});
