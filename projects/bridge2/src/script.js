@@ -1,50 +1,47 @@
-[ Ice.Script = new Object, Ice.Ajax.Client ].as(function(This, Client) {
+var searchAndEvaluateScripts = operator();
 
+[ Ice.Script = new Object ].as(function(This) {
     //todo: should this code be part of Element.replaceHtml method?    
-    This.Loader = Object.subclass({
-        initialize: function(logger) {
-            this.logger = childLogger(logger, 'script-loader');
-            this.referencedScripts = [];
-            //list of urls
-            this.client = new Client(this.logger);
-            //the scripts present on the page are already evaluated
-            $enumerate(document.documentElement.getElementsByTagName('script')).each(function(script) {
-                if (script.src) this.referencedScripts.push(script.src);
-            }.bind(this));
-        },
+    This.Loader = function(logger) {
+        var logger = childLogger(logger, 'script-loader');
+        //the scripts present on the page are already evaluated
+        var referencedScripts = asArray(select(document.documentElement.getElementsByTagName('script'), function(script) {
+            return script.src;
+        }));
+        var client = Client(this.logger);
 
-        searchAndEvaluateScripts: function(element) {
-            $enumerate(element.getElementsByTagName('script')).each(function(s) {
-                this.evaluateScript(s);
-            }.bind(this));
-        },
-
-        evaluateScript: function(script) {
+        function evaluateScript(script) {
             var uri = script.src;
             if (uri) {
-                if (!this.referencedScripts.include(script.src)) {
-                    debug(this.logger, 'loading : ' + uri);
-                    this.client.getSynchronously(uri, '', function(request) {
-                        request.on(Ice.Connection.OK, function() {
-                            this.referencedScripts.push(uri);
-                            debug(this.logger, 'evaluating script at : ' + uri);
+                if (!contains(referencedScripts, script.src)) {
+                    debug(logger, 'loading : ' + uri);
+                    getSynchronously(client, uri, noop, noop, $witch(function(condition) {
+                        condition(OK, function(response) {
+                            append(referencedScripts, uri);
+                            debug(logger, 'evaluating script at : ' + uri);
                             try {
-                                eval(request.content());
+                                eval(contentAsText(response));
                             } catch (e) {
-                                warn(this.logger, 'Failed to evaluate script located at: ' + uri, e);
+                                warn(logger, 'Failed to evaluate script located at: ' + uri, e);
                             }
-                        }.bind(this));
-                    }.bind(this));
+                        });
+                    }));
                 }
             } else {
                 var code = script.innerHTML;
-                debug(this.logger, 'evaluating script : ' + code);
+                debug(logger, 'evaluating script : ' + code);
                 try {
                     eval(code);
                 } catch (e) {
-                    warn(this.logger, 'Failed to evaluate script: \n' + code, e);
+                    warn(logger, 'Failed to evaluate script: \n' + code, e);
                 }
             }
         }
-    });
+
+        return object(function(method) {
+            method(searchAndEvaluateScripts, function(self, element) {
+                each(element.getElementsByTagName('script'), evaluateScript);
+            });
+        });
+    };
 });

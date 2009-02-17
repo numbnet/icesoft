@@ -35,15 +35,11 @@ var handler = window.console && window.console.firebug ? FirebugLogHandler(debug
 window.logger = Logger([ 'window' ], handler);
 
 //adapt to old style logger
-window.logger.debug = function() {
-    apply(curry(window.debug, window.logger), arguments);
-};
-window.logger.warn = function() {
-    apply(curry(window.warn, window.logger), arguments);
-};
-window.logger.error = function() {
-    apply(curry(window.error, window.logger), arguments);
-};
+each(['debug', 'info', 'warn', 'error'], function(level) {
+    window.logger[level] = function() {
+        apply(curry(window[level], window.logger), arguments);
+    };
+});
 window.logger.child = function(category) {
     return window.logger;
 };
@@ -104,12 +100,12 @@ var disposeBridgeAndNotify = operator();
         enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var statusManager = Ice.Status.DefaultStatusManager(configuration, container);
-        var scriptLoader = new Ice.Script.Loader(logger);
+        var scriptLoader = Ice.Script.Loader(logger);
         var commandDispatcher = Ice.Command.Dispatcher();
         var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
         function replaceContainerHTML(html) {
             Ice.Document.replaceContainerHTML(container, html);
-            scriptLoader.searchAndEvaluateScripts(container);
+            searchAndEvaluateScripts(scriptLoader, container);
         }
 
         var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
@@ -154,7 +150,7 @@ var disposeBridgeAndNotify = operator();
                     var update = new Ice.ElementModel.Update(updateElement);
                     address.asExtendedElement().updateDOM(update);
                     debug(logger, 'applied update : ' + update.asString());
-                    scriptLoader.searchAndEvaluateScripts(address.asElement());
+                    searchAndEvaluateScripts(scriptLoader, address.asElement());
                     //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();
