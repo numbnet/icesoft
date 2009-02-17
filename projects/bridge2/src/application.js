@@ -56,6 +56,7 @@ var disposeBridgeAndNotify = operator();
 [ Ice.Community ].as(function(This) {
     var client = Client(true);
     var views = window.views = window.views ? window.views : [];
+
     function enlistView(session, view) {
         append(views, Parameter(session, view));
     }
@@ -100,15 +101,17 @@ var disposeBridgeAndNotify = operator();
         enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var statusManager = Ice.Status.DefaultStatusManager(configuration, container);
-        var scriptLoader = Ice.Script.Loader(logger);
+        var searchAndEvaluateScripts = Ice.Script.Loader(logger);
         var commandDispatcher = Ice.Command.Dispatcher();
         var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
+
         function replaceContainerHTML(html) {
             Ice.Document.replaceContainerHTML(container, html);
-            searchAndEvaluateScripts(scriptLoader, container);
+            searchAndEvaluateScripts(container);
         }
 
         var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
+
         function dispose() {
             dispose = noop;
             documentSynchronizer.shutdown();
@@ -150,7 +153,7 @@ var disposeBridgeAndNotify = operator();
                     var update = new Ice.ElementModel.Update(updateElement);
                     address.asExtendedElement().updateDOM(update);
                     debug(logger, 'applied update : ' + update.asString());
-                    searchAndEvaluateScripts(scriptLoader, address.asElement());
+                    searchAndEvaluateScripts(address.asElement());
                     //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();

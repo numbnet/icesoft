@@ -1,5 +1,3 @@
-var searchAndEvaluateScripts = operator();
-
 [ Ice.Script = new Object ].as(function(This) {
     //todo: should this code be part of Element.replaceHtml method?    
     This.Loader = function(logger) {
@@ -38,10 +36,8 @@ var searchAndEvaluateScripts = operator();
             }
         }
 
-        return object(function(method) {
-            method(searchAndEvaluateScripts, function(self, element) {
-                each(element.getElementsByTagName('script'), evaluateScript);
-            });
-        });
+        return function(element) {
+            each(element.getElementsByTagName('script'), evaluateScript);
+        };
     };
 });
