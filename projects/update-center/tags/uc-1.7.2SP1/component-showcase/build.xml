@@ -1,0 +1,7 @@
+<project name="component-showcase" default="assemble">
+
+    <import file="../common.xml"/>
+    <property file="../common.properties"/>
+    <property file="build.properties"/>
+
+</project>

@@ -1,0 +1,7 @@
+<project name="webmc" default="assemble">
+
+    <import file="../common.xml"/>
+    <property file="../common.properties"/>
+    <property file="build.properties"/>
+
+</project>

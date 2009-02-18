@@ -1,0 +1,69 @@
+/* 
+ *
+ * ICEfaces/GlassFish Update Center Modules
+ *
+ */
+
+.fil, .fim, .fis, select, input.fbl, input.fbm, input.fbs, input.fbx {
+	font-family: arial,verdana,helvetica;
+	font-size: 11px;
+}
+
+input.fil, textarea.fil, select.fil {
+	width: 358px;
+}
+
+input.fim, textarea.fim, select.fim {
+	width: 208px;
+}
+
+input.fis, textarea.fis, select.fis {
+	width: 169px;
+}
+
+input.fil, input.fim, input.fis, textarea.fil, textarea.fim, textarea.fis {
+	background-color: #f2f8fc;
+	border: 1px solid #0077c0;
+	padding: 1px 0px 0px 3px;
+}
+
+textarea.fil {
+	height: 74px;
+}
+
+input.fbl {
+	width: 120px;
+}
+
+input.fbm {
+	width: 115px;
+}
+
+input.fbs {
+	width: 90px;
+}
+
+/* 
+ * Begin Non-Form Items 
+ */
+
+.fakelink {
+	color: #003366;
+	text-decoration: underline;
+}
+
+div.confirmBox {
+	padding: 20px 20px 20px 20px; 
+	border: 1px solid #c1c1c1; 
+	background-color: #f7f7f7;
+}
+
+div.tip {
+	position: relative;
+	top: -9px;
+	margin-left: 10px;
+}
+
+div.email_opt_in { background-color: #f1f1f1; border: 3px solid #ff0000; font-size: 0.9em; margin: 3px 0px 5px 0px; padding: 10px; text-align: center; width: 355px; }
+div.email_opt_in a { color: #cc0000; }
+div.email_opt_in h1 { color: #cc0000; font-size: 1.3em; font-weight: bold; margin: 0px; padding: 0px 0px 5px 0px; }
