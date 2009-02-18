@@ -31,7 +31,8 @@
  *
  */
 
-[ Ice.Document = new Object, Ice.ElementModel.Element, Ice.Connection, Ice.Ajax ].as(function(This, Element, Connection, Ajax) {
+var synchronize = operator();
+[ Ice.Document = new Object ].as(function(This) {
     This.replaceContainerHTML = function(container, html) {
         var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/body\>', 'g').exec(html);
@@ -43,52 +44,50 @@
         c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
     };
 
-    This.Synchronizer = Object.subclass({
-        initialize: function(logger, sessionID, viewID) {
-            this.logger = childLogger(logger, 'synchronizer');
-            this.ajax = new Ajax.Client(this.logger);
-            var id = 'history-frame:' + sessionID + ':' + viewID;
-            try {
-                //ICE-3242 under certain circumstances accessing location's hash property can throw an exception in Firefox                
-                window.frames[id].location.hash;
-                this.historyFrame = window.frames[id];
-            } catch (e) {
-                //alternative way of looking up the frame
-                this.historyFrame = id.asElement().contentWindow;
-            }
-            try {
-                if (this.historyFrame.location.hash.length > 0) this.reload();
-            } catch (e) {
-                error(this.logger, "History frame reload failed: " + e);
-            }
-        },
-
-        synchronize: function() {
-            try {
-                this.historyFrame.location.replace(this.historyFrame.location + '#reload');
-                debug(this.logger, 'mark document as modified');
-                this.synchronize = Function.NOOP;
-            } catch(e) {
-                warn(this.logger, 'could not mark document as modified', e);
-            }
-        },
-
-        reload: function() {
-            try {
-                this.info(logger, 'synchronize body');
-                this.ajax.getAsynchronously(document.URL, '', function(request) {
-                    request.setRequestHeader('Connection', 'close');
-                    request.on(Connection.OK, function(response) {
-                        This.replaceContainerHTML(document.body, response.content());
-                    });
-                });
-            } catch (e) {
-                error(this.logger, 'failed to reload body', e);
-            }
-        },
-
-        shutdown: function() {
-            this.synchronize = Function.NOOP;
+    This.Synchronizer = function(logger, client, sessionID, viewID) {
+        var id = 'history-frame:' + sessionID + ':' + viewID;
+        var historyFrame;
+        try {
+            //ICE-3242 under certain circumstances accessing location's hash property can throw an exception in Firefox
+            window.frames[id].location.hash;
+            historyFrame = window.frames[id];
+        } catch (e) {
+            //alternative way of looking up the frame
+            historyFrame = id.asElement().contentWindow;
         }
-    });
+
+        function synchronizePrivate() {
+            try {
+                historyFrame.location.replace(historyFrame.location + '#reload');
+                debug(logger, 'mark document as modified');
+                synchronizePrivate = noop;
+            } catch(e) {
+                warn(logger, 'could not mark document as modified', e);
+            }
+        }
+
+        if (historyFrame.location.hash.length > 0) {
+            //back button was used, reload body!
+            try {
+                info(logger, 'synchronize body');
+                getAsynchronously(client, document.URL, noop, noop, $witch(function(condition) {
+                    condition(OK, function(response) {
+                        This.replaceContainerHTML(document.body, contentAsText(response));
+                    });
+                }));
+            } catch (e) {
+                error(logger, 'failed to reload body', e);
+            }
+        }
+
+        return object(function(method) {
+            method(synchronize, function(self) {
+                synchronizePrivate();
+            });
+
+            method(shutdown, function() {
+                synchronizePrivate = noop;
+            });
+        });
+    };
 });

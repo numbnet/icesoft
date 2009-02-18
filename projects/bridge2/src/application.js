@@ -103,20 +103,21 @@ var disposeBridgeAndNotify = operator();
         var indicators = Ice.Status.DefaultIndicators(configuration, container);
         var evaluateScripts = Ice.Script.Loader(logger);
         var commandDispatcher = Ice.Command.Dispatcher();
-        var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
+        var documentSynchronizer = new Ice.Document.Synchronizer(logger, client, sessionID, viewID);
+        var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
         function replaceContainerHTML(html) {
             Ice.Document.replaceContainerHTML(container, html);
             evaluateScripts(container);
         }
 
-        var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
-
         function dispose() {
             dispose = noop;
-            documentSynchronizer.shutdown();
+            shutdown(documentSynchronizer);
             shutdown(asyncConnection);
         }
+
+        onUnload(window, dispose);
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'set-cookie', Ice.Command.SetCookie);
@@ -172,8 +173,6 @@ var disposeBridgeAndNotify = operator();
             dispose();
         });
 
-        onUnload(window, dispose);
-
         onSend(asyncConnection, function() {
             on(indicators.busy);
         }, function() {
@@ -186,7 +185,7 @@ var disposeBridgeAndNotify = operator();
                 replaceContainerHTML(contentAsText(response));
             } else if (mimeType && startsWith(mimeType, 'text/xml')) {
                 deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
-                documentSynchronizer.synchronize();
+                synchronize(documentSynchronizer);
             } else {
                 warn(logger, 'unknown content in response');
             }
