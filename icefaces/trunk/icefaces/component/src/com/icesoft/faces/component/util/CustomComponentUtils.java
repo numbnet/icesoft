@@ -628,4 +628,12 @@ public class CustomComponentUtils {
         }
         return null;
     }
+    
+    //ensures that Ancestor's rendered property is true
+    public static boolean isAncestorRendered(UIComponent component) {
+        if (component == null) return true;
+        if (!component.isRendered()) return false;
+        if (component instanceof UIViewRoot) return true;
+        return isAncestorRendered(component.getParent());   
+    }
 }
