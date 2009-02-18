@@ -58,8 +58,8 @@ function iceSubmitPartial(form, component, evt) {
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
     if (Ice.Menu != null && Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
-    if(Ice.FCKeditorUtility) 
-        Ice.FCKeditorUtility.saveAll();          
+    if (Ice.FCKeditorUtility)
+        Ice.FCKeditorUtility.saveAll();
     query.add('ice.submit.partial', true);
     $event(evt, component).serializeOn(query);
     if (form && form.id) {
@@ -87,8 +87,8 @@ function iceSubmit(aForm, aComponent, anEvent) {
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
     if (Ice.Menu != null && Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
-    if(Ice.FCKeditorUtility) 
-        Ice.FCKeditorUtility.saveAll();    
+    if (Ice.FCKeditorUtility)
+        Ice.FCKeditorUtility.saveAll();
     query.add('ice.submit.partial', false);
     //all key events are discarded except when 'enter' is pressed...not good!
     if (event.isKeyEvent()) {
@@ -120,6 +120,24 @@ function iceSubmit(aForm, aComponent, anEvent) {
 
     resetHiddenFieldsFor(aForm);
     return false;
+}
+
+function disposeOnViewRemoval(id) {
+    try {
+        //search the bridge through the parent elements
+        id.asExtendedElement().findBridge().disposeAndNotify();
+    } catch (e) {
+        //search the bridge through the child elements
+        var children = id.asElement().getElementsByTagName('*');
+        var size = children.length;
+        for (var i = 0; i < size; i++) {
+            var child = children[i];
+            if (child.bridge) {
+                child.bridge.disposeAndNotify();
+                break;
+            }
+        }
+    }
 }
 
 //todo: determine if the cleanup of hidden fields should be at framework or component level
