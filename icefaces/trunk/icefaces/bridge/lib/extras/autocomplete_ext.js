@@ -282,7 +282,19 @@ Autocompleter.Base.prototype = {
     },
 
     onBlur: function(event) {
+        if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
+            var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
+            var docBody = strictMode ? document.documentElement : document.body;
+            // Right or bottom border, if any, will be treated as scrollbar.
+            // No way to determine their width or scrollbar width accurately.
+            if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
+                event.clientY > docBody.clientTop + docBody.clientHeight) {
+                this.element.focus();
+                return;
+            }
+        }
         // needed to make click events working
+        setTimeout(this.hide.bind(this), 250);
         this.hasFocus = false;
         this.active = false;
     },
