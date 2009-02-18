@@ -53,31 +53,6 @@ import com.icesoft.util.pooling.ClientIdPool;
 
 
 public class MenuPopupRenderer extends MenuBarRenderer {
-
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        super.decode(facesContext, uiComponent);
-        Map requestMap =
-            facesContext.getExternalContext().getRequestParameterMap();
-        String clientId = uiComponent.getClientId(facesContext);
-        String displayListenerId = clientId + "_sub" + MenuPopup.DISPLAY_LISTENER_ID;
-        if (requestMap.containsKey(displayListenerId) && 
-                requestMap.get("ice.event.captured").equals(displayListenerId) ) {
-            String displayListenerValue = (String) requestMap.get(displayListenerId);
-            if (displayListenerValue != null) {
-                String xy[] = displayListenerValue.split(",");
-                if (xy.length < 3) return;
-                JavascriptContext.addJavascriptCall(facesContext, "Ice.Menu.showIt('"+
-                            xy[0]+"', '"+ xy[1] +"', '"+ xy[2]+ "', '"+ xy[3] +"');");
-                UIComponent targetComponent = D2DViewHandler.findComponent(xy[3].trim(), 
-                        facesContext.getViewRoot());
-                uiComponent.queueEvent(new DisplayEvent(uiComponent,
-                        targetComponent,
-                        xy[3].trim(),
-                        true
-                        ));
-            }
-        }
-    }
     
     protected void trailingEncodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         DOMContext domContext =
