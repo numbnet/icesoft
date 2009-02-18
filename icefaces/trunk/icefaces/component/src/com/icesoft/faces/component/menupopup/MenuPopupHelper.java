@@ -1,11 +1,16 @@
 package com.icesoft.faces.component.menupopup;
 
+import java.util.Map;
+
 import org.w3c.dom.Element;
 
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.DisplayEvent;
+import com.icesoft.faces.component.ext.HtmlPanelGroup;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 /**
@@ -40,6 +45,9 @@ public class MenuPopupHelper {
     }
     
     public static void decodeMenuContext(FacesContext facesContext, UIComponent comp) {
+        
+        processDisplayListener(facesContext, comp);
+        
 //System.out.println("MenuPopupHelper.decodeMenuContext()  for: " + comp.getClientId(facesContext));
         String requestMenuContext = (String) facesContext.getExternalContext().
             getRequestParameterMap().get("ice.menuContext");
@@ -62,6 +70,35 @@ public class MenuPopupHelper {
             else
                 menuPopup.getAttributes().put("contextValue", contextValue);
         }
+    }
+    
+    private static void processDisplayListener(FacesContext facesContext, UIComponent target) {
+        Map requestMap =
+            facesContext.getExternalContext().getRequestParameterMap();
+         UIComponent menuPopupComponent = findMenuPopup(target);
+         if(menuPopupComponent != null) {
+
+            String clientId = menuPopupComponent.getClientId(facesContext);
+            String displayListenerId = clientId + "_sub" + MenuPopup.DISPLAY_LISTENER_ID;
+            if (requestMap.containsKey(displayListenerId) && 
+                    requestMap.get("ice.event.captured").equals(displayListenerId) ) {
+                String displayListenerValue = (String) requestMap.get(displayListenerId);
+                if (displayListenerValue != null) {
+                    String xy[] = displayListenerValue.split(",");
+                    if (xy.length < 3) return;
+                    if (!target.getClientId(facesContext).equals(xy[3].trim()) ) return;
+                    JavascriptContext.addJavascriptCall(facesContext, "Ice.Menu.showIt('"+
+                                xy[0]+"', '"+ xy[1] +"', '"+ xy[2]+ "', '"+ xy[3] +"');");
+                    Object contextValue = ((HtmlPanelGroup)target).getContextValue();
+                    target.queueEvent(new DisplayEvent(menuPopupComponent,
+                            target,
+                            contextValue,
+                            true
+                            ));
+                }
+            }    
+         }
+         
     }
     
     private static UIComponent findMenuPopup(UIComponent comp) {
