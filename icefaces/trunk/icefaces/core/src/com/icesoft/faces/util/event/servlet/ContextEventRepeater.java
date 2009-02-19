@@ -36,8 +36,12 @@ package com.icesoft.faces.util.event.servlet;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -45,11 +49,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /*
  * The ContextEventRepeater was designed to forward servlet events to different
@@ -96,8 +98,6 @@ implements HttpSessionListener, ServletContextListener {
 
     //todo: fix it... this is just a temporary solution
     private static SessionDispatcher.Listener SessionDispatcherListener;
-    private static ContextDestroyedEvent classloadCDEvent;
-    private static SessionDestroyedEvent classloadSDEvent;
 
     static {
         SessionDispatcherListener = new SessionDispatcher.Listener();
@@ -208,12 +208,12 @@ implements HttpSessionListener, ServletContextListener {
 
         ICEfacesIDDisposedEvent iceFacesIdDisposedEvent =
             new ICEfacesIDDisposedEvent(source, iceFacesId);
-        bufferedContextEvents.put(iceFacesIdDisposedEvent, source);
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
                 iceFacesIdDisposed(iceFacesIdDisposedEvent);
         }
+        removeBufferedEvents(iceFacesId);
         if (contextEventPublisher != null) {
             try {
                 contextEventPublisher.publish(iceFacesIdDisposedEvent);
@@ -272,7 +272,7 @@ implements HttpSessionListener, ServletContextListener {
      * @param contextEventListener the listener to be removed.
      */
     public synchronized static void removeListener(
-            final ContextEventListener contextEventListener) {
+        final ContextEventListener contextEventListener) {
 
         if (contextEventListener == null) {
             return;
@@ -282,7 +282,7 @@ implements HttpSessionListener, ServletContextListener {
 
     public synchronized void sessionCreated(final HttpSessionEvent event) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("session Created event: " + event.getSession().getId());
+            LOG.debug("Session Created event: " + event.getSession().getId());
         }
     }
 
@@ -294,7 +294,7 @@ implements HttpSessionListener, ServletContextListener {
      */
     public synchronized void sessionDestroyed(final HttpSessionEvent event) {
         if (LOG.isDebugEnabled() ) {
-            LOG.debug("SessionDestroyed event, session: " + event.getSession().getId());
+            LOG.debug("Session Destroyed event: " + event.getSession().getId());
         }
         // #3073 directly invoke method on SessionDispatcher for all sessions
         // (Not just wrapped ones)
@@ -321,6 +321,36 @@ implements HttpSessionListener, ServletContextListener {
         }
     }
 
+    public synchronized static void viewNumberDisposed(
+        final HttpSession source, final String iceFacesId,
+        final int viewNumber) {
+
+        ViewNumberDisposedEvent viewNumberDisposedEvent =
+            new ViewNumberDisposedEvent(source, iceFacesId, viewNumber);
+        Iterator _listeners = listeners.keySet().iterator();
+        while (_listeners.hasNext()) {
+            ((ContextEventListener)_listeners.next()).
+                viewNumberDisposed(viewNumberDisposedEvent);
+        }
+        removeBufferedEvents(iceFacesId, viewNumber);
+        if (contextEventPublisher != null) {
+            try {
+                contextEventPublisher.publish(viewNumberDisposedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
+        }
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
+                "View Number disposed: " +
+                    viewNumberDisposedEvent.getViewNumber() + " " +
+                        "[ICEfaces ID: " +
+                            viewNumberDisposedEvent.getICEfacesID() +
+                        "]");
+        }
+    }
     /**
      * Fires a new <code>ViewNumberRetrievedEvent</code>, with the specified
      * <code>source</code> and </code>viewNumber</code>, to all registered
@@ -330,11 +360,11 @@ implements HttpSessionListener, ServletContextListener {
      * @param viewNumber the view number.
      */
     public synchronized static void viewNumberRetrieved(
-        final HttpSession source, final String icefacesID,
+        final HttpSession source, final String iceFacesId,
         final int viewNumber) {
 
         ViewNumberRetrievedEvent viewNumberRetrievedEvent =
-            new ViewNumberRetrievedEvent(source, icefacesID, viewNumber);
+            new ViewNumberRetrievedEvent(source, iceFacesId, viewNumber);
         bufferedContextEvents.put(viewNumberRetrievedEvent, source);
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
@@ -352,7 +382,11 @@ implements HttpSessionListener, ServletContextListener {
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
-                "New View number created: " + viewNumberRetrievedEvent.getViewNumber());
+                "View Number retrieved: " +
+                    viewNumberRetrievedEvent.getViewNumber() + " " +
+                        "[ICEfaces ID: " +
+                            viewNumberRetrievedEvent.getICEfacesID() +
+                        "]");
         }
     }
 
@@ -385,6 +419,41 @@ implements HttpSessionListener, ServletContextListener {
             bufferedSession = (HttpSession) bufferedContextEvents.get(event);
             if (bufferedSession.equals(session)) {
                 //bufferedContextEvents.remove(event);
+                it.remove();
+            }
+        }
+    }
+
+    private synchronized static void removeBufferedEvents(
+        final String iceFacesId) {
+
+        Iterator it = bufferedContextEvents.keySet().iterator();
+        while (it.hasNext()) {
+            Object event = it.next();
+            if ((event instanceof ICEfacesIDRetrievedEvent &&
+                ((ICEfacesIDRetrievedEvent)event).
+                    getICEfacesID().equals(iceFacesId)) ||
+                (event instanceof ViewNumberRetrievedEvent &&
+                ((ViewNumberRetrievedEvent)event).
+                    getICEfacesID().equals(iceFacesId))) {
+
+                it.remove();
+            }
+        }
+    }
+
+    private synchronized static void removeBufferedEvents(
+        final String iceFacesId, final int viewNumber) {
+
+        Iterator it = bufferedContextEvents.keySet().iterator();
+        while (it.hasNext()) {
+            Object event = it.next();
+            if (event instanceof ViewNumberRetrievedEvent &&
+                ((ViewNumberRetrievedEvent)event).
+                    getICEfacesID().equals(iceFacesId) &&
+                ((ViewNumberRetrievedEvent)event).
+                    getViewNumber() == viewNumber) {
+
                 it.remove();
             }
         }

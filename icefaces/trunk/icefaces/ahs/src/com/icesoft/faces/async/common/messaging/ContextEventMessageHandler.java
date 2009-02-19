@@ -109,6 +109,13 @@ implements MessageHandler {
                 if (callback != null) {
                     ((Callback)callback).sessionDestroyed(_tokens.nextToken());
                 }
+            } else if (_event.equals("ViewNumberDisposed")) {
+                // message-body:
+                //     <event-name>;<ICEfaces ID>;<View Number>
+                if (callback != null) {
+                    ((Callback)callback).viewNumberDisposed(
+                        _tokens.nextToken(), _tokens.nextToken());
+                }
             } else if (_event.equals("ViewNumberRetrieved")) {
                 // message-body:
                 //     <event-name>;<ICEfaces ID>;<View Number>

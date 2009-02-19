@@ -88,6 +88,10 @@ implements Comparable {
         }
     }
 
+    public boolean contains(final String viewNumber) {
+        return updatedViewsSet.contains(viewNumber);
+    }
+
     public String getICEfacesID() {
         return iceFacesId;
     }
@@ -118,6 +122,14 @@ implements Comparable {
                     _updatedViewsSet);
         }
         return _updatedViews;
+    }
+
+    public boolean remove(final String viewNumber) {
+        return updatedViewsSet.remove(viewNumber);
+    }
+
+    public int size() {
+        return updatedViewsSet.size();
     }
 
     public String toString() {

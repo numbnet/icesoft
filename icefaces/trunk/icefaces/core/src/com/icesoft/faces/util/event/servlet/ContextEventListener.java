@@ -110,6 +110,8 @@ public interface ContextEventListener extends EventListener {
      */
     public void sessionDestroyed(SessionDestroyedEvent event);
 
+    public void viewNumberDisposed(ViewNumberDisposedEvent event);
+    
     /**
      * Indicates a view number has been retrieved. </p>
      *

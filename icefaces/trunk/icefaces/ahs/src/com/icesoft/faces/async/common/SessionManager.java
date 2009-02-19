@@ -77,12 +77,31 @@ implements
         } catch (InterruptedException exception) {
             // ignore interrupts.
         }
-        sessionDestroyed(iceFacesId);
+        synchronized (requestManager) {
+            synchronized (sessionMap) {
+                if (sessionMap.containsKey(iceFacesId)) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "ICEfaces ID disposed: " + iceFacesId);
+                    }
+                    sessionMap.remove(iceFacesId);
+                }
+                Handler _handler = requestManager.pull(iceFacesId);
+                if (_handler != null) {
+                    _handler.handle();
+                }
+                updatedViewsManager.remove(iceFacesId);
+            }
+        }
     }
 
     public void iceFacesIdRetrieved(final String iceFacesId) {
         synchronized (sessionMap) {
             if (!sessionMap.containsKey(iceFacesId)) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(
+                        "ICEfaces ID retrieved: " + iceFacesId);
+                }
                 sessionMap.put(iceFacesId, new HashSet());
             }
         }
@@ -160,7 +179,7 @@ implements
         if (updatedViews == null) {
             throw new IllegalArgumentException("updatedViews is null");
         }
-        synchronized (sessionMap) {
+        synchronized (sessionMap) {                           
             if (isValid(updatedViews.getICEfacesID())) {
                 updatedViewsManager.push(updatedViews);
                 Handler _handler =
@@ -173,20 +192,32 @@ implements
     }
 
     public void sessionDestroyed(final String iceFacesId) {
+        // do nothing.
+    }
+
+    public void viewNumberDisposed(
+        final String iceFacesId, final String viewNumber) {
+
         synchronized (requestManager) {
             synchronized (sessionMap) {
                 if (sessionMap.containsKey(iceFacesId)) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "Session Destroyed: " + iceFacesId);
+                    Set _viewNumberSet =
+                        (Set)sessionMap.get(iceFacesId);
+                    if (_viewNumberSet.contains(viewNumber)) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "View Number disposed: " +
+                                    viewNumber + " " +
+                                        "[ICEfaces ID: " + iceFacesId + "]");
+                        }
+                        _viewNumberSet.remove(viewNumber);
+                        Handler _handler = requestManager.pull(iceFacesId);
+                        if (_handler != null) {
+                            _handler.handle();
+                        }
+                        updatedViewsManager.remove(iceFacesId, viewNumber);
                     }
-                    sessionMap.remove(iceFacesId);
                 }
-                Handler _handler = requestManager.pull(iceFacesId);
-                if (_handler != null) {
-                    _handler.handle();
-                }
-                updatedViewsManager.remove(iceFacesId);
             }
         }
     }
@@ -199,6 +230,12 @@ implements
                 Set _viewNumberSet =
                     (Set)sessionMap.get(iceFacesId);
                 if (!_viewNumberSet.contains(viewNumber)) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "View Number retrieved: " +
+                                viewNumber + " " +
+                                    "[ICEfaces ID: " + iceFacesId + "]");
+                    }
                     _viewNumberSet.add(viewNumber);
                 }
             }

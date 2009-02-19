@@ -38,6 +38,7 @@ import com.icesoft.faces.util.event.servlet.ContextEventListener;
 import com.icesoft.faces.util.event.servlet.ICEfacesIDDisposedEvent;
 import com.icesoft.faces.util.event.servlet.ICEfacesIDRetrievedEvent;
 import com.icesoft.faces.util.event.servlet.SessionDestroyedEvent;
+import com.icesoft.faces.util.event.servlet.ViewNumberDisposedEvent;
 import com.icesoft.faces.util.event.servlet.ViewNumberRetrievedEvent;
 
 /**
@@ -49,31 +50,38 @@ public class ContextDestroyedListener
 implements ContextEventListener {
     private Disposable disposable;
 
-    public ContextDestroyedListener(Disposable disposable) {
+    public ContextDestroyedListener(final Disposable disposable) {
         this.disposable = disposable;
     }
 
-    public void contextDestroyed(ContextDestroyedEvent event) {
+    public void contextDestroyed(final ContextDestroyedEvent event) {
         if (disposable != null) {
             disposable.dispose();
         }
     }
 
 
-    public void iceFacesIdDisposed(ICEfacesIDDisposedEvent event) {
+    public void iceFacesIdDisposed(final ICEfacesIDDisposedEvent event) {
+        // do nothing.
     }
 
-    public void iceFacesIdRetrieved(ICEfacesIDRetrievedEvent event) {
+    public void iceFacesIdRetrieved(final ICEfacesIDRetrievedEvent event) {
+        // do nothing.
     }
 
     public boolean receiveBufferedEvents() {
         return false;
     }
 
-    public void sessionDestroyed(SessionDestroyedEvent event) {
+    public void sessionDestroyed(final SessionDestroyedEvent event) {
+        // do nothing.
     }
 
-    public void viewNumberRetrieved(ViewNumberRetrievedEvent event) {
+    public void viewNumberDisposed(final ViewNumberDisposedEvent event) {
+        // do nothing.
     }
 
+    public void viewNumberRetrieved(final ViewNumberRetrievedEvent event) {
+        // do nothing.
+    }
 }
