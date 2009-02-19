@@ -198,9 +198,8 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
-     *
-     * @param setup Runnable to run, in the proper thread context, before 
-     * doing the JSF lifecycle
+     * @param setup    Runnable to run, in the proper thread context, before
+     *                 doing the JSF lifecycle
      * @param warnSync Whether warn if in synchronous mode
      */
     public void renderLater(Runnable setup, boolean warnSync) {
@@ -229,7 +228,7 @@ public class PersistentFacesState implements Serializable {
             view.acquireLifecycleLock();
             view.installThreadLocals();
             BridgeFacesContext facesContext = view.getFacesContext();
-            
+
             // For JSF 1.1, with the inputFile, we need the execute phases to 
             // actually happen, which wasn't the case when the following code 
             // only ran for JSF 1.2. These are the options we have for JSF 1.1:
@@ -244,7 +243,7 @@ public class PersistentFacesState implements Serializable {
             // C. Clearing the RequestParameterMap leads to skipping the execute,
             //    so that's not sufficient.
             // D. Just doing the same thing for JSF 1.1 as JSF 1.2 seems to work
-            
+
             if (true) { // if (ImplementationUtil.isJSF12()) {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
@@ -295,6 +294,7 @@ public class PersistentFacesState implements Serializable {
      */
     public void executeAndRender() throws RenderingException {
         view.acquireLifecycleLock();
+        view.getFacesContext().injectBundles();
         execute();
         render();
     }
@@ -393,14 +393,14 @@ public class PersistentFacesState implements Serializable {
         }
 
         /**
-         * @param setup Runnable to run, in the proper thread context, before 
-         * doing the JSF lifecycle
+         * @param setup Runnable to run, in the proper thread context, before
+         *              doing the JSF lifecycle
          */
         public RenderRunner(Runnable setup) {
             delay = 0;
             this.setup = setup;
         }
-        
+
         /**
          * <p>Not for application use. Entry point for {@link
          * PersistentFacesState#renderLater}.</p>
@@ -421,10 +421,10 @@ public class PersistentFacesState implements Serializable {
             }
         }
     }
-    
+
     private static class DaemonThreadFactory implements ThreadFactory {
         private ThreadFactory defaultThreadFactory;
-        
+
         private DaemonThreadFactory() {
             defaultThreadFactory = Executors.defaultThreadFactory();
         }
