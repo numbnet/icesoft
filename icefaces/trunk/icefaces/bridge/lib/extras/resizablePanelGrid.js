@@ -195,7 +195,7 @@ Ice.Resizable = Class.create({
 
 Ice.ResizableGrid = Class.create(Ice.Resizable, {
   initialize: function($super, event) {
-    $super(event);
+    $super(event);    logger.info(">>>>>>>>>>>>>>>>>>> ");
     this.cntHght = (Element.getHeight(this.getContainerElement())) + "px";
     this.source.style.height = this.cntHght;
     this.getGhost().style.left= Event.pointerX(event) + "px";
@@ -338,7 +338,7 @@ Ice.PanelDivider.addMethods({
     Element.remove(this.ghost);
   },
 
-  adjustPosition:function(event) {
+  adjustPosition:function(event) {logger.info("<<<<<<<<<<<<<<<<<<<<< ADJUST POSTITITITITITI >>>>>>>>>>>>>>>>");
       var savedVisibility = this.getNextElement().style.visibility;
       this.getNextElement().style.visibility = "hidden";
    if (this.horizontal) {
@@ -442,6 +442,7 @@ Ice.PanelDivider.onLoad = function(divider, isHorizontal) {
     Ice.PanelDivider.dividerHash.set(divider, isHorizontal); // Will replace existing, if any.
     Event.observe(window, "resize", Ice.PanelDivider.onWindowResize);
     Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
+    Ice.PanelDivider.adjustPercentBasedHeight(divider, isHorizontal);
 }
 
 ResizableUtil = {
@@ -458,3 +459,50 @@ ResizableUtil = {
         src.firstChild.style.height= (height-1) + 'px'; 
     }
 }
+
+//this function added to fix ICE-4044 (Issue when setting panelDivider to a non-fixed height )
+Ice.PanelDivider.adjustPercentBasedHeight = function(divider, isHorizontal) {
+    if (isHorizontal)return;         
+    var rootElementId = divider.replace("Divider",""); 
+    var rootElement = $(rootElementId);
+    
+    var rootHeight = Element.getStyle(rootElement, 'height');
+    var percentBasedHeight = null;
+    if (rootHeight && rootHeight.indexOf("%") > 0) {
+        percentBasedHeight = rootHeight.split("%")[0];
+    } 
+    if (percentBasedHeight) {
+        parentHeight = Ice.PanelDivider.getParentHeight(rootElement);
+        newVal = Math.round(parentHeight * (percentBasedHeight / 100));
+        rootElement.style.height = newVal + "px"; 
+        $(divider).style.height = newVal + "px";
+    }
+}
+
+//this function recusivly check the height of the parent element, until one found
+//if none found and body has reached, then return the height of the viewport
+Ice.PanelDivider.getParentHeight = function(element) {
+     //if ture means that height is not assigned to any parent, so now get the 
+     //height of the viewPort
+     if (element.tagName == 'BODY') {
+        var viewPortHeight = document.viewport.getHeight();
+        //for opera get the window.innerHeight
+        if (Prototype.Browser.WebKit && typeof window.innerHeight != 'undefined'){
+            viewPortHeight = window.innerHeight;
+        }       //sub 4 to avoid scrollbar
+        return (viewPortHeight-4);
+     }
+     var sHeight = Element.getStyle(element, 'height');
+     if (sHeight.indexOf("%") > 0) {
+        return Ice.PanelDivider.getParentHeight(element.parentNode);
+     } else {
+         sHeight = Element.getHeight(element);
+         //if no height defined on the element, it returns 2 without any unit
+         //so get the height of its parent   
+         if (sHeight == "2") {
+
+             return Ice.PanelDivider.getParentHeight(element.parentNode);
+         }
+     }        
+     return sHeight;
+ }
