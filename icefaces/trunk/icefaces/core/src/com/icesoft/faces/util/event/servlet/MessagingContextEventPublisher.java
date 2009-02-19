@@ -113,6 +113,11 @@ implements ContextEventPublisher {
             return
                 "SessionDestroyed;" +
                     ((SessionDestroyedEvent)event).getICEfacesID();
+        } else if (event instanceof ViewNumberDisposedEvent) {
+            return
+                "ViewNumberDisposed;" +
+                    ((ViewNumberDisposedEvent)event).getICEfacesID() + ";" +
+                    ((ViewNumberDisposedEvent)event).getViewNumber();
         } else if (event instanceof ViewNumberRetrievedEvent) {
             return
                 "ViewNumberRetrieved;" +

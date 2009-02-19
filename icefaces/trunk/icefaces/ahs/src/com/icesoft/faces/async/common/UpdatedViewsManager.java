@@ -115,7 +115,7 @@ implements AnnouncementMessageHandler.Callback, PurgeMessageHandler.Callback {
                 Iterator _updatedViewsIterator = _updatedViewsQueue.iterator();
                 while (_updatedViewsIterator.hasNext()) {
                     UpdatedViews _updatedViews =
-                            (UpdatedViews)_updatedViewsIterator.next();
+                        (UpdatedViews)_updatedViewsIterator.next();
                     StringBuffer _stringBuffer = new StringBuffer();
                     Iterator _updatedViewIterator =
                         _updatedViews.getUpdatedViewsSet().iterator();
@@ -258,8 +258,27 @@ implements AnnouncementMessageHandler.Callback, PurgeMessageHandler.Callback {
     public void remove(final String iceFacesId) {
         if (iceFacesId != null && iceFacesId.trim().length() != 0) {
             synchronized (updatedViewsQueueMap) {
+                synchronized (purgeMap) {
+                    if (updatedViewsQueueMap.containsKey(iceFacesId)) {
+                        updatedViewsQueueMap.remove(iceFacesId);
+                    }
+                    if (purgeMap.containsKey(iceFacesId)) {
+                        purgeMap.remove(iceFacesId);
+                    }
+                }
+            }
+        }
+    }
+
+    public void remove(final String iceFacesId, final String viewNumber) {
+        if (iceFacesId != null && iceFacesId.trim().length() != 0) {
+            synchronized (updatedViewsQueueMap) {
                 if (updatedViewsQueueMap.containsKey(iceFacesId)) {
-                    updatedViewsQueueMap.remove(iceFacesId);
+                    UpdatedViews _updatedViews =
+                        (UpdatedViews)updatedViewsQueueMap.get(iceFacesId);
+                    if (_updatedViews.contains(viewNumber)) {
+                        _updatedViews.remove(viewNumber);
+                    }
                 }
             }
         }

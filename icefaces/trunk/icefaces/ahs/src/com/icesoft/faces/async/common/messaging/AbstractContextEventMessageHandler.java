@@ -58,6 +58,9 @@ implements MessageHandler {
 
         public void sessionDestroyed(final String iceFacesId);
 
+        public void viewNumberDisposed(
+            final String iceFacesId, final String viewNumber);
+
         public void viewNumberRetrieved(
             final String iceFacesId, final String viewNumber);
     }

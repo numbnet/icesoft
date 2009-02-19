@@ -176,6 +176,10 @@ public class View implements CommandQueue {
 
     public void dispose() {
         dispose.run();
+        ContextEventRepeater.viewNumberDisposed(
+            (HttpSession)facesContext.getExternalContext().getSession(false),
+            sessionID,
+            Integer.parseInt(viewIdentifier));
     }
 
     public void installThreadLocals() {
