@@ -11,7 +11,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.UIComponent;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.FacesException;
-import javax.servlet.http.HttpSession;
 
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
@@ -23,8 +22,6 @@ import java.io.ObjectInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,9 +29,12 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.concurrent.ConcurrentHashMap;
+import java.lang.reflect.Method;
 
 /**
- *
+ * A implementation of StateSaving that stores state using the JSF StateManager
+ * but only stores one copy per View. The copy is keyed by the View Number, not
+ * the ViewID
  */
 public class SingleCopyStateManagerImpl extends StateManager {
 
@@ -44,11 +44,14 @@ public class SingleCopyStateManagerImpl extends StateManager {
     protected boolean serialize_server_state;
     protected boolean compress_view_state;
 
-    private final static String SERIALIZE_SERVER_STATE = "com.sun.faces.serializeServerState";
-    private final static String COMPRESS_VIEW_STATE = "com.sun.faces.compressViewState";
+    protected final static String SERIALIZE_SERVER_STATE = "com.sun.faces.serializeServerState";
+    protected final static String COMPRESS_VIEW_STATE = "com.sun.faces.compressViewState";
 
-    private boolean parametersInitialized;
+    protected boolean parametersInitialized;
     protected StateManager delegate;
+
+    protected boolean pureDelegation;
+    protected Method v2DelegateSaveViewMethod;
 
 
     /**
@@ -78,6 +81,22 @@ public class SingleCopyStateManagerImpl extends StateManager {
         compress_view_state = Boolean.getBoolean( ec.getInitParameter(
                 COMPRESS_VIEW_STATE));
 
+        // check to calling sequence to see if this class is stacked with others from ICEsoft.
+        StackTraceElement[] ste = (new RuntimeException()).getStackTrace();
+        String className;
+        for (int i = 2; i < ste.length; i++) {
+            className = ste[i].getClassName();
+            if (className.equals(ViewRootStateManagerImpl.class.getName()) || className.equals(this.getClass().getName())) {
+                log.debug("Pure delegate role taken by SingleCopyStateSavingImpl");
+                pureDelegation = true;
+                break;
+            }
+        }
+        try {
+            v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
+        } catch (Exception e) {
+            log.error("Exception finding JSF1.2 saveView method on delegate", e); 
+        }
         parametersInitialized = true;
     }
 
@@ -91,6 +110,12 @@ public class SingleCopyStateManagerImpl extends StateManager {
      */
     public UIViewRoot restoreView(FacesContext context, String viewId,
                                   String renderKitId) {
+        initializeParameters( context );
+
+        if (pureDelegation) {
+            return delegate.restoreView(context, viewId, renderKitId);
+        }
+
         UIViewRoot viewRoot;
         ExternalContext externalCtx = context.getExternalContext();
 
@@ -126,6 +151,19 @@ public class SingleCopyStateManagerImpl extends StateManager {
      * @return
      */
     public Object saveView(FacesContext context) {
+
+        if (pureDelegation) {
+            if (v2DelegateSaveViewMethod != null) {
+                // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+                try {
+                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                } catch (Exception e)  {
+                    log.error("Exception in saveView" , e);
+                }
+            } else {
+                return delegate.saveSerializedView(context);
+            }
+        }
 
         SerializedView result;
 
@@ -170,6 +208,9 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
     public SerializedView saveSerializedView(FacesContext context) {
         initializeParameters( context );
+        if (pureDelegation) {
+            return delegate.saveSerializedView(context);
+        }
         return (SerializedView) saveView(context);
     }
 
