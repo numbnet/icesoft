@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>seam-comp-showcaseWAR</name>
+	<name>seam-comp-showcase-1.8</name>
 	<comment></comment>
 	<projects>
-		<project>seam-2.0.0.CR1</project>
+		<project>seam-2.1.1.GA</project>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.wst.jsdt.core.javascriptValidator</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -14,5 +19,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
 </projectDescription>
