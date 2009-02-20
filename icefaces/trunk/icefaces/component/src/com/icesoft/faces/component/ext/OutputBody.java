@@ -20,7 +20,7 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
     private String text;
     private String vlink;
     private String focus;
-    private String previousFocus = new String();
+    transient private String previousFocus;
     
     public OutputBody() {
         super();
@@ -163,7 +163,7 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
         } else {
             target = D2DViewHandler.findComponentInView(this,focus);
         }
-        if( target != null && !previousFocus.equals(focus) ){
+        if( target != null && !focus.equals(previousFocus) ){
             JavascriptContext.applicationFocus(fc,target.getClientId(fc));
             previousFocus = focus;
         }
