@@ -34,6 +34,8 @@ insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('gmap.jspx','gMap'
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('outputResource.jspx','outputResource','/docs/outputDeclarationDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('effects.jspx','effects','/docs/effectsDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('dragDrop.jspx','dragDrop','/docs/dragDropDoc.html','http://facestutorials.icefaces.org/tutorial/dragDrop-tutorial.html')
+insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('dataTable-dataExporter.jspx','dataExporter','/docs/dataTableDoc.html','http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html')
+insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('setEventPhase.jspx','setEventPhasePanel','/docs/setEventPhase.html','http://facestutorials.icefaces.org/tutorial')
 insert into Employee (departmentName,subdepartmentName,firstName,lastName,phone) values('Western','Calgary','Ethan','Smith','555-4562')
 insert into Employee (departmentName,subdepartmentName,firstName,lastName,phone) values('Western','Calgary','Jacob','Smith','555-4563')
 insert into Employee (departmentName,subdepartmentName,firstName,lastName,phone) values('Western','Calgary','Logan','Smith','555-4564')
