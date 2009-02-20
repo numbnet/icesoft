@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.render.RenderKitFactory;
-import javax.servlet.http.HttpSession;
 
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
@@ -16,15 +15,22 @@ import com.icesoft.faces.context.View;
 import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.Method;
 
 /**
- *
+ * A implementation of StateSaving that stores the ViewRoot into the Session between
+ * requests. Fast and performant, the only downside is an inability to persist
+ * the state to other nodes in a cluster
  */
 public class ViewRootStateManagerImpl extends StateManager {
 
     protected static Log log = LogFactory.getLog(ViewRootStateManagerImpl.class);
 
-    private StateManager delegate;
+    protected StateManager delegate;
+    protected boolean parametersInitialized;
+    protected boolean pureDelegation;
+    protected Method v2DelegateSaveViewMethod;
+
 
     public ViewRootStateManagerImpl(StateManager delegate) {
         if (log.isInfoEnabled()) {
@@ -42,6 +48,11 @@ public class ViewRootStateManagerImpl extends StateManager {
      * @return The restored ViewRoot, null if none saved for this ICEfaces viewNumber
      */
     public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
+
+        initializeParameters( context );
+        if (pureDelegation) {
+            return delegate.restoreView(context, viewId, renderKitId);
+        }
 
         if ( !(context instanceof BridgeFacesContext) ) {
             throw new IllegalStateException("FacesContext not instance of BridgeFacesContext");
@@ -70,6 +81,35 @@ public class ViewRootStateManagerImpl extends StateManager {
         return root;
     }
 
+    /**
+     * Perform first time initialization. Primarily determine if this instance is invoked from
+     * another ICEfaces stateSaving instance and if so, enter a pure delegation
+     * mode where this istance does nothing but delegate 
+     * @param context
+     */
+     private void initializeParameters(FacesContext context) {
+         if (parametersInitialized) {
+             return;
+         }
+
+         // check to calling sequence to see if this class is stacked with others from ICEsoft.
+        StackTraceElement[] ste = (new RuntimeException()).getStackTrace();
+        String className;
+        for (int i = 2; i < ste.length; i++) {
+            className = ste[i].getClassName();
+            if (className.equals(this.getClass().getName()) || className.equals(SingleCopyStateManagerImpl.class.getName())) {
+                log.debug("Pure delegate role taken by ViewRootStateSavingImpl");
+                pureDelegation = true;
+                break;
+            }
+        }
+         try {
+             v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
+         } catch (Exception e) {
+             log.error("Exception finding JSF1.2 saveView method on delegate", e);
+         }
+        parametersInitialized = true;
+     }
 
     /**
      * Defer to the current strategy for saving the View
@@ -77,6 +117,20 @@ public class ViewRootStateManagerImpl extends StateManager {
      * @return
      */
     public Object saveView(FacesContext context ) {
+
+        initializeParameters(context);
+        if (pureDelegation) {
+            // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+            if (v2DelegateSaveViewMethod != null) {
+                try {
+                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                } catch (Exception e)  {
+                    log.error("Exception in saveView" , e);
+                }
+            } else {
+                return delegate.saveSerializedView(context);
+            }
+        } 
 
         UIViewRoot root = context.getViewRoot();
 
@@ -99,7 +153,11 @@ public class ViewRootStateManagerImpl extends StateManager {
         return sm.new SerializedView( viewNumber, null);
     }
 
+
     public SerializedView saveSerializedView(FacesContext context) {
+        if (pureDelegation) {
+            return delegate.saveSerializedView(context);
+        }
         return (SerializedView) saveView(context);
     }
 
@@ -131,6 +189,10 @@ public class ViewRootStateManagerImpl extends StateManager {
      */
     public void writeState(FacesContext context, SerializedView view)
     throws IOException {
+        initializeParameters(context);
+        if (pureDelegation) {
+            delegate.writeState(context, view);
+        } 
 
         ResponseWriter writer = context.getResponseWriter();
         writer.write(STATE_FIELD_START);
@@ -166,7 +228,7 @@ public class ViewRootStateManagerImpl extends StateManager {
     }
 
     public void restoreComponentState(FacesContext context,
-                                      UIViewRoot viewRoot,
+                                      UIViewRoot viewRoot,      
                                       String renderKitId) {
     }
 
