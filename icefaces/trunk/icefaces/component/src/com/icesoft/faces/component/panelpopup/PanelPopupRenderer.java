@@ -38,6 +38,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -54,6 +55,7 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 import com.icesoft.util.pooling.ClientIdPool;
+import java.util.Map;
 
 /**
  * <p>
@@ -146,8 +148,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 				rootDiv.appendChild(targetID);
 			}
 			// Write Modal Javascript so that on refresh it will still be modal.
-			String script = modalJavascript(modal, visible, facesContext,
-					clientId);
+			String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);
 			if (script != null) {
 				Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
 				scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
@@ -299,19 +300,35 @@ public class PanelPopupRenderer extends GroupRenderer {
                 facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, root, null);                
     }
 
-	private String modalJavascript(Boolean modal, Boolean visible,
+	private String modalJavascript(UIComponent uiComponent, Boolean modal, Boolean visible,
 			FacesContext facesContext, String clientId) {
 		String call = null;
 		String iframeUrl = CoreUtils.resolveResourceURL(facesContext,
 				"/xmlhttp/blank");
 		if (modal != null) {
 			if (modal.booleanValue() && visible.booleanValue()) {
+                String trigger = "";
+                // ICE-3563
+                if (!((PanelPopup)uiComponent).isRunningModal()) {
+                    Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+                    if (requestParameterMap.get("ice.focus") != null) {
+                        trigger = (String) requestParameterMap.get("ice.focus");
+                    }
+                    ((PanelPopup)uiComponent).setRunningModal(true);
+                    ((BridgeFacesContext) facesContext).setFocusId("");
+                }
+                
 				call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-						+ "');";
+						+ "', '" + trigger + "');";
 				if (log.isTraceEnabled()) {
 					log.trace("Starting Modal Function");
 				}
 			} else {
+                // ICE-3563
+                if (((PanelPopup)uiComponent).isRunningModal()) {
+                    ((PanelPopup)uiComponent).setRunningModal(false);
+                    ((BridgeFacesContext) facesContext).setFocusId("");
+                }
 				call = "Ice.modal.stop('" + clientId + "');";
 				if (log.isTraceEnabled()) {
 					log.trace("Stopping modal function");

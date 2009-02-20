@@ -417,4 +417,19 @@ public class PanelPopup extends HtmlPanelGroup {
     public void setDragged(boolean dragged) {
         this.dragged = dragged;
     }
+    
+    // ICE-3563 {
+    private Boolean runningModal = null;
+    
+    public boolean isRunningModal() {
+		if (runningModal == null) {
+            setRunningModal(isModal() && isVisible());
+		}
+        return runningModal.booleanValue();
+    }
+
+    public void setRunningModal(boolean runningModal) {
+        this.runningModal = Boolean.valueOf(runningModal);
+    }
+    // }
 }
