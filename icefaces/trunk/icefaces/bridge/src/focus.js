@@ -77,7 +77,8 @@ function setFocus(id) {
     }
 
     function setFocusListener(e) {
-        var element = e.target || e.srcElement;
+        var evt = e || window.event;
+        var element = evt.srcElement || evt.target;
         setFocus(element.id);
     }
 
