@@ -243,6 +243,7 @@
 		     <include name="lib/backport-util-concurrent.jar" />
 		     <include name="lib/commons-fileupload.jar"/> 	
              <include name="lib/krysalis-jCharts-*.jar"/>
+             <include name="lib/jxl.jar"/>
 	      </fileset>
         </copy>  
     	
@@ -462,6 +463,7 @@
 	           	 <include name="portlet.jar"/>
 	        	 <include name="servlet-api.jar"/>
 	        	 <include name="common-beanutils.jar"/>
+	        	 <include name="jxl.jar"/>
                  <exclude name="commons-collections.jar"/>
 		   </fileset>
 	       <fileset dir="${jboss.seam.home}/lib">
