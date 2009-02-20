@@ -94,7 +94,7 @@ Ice.modal = {
     target:null,
     oldListener:null,
     id:null,
-    start:function(target, iframeUrl) {
+    start:function(target, iframeUrl,trigger) {
         Ice.modal.oldListener = window.document.documentElement.onkeypress;
         window.document.documentElement.onkeypress = function(e) {
             return Ice.modal.keypress(e);
@@ -161,6 +161,11 @@ Ice.modal = {
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
+        if (trigger) {
+            Ice.modal.trigger = trigger; 
+            $(trigger).blur();
+            setFocus('');
+        }
         modal.style.visibility = 'visible';
     },
     stop:function(target) {
@@ -172,6 +177,10 @@ Ice.modal = {
                 logger.debug('removed modal iframe for : ' + target);
             }
             Ice.modal.running = false;
+            if (Ice.modal.trigger) {
+                Ice.Focus.setFocus(Ice.modal.trigger);
+                Ice.modal.trigger = '';
+            }
         }
     },
     keypress:function(event) {
