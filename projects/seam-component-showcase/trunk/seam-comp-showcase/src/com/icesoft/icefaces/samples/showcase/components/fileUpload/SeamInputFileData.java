@@ -52,7 +52,7 @@ public class SeamInputFileData extends InputFileData{
  
     
     public SeamInputFileData(FileInfo fileInfo, File file) {
-		super(fileInfo, file);
+		super(fileInfo);
 	}
 
 	/**

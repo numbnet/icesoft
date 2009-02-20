@@ -281,6 +281,7 @@ public class SeamOutputProgressController implements Renderable,Serializable  {
 	        if (log.isTraceEnabled()) {
 	            log.trace("OutputProgressController dispose OnDemandRenderer for session: " + sessionId);
 	        }
+	        log.info("removing renderable from sessionId="+sessionId);
 	        renderManager.getOnDemandRenderer(sessionId).remove(this);
 			renderManager.getOnDemandRenderer(sessionId).dispose();
 		}
