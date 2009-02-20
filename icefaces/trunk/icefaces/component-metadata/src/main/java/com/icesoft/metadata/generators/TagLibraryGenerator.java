@@ -607,7 +607,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                            "Class[] dragListenerArgs = new Class[]{DragEvent.class};",
+                            "Class[] dragListenerArgs = new Class[]{com.icesoft.faces.component.dragdrop.DragEvent.class};",
                             true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -638,7 +638,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                            "Class[] dropListenerArgs= new Class[]{DropEvent.class};",
+                            "Class[] dropListenerArgs= new Class[]{com.icesoft.faces.component.dragdrop.DropEvent.class};",
                             true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -659,7 +659,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                                    "Class[] selectionListenerArgs= new Class[]{RowSelectorEvent.class};",
+                                    "Class[] selectionListenerArgs= new Class[]{com.icesoft.faces.component.ext.RowSelectorEvent.class};",
                                     true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -700,7 +700,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                      writer
                             .emitExpression(
-                                    "Class[] selectionListenerArgs= new Class[]{TabChangeEvent.class};",
+                                    "Class[] selectionListenerArgs= new Class[]{com.icesoft.faces.component.paneltabset.TabChangeEvent.class};",
                                     true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -747,7 +747,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                            "Class[] displayListenerArgs= new Class[]{DisplayEvent.class};",
+                            "Class[] displayListenerArgs= new Class[]{com.icesoft.faces.component.DisplayEvent.class};",
                             true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -769,7 +769,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                                    "Class[] listenerArgs= new Class[]{TextChangeEvent.class};",
+                                    "Class[] listenerArgs= new Class[]{com.icesoft.faces.component.selectinputtext.TextChangeEvent.class};",
                                     true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
@@ -931,7 +931,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                 "private static Class actionArgs[] = new Class[0];", true);
         writer
                 .emitExpression(
-                "private static Class actionListenerArgs[] = { ActionEvent.class };",
+                "private static Class actionListenerArgs[] = { javax.faces.event.ActionEvent.class };",
                 true);
         writer
                 .emitExpression(
@@ -939,7 +939,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                 true);
         writer
                 .emitExpression(
-                "private static Class valueChangeListenerArgs[] = { ValueChangeEvent.class };",
+                "private static Class valueChangeListenerArgs[] = { javax.faces.event.ValueChangeEvent.class };",
                 true);
         writer.emitNewline();
         appendDoTagMethods();
