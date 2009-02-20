@@ -50,6 +50,7 @@ import org.jboss.seam.ScopeType;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.inputfile.InputFile;
+
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 
@@ -87,8 +88,7 @@ public class SeamInputFileController implements Serializable{
         	}
             // reference our newly updated file for display purposes and
             // added it to our history file list.
-            currentFile = new InputFileData(inputFile.getFileInfo(),
-                    inputFile.getFile());
+            currentFile = new InputFileData(inputFile.getFileInfo());
 
             synchronized (fileList) {
             	if (!listContains(currentFile.getFile().getName())){

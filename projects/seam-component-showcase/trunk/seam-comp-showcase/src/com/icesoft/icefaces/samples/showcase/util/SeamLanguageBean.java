@@ -35,15 +35,13 @@ package com.icesoft.icefaces.samples.showcase.util;
 
 
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-
+import org.icefaces.application.showcase.util.LocaleBean;
 import org.jboss.seam.annotations.Name;
 
 import org.jboss.seam.annotations.Scope;
 
 import org.jboss.seam.ScopeType;
-import org.icefaces.application.showcase.util.StyleBean;
+
 
 /**
  * <p>The StyleBean class is the backing bean which manages the demonstrations'
@@ -57,27 +55,8 @@ import org.icefaces.application.showcase.util.StyleBean;
  * @since 0.3.0
  */
 @Scope(ScopeType.SESSION)
-@Name("styleBean")
-public class SeamStyleBean extends StyleBean {
-	   /**
-     * Have to override this method since it is hard-wired to do a redirect
-     * for component-showcase application 
-     *
-     * @return the reload navigation attribute
-     */
-//	private final String RIME = "rime";
-//    // default theme
-//    private String currentStyle = RIME;
-//    private String tempStyle = RIME;
+@Name("localeBean")
+public class SeamLanguageBean extends LocaleBean {
 
-	@Override
-    public void changeStyle(ValueChangeEvent e) throws java.io.IOException{
-        tempStyle = (String)e.getNewValue();
-        if (!currentStyle.equalsIgnoreCase(tempStyle)) {
-            currentStyle = tempStyle;
-            //if using IE, it requires extra jsf lifecycle to show new style
-    //        FacesContext.getCurrentInstance().getExternalContext().redirect("/seam-component-showcase/index.jsp");
-        }
-    }
 
 }

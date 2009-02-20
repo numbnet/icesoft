@@ -40,7 +40,6 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Out;
@@ -50,7 +49,7 @@ import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Destroy;
-import javax.persistence.EntityManager;
+
 
 import com.icesoft.icefaces.samples.showcase.common.MResource;
 
@@ -102,7 +101,7 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	  super.navigationPathChange(event);
 	  getMsgBundleKey(this.getSelectedIncludePath());
 	}
-	
+
 	public void navigationKeyChange(){
 		if (!msgKey.equals("gmap")){
 	        FacesContext context = FacesContext.getCurrentInstance();
