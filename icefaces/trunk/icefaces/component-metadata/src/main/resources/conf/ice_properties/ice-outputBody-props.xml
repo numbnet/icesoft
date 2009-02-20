@@ -99,3 +99,15 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+    </description>
+    <property-name>focus</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

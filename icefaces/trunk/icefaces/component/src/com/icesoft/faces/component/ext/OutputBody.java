@@ -1,8 +1,14 @@
 package com.icesoft.faces.component.ext;
 
 
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class OutputBody extends javax.faces.component.UIComponentBase{
     private String alink;
@@ -13,7 +19,9 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
     private String styleClass;
     private String text;
     private String vlink;
-
+    private String focus;
+    private String previousFocus = new String();
+    
     public OutputBody() {
         super();
         setRendererType("com.icesoft.faces.OutputBody");
@@ -88,6 +96,14 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
     public void setVlink(String vlink) {
         this.vlink = vlink;
     }
+    
+    public String getFocus(){
+        return (String)getAttribute("focus",focus,null);
+    }
+    
+    public void setFocus(String focus){
+        this.focus = focus;
+    }
 
     private Object getAttribute(String name, Object localValue, Object defaultValue) {
         if (localValue != null) return localValue;
@@ -109,6 +125,7 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
                 styleClass,
                 text,
                 vlink,
+                focus
         };
     }
 
@@ -122,11 +139,33 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
                 "styleClass",
                 "text",
                 "vlink",
+                "focus"
         };
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         for (int i = 0; i < attrNames.length; i++) {
             getAttributes().put(attrNames[i], values[i + 1]);
+        }
+    }
+    
+    public void encodeEnd(FacesContext context) throws IOException {
+        super.encodeEnd(context);
+        String focus = getFocus();
+        if( focus != null ){
+            setFocus(focus, context);
+        } 
+    }
+ 
+    public void setFocus(String focus, FacesContext fc){
+        UIComponent target = null;
+        if( focus.indexOf(':') > -1){
+            target = this.findComponent(focus);
+        } else {
+            target = D2DViewHandler.findComponentInView(this,focus);
+        }
+        if( target != null && !previousFocus.equals(focus) ){
+            JavascriptContext.applicationFocus(fc,target.getClientId(fc));
+            previousFocus = focus;
         }
     }
 }

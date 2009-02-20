@@ -988,4 +988,36 @@ public class D2DViewHandler extends ViewHandler {
         }
         return component;
     }
+    
+    /**
+    * A version of findComponent() that attempts to locate a component by id (not clientId) 
+    * and searches into NamingContainers. If there are more than one component with the 
+    * provided id, the first one found will be returned
+    * 
+    * @param uiComponent the base component to search from
+    * @param componentId the id to search for
+    */
+
+    public static UIComponent findComponentInView(UIComponent uiComponent,
+                                                String componentId) {
+        UIComponent component = null;
+        UIComponent child = null;
+
+        if (componentId.equals(uiComponent.getId())) {
+            return uiComponent;
+        }
+        Iterator children = uiComponent.getFacetsAndChildren();
+        while (children.hasNext() && (component == null)) {
+            child = (UIComponent) children.next();
+            component = findComponentInView(child, componentId);
+            if (component != null) {
+                break;
+            }
+            if (componentId.endsWith(child.getId())) {
+                component = child;
+                break;
+            }
+        }
+        return component;
+    }    
 }
