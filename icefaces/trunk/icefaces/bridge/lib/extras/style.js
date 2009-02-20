@@ -161,12 +161,12 @@ Ice.modal = {
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
+        modal.style.visibility = 'visible';
         if (trigger) {
             Ice.modal.trigger = trigger; 
             $(trigger).blur();
             setFocus('');
         }
-        modal.style.visibility = 'visible';
     },
     stop:function(target) {
         if (Ice.modal.id == target) {
