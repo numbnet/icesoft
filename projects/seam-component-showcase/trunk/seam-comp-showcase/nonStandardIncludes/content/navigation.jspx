@@ -126,6 +126,14 @@
                      action="#{navigation.navigationPathChange('inputRichText')}"
                      propagation="join"/>
     <br/>
+    <ice:commandLink id="setEventPhasePanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/setEventPhase.jspx" />
+        <ice:outputText
+                value="#{msgs['node.setEventPhase.label']}"/>
+    </ice:commandLink>
+    <br/>
+                     
     <ice:commandLink id="menuBarContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuBar.jspx" />
@@ -228,6 +236,14 @@
             <ice:outputText
                     value="#{msgs['node.rowSelector.label']}"/>
         </ice:commandLink>
+        <br />
+        <ice:commandLink id="dataExporterContentPanel"
+                         actionListener="#{navigation.navigationPathChange}">
+            <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-dataExporter.jspx" />
+            <ice:outputText
+                    value="#{msgs['node.dataExporter.label']}"/>
+        </ice:commandLink>        
+        
     </ice:panelCollapsible>
 </ice:panelCollapsible>
 
