@@ -19,7 +19,10 @@ var attribute = operator();
 var parents = operator();
 var enclosingForm = operator();
 var enclosingBridge = operator();
+
+//DOM patching methods
 var updateElement = operator();
+var removeElement = operator();
 
 function disconnectEventListeners(element) {
     each([
@@ -35,7 +38,7 @@ function disconnectEventListeners(element) {
     });
 }
 
-var attributes = operator();
+var eachAttribute = operator();
 var content = operator();
 var asHTML = operator();
 
@@ -45,11 +48,11 @@ function Update(element) {
     function appendStartTag(self, html) {
         append(html, '<');
         append(html, tag);
-        each(attributes(self), function(attr) {
+        eachAttribute(self, function(name, value) {
             append(html, ' ');
-            append(html, key(attr));
+            append(html, name);
             append(html, '="');
-            append(html, value(attr));
+            append(html, value);
             append(html, '"');
         });
         append(html, '>');
@@ -62,9 +65,9 @@ function Update(element) {
     }
 
     return object(function(method) {
-        method(attributes, function(self) {
-            return collect(element.getElementsByTagName('*'), function(e) {
-                return Cell(e.getAttribute('name'), attribute.firstChild ? attribute.firstChild.data : '');
+        method(eachAttribute, function(self, iterator) {
+            each(element.getElementsByTagName('*'), function(e) {
+                iterator(e.getAttribute('name'), attribute.firstChild ? attribute.firstChild.data : '');
             });
         });
 
@@ -93,6 +96,7 @@ function Update(element) {
 }
 
 var focus = operator();
+var canSubmitForm = operator();
 
 function Element(element) {
     return object(function(method) {
@@ -137,10 +141,6 @@ function Element(element) {
             });
         });
 
-        method(asString, function(self) {
-            return asString(element);
-        });
-
         method(updateElement, function(self, update) {
             HTMLParser(function(parse) {
                 var newElement = parse(asHTML(update))[0];
@@ -150,7 +150,19 @@ function Element(element) {
             });
         });
 
+        method(submit, function(self) {
+            var query = Query();
+            serializeOn(self, query);
+            send(connection(enclosingBridge(self)), query);
+        });
+
         method(serializeOn, noop);
+
+        method(canSubmitForm, none);
+
+        method(asString, function(self) {
+            return asString(element);
+        });
     });
 }
 
@@ -172,6 +184,11 @@ function InputElement(element) {
             element.onfocus = onFocusListener;
         });
 
+        method(canSubmitForm, function(self) {
+            var type = toLowerCase(element.type);
+            return type == 'submit' || type == 'image' || type == 'button';
+        });
+
         method(serializeOn, function(self, query) {
             switch (toLowerCase(element.type)) {
                 case 'image':
@@ -187,6 +204,95 @@ function InputElement(element) {
     }, Element(element));
 }
 
+function SelectElement(element) {
+    return objectWithAncestors(function(method) {
+        method(canSubmitForm, none);
+
+        method(serializeOn, function(self, query) {
+            each(select(element.options, function(option) {
+                return option.selected;
+            }), function(selectedOption) {
+                var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
+                addNameValue(query, element.name, value);
+            });
+        });
+    }, InputElement(element));
+}
+
+function ButtonElement(element) {
+    return objectWithAncestors(function(method) {
+        method(canSubmitForm, function(self) {
+            return toLowerCase(element.type) == 'submit';
+        });
+
+        method(serializeOn, function(self, query) {
+            each(select(element.options, function(option) {
+                return option.selected;
+            }), function(selectedOption) {
+                var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
+                addNameValue(query, element.name, value);
+            });
+        });
+    }, InputElement(element));
+}
+
+var detectDefaultSubmit = operator();
+var captureAndRedirectSubmit = operator();
+var submit = operator();
+
+function FormElement(element) {
+    return objectWithAncestors(function(method) {
+        method(enclosingForm, function(self) {
+            throw 'forms cannot be nested';
+        });
+
+        method(detectDefaultSubmit, function(self) {
+            var defaultID = this.element.id + ':default';
+            return $element(detect(element.elements, function(e) {
+                e.id = defaultID;
+            }, function() {
+                throw 'cannot find default submit';
+            }));
+        });
+
+        method(captureAndRedirectSubmit, function(self) {
+            //captures normal form submit events and sends them through a XMLHttpRequest
+            var previousOnSubmit = element.onsubmit;
+            element.onsubmit = function(event) {
+                if (previousOnSubmit) previousOnSubmit();
+                submit(self);
+            };
+
+            element.submit = function() {
+                element.onsubmit = noop;
+                submit(self);
+            };
+        });
+
+        method(submit, function(self) {
+            var query = Query();
+            serializeOn(self, query);
+            send(connection(enclosingBridge(self)), query);
+        });
+
+        method(updateElement, function(self, update) {
+            each(element.getElementsByTagName('*'), disconnectEventListeners);
+            disconnectEventListeners(element);
+            element.innerHTML = content(update);
+            each(['acceptcharset', 'action', 'enctype', 'method', 'name', 'target'], function(name) {
+                element.removeAttribute(name);
+            });
+            eachAttribute(update, function(name, value) {
+                try {
+                    element.setAttribute(name, value);
+                } catch (e) {
+                    error(logger, 'failed to set attribute ' + name + ':' + value, e);
+                }
+            });
+        });
+    }, Element(element));
+}
+
 function $element(e) {
     //no polymophism here...'switch' is the way then.
     switch (toLowerCase(e.tagName)) {
@@ -195,9 +301,9 @@ function $element(e) {
         //            case 'th':
         //            case 'td':
         //            case 'tr': return TableCellElement(e);
-        //            case 'button': return ButtonElement(e);
-        //            case 'select': return SelectElement(e);
-        //            case 'form': return FormElement(e);
+        case 'button': return ButtonElement(e);
+        case 'select': return SelectElement(e);
+        case 'form': return FormElement(e);
         //            case 'body': return BodyElement(e);
         //            case 'script': return ScriptElement(e);
         //            case 'title': return TitleElement(e);
