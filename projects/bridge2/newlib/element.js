@@ -226,12 +226,7 @@ function ButtonElement(element) {
         });
 
         method(serializeOn, function(self, query) {
-            each(select(element.options, function(option) {
-                return option.selected;
-            }), function(selectedOption) {
-                var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
-                addNameValue(query, element.name, value);
-            });
+            addNameValue(query, element.name, element.value);
         });
     }, InputElement(element));
 }
