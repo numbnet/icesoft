@@ -53,7 +53,7 @@ var resetIndicators = operator();
 var disposeBridge = operator();
 var disposeBridgeAndNotify = operator();
 
-[ Ice.Community ].as(function(This) {
+(function(This) {
     var client = Client(true);
     var views = window.views = window.views ? window.views : [];
 
@@ -148,20 +148,20 @@ var disposeBridgeAndNotify = operator();
             each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
         });
         register(commandDispatcher, 'updates', function(element) {
-            each(element.getElementsByTagName('update'), function(updateElement) {
+            each(element.getElementsByTagName('update'), function(e) {
                 try {
-                    var address = updateElement.getAttribute('address');
-                    var update = new Ice.ElementModel.Update(updateElement);
-                    address.asExtendedElement().updateDOM(update);
-                    debug(logger, 'applied update : ' + update.asString());
-                    evaluateScripts(address.asElement());
+                    var address = e.getAttribute('address');
+                    var update = Update(e);
+                    updateElement($elementWithID(address), update);
+                    debug(logger, 'applied update : ' + asString(update));
+                    evaluateScripts(document.getElementById(address));
                     //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();
                         Ice.StateMon.rebuild();
                     }
                 } catch (e) {
-                    error(logger, 'failed to insert element: ' + update.asString(), e);
+                    error(logger, 'failed to insert element: ' + asString(update), e);
                 }
             });
         });
@@ -238,9 +238,9 @@ var disposeBridgeAndNotify = operator();
             });
         });
     };
-});
+})(Ice.Community);
 
 onKeyPress(document, function(ev) {
     var e = $event(ev);
-    if (e.isEscKey()) e.cancelDefaultAction();
+    if (isEscKey(e)) cancelDefaultAction(e);
 });

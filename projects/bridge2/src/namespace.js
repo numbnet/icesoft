@@ -30,5 +30,5 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
+window.Ice = new Object;
 Ice.Community = new Object;

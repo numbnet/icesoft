@@ -32,7 +32,7 @@
  */
 
 var synchronize = operator();
-[ Ice.Document = new Object ].as(function(This) {
+(function(This) {
     This.replaceContainerHTML = function(container, html) {
         var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/body\>', 'g').exec(html);
@@ -53,7 +53,7 @@ var synchronize = operator();
             historyFrame = window.frames[id];
         } catch (e) {
             //alternative way of looking up the frame
-            historyFrame = id.asElement().contentWindow;
+            historyFrame = document.getElementById(id).contentWindow;
         }
 
         function synchronizePrivate() {
@@ -90,4 +90,4 @@ var synchronize = operator();
             });
         });
     };
-});
+})(Ice.Document = new Object);

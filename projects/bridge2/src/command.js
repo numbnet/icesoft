@@ -1,7 +1,7 @@
 var register = operator();
 var deserializeAndExecute = operator();
 
-[ Ice.Command = new Object ].as(function(This) {
+(function(This) {
     This.Dispatcher = function() {
         var commands = [];
 
@@ -36,4 +36,4 @@ var deserializeAndExecute = operator();
         var sourceNode = errorNode.firstChild;
         logger.error(sourceNode.data);
     };
-});
+})(Ice.Command = new Object);
