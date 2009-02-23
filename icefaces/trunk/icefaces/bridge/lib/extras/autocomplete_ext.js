@@ -100,6 +100,9 @@ Autocompleter.Base.prototype = {
         Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.observe(this.element, "keydown", this.onKeyDown.bindAsEventListener(this));
+        // ICE-3830
+        if (Prototype.Browser.IE || Prototype.Browser.WebKit)
+            Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this));
     },
 
     show: function() {
@@ -297,6 +300,18 @@ Autocompleter.Base.prototype = {
         setTimeout(this.hide.bind(this), 250);
         this.hasFocus = false;
         this.active = false;
+    },
+    
+    // ICE-3830
+    onPaste: function(event) {
+        this.changed = true;
+        this.hasFocus = true;
+        this.index = -1;
+        this.skip_mouse_hover = true;
+        if (this.active) this.render();
+        if (this.observer) clearTimeout(this.observer);
+        this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+        return;
     },
 
     render: function() {
