@@ -5,7 +5,6 @@ var isKeyEvent = operator();
 var isMouseEvent = operator();
 var capturedBy = operator();
 var triggeredBy = operator();
-var serializeOn = operator();
 var serializeEventOn = operator();
 var serializePositionOn = operator();
 var type = operator();
@@ -28,13 +27,17 @@ function Event(event, capturingElement) {
             return event.type;
         });
 
+        method(triggeredBy, function(self) {
+            return capturingElement;
+        });
+
         method(capturedBy, function(self) {
             return capturingElement;
         });
 
         method(serializeEventOn, function(self, query) {
-            addNameValue(query, 'ice.event.triggered', id(triggeredBy(self)));
-            addNameValue(query, 'ice.event.captured', id(capturedBy(self)));
+            addNameValue(query, 'ice.event.target', identifier(triggeredBy(self)));
+            addNameValue(query, 'ice.event.captured', identifier(capturedBy(self)));
             addNameValue(query, 'ice.event.type', 'on' + type(self));
         });
 
@@ -247,6 +250,14 @@ function NetscapeKeyEvent(event, capturingElement) {
     }, NetscapeEvent(event, capturingElement), KeyEvent(event));
 }
 
+function isEnterKey(event) {
+    return isKeyEvent(event) && keyCode(event) == 13;
+}
+
+function isEscKey(event) {
+    return isKeyEvent(event) && keyCode(event) == 27;
+}
+
 function UnknownEvent(capturingElement) {
     return objectWithAncestors(function(method) {
         method(cancelBubbling, noop);
@@ -260,6 +271,7 @@ function UnknownEvent(capturingElement) {
         method(asString, function(self) {
             return 'UnkownEvent[]';
         });
+
     }, Event(null, capturingElement));
 }
 
@@ -269,7 +281,7 @@ var KeyListenerNames = [ 'onkeydown', 'onkeypress', 'onkeyup', 'onhelp' ];
 function $event(e, element) {
     var capturedEvent = window.event || e;
     var capturingElement = $element(element);
-    if (capturedEvent) {
+    if (capturedEvent && capturedEvent.type) {
         var eventType = 'on' + capturedEvent.type;
         if (contains(KeyListenerNames, eventType)) {
             return window.event ? IEKeyEvent(event, capturingElement) : NetscapeKeyEvent(e, capturingElement);

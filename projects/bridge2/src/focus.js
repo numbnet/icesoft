@@ -38,30 +38,32 @@ function setFocus(id) {
     currentFocus = id;
 }
 
-[ Ice.Focus = new Object ].as(function(This) {
+(function(This) {
     function isValidID(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
 
-    This.setFocus = (function(id) {
-        if (id && isValidID(id)) {
-            try {
-                id.asExtendedElement().focus();
-                setFocus(id);
-                var e = document.getElementById(id);
-                if (e) {
-                    e.focus();
-                } else {
-                    info(logger, 'Cannot set focus, no element for id [' + id + "]");
+    This.setFocus = function(id) {
+        runOnce(Delay(function() {
+            if (id && isValidID(id)) {
+                try {
+                    gainFocus($elementWithID(id));
+                    setFocus(id);
+                    var e = document.getElementById(id);
+                    if (e) {
+                        e.focus();
+                    } else {
+                        info(logger, 'Cannot set focus, no element for id [' + id + "]");
+                    }
+                    debug(logger, 'Focus Set on [' + id + "]");
+                } catch(e) {
+                    info(logger, 'Cannot set focus, no element for id [' + id + ']', e);
                 }
-                debug(logger, 'Focus Set on [' + id + "]");
-            } catch(e) {
-                info(logger, 'Cannot set focus, no element for id [' + id + ']', e);
+            } else {
+                debug(logger, 'Focus interupted. Not Set on [' + id + ']');
             }
-        } else {
-            debug(logger, 'Focus interupted. Not Set on [' + id + ']');
-        }
-        //ICE-1247 -- delay required for focusing newly rendered components in IE
-    }).delayFor(100);
-});
+            //ICE-1247 -- delay required for focusing newly rendered components in IE
+        }, 100));
+    }
+})(Ice.Focus = new Object);
 

@@ -12,8 +12,9 @@ onLoad(window, function() {
     };
 });
 
-var id = operator();
+var identifier = operator();
 var tag = operator();
+var property = operator();
 var parents = operator();
 var enclosingForm = operator();
 var enclosingBridge = operator();
@@ -22,14 +23,13 @@ var enclosingBridge = operator();
 var updateElement = operator();
 var removeElement = operator();
 
-var EventListenerNames = [
-    'onkeydown', 'onkeypress', 'onkeyup', 'onhelp', 'onclick', 'ondblclick',
-    'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
-    'onblur', 'onfocus', 'onchange', 'onreset', 'onsubmit'
+var EventNames = [
+    'onkeydown', 'onkeypress', 'onkeyup', 'onhelp', 'onclick', 'ondblclick', 'onmousedown', 'onmousemove',
+    'onmouseout', 'onmouseover', 'onmouseup', 'onblur', 'onfocus', 'onchange', 'onreset', 'onsubmit'
 ];
 
 function disconnectEventListeners(element) {
-    each(EventListenerNames, function(listenerName) {
+    each(EventNames, function(listenerName) {
         try {
             element[listenerName] = null;
         } catch (e) {
@@ -38,8 +38,8 @@ function disconnectEventListeners(element) {
     });
 }
 
-var eachAttribute = operator();
-var content = operator();
+var eachUpdateAttribute = operator();
+var updateContent = operator();
 var asHTML = operator();
 
 function Update(element) {
@@ -48,7 +48,7 @@ function Update(element) {
     function appendStartTag(self, html) {
         append(html, '<');
         append(html, tag);
-        eachAttribute(self, function(name, value) {
+        eachUpdateAttribute(self, function(name, value) {
             append(html, ' ');
             append(html, name);
             append(html, '="');
@@ -65,13 +65,13 @@ function Update(element) {
     }
 
     return object(function(method) {
-        method(eachAttribute, function(self, iterator) {
-            each(element.getElementsByTagName('*'), function(e) {
-                iterator(e.getAttribute('name'), attribute.firstChild ? attribute.firstChild.data : '');
+        method(eachUpdateAttribute, function(self, iterator) {
+            each(element.getElementsByTagName('attribute'), function(e) {
+                iterator(e.getAttribute('name'), e.firstChild ? e.firstChild.data : '');
             });
         });
 
-        method(content, function(self) {
+        method(updateContent, function(self) {
             var contentElement = element.getElementsByTagName('content')[0];
             return contentElement.firstChild ?
                    contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>') : '';
@@ -80,7 +80,7 @@ function Update(element) {
         method(asHTML, function(self) {
             var html = [];
             appendStartTag(self, html);
-            append(html, content(self));
+            append(html, updateContent(self));
             appendEndTag(self, html);
             return join(html, '');
         });
@@ -95,17 +95,21 @@ function Update(element) {
     });
 }
 
-var focus = operator();
+var gainFocus = operator();
 var canSubmitForm = operator();
 
-function Element(element) {
+function DefaultElement(element) {
     return object(function(method) {
-        method(id, function(self) {
+        method(identifier, function(self) {
             return element.id;
         });
 
         method(tag, function(self) {
             return toLowerCase(element.tagName);
+        });
+
+        method(property, function(self, name) {
+            return element[name];
         });
 
         method(parents, function(self) {
@@ -130,11 +134,11 @@ function Element(element) {
         });
 
         method(enclosingBridge, function(self) {
-            return detect(parents(self), function(e) {
+            return property(detect(parents(self), function(e) {
                 return property(e, 'bridge') != null;
             }, function() {
                 throw 'cannot find enclosing bridge';
-            });
+            }), 'bridge');
         });
 
         method(updateElement, function(self, update) {
@@ -167,13 +171,13 @@ function InputElement(element) {
         method(enclosingForm, function(self) {
             var f = element.form;
             if (f) {
-                return $element(f);
+                return FormElement(f);
             } else {
                 throw 'cannot find enclosing form';
             }
         });
 
-        method(focus, function(self) {
+        method(gainFocus, function(self) {
             var onFocusListener = element.onfocus;
             element.onfocus = noop;
             element.focus();
@@ -197,7 +201,7 @@ function InputElement(element) {
                 case 'radio': if (element.checked) addNameValue(query, element.name, element.value || 'on'); break;
             }
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function SelectElement(element) {
@@ -231,11 +235,18 @@ function AnchorElement(element) {
     return objectWithAncestors(function(method) {
         method(canSubmitForm, any);
 
+        method(gainFocus, function(self) {
+            var onFocusListener = element.onfocus;
+            element.onfocus = noop;
+            element.focus();
+            element.onfocus = onFocusListener;
+        });
+
         method(serializeOn, function(self, query) {
             var name = element.name;
             if (name) addNameValue(query, name, name);
         });
-    }, InputElement(element));
+    }, DefaultElement(element));
 }
 
 var detectDefaultSubmit = operator();
@@ -245,12 +256,12 @@ var submit = operator();
 function FormElement(element) {
     return objectWithAncestors(function(method) {
         method(enclosingForm, function(self) {
-            throw 'forms cannot be nested';
+            return self;
         });
 
         //todo: this method should go away since it encourages special treatment for elements with ID ending in ':default' 
         method(detectDefaultSubmit, function(self) {
-            var defaultID = this.element.id + ':default';
+            var defaultID = element.id + ':default';
             return $element(detect(element.elements, function(e) {
                 e.id = defaultID;
             }, function() {
@@ -272,20 +283,14 @@ function FormElement(element) {
             };
         });
 
-        method(submit, function(self) {
-            var query = Query();
-            serializeOn(self, query);
-            send(connection(enclosingBridge(self)), query);
-        });
-
         method(updateElement, function(self, update) {
             each(element.getElementsByTagName('*'), disconnectEventListeners);
             disconnectEventListeners(element);
-            element.innerHTML = content(update);
+            element.innerHTML = updateContent(update);
             each(['acceptcharset', 'action', 'enctype', 'method', 'name', 'target'], function(name) {
                 element.removeAttribute(name);
             });
-            eachAttribute(update, function(name, value) {
+            eachUpdateAttribute(update, function(name, value) {
                 try {
                     element.setAttribute(name, value);
                 } catch (e) {
@@ -293,7 +298,13 @@ function FormElement(element) {
                 }
             });
         });
-    }, Element(element));
+
+        method(serializeOn, function(self, query) {
+            each(collect(element.elements, $element), function(e) {
+                serializeOn(e, query);
+            });
+        });
+    }, DefaultElement(element));
 }
 
 function ScriptElement(element) {
@@ -301,7 +312,7 @@ function ScriptElement(element) {
         method(updateElement, function(self, update) {
             //if script element is updated its code will be evaluate in IE (thus evaluating it twice)
             //evaluate code in the 'window' context
-            var scriptCode = content(update);
+            var scriptCode = updateContent(update);
             if (scriptCode != '' && scriptCode != ';') {
                 var evalFunc = function() {
                     eval(scriptCode);
@@ -309,15 +320,15 @@ function ScriptElement(element) {
                 evalFunc.apply(window);
             }
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function TitleElement(element) {
     return objectWithAncestors(function(method) {
         method(updateElement, function(self, update) {
-            element.ownerDocument.title = content(update);
+            element.ownerDocument.title = updateContent(update);
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function TableCellElement(element) {
@@ -333,7 +344,7 @@ function TableCellElement(element) {
                 element = newElement;
             });
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function BodyElement(element) {
@@ -342,7 +353,7 @@ function BodyElement(element) {
             each(element.getElementsByTagName('*'), disconnectEventListeners);
             //strip <noscript> tag to fix Safari bug
             // #3131 If this is a response from an error code, there may not be a <noscript> tag.
-            var html = content(update);
+            var html = updateContent(update);
             var start = new RegExp('\<noscript\>', 'g').exec(html);
             if (start == null) {
                 element.innerHTML = html;
@@ -351,7 +362,7 @@ function BodyElement(element) {
                 element.innerHTML = substring(html, 0, start.index) + substring(html, end.index + 11, html.length);
             }
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function IFrameElement(element) {
@@ -379,16 +390,17 @@ function IFrameElement(element) {
                 }
 
                 //overwrite listeners and bind them to the existing element
-                each(EventListenerNames, function(name) {
+                each(EventNames, function(name) {
                     element[name] = newElement[name] ? newElement[name] : null;
                     newElement[name] = null;
                 });
             });
         });
-    }, Element(element));
+    }, DefaultElement(element));
 }
 
 function $element(e) {
+    if (!e) return null;
     //no polymophism here...'switch' is the way then.
     switch (toLowerCase(e.tagName)) {
         case 'textarea':
@@ -404,7 +416,7 @@ function $element(e) {
         case 'title': return TitleElement(e);
         case 'a': return AnchorElement(e);
         case 'iframe': return IFrameElement(e);
-        default : return Element(e);
+        default : return DefaultElement(e);
     }
 }
 

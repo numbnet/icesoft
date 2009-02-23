@@ -1,4 +1,4 @@
-[ Ice.Script = new Object ].as(function(This) {
+(function(This) {
     //todo: should this code be part of Element.replaceHtml method?    
     This.Loader = function(logger) {
         var logger = childLogger(logger, 'script-loader');
@@ -40,4 +40,4 @@
             each(element.getElementsByTagName('script'), evaluateScript);
         };
     };
-});
+})(Ice.Script = new Object);

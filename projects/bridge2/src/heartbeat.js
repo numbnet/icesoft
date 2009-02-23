@@ -35,7 +35,7 @@ var stopBeat = operator();
 var onPing = operator();
 var onLostPongs = operator();
 
-[ Ice.Reliability = new Object ].as(function(This) {
+(function(This) {
     var notify = operator();
     var reset = operator();
     This.CoalescingListener = function(retries, callback) {
@@ -103,4 +103,4 @@ var onLostPongs = operator();
             });
         });
     };
-});
+})(Ice.Reliability = new Object);

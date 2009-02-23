@@ -39,7 +39,7 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Reliability.Heartbeat ].as(function(This, Connection, Heartbeat) {
+(function(This, Heartbeat) {
     This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
         var logger = childLogger(logger, 'async-connection');
         var sendChannel = Client(true);
@@ -126,11 +126,11 @@ var shutdown = operator();
         function timedRetryAbort(retryAction, abortAction, timeouts) {
             var index = 0;
             var errorActions = inject(timeouts, [abortAction], function(actions, interval) {
-                return insert(actions, retryAction.delayFor(interval));
+                return insert(actions, curry(runOnce, Delay(retryAction, interval)));
             });
             return function() {
                 if (index < errorActions.length) {
-                    errorActions[index].apply(this, arguments);
+                    apply(errorActions[index], arguments);
                     index++;
                 }
             };
@@ -168,6 +168,7 @@ var shutdown = operator();
         var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 50000;
         var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
         var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
+
         function initializeConnection() {
             //stop the previous heartbeat instance
             stopBeat(heartbeat);
@@ -187,8 +188,9 @@ var shutdown = operator();
             startBeat(heartbeat);
             //wire up keyboard shortcut to toggle heartbeat 
             var heartbeatStarted = true;
-            onKeyPress(window, function(e) {
-                if (e.keyCode() == 46 && e.isCtrlPressed() && e.isShiftPressed()) {
+            onKeyPress(document, function(evt) {
+                var e = $event(evt, document.documentElement);
+                if (keyCode(e) == 46 && isCtrlPressed(e) && isShiftPressed(e)) {
                     heartbeatStarted ? stopBeat(heartbeat) : startBeat(heartbeat);
                     heartbeatStarted = !heartbeatStarted;
                 }
@@ -206,27 +208,35 @@ var shutdown = operator();
         var connectionCookie = listening = lookupCookie('bconn', function() {
             return Cookie('bconn', '-');
         });
+
         function updateLease() {
             update(leaseCookie, (new Date).getTime() + pollingPeriod * 2);
         }
+
         function isLeaseExpired() {
             return asNumber(value(leaseCookie)) < (new Date).getTime();
         }
+
         function shouldEstablishBlockingConnection() {
             return !existsCookie('bconn') || !startsWith(lookupCookieValue('bconn'), sessionID);
         }
+
         function offerCandidature() {
             update(connectionCookie, fullViewID);
         }
+
         function isWinningCandidate() {
             return startsWith(value(connectionCookie), fullViewID);
         }
+
         function markAsOwned() {
             update(connectionCookie, fullViewID + ':acquired');
         }
+
         function hasOwner() {
             return endsWith(value(connectionCookie), ':acquired');
         }
+
         var blockingConnectionMonitor = run(Delay(function() {
             if (shouldEstablishBlockingConnection()) {
                 offerCandidature();
@@ -344,5 +354,5 @@ var shutdown = operator();
             });
         });
     };
-});
+})(Ice.Community.Connection = new Object, Ice.Reliability.Heartbeat);
 

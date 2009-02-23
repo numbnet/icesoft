@@ -34,7 +34,7 @@
 var on = operator();
 var off = operator();
 
-[ Ice.Status = new Object ].as(function(This) {
+(function(This) {
     This.NOOPIndicator = object(function (method) {
         method(on, noop);
 
@@ -57,14 +57,14 @@ var off = operator();
                 each(indicators, function(indicator) {
                     if (indicator != self) off(indicator);
                 });
-                var e = elementID.asElement();
+                var e = document.getElementById(elementID);
                 if (e) {
                     e.style.visibility = 'visible';
                 }
             });
 
             method(off, function(self) {
-                var e = elementID.asElement();
+                var e = document.getElementById(elementID);
                 if (e) {
                     e.style.visibility = 'hidden';
                 }
@@ -309,4 +309,4 @@ var off = operator();
             };
         }
     };
-});
+})(Ice.Status = new Object);
