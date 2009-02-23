@@ -62,7 +62,8 @@ import java.util.Map;
 
 public class OutputChart extends HtmlCommandButton implements Serializable {
 
-    public static String AREA_CHART_TYPE = "area";
+    public static final String SCATTER_PLOT_CHART_TYPE = "scatterplot";
+	public static String AREA_CHART_TYPE = "area";
     public static String AREA_STACKED_CHART_TYPE = "areastacked";
     public static String BAR_CHART_TYPE = "bar";
     public static String BAR_CLUSTERED_CHART_TYPE = "barclustered";
@@ -474,12 +475,12 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
                 Text areaNode = domContext.createTextNode(areaMap.toHTML(
                         "title ='" + areaMap.getLengendLabel() +
-                        "' href=\"javascript:;\" onclick=\"document.forms['" +
+                        "' href=\"return false;\" onclick=\"document.forms['" +
                         getParentFormId() + "']['" + ICE_CHART_COMPONENT +
                         "'].value='" + getClientId(getFacesContext()) +
                         "id-key" + areaMap.hashCode() +
                         "';iceSubmitPartial(document.forms['" +
-                        getParentFormId() + "'],this,event);return false;\""));
+                        getParentFormId() + "'],this,event); return false;\""));
                 map.appendChild(areaNode);
             }
         } else {
