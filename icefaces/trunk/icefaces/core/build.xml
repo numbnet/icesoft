@@ -276,9 +276,9 @@
                 <include name="com/icesoft/faces/async/render/OnDemandRenderer.java"/>
                 <include name="com/icesoft/faces/async/render/Renderable.java"/>
                 <include name="com/icesoft/faces/async/render/RenderManager.java"/>
-                <include name="com/icesoft/faces/context/effects/JavascriptContext.java"/>
                 <include name="com/icesoft/faces/context/DisposableBean.java"/>
                 <include name="org/icefaces/x/core/push/SessionRenderer.java"/>
+                <include name="com/icesoft/faces/context/effects/"/>
             </fileset>
             <doctitle><![CDATA[<h2>ICEfaces API</h2>]]></doctitle>
         </javadoc>
