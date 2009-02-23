@@ -95,13 +95,20 @@ public class ViewRootStateManagerImpl extends StateManager {
          // check to calling sequence to see if this class is stacked with others from ICEsoft.
         StackTraceElement[] ste = (new RuntimeException()).getStackTrace();
         String className;
-        for (int i = 2; i < ste.length; i++) {
+        boolean external = false;
+        for (int i = 0; i < ste.length; i++) {
             className = ste[i].getClassName();
             if (className.equals(this.getClass().getName()) || className.equals(SingleCopyStateManagerImpl.class.getName())) {
-                log.debug("Pure delegate role taken by ViewRootStateSavingImpl");
-                pureDelegation = true;
-                break;
-            }
+                if (external) {
+                     if (log.isDebugEnabled()) {
+                         log.debug("Pure delegate role taken by ViewRootStateSavingImpl");
+                     } 
+                    pureDelegation = true;
+                    break;
+                }
+            } else {
+                external = true;
+            } 
         }
          try {
              v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
