@@ -33,16 +33,21 @@
 
 package com.icesoft.faces.component.outputchart;
 
+import org.krysalis.jcharts.axisChart.ScatterPlotAxisChart;
 import org.krysalis.jcharts.chartData.AxisChartDataSet;
 import org.krysalis.jcharts.chartData.DataSeries;
+import org.krysalis.jcharts.chartData.ScatterPlotDataSeries;
+import org.krysalis.jcharts.chartData.ScatterPlotDataSet;
 import org.krysalis.jcharts.properties.AreaChartProperties;
 import org.krysalis.jcharts.properties.AxisProperties;
 import org.krysalis.jcharts.properties.BarChartProperties;
 import org.krysalis.jcharts.properties.ChartProperties;
 import org.krysalis.jcharts.properties.ChartTypeProperties;
 import org.krysalis.jcharts.properties.ClusteredBarChartProperties;
+import org.krysalis.jcharts.properties.DataAxisProperties;
 import org.krysalis.jcharts.properties.LineChartProperties;
 import org.krysalis.jcharts.properties.PointChartProperties;
+import org.krysalis.jcharts.properties.ScatterPlotProperties;
 import org.krysalis.jcharts.properties.StackedAreaChartProperties;
 import org.krysalis.jcharts.properties.StackedBarChartProperties;
 import org.krysalis.jcharts.test.TestDataGenerator;
@@ -50,6 +55,7 @@ import org.krysalis.jcharts.types.ChartType;
 
 import javax.faces.component.UIComponent;
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class AxisChart extends AbstractChart {
 
@@ -74,10 +80,14 @@ public class AxisChart extends AbstractChart {
             buildLineChart(outputChart);
         } else if (outputChart.getType().equalsIgnoreCase(OutputChart.POINT_CHART_TYPE)) {
             buildPointChart(outputChart);
+        } else if (outputChart.getType().equalsIgnoreCase(OutputChart.SCATTER_PLOT_CHART_TYPE)) {
+            buildScatterPlotChart(outputChart);
         }
     }
 
-    private void buildAreaChart(OutputChart outputChart) throws Throwable {
+
+
+	private void buildAreaChart(OutputChart outputChart) throws Throwable {
         AreaChartProperties areaChartProperties = new AreaChartProperties();
         buildAxisChart(ChartType.AREA, areaChartProperties, outputChart);
     }
@@ -126,6 +136,89 @@ public class AxisChart extends AbstractChart {
                 outlinePaints);
         buildAxisChart(ChartType.POINT, pointChartProperties, outputChart);
     }
+    
+    private void buildScatterPlotChart(OutputChart outputChart) throws Throwable {
+    	Stroke[] strokes = new Stroke[data.length];
+        for (int i = 0; i < data.length; i++) {
+            strokes[i] = new BasicStroke( 0 );
+        }
+        ScatterPlotProperties pointChartProperties = new ScatterPlotProperties(
+        		strokes,
+                getShapes(outputChart.getShapes()));
+        buildScatterPlotChart(ChartType.SCATTER_PLOT, pointChartProperties, outputChart);
+		
+	}
+    
+	
+	private ScatterPlotDataSet createScatterPlotDataSet( OutputChart outputChart, ScatterPlotProperties chartTypeProperties)
+	{
+		ScatterPlotDataSet scatterPlotDataSet = new ScatterPlotDataSet( chartTypeProperties );
+		int maxLength = -1;
+		for (int index = 0; index < data.length; index++) {
+			if (data[index].length > maxLength) {
+				maxLength = data[index].length;
+			}
+		}
+		for (int index = 0; index < data.length; index++) {
+	
+			if (data[index].length != 0) {
+				int length = (data[index].length)/2;
+				Point2D.Double[] points = new Point2D.Double[ maxLength ];
+				Point2D.Double lastPoint = null;
+				for( int x = 0; x < data[index].length; x+=2 )
+				{
+					
+					points[ x/2] = ScatterPlotDataSet.createPoint2DDouble();
+					points[ x/2 ].setLocation( data[index][x], data[index][x+1] );
+					lastPoint = points[ x / 2 ];
+				}
+				for (int i = length; i < maxLength; i++) {
+					points[ i ] = lastPoint;	
+				}
+		
+				
+				scatterPlotDataSet.addDataPoints( points, getPaints(outputChart.getColors())[index], getAsLabelsArray(outputChart.getLabels())[index] );
+			}
+		}
+		return scatterPlotDataSet;
+	}
+    
+    void buildScatterPlotChart(ChartType chartType,
+    		ScatterPlotProperties chartTypeProperties, OutputChart outputChart)
+			throws Throwable {
+    	
+		ScatterPlotDataSet scatterPlotDataSet = this.createScatterPlotDataSet(outputChart,chartTypeProperties);
+
+		ScatterPlotDataSeries scatterPlotDataSeries = new ScatterPlotDataSeries( scatterPlotDataSet,
+				outputChart.getXaxisTitle(),
+				outputChart.getYaxisTitle(),
+				outputChart.getChartTitle() );
+
+		String[] ranges = getAsXaxisLabelsArray(outputChart.getXaxisLabels());
+
+		DataAxisProperties xAxisProperties = new DataAxisProperties();
+		xAxisProperties.setUserDefinedScale( Double.valueOf(ranges[0]).doubleValue(), Double.valueOf(ranges[1]).doubleValue() );
+		xAxisProperties.setNumItems( Integer.valueOf(ranges[2]).intValue() );
+		xAxisProperties.setRoundToNearest( Integer.valueOf(ranges[3]).intValue() );
+
+		DataAxisProperties yAxisProperties = new DataAxisProperties();
+		yAxisProperties.setUserDefinedScale( Double.valueOf(ranges[4]).doubleValue(), Double.valueOf(ranges[5]).doubleValue() );
+		yAxisProperties.setNumItems( Integer.valueOf(ranges[6]).intValue() );
+		yAxisProperties.setRoundToNearest( Integer.valueOf(ranges[7]).intValue() );
+
+		AxisProperties axisProperties = new AxisProperties( xAxisProperties, yAxisProperties );
+
+		chart = new ScatterPlotAxisChart( scatterPlotDataSeries,
+				 new ChartProperties(),
+				 axisProperties,
+				 getLegendProperties(outputChart),
+				 new Integer(outputChart
+							.getWidth()).intValue(),
+				 new Integer(outputChart
+						.getHeight()).intValue() );
+
+	}
+
 
     void buildAxisChart(ChartType chartType,
                         ChartTypeProperties chartTypeProperties,
