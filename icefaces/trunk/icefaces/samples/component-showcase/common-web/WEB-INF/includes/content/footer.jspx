@@ -37,7 +37,6 @@
     <div class="footer_content">
         <div style="width:400px">
             <ice:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
-            <ice:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
             <a href="http://www.icesoft.com/" target="_blank">
                 <ice:outputText value="#{msgs['template.common.icesoft']}" nospan="true" escape="false" />
             </a>
