@@ -92,13 +92,9 @@ Ice.modal = Class.create();
 Ice.modal = {
     running:false,
     target:null,
-    oldListener:null,
     id:null,
+    tabindexValues: [],
     start:function(target, iframeUrl,trigger) {
-        Ice.modal.oldListener = window.document.documentElement.onkeypress;
-        window.document.documentElement.onkeypress = function(e) {
-            return Ice.modal.keypress(e);
-        }
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
@@ -160,6 +156,9 @@ Ice.modal = {
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
         Ice.modal.target = modal;
         Ice.modal.id = target;
+        if (!Ice.modal.running) {
+            Ice.modal.disableTabindex();
+        }
         Ice.modal.running = true;
         modal.style.visibility = 'visible';
         if (trigger) {
@@ -170,7 +169,6 @@ Ice.modal = {
     },
     stop:function(target) {
         if (Ice.modal.id == target) {
-            window.document.documentElement.onkeypress = Ice.modal.oldListener;
             var iframe = document.getElementById('iceModalFrame');
             if (iframe) {
                 iframe.parentNode.removeChild(iframe);
@@ -181,38 +179,41 @@ Ice.modal = {
                 Ice.Focus.setFocus(Ice.modal.trigger);
                 Ice.modal.trigger = '';
             }
+            Ice.modal.restoreTabindex();
         }
     },
-    keypress:function(event) {
-        if (!Ice.modal.running || $(Ice.modal.id) == null) {
-        	window.document.documentElement.onkeypress = Ice.modal.oldListener;
-            return true;
-        }
-        var cancel = true;
-        var src = null;
-        var IEEvent = null;
-        if (event) {
-            src = event.target;
-        } else {
-            IEEvent = window.event;
-            src = IEEvent.srcElement;
-        }
-        if (Ice.modal.containedInId(src, Ice.modal.target.id)) {
-            cancel = false;
-        }
-
-        if (cancel) {
-
-            if (event) {
-                event.stopPropagation();
-            }
-            if (IEEvent) {
-                IEEvent.returnValue = false;
-                IEEvent.cancelBubble = true;
+    disableTabindex: function() {
+        var focusables = {};
+        focusables.a = document.getElementsByTagName('a');
+        focusables.area = document.getElementsByTagName('area');
+        focusables.button = document.getElementsByTagName('button');
+        focusables.input = document.getElementsByTagName('input');
+        focusables.object = document.getElementsByTagName('object');
+        focusables.select = document.getElementsByTagName('select');
+        focusables.textarea = document.getElementsByTagName('textarea');
+        
+        var tabindexValues = [];
+        for (listName in focusables) {
+            var list = focusables[listName]
+            for (var j = 0; j < list.length; j++) {
+                var ele = list[j];
+                if (!Ice.modal.containedInId(ele,Ice.modal.id)) {
+                    var obj = {};
+                    obj.element = ele;
+                    obj.tabIndex = ele.tabIndex ? ele.tabIndex : '';
+                    ele.tabIndex = '-1';
+                    tabindexValues.push(obj);
+                }
             }
         }
-        return !cancel;
+        Ice.modal.tabindexValues = tabindexValues;
     },
+    restoreTabindex: function() {
+        Ice.modal.tabindexValues.each(function(obj) {
+            obj.element.tabIndex = obj.tabIndex;
+        });
+        Ice.modal.tabindexValues = [];
+    }, 
     containedInId:function(node, id) {
         if (node.id == id) {
             return true;
