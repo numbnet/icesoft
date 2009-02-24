@@ -31,18 +31,23 @@ function FirebugLogHandler(priority) {
     function formatOutput(category, message) {
         return join(['[', join(category, '.'), '] ', message], '');
     }
+
     function debugPrimitive(self, category, message, exception) {
         exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
     }
+
     function infoPrimitive(self, category, message, exception) {
         exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
     }
+
     function warnPrimitive(self, category, message, exception) {
         exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
     }
+
     function errorPrimitive(self, category, message, exception) {
         exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
     }
+
     var handlers = [
         Cell(debug, object(function(method) {
             method(debug, debugPrimitive);
@@ -70,11 +75,13 @@ function FirebugLogHandler(priority) {
         }))
     ];
     var handler;
+
     function selectHandler(p) {
         handler = value(detect(handlers, function(cell) {
             return key(cell) == p;
         }));
     }
+
     selectHandler(priority || debug);
 
     return object(function (method) {
@@ -116,6 +123,27 @@ function WindowLogHandler(thresholdPriority, name) {
         var disabled = logEntry == noop;
         logEntry = disabled ? displayEntry : noop;
         return !disabled;
+    }
+
+    function displayEntry(priorityName, colorName, category, message, exception) {
+        var categoryName = join(category, '.');
+
+        if (categoryMatcher.test(categoryName)) {
+            var elementDocument = logContainer.ownerDocument;
+            var timestamp = new Date();
+            var completeMessage = '[' + categoryName + '] : ' + message + (exception ? ('\n' + exception) : '');
+            each(split(completeMessage, '\n'), function(line) {
+                if (/(\w+)/.test(line)) {
+                    var eventNode = elementDocument.createElement('div');
+                    eventNode.style.padding = '3px';
+                    eventNode.style.color = colorName;
+                    eventNode.setAttribute("title", timestamp + ' | ' + priorityName)
+                    logContainer.appendChild(eventNode).appendChild(elementDocument.createTextNode(line));
+                }
+            });
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        trimLines();
     }
 
     function showWindow() {
@@ -205,41 +233,26 @@ function WindowLogHandler(thresholdPriority, name) {
                 trimLines();
             };
             clearButton.onclick = trimAllLines;
+
+            onUnload(window, function() {
+                if (closeOnExit) {
+                    logEntry = noop;
+                    logWindow.close();
+                }
+            });
         } catch (e) {
             logWindow.close();
         }
     }
 
-    function displayEntry(priorityName, colorName, category, message, exception) {
-        var categoryName = join(category, '.');
-
-        if (categoryMatcher.test(categoryName)) {
-            var elementDocument = logContainer.ownerDocument;
-            var timestamp = new Date();
-            var completeMessage = '[' + categoryName + '] : ' + message + (exception ? ('\n' + exception) : '');
-            each(split(completeMessage, '\n'), function(line) {
-                if (/(\w+)/.test(line)) {
-                    var eventNode = elementDocument.createElement('div');
-                    eventNode.style.padding = '3px';
-                    eventNode.style.color = colorName;
-                    eventNode.setAttribute("title", timestamp + ' | ' + priorityName)
-                    logContainer.appendChild(eventNode).appendChild(elementDocument.createTextNode(line));
-                }
-            });
-            logContainer.scrollTop = logContainer.scrollHeight;
+    onKeyPress(document, function(evt) {
+        var event = $event(evt, document.documentElement);
+        var key = keyCode(event);
+        if ((key == 20 || key == 84) && isCtrlPressed(event) && isShiftPressed(event)) {
+            showWindow();
+            logEntry = displayEntry;
         }
-        trimLines();
-    }
-
-    //    updateProperty($element(containerElement), 'onkeypress', function(evt) {
-    //        alert(evt);
-    //        var event = $event(evt, containerElement);
-    //        var key = keyCode(event);
-    //        if ((key == 20 || key == 84) && isCtrlPressed(event) && isShiftPressed(event)) {
-    showWindow();
-    logEntry = displayEntry;
-    //        }
-    //    });
+    });
 
     return object(function(method) {
         method(threshold, function(self, priority) {
