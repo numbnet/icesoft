@@ -32,6 +32,7 @@
 -->
 
 <ice:panelGroup styleClass="componentBox"
+                xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ice="http://www.icesoft.com/icefaces/component">
@@ -119,17 +120,25 @@
 <ice:panelGroup styleClass="exampleBox panelToolTipContainer">
 
     <!-- all the following panels uses the same tool tip component.  -->
-    <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="alberta" value="#{msgs['page.panelTooltip.province1.label']}"/>
+    <ice:panelGroup panelTooltip="provinceInfo"
+                    contextValue="page.panelTooltip.province1"
+                    style="float:left;margin-left:20px;">
+        <ice:outputText value="#{msgs['page.panelTooltip.province1.label']}"/>
     </ice:panelGroup>
-    <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="ontario" value="#{msgs['page.panelTooltip.province2.label']}"/>
+    <ice:panelGroup panelTooltip="provinceInfo"
+                    contextValue="page.panelTooltip.province2"
+                    style="float:left;margin-left:20px;">
+        <ice:outputText value="#{msgs['page.panelTooltip.province2.label']}"/>
     </ice:panelGroup>
-    <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="saskatchewan" value="#{msgs['page.panelTooltip.province3.label']}"/>
+    <ice:panelGroup panelTooltip="provinceInfo"
+                    contextValue="page.panelTooltip.province3"
+                    style="float:left;margin-left:20px;">
+        <ice:outputText value="#{msgs['page.panelTooltip.province3.label']}"/>
     </ice:panelGroup>
-    <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="novascotia" value="#{msgs['page.panelTooltip.province4.label']}"/>
+    <ice:panelGroup panelTooltip="provinceInfo"
+                    contextValue="page.panelTooltip.province4"
+                    style="float:left;margin-left:20px;">
+        <ice:outputText value="#{msgs['page.panelTooltip.province4.label']}"/>
     </ice:panelGroup>
 
     <!-- toolTip decloration that is ued for more then one panelGroup -->

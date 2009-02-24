@@ -35,6 +35,7 @@ package org.icefaces.application.showcase.util;
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.HashMap;
 
 /**
  * <p>Utility class which loads the applications message resource bundle.  This
@@ -68,22 +69,8 @@ public class MessageBundleLoader {
 
     public static final String MESSAGE_PATH =
             "org.icefaces.application.showcase.view.resources.messages";
-
-    // message bundle for component.
-    private static ResourceBundle messages;
-
-    /**
-     * Initialize internationalization.
-     */
-    public static void init() {
-        Locale locale =
-                FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        // assign a default locale if the faces context has none, shouldn't happen
-        if (locale == null) {
-            locale = Locale.ENGLISH;
-        }
-        messages = ResourceBundle.getBundle(MESSAGE_PATH, locale);
-    }
+    
+    private static HashMap messageBundles = new HashMap();
 
     /**
      * Gets a string for the given key from this resource bundle or one of its
@@ -94,9 +81,20 @@ public class MessageBundleLoader {
      *         found the key itself is returned.
      */
     public static String getMessage(String key) {
+        if (key == null) {
+            return null;
+        }
         try {
+            Locale locale =
+                FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            if (locale == null) {
+                locale = Locale.ENGLISH;
+            }
+            ResourceBundle messages = (ResourceBundle)
+                messageBundles.get(locale.toString());
             if (messages == null) {
-                init();
+                messages = ResourceBundle.getBundle(MESSAGE_PATH, locale);
+                messageBundles.put(locale.toString(), messages);
             }
             return messages.getString(key);
         }

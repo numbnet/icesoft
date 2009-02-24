@@ -57,16 +57,7 @@ public class ButtonsAndLinksBean extends BaseBean {
      * @return name of the button clicked.
      */
     public String getClicked() {
-        return clicked;
-    }
-
-    /**
-     * Sets the name of the button clicked.
-     *
-     * @param newValue name of the button clicked.
-     */
-    public void setClicked(String newValue) {
-        clicked = newValue;
+        return MessageBundleLoader.getMessage(clicked);
     }
 
     /**
@@ -93,7 +84,7 @@ public class ButtonsAndLinksBean extends BaseBean {
      * @param e click action event.
      */
     public void submitButtonListener(ActionEvent e) {
-        clicked = MessageBundleLoader.getMessage("bean.buttonsAndLinks.submitButton");
+        clicked = "bean.buttonsAndLinks.submitButton";
         valueChangeEffect.setFired(false);
     }
 
@@ -103,7 +94,7 @@ public class ButtonsAndLinksBean extends BaseBean {
      * @param e click action event.
      */
     public void imageButtonListener(ActionEvent e) {
-        clicked = MessageBundleLoader.getMessage("bean.buttonsAndLinks.imageButton");
+        clicked = "bean.buttonsAndLinks.imageButton";
         valueChangeEffect.setFired(false);
     }
 
@@ -113,7 +104,7 @@ public class ButtonsAndLinksBean extends BaseBean {
      * @param e click action event.
      */
     public void commandLinkListener(ActionEvent e) {
-        clicked = MessageBundleLoader.getMessage("bean.buttonsAndLinks.commandLink");
+        clicked = "bean.buttonsAndLinks.commandLink";
         valueChangeEffect.setFired(false);
     }
 }

@@ -56,14 +56,16 @@ public class DynamicTabSetBean implements Serializable {
     public DynamicTabSetBean() {
 
         // pre-defined two tabs into the panelTabSet
-        Tab newTab1 = new Tab();
-        newTab1.setLabel(MessageBundleLoader.getMessage("bean.panelTabSet.dynamic.default.label1"));
-        newTab1.setContent(MessageBundleLoader.getMessage("bean.panelTabSet.dynamic.default.content1"));
+        Tab newTab1 = new Tab(
+            new MsgString("bean.panelTabSet.dynamic.default.label1", true, null),
+            new MsgString("bean.panelTabSet.dynamic.default.content1", true, null)
+        );
         tabs.add(newTab1);
-
-        Tab newTab2 = new Tab();
-        newTab2.setLabel(MessageBundleLoader.getMessage("bean.panelTabSet.dynamic.default.label2"));
-        newTab2.setContent(MessageBundleLoader.getMessage("bean.panelTabSet.dynamic.default.content2"));
+        
+        Tab newTab2 = new Tab(
+            new MsgString("bean.panelTabSet.dynamic.default.label2", true, null),
+            new MsgString("bean.panelTabSet.dynamic.default.content2", true, null)
+        );
         tabs.add(newTab2);
     }
 
@@ -90,18 +92,25 @@ public class DynamicTabSetBean implements Serializable {
      */
     public void addTab(ActionEvent event) {
 
+        MsgString label, content;
         // assign default label if it's blank
         if (newTabLabel.equals("")) {
-            newTabLabel = MessageBundleLoader.getMessage(
-                    "bean.panelTabSet.dynamic.labelString") + (tabIndex + 1);
-            newTabContent = MessageBundleLoader.getMessage(
-                    "bean.panelTabSet.dynamic.contentString") + (tabIndex + 1);
+            label = new MsgString("bean.panelTabSet.dynamic.labelString", true,
+                new MsgString(Integer.toString(tabIndex + 1), false, null));
+        }
+        else {
+            label = new MsgString(newTabLabel, false, null);
+        }
+        if (newTabContent.equals("")) {
+            content = new MsgString("bean.panelTabSet.dynamic.contentString", true,
+                new MsgString(Integer.toString(tabIndex + 1), false, null));
+        }
+        else {
+            content = new MsgString(newTabContent, false, null);
         }
 
         // set the new tab from the input
-        Tab newTab = new Tab();
-        newTab.setContent(newTabContent);
-        newTab.setLabel(newTabLabel);
+        Tab newTab = new Tab(label, content);
 
         // add to both tabs and select options of selectRadiobox
         tabs.add(newTab);
@@ -147,25 +156,49 @@ public class DynamicTabSetBean implements Serializable {
      * Inner class that represents a tab object with a label, content, and an
      * index.
      */
-    public class Tab {
-        String label;
-        String content;
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
+    public static class Tab {
+        MsgString label;
+        MsgString content;
+        
+        Tab(MsgString label, MsgString content) {
+            this.label = label;
             this.content = content;
         }
-
+        
         public String getLabel() {
-            return label;
+            return label.toString();
         }
-
-        public void setLabel(String label) {
-            this.label = label;
+        
+        public String getContent() {
+            return content.toString();
         }
     }
-
+    
+    public static class MsgString {
+        private String msg;
+        private boolean isKey;
+        private MsgString next;
+        
+        MsgString(String msg, boolean isKey, MsgString next) {
+            this.msg = msg;
+            this.isKey = isKey;
+            this.next = next;
+        }
+        
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            if (msg != null) {
+                if (isKey) {
+                    sb.append(MessageBundleLoader.getMessage(msg));
+                }
+                else {
+                    sb.append(msg);
+                }
+            }
+            if (next != null) {
+                sb.append(next.toString());
+            }
+            return sb.toString();
+        }
+    }
 }

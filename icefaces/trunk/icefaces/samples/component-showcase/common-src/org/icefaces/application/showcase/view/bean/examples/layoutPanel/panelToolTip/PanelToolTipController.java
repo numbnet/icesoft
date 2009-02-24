@@ -61,48 +61,7 @@ public class PanelToolTipController implements Serializable {
 
     private PanelToolTipModel panelToolTipModel;
 
-    private static HashMap provinces =
-            new HashMap();
-
     private ArrayList cityList = new ArrayList();
-
-    static {
-        ArrayList cities = new ArrayList();
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city1.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city2.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city3.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city4.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city5.label"));
-        provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province1.label"),
-                cities);
-
-        cities = new ArrayList();
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city1.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city2.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city3.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city4.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city5.label"));
-        provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province2.label"),
-                cities);
-
-        cities = new ArrayList();
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city1.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city2.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city3.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city4.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city5.label"));
-        provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province3.label"),
-                cities);
-
-        cities = new ArrayList();
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city1.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city2.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city3.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city4.label"));
-        cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city5.label"));
-        provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province4.label"),
-                cities);
-    }
 
 
     /**
@@ -146,12 +105,13 @@ public class PanelToolTipController implements Serializable {
     public void displayListener(DisplayEvent event) {
         // updated the city list for the city that activated the tooltip
         if (event.isVisible()) {
-            List children = event.getTarget().getChildren();
-            UIComponent component = (UIComponent)children.get(0);
-            if (component instanceof UIOutput) {
-                // get the value of the child component. 
-                cityList = (ArrayList)provinces.get(((ValueHolder) component).getValue());
+            String province = event.getContextValue().toString();
+            final int len = 5;
+            ArrayList cities = new ArrayList(len);
+            for(int i = 1; i <= len; i++) {
+                cities.add(MessageBundleLoader.getMessage(province + ".city"+i+".label"));
             }
+            cityList = cities;
         }
     }
 
