@@ -551,6 +551,7 @@ public class SelectInputDateRenderer
 
                     min = timeKeeper.get(Calendar.MINUTE);
                     amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+//System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
                 }
                 for (int i = 0; i < hrs.length; i++ ) {
                     Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
@@ -1783,8 +1784,11 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                         String amPm = requestParameterMap.get(
                             amPmClientId).toString();
 //System.out.println("mergeTimeIntoDateString()    am/pm: " + amPm);
-                        if (hour <= 11 && amPm.equals("PM")) {
+                        if (hour >= 1 && hour <= 11 && amPm.equals("PM")) {
                             hour += 12;
+                        }
+                        else if (hour == 12 && amPm.equals("AM")) {
+                            hour = 0;
                         }
 //System.out.println("mergeTimeIntoDateString()    hour (24 hour): " + hour);
                     }
