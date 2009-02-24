@@ -166,8 +166,19 @@ function DefaultElement(element) {
     });
 }
 
+function Focusable(method, element) {
+    method(gainFocus, function(self) {
+        var onFocusListener = element.onfocus;
+        element.onfocus = noop;
+        element.focus();
+        element.onfocus = onFocusListener;
+    });
+}
+
 function InputElement(element) {
     return objectWithAncestors(function(method) {
+        Focusable(method, element);
+
         method(enclosingForm, function(self) {
             var f = element.form;
             if (f) {
@@ -175,13 +186,6 @@ function InputElement(element) {
             } else {
                 throw 'cannot find enclosing form';
             }
-        });
-
-        method(gainFocus, function(self) {
-            var onFocusListener = element.onfocus;
-            element.onfocus = noop;
-            element.focus();
-            element.onfocus = onFocusListener;
         });
 
         method(canSubmitForm, function(self) {
@@ -233,14 +237,9 @@ function ButtonElement(element) {
 
 function AnchorElement(element) {
     return objectWithAncestors(function(method) {
-        method(canSubmitForm, any);
+        Focusable(method, element);
 
-        method(gainFocus, function(self) {
-            var onFocusListener = element.onfocus;
-            element.onfocus = noop;
-            element.focus();
-            element.onfocus = onFocusListener;
-        });
+        method(canSubmitForm, any);
 
         method(serializeOn, function(self, query) {
             var name = element.name;
