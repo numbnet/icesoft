@@ -45,10 +45,10 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
  */
 public class InputRichTextBean extends BaseBean {
 
-    public static final String TOOLBAR_MODE_1 = "Default";
-    public static final String TOOLBAR_MODE_2 = "Basic";
-
-    private String toolbarMode = TOOLBAR_MODE_1;
+    public String getToolbarModeDefault() { return "Default"; }
+    public String getToolbarModeBasic() { return "Basic"; }
+    
+    private String toolbarMode = getToolbarModeDefault();
 
     private String value = "";
 

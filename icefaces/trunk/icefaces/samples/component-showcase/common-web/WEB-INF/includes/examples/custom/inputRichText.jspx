@@ -55,10 +55,10 @@
                                 partialSubmit="true" style="padding:0;margin:0;">
                 <f:selectItem
                         itemLabel="#{msgs['page.inputRichText.toolbar.default']}"
-                        itemValue="#{applicationScope.InputRichTextBean.TOOLBAR_MODE_1}"/>
+                        itemValue="#{inputRichTextBean.toolbarModeDefault}"/>
                 <f:selectItem
                         itemLabel="#{msgs['page.inputRichText.toolbar.basic']}"
-                        itemValue="#{applicationScope.InputRichTextBean.TOOLBAR_MODE_2}"/>
+                        itemValue="#{inputRichTextBean.toolbarModeBasic}"/>
             </ice:selectOneRadio>
         </ice:panelGroup>
         
