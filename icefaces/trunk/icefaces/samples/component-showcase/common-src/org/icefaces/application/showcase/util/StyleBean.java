@@ -62,13 +62,13 @@ public class StyleBean implements Serializable {
     private final String ROYALE = "royale";
 
     // default theme
-    private String currentStyle = RIME;
-    private String tempStyle = RIME;
+    protected String currentStyle = RIME;
+    protected String tempStyle = RIME;
 
     // available style list
-    private ArrayList styleList;
+    protected ArrayList styleList;
 
-    private HashMap styleMap;
+    protected HashMap styleMap;
 
     /**
      * Creates a new instance of the StyleBean.
