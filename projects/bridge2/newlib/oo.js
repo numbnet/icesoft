@@ -24,6 +24,14 @@ function object(definition) {
     var methods = [];
     var unknown = null;
     definition(function(operator, method) {
+        //replace method in case there was a previous one registered for the same operator
+        var size = operators.length;
+        for (var i = 0; i < size; i++) {
+            if (operators[i] == operator) {
+                methods[i] = method;
+                return;
+            }
+        }
         operators.push(operator);
         methods.push(method);
     }, function(method) {
