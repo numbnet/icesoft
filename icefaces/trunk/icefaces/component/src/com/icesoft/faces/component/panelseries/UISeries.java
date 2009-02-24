@@ -360,6 +360,8 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             this.dataModel = new TreeDataModel((TreeModel) currentValue);
         } else if (currentValue instanceof Set) {
             this.dataModel = new SetDataModel((Set) currentValue);
+        } else if (currentValue instanceof Map) {
+            this.dataModel = new SetDataModel(((Map) currentValue).entrySet());
         } else {
             this.dataModel = new ScalarDataModel(currentValue);
         }
