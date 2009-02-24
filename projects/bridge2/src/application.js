@@ -124,7 +124,7 @@ var disposeBridgeAndNotify = operator();
         register(commandDispatcher, 'parsererror', Ice.Command.ParsingError);
         register(commandDispatcher, 'redirect', function(element) {
             //replace ampersand entities incorrectly decoded by Safari 2.0.4
-            var url = element.getAttribute("url").replace(/&#38;/g, "&");
+            var url = replace(element.getAttribute("url"), /&#38;/g, "&");
             info(logger, 'Redirecting to ' + url);
             window.location.href = url;
         });
