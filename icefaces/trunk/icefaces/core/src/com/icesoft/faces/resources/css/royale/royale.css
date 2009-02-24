@@ -2533,46 +2533,58 @@ Disabeld classes for the calendar controls
 }
 
 /* common accordion headers */
-.icePnlClpsblHdr, .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr,
-    .icePnlClpsblColpsdHdr-dis {
+.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
     background-color: #EFEFEF;
     background-image: url( "./css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: bold;
     text-align: left;
-    color: #FFFFFF;
+    color: #FFF;
     border: 1px solid #CCCCCC;
     border-bottom: none;
     padding-left: 2px;
     padding-right: 5px;
     padding-top: 4px;
     padding-bottom: 4px;
-}
-.icePnlClpsblHdr .iceOutTxt, .icePnlClpsblColpsdHdr .iceOutTxt {
-	color:#FFFFFF;
+    cursor: pointer;
 }
 
-.icePnlClpsbl-dis, .icePnlClpsblColpsd-dis {
-    filter:alpha(opacity=40);
-    opacity:0.4;
+.icePnlClpsblHdr .iceOutTxt, .icePnlClpsblColpsdHdr .iceOutTxt {
+	color:#FFF;
 }
 
 .icePnlClpsblCnt, .icePnlClpsblColpsdCnt,
-    .icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis {
+.icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis {
     background-color: #EFEFEF;
     border: 1px solid #CCCCCC;
     border-top: none;
     padding-left: 5px;
     padding-right: 5px;
-}
-
-.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
-    cursor: pointer;
+    color: #000;
 }
 
 .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
+    background: #EFEFEF url( './css-images/table_col_header_dis.gif' ) repeat-x bottom;
+    font-weight: bold;
+    text-align: left;
+    color: #CCC;
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    padding-left: 2px;
+    padding-right: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     cursor: default;
+}
+
+.icePnlClpsblHdr-dis .iceOutTxt, .icePnlClpsblColpsdHdr-dis .iceOutTxt {
+    color: #CCC;
+}
+
+.icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis,
+.icePnlClpsblColpsdCnt-dis .iceOutTxt, .icePnlClpsblCnt-dis .iceOutTxt {
+    color: #999;
 }
 
 .iceGmp{}
