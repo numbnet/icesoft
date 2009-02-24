@@ -16,7 +16,7 @@ function operator(defaultOperation) {
         } else {
             return defaultOperation ? defaultOperation.apply(defaultOperation, args) : operationNotSupported();
         }
-    }
+    };
 }
 
 function object(definition) {
@@ -40,6 +40,7 @@ function object(definition) {
 
         return unknown;
     }
+
     //tag function with itself to differentiate from normal functions that don't do message dispatching
     return self.instanceTag = self;
 }
@@ -48,6 +49,7 @@ function objectWithAncestors() {
     var definition = arguments[0];
     var args = arguments;
     var o = object(definition);
+
     function self(operator) {
         var method = o(operator);
         if (method) {
@@ -65,6 +67,7 @@ function objectWithAncestors() {
             return null;
         }
     }
+
     //tag function with itself to differentiate from normal functions that don't do message dispatching
     return self.instanceTag = self;
 }
