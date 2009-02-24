@@ -54,12 +54,12 @@ import javax.faces.event.ValueChangeEvent;
 public class RowSelectController extends DataTableBase {
 
     // list of selected employees
-    private ArrayList selectedEmployees;
+    protected ArrayList selectedEmployees;
 
     // flat to indicate multiselect row enabled.
-    private String multiRowSelect = "Single";
-    private boolean multiple;
-    private boolean enhancedMultiple;
+    protected String multiRowSelect = "Single";
+    protected boolean multiple;
+    protected boolean enhancedMultiple;
     public RowSelectController() {
         selectedEmployees = new ArrayList();
     }
