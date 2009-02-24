@@ -29,7 +29,7 @@ public abstract class PagedListDataModel<T> extends DataModel {
      * Create a datamodel that pages through the data showing the specified
      * number of rows on each page.
      */
-    public PagedListDataModel(int pageSize, SessionBean sessionBean) {
+    public PagedListDataModel(int pageSize) {
         super();
         this.pageSize = pageSize;
         this.rowIndex = -1;

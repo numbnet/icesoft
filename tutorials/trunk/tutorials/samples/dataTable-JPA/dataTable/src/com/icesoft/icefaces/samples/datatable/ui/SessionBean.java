@@ -93,9 +93,9 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 	 */
     private void leaveRenderGroups(){
 		if(onePageDataModel.page != null){
-		    for(int i=0; i<uiCustomerBeans.size(); i++){
-			    renderManager.getOnDemandRenderer(((CustomerBean)uiCustomerBeans.get(i)).getCustomer().getCustomernumber().toString()).remove(this);
-		    }
+            for (CustomerBean uiCustomerBean : uiCustomerBeans) {
+                renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).remove(this);
+            }
 		}    	
     }
 
@@ -104,9 +104,9 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 	 * OnDemandRenderers are named/created using the underlying Customer Number.
 	 */
     private void joinRenderGroups(){
-		for(int i=0; i<uiCustomerBeans.size(); i++){
-			renderManager.getOnDemandRenderer(((CustomerBean)uiCustomerBeans.get(i)).getCustomer().getCustomernumber().toString()).add(this);
-		}    	
+        for (CustomerBean uiCustomerBean : uiCustomerBeans) {
+            renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).add(this);
+        }
     }
 
 	/**
@@ -114,7 +114,7 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 	 */
 	public void setDirtyDataController(DirtyDataController dirtyDataController){
 		this.dirtyDataController = dirtyDataController;
-		dirtyDataController.getCURRENT_SESSIONS().add(this);
+		DirtyDataController.getCURRENT_SESSIONS().add(this);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     public DataModel getData() {
     	state = PersistentFacesState.getInstance();
         if(onePageDataModel == null){
-        	onePageDataModel = new LocalDataModel(pageSize, this);
+        	onePageDataModel = new LocalDataModel(pageSize);
         }
     	return onePageDataModel;
     }
@@ -166,9 +166,9 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 
 		// Populate the list of uiCustomerBeans for binding to the dataTable. 
     	uiCustomerBeans.clear();
-    	for(int i = 0; i < pageCustomers.size(); i++){
-			uiCustomerBeans.add(new CustomerBean(pageCustomers.get(i), this));
-		}
+        for (Customer pageCustomer : pageCustomers) {
+            uiCustomerBeans.add(new CustomerBean(pageCustomer, this));
+        }
     	// Add this Renderable to the new render groups.
 		joinRenderGroups();	
 		
@@ -187,8 +187,8 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     }
 
     private class LocalDataModel extends PagedListDataModel {
-        public LocalDataModel(int pageSize, SessionBean sessionBean) {
-            super(pageSize, sessionBean);
+        public LocalDataModel(int pageSize) {
+            super(pageSize);
         }
         
         public DataPage<CustomerBean> fetchPage(int startRow, int pageSize) {
@@ -204,7 +204,7 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 	public void dispose() {
 		// Remove from existing Customer render groups.
         leaveRenderGroups();
-		dirtyDataController.getCURRENT_SESSIONS().remove(this);
+		DirtyDataController.getCURRENT_SESSIONS().remove(this);
 	}
 
 }

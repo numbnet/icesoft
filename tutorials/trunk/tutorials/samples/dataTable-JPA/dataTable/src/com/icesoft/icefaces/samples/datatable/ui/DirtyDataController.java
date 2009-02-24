@@ -15,14 +15,14 @@ public class DirtyDataController {
 	}
 	
     public void setOtherSessionsDirtyData(Customer customer){
-		for(int i=0; i<CURRENT_SESSIONS.size(); i++){
-			List<CustomerBean> sessionView = CURRENT_SESSIONS.get(i).getUiCustomerBeans();
-			for(int y=0; y<sessionView.size(); y++){
-				if(((CustomerBean)sessionView.get(y)).getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
-					CURRENT_SESSIONS.get(i).getOnePageDataModel().setDirtyData();
-					break;
-				}
-			}
-		}
+        for (SessionBean CURRENT_SESSION : CURRENT_SESSIONS) {
+            List<CustomerBean> sessionView = CURRENT_SESSION.getUiCustomerBeans();
+            for (CustomerBean aSessionView : sessionView) {
+                if (aSessionView.getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())) {
+                    CURRENT_SESSION.getOnePageDataModel().setDirtyData();
+                    break;
+                }
+            }
+        }
     }
 }

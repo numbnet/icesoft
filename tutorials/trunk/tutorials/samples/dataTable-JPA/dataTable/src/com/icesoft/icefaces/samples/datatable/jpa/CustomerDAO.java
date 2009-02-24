@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 /**
  * Data access object (DAO) for domain model class Customer.
  *
- * @see org.icefaces.jpa.Customer
+ * @see com.icesoft.icefaces.samples.datatable.jpa.Customer
  */
 
 public class CustomerDAO {
