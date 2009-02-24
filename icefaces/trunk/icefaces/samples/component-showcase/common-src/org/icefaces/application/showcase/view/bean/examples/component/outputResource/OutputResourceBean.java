@@ -41,20 +41,25 @@ import java.util.Date;
 
 import com.icesoft.faces.context.Resource;
 
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+
 public class OutputResourceBean{
 	
 	private Resource imgResource;
 	private Resource pdfResource;
 	private Resource pdfResourceDynFileName;
 	private String fileName = "Choose-a-new-file-name";
-	public static final String RESOURCE_PATH = "org/icefaces/application/showcase/view/resources/";
+	public static final String RESOURCE_PATH = "/WEB-INF/classes/org/icefaces/application/showcase/view/resources/";
 		
 
 	public OutputResourceBean(){
 		try{
-			imgResource = new MyResource("logo.jpg");
-			pdfResource =  new MyResource("WP_Security_Whitepaper.pdf");
-			pdfResourceDynFileName = new MyResource("WP_Security_Whitepaper.pdf");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            imgResource = new MyResource(ec,"logo.jpg");
+			pdfResource =  new MyResource(ec,"WP_Security_Whitepaper.pdf");
+			pdfResourceDynFileName = new MyResource(ec,"WP_Security_Whitepaper.pdf");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -99,22 +104,31 @@ class MyResource implements Resource, Serializable{
     private String resourceName;
     private InputStream inputStream;
     private final Date lastModified;
-    public MyResource(String resourceName) {
+    private ExternalContext extContext;
+
+    public MyResource(ExternalContext ec, String resourceName) {
+        this.extContext = ec;
         this.resourceName = resourceName;
         this.lastModified = new Date();        
     }
+    
     public InputStream open() throws IOException {
         if (inputStream == null) {
-            inputStream = new ByteArrayInputStream( OutputResourceBean.toByteArray( Thread.currentThread().getContextClassLoader().getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName)));
+            InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
+            byte[] byteArray = OutputResourceBean.toByteArray(stream);
+            inputStream = new ByteArrayInputStream(byteArray);
         }
         return inputStream;
     }
+    
     public String calculateDigest() {
         return resourceName;
     }
+
     public Date lastModified() {
         return lastModified;
     }
+
     public void withOptions(Options arg0) throws IOException {
     }
 }   
