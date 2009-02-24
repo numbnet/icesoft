@@ -2,8 +2,8 @@ function registerListener(eventType, obj, listener) {
     var previousListener = obj[eventType];
     if (previousListener) {
         obj[eventType] = function() {
-            previousListener();
-            listener();
+            apply(previousListener, arguments);
+            apply(listener, arguments);
         };
     } else {
         obj[eventType] = listener;
