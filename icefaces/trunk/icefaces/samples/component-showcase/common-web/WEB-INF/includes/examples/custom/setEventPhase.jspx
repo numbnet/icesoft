@@ -94,7 +94,7 @@ clicks a selection or tabs out of a field.
                 <ice:panelGroup>
                     <ice:panelGrid columns="2" styleClass="verticalAlignTop">
                         <ice:outputText value="#{msgs['page.setEventPhase.server.country.label']}" />
-                        <ice:outputText value="#{setEventPhaseBean.selectedCountry}" />
+                        <ice:outputText value="#{setEventPhaseBean.selectedCountryString}" />
                         <ice:outputText value="#{msgs['page.setEventPhase.server.cities.label']}" />
                         <ice:outputText value="#{setEventPhaseBean.selectedCitiesStrings}"/>
                     </ice:panelGrid>

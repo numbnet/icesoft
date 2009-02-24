@@ -76,19 +76,19 @@ public class EffectsModel extends BaseBean {
         fadeAppear.add(new Appear());
         effects.put("effectFadeAppear",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.appearFade.title"),
+                        "page.effect.appearFade.title",
                         fadeAppear));
 
         effects.put("effectHighlight",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.highlight.title"),
+                        "page.effect.highlight.title",
                         new Highlight("#fda505")));
         // pulsate
         Pulsate pulsate = new Pulsate();
         pulsate.setDuration(1.0f);
         effects.put("effectPulsate",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.pulsate.title"),
+                        "page.effect.pulsate.title",
                         pulsate));
 
         // effect move and move back.
@@ -97,7 +97,7 @@ public class EffectsModel extends BaseBean {
 //        move.add(new Move(-25, -25, "relative"));
 //        effects.put("effectMove",
 //                new EffectWrapper(
-//                        MessageBundleLoader.getMessage("page.effect.move.title"),
+//                        "page.effect.move.title",
 //                        move));
 
         // scale effect
@@ -106,7 +106,7 @@ public class EffectsModel extends BaseBean {
 //        scale.add(new Scale(200));
 //        effects.put("effectScale",
 //                new EffectWrapper(
-//                        MessageBundleLoader.getMessage("page.effect.scale.title"),
+//                        "page.effect.scale.title",
 //                        scale));
 
         // puff effect
@@ -115,7 +115,7 @@ public class EffectsModel extends BaseBean {
         puff.add(new Appear());
         effects.put("effectPuff",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.puff.title"),
+                        "page.effect.puff.title",
                         puff));
 
         // Blind effect
@@ -124,7 +124,7 @@ public class EffectsModel extends BaseBean {
         blind.add(new BlindDown());
         effects.put("effectBlind",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.blind.title"),
+                        "page.effect.blind.title",
                         blind));
 
         // drop out effect
@@ -133,13 +133,13 @@ public class EffectsModel extends BaseBean {
         dropOut.add(new Appear());
         effects.put("effectDropOut",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.dropout.title"),
+                        "page.effect.dropout.title",
                         dropOut));
 
         // shake effect
         effects.put("effectShake",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.shake.title"),
+                        "page.effect.shake.title",
                         new Shake()));
 
         // Slide effect
@@ -148,7 +148,7 @@ public class EffectsModel extends BaseBean {
         slide.add(new SlideDown());
         effects.put("effectSlide",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.slide.title"),
+                        "page.effect.slide.title",
                         slide));
 
         // Shrink effect
@@ -157,7 +157,7 @@ public class EffectsModel extends BaseBean {
         shrink.add(new Appear());
         effects.put("effectShrink",
                 new EffectWrapper(
-                        MessageBundleLoader.getMessage("page.effect.shrink.title"),
+                        "page.effect.shrink.title",
                         shrink));
     }
 
@@ -204,11 +204,7 @@ public class EffectsModel extends BaseBean {
         }
 
         public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
+            return MessageBundleLoader.getMessage(title);           
         }
     }
 }

@@ -47,97 +47,6 @@ import javax.faces.model.SelectItem;
  * @since 1.8
  */
 public class SetEventPhaseBean extends BaseBean {
-
-    /**
-     * Countries and Cities declorations
-     */
-
-    private SelectItem[] cityItems;
-
-    private static final String COUNTRY_CANADA =
-            MessageBundleLoader.getMessage("bean.selection.country1.value");
-    private static final String COUNTRY_USA =
-            MessageBundleLoader.getMessage("bean.selection.country2.value");
-    private static final String COUNTRY_CHINA =
-            MessageBundleLoader.getMessage("bean.selection.country3.value");
-    private static final String COUNTRY_UK =
-            MessageBundleLoader.getMessage("bean.selection.country4.value");
-    private static final String COUNTRY_RUSSIA =
-            MessageBundleLoader.getMessage("bean.selection.country5.value");
-
-    private static final SelectItem[] COUNTRY_ITEMS = new SelectItem[]{
-            new SelectItem(COUNTRY_CANADA),
-            new SelectItem(COUNTRY_USA),
-            new SelectItem(COUNTRY_CHINA),
-            new SelectItem(COUNTRY_UK),
-            new SelectItem(COUNTRY_RUSSIA)
-    };
-
-    private static final SelectItem[] CITIES_CANADA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_USA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_CHINA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_UK = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_RUSSIA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city5.value"))
-    };
-
     // selectOneListbox example value
     private String selectedCountry;
     // selectManyListbox example value
@@ -150,25 +59,14 @@ public class SetEventPhaseBean extends BaseBean {
      * @param event value change event
      */
     public void countryChanged(ValueChangeEvent event) {
-        // get new city value and assign it. 
-        String newCountry = (String) event.getNewValue();
-
-        if (COUNTRY_CANADA.equals(newCountry)) {
-            cityItems = CITIES_CANADA;
-        } else if (COUNTRY_USA.equals(newCountry)) {
-            cityItems = CITIES_USA;
-        } else if (COUNTRY_CHINA.equals(newCountry)) {
-            cityItems = CITIES_CHINA;
-        } else if (COUNTRY_UK.equals(newCountry)) {
-            cityItems = CITIES_UK;
-        } else if (COUNTRY_RUSSIA.equals(newCountry)) {
-            cityItems = CITIES_RUSSIA;
-        } else {
-            cityItems = null;
+        SelectItem[] cityItems = getCityItems();
+        if (cityItems == null) {
+            selectedCities = new String[0];
         }
-
-        // Select the first city in the list, for that country
-        selectedCities = new String[]{ cityItems[0].getLabel() };
+        else {
+            // Select the first city in the list, for that country
+            selectedCities = new String[]{ cityItems[0].getValue().toString() };
+        }
 
         // reset effect
         valueChangeEffect.setFired(false);
@@ -191,7 +89,9 @@ public class SetEventPhaseBean extends BaseBean {
      * @return array of country items
      */
     public SelectItem[] getCountryItems() {
-        return COUNTRY_ITEMS;
+        SelectItem[] countryItems =
+            build("bean.selection.country", ".value", 1, 5);
+        return countryItems;
     }
 
     /**
@@ -200,6 +100,18 @@ public class SetEventPhaseBean extends BaseBean {
      * @return array of city items
      */
     public SelectItem[] getCityItems() {
+        SelectItem[] cityItems = null;
+        if (selectedCountry != null && selectedCountry.length() > 0) {
+            SelectItem[] countryItems = getCountryItems();            
+            for(int i = 0; i < countryItems.length; i++) {
+                if (selectedCountry.equals(countryItems[i].getValue())) {
+                    cityItems = build(
+                        "bean.selection.country"+Integer.toString(i+1)+".city",
+                        ".value", 1, 5);
+                    break;
+                }
+            }
+        }
         return cityItems;
     }
 
@@ -212,6 +124,10 @@ public class SetEventPhaseBean extends BaseBean {
         return selectedCountry;
     }
 
+    public void setSelectedCountry(String selectedCountry) {
+        this.selectedCountry = selectedCountry;
+    }
+    
     /**
      * Gets the selected cities.
      *
@@ -221,6 +137,21 @@ public class SetEventPhaseBean extends BaseBean {
         return selectedCities;
     }
 
+    public void setSelectedCities(String[] selectedCities) {
+        this.selectedCities = selectedCities;
+    }
+    
+    /**
+     * Returns selectedCountry, translated
+     *
+     * @return selected country.
+     */
+    public String getSelectedCountryString() {
+        return convertToString(
+            (selectedCountry == null) ? null :
+            new String[]{selectedCountry});
+    }
+    
     /**
      * Returns the selectedCities array a comma seperated list
      *
@@ -230,18 +161,22 @@ public class SetEventPhaseBean extends BaseBean {
         return convertToString(selectedCities);
     }
 
-    public void setCityItems(SelectItem[] cityItems) {
-        this.cityItems = cityItems;
+    private static SelectItem[] build(
+            String prefix, String suffix, int first, int last) {
+        int num = last - first + 1;
+        SelectItem[] ret = new SelectItem[num];
+        for(int i = 0; i < num; i++) {
+            String key = prefix + Integer.toString(first+i) + suffix;
+            ret[i] = build(key);
+        }
+        return ret;
     }
-
-    public void setSelectedCountry(String selectedCountry) {
-        this.selectedCountry = selectedCountry;
+    
+    private static SelectItem build(String key) {
+        return new SelectItem(
+                key, MessageBundleLoader.getMessage(key));
     }
-
-    public void setSelectedCities(String[] selectedCities) {
-        this.selectedCities = selectedCities;
-    }
-
+    
     /**
      * Converts string arrays for displays.
      *
@@ -257,7 +192,7 @@ public class SetEventPhaseBean extends BaseBean {
             if (i > 0) {
                 itemBuffer.append(" , ");
             }
-            itemBuffer.append(stringArray[i]);
+            itemBuffer.append(MessageBundleLoader.getMessage(stringArray[i]));
         }
         return itemBuffer.toString();
     }

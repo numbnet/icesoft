@@ -37,6 +37,7 @@ import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 
 /**
@@ -56,159 +57,32 @@ import javax.faces.model.SelectItem;
  * @sinse 0.3.0
  */
 public class SelectionTagsBean extends BaseBean {
-
-    /**
-     * Available options for the various selection components.
-     */
-    private static final SelectItem[] DRINK_ITEMS = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.drink.drink1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.drink.drink2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.drink.drink3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.drink.drink4.value")),
-    };
-    private static final SelectItem[] LANGUAGE_ITEMS = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.language.lang1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.language.lang2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.language.lang3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.language.lang4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.language.lang5.value")),
-    };
-    private static final SelectItem[] COMPONENT_ITEMS = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.component.comp1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.component.comp2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.component.comp3.value")),
-    };
-    private static final SelectItem[] CARS_ITEMS = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.cars.car1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.cars.car2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.cars.car3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.cars.car4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.cars.car5.value")),
-    };
-
-    /**
-     * Countries and Cities declorations
-     */
-
-    private SelectItem[] cityItems;
-
-    private static final String COUNTRY_CANADA =
-            MessageBundleLoader.getMessage("bean.selection.country1.value");
-    private static final String COUNTRY_USA =
-            MessageBundleLoader.getMessage("bean.selection.country2.value");
-    private static final String COUNTRY_CHINA =
-            MessageBundleLoader.getMessage("bean.selection.country3.value");
-    private static final String COUNTRY_UK =
-            MessageBundleLoader.getMessage("bean.selection.country4.value");
-    private static final String COUNTRY_RUSSIA =
-            MessageBundleLoader.getMessage("bean.selection.country5.value");
-
-    private static final SelectItem[] COUNTRY_ITEMS = new SelectItem[]{
-            new SelectItem(COUNTRY_CANADA),
-            new SelectItem(COUNTRY_USA),
-            new SelectItem(COUNTRY_CHINA),
-            new SelectItem(COUNTRY_UK),
-            new SelectItem(COUNTRY_RUSSIA)
-    };
-
-    private static final SelectItem[] CITIES_CANADA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country1.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_USA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country2.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_CHINA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country3.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_UK = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country4.city5.value"))
-    };
-
-    private static final SelectItem[] CITIES_RUSSIA = new SelectItem[]{
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city1.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city2.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city3.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city4.value")),
-            new SelectItem(MessageBundleLoader.getMessage(
-                    "bean.selection.country5.city5.value"))
-    };
-
-    // selectOneListbox example value
-    private String selectedCountry;
-    private boolean countryChange;
-    // selectManyListbox example value
-    private String[] selectedCities;
     // check box example value
     private boolean newUser;
+    // selectOneMenu for components
+    private String selectedComponent;
+    // selectManyMenu cars values
+    private String[] selectedCars;
     // radio button example
     private String selectedDrink;
     // checkbox multiselect languanges example
     private String[] selectedLanguages;
-    // selectManyMenu cars values
-    private String[] selectedCars;
-    // selectOneMenu for components
-    private String selectedComponent;
+    // selectOneListbox example value
+    private String selectedCountry;
+    // selectManyListbox example value
+    private String[] selectedCities;
 
+
+    /**
+     * Value change listen called when the new checkbox checked/unchecked. No
+     * actual work is done for this method call but it does show what a
+     * ValuesChange method signature should look like.
+     *
+     * @param event jsf value change event
+     */
+    public void carChanged(ValueChangeEvent event) {
+        valueChangeEffect.setFired(false);
+    }
 
     /**
      * Value change listener for the country change event. Sets up the cities
@@ -217,31 +91,17 @@ public class SelectionTagsBean extends BaseBean {
      * @param event value change event
      */
     public void countryChanged(ValueChangeEvent event) {
-
-        // get new city value and assign it. 
-        String newCountry = (String) event.getNewValue();
-
-        if (COUNTRY_CANADA.equals(newCountry)) {
-            cityItems = CITIES_CANADA;
-        } else if (COUNTRY_USA.equals(newCountry)) {
-            cityItems = CITIES_USA;
-        } else if (COUNTRY_CHINA.equals(newCountry)) {
-            cityItems = CITIES_CHINA;
-        } else if (COUNTRY_UK.equals(newCountry)) {
-            cityItems = CITIES_UK;
-        } else if (COUNTRY_RUSSIA.equals(newCountry)) {
-            cityItems = CITIES_RUSSIA;
-        } else {
-            cityItems = null;
+        if (!event.getPhaseId().equals(PhaseId.INVOKE_APPLICATION)) {
+            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            event.queue();
+            return;
         }
-
+        
         // check to see if the country has changed if clear the selected cities
         selectedCities = new String[]{};
-        countryChange = true;
 
         // reset effect
         valueChangeEffect.setFired(false);
-
     }
 
     /**
@@ -256,23 +116,36 @@ public class SelectionTagsBean extends BaseBean {
     }
 
     /**
-     * Value change listen called when the new checkbox checked/unchecked. No
-     * actual work is done for this method call but it does show what a
-     * ValuesChange method signature should look like.
+     * Gets the option items for component types.
      *
-     * @param event jsf value change event
+     * @return array of component type items
      */
-    public void carChanged(ValueChangeEvent event) {
-        valueChangeEffect.setFired(false);
+    public SelectItem[] getComponentItems() {
+        SelectItem[] componentItems =
+            build("bean.selection.component.comp", ".value", 1, 3);
+        return componentItems;
     }
 
+    /**
+     * returns the list of available cars to select
+     *
+     * @return carlist
+     */
+    public SelectItem[] getCarListItems() {
+        SelectItem[] carItems =
+            build("bean.selection.cars.car", ".value", 1, 5);
+        return carItems;
+    }
+    
     /**
      * Gets the option items for drinks.
      *
      * @return array of drink items
      */
     public SelectItem[] getDrinkItems() {
-        return DRINK_ITEMS;
+        SelectItem[] drinkItems =
+            build("bean.selection.drink.drink", ".value", 1, 4);
+        return drinkItems;
     }
 
     /**
@@ -281,7 +154,9 @@ public class SelectionTagsBean extends BaseBean {
      * @return array of language items
      */
     public SelectItem[] getLanguageItems() {
-        return LANGUAGE_ITEMS;
+        SelectItem[] languageItems =
+            build("bean.selection.language.lang", ".value", 1, 5);
+        return languageItems;
     }
 
     /**
@@ -290,7 +165,9 @@ public class SelectionTagsBean extends BaseBean {
      * @return array of country items
      */
     public SelectItem[] getCountryItems() {
-        return COUNTRY_ITEMS;
+        SelectItem[] countryItems =
+            build("bean.selection.country", ".value", 1, 5);
+        return countryItems;
     }
 
     /**
@@ -299,26 +176,19 @@ public class SelectionTagsBean extends BaseBean {
      * @return array of city items
      */
     public SelectItem[] getCityItems() {
+        SelectItem[] cityItems = null;
+        if (selectedCountry != null && selectedCountry.length() > 0) {
+            SelectItem[] countryItems = getCountryItems();            
+            for(int i = 0; i < countryItems.length; i++) {
+                if (selectedCountry.equals(countryItems[i].getValue())) {
+                    cityItems = build(
+                        "bean.selection.country"+Integer.toString(i+1)+".city",
+                        ".value", 1, 5);
+                    break;
+                }
+            }
+        }
         return cityItems;
-    }
-
-    /**
-     * Gets the option items for component types.
-     *
-     * @return array of component type items
-     */
-    public SelectItem[] getComponentItems() {
-        return COMPONENT_ITEMS;
-    }
-
-
-    /**
-     * returns the list of available cars to select
-     *
-     * @return carlist
-     */
-    public SelectItem[] getCarListItems() {
-        return CARS_ITEMS;
     }
 
     /**
@@ -340,12 +210,42 @@ public class SelectionTagsBean extends BaseBean {
     }
 
     /**
+     * Gets the selected component.
+     *
+     * @return the selected component
+     */
+    public String getSelectedComponent() {
+        return selectedComponent;
+    }
+    
+    public void setSelectedComponent(String selectedComponent) {
+        this.selectedComponent = selectedComponent;
+    }
+
+    /**
+     * Gets the array of selected cars.
+     *
+     * @return the array of selected cars
+     */
+    public String[] getSelectedCars() {
+        return selectedCars;
+    }
+    
+    public void setSelectedCars(String[] selectedCars) {
+        this.selectedCars = selectedCars;
+    }
+
+    /**
      * Gets the selected drink.
      *
      * @return the selected drink
      */
     public String getSelectedDrink() {
         return selectedDrink;
+    }
+    
+    public void setSelectedDrink(String selectedDrink) {
+        this.selectedDrink = selectedDrink;
     }
 
     /**
@@ -357,15 +257,47 @@ public class SelectionTagsBean extends BaseBean {
         return selectedLanguages;
     }
 
+    public void setSelectedLanguages(String[] selectedLanguages) {
+        this.selectedLanguages = selectedLanguages;
+    }
+    
     /**
-     * Gets the array of selected cars.
+     * Gets the selected country.
      *
-     * @return the array of selected cars
+     * @return the selected country
      */
-    public String[] getSelectedCars() {
-        return selectedCars;
+    public String getSelectedCountry() {
+        return selectedCountry;
+    }
+    
+    public void setSelectedCountry(String selectedCountry) {
+        this.selectedCountry = selectedCountry;
     }
 
+    /**
+     * Gets the selected cities.
+     *
+     * @return array of selected cities
+     */
+    public String[] getSelectedCities() {
+        return selectedCities;
+    }
+
+    public void setSelectedCities(String[] selectedCities) {
+        this.selectedCities = selectedCities;
+    }
+    
+    /**
+     * Returns selectedComponent, translated
+     *
+     * @return selected component type.
+     */
+    public String getSelectedComponentString() {
+        return convertToString(
+            (selectedComponent == null) ? null :
+            new String[]{selectedComponent});
+    }
+    
     /**
      * Returns the selectedCities array a comma seperated list
      *
@@ -373,6 +305,17 @@ public class SelectionTagsBean extends BaseBean {
      */
     public String getSelectedCarsStrings() {
         return convertToString(selectedCars);
+    }
+    
+    /**
+     * Returns selectedDrink, translated
+     *
+     * @return selected drink.
+     */
+    public String getSelectedDrinkString() {
+        return convertToString(
+            (selectedDrink == null) ? null :
+            new String[]{selectedDrink});
     }
 
     /**
@@ -385,74 +328,41 @@ public class SelectionTagsBean extends BaseBean {
     }
 
     /**
-     * Gets the selected country.
+     * Returns selectedCountry, translated
      *
-     * @return the selected country
+     * @return selected country.
      */
-    public String getSelectedCountry() {
-        return selectedCountry;
+    public String getSelectedCountryString() {
+        return convertToString(
+            (selectedCountry == null) ? null :
+            new String[]{selectedCountry});
     }
-
-    /**
-     * Gets the selected component.
-     *
-     * @return the selected component
-     */
-    public String getSelectedComponent() {
-        return selectedComponent;
-    }
-
-    /**
-     * Gets the selected cities.
-     *
-     * @return array of selected cities
-     */
-    public String[] getSelectedCities() {
-        return selectedCities;
-    }
-
+    
     /**
      * Returns the selectedCities array a comma seperated list
      *
      * @return comma seperated list of selected cities.
      */
     public String getSelectedCitiesStrings() {
-        // if the changeEventListener fired then we want to clear the cities list
-        if (countryChange) {
-            countryChange = false;
-            return "";
-        }
         return convertToString(selectedCities);
     }
-
-    public void setCityItems(SelectItem[] cityItems) {
-        this.cityItems = cityItems;
+    
+    private static SelectItem[] build(
+            String prefix, String suffix, int first, int last) {
+        int num = last - first + 1;
+        SelectItem[] ret = new SelectItem[num];
+        for(int i = 0; i < num; i++) {
+            String key = prefix + Integer.toString(first+i) + suffix;
+            ret[i] = build(key);
+        }
+        return ret;
     }
-
-    public void setSelectedCountry(String selectedCountry) {
-        this.selectedCountry = selectedCountry;
+    
+    private static SelectItem build(String key) {
+        return new SelectItem(
+                key, MessageBundleLoader.getMessage(key));
     }
-
-    public void setSelectedCities(String[] selectedCities) {
-        this.selectedCities = selectedCities;
-    }
-
-    public void setSelectedDrink(String selectedDrink) {
-        this.selectedDrink = selectedDrink;
-    }
-
-    public void setSelectedLanguages(String[] selectedLanguages) {
-        this.selectedLanguages = selectedLanguages;
-    }
-
-    public void setSelectedCars(String[] selectedCars) {
-        this.selectedCars = selectedCars;
-    }
-
-    public void setSelectedComponent(String selectedComponent) {
-        this.selectedComponent = selectedComponent;
-    }
-
+    
     /**
      * Converts string arrays for displays.
      *
@@ -468,7 +378,7 @@ public class SelectionTagsBean extends BaseBean {
             if (i > 0) {
                 itemBuffer.append(" , ");
             }
-            itemBuffer.append(stringArray[i]);
+            itemBuffer.append(MessageBundleLoader.getMessage(stringArray[i]));
         }
         return itemBuffer.toString();
     }

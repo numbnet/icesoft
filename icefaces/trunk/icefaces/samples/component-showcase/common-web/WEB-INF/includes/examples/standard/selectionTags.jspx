@@ -169,14 +169,14 @@ clicks a selection or tabs out of a field.
                         <ice:outputText
                                 value="#{msgs['page.selection.server.component.label']}" />
                         <ice:outputText id="SlctCompTypout"
-                                        value="#{selectionTags.selectedComponent}" />
+                                        value="#{selectionTags.selectedComponentString}" />
                         <ice:outputText value="#{msgs['page.selection.server.cars.label']}" />
                         <ice:outputText id="SlctCarout"
                                         value="#{selectionTags.selectedCarsStrings}" />
                         <ice:outputText
                                 value="#{msgs['page.selection.server.drink.label']}" />
                         <ice:outputText id="SlctDrkout"
-                                        value="#{selectionTags.selectedDrink}" />
+                                        value="#{selectionTags.selectedDrinkString}" />
                         <ice:outputText
                                 value="#{msgs['page.selection.server.language.label']}" />
                         <ice:outputText id="SlctLangout"
@@ -184,7 +184,7 @@ clicks a selection or tabs out of a field.
                         <ice:outputText
                                 value="#{msgs['page.selection.server.country.label']}" />
                         <ice:outputText id="SlctCntyout"
-                                        value="#{selectionTags.selectedCountry}" />
+                                        value="#{selectionTags.selectedCountryString}" />
                         <ice:outputText
                                 value="#{msgs['page.selection.server.cities.label']}" />
                         <ice:outputText id="SlctCtyout"
