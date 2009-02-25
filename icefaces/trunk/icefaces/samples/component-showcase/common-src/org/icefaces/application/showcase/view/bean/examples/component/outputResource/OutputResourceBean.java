@@ -112,6 +112,16 @@ class MyResource implements Resource, Serializable{
         this.lastModified = new Date();        
     }
     
+    /**
+     * This intermediate step of reading in the files from the JAR, into a
+     * byte array, and then serving the Resource from the ByteArrayInputStream,
+     * is not strictly necessary, but serves to illustrate that the Resource
+     * content need not come from an actual file, but can come from any source,
+     * and also be dynamically generated. In most cases, applications need not
+     * provide their own concrete implementations of Resource, but can instead
+     * simply make use of com.icesoft.faces.context.ByteArrayResource,
+     * com.icesoft.faces.context.FileResource, com.icesoft.faces.context.JarResource.
+     */
     public InputStream open() throws IOException {
         if (inputStream == null) {
             InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);

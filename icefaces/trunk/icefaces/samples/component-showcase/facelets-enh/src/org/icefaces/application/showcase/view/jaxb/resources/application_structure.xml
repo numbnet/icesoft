@@ -1208,7 +1208,7 @@
                 </documents>
                 <tlds>
                     <resource-reference
-                            label="outputMedia"
+                            label="outputResource"
                             resourceRef="outputResourceTld"/>
                 </tlds>
                 <tutorials>
