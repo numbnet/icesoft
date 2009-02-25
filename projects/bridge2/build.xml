@@ -148,9 +148,71 @@
         </javac>
     </target>
 
-    <target name="build.bridge" depends="copy, compress" description="Collate bridge code">
-        <delete file="${script}"/>
-        <concat destfile="${script}" append="yes" fixlastline="yes" force="no">
+    <target name="build.bridge" description="Collate bridge code">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/src"/>
+        <touch file="${script}"/>
+        <loadfile property="functional.js" srcFile="newlib/functional.js"/>
+        <loadfile property="oo.js" srcFile="newlib/oo.js"/>
+        <loadfile property="collection.js" srcFile="newlib/collection.js"/>
+        <loadfile property="string.js" srcFile="newlib/string.js"/>
+        <loadfile property="window.js" srcFile="newlib/window.js"/>
+        <loadfile property="http.js" srcFile="newlib/http.js"/>
+        <loadfile property="cookie.js" srcFile="newlib/cookie.js"/>
+        <loadfile property="logger.js" srcFile="newlib/logger.js"/>
+        <loadfile property="delay.js" srcFile="newlib/delay.js"/>
+        <loadfile property="element.js" srcFile="newlib/element.js"/>
+        <loadfile property="event.js" srcFile="newlib/event.js"/>
+        <loadfile property="submit.js" srcFile="src/submit.js"/>
+        <loadfile property="synchronizer.js" srcFile="src/synchronizer.js"/>
+        <loadfile property="command.js" srcFile="src/command.js"/>
+        <loadfile property="script.js" srcFile="src/script.js"/>
+        <loadfile property="focus.js" srcFile="src/focus.js"/>
+        <loadfile property="status.js" srcFile="src/status.js"/>
+        <loadfile property="heartbeat.js" srcFile="src/heartbeat.js"/>
+        <loadfile property="connection.async.js" srcFile="src/connection.async.js"/>
+        <property name="tmp" value="${build.dir}/tmp.js"/>
+        <copy file="src/application.js" tofile="${tmp}" overwrite="yes">
+            <filterset begintoken="//include " endtoken=".js">
+                <filter token="functional" value="${functional.js}"/>
+                <filter token="oo" value="${oo.js}"/>
+                <filter token="collection" value="${collection.js}"/>
+                <filter token="string" value="${string.js}"/>
+                <filter token="window" value="${window.js}"/>
+                <filter token="http" value="${http.js}"/>
+                <filter token="cookie" value="${cookie.js}"/>
+                <filter token="logger" value="${logger.js}"/>
+                <filter token="delay" value="${delay.js}"/>
+                <filter token="element" value="${element.js}"/>
+                <filter token="event" value="${event.js}"/>
+                <filter token="submit" value="${submit.js}"/>
+                <filter token="synchronizer" value="${synchronizer.js}"/>
+                <filter token="command" value="${command.js}"/>
+                <filter token="script" value="${script.js}"/>
+                <filter token="focus" value="${focus.js}"/>
+                <filter token="status" value="${status.js}"/>
+                <filter token="heartbeat" value="${heartbeat.js}"/>
+                <filter token="connection.async" value="${connection.async.js}"/>
+            </filterset>
+        </copy>
+        <!--move file="${tmp}" tofile="${script}" overwrite="yes">
+            <filterchain>
+                <stripjavacomments/>
+                <ignoreblank/>
+            </filterchain>            
+        </move-->
+        <java jar="compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${script}"/>
+            <arg value="${tmp}"/>
+        </java>
+    </target>
+
+    <target name="build.extras" depends="copy, compress"
+            description="Collate extra libraries used by specialized components.">
+        <delete file="${extras.script}"/>
+        <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="prototype.js"/>
                 <file name="base.js"/>
@@ -160,42 +222,6 @@
                 <file name="number.js"/>
                 <file name="hash.js"/>
                 <file name="range.js"/>
-            </filelist>
-            <filelist dir="${build.dir}/newlib">
-                <file name="functional.js"/>
-                <file name="oo.js"/>
-                <file name="collection.js"/>
-                <file name="string.js"/>
-                <file name="window.js"/>
-                <file name="http.js"/>
-                <file name="cookie.js"/>
-                <file name="logger.js"/>
-                <file name="delay.js"/>
-                <file name="element.js"/>
-                <file name="event.js"/>
-            </filelist>
-            <filelist dir="${build.dir}/src">
-                <file name="namespace.js"/>
-                <file name="submit.js"/>
-                <file name="synchronizer.js"/>
-                <file name="command.js"/>
-                <file name="script.js"/>
-                <file name="focus.js"/>
-                <file name="status.js"/>
-                <file name="heartbeat.js"/>
-                <file name="connection.async.js"/>
-                <file name="application.js"/>
-            </filelist>
-            <path location="${script.open.ajax}"
-                    />
-        </concat>
-    </target>
-
-    <target name="build.extras" depends="copy, compress"
-            description="Collate extra libraries used by specialized components.">
-        <delete file="${extras.script}"/>
-        <concat destfile="${extras.script}" append="yes" fixlastline="yes">
-            <filelist dir="${build.dir}/lib/prototype">
                 <file name="ajax.js"/>
                 <file name="dom.js"/>
                 <file name="selector.js"/>

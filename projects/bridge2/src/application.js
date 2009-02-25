@@ -31,29 +31,59 @@
  *
  */
 
-var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-window.logger = Logger([ 'window' ], handler);
+window.evaluate = eval;
 
-//adapt to old style logger
-each(['debug', 'info', 'warn', 'error'], function(level) {
-    window.logger[level] = function() {
-        apply(curry(window[level], window.logger), arguments);
+(function(namespace) {
+    //include functional.js
+    //include oo.js
+    //include collection.js
+    //include string.js
+    //include window.js
+    //adapt to old style of registering window event handlers
+    window.onUnload = curry(onUnload, window);
+    //include logger.js
+    //include cookie.js
+    //include delay.js
+    //include element.js
+    namespace.$element = $element;
+    namespace.$elementWithID = $elementWithID;
+    namespace.captureAndRedirectSubmit = captureAndRedirectSubmit;
+    namespace.enclosingBridge = enclosingBridge;
+    //include event.js
+    namespace.$event = $event;
+    //include http.js
+    //include script.js
+    //include synchronizer.js
+    //include command.js
+    //include heartbeat.js
+    //include status.js
+    namespace.ComponentIndicators = ComponentIndicators;
+    //include connection.async.js
+    //include focus.js
+    window.setFocus = recordFocus;
+    namespace.Focus = { setFocus: applyFocus };
+    //include submit.js
+    window.iceSubmit = iceSubmit;
+    window.iceSubmitPartial = iceSubmitPartial;
+    window.formOf = formOf;
+
+    var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+    window.logger = Logger([ 'window' ], handler);
+
+    //adapt to old style logger
+    window.logger.debug = curry(debug, window.logger);
+    window.logger.info = curry(info, window.logger);
+    window.logger.warn = curry(warn, window.logger);
+    window.logger.error = curry(error, window.logger);
+    window.logger.child = function(category) {
+        return window.logger;
     };
-});
-window.logger.child = function(category) {
-    return window.logger;
-};
 
-function FormPost(request) {
-    setHeader(request, 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-}
+    namespace.connection = operator();
+    namespace.resetIndicators = operator();
+    namespace.disposeBridge = operator();
+    namespace.disposeBridgeAndNotify = operator();
 
-var connection = operator();
-var resetIndicators = operator();
-var disposeBridge = operator();
-var disposeBridgeAndNotify = operator();
-
-(function(This) {
     var client = Client(true);
     var views = window.views = window.views ? window.views : [];
 
@@ -95,19 +125,19 @@ var disposeBridgeAndNotify = operator();
 
     onBeforeUnload(window, disposeWindowViews);
 
-    This.Application = function(configuration, container) {
+    namespace.Application = function(configuration, container) {
         var sessionID = configuration.session;
         var viewID = configuration.view;
         enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
-        var indicators = Ice.Status.DefaultIndicators(configuration, container);
-        var evaluateScripts = Ice.Script.Loader(logger);
-        var commandDispatcher = Ice.Command.Dispatcher();
-        var documentSynchronizer = new Ice.Document.Synchronizer(logger, client, sessionID, viewID);
-        var asyncConnection = This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
+        var indicators = DefaultIndicators(configuration, container);
+        var evaluateScripts = ScriptEvaluator(logger);
+        var commandDispatcher = CommandDispatcher();
+        var documentSynchronizer = DocumentSynchronizer(logger, client, sessionID, viewID);
+        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
-        function replaceContainerHTML(html) {
-            Ice.Document.replaceContainerHTML(container, html);
+        function replaceHTMLAndEvaluateScripts(html) {
+            replaceContainerHTML(container, html);
             evaluateScripts(container);
         }
 
@@ -120,8 +150,8 @@ var disposeBridgeAndNotify = operator();
         onUnload(window, dispose);
 
         register(commandDispatcher, 'noop', noop);
-        register(commandDispatcher, 'set-cookie', Ice.Command.SetCookie);
-        register(commandDispatcher, 'parsererror', Ice.Command.ParsingError);
+        register(commandDispatcher, 'set-cookie', SetCookie);
+        register(commandDispatcher, 'parsererror', ParsingError);
         register(commandDispatcher, 'redirect', function(element) {
             //replace ampersand entities incorrectly decoded by Safari 2.0.4
             var url = replace(element.getAttribute("url"), /&#38;/g, "&");
@@ -182,7 +212,7 @@ var disposeBridgeAndNotify = operator();
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');
             if (mimeType && startsWith(mimeType, 'text/html')) {
-                replaceContainerHTML(contentAsText(response));
+                replaceHTMLAndEvaluateScripts(contentAsText(response));
             } else if (mimeType && startsWith(mimeType, 'text/xml')) {
                 deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
                 synchronize(documentSynchronizer);
@@ -198,7 +228,7 @@ var disposeBridgeAndNotify = operator();
             if (blank(contentAsText(response))) {
                 on(indicators.serverError);
             } else {
-                replaceContainerHTML(contentAsText(response));
+                replaceHTMLAndEvaluateScripts(contentAsText(response));
             }
             dispose();
         });
@@ -218,29 +248,29 @@ var disposeBridgeAndNotify = operator();
 
         return object(function(method) {
             //public method
-            method(connection, function(self) {
+            method(namespace.connection, function(self) {
                 return asyncConnection;
             });
             //public method used to modify bridge's status manager
-            method(resetIndicators, function(self, setup) {
+            method(namespace.resetIndicators, function(self, setup) {
                 each([indicators.busy, indicators.sessionExpired, indicators.serverError, indicators.connectionLost, indicators.connectionTrouble], off);
-                indicators = setup(Ice.Status.DefaultIndicators(configuration, container));
+                indicators = setup(DefaultIndicators(configuration, container));
                 info(logger, "status indicators were updated");
             });
             //public method
-            method(disposeBridge, function(self) {
+            method(namespace.disposeBridge, function(self) {
                 dispose();
             });
             //public method
-            method(disposeBridgeAndNotify, function(self) {
+            method(namespace.disposeBridgeAndNotify, function(self) {
                 disposeView(sessionID, viewID);
                 dispose();
             });
         });
     };
-})(Ice.Community);
 
-onKeyPress(document, function(ev) {
-    var e = $event(ev);
-    if (isEscKey(e)) cancelDefaultAction(e);
-});
+    onKeyPress(document, function(ev) {
+        var e = $event(ev);
+        if (isEscKey(e)) cancelDefaultAction(e);
+    });
+})(window.Ice = new Object());

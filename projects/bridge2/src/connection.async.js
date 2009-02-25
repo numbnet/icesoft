@@ -38,9 +38,10 @@ var onServerError = operator();
 var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
+var AsyncConnection;
 
-(function(This, Heartbeat) {
-    This.AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
+(function() {
+    AsyncConnection = function(logger, sessionID, viewID, configuration, commandDispatcher) {
         var logger = childLogger(logger, 'async-connection');
         var sendChannel = Client(true);
         var receiveChannel = Client(false);
@@ -354,5 +355,5 @@ var shutdown = operator();
             });
         });
     };
-})(Ice.Community.Connection = new Object, Ice.Reliability.Heartbeat);
+})();
 

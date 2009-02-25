@@ -32,23 +32,26 @@
  */
 
 //todo: implement focus management!
-var currentFocus;
+var recordFocus;
+var applyFocus;
 
-function setFocus(id) {
-    currentFocus = id;
-}
+(function() {
+    var currentFocus;
 
-(function(This) {
+    recordFocus = function(id) {
+        currentFocus = id;
+    };
+
     function isValidID(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
 
-    This.setFocus = function(id) {
+    applyFocus = function(id) {
         runOnce(Delay(function() {
             if (id && isValidID(id)) {
                 try {
                     gainFocus($elementWithID(id));
-                    setFocus(id);
+                    recordFocus(id);
                     var e = document.getElementById(id);
                     if (e) {
                         e.focus();
@@ -64,6 +67,6 @@ function setFocus(id) {
             }
             //ICE-1247 -- delay required for focusing newly rendered components in IE
         }, 100));
-    }
-})(Ice.Focus = new Object);
+    };
+})();
 

@@ -1,8 +1,11 @@
 var register = operator();
 var deserializeAndExecute = operator();
+var CommandDispatcher;
+var SetCookie;
+var ParsingError;
 
-(function(This) {
-    This.Dispatcher = function() {
+(function() {
+    CommandDispatcher = function() {
         var commands = [];
 
         return object(function(method) {
@@ -25,15 +28,15 @@ var deserializeAndExecute = operator();
         });
     };
 
-    This.SetCookie = function(message) {
+    SetCookie = function(message) {
         document.cookie = message.firstChild.data;
     };
 
-    This.ParsingError = function(message) {
+    ParsingError = function(message) {
         logger.error('Parsing error');
         var errorNode = message.firstChild;
         logger.error(errorNode.data);
         var sourceNode = errorNode.firstChild;
         logger.error(sourceNode.data);
     };
-})(Ice.Command = new Object);
+})();

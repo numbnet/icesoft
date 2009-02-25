@@ -1,6 +1,8 @@
-(function(This) {
+var ScriptEvaluator;
+
+(function() {
     //todo: should this code be part of Element.replaceHtml method?    
-    This.Loader = function(logger) {
+    ScriptEvaluator = function(logger) {
         var logger = childLogger(logger, 'script-loader');
         //the scripts present on the page are already evaluated
         var referencedScripts = asArray(select(document.documentElement.getElementsByTagName('script'), function(script) {
@@ -18,7 +20,7 @@
                             append(referencedScripts, uri);
                             debug(logger, 'evaluating script at : ' + uri);
                             try {
-                                eval(contentAsText(response));
+                                evaluate(contentAsText(response));
                             } catch (e) {
                                 warn(logger, 'Failed to evaluate script located at: ' + uri, e);
                             }
@@ -29,7 +31,7 @@
                 var code = script.innerHTML;
                 debug(logger, 'evaluating script : ' + code);
                 try {
-                    eval(code);
+                    evaluate(code);
                 } catch (e) {
                     warn(logger, 'Failed to evaluate script: \n' + code, e);
                 }
@@ -40,4 +42,4 @@
             each(element.getElementsByTagName('script'), evaluateScript);
         };
     };
-})(Ice.Script = new Object);
+})();

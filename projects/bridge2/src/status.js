@@ -33,15 +33,17 @@
 
 var on = operator();
 var off = operator();
+var DefaultIndicators;
+var ComponentIndicators;
 
-(function(This) {
-    This.NOOPIndicator = object(function (method) {
+(function() {
+    var NOOPIndicator = object(function (method) {
         method(on, noop);
 
         method(off, noop);
     });
 
-    This.RedirectIndicator = function(uri) {
+    function RedirectIndicator(uri) {
         return object(function (method) {
             method(on, function(self) {
                 window.location.href = uri;
@@ -49,9 +51,9 @@ var off = operator();
 
             method(off, noop);
         });
-    };
+    }
 
-    This.ElementIndicator = function(elementID, indicators) {
+    function ElementIndicator(elementID, indicators) {
         var instance = object(function (method) {
             method(on, function(self) {
                 each(indicators, function(indicator) {
@@ -75,9 +77,9 @@ var off = operator();
         off(instance);
 
         return instance;
-    };
+    }
 
-    This.OverlappingStateProtector = function(indicator) {
+    function OverlappingStateProtector(indicator) {
         var counter = 0;
 
         return object(function (method) {
@@ -92,9 +94,9 @@ var off = operator();
                 --counter;
             });
         });
-    };
+    }
 
-    This.ToggleIndicator = function(onElement, offElement) {
+    function ToggleIndicator(onElement, offElement) {
         var instance = object(function (method) {
             method(on, function(self) {
                 on(onElement);
@@ -109,9 +111,9 @@ var off = operator();
 
         off(instance);
         return instance;
-    };
+    }
 
-    This.MuxIndicator = function(a, b) {
+    function MuxIndicator(a, b) {
         var indicators = arguments;
         var instance = object(function (method) {
             method(on, function(self) {
@@ -125,9 +127,11 @@ var off = operator();
 
         off(instance);
         return instance;
-    };
+    }
 
-    This.PointerIndicator = function(element) {
+    ;
+
+    function PointerIndicator(element) {
         var privateOff = noop;
 
         function toggle() {
@@ -167,9 +171,11 @@ var off = operator();
                 privateOff();
             });
         });
-    };
+    }
 
-    This.OverlayIndicator = function(message, description, buttonText, iconPath, panel) {
+    ;
+
+    function OverlayIndicator(message, description, buttonText, iconPath, panel) {
         return object(function (method) {
             method(on, function(self) {
                 on(panel);
@@ -232,11 +238,13 @@ var off = operator();
 
             method(off, noop);
         });
-    };
+    }
 
-    This.DefaultIndicators = function(configuration, container) {
-        var connectionLostRedirect = configuration.connectionLostRedirectURI ? This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
-        var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
+    ;
+
+    DefaultIndicators = function(configuration, container) {
+        var connectionLostRedirect = configuration.connectionLostRedirectURI ? RedirectIndicator(configuration.connectionLostRedirectURI) : null;
+        var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
         var messages = configuration.messages;
         var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
         var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
@@ -274,30 +282,30 @@ var off = operator();
         });
 
         return {
-            busy: This.OverlappingStateProtector(This.PointerIndicator(container)),
-            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : This.OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
-            connectionLost: connectionLostRedirect ? connectionLostRedirect : This.OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            serverError: This.OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            connectionTrouble: This.NOOPIndicator
+            busy: OverlappingStateProtector(PointerIndicator(container)),
+            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
+            connectionLost: connectionLostRedirect ? connectionLostRedirect : OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            serverError: OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            connectionTrouble: NOOPIndicator
         };
     };
 
-    This.ComponentIndicators = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
+    ComponentIndicators = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
         var indicators = [];
-        var connectionWorking = Ice.Status.ElementIndicator(workingID, indicators);
-        var connectionIdle = Ice.Status.ElementIndicator(idleID, indicators);
-        var connectionLost = Ice.Status.ElementIndicator(lostID, indicators);
-        var busyIndicator = Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
+        var connectionWorking = ElementIndicator(workingID, indicators);
+        var connectionIdle = ElementIndicator(idleID, indicators);
+        var connectionLost = ElementIndicator(lostID, indicators);
+        var busyIndicator = ToggleIndicator(connectionWorking, connectionIdle);
 
-        var busy = Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
-        var connectionTrouble = Ice.Status.ElementIndicator(troubleID, indicators);
+        var busy = OverlappingStateProtector(displayHourglassWhenActive ? MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
+        var connectionTrouble = ElementIndicator(troubleID, indicators);
         if (showPopups) {
             return {
                 busy: busy,
                 connectionTrouble: connectionTrouble,
-                connectionLost: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.connectionLost),
-                sessionExpired: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.sessionExpired),
-                serverError: Ice.Status.MuxIndicator(connectionLost, defaultStatusManager.serverError)
+                connectionLost: MuxIndicator(connectionLost, defaultStatusManager.connectionLost),
+                sessionExpired: MuxIndicator(connectionLost, defaultStatusManager.sessionExpired),
+                serverError: MuxIndicator(connectionLost, defaultStatusManager.serverError)
             };
         } else {
             return {
@@ -309,4 +317,4 @@ var off = operator();
             };
         }
     };
-})(Ice.Status = new Object);
+})();

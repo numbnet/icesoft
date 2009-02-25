@@ -314,7 +314,7 @@ function ScriptElement(element) {
             var scriptCode = updateContent(update);
             if (scriptCode != '' && scriptCode != ';') {
                 var evalFunc = function() {
-                    eval(scriptCode);
+                    evaluate(scriptCode);
                 };
                 evalFunc.apply(window);
             }
