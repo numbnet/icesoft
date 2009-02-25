@@ -32,8 +32,11 @@
  */
 
 var synchronize = operator();
-(function(This) {
-    This.replaceContainerHTML = function(container, html) {
+var replaceContainerHTML;
+var DocumentSynchronizer;
+
+(function() {
+    replaceContainerHTML = function(container, html) {
         var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/body\>', 'g').exec(html);
         var body = html.substring(start.index, end.index + end[0].length)
@@ -44,7 +47,7 @@ var synchronize = operator();
         c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
     };
 
-    This.Synchronizer = function(logger, client, sessionID, viewID) {
+    DocumentSynchronizer = function(logger, client, sessionID, viewID) {
         var id = 'history-frame:' + sessionID + ':' + viewID;
         var historyFrame;
         try {
@@ -72,7 +75,7 @@ var synchronize = operator();
                 info(logger, 'synchronize body');
                 getAsynchronously(client, document.URL, noop, noop, $witch(function(condition) {
                     condition(OK, function(response) {
-                        This.replaceContainerHTML(document.body, contentAsText(response));
+                        replaceContainerHTML(document.body, contentAsText(response));
                     });
                 }));
             } catch (e) {
@@ -90,4 +93,4 @@ var synchronize = operator();
             });
         });
     };
-})(Ice.Document = new Object);
+})();

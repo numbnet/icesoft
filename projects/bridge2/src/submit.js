@@ -32,7 +32,7 @@
  */
 
 function currentConnection() {
-    return connection(enclosingBridge(detect(arguments, function(i) {
+    return namespace.connection(enclosingBridge(detect(arguments, function(i) {
         return !!i;
     })));
 }

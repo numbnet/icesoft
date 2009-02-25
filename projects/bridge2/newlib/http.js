@@ -231,7 +231,7 @@ var ResponseProxy = function(nativeRequestResponse) {
             return inject(getAllHeaders(self), 'HTTP Response\n', function(result, header) {
                 return result + key(header) + ': ' + value(header) + '\n';
             }) + contentAsText(self);
-        })
+        });
     });
 };
 
@@ -246,4 +246,8 @@ function NotFound(response) {
 function ServerInternalError(response) {
     var code = statusCode(response);
     return code >= 500 && code < 600;
+}
+
+function FormPost(request) {
+    setHeader(request, 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 }

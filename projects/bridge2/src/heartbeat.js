@@ -34,11 +34,13 @@ var startBeat = operator();
 var stopBeat = operator();
 var onPing = operator();
 var onLostPongs = operator();
+var Heartbeat;
 
-(function(This) {
+(function() {
     var notify = operator();
     var reset = operator();
-    This.CoalescingListener = function(retries, callback) {
+
+    function CoalescingListener(retries, callback) {
         var count = 0;
         return object(function(method) {
             method(notify, function(self) {
@@ -55,9 +57,9 @@ var onLostPongs = operator();
                 count = 0;
             });
         });
-    };
+    }
 
-    This.Heartbeat = function(period, timeout, logger) {
+    Heartbeat = function(period, timeout, logger) {
         var logger = childLogger(logger, 'heartbeat');
         var pingListeners = [];
         var lostPongListeners = [];
@@ -99,8 +101,8 @@ var onLostPongs = operator();
             });
 
             method(onLostPongs, function(self, callback, lostPongsCount) {
-                append(lostPongListeners, This.CoalescingListener(lostPongsCount || 1, callback));
+                append(lostPongListeners, CoalescingListener(lostPongsCount || 1, callback));
             });
         });
     };
-})(Ice.Reliability = new Object);
+})();
