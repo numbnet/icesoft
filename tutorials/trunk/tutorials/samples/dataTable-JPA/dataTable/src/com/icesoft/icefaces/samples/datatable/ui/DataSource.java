@@ -41,8 +41,8 @@ package com.icesoft.icefaces.samples.datatable.ui;
  */
 public abstract class DataSource {
 
-	// Sortable Headers
-	protected String sortColumnName;
+    // Sortable Headers
+    protected String sortColumnName;
     protected boolean sortAscending;
 
     // DataModel bound to dataTable
@@ -75,10 +75,10 @@ public abstract class DataSource {
      * @param sortColumnName column to sortColumnName
      */
     public void setSortColumnName(String sortColumnName) {
-    	if(!sortColumnName.equals(this.sortColumnName)){
-    	    onePageDataModel.setDirtyData();
+        if (!sortColumnName.equals(this.sortColumnName)) {
+            onePageDataModel.setDirtyData();
             this.sortColumnName = sortColumnName;
-    	}
+        }
     }
 
     /**
@@ -96,17 +96,17 @@ public abstract class DataSource {
      * @param sortAscending true for sortAscending sortColumnName, false for descending sortColumnName.
      */
     public void setSortAscending(boolean sortAscending) {
-    	if(sortAscending != (this.sortAscending)){
-    	    onePageDataModel.setDirtyData();
+        if (sortAscending != (this.sortAscending)) {
+            onePageDataModel.setDirtyData();
             this.sortAscending = sortAscending;
-    	}
+        }
     }
 
-	public PagedListDataModel<CustomerBean> getOnePageDataModel() {
-		return onePageDataModel;
-	}
-	
-	public int getPageSize() {
-		return pageSize;
-	}
+    public PagedListDataModel<CustomerBean> getOnePageDataModel() {
+        return onePageDataModel;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
 }

@@ -40,33 +40,34 @@
     background-color: #dedede;
 }
 
-.tableRowSelected{
-    background-color:#ddaa77;
+.tableRowSelected {
+    background-color: #ddaa77;
 
 }
-.tableRowMouseOver{
-    background-color:#ffbb99;    
+
+.tableRowMouseOver {
+    background-color: #ffbb99;
 }
 
-.headerColumn, dataColumn, inputColumn, buttonColumn{
+.headerColumn, dataColumn, inputColumn, buttonColumn {
     border-right: 1px solid #cbcbcb;
     border-bottom: 1px solid #cbcbcb;
     text-align: left;
 }
 
-.headerColumn{
+.headerColumn {
     width: 50%;
     text-align: center;
 }
 
-.dataColumn{
+.dataColumn {
     width: 50%;
 }
 
-.inputColumn{
+.inputColumn {
     width: 200px;
 }
 
-.buttonColumn{
+.buttonColumn {
     width: 175px;
 }
