@@ -421,6 +421,9 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isValid(id)) {
             return;
         }
+        if (!component.isRendered()) {
+            return;
+        }         
         component.setId(id);
         restoreChild(facesContext, component);
         Iterator children = component.getFacetsAndChildren();
@@ -501,6 +504,9 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
 
     protected void saveChildState(FacesContext facesContext,
                                   UIComponent component) {
+        if (!component.isRendered()) {
+            return;
+        }        
         saveChild(facesContext, component);
         Iterator children = component.getFacetsAndChildren();
         while (children.hasNext()) {
