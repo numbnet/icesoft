@@ -33,10 +33,10 @@
 
 package com.icesoft.icefaces.samples.datatable.ui;
 
+import com.icesoft.icefaces.samples.datatable.jpa.Customer;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.icesoft.icefaces.samples.datatable.jpa.Customer;
 
 public class DirtyDataController {
 

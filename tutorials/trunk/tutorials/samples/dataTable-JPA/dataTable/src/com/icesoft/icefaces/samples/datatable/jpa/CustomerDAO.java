@@ -33,10 +33,9 @@
 
 package com.icesoft.icefaces.samples.datatable.jpa;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.logging.Level;
-
-import javax.persistence.EntityManager;
 
 
 /**
