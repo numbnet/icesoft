@@ -48,6 +48,18 @@ import javax.faces.model.DataModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SessionBean is our web application controller class.  This class makes calls
+ * to the JPA layer to maintain a list of records displayed by a particular user
+ * during his/her session.  It can also mark other sessions data as dirty
+ * through a reference to the DirtyDataController.
+ *
+ * SessionBean extends DataSource which holds a reference to the dataTable
+ * DataModel and dataTable sorting utility methods.
+ *
+ * SessionBean implements Renderable, enabling changes in the dataTable to be
+ * rendered to the session client.
+ */
 public class SessionBean extends DataSource implements Renderable, DisposableBean {
 
     private CustomerDAO CUSTOMERDAO = new CustomerDAO();
@@ -216,6 +228,19 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         return new DataPage<CustomerBean>(totalNumberCustomers, startRow, uiCustomerBeans);
     }
 
+    /**
+     * A special type of JSF DataModel to allow a datatable and datapaginator
+     * to page through a large set of data without having to hold the entire
+     * set of data in memory at once.
+     * Any time a managed bean wants to avoid holding an entire dataset,
+     * the managed bean declares this inner class which extends PagedListDataModel
+     * and implements the fetchData method. fetchData is called
+     * as needed when the table requires data that isn't available in the
+     * current data page held by this object.
+     * This requires the managed bean (and in general the business
+     * method that the managed bean uses) to provide the data wrapped in
+     * a DataPage object that provides info on the full size of the dataset.
+     */
     private class LocalDataModel extends PagedListDataModel {
         public LocalDataModel(int pageSize) {
             super(pageSize);
