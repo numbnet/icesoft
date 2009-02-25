@@ -39,87 +39,87 @@ import javax.faces.event.ActionEvent;
 import com.icesoft.icefaces.samples.datatable.jpa.Customer;
 
 /**
- * <p>This class wraps the Customer object with view specific methods and 
+ * <p>This class wraps the Customer object with view specific methods and
  * properties.</p>
  */
 public class CustomerBean {
-	
-	private Customer customer;
-	private SessionBean sessionBean;
-	private boolean expanded = false;
-	
-	private String tempcontactfirstname;
-	private String tempcontactlastname;
-	
-	public CustomerBean (Customer customer, SessionBean sessionBean){
-		this.customer = customer;
-		this.sessionBean = sessionBean;
-		tempcontactfirstname = customer.getContactfirstname();
-		tempcontactlastname = customer.getContactlastname();
-	}
 
-	public boolean isExpanded() {
-		return expanded;
-	}
+    private Customer customer;
+    private SessionBean sessionBean;
+    private boolean expanded = false;
 
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
-	}
+    private String tempcontactfirstname;
+    private String tempcontactlastname;
 
-	public Customer getCustomer() {
-		return customer;
-	}
+    public CustomerBean(Customer customer, SessionBean sessionBean) {
+        this.customer = customer;
+        this.sessionBean = sessionBean;
+        tempcontactfirstname = customer.getContactfirstname();
+        tempcontactlastname = customer.getContactlastname();
+    }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+    public boolean isExpanded() {
+        return expanded;
+    }
 
-	public String getTempcontactfirstname() {
-		return tempcontactfirstname;
-	}
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 
-	public void setTempcontactfirstname(String tempcontactfirstname) {
-		this.tempcontactfirstname = tempcontactfirstname;
-	}
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	public String getTempcontactlastname() {
-		return tempcontactlastname;
-	}
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
-	public void setTempcontactlastname(String tempcontactlastname) {
-		this.tempcontactlastname = tempcontactlastname;
-	}
+    public String getTempcontactfirstname() {
+        return tempcontactfirstname;
+    }
 
-	/**
-	 * <p>Bound to commandLink actionListener in the ui that renders/unrenders
-	 * the Customer details for editing.</p>
-	 */
-	public void toggleSelected(ActionEvent e){
-		tempcontactfirstname = customer.getContactfirstname();
-		tempcontactlastname = customer.getContactlastname();
-		expanded = !expanded;
-	}	
+    public void setTempcontactfirstname(String tempcontactfirstname) {
+        this.tempcontactfirstname = tempcontactfirstname;
+    }
 
-	/**
-	 * <p>Bound to commandButton actionListener in the ui that commits Customer 
-	 * changes to the database.</p>
-	 */
-	public void commit(ActionEvent e){
-		customer.setContactfirstname(tempcontactfirstname);
-		customer.setContactlastname(tempcontactlastname);
-		sessionBean.commit(customer);
-		expanded = !expanded;
-	}
+    public String getTempcontactlastname() {
+        return tempcontactlastname;
+    }
 
-	/**
-	 * <p>Bound to commandButton actionListener in the ui that cancels potential
-	 * Customer changes to the database and unrenders the editable Customer 
-	 * details.</p>
-	 */
-	public void cancel(ActionEvent e){
-		tempcontactfirstname = customer.getContactfirstname();
-		tempcontactlastname = customer.getContactlastname();
-		expanded = !expanded;
+    public void setTempcontactlastname(String tempcontactlastname) {
+        this.tempcontactlastname = tempcontactlastname;
+    }
+
+    /**
+     * <p>Bound to commandLink actionListener in the ui that renders/unrenders
+     * the Customer details for editing.</p>
+     */
+    public void toggleSelected(ActionEvent e) {
+        tempcontactfirstname = customer.getContactfirstname();
+        tempcontactlastname = customer.getContactlastname();
+        expanded = !expanded;
+    }
+
+    /**
+     * <p>Bound to commandButton actionListener in the ui that commits Customer
+     * changes to the database.</p>
+     */
+    public void commit(ActionEvent e) {
+        customer.setContactfirstname(tempcontactfirstname);
+        customer.setContactlastname(tempcontactlastname);
+        sessionBean.commit(customer);
+        expanded = !expanded;
+    }
+
+    /**
+     * <p>Bound to commandButton actionListener in the ui that cancels potential
+     * Customer changes to the database and unrenders the editable Customer
+     * details.</p>
+     */
+    public void cancel(ActionEvent e) {
+        tempcontactfirstname = customer.getContactfirstname();
+        tempcontactlastname = customer.getContactlastname();
+        expanded = !expanded;
 	}
 
 }

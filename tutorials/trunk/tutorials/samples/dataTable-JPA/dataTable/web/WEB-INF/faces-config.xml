@@ -32,9 +32,9 @@
   ~
   -->
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
-    version="1.2">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+              version="1.2">
 
     <managed-bean>
         <description>
@@ -57,21 +57,21 @@
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-    
-	<managed-bean>
-		<managed-bean-name>sessionBean</managed-bean-name>
-		<managed-bean-class>
-			com.icesoft.icefaces.samples.datatable.ui.SessionBean
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+
+    <managed-bean>
+        <managed-bean-name>sessionBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.samples.datatable.ui.SessionBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
             <property-name>renderManager</property-name>
             <value>#{renderManager}</value>
         </managed-property>
-                <managed-property>
+        <managed-property>
             <property-name>dirtyDataController</property-name>
             <value>#{dirtyDataController}</value>
         </managed-property>
-	</managed-bean>
+    </managed-bean>
 
 </faces-config>

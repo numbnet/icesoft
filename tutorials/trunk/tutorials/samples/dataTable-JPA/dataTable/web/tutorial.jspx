@@ -36,103 +36,125 @@
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" />
+    <jsp:directive.page contentType="text/html;charset=ISO-8859-1"
+                        pageEncoding="ISO-8859-1"/>
     <f:view>
-        <ice:outputDeclaration doctypeRoot="html" 
-                               doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-                               doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" /> 
-    <html>
+        <ice:outputDeclaration doctypeRoot="html"
+                               doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                               doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+        <html>
         <head>
             <title>ICEfaces, Ajax for Java EE</title>
-            <link rel="stylesheet" type="text/css" href="./xmlhttp/css/xp/xp.css"/>
+            <link rel="stylesheet" type="text/css"
+                  href="./xmlhttp/css/xp/xp.css"/>
             <link rel="stylesheet" type="text/css" href="./tutorial.css"/>
         </head>
         <body>
-       
-            <ice:outputText value="Thank you for using ICEfaces." />
-            <ice:outputConnectionStatus />
-    
-            <ice:form partialSubmit="true" >
-    
-                <ice:dataPaginator for="customerdatatable" 
-                                   paginator="true" 
-                                   fastStep="3" >
-                    <f:facet name="first">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-first.gif"/>
-                    </f:facet>
-                    <f:facet name="last">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-last.gif"/>
-                    </f:facet>
-                    <f:facet name="previous">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-previous.gif"/>
-                    </f:facet>
-                    <f:facet name="next">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-next.gif"/>
-                    </f:facet>
-                    <f:facet name="fastforward">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-ff.gif"/>
-                    </f:facet>
-                    <f:facet name="fastrewind">
-                        <ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-fr.gif"/>
-                    </f:facet>
-                </ice:dataPaginator>
-    
-                <ice:dataTable cellspacing="1" 
-                               value="#{sessionBean.data}"  
-                               id="customerdatatable" 
-                               rows="#{sessionBean.pageSize}" 
-                               sortAscending="#{sessionBean.sortAscending}" 
-                               sortColumn="#{sessionBean.sortColumnName}" 
-                               width="750px" 
-                               rowClasses="evenRow,oddRow" 
-                               var="customerbean">
-                    <ice:column>                    
-    
-                        <ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false" />
-    
-                           <!-- HEADER -->
-                           <f:facet name="header">
-                            <ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="headerColumn" >
-                                <ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTFIRSTNAME}">
-                                    <ice:outputText value="#{sessionBean.FIRSTCOLUMNNAME}"/>
-                                </ice:commandSortHeader>
-                                <ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTLASTNAME}">
-                                    <ice:outputText value="#{sessionBean.SECONDCOLUMNNAME}"/>
-                                </ice:commandSortHeader>                                
-                            </ice:panelGrid>                                                    
-                           </f:facet>
-                               
-                        <!-- ROW -->
-                        <ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="dataColumn">
-                            <ice:commandLink actionListener="#{customerbean.toggleSelected}">
-                                <ice:outputText value="#{customerbean.customer.contactfirstname}"/>
-                            </ice:commandLink>
-                            <ice:commandLink actionListener="#{customerbean.toggleSelected}">
-                                <ice:outputText value="#{customerbean.customer.contactlastname}"/>
-                            </ice:commandLink>
+
+        <ice:outputText value="Thank you for using ICEfaces."/>
+        <ice:outputConnectionStatus/>
+
+        <ice:form partialSubmit="true">
+
+            <ice:dataPaginator for="customerdatatable"
+                               paginator="true"
+                               fastStep="3">
+                <f:facet name="first">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-first.gif"/>
+                </f:facet>
+                <f:facet name="last">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-last.gif"/>
+                </f:facet>
+                <f:facet name="previous">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-previous.gif"/>
+                </f:facet>
+                <f:facet name="next">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-next.gif"/>
+                </f:facet>
+                <f:facet name="fastforward">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-ff.gif"/>
+                </f:facet>
+                <f:facet name="fastrewind">
+                    <ice:graphicImage style="border:none;"
+                                      url="./xmlhttp/css/xp/css-images/arrow-fr.gif"/>
+                </f:facet>
+            </ice:dataPaginator>
+
+            <ice:dataTable cellspacing="1"
+                           value="#{sessionBean.data}"
+                           id="customerdatatable"
+                           rows="#{sessionBean.pageSize}"
+                           sortAscending="#{sessionBean.sortAscending}"
+                           sortColumn="#{sessionBean.sortColumnName}"
+                           width="750px"
+                           rowClasses="evenRow,oddRow"
+                           var="customerbean">
+                <ice:column>
+
+                    <ice:rowSelector value="#{customerbean.expanded}"
+                                     selectedClass="tableRowSelected"
+                                     mouseOverClass="tableRowMouseOver"
+                                     toggleOnClick="false"/>
+
+                    <!-- HEADER -->
+                    <f:facet name="header">
+                        <ice:panelGrid columns="2" width="100%" cellspacing="1"
+                                       columnClasses="headerColumn">
+                            <ice:commandSortHeader arrow="true"
+                                                   columnName="#{sessionBean.CONTACTFIRSTNAME}">
+                                <ice:outputText
+                                        value="#{sessionBean.FIRSTCOLUMNNAME}"/>
+                            </ice:commandSortHeader>
+                            <ice:commandSortHeader arrow="true"
+                                                   columnName="#{sessionBean.CONTACTLASTNAME}">
+                                <ice:outputText
+                                        value="#{sessionBean.SECONDCOLUMNNAME}"/>
+                            </ice:commandSortHeader>
                         </ice:panelGrid>
-    
-                        <!-- EDITABLE ROW  -->
-                        <ice:panelGrid columns="4" rendered="#{customerbean.expanded}" width="100%" columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn">
-                            <ice:inputText value="#{customerbean.tempcontactfirstname}" />
-                            <ice:inputText value="#{customerbean.tempcontactlastname}" />
-                            <ice:commandButton value="Commit" actionListener="#{customerbean.commit}" />
-                            <ice:commandButton value="Cancel" actionListener="#{customerbean.cancel}" />
-                        </ice:panelGrid>
-                        
-                    </ice:column>
-    
-                </ice:dataTable>
-                <ice:messages /> 
-            </ice:form>
+                    </f:facet>
+
+                    <!-- ROW -->
+                    <ice:panelGrid columns="2" width="100%" cellspacing="1"
+                                   columnClasses="dataColumn">
+                        <ice:commandLink
+                                actionListener="#{customerbean.toggleSelected}">
+                            <ice:outputText
+                                    value="#{customerbean.customer.contactfirstname}"/>
+                        </ice:commandLink>
+                        <ice:commandLink
+                                actionListener="#{customerbean.toggleSelected}">
+                            <ice:outputText
+                                    value="#{customerbean.customer.contactlastname}"/>
+                        </ice:commandLink>
+                    </ice:panelGrid>
+
+                    <!-- EDITABLE ROW  -->
+                    <ice:panelGrid columns="4"
+                                   rendered="#{customerbean.expanded}"
+                                   width="100%"
+                                   columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn">
+                        <ice:inputText
+                                value="#{customerbean.tempcontactfirstname}"/>
+                        <ice:inputText
+                                value="#{customerbean.tempcontactlastname}"/>
+                        <ice:commandButton value="Commit"
+                                           actionListener="#{customerbean.commit}"/>
+                        <ice:commandButton value="Cancel"
+                                           actionListener="#{customerbean.cancel}"/>
+                    </ice:panelGrid>
+
+                </ice:column>
+
+            </ice:dataTable>
+            <ice:messages/>
+        </ice:form>
 
         </body>
-    </html>
+        </html>
     </f:view>
 </jsp:root>
