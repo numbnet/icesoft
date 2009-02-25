@@ -38,6 +38,11 @@ import com.icesoft.icefaces.samples.datatable.jpa.Customer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DirtyDataController is a helper class used to mark other sessions viewing
+ * updated Customer data as dirty, so those dataTables will fetch the new data 
+ * before rendering.
+ */
 public class DirtyDataController {
 
     // Used to trigger rendering in the other session ui's
