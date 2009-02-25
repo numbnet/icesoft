@@ -33,15 +33,6 @@
 
 package com.icesoft.icefaces.samples.datatable.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.model.DataModel;
-
-import com.icesoft.icefaces.samples.datatable.jpa.Customer;
-import com.icesoft.icefaces.samples.datatable.jpa.CustomerDAO;
-import com.icesoft.icefaces.samples.datatable.jpa.EntityManagerHelper;
-
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.context.DisposableBean;
@@ -49,6 +40,13 @@ import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.icefaces.samples.datatable.jpa.Customer;
+import com.icesoft.icefaces.samples.datatable.jpa.CustomerDAO;
+import com.icesoft.icefaces.samples.datatable.jpa.EntityManagerHelper;
+
+import javax.faces.model.DataModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionBean extends DataSource implements Renderable, DisposableBean {
 
