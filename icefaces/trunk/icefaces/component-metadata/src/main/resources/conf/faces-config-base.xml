@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE faces-config PUBLIC
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Overlay 1.1//EN"
-  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd"
+  "dtd/web-facesconfig_1_1.dtd"
   [
 <!ENTITY ice-ApplyEffect-renderer SYSTEM "ice/renderers/ApplyEffect-renderer.xml">
 <!ENTITY ice-PanelBorder-renderer SYSTEM "ice/renderers/PanelBorder-renderer.xml">
