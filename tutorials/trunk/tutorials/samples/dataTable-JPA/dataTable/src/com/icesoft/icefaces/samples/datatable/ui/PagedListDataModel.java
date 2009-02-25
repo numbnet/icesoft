@@ -39,13 +39,11 @@ import javax.faces.model.DataModel;
  * A special type of JSF DataModel to allow a datatable and datapaginator
  * to page through a large set of data without having to hold the entire
  * set of data in memory at once.
- * <p/>
  * Any time a managed bean wants to avoid holding an entire dataset,
  * the managed bean should declare an inner class which extends this
  * class and implements the fetchData method. This method is called
  * as needed when the table requires data that isn't available in the
  * current data page held by this object.
- * <p/>
  * This does require the managed bean (and in general the business
  * method that the managed bean uses) to provide the data wrapped in
  * a DataPage object that provides info on the full size of the dataset.
