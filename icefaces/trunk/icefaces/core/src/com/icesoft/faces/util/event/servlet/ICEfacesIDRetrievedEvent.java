@@ -33,15 +33,13 @@
 
 package com.icesoft.faces.util.event.servlet;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * The <code>ICEfacesIDRetrievedEvent</code> class represents an event that
  * should be fired whenever an ICEfaces ID is retrieved. </p>
  */
 public class ICEfacesIDRetrievedEvent
-        extends AbstractSessionEvent
-        implements ContextEvent {
+extends AbstractSessionEvent
+implements ContextEvent {
     /**
      * Constructs an <code>ICEfacesIDRetrievedEvent</code> with the specified
      * <code>source</code> and <code>iceFacesId</code>. </p>
@@ -51,8 +49,9 @@ public class ICEfacesIDRetrievedEvent
      * @throws IllegalArgumentException if the specified <code>iceFacesId</code>
      *                                  is either <code>null</code> or empty.
      */
-    public ICEfacesIDRetrievedEvent(HttpSession source, String iceFacesId)
-            throws IllegalArgumentException {
+    public ICEfacesIDRetrievedEvent(
+        final Object source, final String iceFacesId)
+    throws IllegalArgumentException {
         super(source, iceFacesId);
     }
 }

@@ -31,8 +31,6 @@
  */
 package com.icesoft.faces.util.event.servlet;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * The <code>ICEfacesIDDisposedEvent</code> class represents an event that
  * should be fired whenever an ICEfaces ID is disposed. </p>
@@ -49,7 +47,7 @@ implements ContextEvent {
      * @throws IllegalArgumentException if the specified <code>iceFacesId</code>
      *                                  is either <code>null</code> or empty.
      */
-    public ICEfacesIDDisposedEvent(HttpSession source, String iceFacesId)
+    public ICEfacesIDDisposedEvent(final Object source, final String iceFacesId)
     throws IllegalArgumentException {
         super(source, iceFacesId);
     }

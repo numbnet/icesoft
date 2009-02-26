@@ -1,7 +1,5 @@
 package com.icesoft.faces.util.event.servlet;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * <p>
  *   The <code>ViewNumberDisposedEvent</code> class represents an event that
@@ -31,7 +29,7 @@ implements ContextEvent {
      *                 <code>null</code> or empty.
      */
     public ViewNumberDisposedEvent(
-        final HttpSession source, final String iceFacesId, final int viewNumber)
+        final Object source, final String iceFacesId, final int viewNumber)
     throws IllegalArgumentException {
         super(source, iceFacesId);
         this.viewNumber = viewNumber;

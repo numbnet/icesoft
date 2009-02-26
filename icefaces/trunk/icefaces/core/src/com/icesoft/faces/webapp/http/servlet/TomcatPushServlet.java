@@ -74,10 +74,10 @@ implements CometProcessor, ContextEventListener {
         } catch (InterruptedException exception) {
             // ignoring interrupts.
         }
-        HttpSession session = event.getHttpSession();
+        Object session = event.getSession();
         synchronized (eventResponderMap) {
             if (eventResponderMap.containsKey(session)) {
-                ((EventResponder) eventResponderMap.get(session)).dispose();
+                ((EventResponder)eventResponderMap.get(session)).dispose();
             }
         }
         // do nothing.
@@ -96,7 +96,7 @@ implements CometProcessor, ContextEventListener {
     }
 
     public void sessionDestroyed(final SessionDestroyedEvent event) {
-        HttpSession session = event.getHttpSession();
+        Object session = event.getSession();
         synchronized (eventResponderMap) {
             if (eventResponderMap.containsKey(session)) {
                 eventResponderMap.remove(session);
@@ -147,7 +147,7 @@ implements CometProcessor, ContextEventListener {
     }
 
     protected void end(final CometEvent event)
-            throws IOException, ServletException {
+    throws IOException, ServletException {
         /*
          * EventType.END   : END may be called to end the processing of the
          *                   request. Fields that have been initialized in the
@@ -164,7 +164,7 @@ implements CometProcessor, ContextEventListener {
     }
 
     protected void error(final CometEvent event)
-            throws IOException, ServletException {
+    throws IOException, ServletException {
         /*
          * EventType.ERROR : ERROR will be called by the container in the case
          *                   where an IOException or a similar unrecoverable
@@ -179,7 +179,7 @@ implements CometProcessor, ContextEventListener {
     }
 
     protected void read(final CometEvent event)
-            throws IOException, ServletException {
+    throws IOException, ServletException {
         /*
          * EventType.READ  : READ indicates that input data is available, and
          *                   that one read can be made without blocking. The

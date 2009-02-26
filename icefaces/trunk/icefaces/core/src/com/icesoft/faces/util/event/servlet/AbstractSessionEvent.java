@@ -35,8 +35,6 @@ package com.icesoft.faces.util.event.servlet;
 
 import java.util.EventObject;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * The <code>AbstractSessionEvent</code> class provides a default implementation
  * of a session event. Standard behaviors like the get methods of HTTP session
@@ -55,7 +53,7 @@ implements ContextEvent {
      *
      * @param source     the source of this <code>AbstractSessionEvent</code>.
      */
-    protected AbstractSessionEvent(final HttpSession source) {
+    protected AbstractSessionEvent(final Object source) {
         this(source, null);
     }
 
@@ -69,7 +67,7 @@ implements ContextEvent {
      * @param iceFacesId the ICEfaces ID.
      */
     protected AbstractSessionEvent(
-        final HttpSession source, final String iceFacesId) {
+        final Object source, final String iceFacesId) {
 
         super(source);
         this.iceFacesId = iceFacesId;
@@ -77,13 +75,13 @@ implements ContextEvent {
 
     /**
      * <p>
-     *   Gets the HTTP session of this <code>AbstractSessionEvent</code>.
+     *   Gets the Session of this <code>AbstractSessionEvent</code>.
      * </p>
      *
-     * @return the HTTP session.
+     * @return the Session.
      */
-    public HttpSession getHttpSession() {
-        return (HttpSession)source;
+    public Object getSession() {
+        return source;
     }
 
     /**
