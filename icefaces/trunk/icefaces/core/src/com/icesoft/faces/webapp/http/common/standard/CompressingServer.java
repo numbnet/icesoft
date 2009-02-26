@@ -12,11 +12,13 @@ import java.util.zip.GZIPOutputStream;
 public class CompressingServer implements Server {
     private Server server;
     private MimeTypeMatcher mimeTypeMatcher;
+    private boolean compressResources;
     private List noCompressForMimeTypes;
 
     public CompressingServer(Server server, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
         this.server = server;
         this.mimeTypeMatcher = mimeTypeMatcher;
+        this.compressResources = configuration.getAttributeAsBoolean("compressResources", true);
         this.noCompressForMimeTypes = Arrays.asList(configuration.getAttribute("compressResourcesExclusions",
                 "image/gif image/png image/jpeg image/tiff " +
                         "application/pdf application/zip application/x-compress application/x-gzip application/java-archive " +
@@ -25,16 +27,20 @@ public class CompressingServer implements Server {
     }
 
     public void service(Request request) throws Exception {
-        String mimeType = mimeTypeMatcher.mimeTypeFor(request.getURI().getPath());
-        if (noCompressForMimeTypes.contains(mimeType)) {
-            server.service(request);
-        } else {
-            String acceptEncodingHeader = request.getHeader("Accept-Encoding");
-            if (acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
-                server.service(new CompressingRequest(request));
-            } else {
+        if (compressResources) {
+            String mimeType = mimeTypeMatcher.mimeTypeFor(request.getURI().getPath());
+            if (noCompressForMimeTypes.contains(mimeType)) {
                 server.service(request);
+            } else {
+                String acceptEncodingHeader = request.getHeader("Accept-Encoding");
+                if (acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
+                    server.service(new CompressingRequest(request));
+                } else {
+                    server.service(request);
+                }
             }
+        } else {
+            server.service(request);
         }
     }
 

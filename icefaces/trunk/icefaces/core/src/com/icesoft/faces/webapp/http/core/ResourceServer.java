@@ -21,11 +21,7 @@ public class ResourceServer implements Server {
         pathDispatcher.dispatchOn(".*xmlhttp\\/blank$", new CacheControlledServer(new ServeBlankPage()));
         //match any path that does not point to WEB-INF directory
         pathDispatcher.dispatchOn("^(?!.*WEB\\-INF.*).*$", new FileServer(fileLocator, mimeTypeMatcher));
-        if (configuration.getAttributeAsBoolean("compressResources", true)) {
-            dispatcher = new CompressingServer(pathDispatcher, mimeTypeMatcher, configuration);
-        } else {
-            dispatcher = pathDispatcher;
-        }
+        dispatcher = new CompressingServer(pathDispatcher, mimeTypeMatcher, configuration);
     }
 
     public void service(Request request) throws Exception {
