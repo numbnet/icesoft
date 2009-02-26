@@ -33,16 +33,14 @@
 
 package com.icesoft.faces.util.event.servlet;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * The <code>ViewNumberRetrievedEvent</code> class represents an event that
  * should be fired whenever a view number is retrieved. A view number is always
  * associated with an ICEfaces ID. </p>
  */
 public class ViewNumberRetrievedEvent
-        extends AbstractSessionEvent
-        implements ContextEvent {
+extends AbstractSessionEvent
+implements ContextEvent {
     private int viewNumber;
 
     /**
@@ -61,8 +59,8 @@ public class ViewNumberRetrievedEvent
      *                                  </ul>
      */
     public ViewNumberRetrievedEvent(
-            HttpSession source, String iceFacesId, int viewNumber)
-            throws IllegalArgumentException {
+        final Object source, final String iceFacesId, final int viewNumber)
+    throws IllegalArgumentException {
         super(source, iceFacesId);
         this.viewNumber = viewNumber;
     }

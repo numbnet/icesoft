@@ -37,16 +37,15 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -103,7 +102,7 @@ implements HttpSessionListener, ServletContextListener {
         SessionDispatcherListener = new SessionDispatcher.Listener();
     }
 
-    private static Map bufferedContextEvents = new HashMap();
+    private static List bufferedContextEvents = new ArrayList();
     private static ContextEventPublisher contextEventPublisher;
     private static Map listeners = new WeakHashMap();
 
@@ -204,7 +203,7 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     public synchronized static void iceFacesIdDisposed(
-        final HttpSession source, final String iceFacesId) {
+        final Object source, final String iceFacesId) {
 
         ICEfacesIDDisposedEvent iceFacesIdDisposedEvent =
             new ICEfacesIDDisposedEvent(source, iceFacesId);
@@ -239,11 +238,11 @@ implements HttpSessionListener, ServletContextListener {
      * @param iceFacesId the ICEfaces ID.
      */
     public synchronized static void iceFacesIdRetrieved(
-        final HttpSession source, final String iceFacesId) {
+        final Object source, final String iceFacesId) {
 
         ICEfacesIDRetrievedEvent iceFacesIdRetrievedEvent =
             new ICEfacesIDRetrievedEvent(source, iceFacesId);
-        bufferedContextEvents.put(iceFacesIdRetrievedEvent, source);
+        bufferedContextEvents.add(iceFacesIdRetrievedEvent);
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
@@ -306,7 +305,6 @@ implements HttpSessionListener, ServletContextListener {
             ((ContextEventListener) _listeners.next()).
                 sessionDestroyed(sessionDestroyedEvent);
         }
-        removeBufferedEvents(event.getSession());
         if (contextEventPublisher != null) {
             try {
                 contextEventPublisher.publish(sessionDestroyedEvent);
@@ -322,7 +320,7 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     public synchronized static void viewNumberDisposed(
-        final HttpSession source, final String iceFacesId,
+        final Object source, final String iceFacesId,
         final int viewNumber) {
 
         ViewNumberDisposedEvent viewNumberDisposedEvent =
@@ -357,15 +355,16 @@ implements HttpSessionListener, ServletContextListener {
      * listeners. </p>
      *
      * @param source     the source of the event.
+     * @param iceFacesId the ICEfaces ID.
      * @param viewNumber the view number.
      */
     public synchronized static void viewNumberRetrieved(
-        final HttpSession source, final String iceFacesId,
+        final Object source, final String iceFacesId,
         final int viewNumber) {
 
         ViewNumberRetrievedEvent viewNumberRetrievedEvent =
             new ViewNumberRetrievedEvent(source, iceFacesId, viewNumber);
-        bufferedContextEvents.put(viewNumberRetrievedEvent, source);
+        bufferedContextEvents.add(viewNumberRetrievedEvent);
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
@@ -391,11 +390,10 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     ContextEvent[] getBufferedContextEvents() {
-        Set _contextEventSet = bufferedContextEvents.keySet();
         return
             (ContextEvent[])
-                _contextEventSet.toArray(
-                    new ContextEvent[_contextEventSet.size()]);
+                bufferedContextEvents.toArray(
+                    new ContextEvent[bufferedContextEvents.size()]);
     }
 
     private boolean isJMSAvailable() {
@@ -409,25 +407,9 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     private synchronized static void removeBufferedEvents(
-        final HttpSession session) {
-
-        Iterator it = bufferedContextEvents.keySet().iterator();
-        Object event;
-        HttpSession bufferedSession;
-        while (it.hasNext()) {
-            event = it.next();
-            bufferedSession = (HttpSession) bufferedContextEvents.get(event);
-            if (bufferedSession.equals(session)) {
-                //bufferedContextEvents.remove(event);
-                it.remove();
-            }
-        }
-    }
-
-    private synchronized static void removeBufferedEvents(
         final String iceFacesId) {
 
-        Iterator it = bufferedContextEvents.keySet().iterator();
+        Iterator it = bufferedContextEvents.iterator();
         while (it.hasNext()) {
             Object event = it.next();
             if ((event instanceof ICEfacesIDRetrievedEvent &&
@@ -445,7 +427,7 @@ implements HttpSessionListener, ServletContextListener {
     private synchronized static void removeBufferedEvents(
         final String iceFacesId, final int viewNumber) {
 
-        Iterator it = bufferedContextEvents.keySet().iterator();
+        Iterator it = bufferedContextEvents.iterator();
         while (it.hasNext()) {
             Object event = it.next();
             if (event instanceof ViewNumberRetrievedEvent &&
@@ -462,15 +444,15 @@ implements HttpSessionListener, ServletContextListener {
     private synchronized static void sendBufferedEvents(
         final ContextEventListener contextEventListener) {
 
-        Iterator it = bufferedContextEvents.keySet().iterator();
+        Iterator it = bufferedContextEvents.iterator();
         while (it.hasNext()) {
             Object event = it.next();
             if (event instanceof ICEfacesIDRetrievedEvent) {
                 contextEventListener.iceFacesIdRetrieved(
-                    (ICEfacesIDRetrievedEvent) event);
+                    (ICEfacesIDRetrievedEvent)event);
             } else if (event instanceof ViewNumberRetrievedEvent) {
                 contextEventListener.viewNumberRetrieved(
-                    (ViewNumberRetrievedEvent) event);
+                    (ViewNumberRetrievedEvent)event);
             }
         }
     }
