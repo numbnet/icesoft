@@ -152,12 +152,8 @@ window.evaluate = eval;
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'set-cookie', SetCookie);
         register(commandDispatcher, 'parsererror', ParsingError);
-        register(commandDispatcher, 'redirect', function(element) {
-            //replace ampersand entities incorrectly decoded by Safari 2.0.4
-            var url = replace(element.getAttribute("url"), /&#38;/g, "&");
-            info(logger, 'Redirecting to ' + url);
-            window.location.href = url;
-        });
+        register(commandDispatcher, 'redirect', Redirect);
+        register(commandDispatcher, 'macro', Macro);
         register(commandDispatcher, 'reload', function(element) {
             info(logger, 'Reloading');
             var url = window.location.href;
@@ -173,9 +169,6 @@ window.evaluate = eval;
                     window.location.href = url + queryPrefix + 'rvn=' + view;
                 }
             }
-        });
-        register(commandDispatcher, 'macro', function(message) {
-            each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
         });
         register(commandDispatcher, 'updates', function(element) {
             each(element.getElementsByTagName('update'), function(e) {
