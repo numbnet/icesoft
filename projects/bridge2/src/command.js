@@ -3,6 +3,8 @@ var deserializeAndExecute = operator();
 var CommandDispatcher;
 var SetCookie;
 var ParsingError;
+var Redirect;
+var Macro;
 
 (function() {
     CommandDispatcher = function() {
@@ -26,6 +28,17 @@ var ParsingError;
                 value(found)(message);
             });
         });
+    };
+
+    Macro = function(message) {
+        each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
+    };
+
+    Redirect = function(element) {
+        //replace ampersand entities incorrectly decoded by Safari 2.0.4
+        var url = replace(element.getAttribute("url"), /&#38;/g, "&");
+        info(logger, 'Redirecting to ' + url);
+        window.location.href = url;
     };
 
     SetCookie = function(message) {
