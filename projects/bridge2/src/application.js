@@ -153,8 +153,10 @@ window.evaluate = eval;
         register(commandDispatcher, 'set-cookie', SetCookie);
         register(commandDispatcher, 'parsererror', ParsingError);
         register(commandDispatcher, 'redirect', Redirect);
-        register(commandDispatcher, 'macro', Macro);
         register(commandDispatcher, 'reload', broadcaster([ delistWindowViews, Reload ]));
+        register(commandDispatcher, 'macro', function(message) {
+            each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
+        });
         register(commandDispatcher, 'updates', function(element) {
             each(element.getElementsByTagName('update'), function(e) {
                 try {
