@@ -24,10 +24,6 @@ function CommandDispatcher() {
     });
 }
 
-function Macro(message) {
-    each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
-}
-
 function Redirect(element) {
     //replace ampersand entities incorrectly decoded by Safari 2.0.4
     var url = replace(element.getAttribute("url"), /&#38;/g, "&");
