@@ -289,6 +289,7 @@ function Stream(streamDefinition) {
                         return cellConstructor(collector(key(cell), index), collectingStream(value(cell), index + 1));
                     };
                 }
+
                 return collectingStream(stream, 0);
             });
         });
@@ -323,6 +324,7 @@ function Stream(streamDefinition) {
                         return cellConstructor(k, select(v));
                     } : select(v);
                 }
+
                 return select(stream);
             });
         });
@@ -355,62 +357,4 @@ function Stream(streamDefinition) {
             return 'Stream[' + join(self, ', ') + ']';
         });
     });
-}
-
-function Range(start, end) {
-    return objectWithAncestors(function(method) {
-        method(each, function(self, iterator) {
-            for (var i = start; i <= end; i++) {
-                iterator(i);
-            }
-        });
-
-        method(inject, function(self, initialValue, injector) {
-            var tally = initialValue;
-            for (var i = start; i <= end; i++) {
-                tally = injector(tally, i);
-            }
-            return tally;
-        });
-
-        method(detect, function(self, detector, notDetectedThunk) {
-            for (var i = start; i <= end; i++) {
-                if (detector(i)) return i;
-            }
-            return notDetectedThunk ? notDetectedThunk(self) : null;
-        });
-
-        method(copy, function(self) {
-            return Range(start, end);
-        });
-
-        method(size, function(self) {
-            return end - start;
-        });
-
-        method(contains, function(self, item) {
-            return item >= start && item <= end;
-        });
-
-        method(isEmpty, function(self) {
-            return end - start == 0;
-        });
-
-        method(isEmpty, function(self) {
-            return end - start != 0;
-        });
-
-        method(asString, function(self) {
-            return 'Range[' + start + ', ' + end + ']';
-        });
-    }, Stream(function(cellConstructor) {
-        function range(index) {
-            if (index > end) return;
-            return function () {
-                return cellConstructor(index, range(index + 1));
-            };
-        }
-
-        return range(start);
-    }));
 }
