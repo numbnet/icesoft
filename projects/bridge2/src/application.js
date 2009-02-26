@@ -154,22 +154,7 @@ window.evaluate = eval;
         register(commandDispatcher, 'parsererror', ParsingError);
         register(commandDispatcher, 'redirect', Redirect);
         register(commandDispatcher, 'macro', Macro);
-        register(commandDispatcher, 'reload', function(element) {
-            info(logger, 'Reloading');
-            var url = window.location.href;
-            delistWindowViews();
-            if (containsSubstring(url, 'rvn=')) {
-                window.location.reload();
-            } else {
-                var view = element.getAttribute('view');
-                if (view == '') {
-                    window.location.reload();
-                } else {
-                    var queryPrefix = containsSubstring(url, '?') ? '&' : '?';
-                    window.location.href = url + queryPrefix + 'rvn=' + view;
-                }
-            }
-        });
+        register(commandDispatcher, 'reload', broadcaster([ delistWindowViews, Reload ]));
         register(commandDispatcher, 'updates', function(element) {
             each(element.getElementsByTagName('update'), function(e) {
                 try {
