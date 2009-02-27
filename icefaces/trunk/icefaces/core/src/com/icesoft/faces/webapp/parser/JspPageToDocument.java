@@ -441,19 +441,7 @@ public class JspPageToDocument {
         }
 
         if (null == location) {
-            //look for myfaces-impl.jar
-            URL tagURL = JspPageToDocument.class.getClassLoader()
-                    .getResource(MYFACES_TAG_CLASS);
-            //May need similar special case here for MyFaces on OSGi
-            //as below
-            if (null != tagURL) {
-                location = scanJar((JarURLConnection) tagURL.openConnection(),
-                                   namespaceURL);
-            }
-        }
-
-        if (null == location) {
-            //look for myfaces-impl.jar
+            //look for Sun implementation
             URL tagURL = JspPageToDocument.class.getClassLoader()
                     .getResource(SUN_TAG_CLASS);
             if (null != tagURL) {
@@ -482,9 +470,9 @@ public class JspPageToDocument {
                 if (conn instanceof JarURLConnection) {
                     location = scanJar((JarURLConnection) conn, namespaceURL);
                 } else {
-                    //OSGi-based servers (such as GlassFishv3 do not provide 
-                    //JarURLConnection to their resources so we handle the JSF
-                    //TLDs as a special case
+                    //OSGi-based servers (such as GlassFishv3 and WebSphere7)
+                    //do not provide JarURLConnection to their resources so
+                    //we handle the JSF TLDs as a special case.
                     if (namespaceURL.endsWith("html")) {
                         location = getBundleLocation(tagURL, HTML_TLD_SUFFIX);
                     } else if (namespaceURL.endsWith("core")) {
@@ -522,6 +510,28 @@ public class JspPageToDocument {
             } catch (Exception e) {
                 if (log.isDebugEnabled()) {
                     log.debug(e.getMessage(), e);
+                }
+            }
+        }
+
+        if (null == location) {
+            //look for MyFaces implementation
+            URL tagURL = JspPageToDocument.class.getClassLoader().getResource(MYFACES_TAG_CLASS);
+
+            if( null != tagURL ){
+                URLConnection conn = tagURL.openConnection();
+
+                if (conn instanceof JarURLConnection) {
+                    location = scanJar((JarURLConnection) conn, namespaceURL);
+                } else {
+                    //OSGi-based servers (such as GlassFishv3 and WebSphere7)
+                    //do not provide JarURLConnection to their resources so
+                    //we handle the JSF TLDs as a special case.
+                    if (namespaceURL.endsWith("html")) {
+                        location = getBundleLocation(tagURL, HTML_TLD_SUFFIX);
+                    } else if (namespaceURL.endsWith("core")) {
+                        location = getBundleLocation(tagURL, CORE_TLD_SUFFIX);
+                    }
                 }
             }
         }
