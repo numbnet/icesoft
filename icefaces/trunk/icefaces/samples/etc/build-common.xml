@@ -385,24 +385,28 @@ Combinations:
     <target name="tomcat6.0" description="build war file for Tomcat 6.0">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
         <echo message="For Help Information, please use 'ant help'"/>
     </target>
     <target name="jetty6.1" description="build war file for Jetty 6.1">
         <antcall target="build.war">
             <param name="serverel" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
     </target>
     <target name="jboss4.2" description="build war file for JBoss 4.2">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
     </target>
 	<target name="jboss5" description="build war file for JBoss 5">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
     </target>
     <target name="glassfishv2" description="build war file for SUN Glassfish V2">
@@ -410,6 +414,7 @@ Combinations:
             <param name="glassfish" value=""/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
     </target>
 	<target name="glassfishv3" description="build war file for SUN Glassfish V3">
@@ -417,6 +422,7 @@ Combinations:
             <param name="glassfish" value=""/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+			<param name="noelri" value=""/>
         </antcall>
     </target>	
     <target name="pe9" description="build war file for SUN Application Server PE9">
