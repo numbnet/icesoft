@@ -60,6 +60,7 @@
     " >
         <exclude name="el-api.jar"     if="jsf12" />
         <exclude name="el-api.jar"     if="serverel" />
+		<exclude name="el-api.jar"	   if="noelapi" />
         <exclude name="jstl.jar"       if="serverjsf" />
 		<exclude name="xercesImpl.jar" if="websphere6"/>
 		<exclude name="xml-apis.jar"   if="websphere6" />
@@ -347,7 +348,12 @@ Combinations:
     <target name="jboss4.0" depends="build.war" description="JBoss 4.0.5"/>
     <target name="weblogic8.1" depends="build.war" description="Weblogic 8.1"/>
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
-	<target name="weblogic10" depends="build.war" description="Weblogic 10"/>
+	<target name="weblogic10" description="Weblogic 10">
+		<antcall target="build.war">
+            <param name="noelapi" value=""/>
+			<param name="noelri" value=""/>
+        </antcall>
+	</target>
     
     <target name="websphere6.1" description="IBM Websphere 6.1">
 	       <antcall target="build.war">
@@ -380,6 +386,8 @@ Combinations:
     <target name="websphere7" description="IBM Websphere 7">
 	       <antcall target="build.war">
             <param name="websphere6" value=""/>
+			<param name="noelapi" value="" />
+			<param name="noelri" value=""/>
         </antcall>
 	</target>	
     <target name="tomcat6.0" description="build war file for Tomcat 6.0">
