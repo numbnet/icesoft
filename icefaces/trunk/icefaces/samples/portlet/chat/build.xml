@@ -87,7 +87,7 @@
             <!--param name="el-ri" value=""/-->
             <param name="jsf12" value=""/>
             <param name="liferay" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>   
+            <!--param name="icefaces.ahs.enabled" value=""/-->   
         </antcall>
     </target>      
     <target name="build.portlet.liferay.tomcat5.war" description="build a portlet application for Liferay Tomcat5.x without AHS">
@@ -110,7 +110,7 @@
             <!--param name="el-ri" value=""/-->
             <param name="jsf11" value=""/>
             <param name="liferay" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>            
+            <!--param name="icefaces.ahs.enabled" value=""/-->            
         </antcall>
     </target>
     <target name="build.portlet.liferay.jboss4.0.war" description="build a portlet application for Liferay JBoss4.0.x without AHS">
@@ -132,7 +132,7 @@
             <param name="chat.xml" value="./conf/${general.ahs.xml}"/>
             <param name="jsf11" value=""/>
             <param name="liferay" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>
+            <!--param name="icefaces.ahs.enabled" value=""/-->
         </antcall>
     </target>
     <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal with AHS">
@@ -144,7 +144,7 @@
             <param name="chat.xml" value="./conf/${general.ahs.xml}"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>
+            <!--param name="icefaces.ahs.enabled" value=""/-->
         </antcall>  
     </target>
 
@@ -164,7 +164,7 @@
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>
+            <!--param name="icefaces.ahs.enabled" value=""/-->
         </antcall>  
     </target>
     <target name="build.portlet.liferay.glassfishv2.war" description="portlet application for Liferay Glassfish V2 without AHS">
@@ -185,7 +185,7 @@
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
-            <param name="icefaces.ahs.enabled" value=""/>
+            <!--param name="icefaces.ahs.enabled" value=""/-->
         </antcall>        
     </target> 
     
