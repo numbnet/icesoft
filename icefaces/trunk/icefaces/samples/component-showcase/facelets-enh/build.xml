@@ -67,7 +67,9 @@
                 icefaces-facelets.jar
                 el-ri.jar
                 "
-            />
+	>
+		<exclude name="el-ri.jar" if="noelri"/>
+	</patternset>
 
     <!-- jars needed for jaxb-->
     <patternset id="jaxb.jars"  >

@@ -46,7 +46,9 @@
                 icefaces-facelets.jar
                 krysalis-jCharts-1.0.0-alpha-1.jar
                 "
-    />
+    >
+		<exclude name="el-ri.jar" if="noelri" />
+	</patternset>
     <!--
     <target name="help">
         <echo level="info">
