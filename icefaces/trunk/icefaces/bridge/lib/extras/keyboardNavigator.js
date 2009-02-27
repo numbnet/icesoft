@@ -265,7 +265,14 @@ Ice.MenuBarKeyNavigator.addMethods({
   hideAll:function(event) {
       element = Event.element(event); 
       var baritem = element.up('.'+ this.getMenuBarItemClass());
-      if (!(baritem && this.clicked)) {
+      var elt = event.element();
+      if (elt && elt.match("a[onclick]")) {
+          elt = elt.down();
+      }
+      if (elt) {
+          elt = elt.up(".iceMnuItm a[onclick^='return false']");
+      }
+      if (!(baritem && this.clicked) && !elt) {
         Ice.Menu.hideAll();
         if (this.displayOnClick) {       
             this.clicked = false;
