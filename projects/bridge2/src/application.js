@@ -134,6 +134,7 @@ window.evaluate = eval;
         var evaluateScripts = ScriptEvaluator(logger);
         var commandDispatcher = CommandDispatcher();
         var documentSynchronizer = DocumentSynchronizer(logger, client, sessionID, viewID);
+        var syncConnection = SyncConnection(logger, sessionID, viewID, configuration.connection);
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
         function replaceHTMLAndEvaluateScripts(html) {
@@ -184,13 +185,13 @@ window.evaluate = eval;
             dispose();
         });
 
-        onSend(asyncConnection, function() {
+        onSendReceive(syncConnection, function(request) {
             on(indicators.busy);
         }, function() {
             off(indicators.busy);
         });
 
-        onReceive(asyncConnection, function(response) {
+        function receive(response) {
             var mimeType = getHeader(response, 'Content-Type');
             if (mimeType && startsWith(mimeType, 'text/html')) {
                 replaceHTMLAndEvaluateScripts(contentAsText(response));
@@ -201,9 +202,12 @@ window.evaluate = eval;
                 warn(logger, 'unknown content in response');
             }
             off(indicators.connectionTrouble);
-        });
+        }
 
-        onServerError(asyncConnection, function (response) {
+        onSendReceive(syncConnection, noop, receive);
+        onReceive(asyncConnection, receive);
+
+        function serverError(response) {
             warn(logger, 'server side error');
             disposeView(sessionID, viewID);
             if (blank(contentAsText(response))) {
@@ -212,13 +216,19 @@ window.evaluate = eval;
                 replaceHTMLAndEvaluateScripts(contentAsText(response));
             }
             dispose();
-        });
+        }
 
-        whenDown(asyncConnection, function() {
+        onServerError(syncConnection, serverError);
+        onServerError(asyncConnection, serverError);
+
+        function connectionDown() {
             warn(logger, 'connection to server was lost');
             on(indicators.connectionLost);
             dispose();
-        });
+        }
+
+        whenDown(syncConnection, connectionDown);
+        whenDown(asyncConnection, connectionDown);
 
         whenTrouble(asyncConnection, function() {
             warn(logger, 'connection in trouble');
@@ -230,7 +240,7 @@ window.evaluate = eval;
         return object(function(method) {
             //public method
             method(namespace.connection, function(self) {
-                return asyncConnection;
+                return syncConnection;
             });
             //public method used to modify bridge's status manager
             method(namespace.resetIndicators, function(self, setup) {
