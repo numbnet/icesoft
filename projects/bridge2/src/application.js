@@ -31,6 +31,7 @@
  *
  */
 
+//trick YUI compressor to minify names -- see http://developer.yahoo.com/yui/compressor/#work
 window.evaluate = eval;
 
 (function(namespace) {
@@ -128,7 +129,6 @@ window.evaluate = eval;
     namespace.Application = function(configuration, container) {
         var sessionID = configuration.session;
         var viewID = configuration.view;
-        enlistView(sessionID, viewID);
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);
         var evaluateScripts = ScriptEvaluator(logger);
@@ -148,6 +148,7 @@ window.evaluate = eval;
         }
 
         onUnload(window, dispose);
+        enlistView(sessionID, viewID);
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'set-cookie', SetCookie);
