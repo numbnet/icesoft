@@ -193,7 +193,8 @@ Draggable.prototype.updateDrag = function(event, pointer) {
     if(this.dragGhost == true) {
       var height = parseInt(this.element.offsetHeight) ;
       var elementTop = parseInt(Element.getStyle(this.element, 'top').split("px")[0]) ;
-      var pointerTop =  Event.pointerY(event); 
+      if (Prototype.Browser.IE) elementTop = this.element.cumulativeOffset().top; // ICE-3287
+      var pointerTop =  Event.pointerY(event);
       var edge = height + elementTop;
       var inRegion = (pointerTop > elementTop &&  pointerTop < edge );
       if (!inRegion) {
