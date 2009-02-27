@@ -33,7 +33,6 @@
 
 var send = operator();
 var onSend = operator();
-var onSendReceive = operator();
 var onReceive = operator();
 var onServerError = operator();
 var whenDown = operator();
@@ -81,10 +80,14 @@ function SyncConnection(logger, sessionID, viewID, configuration) {
             }));
         });
 
-        method(onSendReceive, function(self, sendCallback, receiveCallback) {
+        method(onSend, function(self, sendCallback, receiveCallback) {
             append(onSendListeners, sendCallback);
             if (receiveCallback)
                 append(onReceiveListeners, receiveCallback);
+        });
+
+        method(onReceive, function(self, receiveCallback) {
+            append(onReceiveListeners, receiveCallback);
         });
 
         method(onServerError, function(self, callback) {

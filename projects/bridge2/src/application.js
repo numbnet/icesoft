@@ -185,7 +185,7 @@ window.evaluate = eval;
             dispose();
         });
 
-        onSendReceive(syncConnection, function(request) {
+        onSend(syncConnection, function(request) {
             on(indicators.busy);
         }, function() {
             off(indicators.busy);
@@ -204,7 +204,7 @@ window.evaluate = eval;
             off(indicators.connectionTrouble);
         }
 
-        onSendReceive(syncConnection, noop, receive);
+        onReceive(syncConnection, receive);
         onReceive(asyncConnection, receive);
 
         function serverError(response) {
