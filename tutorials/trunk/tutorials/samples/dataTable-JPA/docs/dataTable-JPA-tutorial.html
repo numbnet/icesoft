@@ -351,8 +351,8 @@ public class CustomerDAO implements ICustomerDAO{
     &lt;jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" /&gt;
     &lt;f:view&gt;
         &lt;ice:outputDeclaration doctypeRoot="html"
-                               doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                               doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" /&gt;
+                               doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                               doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" /&gt;
     &lt;html&gt;
         &lt;head&gt;
             &lt;title&gt;ICEfaces, Ajax for Java EE&lt;/title&gt;
@@ -371,27 +371,27 @@ public class CustomerDAO implements ICustomerDAO{
                                    fastStep="3" &gt;
                     &lt;f:facet name="first"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-first.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-first.gif"/&gt;
                     &lt;/f:facet&gt;
                     &lt;f:facet name="last"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-last.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-last.gif"/&gt;
                     &lt;/f:facet&gt;
                     &lt;f:facet name="previous"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-previous.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-previous.gif"/&gt;
                     &lt;/f:facet&gt;
                     &lt;f:facet name="next"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-next.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-next.gif"/&gt;
                     &lt;/f:facet&gt;
                     &lt;f:facet name="fastforward"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-ff.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-ff.gif"/&gt;
                     &lt;/f:facet&gt;
                     &lt;f:facet name="fastrewind"&gt;
                         &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-fr.gif"&gt;&lt;/ice:graphicImage&gt;
+                            url="./xmlhttp/css/xp/css-images/arrow-fr.gif"/&gt;
                     &lt;/f:facet&gt;
                 &lt;/ice:dataPaginator&gt;
 
@@ -573,7 +573,8 @@ public class CustomerBean {
       </pre>
       <p>
       The rest of the bindings in tutorial.jspx are to the SessionBean class.  SessionBean is our web application
-      controller class that maintains the list of records displayed by a particular user during his/her session.
+      controller class that makes calls to the JPA layer to maintain a list of records displayed by a particular user
+      during his/her session.
       </p>
       <p>
       For the ice:commandSortHeader to work, we add the sortAscending and sortColumn attributes to the ice:dataTable
@@ -581,6 +582,10 @@ public class CustomerBean {
       are encapsulated in a class called DataSource.  SessionBean extends this class.
       </p>
       <pre>
+/**
+ * The DataSource class is a utility class used by the data table paginator
+ * and commandSortHeader.
+ */
 public abstract class DataSource {
 
     // Sortable Headers
@@ -758,7 +763,7 @@ public abstract class PagedListDataModel<T> extends DataModel {
      * Create a datamodel that pages through the data showing the specified
      * number of rows on each page.
      */
-    public PagedListDataModel(int pageSize, SessionBean sessionBean) {
+    public PagedListDataModel(int pageSize) {
         super();
         this.pageSize = pageSize;
         this.rowIndex = -1;
@@ -929,7 +934,7 @@ public abstract class PagedListDataModel<T> extends DataModel {
     public DataModel getData() {
         state = PersistentFacesState.getInstance();
         if(onePageDataModel == null){
-            onePageDataModel = new LocalDataModel(pageSize, this);
+            onePageDataModel = new LocalDataModel(pageSize);
         }
         return onePageDataModel;
     }
@@ -958,8 +963,8 @@ public abstract class PagedListDataModel<T> extends DataModel {
 
         // Populate the list of uiCustomerBeans for binding to the dataTable.
         uiCustomerBeans.clear();
-        for(int i = 0; i < pageCustomers.size(); i++){
-            uiCustomerBeans.add(new CustomerBean(pageCustomers.get(i), this));
+        for(Customer pageCustomer : pageCustomers){
+            uiCustomerBeans.add(new CustomerBean(pageCustomer, this));
         }
         // Add this Renderable to the new render groups.
         joinRenderGroups();
@@ -979,8 +984,8 @@ public abstract class PagedListDataModel<T> extends DataModel {
     }
 
     private class LocalDataModel extends PagedListDataModel {
-        public LocalDataModel(int pageSize, SessionBean sessionBean) {
-            super(pageSize, sessionBean);
+        public LocalDataModel(int pageSize) {
+            super(pageSize);
         }
 
         public DataPage<CustomerBean> fetchPage(int startRow, int pageSize) {
@@ -1059,8 +1064,8 @@ public abstract class PagedListDataModel<T> extends DataModel {
      */
     private void leaveRenderGroups(){
         if(onePageDataModel.page != null){
-            for(int i=0; i&lt;uiCustomerBeans.size(); i++){
-                renderManager.getOnDemandRenderer(((CustomerBean)uiCustomerBeans.get(i)).getCustomer().getCustomernumber().toString()).remove(this);
+            for(CustomerBean uiCustomerBean : uiCustomerBeans){
+                renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).remove(this);
             }
         }
     }
@@ -1070,8 +1075,8 @@ public abstract class PagedListDataModel<T> extends DataModel {
      * OnDemandRenderers are named/created using the underlying Customer Number.
      */
     private void joinRenderGroups(){
-        for(int i=0; i&lt;uiCustomerBeans.size(); i++){
-            renderManager.getOnDemandRenderer(((CustomerBean)uiCustomerBeans.get(i)).getCustomer().getCustomernumber().toString()).add(this);
+        for(CustomerBean uiCustomerBean : uiCustomerBeans){
+            renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).add(this);
         }
     }
 
@@ -1103,11 +1108,11 @@ public class DirtyDataController {
     }
 
     public void setOtherSessionsDirtyData(Customer customer){
-        for(int i=0; i&lt;CURRENT_SESSIONS.size(); i++){
+        for(SessionBean CURRENT_SESSION : CURRENT_SESSIONS){
             List<CustomerBean> sessionView = CURRENT_SESSIONS.get(i).getUiCustomerBeans();
-            for(int y=0; y&lt;sessionView.size(); y++){
-                if(((CustomerBean)sessionView.get(y)).getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
-                    CURRENT_SESSIONS.get(i).getOnePageDataModel().setDirtyData();
+            for(CustomerBean aSessionView : sessionView){
+                if(aSessionView.getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
+                    CURRENT_SESSION.getOnePageDataModel().setDirtyData();
                     break;
                 }
             }
@@ -1127,7 +1132,7 @@ public class DirtyDataController {
      */
     public void setDirtyDataController(DirtyDataController dirtyDataController){
         this.dirtyDataController = dirtyDataController;
-        dirtyDataController.getCURRENT_SESSIONS().add(this);
+        DirtyDataController.getCURRENT_SESSIONS().add(this);
     }
       </pre>
       <p>
@@ -1189,7 +1194,7 @@ public class DirtyDataController {
     public void dispose() {
         // Remove from existing Customer render groups.
         leaveRenderGroups();
-        dirtyDataController.getCURRENT_SESSIONS().remove(this);
+        DirtyDataController.getCURRENT_SESSIONS().remove(this);
     }
       </pre>
       <p>
