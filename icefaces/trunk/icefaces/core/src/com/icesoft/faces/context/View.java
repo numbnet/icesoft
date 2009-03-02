@@ -14,15 +14,15 @@ import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.lang.reflect.Constructor;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class View implements CommandQueue {
 
-    public static final String ICEFACES_STATE_MAPS = "icefaces.state.maps";    
+    public static final String ICEFACES_STATE_MAPS = "icefaces.state.maps";
     private static final Log Log = LogFactory.getLog(View.class);
     private static final NOOP NOOP = new NOOP();
     private static final Runnable DoNothing = new Runnable() {
@@ -61,10 +61,10 @@ public class View implements CommandQueue {
                     facesContext.dispose();
                 }
             }
-            if (ImplementationUtil.isJSF2())  {
+            if (ImplementationUtil.isJSF2()) {
                 Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
                 Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
-                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[] {request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization});
+                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization});
             } else {
                 facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization);
             }
@@ -87,6 +87,7 @@ public class View implements CommandQueue {
     private Runnable dispose;
     private final ViewQueue allServedViews;
     private Authorization authorization;
+    private final ArrayList onReleaseListeners = new ArrayList();
 
     public View(final String viewIdentifier, String sessionID, HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Authorization authorization) throws Exception {
         this.sessionID = sessionID;
@@ -156,8 +157,12 @@ public class View implements CommandQueue {
     }
 
     public void release() {
-        releaseAll();
-        releaseLifecycleLock();
+        try {
+            releaseAll();
+            notifyRelease();
+        } finally {
+            releaseLifecycleLock();
+        }
     }
 
     private void releaseAll() {
@@ -177,9 +182,9 @@ public class View implements CommandQueue {
     public void dispose() {
         dispose.run();
         ContextEventRepeater.viewNumberDisposed(
-            facesContext.getExternalContext().getSession(false),
-            sessionID,
-            Integer.parseInt(viewIdentifier));
+                facesContext.getExternalContext().getSession(false),
+                sessionID,
+                Integer.parseInt(viewIdentifier));
     }
 
     public void installThreadLocals() {
@@ -240,11 +245,23 @@ public class View implements CommandQueue {
         try {
             Map m = (Map) sessionMap.get(ICEFACES_STATE_MAPS);
             if (m != null) {
-                m.remove( facesContext.getViewNumber() );
+                m.remove(facesContext.getViewNumber());
             }
         } catch (Exception e) {
             Log.error("Exception cleaning up State Saving Map: " + e);
         }
+    }
+
+    private void notifyRelease() {
+        Iterator i = onReleaseListeners.iterator();
+        while (i.hasNext()) {
+            Runnable runnable = (Runnable) i.next();
+            runnable.run();
+        }
+    }
+
+    public void onRelease(Runnable runnable) {
+        onReleaseListeners.add(runnable);
     }
 
     private interface Page {

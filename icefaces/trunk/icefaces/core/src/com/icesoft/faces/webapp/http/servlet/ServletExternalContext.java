@@ -1,9 +1,9 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.View;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
-import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
@@ -23,7 +23,13 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
@@ -36,10 +42,10 @@ public class ServletExternalContext extends BridgeExternalContext {
     private Dispatcher dispatcher;
     private List locales;
 
-    public ServletExternalContext(String viewIdentifier, final Object req, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, Authorization authorization) {
-        super(viewIdentifier, commandQueue, configuration, authorization);
+    public ServletExternalContext(String viewIdentifier, final Object req, Object response, View view, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, Authorization authorization) {
+        super(viewIdentifier, view, configuration, authorization);
         HttpServletRequest request = (HttpServletRequest) req;
-        session = new InterceptingServletSession(request.getSession(), sessionMonitor);
+        session = new InterceptingServletSession(request.getSession(), sessionMonitor, view);
         context = session.getServletContext();
         initParameterMap = new ServletContextInitParameterMap(context);
         applicationMap = new ServletContextAttributeMap(context);
@@ -160,10 +166,11 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     String contextPath = null;
+
     public String getRequestContextPath() {
-        if (null == contextPath)  {
+        if (null == contextPath) {
             contextPath = (String) initialRequest.getAttribute("javax.servlet.forward.context_path");
-            if (null == contextPath)  {
+            if (null == contextPath) {
                 contextPath = initialRequest.getContextPath();
             }
         }
