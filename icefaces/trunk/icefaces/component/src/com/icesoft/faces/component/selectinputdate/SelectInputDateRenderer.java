@@ -1677,13 +1677,13 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             log.debug("selectDate::showPopup" + showPopup);
             log.debug("#################################");
         }
-//        if (showPopup != null) {
-//            if (showPopup.equalsIgnoreCase("true")) {
-//                dateSelect.setShowPopup(true);
-//            } else {
-//                dateSelect.setShowPopup(false);
-//            }
-//        }
+        //1. The popup will be closed automatically on selecting a date when 
+        //there isn't any time input elements on the calendar (same as 1.7.2 behaviour)
+        //2. The popup will NOT be closed automatically on selecting a date, if 
+        //there are time fields on the popup
+        if (!dateSelect.isTime(facesContext)) {
+            dateSelect.setShowPopup(false);
+        }
         if (log.isDebugEnabled()) {
             log.debug("decodeUIInput::");
             log.debug("#################################");
