@@ -1,10 +1,10 @@
 package com.icesoft.faces.webapp.http.portlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.View;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.util.EnumerationIterator;
-import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.ServletRequestAttributes;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -14,7 +14,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
-import javax.portlet.*;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +31,13 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
@@ -58,7 +72,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     public static final String INACTIVE_INCREMENT = "inactiveIncrement";
     private boolean adjustPortletSessionInactiveInterval = true;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig, Authorization authorization) {
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, View commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig, Authorization authorization) {
         super(viewIdentifier, commandQueue, configuration, authorization);
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
@@ -247,8 +261,9 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     String contextPath = null;
+
     public String getRequestContextPath() {
-        if (null == contextPath)  {
+        if (null == contextPath) {
             contextPath = (String) initialRequest.getAttribute(Constants.INC_CONTEXT_PATH);
         }
         return contextPath;
