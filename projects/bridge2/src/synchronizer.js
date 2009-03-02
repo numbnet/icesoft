@@ -41,10 +41,17 @@ var DocumentSynchronizer;
         var end = new RegExp('\<\/body\>', 'g').exec(html);
         var body = html.substring(start.index, end.index + end[0].length)
         var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
-        var tag = container.tagName;
-        var c = $element(container);
-        c.disconnectEventListeners();
-        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
+        updateElement($element(container), objectWithAncestors(function(method) {
+            method(eachUpdateAttribute, function(self, iterator) {
+                each(container.attributes, function(a) {
+                    iterator(a.name, a.value);
+                });
+            });
+
+            method(updateContent, function(self) {
+                return bodyContent;
+            });
+        }), Update());
     };
 
     DocumentSynchronizer = function(logger, client, sessionID, viewID) {

@@ -34,10 +34,9 @@
 //todo: implement focus management!
 var recordFocus;
 var applyFocus;
+var currentFocus;
 
 (function() {
-    var currentFocus;
-
     recordFocus = function(id) {
         currentFocus = id;
     };

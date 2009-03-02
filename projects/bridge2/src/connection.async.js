@@ -51,7 +51,6 @@ function SyncConnection(logger, sessionID, viewID, configuration) {
     var connectionDownListeners = [];
     var sendURI = configuration.context.current + 'block/send-receive-updates';
     var timeout = configuration.timeout ? configuration.timeout : 60000;
-    var receiveCallback = broadcaster(onReceiveListeners);
     var serverErrorCallback = broadcaster(onServerErrorListeners);
     var timeoutBomb = object(function(method) {
         method(stop, noop);
@@ -66,13 +65,12 @@ function SyncConnection(logger, sessionID, viewID, configuration) {
             postAsynchronously(channel, sendURI, function(q) {
                 addQuery(q, query);
                 addQuery(q, defaultQuery);
-                addNameValue(q, 'ice.focus', window.currentFocus);
+                addNameValue(q, 'ice.focus', currentFocus);
 
                 debug(logger, '\n' + asString(q));
             }, FormPost, $witch(function(condition) {
                 condition(OK, function(response, request) {
                     stop(timeoutBomb);
-                    receiveCallback(response);
                     broadcast(onReceiveListeners, arguments);
                 });
 
