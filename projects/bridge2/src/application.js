@@ -53,7 +53,6 @@ window.evaluate = eval;
     //include event.js
     namespace.$event = $event;
     //include http.js
-    //include script.js
     //include synchronizer.js
     //include command.js
     //include heartbeat.js
@@ -131,16 +130,10 @@ window.evaluate = eval;
         var viewID = configuration.view;
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);
-        var evaluateScripts = ScriptEvaluator(logger);
         var commandDispatcher = CommandDispatcher();
         var documentSynchronizer = DocumentSynchronizer(logger, client, sessionID, viewID);
         var syncConnection = SyncConnection(logger, sessionID, viewID, configuration.connection);
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
-
-        function replaceHTMLAndEvaluateScripts(html) {
-            replaceContainerHTML(container, html);
-            evaluateScripts(container);
-        }
 
         function dispose() {
             dispose = noop;
@@ -155,7 +148,7 @@ window.evaluate = eval;
         register(commandDispatcher, 'set-cookie', SetCookie);
         register(commandDispatcher, 'parsererror', ParsingError);
         register(commandDispatcher, 'redirect', Redirect);
-        register(commandDispatcher, 'reload', broadcaster([ delistWindowViews, Reload ]));
+        register(commandDispatcher, 'reload', broadcaster([delistWindowViews, Reload]));
         register(commandDispatcher, 'macro', function(message) {
             each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
         });
@@ -166,7 +159,6 @@ window.evaluate = eval;
                     var update = Update(e);
                     updateElement($elementWithID(address), update);
                     debug(logger, 'applied update : ' + asString(update));
-                    evaluateScripts(document.getElementById(address));
                     //todo: move this into a listener
                     if (Ice.StateMon) {
                         Ice.StateMon.checkAll();
@@ -194,7 +186,7 @@ window.evaluate = eval;
         function receive(response) {
             var mimeType = getHeader(response, 'Content-Type');
             if (mimeType && startsWith(mimeType, 'text/html')) {
-                replaceHTMLAndEvaluateScripts(contentAsText(response));
+                replaceContainerHTML(contentAsText(response));
             } else if (mimeType && startsWith(mimeType, 'text/xml')) {
                 deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
                 synchronize(documentSynchronizer);
@@ -213,7 +205,7 @@ window.evaluate = eval;
             if (blank(contentAsText(response))) {
                 on(indicators.serverError);
             } else {
-                replaceHTMLAndEvaluateScripts(contentAsText(response));
+                replaceContainerHTML(contentAsText(response));
             }
             dispose();
         }
