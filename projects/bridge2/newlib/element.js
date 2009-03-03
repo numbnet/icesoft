@@ -412,7 +412,7 @@ var $elementWithID;
                     var end = new RegExp('\<\/noscript\>', 'g').exec(html);
                     element.innerHTML = substring(html, 0, start.index) + substring(html, end.index + 11, html.length);
                 }
-                updateElement(element);
+                EvaluateScripts(element);
             });
         }, DefaultElement(element));
     }
