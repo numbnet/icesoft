@@ -46,6 +46,7 @@
               location="${build.dir}/lib/openajax/bridge.open.ajax.js"/>
     <property name="extras.script" location="${build.dir}/bridge.extras.js"/>
     <property name="open.ajax.script" location="${build.dir}/openajax.js"/>
+    <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <macrodef name="yui-compress">
         <attribute name="todir"/>
@@ -148,7 +149,7 @@
         </javac>
     </target>
 
-    <target name="build.bridge" description="Collate bridge code">
+    <target name="bridge.collate" description="Collate bridge code">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir}/src"/>
         <touch file="${script}"/>
@@ -166,12 +167,10 @@
         <loadfile property="submit.js" srcFile="src/submit.js"/>
         <loadfile property="synchronizer.js" srcFile="src/synchronizer.js"/>
         <loadfile property="command.js" srcFile="src/command.js"/>
-        <loadfile property="script.js" srcFile="src/script.js"/>
         <loadfile property="focus.js" srcFile="src/focus.js"/>
         <loadfile property="status.js" srcFile="src/status.js"/>
         <loadfile property="heartbeat.js" srcFile="src/heartbeat.js"/>
         <loadfile property="connection.async.js" srcFile="src/connection.async.js"/>
-        <property name="tmp" value="${build.dir}/tmp.js"/>
         <copy file="src/application.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
@@ -188,19 +187,15 @@
                 <filter token="submit" value="${submit.js}"/>
                 <filter token="synchronizer" value="${synchronizer.js}"/>
                 <filter token="command" value="${command.js}"/>
-                <filter token="script" value="${script.js}"/>
                 <filter token="focus" value="${focus.js}"/>
                 <filter token="status" value="${status.js}"/>
                 <filter token="heartbeat" value="${heartbeat.js}"/>
                 <filter token="connection.async" value="${connection.async.js}"/>
             </filterset>
         </copy>
-        <!--move file="${tmp}" tofile="${script}" overwrite="yes">
-            <filterchain>
-                <stripjavacomments/>
-                <ignoreblank/>
-            </filterchain>            
-        </move-->
+    </target>
+    <target name="build.bridge.compressed" depends="bridge.collate" unless="no-compress">
+        <echo message="Compressing Javascript code..."/>
         <java jar="compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
@@ -208,6 +203,15 @@
             <arg value="${tmp}"/>
         </java>
     </target>
+    <target name="build.bridge.uncompressed" depends="bridge.collate" if="no-compress">
+        <move file="${tmp}" tofile="${script}" overwrite="yes">
+            <filterchain>
+                <stripjavacomments/>
+                <ignoreblank/>
+            </filterchain>
+        </move>
+    </target>
+    <target name="build.bridge" depends="build.bridge.compressed, build.bridge.uncompressed"/>
 
     <target name="build.extras" depends="copy, compress"
             description="Collate extra libraries used by specialized components.">
