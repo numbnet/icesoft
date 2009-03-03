@@ -133,12 +133,7 @@ window.evaluate = eval;
         var commandDispatcher = CommandDispatcher();
         var documentSynchronizer = DocumentSynchronizer(logger, client, sessionID, viewID);
         var syncConnection = SyncConnection(logger, sessionID, viewID, configuration.connection);
-        var asyncConnection = configuration.synchronous ?
-                              object(function(method) {
-                                  each([shutdown, onReceive, onServerError, whenDown, whenTrouble], function(op) {
-                                      method(op, noop);
-                                  });
-                              }) :
+        var asyncConnection = configuration.synchronous ? NOOPAsyncConnection() :
                               AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
         function dispose() {
