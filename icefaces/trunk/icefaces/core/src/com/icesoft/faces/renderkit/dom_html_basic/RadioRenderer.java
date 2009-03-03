@@ -187,12 +187,17 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         Node rootNode = domContext.getRootNode();
         HashSet excludes = new HashSet();
 
+        Object attrObj = selectOne.getAttributes().get("disabled");
+        boolean disabled = attrObj != null && Boolean.valueOf(attrObj.toString()).booleanValue();
+        if (!disabled) {
+            disabled = selectItem.isDisabled();
+        }
         Element input = domContext.createElement(HTML.INPUT_ELEM);
         input.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO);
         input.setAttribute(HTML.ID_ATTR, radioClientId);
         input.setAttribute(HTML.NAME_ATTR, selectOneClientId);
         input.setAttribute(HTML.VALUE_ATTR, selectItemValue);
-        if (selectItem.isDisabled()) {
+        if (disabled) {
             input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
         }
         if (isValueSelected(facesContext, selectItem, selectOne,
@@ -204,13 +209,31 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
 
         Element label = domContext.createElement(HTML.LABEL_ATTR);
         label.setAttribute(HTML.FOR_ATTR, radioClientId);
+        attrObj = selectOne.getAttributes().get("styleClass");
+        String labelClass = attrObj == null ? "" : attrObj.toString().trim();
+        if (labelClass.length() > 0) {
+            if (disabled) {
+                String[] styleClasses = labelClass.split("\\s");
+                labelClass = "";
+                for (int i = 0; i < styleClasses.length; i++) {
+                    if (i > 0) {
+                        labelClass += " ";
+                    }
+                    labelClass += styleClasses[i];
+                    if (!labelClass.endsWith("-dis")) {
+                        labelClass += "-dis";
+                    }
+                }
+            }
+            label.setAttribute("class", labelClass);
+        }
         if (selectItemLabel != null) label.appendChild(domContext.createTextNode(selectItemLabel));
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, selectOne, input, label, passThruAttributes);
         PassThruAttributeRenderer.renderBooleanAttributes(
                 facesContext,
-                uiComponent,
+                selectOne,
                 input,
-                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ;
+                new String[]{"disabled"});
         input.setAttribute("onkeypress", combinedPassThru((String) selectOne.getAttributes().get("onkeypress"),
                 "Ice.util.radioCheckboxEnter(form,this,event);"));
         rootNode.appendChild(input);
