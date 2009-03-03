@@ -95,25 +95,3 @@ function none() {
 
 function noop() {
 }
-
-function and() {
-    var operators = arguments;
-    return function() {
-        var size = operators.length;
-        for (var i = 0; i < size; i++) {
-            if (!apply(operators[i], arguments)) return false;
-        }
-        return true;
-    };
-}
-
-function or() {
-    var operators = arguments;
-    return function() {
-        var size = operators.length;
-        for (var i = 0; i < size; i++) {
-            if (apply(operators[i], arguments)) return true;
-        }
-        return false;
-    };
-}
