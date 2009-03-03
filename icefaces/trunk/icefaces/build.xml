@@ -130,7 +130,7 @@
         <zipfileset dir="core/build/javadocs" prefix="${bin.bundle.prefix}/docs/javadocs/icefaces/api"/>
         <zipfileset dir="component/build/doc" includes="tld/" prefix="${bin.bundle.prefix}/docs"/>
 
-        <zipfileset dir="lib" excludes="freemarker-2.3.14.jar, grizzly-comet.jar, org.springframework.*.jar, portlet.jar, catalina-comet.jar, jetty-util-6.0.1.jar, jsf-metadata.jar, tlddoc.jar, catalina-comet.jar, spring-beans.jar, spring-context.jar, spring-core.jar, spring-web.jar, spring-webflow.jar" prefix="${bin.bundle.prefix}/lib"/>
+        <zipfileset dir="lib" excludes="freemarker-2.3.14.jar, grizzly-comet.jar, org.springframework.*.jar, portlet.jar, catalina-comet.jar, jetty-util-6.0.1.jar, jsf-metadata.jar, tlddoc.jar, catalina-comet.jar, spring-beans.jar, spring-context.jar, spring-core.jar, spring-web.jar, spring-webflow.jar, jms.jar, jsf-extensions-test-time-0.1-rc8.jar, jsf-metadata-resources-1.1.1.jar" prefix="${bin.bundle.prefix}/lib"/>
         <!--
         <zipfileset file="core/dist/just-ice.jar" prefix="${bin.bundle.prefix}/lib"/>
 	-->
