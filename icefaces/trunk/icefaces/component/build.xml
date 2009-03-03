@@ -70,7 +70,6 @@
         <pathelement location="${build.classes.dir}"/>
         <fileset dir="../component-metadata/target" includes="*.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar" excludes="jsf-api.jar, jsf-impl.jar, ${ant.project.name}.jar"/>
-        <fileset dir="${lib.dir}/ext" includes="*.jar" />
     </path>
 
     <macrodef name="build.jar">
