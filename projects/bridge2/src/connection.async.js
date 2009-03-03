@@ -378,3 +378,11 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     });
 }
 
+function NOOPAsyncConnection() {
+    return object(function(method) {
+        each([shutdown, onReceive, onServerError, whenDown, whenTrouble], function(op) {
+            method(op, noop);
+        });
+    });
+}
+
