@@ -47,28 +47,36 @@ function Tester(failure) {
 
 function InPageRunner(suiteName, tests) {
     return function() {
-        var container = document.body;
-        container.appendChild(document.createElement('h3')).appendChild(document.createTextNode(suiteName));
+        var cursor = document.body;
+        cursor.appendChild(document.createElement('h3')).appendChild(document.createTextNode(suiteName));
 
+        var interruptTest = new Object;
         Tester(function(message) {
-            var entry = document.createElement('li');
-            container.appendChild(entry);
-            entry.appendChild(document.createTextNode(message));
+            cursor.appendChild(document.createTextNode(message));
+            cursor.style.color = 'red';
+            throw interruptTest;
         });
 
-        var previousContainer = container;
+        var previousCursor = cursor;
         tests(function(testName, thunk) {
-            container.appendChild(document.createElement('h4')).appendChild(document.createTextNode(testName));
-            container = previousContainer.appendChild(document.createElement('ol'));
-            thunk();
-            container = previousContainer;
+            try {
+                cursor = cursor.appendChild(document.createElement('li'));
+                cursor.appendChild(document.createTextNode(testName + ' :: '));
+                thunk();
+                cursor.appendChild(document.createTextNode('ok'));
+                cursor.style.color = 'green';
+            } catch (e) {
+                if (e != interruptTest) throw e;
+            } finally {
+                cursor = previousCursor;
+            }
         });
     };
 }
 
 window.onload = InPageRunner('Less is more', function(test) {
     test('Check greatness', function() {
-        checkTrue(4 > 5, '4 is not greater than 5');
+        checkTrue(4 < 5, '4 is not greater than 5');
         checkTrue(3 > 5, '3 is not greater than 5');
         checkTrue(3 < 5, '3 is greater than 5');
         checkException(function() {
@@ -83,7 +91,7 @@ window.onload = InPageRunner('Less is more', function(test) {
     });
 
     test('Check lesser', function() {
-        checkFalse(4 < 5, '5 is not greater than 4');
+        checkFalse(4 > 5, '5 is not greater than 4');
         checkEqual('a', 'aaa');
         checkNotEqual('b', 'b');
         try {
@@ -91,5 +99,9 @@ window.onload = InPageRunner('Less is more', function(test) {
         } catch (e) {
             fail('failed to run without exceptions');
         }
+    });
+
+    test('All true!', function() {
+        checkFalse(4 > 5, '5 is not greater than 4');
     });
 });
