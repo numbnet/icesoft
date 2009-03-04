@@ -1,32 +1,37 @@
 var checkTrue;
 var checkFalse;
 var checkException;
+var fail;
 
 function Tester(success, failure) {
-    checkTrue = function(value, message) {
+    checkTrue = function(value, failMessage, successMessage) {
         if (!value) {
-            failure(message);
+            failure(failMessage);
         } else {
-            success();
+            success(successMessage);
         }
     };
 
-    checkFalse = function(value, message) {
+    checkFalse = function(value, failMessage, successMesage) {
         if (value) {
-            failure(message);
+            failure(failMessage);
         } else {
-            success();
+            success(successMesage);
         }
     };
 
-    checkException = function(thunk, message) {
+    checkException = function(thunk, failMessage, successMessage) {
         try {
             thunk();
         } catch (e) {
-            return success();
+            return success(successMessage);
         }
 
-        failure(message);
+        failure(failMessage);
+    };
+
+    fail = function(message, exception) {
+        failure(message + (exception && ' > ' + String(exception) || ''));
     };
 }
 
@@ -62,10 +67,21 @@ window.onload = function() {
             checkException(function() {
                 throw '';
             }, 'Failed to detect exception');
+
+            try {
+                throw 'bla';
+            } catch (e) {
+                fail('failed to run without exceptions', e);
+            }
         });
 
         test('Check lesser', function() {
             checkFalse(4 < 5, '5 is not greater than 4');
+            try {
+                throw 'bla';
+            } catch (e) {
+                fail('failed to run without exceptions');
+            }
         });
     });
 };
