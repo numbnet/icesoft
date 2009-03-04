@@ -247,10 +247,7 @@ Ice.autoCentre = {
     },
     start:function(target) {
         Ice.autoCentre.id = target;
-        var s = document.getElementById(target).style;
-        if (!Prototype.Browser.IE) s.visibility = 'hidden';
         Ice.autoCentre.keepCentred();
-        if (!Prototype.Browser.IE) s.visibility = 'visible';
         Event.observe(window, 'resize', Ice.autoCentre.keepCentred);
         Event.observe(window, 'scroll', Ice.autoCentre.keepCentred);
     },
