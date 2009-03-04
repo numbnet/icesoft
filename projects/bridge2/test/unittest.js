@@ -5,75 +5,60 @@ var checkEqual;
 var checkNotEqual;
 var fail;
 
-function Tester(success, failure) {
-    checkTrue = function(value, failMessage, successMessage) {
+function Tester(failure) {
+    checkTrue = function(value, message) {
         if (!value) {
-            failure(failMessage);
-        } else {
-            success(successMessage);
+            failure(message);
         }
     };
 
-    checkFalse = function(value, failMessage, successMesage) {
+    checkFalse = function(value, message) {
         if (value) {
-            failure(failMessage);
-        } else {
-            success(successMesage);
+            failure(message);
         }
     };
 
-    checkException = function(thunk, failMessage, successMessage) {
+    checkException = function(thunk, message) {
         try {
             thunk();
         } catch (e) {
-            return success(successMessage);
+            return;
         }
 
-        failure(failMessage);
+        failure(message);
     };
 
     fail = function(message, exception) {
         failure(message + (exception && ' > ' + String(exception) || ''));
     };
 
-    checkEqual = function(ref, tested, failMessage, sucessMessage) {
-        if (ref == tested) {
-            success(sucessMessage);
-        } else {
-            failure(failMessage || ('expected value is (' + ref + ') but it was (' + tested + ')'));
+    checkEqual = function(ref, tested, message) {
+        if (ref != tested) {
+            failure(message || ('expected value is (' + ref + ') but it was (' + tested + ')'));
         }
     };
 
-    checkNotEqual = function(ref, tested, failMessage, sucessMessage) {
-        if (ref != tested) {
-            success(sucessMessage);
-        } else {
-            failure(failMessage || ('compared values are not different as expected'));
+    checkNotEqual = function(ref, tested, message) {
+        if (ref == tested) {
+            failure(message || ('compared values are not different as expected'));
         }
     };
 }
 
-function InPageRunner(tests) {
+function InPageRunner(suiteName, tests) {
     return function() {
         var container = document.body;
+        container.appendChild(document.createElement('h3')).appendChild(document.createTextNode(suiteName));
 
-        function fail(message) {
+        Tester(function(message) {
             var entry = document.createElement('li');
             container.appendChild(entry);
             entry.appendChild(document.createTextNode(message));
-        }
-
-        function success(message) {
-            var entry = document.createElement('li');
-            container.appendChild(entry);
-            entry.appendChild(document.createTextNode(message || 'ok'));
-        }
-
-        Tester(success, fail);
+        });
 
         var previousContainer = container;
         tests(function(testName, thunk) {
-            container.appendChild(document.createElement('h4').appendChild(document.createTextNode(testName)));
+            container.appendChild(document.createElement('h4')).appendChild(document.createTextNode(testName));
             container = previousContainer.appendChild(document.createElement('ol'));
             thunk();
             container = previousContainer;
@@ -81,7 +66,7 @@ function InPageRunner(tests) {
     };
 }
 
-window.onload = InPageRunner(function(test) {
+window.onload = InPageRunner('Less is more', function(test) {
     test('Check greatness', function() {
         checkTrue(4 > 5, '4 is not greater than 5');
         checkTrue(3 > 5, '3 is not greater than 5');
