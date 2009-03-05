@@ -20,7 +20,7 @@ var indexOf = operator($witch(function(condition) {
 
     condition(isArray, function(items, item) {
         for (var i = 0, size = items.length; i < size; i++) {
-            if (items[i] = item) {
+            if (items[i] == item) {
                 return i;
             }
         }
