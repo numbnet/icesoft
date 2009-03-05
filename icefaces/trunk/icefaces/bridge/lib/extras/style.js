@@ -112,6 +112,7 @@ Ice.modal = {
             iframe.style.position = 'absolute';
             iframe.style.visibility = 'hidden';
             iframe.style.backgroundColor = 'black';
+            iframe.style.borderWidth = "0";
 
             iframe.style.top = '0';
             iframe.style.left = '0';
