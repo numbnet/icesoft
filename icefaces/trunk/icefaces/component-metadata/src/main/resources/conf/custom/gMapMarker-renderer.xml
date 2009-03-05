@@ -35,7 +35,23 @@
 <renderer>
 	<description>
 		<![CDATA[
-            This component uses the google map's GMarker API, which displays the points on the map.
+            This component uses the google map's GMarker API, which displays the 
+            points on the map. <br/>
+            To define the marker the "longitude" and the "latitude" attributes of this 
+            component can be used (e.g.)
+            <p>
+            &lt;ice:gMap&gt;<br/>
+            &nbsp;&nbsp;&lt;ice:gMapMarker latitude="51" longitude="-90"/&gt;<br/>
+            &lt;/ice:gMap&gt;    
+            </p>
+            In addition to that the "gMapLatLng" and "gMapLatLngs" components can 
+            be used as its children (e.g.)<br/>
+            &lt;ice:gMap&gt;<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapMarker latitude="51" longitude="-90"/&gt;<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapLatLng latitude="51.067591" longitude="-114.084862"/&gt;<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapLatLngs value="#{gmap.points}"/&gt; <br/>  
+            &nbsp;&nbsp;&lt;/ice:gMapMarker&gt;<br/>
+            &lt;/ice:gMap&gt;<br/>              
          ]]>
 	</description>
 	<component-family>com.icesoft.faces.GMapMarker</component-family>
