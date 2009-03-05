@@ -29,10 +29,10 @@ function Tester(failure) {
     };
 
     fail = function(message, exception) {
-        failure(message + (exception && ' > ' + String(exception) || ''));
+        failure(message + (exception && ' -- ' + String(exception) || ''));
     };
 
-    checkEqual = function(ref, tested, message) {
+    checkEqual = function(tested, ref, message) {
         if (ref != tested) {
             failure(message || ('expected value is (' + ref + ') but it was (' + tested + ')'));
         }
@@ -77,10 +77,9 @@ function InPageRunner(suiteName, tests) {
 window.onload = InPageRunner('Less is more', function(test) {
     test('Check greatness', function() {
         checkTrue(4 < 5, '4 is not greater than 5');
-        checkTrue(3 > 5, '3 is not greater than 5');
-        checkTrue(3 < 5, '3 is greater than 5');
+        checkTrue(3 < 5, '3 is not greater than 5');
         checkException(function() {
-            throw '';
+            throw 'dfgdf';
         }, 'Failed to detect exception');
 
         try {
