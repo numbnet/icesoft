@@ -177,7 +177,10 @@ function FCKeditorSave(editorInstance) {
 //need to use the Ice.FCKeditorUtility.activeEditor instead
     var instanceName = Ice.FCKeditorUtility.activeEditor;
     var editIns = FCKeditorAPI.GetInstance(instanceName);
-    if (editIns == null) return;    
+    if (editIns == null) {
+        Ice.FCKeditorUtility.saveClicked=true;
+        return;
+    }    
     //clear malformed parameters
     var unwantedField = $(instanceName + "___Config");
     if (unwantedField){
