@@ -58,8 +58,8 @@
 	<renderer-type>null</renderer-type>
 	<renderer-extension>
 		<instance-name>gMapMarker</instance-name>
-		<is-container>false</is-container>
-		<renders-children>false</renders-children>
+		<is-container>true</is-container>
+		<renders-children>true</renders-children>
 		<tag-name>gMapMarker</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
