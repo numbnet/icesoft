@@ -16,7 +16,7 @@
 				action="#{shoppingBean.send}" />
 			<h:message id="message1" for="input1" />
 
-			<h:commandButton actionListener action="logout" value="Logout" immediate="true"/>
+			<h:commandButton action="logout" value="Logout" immediate="true"/>
 		</h:panelGrid>
 	</h:form>
 </f:view>
