@@ -2,7 +2,6 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Collection tests</title>
     <script type="text/javascript" src="../newlib/oo.js"></script>
     <script type="text/javascript" src="../newlib/functional.js"></script>
     <script type="text/javascript" src="../newlib/collection.js"></script>
@@ -21,21 +20,18 @@
                 checkFalse(isString(new Object), 'string is detected falsely');
             });
 
-            test('Indexed access in arrays', function() {
+            test('Indexed access', function() {
                 checkEqual(indexOf([1, 2, 3], 1), 0);
                 checkEqual(indexOf([1, 2, 3], 2), 1);
                 checkEqual(indexOf(['a', 'b', 'c'], 'c'), 2);
                 checkEqual(indexOf(['a', 'b', 'c'], 'd'), -1);
-                checkException(function() {
-                    indexOf(new Object, 1);
-                });
-            });
-
-            test('Indexed access in strings', function() {
                 checkEqual(indexOf('abc', 'a'), 0);
                 checkEqual(indexOf('abc', 'b'), 1);
                 checkEqual(indexOf('abc', 'c'), 2);
                 checkEqual(indexOf('abc', 'd'), -1);
+                checkException(function() {
+                    indexOf(new Object, 1);
+                });
             });
         });
     </script>
