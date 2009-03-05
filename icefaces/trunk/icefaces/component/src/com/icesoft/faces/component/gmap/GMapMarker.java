@@ -21,7 +21,9 @@ public class GMapMarker extends UIPanel{
     
 	private Boolean draggable;
     private String longitude;
-    private String latitude;	
+    private String latitude;
+    private transient String oldLongitude;
+    private transient String oldLatitude;    
     private List point = new ArrayList();
     
 	public GMapMarker() {
@@ -41,6 +43,25 @@ public class GMapMarker extends UIPanel{
     }
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
+    	String currentLat = getLatitude();
+    	String currentLon = getLongitude();
+    	//create a marker if lat and lon defined on the component itself
+    	if (currentLat != null &&  currentLon != null) {
+    	    if (!currentLat.equals(oldLatitude) || 
+    	            !currentLon.equals(oldLongitude)) {
+    	        //to dynamic support first to remove if any
+                JavascriptContext.addJavascriptCall(context, 
+                        "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+                        .getClientId(context)+"', '"+ getClientId(context)+"');"); 
+                JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
+                        "addOverlay('"+ this.getParent().getClientId(context)+
+                        "', '"+ getClientId(context)+"', " +
+                      "'new GMarker(new GLatLng("+ currentLat+","+ currentLon +"))');");                
+                
+    	    }
+    	    oldLatitude = currentLat;
+    	    oldLongitude = currentLon;
+    	}
     }
     
     public void encodeChildren(FacesContext context) throws IOException {
@@ -153,6 +174,19 @@ public class GMapMarker extends UIPanel{
         values[3] = draggable;        
         values[4] = point;        
         return values;
+    }
+    
+    public boolean isRendered() {
+        boolean rendered = super.isRendered();
+        if (!rendered) {
+            FacesContext context = getFacesContext();
+            JavascriptContext.addJavascriptCall(context, 
+                    "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+                    .getClientId(context)+"', '"+ getClientId(context)+"');");  
+            oldLongitude = null;
+            oldLatitude = null;
+        }
+        return rendered;
     }
 
 }
