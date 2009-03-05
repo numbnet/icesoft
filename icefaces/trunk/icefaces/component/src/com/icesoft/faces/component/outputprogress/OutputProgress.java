@@ -30,15 +30,11 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
 package com.icesoft.faces.component.outputprogress;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.util.DOMUtils;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -58,39 +54,30 @@ import javax.faces.el.ValueBinding;
 public class OutputProgress extends UIComponentBase {
 
     private final String DEFAULT_LABEL_POSITION = "embed";
-
     private String label = null;
-
     private String labelPosition = null;
-
     private String labelComplete = null;
-
     private String styleClass = null;
-
     private boolean labelPositionChanged = false;
-
     private String style = null;
-
     private Integer value = null;
-
     private Boolean indeterminate = null;
-
     private String renderedOnUserRole;
 
     /*
-      * (non-Javadoc)
-      *
-      * @see javax.faces.component.UIComponent#getFamily()
-      */
+     * (non-Javadoc)
+     *
+     * @see javax.faces.component.UIComponent#getFamily()
+     */
     public String getFamily() {
         return "com.icesoft.faces.Progress";
     }
 
     /*
-      * (non-Javadoc)
-      *
-      * @see javax.faces.component.UIComponent#getRendererType()
-      */
+     * (non-Javadoc)
+     *
+     * @see javax.faces.component.UIComponent#getRendererType()
+     */
     public String getRendererType() {
         return "com.icesoft.faces.Bar";
     }
@@ -152,9 +139,9 @@ public class OutputProgress extends UIComponentBase {
             return value.intValue();
         }
         ValueBinding vb = getValueBinding("value");
-        if(vb != null) {
+        if (vb != null) {
             Integer val = (Integer) vb.getValue(getFacesContext());
-            if(val != null) {
+            if (val != null) {
                 return val.intValue();
             }
         }
@@ -173,7 +160,7 @@ public class OutputProgress extends UIComponentBase {
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-    public boolean getIndeterminate() {
+    public boolean isIndeterminate() {
         if (indeterminate != null) {
             return indeterminate.booleanValue();
         }
@@ -182,6 +169,15 @@ public class OutputProgress extends UIComponentBase {
             return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
         }
         return false;
+    }
+
+    /**
+     * <p>
+     * Using isIndeterminate instead. </p>
+     * @Deprecated
+     */
+    public boolean getIndeterminate() {
+        return isIndeterminate();
     }
 
     public void setIndeterminate(boolean b) {
@@ -195,10 +191,10 @@ public class OutputProgress extends UIComponentBase {
     public String getProgressLabel() {
         if (getLabel() == null && getIndeterminate()) {
             return "in progress...";
-        } else if (getLabel() != null){
-            return DOMUtils.escapeAnsi(getLabel());            
+        } else if (getLabel() != null) {
+            return DOMUtils.escapeAnsi(getLabel());
         } else {
-            return getLabel(); 
+            return getLabel();
         }
     }
 
@@ -212,7 +208,7 @@ public class OutputProgress extends UIComponentBase {
         }
         ValueBinding vb = getValueBinding("labelPosition");
         return vb != null ? (String) vb.getValue(getFacesContext())
-               : DEFAULT_LABEL_POSITION;
+                : DEFAULT_LABEL_POSITION;
     }
 
     /**
@@ -255,36 +251,37 @@ public class OutputProgress extends UIComponentBase {
      * Return the value of the <code>styleClass</code> property. </p>
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                    styleClass,
-                    CSS_DEFAULT.OUTPUT_PROGRESS_BASE_CLASS,
-                    "styleClass");
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.OUTPUT_PROGRESS_BASE_CLASS,
+                "styleClass");
     }
-    
+
     public String getTextClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.OUTPUT_PROGRESS_TEXT_STYLE_CLASS);
     }
 
     public String getBackgroundClass() {
-        return Util.getQualifiedStyleClass(this, 
-                CSS_DEFAULT.OUTPUT_PROGRESS_BG_STYLE_CLASS);        
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.OUTPUT_PROGRESS_BG_STYLE_CLASS);
     }
-    
+
     public String getFillClass() {
-        return Util.getQualifiedStyleClass(this, 
-                CSS_DEFAULT.OUTPUT_PROGRESS_FILL_STYLE_CLASS);          
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.OUTPUT_PROGRESS_FILL_STYLE_CLASS);
     }
-    
+
     public String getIndeterminateActiveClass() {
-        return Util.getQualifiedStyleClass(this,                             
-                CSS_DEFAULT.OUTPUT_PROGRESS_INDETERMINATE_ACTIVE_CLASS);           
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.OUTPUT_PROGRESS_INDETERMINATE_ACTIVE_CLASS);
     }
-    
+
     public String getIndeterminateInactiveClass() {
-        return Util.getQualifiedStyleClass(this, 
-                CSS_DEFAULT.OUTPUT_PROGRESS_INDETERMINATE_INACTIVE_CLASS);         
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.OUTPUT_PROGRESS_INDETERMINATE_INACTIVE_CLASS);
     }
+
     /**
      * <p>
      * Return the value of the <code>rendered</code> property. </p>
@@ -331,7 +328,7 @@ public class OutputProgress extends UIComponentBase {
         value = (Integer) values[5];
         style = (String) values[6];
         renderedOnUserRole = (String) values[7];
-        styleClass = (String)values[8];
+        styleClass = (String) values[8];
         indeterminate = (Boolean) values[9];
     }
 
@@ -352,5 +349,4 @@ public class OutputProgress extends UIComponentBase {
         ValueBinding vb = getValueBinding("renderedOnUserRole");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-
 }
