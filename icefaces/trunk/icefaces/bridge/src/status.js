@@ -247,7 +247,9 @@
 
         on: function() {
             var overlay = this.container.ownerDocument.createElement('iframe');
-            overlay.setAttribute('src', 'about:blank');
+            var sendURI = Ice.ElementModel.Element.adaptToElement(this.container).findConnection().sendURI;
+            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
+            overlay.setAttribute('src', webappContext + "xmlhttp/blank");
             overlay.setAttribute('frameborder', '0');
             var overlayStyle = overlay.style;
             overlayStyle.position = 'absolute';
