@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletResponse;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -28,18 +27,17 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.definition.registry.NoSuchFlowDefinitionException;
 
 import com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet;
-import com.icesoft.faces.webapp.http.servlet.ServletEnvironmentRequest;
 
 public class SwfLifecycleExecutor extends LifecycleExecutor  {
     private static Log log = LogFactory.getLog(SwfLifecycleExecutor.class);
 	private static final String SERVLET_RELATIVE_LOCATION_PREFIX = "servletRelative:";
 	private static final String CONTEXT_RELATIVE_LOCATION_PREFIX = "contextRelative:";
 	private static final String SERVER_RELATIVE_LOCATION_PREFIX = "serverRelative:";
-    
+
 	private FlowUrlHandler flowUrlHandler = new DefaultFlowUrlHandler();
 
     public void apply(FacesContext facesContext)  {
-        FlowExecutor flowExecutor = (FlowExecutor) 
+        FlowExecutor flowExecutor = (FlowExecutor)
                 SpringWebFlowInstantiationServlet.getFlowExecutor();
         ExternalContext externalContext = facesContext.getExternalContext();
 
@@ -47,9 +45,14 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse servletResponse = (HttpServletResponse) externalContext.getResponse();
         String flowExecutionKey = servletRequest.getParameter("org.springframework.webflow.FlowExecutionKey");
+
+        // if the ajax value is null, try the URL parameter from a possible GET.
+        if (flowExecutionKey == null) {
+            flowExecutionKey = servletRequest.getParameter("execution");
+        }
         String flowId = firstSegment(servletRequest.getPathInfo());
         try {
-            ServletExternalContext servletExternalContext = 
+            ServletExternalContext servletExternalContext =
                 new ServletExternalContext(
                         servletContext, servletRequest, servletResponse );
 		servletExternalContext.setAjaxRequest(true);
@@ -58,14 +61,16 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
                 result = flowExecutor.resumeExecution(
                         flowExecutionKey, servletExternalContext);
             } else {
-                MutableAttributeMap input = 
+                MutableAttributeMap input =
                     defaultFlowExecutionInputMap(servletRequest);
                 result = flowExecutor.launchExecution(
                         flowId, input, servletExternalContext);
             }
-            
+
+            // pass the facesContext, as in some circumstances, it's been cleared
+            // from the threadlocal.
             handleFlowExecutionResult(result, servletExternalContext,
-                    servletRequest, servletResponse);
+                    servletRequest, servletResponse, facesContext);
         } catch (NoSuchFlowDefinitionException e)  {
             jsfExecutor.apply(facesContext);
         } catch (IOException e) {
@@ -83,21 +88,21 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
         return path1;
     }
 
-	private void handleFlowExecutionResult(FlowExecutionResult result, ServletExternalContext context,
-			HttpServletRequest request, HttpServletResponse response)  throws IOException {
+    private void handleFlowExecutionResult(FlowExecutionResult result, ServletExternalContext context,
+			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext)  throws IOException {
 		if (result.isPaused()) {
 			if (context.getFlowExecutionRedirectRequested()) {
-				sendFlowExecutionRedirect(result, context, request, response);
+				sendFlowExecutionRedirect(result, context, request, response, facesContext);
 			} else if (context.getFlowDefinitionRedirectRequested()) {
-				sendFlowDefinitionRedirect(result, context, request, response);
+				sendFlowDefinitionRedirect(result, context, request, response, facesContext);
 			} else if (context.getExternalRedirectRequested()) {
-				sendExternalRedirect(context.getExternalRedirectUrl(), request, response);
+				sendExternalRedirect(context.getExternalRedirectUrl(), request, response, facesContext);
 			}
 		} else if (result.isEnded()) {
 			if (context.getFlowDefinitionRedirectRequested()) {
-				sendFlowDefinitionRedirect(result, context, request, response);
+				sendFlowDefinitionRedirect(result, context, request, response, facesContext);
 			} else if (context.getExternalRedirectRequested()) {
-				sendExternalRedirect(context.getExternalRedirectUrl(), request, response);
+				sendExternalRedirect(context.getExternalRedirectUrl(), request, response, facesContext);
 			} else {
             /* What is the function of the handler?
 				String location = handler.handleExecutionOutcome(result.getOutcome(), request, response);
@@ -107,11 +112,11 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             */
                 defaultHandleExecutionOutcome(result.getFlowId(), result.getOutcome(), request, response);
 			}
-		} else {
+        } else {
 			throw new IllegalStateException("Execution result should have been one of [paused] or [ended]");
 		}
 	}
-    
+
 	protected void defaultHandleExecutionOutcome(String flowId, FlowExecutionOutcome outcome,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (!response.isCommitted()) {
@@ -120,7 +125,7 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 	}
 
 	private void sendFlowExecutionRedirect(FlowExecutionResult result, ServletExternalContext context,
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
+			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext) throws IOException {
 		String url = flowUrlHandler.createFlowExecutionUrl(result.getFlowId(), result.getPausedKey(), request);
 		if (log.isDebugEnabled()) {
 			log.debug("Sending flow execution redirect to '" + url + "'");
@@ -130,11 +135,11 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 			ajaxHandler.sendAjaxRedirect(url, request, response, context.getRedirectInPopup());
 		} else {
         */
-        sendRedirect(url, request, response);
+        sendRedirect(url, request, response, facesContext);
 	}
 
 	private void sendFlowDefinitionRedirect(FlowExecutionResult result, ServletExternalContext context,
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
+			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext) throws IOException {
 		String flowId = context.getFlowRedirectFlowId();
 		MutableAttributeMap input = context.getFlowRedirectFlowInput();
 		if (result.isPaused()) {
@@ -144,17 +149,17 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 		if (log.isDebugEnabled()) {
 			log.debug("Sending flow definition redirect to '" + url + "'");
 		}
-		sendRedirect(url, request, response);
+		sendRedirect(url, request, response, facesContext);
 	}
 
-	private void sendExternalRedirect(String location, HttpServletRequest request, HttpServletResponse response)
+	private void sendExternalRedirect(String location, HttpServletRequest request, HttpServletResponse response,  FacesContext facesContext)
 			throws IOException {
 		if (log.isDebugEnabled()) {
 			log.debug("Sending external redirect to '" + location + "'");
 		}
 		if (location.startsWith(SERVLET_RELATIVE_LOCATION_PREFIX)) {
 			sendServletRelativeRedirect(location.substring(SERVLET_RELATIVE_LOCATION_PREFIX.length()), request,
-					response);
+					response, facesContext);
 		} else if (location.startsWith(CONTEXT_RELATIVE_LOCATION_PREFIX)) {
 			StringBuffer url = new StringBuffer(request.getContextPath());
 			String contextRelativeUrl = location.substring(CONTEXT_RELATIVE_LOCATION_PREFIX.length());
@@ -162,21 +167,21 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 				url.append('/');
 			}
 			url.append(contextRelativeUrl);
-			sendRedirect(url.toString(), request, response);
+			sendRedirect(url.toString(), request, response, facesContext);
 		} else if (location.startsWith(SERVER_RELATIVE_LOCATION_PREFIX)) {
 			String url = location.substring(SERVER_RELATIVE_LOCATION_PREFIX.length());
 			if (!url.startsWith("/")) {
 				url = "/" + url;
 			}
-			sendRedirect(url, request, response);
+			sendRedirect(url, request, response, facesContext);
 		} else if (location.startsWith("http://") || location.startsWith("https://")) {
-			sendRedirect(location, request, response);
+			sendRedirect(location, request, response, facesContext);
 		} else {
-			sendServletRelativeRedirect(location, request, response);
+			sendServletRelativeRedirect(location, request, response, facesContext);
 		}
 	}
 
-	private void sendServletRelativeRedirect(String location, HttpServletRequest request, HttpServletResponse response)
+	private void sendServletRelativeRedirect(String location, HttpServletRequest request, HttpServletResponse response, FacesContext facesContext)
 			throws IOException {
 		StringBuffer url = new StringBuffer(request.getContextPath());
 		url.append(request.getServletPath());
@@ -184,10 +189,10 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 			url.append('/');
 		}
 		url.append(location);
-		sendRedirect(url.toString(), request, response);
+		sendRedirect(url.toString(), request, response, facesContext);
 	}
 
-	private void sendRedirect(String url, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void sendRedirect(String url, HttpServletRequest request, HttpServletResponse response, FacesContext facesContext) throws IOException {
 		/* SWF Ajax popup features
         if (ajaxHandler.isAjaxRequest(request, response)) {
 			ajaxHandler.sendAjaxRedirect(url, request, response, false);
@@ -199,9 +204,17 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             response.sendRedirect(response.encodeRedirectURL(url));
         } else {
         */
-        // Correct HTTP status code is 303, in particular for POST requests.
-        response.setStatus(303);
-        response.setHeader("Location", response.encodeRedirectURL(url));
+
+        ExternalContext ec = null;
+        if ( (facesContext != null) && ( (ec = facesContext.getExternalContext() ) != null)) {
+            ec.redirect( response.encodeRedirectURL( url ));
+        } else {
+            // I'm not sure if there is a case for this legacy redirection code.
+            // FacesContext has been released in an unusual path?
+            // Correct HTTP status code is 303, in particular for POST requests.
+            response.setStatus(303);
+            response.setHeader("Location", response.encodeRedirectURL(url));
+        }
 	}
 
     protected MutableAttributeMap defaultFlowExecutionInputMap(HttpServletRequest request) {
