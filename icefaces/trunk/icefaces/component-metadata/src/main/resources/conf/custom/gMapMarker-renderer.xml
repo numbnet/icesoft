@@ -47,7 +47,7 @@
             In addition to that the "gMapLatLng" and "gMapLatLngs" components can 
             be used as its children (e.g.)<br/>
             &lt;ice:gMap&gt;<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapMarker latitude="51" longitude="-90"/&gt;<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapMarker latitude="51" longitude="-90"&gt;<br/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapLatLng latitude="51.067591" longitude="-114.084862"/&gt;<br/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:gMapLatLngs value="#{gmap.points}"/&gt; <br/>  
             &nbsp;&nbsp;&lt;/ice:gMapMarker&gt;<br/>
