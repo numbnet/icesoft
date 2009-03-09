@@ -159,12 +159,18 @@ public class OutputBody extends javax.faces.component.UIComponentBase{
     public void setFocus(String focus, FacesContext fc){
         UIComponent target = null;
         if( focus.indexOf(':') > -1){
-            target = this.findComponent(focus);
+            applyFocus(fc,focus);
+          
         } else {
             target = D2DViewHandler.findComponentInView(this,focus);
+            if( target != null){
+                applyFocus(fc,target.getClientId(fc));            }            
         }
-        if( target != null && !focus.equals(previousFocus) ){
-            JavascriptContext.applicationFocus(fc,target.getClientId(fc));
+    }
+    
+    void applyFocus(FacesContext facesContext, String focus) {
+        if (!focus.equals(previousFocus)){
+            JavascriptContext.applicationFocus(facesContext,focus);
             previousFocus = focus;
         }
     }
