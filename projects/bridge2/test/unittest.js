@@ -46,11 +46,20 @@ function Tester(failure) {
 }
 
 function InPageRunner(suiteName, tests) {
-    function styleCell(cell) {
-        cell.style.padding = '5px';
+    function styleNormalCell(cell) {
+        cell.style.padding = '6px';
         cell.style.borderColor = 'green';
         cell.style.borderBottomWidth = '1px';
         cell.style.borderBottomStyle = 'dotted';
+    }
+
+    function styleHeaderCell(cell) {
+        cell.style.padding = '6px';
+        cell.style.backgroundColor = '#dddddd';
+        cell.style.borderColor = 'green';
+        cell.style.borderBottomWidth = '1px';
+        cell.style.borderBottomStyle = 'solid';
+        return cell;
     }
 
     function timeThunk(thunk) {
@@ -66,9 +75,9 @@ function InPageRunner(suiteName, tests) {
         cursor.appendChild(document.createElement('h3')).appendChild(document.createTextNode(suiteName));
         cursor = cursor.appendChild(document.createElement('table'));
         var titles = cursor.appendChild(document.createElement('tr'));
-        titles.appendChild(document.createElement('td')).appendChild(document.createTextNode('Test Case'));
-        titles.appendChild(document.createElement('td')).appendChild(document.createTextNode('Result'));
-        titles.appendChild(document.createElement('td')).appendChild(document.createTextNode('Time (ms)'));
+        styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Test Case'));
+        styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Result'));
+        styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Time (ms)'));
         cursor.style.borderCollapse = 'collapse';
 
         document.title = suiteName;
@@ -80,8 +89,8 @@ function InPageRunner(suiteName, tests) {
             error.appendChild(document.createTextNode(message));
             error.style.letterSpacing = '0.12em';
             cursor.style.backgroundColor = '#ee4444';
-            styleCell(error);
-            styleCell(empty);
+            styleNormalCell(error);
+            styleNormalCell(empty);
             throw interruptTest;
         });
 
@@ -93,17 +102,17 @@ function InPageRunner(suiteName, tests) {
 
                 var testTitle = cursor.appendChild(document.createElement('td'));
                 testTitle.appendChild(document.createTextNode(testName));
-                styleCell(testTitle);
+                styleNormalCell(testTitle);
 
                 var elapsedTime = timeThunk(thunk);
 
                 var result = cursor.appendChild(document.createElement('td'));
                 result.appendChild(document.createTextNode('okay'));
-                styleCell(result);
+                styleNormalCell(result);
 
                 var time = cursor.appendChild(document.createElement('td'));
                 time.appendChild(document.createTextNode(elapsedTime));
-                styleCell(time);
+                styleNormalCell(time);
             } catch (e) {
                 if (e != interruptTest) throw e;
             } finally {
