@@ -30,28 +30,18 @@ into data table for selecting trips for CRUD operations.</li>
 During the course of this guide the following topics are
 discussed:<br>
 <ul>
-  <li><a href="#Eliminating_component_bindings">Eliminating the
-component bindings in the working example</a></li>
-  <li><a href="#Building_an_icefaces_data_table_">Creating an ICEfaces
-data table</a></li>
-  <li><a href="#Completing_the_working_example">Completing the working
-example</a></li>
-  <ul>
-    <li><a href="#Porting_the_remainer_of_the_page">Porting the
-remainder of the page</a></li>
-    <li><a href="#Modifying_the_backing_bean">Modifying the backing bean</a></li>
-    <li><a href="#Modifying_the_backing_bean">Modifying the navigation</a></li>
-    <li><a href="#Data_table_sortable_header">Working with sortable
-columns</a><br>
-    </li>
-  </ul>
+  <li><a href="#extended_request_scope">ICEfaces Extended Request Scope</a></li>
+  <li><a href="#Row_Selector_in_data_table">Row Selector in Data Table</a></li>
+  <li><a href="#rendered_attribute">Using the ICEfaces rendered Attribute</a></li>
+  <li><a href="#using_panelStack">Using ice:panelStack</a></li>
+  <li><a href="#multiple_view_support">Multiple View Support</a></li>
 </ul>
 <p>At the completion of this guide you will understand the basic
 concepts of how to build single page interfaces with ICEfaces.&nbsp;
 The completed project for this step of the guide is
 available <a href="TwoPageCrudTable_Part3.zip">here</a>.<br>
 </p>
-<h3>ICEfaces Extended Request Scope</h3>
+<h3><a name="extended_request_scope"></a>ICEfaces Extended Request Scope</h3>
 Standard request scope associates page state with a single request
 cycle, and is well-suited to multi-page applications where the page is
 refreshed after each request.&nbsp; When you consider single page
@@ -480,7 +470,7 @@ selected, as illustrated below.<br>
 <br>
 We will now move on to modify the buttons to use an <span
  style="font-style: italic;">ice:panelStack</span>.<br>
-<h3>Using <span style="font-style: italic;">ice:panelStack</span></h3>
+<h3><a name="using_panelStack"></a>Using <span style="font-style: italic;">ice:panelStack</span></h3>
 The <span style="font-style: italic;">ice:panelStack</span> is a
 component that provides a stack of <span style="font-style: italic;">ice:panelGroup</span>s
 of which only one is visible at a time.&nbsp; The visible panel is
@@ -1237,7 +1227,7 @@ error("Cannot update trip:data " + e);</span><br
 </ol>
 You should now be able to run the project and test all it's CRUD
 functions from the single page interface.<br>
-<h3>Multiple View Support</h3>
+<h3><a name="multiple_view_support"></a>Multiple View Support</h3>
 Once you have an effective single page interface for your application
 you might consider using it in multiple browser windows or tabs, with
 each view being in a different state.&nbsp; ICEfaces provides complete
@@ -1319,7 +1309,7 @@ Now if you run the application in multiple browser windows, each will
 have independant sort headers as illustrated below.<img
  style="width: 750px; height: 704px;" alt="Multiple Browser Windows"
  src="images/Multiview2.png"><br>
-<h3><a name="Finished_part_2"></a>Finished Part 3<br>
+<h3><a name="Finished_part_3"></a>Finished Part 3<br>
 </h3>
 <p>You have now completed Part 3 of the Woodstock to ICEfaces Porting
 Guide.&nbsp; The completed project for this step of the guide is
@@ -1328,10 +1318,7 @@ At
 this point you can go back to the <a
  href="WoodstockToICEfacesPortingGuide.html">table of contents</a>, <a
  href="PortingGuidePart1.html">Part 1</a> or <a
- href="PortingGuidePart2.html">Part 2</a> of the guide, or
-move on to <a href="PortingGuidePart3.html">Part 3</a> of the guide,
-which focuses on aspects of creating a Single Page Interface using
-ICEfaces.&nbsp;
+ href="PortingGuidePart2.html">Part 2</a> of the guide.&nbsp;
 <br>
 <br>
 </p>
