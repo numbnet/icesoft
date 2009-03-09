@@ -4,31 +4,1336 @@
   <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
   <title>Woodstock to ICEfaces Porting Guide - Part 3</title>
   <link href="css/woodstock-styles.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-</style>
 </head>
 <body>
 <h2>Woodstock to ICEfaces Porting Guide - Part 3<br>
 </h2>
-<span style="font-weight: bold;"></span><p>Part 3 of this guide builds on
-the work completed in <a href="PortingGuidePart1.html">Part 2</a>.&nbsp;
-At the completion of Part 2, the Woodstock <span
- style="font-style: italic;">Page1 </span>and<span
- style="font-style: italic;"> CreatePage</span> have been replaced with
-the
-ICEfaces <span style="font-style: italic;">IcePage1 </span>and<span
- style="font-style: italic;"> IceCreatePage</span>.&nbsp;
-This part of the porting guide focuses on aspects of creating a Single
-Page Interface that replaces the multi-page interface currently
-implemented.<br>
+<span style="font-weight: bold;"></span>
+<p>Part 3 of this guide builds on
+the work completed in <a href="PortingGuidePart2.html">Part 2</a>.&nbsp;
+At the completion of Part 2, the ICEfaces <span
+ style="font-style: italic;">IcePage1.jsp</span> and <span
+ style="font-style: italic;">IceCreatepage.jsp</span> have replaced the
+Woodstock <span style="font-style: italic;">Page1.jsp</span> and <span
+ style="font-style: italic;">CreatePage.jsp</span> pages
+respectively.&nbsp; The focus of Part 3 is to build a single page
+interface to replace the existing multi page interface.&nbsp; The
+target capabilities for this interface include:<br>
+</p>
+<ul>
+  <li>Master/detail view in a single page</li>
+  <li>Eliminate update and delete buttons, and incorporate row selector
+into data table for selecting trips for CRUD operations.</li>
+  <li>Introduce panel stack of buttons for the various CRUD operations.</li>
+  <li>Introduce multi window capabilities</li>
+</ul>
+During the course of this guide the following topics are
+discussed:<br>
+<ul>
+  <li><a href="#Eliminating_component_bindings">Eliminating the
+component bindings in the working example</a></li>
+  <li><a href="#Building_an_icefaces_data_table_">Creating an ICEfaces
+data table</a></li>
+  <li><a href="#Completing_the_working_example">Completing the working
+example</a></li>
+  <ul>
+    <li><a href="#Porting_the_remainer_of_the_page">Porting the
+remainder of the page</a></li>
+    <li><a href="#Modifying_the_backing_bean">Modifying the backing bean</a></li>
+    <li><a href="#Modifying_the_backing_bean">Modifying the navigation</a></li>
+    <li><a href="#Data_table_sortable_header">Working with sortable
+columns</a><br>
+    </li>
+  </ul>
+</ul>
+<p>At the completion of this guide you will understand the basic
+concepts of how to build single page interfaces with ICEfaces.&nbsp;
+The completed project for this step of the guide is
+available <a href="TwoPageCrudTable_Part3.zip">here</a>.<br>
+</p>
+<h3>ICEfaces Extended Request Scope</h3>
+Standard request scope associates page state with a single request
+cycle, and is well-suited to multi-page applications where the page is
+refreshed after each request.&nbsp; When you consider single page
+interfaces based on Ajax techniques, a single page can be associated
+with multiple requests.&nbsp; Using standard request scope requires
+that the entire request scope state be reestablished with each of the
+underlying Ajax requests, which could prove to be grossly
+inefficient.&nbsp; You could consider moving state to session scope,
+which is maintained across multiple requests in the session, but that
+is far from an ideal solution.&nbsp; This is particularly evident when
+you look to support multiple views onto the same web app from a single
+client.&nbsp; These views share a common session, but each page could
+potentially be in a considerably different state, making session scope
+unsuitable for maintaining the page state.&nbsp; Basically, the
+standard scoping model did not anticipate Ajax-based implementations
+and becomes cumbersome for single page interfaces.<br>
 <br>
-<span style="font-weight: bold;">This part of the guide is still under
-construction.</span><br>
+ICEfaces features an extended request scope, where the request scope
+state is maintained across multiple requests associated with a single
+page, overcoming the deficiencies of the standard scoping model.&nbsp;
+The use of extended request scope is controlled through a configuration
+parameter in the <span style="font-style: italic;">web.xml</span>
+file.&nbsp; When the ICEfaces framework is added to an existing
+Woodstock project, standard request scope is turned on by default to
+maintain existing behavior.&nbsp; In order to begin working with
+extended request scope the configuration must be adjusted as follows.<br>
 <br>
-From here you can go back to the <a
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;context-param&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;com.icesoft.faces.standardRequestScope&lt;/param-name&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-value&gt;false&lt;/param-value&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/context-param&gt;</span><br style="font-weight: bold;">
+<br>
+All subsequent modifications to the working example are based on the
+use of extended request scope, so adjust the configuration
+appropriately before proceeding.&nbsp; As we start to introduce row
+selection and master/detail views to our single page interface, we will
+leverage extended request scope to maintain the necessary state.&nbsp;
+This will position us to add multi-view capabilities later.&nbsp; As
+part of this strategy we will eliminate dependencies on the session
+scoped state.<br>
+<p></p>
+<h3><a name="Row_Selector_in_data_table"></a>Row Selector in Data Table<br>
+</h3>
+<p><span style="font-style: italic;"></span>The <span
+ style="font-style: italic;">ice:rowSelector</span> facilitates the
+selection of one or more rows from an <span style="font-style: italic;">ice:dataTable</span>
+using the mouse.&nbsp; A style class is used to visually distinguish
+rows for mouse over and selection events.&nbsp; The programing model
+for row selection includes the following:<br>
+</p>
+<ol>
+  <li>The <span style="font-style: italic;">value</span> attribute
+binding of the row selector is to an iterable data model that maintains
+the boolean state of the selection status of each row in the
+table.&nbsp;&nbsp; When the table is rendered, this data model will be
+called for each row in the table to determine if it is selected or
+not.&nbsp; When row selection occurs, a setter into this data model is
+used to update the state.&nbsp; In the case of single row selection,
+this involves setting the newly selected row to <span
+ style="font-style: italic;">true</span>, and the previously selected
+row to <span style="font-style: italic;">false</span>.</li>
+  <li>The <span style="font-style: italic;">selectionListener</span>
+attribute is a method expression binding to the method responsible for
+business logic process that occurs as a result of row selection.<br>
+  </li>
+</ol>
+In order to add the row selector to our working example, the following
+steps are taken using design mode in NetBeans.
+<p></p>
+<ol>
+  <li>Select the last column of the <span style="font-style: italic;">dataTable</span>
+and delete it to eliminate the Update and Delete buttons from the table.</li>
+  <li>Right click the <span style="font-style: italic;">dataTable</span>
+and from the context menu select <span style="font-style: italic;">Add
+Row Selector...&nbsp; </span>This will bring up a binding dialog that
+allows you to define the selection listener as illustrated below.<br>
+    <img style="width: 602px; height: 337px;" alt="Row Selector Binding"
+ src="images/rowSelectorDialog.png"></li>
+  <li>If you examine the JSP code you will see the following
+declaration in the first column of the <span
+ style="font-style: italic;">dataTable</span>.<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&lt;ice:rowSelector
+id="rowSelector1"
+selectionListener="#{IcePage1.rowSelector1_processAction}"/&gt;<br>
+    <span style="font-weight: bold;"></span></span>Modify this to add a
+value binding as follows.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:rowSelector id="rowSelector1"
+selectionListener="#{IcePage1.rowSelector1_processAction}"<span
+ style="font-weight: bold;">
+value="#{IcePage1.rowSelected}" immediate="false"</span>/&gt;<br>
+The <span style="font-style: italic;">value</span> attribute binds to
+our row selection data model, and <span style="font-style: italic;">immediate</span>
+is set to false because we do not want row selection to be applied to
+the data model<br>
+  </li>
+</ol>
+<p>We will now turn our attention to the <span
+ style="font-style: italic;">IcePage1.java</span> backing bean, which
+requires the following changes.&nbsp; <br>
+</p>
+<ol>
+  <li>For row selection we introduce request-scoped state to maintain
+the currently selected row.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private TreeMap
+currentRowData;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public TreeMap
+getCurrentRowData() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return currentRowData;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setCurrentRowData(TreeMap currentRowData) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.currentRowData = currentRowData;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>The row selector action listener must initialize the state of our
+currently selected row.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+rowSelector1_processAction(RowSelectorEvent rse) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = (TreeMap) dataTable1SortableDataModel.getRowData();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>When the data table is rendered it uses the rowSelector value
+binding to determine which rows are selected.&nbsp; If we needed to
+support multiple row selection, the most natural
+data model would be a hash map with trip id as the primary key, but
+since we require only single row selection we can simply compare with
+the currently selected row.&nbsp; The boolean getter for this follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public boolean
+isRowSelected() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (currentRowData == null) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return false;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TreeMap rowData = (TreeMap) dataTable1SortableDataModel.getRowData();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer currentTrip = (Integer)rowData.get("TRIP.TRIPID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer selectedTrip = (Integer) currentRowData.get("TRIP.TRIPID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return (currentTrip.equals(selectedTrip));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    </span><br style="font-weight: bold;">
+  </li>
+  <li>The setter for row selection does nothing, and leaves it to the
+action listener to establish a new value.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setRowSelected(boolean selected) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;"></span><span
+ style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+    </span></li>
+  <li><span style="font-weight: bold;"></span>In the value change
+listener for the person drow down, invalidate <span
+ style="font-style: italic;">currentRowData </span>so there is no
+selection after the person is changed.&nbsp; There is a minor
+complication with the JSF lifecycle where we need to postpone
+processing of the value change event from the PROCESS_VALIDATIONS phase
+to the UPDATE_MODEL phase.&nbsp; This is necessary so the value
+bindings on currentRowData can be used to populate the model prior to
+nulling it out in the valu change listener.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+personDropDownProcessValueChange(ValueChangeEvent event) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (event.getPhaseId() != PhaseId.INVOKE_APPLICATION) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event.setPhaseId(PhaseId.INVOKE_APPLICATION);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event.queue();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+super.personDropDown_processValueChange(event);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+</ol>
+<p>If you run the example now, you will see basic row selection is
+functioning as illustrated below.&nbsp; In this case the dark blue
+indicates currently selected row, and the light blue indicates mouse
+over.&nbsp; You will note that only single row selection is supported,
+and that when the person is changed, row selection is reset to no
+selection.&nbsp; You will also note that interacting with the sort
+headers maintains the proper selection.<img
+ style="width: 781px; height: 576px;" alt="Row Selection"
+ src="images/rowSelector.png"><br>
+</p>
+<p>We are now in position to add the detail panel for manipulating the
+selected row of data.<br>
+</p>
+<h3><a name="rendered_attribute"></a>Using the ICEfaces <span
+ style="font-style: italic;">rendered</span> Attribute</h3>
+Most ICEfaces components support the <span style="font-style: italic;">rendered</span>
+attribute, which controls whether a component and it's children are
+rendered into the page.&nbsp; For single page interfaces, this
+facilitates including or excluding controls in the page based on the
+current state of the user's interaction with the page.&nbsp; When used
+with layout controls like the <span style="font-style: italic;">ice:panelGrid</span>,
+an orgainzed group of controls can be rendered based on the state of
+the application.&nbsp; Because the ICEfaces framework handles the
+incremental rendering of the page, toggling controls using the <span
+ style="font-style: italic;">rendered</span> attribute results in the
+minimum amount of page rendering necessary.<br>
+<h4>Using <span style="font-style: italic;">rendered</span> in the
+working example<br>
+</h4>
+With the working example we will use the <span
+ style="font-style: italic;">rendered</span> attribute on an <span
+ style="font-style: italic;">ice:panelGrid</span> to display the
+details of a selected row in the data table.&nbsp; We can resuse
+elements of the <span style="font-style: italic;">ICEcreatePage.jsp</span>
+page, but first need to incorporate the detail state in our backing
+bean. <br>
+<ol>
+  <li>We will bind the detail fields to a clone of <span
+ style="font-style: italic;">currentRowData</span>.&nbsp; The state for
+this is added as follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private TreeMap
+detailRowData;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public TreeMap
+getDetailRowData() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return detailRowData;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setDetailRowData(TreeMap detailRowData) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.detailRowData = detailRowData;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>We require the <span style="font-style: italic;">triptypeDataProvider</span>
+for the <span style="font-style: italic;">ice:selectOneMenu</span>
+used to select the trip type.&nbsp; The following code is cut from the <span
+ style="font-style: italic;">createPage.java</span> backing bean, and
+pasted into the <span style="font-style: italic;">ICEpage1.java</span>
+bean. <br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private
+CachedRowSetDataProvider triptypeDataProvider = new
+CachedRowSetDataProvider();<br>
+&nbsp;&nbsp;&nbsp; public CachedRowSetDataProvider
+getTriptypeDataProvider() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return triptypeDataProvider;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void
+setTriptypeDataProvider(CachedRowSetDataProvider crsdp) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.triptypeDataProvider =
+crsdp;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+    </span></li>
+  <li><span style="font-weight: bold;"></span>Modify row selection
+logic to create the cloned copy of the row data to be used for the
+detail view.<br>
+&nbsp;&nbsp;&nbsp; public void
+rowSelector1_processAction(RowSelectorEvent rse) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; currentRowData = (TreeMap)
+dataTable1SortableDataModel.getRowData();<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData = (TreeMap) currentRowData.clone();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Need to create new Date object to avoid shallow clone;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+java.sql.Date date = (java.sql.Date) currentRowData.get("TRIP.DEPDATE");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DEPDATE", new Date(date.getTime()));</span><br
+ style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; }<br>
+  </li>
+</ol>
+We can now cut and paste the detail panel into our page using the JSP
+editor, with the following steps.<br>
+<ol>
+  <li>In the <span style="font-style: italic;">mainPanel</span>
+panelGrid remove the absolute height from the style declartion to allow
+this panel to grow in size as necessary.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;h:panelGrid
+id="mainPanel" style="margin: 5px; padding: 5px; left: 0px; top: 160px;
+position: absolute; width: 760px"&gt;</span></li>
+  <li><span style="font-weight: bold;"></span>Move the <span
+ style="font-style: italic;">ice:commandButton</span>, and <span
+ style="font-style: italic;">ice:messages</span> components out of the <span
+ style="font-style: italic;">tablePanel</span>, and up 1 level into the
+    <span style="font-style: italic;">mainPanel</span>.<br>
+  </li>
+  <li><span style="font-weight: bold;"></span>Cut and paste the <span
+ style="font-style: italic;">tripPanel</span> panelGrid from <span
+ style="font-style: italic;">IceCreatePage.jsp</span> to <span
+ style="font-style: italic;">IcePage1.jsp</span> and adjust the value
+bindings from the <span style="font-style: italic;">CreatePage</span>
+to <span style="font-style: italic;">IcePage1.detailRowData</span>.&nbsp;
+The resulting code follows:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:dataTable&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/h:panelGrid&gt;<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h:panelGrid columns="2" id="tripPanel" style=""&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label1a" value="Date"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:selectInputDate
+value="#{IcePage1.detailRowData['TRIP.DEPDATE']}" id="dateCalendar"
+renderAsPopup="true" converter="date.converter"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label2a" value="From"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:inputText value="#{IcePage1.detailRowData['TRIP.DEPCITY']}"
+id="fromCity" partialSubmit="true" required="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label3a" value="To"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:inputText value="#{IcePage1.detailRowData['TRIP.DESTCITY']}"
+id="toCity" partialSubmit="true" required="true"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:outputLabel id="label4a" value="Trip Type"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:selectOneMenu
+value="#{IcePage1.detailRowData['TRIP.TRIPTYPEID']}" id="tripType1"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:converter converterId="javax.faces.Integer"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;f:selectItems id="tripSelect"
+value="#{IcePage1.triptypeDataProvider.options['TRIPTYPE.TRIPTYPEID,TRIPTYPE.NAME']}"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:selectOneMenu&gt;<br>
+&nbsp;&nbsp;</span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/h:panelGrid&gt;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.createButton_action}"
+id="createButton" value="Create"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:messages id="messageGroup1" layout="table"
+style="color:red;"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/h:panelGrid&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/ice:form&gt;<br>
+    <br>
+  </li>
+  <li>Modify the <span style="font-style: italic;">tripPanel</span> to
+be an <span style="font-style: italic;">ice:panelGrid</span>, and add
+a rendered attribute as follows:<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&lt;ice:panelGrid
+columns="2" id="tripPanel" rendered="true" style=""&gt;</span><br>
+You will also need to modify the closing tag to match.<br>
+  </li>
+</ol>
+At this point the basic page looks like follows in design view.<br>
+<img style="width: 834px; height: 524px;" alt="IcePage1 Design View"
+ src="images/LastDesignView.png"><br>
+<br>
+Beyond this point, design view will not be of much use.&nbsp; Once we
+bind the <span style="font-style: italic;">rendered</span> attribute
+into our bean, the <span style="font-style: italic;">tripPanel</span>
+will no longer be visible in design view as the backing model will
+default to <span style="font-style: italic;">false</span>, and it
+won't be rendered.&nbsp; All the elements of the page are still
+accessible from the hierarchical page navigator but won't show up in
+design view.&nbsp; We will now complete this step in the application
+conversion by binding the rendered attribute properly into our backing
+bean with the following steps.<br>
+<ol>
+  <li>Modify the rendered binding in the tripPanel as follows:<br>
+&nbsp;&nbsp; &lt;ice:panelGrid columns="2" id="tripPanel" rendered="<span
+ style="font-weight: bold;">#{IcePage1.tripSelected}</span>"
+style=""&gt;<br>
+    <br>
+  </li>
+  <li>Add the <span style="font-style: italic;">isTripSelected()</span>
+getter logic to our bean as follows:<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public boolean
+isTripSelected() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (currentRowData !=
+null);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    </span></li>
+</ol>
+You can now run the project and examine the details when rows are
+selected, as illustrated below.<br>
+<img style="width: 782px; height: 671px;" alt="Master Detail View"
+ src="images/DetailView.png"><br>
+<br>
+We will now move on to modify the buttons to use an <span
+ style="font-style: italic;">ice:panelStack</span>.<br>
+<h3>Using <span style="font-style: italic;">ice:panelStack</span></h3>
+The <span style="font-style: italic;">ice:panelStack</span> is a
+component that provides a stack of <span style="font-style: italic;">ice:panelGroup</span>s
+of which only one is visible at a time.&nbsp; The visible panel is
+controlled by the <span style="font-style: italic;">selectedPanel</span>
+attribute, which identifies the id of the visible <span
+ style="font-style: italic;">panelGroup</span>.&nbsp; This is a
+convenient way to display alternate groups of controls depending on the
+state of the application. The basic form of this component is
+illustrated below.<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;ice:panelStack
+id="panelStack1" selectedPanel="#{someBinding}"&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="panelGroup1"&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; ....</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="panelGroup2"&gt;</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp; ....</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelStack&gt;</span><br>
+<h4>Using <span style="font-style: italic;">ice:panelStack</span> in
+the working example&nbsp;</h4>
+We can leverage the <span style="font-style: italic;">ice:panelStack</span>
+to display a context sensitive set of buttons depending on the current
+state of the application.&nbsp; The following table defines the states
+that need to be supported.<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">State</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Buttons</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Row
+Selector Active</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">No selection<br>
+      </td>
+      <td style="vertical-align: top;">Create<br>
+      </td>
+      <td style="vertical-align: top;">Yes<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Selection<br>
+      </td>
+      <td style="vertical-align: top;">Create, Delete<br>
+      </td>
+      <td style="vertical-align: top;">Yes<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Update (existing trip changed)<br>
+      </td>
+      <td style="vertical-align: top;">Cancel, Update<br>
+      </td>
+      <td style="vertical-align: top;">No<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Create (new entry)<br>
+      </td>
+      <td style="vertical-align: top;">Cancel, Save<br>
+      </td>
+      <td style="vertical-align: top;">No<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Changes to <span style="font-style: italic;">IcePage.jsp</span> to
+incorporate the buttons include:<br>
+<ol>
+  <li>Replace the existing Create button declaration with the following
+ice:panelStack declaration.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;ice:panelStack id="buttonsPanel"
+selectedPanel="#{IcePage1.selectedPanel}"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="noSelection"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGrid columns="1" id="noSelectionButtonGrid"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.createButtonAction}"
+id="createButton1" value="Create"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGrid&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="selected"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGrid columns="2" id="selectionButtonGrid"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.createButtonAction}"
+id="createButton2" value="Create"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.deleteButtonAction}"
+id="deleteButton"&nbsp; value="Delete"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGrid&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="create"&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGrid columns="2" id="createButtonGrid"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.cancelCreateButtonAction}"
+id="cancelButton1" value="Cancel" immediate="true"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.saveCreateButtonAction}"
+id="saveButton"&nbsp; value="Save"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGrid&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGroup id="update"&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:panelGrid columns="2" id="updateButtonGrid"&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.cancelUpdateButtonAction}"
+id="cancelButton2" value="Cancel" immediate="true"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ice:commandButton action="#{IcePage1.updateButtonAction}"
+id="updateButton"&nbsp; value="Update"/&gt;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGrid&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelGroup&gt;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&lt;/ice:panelStack&gt;<br>
+    </span><br style="font-weight: bold;">
+  </li>
+  <li><span style="font-weight: bold;"></span>Add a <span
+ style="font-style: italic;">rendered</span> attribute to the <span
+ style="font-style: italic;">ice:rowSelector</span> so it can be
+disabled while a row is being edited or created.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:rowSelector id="rowSelector1"
+selectionListener="#{IcePage1.rowSelector1_processAction}"
+value="#{IcePage1.rowSelected}" immediate="false" <span
+ style="font-weight: bold;">rendered="#{!IcePage1.tripBeingEdited}"</span>/&gt;<br>
+    <br>
+  </li>
+  <li>Add a <span style="font-style: italic;">disabled</span>
+attribute to the <span style="font-style: italic;">ice:selectOneMenu</span>
+so that person selection can be disabled while a row is being edited or
+created.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:selectOneMenu id="personDropDown"
+partialSubmit="true" value="#{IcePage1.currentPersonId}"
+valueChangeListener="#{IcePage1.personDropDownProcessValueChange}" <span
+ style="font-weight: bold;">disabled="#{IcePage1.tripBeingEdited}"</span>&gt;</li>
+</ol>
+We will now examine the changes in the bean to get the <span
+ style="font-style: italic;">Create</span> functionality working:<br>
+<ol>
+  <li>Add state for selecting the <span style="font-style: italic;">panelGroup</span>
+id that is visible in the <span style="font-style: italic;">panelStack</span>.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+selectedPanel = "noSelection";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+getSelectedPanel() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return selectedPanel;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+setSelectedPanel(String selectedPanel) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.selectedPanel = selectedPanel;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    </span><br style="font-weight: bold;">
+  </li>
+  <li>Add logic for determining if a trip is currently being edited.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public boolean
+isTripBeingEdited() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (selectedPanel.equals("create") || selectedPanel.equals("update"))</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return true;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+else</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return false;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    </span><br style="font-weight: bold;">
+  </li>
+  <li>Modify person drop down processing to set selected panel state;<br>
+&nbsp;&nbsp;&nbsp; public void
+personDropDownProcessValueChange(ValueChangeEvent event) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (event.getPhaseId() !=
+PhaseId.INVOKE_APPLICATION) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event.setPhaseId(PhaseId.INVOKE_APPLICATION);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event.queue();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+super.personDropDown_processValueChange(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = null;<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "noSelection";</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+  </li>
+  <li>Modify <span style="font-style: italic;">isTripSelected()</span>
+logic to include the create state.<br>
+&nbsp;&nbsp;&nbsp; public boolean isTripSelected() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (currentRowData !=
+null <span style="font-weight: bold;">|| selectedPanel.equals("create")</span>);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+  </li>
+  <li>Add logic for <span style="font-style: italic;">Create</span>
+button to create a new <span style="font-style: italic;">detailRowData</span>,
+and adjust state to create.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+createButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// New details;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData = new TreeMap();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+try {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.TRIPID", nextPK());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} catch (SQLException sqle) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getFacesContext().addMessage(null,</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+new FacesMessage(FacesMessage.SEVERITY_INFO,</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"Problem getting next trip ID.", null));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.PERSONID", getCurrentPersonId());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DEPDATE",&nbsp; new java.util.Date());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DEPCITY", "");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DESTCITY", "");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.TRIPTYPEID", new Integer(1));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = null;</span><br style="font-weight: bold;">
+    <br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Go to create state;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "create";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    </span><br style="font-weight: bold;">
+  </li>
+  <li><span style="font-weight: bold;"></span>Copy logic from <span
+ style="font-style: italic;">Page1.java</span> for creating a new trip
+id.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private Integer
+nextPK() throws java.sql.SQLException {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// create a new rowset</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+com.sun.sql.rowset.CachedRowSetXImpl pkRowSet = new
+com.sun.sql.rowset.CachedRowSetXImpl();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+try {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// set the rowset to use the Travel database</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.setDataSourceName("java:comp/env/jdbc/TRAVEL_ApacheDerby");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// find the highest person id and add one to it</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.setCommand("SELECT MAX(TRAVEL.TRIP.TRIPID) + 1 FROM
+TRAVEL.TRIP");</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.setTableName("TRAVEL.TRIP");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// execute the rowset -- which will contain a single row and single
+column</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.execute();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.next();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// get the key</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int counter = pkRowSet.getInt(1);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return new Integer(counter);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} catch (Exception e) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error("Error fetching Max(TRIPID)+1 : " + e.getMessage());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} finally {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pkRowSet.close();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Add handler for <span style="font-style: italic;">Cancel</span>
+button that adjusts state back to no selection.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+cancelCreateButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData = null;<br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "noSelection";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Add handler for <span style="font-style: italic;">Save</span>
+create button that adds the new row to the database.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+saveCreateButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CachedRowSetDataProvider tripDataProvider = getTripDataProvider();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if ( tripDataProvider.canAppendRow() ) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+try {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RowKey rowKey = tripDataProvider.appendRow();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setCursorRow(rowKey);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.TRIPID", rowKey,&nbsp;
+detailRowData.get("TRIP.TRIPID"));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+saveTripData(rowKey);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.commitChanges();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.refresh();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} catch (Exception e) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error("Cannot append new trip: " + e);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error("Cannot append a new row");</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//update dataModel and adjust state;</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "selected";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = (TreeMap) detailRowData.clone();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Need to create new Date
+object to avoid shallow clone;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java.sql.Date date =
+(java.sql.Date) detailRowData.get("TRIP.DEPDATE");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData.put("TRIP.DEPDATE", new Date(date.getTime()));<br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Add utility function for saving a row.&nbsp; This will be reused
+for updating rows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private void
+saveTripData(RowKey rowKey) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CachedRowSetDataProvider tripDataProvider = getTripDataProvider();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.PERSONID", rowKey,
+detailRowData.get("TRIP.PERSONID"));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Date date = (Date) detailRowData.get("TRIP.DEPDATE");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DEPDATE", rowKey, new
+java.sql.Date(date.getTime()));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DEPCITY", rowKey,
+detailRowData.get("TRIP.DEPCITY"));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.DESTCITY", rowKey,
+detailRowData.get("TRIP.DESTCITY"));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.setValue("TRIP.TRIPTYPEID", rowKey,
+detailRowData.get("TRIP.TRIPTYPEID"));</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.commitChanges();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tripDataProvider.refresh();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span></li>
+</ol>
+That completes the changes required to support creation of new
+trips.&nbsp; You can now run the project and test it.&nbsp; You will
+note that when in create mode that row selection and person selection
+are disabled.&nbsp; If you experiment with the cancel feature you will
+see a problem with the implementation.&nbsp; If you enter values into
+any of the fields and then cancel, a subsequent create action will
+bring back the stale values.&nbsp; This is because of a known issue in
+JSF related to the <span style="font-style: italic;">immediate="true"</span>
+attribute.&nbsp; We need to use <span style="font-style: italic;">immediate="true"</span>
+because we don't want validation to occur when we cancel, but because
+there is no navigation associated with the action, the component values
+are reused.&nbsp; You can read more about this problem <a
+ href="http://wiki.apache.org/myfaces/ClearInputComponents">here</a>.&nbsp;
+There are a number of work arounds for this problem, but for our
+purposes we want to explicitly clear any input values in the form as
+part of the cancel action.&nbsp; This is achieved as follows:<br>
+<ol>
+  <li>Add a private function that will clear the input components
+within the form in the JSF component tree.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private void
+clearInputComponents() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FacesContext facesContext = FacesContext.getCurrentInstance();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UIViewRoot uiViewRoot = facesContext.getViewRoot();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UIComponent inputContainer = (UIComponent)
+uiViewRoot.findComponent("form1:tripPanel");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (inputContainer != null) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+List children = inputContainer.getChildren();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ListIterator it = children.listIterator();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while (it.hasNext()) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Object next = it.next();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (next instanceof UIInput) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UIInput uiInput = (UIInput) next;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+uiInput.resetValue();</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Modify the cancel action listener to clear the input components <br>
+&nbsp;&nbsp;&nbsp; public String cancelCreateButtonAction() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; detailRowData = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; currentRowData = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; selectedPanel =
+"noSelection";<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+clearInputComponents();</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return null;<br>
+&nbsp;&nbsp;&nbsp; }<span style="font-weight: bold;"><br>
+    </span></li>
+</ol>
+You can now test the application to ensure that the cancel create
+sequence is working properly.&nbsp; We now move on to adding the <span
+ style="font-style: italic;">Delete</span> functionality with the
+following changes to the bean.<br>
+<ol>
+  <li>Modify the delete button action listener as follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+deleteButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RowKey key = getTripDataProvider().findFirst("TRIP.TRIPID",
+currentRowData.get("TRIP.TRIPID"));</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setCurrentRowKey(key);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//remove record from cachedRowSet</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String returnVal = super.deleteButton_action();</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//update model and adjust state</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentRowData = null;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "noSelection";</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return returnVal;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }<br>
+    </span></li>
+</ol>
+If you run the application you should now be able to delete
+trips.&nbsp; For the update functionality we will use value change
+listeners to determine when details have changed.&nbsp; The following
+changes are required to implement the update feature.<br>
+<ol>
+  <li>Add value change listeners <span style="font-style: italic;"></span>attributes
+to date, from city, to city, and trip type in detail panel.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:selectInputDate
+value="#{IcePage1.detailRowData['TRIP.DEPDATE']}" id="dateCalendar"
+renderAsPopup="true" converter="date.converter" <span
+ style="font-weight: bold;">valueChangeListener="#{IcePage1.depDateUpdateDetected}"</span>
+partialSubmit="true"&gt;<br>
+    <br>
+&nbsp;&nbsp;&nbsp; &lt;ice:inputText
+value="#{IcePage1.detailRowData['TRIP.DEPCITY']}" id="fromCity"
+partialSubmit="true" required="true" <span style="font-weight: bold;">valueChangeListener="#{IcePage1.depCityUpdateDetected}"</span>/&gt;<br>
+    <br>
+&nbsp;&nbsp;&nbsp; &lt;ice:inputText
+value="#{IcePage1.detailRowData['TRIP.DESTCITY']}" id="toCity"
+partialSubmit="true" required="true" <span style="font-weight: bold;">valueChangeListener="#{IcePage1.destCityUpdateDetected}"</span>/&gt;<br>
+    <br>
+&nbsp;&nbsp;&nbsp; &lt;ice:selectOneMenu
+value="#{IcePage1.detailRowData['TRIP.TRIPTYPEID']}" id="tripType1" <span
+ style="font-weight: bold;">valueChangeListener="#{IcePage1.tripTypeUpdateDetected}"</span>&gt;<br>
+    <br>
+  </li>
+  <li>Add a partial submit attribute to the trip id drop down.<br>
+&nbsp;&nbsp;&nbsp; &lt;ice:selectOneMenu
+value="#{IcePage1.detailRowData['TRIP.TRIPTYPEID']}" id="tripType1"
+valueChangeListener="#{IcePage1.tripTypeUpdateDetected}"<br>
+    <span style="font-weight: bold;">partialSubmit="true"</span>&gt;<br>
+    <br>
+  </li>
+  <li>Add update detected<span style="font-style: italic;"> </span>listener
+logic to the bean as follows.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public void
+depDateUpdateDetected (ValueChangeEvent event) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DEPDATE",&nbsp; event.getNewValue());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updateDetected();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public void depCityUpdateDetected (ValueChangeEvent
+event) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DEPCITY",&nbsp; event.getNewValue());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updateDetected();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public void destCityUpdateDetected (ValueChangeEvent
+event) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.DESTCITY",&nbsp; event.getNewValue());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updateDetected();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public void tripTypeUpdateDetected (ValueChangeEvent
+event) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+detailRowData.put("TRIP.TRIPTYPEID",&nbsp; event.getNewValue());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updateDetected();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; private void updateDetected( ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(selectedPanel.equals("selected") || selectedPanel.equals("update")) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(rowDataChanged()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "update";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+selectedPanel = "selected";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    </span><br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private boolean
+rowDataChanged() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (currentRowData == null || detailRowData == null) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return false;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Date date1 = (Date) currentRowData.get("TRIP.DEPDATE");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Date date2 = (Date) detailRowData.get("TRIP.DEPDATE");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (!date1.equals(date2)){</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return true;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String string1 = (String) currentRowData.get("TRIP.DEPCITY");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String string2 = (String) detailRowData.get("TRIP.DEPCITY");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (string1 == null || string2 == null || !string1.equals(string2)) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return true;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+string1 = (String) currentRowData.get("TRIP.DESTCITY");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+string2 = (String) detailRowData.get("TRIP.DESTCITY");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (string1 == null || string2 == null || !string1.equals(string2)) {</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return true;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer int1 = (Integer) currentRowData.get("TRIP.TRIPTYPEID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer int2 = (Integer) detailRowData.get("TRIP.TRIPTYPEID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (!int1.equals(int2)) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return true;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return false;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Modify the <span style="font-style: italic;">Update</span>
+button handler to save the updated trip.<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public String
+updateButtonAction() {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//find current tripID and update trip data</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Integer tid = (Integer) detailRowData.get("TRIP.TRIPID");</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RowKey rowKey = getTripDataProvider().findFirst("TRIP.TRIPID", tid);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+try {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+saveTripData(rowKey);</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//update dataModel for dataTable with new modified data</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setWrappedData(getSessionBean1().getTripRowSet());</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} catch (Exception e) {</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error("Cannot update trip:data " + e);</span><br
+ style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// reset state to selected<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; selectedPanel = "selected";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return null;<br>
+    </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+  </li>
+</ol>
+You should now be able to run the project and test all it's CRUD
+functions from the single page interface.<br>
+<h3>Multiple View Support</h3>
+Once you have an effective single page interface for your application
+you might consider using it in multiple browser windows or tabs, with
+each view being in a different state.&nbsp; ICEfaces provides complete
+support for this capability through <span style="font-style: italic;">web.xml</span>
+configuration, and a parameter called <span style="font-style: italic;">concurrentDOMViews</span>.&nbsp;
+ICEfaces uses a technique called <span style="font-style: italic;">Direct-to-DOM
+Rendering</span> as part of its Ajax features.&nbsp; This involves
+maintaining a DOM on the server side that is used incrementally update
+the client as presentation changes occur.&nbsp; With <span
+ style="font-style: italic;">concurrentDOMViews </span>set to <span
+ style="font-style: italic;">true</span>, each browser view maintains a
+seperate unique JSF view with its own component tree and server-side
+DOM.&nbsp; Each unique view maintains a seperate extended request
+scope, but all views from the same browser instance share the same
+session.<br>
+<br>
+To turn on <span style="font-style: italic;">concurrentDOMViews</span>
+you need to adjust the web.xml as follows.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;context-param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;param-name&gt;com.icesoft.faces.concurrentDOMViews&lt;/param-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;param-value&gt;<span
+ style="font-weight: bold;">true</span>&lt;/param-value&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/context-param&gt;<br>
+<br>
+Now try running the application and open multiple views.&nbsp; As
+illustrated below, you have 2 independent views onto the application,
+except that they share session state related to the sort headers, so if
+you adjust the sort header in one view, you will get the same sorting
+in the other view.<img style="width: 750px; height: 704px;"
+ alt="Multiple Browser Views" src="images/MultiView1.png"><br>
+<br>
+We will now move the sort header state from session scope, into
+extended request scope with the following steps.<br>
+<ol>
+  <li>Copy the required state out of the session bean, into our
+request-scoped bean.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private boolean
+sortAscending;</span><br style="font-weight: bold;">
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private String
+sortColumn;</span><br style="font-weight: bold;">
+    <br>
+  </li>
+  <li>Modify the getters and setters to use the request-scoped state
+vs. the session-scoped state.<br>
+&nbsp;&nbsp;&nbsp; public boolean isSortAscending() {<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return sortAscending;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public void setSortAscending(boolean ascending) {<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sortAscending = ascending;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (ascending !=
+dataTable1SortableDataModel.isAscending()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setAscending(ascending);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(getSessionBean1().getSortColumn() != null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dataTable1SortableDataModel.setSort(getSessionBean1().getSortColumn());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public String getSortColumn() {<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return sortColumn;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public void setSortColumn(String sortColumn) {<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+this.sortColumn = sortColumn;</span><br style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; } <br>
+  </li>
+</ol>
+Now if you run the application in multiple browser windows, each will
+have independant sort headers as illustrated below.<img
+ style="width: 750px; height: 704px;" alt="Multiple Browser Windows"
+ src="images/Multiview2.png"><br>
+<h3><a name="Finished_part_2"></a>Finished Part 3<br>
+</h3>
+<p>You have now completed Part 3 of the Woodstock to ICEfaces Porting
+Guide.&nbsp; The completed project for this step of the guide is
+available <a href="TwoPageCrudTable_Part3.zip">here</a>.&nbsp;
+At
+this point you can go back to the <a
  href="WoodstockToICEfacesPortingGuide.html">table of contents</a>, <a
- href="PortingGuidePart1.html">Part 1</a>, or <a
- href="PortingGuidePart2.html">Part 2</a> of the guide.<br>
+ href="PortingGuidePart1.html">Part 1</a> or <a
+ href="PortingGuidePart2.html">Part 2</a> of the guide, or
+move on to <a href="PortingGuidePart3.html">Part 3</a> of the guide,
+which focuses on aspects of creating a Single Page Interface using
+ICEfaces.&nbsp;
 <br>
+<br>
+</p>
 </body>
 </html>
