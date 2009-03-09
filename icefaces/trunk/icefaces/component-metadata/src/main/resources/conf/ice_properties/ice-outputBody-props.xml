@@ -102,6 +102,9 @@
 
 <property>
     <description>
+       It can be set to the "id" or the "clientId" of the focused component. If 
+       a component inside the UIData needs to be focused, then clientId will have 
+       to be used.
     </description>
     <property-name>focus</property-name>
     <property-extension>
