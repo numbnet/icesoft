@@ -314,7 +314,7 @@ this.detailRowData = detailRowData;</span><br style="font-weight: bold;">
   </li>
   <li>We require the <span style="font-style: italic;">triptypeDataProvider</span>
 for the <span style="font-style: italic;">ice:selectOneMenu</span>
-used to select the trip type.&nbsp; The following code is cut from the <span
+used to select the trip type.&nbsp; The following code is copied from the <span
  style="font-style: italic;">createPage.java</span> backing bean, and
 pasted into the <span style="font-style: italic;">ICEpage1.java</span>
 bean. <br>
@@ -329,9 +329,14 @@ getTriptypeDataProvider() {<br>
 setTriptypeDataProvider(CachedRowSetDataProvider crsdp) {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.triptypeDataProvider =
 crsdp;<br>
-&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }
+    <br></span>
+    The following line is copied to the _init() method.<br>
+    <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+    triptypeDataProvider.setCachedRowSet((javax.sql.rowset.CachedRowSet) getValue("#{SessionBean1.triptypeRowSet}"));
     <br>
-    </span></li>
+    <br></span>
+    </li>
   <li><span style="font-weight: bold;"></span>Modify row selection
 logic to create the cloned copy of the row data to be used for the
 detail view.<br>
@@ -346,7 +351,7 @@ detailRowData = (TreeMap) currentRowData.clone();</span><br
 // Need to create new Date object to avoid shallow clone;</span><br
  style="font-weight: bold;">
     <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-java.sql.Date date = (java.sql.Date) currentRowData.get("TRIP.DEPDATE");</span><br
+java.util.Date date = (java.util.Date) currentRowData.get("TRIP.DEPDATE");</span><br
  style="font-weight: bold;">
     <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 detailRowData.put("TRIP.DEPDATE", new Date(date.getTime()));</span><br
@@ -897,8 +902,8 @@ selectedPanel = "selected";</span><br style="font-weight: bold;">
 currentRowData = (TreeMap) detailRowData.clone();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Need to create new Date
 object to avoid shallow clone;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java.sql.Date date =
-(java.sql.Date) detailRowData.get("TRIP.DEPDATE");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java.util.Date date =
+(java.util.Date) detailRowData.get("TRIP.DEPDATE");<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 currentRowData.put("TRIP.DEPDATE", new Date(date.getTime()));<br>
     </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1265,7 +1270,7 @@ We will now move the sort header state from session scope, into
 extended request scope with the following steps.<br>
 <ol>
   <li>Copy the required state out of the session bean, into our
-request-scoped bean.<br>
+request-scoped bean, IcePage1.java.<br>
     <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private boolean
 sortAscending;</span><br style="font-weight: bold;">
     <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; private String
