@@ -34,15 +34,14 @@
 package com.icesoft.faces.component.inputfile;
 
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.StringResource;
 import com.icesoft.faces.utils.MessageUtils;
-import com.icesoft.faces.component.inputfile.UploadConfig;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -64,7 +63,12 @@ public class InputFileRenderer extends Renderer {
         c.renderIFrame(iframeContentWriter, facesContext);
         String iframeContent = iframeContentWriter.toString();
         String frameName = ClientIdPool.get(id + ":uploadFrame");
-        String pseudoURL = "javascript: document.write('" + iframeContent.replaceAll("\"", "%22") + "'); document.close();";
+        String pseudoURL = ((ResourceRegistry) context).registerResource(new StringResource(iframeContent) {
+            public void withOptions(Options options) throws IOException {
+                super.withOptions(options);
+                options.setMimeType("text/html");
+            }
+        }).toString();
         
         UploadConfig uploadConfig =
             c.storeContentAndConfig(
