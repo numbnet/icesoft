@@ -170,6 +170,7 @@
         on: function() {
             this.panel.on();
             var messageContainer = document.createElement('div');
+            document.body.appendChild(messageContainer);
             var messageContainerStyle = messageContainer.style;
             messageContainerStyle.position = 'absolute';
             messageContainerStyle.textAlign = 'center';
@@ -187,7 +188,6 @@
             messageContainerStyle.borderWidth = '2px';
             messageContainerStyle.borderStyle = 'solid';
             messageContainerStyle.width = '270px';
-            document.body.appendChild(messageContainer);
 
             var messageElement = document.createElement('div');
             messageElement.appendChild(document.createTextNode(this.message));
