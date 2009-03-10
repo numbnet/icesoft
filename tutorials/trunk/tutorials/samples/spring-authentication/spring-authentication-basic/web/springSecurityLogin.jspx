@@ -15,11 +15,11 @@
             <ice:outputLabel value="User Name" for="j_username"/>
             <ice:inputText id="j_username"
                            value="#{loginBean.userId}" size="40"
-                           maxlength="80"></ice:inputText>
+                           maxlength="80"/>
             <ice:outputLabel value="Password" for="j_password"/>
             <ice:inputSecret id="j_password"
                              value="#{loginBean.password}" size="40"
-                             maxlength="80"></ice:inputSecret>
+                             maxlength="80"/>
         </ice:panelGrid>
         <ice:commandButton actionListener="#{loginBean.login}" value="Login"/>
         <ice:messages style="color: red;"/>
