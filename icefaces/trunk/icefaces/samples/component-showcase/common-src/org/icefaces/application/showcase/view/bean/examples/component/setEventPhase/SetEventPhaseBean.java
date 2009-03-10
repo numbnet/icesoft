@@ -90,7 +90,7 @@ public class SetEventPhaseBean extends BaseBean {
      */
     public SelectItem[] getCountryItems() {
         SelectItem[] countryItems =
-            build("bean.selection.country", ".value", 1, 5);
+            buildSelectItemArray("bean.selection.country", ".value", 1, 5);
         return countryItems;
     }
 
@@ -105,7 +105,7 @@ public class SetEventPhaseBean extends BaseBean {
             SelectItem[] countryItems = getCountryItems();            
             for(int i = 0; i < countryItems.length; i++) {
                 if (selectedCountry.equals(countryItems[i].getValue())) {
-                    cityItems = build(
+                    cityItems = buildSelectItemArray(
                         "bean.selection.country"+Integer.toString(i+1)+".city",
                         ".value", 1, 5);
                     break;
@@ -159,41 +159,5 @@ public class SetEventPhaseBean extends BaseBean {
      */
     public String getSelectedCitiesStrings() {
         return convertToString(selectedCities);
-    }
-
-    private static SelectItem[] build(
-            String prefix, String suffix, int first, int last) {
-        int num = last - first + 1;
-        SelectItem[] ret = new SelectItem[num];
-        for(int i = 0; i < num; i++) {
-            String key = prefix + Integer.toString(first+i) + suffix;
-            ret[i] = build(key);
-        }
-        return ret;
-    }
-    
-    private static SelectItem build(String key) {
-        return new SelectItem(
-                key, MessageBundleLoader.getMessage(key));
-    }
-    
-    /**
-     * Converts string arrays for displays.
-     *
-     * @param stringArray string array to convert
-     * @return a string concatenating the elements of the string array
-     */
-    private static String convertToString(String[] stringArray) {
-        if (stringArray == null) {
-            return "";
-        }
-        StringBuffer itemBuffer = new StringBuffer();
-        for (int i = 0, max = stringArray.length; i < max; i++) {
-            if (i > 0) {
-                itemBuffer.append(" , ");
-            }
-            itemBuffer.append(MessageBundleLoader.getMessage(stringArray[i]));
-        }
-        return itemBuffer.toString();
     }
 }
