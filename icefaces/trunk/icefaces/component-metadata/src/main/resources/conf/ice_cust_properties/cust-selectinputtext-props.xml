@@ -171,9 +171,10 @@
            <p>
             The value of this attribute will be passed to the "options" param of the
             Autocompleter.js. Which allows to set different options to the autoCompleter object.         
-            For example you can configure the delay between key presses in selectInputText(e.g.)<br/>
-            //set the delay to 2 seconds<br/>
-            &nbsp;&nbsp;&lt;ice:selectInputText options="{frequency:2}" ... &gt;<br/>
+            For example the server call delay frequency can be changed to 100 Milliseconds (e.g.)<br/>
+
+            &nbsp;&nbsp;&lt;ice:selectInputText options="{frequency:0.1}" ... &gt;<br/>
+            The default delay is 0.4 Seconds (400 Milliseconds)<br/>
             Please see the scriptaculous doc to find out more options that can be set.               
                 
         ]]>     
