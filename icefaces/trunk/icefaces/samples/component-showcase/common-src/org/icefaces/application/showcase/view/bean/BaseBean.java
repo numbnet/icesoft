@@ -34,8 +34,10 @@ package org.icefaces.application.showcase.view.bean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.application.showcase.util.MessageBundleLoader;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
@@ -89,5 +91,52 @@ public class BaseBean implements Serializable {
 
     public void setValueChangeEffect(Effect valueChangeEffect) {
         this.valueChangeEffect = valueChangeEffect;
+    }
+
+    /**
+     * Utility method for building SelectItem[] from a series of
+     * localised entries in a MessageBundle. The SelectItem value
+     * is the MessageBundle key, and the label is the localised
+     * MessageBundle value.
+     *  
+     * @param prefix Beginning part of the MessageBundle key
+     * @param suffix Ending part of the MessageBundle key
+     * @param first First number of the series
+     * @param last Lat number of the series
+     */
+    protected static SelectItem[] buildSelectItemArray(
+            String prefix, String suffix, int first, int last) {
+        int num = last - first + 1;
+        SelectItem[] ret = new SelectItem[num];
+        for(int i = 0; i < num; i++) {
+            String key = prefix + Integer.toString(first+i) + suffix;
+            ret[i] = buildSelectItem(key);
+        }
+        return ret;
+    }
+    
+    protected static SelectItem buildSelectItem(String key) {
+        return new SelectItem(
+                key, MessageBundleLoader.getMessage(key));
+    }
+    
+    /**
+     * Converts string arrays for displays.
+     *
+     * @param stringArray string array to convert
+     * @return a string concatenating the elements of the string array
+     */
+    protected static String convertToString(String[] stringArray) {
+        if (stringArray == null) {
+            return "";
+        }
+        StringBuffer itemBuffer = new StringBuffer();
+        for (int i = 0, max = stringArray.length; i < max; i++) {
+            if (i > 0) {
+                itemBuffer.append(" , ");
+            }
+            itemBuffer.append(MessageBundleLoader.getMessage(stringArray[i]));
+        }
+        return itemBuffer.toString();
     }
 }
