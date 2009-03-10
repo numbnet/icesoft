@@ -1,13 +1,14 @@
 <project name="spring-authentication" default="build.war">
 
     <!-- location of common build file -->
-    <property name="build-common.xml" value="../../../build-common.xml"/>
+    <property name="build-common.xml"
+              value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
 
     <property name="compile.source" value="1.5"/>
     <property name="compile.target" value="1.5"/>
-    
+
     <!-- path to applicaiton libraries -->
-    <property name="proj.lib.dir" location="./lib/" />
+    <property name="proj.lib.dir" location="./lib/"/>
 
     <import file="${build-common.xml}"/>
 
@@ -37,14 +38,14 @@
     <target name="clean" depends="common.clean">
         <delete quiet="true">
             <fileset dir="${app.lib.dir}">
-                <patternset refid="deployment.icefaces.lib.jars.to.include" />
+                <patternset refid="deployment.icefaces.lib.jars.to.include"/>
             </fileset>
         </delete>
     </target>
 
-    <target name="compile" >
+    <target name="compile">
         <compile>
-            <add.javac.elements >
+            <add.javac.elements>
                 <classpath>
                     <fileset dir="${proj.lib.dir}" includes="*.jar"/>
                 </classpath>
@@ -62,7 +63,7 @@
             <fileset dir="${proj.lib.dir}" includes="*.jar"/>
         </copy>
 
-        <build.war />
+        <build.war/>
     </target>
 
     <target name="build.minimal.war" depends="compile">
@@ -77,9 +78,9 @@
     <!--
         Zip of source code and save in documents folder
     -->
-    <target name="copy.zip.src" >
+    <target name="copy.zip.src">
         <mkdir dir="${dist.dir}"/>
-        <zip basedir="." destfile="${dist.dir}/${ant.project.name}.zip" />
+        <zip basedir="." destfile="${dist.dir}/${ant.project.name}.zip"/>
     </target>
 
     <target name="build.deployable"

@@ -1,0 +1,27 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" version="2.0">
+<head>
+    <title>Spring Security Secure Page</title>
+</head>
+<body>
+<f:view>
+    <h:outputText
+            value="Congratulations, #{sessionScope.SPRING_SECURITY_LAST_USERNAME}! "/>
+    <h:outputText
+            value="You have purchased #{shoppingBean.productId}."/>
+
+    <h:form id="form2">
+        <h:panelGrid columns="1">
+            <h:commandLink id="link1" action="back">
+                <h:outputText id="linkText" value="Home"/>
+            </h:commandLink>
+
+            <h:commandButton id="link2" value="Logout"
+                             actionListener="#{shoppingBean.logout}"/>
+        </h:panelGrid>
+
+    </h:form>
+</f:view>
+</body>
+</html>
