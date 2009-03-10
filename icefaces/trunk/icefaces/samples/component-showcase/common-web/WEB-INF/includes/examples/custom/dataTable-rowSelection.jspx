@@ -83,10 +83,11 @@ a control on the data to hide/show the table columns.
                        rows="15" 
                        columnClasses="tableCol" >
             <ice:column>
-<!-- It is a good practice to use immediate parameter of the rowSelector. If set tuo true, it will work with the results
-     of the selection in APPLY_REQUEST_VALUE stage before validation occurs. If set to false it will defer event
-     processing till after PROCESS_VALIDATION stage. If validation fails, selection event will not fire with
-     immediate=false
+<!--
+ It is a good practice to use immediate parameter of the rowSelector. If unset, or set to true, it will work with the
+ results of the selection in APPLY_REQUEST_VALUE phase before validation occurs. If set to false it will defer event
+ processing until INVOKE_APPLICATION phase, after validation. If validation fails, selection event will not fire with
+ immediate=false.
  -->
                 <ice:rowSelector id="selected"
                                  value="#{employee.selected}"
