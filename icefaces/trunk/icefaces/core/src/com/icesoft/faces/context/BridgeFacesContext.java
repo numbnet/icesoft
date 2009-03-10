@@ -39,6 +39,7 @@ import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -76,6 +77,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -105,6 +108,19 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ELContext elContext;
     private DocumentStore documentStore;
     private String lastViewID;
+
+    private static Constructor jsfUnitConstructor;
+    private static String jsfUnitClass;
+
+    static {
+        try {
+            Class c = Class.forName( "org.jboss.jsfunit.context.JSFUnitFacesContext");
+            jsfUnitClass = c.getName();
+            jsfUnitConstructor = c.getConstructor( new Class[] { javax.faces.context.FacesContext.class} );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
 
     public BridgeFacesContext(Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final Authorization authorization) throws Exception {
         setCurrentInstance(this);
@@ -369,6 +385,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * requests so we need to keep some of our state intact.
      */
     public void release() {
+        // If JSFUnit environment don't release
+        if (doJSFUnitCheck()) return;
+
         faceMessages.clear();
         maxSeverity = null;
         renderResponse = false;
@@ -799,5 +818,29 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             serializer.serialize(document);
             documentStore.save(document);
         }
+    }
+
+    /**
+     * Check if JSFUnit classes are available. If so, instantiate a wrapping
+     * JSFUnitFacesContext passing <code>this</code> and stuff the result into the session where
+     * appropriate.
+     * @return true if this is a JSFUnit environment.
+     */
+    private boolean doJSFUnitCheck() {
+        // if we can instantiate an instance of JSFUnitFacesContext, do so, put it in the session,
+        // and don't release.
+        try {
+            if (jsfUnitConstructor != null) {
+                externalContext.getSessionMap().put(  jsfUnitClass + ".sessionkey",
+                                                      jsfUnitConstructor.newInstance( new Object[] { this }) );
+                return true;
+            }
+        } catch (SessionExpiredException ite) {
+            // Can happen after test is run, and release is called because
+            // JSFUnit is cleaning up.
+        } catch( Exception e) {
+            log.error("Exception instantiating JSFUnitFacesContext", e);
+        }
+        return false;
     }
 }
