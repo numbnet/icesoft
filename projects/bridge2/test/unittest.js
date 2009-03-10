@@ -66,9 +66,11 @@ function InPageRunner(suiteName, tests) {
         var start = new Date;
         thunk();
         var end = new Date;
-        return end.getMilliseconds() - start.getMilliseconds();
+        return end.getTime() - start.getTime();
     }
 
+    var passedTestCases = 0;
+    var failedTestCases = 0;
 
     return function() {
         var cursor = document.body;
@@ -84,6 +86,7 @@ function InPageRunner(suiteName, tests) {
 
         var interruptTest = new Object;
         Tester(function(message) {
+            ++failedTestCases;
             var error = cursor.appendChild(document.createElement('td'));
             var empty = cursor.appendChild(document.createElement('td'));
             error.appendChild(document.createTextNode(message));
@@ -106,8 +109,10 @@ function InPageRunner(suiteName, tests) {
 
                 var elapsedTime = timeThunk(thunk);
 
+                ++passedTestCases;
                 var result = cursor.appendChild(document.createElement('td'));
                 result.appendChild(document.createTextNode('okay'));
+                result.style.letterSpacing = '0.12em';
                 styleNormalCell(result);
 
                 var time = cursor.appendChild(document.createElement('td'));
@@ -119,5 +124,14 @@ function InPageRunner(suiteName, tests) {
                 cursor = previousCursor;
             }
         });
+
+        var finalResult = document.body.appendChild(document.createElement('p'));
+        finalResult.appendChild(document.createTextNode(passedTestCases + ' tests passed; ' + failedTestCases + ' tests failed.'));
+        finalResult.style.letterSpacing = '0.12em';
+        if (failedTestCases > 0) {
+            finalResult.style.color = '#ee4444';
+        } else {
+            finalResult.style.color = 'green';
+        }
     };
 }
