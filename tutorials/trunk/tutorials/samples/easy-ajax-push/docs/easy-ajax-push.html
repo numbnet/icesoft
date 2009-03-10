@@ -1,0 +1,438 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+ <head>
+  <title>ICEfaces Easy Ajax Push Tutorial</title>
+  <LINK href="css/styles.css" rel="stylesheet" TYPE="text/css"/>
+ </head>
+ <body>
+      <!-- header section -->
+  <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+   <a href="index.html">Table of Contents</a>
+  </p>
+  <hr/>
+  <p>
+   <b>Lesson:</b>Easy Ajax Push
+  </p>
+      
+      <!-- tutorial content section -->
+  <h1>ICEfaces Easy Ajax Push Tutorial</h1>
+  <h2>Overview</h2>
+  <p>The essence of Ajax Push is the ability to trigger updates to the client from events or changes that occur on the server.  This makes Ajax Push highly suitable for collaborative applications where one user does something that changes the current state of the application and other users are interested in seeing that change.  There are many different ways to take advantage of Ajax Push to add collaborative features to your rich web application.  From the developer's perspective, Ajax Push is exposed through the SessionRenderer API.  This tutorial is designed to provide a simple and clear illustration of how to get started with the SessionRenderer API to add Ajax Push to your application.
+  </p>
+  <p>The project we are going to build in this tutorial is a page that contains simple, adjustable counters. The counter values are displayed on the page and buttons are provided that can be used to increment or decrement the counter values. The finished project looks like this:
+  </p>
+  <img alt="Running application" border="0" height="333" src="images/app-running.png" width="879">
+  <p>The application consists of two counters.  One is an application-scoped counter that can be adjusted and seen by all users.  The second counter is session-scoped so changes to the value of this counter are restricted to the individual user.  The goal is use the SessionRenderer API so that any modifications to the application-scoped counter result in Ajax Push updates being sent to all application users.
+  </p>
+  <p>
+   This tutorial will discuss the following topics:
+  </p>
+  <ul>
+   <li><a href="#toolsenv">Tools and Environment</a></li>
+   <li><a href="#newproject">Create a New Project</a></li>
+   <ul>
+    <li><a href="#chooseproject">Choose Project</a></li>
+    <li><a href="#namelocation">Name and Location</a></li>
+    <li><a href="#serversettings">Server and Settings</a></li>
+    <li><a href="#frameworks">Frameworks</a></li>
+   </ul>
+   <li><a href="#beans">Creating the Managed Beans</a></li>
+   <ul>
+    <li><a href="#newpackage">Create a New Java Package</a></li>
+    <li><a href="#counterclass">Create a New Counter Class</a></li>
+    <li><a href="#counterimplementation">Implement the Counter Class</a></li>
+    <li><a href="#applicationcounterclass">Create a New ApplicationCounter Class</a></li>
+    <li><a href="#applicationcounterimplementation">Implement the ApplicationCounter Class</a></li>
+    <li><a href="#definebeans">Define the Managed Beans</a></li>
+   </ul>
+   <li><a href="#createpages">Creating the Pages</a></li>
+   <ul>
+    <li><a href="#configurefacelets">Configure Facelets Support</a></li>
+    <li><a href="#editpages">Edit the Facelet Pages</a></li>
+   </ul>
+   <li><a href="#runningwithout">Running without Ajax Push</a></li>
+   <ul>
+    <li><a href="#preparerun">Preparing to Run</a></li>
+    <li><a href="#runwithout">Running the Application</a></li>
+   </ul>
+   <li><a href="#addpush">Adding Ajax Push with SessionRenderer</a></li>
+   <ul>
+    <li><a href="#sessioncounterclass">Create a New SessionCounter Class</a></li>
+    <li><a href="#sessioncounterimplementation">Implement the SessionCounter Class</a></li>
+    <li><a href="#adjustmanagedbean">Adjust the Managed Bean</a></li>
+    <li><a href="#sessionrenderer">Using the SessionRenderer for Ajax Push</a></li>
+   </ul>
+    <li><a href="#runningwith">Running with Ajax Push</a></li>
+   <ul>
+    <li><a href="#runwith">Running the Application</a></li>
+   </ul>
+ </ul>
+  <a name="toolsenv">&nbsp;</a>
+  <h2>Tools and Environment</h2>
+  <p>You can develop ICEfaces applications using the tools of your choice.  To make life a bit easier, ICEsoft also provides project integration plugins for a number of popular IDEs.
+  </p>
+  <a href="http://www.icefaces.org/main/downloads/os-downloads.iface">http://www.icefaces.org/main/downloads/os-downloads.iface</a>
+  <p>For this tutorial, we'll be demonstrating how to build the application using NetBeans 6.5.  We've installed the ICEfaces Project Integration plugin for NetBeans 6.5 which is available from the site listed above.  We'll also be developing using Facelets so we recommend that you use the NetBeans Plugins manager to download and install the Facelets Support plugin.
+  </p>
+  <p>
+   The code in this tutorial is designed to run compatibly on JDK 1.4. so we have purposely avoided the use of annotations, concurrency utilities, etc.
+  </p>
+  <a name="newproject">&nbsp;</a>
+  <h2>Create a New Project</h2>
+  <p>
+   With NetBeans running and the appropriate plugins intalled, you are ready to create a new ICEfaces project:
+  </p>
+  <a name="chooseproject">&nbsp;</a>
+  <h3>Choose Project</h3>
+  <p>
+   The first step is to choose the appropriate project type:
+  </p>
+  <ol>
+   <li>From the menus, choose File -> New Project...</li>
+   <li>On the first screen of the New Project wizard, choose the Java Web category and the Web Application project.
+   </li>
+   <img src="images/choose-project.png" height="577" width="822" border="0">
+   <li>Click Next ></li>
+  </ol>
+  <a name="namelocation">&nbsp;</a>
+  <h3>Name and Location</h3>
+  <p>
+   Then select an appropriate name and location for the project:
+  </p>
+  <ol>
+   <li>Provide a name (e.g. ajaxpush) and location for your new NetBeans project.</li>
+   <img src="images/name-and-location-project.png" height="577" width="822" border="0">
+   <li>Click Next ></li>
+  </ol>
+  <a name="serversettings">&nbsp;</a>
+  <h3>Server and Settings</h3>
+  <p>
+   Select the application server and related settings:
+  </p>
+  <ol>
+   <li>For this example, we'll choose Tomcat 6.0</li>
+   <img src="images/server-and-settings.png" height="577" width="822" border="0">
+   <li>Click Next ></li>
+  </ol>
+  <a name="frameworks">&nbsp;</a>
+  <h3>Frameworks</h3>
+  <p>
+   For our test application, we want the ICEfaces and Facelets framework support:
+  </p>
+  <ol>
+   <li>From the list of frameworks provided, choose ICEfaces.</li>
+   <li>Select the ICEfaces configuration option "Concurrent DOM View".</li>
+   <img src="images/frameworks.png" height="577" width="822" border="0">
+   <p>If you'd like to design your project visually, you can choose Visual Web ICEfaces instead. As we don't really have a complex visual requirement and we are focusing on Ajax Push, the ICEfaces framework is suitable for this tutorial.
+   </p>
+   <li>If you've downloaded and installed the Facelets Support plugin, you should select the checkbox for that framework as well.
+   </li>
+   <li>Click Finish</li>
+  </ol>
+  <p>
+   Once you've completed the project wizard, you should have an initial project in NetBeans that looks like this:
+  </p>
+  <img src="images/initial-project.png" height="824" width="1213" border="0">
+  <p></p>
+  
+  <a name="beans">&nbsp;</a>
+  <h2>Creating the Managed Beans</h2>
+  <p>
+   Our first task is to create the backing beans that will be used to hold the state of the counters.  First we'll start with a generic counter:
+  </p>
+  <a name="newpackage">&nbsp;</a>
+  <h3>Create a New Java Package</h3>
+  <ol>
+   <li>Right-click on Source Packages, select New, then select Java Package...</li>
+   <img src="images/new-java-package.png" height="352" width="377" border="0">
+   <li>In the Name and Location dialog, type in a new package name (e.g. org.icefaces.tutorial).</li>
+   <img src="images/name-and-location-package.png" height="577" width="801" border="0">
+   <li>Click Finish</li>
+  </ol>
+  <a name="counterclass">&nbsp;</a>
+  <h3>Create a New Counter Class</h3>
+  <p>
+   First we create a class file for our Counter:
+  </p>
+  <ol>
+   <li>Under Source Packages, right-click on the newly created package, select New, then select Java Class...
+   </li>
+   <img src="images/new-java-class.png" height="352" width="377" border="0">
+   <li>Type in a new class name (e.g. Counter).</li>
+   <li>Click Finish.</li>
+  </ol>
+  <a name="counterimplementation">&nbsp;</a>
+  <h3>Implement the Counter Class</h3>
+  <p>
+   Now we are going to provide the logic of our Counter bean. We'll use a simple integer member variable as the current counter value, provide getter and setter methods for the value, and also add a couple of methods for incrementing and decrementing the value. The methods will be used as JSF actionListeners so they need to take an ActionEvent as a parameter.
+  </p>
+  <p>
+   You can type or copy the following into the editing tab for the Counter.java file::
+  </p>
+  <ol>
+   <li>Under Source Packages, right-click on the newly created package, select New, then select Java Class...
+   </li>
+   <img src="images/new-java-class.png" height="352" width="377" border="0">
+   <li>Type in a new class name (e.g. Counter).</li>
+   <li>Click Finish.</li>
+  </ol>
+
+      <pre>
+package org.icefaces.tutorial;import javax.faces.event.ActionEvent;public class Counter {    private int count;    public Counter() {    }    public int getCount() {        return count;    }    public void setCount(int count) {        this.count = count;    }    public void increment(ActionEvent event) {        count++;    }    public void decrement(ActionEvent event) {        count--;    }}
+      </pre>
+  <p>
+   Your project should now look something like this:
+  </p>
+  <img src="images/counter-impl.png" height="824" width="1213" border="0">
+  <p/>
+  <a name="applicationcounterclass">&nbsp;</a>
+  <h3>Create a New ApplicationCounter Class</h3>
+  <p>
+   Since multiple users can potentially access and modify the value of our application-scoped counter, we need to create a version that guards against concurrent access.  So we'll create an ApplicationCounter that extends our basic Counter:
+  </p>
+  <ol>
+   <li>Under Source Packages, right-click on the package, select New, then select Java Class...
+   </li>
+   <li>Type in a new class name (e.g. ApplicationCounter).</li>
+   <li>Click Finish.</li>
+  </ol>
+  <a name="applicationcounterimplementation">&nbsp;</a>
+  <h3>Implement the ApplicationCounter Class</h3>
+  <p>
+   You can type or copy the following into the editing tab for the Counter.java file::
+  </p>
+      <pre>
+package org.icefaces.tutorial;import javax.faces.event.ActionEvent;public class ApplicationCounter extends Counter {    public ApplicationCounter() {    }    public synchronized void setCount(int count){        super.setCount(count);    }    public synchronized void increment(ActionEvent event) {        super.increment(event);    }    public synchronized void decrement(ActionEvent event) {        super.decrement(event);    }}
+      </pre>
+  <p>
+   Your project should now look something like this:
+  </p>
+  <img src="images/app-counter-impl.png" height="824" width="1213" border="0">
+  <p/>
+  
+  <a name="definebeans">&nbsp;</a>
+  <h3>Define Managed Beans</h3>
+  <p>
+   To make use of our classes as JSF managed beans, we need to declare them in our faces-config.xml file:
+  </p>
+  <ol>
+   <li>Under WEB-INF, open the faces-config.xml file for editing.</li>
+   <li>Switch to the XML view (rather than PageFlow).</li>
+   <img src="images/faces-config-start.png" height="824" width="1213" border="0">
+   <ol>
+    <p>To create the session-scoped bean:</p>
+    <li>Right-click in the editor and choose JavaServer Faces -> Add Managed Bean..</li>
+    <img src="images/add-managed-bean.png" height="105" width="221" border="0">
+    <li>Give the bean a unique name (e.g. sessionCounter).</li>
+    <li>Type or browse for the correct class (e.g. org.icefaces.tutorial.Counter).</li>
+    <li>Choose the correct scope. For this bean, 'session'.</li>
+    <li>Add a description (this is optional).</li>
+    <img src="images/session-counter-bean.png" height="391" width="581" border="0">
+    <li>Click Add.</li>
+   </ol>
+   <ol>
+    <p>To create the application-scoped bean:</p>
+    <li>Right-click in the editor and choose JavaServer Faces -> Add Managed Bean..</li>
+    <li>Give the bean a unique name (e.g. applicationCounter).</li>
+    <li>Type or browse for the correct class (e.g. org.icefaces.tutorial.ApplicationCounter).</li>
+    <li>Choose the correct scope. For this bean, 'application'.</li>
+    <li>Add a description (this is optional).</li>
+    <img src="images/app-counter-bean.png" height="394" width="625" border="0">
+    <li>Click Add.</li>
+   </ol>
+  </ol>
+  <p>The faces-config.xml file should now look something like this:</p>
+  <img src="images/faces-config-1.png" height="824" width="1213" border="0">
+  <p/>
+  <a name="createpages">&nbsp;</a>
+  <h2>Creating the Pages</h2>
+  <p>Now we need to create our user interface that we can bind our bean values and methods to.  When the project was automatically created, the ICEfaces pluging created a couple of JSP files for us (forward.jsp and welcomeJSF.jsp).  By adding the Facelets Support plugin, it created a couple of starting facelets pages (template.xhtml and template-client.xhtml).  For this tutorial, we're going to use Facelets so we'll be concentrating on the .xhtml resources.
+  </p>
+  <p>With Facelets, the typical approach is to create a template (template.xhtml) that can be used to dynamically include content.  Since this isn't designed to be a tutorial on Facelets, we'll simply describe the minium steps required to get our counters up and running.
+  </p>
+  <a name="configurefacelets">&nbsp;</a>
+  <h3>Configure Facelets Support</h3>
+  <p>To use Facelets with ICEfaces, there are a couple of configuration settings that we need to apply. ICEfaces uses it's own copy of the Facelets library which is included as part of the ICEfaces integration plugin. To ensure that the library is applied to the project:
+  </p>
+  <ol>
+   <li>Right-click on your project and choose Properties.</li>
+   <li>Choose Libraries from the Categories list.</li>
+   <p>If the "Facelets ICEfaces Run-Time 1.7.2" libray is already in the list of compile-time libraries, the project is correctly configured.  If it's not in the list:
+   </p>
+   <ol>
+    <li>Click the Add Library... button.</li>
+    <li>Choose "Facelets ICEfaces Run-Time 1.7.2" from the list.</li>
+    <li>Click the Add Library... button.</li>
+   </ol>
+   <p>In either case, the complete set of libraries should look something like this:</p>
+   <img src="images/icefaces-facelets.png" height="681" width="923" border="0">
+   <p>When using Facelets with ICEfaces, the ICEfaces framework uses a custom JSF ViewHandler implementation.  This must be specified in the faces-config.xml file:
+   </p>
+   <li>Under WEB-INF, open the faces-config.xml file for editing.</li>
+   <li>Switch to the XML view (rather than PageFlow).</li>
+   <li>If necessary, add the  D2DFaceletViewHandler to the application section of the configuration file by copying or typing the following:
+   </li>
+   <pre>
+   &lt;application&gt;        &lt;view-handler&gt;com.icesoft.faces.facelets.D2DFaceletViewHandler&lt;/view-handler&gt;    &lt;/application&gt;
+   </pre>
+   <li>Under WEB-INF, open the faces-config.xml file for editing.</li>
+  </ol>
+  <p>When you are done, the faces-config.xml file should look something like this. Note that it's possible for more than one ViewHandler to be configured.  They are designed to delegate responsibilities appropriately.
+  </p>
+  <img src="images/faces-config-2.png" height="1057" width="1229" border="0">
+  <p/>
+  <a name="editpages">&nbsp;</a>
+  <h3>Edit the Facelet Pages</h3>
+  <p>
+   By including the Facelets framework plugin when the project was initially created, two Facelet files are automatically created for you.  We'll edit those files now:
+  </p>
+  <ol>
+   <li>Open up the template-client.xhtml file for editing.  This file provides the viewable content based on the configuration described in the template (template.xhtml).
+   </li>
+   <li>Add the namespace for the ICEfaces components to the html tag.  We need to add this so that we can use ICEfaces components (e.g.
+    <ice:form> ) in the page.
+   </li>
+   <pre>
+   &lt;html xmlns="http://www.w3.org/1999/xhtml"      xmlns:ui="http://java.sun.com/jsf/facelets"      xmlns:h="http://java.sun.com/jsf/html"      xmlns:ice="http://www.icesoft.com/icefaces/component"&gt;
+   </pre>
+   <li>Change the title definition from:</li>
+   <pre>
+      &lt;ui:define name="title"&gt;
+         Facelets
+      &lt;/ui:define&gt;
+   </pre>
+   <p>to</p>
+   <pre>
+      &lt;ui:define name="title"&gt;
+         Ajax Push Counter
+      &lt;/ui:define&gt;
+   </pre>
+   <li>Change the body definition from:</li>
+   <pre>
+      &lt;ui:define name="body"&gt;         Hello from the Facelets client template!      &lt;/ui:define&gt;
+   </pre>
+   <p>to</p>
+   <pre>
+       &lt;ui:define name="body"&gt;             &lt;ice:form&gt;                 &lt;ice:panelGrid columns="3"&gt;                     &lt;ice:outputText value="Application counter:" /&gt;                     &lt;ice:outputText value="#{applicationCounter.count}" /&gt;                     &lt;ice:panelGroup&gt;                         &lt;ice:commandButton value="-"                                            actionListener="#{applicationCounter.decrement}"/&gt;                         &lt;ice:commandButton value="+"                                            actionListener="#{applicationCounter.increment}"/&gt;                     &lt;/ice:panelGroup&gt;                     &lt;ice:outputText value="Session counter:" /&gt;                     &lt;ice:outputText value="#{sessionCounter.count}" /&gt;                     &lt;ice:panelGroup&gt;                         &lt;ice:commandButton value="-"                                            actionListener="#{sessionCounter.decrement}"/&gt;                         &lt;ice:commandButton value="+"                                            actionListener="#{sessionCounter.increment}"/&gt;                     &lt;/ice:panelGroup&gt;                 &lt;/ice:panelGrid&gt;             &lt;/ice:form&gt;         &lt;/ui:define&gt;
+   </pre>
+  </ol>
+  <p>The body content now provides a number of JSF components including a form, a panelGrid (for layout), outputText for showing the values of our counters, and commandButtons for modifying the values of the counters.  The values and methods use the JSF expression language to bind to the backing beans we described in our faces-config.xml.
+  </p>
+  <img src="images/template-client.png" height="1057" width="1229" border="0">
+  <p/>
+  <a name="runningwithout">&nbsp;</a>
+  <h2>Running without Ajax Push</h2>
+  <a name="preparerun">&nbsp;</a>
+  <h3>Preparing to Run</h3>
+  <p>Before running the application, you should ensure that the default URL that NetBeans attempts to use for launching your browser is correct.  By default, the ICEfaces project attempts to use the JSP page via the ICEfaces extension (welcomeJSF.iface).  You should change this to use the default facelets page with the proper extension (template-client.iface).
+  </p>
+  <ol>
+   <li>Right-click on the project name (e.g. ajaxpush) and choose Properties.</li>
+   <li>Select the Run category.</li>
+   <li>Ensure that the Relative URL value points to your Facelets page and uses the virtual ICEfaces extension (e.g. template-client.iface).
+   </li>
+   <img src="images/run-properties.png" height="573" width="878" border="0">
+  </ol>
+  <a name="runwithout">&nbsp;</a>
+  <h3>Running the Application</h3>
+  <p>If the tutorial is your main (or only) NetBeans project, then you should be able to Run Main Project, using either the green arrow button in the toolbar, the F6 key, or choosing Run -> Run Main Project from the menu.  Your browser should automatically launch using the following URL:
+  </p>
+  <a>http://localhost:8080/ajaxpush/template-client.iface</a>
+  <p>And the application should look something like this:
+  </p>
+  <img src="images/app-running.png" height="333" width="879" border="0">
+  <p>Clicking the buttons allows you to increment and decrement the counter values.  Opening a second  browser shows the the application counter is shared, but the session counters are not.  There are two very important things to note at this point:
+  </p>
+  <ul>
+   <li>You can't just open another window or tab of the same browser instance to do this because browser windows or tabs from the same browser will share sessions.  So use two separate browsers (e.g. IE and Firefox) or use browsers on separate machines.
+   </li>
+   <li>Since we haven't added Ajax Push features yet, the application-scoped counter doesn't update automatically.  It only updates when you interact with the page.  In the following section, we'll use the SessionRenderer API to add Ajax Push so that page updates are automatic.
+   </li>
+  </ul>
+  <a name="addpush">&nbsp;</a>
+  <h2>Adding Ajax Push with SessionRenderer</h2>
+  <p>There are basically two parts to using the SessionRenderer API.</p>
+  <ul>
+   <li>adding sessions to the group or groups we wish to render</li>
+   <li>calling a render when something of interest changes for that group</li>
+  </ul>
+  <p>The SessionRenderer API supports this in a simple and straight-forward manner.</p>
+     <pre>public static void addCurrentSession(final String groupName)public static void removeCurrentSession(final String groupName)public static void render(final String groupName)
+     </pre>
+  <p>Since we want everyone to be able to access the application-scoped counter, we're going to keep it simple and just add everyone to a single, global group.  The easiest way to do this is to have the group membership logic in the constructor of the session-scoped bean.  That way, when our session-scoped bean is created, it's added to a group.
+  </p>
+  <p>Since we only want to do this for our session-scoped counter, and not our application-scoped counter, we'll create another subclass of Counter that does this for us.
+  </p>
+  <a name="sessioncounterclass">&nbsp;</a>
+  <h3>Create a new SessionCounter class</h3>
+  <ol>
+   <li>Under Source Packages, right-click on the package, select New, then select Java Class...</li>
+   <li>Type in a new class name (e.g. SessionCounter).</li>
+   <li>Click Finish.</li>
+  </ol>
+  <a name="sessioncounterimplementation">&nbsp;</a>
+  <h3>Implement the SessionCounter class</h3>
+  <p>
+   The only thing we want to do differently in this counter is add the current session to our group. You can type or copy the following into the editing tab for the Counter.java file:
+  </p>
+      <pre>
+package org.icefaces.tutorial;import org.icefaces.x.core.push.SessionRenderer;public class SessionCounter extends Counter {    public SessionCounter() {        SessionRenderer.addCurrentSession("all");    }}
+      </pre>
+  <p>
+   Your project should now look something like this:
+  </p>
+  <img src="images/session-counter-impl.png" height="1057" width="1229" border="0">
+  <p> For ICEfaces 1.7.1 and 1.7.2, the SessionRenderer API was considered experimental so the package for it reflects this (org.icefaces.x.core.push.SessionRenderer).  For ICEfaces 1.8, the API is no longer considered experimental and resides with the rest of the Ajax Push APIs under com.icesoft.faces.async.render.
+  </p>
+  <a name="adjustmanagedbean">&nbsp;</a>
+  <h3>Adjust the Managed Bean Description</h3>
+  <p>Now that we have a new bean implementation for our session-scoped counter, we need to update the JSF descriptor to make use of it.
+  </p>
+  <ol>
+   <li>Under WEB-INF, open the faces-config.xml file for editing.</li>
+   <li>Switch to the XML view (rather than PageFlow).</li>
+   <li>Change the class of the session-scoped bean from Counter to SessionCounter:</li>
+   <pre> 
+&lt;managed-bean&gt;  &lt;description&gt;A session-scoped counter.&lt;/description&gt;  &lt;managed-bean-name&gt;sessionCounter&lt;/managed-bean-name&gt;  &lt;managed-bean-class&gt;org.icefaces.tutorial.Counter&lt;/managed-bean-class&gt;  &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;&lt;/managed-bean&gt;
+   </pre>
+   <p>becomes</p>
+   <pre>&lt;managed-bean&gt;  &lt;description&gt;A session-scoped counter.&lt;/description&gt;  &lt;managed-bean-name&gt;sessionCounter&lt;/managed-bean-name&gt;  &lt;managed-bean-class&gt;org.icefaces.tutorial.SessionCounter&lt;/managed-bean-class&gt;  &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;&lt;/managed-bean&gt;
+   </pre>
+  </ol>
+  <p>Your faces-config.xml file should now read like this:</p>
+  <img src="images/faces-config-2.png" height="1057" width="1229" border="0">
+  <p/>
+  <a name="sessionrenderer">&nbsp;</a>
+  <h3>Using SessionRender for Ajax Push</h3>
+  <p>Our final step in adding Ajax Push features to our application counter requires modifications to the ApplicationCounter class.  What we want is for updates to be pushed out whenever there is a change.  To do this, you simply need to call the render method of the SessionRenderer when a notable change occurs.
+  </p>
+  <pre>public static void render(final String groupName)</pre>
+  <ol>
+   <li>Type or copy the following changes to the ApplicationCounter class:</li>
+  </ol>
+      <pre>
+package org.icefaces.tutorial;import javax.faces.event.ActionEvent;import org.icefaces.x.core.push.SessionRenderer;public class ApplicationCounter extends Counter {    public ApplicationCounter() {    }    public synchronized void setCount(int count){        super.setCount(count);        SessionRenderer.render("all");    }    public synchronized void increment(ActionEvent event) {        super.increment(event);        SessionRenderer.render("all");   }    public synchronized void decrement(ActionEvent event) {        super.decrement(event);        SessionRenderer.render("all");   }}      </pre>
+  <img src="images/app-counter-impl-2.png" height="1057" width="1229" border="0">
+  <p>So whenever a change is made to the application-scoped counter, we issue a request for a render to the group "all" which, in our case, means every active session.
+  </p>
+  <a name="runningwith">&nbsp;</a>
+  <h2>Running with Ajax Push</h2>
+  <a name="runwith">&nbsp;</a>
+  <h3>Running the Application</h3>
+  <p>Now if you run the main project (using either the green arrow button in the toolbar, the F6 key, or choosing Run -> Run Main Project from the menu) and point two browsers at the application:
+  </p>
+  <a>http://localhost:8080/ajaxpush/template-client.iface</a>
+  <p>Clicking the buttons for the application-scoped counter should provide a richer experience.  Updates from interaction in one browser that result in a change to the application counter are now pushed out to other active users. And there you have it.  Using the SessionRenderer API is an easy and straightforward way to add collaborative features to your ICEfaces applications.
+  </p>
+      
+       
+      <!-- footer section -->
+  <hr/>
+  <p class="tutorialFooterText">
+   The ICEfaces Tutorial
+   <br/>
+   <a href="index.html">Table of Contents</a>
+  </p>
+  <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+ </body>
+</html>
