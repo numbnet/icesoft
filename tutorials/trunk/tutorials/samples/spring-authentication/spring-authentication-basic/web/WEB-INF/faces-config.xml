@@ -16,12 +16,6 @@
 		<managed-bean-name>shoppingBean</managed-bean-name>
 		<managed-bean-class>com.icesoft.icefaces.security.beans.ShoppingBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<description>The shopping service</description>
-			<display-name>shoppingService</display-name>
-			<property-name>shoppingService</property-name>
-			<value>#{shoppingService}</value>
-		</managed-property>
 	</managed-bean>
 	
 	<managed-bean>
@@ -32,33 +26,27 @@
 		
 
 	<navigation-rule>
-		<from-view-id>/secured/hello.jspx</from-view-id>
+		<from-view-id>/secured/welcome.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/secured/page2.jspx</to-view-id>
+			<to-view-id>/secured/successfulPurchase.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 
 	<navigation-rule>
-		<from-view-id>/secured/page2.jspx</from-view-id>
+		<from-view-id>/secured/successfulPurchase.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id>/secured/hello.jspx</to-view-id>
+			<to-view-id>/secured/welcome.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+
 	<navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
-                <from-outcome>logout</from-outcome>
-                <to-view-id>/spring-authentication/j_spring_security_logout.jsp</to-view-id>
-        </navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-                <from-outcome>accessDenied</from-outcome>
-                <to-view-id>/accessDenied.jspx</to-view-id>
+                <from-outcome>login</from-outcome>
+                <to-view-id>/springSecurityLogin.jspx</to-view-id>
         </navigation-case>
 </navigation-rule>
 	

@@ -2,11 +2,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core" version="2.0">
 <head>
-<title>Hello World</title>
+<title>Spring Security Secure Page</title>
 </head>
 <body>
 <f:view>
-	<h:outputText value="Congrats, #{sessionScope.SPRING_SECURITY_LAST_USERNAME}! " /> 
+	<h:outputText value="Congratulations, #{sessionScope.SPRING_SECURITY_LAST_USERNAME}! " />
 	<h:outputText
 		value="You have purchased #{shoppingBean.productId}." />
 
@@ -16,9 +16,7 @@
 				<h:outputText id="linkText" value="Home" />
 			</h:commandLink>
 
-			<h:commandLink id="link2" action="logout">
-				<h:outputText id="logout" value="Logout" />
-			</h:commandLink>
+			<h:commandButton id="link2" value="Logout" actionListener="#{shoppingBean.logout}" />
 		</h:panelGrid>
 
 	</h:form>
