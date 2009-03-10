@@ -128,9 +128,9 @@ var isEmpty = operator(function(items) {
     return items.length == 0;
 });
 
-var notEmpty = operator(function(items) {
-    return items.length > 0;
-});
+var notEmpty = function(items) {
+    return !isEmpty(items);
+};
 
 var collect = operator($witch(function(condition) {
     condition(isString, function(items, collector) {
@@ -283,7 +283,7 @@ function Stream(streamDefinition) {
         method(collect, function(self, collector) {
             return Stream(function(cellConstructor) {
                 function collectingStream(stream, index) {
-                    if (!stream) return;
+                    if (!stream) return null;
                     var cell = stream();
                     return function() {
                         return cellConstructor(collector(key(cell), index), collectingStream(value(cell), index + 1));
@@ -311,12 +311,14 @@ function Stream(streamDefinition) {
                 i++;
                 cursor = value(cursor());
             }
+
+            return i;
         });
 
         method(select, function(self, selector) {
             return Stream(function(cellConstructor) {
                 function select(stream) {
-                    if (!stream) return;
+                    if (!stream) return null;
                     var cell = stream();
                     var k = key(cell);
                     var v = value(cell);
@@ -347,6 +349,10 @@ function Stream(streamDefinition) {
             } else {
                 return notDetectedThunk ? notDetectedThunk(self) : null;
             }
+        });
+
+        method(isEmpty, function(self) {
+            return stream == null;
         });
 
         method(copy, function(self) {
