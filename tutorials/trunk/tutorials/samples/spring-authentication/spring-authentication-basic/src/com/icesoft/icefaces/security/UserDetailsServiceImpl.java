@@ -1,11 +1,11 @@
 package com.icesoft.icefaces.security;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.springframework.dao.DataAccessException;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
