@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <body>
+        
+        This text above will not be displayed.
+        
+        <ui:composition template="/template.xhtml">
+            
+            This text will not be displayed.
+            
+            <ui:define name="title">
+                Ajax Push Counter
+            </ui:define>
+            
+            This text will also not be displayed.
+            
+            <ui:define name="body">
+                <ice:form>
+                    <ice:panelGrid columns="3">
+                        <ice:outputText value="Application counter:" />
+                        <ice:outputText value="#{applicationCounter.count}" />
+                        <ice:panelGroup>
+                            <ice:commandButton value="-"
+                                               actionListener="#{applicationCounter.decrement}"/>
+                            <ice:commandButton value="+"
+                                               actionListener="#{applicationCounter.increment}"/>
+                        </ice:panelGroup>
+
+                        <ice:outputText value="Session counter:" />
+                        <ice:outputText value="#{sessionCounter.count}" />
+                        <ice:panelGroup>
+                            <ice:commandButton value="-"
+                                               actionListener="#{sessionCounter.decrement}"/>
+                            <ice:commandButton value="+"
+                                               actionListener="#{sessionCounter.increment}"/>
+                        </ice:panelGroup>
+
+                    </ice:panelGrid>
+                </ice:form>
+            </ui:define>
+            
+            This text will not be displayed.
+            
+        </ui:composition>
+        
+        This text below will also not be displayed.
+        
+    </body>
+</html>
+
