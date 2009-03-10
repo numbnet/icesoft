@@ -38,16 +38,13 @@ import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.utils.SeriesStateHolder;
 
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import java.io.IOException;
 import java.util.*;
@@ -69,7 +66,8 @@ import java.text.SimpleDateFormat;
  * @version 1.1
  */
 public class SelectInputDate
-        extends HtmlInputText {
+        extends HtmlInputText
+        implements SeriesStateHolder {
     /**
      * The component type.
      */
@@ -735,6 +733,29 @@ public class SelectInputDate
         submittedMinutes = (Integer)values[26];  
         submittedAmPm = (String)values[27];
         popupDate = (Date) values[28];        
+    }
+
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object values[] = new Object[7];
+        values[0] = navEvent ? Boolean.TRUE : Boolean.FALSE;
+        values[1] = navDate;
+        values[2] = showPopup;
+        values[3] = submittedHours;
+        values[4] = submittedMinutes;
+        values[5] = submittedAmPm;
+        values[6] = popupDate;
+        return values;
+    }
+
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object values[] = (Object[]) state;
+        navEvent = ((Boolean) values[0]).booleanValue();
+        navDate = (Date) values[1];
+        showPopup = (List) values[2];
+        submittedHours = (Integer)values[3];
+        submittedMinutes = (Integer)values[4];
+        submittedAmPm = (String)values[5];
+        popupDate = (Date) values[6];
     }
 
     private Map linkMap = new HashMap();
