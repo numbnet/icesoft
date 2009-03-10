@@ -1,10 +1,10 @@
 package com.icesoft.icefaces.security.beans;
 
+import org.springframework.security.ui.AbstractProcessingFilter;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
-import org.springframework.security.ui.AbstractProcessingFilter;
 
 public class LoginBean {
 
