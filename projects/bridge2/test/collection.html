@@ -6,6 +6,20 @@
     <script type="text/javascript" src="../newlib/collection.js"></script>
     <script type="text/javascript" src="unittest.js"></script>
     <script type="text/javascript">
+        function Range(start, end) {
+            return Stream(function(cellConstructor) {
+                if (start == end) return null;
+                function range(index) {
+                    if (index > end) return null;
+                    return function() {
+                        return cellConstructor(index, range(index + 1));
+                    };
+                }
+
+                return range(start);
+            });
+        }
+
         window.onload = InPageRunner('Collection test suite', function(test) {
             test('detect arrays', function() {
                 checkTrue(isArray([]), 'array is not detected');
@@ -33,6 +47,20 @@
                 });
             });
 
+            test('querying', function() {
+                checkEqual(size([1, 2, 3]), 3);
+                checkEqual(size('abcd'), 4);
+                checkEqual(size(Range(0, 3)), 4);
+
+                checkFalse(isEmpty([1, 2, 3]));
+                checkFalse(isEmpty('aaa'));
+                checkFalse(isEmpty(Range(0, 3)));
+
+                checkTrue(isEmpty([]));
+                checkTrue(isEmpty(''));
+                checkTrue(isEmpty(Range(0, 0)));
+            });
+
             test('modify arrays', function() {
                 checkEqual(concatenate([1, 2, 3], [3]).length, 4);
                 checkEqual(concatenate([1, 2, 3], [4])[3], 4);
@@ -48,6 +76,10 @@
                 checkEqual(append([1], 2)[1], 2);
                 var aaa = [1];
                 checkEqual(append(aaa, 3), aaa);
+
+                var aaaa = [1, 2, 3];
+                empty(aaaa);
+                checkEqual(size(aaaa), 0);
             });
         });
     </script>
