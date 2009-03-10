@@ -83,7 +83,7 @@ var select = operator($witch(function(condition) {
     condition(any, function(items, selector) {
         return Stream(function(cellConstructor) {
             function selectingStream(start, end) {
-                if (start > end) return;
+                if (start > end) return null;
                 var item = items[start];
                 return selector(item) ?
                        function() {
