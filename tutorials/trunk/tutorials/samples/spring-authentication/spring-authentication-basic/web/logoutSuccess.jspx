@@ -2,7 +2,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core" version="2.0">
     <head>
-        <title>Logged out</title>
+        <title>Spring Security Logout</title>
     </head>
     <body>
         <f:view>
@@ -10,6 +10,7 @@
               <h:panelGrid id="grid" columns="1">
                 <h:outputText id="output1" value="You have successfully logged out."/>
               </h:panelGrid>
+              <h:commandLink value="Return to Login Page" action="login" />
             </h:form>
         </f:view>
     </body>

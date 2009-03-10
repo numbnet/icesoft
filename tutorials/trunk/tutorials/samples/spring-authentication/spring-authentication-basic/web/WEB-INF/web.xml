@@ -6,12 +6,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 
-	<display-name>ICEfaces Tutorial: Timezone Part 2</display-name>
+	<display-name>Spring Security with ICEfaces</display-name>
 
 	<description>
-		ICEfaces Tutorial: Timezone Part 2 Show how simple it is to
-		integrate ICEfaces technology into an existing JavaServer Faces
-		environment.
+		Spring authentication tutorial is a basic example of Spring Security
+        used in conjunction with ICEfaces components to apply secure
+        authentication and authorization to a dynamic web application.
 	</description>
 
 	<context-param>
@@ -35,9 +35,12 @@
 		synchronous update mode and disable AJAX push features. -->
 	<context-param>
 		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
-		<param-value>false</param-value>
+		<param-value>true</param-value>
 	</context-param>
 
+    <!-- Specifies to the ICEfaces framework whether to support multiple views
+         of a single application from the same browser.  When running in a Portlet
+         environment, this parameter must be set to true. -->
 	<context-param>
 		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
 		<param-value>true</param-value>
@@ -47,6 +50,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
+
 	<!-- ConfigureListener is not generally required. Due to an apparent bug in 
 		Tomcat users have reported seeing the following error "SEVERE: ICEfaces 
 		could not initialize JavaServer Faces. Please check that the JSF .jar files 

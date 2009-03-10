@@ -32,15 +32,6 @@ public class LoginBean {
 
 	}
 
-	/**
-	 * Method that is backed to a submit button of a form.
-	 */
-	public String send() {
-
-		// do real logic
-		return ("success");
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -60,4 +51,6 @@ public class LoginBean {
 	public void login(ActionEvent e) throws java.io.IOException {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_check.jsp?j_username="+userId+"&j_password="+password);
 	}
+
+
 }

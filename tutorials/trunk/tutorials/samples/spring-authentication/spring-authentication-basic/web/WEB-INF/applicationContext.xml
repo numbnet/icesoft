@@ -9,7 +9,7 @@
 		<security:intercept-url pattern="/acegilogin.jspx" filters="none" requires-channel="any"/>
 		<security:intercept-url pattern="/index.jsp" filters="none" requires-channel="any"/>
 		<security:intercept-url pattern="/secured/**" access="ROLE_ALLACCESS, ROLE_URLACCESS" requires-channel="any"/>
-		<security:form-login login-page="/acegilogin.jspx" login-processing-url="/j_spring_security_check.jsp" default-target-url="/secured/hello.jspx" authentication-failure-url="/accessDenied.jspx"  />
+		<security:form-login login-page="/springSecurityLogin.jspx" login-processing-url="/j_spring_security_check.jsp" default-target-url="/secured/welcome.jspx" />
 		<security:logout logout-url="/j_spring_security_logout.jsp" logout-success-url="/logoutSuccess.jspx" />
 	</security:http>
 	
@@ -21,7 +21,5 @@
 	</bean>
 
 	<bean id="userRepository" class="com.icesoft.icefaces.security.UserDaoImpl"/>
-	
-	<bean id="shoppingService" class="com.icesoft.icefaces.security.secure.ShoppingServiceImpl"/>
 
 </beans>
