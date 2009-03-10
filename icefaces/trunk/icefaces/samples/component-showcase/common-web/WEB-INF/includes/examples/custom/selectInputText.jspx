@@ -55,6 +55,16 @@ information from a database of USA Address information.
         <ice:outputText
                 value="#{msgs['page.selectInputText.plainDirections']}"/>
 
+        <!-- //The server call delay frequency can be configured using the "options" attribute,
+        the default delay is 0.4 Seconds (400 Milliseconds)
+        (e.g.)
+        //set delay to 100 Milliseconds
+        <ice:selectInputText id="AutoCmpTxt"
+                             options="{frequency:0.1}"
+                             rows="#{selectInputText.cityListLength}"
+                             width="300"
+                             value="#{selectInputText.selectedCityValue1}"
+        -->
         <ice:selectInputText id="AutoCmpTxt"
                              rows="#{selectInputText.cityListLength}"
                              width="300"

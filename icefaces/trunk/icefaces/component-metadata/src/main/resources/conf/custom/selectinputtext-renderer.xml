@@ -44,7 +44,10 @@
             The selectInputText component can generate one of two types of lists:<br/>
             
                1. A list of String data.<br/>
-               2. A list of arbitrarily complex child components.<br/>
+               2. A list of arbitrarily complex child components.<br/><br/>
+               
+           The server call delay frequency can be configured using the "options" attribute. Please see the description of 
+           "options" attribute for detail.
         ]]>
 	</description>
 	<component-family>javax.faces.Input</component-family>
