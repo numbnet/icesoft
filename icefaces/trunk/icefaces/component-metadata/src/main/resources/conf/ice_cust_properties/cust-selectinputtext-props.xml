@@ -165,3 +165,25 @@
         </editor-class>
     </property-extension>
 </property>
+<property>
+    <description>
+        <![CDATA[
+           <p>
+            The value of this attribute will be passed to the "options" param of the
+            Autocompleter.js. Which allows to set different options to the autoCompleter object.         
+            For example you can configure the delay between key presses in selectInputText(e.g.)<br/>
+            //set the delay to 2 seconds<br/>
+            &nbsp;&nbsp;&lt;ice:selectInputText options="{frequency:2}" ... &gt;<br/>
+            Please see the scriptaculous doc to find out more options that can be set.               
+                
+        ]]>     
+    </description>
+    <property-name>options</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
