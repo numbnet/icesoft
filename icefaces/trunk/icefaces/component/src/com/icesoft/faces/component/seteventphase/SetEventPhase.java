@@ -31,6 +31,7 @@ public class SetEventPhase extends UIComponentBase {
     
     private String events;
     private String phase;
+    private Boolean disabled;
     
     public SetEventPhase() {
     }
@@ -40,7 +41,7 @@ public class SetEventPhase extends UIComponentBase {
     }
     
     public void queueEvent(FacesEvent event) {
-        if (eventMatchingType(event)) {
+        if (!isDisabled() && eventMatchingType(event)) {
             changePhaseId(event);
         }
         super.queueEvent(event);
@@ -67,7 +68,7 @@ public class SetEventPhase extends UIComponentBase {
                         catch(Exception shortName) {
                             // If both the given class name and our attempt at
                             // adding a package didn't resolve to an actual
-                            // complain using the given class name
+                            // class, complain using the given class name
                             throw new FacesException(
                                 "Could not resolve event class type: " +
                                     specifiedEvents[i], directName);
@@ -87,7 +88,7 @@ public class SetEventPhase extends UIComponentBase {
     
     protected void changePhaseId(FacesEvent event) {
         String phase = getPhase();
-        if (phase == null || phase.length() == 0) {
+        if (phase == null || phase.trim().length() == 0) {
             return;
         }
         PhaseId phaseId = (PhaseId) phaseName2PhaseId.get(phase);
@@ -131,6 +132,30 @@ public class SetEventPhase extends UIComponentBase {
         }
         ValueBinding vb = getValueBinding("phase");
         return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>disabled</code> property.</p>
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled ? Boolean.TRUE : Boolean.FALSE;
+    }
+    
+    /**
+     * <p>Return the value of the <code>disabled</code> property.</p>
+     */
+    public boolean isDisabled() {
+        if (null != disabled) {
+            return disabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("disabled");
+        if (vb != null) {
+            Boolean val = (Boolean) vb.getValue(FacesContext.getCurrentInstance());
+            if (val != null) {
+                return val.booleanValue();
+            }
+        }
+        return false;
     }
     
     /**
