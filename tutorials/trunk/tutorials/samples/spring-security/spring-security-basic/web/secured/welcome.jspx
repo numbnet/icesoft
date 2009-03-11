@@ -1,0 +1,33 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" version="2.0"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
+<head>
+    <title>Spring Security with ICEfaces Components</title>
+</head>
+<body>
+<f:view>
+    <ice:form id="form">
+        <ice:panelGrid id="grid" columns="2">
+            <ice:outputText
+                    value="Welcome #{sessionScope.SPRING_SECURITY_LAST_USERNAME}."/>
+            <ice:outputText
+                    value="Enter a product id and use the buy button to purchase the product."/>
+            <ice:outputLabel for="input1" value="Product id:"/>
+            <ice:panelGroup>
+                <ice:inputText id="input1" value="#{shoppingBean.productId}"
+                               required="true"/>
+                <ice:message for="input1"/>
+            </ice:panelGroup>
+            <ice:commandButton id="button1" value="Buy"
+                               action="#{shoppingBean.send}"
+                               enabledOnUserRole="ROLE_ALLACCESS"/>
+            <ice:outputText renderedOnUserRole="ROLE_URLACCESS"
+                            value="(You must acquire the necessary permissions to enable the buy button.)"/>
+        </ice:panelGrid>
+        <ice:commandButton actionListener="#{shoppingBean.logout}"
+                           value="Logout" immediate="true"/>
+    </ice:form>
+</f:view>
+</body>
+</html>
