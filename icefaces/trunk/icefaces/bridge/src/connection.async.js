@@ -196,27 +196,35 @@
             var fullViewID = sessionID + ':' + viewID;
             var leaseCookie = Cookie.lookup('ice.lease', (new Date).getTime().toString());
             var connectionCookie = this.listening = Cookie.lookup('bconn', '-');
+
             function updateLease() {
                 leaseCookie.saveValue((new Date).getTime() + pollingPeriod * 2);
             }
+
             function isLeaseExpired() {
                 return leaseCookie.loadValue().asNumber() < (new Date).getTime();
             }
+
             function shouldEstablishBlockingConnection() {
                 return !Cookie.exists('bconn') || !Cookie.lookup('bconn').value.startsWith(sessionID);
             }
+
             function offerCandidature() {
                 connectionCookie.saveValue(fullViewID);
             }
+
             function isWinningCandidate() {
                 return connectionCookie.loadValue().startsWith(fullViewID);
             }
+
             function markAsOwned() {
                 connectionCookie.saveValue(fullViewID + ':acquired');
             }
+
             function hasOwner() {
                 return connectionCookie.loadValue().endsWith(':acquired');
             }
+
             this.blockingConnectionMonitor = function() {
                 if (shouldEstablishBlockingConnection()) {
                     offerCandidature();
@@ -262,24 +270,42 @@
                 }
             }.bind(this).repeatExecutionEvery(300);
 
+
+            this.fifo = new Connection.LinkedFIFOQueue();
+            this.lock = new Connection.Lock();
+            this.sendEnqueued = function() {
+                if (this.lock.isReleased() && this.fifo.available()) {
+                    this.lock.acquire();
+                    try {
+                        var compoundQuery = new Query();
+                        //dequeue and build query
+                        compoundQuery.addQuery(this.fifo.dequeue()());
+                        compoundQuery.addQuery(this.defaultQuery);
+                        compoundQuery.add('ice.focus', window.currentFocus);
+
+                        this.logger.debug('send > ' + compoundQuery.asString());
+                        this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
+                            Connection.FormPost(request);
+                            request.on(Connection.OK, this.receiveCallback);
+                            request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                            request.on(Connection.OK, this.lock.release);
+                            request.on(Connection.OK, this.sendEnqueued);
+                            request.on(Connection.ServerError, this.serverErrorCallback);
+                            request.on(Connection.OK, Connection.Close);
+                            this.onSendListeners.broadcast();
+                        }.bind(this));
+                    } catch (e) {
+                        this.lock.release();
+                    }
+                }
+            }.bind(this);
+
             this.logger.info('asynchronous mode');
         },
 
-        send: function(query) {
-            var compoundQuery = new Query();
-            compoundQuery.addQuery(query);
-            compoundQuery.addQuery(this.defaultQuery);
-            compoundQuery.add('ice.focus', window.currentFocus);
-
-            this.logger.debug('send > ' + compoundQuery.asString());
-            this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
-                Connection.FormPost(request);
-                request.on(Connection.OK, this.receiveCallback);
-                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
-                request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.OK, Connection.Close);
-                this.onSendListeners.broadcast();
-            }.bind(this));
+        send: function(delayedQuery) {
+            this.fifo.enqueue(delayedQuery);
+            this.sendEnqueued();
         },
 
         onSend: function(sendCallback, receiveCallback) {

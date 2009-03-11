@@ -48,10 +48,8 @@ function formOf(element) {
     throw 'Cannot find enclosing form.';
 }
 
-function iceSubmitPartial(form, component, evt) {
-    form = (form ? form : component.form);
-    var query = new Ice.Parameter.Query();
-
+//todo: move this code into a listener (core bridge should not depend on component code!)
+function addFileUploadParameters(query) {
     if (Ice.InputFileIdPreUpload)
         query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
     if (Ice.InputFileIdPostUpload)
@@ -60,19 +58,28 @@ function iceSubmitPartial(form, component, evt) {
         query.add('ice.menuContext', Ice.Menu.menuContext);
     if (Ice.FCKeditorUtility)
         Ice.FCKeditorUtility.saveAll();
-    query.add('ice.submit.partial', true);
-    $event(evt, component).serializeOn(query);
-    if (form && form.id) {
-        $element(form).serializeOn(query);
-    }
-    if (component && component.id) {
-        var c = $element(component);
-        if (c.isSubmit()) {
-            c.serializeOn(query);
-        }
-    }
-    query.sendOn(currentConnection($element(form), $element(component)));
-    resetHiddenFieldsFor(form);
+}
+
+function iceSubmitPartial(form, component, evt) {
+    form = (form ? form : component.form);
+    currentConnection($element(form), $element(component)).send(function() {
+        return Ice.Parameter.Query.create(function(query) {
+            addFileUploadParameters(query);
+            query.add('ice.submit.partial', true);
+            $event(evt, component).serializeOn(query);
+            if (form && form.id) {
+                $element(form).serializeOn(query);
+            }
+            if (component && component.id) {
+                var c = $element(component);
+                if (c.isSubmit()) {
+                    c.serializeOn(query);
+                }
+            }
+
+            resetHiddenFieldsFor(form);
+        });
+    });
     return false;
 }
 
@@ -80,45 +87,41 @@ function iceSubmit(aForm, aComponent, anEvent) {
     aForm = (aForm ? aForm : aComponent.form);
     var event = $event(anEvent, aComponent);
     var form = $element(aForm);
-    var query = new Ice.Parameter.Query();
-    if (Ice.InputFileIdPreUpload)
-        query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
-    if (Ice.InputFileIdPostUpload)
-        query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
-    if (Ice.Menu != null && Ice.Menu.menuContext != null)
-        query.add('ice.menuContext', Ice.Menu.menuContext);
-    if (Ice.FCKeditorUtility)
-        Ice.FCKeditorUtility.saveAll();
-    query.add('ice.submit.partial', false);
-    //all key events are discarded except when 'enter' is pressed...not good!
-    if (event.isKeyEvent()) {
-        if (event.isEnterKey()) {
-            //find a default submit element to submit the form
-            var submit = form ? form.detectDefaultSubmit() : null;
-            //cancel the default action to block 'onclick' event on the submit element
-            event.cancelDefaultAction();
-            event.serializeOn(query);
-            if (submit) {
-                submit.serializeOn(query);
-            }
-            if (form) {
-                form.serializeOn(query);
-            }
-            query.sendOn(currentConnection($element(aForm), $element(aComponent)));
-        }
-    } else {
-        var component = aComponent && aComponent.id ? $element(aComponent) : null;
-        event.serializeOn(query);
-        if (component && component.isSubmit()) {
-            component.serializeOn(query);
-        }
-        if (form) {
-            form.serializeOn(query);
-        }
-        query.sendOn(currentConnection($element(aForm), $element(aComponent)));
-    }
 
-    resetHiddenFieldsFor(aForm);
+    currentConnection($element(aForm), $element(aComponent)).send(function() {
+        return Ice.Parameter.Query.create(function(query) {
+            addFileUploadParameters(query);
+            query.add('ice.submit.partial', false);
+            //all key events are discarded except when 'enter' is pressed...not good!
+            if (event.isKeyEvent()) {
+                if (event.isEnterKey()) {
+                    //find a default submit element to submit the form
+                    var submit = form ? form.detectDefaultSubmit() : null;
+                    //cancel the default action to block 'onclick' event on the submit element
+                    event.cancelDefaultAction();
+                    event.serializeOn(query);
+                    if (submit) {
+                        submit.serializeOn(query);
+                    }
+                    if (form) {
+                        form.serializeOn(query);
+                    }
+                }
+            } else {
+                var component = aComponent && aComponent.id ? $element(aComponent) : null;
+                event.serializeOn(query);
+                if (component && component.isSubmit()) {
+                    component.serializeOn(query);
+                }
+                if (form) {
+                    form.serializeOn(query);
+                }
+            }
+
+            resetHiddenFieldsFor(aForm);
+        });
+    });
+
     return false;
 }
 

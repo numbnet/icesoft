@@ -53,6 +53,53 @@
         return response.statusCode() == 200;
     };
 
+    This.LinkedFIFOQueue = Object.subclass({
+        initialize: function() {
+            var start = null;
+            var end = null;
+
+            this.enqueue = function(item) {
+                var link = {data: item, nextLink: null};
+                if (start == null) {
+                    start = link;
+                }
+                if (end != null) {
+                    end.nextLink = link;
+                }
+                end = link;
+            }.bind(this);
+
+            this.dequeue = function() {
+                if (start == null) return null;
+
+                var item = start.data;
+                start = start.nextLink;
+                return item;
+            }.bind(this);
+
+            this.available = function() {
+                return start != null;
+            }.bind(this);
+        }
+    });
+
+    This.Lock = Object.subclass({
+        initialize: function() {
+            var locked = false;
+            this.acquire = function() {
+                locked = true;
+            }.bind(this);
+
+            this.release = function() {
+                locked = false;
+            }.bind(this);
+
+            this.isReleased = function() {
+                return !locked;
+            }.bind(this);
+        }
+    });
+
     This.SyncConnection = Object.subclass({
         initialize: function(logger, configuration, defaultQuery) {
             this.logger = logger.child('sync-connection');
@@ -90,30 +137,48 @@
                 try {
                     this.onReceiveListeners.broadcast(response);
                 } catch (e) {
-                    this.logger.error('receive broadcast failed', e)
+                    this.logger.error('receive broadcast failed', e);
                 }
             }.bind(this);
 
             this.badResponseCallback = this.connectionDownListeners.broadcaster();
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
+
+            this.fifo = new Connection.LinkedFIFOQueue();
+            this.lock = new Connection.Lock();
+            this.sendEnqueued = function() {
+                if (this.lock.isReleased() && this.fifo.available()) {
+                    this.lock.acquire();
+                    try {
+                        //dequeue and build query
+                        var compoundQuery = new Query();
+                        //dequeue and build query
+                        compoundQuery.addQuery(this.fifo.dequeue()());
+                        compoundQuery.addQuery(this.defaultQuery);
+                        compoundQuery.add('ice.focus', window.currentFocus);
+
+                        this.logger.debug('send > ' + compoundQuery.asString());
+                        this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
+                            This.FormPost(request);
+                            request.on(Connection.OK, this.receiveCallback);
+                            request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                            request.on(Connection.OK, this.lock.release);
+                            request.on(Connection.OK, this.sendEnqueued);
+                            request.on(Connection.BadResponse, this.badResponseCallback);
+                            request.on(Connection.ServerError, this.serverErrorCallback);
+                            request.on(Connection.OK, Connection.Close);
+                            this.onSendListeners.broadcast(request);
+                        }.bind(this));
+                    } catch (e) {
+                        this.lock.release();
+                    }
+                }
+            }.bind(this);
         },
 
-        send: function(query) {
-            var compoundQuery = new Query();
-            compoundQuery.addQuery(query);
-            compoundQuery.addQuery(this.defaultQuery);
-            compoundQuery.add('ice.focus', window.currentFocus);
-
-            this.logger.debug('send > ' + compoundQuery.asString());
-            this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
-                This.FormPost(request);
-                request.on(Connection.OK, this.receiveCallback);
-                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
-                request.on(Connection.BadResponse, this.badResponseCallback);
-                request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.OK, Connection.Close);
-                this.onSendListeners.broadcast(request);
-            }.bind(this));
+        send: function(delayedQuery) {
+            this.fifo.enqueue(delayedQuery);
+            this.sendEnqueued();
         },
 
         onSend: function(sendCallback, receiveCallback) {
