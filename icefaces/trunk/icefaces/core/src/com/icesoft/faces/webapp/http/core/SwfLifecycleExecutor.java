@@ -121,13 +121,10 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext ) throws IOException {
 
         if (!response.isCommitted()) {
-            ExternalContext ec = null;
-            if ( (facesContext != null) && ( (ec = facesContext.getExternalContext() ) != null)) {
-                ec.redirect( flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request));
-            } else {
-                response.setStatus(303);
-                response.setHeader("Location", flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request) );
-            }
+            sendRedirect( flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request),
+                          request,
+                          response,
+                          facesContext);
         }
     }
 
@@ -217,7 +214,6 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             ec.redirect( response.encodeRedirectURL( url ));
         } else {
             // I'm not sure if there is a case for this legacy redirection code.
-            // FacesContext has been released in an unusual path?
             // Correct HTTP status code is 303, in particular for POST requests.
             response.setStatus(303);
             response.setHeader("Location", response.encodeRedirectURL(url));
