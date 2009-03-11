@@ -52,7 +52,7 @@ public class TestPropDataProvider {
         new MockDataList(),
         1.009d,
         "test1",
-        Boolean.FALSE,
+        false,
         new com.icesoft.faces.context.effects.Move(),
         new MockDataObject("objectValue"),
         new MockMethodBinding("#{mock.methodBinding}"),
