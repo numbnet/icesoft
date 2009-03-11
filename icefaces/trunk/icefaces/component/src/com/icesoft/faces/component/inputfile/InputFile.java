@@ -86,7 +86,6 @@ public class InputFile extends UICommand implements Serializable {
     public static final int INVALID_NAME_PATTERN = FileInfo.INVALID_NAME_PATTERN;
     public static final int UNSPECIFIED_NAME = FileInfo.UNSPECIFIED_NAME;
     public static final int INVALID_CONTENT_TYPE = FileInfo.INVALID_CONTENT_TYPE;
-
     public static final String INVALID_FILE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.INVALID_FILE";
     public static final String SIZE_LIMIT_EXCEEDED_MESSAGE_ID = "com.icesoft.faces.component.inputfile.SIZE_LIMIT_EXCEEDED";
     public static final String UNKNOWN_SIZE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.UNKNOWN_SIZE";
@@ -122,7 +121,7 @@ public class InputFile extends UICommand implements Serializable {
     private MethodBinding progressListener;
     private Boolean progressRender;
     private String submitOnUpload;
-
+    private Boolean failOnEmptyFile;
     /**
      * <p>Return the value of the <code>COMPONENT_TYPE</code> of this
      * component.</p>
@@ -538,7 +537,7 @@ public class InputFile extends UICommand implements Serializable {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[30];
+        Object values[] = new Object[31];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -571,6 +570,7 @@ public class InputFile extends UICommand implements Serializable {
         values[27] = onblur;
         values[28] = buttonClass;
         values[29] = size;
+        values[30] = failOnEmptyFile;        
         return ((Object) (values));
     }
 
@@ -612,6 +612,7 @@ public class InputFile extends UICommand implements Serializable {
         onblur = (String)values[27];
         buttonClass = (String)values[28];
         size = (String) values[29];
+        failOnEmptyFile = (Boolean) values[30];        
     }
 
     /**
@@ -791,7 +792,7 @@ public class InputFile extends UICommand implements Serializable {
         Boolean uploadDirectoryAbsolute = getUploadDirectoryAbsolute();
         boolean progressRender = renderOnProgress();
         boolean progressListener = (getProgressListener() != null);
-        
+        boolean failOnEmptyFile = isFailOnEmptyFile();
         UploadConfig uploadConfig = new UploadConfig(
             clientId,
             formClientId,
@@ -801,7 +802,8 @@ public class InputFile extends UICommand implements Serializable {
             uploadDirectory,
             uploadDirectoryAbsolute,
             progressRender,
-            progressListener);
+            progressListener,
+            failOnEmptyFile);
         return uploadConfig;
     }
 
@@ -1095,4 +1097,15 @@ public class InputFile extends UICommand implements Serializable {
         super.processValidators(context);
     }
     */
+    public void setFailOnEmptyFile(boolean failOnEmptyFile) {
+        this.failOnEmptyFile = new Boolean(failOnEmptyFile);
+    }
+
+    public boolean isFailOnEmptyFile() {
+        if (failOnEmptyFile != null) {
+            return failOnEmptyFile.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("failOnEmptyFile");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : true;
+    }
 }
