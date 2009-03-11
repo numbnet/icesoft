@@ -193,6 +193,12 @@ public class UploadServer implements Server {
                         OutputStream output = new FileOutputStream(file);
                         Streams.copy(stream.openStream(), output, true);
                         long fileLength = file.length();
+                        if (uploadConfig.isFailOnEmptyFile()) {
+                            if (fileLength == 0) {
+                                throw new FileUploadBase.FileUploadIOException(
+                                        new FileUploadBase.UnknownSizeException()); 
+                            }
+                        }                        
                         if (log.isDebugEnabled())
                             log.debug("fileLength: " + fileLength + ((fileLength > uploadConfig.getSizeMax().longValue()) ? "  TOO LARGE" : ""));
                         fileInfo.setStatus(FileInfo.SAVED);

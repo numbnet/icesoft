@@ -367,3 +367,16 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+        By default the inputFile component will throw 
+        ]]>
+    </description>
+    <property-name>failOnEmptyFile</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+     </property-extension>
+</property>

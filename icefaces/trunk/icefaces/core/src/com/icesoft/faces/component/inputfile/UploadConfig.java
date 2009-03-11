@@ -26,6 +26,7 @@ public class UploadConfig implements Serializable {
     private Boolean uploadDirectoryAbsolute;
     private boolean progressRender;
     private boolean progressListener;
+    private boolean failOnEmptyFile;
 
     /**
      * InputFile uses this for publishing its own property configuration
@@ -39,7 +40,8 @@ public class UploadConfig implements Serializable {
         String uploadDirectory,
         Boolean uploadDirectoryAbsolute,
         boolean progressRender,
-        boolean progressListener) {
+        boolean progressListener,
+        boolean failOnEmptyFile) {
         
         this.clientId = clientId;
         this.formClientId = formClientId;
@@ -50,6 +52,7 @@ public class UploadConfig implements Serializable {
         this.uploadDirectoryAbsolute = uploadDirectoryAbsolute;
         this.progressRender = progressRender;
         this.progressListener = progressListener;
+        this.failOnEmptyFile = failOnEmptyFile;
     }
 
     /**
@@ -71,6 +74,7 @@ public class UploadConfig implements Serializable {
         this.uploadDirectoryAbsolute = Boolean.valueOf(uploadDirectoryAbsolute);
         this.progressRender = false;
         this.progressListener = false;
+        this.failOnEmptyFile = componentUploadConfig.failOnEmptyFile;
         
         if (componentUploadConfig != null) {
             if (componentUploadConfig.formClientId != null) {
@@ -145,5 +149,13 @@ public class UploadConfig implements Serializable {
             ",\n  progressRender=" + progressRender +
             ",\n  progressListener=" + progressListener +
             "\n}";        
+    }
+
+    public boolean isFailOnEmptyFile() {
+        return failOnEmptyFile;
+    }
+
+    public void setFailOnEmptyFile(boolean failOnEmptyFile) {
+        this.failOnEmptyFile = failOnEmptyFile;
     }
 }
