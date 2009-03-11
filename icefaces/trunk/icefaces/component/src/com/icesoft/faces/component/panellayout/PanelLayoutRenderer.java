@@ -39,9 +39,11 @@ public class PanelLayoutRenderer extends Renderer {
         StringBuffer prefixStyle = new StringBuffer(" ");
         switch(layoutMode){
             case 1: 
-             prefixStyle.append("position:relative;");
+                 prefixStyle.append("position:relative;");
+                 break;
             case 2:
-             prefixStyle.append("position:absolute;");  
+                 prefixStyle.append("position:absolute;");  
+                 break;
         }
         
         if(style != null && style.length() > 0){
