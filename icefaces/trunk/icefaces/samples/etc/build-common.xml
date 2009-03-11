@@ -350,6 +350,7 @@ Combinations:
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
 	<target name="weblogic10" description="Weblogic 10">
 		<antcall target="build.war">
+			<param name="jsf12" value=""/>
             <param name="noelapi" value=""/>
 			<param name="noelri" value=""/>
         </antcall>
