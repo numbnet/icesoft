@@ -163,10 +163,11 @@ public class SetEventPhase extends UIComponentBase {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = events;
         values[2] = phase;
+        values[3] = disabled;
         return ((Object) (values));
     }
 
@@ -179,5 +180,6 @@ public class SetEventPhase extends UIComponentBase {
         super.restoreState(context, values[0]);
         events = (String) values[1];
         phase = (String) values[2];
+        disabled = (Boolean) values[3];
     }
 }
