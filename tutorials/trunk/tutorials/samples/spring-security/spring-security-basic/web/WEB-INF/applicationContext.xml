@@ -6,10 +6,6 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
 
     <security:http auto-config="true" access-denied-page="/accessDenied.jspx">
-        <security:intercept-url pattern="/acegilogin.jspx" filters="none"
-                                requires-channel="any"/>
-        <security:intercept-url pattern="/index.jsp" filters="none"
-                                requires-channel="any"/>
         <security:intercept-url pattern="/secured/**"
                                 access="ROLE_ALLACCESS, ROLE_URLACCESS"
                                 requires-channel="any"/>
