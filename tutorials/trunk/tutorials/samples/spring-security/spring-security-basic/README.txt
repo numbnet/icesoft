@@ -1,12 +1,6 @@
 This application uses Spring Security 2.0 and ICEfaces.
 It is an adaptation/port of Seema Richard's code for security solution using Acegi and JSF.
 
-1. Build
-Build using the ant script in the lower directory spring-security-basic.
-Make sure that directory spring-security-basic/lib is checked out.
-It contains all common libraries shared between the samples.
-build-common.xml is in tutorials directory. If it is not checked out build will fail.
-
 2. Points of interest
     a) web.xml contains basic spring security filters.
     b) applicationContext.xml contains security definitions under security: tag.
