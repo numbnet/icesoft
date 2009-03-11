@@ -371,7 +371,10 @@
 <property>
     <description>
         <![CDATA[
-        By default the inputFile component will throw 
+            This attribute is true by default. it makes inputFile component to 
+            throw an exception if the file size is 0. Setting it to false let 
+            file to be uploaded with 0 size and component doesn't throw any exception. 
+            In this case application can handle 0 sized file using actionListener.
         ]]>
     </description>
     <property-name>failOnEmptyFile</property-name>
