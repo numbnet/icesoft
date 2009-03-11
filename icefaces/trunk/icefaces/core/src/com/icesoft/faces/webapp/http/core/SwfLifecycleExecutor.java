@@ -110,7 +110,7 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 					sendExternalRedirect(location, request, response);
 				} else {
             */
-                defaultHandleExecutionOutcome(result.getFlowId(), result.getOutcome(), request, response);
+                defaultHandleExecutionOutcome(result.getFlowId(), result.getOutcome(), request, response, facesContext);
 			}
         } else {
 			throw new IllegalStateException("Execution result should have been one of [paused] or [ended]");
@@ -118,11 +118,18 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
 	}
 
 	protected void defaultHandleExecutionOutcome(String flowId, FlowExecutionOutcome outcome,
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if (!response.isCommitted()) {
-			response.sendRedirect(flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request));
-		}
-	}
+			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext ) throws IOException {
+
+        if (!response.isCommitted()) {
+            ExternalContext ec = null;
+            if ( (facesContext != null) && ( (ec = facesContext.getExternalContext() ) != null)) {
+                ec.redirect( flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request));
+            } else {
+                response.setStatus(303);
+                response.setHeader("Location", flowUrlHandler.createFlowDefinitionUrl(flowId, outcome.getOutput(), request) );
+            }
+        }
+    }
 
 	private void sendFlowExecutionRedirect(FlowExecutionResult result, ServletExternalContext context,
 			HttpServletRequest request, HttpServletResponse response, FacesContext facesContext) throws IOException {
