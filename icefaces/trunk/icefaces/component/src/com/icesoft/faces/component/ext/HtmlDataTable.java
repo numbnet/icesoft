@@ -371,7 +371,10 @@ public class HtmlDataTable
 
     public void setScrollable(Boolean scrollable) {
         this.scrollable = scrollable;
-
+    }
+    
+    public void setScrollable(boolean scrollable) {
+        setScrollable(new Boolean (scrollable));
     }
 
     public String getColumnWidths() {
