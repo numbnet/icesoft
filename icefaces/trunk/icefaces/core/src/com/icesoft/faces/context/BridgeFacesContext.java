@@ -117,8 +117,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             Class c = Class.forName( "org.jboss.jsfunit.context.JSFUnitFacesContext");
             jsfUnitClass = c.getName();
             jsfUnitConstructor = c.getConstructor( new Class[] { javax.faces.context.FacesContext.class} );
+            log.info("JSFUnit environment detected");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     } 
 
