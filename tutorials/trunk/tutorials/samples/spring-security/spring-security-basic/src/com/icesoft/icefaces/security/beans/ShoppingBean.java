@@ -31,6 +31,6 @@ public class ShoppingBean {
     }
 
     public void logout(ActionEvent e) throws java.io.IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_logout.jsp");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_logout");
     }
 }

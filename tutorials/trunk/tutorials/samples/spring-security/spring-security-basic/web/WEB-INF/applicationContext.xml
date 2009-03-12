@@ -7,13 +7,10 @@
 
     <security:http auto-config="true" access-denied-page="/accessDenied.jspx">
         <security:intercept-url pattern="/secured/**"
-                                access="ROLE_ALLACCESS, ROLE_URLACCESS"
-                                requires-channel="any"/>
+                                access="ROLE_ALLACCESS, ROLE_URLACCESS"/>
         <security:form-login login-page="/springSecurityLogin.jspx"
-                             login-processing-url="/j_spring_security_check.jsp"
                              default-target-url="/secured/welcome.jspx"/>
-        <security:logout logout-url="/j_spring_security_logout.jsp"
-                         logout-success-url="/logoutSuccess.jspx"/>
+        <security:logout logout-success-url="/logoutSuccess.jspx"/>
     </security:http>
 
     <security:authentication-provider user-service-ref="userDetailsService"/>
