@@ -65,9 +65,7 @@
         },
 
         sendOn: function(connection) {
-            connection.send(function() {
-                return this;
-            }.bind(this));
+            connection.send(this);
         },
 
         serializeOn: function(query) {
