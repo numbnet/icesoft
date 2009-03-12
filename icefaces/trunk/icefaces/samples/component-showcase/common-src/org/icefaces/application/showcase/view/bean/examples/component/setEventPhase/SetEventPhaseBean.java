@@ -47,11 +47,27 @@ import javax.faces.model.SelectItem;
  * @since 1.8
  */
 public class SetEventPhaseBean extends BaseBean {
+    // If the setEventPhase component should be disabled
+    private boolean disabled = false;
     // selectOneListbox example value
     private String selectedCountry;
     // selectManyListbox example value
     private String[] selectedCities;
 
+    /**
+     * @return If the setEventPhase event should be disabled
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+    
+    /**
+     * @param disabled If the setEventPhase event should be disabled
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+    
     /**
      * Value change listener for the country change event. Sets up the cities
      * listbox according to the country.
