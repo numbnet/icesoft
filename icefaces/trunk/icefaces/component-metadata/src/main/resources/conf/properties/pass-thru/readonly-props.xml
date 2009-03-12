@@ -36,7 +36,9 @@
 <property>
 	<description>
 		Flag indicating that this component will prohibit changes by the user. 
-		The element may receive focus unless it has also been disabled.
+		The element may receive focus unless it has also been disabled. This
+        attribute is valid for input types "text" and "password" only. It is
+        non-functional for other input types like "radio" or "checkbox".
 	</description>  
   
     <property-name>readonly</property-name>
