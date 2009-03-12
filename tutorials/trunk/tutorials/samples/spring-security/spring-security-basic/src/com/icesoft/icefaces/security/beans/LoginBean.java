@@ -49,7 +49,7 @@ public class LoginBean {
     }
 
     public void login(ActionEvent e) throws java.io.IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_check.jsp?j_username=" + userId + "&j_password=" + password);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_check?j_username=" + userId + "&j_password=" + password);
     }
 
 
