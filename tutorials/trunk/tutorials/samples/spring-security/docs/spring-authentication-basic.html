@@ -2,1203 +2,553 @@
 
 <html>
   <head>
-    <title>Lazy Loading DataTable with JPA</title>
+    <title>Basic Spring Security with ICEfaces</title>
     <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-      <!-- header section -->
-      <p class="tutoralHeaderText">The ICEfaces Tutorial<br/>
-          <a href="index.html">Table of Contents</a>
-      </p>
-      <hr/>
+    <!-- header section -->
+    <p class="tutoralHeaderText">The ICEfaces Tutorial<br/>
+      <a href="index.html">Table of Contents</a>
+    </p>
+    <hr/>
 
-      <!-- tutorial content section -->
+    <!-- tutorial content section -->
 
-      <h1>Lazy Loading DataTable with JPA</h1>
+    <h1>Basic Spring Security with ICEfaces</h1>
 
-    <img src="images/dataTable_JPA.jpg"
-         title="Editable DataTable with Pagination"
-         alt="Editable DataTable with Pagination" width="576" height="363"/>
+      <img src="images/spring_security_login.jpg"
+           title="Login page using Spring Security"
+           alt="Login page using Spring Security" width="726" height="465"/>
       <p>
-          This tutorial will display an editable dataTable using ICEfaces and JPA.  All records displayed in the GUI will
-          be lazily loaded.  Most importantly, when a record is updated, the ICEfaces rendering api will push updates out
-          to all users currenlty viewing the updated record.
+          This tutorial will walk you through the process of using Spring Security for authentication of an ICEfaces/JSF web
+          application.  Additionally, Spring Security and ICEfaces components will be used to authorize access to different
+          pages and functions in the application.
       </p>
       <p>
-          The Java Persistence API (JPA), is a Java programming language framework that allows developers to manage
-          relational data inside a Java EE 5 application server or outside an EJB container in a Java Standard
-          Edition (Java SE) 5 application.  Many features of third-party persistence frameworks were incorporated into the
-          Java Persistence API, and projects like Hibernate and Open-Source Version TopLink Essentials are now
-          implementations of the Java Persistence API.  For this tutorial we use the Hibernate JPA implementation and
-          include notes on any divergence between this implementation and TopLink Essentials.  Hibernate allows us to
-          package our database in the tutorial web application using HSQLDB and an import.sql file to populate records.
-      </p>
-
-      <p>
-          Lazy loading defers initialization of an object to the point when it is required, to make the program
-          operate more efficiently.  In the case of a dataTable, although we might bind a list of hundreds if not
-          thousands of records to a component (for instance, an employee list) we only want to retrieve records from
-          the database that the user is currently viewing.  Our sample application will use an ICEfaces ice:dataTable
-          component in conjunction with an ice:dataPaginator to display a subset of lazily loaded data in the GUI.
+          The application uses Spring Security 2.0 and ICEfaces.  It is an adaptation/port of Seema Richard's code using
+          <a href="http://www.javaworld.com/javaworld/jw-04-2008/jw-04-acegi-jsf.html?page=1">Acegi
+          and JSF</a>.  Initially, the application will present a
+          login page to the user. If the user attempts to log in with the correct user name and password, the user will be
+          redirected to a page where a purchase can be made. Spring Security will ensure the user ID has been authenticated
+          and that the user's presence on the purchase page is authorized. The user can visit the purchase page if they have
+          the role ROLE_URLACCESS. Making a purchase is a secure function, so the user will only have the "buy" button enabled
+          if they have the role ROLE_ALLACCESS.  This is accomplished using the ICEfaces' enabledOnUserRole
+          attribute.
       </p>
 
       <p>
-          Finally, our tutorial dataTable is editable and if we want our users to be informed of record updates, we will
-          have to bring our GUI to life.  When a single user updates a record, ICEfaces will push this update out to all
-          other users viewing that record.  This is made possible with the ICEfaces rendering api.
-      </p>
-
-      <p>
-          This tutorial will discuss the following topics related to Lazy Loading a DataTable with JPA:
+          This tutorial will discuss the following topics related to Spring Security with ICEfaces:
       </p>
       <ul>
-          <li><a href="#jpa">JPA Classes</a></li>
+          <li><a href="#add">Add Spring Security to an ICEfaces Application</a></li>
           <ul>
-              <li><a href="#jpaone">1: persistence.xml File</a></li>
-              <li><a href="#jpatwo">2: Entity</a></li>
-              <li><a href="#jpathree">3: EntityManager</a></li>
+              <li><a href="#jars">1: jars</a></li>
+              <li><a href="#webxml">2: web.xml</a></li>
+              <li><a href="#applicationContext">3: applicationContext.xml</a></li>
+              <li><a href="#userDetailsService">4: UserDetailsService</a></li>
           </ul>
-          <li><a href="#page">Web Page</a></li>
-          <li><a href="#webApp">Web Application Classes</a></li>
+          <li><a href="#springAuth">Spring Authentication and Authorization</a></li>
           <ul>
-              <li><a href="#one">1: Web Page Bindings</a></li>
-              <li><a href="#two">2: Lazy Loading</a></li>
-              <li><a href="#three">3: Using the Rendering API</a></li>
-              <li><a href="#four">4: Disposable Bean Interface</a></li>
+              <li><a href="#success">1: Successful Authentication and Authorization</a></li>
+              <li><a href="#failed">2: Failed Authentication</a></li>
+              <li><a href="#successfailed">3: Successful Authentication, Failed Authorization</a></li>
           </ul>
-          <li><a href="#examples">Example Application</a></li>
+          <li><a href="#icefacesAuth">ICEfaces Authorization</a></li>
       </ul>
 
-      <a name="jpa">&nbsp;</a>
+      <a name="add">&nbsp;</a>
 
-      <h2>JPA Classes</h2>
+      <h2>Add Spring Security to an ICEfaces Application</h2>
 
-      <a name="jpaone">&nbsp;</a>
+      <a name="jars">&nbsp;</a>
 
-      <h3>1: persistence.xml File</h3>
+      <h3>1: jars</h3>
 
       <p>
-          JPA uses a persistence.xml file to define connection settings to the database.  This tutorial uses
-          JPA stand-alone (outside an EJB container) with Tomcat.  This means an application managed (rather
-          than injected) Entity Manager is used and we will not have support for JTA.  Without support for JTA, we must
-          specify a resource-local entity manager in the persistence.xml:
+          The following jars are included in the application lib folder:
+      </p>
+      <ul>
+          <li>spring.jar</li>
+          <li>spring-security-core-2.0.3.jar</li>
+          <li>spring-security-core-tiger-2.0.3.jar</li>
+          <li>spring-security-taglibs-2.0.3.jar</li>
+      </ul>
+      <p>
+          Although the spring.jar is included, knowledge of Spring is not required for basic authentication and authorization
+          using Spring Security.
+      </p>
+
+      <a name="webxml">&nbsp;</a>
+
+      <h3>2: web.xml</h3>
+
+      <p>
+          The following entries will be added to your existing ICEfaces application web.xml:
       </p>
 
       <pre>
-&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-                                 http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
-             version="1.0"&gt;
+    &lt;listener-class&gt;
+            org.springframework.web.context.ContextLoaderListener
+        &lt;/listener-class&gt;
+    &lt;/listener&gt;
 
-    &lt;persistence-unit name="tutorialPU" transaction-type="RESOURCE_LOCAL"&gt;
+    &lt;!-- Spring Security --&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.springframework.web.filter.DelegatingFilterProxy
+        &lt;/filter-class&gt;
+    &lt;/filter&gt;
 
-        &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
-
-        &lt;properties&gt;
-            &lt;property name="hibernate.archive.autodetection"
-                      value="class, hbm"/&gt;
-
-            &lt;property name="hibernate.show_sql"
-                      value="true"/&gt;
-            &lt;property name="hibernate.format_sql"
-                      value="true"/&gt;
-
-            &lt;property name="hibernate.connection.driver_class"
-                      value="org.hsqldb.jdbcDriver"/&gt;
-            &lt;property name="hibernate.connection.url"
-                      value="jdbc:hsqldb:mem:tutorialPU"/&gt;
-            &lt;property name="hibernate.connection.username"
-                      value="sa"/&gt;
-            &lt;property name="hibernate.dialect"
-                      value="org.hibernate.dialect.HSQLDialect"/&gt;
-
-            &lt;property name="hibernate.hbm2ddl.auto"
-                      value="create-drop"/&gt;
-        &lt;/properties&gt;
-
-    &lt;/persistence-unit&gt;
-
-&lt;/persistence&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
       </pre>
 
       <p>
-          Inclusion of the hibernate.archive.autodetection property means Hibernate will automatically find our entity
-          classes, the classes do not need to be explicitly listed in this file.  The hibernate.hbm2ddl.auto setting results
-          in our in-memory database schema being dropped when the SessionFactory is closed explicitly.
+          The org.springframework.web.context.ContextLoaderListener will load the Spring application context when the
+          application starts up.  This allows us to access Spring-managed beans
+      </p>
+      <p>
+          Spring Security uses servlet filters for authentication and authorization.  The appropriate filter fetches
+          authentication request information such as username and password, and passes this information to Spring Security's
+          authentication manager, which is configured as a Spring bean.  The filter-mapping "/*" ensures all requests will be
+          processed by Spring Security filters.
       </p>
 
-      <p>
-          To make our in-memory database work, we include an import.sql file in the runtime classpath of Hibernate (this
-          has been available since Hibernate 3.1).  After schema export Hibernate will execute the SQL statements
-          contained in the import.sql file.  The import.sql file allows us to insert the same 100 records into the
-          in-memory HSQLDB database each time we run the web application.
-      </p>
-      </p>
+      <a name="applicationContext">&nbsp;</a>
+
+      <h3>4: applicationContext.xml</h3>
 
       <p>
-          For comparison, here is a more minimal persistence.xml file without Hibernate specific settings, using TopLink
-          Essentials and a Derby database:
+          A Spring ApplicationContext is essentially a registry of application objects.  Spring Security 2.0 has added a simplified
+          namespace-based configuration syntax (security:) which substantially reduces the amount of xml in this file.  For detail
+          on how these tags work, please consult the
+          <a href="http://static.springframework.org/spring-security/site/reference/html/springsecurity.html">Spring Security</a>
+          documentation.
+
       </p>
       <pre>
-&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-                                 http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
-             version="1.0"&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd"&gt;
 
-    &lt;persistence-unit name="tutorialPU" transaction-type="RESOURCE_LOCAL"&gt;
+    &lt;security:http auto-config="true" access-denied-page="/accessDenied.jspx"&gt;
+        &lt;security:intercept-url pattern="/secured/**"
+                                access="ROLE_ALLACCESS, ROLE_URLACCESS"/&gt;
+        &lt;security:form-login login-page="/springSecurityLogin.jspx"
+                             default-target-url="/secured/welcome.jspx"/&gt;
+        &lt;security:logout logout-success-url="/logoutSuccess.jspx"/&gt;
+    &lt;/security:http&gt;
 
-        &lt;provider&gt;oracle.toplink.essentials.PersistenceProvider&lt;/provider&gt;
+    &lt;security:authentication-provider user-service-ref="userDetailsService"/&gt;
 
-        &lt;class&gt;com.icesoft.icefaces.samples.datatable.jpa.Customer&lt;/class&gt;
+    &lt;bean id="userDetailsService"
+          class="com.icesoft.icefaces.security.UserDetailsServiceImpl"&gt;
+        &lt;constructor-arg ref="userRepository"/&gt;
+    &lt;/bean&gt;
 
-        &lt;properties&gt;
-            &lt;property name="toplink.jdbc.user"
-                      value="app"/&gt;
-            &lt;property name="toplink.jdbc.password"
-                      value="app"/&gt;
-            &lt;property name="toplink.jdbc.url"
-                      value="jdbc:derby://localhost:1527/sample"/&gt;
-            &lt;property name="toplink.jdbc.driver"
-                      value="org.apache.derby.jdbc.ClientDriver"/&gt;
-        &lt;/properties&gt;
+    &lt;bean id="userRepository"
+          class="com.icesoft.icefaces.security.UserDaoImpl"/&gt;
 
-    &lt;/persistence-unit&gt;
-
-&lt;/persistence&gt;
+&lt;/beans&gt;
       </pre>
+      <p>
+          If you are familiar with previous versions of Spring Security, you can probably guess what's going on here.
+          The &lt;security:http&gt; element is responsible for creating a FilterChainProxy and the filter beans which it uses. Common issues
+          with acegi like incorrect filter ordering are no longer an issue as the filter positions are predefined.
+      </p>
+      <p>
+          The &lt;security:intercept-url&gt; element is used to define the set of URL patterns that the application is interested in
+          and to configure how they should be handled.  In this case, to view pages in our secured directory, a user will
+          require ROLE_ALLACCESS or ROLE_URLACCESS.
+      </p>
+      <p>
+          The &lt;security:form-login&gt; element is used to add filters to provide authentication on demand.  The login-page
+          attribute specifies our login page.  The default-target-url is the URL a user will be taken to after logging in.
+      </p>
+      <p>
+          The &lt;security:form-logout&gt; element adds a LogoutFilter to the filter stack.  The logout-success-url is the URL a
+          user will be taken to after logging out.
+      </p>
+      <p>
+          The &lt;security:authentication-provider&gt; element loads user information from a UserDetailsService and compares the
+          username/password combination with the values supplied at login.  UserDetails is a central interface in Spring
+          Security and will be covered in our next topic.
+      </p>
 
-      <a name="jpatwo">&nbsp;</a>
+      <a name="userDetailsService">&nbsp;</a>
 
-      <h3>2: Entity</h3>
+      <h3>4: UserDetailsService</h3>
 
       <p>
-          Here is our Customer Entity with JPA annotations detailing the database table and column names associated with
-          the entity properties.
+          The UserDetails Service represents a principal, but in an extensible and application-specific way. Think of
+          UserDetails as the adapter between your own user database and what Spring Security needs inside the
+          SecurityContextHolder.  UserDetailsService is an interface with one method that accepts a String-based username
+          argument and returns a UserDetails.  Spring Security provides a number of UserDetailsService implementations,
+          including one that uses an in-memory map and another that uses JDBC.
+      </p>
+
+      <p>
+          Most users tend to write their own though, with implementations often sitting on top of an existing
+          Data Access Object (DAO) that represents employees, customers, or other users of the enterprise application.
+          We have chosen this method, with our com.icesoft.icefaces.security.UserDetailsServiceImpl class implementing the
+          UserDetailsService interface.
       </p>
 
       <pre>
-@Entity
-@Table(name = "CUSTOMER", uniqueConstraints = {})
-public class Customer implements java.io.Serializable {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private UserDao userDao;
 
-    private Integer customernumber;
-    private String contactlastname;
-    private String contactfirstname;
-
-    // Constructors
-
-    /** default constructor */
-    public Customer() {
+    public UserDetailsServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    /** minimal constructor */
-    public Customer(Integer customernumber) {
-        this.customernumber = customernumber;
-    }
-
-    /** full constructor */
-    public Customer(Integer customernumber,
-            String contactlastname, String contactfirstname) {
-        this.customernumber = customernumber;
-        this.contactlastname = contactlastname;
-        this.contactfirstname = contactfirstname;
-    }
-
-    // Property accessors
-    @Id
-    @Column(name = "CUSTOMERNUMBER", unique = true, nullable = false, insertable = true, updatable = true)
-    public Integer getCustomernumber() {
-        return this.customernumber;
-    }
-
-    public void setCustomernumber(Integer customernumber) {
-        this.customernumber = customernumber;
-    }
-
-    @Column(name = "CONTACTLASTNAME", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
-    public String getContactlastname() {
-        return this.contactlastname;
-    }
-
-    public void setContactlastname(String contactlastname) {
-        this.contactlastname = contactlastname;
-    }
-
-    @Column(name = "CONTACTFIRSTNAME", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
-    public String getContactfirstname() {
-        return this.contactfirstname;
-    }
-
-    public void setContactfirstname(String contactfirstname) {
-        this.contactfirstname = contactfirstname;
-    }
-      </pre>
-
-      <a name="jpathree">&nbsp;</a>
-
-      <h3>3: Entity Manager</h3>
-
-      <p>
-          The EntityManagerHelper class is used to manage our entities.  This is an example of an
-          application managed Entity Manager used outside of an EJB3 container.
-      </p>
-
-      <pre>
-public class EntityManagerHelper {
-
-    private static final EntityManagerFactory emf;
-    private static final ThreadLocal<EntityManager> threadLocal;
-
-    static {
-        emf = Persistence.createEntityManagerFactory("tutorialPU");
-        threadLocal = new ThreadLocal<EntityManager>();
-    }
-
-    public static EntityManager getEntityManager() {
-        EntityManager manager = threadLocal.get();
-        if (manager == null || !manager.isOpen()) {
-            manager = emf.createEntityManager();
-            threadLocal.set(manager);
-        }
-        return manager;
-    }
-
-    public static void closeEntityManager() {
-        EntityManager em = threadLocal.get();
-        threadLocal.set(null);
-        if (em != null) em.close();
-    }
-
-    public static void beginTransaction() {
-        getEntityManager().getTransaction().begin();
-    }
-
-    public static void commit() {
-        getEntityManager().getTransaction().commit();
-    }
-      </pre>
-
-      <p>
-          The CustomerDAO class makes use of the EntityManager to interact with the database.
-      </p>
-
-      <pre>
-public class CustomerDAO implements ICustomerDAO{
-
-    private EntityManager getEntityManager() {
-        return EntityManagerHelper.getEntityManager();
-    }
-
-    public Customer update(Customer detachedInstance) {
-        try {
-            Customer result = getEntityManager().merge(detachedInstance);
-            return result;
-        } catch (RuntimeException re) {
-            throw re;
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException, DataAccessException {
+        AppUser user = userDao.findUser(username);
+        if (user == null)
+            throw new UsernameNotFoundException("User not found: " + username);
+        else {
+            return makeUser(user);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Customer> findPageCustomers(String sortColumnName, boolean sortAscending, int startRow, int maxResults) {
-        try {
-            String queryString = "select c from Customer c order by c." + sortColumnName + " " + (sortAscending?"asc":"desc");
-            // In the next statement a Hint is required with TopLink to force an update from the database.
-            // This prevents stale data being assigned from the l2 cache when we push updates out from the server.
-            // With Hibernate, we refresh the l1 cache by calling EntityManagerHelper.getEntityManager().clear() in the SessionBean.
-            return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).getResultList();
-        } catch (RuntimeException re) {
-            throw re;
-        }
+    private org.springframework.security.userdetails.User makeUser(AppUser user) {
+        return new org.springframework.security.userdetails.User(user.getLogin(), user
+                .getPassword(), true, true, true, true,
+                makeGrantedAuthorities(user));
     }
 
-    @SuppressWarnings("unchecked")
-    public Long findTotalNumberCustomers() {
-        try {
-            String queryString = "select count(c) from Customer c";
-            return (Long)getEntityManager().createQuery(queryString).getSingleResult();
-        } catch (RuntimeException re) {
-            throw re;
+    private GrantedAuthority[] makeGrantedAuthorities(AppUser user) {
+        GrantedAuthority[] result = new GrantedAuthority[user.getRoles().size()];
+        int i = 0;
+        for (String role : user.getRoles()) {
+            result[i++] = new GrantedAuthorityImpl(role);
         }
+        return result;
     }
 
 }
       </pre>
 
       <p>
-          This concludes the summary of our JPA classes, the bridge between our database and the web application.
+          AppUser is the representation of a user in our bean logic.  In a more sophisticated application you
+          would likely add other properties such as first name, last name, email, etc.
       </p>
 
-      <a name="page">&nbsp;</a>
+      <pre>
+public class AppUser implements Serializable {
 
-      <h2>Web Page</h2>
+    private String login;
+
+    private String password;
+
+    private Set<String> roles;
+
+    public AppUser() {
+    }
+
+    public AppUser(String login, String password, Set<String> roles) {
+        this.login = login;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+}
+      </pre>
 
       <p>
-          This is our page, tutorial.jspx.  There is nothing out of the ordinary in this page which consists of html,
-          standard jsf and ICEfaces tags.  Please review the component showcase or some of the other tutorials for a more
-          thorough understanding of how the components work.
+          We are not using a database, so our user data is stored in the UserDaoImpl class.  Our entry in the
+          applicationContect.xml ensures this class is injected into the UserDetailsServiceImpl constructor.
+      </p>
+
+      <pre>
+public class UserDaoImpl implements UserDao {
+    public AppUser findUser(String userName) {
+        AppUser appUser = null;
+        Set<String> roles = new HashSet<String>();
+        if (userName.equals("john")) {
+            roles.add("ROLE_URLACCESS");
+            appUser = new AppUser("john", "John", "Turner", "john", roles);
+        } else if (userName.equals("jim")) {
+            appUser = new AppUser("jim", "Jim", "Daniel", "jim", roles);
+        } else if (userName.equals("tina")) {
+            roles.add("ROLE_ALLACCESS");
+            appUser = new AppUser("tina", "Tina", "Joseph", "tina", roles);
+        }
+        return appUser;
+    }
+
+}
+      </pre>
+
+      <p>
+          We have three users with the following username/password/roles:
+      </p>
+      <ul>
+          <li>john/john/ROLE_URLACCESS</li>
+          <li>jim/jim/</li>
+          <li>tina/tina/ROLE_ALLACCESS</li>
+      </ul>
+
+      <a name="springAuth">&nbsp;</a>
+
+      <h2>Spring Authentication and Authorization</h2>
+
+      <p>
+          A user enters our JSF/ICEfaces application via index.jsp.
+      </p>
+
+      <pre>
+&lt;%
+    response.sendRedirect("/spring-authentication/secured/welcome.iface");
+%&gt;
+      </pre>
+
+      <p>
+          This redirects us to a URL that requires ROLE_ALLACCESS or ROLE_URLACCESS as we have stated in our
+          applicationContext.xml.  Spring security does not have an authenticated user so, we will be taken to the login-page
+          specified in the applicationContext.xml, springSecurityLogin.jspx.
       </p>
 
       <pre>
 &lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
-&lt;jsp:root version="1.2"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:h="http://java.sun.com/jsf/html"
-          xmlns:ice="http://www.icesoft.com/icefaces/component"&gt;
-    &lt;jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" /&gt;
-    &lt;f:view&gt;
-        &lt;ice:outputDeclaration doctypeRoot="html"
-                               doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                               doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" /&gt;
+&lt;f:view xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"&gt;
+    &lt;ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/&gt;
     &lt;html&gt;
-        &lt;head&gt;
-            &lt;title&gt;ICEfaces, Ajax for Java EE&lt;/title&gt;
-            &lt;link rel="stylesheet" type="text/css" href="./xmlhttp/css/xp/xp.css"/&gt;
-            &lt;link rel="stylesheet" type="text/css" href="./tutorial.css"/&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-
-            &lt;ice:outputText value="Thank you for using ICEfaces." /&gt;
-            &lt;ice:outputConnectionStatus /&gt;
-
-            &lt;ice:form partialSubmit="true" &gt;
-
-                &lt;ice:dataPaginator for="customerdatatable"
-                                   paginator="true"
-                                   fastStep="3" &gt;
-                    &lt;f:facet name="first"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-first.gif"/&gt;
-                    &lt;/f:facet&gt;
-                    &lt;f:facet name="last"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-last.gif"/&gt;
-                    &lt;/f:facet&gt;
-                    &lt;f:facet name="previous"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-previous.gif"/&gt;
-                    &lt;/f:facet&gt;
-                    &lt;f:facet name="next"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-next.gif"/&gt;
-                    &lt;/f:facet&gt;
-                    &lt;f:facet name="fastforward"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-ff.gif"/&gt;
-                    &lt;/f:facet&gt;
-                    &lt;f:facet name="fastrewind"&gt;
-                        &lt;ice:graphicImage style="border:none;"
-                            url="./xmlhttp/css/xp/css-images/arrow-fr.gif"/&gt;
-                    &lt;/f:facet&gt;
-                &lt;/ice:dataPaginator&gt;
-
-                &lt;ice:dataTable cellspacing="1"
-                               value="#{sessionBean.data}"
-                               id="customerdatatable"
-                               rows="#{sessionBean.pageSize}"
-                               sortAscending="#{sessionBean.sortAscending}"
-                               sortColumn="#{sessionBean.sortColumnName}"
-                               width="750px"
-                               rowClasses="evenRow,oddRow"
-                               var="customerbean"&gt;
-                    &lt;ice:column&gt;
-
-                        &lt;ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false"/&gt;
-
-                        &lt;!-- HEADER --&gt;
-                        &lt;f:facet name="header"&gt;
-                            &lt;ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="headerColumn" &gt;
-                                &lt;ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTFIRSTNAME}"&gt;
-                                    &lt;ice:outputText value="#{sessionBean.FIRSTCOLUMNNAME}"/&gt;
-                                &lt;/ice:commandSortHeader&gt;
-                                &lt;ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTLASTNAME}"&gt;
-                                    &lt;ice:outputText value="#{sessionBean.SECONDCOLUMNNAME}"/&gt;
-                                &lt;/ice:commandSortHeader&gt;
-                            &lt;/ice:panelGrid&gt;
-                        &lt;/f:facet&gt;
-
-                        &lt;!-- TABLE CONTENT ROW --&gt;
-                        &lt;ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="dataColumn"&gt;
-                            &lt;ice:commandLink actionListener="#{customerbean.toggleSelected}"&gt;
-                                &lt;ice:outputText value="#{customerbean.customer.contactfirstname}"/&gt;
-                            &lt;/ice:commandLink&gt;
-                            &lt;ice:commandLink actionListener="#{customerbean.toggleSelected}"&gt;
-                                &lt;ice:outputText value="#{customerbean.customer.contactlastname}"/&gt;
-                            &lt;/ice:commandLink&gt;
-                        &lt;/ice:panelGrid&gt;
-
-                        &lt;!-- EDITABLE ROW  --&gt;
-                        &lt;ice:panelGrid columns="4" rendered="#{customerbean.expanded}" width="100%" columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn"&gt;
-                            &lt;ice:inputText value="#{customerbean.tempcontactfirstname}" /&gt;
-                            &lt;ice:inputText value="#{customerbean.tempcontactlastname}" /&gt;
-                            &lt;ice:commandButton value="Commit" actionListener="#{customerbean.commit}" /&gt;
-                            &lt;ice:commandButton value="Cancel" actionListener="#{customerbean.cancel}" /&gt;
-                        &lt;/ice:panelGrid&gt;
-
-                    &lt;/ice:column&gt;
-
-                &lt;/ice:dataTable&gt;
-                &lt;ice:messages /&gt;
-            &lt;/ice:form&gt;
-
-        &lt;/body&gt;
+    &lt;head&gt;
+        &lt;title&gt;Spring Security Login&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;ice:form partialSubmit="false"&gt;
+        &lt;ice:panelGrid columns="2"&gt;
+            &lt;ice:outputLabel value="User Name" for="j_username"/&gt;
+            &lt;ice:inputText id="j_username"
+                           value="#{loginBean.userId}" size="40"
+                           maxlength="80"/&gt;
+            &lt;ice:outputLabel value="Password" for="j_password"/&gt;
+            &lt;ice:inputSecret id="j_password"
+                             value="#{loginBean.password}" size="40"
+                             maxlength="80"/&gt;
+        &lt;/ice:panelGrid&gt;
+        &lt;ice:commandButton actionListener="#{loginBean.login}" value="Login"/&gt;
+        &lt;ice:messages style="color: red;"/&gt;
+    &lt;/ice:form&gt;
+    &lt;/body&gt;
     &lt;/html&gt;
-    &lt;/f:view&gt;
-&lt;/jsp:root&gt;
-
+&lt;/f:view&gt;
       </pre>
 
-      <p>
-          The page contains a single column dataTable with a panelGrid of table content and another panelGrid containing
-          the editable row.  The editable row is rendered when the table content row has been clicked.  The source of this
-          click is the ice:commandLink that nests the content in the row.  This decision was made because the editable row
-          contains buttons and input components that should not fire the ice:rowSelector toggleOnClick.  As a result, we
-          set the ice:rowSelector toggleOnClick attribute to "false" and use the ice:commandLinks to toggle the rendering
-          of the editable rows.  This means the ice:rowSelector component is relegated to applying the appropriate styles
-          to our rows, based on it's bound value.
-      </p>
+
+      <img src="images/spring_security_login.jpg"
+           title="Welcome page using Spring Security"
+           alt="Welcome page using Spring Security" width="726" height="465"/>
 
       <p>
-          We will now see what happens with the component value bindings and actionListeners in the web application beans.
+          This page uses ICEfaces components to take username and password inputs and then submits them for login via the
+          ice:commandButton actionListener binding.  All the bindings are to our JSF request scope managed-bean, LoginBean:
       </p>
 
-      <a name="webApp">&nbsp;</a>
-
-      <h2>Web Application Classes</h2>
-
-      <a name="one">&nbsp;</a>
-
-      <h3>1: Web Page Bindings</h3>
-
-      <p>
-          The Customer entity is represented in the GUI by the CustomerBean, a wrapper class with view specific properties
-          and methods.
-
-      </p>
-      <p>
-          CustomerBean holds the expanded property, which is bound to the ice:rowSelector component and
-          determines when the editable row ice:panelGrid is rendered.  The tempcontactfirstname and tempcontactlastname
-          properties are bound to the ice:inputText components in the editable row.
-      </p>
-      <p>
-          CustomerBean also has the methods bound to the actionListeners in the ice:dataTable.  The toggleSelected method
-          is called when the ice:commandLinks are used to expand/contract an editable row.  The commit and cancel methods
-          are bound to the ice:commandButton components to commit or cancel changes to a particular record.
-      </p>
       <pre>
-public class CustomerBean {
+public class LoginBean {
 
-    private Customer customer;
-    private SessionBean sessionBean;
-    private boolean expanded = false;
+    // properties
+    private String userId;
 
-    private String tempcontactfirstname;
-    private String tempcontactlastname;
-
-    public CustomerBean (Customer customer, SessionBean sessionBean){
-        this.customer = customer;
-        this.sessionBean = sessionBean;
-        tempcontactfirstname = customer.getContactfirstname();
-        tempcontactlastname = customer.getContactlastname();
-    }
-
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public String getTempcontactfirstname() {
-        return tempcontactfirstname;
-    }
-
-    public void setTempcontactfirstname(String tempcontactfirstname) {
-        this.tempcontactfirstname = tempcontactfirstname;
-    }
-
-    public String getTempcontactlastname() {
-        return tempcontactlastname;
-    }
-
-    public void setTempcontactlastname(String tempcontactlastname) {
-        this.tempcontactlastname = tempcontactlastname;
-    }
+    private String password;
 
     /**
-     * Bound to commandLink actionListener in the ui that renders/unrenders
-     * the Customer details for editing.
+     * default empty constructor
      */
-    public void toggleSelected(ActionEvent e){
-        tempcontactfirstname = customer.getContactfirstname();
-        tempcontactlastname = customer.getContactlastname();
-        expanded = !expanded;
+    public LoginBean() {
+
+        Exception ex = (Exception) FacesContext
+                .getCurrentInstance()
+                .getExternalContext()
+                .getSessionMap()
+                .get(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY);
+
+        if (ex != null)
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, ex
+                            .getMessage(), ex.getMessage()));
+
     }
 
-    /**
-     * Bound to commandButton actionListener in the ui that commits Customer
-     * changes to the database.
-     */
-    public void commit(ActionEvent e){
-        customer.setContactfirstname(tempcontactfirstname);
-        customer.setContactlastname(tempcontactlastname);
-        sessionBean.commit(customer);
-        expanded = !expanded;
+    public String getPassword() {
+        return password;
     }
 
-    /**
-     * Bound to commandButton actionListener in the ui that cancels potential
-     * Customer changes to the database and unrenders the editable Customer
-     * details.
-     */
-    public void cancel(ActionEvent e){
-        tempcontactfirstname = customer.getContactfirstname();
-        tempcontactlastname = customer.getContactlastname();
-        expanded = !expanded;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void login(ActionEvent e) throws java.io.IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/spring-authentication/j_spring_security_check?j_username=" + userId + "&j_password=" + password);
+    }
+
 
 }
       </pre>
+
+
       <p>
-      The rest of the bindings in tutorial.jspx are to the SessionBean class.  SessionBean is our web application
-      controller class that makes calls to the JPA layer to maintain a list of records displayed by a particular user
-      during his/her session.
-      </p>
-      <p>
-      For the ice:commandSortHeader to work, we add the sortAscending and sortColumn attributes to the ice:dataTable
-      component.  The ice:dataTable's visible rows are set with a binding to the rows attribute.  These bindings
-      are encapsulated in a class called DataSource.  SessionBean extends this class.
-      </p>
-      <pre>
-/**
- * The DataSource class is a utility class used by the data table paginator
- * and commandSortHeader.
- */
-public abstract class DataSource {
-
-    // Sortable Headers
-    protected String sortColumnName;
-    protected boolean sortAscending;
-
-    // DataModel bound to dataTable
-    protected PagedListDataModel<CustomerBean> onePageDataModel;
-    // bound to rows attribute in dataTable
-    protected int pageSize = 5;
-
-    protected DataSource(String defaultSortColumn) {
-        sortColumnName = defaultSortColumn;
-        sortAscending = isDefaultAscending(defaultSortColumn);
-    }
-
-    /**
-     * Is the default sortColumnName direction for the given column "sortAscending" ?
-     */
-    protected abstract boolean isDefaultAscending(String sortColumn);
-
-    /**
-     * Gets the sortColumnName column.
-     *
-     * @return column to sortColumnName
-     */
-    public String getSortColumnName() {
-        return sortColumnName;
-    }
-
-    /**
-     * Sets the sortColumnName column.
-     *
-     * @param sortColumnName column to sortColumnName
-     */
-    public void setSortColumnName(String sortColumnName) {
-        if(!sortColumnName.equals(this.sortColumnName)){
-            onePageDataModel.setDirtyData();
-            this.sortColumnName = sortColumnName;
-        }
-    }
-
-    /**
-     * Is the sortColumnName sortAscending?
-     *
-     * @return true if the sortAscending sortColumnName otherwise false
-     */
-    public boolean isSortAscending() {
-        return sortAscending;
-    }
-
-    /**
-     * Sets sortColumnName type.
-     *
-     * @param sortAscending true for sortAscending sortColumnName, false for descending sortColumnName.
-     */
-    public void setSortAscending(boolean sortAscending) {
-        if(sortAscending != (this.sortAscending)){
-            onePageDataModel.setDirtyData();
-            this.sortAscending = sortAscending;
-        }
-    }
-
-    public PagedListDataModel<CustomerBean> getOnePageDataModel() {
-        return onePageDataModel;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-}
-      </pre>
-      <p>
-      There is one more important binding in tutorial.jspx and that is the ice:dataTable value binding.  This leads us to
-      the subject of lazy loading and the use of the PagedListDataModel property in the DataSource class.
+          In Spring Security, HTTP Form Authentication involves using the AuthenticationProcessingFilter to process a login
+          form.  This is the most common way for an application to authenticate end users.  The LoginBean will send
+          j_username and j_password input fields to a URL that is monitored by the filter (by default /j_spring_security_check).
+          There are three possible outcomes here: success (authentication and authorization), access denied based on
+          credentials (failed authentication), access denied based on roles (successful authentication, failed authorization).
       </p>
 
-      <a name="two">&nbsp;</a>
+      <a name="success">&nbsp;</a>
 
-      <h3>2: Lazy Loading</h3>
-
+      <h3>1: Successful Authentication and Authorization</h3>
       <p>
-      In order to lazily load our dataTable content, we need to create the notion of a DataPage that contains only the
-      records currently displayed in the GUI.  This also requires us extending the standard JSF DataModel to work with
-      the DataPage.  The next two classes come from <a href="http://wiki.apache.org/myfaces/WorkingWithLargeTables">WorkingWithLargeTables</a>
-      in the Myfaces Wiki.
+          Users that have ROLE_URLACCESS or ROLE_ALLACCESS are authorized to view the welcome.jspx page in the secure folder.
+          Once they are successfully authenticated, Spring Security will send them to their original destination (the page
+          specified by default-target-url in the application.xml).  Log in as "tina" and you should see the following:
       </p>
+
+      <img src="images/spring_security_welcome.jpg"
+           title="Welcome page using Spring Security"
+           alt="Welcome page using Spring Security" width="726" height="465"/>
+
+      <a name="failed">&nbsp;</a>
+
+      <h3>2: Failed Authentication</h3>
       <p>
-      First, the "page" of data that gets passed back to the GUI.
+          This snippet of code from our LoginBean will catch exceptions thrown by Spring Security so that we can display them
+          in our JSF page via the ice:messages tag.  If you enter invalid credentials, the Spring Security exception will be
+          displayed on the page as follows.
       </p>
       <pre>
-/**
- * A simple class that represents a "page" of data out of a longer set, ie
- * a list of objects together with info to indicate the starting row and
- * the full size of the dataset. Business methods can return instances of this type
- * when returning subsets of available data.
- */
-public class DataPage<T> {
 
-  private int datasetSize;
-  private int startRow;
-  private List<T> data;
+        Exception ex = (Exception) FacesContext
+                .getCurrentInstance()
+                .getExternalContext()
+                .getSessionMap()
+                .get(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY);
 
-  /**
-   * Create an object representing a sublist of a dataset.
-   *
-   * @param datasetSize is the total number of matching rows
-   * available.
-   *
-   * @param startRow is the index within the complete dataset
-   * of the first element in the data list.
-   *
-   * @param data is a list of consecutive objects from the
-   * dataset.
-   */
-  public DataPage(int datasetSize, int startRow, List<T> data) {
-    this.datasetSize = datasetSize;
-    this.startRow = startRow;
-    this.data = data;
-  }
+        if (ex != null)
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, ex
+                            .getMessage(), ex.getMessage()));
 
-  /**
-   * Return the number of items in the full dataset.
-   */
-  public int getDatasetSize() {
-    return datasetSize;
-  }
-
-  /**
-   * Return the offset within the full dataset of the first
-   * element in the list held by this object.
-   */
-  public int getStartRow() {
-    return startRow;
-  }
-
-  /**
-   * Return the list of objects held by this object, which
-   * is a continuous subset of the full dataset.
-   */
-  public List<T> getData() {
-    return data;
-  }
-}
       </pre>
-      <p>
-      The PagedListDataModel, our custom DataModel for lazy loading paginated data.  In our case the ice:dataPaginator
-      is used to navigate paginated data bound to the ice:dataTable component.
-      </p>
       <pre>
-/**
- * A special type of JSF DataModel to allow a datatable and datapaginator
- * to page through a large set of data without having to hold the entire
- * set of data in memory at once.
- *
- * Any time a managed bean wants to avoid holding an entire dataset,
- * the managed bean should declare an inner class which extends this
- * class and implements the fetchData method. This method is called
- * as needed when the table requires data that isn't available in the
- * current data page held by this object.
- *
- * This does require the managed bean (and in general the business
- * method that the managed bean uses) to provide the data wrapped in
- * a DataPage object that provides info on the full size of the dataset.
- */
-public abstract class PagedListDataModel<T> extends DataModel {
-
-    int pageSize;
-    int rowIndex;
-    DataPage<T> page;
-    // Triggers a fetch from the database
-    protected boolean dirtyData = false;
-
-    /*
-     * Create a datamodel that pages through the data showing the specified
-     * number of rows on each page.
-     */
-    public PagedListDataModel(int pageSize) {
-        super();
-        this.pageSize = pageSize;
-        this.rowIndex = -1;
-        this.page = null;
-    }
-
-    /**
-     * Not used in this class; data is fetched via a callback to the
-     * fetchData method rather than by explicitly assigning a list.
-     */
-    @Override
-    public void setWrappedData(Object o) {
-        throw new UnsupportedOperationException("setWrappedData");
-    }
-
-    @Override
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    /**
-     * Specify what the "current row" within the dataset is. Note that
-     * the UIData component will repeatedly call this method followed
-     * by getRowData to obtain the objects to render in the table.
-     */
-    @Override
-    public void setRowIndex(int index) {
-        rowIndex = index;
-    }
-
-    /**
-     * Return the total number of rows of data available (not just the
-     * number of rows in the current page!).
-     */
-    @Override
-    public int getRowCount() {
-        return getPage().getDatasetSize();
-    }
-
-    /**
-     * Return a DataPage object; if one is not currently available then
-     * fetch one. Note that this doesn't ensure that the datapage
-     * returned includes the current rowIndex row; see getRowData.
-     */
-    private DataPage<T> getPage() {
-        if (page != null)
-            return page;
-
-        int rowIndex = getRowIndex();
-        int startRow = rowIndex;
-        if (rowIndex == -1) {
-            // even when no row is selected, we still need a page
-            // object so that we know the amount of data available.
-           startRow = 0;
-        }
-
-        // invoke method on enclosing class
-        page = fetchPage(startRow, pageSize);
-        return page;
-    }
-
-    /**
-     * Return the object corresponding to the current rowIndex.
-     * If the DataPage object currently cached doesn't include that
-     * index or the data is marked as dirty, then fetchPage is called
-     * to retrieve the appropriate page.
-     */
-    @Override
-    public Object getRowData(){
-        if (rowIndex < 0) {
-            throw new IllegalArgumentException(
-                "Invalid rowIndex for PagedListDataModel; not within page");
-        }
-
-        // ensure page exists; if rowIndex is beyond dataset size, then
-        // we should still get back a DataPage object with the dataset size
-        // in it...
-        if (page == null) {
-            page = fetchPage(rowIndex, pageSize);
-        }
-
-        // Check if rowIndex is equal to startRow,
-        // useful for dynamic sorting on pages
-        if (rowIndex == page.getStartRow() && dirtyData){
-            page = fetchPage(rowIndex, pageSize);
-        }
-
-        int datasetSize = page.getDatasetSize();
-        int startRow = page.getStartRow();
-        int nRows = page.getData().size();
-        int endRow = startRow + nRows;
-
-        if (rowIndex >= datasetSize) {
-            throw new IllegalArgumentException("Invalid rowIndex");
-        }
-
-        if (rowIndex < startRow) {
-            page = fetchPage(rowIndex, pageSize);
-            startRow = page.getStartRow();
-        } else if (rowIndex >= endRow) {
-            page = fetchPage(rowIndex, pageSize);
-            startRow = page.getStartRow();
-        }
-        return page.getData().get(rowIndex - startRow);
-    }
-
-    @Override
-    public Object getWrappedData() {
-        return page.getData();
-    }
-
-    /**
-     * Return true if the rowIndex value is currently set to a
-     * value that matches some element in the dataset. Note that
-     * it may match a row that is not in the currently cached
-     * DataPage; if so then when getRowData is called the
-     * required DataPage will be fetched by calling fetchData.
-     */
-    @Override
-    public boolean isRowAvailable() {
-        DataPage<T> page = getPage();
-        if (page == null)
-            return false;
-
-        int rowIndex = getRowIndex();
-        if (rowIndex < 0) {
-            return false;
-        } else if (rowIndex >= page.getDatasetSize()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Method which must be implemented in cooperation with the
-     * managed bean class to fetch data on demand.
-     */
-    public abstract DataPage<T> fetchPage(int startRow, int pageSize);
-
-    public boolean isDirtyData() {
-        return dirtyData;
-    }
-
-    public void setDirtyData(boolean dirtyData) {
-        this.dirtyData = dirtyData;
-    }
-
-    public void setDirtyData() {
-        dirtyData = true;
-    }
-}
+        &lt;ice:messages style="color: red;"/&gt;
       </pre>
+
+      <img src="images/spring_security_error.jpg"
+           title="Error message using Spring Security"
+           alt="Error message using Spring Security" width="726" height="465"/>
+
+      <a name="successfailed">&nbsp;</a>
+
+      <h3>3: Successful Authentication, Failed Authorization</h3>
       <p>
-      The dirtyData property has been added so we can trigger a fetch from outside the paginating mechanisms.  For
-      instance, we will need to mark data as dirty and force a fetch in all GUI's viewing an updated record.
+          The attribute access-denied-page="/accessDenied.jspx" specifies the page that is presented to a user when their
+          credentials fail authorization.  If you log in as "jim", you will successfully pass authentication, but "jim" does
+          not have an assigned role.  Because the welcome.jspx page requires either ROLE_URLACCESS or ROLE_ALLACCESS jim will
+          be sent to the accessDenied page.
+      </p>
+
+      <img src="images/spring_security_access_denied.jpg"
+           title="Access Denied page using Spring Security"
+           alt="Access Denied page using Spring Security" width="726" height="465"/>
+
+      <a name="icefacesAuth">&nbsp;</a>
+
+      <h2>ICEfaces Authorization</h2>
+
+      <p>
+          We have covered "tina" who has ROLE_ALLACCESS and "jim" who does not have an assigned role.  Our final user is "john"
+          who has ROLE_URLACCESS.  This role grants access to pages in the secure folder, but users with this role should not
+          be able to purchase products.  To prevent a purchase we will simply use ICEfaces' enabledOnUserRole attribute on the
+          ice:commandButton component to disable the button and we will use the renderedOnUserRole attribute on an
+          ice:outputText component to render a message to the user.
       </p>
       <p>
-      Here is the relevant code in the SessionBean, including getData() which is bound to the GUI:
+          Selected elements on a page can be completely added or removed with the renderedOnUserRole
+          attribute.  Interactive elements can be enabled or disabled with the enabledOnUserRole attribute.
       </p>
+
       <pre>
-    // Current items in ui
-    private List<CustomerBean> uiCustomerBeans = new ArrayList<CustomerBean>(pageSize);
 
-    /**
-     * Bound to DataTable value in the ui.
-     */
-    public DataModel getData() {
-        state = PersistentFacesState.getInstance();
-        if(onePageDataModel == null){
-            onePageDataModel = new LocalDataModel(pageSize);
-        }
-        return onePageDataModel;
-    }
+&lt;html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" version="2.0"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"&gt;
+&lt;head&gt;
+    &lt;title&gt;Spring Security with ICEfaces Components&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;f:view&gt;
+    &lt;ice:form id="form"&gt;
+        &lt;ice:panelGrid id="grid" columns="2"&gt;
+            &lt;ice:outputText
+                    value="Welcome #{sessionScope.SPRING_SECURITY_LAST_USERNAME}."/&gt;
+            &lt;ice:outputText
+                    value="Enter a product id and use the buy button to purchase a product."/&gt;
+            &lt;ice:outputLabel for="input1" value="Product id:"/&gt;
+            &lt;ice:panelGroup&gt;
+                &lt;ice:inputText id="input1" value="#{shoppingBean.productId}"
+                               required="true"/&gt;
+                &lt;ice:message for="input1"/&gt;
+            &lt;/ice:panelGroup&gt;
+            &lt;ice:commandButton id="button1" value="Buy"
+                               action="#{shoppingBean.send}"
+                               enabledOnUserRole="ROLE_ALLACCESS"/&gt;
+            &lt;ice:outputText renderedOnUserRole="ROLE_URLACCESS"
+                            value="(You must acquire the necessary permissions to enable the buy button.)"/&gt;
+        &lt;/ice:panelGrid&gt;
+        &lt;ice:commandButton actionListener="#{shoppingBean.logout}"
+                           value="Logout" immediate="true"/&gt;
+    &lt;/ice:form&gt;
+&lt;/f:view&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 
-    /**
-     * This is where the Customer data is retrieved from the database and
-     * returned as a list of CustomerBean objects for display in the UI.
-     */
-    private DataPage<CustomerBean> getDataPage(int startRow, int pageSize) {
-        // Retrieve the total number of customers from the database.  This
-        // number is required by the DataPage object so the paginator will know
-        // the relative location of the page data.
-        int totalNumberCustomers = CUSTOMERDAO.findTotalNumberCustomers().intValue();
-
-        // Calculate indices to be displayed in the ui.
-        int endIndex = startRow + pageSize;
-        if (endIndex > totalNumberCustomers) {
-            endIndex = totalNumberCustomers;
-        }
-
-        // Query database for sorted results.
-        List<Customer> pageCustomers = CUSTOMERDAO.findPageCustomers(sortColumnName, sortAscending, startRow, endIndex-startRow);
-
-        // Remove this Renderable from the existing render groups.
-        leaveRenderGroups();
-
-        // Populate the list of uiCustomerBeans for binding to the dataTable.
-        uiCustomerBeans.clear();
-        for(Customer pageCustomer : pageCustomers){
-            uiCustomerBeans.add(new CustomerBean(pageCustomer, this));
-        }
-        // Add this Renderable to the new render groups.
-        joinRenderGroups();
-
-        // Reset the dirtyData flag.
-        onePageDataModel.setDirtyData(false);
-
-        // This is required when using Hibernate JPA.  If the EntityManager is not
-        // cleared or closed objects are cached and stale objects will show up
-        // in the table.
-        // This way, the detached objects are reread from the database.
-        // This call is not required with TopLink JPA, which uses a Query Hint
-        // to clear the l2 cache in CustomerDAO.
-        EntityManagerHelper.getEntityManager().clear();
-
-        return new DataPage<CustomerBean>(totalNumberCustomers,startRow,uiCustomerBeans);
-    }
-
-    private class LocalDataModel extends PagedListDataModel {
-        public LocalDataModel(int pageSize) {
-            super(pageSize);
-        }
-
-        public DataPage<CustomerBean> fetchPage(int startRow, int pageSize) {
-            // call enclosing managed bean method to fetch the data
-            return getDataPage(startRow, pageSize);
-        }
-    }
       </pre>
-      <p>
-      PersistentFacesState, leaveRenderGroups() and joinRenderGroups() are all related to using the ICEfaces rendering
-      api.  A render call will trigger a server push to all users viewing an updated record.  The use of this api is our
-      next topic.
-      </p>
 
-      <a name="three">&nbsp;</a>
-
-      <h3>3: Using the Rendering API</h3>
+      <img src="images/spring_security_icefaces.jpg"
+           title="ICEfaces components using Spring Security"
+           alt="ICEfaces components using Spring Security" width="726" height="465"/>
 
       <p>
-      The key elements to the Rendering API are:
-      </p>
-      <p>
-      Renderable: A bean that implements the Renderable interface and associates the bean with a specific
-      PersistentFacesState. Typically, there will be a single Renderable per client.
-      </p>
-      <p>
-      RenderManager: An application-scoped bean that manages all rendering requests through the RenderHub and a set of
-      named GroupAsyncRenderers.
-      </p>
-      <p>
-      GroupAsyncRenderer: Supports rendering of a group of Renderables. GroupAsyncRenderers can support on-demand,
-      interval, and delayed rendering of a group.  This tutorial uses OnDemandRenderers.
-      </p>
-      <p>
-      Here is how it works.  The RenderManager is an application scope managed bean that the SessionBean has a reference
-      to from faces-config.xml.  When a call is made to joinRenderGroups(), the RenderManager is used to retrieve or
-      create an OnDemandRenderer for the specified Customer object (a call to RenderManager.getOnDemandRenderer(String customernumber)
-      will create the OnDemandRenderer if the name is not found).  After the OnDemandRenderer is created or retrieved, the
-      SessionBean Renderable is added to the Customer render group.  The SessionBean implements Renderable, so its member
-      PersistentFacesState will ensure it receives a push from the server when a render call is made to this render group.
-      After the commit button is pressed in the GUI and a successful update is performed, a render call is made to the
-      updated Customer's render group.  Please consult the ICEfaces documentation for more information on the rendering api.
-      </p>
-      <p>
-      The relevant code from SessionBean:
-      </p>
-      <pre>
-    // required for rendering api
-    private RenderManager renderManager;
-    private PersistentFacesState state = PersistentFacesState.getInstance();
-
-    public PersistentFacesState getState() {
-        return state;
-    }
-
-    /**
-     * This method is called from faces-config.xml with each new session.
-     */
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-    }
-
-    public void renderingException(RenderingException arg0) {
-        if (arg0 instanceof TransientRenderingException ){
-
-        }
-        else if(arg0 instanceof FatalRenderingException){
-            // Remove from existing Customer render groups.
-            leaveRenderGroups();
-        }
-    }
-
-    /**
-     * Remove this Renderable from existing uiCustomerBeans render groups.
-     * OnDemandRenderers are named/created using the underlying Customer Number.
-     */
-    private void leaveRenderGroups(){
-        if(onePageDataModel.page != null){
-            for(CustomerBean uiCustomerBean : uiCustomerBeans){
-                renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).remove(this);
-            }
-        }
-    }
-
-    /**
-     * Add this Renderable to the new uiCustomerBeans render groups.
-     * OnDemandRenderers are named/created using the underlying Customer Number.
-     */
-    private void joinRenderGroups(){
-        for(CustomerBean uiCustomerBean : uiCustomerBeans){
-            renderManager.getOnDemandRenderer(uiCustomerBean.getCustomer().getCustomernumber().toString()).add(this);
-        }
-    }
-
-    /**
-     * Commit updates Customer data to the database, marks the data as dirty in
-     * all SessionBeans viewing the Customer and requests a render of those
-     * views so they will be refreshed with the updated data.
-     */
-    public void commit(Customer customer){
-        EntityManagerHelper.beginTransaction();
-        CUSTOMERDAO.update(customer);
-        EntityManagerHelper.commit();
-        dirtyDataController.setOtherSessionsDirtyData(customer);
-        renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()).requestRender();
-    }
-      </pre>
-      <p>
-      The dirtyDataController is a helper class used to mark other sessions viewing the updated Customer data as dirty,
-      so those dataTables will fetch the new data before rendering.  DirtyDataController:
-      </p>
-      <pre>
-public class DirtyDataController {
-
-    // Used to trigger rendering in the other session ui's
-    private static final ArrayList<SessionBean> CURRENT_SESSIONS = new ArrayList<SessionBean>();
-
-    public static ArrayList<SessionBean> getCURRENT_SESSIONS() {
-        return CURRENT_SESSIONS;
-    }
-
-    public void setOtherSessionsDirtyData(Customer customer){
-        for(SessionBean CURRENT_SESSION : CURRENT_SESSIONS){
-            List<CustomerBean> sessionView = CURRENT_SESSIONS.get(i).getUiCustomerBeans();
-            for(CustomerBean aSessionView : sessionView){
-                if(aSessionView.getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
-                    CURRENT_SESSION.getOnePageDataModel().setDirtyData();
-                    break;
-                }
-            }
-        }
-    }
-}
-      </pre>
-      <p>
-      DirtyDataController related code in the SessionBean:
-      </p>
-      <pre>
-    // Used to inform other sessions of dirtyData
-    private DirtyDataController dirtyDataController;
-
-    /**
-     * This method is called from faces-config.xml with each new session.
-     */
-    public void setDirtyDataController(DirtyDataController dirtyDataController){
-        this.dirtyDataController = dirtyDataController;
-        DirtyDataController.getCURRENT_SESSIONS().add(this);
-    }
-      </pre>
-      <p>
-      The faces-config shows our managed beans and how they are chained together:
-      </p>
-      <pre>
-&lt;managed-bean&gt;
-    &lt;description&gt;
-        Used to initiate server side renders
-    &lt;/description&gt;
-    &lt;managed-bean-name&gt;renderManager&lt;/managed-bean-name&gt;
-    &lt;managed-bean-class&gt;
-        com.icesoft.faces.async.render.RenderManager
-    &lt;/managed-bean-class&gt;
-    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
-&lt;/managed-bean&gt;
-
-&lt;managed-bean&gt;
-    &lt;description&gt;
-        Used to notify sessions of dirty data
-    &lt;/description&gt;
-    &lt;managed-bean-name&gt;dirtyDataController&lt;/managed-bean-name&gt;
-    &lt;managed-bean-class&gt;
-        com.icesoft.icefaces.samples.datatable.ui.DirtyDataController
-    &lt;/managed-bean-class&gt;
-    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
-&lt;/managed-bean&gt;
-
-&lt;managed-bean&gt;
-    &lt;managed-bean-name&gt;sessionBean&lt;/managed-bean-name&gt;
-    &lt;managed-bean-class&gt;
-        com.icesoft.icefaces.samples.datatable.ui.SessionBean
-    &lt;/managed-bean-class&gt;
-    &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
-    &lt;managed-property&gt;
-        &lt;property-name&gt;renderManager&lt;/property-name&gt;
-        &lt;value&gt;#{renderManager}&lt;/value&gt;
-    &lt;/managed-property&gt;
-            &lt;managed-property&gt;
-        &lt;property-name&gt;dirtyDataController&lt;/property-name&gt;
-        &lt;value&gt;#{dirtyDataController}&lt;/value&gt;
-    &lt;/managed-property&gt;
-&lt;/managed-bean&gt;
-      </pre>
-      <a name="four">&nbsp;</a>
-
-      <h3>4: Disposable Bean Interface</h3>
-
-      <p>
-      Finally, we implement the disposable bean interface on our SessionBean.  This is an ICEfaces interface that allows
-      us to be notified when the bean instance is no longer in use. This means we can perform the following cleanup in the
-      SessionBean when the session ends:
-      </p>
-      <pre>
-    /**
-     * Cleanup - before this object is disposed, leave RenderGroups and remove
-     * this SessionBean from the list of current sessions.
-     */
-    public void dispose() {
-        // Remove from existing Customer render groups.
-        leaveRenderGroups();
-        DirtyDataController.getCURRENT_SESSIONS().remove(this);
-    }
-      </pre>
-      <p>
-      This concludes the tutorial.  You may view the source code by following the links below.
+          This concludes the tutorial.  You may view the source code by following the links below.
       </p>
       <a name="examples">&nbsp;</a>
 
@@ -1214,9 +564,9 @@ public class DirtyDataController {
           </thead>
           <tbody>
               <tr>
-                  <td class="bodyExample">dataTable-JPA</td>
-                  <td class="bodySource"><a href="dataTable-JPA-tutorial.zip">dataTable-JPA source code</a></td>
-                  <td class="bodyNotes">Connects to an in-memory HSQLDB database through Hibernate JPA.</td>
+                  <td class="bodyExample">spring-security-basic</td>
+                  <td class="bodySource"><a href="spring-security-basic.zip">spring-security-basic source code</a></td>
+                  <td class="bodyNotes">Spring Security form-login using ICEfaces enabledOnUserRole/renderedOnUserRole attribute.</td>
               </tr>
           </tbody>
       </table>
