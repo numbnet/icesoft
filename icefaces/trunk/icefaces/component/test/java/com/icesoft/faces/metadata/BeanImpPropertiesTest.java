@@ -11,6 +11,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.commons.beanutils.BeanUtils;
 
+import sun.reflect.misc.MethodUtil;
+
 public class BeanImpPropertiesTest extends ICECompsTestCase {
 
     public static Test suite() {
@@ -32,12 +34,16 @@ public class BeanImpPropertiesTest extends ICECompsTestCase {
                 continue;
             }
             ComponentBean componentBean = getComponentBean(components[j]);
+
             PropertyBean[] pds = componentBean.getProperties();
             String message = null;
-
             for (int i = 0; i < pds.length; i++) {
+                boolean newLine = false;
+                String propertyName = null; 
+                String methodName = null;               
                 try {
-                    String propertyName = pds[i].getPropertyName();
+                    propertyName = pds[i].getPropertyName();                    
+
                     if (pds[i].getPropertyClass() == null || pds[i].getPropertyClass().equalsIgnoreCase("String")) {
                         pds[i].setPropertyClass("java.lang.String");
                     }
@@ -45,31 +51,60 @@ public class BeanImpPropertiesTest extends ICECompsTestCase {
                     if(propertyName.equalsIgnoreCase("expanded")){
                         continue;
                     }
-
-                    message = "Failed under test Component= " + components[j].getClass().getName() + " property name= " + propertyName + "\n" + "\tproperty class=" + pds[i].getPropertyClass();
+                    methodName = propertyName.substring(0, 1).toUpperCase()+propertyName.substring(1);
+                    message = "Failed under test Component= " + components[j].getClass().getName() + " property name= " + propertyName +", type boolean" + "\n" + "\tset"+methodName + "(..) doesn't take boolean";
                     Object propValue = testDataProvider.getSimpleTestObject(pds[i].getPropertyClass());
                     if(pds[i].getPropertyClass().equals("boolean")){
-                        String methodName = propertyName.substring(0, 1).toUpperCase()+propertyName.substring(1);
+                        //check if setMethod found
                         Method setMethod = ReflectionUtils.lookupMethod(components[j].getClass(), "set"+methodName, boolean.class);
                         if(setMethod == null){
                             System.out.println(" "+message);
                         }
+                        
                     }
+                  //set the value
                     BeanUtils.setProperty(components[j], propertyName, propValue);
                 } catch (java.lang.IllegalArgumentException ex) {
                     ex.printStackTrace();
                     fail(message);
+                    newLine = true;
                 } catch (IllegalAccessException ex) {
                     ex.printStackTrace();
                     fail(message);
+                    newLine = true;                    
                 } catch (InvocationTargetException ex) {
                     ex.printStackTrace();
                     fail(message);
+                    newLine = true;                    
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     fail(message);
+                    newLine = true;                    
                 }
-
+                
+                
+                if(pds[i].getPropertyClass().equals("boolean")){
+                    try {
+                        //check if isMethod exist
+                        Method m = MethodUtil.getMethod(components[j].getClass(), "is"+methodName, new Class[0]);
+                        //when found, check the return type shouldn't be Boolean instead boolean. Log the message
+                        if (m.getReturnType()== Boolean.class) {
+                            message = " Failed under test Component= " + components[j].getClass().getName() + " property name= " + propertyName +  ", type boolean \tis"+methodName + "() found return type "+ m.getReturnType();
+                            System.out.println(message);
+                            newLine = true;
+                        }
+                    } catch (NoSuchMethodException nsme) {
+                        //log if isMethod was not exist
+                        message = " Failed under test Component= " + components[j].getClass().getName() + " property name= " + propertyName +  ", type boolean \tis"+methodName + "() not found";
+                        System.out.println(message);
+                        newLine = true;
+                    }
+                }
+                
+                //for output format and readability
+                if (newLine) {
+                    System.out.println("\n");
+                }
             }
         }
     }
