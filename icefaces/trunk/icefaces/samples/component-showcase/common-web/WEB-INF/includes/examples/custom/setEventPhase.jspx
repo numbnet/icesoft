@@ -51,6 +51,14 @@ clicks a selection or tabs out of a field.
 
         <ice:panelGroup styleClass="clearer" />
 
+        <ice:panelGroup styleClass="exampleBox selectionContainer">
+            <ice:outputLabel value="#{msgs['page.setEventPhase.enabledDisabled.text']}"/>
+            <ice:selectOneRadio value="#{setEventPhaseBean.disabled}"
+                                partialSubmit="true">
+                <f:selectItem itemLabel="#{msgs['page.setEventPhase.enabled.label']}" itemValue="false"/>
+                <f:selectItem itemLabel="#{msgs['page.setEventPhase.disabled.label']}" itemValue="true"/>
+            </ice:selectOneRadio>
+        </ice:panelGroup>
         <ice:panelGroup styleClass="exampleBox selectionContainer" >
             <ice:panelGrid columns="2" styleClass="verticalAlignTop" >
                 <!-- Select one list boxes - select countries and city -->
@@ -58,7 +66,9 @@ clicks a selection or tabs out of a field.
                         for="sepCnty"
                         value="#{msgs['bean.setEventPhase.countryCities.label']}"/>
                 <ice:panelGroup styleClass="selectionListBoxGroup">
-                    <ice:setEventPhase events="ValueChangeEvent" phase="INVOKE_APPLICATION">
+                    <ice:setEventPhase events="ValueChangeEvent"
+                                       phase="INVOKE_APPLICATION"
+                                       disabled="#{setEventPhaseBean.disabled}">
                         <ice:selectOneListbox id="sepCnty"
                                               value="#{setEventPhaseBean.selectedCountry}"
                                               partialSubmit="true"
