@@ -45,7 +45,7 @@
         <ul>
         <li>- To focus the elements inside the UIData type of components, the element can not be focused using the "id", the clientId has to be used instead.</li>
         <li>- The focus would only be requested when there is a value change on the focus attribute.</li>
-        <li>- If you setting the initial focus, the focused component must be rendered on first render call, if not then set the focus attribute only when component gets renders.</li>
+        <li>- If you setting the initial focus, the focused component must be rendered on first render call, if not then set the focus attribute only when the component gets rendered.</li>
         </ul>
  
         
