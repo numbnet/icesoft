@@ -74,7 +74,7 @@ public class UploadConfig implements Serializable {
         this.uploadDirectoryAbsolute = Boolean.valueOf(uploadDirectoryAbsolute);
         this.progressRender = false;
         this.progressListener = false;
-        this.failOnEmptyFile = componentUploadConfig.failOnEmptyFile;
+        this.failOnEmptyFile = true;
         
         if (componentUploadConfig != null) {
             if (componentUploadConfig.formClientId != null) {
@@ -97,6 +97,7 @@ public class UploadConfig implements Serializable {
             }
             this.progressRender = componentUploadConfig.progressRender;
             this.progressListener = componentUploadConfig.progressListener;
+            this.failOnEmptyFile = componentUploadConfig.failOnEmptyFile;
         }
     }
     
@@ -135,6 +136,10 @@ public class UploadConfig implements Serializable {
     public boolean isProgressListener() {
         return progressListener;
     }
+
+    public boolean isFailOnEmptyFile() {
+        return failOnEmptyFile;
+    }
     
     public String toString() {
         return
@@ -148,14 +153,7 @@ public class UploadConfig implements Serializable {
             ",\n  uploadDirectoryAbsolute=" + uploadDirectoryAbsolute +
             ",\n  progressRender=" + progressRender +
             ",\n  progressListener=" + progressListener +
+            ",\n  failOnEmptyFile=" + failOnEmptyFile +
             "\n}";        
-    }
-
-    public boolean isFailOnEmptyFile() {
-        return failOnEmptyFile;
-    }
-
-    public void setFailOnEmptyFile(boolean failOnEmptyFile) {
-        this.failOnEmptyFile = failOnEmptyFile;
     }
 }
