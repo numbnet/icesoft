@@ -108,7 +108,7 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private static boolean isStreamWritingFlag = false;
-    private static boolean isDOMChecking = true;
+    private static boolean isDOMChecking = false;
     private final Map domContexts = new HashMap();
     private Document document;
 
