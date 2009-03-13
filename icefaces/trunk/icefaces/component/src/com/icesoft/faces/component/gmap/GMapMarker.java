@@ -46,7 +46,8 @@ public class GMapMarker extends UIPanel{
     	String currentLat = getLatitude();
     	String currentLon = getLongitude();
     	//create a marker if lat and lon defined on the component itself
-    	if (currentLat != null &&  currentLon != null) {
+    	if (currentLat != null &&  currentLon != null 
+    	        && currentLat.length() > 0 && currentLon.length() > 0) {
     	    if (!currentLat.equals(oldLatitude) || 
     	            !currentLon.equals(oldLongitude)) {
     	        //to dynamic support first to remove if any
@@ -135,7 +136,7 @@ public class GMapMarker extends UIPanel{
             return longitude;
         }
         ValueBinding vb = getValueBinding("longitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "-122.1419";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
 
 	public String getLatitude() {
@@ -143,7 +144,7 @@ public class GMapMarker extends UIPanel{
             return latitude;
         }
         ValueBinding vb = getValueBinding("latitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "37.4419";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
 
 	public void setLongitude(String longitude) {
