@@ -232,10 +232,9 @@ public class SelectInputDate
     }
 
     public String getTextToRender() {
-        if (getValue()!= null &&
-                getPopupDate() != null && 
-                isRenderAsPopup() && 
-                  !isEnterKeyPressed(getFacesContext())) {
+        if (getPopupDate() != null &&
+            isRenderAsPopup() &&
+            !isEnterKeyPressed(getFacesContext())) {
             return formatDate(getPopupDate());
         }        
         Object submittedValue = getSubmittedValue();
@@ -734,16 +733,15 @@ public class SelectInputDate
         submittedAmPm = (String)values[27];
         popupDate = (Date) values[28];        
     }
-
+    
     public Object saveSeriesState(FacesContext facesContext) {
-        Object values[] = new Object[7];
+        Object values[] = new Object[6];
         values[0] = navEvent ? Boolean.TRUE : Boolean.FALSE;
         values[1] = navDate;
-        values[2] = showPopup;
-        values[3] = submittedHours;
-        values[4] = submittedMinutes;
-        values[5] = submittedAmPm;
-        values[6] = popupDate;
+        values[2] = submittedHours;
+        values[3] = submittedMinutes;
+        values[4] = submittedAmPm;
+        values[5] = popupDate;
         return values;
     }
 
@@ -751,11 +749,10 @@ public class SelectInputDate
         Object values[] = (Object[]) state;
         navEvent = ((Boolean) values[0]).booleanValue();
         navDate = (Date) values[1];
-        showPopup = (List) values[2];
-        submittedHours = (Integer)values[3];
-        submittedMinutes = (Integer)values[4];
-        submittedAmPm = (String)values[5];
-        popupDate = (Date) values[6];
+        submittedHours = (Integer)values[2];
+        submittedMinutes = (Integer)values[3];
+        submittedAmPm = (String)values[4];
+        popupDate = (Date) values[5];
     }
 
     private Map linkMap = new HashMap();
@@ -1213,33 +1210,18 @@ public class SelectInputDate
         return submittedAmPm;
     }
     
-
-    //this component was throwing an exception in popup mode, if the component has no binding for value attribute
-    //so here we returning current date in this case.
-    /* (non-Javadoc)
-     * @see javax.faces.component.ValueHolder#getValue()
-     */
-    public Object getValue() {
-        if (getPopupDate() != null && 
-                isRenderAsPopup() && 
-                  !isEnterKeyPressed(getFacesContext())
-                    && isShowPopup()) { // if popup was closed, return real value
-            return getPopupDate();
-        }          
-        
-        return super.getValue();
-    }
-
     public void validate(FacesContext context) {
-//System.out.println("SID.validate()  ");
-        Object submittedValue = getSubmittedValue();
-//System.out.println("SID.validate()  submittedValue: " + submittedValue);
         try {
             if (isRenderAsPopup() && !isEnterKeyPressed(context)) {
-                Object newValue = getConvertedValue(context, submittedValue);
-//System.out.println("SID.validate()  converted: " + newValue);
-                setPopupDate((Date)newValue);
-                if (isShowPopup()) setSubmittedValue(null); // if popup was closed, process submitted value
+                if (isShowPopup()) {
+                    Object submittedValue = getSubmittedValue();
+                    Object newValue = getConvertedValue(context, submittedValue);
+                    setPopupDate((Date)newValue);
+                    setSubmittedValue(null);
+                }
+                else {
+                    setPopupDate(null);
+                }
             }
         } catch (ConverterException ce) {
             //faces message will be handled by the super class

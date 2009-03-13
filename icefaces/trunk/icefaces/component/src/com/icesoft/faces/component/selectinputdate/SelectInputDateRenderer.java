@@ -692,9 +692,8 @@ public class SelectInputDateRenderer
 	                      currentDay, weekStartsAtDayIndex,
 	                      weekDayOfFirstDayOfMonth,
 	                      lastDayInMonth, table,
-                          months, weekdays, weekdaysLong, converter);
-
-
+                          months, weekdays, weekdaysLong, converter,
+                          (actuallyHaveTime ? value : null));
         } else {
             if (log.isTraceEnabled()) {
                 log.trace("renderNormal::endcodeEnd");
@@ -729,9 +728,8 @@ public class SelectInputDateRenderer
                       currentDay, weekStartsAtDayIndex,
                       weekDayOfFirstDayOfMonth,
                       lastDayInMonth, table,
-                      months, weekdays, weekdaysLong,
-                      converter);
-
+                      months, weekdays, weekdaysLong, converter,
+                      (actuallyHaveTime ? value : null));
         }
 
         // purge child components as they have been encoded no need to keep them around
@@ -1045,7 +1043,7 @@ public class SelectInputDateRenderer
                            int weekDayOfFirstDayOfMonth, int lastDayInMonth,
                            Element table, String[] months,
                            String[] weekdays, String[] weekdaysLong,
-                           Converter converter)
+                           Converter converter, Date value)
             throws IOException {
         Calendar cal;
 
@@ -1092,9 +1090,8 @@ public class SelectInputDateRenderer
             int month = 0;
             int year = 0;
             try {
-                Date currentDate = (Date) inputComponent.getValue();
                 Calendar current = copyCalendar(facesContext, timeKeeper);
-                current.setTime(currentDate);
+                current.setTime(value);
                 
                 day = current.get(Calendar.DAY_OF_MONTH); // starts with 1
                 month = current.get(Calendar.MONTH); // starts with 0
