@@ -34,6 +34,9 @@
 package com.icesoft.faces.component.inputfile;
 
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.StringResource;
+import com.icesoft.faces.context.Resource.Options;
 import com.icesoft.faces.utils.MessageUtils;
 import org.apache.commons.fileupload.FileUploadBase;
 
@@ -55,9 +58,15 @@ public class InputFileRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         StringWriter iframeContentWriter = new StringWriter();
         c.renderIFrame(iframeContentWriter, facesContext);
+        String iframeContent = iframeContentWriter.toString();        
         String frameName = id + ":uploadFrame";
-        String pseudoURL = "javascript: document.write('" + iframeContentWriter.toString().replaceAll("\"", "%22") + "'); document.close();";
-
+        String pseudoURL = ((ResourceRegistry) context).registerResource(new StringResource(iframeContent) {
+            public void withOptions(Options options) throws IOException {
+                super.withOptions(options);
+                options.setMimeType("text/html");
+            }
+        }).toString();
+        
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
         writer.writeAttribute("id", frameName, null);
