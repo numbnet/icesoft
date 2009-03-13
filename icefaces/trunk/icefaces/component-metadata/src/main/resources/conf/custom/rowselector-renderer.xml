@@ -60,17 +60,17 @@
             <li>enhancedMultiple</li>
         </ul>
         By default the component runs in single selection mode. In which selecting a row
-        deselects previously selected row. Setting "multiple" to true, puts the component in
-        multiple selection mode. Which allows you to select multiple rows but you
+        deselects the previously selected row. Setting "multiple" to true, puts the component in
+        multiple selection mode, which allows you to select multiple rows but you
         can not use "ctrl" or "shift" keys for selection. <br>
         Setting the "enhancedMultiple" to true, allows single or muliple selection 
         using the shift or ctrl keys combination. For more detail please see the 
         attribute specific description. 
         </p>
 	    <p>
-	    <b> Note: </b>It is a good practice to use immediate parameter of the rowSelector. If set tuo true, it will work with the results
-     of the selection in APPLY_REQUEST_VALUE stage before validation occurs. If set to false it will defer event
-     processing till after PROCESS_VALIDATION stage. If validation fails, selection event will not fire with
+	    <b> Note: </b>It is a good practice to use the immediate parameter of the rowSelector. If set to true, it will work with the results
+     of the selection in APPLY_REQUEST_VALUE phase, before validation occurs. If set to false it will defer event
+     processing until INVOKE_APPLICATION phase, after validation. If validation fails, selection event will not fire with
      immediate=false
         </p>	
      ]]>
