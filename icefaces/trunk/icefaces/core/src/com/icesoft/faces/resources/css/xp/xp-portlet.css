@@ -2567,7 +2567,12 @@ Disabled classes for the calendar controls
     color: #999;
 }
 
-.iceGmp{}
+.iceGmp{
+    border-collapse:collapse;
+    border-spacing:0px;
+    padding:0px;
+}
+
 .iceGmpMapTd {
     vertical-align: top;
 }
