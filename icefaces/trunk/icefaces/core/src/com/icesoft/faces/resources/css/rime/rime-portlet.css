@@ -2713,7 +2713,10 @@ Disabled classes for the calendar controls
 ----------- Google Maps --------
 */
 
-.iceGmp {
+.iceGmp{
+    border-collapse:collapse;
+    border-spacing:0px;
+    padding:0px;
 }
 
 .iceGmpMapTd {

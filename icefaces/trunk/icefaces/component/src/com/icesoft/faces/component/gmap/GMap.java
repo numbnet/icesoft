@@ -253,8 +253,7 @@ public class GMap extends UIPanel{
             return style;
         }
         ValueBinding vb = getValueBinding("style");
-        return vb != null ? (String) vb.getValue(getFacesContext()) :
-                "border-collapse:collapse; border-spacing:0px; padding:0px;";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     /**
