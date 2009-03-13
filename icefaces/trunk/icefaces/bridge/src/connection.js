@@ -53,6 +53,33 @@
         return response.statusCode() == 200;
     };
 
+    This.Lock = Object.subclass({
+        initialize: function() {
+            var locked = false;
+            this.acquire = function() {
+                locked = true;
+            }.bind(this);
+
+            this.release = function() {
+                locked = false;
+            }.bind(this);
+
+            this.isReleased = function() {
+                return !locked;
+            }.bind(this);
+        }
+    });
+
+    This.NOOPLock = Object.subclass({
+        initialize: function() {
+            this.acquire = Function.NOOP;
+            this.release = Function.NOOP;
+            this.isReleased = function() {
+                return true;
+            };
+        }
+    });
+
     This.SyncConnection = Object.subclass({
         initialize: function(logger, configuration, defaultQuery) {
             this.logger = logger.child('sync-connection');
@@ -90,30 +117,40 @@
                 try {
                     this.onReceiveListeners.broadcast(response);
                 } catch (e) {
-                    this.logger.error('receive broadcast failed', e)
+                    this.logger.error('receive broadcast failed', e);
                 }
             }.bind(this);
 
             this.badResponseCallback = this.connectionDownListeners.broadcaster();
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
+
+            this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
         },
 
         send: function(query) {
-            var compoundQuery = new Query();
-            compoundQuery.addQuery(query);
-            compoundQuery.addQuery(this.defaultQuery);
-            compoundQuery.add('ice.focus', window.currentFocus);
+            if (this.lock.isReleased()) {
+                this.lock.acquire();
+                try {
+                    var compoundQuery = new Query();
+                    compoundQuery.addQuery(query);
+                    compoundQuery.addQuery(this.defaultQuery);
+                    compoundQuery.add('ice.focus', window.currentFocus);
 
-            this.logger.debug('send > ' + compoundQuery.asString());
-            this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
-                This.FormPost(request);
-                request.on(Connection.OK, this.receiveCallback);
-                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
-                request.on(Connection.BadResponse, this.badResponseCallback);
-                request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.OK, Connection.Close);
-                this.onSendListeners.broadcast(request);
-            }.bind(this));
+                    this.logger.debug('send > ' + compoundQuery.asString());
+                    this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
+                        This.FormPost(request);
+                        request.on(Connection.OK, this.lock.release);
+                        request.on(Connection.OK, this.receiveCallback);
+                        request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.BadResponse, this.badResponseCallback);
+                        request.on(Connection.ServerError, this.serverErrorCallback);
+                        request.on(Connection.OK, Connection.Close);
+                        this.onSendListeners.broadcast(request);
+                    }.bind(this));
+                } catch (e) {
+                    this.lock.release();
+                }
+            }
         },
 
         onSend: function(sendCallback, receiveCallback) {

@@ -270,24 +270,34 @@
                 }
             }.bind(this).repeatExecutionEvery(300);
 
+            this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
+
             this.logger.info('asynchronous mode');
         },
 
         send: function(query) {
-            var compoundQuery = new Query();
-            compoundQuery.addQuery(query);
-            compoundQuery.addQuery(this.defaultQuery);
-            compoundQuery.add('ice.focus', window.currentFocus);
+            if (this.lock.isReleased()) {
+                this.lock.acquire();
+                try {
+                    var compoundQuery = new Query();
+                    compoundQuery.addQuery(query);
+                    compoundQuery.addQuery(this.defaultQuery);
+                    compoundQuery.add('ice.focus', window.currentFocus);
 
-            this.logger.debug('send > ' + compoundQuery.asString());
-            this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
-                Connection.FormPost(request);
-                request.on(Connection.OK, this.receiveCallback);
-                request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
-                request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.OK, Connection.Close);
-                this.onSendListeners.broadcast();
-            }.bind(this));
+                    this.logger.debug('send > ' + compoundQuery.asString());
+                    this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
+                        Connection.FormPost(request);
+                        request.on(Connection.OK, this.lock.release);
+                        request.on(Connection.OK, this.receiveCallback);
+                        request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.ServerError, this.serverErrorCallback);
+                        request.on(Connection.OK, Connection.Close);
+                        this.onSendListeners.broadcast();
+                    }.bind(this));
+                } catch (e) {
+                    this.lock.release();
+                }
+            }
         },
 
         onSend: function(sendCallback, receiveCallback) {
