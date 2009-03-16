@@ -1,132 +1,107 @@
 <?xml version="1.0"?>
 
-<project name="push-server" default="build.src.bundle">
+<project name="push-server" default="include.jsf">
+    <property name="src.dir" location="src" />
+    <property name="build.dir" location="build" />
+    <property name="build.classes.dir" location="${build.dir}/classes" />
+    <property name="dist.dir" location="dist" />
+    <property name="web.xml" location="web/WEB-INF/web.xml" />
     
-    <property file="build.properties"/>
-    
-    <property name="src.dir" location="src"/>
-    <property name="web.dir" location="web"/>
-    <property name="lib.dir" location="lib"/>
-    <property name="docs.dir" location="docs"/>
-    <property name="dist.dir" location="dist"/>
-    <property name="bin.dir" location="bin"/>
-    <property name="web.xml" location="web/WEB-INF/web.xml"/>
-    
-    <property name="build.dir" location="build"/>
-    <property name="build.lib.dir" location="${build.dir}/lib"/>
-    <property name="build.classes.dir" location="${build.dir}/classes"/>
-    <property name="compile.debug" value="true"/>
-    
-    <condition property="release.type.suffix" value="${release.type}" else="">
-        <not><equals arg1="${release.type}" arg2="" trim="true"/></not>
-    </condition>
-    
-    <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
-    <property name="src.bundle.name" value="${product}-${product.version}-AHS${release.type.suffix}"/>
-    <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>
+    <property name="productinfo.src" location="conf/org/icesoft/faces/push/server" />
+    <property name="productinfo.dest" location="src/org/icesoft/faces/push/server" />
+    <property name="productinfo.file" value="ProductInfo.java" />
+    <property name="company" value="ICEsoft Technologies, Inc." />
+    <property name="product" value="ICEfaces Push Server" />
+    <property name="version.primary" value="x" />
+    <property name="version.secondary" value="x" />
+    <property name="version.tertiary" value="x" />
+    <property name="release.type" value="x" />
+    <property name="revision" value="x" />
+    <property name="build.number" value="x" />
+
+    <property name="compile.debug" value="true" />
     
     <path id="compile.run.classpath">
-        <pathelement location="${build.classes.dir}"/>
-        
-        <fileset dir="${icefaces.dir}/lib" includes="**/*.jar"/>
+        <pathelement location="${build.classes.dir}" />
+        <fileset dir="../lib" includes="**/*.jar" />
         <pathelement location="${icefaces.jar}" />
     </path>
      
-    <target name="compile">
-        <!--echo message="${icefaces.dir}"/-->
-        <delete dir="${build.classes.dir}"/>
-        <mkdir dir="${build.classes.dir}"/>
+    <target name="compile" depends="update.product.info">
+        <delete dir="${build.classes.dir}" />
+        <mkdir dir="${build.classes.dir}" />
         <javac source="1.4" target="1.4" srcdir="${src.dir}" destdir="${build.classes.dir}" debug="${compile.debug}">
-            <classpath refid="compile.run.classpath"/>
+            <classpath refid="compile.run.classpath" />
         </javac>
         <copy todir="${build.classes.dir}">
-            <fileset dir="${src.dir}" includes="**/*.dtd"/>
+            <fileset dir="${src.dir}" includes="**/*.dtd" />
         </copy>
     </target>    
     
     <target name="jar" depends="compile">
-        
-        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}" />
         <jar destfile="${dist.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
             <manifest>
                 <section name="com.icesoft.faces">
-                    <attribute name="Implementation-Title" value="${product}"/>
-                    <attribute name="Implementation-Version" value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})"/>
-                    <attribute name="Implementation-Vendor" value="${company}"/>
+                    <attribute name="Implementation-Title" value="${product}" />
+                    <attribute name="Implementation-Version" value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})" />
+                    <attribute name="Implementation-Vendor" value="${company}" />
                 </section>
             </manifest>
             <fileset dir="${src.dir}">
-                <include name="**/*.properties"/>
+                <include name="**/*.properties" />
             </fileset>
         </jar>
-        
-        <copy file="${dist.dir}/${ant.project.name}.jar" todir="../lib"/>
-        
+        <copy file="${dist.dir}/${ant.project.name}.jar" todir="../lib" />
     </target>    
     
     <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
-        <delete file="push-server.war"/>
+        <delete dir="${build.dir}" />
+        <delete dir="${dist.dir}" />
+        <delete file="${ant.project.name}.war" />
     </target>
     
     <target name="build.war" depends="clean, jar">
-        <war destfile="${dist.dir}/push-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="${web.xml}" duplicate="fail">
-            <lib dir="${icefaces.dir}/lib">
+        <war destfile="${dist.dir}/${ant.project.name}.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="${web.xml}" duplicate="fail">
+            <lib dir="../lib">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
                 <include name="commons-digester.jar" />
                 <include name="commons-logging.jar" />
                 <include name="icefaces.jar" />
-                <include name="jsf-api.jar" unless="not.use"/>
-                <include name="jsf-impl.jar" unless="not.use"/>
-                <include name="backport-util-concurrent.jar"/>
+                <include name="jsf-api.jar" unless="not.use" />
+                <include name="jsf-impl.jar" unless="not.use" />
+                <include name="backport-util-concurrent.jar" />
             </lib>
             
             <lib file="${dist.dir}/${ant.project.name}.jar" />
         </war>
-        
-        <copy file="${dist.dir}/push-server.war" todir="."/>
-        
+        <copy file="${dist.dir}/push-server.war" todir="." />
     </target>
     
-    <target name="build.src.bundle" depends="clean, jar, build.servlet.tomcat.war">
-        <touch  file="${src.bundle.file}" mkdirs="true"/>
-        <delete file="${src.bundle.file}"/>
-        
-        <echo message="${icefaces.dir}"/>
-        
-        <zip destfile="${src.bundle.file}">
-            <zipfileset dir="." prefix="${src.bundle.name}/${ant.project.name}">
-                <!-- include name="**/bin/**"/ -->
-                <include name="**/src/**"/>
-                <include name="**/lib/**"/>
-                <include name="**/web/**"/>
-                <include name="**/docs/**"/>
-                <!--exclude name="**/lib/*jms.jar"/-->
-                <include name="README.txt"/>
-                <include name="build.*"/>
-            </zipfileset>
-        </zip>
+    <target name="include.jsf">
+        <ant target="build.war" />        
     </target>
-    <target name="build.servlet.jboss4.0.war">
-        <ant target="build.war"/>        
-    </target>
-    <target name="build.servlet.jboss4.2.war">
+
+    <target name="exclude.jsf">
         <antcall target="build.war">
-        	<param name="not.use" value=""/>
+            <param name="not.use" value="" />
         </antcall>
     </target>
-    <target name="build.servlet.tomcat.war">
-        <ant target="build.war"/>        
+
+    <target name="jboss4.2" depends="exclude.jsf" />
+
+    <target name="update.product.info">
+        <copy file="${productinfo.src}/${productinfo.file}" todir="${productinfo.dest}" overwrite="true" />
+        <replace file="${productinfo.dest}/${productinfo.file}">
+            <replacefilter token="@company@" value="${company}" />
+            <replacefilter token="@product@" value="${product}" />
+            <replacefilter token="@version.primary@" value="${version.primary}" />
+            <replacefilter token="@version.secondary@" value="${version.secondary}" />
+            <replacefilter token="@version.tertiary@" value="${version.tertiary}" />
+            <replacefilter token="@release.type@" value="${release.type}" />
+            <replacefilter token="@build.number@" value="${build.number}" />
+            <replacefilter token="@revision@" value="${revision}" />
+        </replace>
     </target>
-    <target name="build.servlet.weblogic.war">
-        <ant target="build.war"/>        
-    </target>
-    <target name="build.servlet.websphere.war">
-        <ant target="build.war"/>        
-    </target>
-    <target name="build.servlet.glassfish.war">
-        <ant target="build.war"/>        
-    </target>    
 </project>
