@@ -47,12 +47,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MessageServiceClient {
-    public static final String CONTEXT_EVENT_TOPIC_NAME =
-        "icefacesContextEventTopic";
-    public static final String RENDER_TOPIC_NAME =
-        "icefacesRenderTopic";
-    public static final String RESPONSE_TOPIC_NAME =
-        "icefacesResponseTopic";
+    public static final String PUSH_TOPIC_NAME = "icefacesPush";
 
     private static final Log LOG =
         LogFactory.getLog(MessageServiceClient.class);
@@ -822,7 +817,16 @@ public class MessageServiceClient {
     }
 
     void schedule(final PublishTask publishTask, final long delay) {
-        timer.schedule(publishTask, delay);
+        try {
+            timer.schedule(publishTask, delay);
+        } catch (IllegalStateException exception) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(
+                    "Task already scheduled or cancelled, " +
+                        "timer was cancelled, or timer thread terminated.",
+                    exception);
+            }
+        }
     }
 
     private static void addMessageProperties(
@@ -925,15 +929,16 @@ public class MessageServiceClient {
     private void setBaseMessageProperties(final ServletContext servletContext) {
         if (servletContext != null) {
             try {
-                String _path = servletContext.getResource("/").getPath();
-                int _index = _path.lastIndexOf("/");
+                String _path =
+                    servletContext.getResource("/WEB-INF/web.xml").getPath();
+                int _index = _path.lastIndexOf("/", _path.lastIndexOf("/") - 1);
                 baseMessageProperties.setProperty(
                     Message.SOURCE_SERVLET_CONTEXT_PATH,
                     _path.substring(
                         _path.lastIndexOf("/", _index - 1) + 1, _index));
             } catch (MalformedURLException exception) {
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to get servlet context path!", exception);
+                    LOG.warn("Failed to get servlet context path.", exception);
                 }
             }
         }
@@ -943,7 +948,7 @@ public class MessageServiceClient {
                 InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException exception) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Failed to get IP address for localhost!", exception);
+                LOG.warn("Failed to get IP address for localhost.", exception);
             }
         }
     }

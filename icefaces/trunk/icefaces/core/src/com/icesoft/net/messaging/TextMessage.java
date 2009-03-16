@@ -78,6 +78,8 @@ implements Message {
     }
 
     public String toString() {
-        return super.toString() + "\r\n" + text + "\r\n";
+        return
+            new StringBuffer(super.toString()).
+                append(getText()).append("\r\n").toString();
     }
 }
