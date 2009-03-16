@@ -9,12 +9,6 @@
         ICEfaces Push Server
     </description>
 
-    <!--
-    <listener>
-        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-    </listener>
-    -->
-
     <!-- Push Server -->
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
