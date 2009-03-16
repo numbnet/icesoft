@@ -122,12 +122,12 @@ public class BroadcastHub {
                             new Identifier("source_id"),
                             new StringLiteral(messageServiceClient.toString()))));
             messageServiceClient.subscribe(
-                MessageServiceClient.RENDER_TOPIC_NAME, messageSelector, true);
+                MessageServiceClient.PUSH_TOPIC_NAME, messageSelector, true);
             //Add ourselves as a message handler using our topic.
             messageHandler = new RenderMessageHandler(renderManager);
             messageHandler.setMessageSelector(messageSelector);
             messageServiceClient.addMessageHandler(
-                messageHandler, MessageServiceClient.RENDER_TOPIC_NAME);
+                messageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
         } catch (MalformedURLException exception) {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal("Failed to get servlet context path!", exception);
@@ -136,7 +136,7 @@ public class BroadcastHub {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal(
                     "Failed to subscribe to topic: " +
-                        MessageServiceClient.RENDER_TOPIC_NAME,
+                        MessageServiceClient.PUSH_TOPIC_NAME,
                     exception);
             }
         }
@@ -196,7 +196,7 @@ public class BroadcastHub {
         messageServiceClient.publish(
             "render broadcast to " + renderer.getName(),
             msgProperties,
-            MessageServiceClient.RENDER_TOPIC_NAME);
+            MessageServiceClient.PUSH_TOPIC_NAME);
         if (LOG.isTraceEnabled()) {
             LOG.trace("Broadcast render message sent to " + renderer.getName());
         }
@@ -209,7 +209,7 @@ public class BroadcastHub {
         try {
             messageServiceClient.stop();
             messageServiceClient.removeMessageHandler(
-                messageHandler, MessageServiceClient.RENDER_TOPIC_NAME);
+                messageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
             renderManager = null;
             messageServiceClient.close();
         } catch (MessageServiceException exception) {
