@@ -265,7 +265,6 @@ public class RenderManager implements Disposable {
 
         private final ServletContext servletContext;
         private final RenderHub renderHub;
-        private final BroadcastHub broadcastHub = new BroadcastHub();
         private final Map rendererGroupMap =
             Collections.synchronizedMap(new HashMap());
         private final ContextDestroyedListener shutdownListener =
@@ -282,7 +281,6 @@ public class RenderManager implements Disposable {
             setBroadcasted(
                 configuration.getAttributeAsBoolean("broadcasted", false));
             ContextEventRepeater.addListener(shutdownListener);
-            broadcastHub.setRenderManager(this);
         }
 
         public void dispose() {
@@ -386,7 +384,6 @@ public class RenderManager implements Disposable {
                 return;
             }
             if (isBroadcasted() && renderer.isBroadcasted()) {
-                broadcastHub.relayRenderRequest(renderer);
             }
         }
 
