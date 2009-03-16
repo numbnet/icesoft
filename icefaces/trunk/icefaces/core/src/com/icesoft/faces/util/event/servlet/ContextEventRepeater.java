@@ -33,9 +33,11 @@
 
 package com.icesoft.faces.util.event.servlet;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.util.Properties;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -95,6 +97,11 @@ implements HttpSessionListener, ServletContextListener {
     private static final Log LOG =
         LogFactory.getLog(ContextEventRepeater.class);
 
+    private static final String BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE =
+        "BufferedContextEvents";
+    private static final String CONTEXT_EVENT_MESSAGE_TYPE =
+        "ContextEvent";
+
     //todo: fix it... this is just a temporary solution
     private static SessionDispatcher.Listener SessionDispatcherListener;
 
@@ -103,8 +110,37 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     private static List bufferedContextEvents = new ArrayList();
-    private static ContextEventPublisher contextEventPublisher;
     private static Map listeners = new WeakHashMap();
+    private static MessageServiceClient messageServiceClient;
+
+    private static AnnouncementMessageHandler announcementMessageHandler =
+        new AnnouncementMessageHandler() {
+            public void publishBufferedContextEvents() {
+                ContextEvent[] _contextEvents =
+                    (ContextEvent[])
+                        bufferedContextEvents.toArray(
+                            new ContextEvent[bufferedContextEvents.size()]);
+                if (_contextEvents.length != 0) {
+                    StringBuffer _message = new StringBuffer();
+                    for (int i = 0; i < _contextEvents.length; i++) {
+                        if (i != 0) {
+                            _message.append("\r\n");
+                        }
+                        _message.append(createMessage(_contextEvents[i]));
+                    }
+                    Properties _messageProperties = new Properties();
+                    _messageProperties.
+                        setStringProperty(
+                            Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                            "push-server");
+                    messageServiceClient.publish(
+                        _message.toString(),
+                        _messageProperties,
+                        BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE,
+                        MessageServiceClient.PUSH_TOPIC_NAME);
+                }
+            }
+        };
 
     /**
      * Adds the specified <code>listener</code> to this
@@ -145,15 +181,6 @@ implements HttpSessionListener, ServletContextListener {
         }
         listeners.clear();
         bufferedContextEvents.clear();
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(contextDestroyedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
-        }
         if (LOG.isInfoEnabled()) {
             ServletContext servletContext =
                 contextDestroyedEvent.getServletContext();
@@ -168,38 +195,6 @@ implements HttpSessionListener, ServletContextListener {
         final ServletContextEvent event) {
 
         SessionDispatcherListener.contextInitialized(event);
-
-        Configuration _configuration =
-            new ServletContextConfiguration(
-                "com.icesoft.faces", event.getServletContext());
-        String _blockingRequestHandler =
-            _configuration.getAttribute(
-                "blockingRequestHandler",
-                _configuration.getAttributeAsBoolean(
-                    "async.server", false) ?
-                        "icefaces-ahs" : "icefaces");
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Blocking Request Handler: " + _blockingRequestHandler);
-        }
-        boolean _isJMSAvailable = isJMSAvailable();
-        if (LOG.isInfoEnabled()) {
-            LOG.info("JMS API available: " + _isJMSAvailable);
-        }
-        if (_blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") &&
-            _isJMSAvailable) {
-
-            contextEventPublisher = new MessagingContextEventPublisher();
-            contextEventPublisher.setContextEventRepeater(this);
-            try {
-                contextEventPublisher.publish(
-                    new ContextInitializedEvent(event));
-            } catch (Exception exception) {
-                contextEventPublisher = null;
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
-        }
     }
 
     public synchronized static void iceFacesIdDisposed(
@@ -213,14 +208,17 @@ implements HttpSessionListener, ServletContextListener {
                 iceFacesIdDisposed(iceFacesIdDisposedEvent);
         }
         removeBufferedEvents(iceFacesId);
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(iceFacesIdDisposedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
+        if (messageServiceClient != null) {
+            Properties _messageProperties = new Properties();
+            _messageProperties.
+                setStringProperty(
+                    Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                    "push-server");
+            messageServiceClient.publish(
+                createMessage(iceFacesIdDisposedEvent),
+                _messageProperties,
+                CONTEXT_EVENT_MESSAGE_TYPE,
+                MessageServiceClient.PUSH_TOPIC_NAME);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -248,14 +246,17 @@ implements HttpSessionListener, ServletContextListener {
             ((ContextEventListener) _listeners.next()).
                 iceFacesIdRetrieved(iceFacesIdRetrievedEvent);
         }
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(iceFacesIdRetrievedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
+        if (messageServiceClient != null) {
+            Properties _messageProperties = new Properties();
+            _messageProperties.
+                setStringProperty(
+                    Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                    "push-server");
+            messageServiceClient.publish(
+                createMessage(iceFacesIdRetrievedEvent),
+                _messageProperties,
+                CONTEXT_EVENT_MESSAGE_TYPE,
+                MessageServiceClient.PUSH_TOPIC_NAME);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -305,17 +306,38 @@ implements HttpSessionListener, ServletContextListener {
             ((ContextEventListener) _listeners.next()).
                 sessionDestroyed(sessionDestroyedEvent);
         }
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(sessionDestroyedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
-        }
         if (LOG.isTraceEnabled()) {
             LOG.trace("ICEfaces ID: " + sessionDestroyedEvent.getICEfacesID());
+        }
+    }
+
+    public synchronized static void setMessageServiceClient(
+        final MessageServiceClient client) {
+
+        if (client != null) {
+            messageServiceClient = client;
+            try {
+                messageServiceClient.subscribe(
+                    MessageServiceClient.PUSH_TOPIC_NAME,
+                    announcementMessageHandler.getMessageSelector());
+            } catch (MessageServiceException exception) {
+                if (LOG.isFatalEnabled()) {
+                    LOG.fatal(
+                        "\r\n" +
+                        "\r\n" +
+                        "Failed to subscribe to topic: " +
+                            MessageServiceClient.PUSH_TOPIC_NAME + "\r\n" +
+                        "    Exception message: " +
+                            exception.getMessage() + "\r\n" +
+                        "    Exception cause: " +
+                            exception.getCause() + "\r\n\r\n");
+                }
+                messageServiceClient = null;
+                return;
+            }
+            messageServiceClient.addMessageHandler(
+                announcementMessageHandler,
+                MessageServiceClient.PUSH_TOPIC_NAME);
         }
     }
 
@@ -331,14 +353,17 @@ implements HttpSessionListener, ServletContextListener {
                 viewNumberDisposed(viewNumberDisposedEvent);
         }
         removeBufferedEvents(iceFacesId, viewNumber);
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(viewNumberDisposedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
+        if (messageServiceClient != null) {
+            Properties _messageProperties = new Properties();
+            _messageProperties.
+                setStringProperty(
+                    Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                    "push-server");
+            messageServiceClient.publish(
+                createMessage(viewNumberDisposedEvent),
+                _messageProperties,
+                CONTEXT_EVENT_MESSAGE_TYPE,
+                MessageServiceClient.PUSH_TOPIC_NAME);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -370,14 +395,17 @@ implements HttpSessionListener, ServletContextListener {
             ((ContextEventListener) _listeners.next()).
                 viewNumberRetrieved(viewNumberRetrievedEvent);
         }
-        if (contextEventPublisher != null) {
-            try {
-                contextEventPublisher.publish(viewNumberRetrievedEvent);
-            } catch (Exception exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Couldn't publish event!", exception);
-                }
-            }
+        if (messageServiceClient != null) {
+            Properties _messageProperties = new Properties();
+            _messageProperties.
+                setStringProperty(
+                    Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                    "push-server");
+            messageServiceClient.publish(
+                createMessage(viewNumberRetrievedEvent),
+                _messageProperties,
+                CONTEXT_EVENT_MESSAGE_TYPE,
+                MessageServiceClient.PUSH_TOPIC_NAME);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -396,13 +424,27 @@ implements HttpSessionListener, ServletContextListener {
                     new ContextEvent[bufferedContextEvents.size()]);
     }
 
-    private boolean isJMSAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass(
-                "javax.jms.TopicConnectionFactory");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
+    private static String createMessage(final ContextEvent event) {
+        if (event instanceof ICEfacesIDDisposedEvent) {
+            return
+                "ICEfacesIDDisposed;" +
+                    ((ICEfacesIDDisposedEvent)event).getICEfacesID();
+        } else if (event instanceof ICEfacesIDRetrievedEvent) {
+            return
+                "ICEfacesIDRetrieved;" +
+                    ((ICEfacesIDRetrievedEvent)event).getICEfacesID();
+        } else if (event instanceof ViewNumberDisposedEvent) {
+            return
+                "ViewNumberDisposed;" +
+                    ((ViewNumberDisposedEvent)event).getICEfacesID() + ";" +
+                    ((ViewNumberDisposedEvent)event).getViewNumber();
+        } else if (event instanceof ViewNumberRetrievedEvent) {
+            return
+                "ViewNumberRetrieved;" +
+                    ((ViewNumberRetrievedEvent)event).getICEfacesID() + ";" +
+                    ((ViewNumberRetrievedEvent)event).getViewNumber();
+        } else {
+            return null;
         }
     }
 
