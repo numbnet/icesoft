@@ -151,15 +151,14 @@ implements Message {
     }
 
     public String toString() {
-        StringBuffer _string = new StringBuffer();
-        Iterator _properties = messageProperties.entrySet().iterator();
-        while (_properties.hasNext()) {
-            Map.Entry _property = (Map.Entry)_properties.next();
-            _string.append(_property.getKey());
-            _string.append(": ");
-            _string.append(_property.getValue());
-            _string.append("\r\n");
+        StringBuffer _messageString = new StringBuffer();
+        Enumeration _propertyNames = getPropertyNames();
+        while (_propertyNames.hasMoreElements()) {
+            String _propertyName = (String)_propertyNames.nextElement();
+            _messageString.
+                append(_propertyName).append(": ").
+                    append(getObjectProperty(_propertyName)).append("\r\n");
         }
-        return _string.toString();
+        return _messageString.append("\r\n").toString();
     }
 }
