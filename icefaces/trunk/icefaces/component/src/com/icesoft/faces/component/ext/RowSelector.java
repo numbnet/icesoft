@@ -74,6 +74,7 @@ public class RowSelector extends UIPanel {
     private MethodBinding clickAction; // Art: 
     private Integer clickedRow;
     private Boolean immediate;
+    private Integer dblClickDelay; // Art: 
     
     transient private List selectedRowsList = new ArrayList();
     
@@ -81,6 +82,9 @@ public class RowSelector extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
+    // Art: added {
+    public static final int DEFAULT_DBLCLICK_DELAY = 200;
+    // Art: }
 
     public RowSelector(){
        JavascriptContext
@@ -256,6 +260,26 @@ public class RowSelector extends UIPanel {
     public void setClickAction(MethodBinding clickAction) {
         this.clickAction = clickAction;
     }
+    
+    public Integer getDblClickDelay() {
+        ValueBinding vb = getValueBinding("dblClickDelay");
+        if (vb != null) {
+            return (Integer) vb.getValue(getFacesContext());
+        }
+        if (dblClickDelay != null) {
+            return dblClickDelay;
+        }
+        return new Integer(DEFAULT_DBLCLICK_DELAY);
+    }
+
+    public void setDblClickDelay(Integer dblClickDelay) {
+        ValueBinding vb = getValueBinding("dblClickDelay");
+        if (vb != null) {
+            vb.setValue(getFacesContext(), dblClickDelay);
+        } else {
+            this.dblClickDelay = dblClickDelay;
+        }
+    }    
     // Art: }
     
     public Boolean getImmediate() {
@@ -537,7 +561,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[16];
+        Object[] state = new Object[17];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -555,6 +579,7 @@ public class RowSelector extends UIPanel {
         // Art: added {
         state[14] = saveAttachedState(context, clickListener);
         state[15] = saveAttachedState(context, clickAction);
+        state[16] = dblClickDelay;
         // Art: }
         return state;
     }
@@ -582,6 +607,7 @@ public class RowSelector extends UIPanel {
             restoreAttachedState(context, state[14]);
         clickAction = (MethodBinding)
             restoreAttachedState(context, state[15]);
+        dblClickDelay = (Integer) state[16];
         // Art: }
     }
     

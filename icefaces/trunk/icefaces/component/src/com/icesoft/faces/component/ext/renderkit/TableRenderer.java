@@ -696,10 +696,11 @@ public class TableRenderer
                             "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
                     // Art: added {
                     } else {
+                        String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
                             + getClickedRowParameterName(uiComponent.getClientId(facesContext)) + "','"
                             + getClickCountParameterName(uiComponent.getClientId(facesContext)) + "',"
-                            + "'" +uiData.getRowIndex()+ "','"+ formId +"',true,event,"+rowSelectionUseEvent+","
+                            + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",true,event,"+rowSelectionUseEvent+","
                             + "'"+ paramId +"','" + toggleClass + "');");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
@@ -707,10 +708,11 @@ public class TableRenderer
                 // Art: added {
                 } else {
                     if (rowSelector.getClickListener() != null || rowSelector.getClickAction() != null) {
+                        String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
                             + getClickedRowParameterName(uiComponent.getClientId(facesContext)) + "','"
                             + getClickCountParameterName(uiComponent.getClientId(facesContext)) + "',"
-                            + "'" +uiData.getRowIndex()+ "','"+ formId +"',false);");
+                            + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",false);");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
                 }

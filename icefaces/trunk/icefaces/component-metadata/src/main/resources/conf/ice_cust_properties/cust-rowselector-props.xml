@@ -272,7 +272,11 @@
 <property>
 	<description>
 		<![CDATA[<p>
-             Listener method to call with a ClickEvent when a row is clicked or double-clicked.
+             Listener method to call with a ClickEvent when a row is clicked or double-clicked. This listener
+             is fired independently of selectionListener. The ClickEvent object contains a reference to
+             a RowSelectorEvent if the click or double click resulted in (de)selection of the row, otherwise
+             it will be null. ClickEvent.isDblClick() determines whether the click event was
+             a single click or a double click.
                 </p>
              ]]>
 	</description>
@@ -289,7 +293,7 @@
 <property>
 	<description>
 		<![CDATA[<p>
-             Action method to call when a row is clicked or double-clicked.
+             Action method to call when a row is clicked or double-clicked. 
                 </p>
              ]]>
 	</description>
@@ -301,4 +305,22 @@
 			&methodBindingEditor;
 		</editor-class>
 	</property-extension>
+</property>
+
+<property>
+	<description>
+		<![CDATA[
+            <p>
+            The delay in milliseconds to wait for a second click (after a first click has been made on a row) to notify 
+            the server whether the ClickEvent was a single click or a double click. This attribute only applies 
+            when clickListener and/or clickAction are specified. Valid values are 0 to 1000. Default is 200.
+            </p>
+        ]]>
+	</description>
+	<property-name>dblClickDelay</property-name>
+	<property-class>int</property-class>
+	<property-extension>
+		<category>ICE_COMPONENT</category>
+        <default-value>200</default-value>
+    </property-extension>
 </property>

@@ -221,9 +221,9 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
 // Art: added {
 Ice.clickEvents = {};
 
-Ice.registerClick = function(elem,hdnClkRow,hdnClkCount,event,useEvent,rowid,formId,hdnFld,toggleClassNames) {
+Ice.registerClick = function(elem,hdnClkRow,hdnClkCount,rowid,formId,delay,toggleOnClick,event,useEvent,hdnFld,toggleClassNames) {
     if (!Ice.clickEvents[elem.id]) {
-        Ice.clickEvents[elem.id] = new Ice.clickEvent(elem,hdnClkRow,hdnClkCount,event,useEvent,rowid,formId,hdnFld,toggleClassNames);
+        Ice.clickEvents[elem.id] = new Ice.clickEvent(elem,hdnClkRow,hdnClkCount,rowid,formId,delay,toggleOnClick,event,useEvent,hdnFld,toggleClassNames);
     } 
 }
 
@@ -234,12 +234,17 @@ Ice.registerDblClick = function(elem) {
 }
 
 Ice.clickEvent = Class.create({
-    initialize: function(elem,hdnClkRow,hdnClkCount,rowid,formId,toggleOnClick,event,useEvent,hdnFld,toggleClassNames) {
+    initialize: function(elem,hdnClkRow,hdnClkCount,rowid,formId,delay,toggleOnClick,event,useEvent,hdnFld,toggleClassNames) {
         this.elem = elem;
         this.hdnClkRow = hdnClkRow;
         this.hdnClkCount = hdnClkCount;
         this.rowid = rowid;
         this.formId = formId;
+        
+        if (delay < 0) this.delay = 0;
+        else if (delay > 1000) this.delay = 1000;
+        else this.delay = delay;
+        
         this.toggleOnClick = toggleOnClick;
         if (this.toggleOnClick) {
             this.event = Object.clone(event);
@@ -248,7 +253,7 @@ Ice.clickEvent = Class.create({
             this.toggleClassNames = toggleClassNames;
         }
         
-        this.timer = setTimeout(this.submit.bind(this,1), 200);
+        this.timer = setTimeout(this.submit.bind(this,1),this.delay);
     },
     submit: function(numClicks) {
         clearTimeout(this.timer);
