@@ -5,17 +5,37 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
+import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
+import com.icesoft.faces.application.ProductInfo;
+import com.icesoft.net.messaging.AbstractMessageHandler;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.net.messaging.TextMessage;
+import com.icesoft.net.messaging.expression.Equal;
+import com.icesoft.net.messaging.expression.Identifier;
+import com.icesoft.net.messaging.expression.StringLiteral;
+import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.icesoft.util.Properties;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -24,10 +44,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.SocketException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
@@ -44,6 +63,10 @@ public class MainServlet extends HttpServlet {
     private ServletContext context;
     private MonitorRunner monitorRunner;
     private MessageServiceClient messageServiceClient;
+    private String localAddress;
+    private int localPort;
+    private String blockingRequestHandlerContext;
+    private boolean detectionDone = false;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -66,12 +89,11 @@ public class MainServlet extends HttpServlet {
                 }
             };
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
-            setUpMessageServiceClient(configuration);
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             PseudoServlet sessionDispatcher = new SessionDispatcher(configuration, context) {
                 protected Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
-                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient, authorization);
+                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, getMessageServiceClient(configuration), blockingRequestHandlerContext, authorization);
                 }
             };
             if (SeamUtilities.isSpringEnvironment()) {
@@ -80,6 +102,39 @@ public class MainServlet extends HttpServlet {
             }
             //don't create new session for resources belonging to expired user sessions
             dispatcher.dispatchOn(".*(block\\/resource\\/)", new SessionVerifier(sessionDispatcher, false));
+            if (!configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
+                dispatcher.dispatchOn(
+                    ".*(block\\/message)",
+                    new PseudoServlet() {
+                        private PseudoServlet notFound =
+                            new EnvironmentAdaptingServlet(
+                                new Server() {
+                                    public void service(final Request request) throws Exception {
+                                        request.respondWith(new NotFoundHandler(""));
+                                    }
+
+                                    public void shutdown() {
+                                        // do nothing.
+                                    }
+                                },
+                                configuration,
+                                context);
+
+                        public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                            if (messageServiceClient != null &&
+                                messageServiceClient.getMessageServiceAdapter() instanceof HttpAdapter) {
+
+                                ((HttpAdapter)messageServiceClient.getMessageServiceAdapter()).getHttpMessagingDispatcher().service(request, response);
+                            } else {
+                                notFound.service(request, response);
+                            }
+                        }
+
+                        public void shutdown() {
+                            // do nothing.
+                        }
+                    });
+            }
             //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
             dispatcher.dispatchOn(".*(\\/$|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
@@ -89,7 +144,11 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        if (localAddress == null) {
+            localAddress = request.getLocalAddr();
+            localPort = request.getLocalPort();
+        }
         try {
             currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
@@ -120,9 +179,24 @@ public class MainServlet extends HttpServlet {
         tearDownMessageServiceClient();
     }
 
+    private synchronized MessageServiceClient getMessageServiceClient(
+        final Configuration configuration) {
+
+        if (!detectionDone) {
+            if (!configuration.
+                    getAttributeAsBoolean("synchronousUpdate", false)) {
+
+                setUpMessageServiceClient(configuration);
+            }
+            detectionDone = true;
+        }
+        return messageServiceClient;
+    }
+
     private boolean isJMSAvailable() {
         try {
-            this.getClass().getClassLoader().loadClass("javax.jms.TopicConnectionFactory");
+            this.getClass().getClassLoader().
+                loadClass("javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
@@ -130,40 +204,224 @@ public class MainServlet extends HttpServlet {
     }
 
     private void setUpMessageServiceClient(final Configuration configuration) {
-        String blockingRequestHandler = configuration.getAttribute("blockingRequestHandler",
-                configuration.getAttributeAsBoolean("async.server", false) ? "icefaces-ahs" : "icefaces");
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Blocking Request Handler: " + blockingRequestHandler);
+        String blockingRequestHandler =
+            configuration.getAttribute("blockingRequestHandler", "auto-detect");
+        if (blockingRequestHandler.equalsIgnoreCase("icefaces")) {
+            // Adapt to Push environment.
+            if (LOG.isInfoEnabled()) {
+                LOG.info(
+                    "Blocking Request Handler: " +
+                        "\"" + blockingRequestHandler + "\"");
+            }
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Adapting to Push environment.");
+            }
+        } else if (blockingRequestHandler.equalsIgnoreCase("push-server")) {
+            // Adapt to Server Push environment.
+            if (LOG.isInfoEnabled()) {
+                LOG.info(
+                    "Blocking Request Handler: " +
+                        "\"" + blockingRequestHandler + "\"");
+            }
+            messageServiceClient =
+                new MessageServiceClient(
+                    new HttpAdapter(localAddress, localPort, context),
+                    context);
+            testMessageService();
+            if (messageServiceClient == null) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("Failed to adapt to Push Server environment.");
+                }
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Adapting to Push environment.");
+                }
+            }
+        } else {
+            if (blockingRequestHandler.equalsIgnoreCase("auto-detect")) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(
+                        "Blocking Request Handler: " +
+                            "\"" + blockingRequestHandler + "\"");
+                }
+            } else {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn(
+                        "INVALID Blocking Request Handler: " +
+                            "\"" + blockingRequestHandler + "\" - " +
+                                "Using \"auto-detect\"");
+                }
+            }
+            // Auto-detect environment.
+            boolean isJMSAvailable = isJMSAvailable();
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("JMS API Available: " + isJMSAvailable);
+            }
+            if (isJMSAvailable) {
+                messageServiceClient =
+                    new MessageServiceClient(
+                        new JMSAdapter(context),
+                        context);
+                testMessageService();
+            }
+            if (messageServiceClient == null) {
+                messageServiceClient =
+                    new MessageServiceClient(
+                        new HttpAdapter(localAddress, localPort, context),
+                        context);
+                testMessageService();
+            }
+            if (messageServiceClient == null) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Adapting to Push environment.");
+                }
+            }
         }
-        boolean isJMSAvailable = isJMSAvailable();
-        if (LOG.isInfoEnabled()) {
-            LOG.info("JMS API available: " + isJMSAvailable);
-        }
-        if (!blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") || !isJMSAvailable) {
-            return;
-        }
-        try {
-            messageServiceClient = new MessageServiceClient(new JMSAdapter(context), context);
-            //todo: make message selector static to avoid instantiating the message handler
-            messageServiceClient.subscribe(MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME, new DisposeViewsHandler().getMessageSelector());
-            messageServiceClient.start();
-        } catch (Exception exception) {
-            LOG.info("Did not start Ajax Push JMS services: " + exception);
-            messageServiceClient = null;
+        if (messageServiceClient != null) {
+            try {
+                // todo: make message selector static to avoid instantiating
+                //       the message handler
+                messageServiceClient.
+                    subscribe(
+                        MessageServiceClient.PUSH_TOPIC_NAME,
+                        new DisposeViewsHandler().getMessageSelector());
+                messageServiceClient.start();
+                ContextEventRepeater.
+                    setMessageServiceClient(messageServiceClient);
+            } catch (Exception exception) {
+                // todo: log some message
+                messageServiceClient = null;
+                blockingRequestHandlerContext = null;
+            }
         }
     }
 
     private void tearDownMessageServiceClient() {
-        if (messageServiceClient == null) {
-            return;
-        }
-        try {
-            messageServiceClient.stop();
-        } catch (MessageServiceException exception) {
-            LOG.error("Failed to close connection due to some internal error!", exception);
+        if (messageServiceClient != null) {
+            try {
+                messageServiceClient.stop();
+            } catch (MessageServiceException exception) {
+                LOG.error(
+                    "Failed to close connection due to some internal error!",
+                    exception);
+            }
         }
     }
 
+    private void testMessageService() {
+        final List results = new ArrayList();
+        MessageHandler acknowledgeMessageHandler =
+            new AbstractMessageHandler(
+                new MessageSelector(
+                    new Equal(
+                        new Identifier(Message.MESSAGE_TYPE),
+                        new StringLiteral("Presence")))) {
+
+                public void handle(final Message message) {
+                    if (message instanceof TextMessage) {
+                        StringTokenizer tokens =
+                            new StringTokenizer(
+                                ((TextMessage)message).getText(), ";");
+                        if (tokens.nextToken().equals("Acknowledge")) {
+                            results.add(
+                                message.getStringProperty(
+                                    Message.SOURCE_SERVLET_CONTEXT_PATH));
+                            while (tokens.hasMoreTokens()) {
+                                results.add(tokens.nextToken());
+                            }
+                        }
+                    }
+                }
+            };
+        try {
+            // throws MessageServiceException
+            messageServiceClient.subscribe(
+                MessageServiceClient.PUSH_TOPIC_NAME,
+                acknowledgeMessageHandler.getMessageSelector(),
+                true);
+            messageServiceClient.addMessageHandler(
+                acknowledgeMessageHandler,
+                MessageServiceClient.PUSH_TOPIC_NAME);
+            // throws MessageServiceException
+            messageServiceClient.start();
+            Properties messageProperties = new Properties();
+            messageProperties.setStringProperty(
+                Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                "push-server");
+            messageServiceClient.publish(
+                "Hello",
+                messageProperties,
+                "Presence",
+                MessageServiceClient.PUSH_TOPIC_NAME);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException exception) {
+                // do nothing.
+            }
+            // throws MessageServiceException
+            messageServiceClient.stop();
+            // throws MessageServiceException
+            messageServiceClient.unsubscribe(
+                MessageServiceClient.PUSH_TOPIC_NAME);
+            messageServiceClient.removeMessageHandler(
+                acknowledgeMessageHandler,
+                MessageServiceClient.PUSH_TOPIC_NAME);
+            if (!results.isEmpty()) {
+                String product = (String)results.get(1);
+                String primary = (String)results.get(2);
+                String secondary = (String)results.get(3);
+                String tertiary = (String)results.get(4);
+                String releaseType = (String)results.get(5);
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(
+                        "Push Server detected: \"" +
+                            product + " " +
+                            primary + "." +
+                            secondary + "." +
+                            tertiary + " " +
+                            releaseType + "\"");
+                }
+                if (!primary.equals("x") && !ProductInfo.PRIMARY.equals("x")) {
+                    if (!primary.equals(ProductInfo.PRIMARY) ||
+                        !secondary.equals(ProductInfo.SECONDARY)) {
+
+                        if (LOG.isWarnEnabled()) {
+                            LOG.warn(
+                                "ICEfaces / Push Server version mismatch! - " +
+                                    "Using \"" +
+                                        ProductInfo.PRODUCT + " " +
+                                        ProductInfo.PRIMARY + "." +
+                                        ProductInfo.SECONDARY + ".x\" " +
+                                    "with \"" +
+                                        product + " " +
+                                        primary + "." +
+                                        secondary + ".x\" " +
+                                    "is not recommended.");
+                        }
+                    }
+                }
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Using Push Server Blocking Request Handler");
+                }
+                blockingRequestHandlerContext =
+                    URI.create("/").resolve(results.get(0) + "/").toString();
+            } else {
+                messageServiceClient = null;
+            }
+        } catch (MessageServiceException exception) {
+            // todo: log some message
+            messageServiceClient.removeMessageHandler(
+                acknowledgeMessageHandler,
+                MessageServiceClient.PUSH_TOPIC_NAME);
+            try {
+                // throws MessageServiceException
+                messageServiceClient.unsubscribe(
+                    MessageServiceClient.PUSH_TOPIC_NAME);
+            } catch (MessageServiceException e) {
+                // do nothing.
+            }
+            messageServiceClient = null;
+        }
+    }
 
     //todo: factor out into a ServletContextDispatcher
     private static class CurrentContextPath extends ThreadLocal {
