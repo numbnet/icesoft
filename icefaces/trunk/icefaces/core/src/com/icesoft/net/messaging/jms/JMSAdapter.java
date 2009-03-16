@@ -36,7 +36,6 @@ import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceAdapter;
-import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.util.ThreadFactory;
 
@@ -94,7 +93,10 @@ implements MessageServiceAdapter {
         super(servletContext);
         String _messagingProperties =
             servletContext.getInitParameter(MESSAGING_PROPERTIES);
-        LOG.info("Messaging Properties (web.xml): " + _messagingProperties);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "Messaging Properties (web.xml): " + _messagingProperties);
+        }
         if (_messagingProperties != null) {
             try {
                 this.jmsProviderConfigurations =
@@ -113,57 +115,12 @@ implements MessageServiceAdapter {
             }
         }
         if (this.jmsProviderConfigurations == null) {
-            String _serverInfo = servletContext.getServerInfo();
-            LOG.info("Server Info: " + _serverInfo);
-            if (_serverInfo.startsWith("Sun Java System Application Server") ||
-                // as of GlassFish V2.1 Final:
-                _serverInfo.startsWith("Sun GlassFish Enterprise Server")) {
-                // GlassFish
-                LOG.info("Messaging Properties: glassfish.properties");
-                this.jmsProviderConfigurations =
-                    getJMSProviderConfigurations(
-                        new String[] {
-                            "glassfish.properties"
-                        });
-            } else if (_serverInfo.startsWith("JBoss")) {
-                // JBoss 4.2.x
-                LOG.info(
-                    "Messaging Properties: " +
-                        "jboss_ha.properties, jboss.properties");
-                this.jmsProviderConfigurations =
-                    getJMSProviderConfigurations(
-                        new String[] {
-                            "jboss_ha.properties",
-                            "jboss.properties"
-                        });
-            } else if (_serverInfo.startsWith("Apache Tomcat")) {
-                // Apache Tomcat 5.x and 6.x / JBoss 4.0.x
-                LOG.info(
-                    "Messaging Properties: " +
-                        "activemq.properties, jboss_ha.properties, " +
-                        "jboss.properties");
-                this.jmsProviderConfigurations =
-                    getJMSProviderConfigurations(
-                        new String[] {
-                            "activemq.properties",
-                            "jboss_ha.properties",
-                            "jboss.properties"
-                        });
-            } else if (_serverInfo.startsWith("WebLogic")) {
-                // BEA WebLogic
-                LOG.info("Messaging Properties: weblogic.properties");
-                this.jmsProviderConfigurations =
-                    getJMSProviderConfigurations(
-                        new String[] {
-                            "weblogic.properties"
-                        });
-            } else {
-                LOG.info(
-                    "Messaging Properties: " +
-                        "<empty>");
-                this.jmsProviderConfigurations =
-                    new JMSProviderConfiguration[0];
-            }
+            this.jmsProviderConfigurations =
+                new JMSProviderConfiguration[] {
+                    new JMSProviderConfigurationProperties()
+                };
+            this.jmsProviderConfigurations[0].
+                setTopicConnectionFactoryName("ConnectionFactory");
         }
         ThreadFactory _threadFactory = new ThreadFactory();
         _threadFactory.setPrefix("MessageReceiver Thread");
@@ -524,7 +481,7 @@ implements MessageServiceAdapter {
                             jmsProviderConfigurations[i].
                                 getTopicConnectionFactoryName());
                 index = i;
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     StringBuffer _environment = new StringBuffer();
                     _environment.append("Using JMS Environment:\r\n");
                     Iterator _properties =
@@ -537,11 +494,14 @@ implements MessageServiceAdapter {
                         _environment.append(_property.getValue());
                         _environment.append("\r\n");
                     }
-                    LOG.info(_environment.toString());
+                    LOG.debug(_environment.toString());
                 }
                 break;
             } catch (NamingException exception) {
-                LOG.error("Failed JMS Environment: " + exception.getMessage());
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(
+                        "Failed JMS Environment: " + exception.getMessage());
+                }
                 if (initialContext != null) {
                     try {
                         initialContext.close();
@@ -560,50 +520,12 @@ implements MessageServiceAdapter {
     throws NamingException {
         String _topicNamePrefix =
             jmsProviderConfigurations[index].getTopicNamePrefix();
-        try {
-            // throws NamingException.
-            return
-                (Topic)
-                    initialContext.lookup(
-                        (_topicNamePrefix == null ? "" : _topicNamePrefix) +
-                            topicName);
-        } catch (NamingException exception) {
-            // temporary trying the old topic names...
-            try {
-                if (MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME.
-                        equals(topicName)) {
-
-                    return
-                        (Topic)
-                            initialContext.lookup(
-                                (_topicNamePrefix == null ?
-                                    "" : _topicNamePrefix) +
-                                        "icefaces.contextEventTopic");
-                } else if (MessageServiceClient.RENDER_TOPIC_NAME.
-                        equals(topicName)) {
-                    
-                    return
-                        (Topic)
-                            initialContext.lookup(
-                                (_topicNamePrefix == null ?
-                                    "" : _topicNamePrefix) +
-                                        "icefaces.renderTopic");
-                } else if (MessageServiceClient.RESPONSE_TOPIC_NAME.
-                        equals(topicName)) {
-
-                    return
-                        (Topic)
-                            initialContext.lookup(
-                                (_topicNamePrefix == null ?
-                                    "" : _topicNamePrefix) +
-                                        "icefaces.responseTopic");
-                } else {
-                    throw exception;
-                }
-            } catch (NamingException e) {
-                throw exception;
-            }
-        }
+        // throws NamingException.
+        return
+            (Topic)
+                initialContext.lookup(
+                    (_topicNamePrefix == null ? "" : _topicNamePrefix) +
+                        topicName);
     }
 
     /*

@@ -147,11 +147,7 @@ implements JMSConnection {
             }
             _messageString.append("\r\n");
         } catch (JMSException exception) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(
-                    "Failed to get properties due to some internal error!",
-                    exception);
-            }
+            // do nothing (this is just a toString() method)
         }
         return _messageString.toString();
     }
