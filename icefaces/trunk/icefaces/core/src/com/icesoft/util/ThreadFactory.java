@@ -101,8 +101,8 @@ implements edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory {
                     exception);
             }
         }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("New thread: " + _thread.getName());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("New thread: " + _thread.getName());
         }
         return _thread;
     }
