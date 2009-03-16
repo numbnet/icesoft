@@ -268,3 +268,37 @@
         <default-value>true</default-value>
     </property-extension>
 </property>
+
+<property>
+	<description>
+		<![CDATA[<p>
+             Listener method to call with a ClickEvent when a row is clicked or double-clicked.
+                </p>
+             ]]>
+	</description>
+	<property-name>clickListener</property-name>
+	<property-class>javax.faces.el.MethodBinding</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<editor-class>
+			&methodBindingEditor;
+		</editor-class>
+	</property-extension>
+</property>
+
+<property>
+	<description>
+		<![CDATA[<p>
+             Action method to call when a row is clicked or double-clicked.
+                </p>
+             ]]>
+	</description>
+	<property-name>clickAction</property-name>
+	<property-class>javax.faces.el.MethodBinding</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<editor-class>
+			&methodBindingEditor;
+		</editor-class>
+	</property-extension>
+</property>
