@@ -35,8 +35,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.util.Properties;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -48,15 +50,15 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class AsyncHttpServerAdaptingServlet
+public class PushServerAdaptingServlet
 implements Server {
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
     private static final Log LOG =
-        LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
+        LogFactory.getLog(PushServerAdaptingServlet.class);
 
     private long sequenceNumber;
 
-    public AsyncHttpServerAdaptingServlet(
+    public PushServerAdaptingServlet(
         final String iceFacesId, final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews,
         final MessageServiceClient messageServiceClient)
@@ -79,12 +81,18 @@ implements Server {
                             }
                             _stringWriter.write(_viewIdentifiers[i]);
                         }
+                        Properties _messageProperties = new Properties();
+                        _messageProperties.
+                            setStringProperty(
+                                Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                                "push-server");
                         messageServiceClient.publish(
                             iceFacesId + ";" +                    // ICEfaces ID
                                 ++sequenceNumber + ";" +      // Sequence Number
                                 _stringWriter.toString(),        // Message Body
+                            _messageProperties,
                             UPDATED_VIEWS_MESSAGE_TYPE,
-                            MessageServiceClient.RESPONSE_TOPIC_NAME);
+                            MessageServiceClient.PUSH_TOPIC_NAME);
                     }
                 }
             });
@@ -94,7 +102,7 @@ implements Server {
     throws Exception {
         request.respondWith(new StreamingContentHandler("text/plain", "UTF-8") {
             public void writeTo(Writer writer) throws IOException {
-                writer.write("Asynchronous HTTP Server is enabled.\n");
+                writer.write("Push Server is enabled.\n");
                 writer.write("Check your server configuration.\n");
             }
         });
