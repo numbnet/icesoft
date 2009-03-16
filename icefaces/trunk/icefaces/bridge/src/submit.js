@@ -122,24 +122,6 @@ function iceSubmit(aForm, aComponent, anEvent) {
     return false;
 }
 
-function disposeOnViewRemoval(id) {
-    try {
-        //search the bridge through the parent elements
-        id.asExtendedElement().findBridge().disposeAndNotify();
-    } catch (e) {
-        //search the bridge through the child elements
-        var children = id.asElement().getElementsByTagName('*');
-        var size = children.length;
-        for (var i = 0; i < size; i++) {
-            var child = children[i];
-            if (child.bridge) {
-                child.bridge.disposeAndNotify();
-                break;
-            }
-        }
-    }
-}
-
 //todo: determine if the cleanup of hidden fields should be at framework or component level
 function resetHiddenFieldsFor(aForm) {
     $enumerate(aForm.elements).each(function(formElement) {

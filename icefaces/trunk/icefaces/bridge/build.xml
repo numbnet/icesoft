@@ -190,6 +190,7 @@
                 <file name="heartbeat.js"/>
                 <file name="connection.async.js"/>
                 <file name="application.js"/>
+                <file name="callback.js"/>
             </filelist>
             <path location="${script.open.ajax}"/>
         </concat>

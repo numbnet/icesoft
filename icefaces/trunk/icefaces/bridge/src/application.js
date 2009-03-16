@@ -107,6 +107,11 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 connection.shutdown();
             };
 
+            var sessionExpiredListeners = [];
+            var onSessionExpired = function(callback) {
+                sessionExpiredListeners.push(callback);
+            };
+
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
             commandDispatcher.register('parsererror', Ice.Command.ParsingError);
@@ -162,6 +167,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
                 delistView(sessionID, viewID);
                 dispose();
+                sessionExpiredListeners.broadcast();
             });
 
             window.onUnload(function() {
@@ -217,6 +223,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             };
             //public methods
             this.connection = connection;
+            this.onSessionExpired = onSessionExpired;
             this.dispose = dispose;
             this.disposeAndNotify = function() {
                 disposeView(sessionID, viewID);
