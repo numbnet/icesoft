@@ -48,7 +48,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
     private boolean pageLoaded = false;
     private Runnable shutdown;
 
-    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService, Authorization authorization) {
+    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService, final String blockingRequestHandlerContext, final Authorization authorization) {
         this.sessionID = restoreOrCreateSessionID(session, idGenerator);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
@@ -56,7 +56,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
         final Server disposeViews;
         final MessageHandler handler;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, authorization);
+            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, blockingRequestHandlerContext, authorization);
             if (messageService == null) {
                 disposeViews = new DisposeViews(sessionID, views);
                 handler = null;
@@ -74,10 +74,10 @@ public class MainSessionBoundServlet implements Server, PageTest {
                                 }
                             }
                         });
-                messageService.addMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+                messageService.addMessageHandler(handler, MessageServiceClient.PUSH_TOPIC_NAME);
             }
         } else {
-            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, authorization);
+            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, blockingRequestHandlerContext, authorization);
             disposeViews = OKServer;
             handler = null;
         }
@@ -93,7 +93,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
             receivePing = OKServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
+            sendUpdatedViews = new RequestVerifier(sessionID, new PushServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
             sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views));
             receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
         }
@@ -138,7 +138,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
 
                 if (handler != null) {
                     //todo: introduce NOOP handler
-                    messageService.removeMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+                    messageService.removeMessageHandler(handler, MessageServiceClient.PUSH_TOPIC_NAME);
                 }
             }
         };
