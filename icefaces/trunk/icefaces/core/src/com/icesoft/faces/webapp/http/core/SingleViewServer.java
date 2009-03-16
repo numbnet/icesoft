@@ -19,9 +19,10 @@ public class SingleViewServer implements Server {
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private ResourceDispatcher resourceDispatcher;
+    private String blockingRequestHandlerContext;
     private Authorization authorization;
 
-    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher, Authorization authorization) {
+    public SingleViewServer(final HttpSession session, final String sessionID, final SessionDispatcher.Monitor sessionMonitor, final Map views, final ViewQueue allUpdatedViews, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final String blockingRequestHandlerContext, final Authorization authorization) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -29,6 +30,7 @@ public class SingleViewServer implements Server {
         this.allUpdatedViews = allUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
     }
 
@@ -40,7 +42,7 @@ public class SingleViewServer implements Server {
             if (views.containsKey(viewNumber)) {
                 view = (View) views.get(viewNumber);
             } else {
-                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, authorization);
+                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
                 views.put(viewNumber, view);
             }
         }
