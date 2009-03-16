@@ -92,7 +92,7 @@
         <target name="tlddoc"/>
     </ice:ant>
 
-    <ice:ant antfile="ahs/build.xml">
+    <ice:ant antfile="push-server/build.xml">
     	<target name="build.servlet.jboss4.2.war"/>
     </ice:ant>
 
@@ -138,7 +138,7 @@
 
         <zipfileset dir="${dist.dir}/samples" includes="address.war, auctionMonitor.war, component-showcase.war" prefix="${bin.bundle.prefix}/samples"/>
 
-        <zipfileset dir="ahs" includes="async-http-server.war" prefix="${bin.bundle.prefix}/ahs"/>
+        <zipfileset dir="push-server" includes="async-http-server.war" prefix="${bin.bundle.prefix}/push-server"/>
     </ice:zip>
 
     <!--delete dir="${build.dir}/${bin.bundle.name}"/>
