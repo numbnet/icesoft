@@ -138,7 +138,7 @@
 
         <zipfileset dir="${dist.dir}/samples" includes="address.war, auctionMonitor.war, component-showcase.war" prefix="${bin.bundle.prefix}/samples"/>
 
-        <zipfileset dir="push-server" includes="async-http-server.war" prefix="${bin.bundle.prefix}/push-server"/>
+        <zipfileset dir="push-server" includes="push-server.war" prefix="${bin.bundle.prefix}/push-server"/>
     </ice:zip>
 
     <!--delete dir="${build.dir}/${bin.bundle.name}"/>
