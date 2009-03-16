@@ -19,9 +19,10 @@ public class MultiViewServer implements Server {
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private ResourceDispatcher resourceDispatcher;
+    private String blockingRequestHandlerContext;
     private Authorization authorization;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher, Authorization authorization) {
+    public MultiViewServer(final HttpSession session, final String sessionID, final SessionDispatcher.Monitor sessionMonitor, final Map views, final ViewQueue asynchronouslyUpdatedViews, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final String blockingRequestHandlerContext, final Authorization authorization) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -29,6 +30,7 @@ public class MultiViewServer implements Server {
         this.asynchronouslyUpdatedViews = asynchronouslyUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
     }
 
@@ -58,7 +60,7 @@ public class MultiViewServer implements Server {
 
     private View createView() throws Exception {
         String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, authorization);
+        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
         views.put(viewNumber, view);
         return view;
     }
