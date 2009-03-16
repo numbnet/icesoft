@@ -53,8 +53,8 @@ import java.util.HashMap;
 /* This skeleton class is intended to allow experimentation with JSF 2.0
 */
 public class BridgeFacesContext2 extends BridgeFacesContext  {
-    public BridgeFacesContext2(Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final Authorization authorization) throws Exception {
-        super(request, viewIdentifier, sessionID, view, configuration, resourceDispatcher, sessionMonitor, authorization);
+    public BridgeFacesContext2(final Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final String blockingRequestHandlerContext, final Authorization authorization) throws Exception {
+        super(request, viewIdentifier, sessionID, view, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
     }
     
         javax.faces.event.PhaseId phaseId = null;
