@@ -160,7 +160,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
     var sftKyFld = $(hdnFld+'sftKy');  
     if (ctrlKyFld && event){
         ctrlKyFld.value = event.ctrlKey || event.metaKey;
-    } 
+    }
     if (sftKyFld && event){
         sftKyFld.value = event.shiftKey;
     }      
@@ -202,6 +202,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         var row = evt.element();
         if (row.tagName.toLowerCase() != "tr") {
             row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
+            // Art: check for Ice.registerClick too?
         }
         if (row) {
             row.className = toggleClassNames;
@@ -216,3 +217,52 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         console.log("Error in rowSelector[" + e + "]");
     }
 }
+
+// Art: added {
+Ice.clickEvents = {};
+
+Ice.registerClick = function(elem,hdnClkRow,hdnClkCount,event,useEvent,rowid,formId,hdnFld,toggleClassNames) {
+    if (!Ice.clickEvents[elem.id]) {
+        Ice.clickEvents[elem.id] = new Ice.clickEvent(elem,hdnClkRow,hdnClkCount,event,useEvent,rowid,formId,hdnFld,toggleClassNames);
+    } 
+}
+
+Ice.registerDblClick = function(elem) {
+    if (Ice.clickEvents[elem.id]) {
+        Ice.clickEvents[elem.id].submit(2);
+    }
+}
+
+Ice.clickEvent = Class.create({
+    initialize: function(elem,hdnClkRow,hdnClkCount,rowid,formId,toggleOnClick,event,useEvent,hdnFld,toggleClassNames) {
+        this.elem = elem;
+        this.hdnClkRow = hdnClkRow;
+        this.hdnClkCount = hdnClkCount;
+        this.rowid = rowid;
+        this.formId = formId;
+        this.toggleOnClick = toggleOnClick;
+        if (this.toggleOnClick) {
+            this.event = Object.clone(event);
+            this.useEvent = useEvent;
+            this.hdnFld = hdnFld;
+            this.toggleClassNames = toggleClassNames;
+        }
+        
+        this.timer = setTimeout(this.submit.bind(this,1), 200);
+    },
+    submit: function(numClicks) {
+        clearTimeout(this.timer);
+        Ice.clickEvents[this.elem.id] = null;
+        var rowField = document.forms[this.formId][this.hdnClkRow];
+        rowField.value = this.rowid;
+        var countField = document.forms[this.formId][this.hdnClkCount];
+        countField.value = numClicks;
+        if (this.toggleOnClick) {
+            Ice.tableRowClicked(this.event,this.useEvent,this.rowid,this.formId,this.hdnFld,this.toggleClassNames);
+        } else {
+            var nothingEvent = new Object();
+            iceSubmitPartial(null, rowField, nothingEvent);
+        }
+    }
+});
+// Art: }

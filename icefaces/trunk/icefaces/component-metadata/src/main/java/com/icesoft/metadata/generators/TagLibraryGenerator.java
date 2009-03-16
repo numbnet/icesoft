@@ -692,8 +692,50 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             + var + ");", true);
                     writer.outdent();
                     writer.emitExpression("}", true);
+                } 
+                // Art: added {
+                else if ("clickListener".equalsIgnoreCase(name)) {
+                    writer.emitExpression("if (isValueReference(" + var
+                            + ")) {", true);
+                    writer.indent();
+                    writer
+                            .emitExpression(
+                                    "Class[] clickListenerArgs= new Class[]{com.icesoft.faces.component.ext.ClickEvent.class};",
+                                    true);
+                    writer.emitExpression(
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), clickListenerArgs );", true);
+                    writer.emitExpression("_component.getAttributes().put(\""
+                            + name + "\", _mb);", true);
+                    writer.outdent();
+                    writer.emitExpression("} else {", true);
+                    writer.indent();
+                    writer.emitExpression("throw new IllegalArgumentException("
+                            + var + ");", true);
+                    writer.outdent();
+                    writer.emitExpression("}", true);
 
                 }
+                 else if ("clickAction".equalsIgnoreCase(name)) {
+                    writer.emitExpression("if (isValueReference(" + var
+                            + ")) {", true);
+                    writer.indent();
+
+                    writer.emitExpression(
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), null );", true);
+                    writer.emitExpression("_component.getAttributes().put(\""
+                            + name + "\", _mb);", true);
+                    writer.outdent();
+                    writer.emitExpression("} else {", true);
+                    writer.indent();
+                    writer.emitExpression("throw new IllegalArgumentException("
+                            + var + ");", true);
+                    writer.outdent();
+                    writer.emitExpression("}", true);
+
+                }
+                // Art: }
                 else if ("tabChangeListener".equalsIgnoreCase(name)) {
                     writer.emitExpression("if (isValueReference(" + var
                             + ")) {", true);

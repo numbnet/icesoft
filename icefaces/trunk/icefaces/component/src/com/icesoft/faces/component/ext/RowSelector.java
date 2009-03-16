@@ -70,6 +70,8 @@ public class RowSelector extends UIPanel {
     private String selectedMouseOverClass;    
     private MethodBinding selectionListener;
     private MethodBinding selectionAction;
+    private MethodBinding clickListener; // Art: 
+    private MethodBinding clickAction; // Art: 
     private Integer clickedRow;
     private Boolean immediate;
     
@@ -238,6 +240,24 @@ public class RowSelector extends UIPanel {
         this.selectionAction = selectionListener;
     }
     
+    // Art: added {
+    public MethodBinding getClickListener() {
+        return clickListener;
+    }
+
+    public void setClickListener(MethodBinding clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public MethodBinding getClickAction() {
+         return clickAction;
+    }
+
+    public void setClickAction(MethodBinding clickAction) {
+        this.clickAction = clickAction;
+    }
+    // Art: }
+    
     public Boolean getImmediate() {
         if (immediate != null) {
             return immediate;
@@ -269,7 +289,65 @@ public class RowSelector extends UIPanel {
         String selectedRows = (String) requestMap.get(selectedRowsParameter);
         boolean isCtrlKey = "true".equals(requestMap.get(selectedRowsParameter+"ctrKy"));
         boolean isShiftKey = "true".equals(requestMap.get(selectedRowsParameter+"sftKy"));        
-        if (selectedRows == null || selectedRows.trim().length() == 0) {
+        // Art: added {
+        String clickedRowParameter = TableRenderer.getClickedRowParameterName(dataTableId);
+        String clickCountParameter = TableRenderer.getClickCountParameterName(dataTableId);
+        String clickedRowIndex = (String) requestMap.get(clickedRowParameter);
+        String clickCount = (String) requestMap.get(clickCountParameter);
+        
+        ClickEvent clickEvent = null;
+        ClickActionEvent clickActionEvent = null;
+        RowSelector rowSelector = (RowSelector) this;
+        boolean skipSelection = false;
+        
+        if (clickedRowIndex != null && clickCount != null) {
+            if (clickedRowIndex.trim().length() != 0 && clickCount.trim().length() != 0) {
+                int rowIndex = dataTable.getRowIndex();
+                boolean rowClicked = false;
+                int row = Integer.parseInt(clickedRowIndex);
+                if (row == rowIndex) {
+                    if (this.getParent() instanceof UIColumns) {
+                        Object servedRow = this.getParent().getAttributes().get("rowServed");
+                        if (servedRow != null) {
+                            if (String.valueOf(servedRow).equals(String.valueOf(rowIndex))) {
+                                return;
+                            }
+                        } else {
+                            this.getParent().getAttributes().put("rowServed", String.valueOf(rowIndex));
+                        }
+                    }
+                    rowClicked = true;
+                }
+                try {
+                    if (rowClicked) {
+                        if (rowSelector.getClickListener() != null) {
+                            clickEvent = createClickEvent(rowSelector, row, Integer.parseInt(clickCount));
+                        }
+                        if (rowSelector.getClickAction() != null) {
+                            clickActionEvent = createClickActionEvent(rowSelector);
+                        }
+                        if (Integer.parseInt(clickCount) == 2 && getValue().booleanValue()) {
+                            skipSelection = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        // Art: }
+        
+        // Art: four possible cases
+        if (selectedRows == null || selectedRows.trim().length() == 0 || skipSelection) { // Art: modified
+            // Art: added {
+            // no need to associate them with a RowSelectorEvent
+            if (null != clickEvent) {
+                rowSelector.queueEvent(clickEvent);
+            }
+            if (null != clickActionEvent) {
+                rowSelector.queueEvent(clickActionEvent);
+            }
+            // Art: }
             return;
         }
         
@@ -294,7 +372,7 @@ public class RowSelector extends UIPanel {
         	rowClicked = true;
         }
 
-        RowSelector rowSelector = (RowSelector) this;
+        // RowSelector rowSelector = (RowSelector) this; // Art: moved it up
 
         try {
             if (rowClicked) {
@@ -303,17 +381,17 @@ public class RowSelector extends UIPanel {
                 if (isEnhancedMultiple()) {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
-                        _queueEvent(rowSelector, rowIndex, b);                        
+                        _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
                         return;
                     }
                     if (isCtrlKey && !isShiftKey) {
                         b = !b;
-                        _queueEvent(rowSelector, rowIndex, b);                        
+                        _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
                         return;
                     }
                 } else {
                     b = !b;
-                    _queueEvent(rowSelector, rowIndex, b);
+                    _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
                     // ICE-3440
                     if (!getMultiple().booleanValue()) {
                         if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
@@ -355,10 +433,8 @@ public class RowSelector extends UIPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
+    
      private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
         UIComponent parentComp = uiComponenent.getParent();
         if (parentComp == null) {
@@ -424,11 +500,44 @@ public class RowSelector extends UIPanel {
                     e);
             }
         }
+        // Art: added {
+        if (event instanceof ClickEvent && clickListener != null) {
+
+            clickListener.invoke(getFacesContext(),
+                                     new Object[]{(ClickEvent) event});
+
+        }        
+        if(event instanceof ClickActionEvent && clickAction != null){
+            try {
+                FacesContext facesContext = getFacesContext();
+                Object result =
+                    clickAction.invoke(facesContext, null);
+                String outcome = (result != null) ? result.toString() : null;
+                NavigationHandler nh =
+                    facesContext.getApplication().getNavigationHandler();
+                nh.handleNavigation(
+                    facesContext,
+                    clickAction.getExpressionString(),
+                    outcome);
+                facesContext.renderResponse();
+            }
+            catch(MethodNotFoundException e) {
+                throw new FacesException(
+                    clickAction.getExpressionString()+": "+e.getMessage(),
+                    e);
+            }
+            catch(EvaluationException e) {
+                throw new FacesException(
+                    clickAction.getExpressionString()+": "+e.getMessage(),
+                    e);
+            }
+        }
+        // Art: }
         selectedRowsList.clear();
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[14];
+        Object[] state = new Object[16];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -443,6 +552,10 @@ public class RowSelector extends UIPanel {
         state[11] = immediate;
         state[12] = styleClass;  
         state[13] = enhancedMultiple;
+        // Art: added {
+        state[14] = saveAttachedState(context, clickListener);
+        state[15] = saveAttachedState(context, clickAction);
+        // Art: }
         return state;
     }
 
@@ -464,6 +577,12 @@ public class RowSelector extends UIPanel {
         immediate = (Boolean)state[11];
         styleClass = (String)state[12]; 
         enhancedMultiple = (Boolean) state[13];        
+        // Art: added {
+        clickListener = (MethodBinding)
+            restoreAttachedState(context, state[14]);
+        clickAction = (MethodBinding)
+            restoreAttachedState(context, state[15]);
+        // Art: }
     }
     
     private String styleClass;
@@ -484,12 +603,13 @@ public class RowSelector extends UIPanel {
                 "styleClass");
     }
     
-    void _queueEvent(RowSelector rowSelector, int rowIndex, boolean isSelected) {
+    void _queueEvent(RowSelector rowSelector, int rowIndex, boolean isSelected, 
+                        ClickEvent clickEvent, ClickActionEvent clickActionEvent) { // Art: modified
         rowSelector.setValue(new Boolean(isSelected));
         if (isSelected){
             selectedRowsList.add(new Integer(rowIndex));
         }
-        if (rowSelector.getSelectionListener() != null) {
+        //if (rowSelector.getSelectionListener() != null || clickEvent != null || clickActionEvent != null) { // Art: modified
             RowSelectorEvent evt =
                     new RowSelectorEvent(rowSelector, rowIndex, isSelected);
             if (getImmediate().booleanValue()) {
@@ -499,19 +619,60 @@ public class RowSelector extends UIPanel {
                 evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
             }
             rowSelector.queueEvent(evt);
-        }
+            // Art: added {
+            // add reference to RowSelectorEvent
+            if (null != clickEvent) {
+                clickEvent.setRowSelectorEvent(evt);
+                rowSelector.queueEvent(clickEvent);
+            }
+            if (null != clickActionEvent) {
+                clickActionEvent.setRowSelectorEvent(evt);
+                rowSelector.queueEvent(clickActionEvent);
+            }
+            // Art: }
+        //} Art:
         if(rowSelector.getSelectionAction() != null){
-            RowSelectorActionEvent evt =
+            RowSelectorActionEvent actevt = // Art: modified evt => actevt
                 new RowSelectorActionEvent(this);
             if (getImmediate().booleanValue()) {
-                evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                actevt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES); // Art: modified evt => actevt
             }
             else {
-                evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                actevt.setPhaseId(PhaseId.INVOKE_APPLICATION); // Art: modified evt => actevt
             }
-            rowSelector.queueEvent(evt);
+            rowSelector.queueEvent(actevt); // Art: modified evt => actevt
         }
-
+        // Art: added {
+        /*if (null != clickEvent) {
+            rowSelector.queueEvent(clickEvent);
+        }
+        if (null != clickActionEvent) {
+            rowSelector.queueEvent(clickActionEvent);
+        }*/
+        // Art: }
     }
-
+    
+    // Art: added {
+    private ClickEvent createClickEvent(RowSelector rowSelector, int rowIndex, int clickCount) {
+        ClickEvent evt = new ClickEvent(rowSelector, rowIndex, clickCount);
+        if (getImmediate().booleanValue()) {
+            evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+        }
+        else {
+            evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+        }
+        return evt;
+    }
+    
+    private ClickActionEvent createClickActionEvent(RowSelector rowSelector) {
+        ClickActionEvent evt = new ClickActionEvent(rowSelector);
+        if (getImmediate().booleanValue()) {
+            evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+        }
+        else {
+            evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+        }
+        return evt;
+    }
+    // Art: }
 }
