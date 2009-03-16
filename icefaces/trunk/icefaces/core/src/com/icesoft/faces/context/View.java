@@ -64,9 +64,9 @@ public class View implements CommandQueue {
             if (ImplementationUtil.isJSF2()) {
                 Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
                 Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
-                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization});
+                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
             } else {
-                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, authorization);
+                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
             }
             makeCurrent();
             request.respondWith(lifecycleResponseHandler);
@@ -86,16 +86,18 @@ public class View implements CommandQueue {
     private final ResourceDispatcher resourceDispatcher;
     private Runnable dispose;
     private final ViewQueue allServedViews;
+    private String blockingRequestHandlerContext;
     private Authorization authorization;
     private final ArrayList onReleaseListeners = new ArrayList();
 
-    public View(final String viewIdentifier, String sessionID, HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Authorization authorization) throws Exception {
+    public View(final String viewIdentifier, final String sessionID, final HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, final ResourceDispatcher resourceDispatcher, final String blockingRequestHandlerContext, final Authorization authorization) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
         this.resourceDispatcher = resourceDispatcher;
         this.allServedViews = allServedViews;
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
         this.persistentFacesState = new PersistentFacesState(this, viewListeners, configuration);
         ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewIdentifier));

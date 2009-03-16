@@ -126,14 +126,16 @@ public class DOMResponseWriter extends ResponseWriter {
     private final Configuration configuration;
     private final Collection jsCode;
     private final Collection cssCode;
+    private String blockingRequestHandlerContext;
     private Node cursor = document;
     private Node savedJSFStateCursor;
 
-    public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration, Collection jsCode, Collection cssCode) {
+    public DOMResponseWriter(final FacesContext context, final DOMSerializer serializer, final Configuration configuration, final Collection jsCode, final Collection cssCode, final String blockingRequestHandlerContext) {
         this.serializer = serializer;
         this.configuration = configuration;
         this.jsCode = jsCode;
         this.cssCode = cssCode;
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         try {
             this.context = (BridgeFacesContext) context;
         } catch (ClassCastException e) {
@@ -244,7 +246,7 @@ public class DOMResponseWriter extends ResponseWriter {
             }
         }
         try {
-            return new DOMResponseWriter(context, serializer, configuration, jsCode, cssCode);
+            return new DOMResponseWriter(context, serializer, configuration, jsCode, cssCode, blockingRequestHandlerContext);
         } catch (FacesException e) {
             throw new IllegalStateException();
         }
@@ -340,7 +342,9 @@ public class DOMResponseWriter extends ResponseWriter {
         script.appendChild(document.createTextNode(calls));
 
         String contextPath = handler.getResourceURL(context, "/");
-        String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", configuration.getAttribute("blockingRequestHandler", configuration.getAttributeAsBoolean("async.server", false) ? "icefaces-ahs" : "icefaces").equalsIgnoreCase("icefaces") ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
+        if (blockingRequestHandlerContext == null) {
+            blockingRequestHandlerContext = URI.create("/").resolve(contextPath.replaceAll("/", "") + "/").toString();
+        }
         String connectionLostRedirectURI;
         try {
             connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
@@ -359,7 +363,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //todo: build startup script only once on aplication startup
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
-                        "window.disposeViewsURI = '" + ahsContextPath + "block/dispose-views';\n" +
+                        "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
@@ -372,7 +376,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
-                        "async: '" + ahsContextPath + "'}," +
+                        "async: '" + blockingRequestHandlerContext + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +

@@ -105,6 +105,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection jsCodeURIs = new ArrayList();
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
+    private String blockingRequestHandlerContext;
     private ELContext elContext;
     private DocumentStore documentStore;
     private String lastViewID;
@@ -122,7 +123,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
     } 
 
-    public BridgeFacesContext(Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final Authorization authorization) throws Exception {
+    public BridgeFacesContext(final Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final String blockingRequestHandlerContext, final Authorization authorization) throws Exception {
         setCurrentInstance(this);
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
@@ -139,6 +140,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.configuration = configuration;
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.resourceDispatcher = resourceDispatcher;
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.documentStore = configuration.getAttributeAsBoolean("compressDOM", false) ? new FastInfosetDocumentStore() : (DocumentStore) new ReferenceDocumentStore();
         this.switchToNormalMode();
     }
@@ -274,7 +276,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public ResponseWriter createAndSetResponseWriter() throws IOException {
-        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCodeURIs, cssRuleURIs);
+        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCodeURIs, cssRuleURIs, blockingRequestHandlerContext);
     }
 
     public void switchToNormalMode() throws Exception {
