@@ -18,10 +18,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.TimeZone;
-import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class ServletRequestResponse implements Request, Response {
@@ -81,6 +82,15 @@ public class ServletRequestResponse implements Request, Response {
         return requestURI;
     }
 
+    public String[] getHeaderNames() {
+        List headerNames = new ArrayList();
+        Enumeration e = request.getHeaderNames();
+        while (e.hasMoreElements()) {
+            headerNames.add(e.nextElement());
+        }
+        return (String[])headerNames.toArray(new String[headerNames.size()]);
+    }
+    
     public String getHeader(String name) {
         return request.getHeader(name);
     }
@@ -153,6 +163,26 @@ public class ServletRequestResponse implements Request, Response {
         } catch (Exception e) {
             return defaultValue;
         }
+    }
+
+    public String getLocalAddr() {
+        return request.getLocalAddr();
+    }
+
+    public String getLocalName() {
+        return request.getLocalName();
+    }
+
+    public String getRemoteAddr() {
+        return request.getRemoteAddr();
+    }
+
+    public String getRemoteHost() {
+        return request.getRemoteHost();
+    }
+
+    public String getServerName() {
+        return request.getServerName();
     }
 
     public InputStream readBody() throws IOException {

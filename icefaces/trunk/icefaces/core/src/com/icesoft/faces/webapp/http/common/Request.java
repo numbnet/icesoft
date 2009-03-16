@@ -12,6 +12,8 @@ public interface Request {
 
     URI getURI();
 
+    String[] getHeaderNames();
+
     String getHeader(String name);
 
     String[] getHeaderAsStrings(String name);
@@ -37,6 +39,16 @@ public interface Request {
     int getParameterAsInteger(String name, int defaultValue);
 
     boolean getParameterAsBoolean(String name, boolean defaultValue);
+
+    String getLocalAddr();
+
+    String getLocalName();
+
+    String getRemoteAddr();
+
+    String getRemoteHost();
+
+    String getServerName();
 
     InputStream readBody() throws IOException;
 

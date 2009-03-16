@@ -21,6 +21,10 @@ public class RequestProxy implements Request {
         return request.getURI();
     }
 
+    public String[] getHeaderNames() {
+        return request.getHeaderNames();
+    }
+
     public String getHeader(String name) {
         return request.getHeader(name);
     }
@@ -71,6 +75,26 @@ public class RequestProxy implements Request {
 
     public boolean getParameterAsBoolean(String name, boolean defaultValue) {
         return request.getParameterAsBoolean(name, defaultValue);
+    }
+
+    public String getLocalAddr() {
+        return request.getLocalAddr();
+    }
+
+    public String getLocalName() {
+        return request.getLocalName();
+    }
+
+    public String getRemoteAddr() {
+        return request.getRemoteAddr();
+    }
+
+    public String getRemoteHost() {
+        return request.getRemoteHost();
+    }
+
+    public String getServerName() {
+        return request.getServerName();
     }
 
     public InputStream readBody() throws IOException {
