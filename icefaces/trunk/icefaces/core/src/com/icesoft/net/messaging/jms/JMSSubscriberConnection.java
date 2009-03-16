@@ -44,7 +44,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.jms.IllegalStateException;
 import javax.jms.InvalidDestinationException;
 import javax.jms.InvalidSelectorException;
 import javax.jms.JMSException;
@@ -363,8 +362,8 @@ implements JMSConnection {
         }
 
         public void run() {
-            if (LOG.isInfoEnabled()) {
-                LOG.info(this + " started.");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(this + " started.");
             }
             try {
                 while (!stopRequested) {
@@ -380,8 +379,8 @@ implements JMSConnection {
                         exception);
                 }
             }
-            if (LOG.isInfoEnabled()) {
-                LOG.info(this + " stopped.");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(this + " stopped.");
             }
         }
 
