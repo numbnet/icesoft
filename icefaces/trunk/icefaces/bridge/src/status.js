@@ -159,46 +159,6 @@
         }
     });
 
-    This.OverlayIndicator = Object.subclass({
-        initialize: function(configuration) {
-            this.configuration = configuration;
-            if (/MSIE/.test(navigator.userAgent)) {
-                this.overlay = document.body.appendChild(document.createElement('iframe'));
-                this.overlay.setAttribute('src', this.configuration.connection.context.current + "xmlhttp/blank");
-                this.overlay.setAttribute('frameborder', '0');
-            } else {
-                this.overlay = document.body.appendChild(document.createElement('div'));
-            }
-
-            var overlayStyle = this.overlay.style;
-            overlayStyle.display = 'none';
-            overlayStyle.position = 'absolute';
-            overlayStyle.display = 'block';
-            overlayStyle.visibility = 'visible';
-            overlayStyle.backgroundColor = 'white';
-            overlayStyle.zIndex = '38000';
-            overlayStyle.top = '0';
-            overlayStyle.left = '0';
-            overlayStyle.opacity = 0.08;
-            overlayStyle.filter = 'alpha(opacity=8)';
-            function resize() {
-                overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-            }
-
-            window.onResize(resize);
-            resize();
-        },
-
-        on: function() {
-            this.overlay.style.display = 'block';
-        },
-
-        off: function() {
-            this.overlay.style.display = 'none';
-        }
-    });
-
     This.PopupIndicator = Object.subclass({
         initialize: function(message, description, buttonText, iconPath, panel) {
             this.message = message;
@@ -281,7 +241,7 @@
             var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
 
             var pointerIndicator = new This.PointerIndicator(container);
-            this.busy = new This.OverlappingStateProtector(configuration.blockUI ? new This.MuxIndicator(pointerIndicator, new This.OverlayIndicator(configuration)) : pointerIndicator);
+            this.busy = new This.OverlappingStateProtector(pointerIndicator);
             this.sessionExpired = this.sessionExpiredRedirect ? this.sessionExpiredRedirect : new This.PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, this);
             this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new This.PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, this);
             this.serverError = new This.PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, this);
@@ -326,9 +286,7 @@
             var connectionWorking = new Ice.Status.ElementIndicator(workingID, indicators);
             var connectionIdle = new Ice.Status.ElementIndicator(idleID, indicators);
             var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
-            var busyElementIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
-            var busyIndicator = defaultStatusManager.configuration.blockUI ?
-                                new Ice.Status.MuxIndicator(busyElementIndicator, new Ice.Status.OverlayIndicator(defaultStatusManager.configuration)) : busyElementIndicator;
+            var busyIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
 
             this.busy = new Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
             this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);
