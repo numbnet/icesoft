@@ -1,6 +1,10 @@
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.http.common.*;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.FileLocator;
+import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.CacheControlledServer;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
@@ -19,6 +23,7 @@ public class ResourceServer implements Server {
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/.*\\.js$", new CacheControlledServer(new ServeJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/css\\/.*", new CacheControlledServer(new ServeCSSResource(mimeTypeMatcher)));
         pathDispatcher.dispatchOn(".*xmlhttp\\/blank$", new CacheControlledServer(new ServeBlankPage()));
+        pathDispatcher.dispatchOn(".*xmlhttp\\/wait\\-cursor$", new CacheControlledServer(new WaitCursorPage()));
         //match any path that does not point to WEB-INF directory
         pathDispatcher.dispatchOn("^(?!.*WEB\\-INF.*).*$", new FileServer(fileLocator, mimeTypeMatcher));
         dispatcher = new CompressingServer(pathDispatcher, mimeTypeMatcher, configuration);
