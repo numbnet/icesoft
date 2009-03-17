@@ -75,7 +75,7 @@ Ice.dataTable.DataTable = Class.create({
         if (innerTable){
           var innerTableWidth = innerTable.getWidth(); 
           if (Prototype.Browser.IE) { 
-            innerTable.setStyle({width:body.clientWidth  + "px"});
+//            innerTable.setStyle({width:body.clientWidth  + "px"});
           }
         }
 
