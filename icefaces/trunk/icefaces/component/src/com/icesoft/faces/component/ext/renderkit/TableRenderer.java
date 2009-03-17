@@ -717,6 +717,15 @@ public class TableRenderer
                     }
                 }
                 // Art: }
+                // Art: added {
+                // disable text selection
+                if (rowSelector.getClickListener() != null 
+                    || rowSelector.getClickAction() != null 
+                    || rowSelector.isEnhancedMultiple()) {
+                        root.setAttribute("onselectstart", "return false;"); // IE
+                        root.setAttribute("onmousedown", "return false;"); // others
+                }
+                // Art: }
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
