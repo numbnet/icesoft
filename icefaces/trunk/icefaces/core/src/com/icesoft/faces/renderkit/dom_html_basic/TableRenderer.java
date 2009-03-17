@@ -108,7 +108,7 @@ public class TableRenderer extends DomBasicRenderer {
                                "overflow:auto;width:100%;"+ (height!=null&&height.length()>0?"height:" + height + ";":""));
             
             Element bodytable = domContext.createElement("table");
-            bodytable.setAttribute("style","width:100%;");
+//            bodytable.setAttribute("style","width:100%;");
             bodyDiv.appendChild(bodytable);
             mainDiv.appendChild(bodyDiv);
             Object scollFooter = uiComponent.getAttributes().get("scrollFooter");
