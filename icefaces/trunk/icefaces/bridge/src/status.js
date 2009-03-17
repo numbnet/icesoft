@@ -176,10 +176,11 @@
                 var overlay;
                 if (/MSIE/.test(navigator.userAgent)) {
                     overlay = document.body.appendChild(document.createElement('iframe'));
-                    overlay.setAttribute('src', configuration.connection.context.current + "xmlhttp/blank");
+                    overlay.setAttribute('src', configuration.connection.context.current + "xmlhttp/wait-cursor");
                     overlay.setAttribute('frameborder', '0');
                 } else {
                     overlay = document.body.appendChild(document.createElement('div'));
+                    overlay.style.cursor = 'wait';
                 }
                 overlay.id = id;
 
@@ -194,7 +195,6 @@
                 overlayStyle.left = '0';
                 overlayStyle.opacity = '0';
                 overlayStyle.filter = 'alpha(opacity=0)';
-                overlayStyle.cursor = 'wait';
                 resize();
             });
         },
