@@ -145,16 +145,17 @@ public class MessagePipeline {
         }
     }
 
-    void publish() {
+    void publish() {                  
         synchronized (messageLock) {
             try {
                 messageServiceClient.getMessageServiceAdapter().
                     publish(message, topicName);
                 publishTask = null;
             } catch (MessageServiceException exception) {
-                if (LOG.isErrorEnabled()) {
-                    // todo: add a meaningful message
-                    LOG.error("", exception);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(
+                        exception.getMessage() + "\r\n" +
+                        "Unable to publish message:\r\n\r\n" + message);
                 }
             } finally {
                 message = null;
