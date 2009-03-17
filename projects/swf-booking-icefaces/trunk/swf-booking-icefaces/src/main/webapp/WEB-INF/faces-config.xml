@@ -4,14 +4,19 @@
   "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
 
 <faces-config>
-	<application>
-                <view-handler>
-                        com.sun.facelets.FaceletViewHandler
-                </view-handler>
-		<view-handler>
-			com.icesoft.faces.facelets.D2DFaceletViewHandler
-		</view-handler>
-		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
-	</application>
+    <application>
+        <view-handler>
+            com.sun.facelets.FaceletViewHandler
+        </view-handler>
+        <view-handler>
+            com.icesoft.faces.facelets.D2DFaceletViewHandler
+        </view-handler>
+        <!-- -->
+        <view-handler>
+            org.springframework.faces.webflow.FlowViewHandler
+        </view-handler>
+
+        <variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+    </application>
 
 </faces-config>
