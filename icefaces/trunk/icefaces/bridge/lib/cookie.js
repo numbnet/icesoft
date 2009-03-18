@@ -1,8 +1,9 @@
 [ Ice ].as(function(This) {
     This.Cookie = This.Parameter.Association.subclass({
-        initialize: function(name, value) {
+        initialize: function(name, value, path) {
             this.name = name;
             this.value = value || '';
+            this.path = path || '/';
             this.save();
         },
 
@@ -17,7 +18,7 @@
         },
 
         save: function() {
-            document.cookie = this.name + '=' + this.value;
+            document.cookie = this.name + '=' + this.value + ';path=' + this.path;
             return this;
         },
 
@@ -30,7 +31,7 @@
         },
 
         remove: function() {
-            document.cookie = this.name + '=0; expires=' + (new Date).toGMTString();
+            document.cookie = this.name + '=0; path=' + this.path + '; expires=' + (new Date).toGMTString();
         }
     });
 

@@ -206,7 +206,7 @@
             }
 
             function shouldEstablishBlockingConnection() {
-                return !Cookie.exists('bconn') || !Cookie.lookup('bconn').value.startsWith(sessionID);
+                return !Cookie.exists('bconn') || Cookie.lookup('bconn').value == '-';
             }
 
             function offerCandidature() {
