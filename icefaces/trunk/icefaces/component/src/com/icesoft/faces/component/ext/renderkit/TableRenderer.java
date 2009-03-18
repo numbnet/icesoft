@@ -722,8 +722,11 @@ public class TableRenderer
                 if (rowSelector.getClickListener() != null 
                     || rowSelector.getClickAction() != null 
                     || rowSelector.isEnhancedMultiple()) {
+                    tr.setAttribute("onmousedown", "return Ice.preventTextSelection(event);");
+                    /*
                         root.setAttribute("onselectstart", "return false;"); // IE
                         root.setAttribute("onmousedown", "return false;"); // others
+                    */
                 }
                 // Art: }
             }
