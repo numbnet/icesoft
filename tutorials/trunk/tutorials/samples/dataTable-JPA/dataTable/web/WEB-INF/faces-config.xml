@@ -48,17 +48,6 @@
     </managed-bean>
 
     <managed-bean>
-        <description>
-            Used to notify sessions of dirty data
-        </description>
-        <managed-bean-name>dirtyDataController</managed-bean-name>
-        <managed-bean-class>
-            com.icesoft.icefaces.samples.datatable.ui.DirtyDataController
-        </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
         <managed-bean-name>sessionBean</managed-bean-name>
         <managed-bean-class>
             com.icesoft.icefaces.samples.datatable.ui.SessionBean
@@ -67,10 +56,6 @@
         <managed-property>
             <property-name>renderManager</property-name>
             <value>#{renderManager}</value>
-        </managed-property>
-        <managed-property>
-            <property-name>dirtyDataController</property-name>
-            <value>#{dirtyDataController}</value>
         </managed-property>
     </managed-bean>
 

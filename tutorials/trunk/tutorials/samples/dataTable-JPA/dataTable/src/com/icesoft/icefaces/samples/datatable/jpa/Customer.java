@@ -213,6 +213,6 @@ public class Customer implements java.io.Serializable {
 
     public void setCreditlimit(Double creditlimit) {
         this.creditlimit = creditlimit;
-	}
+    }
 
 }

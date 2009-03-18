@@ -120,6 +120,6 @@ public class CustomerBean {
         tempcontactfirstname = customer.getContactfirstname();
         tempcontactlastname = customer.getContactlastname();
         expanded = !expanded;
-	}
+    }
 
 }
