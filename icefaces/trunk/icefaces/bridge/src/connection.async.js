@@ -134,12 +134,18 @@
                 };
             };
 
+            function registeredSessions() {
+                return Cookie.lookup('ice.sessions').loadValue().split(' ').collect(function(s) {
+                    return s.split('#')[0];
+                });
+            }
+
             this.connect = function() {
                 this.logger.debug("closing previous connection...");
                 this.listener.close();
                 this.logger.debug("connect...");
                 var query = new Query();
-                window.sessions.each(function(sessionID) {
+                registeredSessions().each(function(sessionID) {
                     query.add('ice.session', sessionID);
                 });
                 this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
