@@ -48,6 +48,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import java.lang.reflect.Method;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -115,8 +116,15 @@ public class DOMResponseWriter extends ResponseWriter {
     {
         document = DOCUMENT_BUILDER.newDocument();
         if (!isDOMChecking) {
-            if (document instanceof com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl) {
-                ((com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl) document).setErrorChecking(false);
+            Method setErrorCheckingMethod = null;
+            try {
+                setErrorCheckingMethod = document.getClass().getMethod("setErrorChecking",
+                                                                     new Class[] { boolean.class } );
+                setErrorCheckingMethod.invoke(document, new Object[] {Boolean.FALSE});
+            } catch (Exception e)  {
+                if (log.isDebugEnabled())  {
+                    log.debug("DOM error checking not disabled ", e);
+                }
             }
         }
     }
