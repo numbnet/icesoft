@@ -1026,8 +1026,12 @@ public abstract class PagedListDataModel<T> extends DataModel {
       will create the OnDemandRenderer if the name is not found).  After the OnDemandRenderer is created or retrieved, the
       SessionBean Renderable is added to the Customer render group.  The SessionBean implements Renderable, so its member
       PersistentFacesState will ensure it receives a push from the server when a render call is made to this render group.
+      </p>
+      <p>
       After the commit button is pressed in the GUI and a successful update is performed, a render call is made to the
-      updated Customer's render group.  Please consult the ICEfaces documentation for more information on the rendering api.
+      updated Customer's render group.  At this point getState() will be called on all the Renderables in that group, so we
+      mark the data as dirty in the getState() method to ensure these views will fetch fresh data from the database, before
+      rendering.  Please consult the ICEfaces documentation for more information on the rendering api.
       </p>
       <p>
       The relevant code from SessionBean:
@@ -1037,7 +1041,14 @@ public abstract class PagedListDataModel<T> extends DataModel {
     private RenderManager renderManager;
     private PersistentFacesState state = PersistentFacesState.getInstance();
 
+    /**
+     * This method is called when a render call is made from the server.  Render
+     * calls are only made to views containing an updated record. The data is
+     * marked as dirty to trigger a fetch of the updated record from the
+     * database before rendering takes place.
+     */
     public PersistentFacesState getState() {
+        onePageDataModel.setDirtyData();
         return state;
     }
 
@@ -1081,60 +1092,17 @@ public abstract class PagedListDataModel<T> extends DataModel {
     }
 
     /**
-     * Commit updates Customer data to the database, marks the data as dirty in
-     * all SessionBeans viewing the Customer and requests a render of those
-     * views so they will be refreshed with the updated data.
+     * Commit updates Customer data to the database and requests a render of views
+     * containing the Customer data so they will be refreshed with the update.
      */
     public void commit(Customer customer){
         EntityManagerHelper.beginTransaction();
         CUSTOMERDAO.update(customer);
         EntityManagerHelper.commit();
-        dirtyDataController.setOtherSessionsDirtyData(customer);
         renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()).requestRender();
     }
       </pre>
-      <p>
-      The dirtyDataController is a helper class used to mark other sessions viewing the updated Customer data as dirty,
-      so those dataTables will fetch the new data before rendering.  DirtyDataController:
-      </p>
-      <pre>
-public class DirtyDataController {
 
-    // Used to trigger rendering in the other session ui's
-    private static final ArrayList<SessionBean> CURRENT_SESSIONS = new ArrayList<SessionBean>();
-
-    public static ArrayList<SessionBean> getCURRENT_SESSIONS() {
-        return CURRENT_SESSIONS;
-    }
-
-    public void setOtherSessionsDirtyData(Customer customer){
-        for(SessionBean CURRENT_SESSION : CURRENT_SESSIONS){
-            List<CustomerBean> sessionView = CURRENT_SESSIONS.get(i).getUiCustomerBeans();
-            for(CustomerBean aSessionView : sessionView){
-                if(aSessionView.getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
-                    CURRENT_SESSION.getOnePageDataModel().setDirtyData();
-                    break;
-                }
-            }
-        }
-    }
-}
-      </pre>
-      <p>
-      DirtyDataController related code in the SessionBean:
-      </p>
-      <pre>
-    // Used to inform other sessions of dirtyData
-    private DirtyDataController dirtyDataController;
-
-    /**
-     * This method is called from faces-config.xml with each new session.
-     */
-    public void setDirtyDataController(DirtyDataController dirtyDataController){
-        this.dirtyDataController = dirtyDataController;
-        DirtyDataController.getCURRENT_SESSIONS().add(this);
-    }
-      </pre>
       <p>
       The faces-config shows our managed beans and how they are chained together:
       </p>
@@ -1151,17 +1119,6 @@ public class DirtyDataController {
 &lt;/managed-bean&gt;
 
 &lt;managed-bean&gt;
-    &lt;description&gt;
-        Used to notify sessions of dirty data
-    &lt;/description&gt;
-    &lt;managed-bean-name&gt;dirtyDataController&lt;/managed-bean-name&gt;
-    &lt;managed-bean-class&gt;
-        com.icesoft.icefaces.samples.datatable.ui.DirtyDataController
-    &lt;/managed-bean-class&gt;
-    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
-&lt;/managed-bean&gt;
-
-&lt;managed-bean&gt;
     &lt;managed-bean-name&gt;sessionBean&lt;/managed-bean-name&gt;
     &lt;managed-bean-class&gt;
         com.icesoft.icefaces.samples.datatable.ui.SessionBean
@@ -1170,11 +1127,6 @@ public class DirtyDataController {
     &lt;managed-property&gt;
         &lt;property-name&gt;renderManager&lt;/property-name&gt;
         &lt;value&gt;#{renderManager}&lt;/value&gt;
-    &lt;/managed-property&gt;
-            &lt;managed-property&gt;
-        &lt;property-name&gt;dirtyDataController&lt;/property-name&gt;
-        &lt;value&gt;#{dirtyDataController}&lt;/value&gt;
-    &lt;/managed-property&gt;
 &lt;/managed-bean&gt;
       </pre>
       <a name="four">&nbsp;</a>
@@ -1194,7 +1146,6 @@ public class DirtyDataController {
     public void dispose() {
         // Remove from existing Customer render groups.
         leaveRenderGroups();
-        DirtyDataController.getCURRENT_SESSIONS().remove(this);
     }
       </pre>
       <p>
