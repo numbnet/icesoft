@@ -108,8 +108,9 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 
     /**
      * This method is called when a render call is made from the server.  Render
-     * calls are only made to views containing an updated record.  Therefore,
-     * the data is marked as dirty to trigger a fetch from the database.
+     * calls are only made to views containing an updated record. The data is
+     * marked as dirty to trigger a fetch of the updated record from the
+     * database before rendering takes place.
      */
     public PersistentFacesState getState() {
         onePageDataModel.setDirtyData();
@@ -166,9 +167,8 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     }
 
     /**
-     * Commit updates Customer data to the database, marks the data as dirty in
-     * all SessionBeans viewing the Customer and requests a render of those
-     * views so they will be refreshed with the updated data.
+     * Commit updates Customer data to the database and requests a render of
+     * views containing the Customer data so they will be refreshed with the update.
      */
     public void commit(Customer customer) {
         EntityManagerHelper.beginTransaction();
