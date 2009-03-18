@@ -700,7 +700,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                                    "Class[] clickListenerArgs= new Class[]{com.icesoft.faces.component.ext.ClickEvent.class};",
+                                    "Class[] clickListenerArgs= new Class[]{com.icesoft.faces.component.ext.ClickActionEvent.class};", // Art: changed
                                     true);
                     writer.emitExpression(
                             "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("

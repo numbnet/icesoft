@@ -319,8 +319,7 @@ public class RowSelector extends UIPanel {
         String clickedRowIndex = (String) requestMap.get(clickedRowParameter);
         String clickCount = (String) requestMap.get(clickCountParameter);
         
-        ClickEvent clickEvent = null;
-        ClickActionEvent clickActionEvent = null;
+        ClickActionEvent clickActionEvent = null; // Art: replaced
         RowSelector rowSelector = (RowSelector) this;
         boolean skipSelection = false;
         
@@ -344,12 +343,9 @@ public class RowSelector extends UIPanel {
                 }
                 try {
                     if (rowClicked) {
-                        if (rowSelector.getClickListener() != null) {
-                            clickEvent = createClickEvent(rowSelector, row, Integer.parseInt(clickCount));
-                        }
-                        if (rowSelector.getClickAction() != null) {
-                            clickActionEvent = createClickActionEvent(rowSelector);
-                        }
+                        if (rowSelector.getClickListener() != null || rowSelector.getClickAction() != null) {
+                            clickActionEvent = createClickActionEvent(rowSelector, row, Integer.parseInt(clickCount));
+                        } // Art: replaced
                         if (Integer.parseInt(clickCount) == 2 && getValue().booleanValue()) {
                             skipSelection = true;
                         }
@@ -364,13 +360,10 @@ public class RowSelector extends UIPanel {
         // Art: four possible cases
         if (selectedRows == null || selectedRows.trim().length() == 0 || skipSelection) { // Art: modified
             // Art: added {
-            // no need to associate them with a RowSelectorEvent
-            if (null != clickEvent) {
-                rowSelector.queueEvent(clickEvent);
-            }
+            // no need to associate with a RowSelectorEvent
             if (null != clickActionEvent) {
                 rowSelector.queueEvent(clickActionEvent);
-            }
+            } // Art: replaced
             // Art: }
             return;
         }
@@ -405,17 +398,17 @@ public class RowSelector extends UIPanel {
                 if (isEnhancedMultiple()) {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
-                        _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
+                        _queueEvent(rowSelector, rowIndex, b, clickActionEvent); // Art: modified, replaced
                         return;
                     }
                     if (isCtrlKey && !isShiftKey) {
                         b = !b;
-                        _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
+                        _queueEvent(rowSelector, rowIndex, b, clickActionEvent); // Art: modified, replaced
                         return;
                     }
                 } else {
                     b = !b;
-                    _queueEvent(rowSelector, rowIndex, b, clickEvent, clickActionEvent); // Art: modified
+                    _queueEvent(rowSelector, rowIndex, b, clickActionEvent); // Art: modified, replaced
                     // ICE-3440
                     if (!getMultiple().booleanValue()) {
                         if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
@@ -525,10 +518,10 @@ public class RowSelector extends UIPanel {
             }
         }
         // Art: added {
-        if (event instanceof ClickEvent && clickListener != null) {
+        if (event instanceof ClickActionEvent && clickListener != null) { // Art: replaced
 
             clickListener.invoke(getFacesContext(),
-                                     new Object[]{(ClickEvent) event});
+                                     new Object[]{(ClickActionEvent) event}); // Art: replaced
 
         }        
         if(event instanceof ClickActionEvent && clickAction != null){
@@ -630,7 +623,7 @@ public class RowSelector extends UIPanel {
     }
     
     void _queueEvent(RowSelector rowSelector, int rowIndex, boolean isSelected, 
-                        ClickEvent clickEvent, ClickActionEvent clickActionEvent) { // Art: modified
+                        ClickActionEvent clickActionEvent) { // Art: modified, replaced
         rowSelector.setValue(new Boolean(isSelected));
         if (isSelected){
             selectedRowsList.add(new Integer(rowIndex));
@@ -647,10 +640,6 @@ public class RowSelector extends UIPanel {
             rowSelector.queueEvent(evt);
             // Art: added {
             // add reference to RowSelectorEvent
-            if (null != clickEvent) {
-                clickEvent.setRowSelectorEvent(evt);
-                rowSelector.queueEvent(clickEvent);
-            }
             if (null != clickActionEvent) {
                 clickActionEvent.setRowSelectorEvent(evt);
                 rowSelector.queueEvent(clickActionEvent);
@@ -679,8 +668,8 @@ public class RowSelector extends UIPanel {
     }
     
     // Art: added {
-    private ClickEvent createClickEvent(RowSelector rowSelector, int rowIndex, int clickCount) {
-        ClickEvent evt = new ClickEvent(rowSelector, rowIndex, clickCount);
+    private ClickActionEvent createClickActionEvent(RowSelector rowSelector, int rowIndex, int clickCount) {
+        ClickActionEvent evt = new ClickActionEvent(rowSelector, rowIndex, clickCount);
         if (getImmediate().booleanValue()) {
             evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
         }
@@ -690,15 +679,7 @@ public class RowSelector extends UIPanel {
         return evt;
     }
     
-    private ClickActionEvent createClickActionEvent(RowSelector rowSelector) {
-        ClickActionEvent evt = new ClickActionEvent(rowSelector);
-        if (getImmediate().booleanValue()) {
-            evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-        }
-        else {
-            evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
-        }
-        return evt;
-    }
+    // Art: replaced
+    
     // Art: }
 }
