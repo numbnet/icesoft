@@ -27,13 +27,13 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
                 if (factory == null) {
                     // checking if GlassFish ARP is available...
                     boolean isGlassFishARPAvailable = isGlassFishARPAvailable();
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("GlassFish ARP available: " + isGlassFishARPAvailable);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("GlassFish ARP available: " + isGlassFishARPAvailable);
                     }
                     // checking if Jetty ARP is available...
                     boolean isJettyARPAvailable = isJettyARPAvailable();
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Jetty ARP available: " + isJettyARPAvailable);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Jetty ARP available: " + isJettyARPAvailable);
                     }
                     if (isGlassFishARPAvailable && configuration.getAttributeAsBoolean("useARP", isGlassFishARPAvailable)) {
                         LOG.info("Adapting to GlassFish ARP environment");
