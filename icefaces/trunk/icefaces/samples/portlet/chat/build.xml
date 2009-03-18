@@ -48,7 +48,7 @@
         <build.portlet.war web.xml="conf/${general.xml}"/>
     </target>
     -->
-    <target name="build.portlet.jboss4.2.portal.war" description="build portlet application for JBoss4.2 portal without AHS">
+    <target name="build.portlet.jboss4.2.portal.war" description="build portlet application for JBoss4.2 portal">
 
         <antcall target="build.portlet" >
             <param name="chat.xml" value="./conf/${general.xml}"/>
@@ -57,7 +57,7 @@
         </antcall>
     </target>
 
-    <target name="build.portlet.liferay.jboss4.2.war" description="build a portlet application for Liferay JBoss4.2 without AHS">
+    <target name="build.portlet.liferay.jboss4.2.war" description="build a portlet application for Liferay JBoss4.2">
 
         <antcall target="build.portlet">
             <param name="chat.xml" value="./conf/${general.xml}"/>
@@ -69,7 +69,7 @@
     <target name="build.portlet" depends="portlet.compile">
         <build.portlet.war web.xml="${chat.xml}"/>
     </target>
-    <target name="build.portlet.liferay.tomcat6.war" description="build a portlet application for Liferay Tomcat6.x without AHS">
+    <target name="build.portlet.liferay.tomcat6.war" description="build a portlet application for Liferay Tomcat6.x">
 
         <antcall target="build.portlet">
             <param name="chat.xml" value="./conf/${general.xml}"/>
@@ -77,7 +77,7 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet.liferay.tomcat5.war" description="build a portlet application for Liferay Tomcat5.x without AHS">
+    <target name="build.portlet.liferay.tomcat5.war" description="build a portlet application for Liferay Tomcat5.x">
         <!--
         <property name="portlet" value="true"/>
         -->
@@ -87,7 +87,7 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet.liferay.jboss4.0.war" description="build a portlet application for Liferay JBoss4.0.x without AHS">
+    <target name="build.portlet.liferay.jboss4.0.war" description="build a portlet application for Liferay JBoss4.0.x">
         <!--
         <property name="portlet" value="true"/>
         -->
@@ -104,7 +104,7 @@
         <antcall target="help"/>
     </target>
     -->
-    <target name="build.portlet.liferay.glassfishv2.war" description="portlet application for Liferay Glassfish V2 without AHS">
+    <target name="build.portlet.liferay.glassfishv2.war" description="portlet application for Liferay Glassfish V2">
         <antcall target="build.portlet">
             <param name="chat.xml" value="./conf/${general.xml}"/>
             <param name="jsf12" value=""/>
