@@ -296,6 +296,8 @@ public class Parser {
                 }
 
                 // now replace all children of viewTag with those of the fake root
+                //do not add viewWire as its own child
+                rootChildren.remove(viewWire);
                 viewWire.getChildren().clear();
                 viewWire.getChildren().addAll(rootChildren);
 
