@@ -35,12 +35,54 @@ window.logger = new Ice.Log.Logger([ 'window' ]);
 window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
 
 [ Ice.Community ].as(function(This) {
+    var registerSession = function(sessionID) {
+        try {
+            var sessionsCookie = Ice.Cookie.lookup('ice.sessions');
+            var sessions = sessionsCookie.loadValue().split(' ');
+            var alreadyRegistered = function(s) {
+                return s.startsWith(sessionID);
+            };
+            var session = sessions.detect(alreadyRegistered);
+            if (session) {
+                sessions = sessions.reject(alreadyRegistered);
+                var occurences = session.split('#')[1].asNumber() + 1;
+                sessions.push(sessionID + '#' + occurences);
+            } else {
+                sessions.push(sessionID + '#' + 1);
+            }
+            sessionsCookie.saveValue(sessions.join(' '));
+        } catch (e) {
+            new Ice.Cookie('ice.sessions', sessionID + '#' + 1);
+        }
+    };
+
+    var deregisterSession = function(sessionID) {
+        var sessionsCookie = Ice.Cookie.lookup('ice.sessions');
+        var sessions = sessionsCookie.loadValue().split(' ');
+        sessionsCookie.saveValue(sessions.inject([], function(tally, s) {
+            var entry = s.split('#');
+            var id = entry[0];
+            var occurences = entry[1].asNumber();
+            if (id == sessionID) {
+                --occurences;
+            }
+            if (occurences > 0) {
+                tally.push(entry[0] + '#' + occurences);
+            }
+            return tally;
+        }).join(' '));
+    };
+
     var views = window.views = window.views ? window.views : [];
     var registerView = function(session, view) {
+        registerSession(session);
         views.push(new Ice.Parameter.Association(session, view));
     };
 
-    var deregisterAllViews = function() {
+    var deregisterWindowViews = function() {
+        views.each(function(v) {
+            deregisterSession(v.name);
+        });
         views.clear();
     };
 
@@ -61,20 +103,21 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
         }
     };
 
-    var delistView = function(session, view) {
+    var deregisterView = function(session, view) {
+        deregisterSession(session);
         views = views.reject(function(i) {
             return i.name == session && i.value == view;
         });
     };
 
     var disposeView = function(session, view) {
-        delistView(session, view);
+        deregisterView(session, view);
         sendDisposeViews([new Ice.Parameter.Association(session, view)]);
     };
 
     var disposeWindowViews = function() {
         sendDisposeViews(views);
-        views.clear();
+        deregisterWindowViews();
     };
 
     window.onBeforeUnload(disposeWindowViews);
@@ -124,7 +167,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
                 var url = window.location.href;
-                deregisterAllViews();
+                deregisterWindowViews();
                 if (url.contains('rvn=')) {
                     window.location.reload();
                 } else {
@@ -165,7 +208,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
                 //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
-                delistView(sessionID, viewID);
+                deregisterView(sessionID, viewID);
                 dispose();
                 sessionExpiredListeners.broadcast();
             });

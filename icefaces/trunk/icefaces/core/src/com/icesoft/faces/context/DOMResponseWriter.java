@@ -48,7 +48,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import java.lang.reflect.Method;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -61,6 +60,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -119,10 +119,10 @@ public class DOMResponseWriter extends ResponseWriter {
             Method setErrorCheckingMethod = null;
             try {
                 setErrorCheckingMethod = document.getClass().getMethod("setErrorChecking",
-                                                                     new Class[] { boolean.class } );
-                setErrorCheckingMethod.invoke(document, new Object[] {Boolean.FALSE});
-            } catch (Exception e)  {
-                if (log.isDebugEnabled())  {
+                        new Class[]{boolean.class});
+                setErrorCheckingMethod.invoke(document, new Object[]{Boolean.FALSE});
+            } catch (Exception e) {
+                if (log.isDebugEnabled()) {
                     log.debug("DOM error checking not disabled ", e);
                 }
             }
@@ -370,8 +370,7 @@ public class DOMResponseWriter extends ResponseWriter {
         ResourceBundle localizedBundle = bridgeMessageResolver.bundleFor(context.getViewRoot().getLocale());
         //todo: build startup script only once on aplication startup
         String startupScript =
-                "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
-                        "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
+                "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "true") + "," +
