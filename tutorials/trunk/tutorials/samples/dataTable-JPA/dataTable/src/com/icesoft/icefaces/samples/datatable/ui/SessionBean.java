@@ -51,8 +51,7 @@ import java.util.List;
 /**
  * SessionBean is our web application controller class.  This class makes calls
  * to the JPA layer to maintain a list of records displayed by a particular user
- * during his/her session.  It can also mark other sessions data as dirty
- * through a reference to the DirtyDataController.
+ * during his/her session.
  *
  * SessionBean extends DataSource which holds a reference to the dataTable
  * DataModel and dataTable sorting utility methods.
@@ -77,8 +76,6 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 
     // Current items in ui
     private List<CustomerBean> uiCustomerBeans = new ArrayList<CustomerBean>(pageSize);
-    // Used to inform other sessions of dirtyData
-    private DirtyDataController dirtyDataController;
 
     public SessionBean() {
         // default sort header, sorting is performed during database query
@@ -109,7 +106,13 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         return CONTACTLASTNAME;
     }
 
+    /**
+     * This method is called when a render call is made from the server.  Render
+     * calls are only made to views containing an updated record.  Therefore,
+     * the data is marked as dirty to trigger a fetch from the database.
+     */
     public PersistentFacesState getState() {
+        onePageDataModel.setDirtyData();
         return state;
     }
 
@@ -152,14 +155,6 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     }
 
     /**
-     * This method is called from faces-config.xml with each new session.
-     */
-    public void setDirtyDataController(DirtyDataController dirtyDataController) {
-        this.dirtyDataController = dirtyDataController;
-        DirtyDataController.getCURRENT_SESSIONS().add(this);
-    }
-
-    /**
      * Bound to DataTable value in the ui.
      */
     public DataModel getData() {
@@ -179,7 +174,6 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         EntityManagerHelper.beginTransaction();
         CUSTOMERDAO.update(customer);
         EntityManagerHelper.commit();
-        dirtyDataController.setOtherSessionsDirtyData(customer);
         renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()).requestRender();
     }
 
@@ -259,7 +253,6 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     public void dispose() {
         // Remove from existing Customer render groups.
         leaveRenderGroups();
-        DirtyDataController.getCURRENT_SESSIONS().remove(this);
-	}
+    }
 
 }
