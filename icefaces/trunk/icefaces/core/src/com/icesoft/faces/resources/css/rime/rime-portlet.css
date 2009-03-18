@@ -1656,6 +1656,8 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceMnuItmLabel {
+    padding-top: 0;
+    padding-bottom: 0;
     padding-left: 7px;
     font-weight: normal;
 }
@@ -1668,6 +1670,10 @@ input.iceSelInpDateClosePopup {
 
 .iceMnuItmImage, .iceMnuBarItemImage, .iceMnuBarVrtItemImage {
     display: inline;
+}
+
+.iceMnuItmImage, .iceMnuItmLabel {
+    vertical-align: middle;
 }
 
 .iceMnuBarSubMenuInd {
