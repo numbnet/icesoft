@@ -231,7 +231,17 @@ public class MainServlet extends HttpServlet {
             testMessageService();
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to adapt to Push Server environment.");
+                    LOG.warn(
+                        "\r\n" +
+                        "\r\n" +
+                        "Push Server not found!  Multiple asynchronous (Ajax " +
+                            "Push) applications accessed\r\n" +
+                        "from the same host will cause communication " +
+                            "failures due to HTTP 1.1 connection\r\n" +
+                        "limits.\r\n" +
+                        "\r\n" +
+                        "Deploy the Push Server to support multiple " +
+                            "asynchronous applications.\r\n");
                 }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
@@ -272,6 +282,19 @@ public class MainServlet extends HttpServlet {
                 testMessageService();
             }
             if (messageServiceClient == null) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn(
+                        "\r\n" +
+                        "\r\n" +
+                        "Push Server not found!  Multiple asynchronous (Ajax " +
+                            "Push) applications accessed\r\n" +
+                        "from the same host will cause communication " +
+                            "failures due to HTTP 1.1 connection\r\n" +
+                        "limits.\r\n" +
+                        "\r\n" +
+                        "Deploy the Push Server to support multiple " +
+                            "asynchronous applications.\r\n");
+                }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
                 }
