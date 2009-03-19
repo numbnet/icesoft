@@ -140,8 +140,8 @@
                     this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         This.FormPost(request);
                         request.on(Connection.OK, this.lock.release);
-                        request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.BadResponse, this.badResponseCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
                         request.on(Connection.OK, Connection.Close);

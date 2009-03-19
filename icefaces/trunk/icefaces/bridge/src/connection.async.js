@@ -294,8 +294,8 @@
                     this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         Connection.FormPost(request);
                         request.on(Connection.OK, this.lock.release);
-                        request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
                         request.on(Connection.OK, Connection.Close);
                         this.onSendListeners.broadcast();
