@@ -1,4 +1,4 @@
-/*
+/* garpinc 180dr2modified
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
@@ -159,26 +159,35 @@ public class AxisChart extends AbstractChart {
 				maxLength = data[index].length;
 			}
 		}
+		if (maxLength == 0) {
+			// for some reason you have to have 2 points at least in a dataset otherwise
+			// this statement will get an ArrayIndexOutOfBoundsException in ScatterPlotChart.java
+			// Line2D.Float line = new Line2D.Float( xAxisCoordinates[ 0 ][ 0 ],
+			//		  yAxisCoordinates[ 0 ][ 0 ],
+			//		  xAxisCoordinates[ 0 ][ 1 ],
+			//		  yAxisCoordinates[ 0 ][ 1 ] );
+			maxLength = 2;
+		}
 		for (int index = 0; index < data.length; index++) {
-	
+			Point2D.Double[] points = new Point2D.Double[ maxLength ];
+			int length = 0;
 			if (data[index].length != 0) {
-				int length = (data[index].length)/2;
-				Point2D.Double[] points = new Point2D.Double[ maxLength ];
-				Point2D.Double lastPoint = null;
+				length = (data[index].length)/2;
+
 				for( int x = 0; x < data[index].length; x+=2 )
 				{
 					
 					points[ x/2] = ScatterPlotDataSet.createPoint2DDouble();
 					points[ x/2 ].setLocation( data[index][x], data[index][x+1] );
-					lastPoint = points[ x / 2 ];
 				}
-				for (int i = length; i < maxLength; i++) {
-					points[ i ] = lastPoint;	
-				}
-		
-				
-				scatterPlotDataSet.addDataPoints( points, getPaints(outputChart.getColors())[index], getAsLabelsArray(outputChart.getLabels())[index] );
 			}
+			for (int i = length; i < maxLength; i++) {
+				points[ i ] = ScatterPlotDataSet.createPoint2DDouble();
+				points[ i ].setLocation( Double.NaN, Double.NaN );	
+			}
+	
+			scatterPlotDataSet.addDataPoints( points, getPaints(outputChart.getColors())[index], getAsLabelsArray(outputChart.getLabels())[index] );
+
 		}
 		return scatterPlotDataSet;
 	}
@@ -194,17 +203,18 @@ public class AxisChart extends AbstractChart {
 				outputChart.getYaxisTitle(),
 				outputChart.getChartTitle() );
 
-		String[] ranges = getAsXaxisLabelsArray(outputChart.getXaxisLabels());
+		double[] ranges = getAsDoubleArray(outputChart.getXaxisLabels());
 
 		DataAxisProperties xAxisProperties = new DataAxisProperties();
-		xAxisProperties.setUserDefinedScale( Double.valueOf(ranges[0]).doubleValue(), Double.valueOf(ranges[1]).doubleValue() );
-		xAxisProperties.setNumItems( Integer.valueOf(ranges[2]).intValue() );
-		xAxisProperties.setRoundToNearest( Integer.valueOf(ranges[3]).intValue() );
+		
+		xAxisProperties.setUserDefinedScale( ranges[0], ranges[1] );
+		xAxisProperties.setNumItems( (int) ranges[2] );
+		xAxisProperties.setRoundToNearest( (int) ranges[3] );
 
 		DataAxisProperties yAxisProperties = new DataAxisProperties();
-		yAxisProperties.setUserDefinedScale( Double.valueOf(ranges[4]).doubleValue(), Double.valueOf(ranges[5]).doubleValue() );
-		yAxisProperties.setNumItems( Integer.valueOf(ranges[6]).intValue() );
-		yAxisProperties.setRoundToNearest( Integer.valueOf(ranges[7]).intValue() );
+		yAxisProperties.setUserDefinedScale( ranges[4], ranges[5] );
+		yAxisProperties.setNumItems( (int) ranges[6] );
+		yAxisProperties.setRoundToNearest( (int) ranges[7] );
 
 		AxisProperties axisProperties = new AxisProperties( xAxisProperties, yAxisProperties );
 
@@ -257,7 +267,8 @@ public class AxisChart extends AbstractChart {
     private Shape[] shapes;
 
     private Shape[] getShapes(Object obj) {
-        if (obj == null && shapes == null) {
+    	// must recalulate generated shapes if data length changed
+        if (obj == null && (shapes == null || shapes.length != data.length)) {
             return shapes = getGeneratedShapes(data.length);
         } else if (obj == null && shapes != null) {
             return shapes;
