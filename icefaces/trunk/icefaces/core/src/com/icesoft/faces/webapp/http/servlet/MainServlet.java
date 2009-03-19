@@ -28,6 +28,7 @@ import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.Properties;
+import com.icesoft.util.ServerUtility;
 
 import java.io.File;
 import java.io.IOException;
@@ -146,8 +147,8 @@ public class MainServlet extends HttpServlet {
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         if (localAddress == null) {
-            localAddress = request.getLocalAddr();
-            localPort = request.getLocalPort();
+            localAddress = ServerUtility.getLocalAddr(request, context);
+            localPort = ServerUtility.getLocalPort(request, context);
         }
         try {
             currentContextPath.attach(request.getContextPath());

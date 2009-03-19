@@ -40,10 +40,12 @@ import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.http.HttpAdapter;
+import com.icesoft.util.ServerUtility;
 
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -57,8 +59,11 @@ public class PushServlet
 extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(PushServlet.class);
 
+    private String localAddress;
+    private int localPort;
     private MessageService messageService;
     private PathDispatcher pathDispatcher = new PathDispatcher();
+    private ServletContext servletContext;
 
     public void destroy() {
         super.destroy();
@@ -70,6 +75,7 @@ extends HttpServlet {
     public void init(final ServletConfig servletConfig)
     throws ServletException {
         super.init(servletConfig);
+        servletContext = servletConfig.getServletContext();
         if (LOG.isInfoEnabled()) {
             LOG.info(new ProductInfo());
         }
@@ -120,14 +126,18 @@ extends HttpServlet {
         final HttpServletRequest httpServletRequest,
         final HttpServletResponse httpServletResponse)
     throws IOException, ServletException {
-        if (messageService != null) {
-            MessageServiceAdapter adapter =
-                messageService.getMessageServiceClient().
-                    getMessageServiceAdapter();
-            if (adapter instanceof HttpAdapter) {
-                ((HttpAdapter)adapter).setLocal(
-                    httpServletRequest.getLocalAddr(),
-                    httpServletRequest.getLocalPort());
+        if (localAddress == null) {
+            localAddress =
+                ServerUtility.getLocalAddr(httpServletRequest, servletContext);
+            localPort =
+                ServerUtility.getLocalPort(httpServletRequest, servletContext);
+            if (messageService != null) {
+                MessageServiceAdapter adapter =
+                    messageService.getMessageServiceClient().
+                        getMessageServiceAdapter();
+                if (adapter instanceof HttpAdapter) {
+                    ((HttpAdapter)adapter).setLocal(localAddress, localPort);
+                }
             }
         }
         try {

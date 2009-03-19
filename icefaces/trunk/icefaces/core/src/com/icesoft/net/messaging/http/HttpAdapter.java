@@ -1,11 +1,11 @@
 package com.icesoft.net.messaging.http;
 
-import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
-import com.icesoft.faces.webapp.http.common.standard.OKHandler;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.OKHandler;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
+import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.net.messaging.AbstractMessageServiceAdapter;
 import com.icesoft.net.messaging.Message;
@@ -17,6 +17,7 @@ import com.icesoft.net.messaging.TextMessage;
 import com.icesoft.net.messaging.expression.Container;
 import com.icesoft.net.messaging.expression.Expression;
 import com.icesoft.net.messaging.expression.Or;
+import com.icesoft.util.ServerUtility;
 
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -119,7 +120,8 @@ implements MessageServiceAdapter {
                             LOG.debug("HTTP Request:\r\n\r\n" + _buffer);
                         }
                         if (request.getRemoteAddr().equals(
-                                request.getLocalAddr())) {
+                                ServerUtility.getLocalAddr(
+                                    request, servletContext))) {
 
                             Message _message =
                                 new TextMessage(

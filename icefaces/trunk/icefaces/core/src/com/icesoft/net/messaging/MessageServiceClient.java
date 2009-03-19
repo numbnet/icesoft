@@ -31,6 +31,8 @@
  */
 package com.icesoft.net.messaging;
 
+import com.icesoft.util.ServerUtility;
+
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -928,18 +930,11 @@ public class MessageServiceClient {
 
     private void setBaseMessageProperties(final ServletContext servletContext) {
         if (servletContext != null) {
-            try {
-                String _path =
-                    servletContext.getResource("/WEB-INF/web.xml").getPath();
-                int _index = _path.lastIndexOf("/", _path.lastIndexOf("/") - 1);
+            String _servletContextPath =
+                ServerUtility.getServletContextPath(servletContext);
+            if (_servletContextPath != null) {
                 baseMessageProperties.setProperty(
-                    Message.SOURCE_SERVLET_CONTEXT_PATH,
-                    _path.substring(
-                        _path.lastIndexOf("/", _index - 1) + 1, _index));
-            } catch (MalformedURLException exception) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("Failed to get servlet context path.", exception);
-                }
+                    Message.SOURCE_SERVLET_CONTEXT_PATH, _servletContextPath);
             }
         }
         try {
