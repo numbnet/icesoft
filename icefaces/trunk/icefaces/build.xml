@@ -94,6 +94,8 @@
 
     <ice:ant antfile="push-server/build.xml">
     	<target name="include.jsf"/>
+        <property name="product" value="ICEfaces Push Server" />
+        <propertyset refid="product.info"/>
     </ice:ant>
 
     <ice:subant target="tomcat6.0">
