@@ -289,10 +289,9 @@ public class ServletRequestResponse implements Request, Response {
             // This block is removable once we find out why sometimes the request
             // object appears a little corrupted.
 
-            int port = request.getRemotePort();
             String host = request.getRemoteHost();
             StringBuffer data = new StringBuffer("+ Request does not contain parameter '" + name + "' host: \n");
-            data.append("  Originator: ").append(host).append(":").append(port).append("\n");
+            data.append("  Originator: ").append(host).append("\n");
             data.append("  Path: ").append(requestURI.toString()).append("\n");
 
             Enumeration e = request.getParameterNames();
