@@ -38,6 +38,7 @@ import com.icesoft.faces.component.FileUploadComponent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.MessageUtils;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
@@ -378,9 +379,10 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 requestContextPath = externalContext.getRequestContextPath();
             }
         }
-        if (requestContextPath == null || requestContextPath.length() == 0)
-            return "./uploadHtml";
-        else
+        if (requestContextPath == null || requestContextPath.length() == 0) {
+            CommonEnvironmentRequest request = ((CommonEnvironmentRequest)context.getExternalContext().getRequest());
+            return request.getScheme() +"://"+ request.getServerName() + ":" +request.getServerPort() + "/uploadHtml";
+        } else
             return requestContextPath + "/uploadHtml";
     }
 
