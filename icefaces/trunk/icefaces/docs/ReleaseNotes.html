@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8 RC1 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8 RC2 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -43,11 +43,10 @@ font-size: 110%
 <td width="78%">
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8
-RC1
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.0-RC2
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">February
-12th, 2009</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">March
+20th, 2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -59,9 +58,11 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
-<li><a href="#Changes_18RC1">Changes
-in v1.8 RC1 (This Release)</a></li>
-<li><a href="#Changes_18DR2">Changes
+<li><a href="ReleaseNotes.html#Changes_18RC2">Changes
+in v1.8 RC2 (This Release)</a></li>
+<li><a href="ReleaseNotes.html#Changes_18RC1">Changes
+in v1.8 RC1</a></li>
+<li><a href="ReleaseNotes.html#Changes_18DR2">Changes
 in v1.8 DR#2</a></li>
 <li><a href="#Changes_18DR1">Changes
 in v1.8 DR#1</a></li>
@@ -79,7 +80,6 @@ Containers</a></li>
 </li>
 <li><a href="#Known_Issues">Known Issues</a><br>
 <ul>
-<li><a href="#KIDocs">Documentation</a></li>
 <li><a href="#KIGeneral">General</a></li>
 <li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
@@ -95,8 +95,198 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_18RC2"></a>Changes
+in&nbsp;v1.8 RC2 (This Release)</h2>
+<br>
+ICEfaces v1.8 RC#2 is a release-candidate build that provides a
+feature-complete preview of the new features, enhancements, and fixes
+that will be included in the upcoming ICEfaces v1.8 release. Although
+this build has successfully completed regression testing issues may
+still exist, thus, it is not recommended for production use. <br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release. Please report any issues with this build
+to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback</a> forum.<br>
+<br>
+This release includes over 90 fixes and enhancements since 1.8 RC#1.
+Refer
+to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10163">ICEfaces
+JIRA Change Log</a> for detailed information on
+all the changes included in this release.
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite&nbsp;</span><br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">New
+ice:outputBody 'focus' Attribute - Manage Focus via Value-binding</span></li>
+<ul>
+<li>Using the focus attribute it is possible to define
+both the initial focus on the page as well to dynamically set the focus
+on each render via a simple value-binding on the attribute.</li>
+<li>Augments the existing "<span style="font-family: Courier New,Courier,monospace;">requestFocus()</span>"
+method on ice:
+input components that require component binding to use.</li>
+</ul>
+</ul>
+<br>
+<ul>
+<li><span style="font-weight: bold;">Row
+Selector now supports Double-Click Events and Actions</span>&nbsp;</li>
+<ul>
+<li>The ice:rowSelector can be used to register event
+listeners for double-click events that occur over a row.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New Scatter
+Chart support&nbsp;</span></li>
+<ul>
+<li><span style="font-weight: bold;"></span>The
+ice:outputChart has been enhanced to support a new "<span style="font-family: Courier New,Courier,monospace;">scatterplot</span>"
+type.</li>
+<li>Thanks to Keith Garry Boyce for this contribution.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework&nbsp;</span><br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">New Push
+Server. &nbsp;</span>The ICEfaces Push Server provides a
+zero-configuration solution to the problem of
+supporting multiple ICEfaces asynchonrous (Ajax Push) applications
+deployed to the same server/host-name. As most browsers have
+limitations on the number of concurrent connections that can be made to
+the same server/host-name it is necessary for multiple asynchronous
+apps. on the same server to share a blocking connection back to the
+server. The Push Server provides this functionality in a lightweight
+implementation with minimal configuration required.<br>
+<br>
+</li>
+<ul>
+<li>To use the Push Server, you simply deploy the <big><span style="font-family: monospace;">push-server.war</span></big>
+file to
+the same server you are deploying your ICEfaces push applications to.
+The ICEfaces apps. will discover the Push Server at startup and
+automatically configure themselves to use it.</li>
+<li>If the Application/Portal Server is configured to use
+a port # that is not&nbsp;the default port #, AND the Application
+Server does not support at least Servlet 2.4 or if a Portal Server is
+used, custom configuration of the web.xml is required.</li>
+<li>The local IP address of the Application/Portal Server
+and the port # must be specified using the following configuration
+parameters in the web.xml file:&nbsp;</li>
+<ul style="font-family: Courier New,Courier,monospace;">
+<li>com.icesoft.faces.localAddress</li>
+<li>com.icesoft.faces.localPort</li>
+</ul>
+<li>The Push Server is a
+functional replacement for the Asynchronous HTTP Server (AHS), which is
+no longer
+required or &nbsp;supported in this release.&nbsp;</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New "Busy"
+Indicator. </span>The ICEfaces bridge has been enhanced to
+support a new "busy" indicator and user-interaction blocking mechanism.
+Users will now see an hourglass cursor and be prevented from
+interacting with the user-interface with the mouse (no focus changes,
+button-clicks, etc.) while a submit or partial-submit is in progress.
+This feature prevents users from "chaining" numerous interactions and
+submits while a previous submit is still pending, avoiding possible
+problems with mismatched state and potentially long delays while
+waiting for the appllication to catch up with the user interactions.</li>
+<ul>
+<li>This feature is enabled by default, but may be disabled
+by specifying "<span style="font-family: Courier New,Courier,monospace;">com.icesoft.faces.blockUIOnSubmit=false</span>"
+in the web.xml
+file.<br>
+</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New
+JavaScript Callback APIs for Bridge Communication Events.</span>
+The ICEfaces bridge has been enhanced to support new JavaScript
+callback APIs to enable application developers to implement custom
+behaviors for common communication events. The following APIs are
+provided:</li>
+<ul>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onSendReceive(id,
+sendCallback,
+receiveCallback)&nbsp;</li>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onAsynchronousReceive(id,
+callback) </li>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onServerError(id,
+callback)&nbsp;</li>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onSessionExpired(id,
+callback)&nbsp;</li>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onConnectionTrouble(id,
+callback)&nbsp;</li>
+<li style="font-family: Courier New,Courier,monospace;">Ice.onConnectionLost(id,
+callback)</li>
+</ul>
+</ul>
+</ul>
+<ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Documentation</span>
+<br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">ICEfaces
+Getting Started Guide</span>.
+The ICEfaces Getting Started Guide has been revised for changes in 1.8.
+It
+should be considered in near final draft form in this release.</li>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">ICEfaces
+Developer's Guide</span>.
+The ICEfaces Developer's Guide has been revised for changes in 1.8. It
+should be considered in near final draft form in this release.</li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Sample
+Applications</span>
+<ul>
+<li>Component Showcase</li>
+<ul>
+<li>The demo for the ice:setEventPhase component has been
+enhanced.</li>
+</ul>
+</ul>
+<ul>
+<li>Sample Application Ant Builds</li>
+<ul>
+<li>New ant build targets have been added for WebSphere
+7.0, JBoss 5.0, and Glassfish v3.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<br>
 <h2><a name="Changes_18RC1"></a>Changes
-in&nbsp;v1.8 RC1 (This Release)</h2>
+in&nbsp;v1.8 RC1</h2>
 <br>
 ICEfaces v1.8 RC#1 is a release-candidate build that provides a
 feature-complete preview of the new features, enhancements, and fixes
@@ -104,7 +294,7 @@ that will be included in the upcoming ICEfaces v1.8 release. Although
 this build has successfully completed regression testing issues may
 still exist, thus, it is not recommended for production use. <br>
 <br>
-Review the <a href="#Known_Issues">Known
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a>
 prior to using this release. Please report any issues with this build
 to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
@@ -160,16 +350,18 @@ Lifecycle Event Phase manipulation component</span></li>
 new ice:setEventPhase component has been added. This component can be
 used to specify the JSF lifecycle phase that certain events will be
 broadcasted in&nbsp;for events originating from child components of
-this component.</li><li>This
-component is useful in cases where a&nbsp;valueChangeListener for one
+this component.</li>
+<li>This
+component is useful in cases where a&nbsp;valueChangeListener for
+one
 component needs to affect the value of another input component. By
 controlling the JSF life-cycle phase that the ValueChangeEvent is
 processed in, it is possible to prevent a submitted value from
-superceding a value change applied by the valueChangeListener.</li><li>For
+superceding a value change applied by the valueChangeListener.</li>
+<li>For
 more information, see the "Set Event Phase" demo on the Component
 Showcase sample application and the TLD documentation for this
 component. </li>
-
 </ul>
 </ul>
 </ul>
@@ -198,17 +390,19 @@ relative to the current window position, available space)</li>
 <li>ice:menuPopup</li>
 <li>ice:panelTooltip</li>
 <li>ice:selectInputDate (popup mode)</li>
-
-</ul><li>See <a href="http://jira.icefaces.org/browse/ICE-3512" target="_blank">ICE-3512</a>
+</ul>
+<li>See <a href="http://jira.icefaces.org/browse/ICE-3512" target="_blank">ICE-3512</a>
 for more information.</li>
 </ul>
 </ul>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">New Keyboard Support for dataTable Row Selection</span>&nbsp;</li>
+<li><span style="font-weight: bold;">New
+Keyboard Support for dataTable Row Selection</span>&nbsp;</li>
 <ul>
-<li>The ice:rowSelector component now provides an optional usage-mode
+<li>The ice:rowSelector component now provides an optional
+usage-mode
 that supports using the keyboard in conjunction with the mouse to
 enable multiple row selection, range selection, etc. based on
 industry-standard key combinations.</li>
@@ -217,58 +411,89 @@ industry-standard key combinations.</li>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">Improved support for Dynamic Popup Menus</span></li>
+<li><span style="font-weight: bold;">Improved
+support for Dynamic Popup Menus</span></li>
 <ul>
-<li>The ice:menuPopup component has been enhanced with the addition of
+<li>The ice:menuPopup component has been enhanced with the
+addition of
 a displayListener. The displayListener can be used to modify the popup
 menu contents immediately prior to the menu becoming visible.</li>
 </ul>
 </ul>
-</ul><ul><ul><li><span style="font-weight: bold;">Improved Localization Support.</span> Thanks to community contributions the icefaces-comps.jar now includes the following&nbsp;language resource files:</li><ul><li>Arabic (new)</li><li>English</li><li>Dutch</li><li>French</li><li>German (new)</li><li>Spanish (revised)</li></ul></ul></ul>
+</ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">Miscellaneous Improvements </span>&nbsp;</li>
+<li><span style="font-weight: bold;">Improved
+Localization Support.</span> Thanks to community contributions
+the icefaces-comps.jar now includes the following&nbsp;language
+resource files:</li>
 <ul>
-<li>The ice:panelPopup component has been improved to support using
+<li>Arabic (new)</li>
+<li>English</li>
+<li>Dutch</li>
+<li>French</li>
+<li>German (new)</li>
+<li>Spanish (revised)</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Miscellaneous
+Improvements </span>&nbsp;</li>
+<ul>
+<li>The ice:panelPopup component has been improved to
+support using
 both "autoCentre" or "autoPosition" and "draggable" attributes at the
 same time. When either "autoCentre" or "autoPosition" are set to true
 as well as "draggable=true", the panelPopup will initially be
 positioned as defined by "autoCentre" or "autoPosition". However, if
-the panelPopup is subsequently moved&nbsp;by the user (via dragging) it
-will no longer autocentre or autoposition.</li><li>The ice:menuBar
+the panelPopup is subsequently moved&nbsp;by the user (via
+dragging) it
+will no longer autocentre or autoposition.</li>
+<li>The ice:menuBar
 component has been improved to hide any displayed menus when the mouse
 leaves the menu area, when "displayOnClick=false". This aligns better
 with the "display on hover" / "hide on hover exit" user-interface
 standard for popup menus than the previous behavior which required the
-user to click on the page outside of the menu area to hide the menu.</li><li>&nbsp;A
+user to click on the page outside of the menu area to hide the menu.</li>
+<li>&nbsp;A
 new "varStatus" attribute has been added to the ice:panelSeries
 component. The varStatus can be used as a convenience in determing the
 current&nbsp;index, first, last, etc. when iterating through the
-panelSeries during rendering. See the TLD document for more details.</li><li>A
+panelSeries during rendering. See the TLD document for more details.</li>
+<li>A
 new "target" attribute has been added to the ice:outputResource
 component. The target attribute can be used to control which browser
-window should be used for a specific resource download operation.</li><li>The
+window should be used for a specific resource download operation.</li>
+<li>The
 percieved responsiveness of the ice:rowSelector has been improved by
 applying row selection style changes in the client prior to the server
 roundtrip associated with the row selection event. </li>
 </ul>
 </ul>
-</ul><ul class="contentIndent">
+</ul>
+<ul class="contentIndent">
 <li><span style="font-weight: bold;">Framework&nbsp;</span><br>
 <br>
 <ul>
-<li><span style="font-weight: bold;">Improvements to JSF State-Saving Support</span>.
+<li><span style="font-weight: bold;">Improvements
+to JSF State-Saving Support</span>.
 Support for JSF state saving has been optimized in this release to
 improve memory consumption and CPU utilization, resulting in the
 following changes to how ICEfaces is configured for state-saving:</li>
 <ul>
-<li>ICEfaces now provides two custom JSF State Manager implementations:</li><ul><li>ViewRootStateManagerImpl.java
+<li>ICEfaces now provides two custom JSF State Manager
+implementations:</li>
+<ul>
+<li>ViewRootStateManagerImpl.java
 preserves the UIViewRoot between requests. This is the traditional
 &nbsp;approach taken by previous ICEfaces releases (though not
 previously implemented as a custom StateManager) and offers the fastest
 and most memory efficient way to save state. A limitation of this
 approach is that the UIComponent structure is not serialized and
-therefore, failover cannot be supported when using this approach.</li><li>SingleCopyStateManagerImpl.java
+therefore, failover cannot be supported when using this approach.</li>
+<li>SingleCopyStateManagerImpl.java
 implements virtually the same algorithm that the default JSF State
 Manager uses, with the exception that it only saves one copy per View,
 and makes some accomodations for ICEfaces unique Ajax Push features.
@@ -276,33 +501,57 @@ This approach is required in deployments where serialization of the
 saved state is required, such as in clustered fail-over deployments.
 Note that this state saving implementation consumes significantly more
 server memory and CPU resources than the ViewRootStateManager, so it
-should be used only as required. </li></ul><li>The ViewRootStateManager is configured by default in the faces-config.xml included in the icefaces.jar.</li><li>The ICEfaces configuration parameter <span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement </span>is no longer valid or required (deprecated).</li>
-<li>State-saving is not supported in JSF1.1 environments, the legacy
+should be used only as required. </li>
+</ul>
+<li>The ViewRootStateManager is configured by default in
+the faces-config.xml included in the icefaces.jar.</li>
+<li>The ICEfaces configuration parameter <span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement
+</span>is no longer valid or required (deprecated).</li>
+<li>State-saving is not supported in JSF1.1 environments,
+the legacy
 approach of retaining the view root is automatically used&nbsp;when
 running in a JSF 1.1 environment.</li>
 <li>Client-side state-saving is not supported.</li>
-
 </ul>
 </ul>
 </li>
 </ul>
-
-
 <ul>
 <ul>
 </ul>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">Improved Application Server Support. </span>This version of ICEfaces has been certified on the following recently-released application servers:</li>
+<li><span style="font-weight: bold;">Improved
+Application Server Support. </span>This version of ICEfaces has
+been certified on the following recently-released application servers:</li>
 <ul>
-<li>Sun Glassfish v2.1</li><li>Sun Glassfish v3 "Prelude"</li><li>JBoss v5.0</li><li>IBM WebSphere v7.0</li></ul>
+<li>Sun Glassfish v2.1</li>
+<li>Sun Glassfish v3 "Prelude"</li>
+<li>JBoss v5.0</li>
+<li>IBM WebSphere v7.0</li>
 </ul>
-</ul><ul><ul><li><span style="font-weight: bold;">Clustered Fail-Over Support for JBoss.</span>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Clustered
+Fail-Over Support for JBoss.</span>
 Support for clustered fail-over deployments of asynchronous ICEfaces
 applications on JBoss application servers has been added in this
-release.</li></ul></ul><ul><ul><li><span style="font-weight: bold;">Support for </span><span style="font-weight: bold;">Glassfish v3&nbsp;Prelude </span><span style="font-weight: bold;">"Grizzly" ARP.</span>
-Support for&nbsp;"Grizzly" Asynchronous Request Processing (ARP) on Glassfish v3&nbsp;Prelude has been added in this release.</li></ul></ul>
+release.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Support for
+</span><span style="font-weight: bold;">Glassfish
+v3&nbsp;Prelude </span><span style="font-weight: bold;">"Grizzly"
+ARP.</span>
+Support for&nbsp;"Grizzly" Asynchronous Request Processing (ARP) on
+Glassfish v3&nbsp;Prelude has been added in this release.</li>
+</ul>
+</ul>
 <ul>
 <li><span style="font-weight: bold;">3rd Party
 Libraries</span></li>
@@ -310,17 +559,23 @@ Libraries</span></li>
 <li>The Sun JSF 1.2 runtime libraries included in the<span style="font-family: monospace;"> icefaces/lib</span>
 directory has been updated to JSF1.2_12.</li>
 <li>The commons-beansutils.jar included in the<span style="font-family: monospace;"> icefaces/lib</span>
-directory has been updated to v1.8.0.</li><li>The commons-discovery.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
-directory has been updated to v0.4.</li><li>The jstl.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
-directory has been updated to v1.1.2.</li></ul>
+directory has been updated to v1.8.0.</li>
+<li>The commons-discovery.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to v0.4.</li>
+<li>The jstl.jar&nbsp;included in the<span style="font-family: monospace;"> icefaces/lib</span>
+directory has been updated to v1.1.2.</li>
+</ul>
 </ul>
 <ul class="contentIndent">
 <li><span style="font-weight: bold;">Documentation</span>
 <br>
 <br>
 <ul>
-<li><span style="font-weight: bold;">ICEfaces Developer's Guide</span>.
-The ICEfaces Developer's Guide has been revised for changes in 1.8. It should be considered in draft form in this release.</li></ul>
+<li><span style="font-weight: bold;">ICEfaces
+Developer's Guide</span>.
+The ICEfaces Developer's Guide has been revised for changes in 1.8. It
+should be considered in draft form in this release.</li>
+</ul>
 </li>
 </ul>
 <ul class="contentIndent">
@@ -328,16 +583,30 @@ The ICEfaces Developer's Guide has been revised for changes in 1.8. It should be
 Applications</span>
 <br>
 <br>
-<ul><li>Component Showcase</li>
 <ul>
-<li>Added preliminary&nbsp;demos for the following new components:</li><ul><li>ice:dataExporter</li><li>ice:setEventPhase</li></ul><li>Enhanced
+<li>Component Showcase</li>
+<ul>
+<li>Added preliminary&nbsp;demos for the following
+new components:</li>
+<ul>
+<li>ice:dataExporter</li>
+<li>ice:setEventPhase</li>
+</ul>
+<li>Enhanced
 the Download Resources demo to illustrate a use-case whereby a resource
-file is dynamically generated after the user requests it.</li><li>Added a German language translation resource file for the Component Showcase sample applications.
+file is dynamically generated after the user requests it.</li>
+<li>Added a German language translation resource file for
+the Component Showcase sample applications.
 We are
 seeking community contributors to provide additional
 language&nbsp;language translation files. If you are interested see
 the <a href="http://www.icefaces.org/main/community/contribute.iface" target="_blank">How To Contribute</a> page for more
-information.</li></ul></ul></li></ul><br>
+information.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<br>
 <h2><a name="Changes_18DR2"></a>Changes
 in&nbsp;v1.8 DR#2&nbsp;</h2>
 <br>
@@ -346,7 +615,7 @@ preview of new features, enhancements, and fixes that will be included
 in the upcoming ICEfaces v1.8 release. This build has been lightly
 tested and is unsuitable for production use.<br>
 <br>
-Review the <a href="#Known_Issues">Known
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a>
 prior to using this release. Please report any issues with this build
 to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
@@ -693,7 +962,7 @@ ICEfaces is supported on the following Java versions:<br>
 </ul>
 <h3><a name="SupportedBrowsers"></a>Browsers</h3>
 <br>
-<table style="text-align: left; width: 717px; height: 179px;" border="1" cellpadding="2" cellspacing="2">
+<table style="text-align: left; width: 717px;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr>
 <td style="vertical-align: top; font-weight: bold; text-align: center;">Vendor<br>
@@ -726,7 +995,7 @@ ICEfaces is supported on the following Java versions:<br>
 Explorer<br>
 </td>
 <td style="vertical-align: top; text-align: right;">6,
-7, 8&nbsp;Beta<br>
+7, 8-RC1<br>
 </td>
 </tr>
 <tr>
@@ -746,12 +1015,51 @@ Explorer<br>
 <td style="vertical-align: top; text-align: right;">9.x<br>
 </td>
 </tr>
+</tbody>
+</table>
+<br>
+<h3><a name="SupportedBrowsersMobile"></a>Mobile
+Browsers</h3>
+<br>
+<table style="text-align: left; width: 717px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; font-weight: bold; text-align: center;">Vendor<br>
+</td>
+<td style="vertical-align: top; font-weight: bold; text-align: center;">Product<br>
+</td>
+<td style="text-align: center;"><span style="font-weight: bold;">Platform</span></td>
+<td style="vertical-align: top; font-weight: bold; text-align: center;">Version<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Apple<br>
+</td>
+<td style="vertical-align: top;">Safari&nbsp;<br>
+</td>
+<td>iPhone, iPod Touch</td>
+<td style="vertical-align: top; text-align: right;">1.x,
+2.x<br>
+</td>
+</tr>
 <tr>
 <td style="vertical-align: top;">Opera<br>
 </td>
 <td style="vertical-align: top;">Opera Mobile<br>
 </td>
-<td style="vertical-align: top; text-align: right;">8.65</td>
+<td>Windows Mobile</td>
+<td style="vertical-align: top; text-align: right;">8.65,
+9.21b2
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">RIM<br>
+</td>
+<td style="vertical-align: top;">Blackberry<br>
+</td>
+<td>Blackberry Bold</td>
+<td style="vertical-align: top; text-align: right;">All<br>
+</td>
 </tr>
 </tbody>
 </table>
@@ -941,7 +1249,7 @@ Enterprise
 Workbench<br>
 </td>
 <td style="vertical-align: top; text-align: right;">6.5,
-7.0<br>
+7.x<br>
 </td>
 </tr>
 <tr>
@@ -976,24 +1284,6 @@ issues with this release. For a complete reference of all outstanding
 issues please refer to the ICEfaces.org <a target="_blank" href="http://jira.icefaces.org">JIRA</a> issue
 tracker.
 </p>
-<h3><a name="KIDocs"></a>Documentation</h3>
-<ul class="contentIndent">
-<li><span style="font-weight: bold;">ICEfaces
-Getting Started Guide</span>&nbsp;</li>
-</ul>
-<ul style="margin-left: 40px;"><li>The ICEfaces Getting Started Guide has not been updated
-to
-reflect changes in 1.8 in this release.</li>
-</ul>
-<ul class="contentIndent">
-<li><span style="font-weight: bold;">ICEfaces
-Developer's Guide</span>&nbsp;</li>
-</ul>
-<ul style="margin-left: 40px;">
-<li>The ICEfaces Developer's Guide has been updated to
-reflect
-changes in 1.8 in this release. It should be considered in Draft form. </li>
-</ul>
 <h3><a name="KIGeneral"></a>General</h3>
 <ul>
 <li>If at any time the asynchronous connection
@@ -1143,18 +1433,6 @@ ice:form</span>, <span style="font-family: monospace;">h:form</span>,
 or <span style="font-family: monospace;">ui:form</span>).</li>
 </ul>
 <ul>
-<li>dataTable
-<ul>
-<li>In this release there is a known issue with the
-scrollable dataTable when used with IE7.
-Occasionally, when a scrollable dataTable is initially renderered in
-the
-browser the scrollbar will not display. In this case, resizing the
-browser window will cause the scrollbars to display. See <a href="http://jira.icefaces.org/browse/ICE-3919" target="_blank">ICE-3919</a>.</li>
-</ul>
-</li>
-</ul>
-<ul>
 <li>Effects (various components)
 <ul>
 <li>In Internet Explorer the Fade,
@@ -1189,21 +1467,6 @@ to
 a
 browser security feature that prevents the override of the browser's
 own context menu.</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>panelPopup
-<ul>
-<li>When
-using a modal <span style="font-family: monospace;">panelPopup</span>
-it may be necessary to ensure that the body region of the page covers
-the entire visible region of the document or the component used to
-block user interaction with the document may not cover the entire page.
-To accomplish this a surrounding DIV sized to 100% width and height can
-be used to enclose all content in the document body. For example: <br>
-<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt;&nbsp;</pre>
-</li>
 </ul>
 </li>
 </ul>
@@ -1365,13 +1628,18 @@ for this issue include not configuring the optional Tomcat NIO
 connector and configuring the ICEfaces AHS server configuration for NIO
 asynchronous communications instead.</li>
 </ul>
-</ul><ul style="font-weight: bold;"><li>Sun Glassfish v2.1</li></ul>
-<ul><ul><li>Due to a bug in the JSF RI included in the Glassfish v2.1
+</ul>
+<ul style="font-weight: bold;">
+<li>Sun Glassfish v2.1</li>
+</ul>
+<ul>
+<ul>
+<li>Due to a bug in the JSF RI included in the Glassfish v2.1
 distribution (v1.2_04), exception redirection may not work correctly
 with ICEfaces. The work-around is to install or use&nbsp;Sun JSF RI
-1.2_05 or newer.</li></ul></ul>
-
-
+1.2_05 or newer.</li>
+</ul>
+</ul>
 <ul style="font-weight: bold;">
 <li>BEA
 Weblogic Server 9</li>
