@@ -38,9 +38,9 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
+import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,8 +56,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.FacesException;
@@ -65,7 +63,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -278,10 +275,11 @@ public class InputFile extends UICommand implements Serializable {
                 requestContextPath = externalContext.getRequestContextPath();
             }
         }
-        if (requestContextPath == null || requestContextPath.length() == 0)
-            return "./uploadHtml";
-        else
-            return requestContextPath + "/uploadHtml";
+        if (requestContextPath == null || requestContextPath.length() == 0) {
+        	CommonEnvironmentRequest request = ((CommonEnvironmentRequest)context.getExternalContext().getRequest());
+        	 return request.getScheme() +"://"+ request.getServerName() + ":" +request.getServerPort() + "/uploadHtml";
+        } else
+             return requestContextPath + "/uploadHtml";
     }
 
     /**
