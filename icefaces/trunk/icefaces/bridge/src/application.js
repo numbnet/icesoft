@@ -238,6 +238,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
 
             connection.onServerError(function (response) {
                 logger.warn('server side error');
+                statusManager.busy.off();
                 disposeView(sessionID, viewID);
                 if (response.isEmpty()) {
                     statusManager.serverError.on();
@@ -249,6 +250,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
 
             connection.whenDown(function() {
                 logger.warn('connection to server was lost');
+                statusManager.busy.off();
                 statusManager.connectionLost.on();
                 dispose();
             });
