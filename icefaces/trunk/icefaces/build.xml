@@ -93,6 +93,13 @@
     </ice:ant>
 
     <ice:ant antfile="push-server/build.xml">
+    	<target name="jboss4.2"/>
+        <property name="product" value="ICEfaces Push Server" />
+        <propertyset refid="product.info"/>
+    </ice:ant>
+    <copy todir="push-server/jboss4.2" file="push-server/push-server.war"/>
+
+    <ice:ant antfile="push-server/build.xml">
     	<target name="include.jsf"/>
         <property name="product" value="ICEfaces Push Server" />
         <propertyset refid="product.info"/>
@@ -140,7 +147,7 @@
 
         <zipfileset dir="${dist.dir}/samples" includes="address.war, auctionMonitor.war, component-showcase.war" prefix="${bin.bundle.prefix}/samples"/>
 
-        <zipfileset dir="push-server" includes="push-server.war" prefix="${bin.bundle.prefix}/push-server"/>
+        <zipfileset dir="push-server" includes="push-server.war, jboss4.2/" prefix="${bin.bundle.prefix}/push-server"/>
     </ice:zip>
 
     <!--delete dir="${build.dir}/${bin.bundle.name}"/>
