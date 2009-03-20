@@ -83,7 +83,7 @@ Containers</a></li>
 <li><a href="#KIGeneral">General</a></li>
 <li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
-<li><a href="#KIPortlets">Portlets</a></li>
+<li><a href="#KISpring">Spring WebFlow</a></li><li><a href="#KIPortlets">Portlets</a></li>
 <li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
@@ -247,6 +247,21 @@ callback)</li>
 <ul>
 </ul>
 <ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party
+Frameworks</span>
+<br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">Spring
+WebFlow</span>.
+ICEfaces support for Spring WebFlow 2.x has been improved in this
+release. See <a href="http://jira.icefaces.org/browse/ICE-4186" target="_blank">ICE-4186</a> and <a href="http://jira.icefaces.org/browse/ICE-4200" target="_blank">ICE-4200</a>
+for more information.
+</li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
 <li><span style="font-weight: bold;">Documentation</span>
 <br>
 <br>
@@ -271,14 +286,16 @@ Applications</span>
 <ul>
 <li>Component Showcase</li>
 <ul>
-<li>The demo for the ice:setEventPhase component has been
+<li>The demo for the ice:setEventPhase component has
+been
 enhanced.</li>
 </ul>
 </ul>
 <ul>
 <li>Sample Application Ant Builds</li>
 <ul>
-<li>New ant build targets have been added for WebSphere
+<li>New ant build targets have been added for
+WebSphere
 7.0, JBoss 5.0, and Glassfish v3.</li>
 </ul>
 </ul>
@@ -316,25 +333,30 @@ Component Suite&nbsp;</span><br>
 <li><span style="font-weight: bold;">New
 Confirmation Panel component</span></li>
 <ul>
-<li>A new ice:panelConfirmation component has been added.
+<li>A new ice:panelConfirmation component has been
+added.
 This component can be used to display a client-side confirmation dialog
 panel when the user triggers an action event on the ice:commandLink or
 ice:commandButton components. If the user cancels the action no action
 event will be fired.</li>
-<li>Simple to configure and can contain custom titles,
+<li>Simple to configure and can contain custom
+titles,
 labels, and button configurations.</li>
 </ul>
 </ul>
 <br>
 <ul>
-<li><span style="font-weight: bold;">New Data
+<li><span style="font-weight: bold;">New
+Data
 Export component</span>&nbsp;</li>
 <ul>
 <li>A new ice:dataExporter component can be used to
 provide user-downloadable exports of ice:dataTable data contents.</li>
-<li>Supports exporting of data in various formats via an
+<li>Supports exporting of data in various formats via
+an
 extensible outputTypeHandler.</li>
-<li>CSV and Excel outputTypeHandlers are provided with
+<li>CSV and Excel outputTypeHandlers are provided
+with
 the component,&nbsp;developers can define custom output formats by
 creating new&nbsp;outputTypeHandler implementations.</li>
 </ul>
@@ -367,10 +389,12 @@ component. </li>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">New support
+<li><span style="font-weight: bold;">New
+support
 for Date &amp; Time entry</span>&nbsp;</li>
 <ul>
-<li>The ice:selectInputDate component has been enhanced to
+<li>The ice:selectInputDate component has been enhanced
+to
 optionally support entering just dates, or dates and times, in either
 24 or 12-hour formats.</li>
 </ul>
@@ -401,7 +425,8 @@ for more information.</li>
 <li><span style="font-weight: bold;">New
 Keyboard Support for dataTable Row Selection</span>&nbsp;</li>
 <ul>
-<li>The ice:rowSelector component now provides an optional
+<li>The ice:rowSelector component now provides an
+optional
 usage-mode
 that supports using the keyboard in conjunction with the mouse to
 enable multiple row selection, range selection, etc. based on
@@ -414,7 +439,8 @@ industry-standard key combinations.</li>
 <li><span style="font-weight: bold;">Improved
 support for Dynamic Popup Menus</span></li>
 <ul>
-<li>The ice:menuPopup component has been enhanced with the
+<li>The ice:menuPopup component has been enhanced with
+the
 addition of
 a displayListener. The displayListener can be used to modify the popup
 menu contents immediately prior to the menu becoming visible.</li>
@@ -483,7 +509,8 @@ Support for JSF state saving has been optimized in this release to
 improve memory consumption and CPU utilization, resulting in the
 following changes to how ICEfaces is configured for state-saving:</li>
 <ul>
-<li>ICEfaces now provides two custom JSF State Manager
+<li>ICEfaces now provides two custom JSF State
+Manager
 implementations:</li>
 <ul>
 <li>ViewRootStateManagerImpl.java
@@ -503,11 +530,13 @@ Note that this state saving implementation consumes significantly more
 server memory and CPU resources than the ViewRootStateManager, so it
 should be used only as required. </li>
 </ul>
-<li>The ViewRootStateManager is configured by default in
+<li>The ViewRootStateManager is configured by default
+in
 the faces-config.xml included in the icefaces.jar.</li>
 <li>The ICEfaces configuration parameter <span style="font-family: monospace;">com.icesoft.faces.doJSFStateManagement
 </span>is no longer valid or required (deprecated).</li>
-<li>State-saving is not supported in JSF1.1 environments,
+<li>State-saving is not supported in JSF1.1
+environments,
 the legacy
 approach of retaining the view root is automatically used&nbsp;when
 running in a JSF 1.1 environment.</li>
@@ -544,7 +573,8 @@ release.</li>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">Support for
+<li><span style="font-weight: bold;">Support
+for
 </span><span style="font-weight: bold;">Glassfish
 v3&nbsp;Prelude </span><span style="font-weight: bold;">"Grizzly"
 ARP.</span>
@@ -586,7 +616,8 @@ Applications</span>
 <ul>
 <li>Component Showcase</li>
 <ul>
-<li>Added preliminary&nbsp;demos for the following
+<li>Added preliminary&nbsp;demos for the
+following
 new components:</li>
 <ul>
 <li>ice:dataExporter</li>
@@ -595,7 +626,8 @@ new components:</li>
 <li>Enhanced
 the Download Resources demo to illustrate a use-case whereby a resource
 file is dynamically generated after the user requests it.</li>
-<li>Added a German language translation resource file for
+<li>Added a German language translation resource file
+for
 the Component Showcase sample applications.
 We are
 seeking community contributors to provide additional
@@ -737,7 +769,8 @@ for more information.</li>
 </ul>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">3rd Party
+<li><span style="font-weight: bold;">3rd
+Party
 Libraries</span></li>
 <ul>
 <li>The Sun JSF 1.2 runtime libraries included in the<span style="font-family: monospace;"> icefaces/lib</span>
@@ -800,7 +833,8 @@ seeking community contributors to provide additional
 language&nbsp;language translation files. If you are interested see
 the <a href="http://www.icefaces.org/main/community/contribute.iface" target="_blank">How To Contribute</a> page for more
 information.</li>
-<li>Examples of using standard JSF validators have been
+<li>Examples of using standard JSF validators have
+been
 added to the "Text Entry" demo under "Extended Components".</li>
 </ul>
 </ul>
@@ -1528,6 +1562,27 @@ primary intention is to show component functionality in a portlet
 context. It may be necessary to customize the specific styles being
 used to work well within the portal theme, etc.</li>
 </ul>
+<h3><a name="KISpring"></a>Spring WebFlow</h3>
+<ul>
+<li>In Spring WebFlow 2.0.5 there is a ViewHandler delegation
+issue that prevents the logic that determines whether a view is
+restorable from working correctly resulting in the flow being
+continuously restarted.
+A workaround is to define a Spring FlowViewHandler in the application
+faces-config.xml file.&nbsp; </li>
+<br>
+<ul>
+<code>&lt;application&gt;<br>
+</code>
+<ul>
+<code>&lt;view-handler&gt;com.sun.facelets.FaceletViewHandler&lt;/view-handler&gt;</code><br>
+<code>&lt;view-handler&gt;com.icesoft.faces.facelets.D2DFaceletViewHandler&lt;/view-handler&gt;</code><br>
+<code>&lt;view-handler&gt;org.springframework.faces.webflow.FlowViewHandler&lt;/view-handler&gt;</code><br>
+<code>&lt;variable-resolver&gt;org.springframework.web.jsf.DelegatingVariableResolver&lt;/variable-resolver&gt;</code><br>
+</ul>
+<code>&lt;/application&gt;</code>
+</ul>
+</ul>
 <h3><a name="KISampleApps"></a>Sample
 Applications</h3>
 <ul>
@@ -1634,7 +1689,8 @@ asynchronous communications instead.</li>
 </ul>
 <ul>
 <ul>
-<li>Due to a bug in the JSF RI included in the Glassfish v2.1
+<li>Due to a bug in the JSF RI included in the Glassfish
+v2.1
 distribution (v1.2_04), exception redirection may not work correctly
 with ICEfaces. The work-around is to install or use&nbsp;Sun JSF RI
 1.2_05 or newer.</li>
@@ -1763,5 +1819,6 @@ directory.</p>
 <p class="Body"><small><br>
 © Copyright
 2005-2009 ICEsoft Technologies, Inc.</small></p>
+
 </div>
 </body></html>
