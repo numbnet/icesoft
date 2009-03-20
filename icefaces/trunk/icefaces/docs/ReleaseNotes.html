@@ -83,7 +83,8 @@ Containers</a></li>
 <li><a href="#KIGeneral">General</a></li>
 <li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
-<li><a href="#KISpring">Spring WebFlow</a></li><li><a href="#KIPortlets">Portlets</a></li>
+<li><a href="#KISpring">Spring WebFlow</a></li>
+<li><a href="#KIPortlets">Portlets</a></li>
 <li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
@@ -110,7 +111,7 @@ prior to using this release. Please report any issues with this build
 to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
 Build Feedback</a> forum.<br>
 <br>
-This release includes over 90 fixes and enhancements since 1.8 RC#1.
+This release includes 100 fixes and enhancements since 1.8 RC#1.
 Refer
 to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10163">ICEfaces
 JIRA Change Log</a> for detailed information on
@@ -119,76 +120,61 @@ all the changes included in this release.
 Improvements
 &amp; Enhancements</span></h3>
 <ul class="contentIndent">
-<li><span style="font-weight: bold;">ICEfaces
-Component Suite&nbsp;</span><br>
+<li><span style="font-weight: bold;">New Push
+Server for Asynchronous (Ajax Push) Applications</span><br>
 <br>
-<ul>
-<li><span style="font-weight: bold;">New
-ice:outputBody 'focus' Attribute - Manage Focus via Value-binding</span></li>
-<ul>
-<li>Using the focus attribute it is possible to define
-both the initial focus on the page as well to dynamically set the focus
-on each render via a simple value-binding on the attribute.</li>
-<li>Augments the existing "<span style="font-family: Courier New,Courier,monospace;">requestFocus()</span>"
-method on ice:
-input components that require component binding to use.</li>
-</ul>
-</ul>
-<br>
-<ul>
-<li><span style="font-weight: bold;">Row
-Selector now supports Double-Click Events and Actions</span>&nbsp;</li>
-<ul>
-<li>The ice:rowSelector can be used to register event
-listeners for double-click events that occur over a row.</li>
-</ul>
-</ul>
-</li>
-</ul>
-<ul>
-<ul>
-<li><span style="font-weight: bold;">New Scatter
-Chart support&nbsp;</span></li>
 <ul>
 <li><span style="font-weight: bold;"></span>The
-ice:outputChart has been enhanced to support a new "<span style="font-family: Courier New,Courier,monospace;">scatterplot</span>"
-type.</li>
-<li>Thanks to Keith Garry Boyce for this contribution.</li>
-</ul>
-</ul>
-</ul>
-<ul class="contentIndent">
-<li><span style="font-weight: bold;">Framework&nbsp;</span><br>
-<br>
-<ul>
-<li><span style="font-weight: bold;">New Push
-Server. &nbsp;</span>The ICEfaces Push Server provides a
-zero-configuration solution to the problem of
+ICEfaces Push Server provides a
+simple solution to the problem of
 supporting multiple ICEfaces asynchonrous (Ajax Push) applications
 deployed to the same server/host-name. As most browsers have
 limitations on the number of concurrent connections that can be made to
-the same server/host-name it is necessary for multiple asynchronous
-apps. on the same server to share a blocking connection back to the
+the same server/host-name it is necessary for multiple
+asynchronous&nbsp; on the same server to share a blocking connection
+back to the
 server. The Push Server provides this functionality in a lightweight
 implementation with minimal configuration required.<br>
 <br>
 </li>
 <ul>
+<li>If there is the possibility of multiple push applications being
+deployed to the same
+server (including future deployments), it is recommended that the Push
+Server also be deployed to
+that server. Even though accessing a single ICEfaces asynchronous
+application from a browser will function
+correctly without the Push Server, making a habit of deploying the
+push-server.war along with your ICEfaces applications will avoid any
+issues if/when a second ICEfaces application is deployed, potentially
+at a later time, etc.</li>
+<li>Note that by default ICEfaces is configured for asynchronous mode. See the "Asynchronous vs. Synchronous Updates <br>
+" topic on pg. 29 of the ICEfaces Developer's Guide for details.</li>
 <li>To use the Push Server, you simply deploy the <big><span style="font-family: monospace;">push-server.war</span></big>
-file to
-the same server you are deploying your ICEfaces push applications to.
-The ICEfaces apps. will discover the Push Server at startup and
+file (located in the <span style="font-family: Courier New,Courier,monospace;">"/icefaces/push-server/"</span>
+directory) to
+the&nbsp;server you are deploying your ICEfaces push applications
+to.
+The ICEfaces&nbsp; will discover the Push Server at startup and
 automatically configure themselves to use it.</li>
-<li>If the Application/Portal Server is configured to use
-a port # that is not&nbsp;the default port #, AND the Application
-Server does not support at least Servlet 2.4 or if a Portal Server is
-used, custom configuration of the web.xml is required.</li>
-<li>The local IP address of the Application/Portal Server
+<li>If...</li><ul><ul><li>the Application Server is configured to use
+a custom (non-default) port #</li></ul></ul><ul><li>and</li></ul>
+<ul>
+<ul><li>the Application
+Server does not support at least Servlet 2.4</li><li>or&nbsp;a Portal Server is
+used</li></ul>
+
+</ul>
+<ul><li>then the local IP address of the
+Application/Portal
+Server
 and the port # must be specified using the following configuration
-parameters in the web.xml file:&nbsp;</li>
+parameters in the web.xml files of both the ICEfaces application(s) and the push-server.war:&nbsp;</li></ul>
+<ul>
+<ul><li>com.icesoft.faces.localAddress</li><li>com.icesoft.faces.localPort</li></ul>
+
+</ul>
 <ul style="font-family: Courier New,Courier,monospace;">
-<li>com.icesoft.faces.localAddress</li>
-<li>com.icesoft.faces.localPort</li>
 </ul>
 <li>The Push Server is a
 functional replacement for the Asynchronous HTTP Server (AHS), which is
@@ -198,9 +184,13 @@ required or &nbsp;supported in this release.&nbsp;</li>
 </ul>
 </li>
 </ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework&nbsp;</span><br>
+<br>
 <ul>
 <ul>
-<li><span style="font-weight: bold;">New "Busy"
+<li><span style="font-weight: bold;">New
+"Busy"
 Indicator. </span>The ICEfaces bridge has been enhanced to
 support a new "busy" indicator and user-interaction blocking mechanism.
 Users will now see an hourglass cursor and be prevented from
@@ -211,15 +201,16 @@ submits while a previous submit is still pending, avoiding possible
 problems with mismatched state and potentially long delays while
 waiting for the appllication to catch up with the user interactions.</li>
 <ul>
-<li>This feature is enabled by default, but may be disabled
+<li>This feature is enabled by default, but may be
+disabled
 by specifying "<span style="font-family: Courier New,Courier,monospace;">com.icesoft.faces.blockUIOnSubmit=false</span>"
 in the web.xml
-file.<br>
-</li>
+file. </li>
 </ul>
 </ul>
 </ul>
 <ul>
+<br>
 <ul>
 <li><span style="font-weight: bold;">New
 JavaScript Callback APIs for Bridge Communication Events.</span>
@@ -241,6 +232,49 @@ callback)&nbsp;</li>
 callback)&nbsp;</li>
 <li style="font-family: Courier New,Courier,monospace;">Ice.onConnectionLost(id,
 callback)</li>
+</ul>
+</ul>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite&nbsp;</span><br>
+<br>
+<ul>
+<li><span style="font-weight: bold;">New
+ice:outputBody 'focus' Attribute - Manage Focus via Value-binding</span></li>
+<ul>
+<li>Using the focus attribute it is possible to
+define
+both the initial focus on the page as well to dynamically set the focus
+on each render via a simple value-binding on the attribute.</li>
+<li>Augments the existing "<span style="font-family: Courier New,Courier,monospace;">requestFocus()</span>"
+method on ice:
+input components that require component binding to use.</li>
+</ul>
+</ul>
+<br>
+<ul>
+<li><span style="font-weight: bold;">Row
+Selector now supports Double-Click Events and Actions</span>&nbsp;</li>
+<ul>
+<li>The ice:rowSelector can be used to register event
+listeners for double-click events that occur over a row.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New
+Scatter
+Chart support&nbsp;</span></li>
+<ul>
+<li><span style="font-weight: bold;"></span>The
+ice:outputChart has been enhanced to support a new "<span style="font-family: Courier New,Courier,monospace;">scatterplot</span>"
+type.</li>
+<li>Thanks to Keith Garry Boyce for this contribution.</li>
 </ul>
 </ul>
 </ul>
@@ -1562,9 +1596,20 @@ primary intention is to show component functionality in a portlet
 context. It may be necessary to customize the specific styles being
 used to work well within the portal theme, etc.</li>
 </ul>
+<ul>
+<li>Liferay 5.2.x automatically compresses all resources
+being
+served by the Portal container. By default&nbsp;this will conflict
+with ICEfaces automatic resource compression. When running with Liferay
+5.2.x it is necessary to either disable Liferay's resource compression,
+or disable ICEfaces resource compression by
+specifying the&nbsp;"<span style="font-family: Courier New,Courier,monospace;">com.icesoft.faces.compressResources=false</span>"
+configuration parameter setting in the web.xml file.</li>
+</ul>
 <h3><a name="KISpring"></a>Spring WebFlow</h3>
 <ul>
-<li>In Spring WebFlow 2.0.5 there is a ViewHandler delegation
+<li>In Spring WebFlow 2.0.5 there is a ViewHandler
+delegation
 issue that prevents the logic that determines whether a view is
 restorable from working correctly resulting in the flow being
 continuously restarted.
@@ -1772,7 +1817,7 @@ form processing that facilitates fine-grained
 interactions with the user as they manipulate a form.</li>
 <li>API
 support for rapid development of group-aware and
-collaborative applications, such as Chat, Webcast, social apps., etc.</li>
+collaborative applications, such as Chat, Webcast, social applications, etc.</li>
 <li>JSP or Facelets based development.</li>
 <li>Tool
 integrations for leading Java IDEs.</li>
@@ -1819,6 +1864,5 @@ directory.</p>
 <p class="Body"><small><br>
 © Copyright
 2005-2009 ICEsoft Technologies, Inc.</small></p>
-
 </div>
 </body></html>
