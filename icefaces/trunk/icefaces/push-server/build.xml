@@ -58,7 +58,9 @@
     <target name="clean">
         <delete dir="${build.dir}" />
         <delete dir="${dist.dir}" />
-        <delete file="${ant.project.name}.war" />
+        <delete>
+            <fileset dir="." includes="**/${ant.project.name}.war"/>
+        </delete>
     </target>
     
     <target name="build.war" depends="clean, jar">

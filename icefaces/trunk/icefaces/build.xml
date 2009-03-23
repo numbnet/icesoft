@@ -97,13 +97,15 @@
         <property name="product" value="ICEfaces Push Server" />
         <propertyset refid="product.info"/>
     </ice:ant>
-    <copy todir="push-server/jboss4.2" file="push-server/push-server.war"/>
+    <move file="push-server/push-server.war" tofile="push-server/jboss4.2-push-server.war"/>
 
     <ice:ant antfile="push-server/build.xml">
     	<target name="include.jsf"/>
         <property name="product" value="ICEfaces Push Server" />
         <propertyset refid="product.info"/>
     </ice:ant>
+
+    <move file="push-server/jboss4.2-push-server.war" tofile="push-server/jboss4.2/push-server.war"/>
 
     <ice:subant target="tomcat6.0">
         <fileset dir="samples" includes="**/build.xml"/>
