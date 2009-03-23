@@ -312,7 +312,9 @@ public class PersistentFacesState implements Serializable {
 
     /**
      * Redirect browser to a different URI. The user's browser will be
-     * immediately redirected without any user interaction required.
+     * immediately redirected without any user interaction required. This appears
+     * to require the page extension in the defining technology (.jxpx, .xhtml, etc)
+     * rather than in the suffix replacement way ( .iface, .faces, etc ) 
      *
      * @param uri the relative or absolute URI.
      */
@@ -331,24 +333,36 @@ public class PersistentFacesState implements Serializable {
     }
 
     /**
-     * Redirect browser to a different page. The redirect page is selected based
-     * on the navigation rule. The user's browser will be immediately redirected
-     * without any user interaction required.
+     * Navigate browser to a different page using an outcome argument to
+     * select the navigation rule. The mechanism for navigation depends on
+     * the navigation rule. <p>
+     *
+     * If there is no JSF lifecycle in progress when this method is called,
+     * this method will manage one. Otherwise, it is the callers responsibility
+     * to call the <code>execute</code> method before, and <code>render</code> method 
+     * after this navigation method.
      *
      * @param outcome the 'from-outcome' field in the navigation rule.
      */
     public void navigateTo(String outcome) {
         warnIfSynchronous();
         try {
-            view.acquireLifecycleLock();
-            view.installThreadLocals();
             BridgeFacesContext facesContext = view.getFacesContext();
-            facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, facesContext.getViewRoot().getViewId(), outcome);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            // #4251 start a lifecycle to re-establish the ViewRoot before
+            // trying navigation if a lifecycle is not already running.
+            if (fc == null) {
+                execute();
+            } 
+            facesContext.getApplication().getNavigationHandler().
+                         handleNavigation(facesContext,
+                                          facesContext.getViewRoot().getViewId(),
+                                          outcome);
+            if (fc == null) {
+                render();
+            } 
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            release();
-            view.releaseLifecycleLock();
         }
     }
 
