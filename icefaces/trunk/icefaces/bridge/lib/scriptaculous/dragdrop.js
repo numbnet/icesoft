@@ -368,13 +368,28 @@ var Draggable = Class.create({
 
         if (this.options.starteffect) this.options.starteffect(this.element);
     },
-
+    // ICE-3457 {
+    hasOffsets: function(elem) {
+        var parent = elem.parentNode;
+        if (parent == document || !parent) return false;
+        if (parent.scrollTop != 0) return true;
+        return this.hasOffsets(parent);
+    },
+    // }
     updateDrag: function(event, pointer) {
         if (!this.dragging) this.startDrag(event);
 
         if (!this.options.quiet) {
             Position.prepare();
-            Droppables.show(pointer, this.element);
+            if (this.hasOffsets(this.element)) { // ICE-3457
+                var windowOffset = document.viewport.getScrollOffsets()
+                var realOffset = Position.realOffset(this.element);
+                var dropOffset = new Array(pointer[0] + realOffset[0] - windowOffset[0],
+                                           pointer[1] + realOffset[1] - windowOffset[1]);
+                Droppables.show(dropOffset, this.element);
+            } else {
+                Droppables.show(pointer, this.element);
+            }
         }
 
         Draggables.notify('onDrag', this, event);
