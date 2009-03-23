@@ -368,6 +368,15 @@ var Draggable = Class.create({
 
         if (this.options.starteffect) this.options.starteffect(this.element);
     },
+    /************************************************************
+     *  ATTENTION! ATTENTION! ATTENTION! ATTENTION! ATTENTION! 
+     * The following code was added as an improvement to ICEfaces,
+     * and it's not part of scriptaculous. This fix should be
+     * included in any future updates of the scriptaculous
+     * library.
+     * This fix correctly calculates the coordinates of drag and
+     * drop events that occur inside scrollable divs.
+     ************************************************************/
     // ICE-3457 {
     hasOffsets: function(elem) {
         var parent = elem.parentNode;
@@ -381,13 +390,15 @@ var Draggable = Class.create({
 
         if (!this.options.quiet) {
             Position.prepare();
-            if (this.hasOffsets(this.element)) { // ICE-3457
+            // ICE-3457 {
+            if (this.hasOffsets(this.element)) {
                 var windowOffset = document.viewport.getScrollOffsets()
                 var realOffset = Position.realOffset(this.element);
                 var dropOffset = new Array(pointer[0] + realOffset[0] - windowOffset[0],
                                            pointer[1] + realOffset[1] - windowOffset[1]);
                 Droppables.show(dropOffset, this.element);
             } else {
+            // }
                 Droppables.show(pointer, this.element);
             }
         }
