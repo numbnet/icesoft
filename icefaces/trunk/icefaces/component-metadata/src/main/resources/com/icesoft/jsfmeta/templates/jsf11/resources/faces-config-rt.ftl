@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE faces-config PUBLIC
-  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Overlay 1.1//EN"
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 <faces-config>
 <#list componentBeans as componentBean>
