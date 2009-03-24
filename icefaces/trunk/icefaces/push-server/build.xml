@@ -66,13 +66,8 @@
     <target name="build.war" depends="clean, jar">
         <war destfile="${dist.dir}/${ant.project.name}.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="${web.xml}" duplicate="fail">
             <lib dir="../lib">
-                <include name="commons-beanutils.jar" />
-                <include name="commons-collections.jar" />
-                <include name="commons-digester.jar" />
                 <include name="commons-logging.jar" />
                 <include name="icefaces.jar" />
-                <include name="jsf-api.jar" unless="not.use" />
-                <include name="jsf-impl.jar" unless="not.use" />
                 <include name="backport-util-concurrent.jar" />
             </lib>
             
@@ -81,18 +76,6 @@
         <copy file="${dist.dir}/push-server.war" todir="." />
     </target>
     
-    <target name="include.jsf">
-        <ant target="build.war" />        
-    </target>
-
-    <target name="exclude.jsf">
-        <antcall target="build.war">
-            <param name="not.use" value="" />
-        </antcall>
-    </target>
-
-    <target name="jboss4.2" depends="exclude.jsf" />
-
     <target name="update.product.info">
         <copy file="${productinfo.src}/${productinfo.file}" todir="${productinfo.dest}" overwrite="true" />
         <replace file="${productinfo.dest}/${productinfo.file}">
