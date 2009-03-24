@@ -45,7 +45,7 @@
     <renderer-extension>
         <instance-name>portlet</instance-name>
         <is-container>true</is-container>
-        <renders-children>false</renders-children>
+        <renders-children>true</renders-children>
         <tag-name>portlet</tag-name>
         <taglib-prefix>@taglib-prefix@</taglib-prefix>
         <taglib-uri>@taglib-uri@</taglib-uri>
