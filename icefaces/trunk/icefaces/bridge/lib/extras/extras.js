@@ -213,6 +213,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         fld.value = rowid;
         var nothingEvent = new Object();
         iceSubmitPartial(null, fld, nothingEvent);
+        setFocus('');
     } catch(e) {
         console.log("Error in rowSelector[" + e + "]");
     }
