@@ -11,8 +11,20 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
@@ -65,32 +77,28 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
     protected abstract Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) throws Exception;
 
-    protected void checkSession(HttpSession session) {
-        try {
-            final String id = session.getId();
-            final Monitor monitor;
-            synchronized (SessionMonitors) {
-                if (!SessionMonitors.containsKey(id)) {
-                    monitor = new Monitor(session);
-                    SessionMonitors.put(id, monitor);
-                } else {
-                    monitor = (Monitor) SessionMonitors.get(id);
-                }
-                //it is possible to have multiple web-app contexts associated with the same session ID
-                monitor.addInSessionContext(context);
+    protected void checkSession(HttpSession session) throws Exception {
+        final String id = session.getId();
+        final Monitor monitor;
+        synchronized (SessionMonitors) {
+            if (!SessionMonitors.containsKey(id)) {
+                monitor = new Monitor(session);
+                SessionMonitors.put(id, monitor);
+            } else {
+                monitor = (Monitor) SessionMonitors.get(id);
             }
+            //it is possible to have multiple web-app contexts associated with the same session ID
+            monitor.addInSessionContext(context);
+        }
 
-            synchronized (sessionBoundServers) {
-                if (!sessionBoundServers.containsKey(id)) {
-                    sessionBoundServers.put(id, this.newServer(session, monitor, new Authorization() {
-                        public boolean isUserInRole(String role) {
-                            return inRole(id, role);
-                        }
-                    }));
-                }
+        synchronized (sessionBoundServers) {
+            if (!sessionBoundServers.containsKey(id)) {
+                sessionBoundServers.put(id, this.newServer(session, monitor, new Authorization() {
+                    public boolean isUserInRole(String role) {
+                        return inRole(id, role);
+                    }
+                }));
             }
-        } catch (Exception e) {
-            Log.error(e);
         }
     }
 
@@ -275,19 +283,19 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
             long elapsedInterval = System.currentTimeMillis() - lastAccess;
             int maxInterval = session.getMaxInactiveInterval();
 
-            Object o = session.getAttribute( POSITIVE_SESSION_TIMEOUT );
+            Object o = session.getAttribute(POSITIVE_SESSION_TIMEOUT);
 
             // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
             // But if it was originally negative, it should stay that way.
             if (maxInterval > 0) {
 
                 if (o == null) {
-                    session.setAttribute( POSITIVE_SESSION_TIMEOUT, new Integer( maxInterval));
+                    session.setAttribute(POSITIVE_SESSION_TIMEOUT, new Integer(maxInterval));
                 }
             } else {
                 if (o != null) {
-                    maxInterval = ((Integer)o).intValue();
-                    session.setMaxInactiveInterval( maxInterval );
+                    maxInterval = ((Integer) o).intValue();
+                    session.setMaxInactiveInterval(maxInterval);
                 }
             }
 
