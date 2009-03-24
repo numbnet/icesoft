@@ -127,7 +127,8 @@ public class InputFileRenderer extends Renderer {
                         "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
                         "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
                         //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
-                        "setTimeout(register, 300);", null);
+                        //Increased the delay for Firefox 3.0.7
+                        "if (navigator.userAgent.indexOf('Firefox/3.0.7')> 0) setTimeout(register, 400); else setTimeout(register, 0);", null);
             writer.endElement("script");
         }
         
