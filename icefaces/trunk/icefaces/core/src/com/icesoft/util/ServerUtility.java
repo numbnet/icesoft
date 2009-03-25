@@ -130,6 +130,20 @@ public class ServerUtility {
                     _path.substring(
                         _path.indexOf("__") + 2,
                         _path.lastIndexOf("__"));
+            } else if (
+                _serverInfo.startsWith("WebLogic") &&
+                (
+                    _serverInfo.indexOf("9.") != -1 ||
+                    _serverInfo.indexOf("10.") != -1
+                )) {
+
+                int _index = _path.lastIndexOf("/");
+                for (int i = 0; i < 3; i++) {
+                    _index = _path.lastIndexOf("/", _index - 1);
+                }
+                _servletContextPath =
+                    _path.substring(
+                        _path.lastIndexOf("/", _index - 1) + 1, _index);
             } else {
                 int _index = _path.lastIndexOf("/", _path.lastIndexOf("/") - 1);
                 _servletContextPath =
