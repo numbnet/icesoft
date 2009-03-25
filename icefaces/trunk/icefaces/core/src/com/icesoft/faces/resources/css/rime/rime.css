@@ -623,7 +623,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOn .LftMid {
-    background: url( './css-images/Tab_LftMid.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_LftMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -631,7 +631,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOn .MidMid {
-    background: url( './css-images/Tab_MidMid.gif' ) repeat-x top left;
+    background: url( './css-images/Tab_MidMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -650,7 +650,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOn .RtMid {
-    background: url( './css-images/Tab_RtMid.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_RtMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -724,7 +724,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOff .LftMid {
-    background: url( './css-images/Tab_LftMid_off.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -732,7 +732,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOff .MidMid {
-    background: url( './css-images/Tab_MidMid_off.gif' ) repeat-x top left;
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -758,7 +758,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOff .RtMid {
-    background: url( './css-images/Tab_RtMid_off.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -835,7 +835,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOver .LftMid {
-    background: url( './css-images/Tab_LftMid_off.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -843,7 +843,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOver .MidMid {
-    background: url( './css-images/Tab_MidMid_off.gif' ) repeat-x top left;
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -867,7 +867,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOver .RtMid {
-    background: url( './css-images/Tab_RtMid_off.gif' ) no-repeat top left;
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -972,7 +972,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOnBtm .LftMid {
-    background: url( './css-images/Tab_Btm_LftMid.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -980,7 +980,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOnBtm .MidMid {
-    background: url( './css-images/Tab_Btm_MidMid.gif' ) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -999,7 +999,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOnBtm .RtMid {
-    background: url( './css-images/Tab_Btm_RtMid.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1075,7 +1075,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOffBtm .LftMid {
-    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1083,7 +1083,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOffBtm .MidMid {
-    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1106,7 +1106,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOffBtm .RtMid {
-    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1183,7 +1183,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOverBtm .LftMid {
-    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1191,7 +1191,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOverBtm .MidMid {
-    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1214,7 +1214,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .icePnlTbOverBtm .RtMid {
-    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
