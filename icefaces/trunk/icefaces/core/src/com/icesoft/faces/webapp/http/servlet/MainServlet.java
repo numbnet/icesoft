@@ -34,8 +34,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
@@ -332,7 +330,6 @@ public class MainServlet extends HttpServlet {
     }
 
     private void testMessageService() {
-        final List results = new ArrayList();
         MessageHandler acknowledgeMessageHandler =
             new AbstractMessageHandler(
                 new MessageSelector(
@@ -346,11 +343,49 @@ public class MainServlet extends HttpServlet {
                             new StringTokenizer(
                                 ((TextMessage)message).getText(), ";");
                         if (tokens.nextToken().equals("Acknowledge")) {
-                            results.add(
-                                message.getStringProperty(
-                                    Message.SOURCE_SERVLET_CONTEXT_PATH));
-                            while (tokens.hasMoreTokens()) {
-                                results.add(tokens.nextToken());
+                            String product = tokens.nextToken();
+                            String primary = tokens.nextToken();
+                            String secondary = tokens.nextToken();
+                            String tertiary = tokens.nextToken();
+                            String releaseType = tokens.nextToken();
+                            if (LOG.isInfoEnabled()) {
+                                LOG.info(
+                                    "Push Server detected: \"" +
+                                        product + " " +
+                                        primary + "." +
+                                        secondary + "." +
+                                        tertiary + " " +
+                                        releaseType + "\"");
+                            }
+                            if (!primary.equals("x") &&
+                                !ProductInfo.PRIMARY.equals("x")) {
+
+                                if (!primary.equals(ProductInfo.PRIMARY) ||
+                                    !secondary.equals(ProductInfo.SECONDARY)) {
+
+                                    if (LOG.isWarnEnabled()) {
+                                        LOG.warn(
+                                            "ICEfaces / Push Server version " +
+                                                "mismatch! - " +
+                                                "Using \"" +
+                                                    ProductInfo.PRODUCT + " " +
+                                                    ProductInfo.PRIMARY + "." +
+                                                    ProductInfo.SECONDARY + "." +
+                                                    "x\" " +
+                                                "with \"" +
+                                                    product + " " +
+                                                    primary + "." +
+                                                    secondary + ".x\" " +
+                                                "is not recommended.");
+                                    }
+                                }
+                            }
+                            messageServiceClient.removeMessageHandler(
+                                this, MessageServiceClient.PUSH_TOPIC_NAME);
+                            if (LOG.isInfoEnabled()) {
+                                LOG.info(
+                                    "Using Push Server " +
+                                        "Blocking Request Handler");
                             }
                         }
                     }
@@ -371,66 +406,14 @@ public class MainServlet extends HttpServlet {
             messageProperties.setStringProperty(
                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
                 "push-server");
-            messageServiceClient.publish(
+            // throws MessageServiceException
+            messageServiceClient.publishNow(
                 "Hello",
                 messageProperties,
                 "Presence",
                 MessageServiceClient.PUSH_TOPIC_NAME);
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException exception) {
-                // do nothing.
-            }
-            // throws MessageServiceException
-            messageServiceClient.stop();
-            // throws MessageServiceException
-            messageServiceClient.unsubscribe(
-                MessageServiceClient.PUSH_TOPIC_NAME);
-            messageServiceClient.removeMessageHandler(
-                acknowledgeMessageHandler,
-                MessageServiceClient.PUSH_TOPIC_NAME);
-            if (!results.isEmpty()) {
-                String product = (String)results.get(1);
-                String primary = (String)results.get(2);
-                String secondary = (String)results.get(3);
-                String tertiary = (String)results.get(4);
-                String releaseType = (String)results.get(5);
-                if (LOG.isInfoEnabled()) {
-                    LOG.info(
-                        "Push Server detected: \"" +
-                            product + " " +
-                            primary + "." +
-                            secondary + "." +
-                            tertiary + " " +
-                            releaseType + "\"");
-                }
-                if (!primary.equals("x") && !ProductInfo.PRIMARY.equals("x")) {
-                    if (!primary.equals(ProductInfo.PRIMARY) ||
-                        !secondary.equals(ProductInfo.SECONDARY)) {
-
-                        if (LOG.isWarnEnabled()) {
-                            LOG.warn(
-                                "ICEfaces / Push Server version mismatch! - " +
-                                    "Using \"" +
-                                        ProductInfo.PRODUCT + " " +
-                                        ProductInfo.PRIMARY + "." +
-                                        ProductInfo.SECONDARY + ".x\" " +
-                                    "with \"" +
-                                        product + " " +
-                                        primary + "." +
-                                        secondary + ".x\" " +
-                                    "is not recommended.");
-                        }
-                    }
-                }
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Using Push Server Blocking Request Handler");
-                }
-                blockingRequestHandlerContext =
-                    URI.create("/").resolve(results.get(0) + "/").toString();
-            } else {
-                messageServiceClient = null;
-            }
+            blockingRequestHandlerContext =
+                URI.create("/").resolve("push-server" + "/").toString();
         } catch (MessageServiceException exception) {
             // todo: log some message
             messageServiceClient.removeMessageHandler(

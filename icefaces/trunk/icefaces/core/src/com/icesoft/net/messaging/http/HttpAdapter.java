@@ -76,18 +76,20 @@ implements MessageServiceAdapter {
                                 LOG.debug(
                                     "Incoming message:\r\n\r\n" + message);
                             }
-                            Iterator _messageHandlers =
-                                ((Set)messageHandlerMap.get(targetName)).
-                                    iterator();
-                            while (_messageHandlers.hasNext()) {
-                                MessageHandler _messageHandler =
-                                    (MessageHandler)_messageHandlers.next();
+                            Set _messageHandlerSet =
+                                (Set)messageHandlerMap.get(targetName);
+                            MessageHandler[] _messageHandlers =
+                                (MessageHandler[])
+                                    _messageHandlerSet.toArray(
+                                        new MessageHandler[
+                                            _messageHandlerSet.size()]);
+                            for (int i = 0; i < _messageHandlers.length; i++) {
                                 MessageSelector _messageSelector =
-                                    _messageHandler.getMessageSelector();
+                                    _messageHandlers[i].getMessageSelector();
                                 if (LOG.isDebugEnabled()) {
                                     LOG.debug(
-                                        "MessageHandler " + _messageHandler +
-                                            ":\r\n" +
+                                        "MessageHandler " +
+                                            _messageHandlers[i] + ":\r\n" +
                                         _messageSelector);
                                 }
                                 if (_messageSelector == null ||
@@ -96,7 +98,7 @@ implements MessageServiceAdapter {
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("Match!");
                                     }
-                                    _messageHandler.handle(message);
+                                    _messageHandlers[i].handle(message);
                                 }
                             }
                         }

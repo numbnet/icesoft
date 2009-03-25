@@ -35,7 +35,6 @@ import com.icesoft.util.ServerUtility;
 
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -604,6 +603,318 @@ public class MessageServiceClient {
 
     /**
      * <p>
+     *   Publishes the specified <code>object</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>object</code> will
+     *   be published immediately as an ObjectMessage, with the specified
+     *   <code>messageProperties</code>, to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      object
+     *                 the object to be published.
+     * @param      messageProperties
+     *                 the message properties for the ObjectMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        ObjectMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final Serializable object, final Properties messageProperties,
+        final String topicName)
+    throws MessageServiceException {
+        if (object != null &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                createMessage(object, baseMessageProperties, messageProperties),
+                topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>object</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>object</code> will
+     *   be published immediately as an ObjectMessage, with the specified
+     *   <code>messageProperties</code> and <code>messageType</code>, to the
+     *   message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      object
+     *                 the object to be published.
+     * @param      messageProperties
+     *                 the message properties for the ObjectMessage.
+     * @param      messageType
+     *                 the message type for the ObjectMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        ObjectMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final Serializable object, final Properties messageProperties,
+        final String messageType, final String topicName)
+    throws MessageServiceException {
+        if (object != null &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                object,
+                getMessageProperties(messageProperties, messageType),
+                topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>object</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>object</code> will
+     *   be published immediately as an ObjectMessage to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      object
+     *                 the object to be published.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        ObjectMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(final Serializable object, final String topicName)
+    throws MessageServiceException {
+        if (object != null &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(object, (Properties)null, topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>object</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>object</code> will
+     *   be published immediately as an ObjectMessage, with the specified
+     *   <code>messageType</code>, to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      object
+     *                 the object to be published.
+     * @param      messageType
+     *                 the message type for the ObjectMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        ObjectMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final Serializable object, final String messageType,
+        final String topicName)
+    throws MessageServiceException {
+        if (object != null &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                object, getMessageProperties(null, messageType), topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>text</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>text</code> will
+     *   be published immediately as a TextMessage, with the specified
+     *   <code>messageProperties</code>, to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      text
+     *                 the text to be published.
+     * @param      messageProperties
+     *                 the message properties for the TextMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        TextMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final String text, final Properties messageProperties,
+        final String topicName)
+    throws MessageServiceException {
+
+        if (text != null && text.trim().length() != 0 &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                createMessage(text, baseMessageProperties, messageProperties),
+                topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>text</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>text</code> will
+     *   be published immediately as a TextMessage, with the specified
+     *   <code>messageProperties</code> and <code>messageType</code>, to the
+     *   message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      text
+     *                 the text to be published.
+     * @param      messageProperties
+     *                 the message properties for the TextMessage.
+     * @param      messageType
+     *                 the message type for the TextMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        TextMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final String text, final Properties messageProperties,
+        final String messageType, final String topicName)
+    throws MessageServiceException {
+        if (text != null && text.trim().length() != 0 &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                text,
+                getMessageProperties(messageProperties, messageType),
+                topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>text</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>text</code> will
+     *   be published immediately as a TextMessage to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      text
+     *                 the text to be published.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String, String)
+     * @see        TextMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(final String text, final String topicName)
+    throws MessageServiceException {
+        if (text != null && text.trim().length() != 0 &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(text, (Properties)null, topicName);
+        }
+    }
+
+    /**
+     * <p>
+     *   Publishes the specified <code>text</code> to the topic with the
+     *   specified <code>topicName</code>. That is, the <code>text</code> will
+     *   be published immediately as a TextMessage, with the specified
+     *   <code>messageType</code>, to the message service.
+     * </p>
+     * <p>
+     *   If this MessageServiceClient is not a publisher on the topic with the
+     *   <code>topicName</code> yet, it will automatically add itself as a
+     *   publisher.
+     * </p>
+     *
+     * @param      text
+     *                 the text to be published.
+     * @param      messageType
+     *                 the message type for the TextMessage.
+     * @param      topicName
+     *                 the topic name of the topic to publish on.
+     * @throws     MessageServiceException
+     *                 if the publishing of the message failed.
+     * @see        #publish(Serializable, Properties, String)
+     * @see        #publish(Serializable, Properties, String, String)
+     * @see        #publish(Serializable, String)
+     * @see        TextMessage
+     * @see        MessagePipeline
+     */
+    public void publishNow(
+        final String text, final String messageType, final String topicName)
+    throws MessageServiceException {
+        if (text != null && text.trim().length() != 0 &&
+            topicName != null && topicName.trim().length() != 0) {
+
+            publishNow(
+                text, getMessageProperties(null, messageType), topicName);
+        }
+    }
+
+    /**
+     * <p>
      *   Removes the specified <code>MessageHandler</code> from this
      *   MessageServiceClient for the topic with the specified
      *   <code>topicName</code>.
@@ -926,6 +1237,11 @@ public class MessageServiceClient {
             messagePipelineMap.put(_messagePipelineId,  _messagePipeline);
         }
         _messagePipeline.enqueue(message);
+    }
+
+    private void publishNow(final Message message, final String topicName)
+    throws MessageServiceException {
+        messageServiceAdapter.publish(message, topicName);
     }
 
     private void setBaseMessageProperties(final ServletContext servletContext) {
