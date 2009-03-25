@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.outputchart;
 
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -73,9 +74,7 @@ public class OutputChartRenderer extends DomBasicRenderer {
             tr.appendChild(td);
         }
         Element table = (Element)domContext.getRootNode();
-        Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
-        hiddenField.setAttribute(HTML.NAME_ATTR, "iceChartComponent");
-        hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+        FormRenderer.addHiddenField(facesContext, OutputChart.ICE_CHART_COMPONENT);
         
         Element td = (Element) domContext.getRootNode(). //table
                 getFirstChild().//tbody Art: 
@@ -96,7 +95,6 @@ public class OutputChartRenderer extends DomBasicRenderer {
             outputChart.generateClientSideImageMap(domContext, map);
             td.appendChild(map);
         }
-        td.appendChild(hiddenField);
         domContext.stepOver();
     }
 }
