@@ -554,7 +554,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .LftTop {
-    background: url(css-images/Tab_LftTop.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftTop.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -563,7 +563,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .MidTop {
-    background: url(css-images/Tab_MidTop.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidTop.gif' ) repeat-x top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -571,7 +571,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .RtTop {
-    background: url(css-images/Tab_RtTop.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtTop.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -580,7 +580,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .LftMid {
-    background: url(css-images/Tab_LftMid.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -588,14 +588,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .MidMid {
-    background: url(css-images/Tab_MidMid.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOn .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
     margin: 3px;
@@ -607,7 +607,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOn .RtMid {
-    background: url(css-images/Tab_RtMid.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtMid.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -655,7 +655,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .LftTop {
-    background: url(css-images/Tab_LftTop_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftTop_off.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -664,7 +664,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .MidTop {
-    background: url(css-images/Tab_MidTop_off.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidTop_off.gif' ) repeat-x top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -672,7 +672,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .RtTop {
-    background: url(css-images/Tab_RtTop_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtTop_off.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -681,7 +681,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .LftMid {
-    background: url(css-images/Tab_LftMid_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -689,14 +689,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .MidMid {
-    background: url(css-images/Tab_MidMid_off.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOff .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
     margin: 3px;
@@ -715,7 +715,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOff .RtMid {
-    background: url(css-images/Tab_RtMid_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -766,7 +766,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .LftTop {
-    background: url(css-images/Tab_LftTop_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftTop_off.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -775,7 +775,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .MidTop {
-    background: url(css-images/Tab_MidTop_off.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidTop_off.gif' ) repeat-x top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -783,7 +783,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .RtTop {
-    background: url(css-images/Tab_RtTop_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtTop_off.gif' ) no-repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -792,7 +792,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .LftMid {
-    background: url(css-images/Tab_LftMid_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -800,14 +800,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .MidMid {
-    background: url(css-images/Tab_MidMid_off.gif) repeat-x top left;
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOver .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet_over.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
     margin: 3px;
@@ -824,7 +824,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOver .RtMid {
-    background: url(css-images/Tab_RtMid_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
     border: none;
     padding: 0;
     text-align: center;
@@ -878,7 +878,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbSetCnt {
 /*newly added class*/
-    background: url(css-images/contentContainer_bg.gif) repeat-x top left;
+    background: url( './css-images/contentContainer_bg.gif' ) repeat-x top left;
     border-bottom: 1px solid #d9d9d9;
     border-left: 1px solid #d9d9d9;
     border-right: 1px solid #d9d9d9;
@@ -887,7 +887,7 @@ input.iceSelInpDateClosePopup {
 
 .icePnlTbSetCntBtm {
 /*was iceTabSetBottom*/
-    background: url(css-images/contentContainer_bg_up.gif) repeat-x top left;
+    background: url( './css-images/contentContainer_bg_up.gif' ) repeat-x top left;
     border-top: 1px solid #d9d9d9;
     border-left: 1px solid #d9d9d9;
     border-right: 1px solid #d9d9d9;
@@ -931,7 +931,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .LftMid {
-    background: url(css-images/Tab_Btm_LftMid.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -939,14 +939,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .MidMid {
-    background: url(css-images/Tab_Btm_MidMid.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOnBtm .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
     margin: 3px;
@@ -958,7 +958,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .RtMid {
-    background: url(css-images/Tab_Btm_RtMid.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -966,7 +966,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .LftBtm {
-    background: url(css-images/Tab_Btm_LftBtm.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftBtm.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -975,7 +975,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .MidBtm {
-    background: url(css-images/Tab_Btm_MidBtm.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidBtm.gif' ) repeat-x bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -983,7 +983,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOnBtm .RtBtm {
-    background: url(css-images/Tab_Btm_RtBtm.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtBtm.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1034,7 +1034,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .LftMid {
-    background: url(css-images/Tab_Btm_LftMid_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1042,14 +1042,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .MidMid {
-    background: url(css-images/Tab_Btm_MidMid_off.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOffBtm .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet_off.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
     margin: 3px;
@@ -1065,7 +1065,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .RtMid {
-    background: url(css-images/Tab_Btm_RtMid_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1073,7 +1073,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .LftBtm {
-    background: url(css-images/Tab_Btm_LftBtm_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftBtm_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1082,7 +1082,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .MidBtm {
-    background: url(css-images/Tab_Btm_MidBtm_off.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidBtm_off.gif' ) repeat-x bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1090,7 +1090,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOffBtm .RtBtm {
-    background: url(css-images/Tab_Btm_RtBtm_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtBtm_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1142,7 +1142,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .LftMid {
-    background: url(css-images/Tab_Btm_LftMid_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1150,14 +1150,14 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .MidMid {
-    background: url(css-images/Tab_Btm_MidMid_off.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat-x bottom left;
     border: none;
     padding: 0;
     text-align: center;
 }
 
 .icePnlTbOverBtm .MidMid a {
-    background: url(css-images/Tab_MidMid_bullet_over.gif) no-repeat top left;
+    background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
     margin: 3px;
@@ -1173,7 +1173,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .RtMid {
-    background: url(css-images/Tab_Btm_RtMid_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1181,7 +1181,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .LftBtm {
-    background: url(css-images/Tab_Btm_LftBtm_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_LftBtm_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1190,7 +1190,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .MidBtm {
-    background: url(css-images/Tab_Btm_MidBtm_off.gif) repeat-x bottom left;
+    background: url( './css-images/Tab_Btm_MidBtm_off.gif' ) repeat-x bottom left;
     border: none;
     padding: 0;
     text-align: center;
@@ -1198,7 +1198,7 @@ input.iceSelInpDateClosePopup {
 }
 
 .icePnlTbOverBtm .RtBtm {
-    background: url(css-images/Tab_Btm_RtBtm_off.gif) no-repeat bottom left;
+    background: url( './css-images/Tab_Btm_RtBtm_off.gif' ) no-repeat bottom left;
     border: none;
     padding: 0;
     text-align: center;
