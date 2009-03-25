@@ -50,12 +50,8 @@ public class ViewRootStateManagerImpl extends StateManager {
     public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
 
         initializeParameters( context );
-        if (pureDelegation) {
+        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
             return delegate.restoreView(context, viewId, renderKitId);
-        }
-
-        if ( !(context instanceof BridgeFacesContext) ) {
-            throw new IllegalStateException("FacesContext not instance of BridgeFacesContext");
         }
 
         BridgeFacesContext bfc = (BridgeFacesContext) context;
@@ -126,7 +122,7 @@ public class ViewRootStateManagerImpl extends StateManager {
     public Object saveView(FacesContext context ) {
 
         initializeParameters(context);
-        if (pureDelegation) {
+          if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
             // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
             if (v2DelegateSaveViewMethod != null) {
                 try {
@@ -140,10 +136,6 @@ public class ViewRootStateManagerImpl extends StateManager {
         } 
 
         UIViewRoot root = context.getViewRoot();
-
-        if ( !(context instanceof BridgeFacesContext) ) {
-            throw new IllegalStateException("FacesContext not instance of BridgeFacesContext");
-        }
 
         BridgeFacesContext bfc = (BridgeFacesContext) context;
         String viewNumber = bfc.getViewNumber();
@@ -162,7 +154,7 @@ public class ViewRootStateManagerImpl extends StateManager {
 
 
     public SerializedView saveSerializedView(FacesContext context) {
-        if (pureDelegation) {
+        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
             return delegate.saveSerializedView(context);
         }
         return (SerializedView) saveView(context);
@@ -197,7 +189,7 @@ public class ViewRootStateManagerImpl extends StateManager {
     public void writeState(FacesContext context, SerializedView view)
     throws IOException {
         initializeParameters(context);
-        if (pureDelegation) {
+        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
             delegate.writeState(context, view);
         } 
 
