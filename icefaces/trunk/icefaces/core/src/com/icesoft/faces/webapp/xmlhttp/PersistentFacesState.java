@@ -351,14 +351,15 @@ public class PersistentFacesState implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
             // #4251 start a lifecycle to re-establish the ViewRoot before
             // trying navigation if a lifecycle is not already running.
-            if (fc == null) {
+            boolean manageLifecycle = ((fc == null) || (fc.getViewRoot() == null));
+            if (manageLifecycle) {
                 execute();
-            } 
+            }
             facesContext.getApplication().getNavigationHandler().
                          handleNavigation(facesContext,
                                           facesContext.getViewRoot().getViewId(),
                                           outcome);
-            if (fc == null) {
+            if (manageLifecycle) {
                 render();
             } 
         } catch (Exception e) {
