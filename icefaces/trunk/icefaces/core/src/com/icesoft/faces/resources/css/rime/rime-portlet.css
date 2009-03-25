@@ -2103,6 +2103,186 @@ input.iceSelInpDateClosePopup {
     border: none;
 }
 
+/* disabled bottom tab off */
+.icePnlTbOffBtm .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOffBtm .MidBtm-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOffBtm .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOffBtm .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOffBtm .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOffBtm .MidMid-dis a {
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+
+}
+
+.icePnlTbOffBtm .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOffBtm .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOffBtm .MidTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOffBtm .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/* disabled bottom tab on */
+
+.icePnlTbOnBtm .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOnBtm .MidBtm-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOnBtm .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOnBtm .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOnBtm .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOnBtm .MidMid-dis a {
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+}
+
+.icePnlTbOnBtm .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOnBtm .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOnBtm .MidTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOnBtm .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
 /* tab on disabled */
 .icePnlTbOn {
 
