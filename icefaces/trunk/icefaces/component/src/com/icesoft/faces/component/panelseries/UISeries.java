@@ -564,6 +564,36 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             setFirst(first.intValue());
     }
 
+    private void resetComponentState(FacesContext facesContext) {
+        Iterator children = getFacetsAndChildren();
+        resetComponentState(facesContext, children);
+    }
+    private void resetComponentState(FacesContext facesContext, Iterator children) {
+        while (children.hasNext()) {
+            UIComponent component = (UIComponent) children.next();
+            if (component.getChildCount() > 0 ) {
+                resetComponentState(facesContext, component.getChildren().iterator());
+            }
+            if (component instanceof EditableValueHolder) {
+                EditableValueHolder input = (EditableValueHolder) component;
+                input.setValue(null);
+                input.setSubmittedValue(null);
+                input.setValid(true);
+                input.setLocalValueSet(false);
+            } else if (component instanceof HtmlForm) {
+                ((HtmlForm) component).setSubmitted(false);
+            }
+        }
+    }        
+    
+    public void encodeEnd(FacesContext context) throws IOException {
+        super.encodeEnd(context);
+        //now reset the component state, it requires because we don't process  
+        //components with rendered=false. which lets input component to keep the 
+        //data of last restored component. 
+        resetComponentState(context);
+    }
+    
     //  Event associated with the specific rowindex
     class RowEvent extends FacesEvent {
         private FacesEvent event = null;
