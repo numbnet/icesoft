@@ -122,13 +122,13 @@ public class InputFileRenderer extends Renderer {
                                   : "return;" ) +
                             " } try { if(document.getElementById('"+id+"')) { '" + id + "'.asExtendedElement().form().submit(); } } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
                         //trigger form submit when the upload starts
-                        "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
+                        "frame.document.onload = function() {frame.document.getElementsByTagName('form')[0].onsubmit = submit;};" +
                         //trigger form submit when the upload ends and re-register handlers
                         "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
                         "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
                         //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
                         //Increased the delay for Firefox 3.0.7
-                        "if (navigator.userAgent.indexOf('Firefox/3.0.7')> 0) setTimeout(register, 400); else setTimeout(register, 0);", null);
+                        "setTimeout(register, 0);", null);
             writer.endElement("script");
         }
         
