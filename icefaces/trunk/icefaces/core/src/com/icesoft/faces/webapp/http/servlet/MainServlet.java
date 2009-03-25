@@ -163,7 +163,14 @@ public class MainServlet extends HttpServlet {
                 throw new ServletException(e);
             }
         } catch (RuntimeException e) {
-            throw e;
+            //ICE-4261: We cannot wrap RuntimeExceptions as ServletExceptions because of support for Jetty
+            //Continuations.  However, if the message of a RuntimeException is null, Tomcat won't
+            //properly redirect to the configured error-page.  So we need a new RuntimeException
+            //that actually includes a message.
+            if( e.getMessage() != null ){
+                throw e;
+            }
+            throw new RuntimeException("no message available",e);
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {
