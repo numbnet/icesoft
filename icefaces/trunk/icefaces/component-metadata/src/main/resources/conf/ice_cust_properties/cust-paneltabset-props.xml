@@ -226,3 +226,17 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        Width of the entire tab set. If this value is set and the actual width needed to
+        display all contained tabs is greater than this value, then the tab set will be clipped.
+    </description>
+    <property-name>width</property-name>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

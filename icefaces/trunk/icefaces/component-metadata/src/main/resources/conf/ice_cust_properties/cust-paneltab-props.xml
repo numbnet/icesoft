@@ -132,7 +132,7 @@
 </property>
 
 <property>
-    <description>If this attribute is set to true, then the label text will wrap to multiple lines instead of beling clipped when the width of the text is greater than the one specified by the labelWidth attribute.</description>
+    <description>If this attribute is set to true, then the label text will wrap to multiple lines instead of being clipped when the width of the text is greater than the one specified by the labelWidth attribute.</description>
     <property-name>labelWrap</property-name>
     <property-class>boolean</property-class>
     <property-extension>
