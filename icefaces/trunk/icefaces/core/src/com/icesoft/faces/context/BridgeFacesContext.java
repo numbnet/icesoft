@@ -109,6 +109,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ELContext elContext;
     private DocumentStore documentStore;
     private String lastViewID;
+    boolean retainViewRoot;
 
     private static Constructor jsfUnitConstructor;
     private static String jsfUnitClass;
@@ -134,6 +135,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig, authorization);
             }
         });
+
+        String keepViewRoot = externalContext.getInitParameter("com.icesoft.faces.retainViewRoot");
+        if (keepViewRoot != null) {
+            retainViewRoot = Boolean.parseBoolean( keepViewRoot);
+        } 
         this.viewNumber = viewIdentifier;
         this.sessionID = sessionID;
         this.view = view;
@@ -405,7 +411,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
         if (com.icesoft.util.SeamUtilities.isSpring2Environment()) {
-            this.viewRoot = null;
+            if (!retainViewRoot) {
+                this.viewRoot = null;
+            } 
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
