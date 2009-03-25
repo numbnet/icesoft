@@ -202,7 +202,6 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         var row = evt.element();
         if (row.tagName.toLowerCase() != "tr") {
             row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
-            // Art: check for Ice.registerClick too?
         }
         if (row) {
             row.className = toggleClassNames;
@@ -219,7 +218,6 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
     }
 }
 
-// Art: added {
 Ice.clickEvents = {};
 
 Ice.registerClick = function(elem,hdnClkRow,hdnClkCount,rowid,formId,delay,toggleOnClick,event,useEvent,hdnFld,toggleClassNames) {
@@ -281,4 +279,3 @@ Ice.preventTextSelection = function(event) {
         return false;
     }
 }
-// Art: }

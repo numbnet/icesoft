@@ -65,10 +65,8 @@ public class TableRenderer
 
     private static final String SELECTED_ROWS = "sel_rows";
     
-    // Art: added {
     private static final String CLICKED_ROW = "click_row";
     private static final String CLICK_COUNT = "click_count";
-    // Art: }
 
     public String getComponentStyleClass(UIComponent uiComponent) {
         return (String) uiComponent.getAttributes().get("styleClass");
@@ -604,10 +602,9 @@ public class TableRenderer
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
         Element hiddenInputNode = null;
-        // Art: added {
         Element hiddenClickedRowField = null;
         Element hiddenClickCountField = null;
-        // Art: }
+
         UIComponent form = DomBasicRenderer.findForm(uiComponent);
         String formId = form == null ? "" : form.getClientId(facesContext);
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
@@ -640,27 +637,19 @@ public class TableRenderer
             hiddenInputNode = rowSelectedField;
             rowSelectionFunctionName = "Ice.tableRowClicked";
             
-            // Art: added {
-            //if (rowSelector.getClickListener() != null) {
-                Element clickedRowField = domContext.createElement(HTML.INPUT_ELEM);
-                String clickedRowParam = getClickedRowParameterName(uiComponent.getClientId(facesContext));
-                clickedRowField.setAttribute(HTML.TYPE_ATTR, "hidden");
-                //clickedRowField.setAttribute(HTML.ID_ATTR, clickedRowParam);
-                clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam); 
-                
-                Element clickCountField = domContext.createElement(HTML.INPUT_ELEM);
-                String clickCountParam = getClickCountParameterName(uiComponent.getClientId(facesContext));
-                clickCountField.setAttribute(HTML.TYPE_ATTR, "hidden");
-                //clickCountField.setAttribute(HTML.ID_ATTR, clickCountParam);
-                clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam); 
-                
-                //tBody.appendChild(clickedRowField);
-                //tBody.appendChild(clickCountField);
-                
-                hiddenClickedRowField = clickedRowField;
-                hiddenClickCountField = clickCountField;
-            //}
-            // Art: }
+
+            Element clickedRowField = domContext.createElement(HTML.INPUT_ELEM);
+            String clickedRowParam = getClickedRowParameterName(uiComponent.getClientId(facesContext));
+            clickedRowField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam); 
+            
+            Element clickCountField = domContext.createElement(HTML.INPUT_ELEM);
+            String clickCountParam = getClickCountParameterName(uiComponent.getClientId(facesContext));
+            clickCountField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam); 
+            
+            hiddenClickedRowField = clickedRowField;
+            hiddenClickCountField = clickCountField;
         }
         
         List columnWidthList = getColumnWidthsAsList(uiComponent);
@@ -677,10 +666,8 @@ public class TableRenderer
             }
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
-            if (rowSelectorFound) { // Art: modified
-                // Art: added {
+            if (rowSelectorFound) {
                 if (toggleOnClick) {
-                // Art: }
                     String toggleClass;
                     if (Boolean.TRUE.equals(rowSelector.getValue())) {
                         toggleClass = selectedClass + " " + rowSelector.getStyleClass();
@@ -688,13 +675,10 @@ public class TableRenderer
                         toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
                     }
                     toggleClass = CSSNamePool.get(getPortletAlternateRowClass(toggleClass, rowIndex));
-                    // Art: added {
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
-                    // Art: }
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
                             "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
-                    // Art: added {
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
@@ -704,8 +688,6 @@ public class TableRenderer
                             + "'"+ paramId +"','" + toggleClass + "');");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
-                    // Art: }
-                // Art: added {
                 } else {
                     if (rowSelector.getClickListener() != null || rowSelector.getClickAction() != null) {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
@@ -716,19 +698,12 @@ public class TableRenderer
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
                 }
-                // Art: }
-                // Art: added {
                 // disable text selection
                 if (rowSelector.getClickListener() != null 
                     || rowSelector.getClickAction() != null 
                     || rowSelector.isEnhancedMultiple()) {
                     tr.setAttribute("onmousedown", "return Ice.preventTextSelection(event);");
-                    /*
-                        root.setAttribute("onselectstart", "return false;"); // IE
-                        root.setAttribute("onmousedown", "return false;"); // others
-                    */
                 }
-                // Art: }
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
@@ -810,12 +785,10 @@ public class TableRenderer
                         if (null != hiddenInputNode)  {
                             td.appendChild(hiddenInputNode);
                         }
-                        // Art: added {
                         if (null != hiddenClickedRowField && null != hiddenClickCountField)  {
                             td.appendChild(hiddenClickedRowField);
                             td.appendChild(hiddenClickCountField);
                         }
-                        // Art: }
                         writeColStyles(columnStyles, columnStylesMaxIndex,
                                        columnStyleIndex, td, colNumber++,
                                        uiComponent);
@@ -873,7 +846,7 @@ public class TableRenderer
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
-                                      columnStyleIndex, colNumber, width, hiddenInputNode, hiddenClickedRowField, hiddenClickCountField); // Art: modified 
+                                      columnStyleIndex, colNumber, width, hiddenInputNode, hiddenClickedRowField, hiddenClickCountField);
                         nextChild.encodeEnd(facesContext);
                         colNumber = uiData.getColNumber();
                     }
@@ -898,8 +871,8 @@ public class TableRenderer
                                DOMContext domContext, Node tr,
                                String[] columnStyles, int columnStylesMaxIndex,
                                int columnStyleIndex, int colNumber,
-                               String width, Element rowSelectorHiddenField, // Art: modified
-                               Element clickEventRowField, Element clickEventCountField) throws IOException { // Art: modified
+                               String width, Element rowSelectorHiddenField,
+                               Element clickEventRowField, Element clickEventCountField) throws IOException {
         UIColumns uiList = (UIColumns) columns;
         int rowIndex = uiList.getFirst();
         uiList.setRowIndex(rowIndex);
@@ -918,12 +891,10 @@ public class TableRenderer
             if (null != rowSelectorHiddenField)  {
                 td.appendChild(rowSelectorHiddenField);
             }
-            // Art: added {
             if (null != clickEventRowField && null != clickEventCountField)  {
                 td.appendChild(clickEventRowField);
                 td.appendChild(clickEventCountField);
             }
-            // Art: }
             if (width != null && !width.equals("100%")) {
 
                 td.setAttribute("style",
@@ -985,7 +956,6 @@ public class TableRenderer
         return dataTableId + SELECTED_ROWS;
     }
     
-    // Art: added {
     public static String getClickedRowParameterName(String dataTableId) {
         int i = dataTableId.lastIndexOf(":");
         dataTableId = dataTableId.substring(0, i);
@@ -997,8 +967,6 @@ public class TableRenderer
         dataTableId = dataTableId.substring(0, i);
         return dataTableId + CLICK_COUNT;
     }    
-    // Art: }
-
 
     public static RowSelector getRowSelector(UIComponent comp) {
         if (comp instanceof RowSelector) {
