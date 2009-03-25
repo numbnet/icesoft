@@ -430,6 +430,7 @@ public class TreeRenderer extends DomBasicRenderer {
 
             navAnchor.setAttribute(HTML.ONCLICK_ATTR, onclickString);
             treeNodeDiv.appendChild(navAnchor);
+            treeNodeDiv.appendChild(domContext.createTextNode(" "));
             // icon
             Element iconImage = domContext.createElement(HTML.IMG_ELEM);
             // Determine whether to render the top, middle, or bottom image:
