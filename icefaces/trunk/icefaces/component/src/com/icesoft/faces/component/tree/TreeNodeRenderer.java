@@ -39,6 +39,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -71,6 +72,11 @@ public class TreeNodeRenderer extends DomBasicRenderer {
 
         if (iconFacet != null && iconFacet.isRendered()) {
             CustomComponentUtils.renderChild(facesContext, iconFacet);
+        }
+        DefaultMutableTreeNode defaultMutableTreeNode = ((TreeNode) uiComponent).getMutable();
+        IceUserObject userObject = (IceUserObject) defaultMutableTreeNode.getUserObject();
+        if (!userObject.isLeaf()) {
+            domContext.getCursorParent().appendChild(domContext.createTextNode(" "));
         }
         if (contentFacet != null && contentFacet.isRendered()) {
             CustomComponentUtils.renderChild(facesContext, contentFacet);
