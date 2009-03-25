@@ -119,7 +119,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
                                   String renderKitId) {
         initializeParameters( context );
 
-        if (pureDelegation) {
+        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
             return delegate.restoreView(context, viewId, renderKitId);
         }
 
@@ -159,7 +159,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
      */
     public Object saveView(FacesContext context) {
 
-        if (pureDelegation) {
+        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
             if (v2DelegateSaveViewMethod != null) {
                 // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
                 try {
@@ -215,7 +215,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
     public SerializedView saveSerializedView(FacesContext context) {
         initializeParameters( context );
-        if (pureDelegation) {
+        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
             return delegate.saveSerializedView(context);
         }
         return (SerializedView) saveView(context);
