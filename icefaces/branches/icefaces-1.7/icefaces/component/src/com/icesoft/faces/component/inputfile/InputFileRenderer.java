@@ -113,12 +113,12 @@ public class InputFileRenderer extends Renderer {
                                   : "return;" ) +
                             " } try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
                         //trigger form submit when the upload starts
-                        "frame.document.onload = function() {frame.document.getElementsByTagName('form')[0].onsubmit = submit;};" +
+                        "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
                         //trigger form submit when the upload ends and re-register handlers
                         "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
                         "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
                         //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
-                        "setTimeout(register, 0);", null);
+                        "setTimeout(register, 300);", null);
             writer.endElement("script");
         }
 
