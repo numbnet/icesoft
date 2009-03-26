@@ -31,6 +31,7 @@
  */
 package com.icesoft.faces.async.common;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
@@ -56,13 +57,17 @@ implements Server {
     private static final Log LOG =
         LogFactory.getLog(PushServerAdaptingServlet.class);
 
+    private String blockingRequestHandlerContext;
     private long sequenceNumber;
 
     public PushServerAdaptingServlet(
         final String iceFacesId, final Collection synchronouslyUpdatedViews,
-        final ViewQueue allUpdatedViews,
+        final ViewQueue allUpdatedViews, final Configuration configuration,
         final MessageServiceClient messageServiceClient)
     throws MessageServiceException {
+        blockingRequestHandlerContext =
+            configuration.getAttribute(
+                "blockingRequestHandlerContext", "push-server");
         allUpdatedViews.onPut(
             new Runnable() {
                 public void run() {
@@ -85,7 +90,7 @@ implements Server {
                         _messageProperties.
                             setStringProperty(
                                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                                "push-server");
+                                blockingRequestHandlerContext);
                         messageServiceClient.publish(
                             iceFacesId + ";" +                    // ICEfaces ID
                                 ++sequenceNumber + ";" +      // Sequence Number
