@@ -57,7 +57,8 @@ import java.util.Set;
 
 
 public class SelectInputTextRenderer extends DomBasicInputRenderer {
-    private final String AUTOCOMPLETE_DIV = "autoCompleteDiv";
+    private static final String AUTOCOMPLETE_DIV = "_div";
+    static final String AUTOCOMPLETE_INDEX = "_idx";
     private static final Log log =
             LogFactory.getLog(SelectInputTextRenderer.class);
     private static final String[] passThruAttributeExceptions = new String[] {
@@ -94,7 +95,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 
             String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
             input.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
-            
+
             String inputStyle = component.getWidthAsStyle();
             if(inputStyle != null && inputStyle.length() > 0)
                 input.setAttribute(HTML.STYLE_ATTR, inputStyle);
@@ -112,13 +113,20 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 div.setAttribute(HTML.CLASS_ATTR, listClass);
             }
             root.appendChild(div);
+
+            Element index = domContext.createElement(HTML.INPUT_ELEM);
+            index.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
+            String indexId = clientId + AUTOCOMPLETE_INDEX;
+            index.setAttribute(HTML.NAME_ATTR, indexId);
+            root.appendChild(index);
+
             String rootStyle = component.getStyle();
             if(rootStyle != null && rootStyle.length() > 0)
                 root.setAttribute(HTML.STYLE_ATTR, rootStyle);
             else
                 root.removeAttribute(HTML.STYLE_ATTR);
             root.setAttribute(HTML.CLASS_ATTR, component.getStyleClass());
-            
+
           //  Element script = domContext.createElement(HTML.SCRIPT_ELEM);
           //  script.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
                               //  HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
@@ -145,23 +153,23 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         SelectInputText component = (SelectInputText) uiComponent;
         Element input = (Element) domContext.getRootNode().getFirstChild();
-        
+
         String combinedValue = "setFocus(this.id);";
         Object appValue = uiComponent.getAttributes().get("onfocus");
         if (appValue != null)
             combinedValue += appValue.toString();
         input.setAttribute("onfocus", combinedValue);
-        
+
         combinedValue = "setFocus('');";
         appValue = uiComponent.getAttributes().get("onblur");
         if (appValue != null)
             combinedValue += appValue.toString();
         input.setAttribute("onblur", combinedValue);
-        
+
         appValue = uiComponent.getAttributes().get("onchange");
         if (appValue != null)
             input.setAttribute("onchange", appValue.toString());
-        
+
         // this would prevent, when first valueChangeListener fires with null value
 //System.out.println("SelectInputTextRenderer.encodeChildren()  clientId: " + uiComponent.getClientId(facesContext));
         String value = getValue(facesContext, uiComponent);

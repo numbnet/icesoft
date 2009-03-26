@@ -117,6 +117,7 @@ Autocompleter.Base.prototype = {
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
+        this.element.focus();        
     },
 
     fixIEOverlapping: function() {
@@ -146,10 +147,10 @@ Autocompleter.Base.prototype = {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
-                    this.getUpdatedChoices(true, event);
+                    this.getUpdatedChoices(true, event, -1);
                     return;
                 case Event.KEY_DOWN:
-                    this.getUpdatedChoices(false, event);
+                    this.getUpdatedChoices(false, event, -1);
                     return;
             }
         }
@@ -163,9 +164,9 @@ Autocompleter.Base.prototype = {
                 //Event.stop(event);
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
-                    this.selectEntry();
+                    var idx = this.selectEntry();
                     Ice.Autocompleter.logger.debug("Getting updated choices on enter");
-                    this.getUpdatedChoices(true, event);
+                    this.getUpdatedChoices(true, event, idx);
                     this.hide();
                     Event.stop(event);
                     return;
@@ -210,7 +211,7 @@ Autocompleter.Base.prototype = {
         if (!this.active) {
             switch (event.keyCode) {
                 case Event.KEY_DOWN:
-                    this.getUpdatedChoices(false, event);
+                    this.getUpdatedChoices(false, event, -1);
                     return;
                 case Event.KEY_BACKSPACE:
                 case Event.KEY_DELETE:
@@ -273,8 +274,9 @@ Autocompleter.Base.prototype = {
         // Hack to fix before beta. Was popup up the list after a selection was made
         var element = Event.findElement(event, 'DIV');
         this.index = element.autocompleteIndex;
+        var idx = element.autocompleteIndex;
         this.selectEntry();
-        this.getUpdatedChoices(true, event);
+        this.getUpdatedChoices(true, event, idx);
         this.hide();
 
     },
@@ -353,11 +355,14 @@ Autocompleter.Base.prototype = {
     },
 
     selectEntry: function() {
+        var idx = -1;
         this.active = false;
         if (this.index >= 0) {
+            idx = this.index;
             this.updateElement(this.getCurrentEntry());
             this.index = -1;
         }
+        return idx;
     },
 
     updateElement: function(selectedElement) {
@@ -442,11 +447,11 @@ Autocompleter.Base.prototype = {
         this.changed = false;
         if (this.getToken().length >= this.options.minChars) {
             this.startIndicator();
-            this.getUpdatedChoices(false, undefined);
+            this.getUpdatedChoices(false, undefined, -1);
         } else {
             this.active = false;
             this.hide();
-            this.getUpdatedChoices(false, undefined);
+            this.getUpdatedChoices(false, undefined, -1);
         }
     },
 
@@ -575,7 +580,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         }
     },
 
-    getUpdatedChoices: function(isEnterKey, event) {
+    getUpdatedChoices: function(isEnterKey, event, idx) {
         if (!event) {
             event = new Object();
         }
@@ -589,6 +594,11 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             this.options.parameters += '&' + this.options.defaultParams;
 
         var form = Ice.util.findForm(this.element);
+        if (idx > -1) {
+            var indexName = this.element.id + "_idx";
+            form[indexName].value = idx;
+        }
+        
         //     form.focus_hidden_field.value=this.element.id;
         if (isEnterKey) {
             Ice.Autocompleter.logger.debug("Sending submit");
