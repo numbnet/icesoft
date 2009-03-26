@@ -126,6 +126,11 @@ public class DOMContext implements java.io.Serializable {
                 context.stepOver();
                 return context;
             }
+            //TODO: Remove as per ICE-4088
+            //both MenuBarRenderer.encodeEnd and
+            //CommandLinkRenderer.encodeBegin make use of the
+            //attach method and should be fixed
+            context.attach((Element) cursorParent);
         }
         context.stepOver();
 
@@ -194,7 +199,7 @@ public class DOMContext implements java.io.Serializable {
             public String getValue() throws ConfigurationException {
                 throw new ConfigurationException("value not available");
             }
-        }, Collections.EMPTY_LIST, Collections.EMPTY_LIST, null);
+        }, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
         Document doc = domWriter.getDocument();
         Element html = doc.createElement("html");
         doc.appendChild(html);
@@ -237,6 +242,28 @@ public class DOMContext implements java.io.Serializable {
             domContexts.put(clientId, context);
         }
         return context;
+    }
+
+    private void attach(Element cursorParent) {
+        if (null == rootNode) { //nothing to attach
+            return;
+        }
+        if (rootNode.equals(cursorParent)) {
+            return;
+        }
+
+        //TODO needs proper fix
+        //Quick & temp fix for ICEfacesWebPresentation application
+        //This exception only happens when "rootNode" is ancestor of "cursor"
+        if (rootNode.getParentNode() != cursorParent) {
+            try {
+                //re-attaching on top of another node
+                //replace them and assume they will re-attach later
+                cursorParent.appendChild(rootNode);
+            } catch (DOMException e) {
+                //this happens in strea-write mode only.
+            }
+        }
     }
 
 
