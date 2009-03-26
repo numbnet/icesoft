@@ -53,6 +53,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -97,23 +98,17 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
     /**
      * A property to store the selectedItem, after successfull match
      */
-    private SelectItem selectedItem = null;
+    private SelectItem selectedItem;
 
     /**
      * list of selectItems
      */
-    List itemList;
+    private transient List itemList;
 
     private String options;
 
-    /**
-     * Map for selectItems, where the key is the "SelectItem.getlabel()" and the
-     * value is the selectItem object
-     */
-    Map itemMap = new HashMap();
+    private transient int index = -1;
 
-    private int index = -1;
-    
     private MethodBinding textChangeListener;
 
     public SelectInputText() {
@@ -160,7 +155,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
 //System.out.println("SelectInputText.setSelectedItem()  changed: " + changed);
             if(changed) {
                 setChangedComponentId( clientId );
-                
+
 //System.out.println("SelectInputText.setSelectedItem()  textChangeListener: " + getTextChangeListener());
                 if( getTextChangeListener() != null ) {
 //System.out.println("SelectInputText.setSelectedItem()  submittedValue: " + value);
@@ -176,7 +171,17 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
                 }
             }
         }
-        setSelectedItem(value);
+        String selIdxStr = (String) requestMap.get(
+            clientId + SelectInputTextRenderer.AUTOCOMPLETE_INDEX);
+//System.out.println("SIT.decode()  selIdxStr: " + selIdxStr);
+        if (selIdxStr != null && selIdxStr.trim().length() > 0) {
+            int selIdx = Integer.parseInt(selIdxStr);
+            setSelectedIndex(selIdx);
+            setChangedComponentId( clientId );
+        }
+        else {
+            setSelectedItem(value);
+        }
     }
 
     private static boolean isPartialSubmitKeypress(Map requestMap, String clientId) {
@@ -274,10 +279,10 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
 
     }
 
-    //this method generating the list of selectItems "itemList",  which can be bounded 
-    //with the bean, or could be static on jsf page 
+    //this method generating the list of selectItems "itemList",  which can be bounded
+    //with the bean, or could be static on jsf page
     //matches list can be change after value change event, so we are calling
-    //this method after value change event in broadcast(), where the method bounded 
+    //this method after value change event in broadcast(), where the method bounded
     //with valueChangeListner is being called and updates the data model.
     void populateItemList() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -287,22 +292,6 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         } else {
             //selectItem or selectItems has been used on jsf page, so get the selectItems
             itemList = Util.getSelectItems(facesContext,this);
-        }
-        try {
-            Iterator items = itemList.iterator();
-            SelectItem item = null;
-            itemMap.clear();
-            while (items.hasNext()) {
-                item = (SelectItem) items.next();
-                String itemLabel = item.getLabel();
-                if(itemLabel == null) {
-                    itemLabel = DomBasicRenderer.converterGetAsString(
-                        facesContext, this, item.getValue());
-                }
-                itemMap.put(itemLabel, item);
-            }
-        } catch(NullPointerException e) {
-            e.printStackTrace();
         }
     }
 
@@ -334,12 +323,69 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         return (UIComponent) getFacet("selectInputText");
     }
 
-    /**
-     * <p>Set the value of the <code>selectedItem</code> property.</p>
-     */
-    public void setSelectedItem(String key) {
+    protected void setSelectedIndex(int index) {
+//System.out.println("SIT.setSelectedIndex()  index: " + index);
+        SelectItem selItm = null;
+        if (index >= 0) {
+            if (itemList == null) {
+                populateItemList();
+            }
+            if (itemList != null) {
+                if (index < itemList.size()) {
+                    selItm = (SelectItem) itemList.get(index);
+//System.out.println("SIT.setSelectedIndex()  selItm: " + selItm);
+                }
+            }
+        }
+        selectedItem = selItm;
+    }
 
-        this.selectedItem = (SelectItem) itemMap.get(key);
+    /**
+     * <p>Set the value of the <code>selectedItem</code> property.
+     * If there are multiple matches between the key parameter, and the
+     * data model's SelectItem objects' itemLabel, it won't match any,
+     * unless one of the matching SelectItem objects equals the last
+     * selectedItem. Note that this component can only keep a reference
+     * to the last selectedItem if its value field is Serializable.</p>
+     */
+    protected void setSelectedItem(String key) {
+//System.out.println("SIT.setSelectedItem()  key: " + key);
+        SelectItem selItm = null;
+        if (key != null) {
+            if (itemList == null) {
+                populateItemList();
+            }
+            if (itemList != null) {
+                SelectItem sticky = null;
+                boolean multipleMatches = false;
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                for (int i = 0; i < itemList.size(); i++) {
+                    SelectItem item = (SelectItem) itemList.get(i);
+                    String itemLabel = item.getLabel();
+                    if (itemLabel == null) {
+                        itemLabel = DomBasicRenderer.converterGetAsString(
+                            facesContext, this, item.getValue());
+                    }
+                    if (key.equals(itemLabel)) {
+//System.out.println("SIT.setSelectedItem()  MATCHED with index: " + i);
+                        if (selectedItem != null && selectedItem.equals(item)) {
+//System.out.println("SIT.setSelectedItem()  MATCHED with selectedItem");
+                            sticky = item;
+                        }
+                        multipleMatches |= (selItm != null);
+//if(selItm != null)System.out.println("SIT.setSelectedItem()  MULTIPLE MATCHES - UNMATCHING  (if no sticky)");
+                        selItm = item;
+                    }
+                }
+                if (sticky != null) {
+                    selItm = sticky;
+                }
+                else if (multipleMatches) {
+                    selItm = null;
+                }
+            }
+        }
+        selectedItem = selItm;
     }
 
     /**
@@ -365,14 +411,6 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         if (rows != null) {
             // Should always return the original no. of rows. JIRA ICE-1320.
             return rows.intValue();
-/*
-            if (itemMap != null) {
-                return itemMap.size() > 0 && itemMap.size() < rows.intValue() ?
-                       itemMap.size() : rows.intValue();
-            } else {
-                return rows.intValue();
-            }
-*/
         }
 
         ValueBinding vb = getValueBinding("rows");
@@ -464,7 +502,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * <p>Return the value of the <code>inputTextClass</code> property.</p>
      */
     public String getInputTextClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.DEFAULT_SELECT_INPUT_TEXT_CLASS, isDisabled());
     }
 
@@ -473,7 +511,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * <p>Return the value of the <code>listClass</code> property.</p>
      */
     public String getListClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.DEFAULT_SELECT_INPUT_LIST_CLASS, isDisabled());
     }
 
@@ -482,7 +520,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * <p>Return the value of the <code>rowClass</code> property.</p>
      */
     public String getRowClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.DEFAULT_SELECT_INPUT_ROW_CLASS, isDisabled());
     }
 
@@ -491,7 +529,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * <p>Return the value of the <code>selectedRowClass</code> property.</p>
      */
     public String getSelectedRowClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.DEFAULT_SELECT_INPUT_SELECTED_ROW_CLASS, isDisabled());
     }
 
@@ -502,27 +540,32 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
     public void setOptions(String options) {
         this.options = options;
     }
-    
+
     public MethodBinding getTextChangeListener() {
         return textChangeListener;
     }
-    
+
     public void setTextChangeListener(MethodBinding mb) {
         textChangeListener = mb;
     }
-    
+
     //the following code is a fix for iraptor bug 347
-    //on first page submit, all input elements gets valueChangeEvent (null to ""), 
+    //on first page submit, all input elements gets valueChangeEvent (null to ""),
     //so component's ids can be more then one
-    private List changedComponentIds = new ArrayList();
+    private transient List changedComponentIds;
 
     /**
      * <p>Set the value of the <code>selectedPanel</code> property.</p>
      */
     void setChangedComponentId(Object id) {
         if (id == null) {
-            changedComponentIds.clear();
+            if (changedComponentIds != null) {
+                changedComponentIds.clear();
+            }
         } else {
+            if (changedComponentIds == null) {
+                changedComponentIds = new ArrayList(6);
+            }
             changedComponentIds.add(id);
         }
     }
@@ -531,6 +574,9 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * <p>Return the value of the <code>selectedPanel</code> property.</p>
      */
     boolean hasChanged() {
+        if (changedComponentIds == null) {
+            return false;
+        }
         return changedComponentIds
                 .contains(this.getClientId(FacesContext.getCurrentInstance()));
     }
@@ -551,7 +597,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
                 queueEvent(new ActionEvent(this));
             }
             if("true".equals(requestParemeterMap.get("ice.event.left"))){
-                queueEvent(new ActionEvent(this));                
+                queueEvent(new ActionEvent(this));
             }
             if("onclick".equals(requestParemeterMap.get("ice.event.type"))){
                 queueEvent(new ActionEvent(this));
@@ -570,16 +616,18 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = listVar;
         values[3] = rows;
         values[4] = width;
-        values[5] = selectedItem;
-        values[6] = itemList;
-        values[7] = options;
-        values[8] = saveAttachedState(context, textChangeListener);
+        values[5] = options;
+        values[6] = saveAttachedState(context, textChangeListener);
+        values[7] = (selectedItem == null ||
+                     selectedItem.getValue() == null ||
+                     selectedItem.getValue() instanceof Serializable)
+                    ? selectedItem : null;
         return ((Object) (values));
     }
 
@@ -594,11 +642,10 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         listVar = (String) values[2];
         rows = (Integer) values[3];
         width = (String) values[4];
-        selectedItem = (SelectItem) values[5];
-        itemList = (List) values[6];
-        options = (String)values[7];
+        options = (String)values[5];
         textChangeListener = (MethodBinding)
-            restoreAttachedState(context, values[8]);
+            restoreAttachedState(context, values[6]);
+        selectedItem = (SelectItem) values[7];
     }
 
     public String getOnkeypress() {
