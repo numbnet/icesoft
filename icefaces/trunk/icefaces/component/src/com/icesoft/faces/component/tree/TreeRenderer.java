@@ -502,6 +502,7 @@ public class TreeRenderer extends DomBasicRenderer {
                 lineImage.setAttribute(HTML.SRC_ATTR,
                                        treeComponent.getLineMiddleImage());
             }
+            treeNodeDiv.appendChild(domContext.createTextNode(" "));
         }
 
         String pathToNode = TreeRenderer.getPathAsString(currentNode,
