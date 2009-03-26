@@ -128,8 +128,13 @@ public class View implements CommandQueue {
 
     //this is the page load request
     public void servePage(Request request) throws Exception {
-        acquireLifecycleLock();
-        page.serve(request);
+        try {
+            acquireLifecycleLock();
+            page.serve(request);
+        } catch (Throwable t)  {
+            Log.error("Problem encountered during View.servePage ", t);
+            throw new Exception(t);
+        }
     }
 
     public void put(Command command) {
