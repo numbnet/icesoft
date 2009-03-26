@@ -199,7 +199,7 @@ public class DOMContext implements java.io.Serializable {
             public String getValue() throws ConfigurationException {
                 throw new ConfigurationException("value not available");
             }
-        }, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+        }, Collections.EMPTY_LIST, Collections.EMPTY_LIST, null);
         Document doc = domWriter.getDocument();
         Element html = doc.createElement("html");
         doc.appendChild(html);
