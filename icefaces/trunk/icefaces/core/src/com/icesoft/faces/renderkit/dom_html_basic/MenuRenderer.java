@@ -376,6 +376,8 @@ public class MenuRenderer extends DomBasicInputRenderer {
                  ((Integer) size).intValue() == 0) ) ) {
             renderSizeAttribute(root, itemCount);
             excludes.add("size");
+        } else {
+            renderSizeAttribute(root, Integer.valueOf(size.toString()).intValue());
         }
 
         Object currentValue = null;
