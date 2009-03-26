@@ -166,9 +166,10 @@
 
         on: function() {
             if (/MSIE/.test(navigator.userAgent)) {
-                this.overlay = document.body.appendChild(document.createElement('iframe'));
+                this.overlay = document.createElement('iframe');
                 this.overlay.setAttribute('src', this.configuration.connection.context.current + "xmlhttp/wait-cursor");
                 this.overlay.setAttribute('frameborder', '0');
+                document.body.appendChild(this.overlay);
             } else {
                 this.overlay = document.body.appendChild(document.createElement('div'));
                 this.overlay.style.cursor = 'wait';
@@ -188,7 +189,15 @@
 
         off: function() {
             if (this.overlay) {
-                document.body.removeChild(this.overlay);
+                if (/MSIE/.test(navigator.userAgent)) {
+                    var overlay = document.createElement('iframe');
+                    overlay.setAttribute('src', this.configuration.connection.context.current + "xmlhttp/blank");
+                    overlay.setAttribute('frameborder', '0');
+                    document.body.replaceChild(overlay, this.overlay);
+                    document.body.removeChild(overlay);
+                } else {
+                    document.body.removeChild(this.overlay);
+                }
             }
         }
     });
