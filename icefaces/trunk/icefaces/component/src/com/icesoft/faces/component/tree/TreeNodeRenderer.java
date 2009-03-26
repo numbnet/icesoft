@@ -73,11 +73,7 @@ public class TreeNodeRenderer extends DomBasicRenderer {
         if (iconFacet != null && iconFacet.isRendered()) {
             CustomComponentUtils.renderChild(facesContext, iconFacet);
         }
-        DefaultMutableTreeNode defaultMutableTreeNode = ((TreeNode) uiComponent).getMutable();
-        IceUserObject userObject = (IceUserObject) defaultMutableTreeNode.getUserObject();
-        if (!userObject.isLeaf()) {
-            domContext.getCursorParent().appendChild(domContext.createTextNode(" "));
-        }
+        domContext.getCursorParent().appendChild(domContext.createTextNode(" "));
         if (contentFacet != null && contentFacet.isRendered()) {
             CustomComponentUtils.renderChild(facesContext, contentFacet);
         }
