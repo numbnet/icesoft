@@ -232,7 +232,7 @@ public class MainServlet extends HttpServlet {
             messageServiceClient =
                 new MessageServiceClient(
                     new HttpAdapter(localAddress, localPort, context),
-                    context);
+                    currentContextPath.lookup());
             testMessageService();
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
@@ -276,14 +276,14 @@ public class MainServlet extends HttpServlet {
                 messageServiceClient =
                     new MessageServiceClient(
                         new JMSAdapter(context),
-                        context);
+                        currentContextPath.lookup());
                 testMessageService();
             }
             if (messageServiceClient == null) {
                 messageServiceClient =
                     new MessageServiceClient(
                         new HttpAdapter(localAddress, localPort, context),
-                        context);
+                        currentContextPath.lookup());
                 testMessageService();
             }
             if (messageServiceClient == null) {

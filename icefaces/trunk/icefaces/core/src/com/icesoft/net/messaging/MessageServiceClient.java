@@ -66,26 +66,6 @@ public class MessageServiceClient {
     private Timer timer = new Timer();
 
     public MessageServiceClient(
-        final MessageServiceAdapter messageServiceAdapter)
-    throws IllegalArgumentException {
-        this(null, null, messageServiceAdapter, null);
-    }
-
-    public MessageServiceClient(
-        final MessageServiceAdapter messageServiceAdapter,
-        final ServletContext servletContext)
-    throws IllegalArgumentException {
-        this(null, null, messageServiceAdapter, servletContext);
-    }
-
-    public MessageServiceClient(
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter)
-    throws IllegalArgumentException {
-        this(null, messageServiceConfiguration, messageServiceAdapter, null);
-    }
-
-    public MessageServiceClient(
         final MessageServiceConfiguration messageServiceConfiguration,
         final MessageServiceAdapter messageServiceAdapter,
         final ServletContext servletContext)
@@ -98,9 +78,49 @@ public class MessageServiceClient {
     }
 
     public MessageServiceClient(
-        final String name, final MessageServiceAdapter messageServiceAdapter)
+        final MessageServiceConfiguration messageServiceConfiguration,
+        final MessageServiceAdapter messageServiceAdapter,
+        final String servletContextPath)
     throws IllegalArgumentException {
-        this(name, null, messageServiceAdapter, null);
+        this(
+            null,
+            messageServiceConfiguration,
+            messageServiceAdapter,
+            servletContextPath);
+    }
+
+    public MessageServiceClient(
+        final MessageServiceAdapter messageServiceAdapter,
+        final ServletContext servletContext)
+    throws IllegalArgumentException {
+        this(null, null, messageServiceAdapter, servletContext);
+    }
+
+    public MessageServiceClient(
+        final MessageServiceAdapter messageServiceAdapter,
+        final String servletContextPath)
+    throws IllegalArgumentException {
+        this(null, null, messageServiceAdapter, servletContextPath);
+    }
+
+    public MessageServiceClient(
+        final String name,
+        final MessageServiceConfiguration messageServiceConfiguration,
+        final MessageServiceAdapter messageServiceAdapter,
+        final ServletContext servletContext)
+    throws IllegalArgumentException {
+        this(name, messageServiceConfiguration, messageServiceAdapter);
+        setBaseMessageProperties(servletContext);
+    }
+
+    public MessageServiceClient(
+        final String name,
+        final MessageServiceConfiguration messageServiceConfiguration,
+        final MessageServiceAdapter messageServiceAdapter,
+        final String servletContextPath)
+    throws IllegalArgumentException {
+        this(name, messageServiceConfiguration, messageServiceAdapter);
+        setBaseMessageProperties(servletContextPath);
     }
 
     public MessageServiceClient(
@@ -111,18 +131,16 @@ public class MessageServiceClient {
     }
 
     public MessageServiceClient(
+        final String name, final MessageServiceAdapter messageServiceAdapter,
+        final String servletContextPath)
+    throws IllegalArgumentException {
+        this(name, null, messageServiceAdapter, servletContextPath);
+    }
+
+    private MessageServiceClient(
         final String name,
         final MessageServiceConfiguration messageServiceConfiguration,
         final MessageServiceAdapter messageServiceAdapter)
-    throws IllegalArgumentException {
-        this(name, messageServiceConfiguration, messageServiceAdapter, null);
-    }
-
-    public MessageServiceClient(
-        final String name,
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter,
-        final ServletContext servletContext)
     throws IllegalArgumentException {
         if (messageServiceAdapter == null) {
             throw new IllegalArgumentException("messageServiceAdapter is null");
@@ -137,7 +155,6 @@ public class MessageServiceClient {
             this.messageServiceConfiguration.setMessageMaxLength(10 * 1024);
         }
         this.messageServiceAdapter = messageServiceAdapter;
-        setBaseMessageProperties(servletContext);
     }
 
     /**
@@ -1244,15 +1261,7 @@ public class MessageServiceClient {
         messageServiceAdapter.publish(message, topicName);
     }
 
-    private void setBaseMessageProperties(final ServletContext servletContext) {
-        if (servletContext != null) {
-            String _servletContextPath =
-                ServerUtility.getServletContextPath(servletContext);
-            if (_servletContextPath != null) {
-                baseMessageProperties.setProperty(
-                    Message.SOURCE_SERVLET_CONTEXT_PATH, _servletContextPath);
-            }
-        }
+    private void setBaseMessageProperties() {
         try {
             baseMessageProperties.setProperty(
                 Message.SOURCE_NODE_ADDRESS,
@@ -1262,5 +1271,25 @@ public class MessageServiceClient {
                 LOG.warn("Failed to get IP address for localhost.", exception);
             }
         }
+    }
+    
+    private void setBaseMessageProperties(final ServletContext servletContext) {
+        if (servletContext != null) {
+            String _servletContextPath =
+                ServerUtility.getServletContextPath(servletContext);
+            if (_servletContextPath != null) {
+                baseMessageProperties.setProperty(
+                    Message.SOURCE_SERVLET_CONTEXT_PATH, _servletContextPath);
+            }
+        }
+        setBaseMessageProperties();
+    }
+
+    private void setBaseMessageProperties(final String servletContextPath) {
+        if (servletContextPath != null) {
+            baseMessageProperties.setProperty(
+                Message.SOURCE_SERVLET_CONTEXT_PATH, servletContextPath);
+        }
+        setBaseMessageProperties();
     }
 }
