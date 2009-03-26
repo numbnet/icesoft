@@ -81,6 +81,7 @@ implements Server {
                         icefacesID,
                         synchronouslyUpdatedViews,
                         allUpdatedViews,
+                        configuration,
                         messageServiceClient);
             } catch (Exception exception) {
                 // Possible exceptions: MessageServiceException

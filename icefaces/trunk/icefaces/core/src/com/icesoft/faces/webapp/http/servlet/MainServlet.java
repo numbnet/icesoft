@@ -211,7 +211,8 @@ public class MainServlet extends HttpServlet {
 
     private void setUpMessageServiceClient(final Configuration configuration) {
         String blockingRequestHandler =
-            configuration.getAttribute("blockingRequestHandler", "auto-detect");
+            configuration.getAttribute(
+                "blockingRequestHandler", "auto-detect");
         if (blockingRequestHandler.equalsIgnoreCase("icefaces")) {
             // Adapt to Push environment.
             if (LOG.isInfoEnabled()) {
@@ -233,7 +234,7 @@ public class MainServlet extends HttpServlet {
                 new MessageServiceClient(
                     new HttpAdapter(localAddress, localPort, context),
                     currentContextPath.lookup());
-            testMessageService();
+            testMessageService(configuration);
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
@@ -277,14 +278,14 @@ public class MainServlet extends HttpServlet {
                     new MessageServiceClient(
                         new JMSAdapter(context),
                         currentContextPath.lookup());
-                testMessageService();
+                testMessageService(configuration);
             }
             if (messageServiceClient == null) {
                 messageServiceClient =
                     new MessageServiceClient(
                         new HttpAdapter(localAddress, localPort, context),
                         currentContextPath.lookup());
-                testMessageService();
+                testMessageService(configuration);
             }
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
@@ -336,7 +337,10 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private void testMessageService() {
+    private void testMessageService(final Configuration configuration) {
+        String blockingRequestHandlerContext =
+            configuration.getAttribute(
+                "blockingRequestHandlerContext", "push-server");
         MessageHandler acknowledgeMessageHandler =
             new AbstractMessageHandler(
                 new MessageSelector(
@@ -412,15 +416,16 @@ public class MainServlet extends HttpServlet {
             Properties messageProperties = new Properties();
             messageProperties.setStringProperty(
                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                "push-server");
+                blockingRequestHandlerContext);
             // throws MessageServiceException
             messageServiceClient.publishNow(
                 "Hello",
                 messageProperties,
                 "Presence",
                 MessageServiceClient.PUSH_TOPIC_NAME);
-            blockingRequestHandlerContext =
-                URI.create("/").resolve("push-server" + "/").toString();
+            this.blockingRequestHandlerContext =
+                URI.create("/").resolve(blockingRequestHandlerContext + "/").
+                    toString();
         } catch (MessageServiceException exception) {
             // todo: log some message
             messageServiceClient.removeMessageHandler(

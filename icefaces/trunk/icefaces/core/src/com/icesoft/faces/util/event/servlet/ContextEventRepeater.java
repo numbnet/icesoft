@@ -33,7 +33,9 @@
 
 package com.icesoft.faces.util.event.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
@@ -111,6 +113,8 @@ implements HttpSessionListener, ServletContextListener {
 
     private static List bufferedContextEvents = new ArrayList();
     private static Map listeners = new WeakHashMap();
+    private static Configuration servletContextConfiguration;
+    private static String blockingRequestHandlerContext;
     private static MessageServiceClient messageServiceClient;
 
     private static AnnouncementMessageHandler announcementMessageHandler =
@@ -132,7 +136,7 @@ implements HttpSessionListener, ServletContextListener {
                     _messageProperties.
                         setStringProperty(
                             Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                            "push-server");
+                            blockingRequestHandlerContext);
                     messageServiceClient.publish(
                         _message.toString(),
                         _messageProperties,
@@ -194,6 +198,9 @@ implements HttpSessionListener, ServletContextListener {
     public synchronized void contextInitialized(
         final ServletContextEvent event) {
 
+        servletContextConfiguration =
+            new ServletContextConfiguration(
+                "com.icesoft.faces", event.getServletContext());
         SessionDispatcherListener.contextInitialized(event);
     }
 
@@ -213,7 +220,7 @@ implements HttpSessionListener, ServletContextListener {
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                    "push-server");
+                    blockingRequestHandlerContext);
             messageServiceClient.publish(
                 createMessage(iceFacesIdDisposedEvent),
                 _messageProperties,
@@ -251,7 +258,7 @@ implements HttpSessionListener, ServletContextListener {
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                    "push-server");
+                    blockingRequestHandlerContext);
             messageServiceClient.publish(
                 createMessage(iceFacesIdRetrievedEvent),
                 _messageProperties,
@@ -315,6 +322,9 @@ implements HttpSessionListener, ServletContextListener {
         final MessageServiceClient client) {
 
         if (client != null) {
+            blockingRequestHandlerContext =
+                servletContextConfiguration.getAttribute(
+                    "blockingRequestHandlerContext", "push-server");
             messageServiceClient = client;
             try {
                 messageServiceClient.subscribe(
@@ -332,6 +342,7 @@ implements HttpSessionListener, ServletContextListener {
                         "    Exception cause: " +
                             exception.getCause() + "\r\n\r\n");
                 }
+                blockingRequestHandlerContext = null;
                 messageServiceClient = null;
                 return;
             }
@@ -358,7 +369,7 @@ implements HttpSessionListener, ServletContextListener {
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                    "push-server");
+                    blockingRequestHandlerContext);
             messageServiceClient.publish(
                 createMessage(viewNumberDisposedEvent),
                 _messageProperties,
@@ -400,7 +411,7 @@ implements HttpSessionListener, ServletContextListener {
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                    "push-server");
+                    blockingRequestHandlerContext);
             messageServiceClient.publish(
                 createMessage(viewNumberRetrievedEvent),
                 _messageProperties,
