@@ -366,7 +366,6 @@ public class DOMResponseWriter extends ResponseWriter {
                 }
             }
             blockingRequestHandlerContext = URI.create("/").resolve(normalizedPath + "/").toString();
-            System.out.println("DOMResponseWriter.enhanceBody: " + contextPath + " - " + blockingRequestHandlerContext);
         }
         String connectionLostRedirectURI;
         try {
