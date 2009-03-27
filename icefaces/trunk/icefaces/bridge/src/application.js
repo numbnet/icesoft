@@ -146,8 +146,8 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
             var dispose = function() {
                 dispose = Function.NOOP;
-                documentSynchronizer.shutdown();
                 connection.shutdown();
+                documentSynchronizer.shutdown();
             };
 
             var sessionExpiredListeners = [];
@@ -205,12 +205,15 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 });
             });
             commandDispatcher.register('session-expired', function() {
-                logger.warn('Session has expired');
-                statusManager.sessionExpired.on();
-                //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
-                deregisterView(sessionID, viewID);
-                dispose();
-                sessionExpiredListeners.broadcast();
+                try {
+                    logger.warn('Session has expired');
+                    statusManager.sessionExpired.on();
+                    //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
+                    deregisterView(sessionID, viewID);
+                } finally {
+                    dispose();
+                    sessionExpiredListeners.broadcast();
+                }
             });
 
             window.onUnload(function() {
