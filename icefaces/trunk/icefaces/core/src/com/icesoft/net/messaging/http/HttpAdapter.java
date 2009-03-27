@@ -240,8 +240,7 @@ implements MessageServiceAdapter {
                         "Outgoing message:\r\n\r\n" +
                             message);
                 }
-                _reader =
-                    new InputStreamReader(_connection.getInputStream());
+                _reader = new InputStreamReader(_connection.getInputStream());
                 if (LOG.isDebugEnabled()) {
                     StringBuffer _buffer = new StringBuffer();
                     Iterator _headerFields =
@@ -258,6 +257,15 @@ implements MessageServiceAdapter {
             } catch (UnsupportedEncodingException exception) {
                 throw new MessageServiceException(exception);
             } catch (IOException exception) {
+                try {
+                    if (_connection.getResponseCode() == 503) {
+                        // Service Unavailable
+                        stop();
+                    }
+                } catch (IOException e) {
+
+                }
+                _reader = new InputStreamReader(_connection.getErrorStream());
                 throw new MessageServiceException(exception);
             } finally {
                 if (_connection != null &&
