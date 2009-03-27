@@ -431,6 +431,10 @@ input {
     padding: 2px;
 }
 
+.iceDatPgrScrBtn .iceCmdLnk-dis {
+       border-bottom:none;
+}
+
 .iceDatPgrTbl {
 /* the container for the pagination*/
     background-color: #CCCCCC;
