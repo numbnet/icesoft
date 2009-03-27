@@ -6,6 +6,8 @@ import com.icesoft.faces.webapp.http.common.standard.EmptyResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Arrays;
+
 public class RequestVerifier implements Server {
     private final static Log log = LogFactory.getLog(RequestVerifier.class);
     private String sessionID;
@@ -22,7 +24,7 @@ public class RequestVerifier implements Server {
             request.respondWith(EmptyResponse.Handler);
         } else {
             if (request.containsParameter("ice.session")) {
-                if (sessionID.equals(request.getParameter("ice.session"))) {
+                if (Arrays.asList(request.getParameterAsStrings("ice.session")).contains(sessionID)) {
                     server.service(request);
                 } else {
                     log.debug("Missmatched 'ice.session' value. Session has expired.");
