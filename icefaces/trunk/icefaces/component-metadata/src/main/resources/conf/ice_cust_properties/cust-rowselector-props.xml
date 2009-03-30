@@ -324,3 +324,17 @@
         <default-value>200</default-value>
     </property-extension>
 </property>
+
+<property>
+<description>
+    <![CDATA[<p>
+        This attribute will control whether or not the selected rows are "prestyled" on the client prior to the submit. False by default.
+    </p>]]>
+</description>
+<property-name>prestyleOnSelection</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_COMPONENT</category>
+    <default-value>false</default-value>
+</property-extension>
+</property>

@@ -675,10 +675,11 @@ public class TableRenderer
                         toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
                     }
                     toggleClass = CSSNamePool.get(getPortletAlternateRowClass(toggleClass, rowIndex));
+                    Boolean prestyleOnSelection = rowSelector.getPrestyleOnSelection();
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
+                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "'," + prestyleOnSelection + ");");
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"

@@ -89,7 +89,7 @@ a control on the data to hide/show the table columns.
  processing until INVOKE_APPLICATION phase, after validation. If validation fails, selection event will not fire with
  immediate=false.
  -->
-                <ice:rowSelector id="selected"
+                <ice:rowSelector id="selected" prestyleOnSelection="true"
                                  value="#{employee.selected}"
                                  multiple="#{rowSelectController.multiple}"
                                  enhancedMultiple="#{rowSelectController.enhancedMultiple}"                                 
