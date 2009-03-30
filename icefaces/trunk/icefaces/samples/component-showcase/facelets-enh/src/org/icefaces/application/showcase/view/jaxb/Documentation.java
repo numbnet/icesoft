@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 
 /**
@@ -46,7 +47,7 @@ import javax.xml.bind.annotation.XmlType;
     "tutorials"
 })
 @XmlRootElement(name = "documentation")
-public class Documentation {
+public class Documentation implements Serializable {
 
     protected Documents documents;
     protected Tlds tlds;

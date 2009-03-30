@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
+import java.io.Serializable;
 
 
 /**
@@ -29,7 +30,7 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlRegistry
-public class ObjectFactory {
+public class ObjectFactory implements Serializable {
 
     private final static QName _Resource_QNAME = new QName("", "resource");
     private final static QName _ResourceReference_QNAME = new QName("", "resource-reference");

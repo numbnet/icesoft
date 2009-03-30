@@ -35,6 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.common.inventory;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
+import java.io.Serializable;
+
 /**
  * <p>The InventoryItem is a descriptive class that respresent a sudo inventory
  * item. It is made up of a basic description as well the number of avialable
@@ -45,7 +47,7 @@ import com.icesoft.faces.context.effects.Highlight;
  * @see Inventory
  * @since 1.7
  */
-public class InventoryItem {
+public class InventoryItem implements Serializable {
     // unique inventory id
     private int id;
     // name of inventory item

@@ -10,6 +10,7 @@ package org.icefaces.application.showcase.view.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -52,7 +53,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "node"
 })
 @XmlRootElement(name = "node")
-public class Node {
+public class Node implements Serializable {
 
     protected List<Node> node;
     @XmlAttribute(required = true)

@@ -10,6 +10,7 @@ package org.icefaces.application.showcase.view.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -46,7 +47,7 @@ import javax.xml.bind.annotation.XmlType;
     "node"
 })
 @XmlRootElement(name = "navigation")
-public class Navigation {
+public class Navigation implements Serializable {
 
     @XmlElement(name = "navigation-default", required = true)
     protected NavigationDefault navigationDefault;

@@ -10,6 +10,7 @@ package org.icefaces.application.showcase.view.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
     "contentResources"
 })
 @XmlRootElement(name = "content")
-public class Content {
+public class Content implements Serializable {
 
     @XmlElement(name = "content-descriptor", required = true)
     protected List<ContentDescriptor> contentDescriptor;
