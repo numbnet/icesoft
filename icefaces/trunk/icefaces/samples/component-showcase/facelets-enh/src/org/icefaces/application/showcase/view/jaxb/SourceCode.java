@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 
 /**
@@ -45,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
     "beans"
 })
 @XmlRootElement(name = "source-code")
-public class SourceCode {
+public class SourceCode implements Serializable {
 
     @XmlElement(name = "jspx-pages")
     protected JspxPages jspxPages;

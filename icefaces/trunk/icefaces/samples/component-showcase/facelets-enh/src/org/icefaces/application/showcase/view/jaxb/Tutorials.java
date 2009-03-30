@@ -10,6 +10,7 @@ package org.icefaces.application.showcase.view.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -41,7 +42,7 @@ import javax.xml.bind.annotation.XmlType;
     "resourceReference"
 })
 @XmlRootElement(name = "tutorials")
-public class Tutorials {
+public class Tutorials implements Serializable {
 
     @XmlElement(name = "resource-reference", required = true)
     protected List<ReferenceType> resourceReference;
