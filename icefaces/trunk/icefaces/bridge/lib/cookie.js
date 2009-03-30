@@ -26,7 +26,7 @@
             var foundTuple = This.Cookie.parse().detect(function(tuple) {
                 return this.name == tuple[0];
             }.bind(this));
-            this.value = foundTuple[1];
+            this.value = foundTuple ? foundTuple[1] : null;
             return this;
         },
 
