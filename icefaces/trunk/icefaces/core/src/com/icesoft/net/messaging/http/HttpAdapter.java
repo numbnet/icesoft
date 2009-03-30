@@ -257,15 +257,22 @@ implements MessageServiceAdapter {
             } catch (UnsupportedEncodingException exception) {
                 throw new MessageServiceException(exception);
             } catch (IOException exception) {
-                try {
-                    if (_connection.getResponseCode() == 503) {
-                        // Service Unavailable
-                        stop();
+                if (_connection != null) {
+                    try {
+                        if (_connection.getResponseCode() == 503) {
+                            // Service Unavailable
+                            stop();
+                        }
+                    } catch (IOException e) {
+                        // do nothing.
                     }
-                } catch (IOException e) {
-
+                    try {
+                        _reader =
+                            new InputStreamReader(_connection.getErrorStream());
+                    } catch (Exception e) {
+                        // do nothing.
+                    }
                 }
-                _reader = new InputStreamReader(_connection.getErrorStream());
                 throw new MessageServiceException(exception);
             } finally {
                 if (_connection != null &&
