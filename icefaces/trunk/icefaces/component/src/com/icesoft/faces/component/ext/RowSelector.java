@@ -75,7 +75,8 @@ public class RowSelector extends UIPanel {
     private Integer clickedRow;
     private Boolean immediate;
     private Integer dblClickDelay;
-    
+    private Boolean prestyleOnSelection;
+
     transient private List selectedRowsList = new ArrayList();
     
 
@@ -543,7 +544,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[17];
+        Object[] state = new Object[18];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -561,6 +562,7 @@ public class RowSelector extends UIPanel {
         state[14] = saveAttachedState(context, clickListener);
         state[15] = saveAttachedState(context, clickAction);
         state[16] = dblClickDelay;
+        state[17] = prestyleOnSelection;
         return state;
     }
 
@@ -587,6 +589,7 @@ public class RowSelector extends UIPanel {
         clickAction = (MethodBinding)
             restoreAttachedState(context, state[15]);
         dblClickDelay = (Integer) state[16];
+        prestyleOnSelection = (Boolean) state[17];
     }
     
     private String styleClass;
@@ -652,5 +655,18 @@ public class RowSelector extends UIPanel {
             evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
         }
         return evt;
+    }
+
+    public Boolean getPrestyleOnSelection() {
+        if (prestyleOnSelection != null) return prestyleOnSelection;
+        ValueBinding vb = getValueBinding("prestyleOnSelection");
+        if (vb == null) return Boolean.FALSE;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return Boolean.FALSE;
+        return Boolean.valueOf(value.toString());
+    }
+
+    public void setPrestyleOnSelection(Boolean prestyleOnSelection) {
+        this.prestyleOnSelection = prestyleOnSelection;
     }
 }

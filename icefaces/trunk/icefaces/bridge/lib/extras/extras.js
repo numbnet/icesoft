@@ -155,7 +155,7 @@ Ice.PanelCollapsible = {
     }
 }
 
-Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames, prestyleOnSelection) {
     var ctrlKyFld = $(hdnFld+'ctrKy');
     var sftKyFld = $(hdnFld+'sftKy');  
     if (ctrlKyFld && event){
@@ -203,7 +203,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         if (row.tagName.toLowerCase() != "tr") {
             row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
         }
-        if (row) {
+        if (row && prestyleOnSelection) {
             row.className = toggleClassNames;
             row.onmouseover = Prototype.emptyFunction;
             row.onmouseout = Prototype.emptyFunction;
