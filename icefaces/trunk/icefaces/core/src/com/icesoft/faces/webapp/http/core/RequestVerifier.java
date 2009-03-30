@@ -23,7 +23,7 @@ public class RequestVerifier implements Server {
             log.info("'POST' request expected. Dropping connection...");
             request.respondWith(EmptyResponse.Handler);
         } else {
-            if (request.containsParameter("ice.session")) {
+            if (request.containsParameter("ice.session") && !"".equals(request.getParameter("ice.session"))) {
                 if (Arrays.asList(request.getParameterAsStrings("ice.session")).contains(sessionID)) {
                     server.service(request);
                 } else {
