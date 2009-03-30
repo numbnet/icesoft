@@ -57,22 +57,25 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
     };
 
     var deregisterSession = function(sessionID) {
-        var sessionsCookie = Ice.Cookie.lookup('ice.sessions');
-        var sessions = sessionsCookie.loadValue().split(' ');
-        sessionsCookie.saveValue(sessions.inject([], function(tally, s) {
-            if (s && s.length == 2) {
-                var entry = s.split('#');
-                var id = entry[0];
-                var occurences = entry[1].asNumber();
-                if (id == sessionID) {
-                    --occurences;
+        //cookie can be gone because its value was emptied when all the windows where disposed
+        if (Ice.Cookie.exists('ice.sessions')) {
+            var sessionsCookie = Ice.Cookie.lookup('ice.sessions');
+            var sessions = sessionsCookie.loadValue().split(' ');
+            sessionsCookie.saveValue(sessions.inject([], function(tally, s) {
+                if (s && s.length == 2) {
+                    var entry = s.split('#');
+                    var id = entry[0];
+                    var occurences = entry[1].asNumber();
+                    if (id == sessionID) {
+                        --occurences;
+                    }
+                    if (occurences > 0) {
+                        tally.push(entry[0] + '#' + occurences);
+                    }
                 }
-                if (occurences > 0) {
-                    tally.push(entry[0] + '#' + occurences);
-                }
-            }
-            return tally;
-        }).join(' '));
+                return tally;
+            }).join(' '));
+        }
     };
 
     var views = window.views = window.views ? window.views : [];
