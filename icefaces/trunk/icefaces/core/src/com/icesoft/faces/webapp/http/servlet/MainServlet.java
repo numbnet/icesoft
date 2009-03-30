@@ -238,16 +238,9 @@ public class MainServlet extends HttpServlet {
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
-                        "\r\n" +
-                        "\r\n" +
-                        "Push Server not found!  Multiple asynchronous (Ajax " +
-                            "Push) applications accessed\r\n" +
-                        "from the same host will cause communication " +
-                            "failures due to HTTP 1.1 connection\r\n" +
-                        "limits.\r\n" +
-                        "\r\n" +
-                        "Deploy the Push Server to support multiple " +
-                            "asynchronous applications.\r\n");
+                        "Push Server not found - the Push Server must be " +
+                            "deployed to support multiple asynchronous " +
+                            "applications.");
                 }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
@@ -290,16 +283,9 @@ public class MainServlet extends HttpServlet {
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
-                        "\r\n" +
-                        "\r\n" +
-                        "Push Server not found!  Multiple asynchronous (Ajax " +
-                            "Push) applications accessed\r\n" +
-                        "from the same host will cause communication " +
-                            "failures due to HTTP 1.1 connection\r\n" +
-                        "limits.\r\n" +
-                        "\r\n" +
-                        "Deploy the Push Server to support multiple " +
-                            "asynchronous applications.\r\n");
+                        "Push Server not found - the Push Server must be " +
+                            "deployed to support multiple asynchronous " +
+                            "applications.");
                 }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
