@@ -39,15 +39,11 @@ public class ServerUtility {
 
             _localAddr = request.getLocalAddr(); // returns null in portal env.
         }
-        if (_localAddr == null) {
-            // Servlet 2.3 or Portal Environment
-            Configuration _configuration =
-                new ServletContextConfiguration(
-                    "com.icesoft.faces", servletContext);
-            _localAddr =
-                _configuration.getAttribute("localAddress", localAddress);
-        }
-        return _localAddr;
+        return
+            new ServletContextConfiguration("com.icesoft.faces", servletContext).
+                getAttribute(
+                    "localAddress",
+                    _localAddr != null ? _localAddr : localAddress);
     }
 
     public static String getLocalAddr(
@@ -80,13 +76,17 @@ public class ServerUtility {
 
             _localPort = request.getLocalPort(); // returns 0 in portal env.
         }
-        if (_localPort == 0) {
-            // Servlet 2.3 or Portal Environment
-            Configuration _configuration =
+        if (_localPort != 0) {
+            return
                 new ServletContextConfiguration(
-                    "com.icesoft.faces", servletContext);
+                    "com.icesoft.faces", servletContext
+                ).getAttributeAsInteger("localPort", _localPort);
+        } else {
             try {
-                _localPort = _configuration.getAttributeAsInteger("localPort");
+                return
+                    new ServletContextConfiguration(
+                        "com.icesoft.faces", servletContext
+                    ).getAttributeAsInteger("localPort");
             } catch (ConfigurationException exception) {
                 String _serverInfo = servletContext.getServerInfo();
                 if (
@@ -100,18 +100,17 @@ public class ServerUtility {
                     // Jetty
                     _serverInfo.startsWith("jetty")) {
 
-                    _localPort = 8080;
+                    return 8080;
                 } else if (
                     // WebLogic
                     _serverInfo.startsWith("WebLogic")) {
 
-                    _localPort = 7001;
+                    return 7001;
                 } else {
-                    _localPort = 8080;
+                    return 8080;
                 }
             }
         }
-        return _localPort;
     }
 
     public static String getServletContextPath(
