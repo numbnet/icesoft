@@ -28,26 +28,28 @@ public class RequestManager {
      *                 the ICEfaces ID set that identifies the session of the
      *                 requester.
      * @return     the request or <code>null</code>.
-     * @see        #push(Set, com.icesoft.faces.async.common.Handler)
+     * @see        #push(Set, Handler)
      */
-    public org.icesoft.faces.push.server.Handler pull(final Set iceFacesIdSet) {
+    public Handler pull(final Set iceFacesIdSet) {
         if (iceFacesIdSet == null || iceFacesIdSet.isEmpty()) {
             return null;
         }
         synchronized (pendingRequestMap) {
-            if (pendingRequestMap.containsKey(iceFacesIdSet)) {
-                final org.icesoft.faces.push.server.Handler _handler =
-                    (org.icesoft.faces.push.server.Handler)pendingRequestMap.remove(iceFacesIdSet);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Pulled pending request: " + iceFacesIdSet);
+            Iterator _iceFacesIds = iceFacesIdSet.iterator();
+            while (_iceFacesIds.hasNext()) {
+                Handler _handler = pull((String)_iceFacesIds.next());
+                if (_handler != null) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Pulled pending request: " + iceFacesIdSet);
+                    }
+                    return _handler;
                 }
-                return _handler;
             }
             return null;
         }
     }
 
-    public org.icesoft.faces.push.server.Handler pull(final String iceFacesId) {
+    public Handler pull(final String iceFacesId) {
         if (iceFacesId == null || iceFacesId.trim().length() == 0) {
             return null;
         }
@@ -57,7 +59,7 @@ public class RequestManager {
                 Map.Entry _entry = (Map.Entry)_entries.next();
                 if (((Set)_entry.getKey()).contains(iceFacesId)) {
                     _entries.remove();
-                    return (org.icesoft.faces.push.server.Handler)_entry.getValue();
+                    return (Handler)_entry.getValue();
                 }
             }
             return null;
@@ -82,7 +84,7 @@ public class RequestManager {
      *                 the handler that represents the pending request.
      * @see        #pull(Set)
      */
-    public void push(final Set iceFacesIdSet, final org.icesoft.faces.push.server.Handler handler) {
+    public void push(final Set iceFacesIdSet, final Handler handler) {
         if (iceFacesIdSet == null || iceFacesIdSet.isEmpty() ||
             handler == null) {
 
