@@ -324,17 +324,24 @@
         <default-value>200</default-value>
     </property-extension>
 </property>
-
 <property>
-<description>
-    <![CDATA[<p>
-        This attribute will control whether or not the selected rows are "prestyled" on the client prior to the submit. False by default.
-    </p>]]>
-</description>
-<property-name>prestyleOnSelection</property-name>
-<property-class>boolean</property-class>
-<property-extension>
-    <category>ICE_COMPONENT</category>
-    <default-value>false</default-value>
-</property-extension>
+	<description>
+		<![CDATA[<p> When the user (de)selects a row, there can be a latency 
+		             with the network communication with the server, and the 
+		             JSF lifecycle executing, before the client will be updated
+		             to depict the row selection. When <b>preStyleOnSelection</b>
+		             is true, the table row's styling will be updated immediately,
+		             improving the application's perceived responsiveness. When
+		             applications directly manage row selection, on the server 
+		             side, to implement specific rules for (de)selection, they
+		             should see this to false, to avoid styling being set and 
+		             reset. For backwards compatibility with such applications,
+		             the default value is false.</p>]]>
+	</description>
+	<property-name>preStyleOnSelection</property-name>
+	<property-class>boolean</property-class>	
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
