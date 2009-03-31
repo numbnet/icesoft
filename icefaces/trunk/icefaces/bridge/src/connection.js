@@ -124,7 +124,7 @@
             this.badResponseCallback = this.connectionDownListeners.broadcaster();
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
 
-            this.lock = /*configuration.blockUI ? new Connection.Lock() :*/ new Connection.NOOPLock();
+            this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
         },
 
         send: function(query) {

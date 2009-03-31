@@ -276,7 +276,7 @@
                 }
             }.bind(this).repeatExecutionEvery(300);
 
-            this.lock = /*configuration.blockUI ? new Connection.Lock() :*/ new Connection.NOOPLock();
+            this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
 
             this.logger.info('asynchronous mode');
         },
