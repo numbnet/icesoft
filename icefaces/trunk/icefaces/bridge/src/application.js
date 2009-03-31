@@ -212,6 +212,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             commandDispatcher.register('session-expired', function() {
                 try {
                     logger.warn('Session has expired');
+                    statusManager.busy.off();
                     statusManager.sessionExpired.on();
                     //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
                     deregisterView(sessionID, viewID);
