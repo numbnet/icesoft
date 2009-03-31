@@ -290,19 +290,21 @@ implements JMSConnection {
 
         public void onMessage(final javax.jms.Message message) {
             try {
-                Iterator _messageHandlers = messageHandlerSet.iterator();
                 Message _message = convert(message);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Incoming message:\r\n\r\n" + _message);
                 }
-                while (_messageHandlers.hasNext()) {
-                    MessageHandler _messageHandler =
-                        (MessageHandler)_messageHandlers.next();
+                MessageHandler[] _messageHandlers =
+                    (MessageHandler[])
+                        messageHandlerSet.toArray(
+                            new MessageHandler[
+                                messageHandlerSet.size()]);
+                for (int i = 0; i < _messageHandlers.length; i++) {
                     MessageSelector _messageSelector =
-                        _messageHandler.getMessageSelector();
+                        _messageHandlers[i].getMessageSelector();
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(
-                            "MessageHandler " + _messageHandler + ":\r\n" +
+                            "MessageHandler " + _messageHandlers[i] + ":\r\n" +
                             _messageSelector);
                     }
                     if (_messageSelector == null ||
@@ -311,7 +313,7 @@ implements JMSConnection {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("Match!");
                         }
-                        _messageHandler.handle(_message);
+                        _messageHandlers[i].handle(_message);
                     }
                 }
                 message.acknowledge();
