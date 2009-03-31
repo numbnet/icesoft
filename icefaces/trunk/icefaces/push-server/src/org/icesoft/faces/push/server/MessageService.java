@@ -170,7 +170,6 @@ public class MessageService {
         messageServiceClient =
             new MessageServiceClient(
                 new HttpAdapter(servletContext), servletContext);
-        // subscribing to icefaces contextEventTopic...
         MessageHandler _helloMessageHandler =
             new AbstractMessageHandler(
                 new MessageSelector(
@@ -208,24 +207,32 @@ public class MessageService {
             new BufferedContextEventsMessageHandler();
         MessageHandler _contextEventMessageHandler =
             new ContextEventMessageHandler();
+        MessageHandler _updatedViewsMessageHandler =
+            new UpdatedViewsMessageHandler();
         messageHandlerMap.put(
             BufferedContextEventsMessageHandler.Callback.class,
             _bufferedContextEventsMessageHandler);
         messageHandlerMap.put(
             ContextEventMessageHandler.Callback.class,
             _contextEventMessageHandler);
+        messageHandlerMap.put(
+            UpdatedViewsMessageHandler.Callback.class,
+            _updatedViewsMessageHandler);
         try {
             subscribe(
                 MessageServiceClient.PUSH_TOPIC_NAME,
                 new MessageSelector(
                     new Or(
-                        _helloMessageHandler.getMessageSelector().
-                            getExpression(),
+                        _helloMessageHandler.
+                            getMessageSelector().getExpression(),
                         new Or(
                             _bufferedContextEventsMessageHandler.
                                 getMessageSelector().getExpression(),
-                            _contextEventMessageHandler.getMessageSelector().
-                                getExpression()))));
+                            new Or(
+                                _contextEventMessageHandler.
+                                    getMessageSelector().getExpression(),
+                                _updatedViewsMessageHandler.
+                                    getMessageSelector().getExpression())))));
         } catch (MessageServiceException exception) {
             tearDownMessageServiceClient();
             return;
@@ -239,22 +246,6 @@ public class MessageService {
         messageServiceClient.addMessageHandler(
             _contextEventMessageHandler,
             MessageServiceClient.PUSH_TOPIC_NAME);
-        // subscribing to icefaces responseTopic...
-        MessageHandler _updatedViewsMessageHandler =
-            new UpdatedViewsMessageHandler();
-        messageHandlerMap.put(
-            UpdatedViewsMessageHandler.Callback.class,
-            _updatedViewsMessageHandler);
-        try {
-            subscribe(
-                MessageServiceClient.PUSH_TOPIC_NAME,
-                new MessageSelector(
-                    _updatedViewsMessageHandler.getMessageSelector().
-                        getExpression()));
-        } catch (MessageServiceException exception) {
-            tearDownMessageServiceClient();
-            return;
-        }
         messageServiceClient.addMessageHandler(
             _updatedViewsMessageHandler,
             MessageServiceClient.PUSH_TOPIC_NAME);
