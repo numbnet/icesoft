@@ -183,8 +183,8 @@
             overlayStyle.left = '0';
             overlayStyle.opacity = '0';
             overlayStyle.filter = 'alpha(opacity=0)';
-            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+            overlayStyle.width = window.width() + 'px';
+            overlayStyle.height = window.height() + 'px';
         },
 
         off: function() {
