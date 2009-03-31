@@ -275,7 +275,9 @@ Ice.clickEvent = Class.create({
 });
 
 Ice.preventTextSelection = function(event) {
-    var elem = event.element();
+    var evt = event || window.event;
+    var evt = Event.extend(evt);
+    var elem = evt.element();
     var tag = elem.tagName.toLowerCase();
     if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
         return true;
