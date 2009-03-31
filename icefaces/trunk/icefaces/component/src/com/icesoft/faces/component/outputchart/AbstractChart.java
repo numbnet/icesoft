@@ -260,6 +260,10 @@ public abstract class AbstractChart {
         } else if (obj == null && paintArray != null) {
             return paintArray;
         } else {
+            if(paintArray != null && paintArray.length != count) {
+                //data has dynamically changed, so let it to be reevaluated
+                paintArray = null;
+            }
             return getAsPaintArray(obj);
         }
     }
