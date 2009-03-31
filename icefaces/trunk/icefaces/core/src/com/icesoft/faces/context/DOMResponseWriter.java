@@ -355,13 +355,13 @@ public class DOMResponseWriter extends ResponseWriter {
             //Only need to strip leading and trailing slashes. Removing all slashes
             //will cause problems with contexts that actually contain slashes e.g /myapp/mysubapp.
             String normalizedPath = contextPath;
-            if( normalizedPath.length() > 0 ){
-                if(normalizedPath.charAt(0) == '/'){
+            if (normalizedPath.length() > 0) {
+                if (normalizedPath.charAt(0) == '/') {
                     normalizedPath = normalizedPath.substring(1);
                 }
-                if( normalizedPath.length() > 0 ){
-                    if(normalizedPath.charAt(normalizedPath.length() -1 ) == '/'){
-                        normalizedPath = normalizedPath.substring(0,normalizedPath.length()-1);
+                if (normalizedPath.length() > 0) {
+                    if (normalizedPath.charAt(normalizedPath.length() - 1) == '/') {
+                        normalizedPath = normalizedPath.substring(0, normalizedPath.length() - 1);
                     }
                 }
             }
@@ -387,7 +387,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
-                        "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "true") + "," +
+                        "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
