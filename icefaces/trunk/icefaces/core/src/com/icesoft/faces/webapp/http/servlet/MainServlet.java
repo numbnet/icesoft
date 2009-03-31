@@ -336,23 +336,43 @@ public class MainServlet extends HttpServlet {
 
                 public void handle(final Message message) {
                     if (message instanceof TextMessage) {
-                        StringTokenizer tokens =
-                            new StringTokenizer(
-                                ((TextMessage)message).getText(), ";");
-                        if (tokens.nextToken().equals("Acknowledge")) {
-                            String product = tokens.nextToken();
-                            String primary = tokens.nextToken();
-                            String secondary = tokens.nextToken();
-                            String tertiary = tokens.nextToken();
-                            String releaseType = tokens.nextToken();
+                        String text = ((TextMessage)message).getText();
+                        int begin, end;
+                        begin = 0;
+                        end = text.indexOf(";");
+                        if (text.substring(begin, end).
+                                equals("Acknowledge")) {
+
+                            String product =
+                                text.substring(
+                                    begin = end + 1,
+                                    end = text.indexOf(";", begin));
+                            String primary =
+                                text.substring(
+                                    begin = end + 1,
+                                    end = text.indexOf(";", begin));
+                            String secondary =
+                                text.substring(
+                                    begin = end + 1,
+                                    end = text.indexOf(";", begin));
+                            String tertiary =
+                                text.substring(
+                                    begin = end + 1,
+                                    end = text.indexOf(";", begin));
+                            String releaseType =
+                                text.substring(
+                                    begin = end + 1,
+                                    end = text.indexOf(";", begin));
                             if (LOG.isInfoEnabled()) {
                                 LOG.info(
                                     "Push Server detected: \"" +
                                         product + " " +
                                         primary + "." +
                                         secondary + "." +
-                                        tertiary + " " +
-                                        releaseType + "\"");
+                                        tertiary +
+                                        (releaseType.equals("") ?
+                                            "" :
+                                            " " + releaseType) + "\"");
                             }
                             if (!primary.equals("x") &&
                                 !ProductInfo.PRIMARY.equals("x")) {
