@@ -89,11 +89,12 @@ a control on the data to hide/show the table columns.
  processing until INVOKE_APPLICATION phase, after validation. If validation fails, selection event will not fire with
  immediate=false.
  -->
-                <ice:rowSelector id="selected" prestyleOnSelection="true"
+                <ice:rowSelector id="selected"
                                  value="#{employee.selected}"
                                  multiple="#{rowSelectController.multiple}"
                                  enhancedMultiple="#{rowSelectController.enhancedMultiple}"                                 
-                                 selectionListener="#{rowSelectController.rowSelectionListener}"/>
+                                 selectionListener="#{rowSelectController.rowSelectionListener}"
+                                 preStyleOnSelection="true"/>
                 <f:facet name="header">
                     <ice:outputText id="column1"
                                     value="#{msgs['page.dataTable.column1']}"/>

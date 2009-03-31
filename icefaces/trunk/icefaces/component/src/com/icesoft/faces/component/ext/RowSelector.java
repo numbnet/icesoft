@@ -75,8 +75,8 @@ public class RowSelector extends UIPanel {
     private Integer clickedRow;
     private Boolean immediate;
     private Integer dblClickDelay;
-    private Boolean prestyleOnSelection;
-
+    private Boolean preStyleOnSelection;
+    
     transient private List selectedRowsList = new ArrayList();
     
 
@@ -296,7 +296,26 @@ public class RowSelector extends UIPanel {
     public void setImmediate(Boolean immediate) {
         this.immediate = immediate;
     }
-
+    
+    public boolean isPreStyleOnSelection() {
+        if (preStyleOnSelection != null) {
+            return preStyleOnSelection.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("preStyleOnSelection");
+        if (vb != null) {
+            Boolean ret = (Boolean) vb.getValue(getFacesContext());
+            if (ret != null) {
+                return ret.booleanValue();
+            }
+        }
+        // For backwards compatibility, when a row is (de)selected, we don't
+        // want to pre-style the row before doing the server round-trip.
+        return false;
+    }
+    
+    public void setPreStyleOnSelection(boolean preStyleOnSelection) {
+        this.preStyleOnSelection = new Boolean(preStyleOnSelection);
+    }
 
     public void processDecodes(FacesContext facesContext){
         // Check for row selection in its parent table hidden field
@@ -562,7 +581,7 @@ public class RowSelector extends UIPanel {
         state[14] = saveAttachedState(context, clickListener);
         state[15] = saveAttachedState(context, clickAction);
         state[16] = dblClickDelay;
-        state[17] = prestyleOnSelection;
+        state[17] = preStyleOnSelection;
         return state;
     }
 
@@ -589,7 +608,7 @@ public class RowSelector extends UIPanel {
         clickAction = (MethodBinding)
             restoreAttachedState(context, state[15]);
         dblClickDelay = (Integer) state[16];
-        prestyleOnSelection = (Boolean) state[17];
+        preStyleOnSelection = (Boolean) state[17];
     }
     
     private String styleClass;
@@ -655,18 +674,5 @@ public class RowSelector extends UIPanel {
             evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
         }
         return evt;
-    }
-
-    public Boolean getPrestyleOnSelection() {
-        if (prestyleOnSelection != null) return prestyleOnSelection;
-        ValueBinding vb = getValueBinding("prestyleOnSelection");
-        if (vb == null) return Boolean.FALSE;
-        Object value = vb.getValue(getFacesContext());
-        if (value == null) return Boolean.FALSE;
-        return Boolean.valueOf(value.toString());
-    }
-
-    public void setPrestyleOnSelection(Boolean prestyleOnSelection) {
-        this.prestyleOnSelection = prestyleOnSelection;
     }
 }

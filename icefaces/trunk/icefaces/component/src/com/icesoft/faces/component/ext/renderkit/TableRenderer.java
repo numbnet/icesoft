@@ -668,18 +668,19 @@ public class TableRenderer
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound) {
                 if (toggleOnClick) {
-                    String toggleClass;
-                    if (Boolean.TRUE.equals(rowSelector.getValue())) {
-                        toggleClass = selectedClass + " " + rowSelector.getStyleClass();
-                    } else {
-                        toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
+                    String toggleClass = ""; // Don't change the row style before the server round-trip
+                    if (rowSelector.isPreStyleOnSelection()) {
+                        if (Boolean.TRUE.equals(rowSelector.getValue())) {
+                            toggleClass = selectedClass + " " + rowSelector.getStyleClass();
+                        } else {
+                            toggleClass = selectedClass + " " + rowSelector.getSelectedClass();
+                        }
                     }
                     toggleClass = CSSNamePool.get(getPortletAlternateRowClass(toggleClass, rowIndex));
-                    Boolean prestyleOnSelection = rowSelector.getPrestyleOnSelection();
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "'," + prestyleOnSelection + ");");
+                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
