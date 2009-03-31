@@ -340,7 +340,8 @@ public class MainServlet extends HttpServlet {
                         int begin, end;
                         begin = 0;
                         end = text.indexOf(";");
-                        if (text.substring(begin, end).
+                        if (end != -1 &&
+                            text.substring(begin, end).
                                 equals("Acknowledge")) {
 
                             String product =
@@ -412,8 +413,7 @@ public class MainServlet extends HttpServlet {
             // throws MessageServiceException
             messageServiceClient.subscribe(
                 MessageServiceClient.PUSH_TOPIC_NAME,
-                acknowledgeMessageHandler.getMessageSelector(),
-                true);
+                acknowledgeMessageHandler.getMessageSelector());
             messageServiceClient.addMessageHandler(
                 acknowledgeMessageHandler,
                 MessageServiceClient.PUSH_TOPIC_NAME);
