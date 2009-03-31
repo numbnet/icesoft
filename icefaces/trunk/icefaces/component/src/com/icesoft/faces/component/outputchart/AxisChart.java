@@ -304,7 +304,7 @@ public class AxisChart extends AbstractChart {
     private double[][] data = null;
 
     public double[][] getData(Object obj) {
-        if (obj instanceof String && data != null) {
+        if (obj instanceof String && data != null && data.equals(obj)) {
             return data;
         } else {
             return data = getAs2dDoubleArray(obj);
