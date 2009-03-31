@@ -58,8 +58,7 @@ to show how the selected panel can be dynamically changed.
             <ice:selectOneRadio id="mainRadio"
                                 value="#{panelStack.selectedPanel}"
                                 partialSubmit="true"
-                                accesskey="S"
-                                title="#{msgs['page.panelStack.accessibility.mainRadioTitle']}">
+                                accesskey="S">
                 <f:selectItem
                         itemValue="#{msgs['page.panelStack.example.1.value']}"
                         itemLabel="#{msgs['page.panelStack.example.1.label']}"/>
