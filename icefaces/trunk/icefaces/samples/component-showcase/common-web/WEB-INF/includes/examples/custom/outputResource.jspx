@@ -81,7 +81,7 @@
 			<ice:outputResource id="pdf-image"
 				resource="#{resourceBean.pdfResource}" mimeType="application/pdf"
 				fileName="Enterprise-Ajax-Security-with-ICEfaces.pdf"
-				image="./images/button-submit.gif" />
+				image="/images/button-submit.gif" />
 		</ice:panelGrid>
 	</ice:panelGroup>
 </ice:panelGroup>

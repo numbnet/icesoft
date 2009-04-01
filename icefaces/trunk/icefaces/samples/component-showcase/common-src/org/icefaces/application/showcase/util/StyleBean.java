@@ -83,13 +83,13 @@ public class StyleBean implements Serializable {
         styleMap = new HashMap(3);
         styleMap.put(RIME, new StylePath(
                 "./xmlhttp/css/rime/rime.css",
-                "./xmlhttp/css/rime/css-images/"));
+                "/xmlhttp/css/rime/css-images/"));
         styleMap.put(XP, new StylePath(
                 "./xmlhttp/css/xp/xp.css",
-                "./xmlhttp/css/xp/css-images/"));
+                "/xmlhttp/css/xp/css-images/"));
         styleMap.put(ROYALE, new StylePath(
                 "./xmlhttp/css/royale/royale.css",
-                "./xmlhttp/css/royale/css-images/"));
+                "/xmlhttp/css/royale/css-images/"));
     }
 
     /**
