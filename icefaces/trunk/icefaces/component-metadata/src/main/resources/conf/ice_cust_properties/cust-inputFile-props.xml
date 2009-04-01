@@ -310,7 +310,9 @@
         would implement <b>com.icesoft.faces.async.render.Renderable</b>, and use the 
         <b>com.icesoft.faces.async.render.RenderManager</b> in conjunction with the 
         <b>com.icesoft.faces.async.render.OnDemandRenderer</b>, to do a server push, 
-        to update the view in the browser with the current progress.</p>
+        to update the view in the browser with the current progress. It could also invoke 
+        either <b>PersistentFacesState.render()</b> or <b>PersistentFacesState.renderLater()</b>,
+        to accomplish the same thing.</p>
         <p>As of ICEfaces 1.7.1, you can just set <b>progressRender="true"</b>, and the server 
         push will happen for you, without setting up all that glue code in the bean. 
         You still have to set your <b>outputProgress</b> component's progress percent 
