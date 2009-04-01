@@ -39,6 +39,8 @@
           value of the "styleClass" attribute as the value of the "class" attribute 
           on the "table" element. If the "style", "border" attributes are specified,
           pass them thru.  If the "layout" attribute is specified, and its
+          value is "spread", let the checkbox tag do the rendering.
+          If the "layout" attribute is specified, and its
           value is "pageDirection", render the children elements vertically,
           otherwise horizontally, in the table.  If any of the children are
           an instance of SelectItemGroup, render them as a nested table.
