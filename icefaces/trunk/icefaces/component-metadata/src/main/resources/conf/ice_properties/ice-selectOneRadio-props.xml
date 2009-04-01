@@ -64,3 +64,25 @@
     <default-value>"Ice.util.radioCheckboxEnter(form,this,event);"</default-value>    
 </property-extension>
 </property>
+<property>
+<description>
+    Orientation of the options list to be created. Valid values are "pageDirection" (list is laid out vertically),
+    or "lineDirection" (list is laid out horizontally), or spread (list is laid out by radio tags).
+    If not specified, the default value is "lineDirection".
+</description>
+<property-name>layout</property-name>
+<property-class>java.lang.String</property-class>
+<property-extension>
+    <category>APPEARANCE</category>
+    <editor-class>
+        &selectOneDomainEditor;
+    </editor-class>
+    <named-value>
+        <name>&domainClass;</name>
+        <expression>
+            &layoutDomain;
+        </expression>
+    </named-value>
+    <default-value>lineDirection</default-value>
+</property-extension>
+</property>
