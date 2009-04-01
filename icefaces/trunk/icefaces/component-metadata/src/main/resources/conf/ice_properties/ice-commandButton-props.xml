@@ -75,10 +75,17 @@
     <property-name>panelConfirmation</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
-        <category>ADVANCED</category>
+
         <editor-class>
-            &styleClassEditor;
+            &selectOneDomainEditor;
         </editor-class>
+        <named-value>
+            <name>&domainClass;</name>
+            <expression>
+                &inputComponentIdsDomain;
+            </expression>
+        </named-value>
     </property-extension>
+
 </property>
 
