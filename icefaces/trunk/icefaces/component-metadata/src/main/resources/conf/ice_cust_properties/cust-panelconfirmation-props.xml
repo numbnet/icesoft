@@ -88,7 +88,7 @@
         <category>ICE_COMPONENT</category>
         <default-value>"normal"</default-value> 
 		<editor-class>
-			&electOneDomainEditor;
+			&selectOneDomainEditor;
 		</editor-class>
      </property-extension>
 </property>
