@@ -61,7 +61,7 @@ would like to inform the user of the File upload progress.
 
 <div
  style="margin: 12pt 54pt 12pt 60.24pt; color: rgb(0, 0, 0); font-style: normal; font-weight: normal; text-align: left; text-decoration: none; text-indent: -36pt; text-transform: none; vertical-align: baseline;">
-<span style="font-weight: bold;">Note:</span>&nbsp;&nbsp;- The inputFile component must be inside a form element.<br>- The inputFile component sends exception information to the client using FacesMessage, so it always a good idea to have a instance of <span style="color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline;">message</span> or <span style="color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline;">messages</span> for inputFile component and if the developer wants to perform some operation against an exception he/she could do it using actionListener.<br>
+<span style="font-weight: bold;">Note:</span>&nbsp;&nbsp;The inputFile component sends exception information to the client using FacesMessage, so it always a good idea to have a instance of <span style="color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline;">message</span> or <span style="color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline;">messages</span> for inputFile component and if the developer wants to perform some operation against an exception he/she could do it using actionListener.<br>
 </div>
 
 <p>
@@ -69,35 +69,26 @@ would like to inform the user of the File upload progress.
 These are some things to consider when implementing the progressListener.
 <ol>
 <li>Method must take a single argument of type java.util.EventObject.</li>
-<li>Developer must invoke the render() call on the PersistentFacesState instance.</li>
-<li>Beans which implement the progressListener must be in session scope.</li>
-<li>The PersistentFacesState must be set in the constructor of session bean.</li>
+<li>This method is typically used to simply store the percent progress, to be used by an ice:outputProgress component.</li>
 </ol>
 The following example shows an InputFile progressListener implementation
 in a bean.
 
 <pre>
 public class MyBean {
-    private PersistentFacesState state = null;
-        private int percent = -1;
-        public MyBean() {
-            state = PersistentFacesState.getInstance();
-        }
+    private int percent = -1;
 
-       /**
-        * This is the progressListener implementation
-        */
-        public void progress (EventObject event) {
-             InputFile file = (InputFile)event.getSource();
-             percent  = file.getFileInfo().getPercent();
-             try {
-                  if (state != null) {
-                     state.render();
-                 }
-             } catch (RenderingException e) {
-                 e.printStackTrace();
-             }
-     }
+    /**
+     * This is the progressListener implementation
+     */
+    public void progress(EventObject event) {
+        InputFile file = (InputFile) event.getSource();
+        percent  = file.getFileInfo().getPercent();
+    }
+    
+    public int getPercent() {
+        return percent;
+    }
 }
 </pre>
 </p>
@@ -107,36 +98,25 @@ public class MyBean {
 These are some things to consider when implementing the actionListener.
 <ol>
 <li>The actionListener is only invoked when the file is saved or on any exception.</li>
-<li>The developer can make a decision using the following 4 InputFile states.</br>
-    [SAVED, INVALID, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE]. </li>
+<li>The developer can make a decision using the following InputFile states:</br>
+    [SAVED, INVALID, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE, INVALID_NAME_PATTERN, UNSPECIFIED_NAME, INVALID_CONTENT_TYPE]   
 </ol>
 
 
 The following example shows an InputFile actionListener implementation.
 <pre>
 public void action(ActionEvent event){
-      InputFile inputFile =(InputFile) event.getSource();
-      //file has been saved
-       if (inputFile.getStatus() == InputFile.SAVED) {
-            fileName = inputFile.getFileInfo().getFileName();
-            contentType = inputFile.getFileInfo().getContentType();
-      }
-
-       //invalid file, happens when clicking on upload without
- selecting a file, or a file with no contents.
-       if (inputFile.getStatus() == InputFile.INVALID) {
-            inputFile.getFileInfo().getException().printStackTrace();
-       }
-
-     //file size exceeded the limit
-      if (inputFile.getStatus() == InputFile.SIZE_LIMIT_EXCEEDED) {
-          inputFile.getFileInfo().getException().printStackTrace();
-      }
-
-     //indicate that the request size is not specified.
-      if (inputFile.getStatus() == InputFile.UNKNOWN_SIZE) {
-           inputFile.getFileInfo().getException().printStackTrace();
-     }
+    InputFile inputFile = (InputFile) event.getSource();
+    FileInfo fileInfo = inputFile.getFileInfo();
+    // File has been saved
+    if (fileInfo.isSaved()) {
+        fileName = fileInfo.getFileName();
+        contentType = fileInfo.getContentType();
+    }
+    // One of the several filure possibilities. Use fileInfo.getStatus() to see which
+    else if (fileInfo.isFailed()) {
+        fileInfo.getException().printStackTrace();
+    }
   }
 </pre>
 </p>
