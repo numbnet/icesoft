@@ -437,6 +437,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             Element inputElement = (Element) inputElements.item(i);
             String id = inputElement.getAttribute("id");
             if (!"".equals(id)) {
+                String name = null;
                 if (parameters.containsKey(id)) {
                     String value = ((String[]) parameters.get(id))[0];
                     //empty string is implied (default) when 'value' attribute is missing
@@ -450,6 +451,34 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                     }
                     else {
                         inputElement.setAttribute("value", "");
+                    }
+                }
+                else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
+                    if (inputElement.getAttribute("type").equals("checkbox")) {
+                        String currValue = inputElement.getAttribute("value");
+                        if (!"".equals(currValue)) {
+                            boolean found = false;
+                            String[] values = (String[]) parameters.get(name);
+                            if (values != null) {
+                                for(int v = 0; v < values.length; v++) {
+                                    if (currValue.equals(values[v])) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (found) {
+                                // For some reason, our multiple checkbox 
+                                // components use checked="true", while
+                                // our single checkbox components use
+                                // checked="checked". The latter complying
+                                // with the HTML specification.
+                                inputElement.setAttribute("checked", "true");
+                            }
+                            else {
+                                inputElement.removeAttribute("checked");
+                            }
+                        }
                     }
                 }
                 else {
