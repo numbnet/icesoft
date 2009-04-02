@@ -1,0 +1,185 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+-->
+<ice:form id="navForm"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+<ice:panelGrid columns="2"
+               width="100%" 
+               cellspacing="0" 
+               cellpadding="0"
+               styleClass="navigationBarPadding">
+
+    <ice:panelGrid columns="8"
+	               cellspacing="0" 
+	               cellpadding="0">
+
+	    <ice:panelGroup rendered="#{participant.moderator}">
+	        <ice:commandButton id="slideBackAll"
+                                 image="resources/images/nav_arrow_beg_#{participant.presentation.imageLoaded}.gif"
+	                           actionListener="#{participant.presentation.backAll}"
+	                           alt="#{msgs['page.navigation.arrow.backToStart.alt']}"
+	                           title="#{msgs['page.navigation.arrow.backToStart.title']}"
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
+	        <ice:commandButton id="slideBackOne"
+                                 image="resources/images/nav_arrow_back_#{participant.presentation.imageLoaded}.gif"
+	                           actionListener="#{participant.presentation.backOne}"
+	                           alt="#{msgs['page.navigation.arrow.back.alt']}"
+	                           title="#{msgs['page.navigation.arrow.back.title']}"
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
+		</ice:panelGroup>
+
+		<ice:panelGroup  rendered="#{not participant.mobile}"
+		                 styleClass="navigationElementPadding">
+		    <strong>#{msgs['page.navigation.page.text']}</strong>
+		</ice:panelGroup>
+
+        <ice:inputText id="slideNumber"
+                       rendered="#{participant.moderator}"
+                       partialSubmit="true"
+                       valueChangeListener="#{participant.presentation.specificSlideNumberChanged}"
+                       value="#{participant.presentation.specificSlideNumber}"
+                       title="#{msgs['page.navigation.page.input.title']}"
+                       styleClass="inputPAGENUM"
+                       maxlength="4"
+                       size="2"
+                       disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+
+        <ice:outputText id="currentSlide" rendered="#{not participant.moderator}"
+                        value="#{participant.presentation.specificSlideNumber}" />
+
+		<ice:panelGroup styleClass="navigationElementPadding">
+		    <ice:outputText id="lastSlide"
+                                value="#{msgs['page.navigation.page.ofLoadedPresentation']} #{participant.presentation.lastSlideNumber}"
+		                    rendered="#{participant.presentation.loaded}"/>
+		    <ice:outputText id="noSlides"
+                                value="#{msgs['page.navigation.page.ofNoPresentation']}"
+		                    rendered="#{not participant.presentation.loaded}"/>
+		</ice:panelGroup>
+
+		<ice:panelGrid rendered="#{participant.moderator}"
+		               columns="8" 
+		               cellspacing="0" 
+                       cellpadding="0">
+	        <ice:commandButton id="slideForwardOne"
+                                 image="resources/images/nav_arrow_forward_#{participant.presentation.imageLoaded}.gif"
+	                           actionListener="#{participant.presentation.forwardOne}"
+	                           title="#{msgs['page.navigation.arrow.forward.title']}" 
+	                           alt="#{msgs['page.navigation.arrow.forward.alt']}"
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
+	        <ice:commandButton id="slideForwardAll"
+                                 image="resources/images/nav_arrow_end_#{participant.presentation.imageLoaded}.gif"
+	                           actionListener="#{participant.presentation.forwardAll}"
+	                           title="#{msgs['page.navigation.arrow.forwardToEnd.title']}" 
+	                           alt="#{msgs['page.navigation.arrow.forwardToEnd.alt']}"
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
+            <ice:outputText id="slideShowText"
+                            value="#{msgs['page.navigation.slideshow.text']}"
+                            styleClass="navigationSlideshowText"/>
+            <ice:selectBooleanCheckbox id="slideAutoPlay"
+                    value="#{participant.presentation.autoPlay}"
+                    partialSubmit="true"
+                    valueChangeListener="#{participant.presentation.autoPlayChange}"
+                    title="#{msgs['page.navigation.slideshow.checkbox.title']}"
+                    disabled="#{not participant.presentation.loaded}"/>
+            <ice:outputText id="slidesShowInterval"
+                            value="#{msgs['page.navigation.slideshow.interval.text']}"
+                            styleClass="navigationDelayText"/>
+            <ice:selectOneMenu id="slctInterval"
+                               partialSubmit="true"
+                               value="#{participant.presentation.timer.changeDelay}"
+                               valueChangeListener="#{participant.presentation.timer.changeDelayListener}"
+                               disabled="#{not participant.presentation.autoPlay}">
+                <f:selectItems
+                        value="#{participant.presentation.timer.changeDelayItems}"/>
+            </ice:selectOneMenu>
+	        <ice:graphicImage rendered="#{!participant.mobile}"
+	                          value="resources/images/nav_div.gif" 
+	                          width="30"
+	                          height="33"/>
+	        <ice:commandButton id="loadPresentation"
+                                 rendered="#{!participant.mobile}"
+	                           image="resources/images/nav_open.gif" 
+	                           alt="#{msgs['page.navigation.loadPresentationButton.alt']}"
+	                           actionListener="#{participant.presentation.newDocument}"
+	                           title="#{msgs['page.navigation.loadPresentationButton.title']}"/>
+		</ice:panelGrid>
+
+<!-- Skype not implemented
+        <ice:outputLink rendered="#{participant.moderator and not participant.mobile}"
+                        onclick="#{participant.presentation.skypeScript}"
+                        title="Start Skype conference call">
+            <img src="resources/images/call_blue_transparent_34x34.png"/>
+        </ice:outputLink>
+ -->
+
+		<ice:outputText id="pointer" rendered="#{participant.moderator}" 
+		                value="#{msgs['page.navigation.pointer.text']}"
+                            styleClass="navigationPointerText"/>
+		<ice:selectBooleanCheckbox id="usingPointer"
+                                       rendered="#{participant.moderator}" 
+		                           value="#{participant.presentation.usingPointer}"
+		                           valueChangeListener="#{participant.presentation.pointerChange}"
+		                           partialSubmit="true"
+		                           title="#{msgs['page.navigation.pointer.checkbox.title']}"/>
+
+        <ice:commandButton id="logout"
+                           rendered="#{!participant.mobile}"
+                           image="resources/images/nav_logout.gif"
+                           action="#{participant.confirmLogout}"
+                           alt="#{msgs['page.navigation.logoutButton.alt']}"
+                           title="#{msgs['page.navigation.logoutButton.title.leave']} #{participant.presentation.name} #{msgs['page.navigation.logoutButton.title.presentation']}"/>
+
+	</ice:panelGrid>
+
+	<ice:panelGroup rendered="#{!participant.mobile}"
+	                style="float: right;">
+	    <img src="resources/images/logo.jpg" 
+	         style="width: 266px; height: 50px; margin-top: 1px;"/>
+	</ice:panelGroup>
+	<!-- Put logout button in logo's spot if rendering to a mobile browser -->
+    <ice:panelGroup rendered="#{participant.mobile}"
+                    style="float: right; margin-top: 1px;">
+        <ice:commandButton id="mobileLogout"
+                           image="resources/images/nav_logout.gif"
+                           action="#{participant.confirmLogout}"
+                           alt="#{msgs['page.navigation.logoutButton.alt']}"
+                           title="#{msgs['page.navigation.logoutButton.title.leave']} #{participant.presentation.name} #{msgs['page.navigation.logoutButton.title.presentation']}"/>
+    </ice:panelGroup>
+
+</ice:panelGrid>
+</ice:form>
