@@ -454,10 +454,13 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                     }
                 }
                 else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
-                    if (inputElement.getAttribute("type").equals("checkbox")) {
+                    String type = inputElement.getAttribute("type");
+                    if (type != null && type.equals("checkbox") || type.equals("radio")) {
                         String currValue = inputElement.getAttribute("value");
                         if (!"".equals(currValue)) {
                             boolean found = false;
+                            // For multiple checkboxes, values can have length > 1,
+                            // but for multiple radios, values would have at most length=1
                             String[] values = (String[]) parameters.get(name);
                             if (values != null) {
                                 for(int v = 0; v < values.length; v++) {
@@ -473,7 +476,13 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                                 // our single checkbox components use
                                 // checked="checked". The latter complying
                                 // with the HTML specification.
-                                inputElement.setAttribute("checked", "true");
+                                // Also, radios use checked="checked"
+                                if (type.equals("checkbox")) {
+                                    inputElement.setAttribute("checked", "true");
+                                }
+                                else if (type.equals("radio")) {
+                                    inputElement.setAttribute("checked", "checked");
+                                }
                             }
                             else {
                                 inputElement.removeAttribute("checked");
