@@ -1,0 +1,120 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+-->
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="chat" >
+
+    <ice:panelGrid columns="2" 
+                   styleClass="bgBARBLUE" 
+                   width="100%"
+                   cellpadding="0" 
+                   cellspacing="0"
+                   border="0" >
+        <ice:outputText id="mobileChatTxt"
+                        rendered="#{participant.mobile}"
+                        value="#{msgs['page.chat.text']}"
+                        style="padding-left: 6px;"/>
+        <ice:commandButton id="saveChat"
+                           rendered="#{!participant.mobile}"
+                           alt="#{msgs['page.chat.chatLogButton.alt']}"
+                           image="resources/images/chat_save.gif"
+                           title="#{msgs['page.chat.chatLogButton.title']}"
+                           onclick="javascript: showMedium('chatlog.html');"
+                           style="padding-left: 13px;"/>
+        <ice:panelGroup style="text-align: right;" >
+	        <ice:commandButton id="cScrollUpBtn"
+                                 immediate="true"
+	                           alt="#{msgs['page.scrollUpButton.alt']}"
+	                           image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
+	                           title="#{msgs['page.chat.scrollUpButton.title']}"
+	                           actionListener="#{participant.chatView.moveChatViewUp}"
+	                           disabled="#{participant.chatView.chatScrollUpDisabled}"/>
+	        <ice:commandButton id="cScrollDnBtn"
+                                 immediate="true" 
+	                           alt="#{msgs['page.scrollDownButton.alt']}"
+	                           image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
+	                           title="#{msgs['page.chat.scrollDownButton.title']}"
+	                           actionListener="#{participant.chatView.moveChatViewDown}"
+	                           disabled="#{participant.chatView.chatScrollDownDisabled}"/>
+        </ice:panelGroup>
+    </ice:panelGrid>
+        <!-- chatList panelGroup is nested in chatListEffect panelGroup so the
+             effect is applied as a border rather than around the whole list. -->
+        <ice:panelGroup styleClass="chatListEffect"
+                        effect="#{participant.messageEffect}" >
+        <ice:panelGroup styleClass="chatList">
+        <ul>
+        <ice:dataTable id="chatTbl"
+                       value="#{participant.chatViewList}"
+                       rows="#{participant.chatView.viewSize}"
+                       var="page"
+                       width="100%"
+                       styleClass="chatTable">
+            <ice:column>
+            <li>
+                <ice:outputText id="msgSender"
+                                value="#{page.senderFormatted}"
+                                style="font-weight: bold; float: left;"/>
+                &amp;nbsp;
+                <ice:outputText id="message"
+                                value="#{page.message}" 
+                                escape="false"/>
+            </li>
+            </ice:column>
+        </ice:dataTable>
+        </ul>
+    </ice:panelGroup>
+    </ice:panelGroup>
+    <ice:panelGrid columns="2" 
+                   styleClass="bgBARBLUE" 
+                   width="100%"
+                   cellpadding="0" 
+                   cellspacing="0"
+                   border="0" >
+        <ice:panelGroup styleClass="inputChatCell">
+            <ice:inputText id="inputMsg"
+                           binding="#{participant.chatMessageField}"
+                           value="#{participant.chatMessage}"
+                           maxlength="#{participant.mobile?'40':'70'}" 
+                           styleClass="inputCHAT"
+                           actionListener="#{participant.addChatMessage}"/>
+        </ice:panelGroup>
+        <ice:panelGroup styleClass="sendChatCell">
+            <ice:commandButton id="sendMsgBtn"
+                               image="#{participant.mobile?'resources/images/chat_send_mobile.gif':'resources/images/chat_send.gif'}"
+                               actionListener="#{participant.addChatMessage}"
+                               alt="#{msgs['page.chat.sendButton.alt']}"/>
+        </ice:panelGroup>
+</ice:panelGrid>
+</div>
