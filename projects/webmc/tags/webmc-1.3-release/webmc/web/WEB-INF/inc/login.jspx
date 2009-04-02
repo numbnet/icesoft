@@ -1,0 +1,252 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+-->
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="backgroundTop">
+<div class="backgroundBottom">
+<center>
+<div class="loginBox">
+<ice:form id="loginForm">
+    <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.gif':'./resources/images/login_logo.gif'}" 
+                      alt="#{msgs['page.login.loginLogo.alt']}"
+                      styleClass="loginLogo" />
+    <!-- Viewer and Moderator Tabs for Desktop Browsers -->
+    <ice:panelGroup rendered="#{!participant.mobile}"
+                    style="text-align: left;">
+	    <ice:panelGroup styleClass="moderatorViewerButtons">
+	        <ice:commandButton id="viewerBtn"
+	                actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
+	                alt="#{msgs['page.login.viewerButton.alt']}"
+	                immediate="true"
+	                image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
+	        <ice:commandButton id="moderatorBtn"
+	                actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
+	                alt="#{msgs['page.login.moderatorButton.alt']}"
+	                immediate="true"
+	                image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
+	    </ice:panelGroup>
+	</ice:panelGroup>
+	<!-- Desktop and Mobile browsers have a different layout that is triggered 
+	     with the rendered attribute on each "cell" of the panelGrid -->	
+	<ice:panelGrid columns="4"
+	               cellspacing="0"
+	               cellpadding="0"
+                   styleClass="loginPanelGrid" 
+	               columnClasses="loginFirstColumn,loginSecondColumn,loginThirdColumn,loginFourthColumn">
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
+        <!-- Name common to both Viewer and Moderator -->
+        <ice:panelGroup>       
+            <ice:outputLabel styleClass="loginLabel firstNameLabel"
+                             value="#{msgs['page.login.nameLabel']} " 
+                             for="firstName" />
+            <ice:inputText id="firstName"
+                           value="#{participant.firstName}"
+                           converter="fixCaps" 
+                           required="true"
+                           partialSubmit="true" 
+                           maxlength="20"
+                           tabindex="1"
+                           styleClass="loginInput"
+                           binding="#{participant.loginBean.firstNameField}"/>
+        </ice:panelGroup>
+        <!-- Name error message -->
+        <ice:panelGroup>
+            <ice:message for="firstName" id="firstNameErr"
+                         errorClass="inputError"/>
+        </ice:panelGroup >
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
+        <!-- Viewer selects from presentations -->
+        <ice:panelGroup rendered="#{not participant.moderator}">
+            <ice:outputLabel styleClass="loginLabel"
+                             value="#{msgs['page.login.presentationLabel']} "
+                             for="existingPresentationName"/>
+            <ice:selectOneMenu id="existingPresentationName"
+                               partialSubmit="true"
+                               tabindex="4"
+                               value="#{participant.loginBean.presentationName}"
+                               styleClass="presentationMenu"
+                               valueChangeListener="#{participant.loginBean.selectPresentation}">
+                <f:selectItems value="#{presentationMgr.presentationItems}"/>
+            </ice:selectOneMenu>
+        </ice:panelGroup>
+        <!-- Moderator creates a new presentation -->
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
+            <ice:outputLabel styleClass="loginLabel"
+                             value="#{msgs['page.login.presentationLabel']} "
+                             for="newPresentationName"/>
+            <ice:inputText id="newPresentationName"
+                           required="true"
+                           maxlength="50"
+                           tabindex="4"
+                           styleClass="loginInput"
+                           value="#{participant.loginBean.presentationName}"
+                           partialSubmit="true">
+                <f:validator validatorId="NameValidator"/>
+            </ice:inputText>
+        </ice:panelGroup>
+        <!-- Viewer Presentation Error Message -->
+        <ice:panelGroup rendered="#{not participant.moderator}">
+            <ice:outputText id="presentationErr"
+                            value="#{msgs['page.login.presentationError.required']}"
+                            rendered="#{participant.loginBean.invalidPresentation}"
+                            styleClass="inputError"/>
+        </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
+        <!-- Moderator Presentation Error Message -->
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
+            <ice:message for="newPresentationName" id="newPresentationNameErr"
+                         errorClass="inputError"/>
+        </ice:panelGroup>
+        <!-- Refresh PersistentFacesState (Empty Cell with Spacer) -->
+        <ice:panelGroup>
+            &amp;nbsp;
+            <ice:outputText value="#{participant.refreshPersistentFacesState}" 
+                            visible="false"/>
+        </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{!participant.mobile}" /> 
+        <!-- Viewer inputs password -->
+        <ice:panelGroup rendered="#{not participant.moderator}" >
+            <!-- Empty Cell when password not required -->
+	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" />
+            <ice:outputLabel rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
+                             styleClass="loginLabel passwordLabel"
+                             value="#{msgs['page.login.passwordLabel']} "
+                             for="viewPassword" />
+            <ice:inputSecret id="viewPassword"
+                             rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
+                             value="#{participant.loginBean.presentationPassword}"
+                             tabindex="5"
+                             redisplay="true" 
+                             partialSubmit="true"
+                             maxlength="20"
+                             styleClass="loginInput"
+                             actionListener="#{participant.loginBean.validatePassword}">
+            </ice:inputSecret>
+        </ice:panelGroup>
+        <!-- Moderator inputs password -->
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
+	        <ice:outputLabel styleClass="loginLabel"
+	                         value="#{msgs['page.login.passwordLabel']} "
+	                         for="moderatorPassword" />
+	        <ice:inputSecret id="moderatorPassword"
+	                         value="#{participant.loginBean.presentationPassword}"
+	                         maxlength="20"
+	                         tabindex="5"
+	                         styleClass="loginInput"
+	                         redisplay="true" >
+	        </ice:inputSecret>
+        </ice:panelGroup>
+        <!-- Viewer Password Error Message -->
+        <ice:panelGroup rendered="#{not participant.moderator}" >
+	        <ice:outputText id="viewerPasswordErr"
+                              value="#{msgs['page.login.passwordError.invalid']} "
+	                        rendered="#{participant.loginBean.invalidPassword}"
+	                        styleClass="inputError"/>
+        </ice:panelGroup>
+        <!-- Moderator Password Error Message -->
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
+	        <ice:message for="moderatorPassword" id="moderatorPasswordErr"
+	                     errorClass="inputError"/>
+        </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup />
+        <!-- Empty Cell -->
+        <ice:panelGroup />
+        <!-- Viewer Buttons -->
+        <ice:panelGroup rendered="#{not participant.moderator}"
+	                    styleClass="loginButtons">
+            <ice:commandButton id="vResetBtn"
+                               image="resources/images/butt_reset.gif"
+                               actionListener="#{participant.loginBean.resetButton}"
+                               immediate="true"
+                               tabindex="6"
+                               alt="#{msgs['page.login.resetButton.alt']}" />
+            <ice:commandLink   id="vLoginBtn"
+                               action="#{participant.login}"
+                               tabindex="7"
+                               alt="#{msgs['page.login.joinLink.alt']}">
+                <ice:graphicImage value="resources/images/butt_join_present.gif" 
+                                  style="border: 0; "/>
+                <f:param name="loginSource" 
+                         value="viewLogin"/>
+            </ice:commandLink>
+	    </ice:panelGroup>
+	    <!-- Moderator Buttons -->
+	    <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}"
+	                    styleClass="loginButtons">
+            <ice:commandButton id="mResetBtn"
+                               image="resources/images/butt_reset.gif"
+                               actionListener="#{participant.loginBean.resetButton}"
+                               immediate="true"
+                               tabindex="7"
+                               alt="#{msgs['page.login.resetButton.alt']}"/>
+            <ice:commandLink   id="mLoginBtn"
+                               action="#{participant.login}"
+                               tabindex="8"
+                               alt="#{msgs['page.login.startLink.alt']}">
+                <ice:graphicImage value="resources/images/butt_start_present.gif"
+                                  style="border: 0;"/>
+                <f:param name="loginSource" 
+                         value="moderatorLogin"/>
+            </ice:commandLink>
+	    </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{!participant.mobile}" />
+    </ice:panelGrid>
+	<!-- Moderator Instructions -->
+    <ice:panelGroup styleClass="headerMessage" 
+                    rendered="#{participant.moderator and not participant.mobile}">
+	    <ice:outputText value="#{msgs['page.login.moderator.instruction']}" />
+	    <br />
+	    <ice:outputText value="#{msgs['page.login.moderator.instruction.password']}"/>
+    </ice:panelGroup>
+    <!-- Viewer Instructions -->
+    <ice:panelGroup styleClass="headerMessage" 
+                    rendered="#{not participant.moderator and not participant.mobile}">
+        <ice:outputText value="#{msgs['page.login.viewer.instruction']}"/>
+        <br />
+        <ice:outputText value="#{msgs['page.login.viewer.instruction.password']}"/>
+    </ice:panelGroup>
+	
+</ice:form>
+</div>
+</center>
+</div>
+</div>
