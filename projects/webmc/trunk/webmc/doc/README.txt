@@ -1,5 +1,5 @@
                      WEBMC GETTING STARTED GUIDE
-                            Rev. 1.0
+                            Rev. 1.3
                          (www.icefaces.org)
 --------------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ Fill in each property to use your own data.
 
 Set the base.dir property in the build.properties file to point to the path of
 your ICEfaces library folder. For example, if you downloaded the release of
-ICEfaces 1.5.3 you would use "ICEfaces-1.5.3-bin/icefaces/lib" as the directory.
+ICEfaces 1.8.0 you would use "ICEfaces-1.8.0-bin/icefaces/lib" as the directory.
 By default the base.dir property is set to build from the local ossrepo trunk.
 
 --------------------------------------------------------------------------------
