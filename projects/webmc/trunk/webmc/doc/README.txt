@@ -1,7 +1,7 @@
                      WEBMC GETTING STARTED GUIDE
                             Rev. 1.3
                          (www.icefaces.org)
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 
 TOPICS
 
@@ -12,7 +12,7 @@ TOPICS
 5. Default Presentations
 6. Building Webmc
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 1. What is Webmc?
 
 WebMC Beta is a basic web conferencing system that allows participants to share 
@@ -20,7 +20,7 @@ PowerPoint presentations over the web. WebMC uses ICEfaces built in Ajax-Push
 capabilities to deliver a collaborative web-based PowerPoint sharing experience 
 without the use of special browser plugins.
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 2. Required JAR Files
 
 Webmc uses the Javamail libraries which must be properly configured before
@@ -33,7 +33,7 @@ compile, acquire the necessary jars from the links provided.
   JavaMail API implementation (version 1.3 or greater)
   http://java.sun.com/products/javamail/
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 3. Mail Configuration
 
 If you require the mail functionality, and have setup the Javamail jars as
@@ -60,7 +60,7 @@ mailserver information. An example of the file is shown below:
 
 Fill in each property to use your own data.
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 4. ICEfaces Location
 
 Set the base.dir property in the build.properties file to point to the path of
@@ -68,7 +68,7 @@ your ICEfaces library folder. For example, if you downloaded the release of
 ICEfaces 1.8.0 you would use "ICEfaces-1.8.0-bin/icefaces/lib" as the directory.
 By default the base.dir property is set to build from the local ossrepo trunk.
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 5. Default Presentations
 
 Webmc will unpack and autocreate presentations based on the zip files present
@@ -76,7 +76,7 @@ in the basepres folder. Simply add a properly formatted zip file to
 web/basepres/, and when Webmc is deployed and started an unmoderated slideshow
 version of the presentation will be created.
 
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 6. Building Webmc
 
 After the ICEfaces location is set, any mailserver configuration is done, and
