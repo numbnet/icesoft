@@ -408,11 +408,65 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         for (int i = 0; i < inputElementsLength; i++) {
             Element inputElement = (Element) inputElements.item(i);
             String id = inputElement.getAttribute("id");
-            if (!"".equals(id) && parameters.containsKey(id)) {
-                String value = ((String[]) parameters.get(id))[0];
-                //empty string is implied (default) when 'value' attribute is missing
-                if (!"".equals(value) && inputElement.hasAttribute("value")) {
-                    inputElement.setAttribute("value", value);
+            if (!"".equals(id)) {
+                String name = null;
+                if (parameters.containsKey(id)) {
+                    String value = ((String[]) parameters.get(id))[0];
+                    //empty string is implied (default) when 'value' attribute is missing
+                    if (!"".equals(value)) {
+                        if (inputElement.hasAttribute("value")) {
+                            inputElement.setAttribute("value", value);
+                        }
+                        else if (inputElement.getAttribute("type").equals("checkbox")) {
+                            inputElement.setAttribute("checked", "checked");
+                        }
+                    }
+                    else {
+                        inputElement.setAttribute("value", "");
+                    }
+                }
+                else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
+                    String type = inputElement.getAttribute("type");
+                    if (type != null && type.equals("checkbox") || type.equals("radio")) {
+                        String currValue = inputElement.getAttribute("value");
+                        if (!"".equals(currValue)) {
+                            boolean found = false;
+                            // For multiple checkboxes, values can have length > 1,
+                            // but for multiple radios, values would have at most length=1
+                            String[] values = (String[]) parameters.get(name);
+                            if (values != null) {
+                                for(int v = 0; v < values.length; v++) {
+                                    if (currValue.equals(values[v])) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (found) {
+                                // For some reason, our multiple checkbox 
+                                // components use checked="true", while
+                                // our single checkbox components use
+                                // checked="checked". The latter complying
+                                // with the HTML specification.
+                                // Also, radios use checked="checked"
+                                if (type.equals("checkbox")) {
+                                    inputElement.setAttribute("checked", "true");
+                                }
+                                else if (type.equals("radio")) {
+                                    inputElement.setAttribute("checked", "checked");
+                                }
+                            }
+                            else {
+                                inputElement.removeAttribute("checked");
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (inputElement.getAttribute("type").equals("checkbox")) {
+                        ////inputElement.setAttribute("checked", "");
+                        inputElement.removeAttribute("checked");
+                    }
                 }
             }
         }
