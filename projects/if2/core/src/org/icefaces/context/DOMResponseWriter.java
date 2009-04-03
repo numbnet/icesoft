@@ -31,17 +31,19 @@
  *
  */
 
-package com.icesoft.faces.context;
+package org.icefaces.context;
 
-import com.icesoft.faces.application.StartupTime;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
+//import com.icesoft.faces.application.StartupTime;
+//import com.icesoft.faces.context.effects.JavascriptContext;
+//import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.ConfigurationException;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import com.icesoft.faces.webapp.http.common.Configuration;
+//import com.icesoft.faces.webapp.http.common.ConfigurationException;
+//import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -54,7 +56,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -77,7 +79,9 @@ import java.util.ResourceBundle;
  * <code>javax.faces.context.ResponseWriter</code>.
  */
 public class DOMResponseWriter extends ResponseWriter {
-    private static final Log log = LogFactory.getLog(DOMResponseWriter.class);
+//    private static final Log log = LogFactory.getLog(DOMResponseWriter.class);
+    private static Logger log = Logger.getLogger("org.icefaces.context");
+
     public static final String DOCTYPE_PUBLIC = "com.icesoft.doctype.public";
     public static final String DOCTYPE_SYSTEM = "com.icesoft.doctype.system";
     public static final String DOCTYPE_ROOT = "com.icesoft.doctype.root";
@@ -86,17 +90,17 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private List markerNodes = new ArrayList();
 
-    private static final BundleResolver bridgeMessageResolver = new FailoverBundleResolver("bridge-messages", new ListResourceBundle() {
-        protected Object[][] getContents() {
-            return new Object[][]{
-                    {"session-expired", "User Session Expired"},
-                    {"connection-lost", "Network Connection Interrupted"},
-                    {"server-error", "Server Internal Error"},
-                    {"description", "To reconnect click the Reload button on the browser or click the button below"},
-                    {"button-text", "Reload"}
-            };
-        }
-    });
+//    private static final BundleResolver bridgeMessageResolver = new FailoverBundleResolver("bridge-messages", new ListResourceBundle() {
+//        protected Object[][] getContents() {
+//            return new Object[][]{
+//                    {"session-expired", "User Session Expired"},
+//                    {"connection-lost", "Network Connection Interrupted"},
+//                    {"server-error", "Server Internal Error"},
+//                    {"description", "To reconnect click the Reload button on the browser or click the button below"},
+//                    {"button-text", "Reload"}
+//            };
+//        }
+//    });
     static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
@@ -104,7 +108,7 @@ public class DOMResponseWriter extends ResponseWriter {
             DOCUMENT_BUILDER =
                     DocumentBuilderFactory.newInstance().newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            log.error("Cannot acquire a DocumentBuilder", e);
+            log.log(Level.SEVERE, "Cannot acquire a DocumentBuilder", e);
         }
     }
 
@@ -113,6 +117,8 @@ public class DOMResponseWriter extends ResponseWriter {
     private final Map domContexts = new HashMap();
     private Document document;
 
+//normally allocated at construction time
+    private void initDocument()
     {
         document = DOCUMENT_BUILDER.newDocument();
         if (!isDOMChecking) {
@@ -122,40 +128,54 @@ public class DOMResponseWriter extends ResponseWriter {
                         new Class[]{boolean.class});
                 setErrorCheckingMethod.invoke(document, new Object[]{Boolean.FALSE});
             } catch (Exception e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("DOM error checking not disabled ", e);
+                if (log.isLoggable(Level.FINE)) {
+                    log.log(Level.FINE, "DOM error checking not disabled ", e);
                 }
             }
         }
+        cursor = document;
     }
 
-    private final BridgeFacesContext context;
-    private final DOMSerializer serializer;
-    private final Configuration configuration;
-    private final Collection jsCode;
-    private final Collection cssCode;
+    private Writer writer;
+    private FacesContext facesContext;
+//    private final BridgeFacesContext context;
+//    private final DOMSerializer serializer;
+//    private final Configuration configuration;
+//    private final Collection jsCode;
+//    private final Collection cssCode;
     private String blockingRequestHandlerContext;
-    private Node cursor = document;
+//    private Node cursor = document;
+    private Node cursor;
     private Node savedJSFStateCursor;
 
-    public DOMResponseWriter(final FacesContext context, final DOMSerializer serializer, final Configuration configuration, final Collection jsCode, final Collection cssCode, final String blockingRequestHandlerContext) {
-        this.serializer = serializer;
-        this.configuration = configuration;
-        this.jsCode = jsCode;
-        this.cssCode = cssCode;
-        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
-        try {
-            this.context = (BridgeFacesContext) context;
-        } catch (ClassCastException e) {
-            throw new IllegalStateException(
-                    "ICEfaces requires the PersistentFacesServlet. " +
-                            "Please check your web.xml servlet mappings");
-        }
+    public DOMResponseWriter(Writer writer)  {
+//        this.facesContext = facesContext;
+        this.writer = writer;
     }
 
-    Map getDomContexts() {
-        return domContexts;
+    public DOMResponseWriter(Document document, Writer writer)  {
+        this.writer = writer;
+        this.document = document;
     }
+
+//    public DOMResponseWriter(final FacesContext context, final DOMSerializer serializer, final Configuration configuration, final Collection jsCode, final Collection cssCode, final String blockingRequestHandlerContext) {
+//        this.serializer = serializer;
+//        this.configuration = configuration;
+//        this.jsCode = jsCode;
+//        this.cssCode = cssCode;
+//        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
+//        try {
+//            this.context = (BridgeFacesContext) context;
+//        } catch (ClassCastException e) {
+//            throw new IllegalStateException(
+//                    "ICEfaces requires the PersistentFacesServlet. " +
+//                            "Please check your web.xml servlet mappings");
+//        }
+//    }
+//
+//    Map getDomContexts() {
+//        return domContexts;
+//    }
 
     public Node getCursorParent() {
         return cursor;
@@ -178,14 +198,19 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void startDocument() throws IOException {
+        System.out.println(this + " startDocument ");
+        initDocument();
     }
 
     public void endDocument() throws IOException {
-        domContexts.clear();
-        if (!isStreamWriting()) {
-            enhanceAndFixDocument();
-            serializer.serialize(document);
-        }
+System.out.println("DOMResponseWriter.endDocument with writer " + writer.getClass());
+System.out.println("                              with document " + DOMUtils.nodeToString(document));
+        DOMUtils.printNode(document, writer);
+//        domContexts.clear();
+//        if (!isStreamWriting()) {
+//            enhanceAndFixDocument();
+//            serializer.serialize(document);
+//        }
         document = null;
         cursor = null;
         savedJSFStateCursor = null;
@@ -196,7 +221,13 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void startElement(String name, UIComponent componentForElement)
             throws IOException {
+        if (null == document)  {
+            System.out.println(writer.getClass() + " startElement " + name);
+            document = DOCUMENT_BUILDER.newDocument();
+            System.out.println("creating " + document.hashCode());
+        }
         moveCursorOn(appendToCursor(document.createElement(name)));
+System.out.println("appended " + name);
     }
 
     public void endElement(String name) throws IOException {
@@ -225,6 +256,11 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void writeComment(Object comment) throws IOException {
+        if (null == document)  {
+            System.out.println(writer.getClass() + " writeComment " + comment);
+            writer.write(String.valueOf(comment));
+            return;
+        }
         appendToCursor(document.createComment(String.valueOf(comment)));
     }
 
@@ -244,6 +280,9 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public ResponseWriter cloneWithWriter(Writer writer) {
+        System.out.println("clone with writer " + writer.getClass());
+        return new DOMResponseWriter(null, writer);
+/*
         //FIXME: This is a hack for DOM rendering but JSF currently clones the writer
         //just as the components are complete
         if (null != document) {
@@ -258,6 +297,7 @@ public class DOMResponseWriter extends ResponseWriter {
         } catch (FacesException e) {
             throw new IllegalStateException();
         }
+*/
     }
 
     public void close() throws IOException {
@@ -267,7 +307,17 @@ public class DOMResponseWriter extends ResponseWriter {
         if (0 == len) {
             return;
         }
-        appendToCursor(document.createTextNode(new String(cbuf, off, len)));
+        if (null == document)  {
+            System.out.println(writer.getClass() + " raw write buf " + new String(cbuf, off, len));
+            writer.write(cbuf, off, len);
+            return;
+        }
+        try {
+            appendToCursor(document.createTextNode(new String(cbuf, off, len)));
+        } catch (Exception e)  {
+            System.out.println(e + " Cannot write " + new String(cbuf, off, len));
+//            e.printStackTrace();
+        }
     }
 
     public void write(int c) throws IOException {
@@ -278,7 +328,16 @@ public class DOMResponseWriter extends ResponseWriter {
         if ("".equals(str)) {
             return;
         }
-        appendToCursor(document.createTextNode(str));
+        if (null == document)  {
+            System.out.println(writer.getClass() + " raw write " + str);
+            writer.write(str);
+            return;
+        }
+        try {
+            appendToCursor(document.createTextNode(str));
+        } catch (Exception e)  {
+            System.out.println("Failed to write str " + str);
+        }
     }
 
     public void write(String str, int off, int len) throws IOException {
@@ -311,6 +370,7 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void enhanceAndFixDocument() {
+/*
         Element html = (Element) document.getDocumentElement();
         enhanceHtml(html = "html".equals(html.getTagName()) ? html : fixHtml());
 
@@ -319,16 +379,20 @@ public class DOMResponseWriter extends ResponseWriter {
 
         Element body = (Element) document.getElementsByTagName("body").item(0);
         enhanceBody(body == null ? fixBody() : body);
+*/
     }
 
     private void enhanceHtml(Element html) {
+/*
         //add lang attribute
         Locale locale = context.getViewRoot().getLocale();
         //id required for forwarded (server-side) redirects
         html.setAttribute("id", "document:html");
         html.setAttribute("lang", locale.getLanguage());
+*/
     }
 
+/*
     private void enhanceBody(Element body) {
         //id required for forwarded (server-side) redirects
         body.setAttribute("id", "document:body");
@@ -521,6 +585,7 @@ public class DOMResponseWriter extends ResponseWriter {
         link.setAttribute("type", "text/javascript");
         link.appendChild(document.createTextNode("try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}"));
     }
+*/
 
     private Element fixHtml() {
         Element root = document.getDocumentElement();
@@ -573,39 +638,40 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void moveCursorOn(Node node) {
-        if (log.isTraceEnabled()) {
-            log.trace("moving cursor on " + DOMUtils.toDebugString(node));
+        if (log.isLoggable(Level.FINEST)) {
+            log.finest("moving cursor on " + DOMUtils.toDebugString(node));
         }
         cursor = node;
     }
 
     private Node appendToCursor(Node node) {
         try {
-            if (log.isTraceEnabled()) {
-                log.trace("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
             return cursor.appendChild(node);
 
         } catch (DOMException e) {
             String message = "Failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
-            log.error(message);
+            System.out.println("using document " + document.hashCode());
+            log.severe(message);
             throw new RuntimeException(message, e);
         }
     }
 
     private Node appendToCursor(Attr node) {
         try {
-            if (log.isTraceEnabled()) {
-                log.trace("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
             return ((Element) cursor).setAttributeNode(node);
         } catch (DOMException e) {
             String message = "Failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
-            log.error(message);
+            log.severe(message);
             throw new RuntimeException(message, e);
         } catch (ClassCastException e) {
             String message = "The cursor is not an element: " + DOMUtils.toDebugString(cursor);
-            log.error(message);
+            log.severe(message);
             throw new RuntimeException(message, e);
         }
     }
@@ -659,6 +725,7 @@ public class DOMResponseWriter extends ResponseWriter {
      * This method shouldn't be called if state saving is not enabled
      */
     public void copyStateNodesToMarkers() {
+/*
 
         Iterator i = markerNodes.iterator();
         while (i.hasNext()) {
@@ -677,8 +744,8 @@ public class DOMResponseWriter extends ResponseWriter {
                     nodeValue = child.getNodeValue();
                     if (nodeValue != null && nodeValue.indexOf("j_id") > -1) {
                         PersistentFacesState.getInstance().setStateRestorationId(nodeValue);
-                        if (log.isDebugEnabled()) {
-                            log.debug("State id for server push state saving: " + nodeValue);
+                        if (log.isLoggable(Level.FINE)) {
+                            log.fine("State id for server push state saving: " + nodeValue);
                         }
                     }
                     n.appendChild(child.cloneNode(true));
@@ -689,6 +756,7 @@ public class DOMResponseWriter extends ResponseWriter {
             n.normalize();
         }
         markerNodes.clear();
+*/
     }
 
     /**
