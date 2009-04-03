@@ -195,6 +195,8 @@ public class ChartController implements Serializable {
             }
 
         }
+        if (currentChartModel!= null)
+            currentChartModel.renderOnSubmit = false;
     }
 
     public AbstractChartData getCurrentChartModel() {
