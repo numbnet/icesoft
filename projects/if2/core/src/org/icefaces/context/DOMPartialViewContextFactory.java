@@ -6,7 +6,7 @@ import javax.faces.context.PartialViewContextFactory;
 import javax.faces.context.PartialViewContext;
 
 public class DOMPartialViewContextFactory extends PartialViewContextFactory  {
-    DOMPartialViewContextFactory delegate;
+    PartialViewContextFactory delegate;
 
     public DOMPartialViewContextFactory(PartialViewContextFactory delegate)  {
         this.delegate = delegate;
