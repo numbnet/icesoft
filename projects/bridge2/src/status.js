@@ -179,7 +179,7 @@ var ComponentIndicators;
         return object(function (method) {
             method(on, function(self) {
                 on(panel);
-                var messageContainer = document.createElement('div');
+                var messageContainer = document.body.appendChild(document.createElement('div'));
                 var messageContainerStyle = messageContainer.style;
                 messageContainerStyle.position = 'absolute';
                 messageContainerStyle.textAlign = 'center';
@@ -197,9 +197,8 @@ var ComponentIndicators;
                 messageContainerStyle.borderWidth = '2px';
                 messageContainerStyle.borderStyle = 'solid';
                 messageContainerStyle.width = '270px';
-                document.body.appendChild(messageContainer);
 
-                var messageElement = document.createElement('div');
+                var messageElement = messageContainer.appendChild(document.createElement('div'));
                 messageElement.appendChild(document.createTextNode(message));
                 var messageElementStyle = messageElement.style;
                 messageElementStyle.marginLeft = '30px';
@@ -207,18 +206,16 @@ var ComponentIndicators;
                 messageElementStyle.fontSize = '14px';
                 messageElementStyle.fontSize = '14px';
                 messageElementStyle.fontWeight = 'bold';
-                messageContainer.appendChild(messageElement);
 
-                var descriptionElement = document.createElement('div');
+                var descriptionElement = messageElement.appendChild(document.createElement('div'));
                 descriptionElement.appendChild(document.createTextNode(description));
                 var descriptionElementStyle = descriptionElement.style;
                 descriptionElementStyle.fontSize = '11px';
                 descriptionElementStyle.marginTop = '7px';
                 descriptionElementStyle.marginBottom = '7px';
                 descriptionElementStyle.fontWeight = 'normal';
-                messageElement.appendChild(descriptionElement);
 
-                var buttonElement = document.createElement('input');
+                var buttonElement = messageContainer.appendChild(document.createElement('input'));
                 buttonElement.type = 'button';
                 buttonElement.value = buttonText;
                 var buttonElementStyle = buttonElement.style;
@@ -227,7 +224,6 @@ var ComponentIndicators;
                 buttonElement.onclick = function() {
                     window.location.reload();
                 };
-                messageContainer.appendChild(buttonElement);
                 var resize = function() {
                     messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
                     messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
