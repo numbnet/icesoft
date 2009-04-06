@@ -127,6 +127,7 @@ window.evaluate = eval;
 
     namespace.Application = function(configuration, container) {
         var sessionID = configuration.session;
+        window.sessions = [sessionID];
         var viewID = configuration.view;
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);
@@ -238,7 +239,7 @@ window.evaluate = eval;
             //public method used to modify bridge's status manager
             method(namespace.resetIndicators, function(self, setup) {
                 each([indicators.busy, indicators.sessionExpired, indicators.serverError, indicators.connectionLost, indicators.connectionTrouble], off);
-                indicators = setup(DefaultIndicators(configuration, container));
+                indicators = setup(DefaultIndicators(configuration, container), configuration);
                 info(logger, "status indicators were updated");
             });
             //public method
