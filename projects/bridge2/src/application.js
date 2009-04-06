@@ -221,6 +221,7 @@ window.evaluate = eval;
         });
         register(commandDispatcher, 'session-expired', function() {
             warn(logger, 'Session has expired');
+            off(indicators.busy);
             on(indicators.sessionExpired);
             //avoid sending "dispose-views" request, the view is disposed by the server on session expiry
             delistView(sessionID, viewID);
@@ -251,6 +252,7 @@ window.evaluate = eval;
 
         function serverError(response) {
             warn(logger, 'server side error');
+            off(indicators.busy);
             disposeView(sessionID, viewID);
             if (blank(contentAsText(response))) {
                 on(indicators.serverError);
@@ -265,6 +267,7 @@ window.evaluate = eval;
 
         function connectionDown() {
             warn(logger, 'connection to server was lost');
+            off(indicators.busy);
             on(indicators.connectionLost);
             dispose();
         }
