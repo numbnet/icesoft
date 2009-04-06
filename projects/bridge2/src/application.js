@@ -99,7 +99,7 @@ window.evaluate = eval;
             });
             if (session) {
                 sessions = sessions.reject(alreadyRegistered);
-                var occurences = session.split('#')[1].asNumber() + 1;
+                var occurences = asNumber(session.split('#')[1]) + 1;
                 append(sessions, sessionID + '#' + occurences);
             } else {
                 append(sessions, sessionID + '#' + 1);
