@@ -31,8 +31,8 @@ function existsCookie(name) {
 var update = operator();
 var remove = operator();
 function Cookie(name, val, path) {
-    val = val ? val : '';
-    path = path ? path : '/';
+    val = val || '';
+    path = path || '/';
     document.cookie = name + '=' + val + ';path=' + path;
 
     return object(function(method) {
@@ -41,12 +41,12 @@ function Cookie(name, val, path) {
         });
 
         method(update, function(self, val) {
-            document.cookie = name + '=' + val;
+            document.cookie = name + '=' + val + ';path=' + path;
             return self;
         });
 
         method(remove, function(self) {
-            document.cookie = name + '=0; path=' + path + '; expires=' + (new Date).toGMTString();
+            document.cookie = name + '=0;path=' + path + ';expires=' + (new Date).toGMTString();
         });
 
         method(asString, function(self) {
