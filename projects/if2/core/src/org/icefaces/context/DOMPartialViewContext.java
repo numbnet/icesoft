@@ -11,6 +11,8 @@ public class DOMPartialViewContext extends com.sun.faces.context.PartialViewCont
     FacesContext facesContext;
 
     public DOMPartialViewContext(FacesContext facesContext)  {
+        super(facesContext);
+        this.facesContext = facesContext;
     }
 /*
     public abstract Collection<String> getExecuteIds();
