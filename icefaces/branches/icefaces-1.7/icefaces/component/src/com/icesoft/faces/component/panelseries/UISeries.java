@@ -35,9 +35,11 @@ package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.tree.TreeDataModel;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.model.SetDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
 
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
@@ -421,9 +423,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isValid(id)) {
             return;
         }
-        if (!component.isRendered()) {
-            return;
-        }         
         component.setId(id);
         restoreChild(facesContext, component);
         Iterator children = component.getFacetsAndChildren();
@@ -504,9 +503,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
 
     protected void saveChildState(FacesContext facesContext,
                                   UIComponent component) {
-        if (!component.isRendered()) {
-            return;
-        }        
         saveChild(facesContext, component);
         Iterator children = component.getFacetsAndChildren();
         while (children.hasNext()) {
@@ -526,38 +522,19 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (first != null && first.intValue() != getFirst())
             setFirst(first.intValue());
     }
-
-    private void resetComponentState(FacesContext facesContext) {
-        Iterator children = getFacetsAndChildren();
-        resetComponentState(facesContext, children);
-    }
-    private void resetComponentState(FacesContext facesContext, Iterator children) {
-        while (children.hasNext()) {
-            UIComponent component = (UIComponent) children.next();
-            if (component.getChildCount() > 0 ) {
-                resetComponentState(facesContext, component.getChildren().iterator());
-            }
-            if (component instanceof EditableValueHolder) {
-                EditableValueHolder input = (EditableValueHolder) component;
-                input.setValue(null);
-                input.setSubmittedValue(null);
-                input.setValid(true);
-                input.setLocalValueSet(false);
-            } else if (component instanceof HtmlForm) {
-                ((HtmlForm) component).setSubmitted(false);
+    
+    public Object getValue() {
+        try {
+            return super.getValue();
+        } catch (Exception e) {
+            //ICE-4066
+            if (CustomComponentUtils.isAncestorRendered(this)) {
+                throw new FacesException(e);
             }
         }
-    }        
-    
-    public void encodeEnd(FacesContext context) throws IOException {
-        super.encodeEnd(context);
-        //now reset the component state, it required because we don't process  
-        //components with rendered=false. which lets input component to keep the 
-        //data of last restored component.
-        //to fix ICE-4253
-        resetComponentState(context);
-    }
-    
+        return null;
+    }    
+
     //  Event associated with the specific rowindex
     class RowEvent extends FacesEvent {
         private FacesEvent event = null;
