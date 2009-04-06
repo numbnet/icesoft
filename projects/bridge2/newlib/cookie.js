@@ -30,9 +30,10 @@ function existsCookie(name) {
 
 var update = operator();
 var remove = operator();
-function Cookie(name, val) {
+function Cookie(name, val, path) {
     val = val ? val : '';
-    document.cookie = name + '=' + val;
+    path = path ? path : '/';
+    document.cookie = name + '=' + val + ';path=' + path;
 
     return object(function(method) {
         method(value, function(self) {
@@ -45,11 +46,11 @@ function Cookie(name, val) {
         });
 
         method(remove, function(self) {
-            document.cookie = name + '=0; expires=' + (new Date).toGMTString();
+            document.cookie = name + '=0; path=' + path + '; expires=' + (new Date).toGMTString();
         });
 
         method(asString, function(self) {
-            return 'Cookie[' + name + ', ' + value(self) + ']';
+            return 'Cookie[' + name + ', ' + value(self) + ', ' + path + ']';
         });
     });
 }
