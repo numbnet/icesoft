@@ -87,18 +87,63 @@ window.evaluate = eval;
     var client = Client(true);
     var views = window.views = window.views ? window.views : [];
 
+    function enlistSession(sessionID) {
+        try {
+            var sessionsCookie = lookupCookie('ice.sessions');
+            var sessions = split(value(sessionsCookie), ' ');
+            var alreadyRegistered = function(s) {
+                return startsWith(s, sessionID);
+            };
+            var session = detect(sessions, alreadyRegistered, function() {
+                return null;
+            });
+            if (session) {
+                sessions = sessions.reject(alreadyRegistered);
+                var occurences = session.split('#')[1].asNumber() + 1;
+                append(sessions, sessionID + '#' + occurences);
+            } else {
+                append(sessions, sessionID + '#' + 1);
+            }
+            update(sessionsCookie, join(sessions, ' '));
+        } catch (e) {
+            Cookie('ice.sessions', sessionID + '#' + 1);
+        }
+    }
+
+    function delistSession(sessionID) {
+        var sessionsCookie = lookupCookie('ice.sessions');
+        var sessions = split(value(sessionsCookie), ' ');
+        update(sessionsCookie, join(inject(sessions, [], function(tally, s) {
+            var entry = split(s, '#');
+            var id = entry[0];
+            var occurences = asNumber(entry[1]);
+            if (id == sessionID) {
+                --occurences;
+            }
+            if (occurences > 0) {
+                append(tally, entry[0] + '#' + occurences);
+            }
+            return tally;
+        }), ' '));
+    }
+
     function enlistView(session, view) {
+        enlistSession(session);
         append(views, Parameter(session, view));
     }
 
     function delistView(session, view) {
+        delistSession(session);
         views = reject(views, function(i) {
             return key(i) == session && value(i) == view;
         });
     }
 
     function delistWindowViews() {
-        views = [];
+        each(views, function(v) {
+            delistSession(key(v));
+        });
+        empty(views);
     }
 
     function sendDisposeViews(parameters) {
@@ -127,7 +172,6 @@ window.evaluate = eval;
 
     namespace.Application = function(configuration, container) {
         var sessionID = configuration.session;
-        window.sessions = [sessionID];
         var viewID = configuration.view;
         var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);

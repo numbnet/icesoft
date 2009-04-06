@@ -193,13 +193,18 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         };
     }
 
+    function registeredSessions() {
+        return collect(split(lookupCookieValue('ice.sessions'), ' '), function(s) {
+            return split(s, '#')[0];
+        });
+    }
+
     function connect() {
         debug(logger, "closing previous connection...");
         close(listener);
         debug(logger, "connect...");
-        alert(channel);
         listener = postAsynchronously(channel, receiveURI, function(q) {
-            each(window.sessions, curry(addNameValue, q, 'ice.session'));
+            each(registeredSessions(), curry(addNameValue, q, 'ice.session'));
         }, function(request) {
             FormPost(request);
             sendXWindowCookie(request);
