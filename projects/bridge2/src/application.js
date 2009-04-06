@@ -111,20 +111,24 @@ window.evaluate = eval;
     }
 
     function delistSession(sessionID) {
-        var sessionsCookie = lookupCookie('ice.sessions');
-        var sessions = split(value(sessionsCookie), ' ');
-        update(sessionsCookie, join(inject(sessions, [], function(tally, s) {
-            var entry = split(s, '#');
-            var id = entry[0];
-            var occurences = asNumber(entry[1]);
-            if (id == sessionID) {
-                --occurences;
-            }
-            if (occurences > 0) {
-                append(tally, entry[0] + '#' + occurences);
-            }
-            return tally;
-        }), ' '));
+        if (existsCookie('ice.sessions')) {
+            var sessionsCookie = lookupCookie('ice.sessions');
+            var sessions = split(value(sessionsCookie), ' ');
+            update(sessionsCookie, join(inject(sessions, [], function(tally, s) {
+                if (s) {
+                    var entry = split(s, '#');
+                    var id = entry[0];
+                    var occurences = asNumber(entry[1]);
+                    if (id == sessionID) {
+                        --occurences;
+                    }
+                    if (occurences > 0) {
+                        append(tally, entry[0] + '#' + occurences);
+                    }
+                }
+                return tally;
+            }), ' '));
+        }
     }
 
     function enlistView(session, view) {
