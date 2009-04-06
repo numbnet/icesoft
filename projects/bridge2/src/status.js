@@ -113,7 +113,7 @@ var ComponentIndicators;
         return instance;
     }
 
-    function MuxIndicator(a, b) {
+    function MuxIndicator() {
         var indicators = arguments;
         var instance = object(function (method) {
             method(on, function(self) {
@@ -128,8 +128,6 @@ var ComponentIndicators;
         off(instance);
         return instance;
     }
-
-    ;
 
     function PointerIndicator(element) {
         var privateOff = noop;
@@ -173,9 +171,51 @@ var ComponentIndicators;
         });
     }
 
-    ;
+    function OverlayIndicator(configuration) {
+        return object(function(method) {
+            var isIEBrowser = /MSIE/.test(navigator.userAgent);
+            var overlay;
+            method(on, function(self) {
+                if (isIEBrowser) {
+                    overlay = document.createElement('iframe');
+                    overlay.setAttribute('src', configuration.connection.context.current + "xmlhttp/wait-cursor");
+                    overlay.setAttribute('frameborder', '0');
+                    document.body.appendChild(overlay);
+                } else {
+                    overlay = document.body.appendChild(document.createElement('div'));
+                    overlay.style.cursor = 'wait';
+                }
 
-    function OverlayIndicator(message, description, buttonText, iconPath, panel) {
+                var overlayStyle = overlay.style;
+                overlayStyle.position = 'absolute';
+                overlayStyle.backgroundColor = 'white';
+                overlayStyle.zIndex = '38000';
+                overlayStyle.top = '0';
+                overlayStyle.left = '0';
+                overlayStyle.opacity = '0';
+                overlayStyle.filter = 'alpha(opacity=0)';
+                overlayStyle.width = (Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - 20) + 'px';
+                overlayStyle.height = (Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - 20) + 'px';
+            });
+
+            method(off, function(self) {
+                if (overlay) {
+                    if (isIEBrowser) {
+                        var blankOverlay = document.createElement('iframe');
+                        blankOverlay.setAttribute('src', this.configuration.connection.context.current + "xmlhttp/blank");
+                        blankOverlay.setAttribute('frameborder', '0');
+                        document.body.replaceChild(blankOverlay, overlay);
+                        document.body.removeChild(blankOverlay);
+                    } else {
+                        document.body.removeChild(overlay);
+                    }
+                    overlay = null;
+                }
+            });
+        });
+    }
+
+    function PopupIndicator(message, description, buttonText, iconPath, panel) {
         return object(function (method) {
             method(on, function(self) {
                 on(panel);
@@ -236,14 +276,13 @@ var ComponentIndicators;
         });
     }
 
-    ;
-
     DefaultIndicators = function(configuration, container) {
         var connectionLostRedirect = configuration.connectionLostRedirectURI ? RedirectIndicator(configuration.connectionLostRedirectURI) : null;
         var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
         var messages = configuration.messages;
         var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
         var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+        var busyIndicator = PointerIndicator(container);
         var overlay = object(function(method) {
             method(on, function(self) {
                 var overlay = container.ownerDocument.createElement('iframe');
@@ -278,20 +317,22 @@ var ComponentIndicators;
         });
 
         return {
-            busy: OverlappingStateProtector(PointerIndicator(container)),
-            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : OverlayIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
-            connectionLost: connectionLostRedirect ? connectionLostRedirect : OverlayIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            serverError: OverlayIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            busy: OverlappingStateProtector(configuration.blockUI ? MuxIndicator(busyIndicator, OverlayIndicator(configuration)) : busyIndicator),
+            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
+            connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
             connectionTrouble: NOOPIndicator
         };
     };
 
-    ComponentIndicators = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
+    ComponentIndicators = function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive, configuration) {
         var indicators = [];
         var connectionWorking = ElementIndicator(workingID, indicators);
         var connectionIdle = ElementIndicator(idleID, indicators);
         var connectionLost = ElementIndicator(lostID, indicators);
-        var busyIndicator = ToggleIndicator(connectionWorking, connectionIdle);
+        var busyElementIndicator = ToggleIndicator(connectionWorking, connectionIdle);
+        //avoid displaying the overlay twice
+        var busyIndicator = configuration.blockUI && !displayHourglassWhenActive ? MuxIndicator(busyElementIndicator, OverlayIndicator(configuration)) : busyElementIndicator;
 
         var busy = OverlappingStateProtector(displayHourglassWhenActive ? MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
         var connectionTrouble = ElementIndicator(troubleID, indicators);

@@ -197,6 +197,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         debug(logger, "closing previous connection...");
         close(listener);
         debug(logger, "connect...");
+        alert(channel);
         listener = postAsynchronously(channel, receiveURI, function(q) {
             each(window.sessions, curry(addNameValue, q, 'ice.session'));
         }, function(request) {
