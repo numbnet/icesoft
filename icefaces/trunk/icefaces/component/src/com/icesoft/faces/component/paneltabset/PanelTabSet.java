@@ -52,13 +52,11 @@ import com.icesoft.faces.utils.UpdatableProperty;
 import com.icesoft.faces.utils.SeriesStateHolder;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
-import com.icesoft.faces.component.util.CustomComponentUtils;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
@@ -1150,10 +1148,7 @@ public class PanelTabSet
     
     public String getClientId(FacesContext context) {
         String clientId = super.getClientId(context);
-
-        //we need to check the value() to fix ICE-2009 (Multiple level of UIData)
-        //isAncestorRender() is added to fix ICE-4066.  
-        if (CustomComponentUtils.isAncestorRendered(this) && super.getValue() == null) {
+        if (super.getValue() == null) {
             clientId += NamingContainer.SEPARATOR_CHAR + "0";
         }
         return clientId; 
@@ -1214,5 +1209,5 @@ public class PanelTabSet
             }
         }
         super.queueEvent(event);
-    }
+    }        
 }
