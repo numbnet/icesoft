@@ -98,8 +98,8 @@ window.evaluate = eval;
                 return null;
             });
             if (session) {
-                sessions = sessions.reject(alreadyRegistered);
-                var occurences = asNumber(session.split('#')[1]) + 1;
+                sessions = reject(sessions, alreadyRegistered);
+                var occurences = asNumber(split(session, '#')[1]) + 1;
                 append(sessions, sessionID + '#' + occurences);
             } else {
                 append(sessions, sessionID + '#' + 1);
