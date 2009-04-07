@@ -33,6 +33,7 @@ public class AuctionMonitorUpdatesClient extends Client {
 
         ActionThread pingThread = new ActionThread(this, "Ping Thread " + clientId);
         actionThreads.add( pingThread);
+        
 
         ActionThread receiveThread = new ActionThread(this, "Receive Thread "+ clientId);
         actionThreads.add(receiveThread);
@@ -45,7 +46,7 @@ public class AuctionMonitorUpdatesClient extends Client {
         Actor pingActor = new PingActor();
         pingActors.add( pingActor );
 
-
+        pingThread.overrideInterRequestDelay(PingActor.STANDARD_PING_INTERVAL);
         // Define the list of actors to the Action Thread
         pingThread.setActorList( pingActors ); // starts the thread
         receiveThread.setActorList( receiveActors );  // starts the thread

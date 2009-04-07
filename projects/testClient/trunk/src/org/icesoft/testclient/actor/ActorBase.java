@@ -33,7 +33,7 @@ public abstract class ActorBase implements Actor {
     /**
      * Number of errors this reporting period
      */
-    protected int errorCount;
+    protected int errorCountThisInterval;
 
     /**
      * Total number of errors encountered by this Actor
@@ -104,7 +104,7 @@ public abstract class ActorBase implements Actor {
             
             data.append( URLEncoder.encode(controller.getViewNumber(), "UTF-8")).append("&");
             data.append("focus_hidden_field=&");
-            data.append("icefacesCssUpdates=&"); 
+            data.append("icefacesCssUpdates=&\n"); 
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public abstract class ActorBase implements Actor {
      * the last minute
      */
     public String report(Client controller) {
-        cumulativeErrorCount += errorCount;
+        cumulativeErrorCount += errorCountThisInterval;
         cumulativeRequestCount += requestCountThisInterval;
 
         StringBuffer ret =new StringBuffer();
@@ -128,7 +128,7 @@ public abstract class ActorBase implements Actor {
                 append("\t average: " ).append ( runningAverage ).append( " ms/request");
 
         requestCountThisInterval = 0;
-        errorCount = 0;
+        errorCountThisInterval = 0;
         return ret.toString();
     }
 

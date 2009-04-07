@@ -77,6 +77,11 @@ public abstract class Client {
 
     final int REPORT_INTERVAL = 60000;
 
+    // There is one open, fixed URLConnection class for all POSTS. 
+    protected URLConnection urlConnectionForPosts;
+    protected OutputStreamWriter outStreamForPosts;
+    protected InputStreamReader inStreamForPosts; 
+
     protected boolean running = true;
 
     /**
@@ -117,8 +122,6 @@ public abstract class Client {
                         String prior = url.substring(0, spos);
                         String posterior = url.substring(epos);
                         int port = Integer.parseInt( url.substring(spos, epos ));
-                        System.out.println("Prior = " + prior + " port = " + port + ", post=" + posterior);
-
                         this.initialUrl = prior + Integer.toString( port + clientId ) +  posterior;
                     }
                 }
@@ -240,19 +243,43 @@ public abstract class Client {
 //        System.out.println("POST to:" + uri + ", data:[" + data+ "]");
 
         String result;
+
         URL urlURL = new URL(uri);
+        
         URLConnection urlConnection = urlURL.openConnection();
         urlConnection.setDoOutput(true);
         urlConnection.setRequestProperty("Cookie", cookie);
         OutputStreamWriter urlWriter = new OutputStreamWriter(
                 urlConnection.getOutputStream() );
+//
+//        try {
+//            if (urlConnectionForPosts == null) {
+//
+//                urlConnectionForPosts = urlURL.openConnection();
+//                urlConnectionForPosts.setDoOutput(true);
+//                urlConnectionForPosts.setRequestProperty("Cookie", cookie);
+//                outStreamForPosts = new OutputStreamWriter(
+//                        urlConnectionForPosts.getOutputStream() );
+//                inStreamForPosts = new InputStreamReader( urlConnectionForPosts.getInputStream() );
+//
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Exception caught opening streams: " + e);
+//        }
+
+
+//        outStreamForPosts.write( data );
+//        outStreamForPosts.flush();
+
+//         result = getInputAsString( inStreamForPosts );
+
+
         urlWriter.write(data);
         urlWriter.flush();
         urlWriter.close();
-
+//
         // URLConnection throws IOException if the response is in error
-        result = getInputAsString(
-                new InputStreamReader(urlConnection.getInputStream()) );
+        result = getInputAsString( new InputStreamReader(urlConnection.getInputStream()) );
         return result;
     }
 

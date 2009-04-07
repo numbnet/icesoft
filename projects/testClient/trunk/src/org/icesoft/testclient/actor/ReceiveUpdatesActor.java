@@ -4,8 +4,6 @@ import org.icesoft.testclient.client.Client;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.net.URL;
-import java.io.IOException;
 
 /**
  * @author ICEsoft Technologies, Inc.
@@ -48,8 +46,10 @@ public class ReceiveUpdatesActor extends ActorBase {
         } catch (Exception e) {
             log.throwing(this.getClass().getName(), "act, receive-updated-views",  e);
 
+            System.out.println("Exception thrown reading reply: " + e);
+            e.printStackTrace();
             System.out.println(updatedViews);
-            errorCount ++;
+            errorCountThisInterval++;
             return;
         }
 
@@ -76,8 +76,9 @@ public class ReceiveUpdatesActor extends ActorBase {
         } catch (Exception e) {
             log.throwing(this.getClass().getName(), "act, receive-updates",  e);
 
+            System.out.println("Exception thrown reading receive-updates, " + e);
             System.out.println(updates);
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }    
 }

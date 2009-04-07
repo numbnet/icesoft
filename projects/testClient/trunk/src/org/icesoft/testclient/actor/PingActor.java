@@ -39,7 +39,7 @@ public class PingActor extends ActorBase {
            log.fine(pingResult);
         } catch (Exception e)  {
             log.throwing( "Exception caught in ping: ", "a",  e);
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 }

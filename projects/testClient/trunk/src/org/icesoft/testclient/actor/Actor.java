@@ -10,8 +10,9 @@ import java.util.List;
  * will do only a single request and it's up to the Client to configure multiple
  * Actors to perform some testing work. For example, there is a <code>PingActor</code> that
  * simply sends a Ping request, and it should be used in conjunction with the
- * <code>ReceiveUpdatesActor</code> to perform that basic action by the browser. It makes good
- * sense to have them in seperate threads so the Ping can act at its time interval
+ * <code>ReceiveUpdatesActor</code> to perform the basic heartbeat+update checking
+ * action that is provided by the browser. It makes good
+ * sense to have them in separate threads so the Ping can act at its time interval
  * while the receive-updated-views and recieve-updates command can work in tandem
  * at the frequency the application requires.
  * <p>
@@ -44,7 +45,8 @@ public interface Actor {
     /**
      * Do the work here. Actors should be reasonably atomic and do a single
      * piece of work. They should support the repeat count and the inter request
-     * delay, but they may not for purposes of being bad actors to test the framework.
+     * delay, but they may choose not to for purposes of being bad actors to
+     * test the framework.
      *
      * It's also possible to write an actor that does one request and returns.
      * The ActionThread now loops, so multiple actors can be strung together

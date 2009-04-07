@@ -59,7 +59,7 @@ public class JSFTimezoneActor extends ActorBase {
             log.fine( timezoneResult );
         } catch (Exception e)  {
             log.throwing(this.getClass().getName(), "act", e);
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 
