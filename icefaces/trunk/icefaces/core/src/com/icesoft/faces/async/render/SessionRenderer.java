@@ -8,10 +8,6 @@ package com.icesoft.faces.async.render;
  *   views that a particular user has open in their session will be updated via
  *   Ajax Push with the current application state.
  * </p>
- * <p>
- *   This is a preliminary introduction of this API and it is subject to change.
- *   For more fine-grained control use the {@link RenderManager} API.
- * </p>
  */
 public class SessionRenderer {
     public static final String ALL_SESSIONS = "SessionRenderer.ALL_SESSIONS";
