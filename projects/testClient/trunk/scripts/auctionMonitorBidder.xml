@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<testDefinition>
+  
+    <client>
+        <clientClass>org.icesoft.testclient.client.AuctionMonitorUpdatesClient</clientClass>
+        <testURL>http://localhost:8080/auctionMonitor</testURL>
+        <clientCount>1</clientCount>
+        <initialDelay>3000</initialDelay>
+        <interRequestDelay>50</interRequestDelay>
+        <repeatCount>1000</repeatCount>
+        <usingProxy>false</usingProxy>
+    </client>
+</testDefinition>
+
