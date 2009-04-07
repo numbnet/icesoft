@@ -67,7 +67,7 @@ public class ChatInteractorActor extends ReceiveUpdatesActor {
         } catch (Exception e)  {
             
             log.throwing(this.getClass().getName(), "act, send-receive-updates",  e);
-            errorCount ++;
+            errorCountThisInterval++;
         }
 
         // now allow the superclass to just receive updates

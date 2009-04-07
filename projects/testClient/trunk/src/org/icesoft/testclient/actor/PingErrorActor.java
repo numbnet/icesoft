@@ -34,7 +34,7 @@ public class PingErrorActor extends ActorBase {
         } catch (Exception e)  {
             log.fine ( "Error Response properly thrown" );
             requestCountThisInterval++;
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 

@@ -31,7 +31,7 @@ public class SyncTestUpdatesActor extends ActorBase {
 
         } catch (Exception e) {
             log.throwing(this.getClass().getName(), "act", e);
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 

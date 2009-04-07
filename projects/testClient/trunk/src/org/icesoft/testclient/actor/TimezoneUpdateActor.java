@@ -61,7 +61,7 @@ public class TimezoneUpdateActor extends ActorBase {
 
         } catch (Exception e) {
             log.throwing("Error getting response: ", "a", e);
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 

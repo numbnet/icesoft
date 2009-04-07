@@ -56,7 +56,7 @@ public class LoginActor extends ActorBase {
                log.fine(loginResult);
             } catch (Exception e)  {
                 log.throwing( "Exception caught in ping: ", "a" , e);
-                errorCount ++;
+                errorCountThisInterval++;
             }
 
             oneTime = true;

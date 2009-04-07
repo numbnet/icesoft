@@ -59,7 +59,7 @@ public class SpoofingActor extends ActorBase {
         } catch (Exception e) {
             log.throwing(this.getClass().getName(), "act, receive-updated-views",  e);
 
-            errorCount ++;
+            errorCountThisInterval++;
         }
     }
 
