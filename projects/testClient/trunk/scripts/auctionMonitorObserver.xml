@@ -3,13 +3,12 @@
   
     <client>
         <clientClass>org.icesoft.testclient.client.StandalonePingReceiveUpdatesClient</clientClass>
-        <testURL>http://localhost:8080/auctionMonitor</testURL>
+        <testURL>http://localhost:9090/auctionMonitor</testURL>
         <clientCount>1</clientCount>
         <initialDelay>5000</initialDelay>
-        <interRequestDelay>5000</interRequestDelay>
+        <interRequestDelay>50</interRequestDelay>
         <repeatCount>30000</repeatCount>
-	<branch>false</branch>
+        <usingProxy>false</usingProxy>
     </client>
-
 </testDefinition>
 
