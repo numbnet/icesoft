@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.2 SP1 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.2 SP2 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -44,10 +44,10 @@ font-size: 110%
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
 <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.2
-SP1
+SP2
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">November
-26th, 2008</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">April
+9th, 2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -59,8 +59,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="#Changes_172SP2">Changes
+in This Release (v1.7.2 SP2)</a></li>
 <li><a href="#Changes_172SP1">Changes
-in This Release (v1.7.2 SP1)</a></li>
+in&nbsp;v1.7.2-SP1</a></li>
 <li><a href="#Changes_172">Changes
 in&nbsp;v1.7.2</a></li>
 <li><a href="#Changes_171">Changes
@@ -83,11 +85,14 @@ Containers</a></li>
 </li>
 <li><a href="#Known_Issues">Known Issues</a><br>
 <ul>
-<li><a href="ReleaseNotes.html#KIDocs">Documentation</a></li><li><a href="#KIGeneral">General</a></li><li><a href="#KIJSPMarkup">JSP Markup</a></li>
+<li><a href="#KIDocs">Documentation</a></li>
+<li><a href="#KIGeneral">General</a></li>
+<li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
 <li><a href="#KIJSF">JSF 1.2</a></li>
 <li><a href="#KIPortlets">Portlets</a></li>
-<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li><li><a href="#KISampleApps">Sample Applications</a></li>
+<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li>
+<li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
 </li>
@@ -98,8 +103,76 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_172SP2"></a>Changes
+in This Release (v1.7.2 SP2)</h2>
+<br>
+ICEfaces v1.7.2 SP2 is a service pack update for ICEfaces 1.7.2. This
+service pack release includes a critical fix for
+an issue in ICEfaces 1.7.2-SP1 that can prevent the ice:inputFile
+component from working with&nbsp;FireFox v3.0.7+, which was
+released after 1.7.2-SP1. Also included is a fix for an issue that
+could potentially cause IE6 to deadlock with 100% CPU consumption.<br>
+<br>
+There have been important changes to the Documentation and JSF 1.2
+topics in the&nbsp;<a href="#Known_Issues">Known
+Issues</a>
+section, please review prior to using this release. Review the <a href="#migrationnotes">1.6.x
+to 1.7.x Migration Notes</a>
+if you plan to use an existing ICEfaces 1.6.x&nbsp; application
+with 1.7.x.<br>
+<h3><span style="font-weight: bold;">Change Log</span></h3>
+<span style="font-weight: bold;"></span>
+<ul class="contentIndent">
+<li>[<a href="http://jira.icefaces.org/browse/ICE-3975">ICE-3975</a>]
+- RowSelection in DataTable freezes IE6 with cpu at 100%
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4181">ICE-4181</a>]
+- File Upload with ice:inputFile not working any more after Firefox
+3.0.7 update
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4227">ICE-4227</a>]
+- The inputFile component fails when used in .ear and web's
+context-root set to "/"
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4246">ICE-4246</a>]
+- submitOnUpload="postUpload" does not work in FF 3.0.7 with 1.7-branch
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-3977">ICE-3977</a>]
+- Preselection of radio or checkbox with layout=spread not working
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4002">ICE-4002</a>]
+- Update coalescing does not preserve the order of updates
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4039">ICE-4039</a>]
+- js event being overwritten for ice:selectInputText
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-1993">ICE-1993</a>]
+- selectInputText: allow different entries with the same label
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4066">ICE-4066</a>]
+- panelTabSet ignore parent's rendered attribute when put in UISeries
+component
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4253">ICE-4253</a>]
+- REGRESSION of ICE-4066 : input component values being applied to all
+rows in a dataTable
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-4324">ICE-4324</a>]
+- REGRESSION of ICE-4066 : input component values being applied to
+other rows in some specific scenarios
+</li>
+<li>[<a href="http://jira.icefaces.org/browse/ICE-3946">ICE-3946</a>]
+- Add displayListener to MenuPopup
+</li>
+</ul>
+<br>
+Please report any issues with
+this release to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/">forums</a>
+or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/">JIRA
+issue tracker</a>.<br>
+<br>
 <h2><a name="Changes_172SP1"></a>Changes
-in This Release (v1.7.2 SP1)</h2>
+in&nbsp;v1.7.2 SP1</h2>
 <br>
 ICEfaces v1.7.2 SP1 is a service pack update for ICEfaces 1.7.2. This
 service pack release includes&nbsp;critical fixes for
@@ -107,12 +180,15 @@ an issue in ICEfaces 1.7.2 that can result in an ICEfaces application
 becoming dead-locked on the application server.
 It is strongly recommended that all 1.7.2 deployments be updated to
 1.7.2 SP1.<br>
-<br>There have been important changes to the Documentation and JSF 1.2 topics in the&nbsp;<a href="#Known_Issues">Known
+<br>
+There have been important changes to the Documentation and JSF 1.2
+topics in the&nbsp;<a href="#Known_Issues">Known
 Issues</a>
 section, please review prior to using this release. Review the <a href="#migrationnotes">1.6.x
 to 1.7.x Migration Notes</a>
 if you plan to use an existing ICEfaces 1.6.x&nbsp; application
-with 1.7.x.<br><h3><span style="font-weight: bold;">Change Log</span></h3>
+with 1.7.x.<br>
+<h3><span style="font-weight: bold;">Change Log</span></h3>
 <span style="font-weight: bold;"></span>
 <ul class="contentIndent">
 <li>[<a href="http://jira.icefaces.org/browse/ICE-3614">ICE-3614</a>]
@@ -142,7 +218,8 @@ X-Connection: close to previous pending request</li>
 [<a href="http://jira.icefaces.org/browse/ICE-3814">ICE-3814</a>]
 - ICEfaces AHS: NPE in ProcessHandler when using server-mode</li>
 </ul>
-<br>Please report any issues with
+<br>
+Please report any issues with
 this release to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/">forums</a>
 or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/">JIRA
 issue tracker</a>.<br>
@@ -1698,7 +1775,11 @@ ICEfaces Asynchronous HTTP Server (AHS) have changed as follows.</li>
 <li>Instead&nbsp;of&nbsp;routing <big><span style="font-family: monospace;">"/application-name/block/receive-updated-views"</span></big>
 to the AHS, it is simplified to routing just <big><span style="font-family: monospace;">"/async-http-server"</span></big>
 to the AHS, which was already the case for servlet-mode, but is now
-applicable to server-mode as well.&nbsp;</li></ul></ul><ul><ul>
+applicable to server-mode as well.&nbsp;</li>
+</ul>
+</ul>
+<ul>
+<ul>
 <li>On page 81:<br>
 <br>
 <span style="font-family: monospace;">ProxyPass&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1820,7 +1901,14 @@ on</span><br style="font-family: monospace;">
 http://host:port/block/receive-updated-views$2 [P]</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">RewriteRule&nbsp;&nbsp;
 ^/(.*)/block/dispose-views(.*) http://host:port/block/dispose-views$2
-[P]</span></li></ul></ul><ul><ul><li>On page 129, in the notes on the blockingRequestHandlerContext, the following sentence can be omitted:<br>"This setting is only in effect when AHS is running as a servlet."</li>
+[P]</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>On page 129, in the notes on the
+blockingRequestHandlerContext, the following sentence can be omitted:<br>
+"This setting is only in effect when AHS is running as a servlet."</li>
 </ul>
 </ul>
 <h3><a name="KIGeneral"></a>General</h3>
@@ -2033,14 +2121,24 @@ of the component.</li>
 <h3><a name="KIJSF"></a>JSF
 1.2</h3>
 <ul>
-<li>As of the ICEfaces 1.7.2 release, ICEfaces can now be used in JSF
+<li>As of the ICEfaces 1.7.2 release, ICEfaces can now be used
+in JSF
 1.2 environments utilizing the JSF 1.2 document schemas for the
 faces-config.xml and web.xml files when used with Sun JSF 1.2_09 or
 greater. Previous ICEfaces versions, or 1.7.2+ used with older JSF 1.2
 runtimes, still require the use of the JSF 1.1 document DTDs (so-called
-"compatibility mode").&nbsp;</li><li>When using JSF 1.2 schemas with
+"compatibility mode").&nbsp;</li>
+<li>When using JSF 1.2 schemas with
 ICEfaces and Sun JSF 1.2-09+ it is necessary to define the following
-configuration parameter in the web.xml file for your project:</li></ul><div style="margin-left: 80px;"><span style="font-family: monospace;">&lt;context-param&gt;</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; &nbsp; &nbsp; &lt;param-name&gt;com.sun.faces.enableRestoreView11Compatibility&lt;/param-name&gt;</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param-value&gt;true&lt;/param-value&gt;</span><br style="font-family: monospace;"><span style="font-family: monospace;">&lt;/context-param&gt;</span></div><h3><a name="KIPortlets"></a>Portlets</h3>
+configuration parameter in the web.xml file for your project:</li>
+</ul>
+<div style="margin-left: 80px;"><span style="font-family: monospace;">&lt;context-param&gt;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;
+&nbsp; &nbsp;
+&lt;param-name&gt;com.sun.faces.enableRestoreView11Compatibility&lt;/param-name&gt;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param-value&gt;true&lt;/param-value&gt;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&lt;/context-param&gt;</span></div>
+<h3><a name="KIPortlets"></a>Portlets</h3>
 <ul>
 <li>The following ICEfaces components are known not to work
 correctly in a portlet environment:
@@ -2083,7 +2181,8 @@ application
 configured to use AHS, the application server may log harmless
 exceptions related to the classloader unloading classes before
 framework threads have finished running (related to JMS).</li>
-</ul><h3><a name="KISampleApps"></a>Sample
+</ul>
+<h3><a name="KISampleApps"></a>Sample
 Applications</h3>
 <ul>
 <li>Of the
@@ -2313,6 +2412,6 @@ Notice</h2>
 directory.</p>
 <p class="Body"><small><br>
 © Copyright
-2005-2008 ICEsoft Technologies, Inc.</small></p>
+2005-2009 ICEsoft Technologies, Inc.</small></p>
 </div>
 </body></html>
