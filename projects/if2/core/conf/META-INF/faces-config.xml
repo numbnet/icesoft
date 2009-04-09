@@ -6,7 +6,7 @@
 
 <!--    <ordering><after><others/></after></ordering>  -->
     <factory>
-        <partial-view-context-factory>org.icefaces.context.PartialViewContextFactory</partial-view-context-factory>
+        <partial-view-context-factory>org.icefaces.context.DOMPartialViewContextFactory</partial-view-context-factory>
     </factory>
     <render-kit>
         <render-kit-id>xHTML_BASIC</render-kit-id>
