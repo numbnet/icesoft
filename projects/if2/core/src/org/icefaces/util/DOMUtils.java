@@ -31,7 +31,7 @@
  *
  */
 
-package com.icesoft.faces.util;
+package org.icefaces.util;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
