@@ -95,9 +95,10 @@ public class DOMPartialViewContext extends com.sun.faces.context.PartialViewCont
                 Document newDOM = writer.getOldDocument();
 
                 Node[] diffs = DOMUtils.domDiff(oldDOM, newDOM);
-                if ((null != diffs) && (/*strange bug for now*/ diffs.length == 1))  {
+
+                if (null != diffs)  {
                     partialWriter.startDocument();
-                    for (int i=0; i <diffs.length; i++)  {
+                    for (int i=0; i < diffs.length; i++)  {
                         Element element = (Element) diffs[i];
                         partialWriter.startUpdate(element.getAttribute("id"));
                         DOMUtils.printNode(element, outputWriter);
@@ -109,6 +110,7 @@ public class DOMPartialViewContext extends com.sun.faces.context.PartialViewCont
                     DOMUtils.printNode(document, outputWriter);
                     partialWriter.endUpdate();
                 }
+
                 renderState(facesContext);
                 partialWriter.endDocument();
                 return;
