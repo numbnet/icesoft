@@ -1,15 +1,13 @@
 
 package org.icefaces.context;
 
-import com.icesoft.faces.util.DOMUtils;
-
-import java.util.Collection;
 import java.util.Iterator;
 import java.io.IOException;
 import java.io.Writer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.icefaces.util.DOMUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
