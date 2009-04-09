@@ -82,6 +82,8 @@ public class DOMResponseWriter extends ResponseWriter {
 //    private static final Log log = LogFactory.getLog(DOMResponseWriter.class);
     private static Logger log = Logger.getLogger("org.icefaces.context");
 
+    private static final String OLD_DOM = "org.icefaces.old-dom";
+    
     public static final String DOCTYPE_PUBLIC = "com.icesoft.doctype.public";
     public static final String DOCTYPE_SYSTEM = "com.icesoft.doctype.system";
     public static final String DOCTYPE_ROOT = "com.icesoft.doctype.root";
@@ -117,7 +119,8 @@ public class DOMResponseWriter extends ResponseWriter {
     private final Map domContexts = new HashMap();
     private Document document;
 
-//normally allocated at construction time
+    //previously allocated at construction time
+    //however, this initializer may be too bulky for that
     private void initDocument()
     {
         document = DOCUMENT_BUILDER.newDocument();
@@ -185,6 +188,10 @@ public class DOMResponseWriter extends ResponseWriter {
         return document;
     }
 
+    public Document getOldDocument() {
+        return (Document) FacesContext.getCurrentInstance().getViewRoot().getAttributes().get(OLD_DOM);
+    }
+
     public static void setDOMErrorChecking(boolean flag) {
         isDOMChecking = flag;
     }
@@ -198,22 +205,27 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void startDocument() throws IOException {
-        System.out.println(this + " startDocument ");
         initDocument();
     }
 
     public void endDocument() throws IOException {
-System.out.println("DOMResponseWriter.endDocument with writer " + writer.getClass());
-System.out.println("                              with document " + DOMUtils.nodeToString(document));
-        DOMUtils.printNode(document, writer);
-//        domContexts.clear();
-//        if (!isStreamWriting()) {
-//            enhanceAndFixDocument();
-//            serializer.serialize(document);
-//        }
+        boolean isPartialRequest = FacesContext.getCurrentInstance().getPartialViewContext().isPartialRequest();
+        //full-page requests write directly to the response
+        if (!isPartialRequest)  {
+            DOMUtils.printNode(document, writer);
+        } 
+
+        if (null != document.getDocumentElement())  {
+            if (null != stateNode)  {
+                stateNode.getParentNode().removeChild(stateNode);
+                stateNode = null;
+            }
+            FacesContext.getCurrentInstance().getViewRoot().getAttributes().put(OLD_DOM, document);
+        }
+        
         document = null;
         cursor = null;
-        savedJSFStateCursor = null;
+//        savedJSFStateCursor = null;
     }
 
     public void flush() throws IOException {
@@ -221,13 +233,7 @@ System.out.println("                              with document " + DOMUtils.nod
 
     public void startElement(String name, UIComponent componentForElement)
             throws IOException {
-        if (null == document)  {
-            System.out.println(writer.getClass() + " startElement " + name);
-            document = DOCUMENT_BUILDER.newDocument();
-            System.out.println("creating " + document.hashCode());
-        }
         moveCursorOn(appendToCursor(document.createElement(name)));
-System.out.println("appended " + name);
     }
 
     public void endElement(String name) throws IOException {
@@ -257,7 +263,7 @@ System.out.println("appended " + name);
 
     public void writeComment(Object comment) throws IOException {
         if (null == document)  {
-            System.out.println(writer.getClass() + " writeComment " + comment);
+System.out.println(writer.getClass() + " writeComment " + comment);
             writer.write(String.valueOf(comment));
             return;
         }
@@ -280,7 +286,7 @@ System.out.println("appended " + name);
     }
 
     public ResponseWriter cloneWithWriter(Writer writer) {
-        System.out.println("clone with writer " + writer.getClass());
+System.out.println("clone with writer " + writer.getClass());
         return new DOMResponseWriter(null, writer);
 /*
         //FIXME: This is a hack for DOM rendering but JSF currently clones the writer
@@ -324,12 +330,23 @@ System.out.println("appended " + name);
         appendToCursor(document.createTextNode(String.valueOf((char) c)));
     }
 
+    Node stateNode = null;
+
     public void write(String str) throws IOException {
         if ("".equals(str)) {
             return;
         }
+        if ("~com.sun.faces.saveStateFieldMarker~".equals(str))  {
+            //TODO: suppress insertion of state node into DOM rather than
+            //remove later.  This special case is caused by the fact that
+            //during partial responses the Sun implementation does not 
+            //write the state marker
+            stateNode =  document.createTextNode(str);
+            appendToCursor(stateNode);
+            return;
+        }
         if (null == document)  {
-            System.out.println(writer.getClass() + " raw write " + str);
+            System.out.println(writer.getClass() + " raw write str " + str);
             writer.write(str);
             return;
         }
@@ -347,6 +364,8 @@ System.out.println("appended " + name);
         appendToCursor(document.createTextNode(str.substring(off, len)));
     }
 
+    //TODO: look at component implementation for generic HTML manipulation
+/*
     public Element getHtmlElement() {
         Element html = document.getDocumentElement();
         if (html == null) {
@@ -370,7 +389,6 @@ System.out.println("appended " + name);
     }
 
     private void enhanceAndFixDocument() {
-/*
         Element html = (Element) document.getDocumentElement();
         enhanceHtml(html = "html".equals(html.getTagName()) ? html : fixHtml());
 
@@ -379,20 +397,16 @@ System.out.println("appended " + name);
 
         Element body = (Element) document.getElementsByTagName("body").item(0);
         enhanceBody(body == null ? fixBody() : body);
-*/
     }
 
     private void enhanceHtml(Element html) {
-/*
         //add lang attribute
         Locale locale = context.getViewRoot().getLocale();
         //id required for forwarded (server-side) redirects
         html.setAttribute("id", "document:html");
         html.setAttribute("lang", locale.getLanguage());
-*/
     }
 
-/*
     private void enhanceBody(Element body) {
         //id required for forwarded (server-side) redirects
         body.setAttribute("id", "document:body");
@@ -653,7 +667,6 @@ System.out.println("appended " + name);
 
         } catch (DOMException e) {
             String message = "Failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
-            System.out.println("using document " + document.hashCode());
             log.severe(message);
             throw new RuntimeException(message, e);
         }
