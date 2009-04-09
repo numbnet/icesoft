@@ -39,7 +39,7 @@
         <copy file="${icefaces.jar}" todir="${build.dir}/${ant.project.name}/WEB-INF/lib">
         </copy>
         <copy todir="${build.dir}/${ant.project.name}/WEB-INF/classes">
-            <fileset dir="src"/>
+            <fileset dir="${build.dir}/classes"/>
         </copy>
 
         <copy todir="${build.dir}/${ant.project.name}/">
