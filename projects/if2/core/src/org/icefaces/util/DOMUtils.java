@@ -100,7 +100,10 @@ public class DOMUtils {
     }
 
     public static void printNode(Node node, Writer writer) throws IOException {
-        printNode(node, writer, 0, true, false);
+        //TODO: consider generally disabling whitespace addition -- 
+        //page output should reflect input as closely as possible
+        //printNode(node, writer, 0, true, false);
+        printNode(node, writer, 0, false, false);
     }
 
     private static void printNode(
@@ -651,6 +654,22 @@ public class DOMUtils {
             "yuml"
             /* "&#255;" -- latin small letter y with diaeresis, U+00FF ISOlat1 */,
     };
+
+    public static String toDebugStringDeep(Node node)  {
+        return toDebugStringDeep(node, "");
+    }
+
+    static String toDebugStringDeep(Node node, String indent)  {
+        String result = toDebugString(node) + "\n";
+        indent = indent + "  ";
+        NodeList nodes = node.getChildNodes();
+        if (nodes != null) {
+            for (int i = 0; i < nodes.getLength(); i++) {
+               result += indent + toDebugStringDeep(nodes.item(i), indent) + "\n";
+            }
+        }
+        return result;
+    }
 
     public static String toDebugString(Node node) {
         short type = node.getNodeType();
