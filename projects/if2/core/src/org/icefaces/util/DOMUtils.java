@@ -45,9 +45,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
+import java.util.Collection;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Arrays;
 import java.io.Writer;
 import java.io.IOException;
@@ -258,7 +261,8 @@ public class DOMUtils {
         List nodeDiffs = new Vector();
         compareNodes(nodeDiffs, oldDOM.getDocumentElement(),
                 newDOM.getDocumentElement());
-        return ((Node[]) nodeDiffs.toArray(new Node[0]));
+        Node[] prunedDiff = pruneAncestors(nodeDiffs);
+        return prunedDiff;
     }
 
 
@@ -654,6 +658,115 @@ public class DOMUtils {
             "yuml"
             /* "&#255;" -- latin small letter y with diaeresis, U+00FF ISOlat1 */,
     };
+
+    private static Node[] pruneAncestors(List nodeList)  {
+        Node[] changed =  (Node[]) nodeList.toArray(new Node[0]);
+        HashMap depthMaps = new HashMap();
+        for (int i = 0; i < changed.length; i++) {
+            Element changeRoot =
+                    DOMUtils.ascendToNodeWithID(changed[i]);
+            changed[i] = changeRoot;
+            Integer depth = new Integer(getDepth(changeRoot));
+            HashSet peers = (HashSet) depthMaps.get(depth);
+            if (null == peers) {
+                peers = new HashSet();
+                depthMaps.put(depth, peers);
+            }
+            //place the node in a collection of all nodes
+            //at its same depth in the DOM
+            peers.add(changeRoot);
+        }
+        Iterator allDepths = depthMaps.keySet().iterator();
+        while (allDepths.hasNext()) {
+            Integer baseDepth = (Integer) allDepths.next();
+            Iterator checkDepths = depthMaps.keySet().iterator();
+            while (checkDepths.hasNext()) {
+                Integer checkDepth = (Integer) checkDepths.next();
+                if (baseDepth.intValue() < checkDepth.intValue()) {
+                    pruneAncestors(baseDepth, (HashSet) depthMaps.get(baseDepth),
+                            checkDepth, (HashSet) depthMaps.get(checkDepth));
+                }
+            }
+        }
+
+        //Merge all remaining elements at different depths
+        //Collection is a Set so duplicates will be discarded
+        HashSet topElements = new HashSet();
+        Iterator allDepthMaps = depthMaps.values().iterator();
+        while (allDepthMaps.hasNext()) {
+            topElements.addAll((HashSet) allDepthMaps.next());
+        }
+
+        Element[] elements = null;
+        if (!topElements.isEmpty()) {
+            boolean reload = false;
+            int j = 0;
+            elements = new Element[topElements.size()];
+            HashSet dupCheck = new HashSet();
+            //copy the succsessful changed elements and check for change
+            //to head or body
+            for (int i = 0; i < changed.length; i++) {
+                Element element = (Element) changed[i];
+                String tag = element.getTagName();
+                //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
+                //TODO: pass the reload flag back out of this function
+                reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
+                if (topElements.contains(element)) {
+                    if (!dupCheck.contains(element)) {
+                        dupCheck.add(element);
+                        elements[j++] = element;
+                    }
+                }
+            }
+        }
+
+        return elements;
+    }
+
+    //prune the children by looking for ancestors in the parents collection 
+    private static void pruneAncestors(Integer parentDepth, Collection parents,
+                                Integer childDepth, Collection children) {
+        Iterator parentList = parents.iterator();
+        while (parentList.hasNext()) {
+            Node parent = (Node) parentList.next();
+            Iterator childList = children.iterator();
+            while (childList.hasNext()) {
+                Node child = (Node) childList.next();
+                if (isAncestor(parentDepth, parent, childDepth, child)) {
+                    childList.remove();
+                }
+            }
+
+        }
+    }
+
+    private static int getDepth(Node node) {
+        int depth = 0;
+        Node parent = node;
+        while ((parent = parent.getParentNode()) != null) {
+            depth++;
+        }
+        return depth;
+    }
+
+    private static boolean isAncestor(Integer parentDepth, Node parent,
+                               Integer childDepth, Node child) {
+        if (!parent.hasChildNodes()) {
+            return false;
+        }
+        Node testParent = child;
+        int testDepth = childDepth.intValue();
+        int stopDepth = parentDepth.intValue();
+        while (((testParent = testParent.getParentNode()) != null) &&
+                (testDepth > stopDepth)) {
+            testDepth--;
+            if (testParent.equals(parent)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public static String toDebugStringDeep(Node node)  {
         return toDebugStringDeep(node, "");
