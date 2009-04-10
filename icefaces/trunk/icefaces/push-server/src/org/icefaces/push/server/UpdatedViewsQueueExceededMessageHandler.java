@@ -29,8 +29,9 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
+import com.icesoft.net.messaging.AbstractMessageHandler;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
@@ -39,18 +40,16 @@ import com.icesoft.net.messaging.expression.Equal;
 import com.icesoft.net.messaging.expression.Identifier;
 import com.icesoft.net.messaging.expression.StringLiteral;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ContextEventMessageHandler
-extends AbstractContextEventMessageHandler
+public class UpdatedViewsQueueExceededMessageHandler
+extends AbstractMessageHandler
 implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "ContextEvent";
+    protected static final String MESSAGE_TYPE = "UpdatedViewsQueueExceeded";
 
     private static final Log LOG =
-        LogFactory.getLog(ContextEventMessageHandler.class);
+        LogFactory.getLog(UpdatedViewsQueueExceededMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -58,7 +57,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected ContextEventMessageHandler() {
+    protected UpdatedViewsQueueExceededMessageHandler() {
         super(messageSelector);
     }
 
@@ -70,51 +69,9 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            StringTokenizer _tokens =
-                new StringTokenizer(((TextMessage)message).getText(), ";");
-            String _event = _tokens.nextToken();
-            if (_event.equals("ICEfacesIDDisposed")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>
-                if (callback != null) {
-                    ((Callback)callback).
-                        iceFacesIdDisposed(
-                            message.getStringProperty(
-                                Message.SOURCE_SERVLET_CONTEXT_PATH),
-                            _tokens.nextToken());
-                }
-            } else if (_event.equals("ICEfacesIDRetrieved")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>
-                if (callback != null) {
-                    ((Callback)callback).
-                        iceFacesIdRetrieved(
-                            message.getStringProperty(
-                                Message.SOURCE_SERVLET_CONTEXT_PATH),
-                            _tokens.nextToken());
-                }
-            } else if (_event.equals("ViewNumberDisposed")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>;<View Number>
-                if (callback != null) {
-                    ((Callback)callback).
-                        viewNumberDisposed(
-                            message.getStringProperty(
-                                Message.SOURCE_SERVLET_CONTEXT_PATH),
-                            _tokens.nextToken(),
-                            _tokens.nextToken());
-                }
-            } else if (_event.equals("ViewNumberRetrieved")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>;<View Number>
-                if (callback != null) {
-                    ((Callback)callback).
-                        viewNumberRetrieved(
-                            message.getStringProperty(
-                                Message.SOURCE_SERVLET_CONTEXT_PATH),
-                            _tokens.nextToken(),
-                            _tokens.nextToken());
-                }
+            if (callback != null) {
+                ((Callback)callback).
+                    updatedViewsQueueExceeded(((TextMessage)message).getText());
             }
         }
     }
@@ -124,5 +81,7 @@ implements MessageHandler {
     }
 
     public static interface Callback
-    extends AbstractContextEventMessageHandler.Callback {}
+    extends MessageHandler.Callback {
+        public void updatedViewsQueueExceeded(final String iceFacesId);
+    }
 }

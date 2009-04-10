@@ -29,8 +29,9 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.xmlhttp.Response;
 import com.icesoft.net.messaging.AbstractMessageHandler;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
@@ -47,9 +48,6 @@ import com.icesoft.net.messaging.expression.StringLiteral;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
-import java.util.Set;
-import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,13 +58,13 @@ import org.apache.commons.logging.LogFactory;
  *
  * @see        MessageServiceClient
  */
-public class UpdatedViewsMessageHandler
+public class ResponseMessageHandler
 extends AbstractMessageHandler
-        implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "UpdatedViews";
+implements MessageHandler {
+    protected static final String MESSAGE_TYPE = "Response";
 
     private static final Log LOG =
-        LogFactory.getLog(UpdatedViewsMessageHandler.class);
+        LogFactory.getLog(ResponseMessageHandler.class);
 
     private static MessageSelector messageSelector;
     static {
@@ -96,14 +94,11 @@ extends AbstractMessageHandler
         }
     }
 
-    protected UpdatedViewsMessageHandler() {
+    protected ResponseMessageHandler() {
         super(messageSelector);
     }
 
     public void handle(final Message message) {
-        if (message == null) {
-            return;
-        }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
@@ -115,21 +110,22 @@ extends AbstractMessageHandler
                 _messageBody.substring(_beginIndex, _endIndex);
             _beginIndex = _endIndex + 1;
             _endIndex = _messageBody.indexOf(";", _beginIndex);
+            String _viewNumber =
+                _messageBody.substring(_beginIndex, _endIndex);
+            _beginIndex = _endIndex + 1;
+            _endIndex = _messageBody.indexOf(";", _beginIndex);
             long _sequenceNumber =
                 Long.parseLong(
                     _messageBody.substring(_beginIndex, _endIndex));
             _beginIndex = _endIndex + 1;
-            StringTokenizer _tokens =
-                new StringTokenizer(_messageBody.substring(_beginIndex), ",");
-            int _tokenCount = _tokens.countTokens();
-            Set _updatedViewsSet = new HashSet(_tokenCount);
-            for (int i = 0; i < _tokenCount; i++) {
-                _updatedViewsSet.add(_tokens.nextToken());
-            }
             if (callback != null) {
-                ((Callback)callback).sendUpdatedViews(
-                    new UpdatedViews(
-                        _iceFacesId, _sequenceNumber, _updatedViewsSet));
+                ((Callback)callback).sendResponse(
+                    new Response(
+                        _iceFacesId,
+                        _viewNumber,
+                        _sequenceNumber,
+                        _beginIndex != _messageBody.length() ?
+                            _messageBody.substring(_beginIndex) : null));
             }
         }
     }
@@ -140,6 +136,6 @@ extends AbstractMessageHandler
 
     public static interface Callback
     extends MessageHandler.Callback {
-        public void sendUpdatedViews(final UpdatedViews updatedViews);
+        public void sendResponse(final Response response);
     }
 }

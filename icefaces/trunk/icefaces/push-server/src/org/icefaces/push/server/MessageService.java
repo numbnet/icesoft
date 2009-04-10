@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import com.icesoft.net.messaging.AbstractMessageHandler;
 import com.icesoft.net.messaging.Message;
@@ -57,9 +57,9 @@ import org.apache.commons.logging.LogFactory;
 public class MessageService {
     private static final Log LOG = LogFactory.getLog(MessageService.class);
 
-    private final Map messageHandlerMap = new HashMap();
+    protected final Map messageHandlerMap = new HashMap();
 
-    private MessageServiceClient messageServiceClient;
+    protected MessageServiceClient messageServiceClient;
 
     public MessageService(final ServletContext servletContext) {
         setUpMessageServiceClient(servletContext);
@@ -164,7 +164,7 @@ public class MessageService {
         }
     }
 
-    private void setUpMessageServiceClient(
+    protected void setUpMessageServiceClient(
         final ServletContext servletContext) {
 
         messageServiceClient =
@@ -251,7 +251,7 @@ public class MessageService {
             MessageServiceClient.PUSH_TOPIC_NAME);
     }
 
-    private void tearDownMessageServiceClient() {
+    protected void tearDownMessageServiceClient() {
         stop();
         messageServiceClient.removeMessageHandler(
             (MessageHandler)
@@ -285,7 +285,7 @@ public class MessageService {
         messageServiceClient = null;
     }
 
-    private void subscribe(
+    protected void subscribe(
         final String topicName, final MessageSelector messageSelector)
     throws MessageServiceException {
         try {

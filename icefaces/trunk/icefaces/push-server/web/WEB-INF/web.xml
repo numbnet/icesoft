@@ -12,7 +12,7 @@
     <!-- Push Server -->
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
-        <servlet-class>org.icesoft.faces.push.server.PushServlet</servlet-class>
+        <servlet-class>org.icefaces.push.server.PushServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

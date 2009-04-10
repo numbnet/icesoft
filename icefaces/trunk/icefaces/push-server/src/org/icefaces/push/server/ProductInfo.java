@@ -1,4 +1,4 @@
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 public class ProductInfo {
     /**

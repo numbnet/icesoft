@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
@@ -51,7 +51,8 @@ implements Handler, Runnable {
     private static final int STATE_RESPONSE_IS_READY = 3;
     private static final int STATE_DONE = 4;
 
-    private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
+    private static final Log LOG =
+        LogFactory.getLog(ReceiveUpdatedViewsHandler.class);
 
     private static final ResponseHandler CLOSE_RESPONSE_HANDLER =
         new ResponseHandler() {
