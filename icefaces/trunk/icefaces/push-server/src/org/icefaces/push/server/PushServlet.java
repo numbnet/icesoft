@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -82,7 +82,7 @@ extends HttpServlet {
         try {
             final Configuration _servletConfigConfiguration =
                 new ServletConfigConfiguration(
-                    "org.icesoft.faces.push.server", servletConfig);
+                    "org.icefaces.push.server", servletConfig);
             final Configuration _servletContextConfiguration =
                 new ServletContextConfiguration(
                     "com.icesoft.faces", servletConfig.getServletContext());

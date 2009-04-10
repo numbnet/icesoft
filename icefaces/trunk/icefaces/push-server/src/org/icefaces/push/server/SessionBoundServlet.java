@@ -29,28 +29,44 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
-/**
- * <p>
- *   The <code>AbstractHandler</code> class provides a base implementation of
- *   the <code>Handler</code> interface.
- * </p>
- */
-public abstract class AbstractHandler
-implements Handler, Runnable {
-    protected ExecuteQueue executeQueue;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-    /**
-     * <p>
-     *   Constructs an <code>AbstractHandler</code> object.
-     * </p>
-     */
-    protected AbstractHandler(final ExecuteQueue executeQueue) {
-        this.executeQueue = executeQueue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+//todo: rename to SessionBoundServer
+public class SessionBoundServlet
+implements Server {
+    private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
+    private PathDispatcherServer pathDispatcherServer;
+
+    public SessionBoundServlet(
+        final SessionManager sessionManager,
+        final ExecuteQueue executeQueue,
+        final SessionDispatcher.Monitor monitor) {
+
+        // todo: I should've done this differently... When revisiting this I
+        //       should create a separate DisposeViewsServer and register that
+        //       with the appropriate Request URI.
+        Server _server =
+            new SendUpdatedViewsServer(sessionManager, executeQueue, monitor);
+        pathDispatcherServer = new PathDispatcherServer();
+        pathDispatcherServer.dispatchOn(
+            ".*block\\/receive\\-updated\\-views$", _server);
+        pathDispatcherServer.dispatchOn(
+            ".*block\\/dispose\\-views$", _server);
     }
 
-    public void handle() {
-        executeQueue.execute(this);
+    public void service(Request request) throws Exception {
+        pathDispatcherServer.service(request);
+    }
+
+    public void shutdown() {
+        pathDispatcherServer.shutdown();
     }
 }

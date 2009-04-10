@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -40,11 +40,11 @@ import org.apache.commons.logging.LogFactory;
 public class UpdatedViewsQueue {
     private static final Log LOG = LogFactory.getLog(UpdatedViewsQueue.class);
 
-    private final String iceFacesId;
-    private final TreeSet updatedViewsQueue = new TreeSet();
+    protected final String iceFacesId;
+    protected final TreeSet updatedViewsQueue = new TreeSet();
 
-    private int size;
-    private UpdatedViewsManager updatedViewsManager;
+    protected int size;
+    protected UpdatedViewsManager updatedViewsManager;
 
     public UpdatedViewsQueue(
         final String iceFacesId,

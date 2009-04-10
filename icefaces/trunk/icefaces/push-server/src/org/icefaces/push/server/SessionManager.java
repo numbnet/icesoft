@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -61,11 +61,11 @@ implements
 
         this.messageService = messageService;
         this.messageService.setCallback(
-                BufferedContextEventsMessageHandler.Callback.class, this);
+            BufferedContextEventsMessageHandler.Callback.class, this);
         this.messageService.setCallback(
-                ContextEventMessageHandler.Callback.class, this);
+            ContextEventMessageHandler.Callback.class, this);
         this.messageService.setCallback(
-                UpdatedViewsMessageHandler.Callback.class, this);
+            UpdatedViewsMessageHandler.Callback.class, this);
         this.requestManager = new RequestManager();
         this.updatedViewsManager =
             new UpdatedViewsManager(configuration, messageService, this);

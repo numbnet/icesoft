@@ -29,63 +29,35 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import com.icesoft.net.messaging.AbstractMessageHandler;
-import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
-import com.icesoft.net.messaging.TextMessage;
-import com.icesoft.net.messaging.expression.Equal;
-import com.icesoft.net.messaging.expression.Identifier;
-import com.icesoft.net.messaging.expression.StringLiteral;
 
-import java.util.StringTokenizer;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class ResponseQueueExceededMessageHandler
+public abstract class AbstractContextEventMessageHandler
 extends AbstractMessageHandler
 implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "ResponseQueueExceeded";
+    protected AbstractContextEventMessageHandler() {
+        super();
+    }
 
-    private static final Log LOG =
-        LogFactory.getLog(ResponseQueueExceededMessageHandler.class);
+    protected AbstractContextEventMessageHandler(
+        final MessageSelector messageSelector) {
 
-    private static MessageSelector messageSelector =
-        new MessageSelector(
-            new Equal(
-                new Identifier(Message.MESSAGE_TYPE),
-                new StringLiteral(MESSAGE_TYPE)));
-
-    protected ResponseQueueExceededMessageHandler() {
         super(messageSelector);
-    }
-
-    public void handle(final Message message) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Handling:\r\n\r\n" + message);
-        }
-        if (message instanceof TextMessage) {
-            StringTokenizer _tokens =
-                new StringTokenizer(
-                    ((TextMessage)message).getText(), ";");
-            if (callback != null) {
-                ((Callback)callback).
-                    responseQueueExceeded(
-                        _tokens.nextToken(), _tokens.nextToken());
-            }
-        }
-    }
-
-    public String toString() {
-        return getClass().getName();
     }
 
     public static interface Callback
     extends MessageHandler.Callback {
-        public void responseQueueExceeded(
-            final String iceFacesId, final String viewNumber);
+        void iceFacesIdDisposed(String servletContextPath, String iceFacesId);
+
+        void iceFacesIdRetrieved(String servletContextPath, String iceFacesId);
+
+        void viewNumberDisposed(
+            String servletContextPath, String iceFacesId, String viewNumber);
+
+        void viewNumberRetrieved(
+            String servletContextPath, String iceFacesId, String viewNumber);
     }
 }

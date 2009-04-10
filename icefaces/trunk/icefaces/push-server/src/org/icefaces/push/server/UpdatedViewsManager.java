@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package org.icesoft.faces.push.server;
+package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.net.messaging.Message;
@@ -47,17 +47,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class UpdatedViewsManager {
-    private static final String UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE =
+    protected static final String UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE =
         "UpdatedViewsQueueExceeded";
 
     private static final Log LOG =
         LogFactory.getLog(UpdatedViewsManager.class);
 
-    private final MessageService messageService;
-    private final SessionManager sessionManager;
-    private final Map updatedViewsQueueMap = new HashMap();
+    protected final MessageService messageService;
+    protected final SessionManager sessionManager;
+    protected final Map updatedViewsQueueMap = new HashMap();
 
-    private int updatedViewsQueueSize;
+    protected int updatedViewsQueueSize;
 
     public UpdatedViewsManager(
         final Configuration configuration,
@@ -130,7 +130,7 @@ public class UpdatedViewsManager {
                             updatedViewsQueueMap.get(_iceFacesId);
                 } else {
                     _updatedViewsQueue =
-                        new UpdatedViewsQueue(_iceFacesId, this);
+                        newUpdatedViewsQueue(_iceFacesId, this);
                     updatedViewsQueueMap.put(_iceFacesId, _updatedViewsQueue);
                 }
                 try {
@@ -205,5 +205,12 @@ public class UpdatedViewsManager {
                         updatedViewsQueueSize);
         }
         this.updatedViewsQueueSize = updatedViewsQueueSize;
+    }
+
+    protected UpdatedViewsQueue newUpdatedViewsQueue(
+        final String iceFacesId,
+        final UpdatedViewsManager updatedViewsManager) {
+        
+        return new UpdatedViewsQueue(iceFacesId, updatedViewsManager);
     }
 }
