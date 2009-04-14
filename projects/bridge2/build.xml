@@ -55,10 +55,7 @@
         <loadfile property="delay.js" srcFile="lib/delay.js"/>
         <loadfile property="element.js" srcFile="lib/element.js"/>
         <loadfile property="event.js" srcFile="lib/event.js"/>
-        <loadfile property="submit.js" srcFile="src/submit.js"/>
-        <loadfile property="synchronizer.js" srcFile="src/synchronizer.js"/>
         <loadfile property="command.js" srcFile="src/command.js"/>
-        <loadfile property="focus.js" srcFile="src/focus.js"/>
         <loadfile property="status.js" srcFile="src/status.js"/>
         <loadfile property="heartbeat.js" srcFile="src/heartbeat.js"/>
         <loadfile property="connection.async.js" srcFile="src/connection.async.js"/>
@@ -75,10 +72,7 @@
                 <filter token="delay" value="${delay.js}"/>
                 <filter token="element" value="${element.js}"/>
                 <filter token="event" value="${event.js}"/>
-                <filter token="submit" value="${submit.js}"/>
-                <filter token="synchronizer" value="${synchronizer.js}"/>
                 <filter token="command" value="${command.js}"/>
-                <filter token="focus" value="${focus.js}"/>
                 <filter token="status" value="${status.js}"/>
                 <filter token="heartbeat" value="${heartbeat.js}"/>
                 <filter token="connection.async" value="${connection.async.js}"/>
