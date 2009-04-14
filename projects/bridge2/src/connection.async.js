@@ -39,74 +39,7 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-function SyncConnection(logger, sessionID, viewID, configuration) {
-    var logger = childLogger(logger, 'sync-connection');
-    var channel = Client(true);
-    var defaultQuery = Query();
-    addNameValue(defaultQuery, 'ice.view', viewID);
-    addNameValue(defaultQuery, 'ice.session', sessionID);
-    var onSendListeners = [];
-    var onReceiveListeners = [];
-    var onServerErrorListeners = [];
-    var connectionDownListeners = [];
-    var sendURI = configuration.context.current + 'block/send-receive-updates';
-    var timeout = configuration.timeout ? configuration.timeout : 60000;
-    var serverErrorCallback = broadcaster(onServerErrorListeners);
-    var timeoutBomb = object(function(method) {
-        method(stop, noop);
-    });
-
-    return object(function(method) {
-        method(send, function(self, query) {
-            stop(timeoutBomb);
-            timeoutBomb = runOnce(Delay(broadcaster(connectionDownListeners), timeout));
-            broadcast(onSendListeners);
-            debug(logger, 'send > ' + sendURI);
-            postAsynchronously(channel, sendURI, function(q) {
-                addQuery(q, query);
-                addQuery(q, defaultQuery);
-                addNameValue(q, 'ice.focus', currentFocus);
-
-                debug(logger, '\n' + asString(q));
-            }, FormPost, $witch(function(condition) {
-                condition(OK, function(response, request) {
-                    stop(timeoutBomb);
-                    broadcast(onReceiveListeners, arguments);
-                });
-
-                condition(ServerInternalError, serverErrorCallback);
-            }));
-        });
-
-        method(onSend, function(self, sendCallback, receiveCallback) {
-            append(onSendListeners, sendCallback);
-            if (receiveCallback)
-                append(onReceiveListeners, receiveCallback);
-        });
-
-        method(onReceive, function(self, receiveCallback) {
-            append(onReceiveListeners, receiveCallback);
-        });
-
-        method(onServerError, function(self, callback) {
-            append(onServerErrorListeners, callback);
-        });
-
-        method(whenDown, function(self, callback) {
-            append(connectionDownListeners, callback);
-        });
-
-        method(shutdown, function(self) {
-            //shutdown once
-            method(shutdown, noop);
-            //avoid sending XMLHTTP requests that might create new sessions on the server
-            method(send, noop);
-            each([onSendListeners, onReceiveListeners, connectionDownListeners, onServerErrorListeners], empty);
-        });
-    });
-}
-
-function AsyncConnection(logger, sessionID, viewID, configuration, commandDispatcher) {
+function AsyncConnection(logger, sessionID, viewID, configuration, commandDispatcher, pickUpdates) {
     var logger = childLogger(logger, 'async-connection');
     var channel = Client(false);
     var defaultQuery = Query();
@@ -128,9 +61,8 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         method(stopBeat, noop);
     });
 
-    var pingURI = configuration.context.current + 'block/ping';
-    var getURI = configuration.context.current + 'block/receive-updates';
-    var receiveURI = configuration.context.async + 'block/receive-updated-views';
+    var pingURI = configuration.context.current + 'icefaces/ping';
+    var receiveURI = configuration.context.async + 'icefaces/send-updated-views';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {
@@ -204,7 +136,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         close(listener);
         debug(logger, "connect...");
         listener = postAsynchronously(channel, receiveURI, function(q) {
-            each(registeredSessions(), curry(addNameValue, q, 'ice.session'));
+            each(registeredSessions(), curry(addNameValue, q, 'ice.sessions'));
         }, function(request) {
             FormPost(request);
             sendXWindowCookie(request);
@@ -244,9 +176,9 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
             }, FormPost, noop);
         });
 
-        onLostPongs(heartbeat, broadcaster(connectionDownListeners), heartbeatRetries);
-        onLostPongs(heartbeat, broadcaster(connectionTroubleListeners));
         onLostPongs(heartbeat, connect);
+        onLostPongs(heartbeat, broadcaster(connectionTroubleListeners));
+        onLostPongs(heartbeat, broadcaster(connectionDownListeners), heartbeatRetries);
 
         startBeat(heartbeat);
         //wire up keyboard shortcut to toggle heartbeat
@@ -320,26 +252,12 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         }
     }, pollingPeriod));
 
-    function pickUpdates() {
-        postAsynchronously(channel, getURI, function(q) {
-            addQuery(q, defaultQuery);
-        }, FormPost, $witch(function(condition) {
-            condition(OK, function(response) {
-                if (notEmpty(contentAsText(response))) receiveCallback(response);
-            });
-        }));
-    }
-
-    //pick any updates that might be generated in between bridge re-initialization
-    //todo: replace heuristic with more exact solution
-    runOnce(Delay(pickUpdates, pollingPeriod));
-
     //monitor & pick updates for this view
     var updatesMonitor = run(Delay(function() {
         try {
             var views = split(value(updatedViews), ' ');
             if (contains(views, fullViewID)) {
-                pickUpdates();
+                pickUpdates(views);
                 update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
             }
         } catch (e) {
@@ -373,6 +291,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
                 connect = noop;
                 stopBeat(heartbeat);
             } catch (e) {
+                error(logger, 'error during shutdown', e);
                 //ignore, we really need to shutdown
             } finally {
                 each([onReceiveListeners, connectionDownListeners, onServerErrorListeners], empty);
@@ -383,12 +302,3 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         });
     });
 }
-
-function NOOPAsyncConnection() {
-    return object(function(method) {
-        each([shutdown, onReceive, onServerError, whenDown, whenTrouble], function(op) {
-            method(op, noop);
-        });
-    });
-}
-

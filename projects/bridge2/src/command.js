@@ -24,33 +24,6 @@ function CommandDispatcher() {
     });
 }
 
-function Redirect(element) {
-    //replace ampersand entities incorrectly decoded by Safari 2.0.4
-    var url = replace(element.getAttribute("url"), /&#38;/g, "&");
-    info(logger, 'Redirecting to ' + url);
-    window.location.href = url;
-}
-
-function Reload(element) {
-    info(logger, 'Reloading');
-    var url = window.location.href;
-    if (containsSubstring(url, 'rvn=')) {
-        window.location.reload();
-    } else {
-        var view = element.getAttribute('view');
-        if (view == '') {
-            window.location.reload();
-        } else {
-            var queryPrefix = containsSubstring(url, '?') ? '&' : '?';
-            window.location.href = url + queryPrefix + 'rvn=' + view;
-        }
-    }
-}
-
-function SetCookie(message) {
-    document.cookie = message.firstChild.data;
-}
-
 function ParsingError(message) {
     logger.error('Parsing error');
     var errorNode = message.firstChild;

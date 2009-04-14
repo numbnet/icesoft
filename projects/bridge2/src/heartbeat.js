@@ -88,9 +88,6 @@ var Heartbeat;
 
             method(stopBeat, function(self) {
                 stop(beat);
-
-                empty(pingListeners);
-                empty(lostPongListeners);
                 info(logger, 'heartbeat stopped');
 
                 return self;
