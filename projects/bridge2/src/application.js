@@ -61,66 +61,43 @@ window.evaluate = eval;
     //include connection.async.js
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-    window.logger = Logger([ 'window' ], handler);
+    namespace.logger = Logger([ 'window' ], handler);
 
     namespace.resetIndicators = operator();
     namespace.disposeBridge = operator();
     namespace.disposeBridgeAndNotify = operator();
 
     var client = Client(true);
-    var views = namespace.views = namespace.views ? namespace.views : [];
+    var views = namespace.views = namespace.views || [];
 
-    function enlistSession(sessionID) {
+    function enlistSession(sessionID, viewID) {
         try {
-            var sessionsCookie = lookupCookie('ice.sessions');
-            var sessions = split(value(sessionsCookie), ' ');
-            var alreadyRegistered = function(s) {
-                return startsWith(s, sessionID);
-            };
-            var session = detect(sessions, alreadyRegistered, function() {
-                return null;
-            });
-            if (session) {
-                sessions = reject(sessions, alreadyRegistered);
-                var occurences = asNumber(split(session, '#')[1]) + 1;
-                append(sessions, sessionID + '#' + occurences);
-            } else {
-                append(sessions, sessionID + '#' + 1);
-            }
-            update(sessionsCookie, join(sessions, ' '));
+            var viewsCookie = lookupCookie('ice.views');
+            var sessionViewTuples = split(value(viewsCookie), ' ');
+            update(viewsCookie, join(append(sessionViewTuples, sessionID + ':' + viewID), ' '));
         } catch (e) {
-            Cookie('ice.sessions', sessionID + '#' + 1);
+            Cookie('ice.views', sessionID + ':' + viewID);
         }
     }
 
-    function delistSession(sessionID) {
-        if (existsCookie('ice.sessions')) {
-            var sessionsCookie = lookupCookie('ice.sessions');
-            var sessions = split(value(sessionsCookie), ' ');
-            update(sessionsCookie, join(inject(sessions, [], function(tally, s) {
-                if (s) {
-                    var entry = split(s, '#');
-                    var id = entry[0];
-                    var occurences = asNumber(entry[1]);
-                    if (id == sessionID) {
-                        --occurences;
-                    }
-                    if (occurences > 0) {
-                        append(tally, entry[0] + '#' + occurences);
-                    }
-                }
-                return tally;
+    function delistSession(sessionID, viewID) {
+        if (existsCookie('ice.views')) {
+            var viewsCookie = lookupCookie('ice.views');
+            var sessionViewTuples = split(value(viewsCookie), ' ');
+            var fullID = sessionID + ':' + viewID;
+            update(viewsCookie, join(reject(sessionViewTuples, function(tuple) {
+                return tuple == fullID;
             }), ' '));
         }
     }
 
     function enlistView(session, view) {
-        enlistSession(session);
+        enlistSession(session, view);
         append(views, Parameter(session, view));
     }
 
     function delistView(session, view) {
-        delistSession(session);
+        delistSession(session, view);
         views = reject(views, function(i) {
             return key(i) == session && value(i) == view;
         });
@@ -128,7 +105,7 @@ window.evaluate = eval;
 
     function delistWindowViews() {
         each(views, function(v) {
-            delistSession(key(v));
+            delistSession(key(v), value(v));
         });
         empty(views);
     }
@@ -146,12 +123,13 @@ window.evaluate = eval;
     }
 
     function disposeView(session, view) {
-        sendDisposeViews([Parameter(session, view)]);
+        //todo: figure out if dispose-views should be sent and how 
+        //sendDisposeViews([Parameter(session, view)]);
         delistView(session, view);
     }
 
     function disposeWindowViews() {
-        sendDisposeViews(views);
+        //sendDisposeViews(views);
         delistWindowViews();
     }
 
@@ -173,18 +151,26 @@ window.evaluate = eval;
         }), Update());
     }
 
-    ;
-
     onBeforeUnload(window, disposeWindowViews);
 
     namespace.Application = function(configuration, container) {
         var sessionID = configuration.session;
-        var viewID = configuration.view;
-        var logger = childLogger(window.logger, sessionID.substring(0, 4) + '#' + viewID);
+        //todo: can we rely on javax.faces.ViewState to identify the view?
+        var viewID = document.getElementById('javax.faces.ViewState').value;
+        var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);
         var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(views) {
-            warn(logger, 'need to pick updates for views ' + asString(views));
+        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function() {
+            try {
+                var forms = document.getElementsByTagName('form');
+                var allFormIDs = join(collect(forms, function(f) {
+                    return f.id;
+                }), ' ');
+                //use first found form to submit; force a render for all forms in the page/view
+                jsf.ajax.request(forms[0], null, {render: allFormIDs});
+            } catch (e) {
+                warn(logger, 'failed to pick updates', e);
+            }
         });
 
         function dispose() {
@@ -262,4 +248,4 @@ window.evaluate = eval;
         var e = $event(ev);
         if (isEscKey(e)) cancelDefaultAction(e);
     });
-})(window.Ice = new Object);
+})(window.Ice = window.Ice || new Object);

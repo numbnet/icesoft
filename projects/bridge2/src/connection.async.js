@@ -42,9 +42,6 @@ var shutdown = operator();
 function AsyncConnection(logger, sessionID, viewID, configuration, commandDispatcher, pickUpdates) {
     var logger = childLogger(logger, 'async-connection');
     var channel = Client(false);
-    var defaultQuery = Query();
-    addNameValue(defaultQuery, 'ice.view', viewID);
-    addNameValue(defaultQuery, 'ice.session', sessionID);
     var onReceiveListeners = [];
     var onServerErrorListeners = [];
     var connectionDownListeners = [];
@@ -82,8 +79,8 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     };
 
     //read/create cookie that contains the updated views
-    var updatedViews = lookupCookie('updates', function() {
-        return Cookie('updates', '');
+    var updatedViews = lookupCookie('ice.updated.views', function() {
+        return Cookie('ice.updated.views', '');
     });
 
     //register command that handles the updated-views message
@@ -105,7 +102,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     //this strategy is mainly employed to fix the window.onunload issue
     //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
     try {
-        listening = lookupCookie('bconn');
+        listening = lookupCookie('ice.connection.running');
         remove(listening);
     } catch (e) {
         //do nothing
@@ -126,9 +123,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     }
 
     function registeredSessions() {
-        return collect(split(lookupCookieValue('ice.sessions'), ' '), function(s) {
-            return split(s, '#')[0];
-        });
+        return split(lookupCookieValue('ice.views'), ' ');
     }
 
     function connect() {
@@ -136,7 +131,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         close(listener);
         debug(logger, "connect...");
         listener = postAsynchronously(channel, receiveURI, function(q) {
-            each(registeredSessions(), curry(addNameValue, q, 'ice.sessions'));
+            each(registeredSessions(), curry(addNameValue, q, 'ice.view'));
         }, function(request) {
             FormPost(request);
             sendXWindowCookie(request);
@@ -171,9 +166,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         onPing(heartbeat, function(pong) {
             //re-register a pong command on every ping
             register(commandDispatcher, 'pong', pong);
-            postAsynchronously(channel, pingURI, function(q) {
-                addQuery(q, defaultQuery);
-            }, FormPost, noop);
+            postAsynchronously(channel, pingURI, noop, FormPost, noop);
         });
 
         onLostPongs(heartbeat, connect);
@@ -197,11 +190,11 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     //monitor if the blocking connection needs to be started
     var pollingPeriod = 1000;
     var fullViewID = sessionID + ':' + viewID;
-    var leaseCookie = lookupCookie('ice.lease', function() {
-        return Cookie('ice.lease', asString((new Date).getTime()));
+    var leaseCookie = lookupCookie('ice.connection.lease', function() {
+        return Cookie('ice.connection.lease', asString((new Date).getTime()));
     });
-    var connectionCookie = listening = lookupCookie('bconn', function() {
-        return Cookie('bconn', '-');
+    var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
+        return Cookie('ice.connection.running', '-');
     });
 
     function updateLease() {
@@ -213,7 +206,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     }
 
     function shouldEstablishBlockingConnection() {
-        return !existsCookie('bconn') || !startsWith(lookupCookieValue('bconn'), sessionID);
+        return !existsCookie('ice.connection.running') || !startsWith(lookupCookieValue('ice.connection.running'), sessionID);
     }
 
     function offerCandidature() {
@@ -257,7 +250,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         try {
             var views = split(value(updatedViews), ' ');
             if (contains(views, fullViewID)) {
-                pickUpdates(views);
+                pickUpdates();
                 update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
             }
         } catch (e) {
