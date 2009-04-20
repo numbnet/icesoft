@@ -249,7 +249,8 @@ public class AxisChart extends AbstractChart {
                 chartTypeProperties);
 
         AxisProperties axisProperties = ((chartType.equals(ChartType.BAR) || 
-                chartType.equals(ChartType.BAR_CLUSTERED)) && 
+                chartType.equals(ChartType.BAR_CLUSTERED) ||
+                chartType.equals(ChartType.BAR_STACKED)) && 
                 outputChart.isHorizontal())?
                 new AxisProperties(true): new AxisProperties();
 

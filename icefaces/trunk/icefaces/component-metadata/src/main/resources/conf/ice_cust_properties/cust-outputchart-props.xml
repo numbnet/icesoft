@@ -420,7 +420,10 @@
         <ul>
         	<li>bar</li>
         	<li>barclustered</li>
-        </ul>   
+            <li>barstacked</li>        	
+        </ul>  
+        <b>Note: </b> Negative values in Stacked Bar charts are not supported by 
+        the krysalis.jcharts.
         </p> 
         ]]>               
     </description>
