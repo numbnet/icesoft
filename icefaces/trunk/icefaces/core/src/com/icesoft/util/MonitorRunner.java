@@ -13,28 +13,32 @@ public class MonitorRunner {
     private boolean run = true;
 
     public MonitorRunner(final long interval) {
-        Thread thread = new Thread("Monitor Runner") {
-            public void run() {
-                while (run) {
-                    try {
-                        Thread.sleep(interval);
-                        Iterator i = new ArrayList(monitors).iterator();
-                        while (i.hasNext()) {
-                            Runnable monitor = (Runnable) i.next();
-                            try {
-                                monitor.run();
-                            } catch (Throwable t) {
-                                log.warn("Failed to run monitor: " + monitor);
+        try {
+            Thread thread = new Thread("Monitor Runner") {
+                public void run() {
+                    while (run) {
+                        try {
+                            Thread.sleep(interval);
+                            Iterator i = new ArrayList(monitors).iterator();
+                            while (i.hasNext()) {
+                                Runnable monitor = (Runnable) i.next();
+                                try {
+                                    monitor.run();
+                                } catch (Throwable t) {
+                                    log.warn("Failed to run monitor: " + monitor);
+                                }
                             }
+                        } catch (InterruptedException e) {
+                            //do nothing
                         }
-                    } catch (InterruptedException e) {
-                        //do nothing
                     }
                 }
-            }
-        };
-        thread.setDaemon(true);
-        thread.start();
+            };
+            thread.setDaemon(true);
+            thread.start();
+        } catch (Exception e)  {
+            log.error("Unable to initialize Monitor Runner ", e);
+        }
     }
 
     public void registerMonitor(Runnable monitor) {
