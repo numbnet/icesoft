@@ -274,11 +274,16 @@ public class MainServlet extends HttpServlet {
                 testMessageService(configuration);
             }
             if (messageServiceClient == null) {
-                messageServiceClient =
-                    new MessageServiceClient(
-                        new HttpAdapter(localAddress, localPort, context),
-                        currentContextPath.lookup());
-                testMessageService(configuration);
+                try {
+                    messageServiceClient =
+                        new MessageServiceClient(
+                            new HttpAdapter(localAddress, localPort, context),
+                            currentContextPath.lookup());
+                    testMessageService(configuration);
+                } catch (Exception e)  {
+                    LOG.warn(
+                        "Unable to set up MessageServiceClient ", e);
+                }
             }
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {

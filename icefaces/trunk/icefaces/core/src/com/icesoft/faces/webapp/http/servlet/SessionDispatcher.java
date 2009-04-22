@@ -212,27 +212,31 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         private boolean run = true;
 
         public void contextInitialized(ServletContextEvent servletContextEvent) {
-            Thread monitor = new Thread("Session Monitor") {
-                public void run() {
-                    while (run) {
-                        try {
-                            // Iterate over the session monitors using a copying iterator
-                            Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
-                            while (iterator.hasNext()) {
-                                final Monitor sessionMonitor = (Monitor) iterator.next();
-                                sessionMonitor.shutdownIfExpired();
-                                ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
-                            }
+            try {
+                Thread monitor = new Thread("Session Monitor") {
+                    public void run() {
+                        while (run) {
+                            try {
+                                // Iterate over the session monitors using a copying iterator
+                                Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
+                                while (iterator.hasNext()) {
+                                    final Monitor sessionMonitor = (Monitor) iterator.next();
+                                    sessionMonitor.shutdownIfExpired();
+                                    ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
+                                }
 
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            //ignore interrupts
+                                Thread.sleep(10000);
+                            } catch (InterruptedException e) {
+                                //ignore interrupts
+                            }
                         }
                     }
-                }
-            };
-            monitor.setDaemon(true);
-            monitor.start();
+                };
+                monitor.setDaemon(true);
+                monitor.start();
+            } catch (Exception e)  {
+                Log.error("Unable to initialize Session Monitor ", e);
+            }
         }
 
         public void contextDestroyed(ServletContextEvent servletContextEvent) {
