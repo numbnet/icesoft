@@ -61,12 +61,15 @@ public class IdGenerator {
         this.seed = seed.trim();
         this.counter = 0;
         try {
-            ipAddress = InetAddress.getLocalHost().getHostAddress();
             md5 = MessageDigest.getInstance("MD5");
+            ipAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
+        } catch (NoClassDefFoundError e)  {
+            //Google App Engine
+            ipAddress = "GAE";
         }
     }
 
