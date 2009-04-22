@@ -24,6 +24,9 @@ public class ServerUtility {
             localAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException exception) {
             localAddress = "127.0.0.1";
+        } catch (NoClassDefFoundError e)  {
+            //Google App Engine
+            localAddress = "GAE";
         }
     }
 
