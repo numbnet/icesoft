@@ -41,6 +41,7 @@ public class GMapDirection extends UIPanel{
     
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
+        super.encodeBegin(context);    	
     	String textualDivId = getTextualDivId(); 
 		GMap gmap = (GMap)this.getParent();
     	String mapId = gmap.getClientId(context);

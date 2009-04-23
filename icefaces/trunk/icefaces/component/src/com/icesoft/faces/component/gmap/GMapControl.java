@@ -53,6 +53,7 @@ public class GMapControl extends UIPanel{
 	}
     
     public void encodeBegin(FacesContext context) throws IOException {
+        super.encodeBegin(context);
         String currentName = getName();
         String mapClientId = this.getParent().getClientId(context); 
         if (!isRendered()) {

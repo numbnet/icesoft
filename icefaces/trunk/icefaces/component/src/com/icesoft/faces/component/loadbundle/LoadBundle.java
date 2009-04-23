@@ -42,6 +42,7 @@ public class LoadBundle extends UIOutput{
     
     public void encodeBegin(FacesContext context) throws IOException {
         setRendererType(null);
+        super.encodeBegin(context);
         String newBasename = getBasename();
         Locale currentLocale = context.getViewRoot().getLocale();
         boolean reloadRequired = !((oldLocale != null) && 

@@ -354,39 +354,6 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
 
     /*
      *  (non-Javadoc)
-     * @see javax.faces.component.UIComponent#encodeBegin(javax.faces.context.FacesContext)
-     */
-    public void encodeBegin(FacesContext context) throws IOException {
-    	
-    	if(!Beans.isDesignTime()){
-	        try {
-	            if (getAbstractChart() == null) {
-	            	createAbstractChart();	                
-	                if (getType().equalsIgnoreCase(OutputChart.CUSTOM_CHART_TYPE)) {
-                        evaluateRenderOnSubmit(context);
-	                }
-	                getAbstractChart().encode(context, this);
-	            } else if (evaluateRenderOnSubmit(context).booleanValue()) {
-	            	getAbstractChart().encode(context, this);
-	            }
-	        } catch (Throwable e) {
-	            e.printStackTrace();
-	        }
-    	}
-        super.encodeBegin(context);
-    }
-
-    /*
-     *  (non-Javadoc)
-     * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
-     */
-    public void broadcast(FacesEvent event)
-            throws AbortProcessingException {
-        super.broadcast(event);
-    }
-
-    /*
-     *  (non-Javadoc)
      * @see javax.faces.component.UIComponent#decode(javax.faces.context.FacesContext)
      */
     public void decode(FacesContext context) {
@@ -596,11 +563,11 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         this.horizontalSet = true;        
     }
     
-    private AbstractChart createAbstractChart() throws Throwable {
+    AbstractChart createAbstractChart() throws Throwable {
         return (AbstractChart)this.getAttributes().put(getClientId(getFacesContext()), AbstractChart.createChart(this));
     }
     
-    private AbstractChart getAbstractChart() {
+    AbstractChart getAbstractChart() {
     	Object abstractChart = this.getAttributes().get(getClientId(getFacesContext()));
     	return (abstractChart != null)? (AbstractChart)abstractChart : null;
     }
