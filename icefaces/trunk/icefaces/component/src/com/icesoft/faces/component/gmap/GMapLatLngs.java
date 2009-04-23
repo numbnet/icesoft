@@ -30,6 +30,7 @@ public class GMapLatLngs extends UIPanel{
     
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
+        super.encodeBegin(context);    	
     	Iterator it = getValue().iterator();
     	StringBuffer latLngScript = new StringBuffer();
     	while(it.hasNext()) {

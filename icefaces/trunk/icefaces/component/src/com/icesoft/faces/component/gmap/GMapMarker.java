@@ -43,6 +43,7 @@ public class GMapMarker extends UIPanel{
     }
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
+        super.encodeBegin(context);    	
     	String currentLat = getLatitude();
     	String currentLon = getLongitude();
     	//create a marker if lat and lon defined on the component itself

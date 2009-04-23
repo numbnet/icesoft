@@ -473,21 +473,6 @@ public class RowSelector extends UIPanel {
         return getParentDataTable(parentComp);
     }
 
-    public void encodeEnd(FacesContext facesContext)
-            throws IOException {
-               
-        //super.encodeEnd(facesContext, uiComponent);
-
-        // Nothing is rendered
-    }
-
-    public void encodeBegin(FacesContext facesContext)
-            throws IOException {
-        //super.encodeBegin(facesContext, uiComponent);
-         //uiComponent.setRendered(true);
-        // Mothing is rendered
-    }
-
     public void broadcast(FacesEvent event) {
         
         super.broadcast(event);

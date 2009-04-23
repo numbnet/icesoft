@@ -34,6 +34,7 @@ public class GMapLatLng extends UIPanel{
     
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
+        super.encodeBegin(context);    	
     	generateLatLngScript();
     }
     

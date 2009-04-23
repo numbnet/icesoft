@@ -27,6 +27,7 @@ public class GMapGeoXml extends UIPanel{
     
     public void encodeBegin(FacesContext context) throws IOException {
         setRendererType(null);
+        super.encodeBegin(context);        
         if (!isRendered()) {
             JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"');");
         } else {

@@ -55,12 +55,6 @@ public class PanelTooltip extends PanelPopup{
 
     
     public void encodeBegin(FacesContext context) throws IOException {
-        if ("none".equals(getHideOn())) {
-            removeTooltipFromVisibleList(context);
-        }
-        if (isDynamic() && !isVisible()) {
-            return;
-        }
         super.encodeBegin(context);
         setValueChangeFired(false);
         

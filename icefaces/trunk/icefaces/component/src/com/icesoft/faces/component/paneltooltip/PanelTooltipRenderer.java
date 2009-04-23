@@ -1,5 +1,7 @@
 package com.icesoft.faces.component.paneltooltip;
 
+import java.io.IOException;
+
 import com.icesoft.faces.component.panelpopup.PanelPopupRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
@@ -31,4 +33,18 @@ public class PanelTooltipRenderer extends PanelPopupRenderer{
         LocalEffectEncoder.encode(
                 facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, root, null);        
     }
+    
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    throws IOException {
+        PanelTooltip panelTooltip = (PanelTooltip) uiComponent;
+        if ("none".equals(panelTooltip.getHideOn())) {
+            panelTooltip.removeTooltipFromVisibleList(facesContext);
+        }
+        if (panelTooltip.isDynamic() && !panelTooltip.isVisible()) {
+            return;
+        }
+        super.encodeBegin(facesContext, uiComponent);
+    }
+    
+
 }

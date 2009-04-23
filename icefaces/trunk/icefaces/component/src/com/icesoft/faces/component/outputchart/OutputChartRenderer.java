@@ -43,6 +43,8 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
+import java.beans.Beans;
 import java.io.IOException;
 
 public class OutputChartRenderer extends DomBasicRenderer {
@@ -52,7 +54,22 @@ public class OutputChartRenderer extends DomBasicRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
-        OutputChart outputChart = (OutputChart) uiComponent;
+        OutputChart outputChart = (OutputChart) uiComponent;        
+        if(!Beans.isDesignTime()){
+            try {
+                if (outputChart.getAbstractChart() == null) {
+                    outputChart.createAbstractChart();                  
+                    if (outputChart.getType().equalsIgnoreCase(OutputChart.CUSTOM_CHART_TYPE)) {
+                        outputChart.evaluateRenderOnSubmit(facesContext);
+                    }
+                    outputChart.getAbstractChart().encode(facesContext, outputChart);
+                } else if (outputChart.evaluateRenderOnSubmit(facesContext).booleanValue()) {
+                    outputChart.getAbstractChart().encode(facesContext, outputChart);
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }  
         String clientId = outputChart.getClientId(facesContext);
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
