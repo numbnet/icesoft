@@ -36,7 +36,7 @@ public class FileServer implements Server {
                 }
             });
         } else {
-            request.respondWith(new NotFoundHandler("Cannot find file " + file));
+            request.respondWith(new NotFoundHandler("Could not find file at " + path));
         }
     }
 
