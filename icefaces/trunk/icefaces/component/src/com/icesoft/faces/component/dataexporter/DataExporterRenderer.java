@@ -20,8 +20,11 @@ import javax.servlet.http.HttpSession;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
+import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.UIColumn;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.outputresource.OutputResourceRenderer;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
@@ -89,11 +92,23 @@ public class DataExporterRenderer extends OutputResourceRenderer {
 		String clickToCreateFileText = oe.getClickToCreateFileText();
 		if (clickToCreateFileText == null)
 			clickToCreateFileText = "Click to create export file";
-		link.setValue(clickToCreateFileText);
+        String clickToCreateFileImage = oe.getClickToCreateFileImage();		
+        if (clickToCreateFileImage != null) {
+            HtmlGraphicImage img = (HtmlGraphicImage) fc.getApplication()
+            .createComponent(HtmlGraphicImage.COMPONENT_TYPE);      
+            img.setValue(clickToCreateFileImage);
+            img.setAlt(clickToCreateFileText);
+            img.setTitle(clickToCreateFileText);
+            link.getChildren().add(img);
+        } else {
+            link.setValue(clickToCreateFileText);
+        }
+
 		link.setTransient(true);
 		oe.getChildren().add(link);
 		link.encodeBegin(fc);
-		link.encodeEnd(fc);
+		CustomComponentUtils.renderChildren(fc, link);
+		link.encodeEnd(fc);		
 		oe.getChildren().clear();
 
 	}

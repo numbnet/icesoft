@@ -120,3 +120,28 @@
       <default-value>true</default-value>
     </property-extension>
   </property>
+  
+  <property>
+    <description>
+        The image path that will be used to display an image for create file link 
+        instead of text.
+        The text assigned to "clickToCreateFileText" attribute will be assigned 
+        to "alt" and "title" property of the image.
+    </description>
+    <property-name>clickToCreateFileImage</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+    </property-extension>
+  </property>  
+  
+    <property>
+    <description>
+        The image path that will be used to display an image for download file link instead of text. 
+    </description>
+    <property-name>image</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+    </property-extension>
+  </property>  
