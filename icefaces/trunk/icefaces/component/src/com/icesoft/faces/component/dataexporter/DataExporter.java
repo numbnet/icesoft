@@ -23,6 +23,7 @@ public class DataExporter extends OutputResource {
 	private String _origFor;
 	private transient OutputTypeHandler _origOutputTypeHandler;
 	private transient int _origDataModelHash = 0;
+	private Boolean clickToCreateFile;
 	
 	public final static String EXCEL_TYPE = "excel";
 	public final static String CSV_TYPE = "csv";
@@ -148,6 +149,18 @@ public class DataExporter extends OutputResource {
 		this.clickToCreateFileText = clickToCreateFileText;
 	}
 
+    public boolean isClickToCreateFile() {
+        if (this.clickToCreateFile != null) {
+            return clickToCreateFile.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("clickToCreateFile");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : true;
+    }
+
+    public void setClickToCreateFile(boolean clickToCreateFile) {
+        this.clickToCreateFile = new Boolean(clickToCreateFile);
+    }	
+    
 	public OutputTypeHandler getOutputTypeHandler() {
 		ValueBinding vb = getValueBinding("outputTypeHandler");
 		OutputTypeHandler newOutputHandler = null;
@@ -175,7 +188,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[11];
+            values = new Object[8];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -184,6 +197,7 @@ public class DataExporter extends OutputResource {
         values[4] = readyToExport? Boolean.TRUE : Boolean.FALSE;
         values[5] = _origType;
         values[6] = _origFor;
+        values[7] = clickToCreateFile;
         return ((Object) (values));
     }
 
@@ -202,7 +216,7 @@ public class DataExporter extends OutputResource {
         readyToExport = ((Boolean) values[4]).booleanValue();        
         _origType = (String) values[5];
         _origFor = (String)values[6];
- 
+        clickToCreateFile = (Boolean) values[7];
     }
     
     public String getLabel() {

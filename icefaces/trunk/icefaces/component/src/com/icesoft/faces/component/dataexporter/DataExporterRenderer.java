@@ -37,7 +37,7 @@ public class DataExporterRenderer extends OutputResourceRenderer {
 		if (oe.getUIData() != null && (oe.getType() != null
 		        && oe.getType().length() > 0)) {
 
-			if (oe.isReadyToExport()) {
+			if (oe.isReadyToExport() || !oe.isClickToCreateFile()) {
 				if (oe.getResource() == null) {
 					File file = createFile(fc, oe.getUIData(),
 							(DataExporter) uiC);
