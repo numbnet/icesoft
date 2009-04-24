@@ -107,3 +107,16 @@
       <default-value>true</default-value>
     </property-extension>
   </property> 
+
+  <property>
+    <description>
+        Setting this property to false will not require a click to create a file.
+        Default value is true.
+    </description>
+    <property-name>clickToCreateFile</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>
+    </property-extension>
+  </property>
