@@ -172,7 +172,8 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
                 var url = window.location.href;
-                deregisterWindowViews();
+                sendDisposeViews = Function.NOOP;
+                dispose();
                 if (url.contains('rvn=')) {
                     window.location.reload();
                 } else {
