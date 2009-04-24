@@ -5,7 +5,7 @@ import com.icesoft.faces.webapp.http.common.Response;
 import java.io.IOException;
 import java.io.Writer;
 
-public class NotFoundHandler extends FixedSizeContentHandler {
+public class NotFoundHandler extends StreamingContentHandler {
     private String message;
 
     public NotFoundHandler(String message) {
