@@ -156,8 +156,19 @@ Ice.PanelCollapsible = {
 }
 
 Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
-    var ctrlKyFld = $(hdnFld+'ctrKy');
-    var sftKyFld = $(hdnFld+'sftKy');  
+    var ctrlKyFld = document.getElementsByName(hdnFld+'ctrKy');
+    var sftKyFld = document.getElementsByName(hdnFld+'sftKy');  
+    if (ctrlKyFld.length > 0) {
+        ctrlKyFld = ctrlKyFld[0];
+    } else {
+        ctrlKyFld = null;
+    }
+    
+    if (sftKyFld.length > 0) {
+        sftKyFld = sftKyFld[0];
+    } else {
+        sftKyFld = null;
+    }    
     if (ctrlKyFld && event){
         ctrlKyFld.value = event.ctrlKey || event.metaKey;
     }
