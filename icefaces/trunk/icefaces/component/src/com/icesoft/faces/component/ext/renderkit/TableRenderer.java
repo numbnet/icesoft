@@ -43,6 +43,7 @@ import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -609,17 +610,8 @@ public class TableRenderer
         String formId = form == null ? "" : form.getClientId(facesContext);
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
-            Element ctrlKeyEle = domContext.createElement(HTML.INPUT_ELEM);
-            ctrlKeyEle.setAttribute(HTML.TYPE_ATTR, "hidden");
-            ctrlKeyEle.setAttribute(HTML.ID_ATTR, paramId + "ctrKy");
-            ctrlKeyEle.setAttribute(HTML.NAME_ATTR, paramId + "ctrKy"); 
-            
-            Element shiftKeyEle = domContext.createElement(HTML.INPUT_ELEM);
-            shiftKeyEle.setAttribute(HTML.TYPE_ATTR, "hidden");
-            shiftKeyEle.setAttribute(HTML.ID_ATTR, paramId + "sftKy");
-            shiftKeyEle.setAttribute(HTML.NAME_ATTR, paramId + "sftKy"); 
-            tBody.appendChild(ctrlKeyEle);
-            tBody.appendChild(shiftKeyEle);
+            FormRenderer.addHiddenField(facesContext, paramId + "ctrKy");            
+            FormRenderer.addHiddenField(facesContext, paramId + "sftKy");
             
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
