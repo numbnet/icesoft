@@ -430,8 +430,24 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         Document document = documentStore.load();
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
-
-        NodeList inputElements = document.getElementsByTagName("input");
+        
+        NodeList formElements = document.getElementsByTagName("form");
+        int formElementsLength = formElements.getLength();
+        for (int i = 0; i < formElementsLength; i++) {
+            Element formElement = (Element) formElements.item(i);
+            String id = formElement.getAttribute("id");
+            //String formClientId = ((String[]) parameters.get(id))[0];
+            //if (formClientId != null && formClientId.equals(id)) {
+            if (parameters.containsKey(id)) {
+                applyBrowserFormChanges(parameters, document, formElement);
+                break; // This assumes only one form is submitted
+            }
+        }
+        documentStore.cache(document);
+    }
+    
+    protected void applyBrowserFormChanges(Map parameters, Document document, Element form) {        
+        NodeList inputElements = form.getElementsByTagName("input");
         int inputElementsLength = inputElements.getLength();
         for (int i = 0; i < inputElementsLength; i++) {
             Element inputElement = (Element) inputElements.item(i);
@@ -499,7 +515,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             }
         }
 
-        NodeList textareaElements = document.getElementsByTagName("textarea");
+        NodeList textareaElements = form.getElementsByTagName("textarea");
         int textareaElementsLength = textareaElements.getLength();
         for (int i = 0; i < textareaElementsLength; i++) {
             Element textareaElement = (Element) textareaElements.item(i);
@@ -519,7 +535,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             }
         }
 
-        NodeList selectElements = document.getElementsByTagName("select");
+        NodeList selectElements = form.getElementsByTagName("select");
         int selectElementsLength = selectElements.getLength();
         for (int i = 0; i < selectElementsLength; i++) {
             Element selectElement = (Element) selectElements.item(i);
@@ -540,7 +556,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 }
             }
         }
-        documentStore.cache(document);
     }
 
     public URI loadJavascriptCode(final Resource resource) {
