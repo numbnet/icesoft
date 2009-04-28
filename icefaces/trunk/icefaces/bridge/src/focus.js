@@ -68,8 +68,9 @@ function setFocus(id) {
         var previousListener = element[eventType];
         if (previousListener) {
             element[eventType] = function(e) {
-                previousListener(e);
-                listener(e);
+                var args = [e];
+                previousListener.apply(element, args);
+                listener.apply(element, args);
             };
         } else {
             element[eventType] = listener;
