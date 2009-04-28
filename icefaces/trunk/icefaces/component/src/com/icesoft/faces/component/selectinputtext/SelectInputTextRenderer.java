@@ -165,8 +165,21 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
         SelectInputText component = (SelectInputText) uiComponent;
         Element input = (Element) domContext.getRootNode().getFirstChild();
 
-        input.setAttribute("onfocus", "setFocus(this.id);");
-        input.setAttribute("onblur", "setFocus('');");
+        String combinedValue = "setFocus(this.id);";
+        Object appValue = uiComponent.getAttributes().get("onfocus");
+        if (appValue != null)
+            combinedValue += appValue.toString();
+        input.setAttribute("onfocus", combinedValue);
+
+        combinedValue = "setFocus('');";
+        appValue = uiComponent.getAttributes().get("onblur");
+        if (appValue != null)
+            combinedValue += appValue.toString();
+        input.setAttribute("onblur", combinedValue);
+
+        appValue = uiComponent.getAttributes().get("onchange");
+        if (appValue != null)
+            input.setAttribute("onchange", appValue.toString());
         // this would prevent, when first valueChangeListener fires with null value
 //System.out.println("SelectInputTextRenderer.encodeChildren()  clientId: " + uiComponent.getClientId(facesContext));
         String value = getValue(facesContext, uiComponent);
