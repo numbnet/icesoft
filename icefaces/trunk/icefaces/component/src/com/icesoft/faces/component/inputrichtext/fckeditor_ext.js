@@ -62,6 +62,8 @@ Ice.FCKeditor.prototype = {
 	     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
 	}
 	this.thirdPartyObject.CreateIce(ele);
+	var onCompleteInvoked = $(ele + 'onCompleteInvoked');
+    if (onCompleteInvoked)onCompleteInvoked.value = false;	
 	}
 };
 
@@ -69,8 +71,12 @@ Object.extend(Ice.FCKeditor,  Ice.Repository);
 
 Ice.FCKeditorUtility = Class.create();
 Ice.FCKeditorUtility = {
-    //this will be only called on every render cycle
+    //this will be called on every render cycle
     updateValue: function(ele) {
+        var onCompleteInvoked = $(ele + 'onCompleteInvoked');
+        if (onCompleteInvoked){
+            if (onCompleteInvoked.value != "true"){return}
+        }
         try {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
             if (oEditor != null) {
@@ -135,7 +141,9 @@ FCKeditor.prototype.CreateIce = function(eleId)
 }
 
 function FCKeditor_OnComplete( editorInstance ){
-    toogleState(editorInstance);
+    var onCompleteInvoked = $(editorInstance.Name + 'onCompleteInvoked');
+    if (onCompleteInvoked)onCompleteInvoked.value = true;    
+    Ice.FCKeditorUtility.updateValue(editorInstance.Name);	
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
