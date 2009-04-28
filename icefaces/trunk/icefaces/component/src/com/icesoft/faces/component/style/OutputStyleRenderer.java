@@ -57,6 +57,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static Log log = LogFactory.getLog(OutputStyleRenderer.class);
     private static final String IE_EXTENTION = "_ie";
     private static final String IE_7_EXTENTION = "_ie7";
+    private static final String IE_8_EXTENSION = "_ie8";
     private static final String SAFARI_EXTENTION = "_safari";
     private static final String SAFARI_MOBILE_EXTENTION = "_safarimobile";
     private static final String CSS_EXTENTION = ".css";
@@ -72,6 +73,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final int SAFARI_MOBILE = 5;
     private static final int OPERA = 6;
     private static final int OPERA_MOBILE = 7;
+    private static final int IE_8 = 8;
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -101,6 +103,9 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             }
                             if(browserType == IE_7){
                                 extention = IE_7_EXTENTION;
+                            }
+                            if(browserType == IE_8){
+                                extention = IE_8_EXTENSION;
                             }
                             if(browserType == SAFARI_MOBILE){
                                 extention = SAFARI_MOBILE_EXTENTION;
@@ -195,6 +200,9 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 result = IE;
                 if(user.indexOf("msie 7") != -1){
                     result = IE_7;
+                }
+                if(user.indexOf("msie 8") != -1){
+                    result = IE_8;
                 }
             } else if (user.indexOf("safari") != -1) {
                 result = SAFARI;
