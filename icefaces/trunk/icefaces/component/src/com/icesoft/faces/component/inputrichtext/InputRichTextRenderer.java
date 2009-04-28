@@ -51,9 +51,16 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.isSaveOnSubmit()) {
                 Element saveOnSubmit = domContext.createElement(HTML.INPUT_ELEM);
                 saveOnSubmit.setAttribute(HTML.ID_ATTR, clientId + "saveOnSubmit");
+                saveOnSubmit.setAttribute(HTML.NAME_ATTR, clientId + "saveOnSubmit");                
                 saveOnSubmit.setAttribute(HTML.TYPE_ATTR, "hidden");                
                 root.appendChild(saveOnSubmit);
             }
+            Element onCompleteInvoked = domContext.createElement(HTML.INPUT_ELEM);
+            onCompleteInvoked.setAttribute(HTML.ID_ATTR, clientId + "onCompleteInvoked");
+            onCompleteInvoked.setAttribute(HTML.NAME_ATTR, clientId + "onCompleteInvoked");            
+            onCompleteInvoked.setAttribute(HTML.TYPE_ATTR, "hidden");                
+            root.appendChild(onCompleteInvoked);
+            
             div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
             div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");
             JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");            
