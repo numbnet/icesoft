@@ -69,6 +69,7 @@ function setFocus(id) {
         if (previousListener) {
             element[eventType] = function(e) {
                 var args = [e];
+                //execute listeners so that 'this' variable points to the current element
                 previousListener.apply(element, args);
                 listener.apply(element, args);
             };
