@@ -1669,7 +1669,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         String popupState = getHiddenFieldName(facesContext, component);
         String showPopup = (String) requestParameterMap.get(popupState);
         SelectInputDate dateSelect = (SelectInputDate) component;
-
+        String clientId = component.getClientId(facesContext); 
         if (log.isDebugEnabled()) {
             log.debug("selectDate::showPopup" + showPopup);
             log.debug("#################################");
@@ -1680,12 +1680,16 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         //there are time fields on the popup
         if (!dateSelect.isTime(facesContext)) {
             dateSelect.setShowPopup(false);
+            //ICE-4405 (selectInputDate loses focus after closing calendar.)
+            if (dateSelect.isRenderAsPopup()) {
+                JavascriptContext.applicationFocus(facesContext, clientId+ CALENDAR_BUTTON);
+            }
         }
         if (log.isDebugEnabled()) {
             log.debug("decodeUIInput::");
             log.debug("#################################");
         }
-        String clientId = component.getClientId(facesContext); 
+
         CustomComponentUtils.decodeUIInput(facesContext, component, clientId+CALENDAR_CLICK);
         Object submittedValue = dateSelect.getSubmittedValue();
         if (submittedValue instanceof String &&
