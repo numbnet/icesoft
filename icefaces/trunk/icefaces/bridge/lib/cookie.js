@@ -18,7 +18,7 @@
         },
 
         save: function() {
-            document.cookie = this.name + '=' + this.value + ';path=' + this.path;
+            document.cookie = this.name + '=' + this.value + '; path=' + this.path;
             return this;
         },
 
@@ -31,7 +31,9 @@
         },
 
         remove: function() {
-            document.cookie = this.name + '=0; path=' + this.path + '; expires=' + (new Date).toGMTString();
+            var date = new Date();
+            date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+            document.cookie = this.name + '=; expires=' + date.toGMTString() + '; path=' + this.path;
         }
     });
 
