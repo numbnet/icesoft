@@ -49,7 +49,7 @@ Once the file is uploaded, information about the file is displayed.
     <ice:panelGroup styleClass="exampleBox inputFileContainer">
 
         <!-- file upload usage with progress callback. -->
-        <ice:inputFile id="inputFileName"
+        <ice:inputFile id="inputFileName" width="600"
                        progressListener="#{inputFileController.fileUploadProgress}"
                        actionListener="#{inputFileController.uploadFile}"/>
         <!-- progress bar, percent value is upated via progressListener-->
