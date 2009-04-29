@@ -63,7 +63,12 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is supposed to provide a generic interface to the
@@ -446,7 +451,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     protected Authorization detectAuthorization(final Principal principal) {
-        if (AuthenticationClass != null && (null == principal || AuthenticationClass.isInstance(principal))) {
+        if (AuthenticationClass != null) {
             return SpringAuthenticationClass == null ? AcegiAuthWrapper.getVerifier(principal, sessionMap) : SpringAuthWrapper.getVerifier(principal, sessionMap);
         } else {
             return defaultAuthorization;
@@ -456,5 +461,4 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public void setRequestCharacterEncoding(String encoding) {
         //to avoid UnsupportedOperationException with rave ViewHandler
     }
-
 }
