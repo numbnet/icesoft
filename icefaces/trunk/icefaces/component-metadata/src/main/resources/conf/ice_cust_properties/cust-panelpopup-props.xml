@@ -39,6 +39,7 @@
 &ice-effects-props;
 &events-props;
 
+<!--
 <property>
 	<description>Used to render a resizable popup.</description>
 	<property-name>resizable</property-name>
@@ -49,6 +50,7 @@
         <is-hidden>true</is-hidden>
 	</property-extension>
 </property>
+-->
 
 <property>
 	<description>
