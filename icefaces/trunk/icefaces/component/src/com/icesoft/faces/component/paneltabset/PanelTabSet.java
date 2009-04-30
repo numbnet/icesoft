@@ -95,6 +95,7 @@ public class PanelTabSet
      * @see javax.faces.component.UIComponent#decode(javax.faces.context.FacesContext)
      */
     public void decode(FacesContext context) {
+        eventQueued = false;
     	reconcileListeners();
         super.decode(context);
     }
@@ -210,7 +211,9 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-       
+        if (!isImmediate() && eventQueued) {
+            _selectedIndex.validate(context, this);            
+        }        
         applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
     }
 
@@ -226,9 +229,6 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-        if (!isImmediate() && eventQueued) {
-            _selectedIndex.validate(context, this);            
-        }            
         _selectedIndex.updateModel(context, this);
         applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
     
@@ -1193,7 +1193,6 @@ public class PanelTabSet
     
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        eventQueued = false;
     }
 
         
