@@ -135,7 +135,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
                 facesContext,
                 uiComponent,
                 input,
-                new String[]{}) ;
+                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ;
         // onfocus
         String original = (String) uiComponent.getAttributes().get("onfocus");
         String onfocus = "setFocus(this.id);";
