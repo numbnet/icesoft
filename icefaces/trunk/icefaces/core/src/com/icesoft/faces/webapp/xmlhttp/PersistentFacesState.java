@@ -41,6 +41,7 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
+import com.icesoft.faces.util.CoreUtils;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
@@ -295,6 +296,7 @@ public class PersistentFacesState implements Serializable {
     public void executeAndRender() throws RenderingException {
         view.acquireLifecycleLock();
         view.getFacesContext().injectBundles();
+        CoreUtils.addAuxiliaryContexts(view.getFacesContext());
         execute();
         render();
     }
