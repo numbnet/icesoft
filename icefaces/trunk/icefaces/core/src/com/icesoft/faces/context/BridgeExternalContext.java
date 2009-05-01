@@ -458,6 +458,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     }
 
+    public String getResponseCharacterEncoding() {
+        return "utf-8";
+    }
+
     public void setRequestCharacterEncoding(String encoding) {
         //to avoid UnsupportedOperationException with rave ViewHandler
     }
