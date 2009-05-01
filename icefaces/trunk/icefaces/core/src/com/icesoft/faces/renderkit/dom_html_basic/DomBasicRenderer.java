@@ -40,6 +40,8 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
 import com.icesoft.util.pooling.ClientIdPool;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.w3c.dom.Element;
 
 import javax.faces.application.Application;
@@ -67,6 +69,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class DomBasicRenderer extends Renderer {
+    private static final Log log = LogFactory.getLog(DomBasicRenderer.class);
     public static final String ATTRIBUTES_THAT_ARE_SET_KEY =
         "javax.faces.component.UIComponentBase.attributesThatAreSet";
 
@@ -496,13 +499,16 @@ public abstract class DomBasicRenderer extends Renderer {
                     "] but it is an instance of ["
                     + uiComponent.getClass() + "]");
         }
-        
-        if ((uiComponent instanceof UIInput) || (uiComponent instanceof UICommand)) {
-            if (findForm(uiComponent) == null) {
-                throw new NullPointerException("Missing Form - the UIComponent of type [" 
-                        + uiComponent.getClass() + "] requires a containing form." );
+
+        if (log.isDebugEnabled()) {
+            if ((uiComponent instanceof UIInput) || (uiComponent instanceof UICommand)) {
+                if (findForm(uiComponent) == null) {
+                    log.debug("Missing Form - the UIComponent of type [" 
+                            + uiComponent.getClass() + "] requires a containing form.");
+                }
             }
         }
+        
     }
 
     /**
