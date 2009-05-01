@@ -111,16 +111,6 @@ public class ImplementationUtil {
         } catch (ClassNotFoundException e) {
         }
 
-        try {
-            Class.forName(MYFACES_MARKER);
-            isMyFaces = true;
-        } catch (ClassNotFoundException e) {
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("JSF-RI: " + isRI + "  MyFaces: " + isMyFaces);
-        }
-
         //Test for JSF 1.2
         try {
             Class.forName(JSF12_MARKER);
@@ -141,6 +131,18 @@ public class ImplementationUtil {
 
         if (log.isTraceEnabled()) {
             log.trace("JSF-2: " + isJSF2);
+        }
+
+        try {
+            Class.forName(MYFACES_MARKER);
+            isMyFaces = true;
+            //Disable JSF12 detection in MyFaces environment
+            isJSF12 = false;
+        } catch (ClassNotFoundException e) {
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace("JSF-RI: " + isRI + "  MyFaces: " + isMyFaces);
         }
 
         try {
