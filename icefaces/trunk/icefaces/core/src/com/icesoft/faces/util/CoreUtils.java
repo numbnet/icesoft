@@ -1,19 +1,26 @@
 package com.icesoft.faces.util;
 
 import java.util.Iterator;
+import java.lang.reflect.Constructor;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.webapp.http.common.Configuration;
 
 public class CoreUtils {
+    private static final Log log = LogFactory.getLog(CoreUtils.class);
 	private static Boolean renderPortletStyleClass;
 	private static Boolean portletEnvironment;
 
@@ -175,7 +182,29 @@ public class CoreUtils {
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
         rootElement.setAttribute("onmouseover", onmouseover);
     }
-   
+    
+    public static void addAuxiliaryContexts(FacesContext facesContext)  {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        if (!(externalContext instanceof BridgeExternalContext))  {
+            return;
+        }
+        BridgeExternalContext bridgeExternalContext = 
+                (BridgeExternalContext) externalContext;
+        Configuration configuration = bridgeExternalContext.getConfiguration();
+        String className = configuration.getAttribute("auxiliaryContexts", "");
+        if ("".equals(className)) {
+            return;
+        }
+        try{
+            Class contextClass = Class.forName(className);
+            Constructor contextConstructor = contextClass.getDeclaredConstructors()[0];
+            contextConstructor.setAccessible(true);
+            contextConstructor.newInstance(new Object[]{facesContext});
+        } catch (Throwable t) {
+            log.error("Unable to add auxiliary context " + className, t);
+        }
+    }
+
     public static boolean objectsEqual(Object ob1, Object ob2) {
         if (ob1 == null && ob2 == null) {
             return true;

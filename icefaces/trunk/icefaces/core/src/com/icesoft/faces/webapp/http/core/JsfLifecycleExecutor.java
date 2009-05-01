@@ -4,6 +4,7 @@ import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
+import com.icesoft.faces.util.CoreUtils;
 
 public class JsfLifecycleExecutor extends LifecycleExecutor {
     private final static LifecycleFactory LIFECYCLE_FACTORY =
@@ -13,6 +14,7 @@ public class JsfLifecycleExecutor extends LifecycleExecutor {
             LIFECYCLE_FACTORY.DEFAULT_LIFECYCLE);
 
     public void apply(FacesContext facesContext) {
+        CoreUtils.addAuxiliaryContexts(facesContext);
         lifecycle.execute(facesContext);
         lifecycle.render(facesContext);
     }

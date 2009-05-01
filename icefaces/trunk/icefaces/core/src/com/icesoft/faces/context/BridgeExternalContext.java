@@ -180,11 +180,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Map responseCookieMap;
     protected Map requestHeaderMap;
     protected Map requestHeaderValuesMap;
+    protected Configuration configuration;
 
     protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration, Authorization authorization) {
         this.viewIdentifier = viewIdentifier;
         this.commandQueue = commandQueue;
         this.defaultAuthorization = authorization;
+        this.configuration = configuration;
         // ICE-3549
         this.standardScope = SeamUtilities.isSeamEnvironment() ||
                 configuration.getAttributeAsBoolean("standardRequestScope", false);
@@ -203,6 +205,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public abstract void updateOnPageLoad(Object request, Object response);
 
     public abstract void removeSeamAttributes();
+
+    public Configuration getConfiguration()  {
+        return configuration;
+    }
 
     public boolean isUserInRole(String role) {
         return detectedAuthorization.isUserInRole(role);
