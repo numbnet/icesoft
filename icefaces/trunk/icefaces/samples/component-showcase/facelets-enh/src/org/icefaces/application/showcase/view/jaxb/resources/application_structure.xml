@@ -1891,7 +1891,7 @@
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/selection/SelectionTagsBean.java"/>
             <!-- buttons and links-->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.buttonsAndLinks.ButtonsAndLinksBean"
-                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/selection/SelectionTagsBean.java"/>
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/buttonsAndLinks/ButtonsAndLinksBean.java"/>
             <!-- text fields-->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.textEntry.TextFieldsBean"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/textEntry/TextFieldsBean.java"/>
