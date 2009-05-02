@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.portlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
@@ -72,8 +73,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     public static final String INACTIVE_INCREMENT = "inactiveIncrement";
     private boolean adjustPortletSessionInactiveInterval = true;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, View commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig, Authorization authorization) {
-        super(viewIdentifier, commandQueue, configuration, authorization);
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, View commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig, Authorization authorization, BridgeFacesContext facesContext) {
+        super(viewIdentifier, commandQueue, configuration, authorization, facesContext);
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
 

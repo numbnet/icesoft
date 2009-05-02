@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
@@ -42,8 +43,8 @@ public class ServletExternalContext extends BridgeExternalContext {
     private Dispatcher dispatcher;
     private List locales;
 
-    public ServletExternalContext(String viewIdentifier, final Object req, Object response, View view, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, Authorization authorization) {
-        super(viewIdentifier, view, configuration, authorization);
+    public ServletExternalContext(String viewIdentifier, final Object req, Object response, View view, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, Authorization authorization, BridgeFacesContext facesContext) {
+        super(viewIdentifier, view, configuration, authorization, facesContext);
         HttpServletRequest request = (HttpServletRequest) req;
         session = new InterceptingServletSession(request.getSession(), sessionMonitor, view);
         context = session.getServletContext();

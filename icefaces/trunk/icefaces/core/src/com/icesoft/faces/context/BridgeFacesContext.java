@@ -51,9 +51,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jvnet.fastinfoset.FastInfosetException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import org.w3c.dom.CharacterData;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.el.ELContext;
@@ -76,11 +75,19 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
@@ -116,30 +123,30 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     static {
         try {
-            Class c = Class.forName( "org.jboss.jsfunit.context.JSFUnitFacesContext");
+            Class c = Class.forName("org.jboss.jsfunit.context.JSFUnitFacesContext");
             jsfUnitClass = c.getName();
-            jsfUnitConstructor = c.getConstructor( new Class[] { javax.faces.context.FacesContext.class} );
+            jsfUnitConstructor = c.getConstructor(new Class[]{javax.faces.context.FacesContext.class});
             log.info("JSFUnit environment detected");
         } catch (Exception e) {
         }
-    } 
+    }
 
     public BridgeFacesContext(final Request request, final String viewIdentifier, final String sessionID, final View view, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor, final String blockingRequestHandlerContext, final Authorization authorization) throws Exception {
         setCurrentInstance(this);
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
-                externalContext = new ServletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, authorization);
+                externalContext = new ServletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, authorization, BridgeFacesContext.this);
             }
 
             public void portlet(Object request, Object response, Object portletConfig) {
-                externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig, authorization);
+                externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig, authorization, BridgeFacesContext.this);
             }
         });
 
         String keepViewRoot = externalContext.getInitParameter("com.icesoft.faces.retainViewRoot");
         if (keepViewRoot != null) {
-            retainViewRoot = Boolean.parseBoolean( keepViewRoot);
-        } 
+            retainViewRoot = Boolean.parseBoolean(keepViewRoot);
+        }
         this.viewNumber = viewIdentifier;
         this.sessionID = sessionID;
         this.view = view;
@@ -248,7 +255,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             return (null);
         }
 
-        if (!rootKitId.equals(renderKitId))  {
+        if (!rootKitId.equals(renderKitId)) {
             renderKitId = rootKitId;
             RenderKitFactory renderKitFactory = (RenderKitFactory)
                     FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
@@ -310,11 +317,13 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // #3424. Allow viewRoot to be set to null. On page reload, this object
         // is reused, but viewRoot must be nullable 
         this.viewRoot = viewRoot;
-        lastViewID = viewRoot.getViewId();
         if (viewRoot != null) {
+            lastViewID = viewRoot.getViewId();
             final String path = viewRoot.getViewId();
             //Likely an error condition, but allows JSF 2.0 to run
-            if (null == path)  { return; }
+            if (null == path) {
+                return;
+            }
             if (PageTemplatePattern.matcher(path).matches()) {
                 //pointing this FacesContext to the new view
                 responseWriter = null;
@@ -413,7 +422,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         if (com.icesoft.util.SeamUtilities.isSpring2Environment()) {
             if (!retainViewRoot) {
                 this.viewRoot = null;
-            } 
+            }
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
@@ -430,7 +439,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         Document document = documentStore.load();
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
-        
+
         NodeList formElements = document.getElementsByTagName("form");
         int formElementsLength = formElements.getLength();
         for (int i = 0; i < formElementsLength; i++) {
@@ -445,8 +454,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
         documentStore.cache(document);
     }
-    
-    protected void applyBrowserFormChanges(Map parameters, Document document, Element form) {        
+
+    protected void applyBrowserFormChanges(Map parameters, Document document, Element form) {
         NodeList inputElements = form.getElementsByTagName("input");
         int inputElementsLength = inputElements.getLength();
         for (int i = 0; i < inputElementsLength; i++) {
@@ -460,16 +469,13 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                     if (!"".equals(value)) {
                         if (inputElement.hasAttribute("value")) {
                             inputElement.setAttribute("value", value);
-                        }
-                        else if (inputElement.getAttribute("type").equals("checkbox")) {
+                        } else if (inputElement.getAttribute("type").equals("checkbox")) {
                             inputElement.setAttribute("checked", "checked");
                         }
-                    }
-                    else {
+                    } else {
                         inputElement.setAttribute("value", "");
                     }
-                }
-                else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
+                } else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
                     String type = inputElement.getAttribute("type");
                     if (type != null && type.equals("checkbox") || type.equals("radio")) {
                         String currValue = inputElement.getAttribute("value");
@@ -479,7 +485,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                             // but for multiple radios, values would have at most length=1
                             String[] values = (String[]) parameters.get(name);
                             if (values != null) {
-                                for(int v = 0; v < values.length; v++) {
+                                for (int v = 0; v < values.length; v++) {
                                     if (currValue.equals(values[v])) {
                                         found = true;
                                         break;
@@ -495,18 +501,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                                 // Also, radios use checked="checked"
                                 if (type.equals("checkbox")) {
                                     inputElement.setAttribute("checked", "true");
-                                }
-                                else if (type.equals("radio")) {
+                                } else if (type.equals("radio")) {
                                     inputElement.setAttribute("checked", "checked");
                                 }
-                            }
-                            else {
+                            } else {
                                 inputElement.removeAttribute("checked");
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     if (inputElement.getAttribute("type").equals("checkbox")) {
                         ////inputElement.setAttribute("checked", "");
                         inputElement.removeAttribute("checked");
@@ -523,7 +526,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             if (!"".equals(id) && parameters.containsKey(id)) {
                 String value = ((String[]) parameters.get(id))[0];
                 Node firstChild = textareaElement.getFirstChild();
-                if (null != firstChild)  {
+                if (null != firstChild) {
                     //set value on the Text node
                     firstChild.setNodeValue(value);
                 } else {
@@ -531,7 +534,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                     //child for empty TextArea
                     textareaElement.appendChild(document.createTextNode(value));
                 }
-                
+
             }
         }
 
@@ -663,17 +666,17 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 Iterator clientIdIterator = facesContext.getClientIdsWithMessages();
                 FacesMessage message;
                 String clientId;
-                while(clientIdIterator.hasNext()){
-                    clientId = (String)clientIdIterator.next();
+                while (clientIdIterator.hasNext()) {
+                    clientId = (String) clientIdIterator.next();
                     Iterator facesMessagesForClientId = facesContext.getMessages(clientId);
-                    while(facesMessagesForClientId.hasNext()){
-                        message = (FacesMessage)facesMessagesForClientId.next();
+                    while (facesMessagesForClientId.hasNext()) {
+                        message = (FacesMessage) facesMessagesForClientId.next();
                         result.addMessage(clientId, message);
                     }
                 }
                 Iterator facesMessagesWithNoId = facesContext.getMessages(null);
-                while(facesMessagesWithNoId.hasNext()){
-                    message = (FacesMessage)facesMessagesWithNoId.next();
+                while (facesMessagesWithNoId.hasNext()) {
+                    message = (FacesMessage) facesMessagesWithNoId.next();
                     result.addMessage("", message);
                 }
                 if (log.isDebugEnabled()) {
@@ -818,13 +821,17 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         Document load() throws IOException;
     }
 
+    void resetLastViewID() {
+        lastViewID = null;
+    }
+
     private static class ReferenceDocumentStore implements DocumentStore {
         private Document document;
 
         public void save(Document document) {
             this.document = document;
         }
-        
+
         public void cache(Document document) {
             this.document = document;
         }
@@ -847,12 +854,12 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             this.document = null;
         }
 
-        public void cache(Document document)  {
+        public void cache(Document document) {
             this.document = document;
         }
 
         public Document load() throws IOException {
-            if (null != document)  {
+            if (null != document) {
                 return document;
             }
             if (data.length == 0) return null;
@@ -887,6 +894,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * Check if JSFUnit classes are available. If so, instantiate a wrapping
      * JSFUnitFacesContext passing <code>this</code> and stuff the result into the session where
      * appropriate.
+     *
      * @return true if this is a JSFUnit environment.
      */
     private boolean doJSFUnitCheck() {
@@ -894,14 +902,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // and don't release.
         try {
             if (jsfUnitConstructor != null) {
-                externalContext.getSessionMap().put(  jsfUnitClass + ".sessionkey",
-                                                      jsfUnitConstructor.newInstance( new Object[] { this }) );
+                externalContext.getSessionMap().put(jsfUnitClass + ".sessionkey",
+                        jsfUnitConstructor.newInstance(new Object[]{this}));
                 return true;
             }
         } catch (SessionExpiredException ite) {
             // Can happen after test is run, and release is called because
             // JSFUnit is cleaning up.
-        } catch( Exception e) {
+        } catch (Exception e) {
             log.error("Exception instantiating JSFUnitFacesContext", e);
         }
         return false;
