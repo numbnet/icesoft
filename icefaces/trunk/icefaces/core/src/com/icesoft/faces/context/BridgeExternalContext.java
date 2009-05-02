@@ -52,7 +52,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -181,12 +180,14 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Map requestHeaderMap;
     protected Map requestHeaderValuesMap;
     protected Configuration configuration;
+    protected BridgeFacesContext facesContext;
 
-    protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration, Authorization authorization) {
+    protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration, Authorization authorization, BridgeFacesContext context) {
         this.viewIdentifier = viewIdentifier;
         this.commandQueue = commandQueue;
         this.defaultAuthorization = authorization;
         this.configuration = configuration;
+        this.facesContext = context;
         // ICE-3549
         this.standardScope = SeamUtilities.isSeamEnvironment() ||
                 configuration.getAttributeAsBoolean("standardRequestScope", false);
@@ -206,7 +207,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     public abstract void removeSeamAttributes();
 
-    public Configuration getConfiguration()  {
+    public Configuration getConfiguration() {
         return configuration;
     }
 
@@ -399,11 +400,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
             throw new RuntimeException(exception);
         }
         redirector.redirect(uri.toString());
-        // #3172 FacesContext may be null if we're currently logging out.  
-        FacesContext fc = FacesContext.getCurrentInstance();
-        if (fc != null) {
-            fc.responseComplete();
-        }
+        facesContext.resetLastViewID();
+        facesContext.responseComplete();
     }
 
     public Map getRequestParameterMap() {
