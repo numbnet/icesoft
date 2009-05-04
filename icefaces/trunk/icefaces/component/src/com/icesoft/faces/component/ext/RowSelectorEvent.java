@@ -71,6 +71,18 @@ public class RowSelectorEvent extends FacesEvent {
         return selected;
     }
 
+    /**
+     * This property returns selected row(s) during the row selection event. 
+     * The event lists selection changes tied to the event, not the total model 
+     * state. So this property can return multiple rows only when the selection 
+     * was made using the "shift" key in enhancedMultiple mode, other wise it returns 
+     * a single rowindex.
+     * 
+     * To determine all the currently selected rows in a dataTable the application 
+     * needs to query the model 
+     *  
+     * @return the rows selected during the row selection event.
+     */
     public List getSelectedRows() {
         return selectedRows;
     }
