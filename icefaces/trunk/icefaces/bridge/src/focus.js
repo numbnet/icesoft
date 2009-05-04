@@ -44,7 +44,7 @@ function setFocus(id) {
     }
 
     This.setFocus = (function(id) {
-        if (id && id != currentFocus && isValidID(id)) {
+        if (id && isValidID(id)) {
             try {
                 id.asExtendedElement().focus();
                 setFocus(id);
