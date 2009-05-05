@@ -25,7 +25,7 @@ public class ServerUtility {
         } catch (UnknownHostException exception) {
             localAddress = "127.0.0.1";
         } catch (NoClassDefFoundError e)  {
-            //Google App Engine
+            // Google App Engine
             localAddress = "GAE";
         }
     }
@@ -40,7 +40,12 @@ public class ServerUtility {
         if (servletContext.getMajorVersion() >= 2 &&
             servletContext.getMinorVersion() >= 4) {
 
-            _localAddr = request.getLocalAddr(); // returns null in portal env.
+            try {
+                // Returns null in a portal environment.
+                _localAddr = request.getLocalAddr();
+            } catch (UnsupportedOperationException exception) {
+                // JBoss Portal 2.6.x environment.
+            }
         }
         return
             new ServletContextConfiguration("com.icesoft.faces", servletContext).
