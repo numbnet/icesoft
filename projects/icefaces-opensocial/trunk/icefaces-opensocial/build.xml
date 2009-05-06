@@ -31,18 +31,11 @@
   ~
   -->
 
-<project name="timezone5" default="tomcat6.0">
-    
-    <!--property name="ant.project.name" value="timezone5"/-->
+<project name="icefaces-opensocial" default="tomcat6.0">
     
     <property file="../build.properties"/>
-    <property name="common.build.file" location="../../etc/build-common.xml"/>
+    <property name="common.build.file" location="../etc/build-common.xml"/>
     
     <import file="${common.build.file}"/>
-    <!--
-    <target name="build.war" depends="compile">
-        <build.war/>
-    </target>
-    -->
 </project>
 
