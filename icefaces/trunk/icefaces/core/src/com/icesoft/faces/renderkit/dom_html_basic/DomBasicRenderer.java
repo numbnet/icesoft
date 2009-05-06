@@ -479,7 +479,7 @@ public abstract class DomBasicRenderer extends Renderer {
      *                              uiComponent is not assignable to the given
      *                              type.                               
      */
-    public void validateParameters(FacesContext facesContext,
+    public static void validateParameters(FacesContext facesContext,
                                    UIComponent uiComponent,
                                    Class validComponentType) {
 

@@ -55,7 +55,9 @@ import java.util.Map;
  * @author gmccleary
  */
 public class PassThruAttributeWriter {
-
+    
+    public static final String[] EMPTY_STRING_ARRAY = {};
+    
     private static List passThruAttributeNames = new ArrayList();
     private static List booleanPassThruAttributeNames = new ArrayList();
 

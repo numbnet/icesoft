@@ -532,9 +532,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 } else {
                     //DOM brought back from compression may have no
                     //child for empty TextArea
-                    textareaElement.appendChild(document.createTextNode(value));
+                    if (value != null && value.length() > 0) {
+                        textareaElement.appendChild(document.createTextNode(value));
+                    }
                 }
-
             }
         }
 
