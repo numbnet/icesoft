@@ -12,23 +12,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 
-public class InputTextRenderer extends BaseRenderer{
+public class InputTextRenderer extends BaseInputRenderer {
     
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT);
 
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        //readonly or disabled components are not required to submit the value
-        super.decode(facesContext, uiComponent);
-        if(DomBasicRenderer.isStatic(uiComponent)) return;
-        String clientId = uiComponent.getClientId(facesContext);
-        Map requestMap =
-                facesContext.getExternalContext().getRequestParameterMap();
-        if (requestMap.containsKey(clientId)) {
-            String decodedValue = (String) requestMap.get(clientId);
-            ((UIInput)uiComponent).setSubmittedValue(decodedValue);
-        }
-    }
-    
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -39,7 +26,7 @@ public class InputTextRenderer extends BaseRenderer{
         PassThruAttributeWriter.renderBooleanAttributes(
                 writer, 
                 uiComponent, 
-                new String[0]);
+                PassThruAttributeWriter.EMPTY_STRING_ARRAY);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);   
         writer.writeAttribute(HTML.TYPE_ATTR, "text", null);        
         Object styleClass = uiComponent.getAttributes().get("styleClass");
@@ -58,18 +45,6 @@ public class InputTextRenderer extends BaseRenderer{
             writer.writeAttribute(HTML.VALUE_ATTR, value, null);
         }
         writer.endElement(HTML.INPUT_ELEM);
-    }
-    
-    public String getValue(FacesContext facesContext, UIComponent uiComponent) {
-        // for input components, get the submitted value
-        if (uiComponent instanceof UIInput) {
-            Object submittedValue = ((UIInput) uiComponent).getSubmittedValue();
-            if (submittedValue != null && submittedValue instanceof String) {
-                return (String) submittedValue;
-            }
-        }
-        return DomBasicInputRenderer.converterGetAsString(facesContext, 
-                uiComponent, ((UIInput) uiComponent).getValue());
     }
    
     protected void renderHtmlAttributes(
