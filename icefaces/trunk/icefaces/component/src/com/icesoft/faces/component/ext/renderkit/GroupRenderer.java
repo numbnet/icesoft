@@ -203,7 +203,6 @@ public class GroupRenderer
         if (!dropListener) {
             dropMask = DndEvent.MASK_ALL;
         }
-
         if ("DRAG".equalsIgnoreCase(dndType)) {
 
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
@@ -212,7 +211,7 @@ public class GroupRenderer
 
         } else if ("drop".equalsIgnoreCase(dndType)) {
             DragDrop.addDroptarget(
-                    uiComponent.getClientId(facesContext), null, facesContext,
+                    uiComponent, null, facesContext,
                     dropMask, hoverClass);
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
 
@@ -220,7 +219,7 @@ public class GroupRenderer
                                           handleId, dragOptions, dragMask,
                                           facesContext);
             DragDrop.addDroptarget(
-                    uiComponent.getClientId(facesContext), null, facesContext,
+                    uiComponent, null, facesContext,
                     dropMask, hoverClass);
         } else {
             throw new IllegalArgumentException("Value [" + dndType +
