@@ -35,6 +35,8 @@ package com.icesoft.faces.context.effects;
 
 import javax.faces.context.FacesContext;
 import java.util.StringTokenizer;
+import com.icesoft.faces.application.D2DViewHandler;
+import javax.faces.component.UIComponent;
 
 /**
  * Make HTML Elements draggable or droppable
@@ -121,22 +123,33 @@ public class DragDrop {
 
     /**
      * Make an HTML element droppable
-     * @param id
+     * @param uiComponent
      * @param acceptClass
      * @param facesContext
      * @param mask
      * @param hoverClass
      * @return
      */
-    public static String addDroptarget(String id, String acceptClass,
+    public static String addDroptarget(UIComponent uiComponent, String acceptClass,
                                        FacesContext facesContext, String mask,
                                        String hoverClass) {
+        String id = uiComponent.getClientId(facesContext);
+        String scrollid = (String) uiComponent.getAttributes().get("dropTargetScrollerId");
+        if (scrollid != null && scrollid.trim().length() > 0) {
+            UIComponent scroller = D2DViewHandler.findComponentInView(facesContext.getViewRoot(), scrollid);
+            if (scroller != null) {
+                scrollid = scroller.getClientId(facesContext);
+            }
+        }
         EffectsArguments ea = new EffectsArguments();
         ea.add("accept", acceptClass);
         ea.add("mask", mask);
         ea.add("hoverclass", hoverClass);
+        if (scrollid != null && scrollid.trim().length() > 0) {
+            ea.add("scrollid", scrollid);
+        }
 
-        String call = "Droppables.add('" + id + "'" + ea.toString();        
+        String call = "Droppables.add('" + id + "'" + ea.toString();
         JavascriptContext.addJavascriptCall(facesContext, call);
         return call;
     }

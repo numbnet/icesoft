@@ -75,6 +75,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private Object dragValue;
 
     private String dropTarget;
+    private String dropTargetScrollerId;
     private MethodBinding dropListener;
     private Object dropValue;
 
@@ -658,7 +659,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[42];
+        Object values[] = new Object[43];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -701,6 +702,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[39] = onmouseover;
         values[40] = onmousemove;
         values[41] = onmouseup;        
+        values[42] = dropTargetScrollerId;        
         return values;
 
     }
@@ -752,7 +754,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         onmouseout= (String)values[38];
         onmouseover= (String)values[39];
         onmousemove= (String)values[40];
-        onmouseup= (String)values[41];          
+        onmouseup= (String)values[41];
+        dropTargetScrollerId = (String) values[42];
     }
 
     /**
@@ -1056,6 +1059,18 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     public void setOnkeyup(String onkeyup) {
         this.onkeyup = onkeyup;
     }
-    
+
+    public String getDropTargetScrollerId() {
+        if (dropTargetScrollerId != null) return dropTargetScrollerId;
+        ValueBinding vb = getValueBinding("dropTargetScrollerId");
+        if (vb == null) return null;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return null;
+        return value.toString();
+    }
+
+    public void setDropTargetScrollerId(String dropTargetScrollerId) {
+        this.dropTargetScrollerId = dropTargetScrollerId;
+    }
 }
 

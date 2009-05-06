@@ -298,3 +298,18 @@
         <is-hidden>true</is-hidden>
     </property-extension>
 </property>
+
+<property>
+<description>
+    Id of scrollable div containing drop target.
+    Not needed if drop target is not in a scrollable div.
+</description>
+<property-name>dropTargetScrollerId</property-name>
+<property-class>java.lang.String</property-class>
+<property-extension>
+    <category>ICE_COMPONENT</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+</property-extension>
+</property>

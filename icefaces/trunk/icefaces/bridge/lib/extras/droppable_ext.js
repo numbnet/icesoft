@@ -44,7 +44,7 @@ Droppables.show = function(point, element) {
 
     if (this.last_active) this.deactivate(this.last_active);
     var dropsToScan = this.drops;
-    if (DropRegions.init) {
+    if (DropRegions.init && this.drops.all(function(drop){return !drop.scrollid;})) {
         dropsToScan = DropRegions.drops(point);
     }
     dropsToScan.each(function(drop) {
