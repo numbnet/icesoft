@@ -1,5 +1,5 @@
 <html>
     <body>
-        <jsp:forward page="timezone.iface"/>
+        <jsp:forward page="activities.iface"/>
     </body>
 </html>
