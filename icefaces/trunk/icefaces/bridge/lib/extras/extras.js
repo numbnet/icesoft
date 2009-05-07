@@ -293,6 +293,17 @@ Ice.preventTextSelection = function(event) {
     if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
         return true;
     } else {
+        Ice.disableTxtSelection(document.body);
         return false;
     }
+}
+
+Ice.disableTxtSelection = function (element) {
+    element.onselectstart = function () { return false; }
+    element.onmousedown = function (evt) { return false; };
+}
+
+Ice.enableTxtSelection = function (element) {
+    element.onselectstart = function () { return true; }
+    element.onmousedown = function (evt) { return true; };    
 }

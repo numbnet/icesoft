@@ -710,7 +710,7 @@ public class TableRenderer
                     tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
-                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='" +
+                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
                         getPortletAlternateRowClass(selectedClass, rowIndex) + "'"); // ICE-2571
             }
             domContext.setCursorParent(tBody);
