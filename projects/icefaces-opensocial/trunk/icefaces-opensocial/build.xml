@@ -33,9 +33,13 @@
 
 <project name="icefaces-opensocial" default="tomcat6.0">
     
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+
     <property file="../build.properties"/>
     <property name="common.build.file" location="../etc/build-common.xml"/>
-    
     <import file="${common.build.file}"/>
+
+    
 </project>
 
