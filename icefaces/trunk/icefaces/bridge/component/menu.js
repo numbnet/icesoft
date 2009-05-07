@@ -115,6 +115,9 @@ Ice.Menu = {
                     submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.offsetHeight});
                 }
             }
+            if (submenu.viewportOffset().top < 0) { // ICE-3658
+                submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.viewportOffset().top});
+            }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
         Ice.Menu.currentMenu = submenu;
