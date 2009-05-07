@@ -33,11 +33,9 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import com.icesoft.faces.component.IceExtended;
-import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.component.ext.HtmlInputTextarea;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
@@ -45,13 +43,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.w3c.dom.Element;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIInput;
-import org.w3c.dom.Text;
 
 public class TextareaRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TextareaRenderer {
@@ -65,27 +59,29 @@ public class TextareaRenderer
                 ExtendedAttributeConstants.ICE_INPUTTEXTAREA,
                 new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
     
-    private static Map rendererJavascript;
-    private static Map rendererJavascriptPartialSubmit;
-    static {
-        rendererJavascript = new HashMap();
-        rendererJavascript.put(HTML.ONMOUSEDOWN_ATTR,
-            ONMOUSEDOWN_FOCUS);
-        
-        rendererJavascriptPartialSubmit = new HashMap();
-        rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR,
-            ONMOUSEDOWN_FOCUS);
-        rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
-            DomBasicRenderer.ICESUBMITPARTIAL);
-    }
-    
     protected void renderHtmlAttributes(
         FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
             throws IOException {
+        HtmlInputTextarea inputTextarea = (HtmlInputTextarea) uiComponent;
         PassThruAttributeWriter.renderHtmlAttributes(
             writer, uiComponent, PASSTHRU);
-        Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit() ?
-            rendererJavascriptPartialSubmit : rendererJavascript;
+        Map rendererJS = new HashMap(4);
+        rendererJS.put(
+            HTML.ONMOUSEDOWN_ATTR, ONMOUSEDOWN_FOCUS);
+        int maxlength = inputTextarea.getMaxlength();
+        if (maxlength >= 0) {
+            // The most recent char is not a part of the textarea's value when
+            // the onkey* events fire, so if you mouse away, it'll have one 
+            // too many chars, hence the need for onchange. Can't just be
+            // onchange though, since it doesn't fire as you type, in FF3.
+            String handler = "Ice.txtAreaMaxLen(this,"+maxlength+");"; 
+            rendererJS.put(HTML.ONKEYDOWN_ATTR, handler);
+            rendererJS.put(HTML.ONCHANGE_ATTR, handler);
+        }
+        if (inputTextarea.getPartialSubmit()) {
+            rendererJS.put(
+                HTML.ONBLUR_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+        }
         LocalEffectEncoder.encode(
             facesContext, uiComponent, PASSTHRU_JS_EVENTS, rendererJS, null, writer);                
     }

@@ -67,6 +67,7 @@ public class HtmlInputTextarea
     private String renderedOnUserRole = null;
     private Effect effect;
     private Boolean visible = null;
+    private Integer maxlength;
 
     private Effect onclickeffect;
     private Effect ondblclickeffect;
@@ -510,13 +511,31 @@ public class HtmlInputTextarea
         ValueBinding vb = getValueBinding("autocomplete");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    /**
+     * <p>Set the value of the <code>maxlength</code> property.</p>
+     */
+    public void setMaxlength(int maxlength) {
+        this.maxlength = new Integer(maxlength);
+    }
+    
+    /**
+     * <p>Return the value of the <code>maxlength</code> property.</p>
+     */
+    public int getMaxlength() {
+        if (maxlength != null) {
+            return maxlength.intValue();
+        }
+        ValueBinding vb = getValueBinding("maxlength");
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : Integer.MIN_VALUE;
+    }
 
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[23];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -538,6 +557,7 @@ public class HtmlInputTextarea
         values[20] = visible;
         values[21] = autocomplete;
         values[22] = getSubmittedValue();
+        values[23] = maxlength;
         return ((Object) (values));
     }
 
@@ -568,6 +588,7 @@ public class HtmlInputTextarea
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
         setSubmittedValue(values[22]);
+        maxlength = (Integer) values[23];
     }
 }
    

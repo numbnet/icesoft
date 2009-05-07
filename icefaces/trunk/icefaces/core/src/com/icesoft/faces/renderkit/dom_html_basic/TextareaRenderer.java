@@ -34,10 +34,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
-import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.DOMUtils;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;

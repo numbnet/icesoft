@@ -307,3 +307,9 @@ Ice.enableTxtSelection = function (element) {
     element.onselectstart = function () { return true; }
     element.onmousedown = function (evt) { return true; };    
 }
+
+Ice.txtAreaMaxLen = function(field, maxlength) {
+    if (maxlength >= 0 && field.value.length > maxlength) {
+        field.value = field.value.substring(0, maxlength);
+    }
+}
