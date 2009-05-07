@@ -255,6 +255,9 @@ public class TreeRenderer extends DomBasicRenderer {
             Map requestMap = facesContext.getExternalContext().getRequestMap();
             String varAttribute = treeComponent.getVar();
             requestMap.put(varAttribute, current);
+            if (!treeNode.isRendered()) {
+                return;
+            }
             domContext.setCursorParent(parentDOMNode);
 
             treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
@@ -272,6 +275,9 @@ public class TreeRenderer extends DomBasicRenderer {
             Map requestMap = facesContext.getExternalContext().getRequestMap();
             String varAttribute = treeComponent.getVar();
             requestMap.put(varAttribute, current);
+            if (!treeNode.isRendered()) {
+                return;
+            }
             domContext.setCursorParent(parentDOMNode);
 
             treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
