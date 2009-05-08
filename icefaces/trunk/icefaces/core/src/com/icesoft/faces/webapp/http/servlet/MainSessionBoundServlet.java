@@ -93,7 +93,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
             receivePing = OKServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new RequestVerifier(sessionID, new PushServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
+            sendUpdatedViews = new RequestVerifier(sessionID, new PushServerDetector(session, sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
             sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views, this));
             receivePing = new RequestVerifier(sessionID, new ReceivePing(views, this));
         }

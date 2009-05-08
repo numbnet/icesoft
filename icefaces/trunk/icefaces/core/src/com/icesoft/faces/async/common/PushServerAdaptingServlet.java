@@ -48,20 +48,24 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class PushServerAdaptingServlet
 implements Server {
+    private static final String SEQUENCE_NUMBER_KEY =
+        "com.icesoft.faces.sequenceNumber";
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
     private static final Log LOG =
         LogFactory.getLog(PushServerAdaptingServlet.class);
 
     private String blockingRequestHandlerContext;
-    private long sequenceNumber;
 
     public PushServerAdaptingServlet(
-        final String iceFacesId, final Collection synchronouslyUpdatedViews,
+        final HttpSession httpSession, final String iceFacesId,
+        final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews, final Configuration configuration,
         final MessageServiceClient messageServiceClient)
     throws MessageServiceException {
@@ -75,6 +79,17 @@ implements Server {
                     synchronouslyUpdatedViews.clear();
                     Set _viewIdentifierSet = new HashSet(allUpdatedViews);
                     if (!_viewIdentifierSet.isEmpty()) {
+                        Long _sequenceNumber =
+                            (Long)httpSession.getAttribute(SEQUENCE_NUMBER_KEY);
+                        if (_sequenceNumber != null) {
+                            _sequenceNumber =
+                                new Long(_sequenceNumber.longValue() + 1);
+                        } else {
+                            _sequenceNumber =
+                                new Long(1);
+                        }
+                        httpSession.setAttribute(
+                            SEQUENCE_NUMBER_KEY, _sequenceNumber);
                         String[] _viewIdentifiers =
                             (String[])
                                 _viewIdentifierSet.toArray(
@@ -93,7 +108,7 @@ implements Server {
                                 blockingRequestHandlerContext);
                         messageServiceClient.publish(
                             iceFacesId + ";" +                    // ICEfaces ID
-                                ++sequenceNumber + ";" +      // Sequence Number
+                                _sequenceNumber + ";" +       // Sequence Number
                                 _stringWriter.toString(),        // Message Body
                             _messageProperties,
                             UPDATED_VIEWS_MESSAGE_TYPE,
