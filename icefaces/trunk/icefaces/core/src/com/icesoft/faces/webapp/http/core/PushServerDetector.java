@@ -9,6 +9,8 @@ import com.icesoft.util.MonitorRunner;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,7 +25,8 @@ implements Server {
     private Server server;
 
     public PushServerDetector(
-        final String icefacesID, final Collection synchronouslyUpdatedViews,
+        final HttpSession httpSession, final String icefacesID,
+        final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner,
         final Configuration configuration,
         final MessageServiceClient messageServiceClient,
@@ -43,8 +46,9 @@ implements Server {
         }
         server =
             factory.newServer(
-                icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                monitorRunner, configuration, messageServiceClient, pageTest);
+                httpSession, icefacesID, synchronouslyUpdatedViews,
+                allUpdatedViews, monitorRunner, configuration,
+                messageServiceClient, pageTest);
     }
 
     public void service(final Request request) throws Exception {
@@ -57,7 +61,8 @@ implements Server {
 
     private static interface ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
+            final HttpSession httpSession, final String icefacesID,
+            final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
@@ -68,7 +73,8 @@ implements Server {
     private static class PushServerAdaptingServletFactory
     implements ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
+            final HttpSession httpSession, final String icefacesID,
+            final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
@@ -78,6 +84,7 @@ implements Server {
             try {
                 return
                     new PushServerAdaptingServlet(
+                        httpSession,
                         icefacesID,
                         synchronouslyUpdatedViews,
                         allUpdatedViews,
@@ -95,9 +102,9 @@ implements Server {
                 }
                 return
                     factory.newServer(
-                        icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                        monitorRunner, configuration, messageServiceClient,
-                        pageTest);
+                        httpSession, icefacesID, synchronouslyUpdatedViews,
+                        allUpdatedViews, monitorRunner, configuration,
+                        messageServiceClient, pageTest);
             }
         }
     }
@@ -105,7 +112,8 @@ implements Server {
     private static class SendUpdatedViewsFactory
     implements ServerFactory {
         public Server newServer(
-            final String icefacesID, final Collection synchronouslyUpdatedViews,
+            final HttpSession httpSession, final String icefacesID,
+            final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
