@@ -39,27 +39,47 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Set;
+
 //todo: rename to SessionBoundServer
 public class SessionBoundServlet
 implements Server {
     private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
-    private PathDispatcherServer pathDispatcherServer;
+
+    protected PathDispatcherServer pathDispatcherServer;
 
     public SessionBoundServlet(
         final SessionManager sessionManager,
         final ExecuteQueue executeQueue,
         final SessionDispatcher.Monitor monitor) {
 
-        // todo: I should've done this differently... When revisiting this I
-        //       should create a separate DisposeViewsServer and register that
-        //       with the appropriate Request URI.
-        Server _server =
-            new SendUpdatedViewsServer(sessionManager, executeQueue, monitor);
         pathDispatcherServer = new PathDispatcherServer();
         pathDispatcherServer.dispatchOn(
-            ".*block\\/receive\\-updated\\-views$", _server);
+            ".*block\\/receive\\-updated\\-views$",
+            new SendUpdatedViewsServer(sessionManager, monitor) {
+                public void handle(
+                    final Request request, final Set iceFacesIdSet) {
+
+                    new IDVerifier(
+                        iceFacesIdSet,
+                        new ReceiveUpdatedViewsHandler(
+                            request, iceFacesIdSet, sessionManager,
+                            executeQueue)
+                    ).handle();
+                }
+            });
         pathDispatcherServer.dispatchOn(
-            ".*block\\/dispose\\-views$", _server);
+            ".*block\\/dispose\\-views$",
+            new DisposeViewsHandlerServer(monitor) {
+                public void handle(final Request request) {
+                    new DisposeViewsHandler(
+                        request, sessionManager, executeQueue
+                    ).handle();
+                }
+            });
+        pathDispatcherServer.dispatchOn(
+            ".*",
+            new NotFoundServer());
     }
 
     public void service(Request request) throws Exception {

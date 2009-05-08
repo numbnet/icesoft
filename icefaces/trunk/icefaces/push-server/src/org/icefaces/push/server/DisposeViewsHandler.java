@@ -64,10 +64,9 @@ implements Handler, Runnable {
 
     private static final String DISPOSE_VIEWS_MESSAGE_TYPE = "DisposeViews";
 
-    private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
+    private static final Log LOG = LogFactory.getLog(DisposeViewsHandler.class);
 
     private final SessionManager sessionManager;
-    private final Request request;
 
     private int state = STATE_UNINITIALIZED;
 
@@ -75,8 +74,7 @@ implements Handler, Runnable {
         final Request request, final SessionManager sessionManager,
         final ExecuteQueue executeQueue) {
 
-        super(executeQueue);
-        this.request = request;
+        super(request, executeQueue);
         this.sessionManager = sessionManager;
     }
 

@@ -31,6 +31,8 @@
  */
 package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.http.common.Request;
+
 /**
  * <p>
  *   The <code>AbstractHandler</code> class provides a base implementation of
@@ -39,15 +41,35 @@ package org.icefaces.push.server;
  */
 public abstract class AbstractHandler
 implements Handler, Runnable {
-    protected ExecuteQueue executeQueue;
+    protected final ExecuteQueue executeQueue;
+    protected final Handler handler;
+    protected final Request request;
+
+    protected AbstractHandler(final Handler handler) {
+        this.handler = handler;
+        this.request = handler.getRequest();
+        this.executeQueue = handler.getExecuteQueue();
+    }
 
     /**
      * <p>
      *   Constructs an <code>AbstractHandler</code> object.
      * </p>
      */
-    protected AbstractHandler(final ExecuteQueue executeQueue) {
+    protected AbstractHandler(
+        final Request request, final ExecuteQueue executeQueue) {
+
+        this.request = request;
         this.executeQueue = executeQueue;
+        this.handler = null;
+    }
+
+    public ExecuteQueue getExecuteQueue() {
+        return executeQueue;
+    }
+
+    public Request getRequest() {
+        return request;
     }
 
     public void handle() {

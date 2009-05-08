@@ -31,6 +31,8 @@
  */
 package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.http.common.Request;
+
 /**
  * <p>
  *   Please note that it is preferred to invoke <code>{@link #handle()}</code>
@@ -39,5 +41,9 @@ package org.icefaces.push.server;
  */
 public interface Handler
 extends Runnable {
-    public void handle();
+    ExecuteQueue getExecuteQueue();
+
+    Request getRequest();
+
+    void handle();
 }

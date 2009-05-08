@@ -34,7 +34,6 @@ package org.icefaces.push.server;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.util.List;
 import java.util.Set;
@@ -70,11 +69,9 @@ implements Handler, Runnable {
         };
 
     private final SessionManager sessionManager;
-    private final Request request;
 
     private Set iceFacesIdSet;
     private List updatedViewsList;
-    private SequenceNumbers sequenceNumbers;
     
     private int state = STATE_UNINITIALIZED;
 
@@ -82,10 +79,26 @@ implements Handler, Runnable {
         final Request request, final Set iceFacesIdSet,
         final SessionManager sessionManager, final ExecuteQueue executeQueue) {
 
-        super(executeQueue);
-        this.request = request;
+        super(request, executeQueue);
         this.iceFacesIdSet = iceFacesIdSet;
         this.sessionManager = sessionManager;
+    }
+
+    public void respondWith(
+        final Request request, final List updatedViewsList) {
+
+        try {
+            request.respondWith(
+                new UpdatedViewsResponseHandler(
+                    request, updatedViewsList));
+        } catch (Exception exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "An error occurred while " +
+                        "trying to response with: 200 OK!",
+                    exception);
+            }
+        }
     }
 
     public void run() {
@@ -99,26 +112,6 @@ implements Handler, Runnable {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Processing Request");
                 }
-                if (iceFacesIdSet.isEmpty()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "404 Not Found (ICEfaces ID(s))");
-                    }
-                    try {
-                        request.respondWith(new NotFoundHandler(""));
-                    } catch (Exception exception) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(
-                                "An error occurred " +
-                                    "while trying to respond with: " +
-                                        "404 Not Found!",
-                                exception);
-                        }
-                    }
-                    state = STATE_DONE;
-                    return;
-                }
-                extractSequenceNumbers();
                 // checking pending request...
                 ReceiveUpdatedViewsHandler _receiveUpdatedViewsHandler =
                     (ReceiveUpdatedViewsHandler)
@@ -146,7 +139,11 @@ implements Handler, Runnable {
                 if (sessionManager.isValid(iceFacesIdSet)) {
                     updatedViewsList =
                         sessionManager.getUpdatedViewsManager().
-                            pull(iceFacesIdSet, sequenceNumbers);
+                            pull(
+                                iceFacesIdSet,
+                                new SequenceNumbers(
+                                    request.
+                                        getHeaderAsStrings("X-Window-Cookie")));
                     if (updatedViewsList == null || updatedViewsList.isEmpty()) {
                         sessionManager.getRequestManager().
                             push(iceFacesIdSet, this);
@@ -171,18 +168,7 @@ implements Handler, Runnable {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Response is Ready");
                 }
-                try {
-                    request.respondWith(
-                        new UpdatedViewsResponseHandler(
-                            request, updatedViewsList));
-                } catch (Exception exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "An error occurred while " +
-                                "trying to response with: 200 OK!",
-                            exception);
-                    }
-                }
+                respondWith(request, updatedViewsList);
                 state = STATE_DONE;
             case STATE_DONE :
                 if (LOG.isTraceEnabled()) {
@@ -191,17 +177,6 @@ implements Handler, Runnable {
                 break;
             default :
                 // this should never happen!
-        }
-    }
-
-    private void extractSequenceNumbers() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Extracting Sequence Number(s)...");
-        }
-        sequenceNumbers =
-            new SequenceNumbers(request.getHeaderAsStrings("X-Window-Cookie"));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Sequence Number(s): " + sequenceNumbers);
         }
     }
 }
