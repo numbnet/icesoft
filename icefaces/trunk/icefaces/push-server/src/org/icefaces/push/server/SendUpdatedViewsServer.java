@@ -35,26 +35,25 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.HashSet;
 import java.util.Set;
 
-public class SendUpdatedViewsServer
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public abstract class SendUpdatedViewsServer
 implements Server {
     private static final Log LOG =
         LogFactory.getLog(SendUpdatedViewsServer.class);
 
     private final SessionManager sessionManager;
-    private final ExecuteQueue executeQueue;
     private final SessionDispatcher.Monitor monitor;
 
     public SendUpdatedViewsServer(
-        final SessionManager sessionManager, final ExecuteQueue executeQueue,
+        final SessionManager sessionManager,
         final SessionDispatcher.Monitor monitor) {
+
         this.sessionManager = sessionManager;
-        this.executeQueue = executeQueue;
         this.monitor = monitor;
     }
 
@@ -85,9 +84,10 @@ implements Server {
             LOG.debug("ICEfaces ID(s): " + _iceFacesIdSet);
         }
         monitor.touchSession();
-        new ProcessHandler(
-            request, _iceFacesIdSet, sessionManager, executeQueue).handle();
+        handle(request, _iceFacesIdSet);
     }
+
+    public abstract void handle(Request request, Set iceFacesIdSet);
 
     public void shutdown() {
         // do nothing.
