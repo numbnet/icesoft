@@ -94,12 +94,12 @@ public class MainSessionBoundServlet implements Server, PageTest {
         } else {
             //setup blocking connection server
             sendUpdatedViews = new RequestVerifier(sessionID, new PushServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService, this));
-            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views));
-            receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
+            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views, this));
+            receivePing = new RequestVerifier(sessionID, new ReceivePing(views, this));
         }
 
         Server upload = new UploadServer(views, configuration);
-        Server receiveSendUpdates = new RequestVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor));
+        Server receiveSendUpdates = new RequestVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
         dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
         dispatcher.dispatchOn(".*block\\/receive\\-updated\\-views$", sendUpdatedViews);
