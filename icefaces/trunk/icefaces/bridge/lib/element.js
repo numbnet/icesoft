@@ -34,16 +34,20 @@
 [ Ice.ElementModel = new Object ].as(function(This) {
     //window scoped variable that keeps track of the focused element
     window.focusedElement = null;
-    var recordFocus = function(element) {
-        window.focusedElement = element.id;
-    };
-    var restoreFocus = function(element) {
+    var restoreElementFocus = function(element) {
         if (window.focusedElement == element.id) element.focus();
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }.delayFor(100);
-
+    var trackElementFocus = function(element) {
+        Ice.Focus.registerElementListener(element, 'onfocus', function() {
+            window.focusedElement = element.id;
+        });
+        Ice.Focus.registerElementListener(element, 'onblur', function() {
+            window.focusedElement = null;
+        });
+    };
     window.onLoad(function() {
-        Ice.Focus.recordFocus(document, recordFocus);
+        $element(document.body).trackFocus();
     });
 
     This.TemporaryContainer = function() {
@@ -139,7 +143,14 @@
 
         updateDOM: function(update) {
             this.replaceHtml(update.asHTML());
-            restoreFocus(this.element);
+            restoreElementFocus(this.element);
+            this.trackFocus();
+        },
+
+        trackFocus: function() {
+            $enumerate(['select', 'input', 'button', 'a', 'textarea']).each(function(type) {
+                $enumerate(this.element.getElementsByTagName(type)).each(trackElementFocus);
+            }.bind(this));
         },
 
         replaceHtml: function(html) {
@@ -277,6 +288,10 @@
             this.element.onfocus = Function.NOOP;
             this.element.focus();
             this.element.onfocus = onFocusListener;
+        },
+
+        trackFocus: function() {
+            trackElementFocus(this.element);
         },
 
         serializeOn: function(query) {
@@ -479,6 +494,10 @@
             this.element.onfocus = Function.NOOP;
             this.element.focus();
             this.element.onfocus = onFocusListener;
+        },
+
+        trackFocus: function() {
+            trackElementFocus(this.element);
         },
 
         serializeOn: function(query) {
