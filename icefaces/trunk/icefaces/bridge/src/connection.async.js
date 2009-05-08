@@ -183,7 +183,11 @@
                     commandDispatcher.register('pong', function() {
                         ping.pong();
                     });
-                    this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery.asURIEncodedString(), Connection.FormPost);
+                    this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery.asURIEncodedString(), function(request) {
+                        Connection.FormPost(request);
+                        request.on(Connection.OK, this.receiveCallback);
+                        request.on(Connection.OK, Connection.Close);
+                    }.bind(this));
                 }.bind(this));
 
                 this.heartbeat.onLostPongs(this.connectionDownListeners.broadcaster(), heartbeatRetries);
