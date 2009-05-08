@@ -1,10 +1,12 @@
 package com.icesoft.faces.webapp.http.common;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Date;
+
+import javax.servlet.http.Cookie;
 
 public class RequestProxy implements Request {
     protected Request request;
@@ -75,6 +77,10 @@ public class RequestProxy implements Request {
 
     public boolean getParameterAsBoolean(String name, boolean defaultValue) {
         return request.getParameterAsBoolean(name, defaultValue);
+    }
+
+    public Cookie[] getCookies() {
+        return request.getCookies();
     }
 
     public String getLocalAddr() {

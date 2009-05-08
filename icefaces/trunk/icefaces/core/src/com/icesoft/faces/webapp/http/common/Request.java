@@ -1,5 +1,6 @@
 package com.icesoft.faces.webapp.http.common;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +40,8 @@ public interface Request {
     int getParameterAsInteger(String name, int defaultValue);
 
     boolean getParameterAsBoolean(String name, boolean defaultValue);
+
+    Cookie[] getCookies();
 
     String getLocalAddr();
 

@@ -165,6 +165,10 @@ public class ServletRequestResponse implements Request, Response {
         }
     }
 
+    public Cookie[] getCookies() {
+        return request.getCookies();
+    }
+
     public String getLocalAddr() {
         return request.getLocalAddr();
     }
