@@ -45,47 +45,36 @@
             <tr>
                 <td valign="top">
                     <table width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td background="images/demo-page-bkgnd.gif"><img
-                                    src="images/demo-page-left.gif"/></td>
-                        </tr>
-                        <tr>
-                            <td height="45" valign="bottom"><img
-                                    src="images/timezone_logo.gif"/></td>
+                        <tr height="159">
+                            <td background="images/banner_bg.gif" valign="top" ><img
+                                    src="images/demo-page-left.jpg"/></td>
                         </tr>
                     </table>
                 </td>
                 <td valign="top" align="right" width="119"><img
-                        src="images/demo-page-right.gif"/></td>
+                        src="images/banner_logo.jpg"/></td>
             </tr>
         </table>
     </div>
 
-    <div>
-        <ice:form partialSubmit="true">
+    <div >
             <ice:dataTable 
                            value="#{activityBean.activityList}"
                            var="activity" headerClass="tableHeader"
-                           width="100%"
-                           columnClasses="checkedDisplayName,checkedLocation">
-                <f:facet name="header">
-                    <ice:outputText styleClass="tableHeaderTitle"
-                                    value="Activities"/>
-                </f:facet>
+                           width="100%" columnClasses="titleColumn, bodyColumn" >
                 <ice:column>
-                    <f:facet name="header">
-                        <ice:outputText value="Title"/>
-                    </f:facet>
-                    <ice:outputText value="#{activity.title}"/>
+                    <ice:outputText styleClass="activityTitle" value="#{activity.title}"/><br/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">
-                        <ice:outputText value="Body"/>
-                    </f:facet>
-                    <ice:outputText value="#{activity.body}"/>
+                    <ice:outputText styleClass="activityBody" value="#{activity.body}"/>
                 </ice:column>
             </ice:dataTable>
-    <ice:commandButton value="Activate" action="#{activityBean.activate}" />
+        <ice:form >
+            <div class="bottom">
+                <ice:inputText value="#{activityBean.newTitle}" /><br/>
+                <ice:inputText value="#{activityBean.newBody}" />        
+                <ice:commandButton value="Post" action="#{activityBean.activate}" />
+            </div>
         </ice:form>
     </div>
     </body>
