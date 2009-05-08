@@ -32,13 +32,14 @@
  */
 
 body {
-	background-color:#FFFFFF;
-	color:#666666;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:.8em;
-	font-weight:normal;
-	margin:5px;
+    font-family: Helvetica, Sans-Serif;
+    color: #5f5f5f;
+    background-color: #ffffff;
+    background-image: url( './images/banner_bg.gif' );
+    background-repeat: repeat-x;
+    background-position: right top;
 }
+
 
 table {
 	font-size:.9em;
@@ -61,6 +62,14 @@ table {
 	border-bottom:2px solid #666666;
 	z-index:10;
 	background-color:#FFFFFF;
+}
+
+.activityTitle {
+    font-weight: bold;
+}
+
+.activityBody {
+    text-indent: 1cm;
 }
 
 .floatingDialogHeader {
@@ -93,17 +102,17 @@ table {
 	font-weight:bold;
 }
 
-.checkedDisplayName {
-    width:18%
+.titleColumn {
+    width:50%
 }
-.checkedLocation {
-    width:32%
+.bodyColumn {
+    width:50%
 }
-.checkedUseDaylightTime {
-    width:15%
+.dataColumn {
+    width:80%
 }
-.checkedInDaylightTime {
-    width:15%
+.entryColumn {
+    width:20%
 }
 .checkedTime {
     width:20%
@@ -125,4 +134,10 @@ table {
 .yellow{background: #fefc5a;}
 
 .green{background: #96b710;}
+
+.bottom {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
 

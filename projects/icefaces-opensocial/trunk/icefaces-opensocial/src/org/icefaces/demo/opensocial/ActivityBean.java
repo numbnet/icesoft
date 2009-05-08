@@ -37,8 +37,7 @@ import org.opensocial.client.OpenSocialClient;
 import org.opensocial.client.OpenSocialProvider;
 import org.opensocial.data.OpenSocialActivity;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.icesoft.faces.async.render.SessionRenderer;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -48,10 +47,10 @@ import java.util.ArrayList;
  */
 
 public class ActivityBean  {
-    private static Log log = LogFactory.getLog(ActivityBean.class);
     private ArrayList activityList = new ArrayList();
+    private String personName = "jane.doe";
     OpenSocialProvider shindig = OpenSocialProvider.valueOf("ORKUT_SANDBOX");
-    OpenSocialClient c;
+    OpenSocialClient socialClient;
 
     /**
      * Constructor initializes time zones.
@@ -64,53 +63,55 @@ public class ActivityBean  {
      * Initializes this bean's properties.
      */
     private void init() {
-//        OpenSocialProvider shindig = OpenSocialProvider.valueOf("ORKUT_SANDBOX");
+        SessionRenderer.addCurrentSession(personName);
+        //OpenSocialProvider shindig = OpenSocialProvider.valueOf("ORKUT_SANDBOX");
         shindig.restEndpoint = "http://localhost:8080/shindig/social/rest/";
         shindig.rpcEndpoint = "http://localhost:8080/shindig/social/rpc/";
         shindig.providerName = "localhost";
         shindig.isOpenSocial = false;
-//        OpenSocialClient c =
-    //      new OpenSocialClient(OpenSocialProvider.valueOf("ORKUT_SANDBOX"));
-         c = new OpenSocialClient(shindig);
-        c.setProperty(OpenSocialClient.Property.DEBUG, "true");
-    c.setProperty(OpenSocialClient.Property.TOKEN,
-        "owner:jane.doe:appid:domain:apprul:module:container");
+
+        //OpenSocialClient socialClient =
+        //      new OpenSocialClient(OpenSocialProvider.valueOf("ORKUT_SANDBOX"));
+        socialClient = new OpenSocialClient(shindig);
+        socialClient.setProperty(OpenSocialClient.Property.DEBUG, "true");
+        socialClient.setProperty(OpenSocialClient.Property.TOKEN,
+                "owner:" + personName + ":appid:domain:apprul:module:container");
 
     }
 
-
+    /**
+     * Update the list of Activities from the OpenSocial server.
+     *
+     */
     void refreshActivities()  {
-    try {
-      // Retrieve the friends of the specified user using the OpenSocialClient
-      // method fetchFriends
-      Collection<OpenSocialActivity> activities =
-//        c.fetchFriends("03067092798963641994");
-              c.fetchActivitiesForPerson("jane.doe");
-      
-      System.out.println("----------");
-      
-      // The fetchFriends method returns a typical Java Collection object with
-      // all of the methods you're already accustomed to like size()
-      System.out.println(activities.size() + " activities:");
+        try {
 
-      // Iterate through the Collection
-      for (OpenSocialActivity activity : activities) {
-        // Output the name of the current friend
-        System.out.println("- " + activity.getTitle() + " [" + activity.getBody() + "]");
-      }
+            Collection<OpenSocialActivity> activities =
+                  socialClient.fetchActivitiesForPerson(personName);
 
-      System.out.println("----------");
-        activityList.clear();
-        activityList.addAll(activities);
+            printActivities(activities);
 
-    } catch (org.opensocial.client.OpenSocialRequestException e) {
-      System.out.println("OpenSocialRequestException thrown: " + e.getMessage());
-      e.printStackTrace();
-    } catch (java.io.IOException e) {
-      System.out.println("IOException thrown: " + e.getMessage());
-      e.printStackTrace();
+            activityList = new ArrayList(activities);
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
     }
+
+    /**
+     * Submit a new Activity to the OpenSocial server.
+     *
+     */
+    public String activate()  {
+        try {
+            socialClient.createActivity(newTitle, newBody);
+            SessionRenderer.render(personName);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return "success";
     }
+
 
     /**
      * Gets ArrayList of currently active <code>TimeZoneWrapper</code> objects.
@@ -123,21 +124,42 @@ public class ActivityBean  {
         return activityList;
     }
     
-    public String activate()  {
 
-        try {
+    String newTitle = "Title";
 
-            c.createActivity("MilliTime", String.valueOf(System.currentTimeMillis()));
+    public String getNewTitle()  {
+        return newTitle;
+    }
 
-        } catch (org.opensocial.client.OpenSocialRequestException e) {
-          System.out.println("OpenSocialRequestException thrown: " + e.getMessage());
-          e.printStackTrace();
-        } catch (java.io.IOException e) {
-          System.out.println("IOException thrown: " + e.getMessage());
-          e.printStackTrace();
-        }
+    public void setNewTitle(String newTitle)  {
+        this.newTitle = newTitle;
+    }
+
+    String newBody = "Body";
+
+    public String getNewBody()  {
+        return newBody;
+    }
     
-        return "success";
+    public void setNewBody(String newBody)  {
+        this.newBody = newBody;
+    }
+
+
+    public void printActivities(Collection<OpenSocialActivity> activities)  {
+        System.out.println("----------");
+
+        // The fetchFriends method returns a typical Java Collection object with
+        // all of the methods you're already accustomed to like size()
+        System.out.println(activities.size() + " activities:");
+
+        // Iterate through the Collection
+        for (OpenSocialActivity activity : activities) {
+        // Output the name of the current friend
+        System.out.println("- " + activity.getTitle() + " [" + activity.getBody() + "]");
+        }
+
+        System.out.println("----------");
     }
 
 }
