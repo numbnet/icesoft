@@ -60,13 +60,13 @@ public class View implements CommandQueue {
                 if (facesContext != null) {
                     facesContext.dispose();
                 }
-            }
-            if (ImplementationUtil.isJSF2()) {
-                Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
-                Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
-                facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
-            } else {
-                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
+                if (ImplementationUtil.isJSF2()) {
+                    Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
+                    Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
+                    facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
+                } else {
+                    facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
+                }
             }
             makeCurrent();
             request.respondWith(lifecycleResponseHandler);
