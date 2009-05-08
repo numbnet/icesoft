@@ -32,6 +32,19 @@
  */
 
 [ Ice.ElementModel = new Object ].as(function(This) {
+    //window scoped variable that keeps track of the focused element
+    window.focusedElement = null;
+    var recordFocus = function(element) {
+        window.focusedElement = element.id;
+    };
+    var restoreFocus = function(element) {
+        if (window.focusedElement == element.id) element.focus();
+        //ICE-1247 -- delay required for focusing newly rendered components in IE
+    }.delayFor(100);
+
+    window.onLoad(function() {
+        Ice.Focus.recordFocus(document, recordFocus);
+    });
 
     This.TemporaryContainer = function() {
         var container = document.body.appendChild(document.createElement('div'));
@@ -126,6 +139,7 @@
 
         updateDOM: function(update) {
             this.replaceHtml(update.asHTML());
+            restoreFocus(this.element);
         },
 
         replaceHtml: function(html) {
@@ -258,6 +272,7 @@
         },
 
         focus: function() {
+            focusedElement = this.element.id;
             var onFocusListener = this.element.onfocus;
             this.element.onfocus = Function.NOOP;
             this.element.focus();

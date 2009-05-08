@@ -78,21 +78,25 @@ function setFocus(id) {
         }
     }
 
-    function setFocusListener(e) {
-        var evt = e || window.event;
-        var element = evt.srcElement || evt.target;
-        setFocus(element.id);
-    }
-
-    This.captureFocusIn = function(root) {
+    This.recordFocus = function(root, listener) {
         $enumerate(['select', 'input', 'button', 'a']).each(function(type) {
             $enumerate(root.getElementsByTagName(type)).each(function(element) {
-                registerElementListener(element, 'onfocus', setFocusListener);
+                registerElementListener(element, 'onfocus', function(event) {
+                    listener(element, event);
+                });
             });
         });
     };
 
+    function setFocusListener(element) {
+        setFocus(element.id);
+    }
+
+    This.captureCurrentFocus = function(root) {
+        This.recordFocus(root, setFocusListener);
+    };
+
     window.onLoad(function() {
-        This.captureFocusIn(document);
+        This.captureCurrentFocus(document);
     });
 });
