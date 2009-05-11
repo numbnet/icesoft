@@ -64,7 +64,7 @@ function setFocus(id) {
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }).delayFor(100);
 
-    This.registerElementListener = function(element, eventType, listener) {
+    function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
         if (previousListener) {
             element[eventType] = function(e) {
@@ -76,26 +76,23 @@ function setFocus(id) {
         } else {
             element[eventType] = listener;
         }
-    };
+    }
 
-    var trackFocus = function(element) {
-        This.registerElementListener(element, 'onfocus', function() {
-            setFocus(element);
+    function setFocusListener(e) {
+        var evt = e || window.event;
+        var element = evt.srcElement || evt.target;
+        setFocus(element.id);
+    }
+
+    This.captureFocusIn = function(root) {
+        $enumerate(['select', 'input', 'button', 'a']).each(function(type) {
+            $enumerate(root.getElementsByTagName(type)).each(function(element) {
+                registerElementListener(element, 'onfocus', setFocusListener);
+            });
         });
     };
 
-    This.captureCurrentFocus = function(root) {
-        var focusableElements = ['select', 'input', 'button', 'a', 'textarea'];
-        if (focusableElements.include(root.tagName.toLowerCase())) {
-            trackFocus(root);
-        } else {
-            $enumerate(focusableElements).each(function(type) {
-                $enumerate(root.getElementsByTagName(type)).each(trackFocus);
-            });
-        }
-    };
-
     window.onLoad(function() {
-        This.captureCurrentFocus(document.body);
+        This.captureFocusIn(document);
     });
 });
