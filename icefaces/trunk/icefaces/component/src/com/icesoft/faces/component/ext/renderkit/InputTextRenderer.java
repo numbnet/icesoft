@@ -38,6 +38,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
             "setFocus(this.id);");
         rendererJavascript.put(HTML.ONBLUR_ATTR,
             "setFocus('');");
+        rendererJavascript.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
         rendererJavascriptPartialSubmit = new HashMap();
         rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
             DomBasicRenderer.ICESUBMIT);
@@ -45,6 +46,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
             "setFocus(this.id);");
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
             "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
+        rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");        
     }
     
     protected void renderHtmlAttributes(FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
@@ -58,6 +60,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         }
         Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit()
             ? rendererJavascriptPartialSubmit : rendererJavascript;
+
         LocalEffectEncoder.encode(
             facesContext, uiComponent, jsEvents, rendererJS, null, writer);
     }
