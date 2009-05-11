@@ -213,8 +213,16 @@ public class RenderManager implements Disposable {
         }
     }
 
+    public void setBroadcastRenderer(
+        final BroadcastRenderer broadcastRenderer) {
+
+        if (internalRenderManager != null) {
+            internalRenderManager.setBroadcastRenderer(broadcastRenderer);
+        }
+    }
+
     public static synchronized void setServletConfig(
-            final ServletConfig servletConfig) {
+        final ServletConfig servletConfig) {
 
         if (internalRenderManager == null) {
             internalRenderManager =
@@ -269,8 +277,8 @@ public class RenderManager implements Disposable {
             Collections.synchronizedMap(new HashMap());
         private final ContextDestroyedListener shutdownListener =
             new ContextDestroyedListener(this);
-
         private boolean broadcasted;
+        private BroadcastRenderer broadcastRenderer;
 
         private InternalRenderManager(final ServletContext servletContext) {
             this.servletContext = servletContext;
@@ -371,6 +379,12 @@ public class RenderManager implements Disposable {
             renderHub.setKeepAliveTime(keepAliveTime);
         }
 
+        public void setBroadcastRenderer(
+            final BroadcastRenderer broadcastRenderer) {
+
+            this.broadcastRenderer = broadcastRenderer;
+        }
+
         public void setRenderQueueCapacity(int renderQueueCapacity) {
             renderHub.setRenderQueueCapacity(renderQueueCapacity);
         }
@@ -383,7 +397,10 @@ public class RenderManager implements Disposable {
             if (renderer == null) {
                 return;
             }
-            if (isBroadcasted() && renderer.isBroadcasted()) {
+            if (broadcastRenderer != null &&
+                isBroadcasted() && renderer.isBroadcasted()) {
+
+                broadcastRenderer.requestRender(renderer);
             }
         }
 
