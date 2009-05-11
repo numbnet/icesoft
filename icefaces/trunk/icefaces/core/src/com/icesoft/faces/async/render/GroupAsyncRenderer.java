@@ -235,27 +235,7 @@ implements AsyncRenderer {
         requestRender(true);
     }
 
-    /**
-     * The method called by dispose to halt a render pass at the current {@link
-     * Renderable}s.
-     */
-    public void requestStop() {
-        stopRequested = true;
-    }
-
-    public void setBroadcasted(final boolean broadcasted) {
-        this.broadcasted = broadcasted;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public void setRenderManager(final RenderManager renderManager) {
-        // do nothing.
-    }
-
-    void requestRender(final boolean allowBroadcasting) {
+    public void requestRender(final boolean allowBroadcasting) {
         if (LOG.isTraceEnabled()) {
             LOG.trace(name + " preparing to render " + group.size());
         }
@@ -264,7 +244,7 @@ implements AsyncRenderer {
             RenderManager.getInstance().requestRender(this);
         }
         stopRequested = false;
-        /* 
+        /*
          * Note that the Iterator returned by the CopyOnWriteArraySet relies on
          * an unchanging snapshot of the array at the time the Iterator was
          * constructed and does not support the mutative remove operation!
@@ -286,7 +266,7 @@ implements AsyncRenderer {
              *     synchronization is needed while traversing the iterator.  The
              *     iterator does NOT support the remove method."
              */
-            WeakReference reference = (WeakReference)i.next(); 
+            WeakReference reference = (WeakReference)i.next();
             Object object = reference.get();
             if (object == null) {
                 group.remove(reference);
@@ -298,6 +278,26 @@ implements AsyncRenderer {
                 requestRender((PortletSession)object);
             }
         }
+    }
+
+    /**
+     * The method called by dispose to halt a render pass at the current {@link
+     * Renderable}s.
+     */
+    public void requestStop() {
+        stopRequested = true;
+    }
+
+    public void setBroadcasted(final boolean broadcasted) {
+        this.broadcasted = broadcasted;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setRenderManager(final RenderManager renderManager) {
+        // do nothing.
     }
 
     private void add(final Object object) {
