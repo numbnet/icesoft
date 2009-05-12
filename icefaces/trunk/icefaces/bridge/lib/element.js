@@ -240,6 +240,92 @@
         }
     };
 
+    This.ElementStyleProperties =
+    ['background',
+        'backgroundAttachment',
+        'backgroundColor',
+        'backgroundImage',
+        'backgroundPosition',
+        'backgroundRepeat',
+        'border',
+        'borderBottom',
+        'borderBottomColor',
+        'borderBottomStyle',
+        'borderBottomWidth',
+        'borderColor',
+        'borderLeft',
+        'borderLeftColor',
+        'borderLeftStyle',
+        'borderLeftWidth',
+        'borderRight',
+        'borderRightColor',
+        'borderRightStyle',
+        'borderRightWidth',
+        'borderStyle',
+        'borderTop',
+        'borderTopColor',
+        'borderTopStyle',
+        'borderTopWidth',
+        'borderWidth',
+        'clear',
+        'clip',
+        'color',
+        'cursor',
+        'display',
+        'filter',
+        'font',
+        'fontFamily',
+        'fontSize',
+        'fontVariant',
+        'fontWeight',
+        'height',
+        'left',
+        'letterSpacing',
+        'lineHeight',
+        'listStyle',
+        'listStyleImage',
+        'listStylePosition',
+        'listStyleType',
+        'margin',
+        'marginBottom',
+        'marginLeft',
+        'marginRight',
+        'marginTop',
+        'overflow',
+        'padding',
+        'paddingBottom',
+        'paddingLeft',
+        'paddingRight',
+        'paddingTop',
+        'pageBreakAfter',
+        'pageBreakBefore',
+        'position',
+        'styleFloat',
+        'textAlign',
+        'textDecoration',
+        'textDecorationBlink',
+        'textDecorationLineThrough',
+        'textDecorationNone',
+        'textDecorationOverline',
+        'textDecorationUnderline',
+        'textIndent',
+        'textTransform',
+        'top',
+        'verticalAlign',
+        'visibility',
+        'width',
+        'zIndex'];
+
+    This.InputElementAttributes =
+        //core and i18n attributes (except 'id' and 'style' attributes)
+    ['className', 'title', 'lang',
+        //input element attributes
+        'name', 'value', 'checked', 'disabled', 'readOnly',
+        'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
+        'tabIndex', 'accessKey', 'accept'];
+    //'dir' attribute cannot be updated dynamically in IE 7
+    //'type' attribute cannot be updated dynamically in Firefox 2.0
+
     This.InputElement = This.Element.subclass({
         InputListenerNames: [ 'onBlur', 'onFocus', 'onChange' ],
 
@@ -262,6 +348,35 @@
             this.element.onfocus = Function.NOOP;
             this.element.focus();
             this.element.onfocus = onFocusListener;
+        },
+
+        replaceHostElementWith: function(newElement) {
+            This.InputElementAttributes.each(function(attributeName) {
+                var newValue = newElement[attributeName]
+                var oldValue = this.element[attributeName];
+                if (oldValue != newValue) {
+                    this.element[attributeName] = newValue;
+                }
+            }.bind(this));
+
+            //'style' attribute special case
+            var newStyle = newElement.getAttribute('style');
+            var oldStyle = this.element.getAttribute('style');
+            var elementStyle = this.element.style;
+            var newElementStyle = newElement.style;
+            if (newStyle != oldStyle) {
+                //this.element.setAttribute('style', newStyle);
+                This.ElementStyleProperties.each(function(p) {
+                    elementStyle[p] = newElementStyle[p];
+                });
+            }
+
+            //overwrite listeners and bind them to the existing element
+            this.eachListenerName(function(listenerName) {
+                var name = listenerName.toLowerCase();
+                this.element[name] = newElement[name] ? newElement[name].bind(this.element) : null;
+                newElement[name] = null;
+            }.bind(this));
         },
 
         serializeOn: function(query) {
