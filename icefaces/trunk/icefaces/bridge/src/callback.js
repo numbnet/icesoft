@@ -25,7 +25,7 @@
         findBridgeInParentsOrChildren(id).connection.onSend(sendCallback, receiveCallback);
     };
 
-    This.onAsyncronousReceive = function(id, receiveCallback) {
+    This.onAsynchronousReceive = function(id, receiveCallback) {
         findBridgeInParentsOrChildren(id).connection.onReceive(receiveCallback);
     };
 
