@@ -365,7 +365,7 @@
             var elementStyle = this.element.style;
             var newElementStyle = newElement.style;
             if (newStyle != oldStyle) {
-                //this.element.setAttribute('style', newStyle);
+                this.element.setAttribute('style', newStyle);
                 This.ElementStyleProperties.each(function(p) {
                     elementStyle[p] = newElementStyle[p];
                 });
