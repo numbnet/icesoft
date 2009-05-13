@@ -37,6 +37,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.util.CoreUtils;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
@@ -50,6 +51,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -218,21 +221,49 @@ public class Tree extends UICommand implements NamingContainer {
         return this.currentNode;
     }
 
+    public void encodeBegin(FacesContext context) throws IOException {
+            if (!keepSaved(context)) {
+                savedChildren = new HashMap();
+            }
+            super.encodeBegin(context);
+
+    }
+    
+    private boolean keepSaved(FacesContext context) {
+
+        Iterator clientIds = savedChildren.keySet().iterator();
+        while (clientIds.hasNext()) {
+            String clientId = (String) clientIds.next();
+            Iterator messages = context.getMessages(clientId);
+            while (messages.hasNext()) {
+                FacesMessage message = (FacesMessage) messages.next();
+                if (message.getSeverity().compareTo(FacesMessage.SEVERITY_ERROR)
+                    >= 0) {
+                    return (true);
+                }
+            }
+        }
+        return false;
+
+    }    
+    
     /**
      * @param nodePath
      */
     public void setNodePath(String nodePath) {
         FacesContext facesContext = getFacesContext();
+        this.nodePath = nodePath;
         // save the state of the last node
         saveChildrenState(facesContext);
 
-        this.nodePath = nodePath;
+
+        // put the current node on the request map
+        this.setCurrentVarToRequestMap(facesContext, getCurrentNode());
+    
 
         // restore the state for current node
         restoreChildrenState(facesContext);
 
-        // put the current node on the request map
-        this.setCurrentVarToRequestMap(facesContext, getCurrentNode());
 
     }
 
@@ -857,8 +888,10 @@ public class Tree extends UICommand implements NamingContainer {
         if (!isRendered()) {
             return;
         }
+        if (null == savedChildren || !keepSaved(context)) {
+            savedChildren = new HashMap();
+        }
 
-        savedChildren = new HashMap();
 
         this.processTreeNodes((DefaultMutableTreeNode) getModel().getRoot(),
                               PhaseId.APPLY_REQUEST_VALUES, context);
