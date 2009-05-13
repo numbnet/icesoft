@@ -330,14 +330,21 @@ public class TreeRenderer extends DomBasicRenderer {
                            TreeNode treeNode,
                            Element parentDOMNode) {
 
+        treeComponent.setNodePath(null);
+        treeComponent.setCurrentNode(currentNode);
         String pathToCurrentRoot =
                 getPathAsString(currentNode, treeComponentRootNode);
         boolean hideRootNode = isHideRootNode(treeComponent);
         boolean hideNavigation = isHideNavigation(treeComponent);
 
+        String pathToCurrentNode = TreeRenderer.getPathAsString(currentNode,
+                (DefaultMutableTreeNode) treeComponent.getModel()
+                        .getRoot());
+        
         treeNode.setMutable(currentNode);
         treeNode.setId(Tree.ID_PREFIX + pathToCurrentRoot);
         treeNode.setParent(treeComponent);
+        treeComponent.setNodePath(pathToCurrentNode);
 
         // efficiency and simplicity
         IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
