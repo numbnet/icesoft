@@ -1,12 +1,16 @@
 package com.icesoft.faces.webapp.http.common;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
+
 public interface Response {
 
+    void addCookie(Cookie cookie);
+    
     void setStatus(int code);
 
     void setHeader(String name, String value);

@@ -1,15 +1,21 @@
 package com.icesoft.faces.webapp.http.common;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+
+import javax.servlet.http.Cookie;
 
 public class ResponseProxy implements Response {
     protected Response response;
 
     public ResponseProxy(Response response) {
         this.response = response;
+    }
+
+    public void addCookie(final Cookie cookie) {
+        response.addCookie(cookie);
     }
 
     public void setStatus(int code) {
