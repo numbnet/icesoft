@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/krysalis-jCharts-1.0.0-alpha-1.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/icefaces-compat.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/icefaces-comps-compat.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/jsf-metadata.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/jsf-metadata-resources-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/jsp-api-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/jxl.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/lib/jsf-impl.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/glimmer/compat/lib/backport-util-concurrent.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
