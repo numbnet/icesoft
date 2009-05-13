@@ -273,9 +273,39 @@ implements AsyncRenderer {
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
-                requestRender((HttpSession)object);
+                HttpSession httpSession = (HttpSession)object;
+                try {
+                    // is valid?
+                    httpSession.getAttribute("nonExistentAttribute");
+                    // valid
+                    requestRender(httpSession.getId());
+                } catch (Exception exception) {
+                    // not valid
+                    /*
+                     * Remove from the CopyOnWriteArraySet is allowed here as
+                     * the Iterator in requestRender(boolean) relies on an
+                     * unchanging snapshot of the array at the time the Iterator
+                     * was constructed.
+                     */
+                    remove(httpSession);
+                }
             } else if (object instanceof PortletSession) {
-                requestRender((PortletSession)object);
+                PortletSession portletSession = (PortletSession)object;
+                try {
+                    // is valid?
+                    portletSession.getAttribute("nonExistentAttribute");
+                    // valid
+                    requestRender(portletSession.getId());
+                } catch (Exception exception) {
+                    // not valid
+                    /*
+                     * Remove from the CopyOnWriteArraySet is allowed here as
+                     * the Iterator in requestRender(boolean) relies on an
+                     * unchanging snapshot of the array at the time the Iterator
+                     * was constructed.
+                     */
+                    remove(portletSession);
+                }
             }
         }
     }
@@ -326,24 +356,6 @@ implements AsyncRenderer {
         return false;
     }
 
-    private boolean isValid(final HttpSession httpSession) {
-        try {
-            httpSession.getAttribute("nonExistentAttribute");
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
-    }
-
-    private boolean isValid(final PortletSession portletSession) {
-        try {
-            portletSession.getAttribute("nonExistentAttribute");
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
-    }
-
     private void remove(final Object object) {
         // todo: remove synchronized block as CopyOnWriteArraySet is used?
         synchronized (group) {
@@ -360,32 +372,6 @@ implements AsyncRenderer {
             if (LOG.isWarnEnabled()) {
                 LOG.warn(name + " does not contain " + object);
             }
-        }
-    }
-
-    private void requestRender(final HttpSession httpSession) {
-        if (isValid(httpSession)) {
-            requestRender(httpSession.getId());
-        } else {
-            /*
-             * Remove from the CopyOnWriteArraySet is allowed here as the
-             * Iterator in requestRender(boolean) relies on an unchanging
-             * snapshot of the array at the time the Iterator was constructed.
-             */
-            remove(httpSession);
-        }
-    }
-
-    private void requestRender(final PortletSession portletSession) {
-        if (isValid(portletSession)) {
-            requestRender(portletSession.getId());
-        } else {
-            /*
-             * Remove from the CopyOnWriteArraySet is allowed here as the
-             * Iterator in requestRender(boolean) relies on an unchanging
-             * snapshot of the array at the time the Iterator was constructed.
-             */
-            remove(portletSession);
         }
     }
 
