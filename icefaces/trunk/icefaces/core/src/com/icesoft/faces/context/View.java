@@ -16,6 +16,7 @@ import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.facelets.FaceletsUIDebug;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
@@ -50,6 +51,9 @@ public class View implements CommandQueue {
         };
 
         public void serve(Request request) throws Exception {
+            if (FaceletsUIDebug.handleRequest(session, request)) {
+                return;
+            }
             String path = request.getURI().getPath();
             boolean reloded = path.equals(lastPath);
             lastPath = path;
@@ -81,6 +85,7 @@ public class View implements CommandQueue {
     private final String viewIdentifier;
     private final Collection viewListeners = new ArrayList();
     private final String sessionID;
+    private final HttpSession session;
     private final Configuration configuration;
     private final SessionDispatcher.Monitor sessionMonitor;
     private final ResourceDispatcher resourceDispatcher;
@@ -92,6 +97,7 @@ public class View implements CommandQueue {
 
     public View(final String viewIdentifier, final String sessionID, final HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, final ResourceDispatcher resourceDispatcher, final String blockingRequestHandlerContext, final Authorization authorization) throws Exception {
         this.sessionID = sessionID;
+        this.session = session;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
@@ -173,9 +179,15 @@ public class View implements CommandQueue {
     }
 
     private void releaseAll() {
-        facesContext.release();
-        persistentFacesState.release();
-        ((BridgeExternalContext) facesContext.getExternalContext()).release();
+        if (facesContext != null) {
+            facesContext.release();
+        }
+        if (persistentFacesState != null) {
+            persistentFacesState.release();
+        }
+        if (facesContext != null) {
+            ((BridgeExternalContext) facesContext.getExternalContext()).release();
+        }
     }
 
     public BridgeFacesContext getFacesContext() {
