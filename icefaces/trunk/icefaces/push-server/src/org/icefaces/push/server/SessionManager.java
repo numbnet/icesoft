@@ -31,14 +31,18 @@
  */
 package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.icesoft.faces.webapp.http.common.Configuration;
 
 public class SessionManager
 implements
@@ -49,6 +53,7 @@ implements
     private static final Log LOG = LogFactory.getLog(SessionManager.class);
 
     private final Map sessionMap = new HashMap();
+    private final List freeList = new ArrayList();
 
     private final RequestManager requestManager;
     private final UpdatedViewsManager updatedViewsManager;
@@ -94,34 +99,30 @@ implements
 
     public void iceFacesIdDisposed(
         final String servletContextPath, final String iceFacesId) {
-        // temporary go to sleep... when the AHS gets refactored we should be
-        // able to fix this more properly.
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException exception) {
             // ignore interrupts.
         }
         synchronized (requestManager) {
-            synchronized (sessionMap) {
-                if (sessionMap.containsKey(iceFacesId)) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "ICEfaces ID disposed: " + iceFacesId);
-                    }
-                    sessionMap.remove(iceFacesId);
-                }
+            synchronized (freeList) {
+                // Marking the specified ICEfaces ID eligible for removal.
+                freeList.add(
+                    new Record(iceFacesId, System.currentTimeMillis()));
                 Handler _handler = requestManager.pull(iceFacesId);
                 if (_handler != null) {
                     _handler.handle();
                 }
-                updatedViewsManager.remove(iceFacesId);
             }
         }
     }
 
     public void iceFacesIdRetrieved(
         final String servletContextPath, final String iceFacesId) {
+
         synchronized (sessionMap) {
+            cleanUp(iceFacesId);
             if (!sessionMap.containsKey(iceFacesId)) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug(
@@ -259,6 +260,49 @@ implements
                     _viewNumberSet.add(viewNumber);
                 }
             }
+        }
+    }
+
+    private void cleanUp(final String iceFacesId) {
+        synchronized (freeList) {
+            synchronized (requestManager) {
+                synchronized (sessionMap) {
+                    Iterator _records = freeList.iterator();
+                    int _size = freeList.size();
+                    long _currentTime = System.currentTimeMillis();
+                    for (int i = 0; i < _size; i++) {
+                        Record _record = (Record)_records.next();
+                        if (iceFacesId.equals(_record.iceFacesId)) {
+                            // ICEfaces ID is still in use, remove from freeList
+                            _records.remove();
+                        } else if (_currentTime - _record.timestamp >= 60000) {
+                            if (sessionMap.containsKey(iceFacesId)) {
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug(
+                                        "ICEfaces ID disposed: " + iceFacesId);
+                                }
+                                sessionMap.remove(iceFacesId);
+                            }
+                            Handler _handler = requestManager.pull(iceFacesId);
+                            if (_handler != null) {
+                                _handler.handle();
+                            }
+                            updatedViewsManager.remove(iceFacesId);
+                            _records.remove();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static class Record {
+        private final String iceFacesId;
+        private final long timestamp;
+
+        private Record(final String iceFacesId, final long timestamp) {
+            this.iceFacesId = iceFacesId;
+            this.timestamp = timestamp;
         }
     }
 
