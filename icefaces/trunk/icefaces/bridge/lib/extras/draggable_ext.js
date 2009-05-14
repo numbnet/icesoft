@@ -147,6 +147,7 @@ Draggable.prototype.resize = function(event) {
 };
 
 Draggable.removeMe = function(element) {
+    $(element).undoPositioned();
     var monitors = Ice.StateMon.monitors;
     var newMonitors = Array();
     for (i = 0; i < monitors.length; i++) {
