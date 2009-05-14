@@ -153,6 +153,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 				Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
 				scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
 						HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
+                scriptEle.setAttribute(HTML.ID_ATTR,
+                        clientId+"scrt");
                 scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
 				Node node = domContext.createTextNode(script);
 				scriptEle.appendChild(node);
