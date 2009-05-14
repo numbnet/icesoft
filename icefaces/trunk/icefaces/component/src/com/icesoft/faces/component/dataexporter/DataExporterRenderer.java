@@ -181,7 +181,7 @@ public class DataExporterRenderer extends OutputResourceRenderer {
 		else {
 			ValueBinding vb = uic.getValueBinding("value");
 			if (vb != null)
-				str += vb.getValue(fc).toString();
+				str += String.valueOf(vb.getValue(fc));
 		}
 
 		if (uic.getChildCount() > 0) {
