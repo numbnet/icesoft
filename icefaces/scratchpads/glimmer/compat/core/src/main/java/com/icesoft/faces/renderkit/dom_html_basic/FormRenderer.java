@@ -35,25 +35,22 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
-//import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.component.NamingContainer;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FormRenderer extends DomBasicRenderer {
 
@@ -64,9 +61,9 @@ public class FormRenderer extends DomBasicRenderer {
     private static Logger log = Logger.getLogger("com.icesoft.faces.compat");
 
     public static final String STATE_SAVING_MARKER = "stateSavingMarker";
-    
+
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
-    
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UIForm.class);
         UIForm uiForm = (UIForm) uiComponent;
@@ -95,7 +92,8 @@ public class FormRenderer extends DomBasicRenderer {
             domContext.setRootNode(root);
             root.setAttribute("id", formClientId);
             root.setAttribute("method", "post");
-            root.setAttribute("action", "javascript:;");
+            ExternalContext externalContext = facesContext.getExternalContext();
+            root.setAttribute("action", externalContext.getRequestContextPath() + externalContext.getRequestServletPath());
 
             String styleClass =
                     (String) uiComponent.getAttributes().get("styleClass");
@@ -107,12 +105,6 @@ public class FormRenderer extends DomBasicRenderer {
             if (acceptcharset != null) {
                 root.setAttribute("accept-charset", acceptcharset);
             }
-            //redirect form submits
-            String redirectScript = "$element(document.getElementById('" + formClientId + "')).captureAndRedirectSubmit();";
-            Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
-            scriptElement.setAttribute("type", "text/javascript");
-            scriptElement.appendChild(domContext.createTextNode(redirectScript));
-            root.appendChild(scriptElement);
 
             // this hidden field will be checked in the decode method to
             // determine if this form has been submitted.
@@ -186,11 +178,11 @@ public class FormRenderer extends DomBasicRenderer {
         //root.setAttribute("context_type", contextClass);
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-        String autoComplete = (String)uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
-        if(autoComplete != null && "off".equalsIgnoreCase(autoComplete)){
+        String autoComplete = (String) uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
+        if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
             root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
-                
+
         // don't override user-defined value
         String userDefinedValue = root.getAttribute("onsubmit");
         if (userDefinedValue == null || userDefinedValue.equalsIgnoreCase("")) {
@@ -234,16 +226,16 @@ public class FormRenderer extends DomBasicRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // set static class variable for support of myfaces command link
         renderCommandLinkHiddenFields(facesContext, uiComponent);
-        
+
         //check if the messages renderer asked to be rendered later,
         //if yes, then re-render it
-        if (uiComponent.getAttributes().get("$ice-msgs$") != null)  {
-            UIComponent messages = (UIComponent)uiComponent.getAttributes().get("$ice-msgs$");
+        if (uiComponent.getAttributes().get("$ice-msgs$") != null) {
+            UIComponent messages = (UIComponent) uiComponent.getAttributes().get("$ice-msgs$");
             messages.encodeBegin(facesContext);
             messages.encodeChildren(facesContext);
             messages.encodeEnd(facesContext);
         }
-        
+
         domContext.stepOver();
     }
 
@@ -301,7 +293,7 @@ public class FormRenderer extends DomBasicRenderer {
         hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
         hiddenFieldsDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
         root.appendChild(hiddenFieldsDiv);
-        
+
         Iterator commandLinkFields = map.entrySet().iterator();
         while (commandLinkFields.hasNext()) {
             Map.Entry nextField = (Map.Entry) commandLinkFields.next();
