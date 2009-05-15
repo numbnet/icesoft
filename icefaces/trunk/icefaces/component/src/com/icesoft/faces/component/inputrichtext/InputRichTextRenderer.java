@@ -46,6 +46,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                                     String.valueOf(inputRichText.isDisabled()));            
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
+            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
             script.appendChild(domContext.createTextNode(call.toString()));
             root.appendChild(script);
             if (inputRichText.isSaveOnSubmit()) {
