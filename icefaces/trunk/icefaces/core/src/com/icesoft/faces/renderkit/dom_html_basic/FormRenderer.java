@@ -39,6 +39,8 @@ import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
+import com.icesoft.util.pooling.ClientIdPool;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -111,6 +113,7 @@ public class FormRenderer extends DomBasicRenderer {
             String redirectScript = "$element(document.getElementById('" + formClientId + "')).captureAndRedirectSubmit();";
             Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
             scriptElement.setAttribute("type", "text/javascript");
+            scriptElement.setAttribute("id", ClientIdPool.get(formClientId + "script"));
             scriptElement.appendChild(domContext.createTextNode(redirectScript));
             root.appendChild(scriptElement);
 

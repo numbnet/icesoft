@@ -89,6 +89,7 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
                     lostID, false));
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
+            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "script"));            
             script.appendChild(domContext.createTextNode(
                     "'" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.attachStatusManager(" +
                             "function(defaultStatusManager) {" +
