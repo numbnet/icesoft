@@ -6,33 +6,28 @@ import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
 import com.icesoft.faces.context.ResourceRegistry;
-import com.icesoft.faces.context.Resource.Options;
-import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class InputRichText extends UIInput {
     public static final String COMPONENET_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
-    private static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
+    public static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
     private static final Resource FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
     private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
     private static final Date lastModified = new Date();
@@ -55,7 +50,7 @@ public class InputRichText extends UIInput {
 
     private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
-            synchronized(ZipEntryCache) {
+            synchronized (ZipEntryCache) {
                 if (ZipEntryCache.isEmpty()) {
                     loadZipEntryCache();
                 }
@@ -88,7 +83,7 @@ public class InputRichText extends UIInput {
     public static void loadFCKJSIfRequired() {
         if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
             ResourceRegistry registry =
-                    (ResourceRegistry) FacesContext.getCurrentInstance();
+                    ResourceRegistryLocator.locate(FacesContext.getCurrentInstance());
             if (registry != null) {
                 baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
                 registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
@@ -399,8 +394,8 @@ class FCKJarResource extends JarResource {
     public FCKJarResource(String path) {
         super(path);
     }
-    
+
     public void withOptions(Options options) throws IOException {
-    
+
     }
 }

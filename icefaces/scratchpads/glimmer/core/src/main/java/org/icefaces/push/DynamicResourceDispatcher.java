@@ -34,6 +34,7 @@ import org.icefaces.push.http.standard.PathDispatcherServer;
 import org.icefaces.push.servlet.SessionDispatcher;
 import org.icefaces.util.Base64;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -54,11 +55,13 @@ public class DynamicResourceDispatcher implements Server {
     private ArrayList registered = new ArrayList();
     private SessionDispatcher.Monitor monitor;
 
-    public DynamicResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor, Configuration configuration) {
+    public DynamicResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor, HttpSession session, Configuration configuration) {
         this.prefix = prefix;
         this.mimeTypeMatcher = mimeTypeMatcher;
         this.monitor = monitor;
         this.compressResource = new CompressingServer(dispatcher, mimeTypeMatcher, configuration);
+        //auto-register
+        session.setAttribute(DynamicResourceDispatcher.class.getName(), this);
     }
 
     public void service(Request request) throws Exception {
@@ -96,7 +99,7 @@ public class DynamicResourceDispatcher implements Server {
             dispatchFilename = filename.replaceAll("\\+", "\\\\+");
             uriFilename = filename;
         }
-        final String name = prefix + encode(resource) + "/";
+        final String name = prefix + "/" + encode(resource) + "/";
         if (!registered.contains(name)) {
             registered.add(name);
             dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", new ResourceServer(resource));

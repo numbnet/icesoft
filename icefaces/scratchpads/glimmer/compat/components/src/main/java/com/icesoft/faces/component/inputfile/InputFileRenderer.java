@@ -33,9 +33,12 @@
 
 package com.icesoft.faces.component.inputfile;
 
-import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.context.StringResource;
 import com.icesoft.faces.utils.MessageUtils;
+import com.icesoft.util.pooling.ClientIdPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,10 +48,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-
-import com.icesoft.util.pooling.ClientIdPool;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class InputFileRenderer extends Renderer {
     private static final Log log = LogFactory.getLog(InputFileRenderer.class);
@@ -63,17 +62,17 @@ public class InputFileRenderer extends Renderer {
         c.renderIFrame(iframeContentWriter, facesContext);
         String iframeContent = iframeContentWriter.toString();
         String frameName = ClientIdPool.get(id + ":uploadFrame");
-        String pseudoURL = ((ResourceRegistry) context).registerResource(new StringResource(iframeContent) {
+        String pseudoURL = ResourceRegistryLocator.locate(context).registerResource(new StringResource(iframeContent) {
             public void withOptions(Options options) throws IOException {
                 super.withOptions(options);
                 options.setMimeType("text/html");
             }
         }).toString();
-        
+
         UploadConfig uploadConfig =
-            c.storeContentAndConfig(
-                facesContext, id, iframeContent);
-        
+                c.storeContentAndConfig(
+                        facesContext, id, iframeContent);
+
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
         writer.writeAttribute("id", frameName, null);
@@ -92,45 +91,45 @@ public class InputFileRenderer extends Renderer {
         // will be transparent, allowing background colors to show through.
         writer.writeAttribute("allowtransparency", "true", null);
         writer.endElement("iframe");
-        
+
         String submitOnUpload = c.getValidatedSubmitOnUpload();
         if (!submitOnUpload.equals(InputFile.SUBMIT_NONE)) {
             boolean preUpload =
-                submitOnUpload.equals(InputFile.SUBMIT_PRE_UPLOAD) ||
-                submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
+                    submitOnUpload.equals(InputFile.SUBMIT_PRE_UPLOAD) ||
+                            submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
             boolean postUpload =
-                submitOnUpload.equals(InputFile.SUBMIT_POST_UPLOAD) ||
-                submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
-            
+                    submitOnUpload.equals(InputFile.SUBMIT_POST_UPLOAD) ||
+                            submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
+
             writer.startElement("script", c);
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("id", id, null);
             writer.writeText(
-                "var register = function() {" +
-                        "var frameElem = document.getElementById('" + frameName + "');" +
-                        "if(!frameElem) { return; }" +
-                        "var frame = frameElem.contentWindow;" +
-                        "var submit = function() { " +
+                    "var register = function() {" +
+                            "var frameElem = document.getElementById('" + frameName + "');" +
+                            "if(!frameElem) { return; }" +
+                            "var frame = frameElem.contentWindow;" +
+                            "var submit = function() { " +
                             "if(arguments.length == 1 && arguments[0] == 1) { " +
-                                ( postUpload
-                                  ? ("Ice.InputFileIdPostUpload = '" + id + "'; Ice.InputFileIdPreUpload = null;")
-                                  : "return;" ) +
+                            (postUpload
+                                    ? ("Ice.InputFileIdPostUpload = '" + id + "'; Ice.InputFileIdPreUpload = null;")
+                                    : "return;") +
                             " } " +
                             "else { " +
-                                ( preUpload
-                                  ? ("Ice.InputFileIdPreUpload = '" + id + "'; Ice.InputFileIdPostUpload = null;")
-                                  : "return;" ) +
-                            " } try { if(document.getElementById('"+id+"')) { '" + id + "'.asExtendedElement().form().submit(); } } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
-                        //trigger form submit when the upload starts
-                        "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
-                        //trigger form submit when the upload ends and re-register handlers
-                        "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
-                        "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
-                        //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
-                        "setTimeout(register, 300);", null);
+                            (preUpload
+                                    ? ("Ice.InputFileIdPreUpload = '" + id + "'; Ice.InputFileIdPostUpload = null;")
+                                    : "return;") +
+                            " } try { if(document.getElementById('" + id + "')) { '" + id + "'.asExtendedElement().form().submit(); } } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
+                            //trigger form submit when the upload starts
+                            "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
+                            //trigger form submit when the upload ends and re-register handlers
+                            "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
+                            "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
+                            //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
+                            "setTimeout(register, 300);", null);
             writer.endElement("script");
         }
-        
+
         FileInfo fileInfo = c.getFileInfo();
         if (log.isDebugEnabled())
             log.debug("InputFileRenderer  fileInfo: " + fileInfo);
@@ -144,39 +143,34 @@ public class InputFileRenderer extends Renderer {
             }
             if (fileName == null)
                 fileName = "";
-            
+
             int status = fileInfo.getStatus();
             if (status == FileInfo.INVALID) {
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
-            }
-            else if (status == FileInfo.SIZE_LIMIT_EXCEEDED) {
+            } else if (status == FileInfo.SIZE_LIMIT_EXCEEDED) {
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
-            }
-            else if (status == FileInfo.UNKNOWN_SIZE) {
+            } else if (status == FileInfo.UNKNOWN_SIZE) {
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
-            }
-            else if (status == FileInfo.INVALID_NAME_PATTERN) {
+            } else if (status == FileInfo.INVALID_NAME_PATTERN) {
                 String fileNamePattern = uploadConfig.getFileNamePattern();
                 if (fileNamePattern == null)
                     fileNamePattern = "";
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, fileNamePattern}));
-            }
-            else if (status == FileInfo.UNSPECIFIED_NAME) {
+            } else if (status == FileInfo.UNSPECIFIED_NAME) {
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNSPECIFIED_NAME_MESSAGE_ID));
-            }
-            else if (status == FileInfo.INVALID_CONTENT_TYPE) {
+            } else if (status == FileInfo.INVALID_CONTENT_TYPE) {
                 context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_CONTENT_TYPE_MESSAGE_ID));
             }
         }
     }
-    
+
     public void decode(FacesContext facesContext, UIComponent component) {
         super.decode(facesContext, component);
-        
+
         InputFile inputFile = (InputFile) component;
         inputFile.setPreUpload(false);
         inputFile.setPostUpload(false);
-        
+
         Map parameter = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(facesContext);
         String preUpload = (String) parameter.get("ice.inputFile.preUpload");
@@ -185,13 +179,13 @@ public class InputFileRenderer extends Renderer {
             if (preUpload.equals(clientId)) {
                 inputFile.reset();
                 inputFile.setPreUpload(true);
-                inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
+                inputFile.queueEvent(new InputFileProgressEvent(inputFile));
             }
         }
         if (postUpload != null && postUpload.length() > 0) {
             if (postUpload.equals(clientId)) {
                 inputFile.setPostUpload(true);
-                inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
+                inputFile.queueEvent(new InputFileProgressEvent(inputFile));
             }
         }
     }

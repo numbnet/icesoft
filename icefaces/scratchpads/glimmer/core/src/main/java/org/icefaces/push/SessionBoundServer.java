@@ -32,7 +32,6 @@ import org.icefaces.push.servlet.SessionDispatcher;
 import javax.servlet.http.HttpSession;
 import java.util.Observable;
 
-//todo: rename to SessionBoundServer and move in com.icesoft.faces.webapp.http.core
 public class SessionBoundServer implements Server {
     private final PathDispatcherServer dispatcher = new PathDispatcherServer();
 
@@ -58,7 +57,7 @@ public class SessionBoundServer implements Server {
         dispatcher.dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
         dispatcher.dispatchOn(".*icefaces\\/bridge\\.js$", new CacheControlledServer(new ServeBridgeCode()));
         dispatcher.dispatchOn(".*icefaces\\/bridge\\.wireup\\.js$", new CacheControlledServer(new WireUpBridge(context, session)));
-        dispatcher.dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("resource", mimeTypeMatcher, sessionMonitor, configuration));
+        dispatcher.dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
     }
 
     public void service(Request request) throws Exception {

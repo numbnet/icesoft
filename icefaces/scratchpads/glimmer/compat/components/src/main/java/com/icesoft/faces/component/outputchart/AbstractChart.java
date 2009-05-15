@@ -33,7 +33,7 @@
 
 package com.icesoft.faces.component.outputchart;
 
-import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.ResourceRegistryLocator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.krysalis.jcharts.Chart;
@@ -83,7 +83,7 @@ public abstract class AbstractChart {
             bos.close();
             bos = null;
             outputChart.setChartResource(new ChartResource(data));
-            outputChart.setChartURI(((ResourceRegistry) context).registerResource(outputChart.getChartResource()));
+            outputChart.setChartURI(ResourceRegistryLocator.locate(context).registerResource(outputChart.getChartResource()));
         } else {
             log.equals("The jchart is not defined for the " +
                     outputChart.getClientId(FacesContext.getCurrentInstance()) +
@@ -260,7 +260,7 @@ public abstract class AbstractChart {
         } else if (obj == null && paintArray != null) {
             return paintArray;
         } else {
-            if(paintArray != null && paintArray.length != count) {
+            if (paintArray != null && paintArray.length != count) {
                 //data has dynamically changed, so let it to be reevaluated
                 paintArray = null;
             }
