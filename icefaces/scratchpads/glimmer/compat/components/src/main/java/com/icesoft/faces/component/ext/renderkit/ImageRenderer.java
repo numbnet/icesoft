@@ -34,7 +34,7 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.context.ByteArrayResource;
-import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.ResourceRegistryLocator;
 
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
@@ -56,7 +56,7 @@ public class ImageRenderer
                 }
             };
 
-            return (((ResourceRegistry) facesContext).registerResource(bar)).getPath();
+            return ResourceRegistryLocator.locate(facesContext).registerResource(bar).getPath();
         } else {
             // delegate to the parent class
             return super.processSrcAttribute(facesContext, uiGraphic);

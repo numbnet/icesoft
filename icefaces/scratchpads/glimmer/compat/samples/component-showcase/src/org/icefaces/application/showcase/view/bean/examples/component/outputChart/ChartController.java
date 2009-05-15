@@ -37,9 +37,9 @@ import com.icesoft.faces.component.outputchart.OutputChart;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.Serializable;
 
 /**
  * The ChartController class is responsible for handling all user interations
@@ -124,8 +124,8 @@ public class ChartController implements Serializable {
                 new ChartModelCustom(true, false, false, false));
 
         // set the default dataModel
-        currentChartType = OutputChart.CUSTOM_CHART_TYPE;
-        currentChartModel = (AbstractChartData)chartDataModels.get(currentChartType);
+        currentChartType = OutputChart.PIE2D_CHART_TYPE;
+        currentChartModel = (AbstractChartData) chartDataModels.get(currentChartType);
     }
 
     /**
@@ -138,8 +138,8 @@ public class ChartController implements Serializable {
         String newChartType = (String) event.getNewValue();
         if (newChartType != null) {
             currentChartType = newChartType;
-            currentChartModel = (AbstractChartData)chartDataModels.get(newChartType);
-            if (currentChartModel!= null)
+            currentChartModel = (AbstractChartData) chartDataModels.get(newChartType);
+            if (currentChartModel != null)
                 currentChartModel.renderOnSubmit = true;
         }
     }
@@ -195,7 +195,7 @@ public class ChartController implements Serializable {
             }
 
         }
-        if (currentChartModel!= null)
+        if (currentChartModel != null)
             currentChartModel.renderOnSubmit = false;
     }
 
