@@ -60,7 +60,8 @@ window.evaluate = eval;
     namespace.ComponentIndicators = ComponentIndicators;
     //include connection.async.js
     //include submit.js
-    namespace.submit = submit;
+    namespace.submitEvent = submitEvent;
+    namespace.submitForm = submitForm;
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -131,17 +132,16 @@ window.evaluate = eval;
     //hijack browser form submit, instead submit through an Ajax request
     onLoad(window, function() {
         each(document.getElementsByTagName('form'), function(f) {
-            f.submit = noop;
+            f.submit = function() {
+                submitForm(null, f);
+            };
             f.onsubmit = none;
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
                     f.onsubmit = function() {
-                        var query = Query();
-                        serializeOn($event(e, f), query);
-                        var queryString = join(collect(queryParameters(query), asURIEncodedString), ',');
-                        jsf.ajax.request(element, event, {execute: '@all', render: '@all', params: queryString});
+                        submitEvent(event, element, f);
                         f.onsubmit = none;
                         return false;
                     };
