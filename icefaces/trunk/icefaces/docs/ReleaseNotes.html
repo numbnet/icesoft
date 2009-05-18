@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8.0 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8.1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -33,7 +33,8 @@ font-weight: bold;
 h4 {
 font-size: 110%
 }
-</style></head>
+</style>
+</head>
 <body>
 <div style="border: 1px solid rgb(187, 187, 187);">
 <table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%">
@@ -42,9 +43,9 @@ font-size: 110%
 <td width="78%">
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.0
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">April&nbsp;2nd, 2009</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">May&nbsp;21st,&nbsp;2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -56,8 +57,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="#Changes_181">Changes
+in v1.8.1 (This Release)</a></li>
 <li><a href="#Changes_180">Changes
-in v1.8.0 (This Release)</a></li>
+in v1.8.0</a></li>
 <li><a href="#MigrationNotes">Migration
 Notes
 </a></li>
@@ -91,8 +94,163 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_181"></a>Changes
+in&nbsp;v1.8.1 (This Release)</h2>
+<br>
+ICEfaces v1.8.1 is a maintenance release featuring over 60
+fixes and improvements.<br>
+<br>
+Review the <a href="#Known_Issues">Known
+Issues</a>
+prior to using this release.&nbsp;Review the&nbsp;<a href="#MigrationNotes">Migration Notes</a>
+if you plan to use an existing ICEfaces 1.7.x application with 1.8.x. <br>
+<br>
+Please report any issues with
+this release to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/">forums</a>
+or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/browse/ICE">JIRA
+issue tracker</a>. <br>
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite&nbsp;</span><br>
+<br>
+<ul>
+<li>The ice:dataExporter component has been enhanced to
+support the ability to initiate a download immediately by clicking on
+it, without requiring an additional user-selection for the format to be
+downloaded. In addition, an image can now optionally be used as the
+download link target. See the TLD documentation for this component for
+details.</li>
+<li>The ice:inputTextarea component has been enhanced to
+support the "maxlength" attribute.</li>
+<li>The ice:outputChart now supports the horizontal
+orientation for the "barstacked" chart-type.</li>
+<li>The ice:outputStyle component now supports Internet
+Explorer 8 (IE8), such that an&nbsp;IE8-specific theme css file
+will automatically be included in the page when using IE8.&nbsp;</li>
+<li>The ice:inputRichText component has been updated to
+use&nbsp;FCKeditor library&nbsp;v2.6.4.</li>
+<li>The ice:menuBar component has been improved to avoid
+displaying child menus off the top of the visible viewport, in addition
+to the previous positioning enhancements included in 1.8.0. </li>
+<li>The "resizable" attribute on the ice:panelPopup
+component has been removed. The panelPopup component has never
+supported user-resizability and this was a no-op attribute.
+Applications with bindings to this attribute will need to be modified
+accordingly. Support for user-resizing of the panelPopup component may
+be added in a future release, see JIRA <a href="http://jira.icefaces.org/browse/ICE-4436" target="_blank">ICE-4436</a>
+for details or to vote for this enhancement.</li>
+<li>The ice:panelGroup's drag &amp; drop features have
+been improved to resolve some issues when using drag &amp; drop
+within scrollable &lt;DIV&gt;s in the IE browser browser. In
+addition, a Scriptaculous bug that prevented the Drop
+event.getTargetDropValue() &nbsp;method from returning the correct
+value has been resolved. Note that a new "dropTargetScrollerId"
+attribute must be specified in some cases to avoid this issue. See the
+TLD documentation for this component for details.</li>
+<li>The TLD documentation for the ice:inputFile component
+has been updated to warn against performing long-running operations in
+the actionListener for this component as doing so may result in the
+inputFile component disappearing in browser.&nbsp; </li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework</span></li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li>Support has been added for the Facelets ui:debug tag in
+this release. To enable this feature press Ctrl-Shift-D in your browser.</li>
+<li>Preliminary support for the Google App. Engine
+application hosting environment has been added in this release, with
+certain limitations. See JIRA <a href="http://jira.icefaces.org/browse/ICE-4394" target="_blank">ICE-4394</a>
+for details.</li>
+<li>A navigation issue related to ICEfaces handling of a
+redirect from a forwarded page has been resolved to align with the JSF
+RI's behavior, as well as ICEfaces behavior prior to 1.7.2. See JIRA <a href="http://jira.icefaces.org/browse/ICE-4428" target="_blank">ICE-4428</a>
+for details.&nbsp;</li>
+<li>An issue introduced in 1.8.0 that resulted in
+request-scoped beans being disposed and recreated upon a page reload
+when "concurrentDOMViews=false" and "standardRequestScope=false" has
+been resolved. See JIRA <a href="http://jira.icefaces.org/browse/ICE-4459" target="_blank">ICE-4459</a>
+for details.</li>
+<li>An issue that could cause browser focus to be lost when a
+partialSubmit was&nbsp;triggered &nbsp;from an inputText
+component has been resolved. This issue was limited to Internet
+Explorer (IE) browsers. For more information, refer to JIRA <a href="http://jira.icefaces.org/browse/ICE-4461" target="_blank">ICE-4461</a>.</li>
+<li>An issue that could cause an
+UnsupportedOperationException to be thrown when using JBoss Portal
+2.6.x has been resolved.</li>
+<li>An issue that could cause push operations to stop working
+when viewing multiple asynchronous ICEfaces applications in the Opera
+9.6.x browser has been fixed.</li>
+</ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Sample
+Applications</span>
+<br>
+<ul>
+<br>
+<li>Component Showcase</li>
+<ul>
+<li>An issue that prevented the "setEventPhase" demo from
+working correctly when running on a JSF 1.1 runtime has been resolved.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Documentation</span></li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li>API JavaDoc</li>
+<ul>
+<li>The API JavaDoc for the new SessionRenderer API
+introduced in 1.8.0 was incorrectly ommitted from the API JavaDoc in
+that release. It has been added in 1.8.1.</li>
+</ul>
+</ul>
+<ul>
+<li>ICEfaces
+Developer's Guide</li>
+<ul>
+<li>To clarify the "Push Server" section in "Chapter 5 -
+Advanced Topics" section on pg. 74 -&nbsp;the Push Server <span style="font-weight: bold;">MUST</span> always be
+deployed with asynchronous ICEfaces&nbsp;portlets or the push
+functions of these portlets will not work.</li>
+<li><span style="font-weight: bold;"></span>The
+usage example in the Bridge Connection Status Events section in
+"Chapter 4 - ICEfaces Reference Information", on&nbsp;pg. 28 is
+incorrect. The corrected usage example is noted below:</li>
+</ul>
+<ul>
+<pre>&lt;body&gt; </pre>
+<pre>... </pre>
+<pre>&lt;script type="text/javascript"&gt; </pre>
+<pre> Ice.onSessionExpired('document:body', function() { </pre>
+<pre> alert('Session has expired!'); </pre>
+<pre> }); </pre>
+<pre>&lt;/script&gt; </pre>
+<pre>... </pre>
+<pre>&lt;/body&gt; </pre>
+</ul>
+<p></p>
+</ul>
+</ul>
+<ul>
+<ul>
+</ul>
+</ul>
+Refer to the <a href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10170" target="_blank">ICEfaces JIRA Change Log</a> for
+detailed information on all the changes included in this release.<br>
+<br>
 <h2><a name="Changes_180"></a>Changes
-in&nbsp;v1.8.0 (This Release)</h2>
+in&nbsp;v1.8.0</h2>
 <br>
 ICEfaces v1.8.0 is a certified production release featuring over 350
 enhancements, improvements, and bug fixes.<br>
@@ -104,7 +262,7 @@ if you plan to use an existing ICEfaces application with 1.8.&nbsp;<br>
 <br>
 Please report any issues with
 this release to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/">forums</a>
-or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/">JIRA
+or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/browse/ICE">JIRA
 issue tracker</a>.&nbsp;
 <h3><span style="font-weight: bold;">Notable
 Improvements
@@ -760,12 +918,14 @@ the&nbsp;new&nbsp;Push Server</h3>
 <li>Asynchronous ICEfaces applications (push) should now be
 deployed with the new Push Server.</li>
 <li>If you deploy more than one asynchronous ICEfaces
-application to the same application/portal server/host-name and view
+application to the same application server/host-name and view
 more than one of these applications in a single browser (via multiple
 tabs or windows), the push updates only function correctly for one of
 the applications. This restriction is due to HTTP 1.1 connection-limit
 recommendations that many browsers enforce. Changes in 1.8.0 make this
 issue more prevelant on all browsers than in previous releases.</li>
+<li>Note that the Push Server MUST be deployed when using any
+ICEfaces asynchronous portlets.</li>
 <li>See the "Push Server" section on pg. 74 of the
 ICEfaces
 Developer's Guide for more information.</li>
@@ -1122,12 +1282,12 @@ Workbench<br>
 7.x<br>
 </td>
 </tr>
-<tr>
+<tr><td>IBM</td><td>Rational Application Developer (RAD)</td><td style="text-align: right;">7.5</td></tr><tr>
 <td style="vertical-align: top;">Sun<br>
 </td>
 <td style="vertical-align: top;">NetBeans<br>
 </td>
-<td style="vertical-align: top; text-align: right;">6.5<br>
+<td style="vertical-align: top; text-align: right;">6.5, 6.7 Beta<br>
 </td>
 </tr>
 </tbody>
@@ -1365,6 +1525,9 @@ browser.</li>
 <ul>
 <li>outputChart
 <ul>
+<li>Negative values are not supported in "barstacked"
+chart-types. This is a limitation of the&nbsp;krysalis.jcharts
+library used to generate the chart images.</li>
 <li>When using the ice:outputChart component with IE6
 the
 following warning log messages may appear in the ICEfaces server log:
