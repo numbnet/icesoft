@@ -96,7 +96,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 UIViewRoot viewRoot = facesContext.getViewRoot();
                 writer.startDocument();
-                Iterator<UIComponent> itr = viewRoot.getFacetsAndChildren();
+                Iterator<UIComponent> itr = viewRoot.getChildren().iterator();
                 while (itr.hasNext()) {
                     UIComponent kid = itr.next();
                     kid.encodeAll(facesContext);
