@@ -43,7 +43,7 @@
             var="msgs"/>
 
 
-    <head>
+    <h:head>
 
         <title id="dynamicTitle">
             <ui:insert name="title">#{msgs[applicationModel.currentNode.contentDescriptor.title]}</ui:insert>
@@ -65,8 +65,8 @@
         <script type="text/javascript" src="icefaces/bridge.wireup.js"/>
         <script type="text/javascript" src="icesubmit.js"/>
         <script type="text/javascript" src="prototype-1.6.0.3.js"/>
-    </head>
-    <body>
+    </h:head>
+    <h:body>
 
     <ui:insert name="header">
         <ui:include src="/WEB-INF/includes/content/header.xhtml"/>
@@ -232,7 +232,7 @@
                     );
         </script>
     </ui:remove>
-    </body>
+    </h:body>
 </f:view>
 </html>
  
