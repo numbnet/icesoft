@@ -48,7 +48,9 @@
         </ice:panelGroup>
     </f:facet>
     <h:commandLink id="buttonsAndLinksContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/standard/buttonsAndLinks.xhtml" />
         <ice:outputText
                 value="#{msgs['node.buttonLinks.label']}"/>
@@ -70,14 +72,16 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
 
     <br />
     <h:commandLink id="selectionTagsContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/standard/selectionTags.xhtml" />
         <ice:outputText
                 value="#{msgs['node.selection.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="textFieldsContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/standard/textFields.xhtml" />
         <ice:outputText
                 value="#{msgs['node.textFields.label']}"/>
@@ -92,14 +96,16 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
         </ice:panelGroup>
     </f:facet>
     <h:commandLink id="selectInputContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/selectInputText.xhtml" />
         <ice:outputText
                 value="#{msgs['node.selectInputText.label']}"/>
     </h:commandLink>
     <br />
     <h:commandLink id="selectInputDateContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/selectInputDate.xhtml" />
         <ice:outputText
                 value="#{msgs['node.selectInputDate.label']}"/>
@@ -107,14 +113,16 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
     <br />
     <!-- Charts -->
     <h:commandLink id="chartContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputChart.xhtml" />
         <ice:outputText
                 value="#{msgs['node.outputChart.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="connectionStatusContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputConnectionStatus.xhtml" />
         <ice:outputText
                 value="#{msgs['node.outputConnectionStatus.label']}"/>
@@ -122,84 +130,96 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
     <br/>
     <!-- Output Resource -->
     <h:commandLink id="outputResourcePanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputResource.xhtml" />
         <ice:outputText
                 value="#{msgs['node.outputResource.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="dragDropContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dragDrop.xhtml" />
         <ice:outputText
                 value="#{msgs['node.dragDrop.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="effectsContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/effects.xhtml" />
         <ice:outputText
                 value="#{msgs['node.effects.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="inputFileContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/inputFile.xhtml" />
         <ice:outputText
                 value="#{msgs['node.inputFile.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="gMapContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/gmap.xhtml" />
         <ice:outputText
                 value="#{msgs['node.gMap.label']}"/>
     </h:commandLink>
     <br />
     <h:commandLink id="outputMediaContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputMedia.xhtml" />
         <ice:outputText
                 value="#{msgs['node.outputMedia.label']}"/>
     </h:commandLink>
     <br />
     <h:commandLink id="menuBarContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuBar.xhtml" />
         <ice:outputText
                 value="#{msgs['node.menuBar.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="menuPopupContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuPopup.xhtml" />
         <ice:outputText
                 value="#{msgs['node.menuPopup.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="outputProgressContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputProgress.xhtml" />
         <ice:outputText
                 value="#{msgs['node.outputProgress.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="inputRichTextPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/inputRichText.xhtml" />
         <ice:outputText
                 value="#{msgs['node.inputRichText.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="setEventPhasePanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/setEventPhase.xhtml" />
         <ice:outputText
                 value="#{msgs['node.setEventPhase.label']}"/>
     </h:commandLink>
     <br />
     <h:commandLink id="treeContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/tree.xhtml" />
         <ice:outputText
                 value="#{msgs['node.tree.label']}"/>
@@ -213,56 +233,64 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
             </ice:panelGroup>
         </f:facet>
         <h:commandLink id="columnsContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-columns.xhtml" />
             <ice:outputText
                     value="#{msgs['node.columns.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="dataTablePaginatorContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-dataScrolling.xhtml" />
             <ice:outputText
                     value="#{msgs['node.dataScrolling.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="dataTableExpandableContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-expandable.xhtml" />
             <ice:outputText
                     value="#{msgs['node.expandableDataTable.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="commandSortHeaderContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.xhtml" />
             <ice:outputText
                     value="#{msgs['node.commandSortHeader.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="dataTableResizableColumnsContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-resizableColumns.xhtml" />
             <ice:outputText
                     value="#{msgs['node.resizable.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="dataTableGroupingContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-grouping.xhtml" />
             <ice:outputText
                     value="#{msgs['node.grouping.label']}"/>
         </h:commandLink>
         <br/>
         <h:commandLink id="dataTableRowSelectionContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-rowSelection.xhtml" />
             <ice:outputText
                     value="#{msgs['node.rowSelector.label']}"/>
         </h:commandLink>
       <br/>
         <h:commandLink id="dataExporterContentPanel"
-                         onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                          action="success">
+        <f:ajax execute="@all" render="@all"/>
             <f:param name="includePath" value="/WEB-INF/includes/examples/custom/dataTable-dataExporter.xhtml" />
             <ice:outputText
                     value="#{msgs['node.dataExporter.label']}"/>
@@ -279,70 +307,80 @@ onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return f
     </f:facet>
 
     <h:commandLink id="panelBorderContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelBorder.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelBorder.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelDividerContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelDivider.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelDivider.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelStackContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelStack.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelStack.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelSeriesContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelSeries.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelSeries.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelPositionedContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelPositioned.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelPositioned.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelCollapsibleContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelCollapsible.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelCollapsible.label']}"/>
     </h:commandLink>
     <br />
     <h:commandLink id="tabbedPaneContentPanel-static"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelTabSet-static.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelTabSetStatic.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="tabbedPaneContentPanel-dynamic"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelTabSet-dynamic.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelTabSetDynamic.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelPopupContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelPopup.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelPopup.label']}"/>
     </h:commandLink>
     <br/>
     <h:commandLink id="panelTooltipContentPanel"
-                     onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'})" action="success">
+                      action="success">
+        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelTooltip.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelTooltip.label']}"/>
