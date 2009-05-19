@@ -115,7 +115,7 @@ public class DOMUtils {
     public static void printChildNodes(Node node, Writer writer) throws IOException {
         NodeList children = node.getChildNodes();
         int l = children.getLength();
-        for (int i = 0; i < l; i++) {
+        for (int i = 0; i < l; i++)  {
             printNode(children.item(i), writer);
         }
     }
