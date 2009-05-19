@@ -93,6 +93,12 @@ public class RenderManager implements Disposable {
         // do nothing.
     }
 
+    public BroadcastRenderer getBroadcastRenderer() {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getBroadcastRenderer() : null;
+    }
+
     /**
      * The DelayRenderer is a {@link GroupAsyncRenderer} that requests a
      * server-initiated render of all the Renderables in its collection.  The
@@ -177,6 +183,9 @@ public class RenderManager implements Disposable {
                 internalRenderManager.getServletContext() : null;
     }
 
+    /**
+     * @deprecated Replaced by {@link #getBroadcastRenderer()}. 
+     */
     public boolean isBroadcasted() {
         return
             internalRenderManager != null &&
@@ -207,6 +216,9 @@ public class RenderManager implements Disposable {
         }
     }
 
+    /**
+     * @deprecated Replaced by {@link #setBroadcastRenderer(BroadcastRenderer)}.
+     */
     public void setBroadcasted(final boolean broadcasted) {
         if (internalRenderManager != null) {
             internalRenderManager.setBroadcasted(broadcasted);
@@ -277,7 +289,6 @@ public class RenderManager implements Disposable {
             Collections.synchronizedMap(new HashMap());
         private final ContextDestroyedListener shutdownListener =
             new ContextDestroyedListener(this);
-        private boolean broadcasted;
         private BroadcastRenderer broadcastRenderer;
 
         private InternalRenderManager(final ServletContext servletContext) {
@@ -316,6 +327,10 @@ public class RenderManager implements Disposable {
             ContextEventRepeater.removeListener(shutdownListener);
         }
 
+        public BroadcastRenderer getBroadcastRenderer() {
+            return broadcastRenderer;
+        }
+
         public DelayRenderer getDelayRenderer(final String rendererName) {
             return (DelayRenderer)getRenderer(rendererName, DELAY);
         }
@@ -340,7 +355,7 @@ public class RenderManager implements Disposable {
         }
 
         public boolean isBroadcasted() {
-            return broadcasted;
+            return broadcastRenderer != null;
         }
 
         public void removeRenderer(final AsyncRenderer renderer) {
@@ -364,7 +379,7 @@ public class RenderManager implements Disposable {
         }
 
         public void setBroadcasted(final boolean broadcasted) {
-            this.broadcasted = broadcasted;
+            // do nothing.
         }
 
         public void setCorePoolSize(int corePoolSize) {
@@ -451,7 +466,7 @@ public class RenderManager implements Disposable {
                     renderer = null;
             }
             if (renderer != null) {
-                renderer.setBroadcasted(broadcasted);
+                renderer.setBroadcasted(broadcastRenderer != null);
                 renderer.setName(name);
                 rendererGroupMap.put(name, renderer);
             }
