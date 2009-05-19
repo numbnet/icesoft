@@ -50,26 +50,10 @@
     <h:commandLink id="buttonsAndLinksContentPanel"
                       action="success">
         <f:ajax execute="@all" render="@all"/>
-        <f:ajax execute="@all" render="@all"/>
         <f:param name="includePath" value="/WEB-INF/includes/examples/standard/buttonsAndLinks.xhtml" />
         <ice:outputText
                 value="#{msgs['node.buttonLinks.label']}"/>
     </h:commandLink>
-    <br />
-<ui:remove>
-    <h:commandButton id="buttonsAndLinksContentPanel2"
-                     value="#{msgs['node.buttonLinks.label']}"
-onclick="jsf.ajax.request(this, event, {execute:'@all',render:'@all'}); return false;"                                           
-                     action="#{navigation.navigationPathChange}">
-    </h:commandButton>  <br />
-
-  
-    <h:link id="tryHLinkId" action="#navigation.navigationPathChange}">
-        <f:param name="includePath" value="/WEB-INF/includes/examples/standard/buttonsAndLinks.xhtml" />
-            <ice:outputText value="2nd link for Buttons"/>
-    </h:link>
-</ui:remove>    
-
     <br />
     <h:commandLink id="selectionTagsContentPanel"
                       action="success">
