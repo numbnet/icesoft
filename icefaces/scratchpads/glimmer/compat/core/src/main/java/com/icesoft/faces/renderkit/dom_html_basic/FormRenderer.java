@@ -189,7 +189,9 @@ public class FormRenderer extends DomBasicRenderer {
             root.setAttribute("onsubmit", "return false;");
         }
 
-        facesContext.getApplication().getViewHandler().writeState(facesContext);
+        //Write state at end of encodeEnd so that full component state is available
+        //when marker is replaced
+        //facesContext.getApplication().getViewHandler().writeState(facesContext);
         // Currently we have to put the marker node in the DOM here, because
         // the DOMResponseWriter doesn't have the same View of the DOM as this object does,
         // because this object isn't using the DOMResponseWriter. 
@@ -236,6 +238,7 @@ public class FormRenderer extends DomBasicRenderer {
             messages.encodeEnd(facesContext);
         }
 
+        facesContext.getApplication().getViewHandler().writeState(facesContext);
         domContext.stepOver();
     }
 
