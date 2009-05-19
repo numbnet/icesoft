@@ -794,7 +794,7 @@ public class DOMUtils {
         NodeList nodes = node.getChildNodes();
         if (nodes != null) {
             for (int i = 0; i < nodes.getLength(); i++) {
-               result += indent + toDebugStringDeep(nodes.item(i), indent) + "\n";
+               result += indent + toDebugStringDeep(nodes.item(i), indent);
             }
         }
         return result;
