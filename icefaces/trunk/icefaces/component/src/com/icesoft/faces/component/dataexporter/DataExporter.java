@@ -1,12 +1,28 @@
 package com.icesoft.faces.component.dataexporter;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.DisplayEvent;
+import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.component.outputresource.OutputResource;
 import com.icesoft.faces.context.FileResource;
+import com.icesoft.faces.context.Resource;
+import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
@@ -23,8 +39,6 @@ public class DataExporter extends OutputResource {
 	private String _origFor;
 	private transient OutputTypeHandler _origOutputTypeHandler;
 	private transient int _origDataModelHash = 0;
-	private Boolean clickToCreateFile;
-	private String clickToCreateFileImage;
 	public final static String EXCEL_TYPE = "excel";
 	public final static String CSV_TYPE = "csv";
 
@@ -149,30 +163,6 @@ public class DataExporter extends OutputResource {
 		this.clickToCreateFileText = clickToCreateFileText;
 	}
 
-    public boolean isClickToCreateFile() {
-        if (this.clickToCreateFile != null) {
-            return clickToCreateFile.booleanValue();
-        }
-        ValueBinding vb = getValueBinding("clickToCreateFile");
-        return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : true;
-    }
-
-    public void setClickToCreateFile(boolean clickToCreateFile) {
-        this.clickToCreateFile = new Boolean(clickToCreateFile);
-    }	
-    
-    public String getClickToCreateFileImage() {
-        if (this.clickToCreateFileImage != null) {
-            return clickToCreateFileImage;
-        }
-        ValueBinding vb = getValueBinding("clickToCreateFileImage");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setClickToCreateFileImage(String clickToCreateFileImage) {
-        this.clickToCreateFileImage = clickToCreateFileImage;
-    }    
-    
 	public OutputTypeHandler getOutputTypeHandler() {
 		ValueBinding vb = getValueBinding("outputTypeHandler");
 		OutputTypeHandler newOutputHandler = null;
@@ -200,7 +190,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[9];
+            values = new Object[7];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -209,8 +199,6 @@ public class DataExporter extends OutputResource {
         values[4] = readyToExport? Boolean.TRUE : Boolean.FALSE;
         values[5] = _origType;
         values[6] = _origFor;
-        values[7] = clickToCreateFile;
-        values[8] = clickToCreateFileImage;        
         return ((Object) (values));
     }
 
@@ -229,8 +217,6 @@ public class DataExporter extends OutputResource {
         readyToExport = ((Boolean) values[4]).booleanValue();        
         _origType = (String) values[5];
         _origFor = (String)values[6];
-        clickToCreateFile = (Boolean) values[7];
-        clickToCreateFileImage = (String) values[8];        
     }
     
     public String getLabel() {
@@ -242,5 +228,166 @@ public class DataExporter extends OutputResource {
         return label;
     }
 	
+    public void broadcast(FacesEvent event)
+    throws AbortProcessingException {
+        super.broadcast(event);
+        if (event != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String type = getType();
+            Resource res = getResource(); 
+            if (res == null) {
+                File output = createFile(facesContext, type);
+                setResource(new FileResource(output));
+                getResource();
+            }
+            JavascriptContext.addJavascriptCall(facesContext, "window.open('" + getPath() + "');");
+        }
+    }    
 
+    private File createFile(FacesContext fc, String type) {
+        UIData uiData = getUIData();
+        OutputTypeHandler outputHandler = null;
+        ServletContext context = ((HttpSession) FacesContext
+                .getCurrentInstance().getExternalContext().getSession(false))
+                .getServletContext();
+
+        try {
+            File exportDir = new File(context.getRealPath("/export"));
+            if (!exportDir.exists())
+                exportDir.mkdirs();
+            String pathWithoutExt = context.getRealPath("/export") + "/export_"
+                    + new Date().getTime();
+
+            if (getOutputTypeHandler() != null)
+                outputHandler = getOutputTypeHandler();
+            else if (DataExporter.EXCEL_TYPE.equals(getType())) {
+                outputHandler = new ExcelOutputHandler(pathWithoutExt + ".xls",
+                        fc, uiData.getId());
+            } else if (DataExporter.CSV_TYPE.equals(getType())) {
+                outputHandler = new CSVOutputHandler(pathWithoutExt + ".csv");
+            }
+            if (outputHandler == null) {
+                return null;
+            }
+            renderToHandler(outputHandler, uiData, fc);
+            setMimeType(outputHandler.getMimeType());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return outputHandler != null ? outputHandler.getFile() : null;
+
+    }
+
+    private String encodeParentAndChildrenAsString(FacesContext fc,
+            UIComponent uic, String str) {
+        Object value = uic.getAttributes().get("value");
+        if (value != null)
+            str += "" + value;
+        else {
+            ValueBinding vb = uic.getValueBinding("value");
+            if (vb != null)
+                str += String.valueOf(vb.getValue(fc));
+        }
+
+        if (uic.getChildCount() > 0) {
+            Iterator iter = uic.getChildren().iterator();
+            while (iter.hasNext()) {
+                UIComponent child = (UIComponent) iter.next();
+                str += encodeParentAndChildrenAsString(fc, child, str);
+            }
+        }
+        return str;
+    }
+
+    protected List getRenderedChildColumnsList(UIComponent component) {
+        List results = new ArrayList();
+        Iterator kids = component.getChildren().iterator();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            if ((kid instanceof UIColumn) && kid.isRendered()) {
+                results.add(kid);
+            }
+        }
+        return results;
+    }
+
+    private void renderToHandler(OutputTypeHandler outputHandler,
+            UIData uiData, FacesContext fc) {
+
+        try {
+            int rowIndex = uiData.getFirst();
+            int colIndex = 0;
+            int numberOfRowsToDisplay = uiData.getRows();
+            int countOfRowsDisplayed = 0;
+            uiData.setRowIndex(rowIndex);
+
+            // write header
+            Iterator childColumns = getRenderedChildColumnsList(uiData)
+                    .iterator();
+            while (childColumns.hasNext()) {
+                UIColumn nextColumn = (UIColumn) childColumns.next();
+
+                UIComponent headerComp = nextColumn.getFacet("header");
+                if (headerComp != null) {
+                    String headerText = "";
+                    headerText = encodeParentAndChildrenAsString(fc,
+                            headerComp, headerText);
+                    if (headerText != null) {
+                        outputHandler.writeHeaderCell(headerText, colIndex);
+                    }
+                }
+                colIndex++;
+            }
+
+            while (uiData.isRowAvailable()) {
+                if (numberOfRowsToDisplay > 0
+                        && countOfRowsDisplayed >= numberOfRowsToDisplay) {
+                    break;
+                }
+
+                // render the child columns; each one in a td
+                childColumns = getRenderedChildColumnsList(uiData).iterator();
+                colIndex = 0;
+                while (childColumns.hasNext()) {
+                    UIColumn nextColumn = (UIColumn) childColumns.next();
+
+                    Object output = null;
+                    String stringOutput = "";
+
+                    Iterator childrenOfThisColumn = nextColumn.getChildren()
+                            .iterator();
+                    while (childrenOfThisColumn.hasNext()) {
+
+                        UIComponent nextChild = (UIComponent) childrenOfThisColumn
+                                .next();
+                        if (nextChild.isRendered()) {
+                            stringOutput += encodeParentAndChildrenAsString(fc,
+                                    nextChild, stringOutput);
+                        }
+
+                    }
+                    output = stringOutput;
+                    outputHandler.writeCell(output, colIndex, rowIndex);
+                    colIndex++;
+                }
+                // keep track of rows displayed
+                countOfRowsDisplayed++;
+                // maintain the row index property on the underlying UIData
+                // component
+                rowIndex++;
+                uiData.setRowIndex(rowIndex);
+
+            }
+            // reset the underlying UIData component
+            uiData.setRowIndex(-1);
+
+            outputHandler.flushFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    
 }
