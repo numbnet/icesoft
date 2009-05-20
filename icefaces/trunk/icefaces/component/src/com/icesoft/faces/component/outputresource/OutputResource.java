@@ -314,7 +314,7 @@ public class OutputResource extends UIComponentBase {
 		return lastResourceHashCode;
 	}
 
-	String getPath() {
+	public String getPath() {
 		return path;
 	}
 	
