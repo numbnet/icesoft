@@ -50,7 +50,8 @@ public class DataExporterRenderer extends BaseRenderer {
                 writer.writeAttribute(HTML.SRC_ATTR, facesContext.
                         getApplication().getViewHandler()
                         .getResourceURL(facesContext, image), HTML.SRC_ATTR);  
-                writer.writeAttribute(HTML.TITLE_ATTR, label, HTML.TITLE_ATTR);  
+                writer.writeAttribute(HTML.TITLE_ATTR, label, HTML.TITLE_ATTR);
+                writer.writeAttribute(HTML.ALT_ATTR, label, HTML.ALT_ATTR);                
                 writer.endElement(HTML.IMG_ELEM);
             } else {
                 writer.write(label);
