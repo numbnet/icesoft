@@ -39,9 +39,8 @@
 &ice-effects-props;
 &events-props;
 
-<!--
 <property>
-	<description>Used to render a resizable popup.</description>
+	<description>This attribute is currently unsupported.</description>
 	<property-name>resizable</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
@@ -50,7 +49,6 @@
         <is-hidden>true</is-hidden>
 	</property-extension>
 </property>
--->
 
 <property>
 	<description>

@@ -273,11 +273,9 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * 
 	 * @return false
 	 */
-/*
 	public boolean isResizable() {
 		return false; // resizable functionality is not added yet
 	}
-*/
 
 	/**
 	 * Sets the resizable attribute of the component. Note: The resizable
@@ -286,11 +284,9 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * @param resizable
 	 *            a value of true will set the component to be resizable
 	 */
-/*
 	public void setResizable(boolean resizable) {
 		this.resizable = Boolean.valueOf(resizable);
 	}
-*/
 
 	/**
 	 * @return true if the component is modal.
