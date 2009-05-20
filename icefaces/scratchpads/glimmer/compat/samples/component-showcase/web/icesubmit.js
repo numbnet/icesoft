@@ -7,6 +7,13 @@ function iceSubmitPartial(form, component, evt) {
 }
 
 function iceSubmit(form, component, evt) {
+    if (evt.keyCode) code = evt.keyCode;
+    else if (evt.which) code = evt.which;
+    if (code > 3) {
+        if (code != 13) {
+            return false;
+        }
+    }
     ice.submitForm(evt, form || formOf(component));
     return false;
 }
