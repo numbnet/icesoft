@@ -284,11 +284,11 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         }
 
         public boolean isExpired() {
-            long elapsedInterval = System.currentTimeMillis() - lastAccess;
-            int maxInterval = session.getMaxInactiveInterval();
 
+            long elapsedInterval = System.currentTimeMillis() - lastAccess;
+            try { 
+                int maxInterval = session.getMaxInactiveInterval();
             // 4496 return true if session is already expired
-            try {
                 Object o = session.getAttribute(POSITIVE_SESSION_TIMEOUT);
 
                 // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
@@ -304,7 +304,6 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
                     }
                 }
                 return elapsedInterval + 15000 > maxInterval * 1000;
-
             } catch (Exception e) {
                 return true;
             }
