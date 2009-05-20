@@ -150,7 +150,10 @@ public class DataExporter extends OutputResource {
 	public void setReadyToExport(boolean readyToExport) {
 		this.readyToExport = readyToExport;
 	}
-
+	
+	/**
+	 * @deprecated
+	 */
 	public String getClickToCreateFileText() {
 		if (this.clickToCreateFileText != null) {
 			return clickToCreateFileText;
@@ -159,6 +162,9 @@ public class DataExporter extends OutputResource {
 		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
 
+     /**
+     * @deprecated
+     */
 	public void setClickToCreateFileText(String clickToCreateFileText) {
 		this.clickToCreateFileText = clickToCreateFileText;
 	}
