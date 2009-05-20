@@ -51,8 +51,7 @@
 
  <property>
 	<description>
-	The value of this attribute will be rendered as an hyper link which can be 
-	clicked to create the file.
+	     Note: This is deprecated.
 	</description>
     <property-name>clickToCreateFileText</property-name>
 
