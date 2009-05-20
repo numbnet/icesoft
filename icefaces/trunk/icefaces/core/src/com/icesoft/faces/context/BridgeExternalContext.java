@@ -145,7 +145,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     };
     private static final String SEAM_LIFECYCLE_SHORTCUT = "com.icesoft.faces.shortcutLifecycle";
-    public static String PostBackKey;
+    public static String PostBackKey = "com.icesoft.faces.postbackkey";
 
     static {
         //We will place VIEW_STATE_PARAM in the requestMap so that
