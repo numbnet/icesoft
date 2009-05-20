@@ -824,6 +824,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     void resetLastViewID() {
         lastViewID = null;
+        viewRoot = null;
     }
 
     private static class ReferenceDocumentStore implements DocumentStore {
