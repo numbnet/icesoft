@@ -37,7 +37,7 @@
 &base-props;
 <property>
 	<description>
-		Id of the dataTable.
+		  ID of the dataTable that this dataExporter component will export data from.
 	</description>
 	<property-name>for</property-name>
 	<property-class>java.lang.String</property-class>
@@ -51,7 +51,7 @@
 
  <property>
 	<description>
-	     Note: This is deprecated.
+	    Note: This is deprecated as of 1.8.1. Specifying a value for this attribute will have no effect.
 	</description>
     <property-name>clickToCreateFileText</property-name>
 
@@ -109,7 +109,10 @@
 
   <property>
     <description>
-        The image path that will be used to display an image for download file link instead of text. 
+        The URL of an image that will be rendered instead of the 'label' attribute 
+        text which the user can click on to initiate a data export download. When 
+        this attribute is specified, the 'label' text will be used for the 'title' 
+        and 'alt' text on the image element.
     </description>
     <property-name>image</property-name>
     <property-class>java.lang.String</property-class>
