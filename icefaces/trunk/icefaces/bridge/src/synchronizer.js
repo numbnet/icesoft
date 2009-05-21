@@ -64,10 +64,12 @@
         },
 
         synchronize: function() {
+            this.synchronize = Function.NOOP;
             try {
-                this.historyFrame.location.replace(this.historyFrame.location + '#reload');
-                this.logger.debug('mark document as modified');
-                this.synchronize = Function.NOOP;
+                if (!this.historyFrame.location.hash.contains('reload')) {
+                    this.historyFrame.location.replace(this.historyFrame.location + '#reload');
+                    this.logger.debug('mark document as modified');
+                }
             } catch(e) {
                 this.logger.warn('could not mark document as modified', e);
             }

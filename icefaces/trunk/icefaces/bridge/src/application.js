@@ -238,8 +238,8 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 if (mimeType.startsWith('text/html')) {
                     replaceContainerHTML(response.content());
                 } else if (mimeType.startsWith('text/xml')) {
-                    commandDispatcher.deserializeAndExecute(response.contentAsDOM().documentElement);
                     documentSynchronizer.synchronize();
+                    commandDispatcher.deserializeAndExecute(response.contentAsDOM().documentElement);
                 } else {
                     logger.warn('unknown content in response');
                 }
