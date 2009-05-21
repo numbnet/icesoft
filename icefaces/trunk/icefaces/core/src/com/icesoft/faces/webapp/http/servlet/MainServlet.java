@@ -162,7 +162,7 @@ public class MainServlet extends HttpServlet {
             } else {
                 throw new ServletException(e);
             }
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e) {                                                                       
             //ICE-4261: We cannot wrap RuntimeExceptions as ServletExceptions because of support for Jetty
             //Continuations.  However, if the message of a RuntimeException is null, Tomcat won't
             //properly redirect to the configured error-page.  So we need a new RuntimeException
@@ -170,6 +170,10 @@ public class MainServlet extends HttpServlet {
             if( e.getMessage() != null ){
                 throw e;
             }
+            // ICE-4507 let Jetty continuation messages get through untouched
+            if (e.getClass().getName().startsWith("org.mortbay.jetty") ) {
+                throw e;
+            } 
             throw new RuntimeException("no message available",e);
         } catch (Exception e) {
             throw new ServletException(e);
@@ -384,8 +388,7 @@ public class MainServlet extends HttpServlet {
                                 !ProductInfo.PRIMARY.equals("x")) {
 
                                 if (!primary.equals(ProductInfo.PRIMARY) ||
-                                    !secondary.equals(ProductInfo.SECONDARY) ||
-                                    !tertiary.equals(ProductInfo.TERTIARY)) {
+                                    !secondary.equals(ProductInfo.SECONDARY)) {
 
                                     if (LOG.isWarnEnabled()) {
                                         LOG.warn(
@@ -395,12 +398,11 @@ public class MainServlet extends HttpServlet {
                                                     ProductInfo.PRODUCT + " " +
                                                     ProductInfo.PRIMARY + "." +
                                                     ProductInfo.SECONDARY + "." +
-                                                    ProductInfo.TERTIARY + "\" " +
+                                                    "x\" " +
                                                 "with \"" +
                                                     product + " " +
                                                     primary + "." +
-                                                    secondary + "." +
-                                                    tertiary + "\" " +
+                                                    secondary + ".x\" " +
                                                 "is not recommended.");
                                     }
                                 }
