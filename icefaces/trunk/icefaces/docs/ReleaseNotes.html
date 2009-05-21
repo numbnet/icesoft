@@ -45,7 +45,7 @@ font-size: 110%
 </h1>
 <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">May&nbsp;21st,&nbsp;2009</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">May&nbsp;25th,&nbsp;2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -117,16 +117,16 @@ Improvements
 Component Suite&nbsp;</span><br>
 <br>
 <ul>
-<li>The ice:dataExporter component has been enhanced to
-support the ability to initiate a download immediately by clicking on
-it, without requiring an additional user-selection for the format to be
-downloaded. In addition, an image can now optionally be used as the
-download link target. See the TLD documentation for this component for
-details.</li>
 <li>The ice:inputTextarea component has been enhanced to
 support the "maxlength" attribute.</li>
 <li>The ice:outputChart now supports the horizontal
 orientation for the "barstacked" chart-type.</li>
+<li>The ice:dataExporter component has been improved to
+support both
+the generation of an export file and the initiation of the download of
+the file in response to a single user click, instead of the previously
+required two clicks. As a result, the 'clickToCreateFileText' attribute
+has been deprecated in this release and is now a no-op attribute.</li>
 <li>The ice:outputStyle component now supports Internet
 Explorer 8 (IE8), such that an&nbsp;IE8-specific theme css file
 will automatically be included in the page when using IE8.&nbsp;</li>
@@ -135,13 +135,6 @@ use&nbsp;FCKeditor library&nbsp;v2.6.4.</li>
 <li>The ice:menuBar component has been improved to avoid
 displaying child menus off the top of the visible viewport, in addition
 to the previous positioning enhancements included in 1.8.0. </li>
-<li>The "resizable" attribute on the ice:panelPopup
-component has been removed. The panelPopup component has never
-supported user-resizability and this was a no-op attribute.
-Applications with bindings to this attribute will need to be modified
-accordingly. Support for user-resizing of the panelPopup component may
-be added in a future release, see JIRA <a href="http://jira.icefaces.org/browse/ICE-4436" target="_blank">ICE-4436</a>
-for details or to vote for this enhancement.</li>
 <li>The ice:panelGroup's drag &amp; drop features have
 been improved to resolve some issues when using drag &amp; drop
 within scrollable &lt;DIV&gt;s in the IE browser browser. In
@@ -1282,12 +1275,18 @@ Workbench<br>
 7.x<br>
 </td>
 </tr>
-<tr><td>IBM</td><td>Rational Application Developer (RAD)</td><td style="text-align: right;">7.5</td></tr><tr>
+<tr>
+<td>IBM</td>
+<td>Rational Application Developer (RAD)</td>
+<td style="text-align: right;">7.5</td>
+</tr>
+<tr>
 <td style="vertical-align: top;">Sun<br>
 </td>
 <td style="vertical-align: top;">NetBeans<br>
 </td>
-<td style="vertical-align: top; text-align: right;">6.5, 6.7 Beta<br>
+<td style="vertical-align: top; text-align: right;">6.5,
+6.7 Beta<br>
 </td>
 </tr>
 </tbody>
