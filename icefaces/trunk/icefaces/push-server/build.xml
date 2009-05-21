@@ -8,7 +8,7 @@
     <property name="web.xml" location="web/WEB-INF/web.xml" />
     
     <property name="productinfo.src" location="conf/org/icesoft/faces/push/server" />
-    <property name="productinfo.dest" location="src/org/icesoft/faces/push/server" />
+    <property name="productinfo.dest" location="src/org/icefaces/push/server" />
     <property name="productinfo.file" value="ProductInfo.java" />
     <property name="company" value="ICEsoft Technologies, Inc." />
     <property name="product" value="ICEfaces Push Server" />
