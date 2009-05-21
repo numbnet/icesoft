@@ -163,7 +163,16 @@ window.evaluate = eval;
             try {
                 var forms = document.getElementsByTagName('form');
                 //use first found form to submit; force a render for all forms in the page/view
-                jsf.ajax.request(forms[0], null, {render: '@all'});
+                var form = forms[0];
+                var viewState = form['javax.faces.ViewState'].value;
+                var newForm = document.createElement('form');
+                newForm.action = form.action;
+                var input = newForm.appendChild(document.createElement('input'));
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'javax.faces.ViewState');
+                input.setAttribute('value', viewState);
+
+                jsf.ajax.request(newForm, null, {render: '@all'});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
