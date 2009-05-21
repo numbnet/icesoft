@@ -242,6 +242,7 @@ Ice.registerClick = function(elem,hdnClkRow,hdnClkCount,rowid,formId,delay,toggl
 }
 
 Ice.registerDblClick = function(elem) {
+    if (document.selection) document.selection.empty();
     if (Ice.clickEvents[elem.id]) {
         Ice.clickEvents[elem.id].submit(2);
     }
