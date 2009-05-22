@@ -46,6 +46,11 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
         if (factory == null) {
             synchronized (LOCK) {
                 if (factory == null) {
+                    // checking if Servlet 3.0 ARP is available...
+                    boolean isAsyncARPAvailable = isAsyncARPAvailable();
+                    if (log.isLoggable(Level.FINE)) {
+                        log.log(Level.FINE,"AsyncContext ARP available: " + isAsyncARPAvailable);
+                    }
                     // checking if GlassFish ARP is available...
                     boolean isGlassFishARPAvailable = isGlassFishARPAvailable();
                     if (log.isLoggable(Level.FINE)) {
@@ -56,7 +61,12 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
                     if (log.isLoggable(Level.FINE)) {
                         log.log(Level.FINE,"Jetty ARP available: " + isJettyARPAvailable);
                     }
-                    if (isGlassFishARPAvailable && configuration.getAttributeAsBoolean("useARP", isGlassFishARPAvailable)) {
+                    if (isAsyncARPAvailable && configuration.getAttributeAsBoolean("useARP", isAsyncARPAvailable)) {
+                        log.log(Level.INFO,"Adapting to Servlet 3.0 AsyncContext ARP environment");
+                        factory = new AsyncAdaptingServletFactory();
+                        // instantiate a fallback factory for creating fallback servlets.
+                        fallbackFactory = new ThreadBlockingAdaptingServletFactory();
+                    } else if (isGlassFishARPAvailable && configuration.getAttributeAsBoolean("useARP", isGlassFishARPAvailable)) {
                         log.log(Level.INFO,"Adapting to GlassFish ARP environment");
                         factory = new GlassFishAdaptingServletFactory();
                         // instantiate a fallback factory for creating fallback servlets.
@@ -104,6 +114,15 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
         servlet.shutdown();
     }
 
+    private boolean isAsyncARPAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass("javax.servlet.AsyncContext");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
     private boolean isGlassFishARPAvailable() {
         try {
             this.getClass().getClassLoader().loadClass("com.sun.enterprise.web.connector.grizzly.comet.CometEngine");
@@ -124,6 +143,12 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
 
     private static interface EnvironmentAdaptingServletFactory {
         public PseudoServlet newServlet(final Server server, final ServletContext servletContext);
+    }
+
+    private static class AsyncAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
+        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
+            return new AsyncAdaptingServlet(server);
+        }
     }
 
     private static class GlassFishAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
