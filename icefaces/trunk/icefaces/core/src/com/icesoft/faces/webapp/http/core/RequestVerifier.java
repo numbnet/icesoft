@@ -31,7 +31,9 @@ public class RequestVerifier implements Server {
                     request.respondWith(SessionExpiredResponse.Handler);
                 }
             } else {
-                log.info("Request missing 'ice.session' required parameter. Dropping connection...");
+                if( log.isDebugEnabled() ){
+                    log.debug("Request missing 'ice.session' required parameter. Dropping connection...");
+                }
                 request.respondWith(EmptyResponse.Handler);
             }
         }
