@@ -211,16 +211,19 @@ implements MessageServiceAdapter {
             OutputStreamWriter _writer = null;
             InputStreamReader _reader = null;
             try {
+                String _destinationServletContextPath =
+                    message.getStringProperty(
+                        Message.DESTINATION_SERVLET_CONTEXT_PATH);
                 _connection =
                     (HttpURLConnection)
                         new URL(
                             "http",
                             localAddress,
                             localPort,
-                            "/" +
-                                message.getStringProperty(
-                                    Message.DESTINATION_SERVLET_CONTEXT_PATH) +
-                                "/block/message"
+                            (_destinationServletContextPath.startsWith("/") ?
+                                _destinationServletContextPath :
+                                "/" + _destinationServletContextPath
+                            ) + "/block/message"
                         ).openConnection();
                 _connection.setDoInput(true);
                 _connection.setDoOutput(true);
