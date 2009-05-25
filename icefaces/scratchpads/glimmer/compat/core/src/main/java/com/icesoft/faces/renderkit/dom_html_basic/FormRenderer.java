@@ -209,6 +209,13 @@ public class FormRenderer extends DomBasicRenderer {
 //            ((Element) n).setAttribute( "id", id );
 //            domWriter.trackMarkerNode( n );
 //        }
+        if (!domContext.isInitialized()) {
+            Element viewState = domContext.createElement("input");
+            viewState.setAttribute("type", "hidden");
+            viewState.setAttribute("name", "javax.faces.ViewState");
+            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
+            domContext.getRootNode().appendChild(viewState);
+        }
 
         domContext.stepInto(uiComponent);
     }
@@ -239,15 +246,6 @@ public class FormRenderer extends DomBasicRenderer {
         }
 
         facesContext.getApplication().getViewHandler().writeState(facesContext);
-
-        String state = facesContext.getApplication().getStateManager().getViewState(facesContext);
-
-        Element viewState = domContext.createElement("input");
-        viewState.setAttribute("type", "hidden");
-        viewState.setAttribute("name", "javax.faces.ViewState");
-        viewState.setAttribute("value", state);
-        domContext.getRootNode().appendChild(viewState);
-
         domContext.stepOver();
     }
 
