@@ -239,6 +239,15 @@ public class FormRenderer extends DomBasicRenderer {
         }
 
         facesContext.getApplication().getViewHandler().writeState(facesContext);
+
+        String state = facesContext.getApplication().getStateManager().getViewState(facesContext);
+
+        Element viewState = domContext.createElement("input");
+        viewState.setAttribute("type", "hidden");
+        viewState.setAttribute("name", "javax.faces.ViewState");
+        viewState.setAttribute("value", state);
+        domContext.getRootNode().appendChild(viewState);
+
         domContext.stepOver();
     }
 
