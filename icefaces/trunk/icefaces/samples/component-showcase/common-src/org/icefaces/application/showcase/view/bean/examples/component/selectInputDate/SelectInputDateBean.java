@@ -139,7 +139,6 @@ public class SelectInputDateBean extends BaseBean {
      * @param event JSF value change event. 
      */
     public void effect2ChangeListener(ValueChangeEvent event){
-        System.out.println("Value change fired "+ event.getOldValue() + " : " + event.getNewValue());
         valueChangeEffect2.setFired(false);
     }
 
