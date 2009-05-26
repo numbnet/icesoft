@@ -46,6 +46,11 @@ System.out.println("Using Servlet 3.0 AsyncContext");
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        String pathInfo = request.getPathInfo();
+        if (!"/send-updated-views".equals(pathInfo))  {
+            super.service(request, response);
+            return;
+        }
         if (!request.isAsyncSupported())  {
 System.out.println("ThreadBlocking delegation");
             super.service(request, response);
@@ -77,6 +82,7 @@ System.out.println(Integer.toHexString(this.hashCode()) + " get asyncContext for
                 throws Exception {
             super.respondWith(handler);
 System.out.println(Integer.toHexString(this.hashCode()) + " resuming " + asyncContext);
+            asyncContext.getResponse().flushBuffer();
             asyncContext.complete();
         }
 
