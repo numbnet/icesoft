@@ -824,7 +824,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     void resetLastViewID() {
         lastViewID = null;
-        viewRoot = null;
+        //reset viewRoot only when running with JSF1.1
+        if (!ImplementationUtil.isJSFStateSaving()) {
+            viewRoot = null;
+        }
     }
 
     private static class ReferenceDocumentStore implements DocumentStore {
