@@ -42,7 +42,7 @@ public class AsyncAdaptingServlet extends ThreadBlockingAdaptingServlet {
     public AsyncAdaptingServlet(final Server server)  {
         super(server);
         this.server = server;
-System.out.println("Using Servlet 3.0 AsyncContext");
+        log.info("Using Servlet 3.0 AsyncContext");
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -72,16 +72,13 @@ System.out.println("ThreadBlocking delegation");
             super(request, response);
             if (!request.isAsyncStarted())  {
                 asyncContext = request.startAsync();
-System.out.println(Integer.toHexString(this.hashCode()) + " startAsync on " + asyncContext);
             }
             asyncContext = request.getAsyncContext();
-System.out.println(Integer.toHexString(this.hashCode()) + " get asyncContext for " + asyncContext);
         }
 
         public void respondWith(final ResponseHandler handler) 
                 throws Exception {
             super.respondWith(handler);
-System.out.println(Integer.toHexString(this.hashCode()) + " resuming " + asyncContext);
             asyncContext.getResponse().flushBuffer();
             asyncContext.complete();
         }
