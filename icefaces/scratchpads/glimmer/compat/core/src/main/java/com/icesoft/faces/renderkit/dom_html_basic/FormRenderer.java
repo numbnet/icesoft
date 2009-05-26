@@ -122,6 +122,12 @@ public class FormRenderer extends DomBasicRenderer {
                     CurrentStyle.CSS_UPDATE_FIELD);
             cssUpdateField.setAttribute(HTML.VALUE_ATTR, "");
             root.appendChild(cssUpdateField);
+
+            Element viewState = domContext.createElement("input");
+            viewState.setAttribute("type", "hidden");
+            viewState.setAttribute("name", "javax.faces.ViewState");
+            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
+            root.appendChild(viewState);
         }
 
         // This has to occur outside the isInitialized test, as it has to happen
@@ -209,14 +215,6 @@ public class FormRenderer extends DomBasicRenderer {
 //            ((Element) n).setAttribute( "id", id );
 //            domWriter.trackMarkerNode( n );
 //        }
-        if (!domContext.isInitialized()) {
-            Element viewState = domContext.createElement("input");
-            viewState.setAttribute("type", "hidden");
-            viewState.setAttribute("name", "javax.faces.ViewState");
-            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
-            domContext.getRootNode().appendChild(viewState);
-        }
-
         domContext.stepInto(uiComponent);
     }
 
