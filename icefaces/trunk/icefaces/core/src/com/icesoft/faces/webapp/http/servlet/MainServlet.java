@@ -388,7 +388,8 @@ public class MainServlet extends HttpServlet {
                                 !ProductInfo.PRIMARY.equals("x")) {
 
                                 if (!primary.equals(ProductInfo.PRIMARY) ||
-                                    !secondary.equals(ProductInfo.SECONDARY)) {
+                                    !secondary.equals(ProductInfo.SECONDARY) ||
+                                    !tertiary.equals(ProductInfo.TERTIARY)) {
 
                                     if (LOG.isWarnEnabled()) {
                                         LOG.warn(
@@ -398,11 +399,12 @@ public class MainServlet extends HttpServlet {
                                                     ProductInfo.PRODUCT + " " +
                                                     ProductInfo.PRIMARY + "." +
                                                     ProductInfo.SECONDARY + "." +
-                                                    "x\" " +
+                                                    ProductInfo.TERTIARY + "\" " +
                                                 "with \"" +
                                                     product + " " +
                                                     primary + "." +
-                                                    secondary + ".x\" " +
+                                                    secondary + "." +
+                                                    tertiary + "\" " +
                                                 "is not recommended.");
                                     }
                                 }
