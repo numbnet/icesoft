@@ -36,12 +36,16 @@ import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.ObjectMessage;
 import com.icesoft.net.messaging.TextMessage;
+import com.icesoft.net.messaging.expression.Container;
+import com.icesoft.net.messaging.expression.Expression;
+import com.icesoft.net.messaging.expression.Or;
 
 import edu.emory.mathcs.backport.java.util.concurrent.RejectedExecutionException;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.jms.InvalidDestinationException;
@@ -59,6 +63,8 @@ extends AbstractJMSConnection
 implements JMSConnection {
     private static final Log LOG =
         LogFactory.getLog(JMSSubscriberConnection.class);
+
+    private final Map subscriberMap = new HashMap();
 
     private TopicSubscriber topicSubscriber;
     private MessageReceiver messageReceiver;
@@ -189,31 +195,40 @@ implements JMSConnection {
     public void subscribe(
         final MessageSelector messageSelector, final boolean noLocal)
     throws InvalidDestinationException, InvalidSelectorException, JMSException {
-        if (connected && topicSubscriber == null) {
+        if (connected) {
             synchronized (connectionLock) {
-                if (connected && topicSubscriber == null) {
-                    // throws
-                    //     InvalidDestinationException,
-                    //     InvalidSelectorException, JMSException
-                    topicSubscriber =
-                        topicSession.createSubscriber(
+                if (connected) {
+                    Container _container =
+                        new Container(messageSelector.getExpression());
+                    if (subscriberMap.containsKey(topic)) {
+                        subscriberMap.put(
                             topic,
-                            messageSelector != null ?
-                                messageSelector.toString() : null,
-                            noLocal);
-                    messageReceiver =
-                        new MessageReceiver(
-                            new MessageListener(), topicSubscriber);
-                    try {
-                        // throws RejectedExecutionException
-                        jmsAdapter.getExecutorService().
-                            execute(messageReceiver);
-                    } catch (RejectedExecutionException exception) {
-                        if (LOG.isFatalEnabled()) {
-                            LOG.fatal(
-                                "messageReceiver could not be accepted " +
-                                    "for execution!",
-                                exception);
+                            new Or(
+                                (Expression)subscriberMap.get(topic),
+                                _container));
+                    } else {
+                        subscriberMap.put(topic, _container);
+                    }
+                    if (topicSubscriber == null) {
+                        // throws
+                        //     InvalidDestinationException,
+                        //     InvalidSelectorException, JMSException
+                        topicSubscriber =
+                            topicSession.createSubscriber(topic, null, noLocal);
+                        messageReceiver =
+                            new MessageReceiver(
+                                new MessageListener(this), topicSubscriber);
+                        try {
+                            // throws RejectedExecutionException
+                            jmsAdapter.getExecutorService().
+                                execute(messageReceiver);
+                        } catch (RejectedExecutionException exception) {
+                            if (LOG.isFatalEnabled()) {
+                                LOG.fatal(
+                                    "messageReceiver could not be accepted " +
+                                        "for execution!",
+                                    exception);
+                            }
                         }
                     }
                 }
@@ -231,6 +246,9 @@ implements JMSConnection {
                         messageReceiver.getMessageListener().
                             clearMessageHandlers();
                     }
+                    if (subscriberMap.containsKey(topic)) {
+                        subscriberMap.remove(topic);
+                    }
                     try {
                         if (topicSubscriber != null) {
                             // throws JMSException.
@@ -242,6 +260,12 @@ implements JMSConnection {
                 }
             }
         }
+    }
+
+    private boolean accept(final Message message) {
+        return
+            subscriberMap.containsKey(topic) &&
+            ((Expression)subscriberMap.get(topic)).evaluate(message);
     }
 
     private static Message convert(final javax.jms.Message message)
@@ -286,34 +310,43 @@ implements JMSConnection {
     implements javax.jms.MessageListener {
         private static final Log LOG = LogFactory.getLog(MessageListener.class);
 
-        private Set messageHandlerSet = new HashSet();
+        private final Set messageHandlerSet = new HashSet();
+        private final JMSSubscriberConnection jmsSubscriberConnection;
+
+        private MessageListener(
+            final JMSSubscriberConnection jmsSubscriberConnection) {
+
+            this.jmsSubscriberConnection = jmsSubscriberConnection;
+        }
 
         public void onMessage(final javax.jms.Message message) {
             try {
                 Message _message = convert(message);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Incoming message:\r\n\r\n" + _message);
-                }
-                MessageHandler[] _messageHandlers =
-                    (MessageHandler[])
-                        messageHandlerSet.toArray(
-                            new MessageHandler[
-                                messageHandlerSet.size()]);
-                for (int i = 0; i < _messageHandlers.length; i++) {
-                    MessageSelector _messageSelector =
-                        _messageHandlers[i].getMessageSelector();
+                if (jmsSubscriberConnection.accept(_message)) {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "MessageHandler " + _messageHandlers[i] + ":\r\n" +
-                            _messageSelector);
+                        LOG.debug("Incoming message:\r\n\r\n" + _message);
                     }
-                    if (_messageSelector == null ||
-                        _messageSelector.matches(_message)) {
-
+                    MessageHandler[] _messageHandlers =
+                        (MessageHandler[])
+                            messageHandlerSet.toArray(
+                                new MessageHandler[
+                                    messageHandlerSet.size()]);
+                    for (int i = 0; i < _messageHandlers.length; i++) {
+                        MessageSelector _messageSelector =
+                            _messageHandlers[i].getMessageSelector();
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("Match!");
+                            LOG.debug(
+                                "MessageHandler " + _messageHandlers[i] + ":\r\n" +
+                                _messageSelector);
                         }
-                        _messageHandlers[i].handle(_message);
+                        if (_messageSelector == null ||
+                            _messageSelector.matches(_message)) {
+
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Match!");
+                            }
+                            _messageHandlers[i].handle(_message);
+                        }
                     }
                 }
                 message.acknowledge();
