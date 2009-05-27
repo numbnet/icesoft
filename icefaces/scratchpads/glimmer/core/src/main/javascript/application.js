@@ -161,18 +161,12 @@ window.evaluate = eval;
         var commandDispatcher = CommandDispatcher();
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function() {
             try {
-                var forms = document.getElementsByTagName('form');
                 //use first found form to submit; force a render for all forms in the page/view
-                var form = forms[0];
-                var viewState = form['javax.faces.ViewState'].value;
+                var form = document.getElementsByTagName('form')[0];
                 var newForm = document.createElement('form');
+                var viewState = form['javax.faces.ViewState'].value;
                 newForm.action = form.action;
-                var input = newForm.appendChild(document.createElement('input'));
-                input.setAttribute('type', 'hidden');
-                input.setAttribute('name', 'javax.faces.ViewState');
-                input.setAttribute('value', viewState);
-
-                jsf.ajax.request(newForm, null, {render: '@all'});
+                jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
