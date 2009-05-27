@@ -46,6 +46,7 @@ import javax.faces.render.RenderKit;
 import javax.faces.FactoryFinder;
 import javax.faces.context.ExceptionHandlerFactory;
 import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.PartialViewContext;
 import java.util.Map;
 import java.util.HashMap;
@@ -82,6 +83,14 @@ public class BridgeFacesContext2 extends BridgeFacesContext  {
         this.exceptionHandler = exceptionHandler;
     }
     
+    ExternalContext externalContext = null;
+    public ExternalContext getExternalContext()  {
+        if (null == externalContext)  {
+            externalContext = new BridgeExternalContext2((BridgeExternalContext) super.getExternalContext());
+        }
+        return externalContext;
+    }
+
     PartialViewContext partialViewContext  = null;
 
     public PartialViewContext getPartialViewContext() {

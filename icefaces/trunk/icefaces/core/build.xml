@@ -184,6 +184,7 @@
             <classpath refid="compile.run.classpath"/>
             <src location="${src.dir}"/>
             <include name="org/icefaces/x/context/BridgeFacesContext2.java"/>
+            <include name="org/icefaces/x/context/BridgeExternalContext2.java"/>
         </javac>
     </target>
 
@@ -200,6 +201,7 @@
             <exclude name="com/icesoft/faces/webapp/http/servlet/TomcatPushServlet.java"/>
             <exclude name="com/icesoft/faces/webapp/http/servlet/GrizzlyPushServlet.java"/>
             <exclude name="org/icefaces/x/context/BridgeFacesContext2.java"/>
+            <exclude name="org/icefaces/x/context/BridgeExternalContext2.java"/>
         </javac>
 
         <antcall target="compile15" />
