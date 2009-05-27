@@ -182,6 +182,15 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Configuration configuration;
     protected BridgeFacesContext facesContext;
 
+    protected BridgeExternalContext()  {
+        this.viewIdentifier = null;
+        this.commandQueue = null;
+        this.defaultAuthorization = null;
+        this.configuration = null;
+        this.facesContext = null;
+        this.standardScope = false;
+    }
+
     protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration, Authorization authorization, BridgeFacesContext context) {
         this.viewIdentifier = viewIdentifier;
         this.commandQueue = commandQueue;
