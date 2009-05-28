@@ -161,11 +161,9 @@ window.evaluate = eval;
         var commandDispatcher = CommandDispatcher();
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function() {
             try {
-                //use first found form to submit; force a render for all forms in the page/view
-                var form = document.getElementsByTagName('form')[0];
                 var newForm = document.createElement('form');
-                var viewState = form['javax.faces.ViewState'].value;
-                newForm.action = form.action;
+                var viewState = document.getElementById('javax.faces.ViewState').value;
+                newForm.action = window.location.pathname;
                 jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);

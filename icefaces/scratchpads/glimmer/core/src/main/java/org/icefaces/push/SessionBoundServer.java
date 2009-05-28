@@ -25,7 +25,6 @@ package org.icefaces.push;
 import org.icefaces.push.http.MimeTypeMatcher;
 import org.icefaces.push.http.Request;
 import org.icefaces.push.http.Server;
-import org.icefaces.push.http.standard.CacheControlledServer;
 import org.icefaces.push.http.standard.PathDispatcherServer;
 import org.icefaces.push.servlet.SessionDispatcher;
 
@@ -55,8 +54,6 @@ public class SessionBoundServer implements Server {
         };
         dispatcher.dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, notifier, monitor, configuration));
         dispatcher.dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
-        dispatcher.dispatchOn(".*icefaces\\/bridge\\.js$", new CacheControlledServer(new ServeBridgeCode()));
-        dispatcher.dispatchOn(".*icefaces\\/bridge\\.wireup\\.js$", new CacheControlledServer(new WireUpBridge(context, session)));
         dispatcher.dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
     }
 

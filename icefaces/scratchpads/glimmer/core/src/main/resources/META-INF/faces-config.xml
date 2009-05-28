@@ -38,4 +38,8 @@
     <application>
         <resource-handler>org.icefaces.push.servlet.PushResourceHandler</resource-handler>
     </application>
+    <component>
+        <component-type>ice.push</component-type>
+        <component-class>org.icefaces.component.PushEnabler</component-class>
+    </component>
 </faces-config>
