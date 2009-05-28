@@ -5,7 +5,7 @@
     <description>
     </description>
     <tlib-version>1.2</tlib-version>
-    <short-name>icefaces-core</short-name>
+    <short-name>icecore</short-name>
     <uri>http://icefaces.org/tld/core</uri>
     <listener>
         <listener-class>org.icefaces.push.servlet.ServletEnvironmentListener</listener-class>

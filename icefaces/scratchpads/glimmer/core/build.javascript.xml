@@ -37,7 +37,7 @@
     <property file="build.properties"/>
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
-    <property name="build.dir" location="${basedir}/build/javascript"/>
+    <property name="build.dir" location="${basedir}/build/javascript/resources"/>
     <property name="script" location="${build.dir}/bridge.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 

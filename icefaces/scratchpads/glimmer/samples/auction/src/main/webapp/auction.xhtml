@@ -34,13 +34,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://icefaces.org/tld/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <f:view renderKitId="xHTML_BASIC" contentType="text/html">
 <h:head><title>Auction Monitor - Direct-to-DOM (D2D) Version</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
     <h:outputScript name="jsf.js" library="javax.faces"/>
-    <script type="text/javascript" src="icefaces/bridge.js"></script>
-    <script type="text/javascript" src="icefaces/bridge.wireup.js"></script>
     <link href="./resources/demo_template.css" rel="stylesheet" type="text/css"/>
     <link href="./resources/auction_styles.css" rel="stylesheet" type="text/css"/>
     <!--<link href="/auction/javax.faces.resource/demo_template.css.jsf" rel="stylesheet" type="text/css" />-->
@@ -63,6 +62,7 @@
         }
     }
 </script>
+<ice:push>
 <div>
     <div class="header_right">
         <img src="./css/images/banner_logo.jpg" alt="ICEfaces" width="267"
@@ -391,6 +391,7 @@
     <img src="./images/button_bid_accept.gif"/>
     <img src="./images/button_bid_decline.gif"/>
 </div>
+</ice:push>
 </h:body>
 </f:view>
 </html>
