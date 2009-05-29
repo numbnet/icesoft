@@ -384,6 +384,9 @@ public class DOMResponseWriter extends ResponseWriter {
     public ResponseWriter cloneWithWriter(Writer writer) {
         //TODO: Should we be creating a brand new one here or using the same document
         //with a new writer?
+        if (writer.getClass().getName().endsWith("FastStringWriter")) {
+            return new BasicResponseWriter(writer, getContentType(), getCharacterEncoding());
+        }
         return new DOMResponseWriter(null, writer);
     }
 
