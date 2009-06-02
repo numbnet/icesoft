@@ -29,7 +29,12 @@ import org.w3c.dom.Node;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.*;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
+import javax.faces.context.PartialViewContext;
+import javax.faces.context.PartialViewContextWrapper;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.io.Writer;
@@ -41,7 +46,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     private static Logger log = Logger.getLogger("org.icefaces.context");
 
     private PartialViewContext wrapped;
-    private FacesContext facesContext;
+    protected FacesContext facesContext;
     private PartialResponseWriter partialWriter;
 
     public DOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
@@ -124,7 +129,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.endUpdate();
                 }
 
-                renderState(facesContext);
+                renderState();
+                renderExtensions();
                 partialWriter.endDocument();
                 return;
             } catch (IOException ex) {
@@ -142,15 +148,17 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private void renderState(FacesContext context) throws IOException {
-
+    private void renderState() throws IOException {
         // Get the view state and write it to the response..
         PartialResponseWriter writer = getPartialResponseWriter();
         writer.startUpdate(PartialResponseWriter.VIEW_STATE_MARKER);
-        String state = context.getApplication().getStateManager().getViewState(context);
+        String state = facesContext.getApplication().getStateManager().getViewState(facesContext);
         writer.write(state);
         writer.endUpdate();
 
     }
 
+    protected void renderExtensions() {
+        //do nothing.
+    }
 }

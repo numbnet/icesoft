@@ -1,51 +1,56 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
-import java.io.IOException;
+import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.util.pooling.ClientIdPool;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.el.ValueBinding;
 import javax.faces.render.Renderer;
+import java.io.IOException;
 
-import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
-
-import com.icesoft.util.pooling.ClientIdPool;
-
-public class BaseRenderer extends Renderer{
+@ResourceDependencies({
+        @ResourceDependency(name = "icesubmit.js"),
+        @ResourceDependency(name = "prototype.js")
+        //todo: see why injecting ice-extras.js like this generates JS errors
+        //@ResourceDependency(name = "ice-extras.js")
+})
+public class BaseRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         CurrentStyle.decode(facesContext, uiComponent);
         super.decode(facesContext, uiComponent);
     }
-    
+
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+            throws IOException {
         super.encodeBegin(facesContext, uiComponent);
-        
+
     }
-    
+
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+            throws IOException {
         super.encodeChildren(facesContext, uiComponent);
-        
+
     }
-    
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
-        super.encodeEnd(facesContext, uiComponent);    
+            throws IOException {
+        super.encodeEnd(facesContext, uiComponent);
         CoreUtils.recoverFacesMessages(facesContext, uiComponent);
         JavascriptContext.fireEffect(uiComponent, facesContext);
     }
-    
+
     public String getResourceURL(FacesContext context, String path) {
         return DomBasicRenderer.getResourceURL(context, path);
-    }    
-    
+    }
+
     //This method should not be removed, it will be called by the UIInput class
     //for all input type of components.
     public Object getConvertedValue(FacesContext facesContext, UIComponent
@@ -70,15 +75,15 @@ public class BaseRenderer extends Renderer{
 
         if (converter != null) {
             return converter.getAsObject(facesContext, uiComponent,
-                                         (String) submittedValue);
+                    (String) submittedValue);
         } else if (submittedValue != null) {
             return (String) submittedValue;
         } else {
             return null;
         }
-    }    
-    
+    }
+
     public String convertClientId(FacesContext context, String clientId) {
-        return ClientIdPool.get(clientId);    
-    }   
+        return ClientIdPool.get(clientId);
+    }
 }

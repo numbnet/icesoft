@@ -237,8 +237,8 @@ public class JavascriptContext {
     public static String applyEffect(Effect effect, String id,
                                      FacesContext context) {
         //Get the real ID if a JSF component
-        UIComponent uiComponent =  CoreComponentUtils.findComponent(id, context.getViewRoot());
-         if (uiComponent != null) {
+        UIComponent uiComponent = CoreComponentUtils.findComponent(id, context.getViewRoot());
+        if (uiComponent != null) {
             id = uiComponent.getClientId(context);
         }
 
@@ -265,7 +265,7 @@ public class JavascriptContext {
         Object viewRoot = context.getViewRoot();
         try {
 
-            UIComponent uiComponent =  CoreComponentUtils.findComponent(id, context.getViewRoot());
+            UIComponent uiComponent = CoreComponentUtils.findComponent(id, context.getViewRoot());
             if (uiComponent != null) {
                 id = uiComponent.getClientId(context);
             }
