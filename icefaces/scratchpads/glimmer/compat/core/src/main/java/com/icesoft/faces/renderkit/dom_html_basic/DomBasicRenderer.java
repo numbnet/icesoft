@@ -45,6 +45,8 @@ import org.w3c.dom.Element;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -66,9 +68,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+@ResourceDependencies({
+        @ResourceDependency(name = "icesubmit.js"),
+        @ResourceDependency(name = "prototype.js")
+        //todo: see why injecting ice-extras.js like this generates JS errors
+        //@ResourceDependency(name = "ice-extras.js")
+})
 public abstract class DomBasicRenderer extends Renderer {
     public static final String ATTRIBUTES_THAT_ARE_SET_KEY =
-        "javax.faces.component.UIComponentBase.attributesThatAreSet";
+            "javax.faces.component.UIComponentBase.attributesThatAreSet";
 
     // iceSubmitPartial
     public final static String ICESUBMITPARTIAL =
@@ -95,7 +103,7 @@ public abstract class DomBasicRenderer extends Renderer {
         // extract component value from the request map
         String clientId = uiComponent.getClientId(facesContext);
         Debug.assertTrue(clientId != null,
-                         "Client id is not defined for decoding");
+                "Client id is not defined for decoding");
         Map requestMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         if (requestMap.containsKey(clientId)) {
@@ -126,7 +134,7 @@ public abstract class DomBasicRenderer extends Renderer {
         validateParameters(facesContext, uiComponent, null);
         CoreUtils.recoverFacesMessages(facesContext, uiComponent);
         renderEnd(facesContext, uiComponent,
-                  getValue(facesContext, uiComponent));
+                getValue(facesContext, uiComponent));
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
@@ -154,7 +162,7 @@ public abstract class DomBasicRenderer extends Renderer {
             }
         }
         return formatComponentValue(facesContext, uiComponent,
-                                    getValue(uiComponent));
+                getValue(uiComponent));
     }
 
     Object getValue(UIComponent uiComponent) {
@@ -194,11 +202,10 @@ public abstract class DomBasicRenderer extends Renderer {
             throws ConverterException {
         return converterGetAsString(facesContext, uiComponent, currentValue);
     }
-    
+
     public static String converterGetAsString(FacesContext facesContext,
                                               UIComponent uiComponent,
-                                              Object currentValue)
-    {
+                                              Object currentValue) {
         if (!(uiComponent instanceof ValueHolder)) {
             if (currentValue != null) {
                 return currentValue.toString();
@@ -213,19 +220,19 @@ public abstract class DomBasicRenderer extends Renderer {
         // if there was no converter registered with the component then 
         // look for the default converter for the Class of the currentValue
         if (converter == null) {
-            if(currentValue == null) {
+            if (currentValue == null) {
                 return "";
             } else if (currentValue instanceof String) {
                 return (String) currentValue;
-            } 
-            
+            }
+
             converter = getConverterForClass(currentValue.getClass());
 
             if (converter == null) {
                 return currentValue.toString();
             }
         }
-        
+
         String ret = converter.getAsString(facesContext, uiComponent, currentValue);
 //System.out.println("DomBasicRenderer.converterGetAsString()  currentValue: " + currentValue);        
 //System.out.println("DomBasicRenderer.converterGetAsString()  ret         : " + ret);        
@@ -234,7 +241,7 @@ public abstract class DomBasicRenderer extends Renderer {
 //            System.out.println("DomBasicRenderer.converterGetAsString()  timeZone: " + ((javax.faces.convert.DateTimeConverter)converter).getTimeZone());
         return ret;
     }
-    
+
     /**
      * Find the UIComponent whose id is given by the for attribute of the
      * UIComponent parameter.
@@ -278,7 +285,7 @@ public abstract class DomBasicRenderer extends Renderer {
                 // (see the docs for findComponent for an information that will
                 // justify this approach)
                 while (nextParent != null &&
-                       !(nextParent instanceof NamingContainer)) {
+                        !(nextParent instanceof NamingContainer)) {
                     nextParent = nextParent.getParent();
                 }
                 if (nextParent == null) {
@@ -321,7 +328,7 @@ public abstract class DomBasicRenderer extends Renderer {
             UIComponent parent,
             String searchChildId) {
         UIComponent foundChild = null;
-        if (parent.getChildCount() == 0)return foundChild;
+        if (parent.getChildCount() == 0) return foundChild;
         Iterator children = parent.getChildren().iterator();
         UIComponent nextChild = null;
         while (children.hasNext()) {
@@ -331,7 +338,7 @@ public abstract class DomBasicRenderer extends Renderer {
             }
             if (foundChild == null) {
                 searchDownwardsForChildComponentWithId(nextChild,
-                                                       searchChildId);
+                        searchChildId);
             }
             if (foundChild != null) {
                 break;
@@ -420,7 +427,7 @@ public abstract class DomBasicRenderer extends Renderer {
         Object attrValue = uiComponent.getAttributes().get(attrNameInComponent);
         if (attrValue != null && !attrValue.equals("")) {
             if (attrValue.toString().equalsIgnoreCase("true") ||
-                attrValue.toString().equalsIgnoreCase("false")) {
+                    attrValue.toString().equalsIgnoreCase("false")) {
                 boolean trueValue =
                         new Boolean(attrValue.toString()).booleanValue();
                 if (!trueValue) {
@@ -429,7 +436,7 @@ public abstract class DomBasicRenderer extends Renderer {
                 }
             }
             targetElement.setAttribute(attrNameInDom.toString(),
-                                       attrValue.toString());
+                    attrValue.toString());
         }
     }
 
@@ -468,13 +475,13 @@ public abstract class DomBasicRenderer extends Renderer {
      * @param validComponentType
      * @throws NullPointerException if either of the facesContext or the
      *                              uiComponent parameters are null or
-     *                              if a parent form is not 
+     *                              if a parent form is not
      *                              found when the given UIComponent
      *                              is a UIInput or UICommand,
      *                              IllegalArgumentException if the
      *                              validComponentType is not null and the
      *                              uiComponent is not assignable to the given
-     *                              type.                               
+     *                              type.
      */
     public void validateParameters(FacesContext facesContext,
                                    UIComponent uiComponent,
@@ -489,18 +496,18 @@ public abstract class DomBasicRenderer extends Renderer {
                     "Invalid Parameter - UIComponent instance must not be null");
         }
         if (!Beans.isDesignTime() && validComponentType != null &&
-            !(validComponentType.isInstance(uiComponent))) {
+                !(validComponentType.isInstance(uiComponent))) {
             throw new IllegalArgumentException(
                     "Invalid Parameter - UIComponent class should be ["
-                    + validComponentType +
-                    "] but it is an instance of ["
-                    + uiComponent.getClass() + "]");
+                            + validComponentType +
+                            "] but it is an instance of ["
+                            + uiComponent.getClass() + "]");
         }
-        
+
         if ((uiComponent instanceof UIInput) || (uiComponent instanceof UICommand)) {
             if (findForm(uiComponent) == null) {
-                throw new NullPointerException("Missing Form - the UIComponent of type [" 
-                        + uiComponent.getClass() + "] requires a containing form." );
+                throw new NullPointerException("Missing Form - the UIComponent of type ["
+                        + uiComponent.getClass() + "] requires a containing form.");
             }
         }
     }
@@ -573,9 +580,9 @@ public abstract class DomBasicRenderer extends Renderer {
         UIComponent form = null;
         // check family 
         if (parent != null &&
-            (parent.getFamily().equalsIgnoreCase(WEB_UIFORM) ||
-             parent.getFamily().equalsIgnoreCase(UIFORM) ||
-             parent.getFamily().equalsIgnoreCase(WEB_UIJSFFORM))) {
+                (parent.getFamily().equalsIgnoreCase(WEB_UIFORM) ||
+                        parent.getFamily().equalsIgnoreCase(UIFORM) ||
+                        parent.getFamily().equalsIgnoreCase(WEB_UIJSFFORM))) {
             form = (UIComponent) parent;
         }
 
@@ -611,8 +618,8 @@ public abstract class DomBasicRenderer extends Renderer {
                     parentNamingContainer.getClientId(facesContext);
         }
         return parentNamingContainerClientId
-               + NamingContainer.SEPARATOR_CHAR
-               + uiComponentId;
+                + NamingContainer.SEPARATOR_CHAR
+                + uiComponentId;
     }
 
     protected String[] getColumnStyleClasses(UIComponent uiComponent) {
@@ -633,7 +640,7 @@ public abstract class DomBasicRenderer extends Renderer {
     }
 
     public String[] getStyleClasses(UIComponent uiComponent,
-                                     String styleClassAttributeName) {
+                                    String styleClassAttributeName) {
         String allStyleClasses = (String) uiComponent.getAttributes()
                 .get(styleClassAttributeName);
         if (allStyleClasses == null) {
@@ -676,30 +683,30 @@ public abstract class DomBasicRenderer extends Renderer {
             } else if (uiComponent instanceof HtmlMessages) {
                 severityStyleClass =
                         ((HtmlMessages) uiComponent).getInfoClass();
-                baseStyle = "iceMsgs";                
+                baseStyle = "iceMsgs";
             }
-            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
-            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
-            							(severityStyleClass, 
-            							baseStyle + "Info", 
-            							PORTLET_CSS_DEFAULT.PORTLET_MSG_INFO);
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")) {
+                severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+                        (severityStyleClass,
+                                baseStyle + "Info",
+                                PORTLET_CSS_DEFAULT.PORTLET_MSG_INFO);
             }
         } else if (messageSeverity == FacesMessage.SEVERITY_WARN) {
             severityStyle =
                     (String) uiComponent.getAttributes().get("warnStyle");
             if (uiComponent instanceof HtmlMessage) {
                 severityStyleClass = ((HtmlMessage) uiComponent).getWarnClass();
-                baseStyle = "iceMsg";                
+                baseStyle = "iceMsg";
             } else if (uiComponent instanceof HtmlMessages) {
                 severityStyleClass =
                         ((HtmlMessages) uiComponent).getWarnClass();
-                baseStyle = "iceMsgs";                
+                baseStyle = "iceMsgs";
             }
-            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
-            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
-            							(severityStyleClass, 
-            							baseStyle + "Warn", 
-            							PORTLET_CSS_DEFAULT.PORTLET_MSG_ALERT);
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")) {
+                severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+                        (severityStyleClass,
+                                baseStyle + "Warn",
+                                PORTLET_CSS_DEFAULT.PORTLET_MSG_ALERT);
             }
         } else if (messageSeverity == FacesMessage.SEVERITY_ERROR) {
             severityStyle =
@@ -713,11 +720,11 @@ public abstract class DomBasicRenderer extends Renderer {
                         ((HtmlMessages) uiComponent).getErrorClass();
                 baseStyle = "iceMsgs";
             }
-            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
-            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
-            							(severityStyleClass, 
-            							baseStyle + "Error", 
-            							PORTLET_CSS_DEFAULT.PORTLET_MSG_ERROR);
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")) {
+                severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+                        (severityStyleClass,
+                                baseStyle + "Error",
+                                PORTLET_CSS_DEFAULT.PORTLET_MSG_ERROR);
             }
 
         } else if (messageSeverity == FacesMessage.SEVERITY_FATAL) {
@@ -775,7 +782,7 @@ public abstract class DomBasicRenderer extends Renderer {
         boolean tooltip = false;
         Object tooltipAttribute = uiComponent.getAttributes().get("tooltip");
         if (tooltipAttribute instanceof Boolean
-            && ((Boolean) tooltipAttribute).booleanValue()) {
+                && ((Boolean) tooltipAttribute).booleanValue()) {
             tooltip = true;
         }
         return tooltip;
@@ -805,10 +812,10 @@ public abstract class DomBasicRenderer extends Renderer {
 
     /**
      * This is a utility method for concatenating two Strings, where passThru
-     *  is typically null or an empty String, and renderer is usually non-null,
-     *  but can in theory be null, and we want to minimise needless new String
-     *  creation.
-     * 
+     * is typically null or an empty String, and renderer is usually non-null,
+     * but can in theory be null, and we want to minimise needless new String
+     * creation.
+     *
      * @param passThru The passthru attribute from the component
      * @param renderer The Javascript that the Renderer needs to output
      * @return A String concatenation of passThru + renderer
@@ -816,16 +823,16 @@ public abstract class DomBasicRenderer extends Renderer {
     public static String combinedPassThru(String passThru, String renderer) {
         int passThruLen = (passThru == null) ? 0 : passThru.length();
         int rendererLen = (renderer == null) ? 0 : renderer.length();
-        if(passThruLen == 0 && rendererLen == 0)
+        if (passThruLen == 0 && rendererLen == 0)
             return null;
-        if(passThruLen == 0)
+        if (passThruLen == 0)
             return renderer;
-        if(rendererLen == 0)
+        if (rendererLen == 0)
             return passThru;
         return passThru + renderer;
-    }     
-    
+    }
+
     public String convertClientId(FacesContext context, String clientId) {
-        return ClientIdPool.get(clientId);    
+        return ClientIdPool.get(clientId);
     }
 }

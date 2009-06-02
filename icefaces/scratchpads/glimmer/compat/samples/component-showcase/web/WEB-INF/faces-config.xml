@@ -32,16 +32,20 @@
   ~
   -->
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-    version="2.0"
-    metadata-complete="false">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0"
+              metadata-complete="false">
 
+    <factory>
+        <partial-view-context-factory>com.icesoft.faces.context.CompatDOMPartialViewContextFactory
+        </partial-view-context-factory>
+    </factory>
     <application>
 
-<!--         <view-handler>
-            com.icesoft.faces.facelets.D2DFaceletViewHandler
-        </view-handler> -->
+        <!--         <view-handler>
+           com.icesoft.faces.facelets.D2DFaceletViewHandler
+       </view-handler> -->
 
         <locale-config>
             <default-locale>en</default-locale>

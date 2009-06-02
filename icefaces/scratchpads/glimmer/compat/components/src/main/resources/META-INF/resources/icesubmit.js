@@ -30,3 +30,11 @@ function formOf(element) {
 
 function setFocus() {
 }
+
+window.onLoad = ice.onLoad;
+window.onUnload = ice.onUnload;
+var noop = function() {
+};
+window.logger = {debug: noop, info: noop, warn: noop, error: noop, child: function() {
+    return window.logger
+}};

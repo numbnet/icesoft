@@ -186,7 +186,7 @@ Object.extend(Object, {
     },
 
     isHash: function(object) {
-        return object instanceof Hash;
+        return object instanceof Hashtable;
     },
 
     isFunction: function(object) {
@@ -1007,11 +1007,11 @@ $w('abs round ceil floor').each(function(method) {
     Number.prototype[method] = Math[method].methodize();
 });
 function $H(object) {
-    return new Hash(object);
+    return new Hashtable(object);
 }
 ;
 
-var Hash = Class.create(Enumerable, (function() {
+var Hashtable = Class.create(Enumerable, (function() {
 
     function toQueryPair(key, value) {
         if (Object.isUndefined(value)) return key;
@@ -1072,7 +1072,7 @@ var Hash = Class.create(Enumerable, (function() {
         },
 
         update: function(object) {
-            return new Hash(object).inject(this, function(result, pair) {
+            return new Hashtable(object).inject(this, function(result, pair) {
                 result.set(pair.key, pair.value);
                 return result;
             });
@@ -1091,7 +1091,7 @@ var Hash = Class.create(Enumerable, (function() {
         },
 
         inspect: function() {
-            return '#<Hash:{' + this.map(function(pair) {
+            return '#<Hashtable:{' + this.map(function(pair) {
                 return pair.map(Object.inspect).join(': ');
             }).join(', ') + '}>';
         },
@@ -1101,13 +1101,13 @@ var Hash = Class.create(Enumerable, (function() {
         },
 
         clone: function() {
-            return new Hash(this);
+            return new Hashtable(this);
         }
     }
 })());
 
-Hash.prototype.toTemplateReplacements = Hash.prototype.toObject;
-Hash.from = $H;
+Hashtable.prototype.toTemplateReplacements = Hashtable.prototype.toObject;
+Hashtable.from = $H;
 var ObjectRange = Class.create(Enumerable, {
     initialize: function(start, end, exclusive) {
         this.start = start;
@@ -4244,7 +4244,7 @@ Object.extend(document, {
 })();
 /*------------------------------- DEPRECATED -------------------------------*/
 
-Hash.toQueryString = Object.toQueryString;
+Hashtable.toQueryString = Object.toQueryString;
 
 var Toggle = { display: Element.toggle };
 
