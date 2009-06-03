@@ -112,7 +112,8 @@ public class BasicResponseWriter extends ResponseWriter  {
     }
 
     public ResponseWriter cloneWithWriter(Writer writer)  {
-        throw new UnsupportedOperationException("BasicResponseWriter does not support cloning");
+        return new BasicResponseWriter(writer, getContentType(), getCharacterEncoding());
+//        throw new UnsupportedOperationException("BasicResponseWriter does not support cloning");
     }
     
     public void close() throws IOException  {
