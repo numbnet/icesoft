@@ -41,18 +41,15 @@ public class DOMRenderKit extends RenderKit {
     RenderKit delegate;
 
     public DOMRenderKit(RenderKit delegate)  {
-System.out.println("DOMRenderKit wrapping " + delegate);
         this.delegate = delegate;
     }
 
-    public DOMRenderKit()  {
-System.out.println("DOMRenderKit without decoration constructor");
-    RenderKitFactory factory = (RenderKitFactory)
-        FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+    public DOMRenderKit() {
+        RenderKitFactory factory = (RenderKitFactory)
+                FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
         delegate = factory.getRenderKit(null, RenderKitFactory.HTML_BASIC_RENDER_KIT);
-System.out.println("        delegate is " + delegate);
-        }
-    
+    }
+
     public RenderKit getWrapped()  {
         return delegate;
     }
@@ -71,9 +68,7 @@ System.out.println("        delegate is " + delegate);
     }
 
     public  ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding)  {
-        System.out.println("creating DOMResponseWriter wrapping " + writer.getClass());
         ResponseWriter responseWriter = new DOMResponseWriter(writer);
-//        return delegate.createResponseWriter(writer, contentTypeList, encoding);
         return responseWriter;
     }
 

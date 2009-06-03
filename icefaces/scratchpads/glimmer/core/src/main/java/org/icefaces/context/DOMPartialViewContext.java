@@ -85,11 +85,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         if (isRenderAll() && (phaseId == PhaseId.RENDER_RESPONSE)) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
-                ResponseWriter orig = facesContext.getResponseWriter();
                 //TODO: understand why the original writer must be restored
                 //it may be for error handling cases
                 //facesContext.getAttributes().put(ORIGINAL_WRITER, orig);
-                Writer outputWriter = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputWriter();
+                Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
                 DOMResponseWriter writer = new DOMResponseWriter(outputWriter);
                 facesContext.setResponseWriter(writer);
 
@@ -134,9 +133,11 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 partialWriter.endDocument();
                 return;
             } catch (IOException ex) {
+                ex.printStackTrace();
                 //should put back the original ResponseWriter
 //                this.cleanupAfterView();
             } catch (RuntimeException ex) {
+                ex.printStackTrace();
 //                this.cleanupAfterView();
                 // Throw the exception
                 throw ex;
