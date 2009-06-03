@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
+import javax.portlet.PortletSession;
 
 import org.icefaces.push.SessionRenderer;
 import org.icefaces.push.SessionRenderableAdaptor;
@@ -55,13 +56,13 @@ public class PushRenderer  {
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        SessionRenderer sessionRenderer = (SessionRenderer) session.getAttribute("DEFAULT_SESSION_RENDERER");
+        Map sessionMap = externalContext.getSessionMap();
+        Object sessionRenderer = sessionMap.get("DEFAULT_SESSION_RENDERER");
         if (null == sessionRenderer)  {
             sessionRenderer = new SessionRenderableAdaptor();
-            session.setAttribute("DEFAULT_SESSION_RENDERER", sessionRenderer);
+            sessionMap.put("DEFAULT_SESSION_RENDERER", sessionRenderer);
         }
-        group.add(new SessionHolder(session));
+        group.add(new SessionHolder(externalContext.getSession(false)));
     }
     
     /**
@@ -130,9 +131,15 @@ class SessionHolder   {
     WeakReference sessionReference = null;
     String sessionId = null;
 
-    public SessionHolder(HttpSession session)  {
+    public SessionHolder(Object session)  {
         sessionReference = new WeakReference(session);
-        sessionId = session.getId();
+        if( session instanceof HttpSession ){
+            sessionId = ((HttpSession)session).getId();
+        }
+
+        if(session instanceof PortletSession){
+            sessionId = ((PortletSession)session).getId();
+        }
     }
     
     public Object getSession()  {
