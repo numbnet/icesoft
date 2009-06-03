@@ -36,7 +36,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ice="http://icefaces.org/tld/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-<f:view renderKitId="xHTML_BASIC" contentType="text/html">
+<f:view renderKitId="xHTML_BASIC_Push" contentType="text/html">
 <h:head><title>Auction Monitor - Direct-to-DOM (D2D) Version</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
     <h:outputScript name="jsf.js" library="javax.faces"/>
@@ -62,7 +62,6 @@
         }
     }
 </script>
-<ice:push>
 <div>
     <div class="header_right">
         <img src="./css/images/banner_logo.jpg" alt="ICEfaces" width="267"
@@ -391,7 +390,6 @@
     <img src="./images/button_bid_accept.gif"/>
     <img src="./images/button_bid_decline.gif"/>
 </div>
-</ice:push>
 </h:body>
 </f:view>
 </html>
