@@ -42,12 +42,14 @@
     </patternset>
 
     <patternset id="lib.distribute.jsf">
-        <include name="jsf-*.jar" unless="no.jsf"/>
+        <include name="jsf-api.jar" unless="no.jsf"/>
+        <include name="jsf-impl.jar" unless="no.jsf"/>
         <exclude name="*.jar" if="no.jsf"/>
     </patternset>
 
     <patternset id="lib.distribute.portlet">
-        <exclude name="jsf-portlet-*.jar" unless="portlet"/>
+        <include name="portletbridge*.jar" if="bridge.jboss"/>
+        <include name="jsf-portlet*.jar" if="bridge.apache"/>
     </patternset>
 
     <target name="clean">
