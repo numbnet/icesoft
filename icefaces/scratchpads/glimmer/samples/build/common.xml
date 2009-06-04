@@ -33,12 +33,21 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
 
     <patternset id="lib.compile">
-        <include name="jsf-api.jar"/>
-        <include name="jsf-impl.jar"/>
+        <include name="*.jar"/>
     </patternset>
 
-    <patternset id="lib.distribute">
-        <include name="icefaces.jar"/>
+    <patternset id="lib.distribute.icefaces">
+        <include name="icefaces.jar" unless="no.ice"/>
+        <exclude name="*.jar" if="no.ice"/>
+    </patternset>
+
+    <patternset id="lib.distribute.jsf">
+        <include name="jsf-*.jar" unless="no.jsf"/>
+        <exclude name="*.jar" if="no.jsf"/>
+    </patternset>
+
+    <patternset id="lib.distribute.portlet">
+        <exclude name="jsf-portlet-*.jar" unless="portlet"/>
     </patternset>
 
     <target name="clean">
@@ -61,7 +70,6 @@
             <classpath>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
-                    <patternset refid="lib.distribute"/>
                 </fileset>
             </classpath>
         </javac>
@@ -78,10 +86,13 @@
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
-                <patternset refid="lib.distribute"/>
+                <patternset refid="lib.distribute.icefaces"/>
+                <patternset refid="lib.distribute.jsf"/>
+                <patternset refid="lib.distribute.portlet"/>
             </lib>
             <classes dir="${classes.dir}"/>
         </war>
+        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
     </target>
 
     <target name="deploy.gf3" depends="war" description="copy .war file to Glassfish v3 autodeploy directory">
