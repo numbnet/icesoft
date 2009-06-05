@@ -281,9 +281,12 @@ Ice.MenuBarKeyNavigator.addMethods({
       event.stopPropagation();
    },
    
-  hideAllDocument:function(event) {
-    Ice.Menu.hideAll();
-  },
+   hideAllDocument:function(event) {
+     if (this.displayOnClick) {       
+         this.clicked = false;
+     } 
+     Ice.Menu.hideAll();
+   },
       
    showMenu:function(event) {
      element = Event.element(event);    
