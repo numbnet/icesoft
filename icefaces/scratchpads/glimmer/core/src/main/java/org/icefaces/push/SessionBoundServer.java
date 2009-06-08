@@ -23,17 +23,13 @@
 package org.icefaces.push;
 
 import org.icefaces.push.http.MimeTypeMatcher;
-import org.icefaces.push.http.Request;
-import org.icefaces.push.http.Server;
 import org.icefaces.push.http.standard.PathDispatcherServer;
 import org.icefaces.push.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
 import java.util.Observable;
 
-public class SessionBoundServer implements Server {
-    private final PathDispatcherServer dispatcher = new PathDispatcherServer();
-
+public class SessionBoundServer extends PathDispatcherServer {
     public SessionBoundServer(final HttpSession session, MonitorRunner monitor, final SessionDispatcher.Monitor sessionMonitor, CurrentContext context, Configuration configuration) {
         UpdateNotifier notifier = new UpdateNotifier() {
             public void onUpdate(Observer observer) {
@@ -41,7 +37,6 @@ public class SessionBoundServer implements Server {
             }
         };
         Observable pingPongNotifier = new Observable() {
-            @Override
             public void notifyObservers(Object arg) {
                 setChanged();
                 super.notifyObservers(arg);
@@ -52,16 +47,8 @@ public class SessionBoundServer implements Server {
                 return session.getServletContext().getMimeType(path);
             }
         };
-        dispatcher.dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, notifier, monitor, configuration));
-        dispatcher.dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
-        dispatcher.dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
-    }
-
-    public void service(Request request) throws Exception {
-        dispatcher.service(request);
-    }
-
-    public void shutdown() {
-        dispatcher.shutdown();
+        dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, notifier, monitor, configuration));
+        dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
+        dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
     }
 }
