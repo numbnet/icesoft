@@ -98,7 +98,13 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
     }
 
     public boolean isResourceRequest(FacesContext facesContext) {
-        return handler.isResourceRequest(facesContext) || ICEfacesResourcePattern.matcher(((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRequestURI()).find();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
+        boolean resourceRequest = handler.isResourceRequest(facesContext) || ICEfacesResourcePattern.matcher(servletRequest.getRequestURI()).find();
+        if (!resourceRequest && servletRequest.getParameter("ice.session.donottouch") == null) {
+            dispatcher.touchSession((HttpSession) externalContext.getSession(false));
+        }
+        return resourceRequest;
     }
 
     public String getRendererTypeForResourceName(String s) {

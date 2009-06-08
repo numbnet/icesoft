@@ -162,9 +162,11 @@ window.evaluate = eval;
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function() {
             try {
                 var newForm = document.createElement('form');
-                var viewState = document.getElementById('javax.faces.ViewState').value;
+                var viewState = detect(document.getElementsByTagName('input'), function(e) {
+                    return e.getAttribute('name') == 'javax.faces.ViewState';
+                }).value;
                 newForm.action = window.location.pathname;
-                jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState});
+                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewState});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
@@ -181,9 +183,15 @@ window.evaluate = eval;
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
+        register(commandDispatcher, 'session-expired', function() {
+            info(logger, 'session expired');
+            on(indicators.sessionExpired);
+            dispose();
+        });
         register(commandDispatcher, 'macro', function(message) {
             each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
         });
+
 
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');

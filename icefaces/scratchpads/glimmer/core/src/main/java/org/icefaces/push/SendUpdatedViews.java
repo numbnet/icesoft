@@ -58,7 +58,12 @@ public class SendUpdatedViews implements Server, Runnable {
             writer.write("<pong/>");
         }
     };
-    private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
+    private static final ResponseHandler AfterShutdownHandler = new FixedXMLContentHandler() {
+        public void writeTo(Writer writer) throws IOException {
+            writer.write("<session-expired/>");
+        }
+    };
+    private static final Server AfterShutdown = new ResponseHandlerServer(AfterShutdownHandler);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private final long timeoutInterval;
@@ -116,7 +121,7 @@ public class SendUpdatedViews implements Server, Runnable {
             public void shutdown() {
                 //avoid creating new blocking connections after shutdown
                 activeServer = AfterShutdown;
-                respondIfPendingRequest(CloseResponse);
+                respondIfPendingRequest(AfterShutdownHandler);
             }
         };
     }

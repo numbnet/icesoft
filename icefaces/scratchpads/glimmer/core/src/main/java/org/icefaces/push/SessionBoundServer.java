@@ -62,5 +62,6 @@ public class SessionBoundServer implements Server {
     }
 
     public void shutdown() {
+        dispatcher.shutdown();
     }
 }

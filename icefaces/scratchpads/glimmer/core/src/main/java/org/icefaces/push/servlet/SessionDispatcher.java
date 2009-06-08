@@ -106,6 +106,16 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
     protected abstract Server newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
 
+    public void touchSession(HttpSession session) {
+        if (session != null) {
+            String id = session.getId();
+            if (SessionMonitors.containsKey(id)) {
+                Monitor monitor = (Monitor) SessionMonitors.get(id);
+                monitor.touchSession();
+            }
+        }
+    }
+
     protected void checkSession(HttpSession session) throws Exception {
         final String id = session.getId();
         final Monitor monitor;
