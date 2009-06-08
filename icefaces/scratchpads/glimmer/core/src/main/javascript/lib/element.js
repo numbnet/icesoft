@@ -309,16 +309,6 @@ var $elementWithID;
                 return self;
             });
 
-            //todo: this method should go away since it encourages special treatment for elements with ID ending in ':default'
-            method(detectDefaultSubmit, function(self) {
-                var defaultID = element.id + ':default';
-                return $element(detect(element.elements, function(e) {
-                    e.id = defaultID;
-                }, function() {
-                    throw 'cannot find default submit';
-                }));
-            });
-
             method(captureAndRedirectSubmit, function(self) {
                 //captures normal form submit events and sends them through a XMLHttpRequest
                 var previousOnSubmit = element.onsubmit;
