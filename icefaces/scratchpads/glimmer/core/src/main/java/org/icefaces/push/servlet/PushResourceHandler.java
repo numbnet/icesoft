@@ -47,7 +47,7 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
     private static Logger log = Logger.getLogger("org.icefaces.pushservlet");
     private static final Pattern ICEfacesResourcePattern = Pattern.compile(".*/icefaces/.*");
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
-    private PseudoServlet dispatcher;
+    private SessionDispatcher dispatcher;
     private MonitorRunner monitor;
 
     private ResourceHandler handler;
