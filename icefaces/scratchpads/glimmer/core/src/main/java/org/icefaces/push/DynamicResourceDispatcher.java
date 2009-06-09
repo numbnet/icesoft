@@ -22,6 +22,7 @@
 
 package org.icefaces.push;
 
+import org.icefaces.application.DynamicResourceRegistry;
 import org.icefaces.push.http.DynamicResource;
 import org.icefaces.push.http.DynamicResourceLinker;
 import org.icefaces.push.http.MimeTypeMatcher;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class DynamicResourceDispatcher implements Server {
+public class DynamicResourceDispatcher implements Server, DynamicResourceRegistry {
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
