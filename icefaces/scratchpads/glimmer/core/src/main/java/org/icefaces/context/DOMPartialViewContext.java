@@ -121,7 +121,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     if (oldDOM == null) {
                         log.warning("Old DOM is null during domDiff calculation");
                     } else {
-                        log.warning("Old DOM is null during domDiff calculation");
+                        log.warning("New DOM is null during domDiff calculation");
                     }
                 } 
 
