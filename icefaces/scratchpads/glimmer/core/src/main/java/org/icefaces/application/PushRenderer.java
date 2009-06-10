@@ -36,6 +36,7 @@ import javax.faces.context.ExternalContext;
 import javax.portlet.PortletSession;
 
 import org.icefaces.push.SessionRenderer;
+import org.icefaces.util.EnvUtils;
 import org.icefaces.push.SessionRenderableAdaptor;
 
 public class PushRenderer  {
@@ -133,12 +134,11 @@ class SessionHolder   {
 
     public SessionHolder(Object session)  {
         sessionReference = new WeakReference(session);
-        if( session instanceof HttpSession ){
+        if (session instanceof HttpSession)  {
             sessionId = ((HttpSession)session).getId();
         }
-
-        if(session instanceof PortletSession){
-            sessionId = ((PortletSession)session).getId();
+        if (EnvUtils.instanceofPortletSession(session))  {
+            sessionId = ((PortletSession) session).getId();
         }
     }
     
