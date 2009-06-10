@@ -260,25 +260,27 @@ public class DOMUtils {
 
     /**
      * Determine the set of top-level nodes in newDOM that are different from
-     * the corresponding nodes in oldDOM.
+     * the corresponding nodes in oldDOM. If the DOMs are identical, this
+     * method will return an empty array. This method should not be called if one
+     * of the DOMs is null.
      *
      * @param oldDOM original dom Document
      * @param newDOM changed dom Document
-     * @return array of top-level nodes in newDOM that differ from oldDOM
+     * @return array of top-level nodes in newDOM that differ from oldDOM, an
+     * empty array if no nodes are different
      */
     public static Node[] domDiff(Document oldDOM, Document newDOM) {
         List<Node> nodeDiffs = new Vector<Node>();
         compareNodes(nodeDiffs, oldDOM.getDocumentElement(),
                      newDOM.getDocumentElement());
-        //TODO: determine cause for pruning errors and replace the
-        //code that follows with the one line in the try clause
-        Node[] prunedDiff =  (Node[]) nodeDiffs.toArray(new Node[0]);
+
+        Node[] prunedDiff = null;
         try {
-                prunedDiff = pruneAncestors(nodeDiffs);
+            prunedDiff = pruneAncestors(nodeDiffs);
         } catch (Exception e)  {
             e.printStackTrace();
         }
-        return prunedDiff;
+        return (prunedDiff==null) ? new Node[0] : prunedDiff;  
     }
 
 
