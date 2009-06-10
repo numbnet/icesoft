@@ -105,26 +105,30 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     UIComponent kid = itr.next();
                     kid.encodeAll(facesContext);
                 }
-                Document document = writer.getDocument();
+//                Document document = writer.getDocument();
                 writer.endDocument();
 
                 //the valid old document from the current pass is the new document
                 Document newDOM = writer.getOldDocument();
 
-                Node[] diffs = DOMUtils.domDiff(oldDOM, newDOM);
-
-                if (null != diffs) {
-                    partialWriter.startDocument();
-                    for (int i = 0; i < diffs.length; i++) {
-                        Element element = (Element) diffs[i];
-                        partialWriter.startUpdate(element.getAttribute("id"));
-                        DOMUtils.printNode(element, outputWriter);
-                        partialWriter.endUpdate();
-                    }
+                partialWriter.startDocument();
+                Node[] diffs = new Node[0];
+                if (oldDOM != null && newDOM != null)  {
+                    diffs = DOMUtils.domDiff(oldDOM, newDOM);
                 } else {
-                    partialWriter.startDocument();
-                    partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
-                    DOMUtils.printNode(document, outputWriter);
+                    // This shouldn't be the case. Typically it is a symptom that
+                    // There is something else wrong so log it as a warning. 
+                    if (oldDOM == null) {
+                        log.warning("Old DOM is null during domDiff calculation");
+                    } else {
+                        log.warning("Old DOM is null during domDiff calculation");
+                    }
+                } 
+
+                for (int i = 0; i < diffs.length; i++) {
+                    Element element = (Element) diffs[i];
+                    partialWriter.startUpdate(element.getAttribute("id"));
+                    DOMUtils.printNode(element, outputWriter);
                     partialWriter.endUpdate();
                 }
 
