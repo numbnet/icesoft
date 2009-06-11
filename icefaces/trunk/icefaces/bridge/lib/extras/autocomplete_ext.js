@@ -82,6 +82,8 @@ Autocompleter.Base.prototype = {
                                   if (!update.style.position || update.style.position == 'absolute') {
                                       update.style.position = 'absolute';
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                                      update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                                          offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
                                   }
                                   Effect.Appear(update, {duration:0.15});
                               };
