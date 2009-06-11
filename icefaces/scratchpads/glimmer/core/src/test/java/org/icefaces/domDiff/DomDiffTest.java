@@ -48,7 +48,7 @@ public class DomDiffTest {
        File f = new File("./");
         System.out.println("Location of file is: " + f.getAbsolutePath());
         Node[] diff = DOMUtils.domDiff( test01_A, test01_B);
-        assertTrue (diff == null);
+        assertTrue (diff != null && diff.length == 0);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class DomDiffTest {
         long delta = System.nanoTime() - start;
 
         // This assertion guarantees the full diff was run through. 
-        assertTrue(diff == null);
+        assertTrue(diff != null && diff.length == 0);
         System.out.println("time for delta = " + delta/1e9 + " seconds");
 
     }
@@ -168,7 +168,7 @@ public class DomDiffTest {
         long delta = System.nanoTime() - start;
 
         // This assertion guarantees the full diff was run through.
-        assertTrue(diff == null);
+        assertTrue(diff != null && diff.length == 0);
         System.out.println("time for delta = " + delta/1e9 + " seconds");
     }
 
