@@ -214,7 +214,7 @@ window.evaluate = eval;
         });
 
         whenDown(asyncConnection, function() {
-            warn(lopgger, 'connection to server was lost');
+            warn(logger, 'connection to server was lost');
             off(indicators.busy);
             on(indicators.connectionLost);
             dispose();
