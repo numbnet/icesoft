@@ -134,11 +134,13 @@ public class TagToComponentMap implements Serializable {
         NameRule nRule =
                 new NameRule(tagToComponentMap, faceletsTaglibXmlWriter);
         digester.addRule("*/tag/tag-class", nRule);
+        digester.addRule("*/tag/tagclass", nRule);
         digester.addRule("*/uri", nRule);
 
         // These rules scoop the values from <name> and <tag-class> elements;
         digester.addCallMethod("*/tag/name", "setTagName", 0);
         digester.addCallMethod("*/tag/tag-class", "setTagClass", 0);
+        digester.addCallMethod("*/tag/tagclass", "setTagClass", 0);
         digester.addCallMethod("*/uri", "append", 0);
 
         try {
