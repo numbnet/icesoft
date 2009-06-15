@@ -116,17 +116,15 @@ window.evaluate = eval;
         var end = new RegExp('\<\/body\>', 'g').exec(html);
         var body = html.substring(start.index, end.index + end[0].length)
         var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
-        updateElement($element(container), objectWithAncestors(function(method) {
-            method(eachUpdateAttribute, function(self, iterator) {
-                each(container.attributes, function(a) {
-                    iterator(a.name, a.value);
-                });
-            });
-
-            method(updateContent, function(self) {
-                return bodyContent;
-            });
-        }), Update());
+        //strip <noscript> tag to fix Safari bug
+        // #3131 If this is a response from an error code, there may not be a <noscript> tag.
+        var startNoscript = new RegExp('\<noscript\>', 'g').exec(bodyContent);
+        if (startNoscript == null) {
+            container.innerHTML = bodyContent;
+        } else {
+            var endNoscript = new RegExp('\<\/noscript\>', 'g').exec(bodyContent);
+            container.innerHTML = substring(bodyContent, 0, startNoscript.index) + substring(bodyContent, endNoscript.index + 11, bodyContent.length);
+        }
     }
 
     //hijack browser form submit, instead submit through an Ajax request
