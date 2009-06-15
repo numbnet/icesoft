@@ -249,7 +249,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         try {
             var views = split(value(updatedViews), ' ');
             if (contains(views, fullViewID)) {
-                pickUpdates();
+                pickUpdates(viewID);
                 update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
             }
         } catch (e) {

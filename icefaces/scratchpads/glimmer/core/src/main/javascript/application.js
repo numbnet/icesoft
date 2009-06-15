@@ -159,14 +159,11 @@ window.evaluate = eval;
         var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
         var indicators = DefaultIndicators(configuration, container);
         var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function() {
+        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
             try {
                 var newForm = document.createElement('form');
-                var viewState = detect(document.getElementsByTagName('input'), function(e) {
-                    return e.getAttribute('name') == 'javax.faces.ViewState';
-                }).value;
                 newForm.action = window.location.pathname;
-                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewState});
+                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewID});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
@@ -217,7 +214,7 @@ window.evaluate = eval;
         });
 
         whenDown(asyncConnection, function() {
-            warn(logger, 'connection to server was lost');
+            warn(lopgger, 'connection to server was lost');
             off(indicators.busy);
             on(indicators.connectionLost);
             dispose();
