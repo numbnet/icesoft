@@ -48,7 +48,6 @@ window.evaluate = eval;
     //include element.js
     namespace.$element = $element;
     namespace.$elementWithID = $elementWithID;
-    namespace.captureAndRedirectSubmit = captureAndRedirectSubmit;
     namespace.enclosingBridge = enclosingBridge;
     //include event.js
     namespace.$event = $event;
