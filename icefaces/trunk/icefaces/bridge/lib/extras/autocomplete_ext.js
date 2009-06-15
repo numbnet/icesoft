@@ -184,17 +184,23 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_RIGHT:
                     return;
                 case Event.KEY_UP:
-                    this.markPrevious();
-                    this.render();
-                //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    Event.stop(event);
-                    return;
+                    //ICE-4549 (the KEY_UP and KEY_DOWN would be handled by the onkeydown event for IE and WebKit)
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                      
+                        this.markPrevious();
+                        this.render();
+                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                        Event.stop(event);
+                        return;
+	                }
                 case Event.KEY_DOWN:
-                    this.markNext();
-                    this.render();
-                //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    Event.stop(event);
-                    return;
+                    //ICE-4549 
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                 
+                        this.markNext();
+                        this.render();
+                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                        Event.stop(event);
+                        return;
+                    }
 
             }
         }
