@@ -203,20 +203,24 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * @see javax.faces.component.UIComponent#isRendered()
 	 */
 	public boolean isRendered() {
-
-		if (!Util.isRenderedOnUserRole(this)) {
-		    JavascriptContext.addJavascriptCall(getFacesContext(), 
-		            "Ice.modal.stop('" + getClientId(getFacesContext()) + "');");
+	    if (!Util.isRenderedOnUserRole(this)) {
+	        stopModal();
 			return false;
 		}
 	    boolean rendered = super.isRendered();
 		if (!rendered) {
-            JavascriptContext.addJavascriptCall(getFacesContext(), 
-                    "Ice.modal.stop('" + getClientId(getFacesContext()) + "');");		    
+            stopModal();
 		}
 	    return rendered; 
 	}
 
+	private void stopModal() {
+        String caller = new Exception().getStackTrace()[2].getMethodName();
+        if(caller.startsWith("encode")) {   
+            JavascriptContext.addJavascriptCall(getFacesContext(), 
+                "Ice.modal.stop('" + getClientId(getFacesContext()) + "');");
+        }	    
+	}
 	/**
 	 * @return the headerClass style class name.
 	 */
