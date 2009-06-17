@@ -35,15 +35,8 @@
         <render-kit-id>xHTML_BASIC</render-kit-id>
         <render-kit-class>org.icefaces.render.DOMRenderKit</render-kit-class>
     </render-kit>
-    <render-kit>
-        <render-kit-id>xHTML_BASIC_Push</render-kit-id>
-        <render-kit-class>org.icefaces.render.PushDOMRenderKit</render-kit-class>
-    </render-kit>
     <application>
         <resource-handler>org.icefaces.push.servlet.PushResourceHandler</resource-handler>
+        <view-handler>org.icefaces.push.BridgeSetup</view-handler>
     </application>
-    <component>
-        <component-type>ice.push</component-type>
-        <component-class>org.icefaces.component.PushEnabler</component-class>
-    </component>
 </faces-config>
