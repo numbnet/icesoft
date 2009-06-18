@@ -95,6 +95,7 @@ Ice.modal = {
     id:null,
     tabindexValues: [],
     start:function(target, iframeUrl,trigger) {
+        Ice.modal.autopositon = false;
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
@@ -135,17 +136,19 @@ Ice.modal = {
                     frame.style.width = width + 'px';
                     frame.style.height = height + 'px';
                     frame.style.visibility = 'visible';
-                    var modalWidth = 100;
-                    var modalHeight = 100;
-                    try {
-                        modalWidth = Element.getWidth(modal);
-                        modalHeight = Element.getHeight(modal);
-                    } catch (e) {
+                    if (!Ice.modal.autopositon) {
+                        var modalWidth = 100;
+                        var modalHeight = 100;
+                        try {
+                            modalWidth = Element.getWidth(modal);
+                            modalHeight = Element.getHeight(modal);
+                        } catch (e) {
+                        }
+                        modalWidth = parseInt(modalWidth) / 2;
+                        modalHeight = parseInt(modalHeight) / 2;
+                        modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
+                        modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
                     }
-                    modalWidth = parseInt(modalWidth) / 2;
-                    modalHeight = parseInt(modalHeight) / 2;
-                    modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
-                    modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
                     frame.style.display = frameDisp;
                 }
             };
@@ -280,6 +283,9 @@ Ice.autoPosition = {
         }
     },
     start:function(target, x, y) {
+        if (target == Ice.modal.id) {
+            Ice.modal.autopositon = true;
+        }
         Ice.autoPosition.id = target;
         Ice.autoPosition.xPos = x;
         Ice.autoPosition.yPos = y;
@@ -288,10 +294,12 @@ Ice.autoPosition = {
         Ice.autoPosition.keepPositioned();
         if (!Prototype.Browser.IE) s.visibility = 'visible';
         Event.observe(window, 'scroll', Ice.autoPosition.keepPositioned);
+        Event.observe(window, 'resize', Ice.autoPosition.keepPositioned);
     },
     stop:function(target) {
         if (Ice.autoPosition.id == target) {
             Event.stopObserving(window, 'scroll', Ice.autoPosition.keepPositioned);
+            Event.stopObserving(window, 'resize', Ice.autoPosition.keepPositioned);
         }
     }
 };
