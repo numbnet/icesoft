@@ -22,24 +22,17 @@
  *
 -->
 
-<project name="icefaces" default="all">
+<project name="icefaces-compat" default="all">
 
     <target name="all">
         <subant>
-            <fileset dir="." excludes="HtmlUnitTest/build.xml compat/build.xml" includes="*/build.xml"/>
+            <fileset dir="." includes="*/build.xml"/>
         </subant> 
     </target>
 
-    <target name="world" depends="all">
-            <subant>
-                <fileset dir="." includes="compat/build.xml"/>
-            </subant>
-    </target>
-
-
     <target name="allclean">
         <subant target="clean">
-            <fileset dir="." excludes="HtmlUnitTest/build.xml" includes="*/build.xml"/>
+            <fileset dir="." includes="*/build.xml"/>
         </subant>
     </target>
 
