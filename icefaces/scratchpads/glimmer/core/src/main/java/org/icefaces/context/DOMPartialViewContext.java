@@ -41,6 +41,8 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.icefaces.util.EnvUtils;
+
 public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     private static Logger log = Logger.getLogger("org.icefaces.context");
@@ -65,7 +67,12 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     @Override
-    public PartialResponseWriter getPartialResponseWriter() {
+    public PartialResponseWriter getPartialResponseWriter()  {
+
+        if (!EnvUtils.isICEfacesView(facesContext))  {
+            return wrapped.getPartialResponseWriter();
+        }
+
         if (null == partialWriter) {
             try {
                 //TODO: ensure this can co-exist with other PartialViewContext implementations
@@ -82,6 +89,12 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public void processPartial(PhaseId phaseId) {
+    
+        if (!EnvUtils.isICEfacesView(facesContext))  {
+            wrapped.processPartial(phaseId);
+            return;
+        }
+
         if (isRenderAll() && (phaseId == PhaseId.RENDER_RESPONSE)) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
