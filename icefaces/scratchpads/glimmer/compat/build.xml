@@ -26,7 +26,7 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="core/build.xml component/build.xml samples/build.xml"/>
+            <fileset dir="." includes="core/build.xml components/build.xml samples/build.xml"/>
         </subant> 
     </target>
 
