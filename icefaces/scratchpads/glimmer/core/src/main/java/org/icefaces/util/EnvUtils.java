@@ -22,8 +22,12 @@
 
 package org.icefaces.util;
 
+import javax.faces.context.FacesContext;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.icefaces.render.DOMRenderKit;
 
 public class EnvUtils {
     private static Logger log = Logger.getLogger("org.icefaces.util.EnvUtils");
@@ -40,6 +44,13 @@ public class EnvUtils {
     public static boolean instanceofPortletSession(Object session)  {
         if (null != PortletSessionClass)  {
             return PortletSessionClass.isInstance(session);
+        }
+        return false;
+    }
+
+    public static boolean isICEfacesView(FacesContext facesContext)  {
+        if (facesContext.getRenderKit() instanceof DOMRenderKit)  {
+            return true;
         }
         return false;
     }
