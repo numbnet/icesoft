@@ -45,7 +45,7 @@
 
     <patternset id="additional.compile.lib.jars"
                 includes="
-                servlet-api.jar
+                javax.servlet.jar
                 "
             />
 
