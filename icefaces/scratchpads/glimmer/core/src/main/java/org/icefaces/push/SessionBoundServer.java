@@ -22,6 +22,7 @@
 
 package org.icefaces.push;
 
+import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.http.MimeTypeMatcher;
 import org.icefaces.push.http.standard.PathDispatcherServer;
 import org.icefaces.push.servlet.SessionDispatcher;
@@ -30,12 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Observable;
 
 public class SessionBoundServer extends PathDispatcherServer {
-    public SessionBoundServer(final HttpSession session, MonitorRunner monitor, final SessionDispatcher.Monitor sessionMonitor, CurrentContext context, Configuration configuration) {
-        UpdateNotifier notifier = new UpdateNotifier() {
-            public void onUpdate(Observer observer) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
+    public SessionBoundServer(final HttpSession session, MonitorRunner monitor, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
         Observable pingPongNotifier = new Observable() {
             public void notifyObservers(Object arg) {
                 setChanged();
@@ -47,8 +43,10 @@ public class SessionBoundServer extends PathDispatcherServer {
                 return session.getServletContext().getMimeType(path);
             }
         };
-        dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, notifier, monitor, configuration));
+        dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, monitor, configuration));
         dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
+        dispatchOn(".*icefaces\\/dispose\\-window$", new DisposeWindowScope(WindowScopeManager.lookup(session, configuration)));
         dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
     }
+
 }

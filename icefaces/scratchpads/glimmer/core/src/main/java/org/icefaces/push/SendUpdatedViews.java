@@ -73,7 +73,7 @@ public class SendUpdatedViews implements Server, Runnable {
     private String[] updatedViews;
     private String[] participatingViews;
 
-    public SendUpdatedViews(HttpSession session, Observable pingPongNotifier, UpdateNotifier notifier, final MonitorRunner monitorRunner, Configuration configuration) {
+    public SendUpdatedViews(HttpSession session, Observable pingPongNotifier, final MonitorRunner monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
         this.monitorRunner = monitorRunner;
         pingPongNotifier.addObserver(new Observer() {
@@ -98,12 +98,6 @@ public class SendUpdatedViews implements Server, Runnable {
             }
         }
 
-        notifier.onUpdate(new UpdateNotifier.Observer() {
-            public void updated(String[] latestViews) {
-                updatedViews = latestViews;
-                respondIfViewsAvailable();
-            }
-        });
         //add monitor
         monitorRunner.registerMonitor(this);
 
