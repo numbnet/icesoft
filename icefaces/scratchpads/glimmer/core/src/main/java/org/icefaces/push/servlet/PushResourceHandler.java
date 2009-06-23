@@ -61,7 +61,7 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
         monitor = new MonitorRunner(configuration.getAttributeAsLong("poolingInterval", 15000));
         dispatcher = new SessionDispatcher(configuration, context) {
             protected Server newServer(HttpSession session, Monitor sessionMonitor) {
-                return new SessionBoundServer(session, monitor, sessionMonitor, PushResourceHandler.this, configuration);
+                return new SessionBoundServer(session, monitor, sessionMonitor, configuration);
             }
         };
     }

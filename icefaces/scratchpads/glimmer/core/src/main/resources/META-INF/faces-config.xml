@@ -37,6 +37,7 @@
     </render-kit>
     <application>
         <resource-handler>org.icefaces.push.servlet.PushResourceHandler</resource-handler>
+        <view-handler>org.icefaces.application.WindowScopeSetup</view-handler>
         <view-handler>org.icefaces.push.BridgeSetup</view-handler>
     </application>
 </faces-config>

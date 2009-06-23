@@ -149,7 +149,16 @@ window.evaluate = eval;
 
     onBeforeUnload(window, delistWindowViews);
 
+    var asyncContext;
+    onBeforeUnload(window, function() {
+        postSynchronously(Client(true), asyncContext + 'icefaces/dispose-window', function(query) {
+            addNameValue(query, 'ice.window', namespace.window);
+        }, FormPost, noop);
+    });
+
     namespace.Application = function(configuration, container) {
+        asyncContext = configuration.connection.context.async;
+
         var sessionID = configuration.session;
         //todo: can we rely on javax.faces.ViewState to identify the view?
         var viewID = document.getElementById('javax.faces.ViewState').value;
@@ -160,7 +169,7 @@ window.evaluate = eval;
             try {
                 var newForm = document.createElement('form');
                 newForm.action = window.location.pathname;
-                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewID});
+                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewID, 'ice.window': namespace.window});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
