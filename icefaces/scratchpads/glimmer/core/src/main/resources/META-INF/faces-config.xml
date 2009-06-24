@@ -39,6 +39,6 @@
         <resource-handler>org.icefaces.push.servlet.PushResourceHandler</resource-handler>
         <view-handler>org.icefaces.application.WindowScopeSetup</view-handler>
         <view-handler>org.icefaces.push.BridgeSetup</view-handler>
-        <el-resolver>org.icefaces.context.WindowELContext</el-resolver>
+        <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
     </application>
 </faces-config>
