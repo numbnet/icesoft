@@ -30,15 +30,14 @@ public class WindowScopeSetup extends ViewHandlerWrapper {
 
         ExternalContext externalContext = context.getExternalContext();
         Map sessionMap = externalContext.getSessionMap();
-        String id = externalContext.getRequestParameterMap().get("ice.window");
-        final WindowScopeManager.ScopeMap scopeMap = WindowScopeManager.lookup(sessionMap, externalContext).determineWindowScope(id);
-        sessionMap.put("window", scopeMap);
+        String requestID = externalContext.getRequestParameterMap().get("ice.window");
+        final String id = WindowScopeManager.lookup(sessionMap, externalContext).determineWindowID(requestID);
         root.addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 ResponseWriter writer = context.getResponseWriter();
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
-                writer.writeText("window.ice.window = " + scopeMap.getId() + ";", null);
+                writer.writeText("window.ice.window = " + id + ";", null);
                 writer.endElement("script");
             }
         }, "body");
