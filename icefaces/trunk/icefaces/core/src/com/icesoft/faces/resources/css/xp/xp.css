@@ -548,7 +548,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOn .MidMid a {
+.icePnlTbOn .MidMid a, .icePnlTbOn .MidMid>div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -559,7 +559,7 @@ fieldset {
 }
 
 
-* html .icePnlTbOn .MidMid a {
+* html .icePnlTbOn .MidMid a, * html .icePnlTbOn .MidMid>div {
     width: 1%;
 }
 
@@ -649,7 +649,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOff .MidMid a {
+.icePnlTbOff .MidMid a, icePnlTbOff .MidMid>div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -659,7 +659,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOff .MidMid a {
+* html .icePnlTbOff .MidMid a, * html .icePnlTbOff .MidMid>div {
     width: 1%;
 }
 
@@ -750,7 +750,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOver .MidMid a {
+.icePnlTbOver .MidMid a, .icePnlTbOver .MidMid>div{
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -760,7 +760,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOver .MidMid a {
+* html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid>div {
     width: 1%;
 }
 
@@ -883,7 +883,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOnBtm .MidMid a {
+.icePnlTbOnBtm .MidMid a, .icePnlTbOnBtm .MidMid>div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -893,7 +893,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOnBtm .MidMid a {
+* html .icePnlTbOnBtm .MidMid a, * html .icePnlTbOnBtm .MidMid>div {
     width: 1%;
 }
 
@@ -983,7 +983,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOffBtm .MidMid a {
+.icePnlTbOffBtm .MidMid a, .icePnlTbOffBtm .MidMid>div{
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -993,7 +993,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOffBtm .MidMid a {
+* html .icePnlTbOffBtm .MidMid a, * html .icePnlTbOffBtm .MidMid>div {
     width: 1%;
 }
 
@@ -1084,7 +1084,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOverBtm .MidMid a {
+.icePnlTbOverBtm .MidMid a, .icePnlTbOverBtm .MidMid>div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -1094,7 +1094,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOverBtm .MidMid a {
+* html .icePnlTbOverBtm .MidMid a, * html .icePnlTbOverBtm .MidMid>div {
     width: 1%;
 }
 
@@ -2037,7 +2037,7 @@ fieldset {
     color: #ABABAB;
 }
 
-.icePnlTbOff .MidMid-dis a {
+.icePnlTbOff .MidMid-dis a, .icePnlTbOff .MidMid-dis>div {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2127,7 +2127,7 @@ fieldset {
     color: #ABABAB;
 }
 
-.icePnlTbOffBtm .MidMid-dis a {
+.icePnlTbOffBtm .MidMid-dis a, .icePnlTbOffBtm .MidMid-dis>div {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2218,7 +2218,7 @@ fieldset {
     color: #ABABAB;
 }
 
-.icePnlTbOnBtm .MidMid-dis a {
+.icePnlTbOnBtm .MidMid-dis a, .icePnlTbOnBtm .MidMid-dis>div {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2311,7 +2311,7 @@ fieldset {
     color: #ABABAB;
 }
 
-.icePnlTbOn .MidMid-dis a {
+.icePnlTbOn .MidMid-dis a, .icePnlTbOn .MidMid-dis>div {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;

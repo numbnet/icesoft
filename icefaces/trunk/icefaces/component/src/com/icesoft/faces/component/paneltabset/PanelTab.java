@@ -55,6 +55,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -733,4 +734,8 @@ public class PanelTab
                ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
                false;
     }
+    
+    public UIComponent getLabelFacet() {
+        return (UIComponent) getFacet("label");
+    }    
 }
