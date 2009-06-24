@@ -18,14 +18,14 @@ public class WindowScopeManager {
     private long expirationPeriod;
 
     public WindowScopeManager(Configuration configuration) {
-        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 1000);
+        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 500);
     }
 
     public ScopeMap determineWindowScope(String id) {
         return (ScopeMap) windowScopedMaps.get(determineWindowID(id));
     }
 
-    private String determineWindowID(String id) {
+    public String determineWindowID(String id) {
         try {
             for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
                 ((ScopeMap) scopeMap).removeWhenExpired();
@@ -60,13 +60,9 @@ public class WindowScopeManager {
         private String id = generateID();
         private long timestamp = -1;
 
-        public String getId() {
-            return id;
-        }
-
         private void removeWhenExpired() {
             if (System.currentTimeMillis() > timestamp + expirationPeriod) {
-                disposedWindowScopedMaps.remove(id);
+                disposedWindowScopedMaps.remove(this);
             }
         }
 
