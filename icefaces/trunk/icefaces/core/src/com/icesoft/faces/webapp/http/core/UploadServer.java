@@ -47,7 +47,7 @@ public class UploadServer implements Server {
         //Partial fix for http://jira.icefaces.org/browse/ICE-1600
         this.uploadDirectory = configuration.getAttribute("uploadDirectory", "");
         this.uploadDirectoryAbsolute = configuration.getAttributeAsBoolean("uploadDirectoryAbsolute", false);
-        this.lifecycleOnCallingThread = configuration.getAttributeAsBoolean("lifecycleOnCallingThread", false);
+        this.lifecycleOnCallingThread = configuration.getAttributeAsBoolean("forceLifecycleOnCallingThread", false);
     }
 
     public void service(final Request request) throws Exception {
