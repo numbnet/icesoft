@@ -45,6 +45,7 @@ import com.icesoft.faces.util.DOMUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.faces.FacesException;
@@ -583,12 +584,21 @@ public class PanelTabSetRenderer
         this.renderSpacerImage(domContext, td_bot_mid);
         this.renderSpacerImage(domContext, td_bot_right);
 
+        UIComponent labelFacet = tab.getLabelFacet();
         String disableStyleClassSuffix;
-
+        
         if (disabled) {
             disableStyleClassSuffix = "-dis";
-            Text text = domContext.createTextNode(label);
-            td_mid_mid.appendChild(text);
+            if (labelFacet == null) {
+                Text text = domContext.createTextNode(label);
+                td_mid_mid.appendChild(text);
+            } else {
+                Node cursor = domContext.getCursorParent();
+                domContext.setCursorParent(td_mid_mid);
+                CustomComponentUtils.renderChild(facesContext, labelFacet);
+                domContext.setCursorParent(cursor);
+            }
+
         } else {
             disableStyleClassSuffix = "";
             // Build a command link
@@ -600,7 +610,19 @@ public class PanelTabSetRenderer
             // set focus handler
             link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
-            td_mid_mid.appendChild(link);
+            if (labelFacet == null) {
+                td_mid_mid.appendChild(link);
+            } else {
+                link.setAttribute(HTML.STYLE_ATTR, "display:none;");
+                Element div = domContext.createElement(HTML.DIV_ELEM); 
+                td_mid_mid.appendChild(div);
+                div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                Node cursor = domContext.getCursorParent();
+                domContext.setCursorParent(div);
+                CustomComponentUtils.renderChild(facesContext, labelFacet);
+                domContext.setCursorParent(cursor);  
+                div.appendChild(link);
+            }
             renderLinkText(label, domContext, link, tab, tabSet);
 
             Map parameterMap = getParameterMap(facesContext, tab);
