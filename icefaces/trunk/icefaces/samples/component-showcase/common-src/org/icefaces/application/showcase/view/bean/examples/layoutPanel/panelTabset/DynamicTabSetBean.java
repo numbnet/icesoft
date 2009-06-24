@@ -36,6 +36,7 @@ import org.icefaces.application.showcase.util.MessageBundleLoader;
 
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.io.Serializable;
 
@@ -48,7 +49,8 @@ import java.io.Serializable;
  */
 public class DynamicTabSetBean implements Serializable {
 
-    private int tabIndex;
+    private int tabIndex =-1;
+    private int tabLabelIndex = 2;
     private String newTabLabel;
     private String newTabContent;
     private List tabs = new ArrayList();
@@ -59,13 +61,13 @@ public class DynamicTabSetBean implements Serializable {
         Tab newTab1 = new Tab(
             new MsgString("bean.panelTabSet.dynamic.default.label1", true, null),
             new MsgString("bean.panelTabSet.dynamic.default.content1", true, null)
-        );
+        , ++tabIndex);
         tabs.add(newTab1);
         
         Tab newTab2 = new Tab(
             new MsgString("bean.panelTabSet.dynamic.default.label2", true, null),
             new MsgString("bean.panelTabSet.dynamic.default.content2", true, null)
-        );
+        , ++tabIndex);
         tabs.add(newTab2);
     }
 
@@ -93,24 +95,26 @@ public class DynamicTabSetBean implements Serializable {
     public void addTab(ActionEvent event) {
 
         MsgString label, content;
+        tabIndex = tabIndex + 1;
+        tabLabelIndex = tabLabelIndex+ 1;
         // assign default label if it's blank
         if (newTabLabel.equals("")) {
             label = new MsgString("bean.panelTabSet.dynamic.labelString", true,
-                new MsgString(Integer.toString(tabIndex + 1), false, null));
+                new MsgString(Integer.toString(tabLabelIndex), false, null));
         }
         else {
             label = new MsgString(newTabLabel, false, null);
         }
         if (newTabContent.equals("")) {
             content = new MsgString("bean.panelTabSet.dynamic.contentString", true,
-                new MsgString(Integer.toString(tabIndex + 1), false, null));
+                new MsgString(Integer.toString(tabLabelIndex), false, null));
         }
         else {
             content = new MsgString(newTabContent, false, null);
         }
 
         // set the new tab from the input
-        Tab newTab = new Tab(label, content);
+        Tab newTab = new Tab(label, content, tabIndex);
 
         // add to both tabs and select options of selectRadiobox
         tabs.add(newTab);
@@ -137,6 +141,7 @@ public class DynamicTabSetBean implements Serializable {
     }
 
     public List getTabs() {
+        removeDeletedTab();
         return tabs;
     }
 
@@ -151,18 +156,41 @@ public class DynamicTabSetBean implements Serializable {
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
     }
+    
+    private void removeDeletedTab() {
+        if (tabs != null ) {
+            Iterator it = tabs.iterator();
+            int remove = -1;
+            while(it.hasNext()) {
+                Tab tab = (Tab)it.next();
+                if (tab.isDeleted()) {
+                    remove = tab.getIndex();
+                }
+            }
+            if (remove > -1) {
+                tabs.remove(remove);
+                for (int i=0; i < tabs.size(); i++) {
+                   ((Tab)tabs.get(i)).setIndex(i);           
+                }
+                tabIndex = tabs.size() -1;
+            }     
+        }        
+    }
 
     /**
      * Inner class that represents a tab object with a label, content, and an
      * index.
      */
-    public static class Tab {
+    public class Tab {
         MsgString label;
         MsgString content;
-        
-        Tab(MsgString label, MsgString content) {
+        private boolean deleted;
+        private int index;
+
+        Tab(MsgString label, MsgString content, int index) {
             this.label = label;
             this.content = content;
+            this.index = index;
         }
         
         public String getLabel() {
@@ -171,6 +199,22 @@ public class DynamicTabSetBean implements Serializable {
         
         public String getContent() {
             return content.toString();
+        }
+        
+        public void closeTab(ActionEvent event) {
+            deleted = true;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
         }
     }
     
