@@ -38,6 +38,7 @@ public class UploadServer implements Server {
     private boolean uniqueFolder;
     private String uploadDirectory;
     private boolean uploadDirectoryAbsolute;
+    private boolean lifecycleOnCallingThread;
 
     public UploadServer(Map views, Configuration configuration) {
         this.views = views;
@@ -46,11 +47,13 @@ public class UploadServer implements Server {
         //Partial fix for http://jira.icefaces.org/browse/ICE-1600
         this.uploadDirectory = configuration.getAttribute("uploadDirectory", "");
         this.uploadDirectoryAbsolute = configuration.getAttributeAsBoolean("uploadDirectoryAbsolute", false);
+        this.lifecycleOnCallingThread = configuration.getAttributeAsBoolean("lifecycleOnCallingThread", false);
     }
 
     public void service(final Request request) throws Exception {
         final ServletFileUpload uploader = new ServletFileUpload();
-        final ProgressCalculator progressCalculator = new ProgressCalculator();
+        final ProgressCalculator progressCalculator = new ProgressCalculator(
+                lifecycleOnCallingThread);
         uploader.setFileSizeMax(maxSize);
         uploader.setProgressListener(new ProgressListener() {
             public void update(long read, long total, int chunkIndex) {
@@ -298,6 +301,11 @@ public class UploadServer implements Server {
         private FileInfo fileInfo;
         private int lastGranularlyNotifiablePercent = -1;
         private long lastTime = -1;
+        private boolean lifecycleOnCallingThread;
+
+        public ProgressCalculator(boolean lifecycleOnCallingThread) {
+            this.lifecycleOnCallingThread = lifecycleOnCallingThread;
+        } 
 
         public void progress(long read, long total) {
             if (total > 0) {
@@ -379,11 +387,14 @@ public class UploadServer implements Server {
                 // data model.
                 stateHolder = new UploadStateHolder(
                     uploadConfig, (FileInfo) fileInfo.clone());
-                
+
                 // Seam throws spurious exceptions with PFS.renderLater
                 //  so we'll work-around that for now. Fix later.
-                if (SeamUtilities.isSeamEnvironment() ||
-                    SeamUtilities.isSpringEnvironment()) {
+                if (lifecycleOnCallingThread ||
+                      SeamUtilities.isSeamEnvironment() ||
+                      SeamUtilities.isSpringSecurityEnvironment()  ||
+                      SeamUtilities.isSpringEnvironment()) {
+                    
                     stateHolder.setAsyncLifecycle(false);
                     stateHolder.install();
                     state.setupAndExecuteAndRender();
