@@ -1,6 +1,4 @@
-package org.icefaces.context;
-
-import org.icefaces.application.WindowScopeManager;
+package org.icefaces.application;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -12,7 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-public class WindowELContext extends ELResolver {
+public class WindowELResolver extends ELResolver {
     private static final String SCOPE_NAME = "window";
 
 
