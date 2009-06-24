@@ -70,7 +70,17 @@ public class ReceiveSendUpdates implements Server {
                         //mark that updates for this view are sent on the UI connection
                         //this avoids unblocking the blocking connection for updates generated during the execution of JSF lifecycle
                         synchronouslyUpdatedViews.add(viewNumber);
-                        renderCycle(view.getFacesContext());
+                        try  {
+                            renderCycle(view.getFacesContext());
+                        } catch (Exception e)  {
+                            String viewID = "Unknown View"; 
+                            try {
+                                viewID = view.getFacesContext().getViewRoot().getViewId();
+                            } catch (NullPointerException npe)  { }
+                            LOG.error("Exception occured during rendering on " + 
+                                    request.getURI() + " [" + viewID + "]", e);
+                            throw e;
+                        }
                         synchronouslyUpdatedViews.remove(viewNumber);
 
                         request.respondWith(new SendUpdates.Handler(views, request));

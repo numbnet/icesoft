@@ -175,6 +175,11 @@ public class PersistentFacesState implements Serializable {
             facesContext.setFocusId("");
             lifecycle.render(facesContext);
         } catch (Exception e) {
+            String viewID = "Unknown View"; 
+            try {
+                viewID = facesContext.getViewRoot().getViewId();
+            } catch (NullPointerException npe)  { }
+            log.error("Exception occured during execute push on " + viewID, e);
             throwRenderingException(e);
         } finally {
             facesContext.release();
@@ -225,10 +230,11 @@ public class PersistentFacesState implements Serializable {
      */
     public void execute() throws RenderingException {
         failIfDisposed();
+        BridgeFacesContext facesContext = null;
         try {
             view.acquireLifecycleLock();
             view.installThreadLocals();
-            BridgeFacesContext facesContext = view.getFacesContext();
+            facesContext = view.getFacesContext();
 
             // For JSF 1.1, with the inputFile, we need the execute phases to 
             // actually happen, which wasn't the case when the following code 
@@ -281,6 +287,11 @@ public class PersistentFacesState implements Serializable {
         } catch (Exception e) {
             release();
             view.releaseLifecycleLock();
+            String viewID = "Unknown View"; 
+            try {
+                viewID = facesContext.getViewRoot().getViewId();
+            } catch (NullPointerException npe)  { }
+            log.error("Exception occured during execute push on " + viewID, e);
             throwRenderingException(e);
         }
     }
