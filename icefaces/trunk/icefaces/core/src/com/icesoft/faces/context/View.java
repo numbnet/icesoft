@@ -73,7 +73,17 @@ public class View implements CommandQueue {
                 }
             }
             makeCurrent();
-            request.respondWith(lifecycleResponseHandler);
+            try {
+                request.respondWith(lifecycleResponseHandler);
+            } catch (Exception e)  {
+                String viewID = "Unknown View"; 
+                try {
+                    viewID = facesContext.getViewRoot().getViewId();
+                } catch (NullPointerException npe)  { }
+                Log.error("Exception occured during rendering on " + 
+                        request.getURI() + " [" + viewID + "]", e);
+                throw e;
+            }
         }
     };
     private Page page = lifecycleExecutedPage;
