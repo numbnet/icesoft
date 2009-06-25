@@ -46,6 +46,8 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
+import com.icesoft.util.pooling.ClientIdPool;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -393,7 +395,8 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
             }
         }
-
+        anchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
+                menuItem.getClientId(facesContext)+ ":"+LINK_SUFFIX));
         if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
             subImg.setAttribute(HTML.SRC_ATTR,
