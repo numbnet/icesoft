@@ -145,7 +145,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
         String keepViewRoot = externalContext.getInitParameter("com.icesoft.faces.retainViewRoot");
         if (keepViewRoot != null) {
-            retainViewRoot = Boolean.parseBoolean(keepViewRoot);
+            retainViewRoot = Boolean.valueOf(keepViewRoot).booleanValue();
         }
         this.viewNumber = viewIdentifier;
         this.sessionID = sessionID;
