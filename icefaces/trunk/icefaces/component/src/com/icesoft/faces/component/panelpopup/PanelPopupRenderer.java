@@ -256,8 +256,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 		String autoPositionJS = null;
         boolean positionOnLoadOnly = panelPopup.isPositionOnLoadOnly();
         boolean dragged = panelPopup.isDragged();
-        if (panelPopup.getAutoPosition() != null && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
-			String positions = panelPopup.getAutoPosition();
+        String positions = panelPopup.getAutoPosition();
+        if (positions != null && !positions.equalsIgnoreCase("manual") && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			if( positions.indexOf(',') < 1 ){
 				log.warn("The autoPosition attribute should be used with an "
 						+" x and y value for the position, such as '20,40'");
@@ -318,10 +318,11 @@ public class PanelPopupRenderer extends GroupRenderer {
                     ((PanelPopup)uiComponent).setRunningModal(true);
                     ((BridgeFacesContext) facesContext).setFocusId("");
                 }
-                
-				call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-						+ "', '" + trigger + "');";
-				if (log.isTraceEnabled()) {
+
+                String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
+                call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
+                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");";
+                if (log.isTraceEnabled()) {
 					log.trace("Starting Modal Function");
 				}
 			} else {
