@@ -136,7 +136,9 @@
 	<description>
 		Used to keep the popup positioned on the screen through
 		scrolling events. Use a string of x and y px values (e.g.
-		autoPostion="35,200").
+		autoPostion="35,200"). For a modal popup, use "manual" to disable
+        automatic centering on the document. Then specify top, left
+        positions by style or styleClass.
 	</description>
 	<property-name>autoPosition</property-name>
 	<property-class>java.lang.String</property-class>
