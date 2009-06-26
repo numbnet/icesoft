@@ -322,3 +322,25 @@ Ice.isEventSourceInputElement = function(event) {
         return false;
     }
 }
+
+Ice.tabLblFacetOnFocus = function(ele) {
+    setFocus(ele.id); 
+    if(!document.all) {
+        ele.style.visibility='hidden';
+    } 
+    ele.style.borderStyle='none';
+    ele.style.outlineStyle='none'; 
+    ele.style.borderWidth='0px';
+    ele.style.outlineWidth='0px';     
+    ele.parentNode.style.borderStyle='dotted';
+    ele.parentNode.style.borderWidth='1px 1px 1px 1px';
+}
+
+Ice.tabLblFacetOnBlur = function(ele) {
+    setFocus('');
+    if(!document.all) {    
+        ele.style.visibility='visible';
+    } 
+    ele.parentNode.style.borderStyle='none';
+}
+
