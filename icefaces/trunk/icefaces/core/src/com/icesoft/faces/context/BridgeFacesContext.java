@@ -94,6 +94,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private static final Log log = LogFactory.getLog(BridgeFacesContext.class);
     //todo: factor out the page template extension pattern to reuse it MainServlet.java as well (maybe in configuration)
     private static final Pattern PageTemplatePattern = Pattern.compile(".*(\\.iface$|\\.jsf$|\\.faces$|\\.jsp$|\\.jspx$|\\.xhtml$|\\.seam$)");
+    private static final Runnable Noop = new Runnable() {
+        public void run() {
+        }
+    };
+
     private Application application;
     private BridgeExternalContext externalContext;
     private HashMap faceMessages = new HashMap();
@@ -116,7 +121,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ELContext elContext;
     private DocumentStore documentStore;
     private String lastViewID;
-    boolean retainViewRoot;
+    private boolean retainViewRoot;
+    private Runnable onRelease = Noop;
+    private Runnable clearViewRoot = new Runnable() {
+        public void run() {
+            onRelease = Noop;
+            viewRoot = null;
+        }
+    };
 
     private static Constructor jsfUnitConstructor;
     private static String jsfUnitClass;
@@ -427,6 +439,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             //clear the request map except when we have SWF2
             externalContext.release();
         }
+        
+        onRelease.run();
         // #2807 release thread locals
         setCurrentInstance(null);
     }
@@ -826,7 +840,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         lastViewID = null;
         //reset viewRoot only when running with JSF1.1
         if (!ImplementationUtil.isJSFStateSaving()) {
-            viewRoot = null;
+            //reset the viewRoot only at the end of lifecycle
+            onRelease = clearViewRoot;
         }
     }
 
