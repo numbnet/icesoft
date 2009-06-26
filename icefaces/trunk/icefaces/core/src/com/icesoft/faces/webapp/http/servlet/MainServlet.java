@@ -34,7 +34,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URI;
-import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -171,10 +170,11 @@ public class MainServlet extends HttpServlet {
                 throw e;
             }
             // ICE-4507 let Jetty continuation messages get through untouched
-            if (e.getClass().getName().startsWith("org.mortbay.jetty") ) {
+            String errorClassname = e.getClass().getName();
+            if (errorClassname.startsWith("org.mortbay.jetty") ) {
                 throw e;
             } 
-            throw new RuntimeException("no message available",e);
+            throw new RuntimeException("wrapped Exception: " + errorClassname,e);
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {
