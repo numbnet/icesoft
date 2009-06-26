@@ -12,35 +12,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WindowScopeManager {
-    private static Logger log = Logger.getLogger(WindowScopeManager.class.getName());
+    private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
+    private static final CurrentScopeThreadLocal CurrentScope = new CurrentScopeThreadLocal();
     private HashMap windowScopedMaps = new HashMap();
     private LinkedList disposedWindowScopedMaps = new LinkedList();
     private long expirationPeriod;
 
     public WindowScopeManager(Configuration configuration) {
-        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 500);
+        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 600);
     }
 
-    public ScopeMap determineWindowScope(String id) {
-        return (ScopeMap) windowScopedMaps.get(determineWindowID(id));
+    public ScopeMap lookupWindowScope() {
+        return CurrentScope.lookup();
     }
 
-    public String determineWindowID(String id) {
+    public synchronized String determineWindowID(String id) {
         try {
             for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
-                ((ScopeMap) scopeMap).removeWhenExpired();
+                ((ScopeMap) scopeMap).discardIfExpired();
             }
         } catch (Throwable e) {
-            log.log(Level.FINE, "Failed to remove window scope map", e);
+            Log.log(Level.FINE, "Failed to remove window scope map", e);
         }
 
         if (id == null) {
-            ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ?
-                    new ScopeMap() : (ScopeMap) disposedWindowScopedMaps.removeFirst();
+            ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ? new ScopeMap() : (ScopeMap) disposedWindowScopedMaps.removeFirst();
+            CurrentScope.associate(scopeMap);
             windowScopedMaps.put(scopeMap.id, scopeMap);
             return scopeMap.id;
         } else {
             if (windowScopedMaps.containsKey(id)) {
+                CurrentScope.associate((ScopeMap) windowScopedMaps.get(id));
                 return id;
             } else {
                 throw new RuntimeException("Unknown window scope ID: " + id);
@@ -60,7 +62,10 @@ public class WindowScopeManager {
         private String id = generateID();
         private long timestamp = -1;
 
-        private void removeWhenExpired() {
+        public ScopeMap() {
+        }
+
+        private void discardIfExpired() {
             if (System.currentTimeMillis() > timestamp + expirationPeriod) {
                 disposedWindowScopedMaps.remove(this);
             }
@@ -96,5 +101,15 @@ public class WindowScopeManager {
         }
 
         return manager;
+    }
+
+    private static class CurrentScopeThreadLocal extends ThreadLocal {
+        ScopeMap lookup() {
+            return (ScopeMap) get();
+        }
+
+        void associate(ScopeMap map) {
+            set(map);
+        }
     }
 }

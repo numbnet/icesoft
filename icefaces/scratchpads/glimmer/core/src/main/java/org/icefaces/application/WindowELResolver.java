@@ -84,9 +84,7 @@ public class WindowELResolver extends ELResolver {
         ExternalContext externalContext = ctx.getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
 
-        String id = externalContext.getRequestParameterMap().get("ice.window");
-        return WindowScopeManager.lookup(sessionMap, externalContext).determineWindowScope(id);
-
+        return WindowScopeManager.lookup(sessionMap, externalContext).lookupWindowScope();
     }
 
 
