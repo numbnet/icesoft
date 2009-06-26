@@ -607,23 +607,33 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.NAME_ATTR, linkId);
             link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
-            // set focus handler
-            link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
-            link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
             if (labelFacet == null) {
                 td_mid_mid.appendChild(link);
+                // set focus handler
+                link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
+                link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
+                renderLinkText(label, domContext, link, tab, tabSet);                
             } else {
-                link.setAttribute(HTML.STYLE_ATTR, "display:none;");
+                //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
+                label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>";
+                // set focus handler
+                link.setAttribute(HTML.ONFOCUS_ATTR, "Ice.tabLblFacetOnFocus(this);");
+                link.setAttribute(HTML.ONBLUR_ATTR, "Ice.tabLblFacetOnBlur(this);");
+                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");                
                 Element div = domContext.createElement(HTML.DIV_ELEM); 
                 td_mid_mid.appendChild(div);
                 div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                div.appendChild(link);
                 Node cursor = domContext.getCursorParent();
                 domContext.setCursorParent(div);
                 CustomComponentUtils.renderChild(facesContext, labelFacet);
                 domContext.setCursorParent(cursor);  
-                div.appendChild(link);
+
+                Text spacer = domContext.createTextNode(label);
+                link.appendChild(spacer);
             }
-            renderLinkText(label, domContext, link, tab, tabSet);
+
 
             Map parameterMap = getParameterMap(facesContext, tab);
             renderOnClick(facesContext, tabSet, tab, link, parameterMap);

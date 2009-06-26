@@ -556,7 +556,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOn .MidMid a {
+.icePnlTbOn .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -567,7 +567,7 @@ input {
 
 }
 
-* html .icePnlTbOn .MidMid a {
+* html .icePnlTbOn .MidMid>a {
     width: 1%;
 }
 
@@ -657,7 +657,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOff .MidMid a {
+.icePnlTbOff .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -667,7 +667,7 @@ input {
     padding-left: 15px;
 }
 
-* html .icePnlTbOff .MidMid a {
+* html .icePnlTbOff .MidMid>a {
     width: 1%;
 }
 
@@ -757,7 +757,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOver .MidMid a {
+.icePnlTbOver .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -767,7 +767,7 @@ input {
     padding-left: 15px;
 }
 
-* html .icePnlTbOver .MidMid a {
+* html .icePnlTbOver .MidMid>a {
     width: 1%;
 }
 
@@ -887,7 +887,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOnBtm .MidMid a {
+.icePnlTbOnBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -897,7 +897,7 @@ input {
     padding-left: 15px;
 }
 
-* html .icePnlTbOnBtm .MidMid a {
+* html .icePnlTbOnBtm .MidMid>a {
     width: 1%;
 }
 
@@ -987,7 +987,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOffBtm .MidMid a {
+.icePnlTbOffBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -997,7 +997,7 @@ input {
     padding-left: 15px;
 }
 
-* html .icePnlTbOffBtm .MidMid a {
+* html .icePnlTbOffBtm .MidMid>a {
     width: 1%;
 }
 
@@ -1087,7 +1087,7 @@ input {
     white-space: nowrap;
 }
 
-.icePnlTbOverBtm .MidMid a {
+.icePnlTbOverBtm .MidMid>a {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -1097,7 +1097,7 @@ input {
     padding-left: 15px;
 }
 
-* html .icePnlTbOverBtm .MidMid a {
+* html .icePnlTbOverBtm .MidMid>a {
     width: 1%;
 }
 
