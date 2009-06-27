@@ -323,8 +323,38 @@ Ice.isEventSourceInputElement = function(event) {
     }
 }
 
-Ice.tabLblFacetOnFocus = function(ele) {
+Ice.tabNavigator = function(event) {
+     var ele = Event.element(event);
+     var kc= event.keyCode;
+     switch (kc) {
+        case 37:
+        case 38:
+           var preCell = ele.up('.icePnlTb').previousSibling;
+           if (preCell) {
+               var lnk = preCell.down('.icePnlTbLblLnk');
+               if(lnk) {
+                  lnk.focus();
+               }
+           }
+        break; 
+        case 39:
+        case 40:
+           var nextCell = ele.up('.icePnlTb').nextSibling;
+           if (nextCell && Element.hasClassName(nextCell, 'icePnlTb')) {
+               var lnk = nextCell.down('.icePnlTbLblLnk');
+               if(lnk) {
+                  lnk.focus();
+               }
+           }
+        break;            
+     
+    }    
+}
+
+Ice.pnlTabOnFocus = function(ele, facet) {
     setFocus(ele.id); 
+    Event.observe(ele, 'keydown', Ice.tabNavigator);    
+    if (!facet) return;
     if(!document.all) {
         ele.style.visibility='hidden';
     } 
@@ -334,9 +364,12 @@ Ice.tabLblFacetOnFocus = function(ele) {
     ele.style.outlineWidth='0px';     
     ele.parentNode.style.borderStyle='dotted';
     ele.parentNode.style.borderWidth='1px 1px 1px 1px';
+
 }
 
-Ice.tabLblFacetOnBlur = function(ele) {
+Ice.pnlTabOnBlur = function(ele, facet) {
+    Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+    if (!facet)return;    
     setFocus('');
     if(!document.all) {    
         ele.style.visibility='visible';
