@@ -607,19 +607,20 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.NAME_ATTR, linkId);
             link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
+            link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
             if (labelFacet == null) {
                 td_mid_mid.appendChild(link);
                 // set focus handler
-                link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
-                link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
+                link.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlTabOnFocus(this, false);");
+                link.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlTabOnBlur(this, false);");
                 renderLinkText(label, domContext, link, tab, tabSet);                
             } else {
                 //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
                 label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>";
                 // set focus handler
-                link.setAttribute(HTML.ONFOCUS_ATTR, "Ice.tabLblFacetOnFocus(this);");
-                link.setAttribute(HTML.ONBLUR_ATTR, "Ice.tabLblFacetOnBlur(this);");
+                link.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlTabOnFocus(this, true);");
+                link.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlTabOnBlur(this, true);");
                 link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");                
                 Element div = domContext.createElement(HTML.DIV_ELEM); 
                 td_mid_mid.appendChild(div);
