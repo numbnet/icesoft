@@ -3,6 +3,10 @@ package org.icefaces.application;
 import org.icefaces.push.Configuration;
 
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PreDestroyCustomScopeEvent;
+import javax.faces.event.ScopeContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WindowScopeManager {
+    public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final CurrentScopeThreadLocal CurrentScope = new CurrentScopeThreadLocal();
     private HashMap windowScopedMaps = new HashMap();
@@ -26,17 +31,18 @@ public class WindowScopeManager {
         return CurrentScope.lookup();
     }
 
-    public synchronized String determineWindowID(String id) {
+    public synchronized String determineWindowID(FacesContext context) {
+        String id = context.getExternalContext().getRequestParameterMap().get("ice.window");
         try {
             for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
-                ((ScopeMap) scopeMap).discardIfExpired();
+                ((ScopeMap) scopeMap).discardIfExpired(context);
             }
         } catch (Throwable e) {
             Log.log(Level.FINE, "Failed to remove window scope map", e);
         }
 
         if (id == null) {
-            ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ? new ScopeMap() : (ScopeMap) disposedWindowScopedMaps.removeFirst();
+            ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ? new ScopeMap(context) : (ScopeMap) disposedWindowScopedMaps.removeFirst();
             CurrentScope.associate(scopeMap);
             windowScopedMaps.put(scopeMap.id, scopeMap);
             return scopeMap.id;
@@ -62,12 +68,28 @@ public class WindowScopeManager {
         private String id = generateID();
         private long timestamp = -1;
 
-        public ScopeMap() {
+        public ScopeMap(FacesContext facesContext) {
+            boolean processingEvents = facesContext.isProcessingEvents();
+            try {
+                facesContext.setProcessingEvents(true);
+                ScopeContext context = new ScopeContext(ScopeName, this);
+                facesContext.getApplication().publishEvent(facesContext, PostConstructCustomScopeEvent.class, context);
+            } finally {
+                facesContext.setProcessingEvents(processingEvents);
+            }
         }
 
-        private void discardIfExpired() {
+        private void discardIfExpired(FacesContext facesContext) {
             if (System.currentTimeMillis() > timestamp + expirationPeriod) {
-                disposedWindowScopedMaps.remove(this);
+                boolean processingEvents = facesContext.isProcessingEvents();
+                try {
+                    facesContext.setProcessingEvents(true);
+                    ScopeContext context = new ScopeContext(ScopeName, this);
+                    facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
+                } finally {
+                    disposedWindowScopedMaps.remove(this);
+                    facesContext.setProcessingEvents(processingEvents);
+                }
             }
         }
 
@@ -77,7 +99,10 @@ public class WindowScopeManager {
         }
     }
 
-    public static WindowScopeManager lookup(Map session, ExternalContext externalContext) {
+    public static WindowScopeManager lookup(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        Map session = externalContext.getSessionMap();
+
         Object o = session.get(WindowScopeManager.class.getName());
         final WindowScopeManager manager;
         if (o == null) {
