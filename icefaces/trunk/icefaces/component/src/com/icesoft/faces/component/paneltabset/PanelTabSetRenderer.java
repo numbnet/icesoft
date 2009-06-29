@@ -37,6 +37,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -467,6 +468,9 @@ public class PanelTabSetRenderer
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));
+                        JavascriptContext.addJavascriptCall(facesContext,
+                                "document.getElementById('"+ paramName + "').focus();");
+                        
                         return;
                     }
                     tabIdx++;
@@ -490,6 +494,9 @@ public class PanelTabSetRenderer
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));
+                        JavascriptContext.addJavascriptCall(facesContext,
+                                "document.getElementById('"+ paramName + "').focus();");
+                        
                         return;
                     }
                     tabIdx++;
