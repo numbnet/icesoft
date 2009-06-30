@@ -164,6 +164,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
             commandDispatcher.register('parsererror', Ice.Command.ParsingError);
             commandDispatcher.register('redirect', function(element) {
+                dispose();
                 //replace ampersand entities incorrectly decoded by Safari 2.0.4
                 var url = element.getAttribute("url").replace(/&#38;/g, "&");
                 logger.info('Redirecting to ' + url);
