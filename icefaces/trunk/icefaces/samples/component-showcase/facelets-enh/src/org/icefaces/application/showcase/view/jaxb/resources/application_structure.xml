@@ -209,6 +209,10 @@
                   label="node.panelTooltip.label"
                   leaf="true" link="true"
                   contentRef="panelTooltipContentDesc"/>
+            <node id="panelConfirmationNode"
+                  label="node.panelConfirmation.label"
+                  leaf="true" link="true"
+                  contentRef="panelConfirmationContentDesc"/>
         </node>
     </navigation>
 
@@ -766,6 +770,44 @@
                     <resource-reference
                             label="panelGroup"
                             resourceRef="panelGroupTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Tutorials"
+                            resourceRef="generalTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
+        
+        <content-descriptor
+                id="panelConfirmationContentDesc" title="node.panelConfirmation.title"
+                templateRef="tabbedContainer">
+            <example>
+                <resource-reference
+                        resourceRef="panelConfirmationExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                <jspx-pages>
+                    <resource-reference
+                            label="panelConfirmation.jspx"
+                            resourceRef="panelConfirmationExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="ConfirmationPanelBean.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelConfirmation.ConfirmationBean"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="Panel Confirmation"
+                            resourceRef="panelConfirmationDoc"/>
+                </documents>                                                                                          
+                <tlds>
+                    <resource-reference
+                            label="panelConfirmation"
+                            resourceRef="panelConfirmationTld"/>
                 </tlds>
                 <tutorials>
                     <resource-reference
@@ -1882,6 +1924,8 @@
                       path="/WEB-INF/includes/examples/panel/panelTabSet-dynamic.jspx"/>
             <resource id="panelTooltipExplResc"
                       path="/WEB-INF/includes/examples/panel/panelTooltip.jspx"/>
+            <resource id="panelConfirmationExplResc"
+                      path="/WEB-INF/includes/examples/panel/panelConfirmation.jspx"/>
 
             <!--              -->
             <!-- source code  -->
@@ -2032,6 +2076,8 @@
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelToolTip/PanelToolTipController.java"/>
             <resource id="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelToolTip.PanelToolTipModel"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelToolTip/PanelToolTipModel.java"/>
+            <resource id="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelConfirmation.ConfirmationBean"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelConfirmation/ConfirmationPanelBean.java"/>
 
             <!-- common inventory classes -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.common.inventory.InventoryInterface"
@@ -2143,6 +2189,9 @@
             <resource id="panelTooltipDoc"
                       pathType="include"
                       path="/docs/panelTooltipDoc.html"/>
+            <resource id="panelConfirmationDoc"
+                      pathType="include"
+                      path="/docs/panelConfirmationDoc.html"/>
             <resource id="selectInputDateDoc"
                       pathType="include"
                       path="/docs/selectInputDateDoc.html"/>
@@ -2359,6 +2408,9 @@
             <resource id="panelTooltipTld"
                       pathType="include"
                       path="/docs/tld/ice/panelTooltip.html"/>
+            <resource id="panelConfirmationTld"
+                      pathType="include"
+                      path="/docs/tld/ice/panelConfirmation.html"/>
             <resource id="portletTld"
                       pathType="include"
                       path="/docs/tld/ice/portlet.html"/>

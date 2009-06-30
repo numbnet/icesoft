@@ -327,6 +327,13 @@
         <ice:outputText
                 value="#{msgs['node.panelTooltip.label']}"/>
     </ice:commandLink>
+    <br/>
+    <ice:commandLink id="panelConfirmationContentPanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelConfirmation.jspx" />
+        <ice:outputText
+                value="#{msgs['node.panelConfirmation.label']}"/>
+    </ice:commandLink>
 
 </ice:panelCollapsible>
 </ice:panelGroup>

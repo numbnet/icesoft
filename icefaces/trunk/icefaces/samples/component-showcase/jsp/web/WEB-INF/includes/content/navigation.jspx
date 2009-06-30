@@ -326,6 +326,11 @@
         <ice:outputText
                 value="#{msgs['node.panelTooltip.label']}"/>
     </ice:commandLink>
+    <br/>
+    <ice:commandLink id="panelConfirmationContentPanel" actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="panelConfirmationContentPanel" />
+        <ice:outputText value="#{msgs['node.panelConfirmation.label']}"/>
+    </ice:commandLink>
 
 </ice:panelCollapsible>
 </ice:panelGroup>
