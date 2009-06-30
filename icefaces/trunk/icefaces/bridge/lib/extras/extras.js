@@ -334,6 +334,7 @@ Ice.tabNavigator = function(event) {
                var lnk = preCell.down('.icePnlTbLblLnk');
                if(lnk) {
                   lnk.focus();
+                  return false;
                }
            }
         break; 
@@ -344,6 +345,7 @@ Ice.tabNavigator = function(event) {
                var lnk = nextCell.down('.icePnlTbLblLnk');
                if(lnk) {
                   lnk.focus();
+                  return false;                  
                }
            }
         break;            
