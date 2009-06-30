@@ -313,6 +313,12 @@
                              </f:subview>
                          </ice:panelGroup>
 
+                         <ice:panelGroup id="panelConfirmationContentPanel">
+                             <f:subview id="pcSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelConfirmation.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
                          <ice:panelGroup id="panelSeriesContentPanel" >
                              <f:subview id="lcSub">
                                  <!-- Panel Series Component include -->
