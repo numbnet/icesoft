@@ -38,7 +38,6 @@ import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -177,7 +176,15 @@ public class TreeRenderer extends DomBasicRenderer {
         // clean up, and remove nodes
         DOMContext.removeChildren(rootDomNode);
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-
+        if (treeComponent.isKeyboardNavigationEnabled()) {
+            String keyboardSupport = "return Ice.treeNavigator.handleFocus(event, this);";
+            String userKeyDown = (String) uiComponent.getAttributes().get(HTML.ONKEYDOWN_ATTR);
+            String keydown = DomBasicRenderer.combinedPassThru(userKeyDown, keyboardSupport);
+            rootDomNode.setAttribute(HTML.ONKEYDOWN_ATTR, keydown);
+            String userClick = (String) uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
+            String click = DomBasicRenderer.combinedPassThru(userClick, keyboardSupport);        
+            rootDomNode.setAttribute(HTML.ONCLICK_ATTR, click);     
+        }
         domContext.stepInto(uiComponent);
 
     }
