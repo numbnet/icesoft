@@ -90,7 +90,7 @@ public class PanelTabSet
      * The method binding for a TabChangeListener.
      */
     private MethodBinding _tabChangeListener = null;
-
+    private Boolean keyboardNavigationEnabled;
     /* (non-Javadoc)
      * @see javax.faces.component.UIComponent#decode(javax.faces.context.FacesContext)
      */
@@ -589,7 +589,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[35];
+        Object values[] = new Object[36];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -624,7 +624,8 @@ public class PanelTabSet
         values[31] = visible;
         values[32] = saveAttachedState(context, listenerList);   
         values[33] = immediate;   
-        values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;;  
+        values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;
+        values[35] = keyboardNavigationEnabled;
         return ((Object) (values));
     }
 
@@ -676,7 +677,8 @@ public class PanelTabSet
             }            
         }
         immediate = (Boolean)values[33];
-        border_set = ((Boolean) values[34]).booleanValue();        
+        border_set = ((Boolean) values[34]).booleanValue(); 
+        keyboardNavigationEnabled = (Boolean) values[35];         
     }
 
     public Object saveSeriesState(FacesContext facesContext) {
@@ -1224,5 +1226,20 @@ public class PanelTabSet
             }
         }
         super.queueEvent(event);
-    }        
+    }   
+    
+
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }
 }
