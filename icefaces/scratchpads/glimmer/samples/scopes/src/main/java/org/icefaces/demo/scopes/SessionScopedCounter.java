@@ -6,10 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 
-@ManagedBean(name = "SessionCounter")
+@ManagedBean(name = "SessionScopedCounter")
 @SessionScoped
-public class SessionCounter extends Counter implements Serializable {
-    public SessionCounter() {
+public class SessionScopedCounter extends Counter implements Serializable {
+    public SessionScopedCounter() {
         System.out.println(this);
     }
 
