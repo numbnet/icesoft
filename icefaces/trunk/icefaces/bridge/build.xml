@@ -237,6 +237,7 @@
                 <file name="dataTable.js"/>
                 <file name="panelConfirmation.js"/>
                 <file name="calendar.js"/>
+                <file name="treeNavigator.js"/>
             </filelist>
             <filelist dir="${build.dir}/component">
                 <file name="menu.js"/>

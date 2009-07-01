@@ -165,7 +165,7 @@ public class Tree extends UICommand implements NamingContainer {
     private String hideRootNode;
     private String hideNavigation;
     private String pathToExpandedNode;
-    
+    private Boolean keyboardNavigationEnabled;
     transient private DefaultMutableTreeNode currentNode;
     private String nodePath;
     private String title;
@@ -803,7 +803,7 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[27];
+        Object values[] = new Object[28];
         values[0] = super.saveState(context);
         values[1] = title;        
         values[2] = navigationEventType;
@@ -830,7 +830,8 @@ public class Tree extends UICommand implements NamingContainer {
         values[23] = hideNavigation;
         values[24] = nodePath;
         values[25] = savedChildren;
-        values[26] = pathToExpandedNode;        
+        values[26] = pathToExpandedNode; 
+        values[27] = keyboardNavigationEnabled;
         
 
         return (values);
@@ -872,7 +873,8 @@ public class Tree extends UICommand implements NamingContainer {
         hideNavigation = (String) values[23];
         nodePath = (String) values[24];
         savedChildren = (Map) values[25];
-        pathToExpandedNode = (String) values[26];        
+        pathToExpandedNode = (String) values[26];
+        keyboardNavigationEnabled = (Boolean) values[27];         
     }
 
 
@@ -1348,6 +1350,20 @@ public class Tree extends UICommand implements NamingContainer {
     void setPathToExpandedNode(String pathToExpandedNode) {
         this.pathToExpandedNode = pathToExpandedNode;
     }
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }     
 }
 
 //  Private class to represent saved state information for the children of the Tree component
