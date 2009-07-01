@@ -334,9 +334,15 @@ Ice.tabNavigator = function(event) {
                var lnk = preCell.down('.icePnlTbLblLnk');
                if(lnk) {
                   lnk.focus();
-                  return false;
                }
            }
+           if (ele.up('.icePnlTb')) {
+               if (event.preventDefault){
+                   event.preventDefault();
+               } else if (event.returnValue){
+                   event.returnValue = false;
+               }
+           }           
         break; 
         case 39:
         case 40:
@@ -345,7 +351,13 @@ Ice.tabNavigator = function(event) {
                var lnk = nextCell.down('.icePnlTbLblLnk');
                if(lnk) {
                   lnk.focus();
-                  return false;                  
+               }
+           }
+           if (ele.up('.icePnlTb')) {
+               if (event.preventDefault){
+                   event.preventDefault();
+               } else if (event.returnValue){
+                   event.returnValue = false;
                }
            }
         break;            
@@ -353,9 +365,11 @@ Ice.tabNavigator = function(event) {
     }    
 }
 
-Ice.pnlTabOnFocus = function(ele, facet) {
-    setFocus(ele.id); 
-    Event.observe(ele, 'keydown', Ice.tabNavigator);    
+Ice.pnlTabOnFocus = function(ele, facet, kbs) {
+    setFocus(ele.id);
+    if(kbs) { 
+        Event.observe(ele, 'keydown', Ice.tabNavigator); 
+    }   
     if (!facet) return;
     if(!document.all) {
         ele.style.visibility='hidden';
@@ -369,8 +383,10 @@ Ice.pnlTabOnFocus = function(ele, facet) {
 
 }
 
-Ice.pnlTabOnBlur = function(ele, facet) {
-    Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+Ice.pnlTabOnBlur = function(ele, facet, kbs) {
+    if(kbs) { 
+        Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+    }
     if (!facet)return;    
     setFocus('');
     if(!document.all) {    
