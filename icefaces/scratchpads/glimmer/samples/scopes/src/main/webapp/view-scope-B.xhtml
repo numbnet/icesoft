@@ -26,8 +26,8 @@
         <p>
             <h:commandButton id="redirect" value="Goto Page A" action="A"/>
         </p>
-        <p style="font-style: italic;">Redirecting back to previous view should show the counter with its value before
-            the first redirect. </p>
+        <p style="font-style: italic;">Redirecting back to previous view should show the counter with value 0 because a
+            new view instance is created on non-postaback requests.</p>
         <h:messages/>
     </h:form>
 </h:body>
