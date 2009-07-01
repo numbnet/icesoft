@@ -21,4 +21,22 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/view-scope-A.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>B</from-outcome>
+            <to-view-id>/view-scope-B.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/view-scope-B.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>A</from-outcome>
+            <to-view-id>/view-scope-A.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
