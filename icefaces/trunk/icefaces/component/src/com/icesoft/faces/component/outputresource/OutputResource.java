@@ -71,9 +71,7 @@ public class OutputResource extends UIComponentBase {
 	    }else {
             ValueBinding vb = getValueBinding("resource");
     		if (vb == null) {
-    		    if (log.isInfoEnabled()) {
-    		        log.info("The \"resource\" is not defined");
-    		    }
+                addInfo();
     		    return null;
     		}
     		currResource = (Resource) vb.getValue(getFacesContext());
@@ -90,6 +88,12 @@ public class OutputResource extends UIComponentBase {
 		}
 		return currResource;
 	}
+	
+    public void addInfo() {
+        if (log.isInfoEnabled()) {
+            log.info("The \"resource\" is not defined");
+        }
+    }
 
 	public void setResource(Resource resource) {
 		this.resource = resource;

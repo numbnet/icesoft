@@ -395,5 +395,5 @@ public class DataExporter extends OutputResource {
 
     }
     
-    
+    public void addInfo() {}
 }
