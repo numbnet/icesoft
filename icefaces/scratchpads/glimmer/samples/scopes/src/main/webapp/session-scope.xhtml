@@ -16,15 +16,16 @@
     <h2>Session scoped counter</h2>
 
     <h3>
-        <h:outputText id="out" value="#{SessionCounter.count}"/>
+        <h:outputText id="out" value="#{SessionScopedCounter.count}"/>
     </h3>
     <h:form id="form1" prependId="false">
         <p>
-            <h:commandButton id="plus" value="+" action="#{SessionCounter.increment}"/>
-            <h:commandButton id="minus" value="-" action="#{SessionCounter.decrement}"/>
+            <h:commandButton id="plus" value="+" action="#{SessionScopedCounter.increment}"/>
+            <h:commandButton id="minus" value="-" action="#{SessionScopedCounter.decrement}"/>
         </p>
         <p style="font-style: italic;">Multiple browser windows opened with this page will increment the same counter
             instance.</p>
+        <a href="index.html">back to tests index</a>
         <h:messages/>
     </h:form>
 </h:body>

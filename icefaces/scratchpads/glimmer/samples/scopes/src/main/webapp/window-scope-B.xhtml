@@ -16,16 +16,17 @@
     <h2>Window scoped counter -- page B</h2>
 
     <h3>
-        <h:outputText id="out" value="#{WindowCounter.count}"/>
+        <h:outputText id="out" value="#{WindowScopedCounter.count}"/>
     </h3>
     <h:form id="form1" prependId="false">
         <p>
-            <h:commandButton id="plus" value="+" action="#{WindowCounter.increment}"/>
-            <h:commandButton id="minus" value="-" action="#{WindowCounter.decrement}"/>
+            <h:commandButton id="plus" value="+" action="#{WindowScopedCounter.increment}"/>
+            <h:commandButton id="minus" value="-" action="#{WindowScopedCounter.decrement}"/>
         </p>
         <p>
             <h:commandButton id="redirect" value="Goto Page A" action="A"/>
         </p>
+        <a href="index.html">back to tests index</a>
         <h:messages/>
     </h:form>
 </h:body>
