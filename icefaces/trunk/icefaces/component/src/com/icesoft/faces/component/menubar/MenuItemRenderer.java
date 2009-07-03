@@ -239,7 +239,8 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             Element anch = (Element)topLevelDiv.getChildNodes().item(0);
             String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
             onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
-            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
+            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.onmouseover();");              
         }
         if ((uiComponent.getChildCount() > 0) &&
             (((MenuItem) uiComponent).isChildrenMenuItem())) {
