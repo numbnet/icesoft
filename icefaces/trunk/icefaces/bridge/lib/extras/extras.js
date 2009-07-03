@@ -371,16 +371,7 @@ Ice.pnlTabOnFocus = function(ele, facet, kbs) {
         Event.observe(ele, 'keydown', Ice.tabNavigator); 
     }   
     if (!facet) return;
-    if(!document.all) {
-        ele.style.visibility='hidden';
-    } 
-    ele.style.borderStyle='none';
-    ele.style.outlineStyle='none'; 
-    ele.style.borderWidth='0px';
-    ele.style.outlineWidth='0px';     
-    ele.parentNode.style.borderStyle='dotted';
-    ele.parentNode.style.borderWidth='1px 1px 1px 1px';
-
+    Ice.simulateFocus(ele.parentNode, ele);
 }
 
 Ice.pnlTabOnBlur = function(ele, facet, kbs) {
@@ -389,9 +380,33 @@ Ice.pnlTabOnBlur = function(ele, facet, kbs) {
     }
     if (!facet)return;    
     setFocus('');
-    if(!document.all) {    
-        ele.style.visibility='visible';
-    } 
-    ele.parentNode.style.borderStyle='none';
+    Ice.simulateBlur(ele.parentNode, ele);
 }
 
+Ice.pnlClpFocus = function(anc) {
+    Ice.simulateFocus(anc.parentNode, anc);
+}
+
+Ice.pnlClpBlur = function(anc) {
+    Ice.simulateBlur(anc.parentNode, anc);
+}
+
+Ice.simulateFocus = function(ele, anc) {
+    if(!document.all) {
+        anc.style.visibility='hidden';
+    } 
+    anc.style.borderStyle='none';
+    anc.style.outlineStyle='none'; 
+    anc.style.borderWidth='0px';
+    anc.style.outlineWidth='0px'; 
+    anc.style.margin='0px';        
+    ele.style.borderStyle='dotted';
+    ele.style.borderWidth='1px 1px 1px 1px';
+}
+
+Ice.simulateBlur = function(ele, anc) {
+    if(!document.all) {    
+        anc.style.visibility='visible';
+    } 
+    ele.style.borderStyle='none';
+}
