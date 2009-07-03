@@ -160,6 +160,7 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   applyFocus: function(direct) {
       var p = this.srcElement.parentNode;
+      var pm = Element.hasClassName(p, this.getPopupMenuClass());      
       var mb = Element.hasClassName(p, this.getMenuBarItemClass());
       var mi = Element.hasClassName(p, this.getMenuItemClass());
 
@@ -191,6 +192,19 @@ Ice.MenuBarKeyNavigator.addMethods({
             
         }else if (mi) {
             this.focusMenuItem('.'+this.getMenuItemClass(), direct == 's', direct);
+        }else if (pm) {
+            switch(direct) {
+                case 'n':
+                     this.focusMenuItem('.'+this.getPopupMenuClass());
+                break;
+                case 's':
+                     this.focusMenuItem('.'+this.getPopupMenuClass(), true);                
+                break;
+                case 'e':
+                      this.focusSubMenuItem(p);
+                break;                
+                
+             }                
         }
   },
   
@@ -231,6 +245,10 @@ Ice.MenuBarKeyNavigator.addMethods({
      return "iceMnuItm";
   },
   
+  getPopupMenuClass: function() {
+     return "iceMnuPopVrtItem";
+  },
+    
   hover: function(event) {
     if (this.clicked) {
         element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
