@@ -401,12 +401,10 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
-        if (!(this instanceof MenuPopup)) {
-            String call = "new Ice.MenuBarKeyNavigator('" + 
-            getClientId(context) +"', " +
-            isDisplayOnClick() +");";
-            JavascriptContext.addJavascriptCall(context, call);
-        }
+        String call = "new Ice.MenuBarKeyNavigator('" + 
+        getClientId(context) +"', " +
+        isDisplayOnClick() +");";
+        JavascriptContext.addJavascriptCall(context, call);
         super.encodeBegin(context);
     }
 
