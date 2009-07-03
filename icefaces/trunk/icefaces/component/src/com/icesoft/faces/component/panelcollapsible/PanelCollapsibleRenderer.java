@@ -18,6 +18,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.util.CoreUtils;
 
 public class PanelCollapsibleRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes =
@@ -68,6 +69,13 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                       "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
                       panelCollapsible.isExpanded()+"'; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
+            anchor.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlClpFocus(this);");
+            anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);"); 
+            anchor.setAttribute(HTML.HREF_ATTR, "#"); 
+            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>"));
+            header.appendChild(anchor);
         }
 
     }
