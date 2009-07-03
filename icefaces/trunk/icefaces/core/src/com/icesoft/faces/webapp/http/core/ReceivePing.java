@@ -4,6 +4,8 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Pong;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.common.Response;
 
 import java.util.Map;
 
@@ -13,6 +15,13 @@ import org.apache.commons.logging.LogFactory;
 public class ReceivePing implements Server {
     private static final Log LOG = LogFactory.getLog(ReceivePing.class);
     private static final Pong PONG = new Pong();
+    private static final ResponseHandler CLOSE_RESPONSE = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+            //let the bridge know that this blocking connection should not be re-initialized
+            response.setHeader("X-Connection", "close");
+            response.setHeader("Content-Length", 0);
+        }
+    };
     private Map commandQueues;
     private PageTest pageTest;
 
@@ -34,6 +43,7 @@ public class ReceivePing implements Server {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("could not get a valid queue for " + viewIdentifier);
                 }
+                request.respondWith(CLOSE_RESPONSE);
             }
         }
     }
