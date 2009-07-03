@@ -106,6 +106,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String renderedOnUserRole = null;
     private String noIcons;
     private Boolean displayOnClick;
+    private Boolean keyboardNavigationEnabled;    
     /**
      * default no args constructor
      */
@@ -401,10 +402,12 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
-        String call = "new Ice.MenuBarKeyNavigator('" + 
-        getClientId(context) +"', " +
-        isDisplayOnClick() +");";
-        JavascriptContext.addJavascriptCall(context, call);
+        if (isKeyboardNavigationEnabled()) {
+            String call = "new Ice.MenuBarKeyNavigator('" + 
+            getClientId(context) +"', " +
+            isDisplayOnClick() +");";
+            JavascriptContext.addJavascriptCall(context, call);
+        }
         super.encodeBegin(context);
     }
 
@@ -432,5 +435,19 @@ public class MenuBar extends UICommand implements NamingContainer {
         style = (String) values[6];
         styleClass = (String) values[7];
     }
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }    
 }
 

@@ -118,3 +118,15 @@
         <default-value>"mousedown"</default-value>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        Enables keyboard support, default value is true.
+    </description>
+    <property-name>keyboardNavigationEnabled</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+    </property-extension>
+</property>
