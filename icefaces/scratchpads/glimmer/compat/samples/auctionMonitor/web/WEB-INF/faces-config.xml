@@ -33,109 +33,109 @@
   -->
 
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-    version="2.0"
-    metadata-complete="false">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0"
+              metadata-complete="false">
 
-<!-- Render Manager -->
-<!--
-<managed-bean>
-    <description>
-        Manages render calls to the Faces Context.
-    </description>
-    <managed-bean-name>
-        rmanager
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.faces.async.render.RenderManager
-    </managed-bean-class>
-    <managed-bean-scope>
-        application
-    </managed-bean-scope>
-</managed-bean>
--->
+    <!-- Render Manager -->
+    <!--
+    <managed-bean>
+        <description>
+            Manages render calls to the Faces Context.
+        </description>
+        <managed-bean-name>
+            rmanager
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.faces.async.render.RenderManager
+        </managed-bean-class>
+        <managed-bean-scope>
+            application
+        </managed-bean-scope>
+    </managed-bean>
+    -->
 
-<!-- Managed Beans -->
-<managed-bean>
-    <description>
-        Bean to handle the interval rendering of clocks
-    </description>
-    <managed-bean-name>
-        ClockBean
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.applications.faces.auctionMonitor.beans.ClockBean
-    </managed-bean-class>
-    <managed-bean-scope>
-        request
-    </managed-bean-scope>
-<!--
-    <managed-property>
-        <property-name>renderManager</property-name>
-        <value>#{rmanager}</value>
-    </managed-property>
--->
-</managed-bean>
+    <!-- Managed Beans -->
+    <managed-bean>
+        <description>
+            Bean to handle the interval rendering of clocks
+        </description>
+        <managed-bean-name>
+            ClockBean
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.auctionMonitor.beans.ClockBean
+        </managed-bean-class>
+        <managed-bean-scope>
+            request
+        </managed-bean-scope>
+        <!--
+            <managed-property>
+                <property-name>renderManager</property-name>
+                <value>#{rmanager}</value>
+            </managed-property>
+        -->
+    </managed-bean>
 
-<managed-bean>
-    <description>
-        Bean for monitoring auctions
-    </description>
-    <managed-bean-name>
-        AuctionBean
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.applications.faces.auctionMonitor.beans.AuctionBean
-    </managed-bean-class>
-    <managed-bean-scope>
-        request
-    </managed-bean-scope>
-</managed-bean>
+    <managed-bean>
+        <description>
+            Bean for monitoring auctions
+        </description>
+        <managed-bean-name>
+            AuctionBean
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.auctionMonitor.beans.AuctionBean
+        </managed-bean-class>
+        <managed-bean-scope>
+            session
+        </managed-bean-scope>
+    </managed-bean>
 
-<managed-bean>
-    <description>
-        Bean used to handle the state of the demo readme notes
-    </description>
-    <managed-bean-name>
-        ReadmeBean
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.applications.faces.auctionMonitor.beans.ReadmeBean
-    </managed-bean-class>
-    <managed-bean-scope>
-        request
-    </managed-bean-scope>
-</managed-bean>
+    <managed-bean>
+        <description>
+            Bean used to handle the state of the demo readme notes
+        </description>
+        <managed-bean-name>
+            ReadmeBean
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.auctionMonitor.beans.ReadmeBean
+        </managed-bean-class>
+        <managed-bean-scope>
+            session
+        </managed-bean-scope>
+    </managed-bean>
 
-<managed-bean>
-    <description>
-        Bean mainly for chat usage, also handling message logs and UI updates
-    </description>
-    <managed-bean-name>
-        UserBean
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.applications.faces.auctionMonitor.beans.UserBean
-    </managed-bean-class>
-    <managed-bean-scope>
-        request
-    </managed-bean-scope>
-</managed-bean>
+    <managed-bean>
+        <description>
+            Bean mainly for chat usage, also handling message logs and UI updates
+        </description>
+        <managed-bean-name>
+            UserBean
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.auctionMonitor.beans.UserBean
+        </managed-bean-class>
+        <managed-bean-scope>
+            session
+        </managed-bean-scope>
+    </managed-bean>
 
-<managed-bean>
-    <description>
-        Bean used by the control page for manually controlling the auction
-    </description>
-    <managed-bean-name>
-        LogBean
-    </managed-bean-name>
-    <managed-bean-class>
-        com.icesoft.applications.faces.auctionMonitor.beans.LogBean
-    </managed-bean-class>
-    <managed-bean-scope>
-        application
-    </managed-bean-scope>
-</managed-bean>
+    <managed-bean>
+        <description>
+            Bean used by the control page for manually controlling the auction
+        </description>
+        <managed-bean-name>
+            LogBean
+        </managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.applications.faces.auctionMonitor.beans.LogBean
+        </managed-bean-class>
+        <managed-bean-scope>
+            application
+        </managed-bean-scope>
+    </managed-bean>
 
 </faces-config>
