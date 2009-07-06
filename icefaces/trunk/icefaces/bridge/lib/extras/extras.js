@@ -399,8 +399,10 @@ Ice.simulateFocus = function(ele, anc) {
     anc.style.outlineStyle='none'; 
     anc.style.borderWidth='0px';
     anc.style.outlineWidth='0px'; 
-    anc.style.margin='0px';        
+    anc.style.margin='0px';  
+    ele['_borderStyle'] = ele.style.borderStyle;     
     ele.style.borderStyle='dotted';
+    ele['_borderWidth'] = ele.style.borderWidth;   
     ele.style.borderWidth='1px 1px 1px 1px';
 }
 
@@ -408,5 +410,7 @@ Ice.simulateBlur = function(ele, anc) {
     if(!document.all) {    
         anc.style.visibility='visible';
     } 
-    ele.style.borderStyle='none';
+    ele.style.borderStyle = ele['_borderStyle'];
+    ele.style.borderWidth = ele['_borderWidth'];    
+    
 }
