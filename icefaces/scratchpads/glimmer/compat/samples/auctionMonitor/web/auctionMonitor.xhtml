@@ -80,42 +80,42 @@
                     <f:facet name="header">
                         <ice:panelGrid columns="5" width="100%" cellspacing="1"
                                        columnClasses="#{AuctionBean.titleTextStyle},#{AuctionBean.priceTextStyle},#{AuctionBean.bidsTextStyle},#{AuctionBean.timeLeftTextStyle},column5,column6">
-                            <center>
+                            <h:panelGroup><center>
                                 <ice:commandLink id="sortByTitle_click"
                                                  immediate="true"
                                                  action="#{AuctionBean.sortByTitle}">
                                     <ice:outputText value="Item Name"
                                                     title="Sort by the Item Name"/>
                                 </ice:commandLink>
-                            </center>
-                            <center>
+                            </center></h:panelGroup>
+                            <h:panelGroup><center>
                                 <ice:commandLink id="sortByPrice_click"
                                                  immediate="true"
                                                  action="#{AuctionBean.sortByPrice}">
                                     <h:outputText value="Price"
                                                   title="Sort by the Price"/>
                                 </ice:commandLink>
-                            </center>
-                            <center>
+                            </center></h:panelGroup>
+                            <h:panelGroup><center>
                                 <ice:commandLink id="sortByBides_click"
                                                  immediate="true"
                                                  action="#{AuctionBean.sortByBids}">
                                     <ice:outputText value="Bids"
                                                     title="Sort by the Bids"/>
                                 </ice:commandLink>
-                            </center>
-                            <center>
+                            </center></h:panelGroup>
+                            <h:panelGroup><center>
                                 <ice:commandLink id="sortByTimeLeft_click"
                                                  immediate="true"
                                                  action="#{AuctionBean.sortByTimeLeft}">
                                     <ice:outputText value="Time Left"
                                                     title="Sort by the Time Left"/>
                                 </ice:commandLink>
-                            </center>
-                            <center>
+                            </center></h:panelGroup>
+                            <h:panelGroup><center>
                                 <ice:outputText value="Action"
                                                 styleClass="tableTdAction"/>
-                            </center>
+                            </center></h:panelGroup>
                         </ice:panelGrid>
                     </f:facet>
                     <ice:panelGrid columns="5" width="100%" cellspacing="1"
@@ -132,8 +132,8 @@
                             </font>
                         </ice:panelGroup>
 
-                        <div align="right">
-                            <ice:panelGroup>
+                        <ice:panelGroup>
+                            <div align="right">
                                 <font face="helvetica" size="-1">
                                     <ice:outputText id="item_currentPrice"
                                                     value="#{item.currentPrice}"
@@ -142,8 +142,8 @@
                                                          currencySymbol="$"/>
                                     </ice:outputText>
                                 </font>
-                            </ice:panelGroup>
-                        </div>
+                            </div>
+                        </ice:panelGroup>
                         <ice:panelGroup>
                             <font face="helvetica" size="-1">
                                 <center>
