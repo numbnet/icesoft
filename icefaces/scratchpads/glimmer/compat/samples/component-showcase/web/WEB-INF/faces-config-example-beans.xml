@@ -305,7 +305,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.selection.SelectionTagsBean
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <!-- Buttons And Links components backing bean -->
     <managed-bean>
