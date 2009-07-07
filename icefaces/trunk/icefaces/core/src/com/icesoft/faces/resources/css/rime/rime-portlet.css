@@ -551,7 +551,7 @@ input.iceSelInpDateClosePopup {
     margin-right: 0;
 }
 
-.icePnlTbOn .MidMid td {
+.icePnlTbOn .MidMid td, .icePnlTbOn .MidMid>div {
     font-weight: bold;
     white-space: nowrap;
     text-align: center;
@@ -598,7 +598,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOn .MidMid a {
+.icePnlTbOn .MidMid>a, .icePnlTbOn .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -642,7 +642,7 @@ input.iceSelInpDateClosePopup {
     height: 1px;
 }
 
-* html .icePnlTbOn .MidMid a {
+* html .icePnlTbOn .MidMid>a, * html .icePnlTbOn .MidMid>div {
     height: 1%;
 }
 
@@ -652,7 +652,7 @@ input.iceSelInpDateClosePopup {
     margin-right: 0;
 }
 
-.icePnlTbOff .MidMid td {
+.icePnlTbOff .MidMid td, .icePnlTbOff .MidMid>div {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -699,7 +699,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOff .MidMid a {
+.icePnlTbOff .MidMid>a, .icePnlTbOff .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -752,7 +752,7 @@ input.iceSelInpDateClosePopup {
     height: 1px;
 }
 
-* html .icePnlTbOff .MidMid a {
+* html .icePnlTbOff .MidMid>a, * html .icePnlTbOff .MidMid>div {
     height: 1%;
 }
 
@@ -763,7 +763,7 @@ input.iceSelInpDateClosePopup {
 
 }
 
-.icePnlTbOver .MidMid td {
+.icePnlTbOver .MidMid td, .icePnlTbOver .MidMid>div {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -810,7 +810,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOver .MidMid a {
+.icePnlTbOver .MidMid>a, .icePnlTbOver .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -861,7 +861,7 @@ input.iceSelInpDateClosePopup {
     height: 1px;
 }
 
-* html .icePnlTbOver .MidMid a {
+* html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid>div {
     height: 1%;
 }
 
@@ -905,7 +905,7 @@ input.iceSelInpDateClosePopup {
     margin-right: 0;
 }
 
-.icePnlTbOnBtm .MidMid td {
+.icePnlTbOnBtm .MidMid td, .icePnlTbOnBtm .MidMid>div {
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
@@ -949,7 +949,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOnBtm .MidMid a {
+.icePnlTbOnBtm .MidMid>a, .icePnlTbOnBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
@@ -995,7 +995,7 @@ input.iceSelInpDateClosePopup {
     height: 4px;
 }
 
-* html .icePnlTbOnBtm .MidMid a {
+* html .icePnlTbOnBtm .MidMid>a, * html .icePnlTbOnBtm .MidMid>div {
     height: 1%;
 }
 
@@ -1005,7 +1005,7 @@ input.iceSelInpDateClosePopup {
     margin-right: 0;
 }
 
-.icePnlTbOffBtm .MidMid td {
+.icePnlTbOffBtm .MidMid td, .icePnlTbOffBtm .MidMid>td {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -1052,7 +1052,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOffBtm .MidMid a {
+.icePnlTbOffBtm .MidMid>a, .icePnlTbOffBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
@@ -1102,7 +1102,7 @@ input.iceSelInpDateClosePopup {
     height: 4px;
 }
 
-* html .icePnlTbOffBtm .MidMid a {
+* html .icePnlTbOffBtm .MidMid>a, * html .icePnlTbOffBtm .MidMid>div {
     height: 1%;
 }
 
@@ -1113,7 +1113,7 @@ input.iceSelInpDateClosePopup {
 
 }
 
-.icePnlTbOverBtm .MidMid td {
+.icePnlTbOverBtm .MidMid td, .icePnlTbOverBtm .MidMid>div {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -1160,7 +1160,7 @@ input.iceSelInpDateClosePopup {
     text-align: center;
 }
 
-.icePnlTbOverBtm .MidMid a {
+.icePnlTbOverBtm .MidMid>a, .icePnlTbOverBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
