@@ -136,7 +136,8 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
             } else if (e.getMessage() != null) {
                 throw e;
             } else {
-                throw new RuntimeException("no message available", e);
+                throw new RuntimeException( "wrapped Exception: " + 
+                        e.getClass().getName(), e );
             }
         } catch (Exception e) {
             throw new ServletException(e);
