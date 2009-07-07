@@ -38,13 +38,12 @@ public class ReceivePing implements Server {
             CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
             if (queue != null) {
                 queue.put(PONG);
-                request.respondWith(NOOPResponse.Handler);
             } else {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("could not get a valid queue for " + viewIdentifier);
                 }
-                request.respondWith(CLOSE_RESPONSE);
             }
+            request.respondWith(NOOPResponse.Handler);
         }
     }
 
