@@ -367,7 +367,11 @@
             if (newStyle != oldStyle) {
                 this.element.setAttribute('style', newStyle);
                 This.ElementStyleProperties.each(function(p) {
-                    elementStyle[p] = newElementStyle[p];
+                    if (Prototype.Browser.IE && p === "font" && !newElementStyle[p]) { // ICE-4669
+//                        elementStyle[p] = "medium ,";
+                    } else {
+                        elementStyle[p] = newElementStyle[p];
+                    }
                 });
             }
 
