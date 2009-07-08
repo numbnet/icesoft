@@ -58,7 +58,7 @@ public class NavigationBean {
         FacesContext context = FacesContext.getCurrentInstance();
         Map map = context.getExternalContext().getRequestParameterMap();
         String requestedPath = (String) map.get("includePath");
-        if (null != requestedPath)  {
+        if ((null != requestedPath) && (requestedPath.length() > 0))  {
             selectedIncludePath = requestedPath;
         }
         return selectedIncludePath;
