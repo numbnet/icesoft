@@ -289,7 +289,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelBorder.PanelBorderBean
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <!-- Text fields and text areas backing bean -->
     <managed-bean>
