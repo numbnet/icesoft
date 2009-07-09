@@ -7,7 +7,7 @@ import javax.faces.lifecycle.LifecycleFactory;
 import com.icesoft.faces.util.CoreUtils;
 
 public class JsfLifecycleExecutor extends LifecycleExecutor {
-    private final static LifecycleFactory LIFECYCLE_FACTORY =
+    private final LifecycleFactory LIFECYCLE_FACTORY =
             (LifecycleFactory) FactoryFinder.getFactory(
                     FactoryFinder.LIFECYCLE_FACTORY);
     private Lifecycle lifecycle = LIFECYCLE_FACTORY.getLifecycle(
