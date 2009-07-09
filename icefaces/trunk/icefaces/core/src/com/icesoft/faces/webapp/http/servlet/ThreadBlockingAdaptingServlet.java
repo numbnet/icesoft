@@ -32,12 +32,15 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
             super(request, response);
         }
 
-        public void respondWith(ResponseHandler handler) throws Exception {
-            super.respondWith(handler);
-            if (semaphore == null) {
-                blockResponse = false;
-            } else {
-                semaphore.release();
+        public void respondWith(final ResponseHandler handler) throws Exception {
+            try {
+                super.respondWith(handler);
+            } finally {
+                if (semaphore == null) {
+                    blockResponse = false;
+                } else {
+                    semaphore.release();
+                }
             }
         }
 
