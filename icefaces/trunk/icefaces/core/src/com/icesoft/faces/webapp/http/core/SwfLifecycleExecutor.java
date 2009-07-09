@@ -72,7 +72,7 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             handleFlowExecutionResult(result, servletExternalContext,
                     servletRequest, servletResponse, facesContext);
         } catch (NoSuchFlowDefinitionException e)  {
-            jsfExecutor.apply(facesContext);
+            getJsfLifecycleExecutor(facesContext).apply(facesContext);
         } catch (IOException e) {
             throw(new FacesException(e));
         }

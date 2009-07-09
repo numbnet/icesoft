@@ -10,30 +10,45 @@ import javax.faces.context.FacesContext;
 
 import com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet;
 
+import java.util.Map;
+
 public abstract class LifecycleExecutor {
     private static Log log = LogFactory.getLog(LifecycleExecutor.class);
-    static LifecycleExecutor jsfExecutor = null;
-    private static LifecycleExecutor swfExecutor = null;
+
+    private static String JSF_EXEC = "JSF Lifecyle Executor";
+    private static String SWF_EXEC = "SWF Lifecyle Executor";
 
     public static LifecycleExecutor getLifecycleExecutor(FacesContext context)  {
-        init();
-        if (null != swfExecutor)  {
+        init(context);
+        Map appMap = context.getExternalContext().getApplicationMap();
+        Object swfExecObj = appMap.get(SWF_EXEC);
+        if (null != swfExecObj)  {
             //Spring Web Flow URLs do not typically contain file extensions
             //this is not the correct way to determine whether to delegate
             //these requests
            if (!isExtensionMapped(context))  {
-                return swfExecutor;
+                return (LifecycleExecutor)swfExecObj;
             }
         }
-        return jsfExecutor;
+        return (LifecycleExecutor)appMap.get(JSF_EXEC);
+    }
+
+    protected LifecycleExecutor getJsfLifecycleExecutor(FacesContext context){
+        Map appMap = context.getExternalContext().getApplicationMap();
+        return (LifecycleExecutor)appMap.get(JSF_EXEC);
     }
 
     public abstract void apply(FacesContext facesContext);
 
-    private static void init()  {
-        if (null != jsfExecutor)  {
+    private static void init(FacesContext context)  {
+        Map appMap = context.getExternalContext().getApplicationMap();
+        Object obj = appMap.get(JSF_EXEC);
+        if (null != obj)  {
             return;
+        } else {
+            appMap.put(JSF_EXEC, new JsfLifecycleExecutor() );
         }
+
         Object flowExecutor = null;
         try {
             flowExecutor = SpringWebFlowInstantiationServlet.getFlowExecutor();
@@ -42,12 +57,9 @@ public abstract class LifecycleExecutor {
                 log.debug("SpringWebFlow unavailable ");
             }
         }
-
         if (null != flowExecutor)  {
-            swfExecutor = new SwfLifecycleExecutor();
+            appMap.put(SWF_EXEC, new SwfLifecycleExecutor() );
         }
-        
-        jsfExecutor = new JsfLifecycleExecutor();
     }
     
     static boolean isExtensionMapped(FacesContext facesContext)  {

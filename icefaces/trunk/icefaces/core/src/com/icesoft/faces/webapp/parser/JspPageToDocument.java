@@ -58,6 +58,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
@@ -631,8 +632,14 @@ public class JspPageToDocument {
     static String[] scanJars(ExternalContext context, String namespaceURL) {
         try {
             String[] location = null;
-            Iterator paths =
-                    context.getResourcePaths("/WEB-INF/lib/").iterator();
+            Set resourcePaths = context.getResourcePaths("/WEB-INF/lib/");
+            if(resourcePaths == null){
+                if (log.isDebugEnabled()) {
+                    log.debug("there are no libraries in /WEB-INF/lib/ ");
+                }
+                return null;
+            }
+            Iterator paths = resourcePaths.iterator();
             while (paths.hasNext()) {
                 String path = (String) paths.next();
                 if (!path.endsWith(".jar")) {
