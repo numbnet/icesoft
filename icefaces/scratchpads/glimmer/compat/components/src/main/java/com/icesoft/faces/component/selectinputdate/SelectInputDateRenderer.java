@@ -1459,7 +1459,7 @@ public class SelectInputDateRenderer
         //this is a fix for bug 340
         UIComponent form = findForm(uiComponent);
         String formId = form.getClientId(facesContext);
-        return formId + ":_idcl";
+        return formId + ":j_idcl";
     }
 
     private int checkLink(Object eventCapturedId, String clickedLink, String clientId) {
