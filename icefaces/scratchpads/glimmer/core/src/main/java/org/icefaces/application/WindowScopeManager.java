@@ -28,7 +28,7 @@ public class WindowScopeManager {
     }
 
     public ScopeMap lookupWindowScope() {
-        return CurrentScope.lookup();
+        return (ScopeMap) windowScopedMaps.get(CurrentScope.lookup());
     }
 
     public synchronized String determineWindowID(FacesContext context) {
@@ -43,12 +43,12 @@ public class WindowScopeManager {
 
         if (id == null) {
             ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ? new ScopeMap(context) : (ScopeMap) disposedWindowScopedMaps.removeFirst();
-            CurrentScope.associate(scopeMap);
+            CurrentScope.associate(scopeMap.id);
             windowScopedMaps.put(scopeMap.id, scopeMap);
             return scopeMap.id;
         } else {
             if (windowScopedMaps.containsKey(id)) {
-                CurrentScope.associate((ScopeMap) windowScopedMaps.get(id));
+                CurrentScope.associate(id);
                 return id;
             } else {
                 throw new RuntimeException("Unknown window scope ID: " + id);
@@ -60,7 +60,7 @@ public class WindowScopeManager {
         return String.valueOf(System.currentTimeMillis());
     }
 
-    public void disposeWindow(String id) {
+    public synchronized void disposeWindow(String id) {
         ((ScopeMap) windowScopedMaps.get(id)).dispose();
     }
 
@@ -129,12 +129,12 @@ public class WindowScopeManager {
     }
 
     private static class CurrentScopeThreadLocal extends ThreadLocal {
-        ScopeMap lookup() {
-            return (ScopeMap) get();
+        String lookup() {
+            return (String) get();
         }
 
-        void associate(ScopeMap map) {
-            set(map);
+        void associate(String windowID) {
+            set(windowID);
         }
     }
 }
