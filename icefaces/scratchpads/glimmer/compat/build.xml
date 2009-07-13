@@ -26,8 +26,11 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="core/build.xml components/build.xml samples/build.xml"/>
+            <fileset dir="." includes="core/build.xml"/>
         </subant> 
+        <subant>
+            <fileset dir="." includes="components/build.xml samples/build.xml"/>
+        </subant>
     </target>
 
     <target name="allclean">
