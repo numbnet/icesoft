@@ -129,7 +129,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element table = domContext.createElement(HTML.TABLE_ELEM);
 			table.setAttribute(HTML.CELLPADDING_ATTR, "0");
 			table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-			table.setAttribute(HTML.WIDTH_ATTR, "100%");
+//			table.setAttribute(HTML.WIDTH_ATTR, "100%");
 			rootDiv.appendChild(table);
 /*
             Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
@@ -187,7 +187,13 @@ public class PanelPopupRenderer extends GroupRenderer {
 			handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
 			headerTd.setAttribute(HTML.ID_ATTR, handleId);
 			headerTr.appendChild(headerTd);
-			// add header facet to header tr and add to table
+            Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
+            Element headerDiv = domContext.createElement("div");
+            headerDiv.setAttribute(HTML.STYLE_ATTR, "width:1px;");
+            headerDiv.setAttribute("class", "icePnlPopHdr");
+            headerTdSpacer.appendChild(headerDiv);
+            headerTr.appendChild(headerTdSpacer);
+            // add header facet to header tr and add to table
 			table.appendChild(headerTr);
 			// set the cursor parent to the new table row Element
 			// to the new table row Element
