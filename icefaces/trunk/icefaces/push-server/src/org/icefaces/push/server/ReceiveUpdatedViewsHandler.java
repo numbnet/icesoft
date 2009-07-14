@@ -31,12 +31,16 @@
  */
 package org.icefaces.push.server;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.core.NOOPResponse;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,8 +72,11 @@ implements Handler, Runnable {
             }
         };
 
+    private final long blockingConnectionTimeout;
     private final SessionManager sessionManager;
+    private final Timer timer;
 
+    private BlockingConnectionTimeoutTask blockingConnectionTimeoutTask;
     private Set iceFacesIdSet;
     private List updatedViewsList;
     
@@ -77,11 +84,16 @@ implements Handler, Runnable {
 
     public ReceiveUpdatedViewsHandler(
         final Request request, final Set iceFacesIdSet,
-        final SessionManager sessionManager, final ExecuteQueue executeQueue) {
+        final SessionManager sessionManager, final ExecuteQueue executeQueue,
+        final Timer timer, final Configuration configuration) {
 
         super(request, executeQueue);
         this.iceFacesIdSet = iceFacesIdSet;
         this.sessionManager = sessionManager;
+        this.timer = timer;
+        this.blockingConnectionTimeout =
+            configuration.
+                getAttributeAsLong("blockingConnectionTimeout", 90000);
     }
 
     public void respondWith(
@@ -118,10 +130,18 @@ implements Handler, Runnable {
                         sessionManager.getRequestManager().
                             pull(iceFacesIdSet);
                 if (_receiveUpdatedViewsHandler != null) {
+                    if (_receiveUpdatedViewsHandler.
+                            blockingConnectionTimeoutTask != null) {
+
+                        _receiveUpdatedViewsHandler.
+                            blockingConnectionTimeoutTask.cancel();
+                        _receiveUpdatedViewsHandler.
+                            blockingConnectionTimeoutTask = null;
+                    }
                     // respond to pending request.
                     try {
-                        _receiveUpdatedViewsHandler.request.respondWith(
-                            CLOSE_RESPONSE_HANDLER);
+                        _receiveUpdatedViewsHandler.request.
+                            respondWith(CLOSE_RESPONSE_HANDLER);
                     } catch (Exception exception) {
                         if (LOG.isErrorEnabled()) {
                             LOG.error(
@@ -130,11 +150,16 @@ implements Handler, Runnable {
                                 exception);
                         }
                     }
+                    _receiveUpdatedViewsHandler.state = STATE_DONE;
                 }
                 state = STATE_WAITING_FOR_RESPONSE;
             case STATE_WAITING_FOR_RESPONSE :
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Waiting for Response");
+                }
+                if (blockingConnectionTimeoutTask != null) {
+                    blockingConnectionTimeoutTask.cancel();
+                    blockingConnectionTimeoutTask = null;
                 }
                 if (sessionManager.isValid(iceFacesIdSet)) {
                     updatedViewsList =
@@ -147,6 +172,11 @@ implements Handler, Runnable {
                     if (updatedViewsList == null || updatedViewsList.isEmpty()) {
                         sessionManager.getRequestManager().
                             push(iceFacesIdSet, this);
+                        timer.schedule(
+                            blockingConnectionTimeoutTask =
+                                new BlockingConnectionTimeoutTask(
+                                    iceFacesIdSet, sessionManager),
+                            blockingConnectionTimeout);
                         return;
                     }
                     state = STATE_RESPONSE_IS_READY;
@@ -177,6 +207,39 @@ implements Handler, Runnable {
                 break;
             default :
                 // this should never happen!
+        }
+    }
+
+    private static class BlockingConnectionTimeoutTask
+    extends TimerTask {
+        private final Set iceFacesIdSet;
+        private final SessionManager sessionManager;
+
+        public BlockingConnectionTimeoutTask(
+            final Set iceFacesIdSet, final SessionManager sessionManager) {
+
+            this.iceFacesIdSet = iceFacesIdSet;
+            this.sessionManager = sessionManager;
+        }
+
+        public void run() {
+            ReceiveUpdatedViewsHandler _receiveUpdatedViewsHandler =
+                (ReceiveUpdatedViewsHandler)
+                    sessionManager.getRequestManager().pull(iceFacesIdSet);
+            if (_receiveUpdatedViewsHandler != null) {
+                try {
+                    _receiveUpdatedViewsHandler.request.
+                        respondWith(NOOPResponse.Handler);
+                } catch (Exception exception) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(
+                            "An error occurred while " +
+                                "trying to responde with: 200 OK (noop)",
+                            exception);
+                    }
+                }
+                _receiveUpdatedViewsHandler.state = STATE_DONE;
+            }
         }
     }
 }
