@@ -71,10 +71,9 @@ implements Handler, Runnable {
     private int state = STATE_UNINITIALIZED;
 
     public DisposeViewsHandler(
-        final Request request, final SessionManager sessionManager,
-        final ExecuteQueue executeQueue) {
+        final Request request, final SessionManager sessionManager) {
 
-        super(request, executeQueue);
+        super(request);
         this.sessionManager = sessionManager;
     }
 

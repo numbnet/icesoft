@@ -84,10 +84,10 @@ implements Handler, Runnable {
 
     public ReceiveUpdatedViewsHandler(
         final Request request, final Set iceFacesIdSet,
-        final SessionManager sessionManager, final ExecuteQueue executeQueue,
+        final SessionManager sessionManager,
         final Timer timer, final Configuration configuration) {
 
-        super(request, executeQueue);
+        super(request);
         this.iceFacesIdSet = iceFacesIdSet;
         this.sessionManager = sessionManager;
         this.timer = timer;

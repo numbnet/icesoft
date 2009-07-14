@@ -51,11 +51,10 @@ implements Handler, Runnable {
         this.executeQueue = handler.getExecuteQueue();
     }
 
-    /**
-     * <p>
-     *   Constructs an <code>AbstractHandler</code> object.
-     * </p>
-     */
+    protected AbstractHandler(final Request request) {
+        this(request, null);
+    }
+
     protected AbstractHandler(
         final Request request, final ExecuteQueue executeQueue) {
 
@@ -73,6 +72,10 @@ implements Handler, Runnable {
     }
 
     public void handle() {
-        executeQueue.execute(this);
+        if (executeQueue == null) {
+            run();
+        } else {
+            executeQueue.execute(this);
+        }
     }
 }
