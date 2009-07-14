@@ -124,7 +124,7 @@ Ice.FCKeditorUtility = {
                 if (!oEditor) return;
                 var editorValue = $(ele);
                 var saveOnSubmit = $(ele + 'saveOnSubmit');
-                if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) { 
+                if (saveOnSubmit && editorValue) { 
                     var valueHolder = $(ele + 'valueHolder');
                     editorValue.value = oEditor.GetXHTML(true);
                    valueHolder.value = editorValue.value;
