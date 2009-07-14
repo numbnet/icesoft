@@ -13,6 +13,44 @@ public class RequestManager {
 
     private final Map pendingRequestMap = new HashMap();
 
+    {
+        if (LOG.isDebugEnabled()) {
+            new Thread(
+                new Runnable() {
+                    public void run() {
+                        while (true) {
+                            StringBuffer _pendingRequests = new StringBuffer();
+                            synchronized (pendingRequestMap) {
+                                Iterator _entries =
+                                    pendingRequestMap.entrySet().iterator();
+                                while (_entries.hasNext()) {
+                                    Map.Entry _entry =
+                                        (Map.Entry)_entries.next();
+                                    _pendingRequests.
+                                        append(_entry.getKey()).append(" - ").
+                                            append(_entry.getValue()).
+                                            append(" [").
+                                            append(
+                                                ((Handler)_entry.getValue()).
+                                                    getRequest().
+                                                    getRemoteAddr()).
+                                            append("]\r\n");
+                                }
+                            }
+                            LOG.debug(
+                                "Pending requests:\r\n\r\n" + _pendingRequests);
+                            try {
+                                Thread.sleep(60000);
+                            } catch (InterruptedException exception) {
+                                // do nothing.
+                            }
+                        }
+                    }
+                }
+            ).start();
+        }
+    }
+
     /**
      * <p>
      *   Pulls the pending request, represented as a handler, for the specified
@@ -39,9 +77,6 @@ public class RequestManager {
             while (_iceFacesIds.hasNext()) {
                 Handler _handler = pull((String)_iceFacesIds.next());
                 if (_handler != null) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Pulled pending request: " + iceFacesIdSet);
-                    }
                     return _handler;
                 }
             }
@@ -59,6 +94,11 @@ public class RequestManager {
                 Map.Entry _entry = (Map.Entry)_entries.next();
                 if (((Set)_entry.getKey()).contains(iceFacesId)) {
                     _entries.remove();
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Unparked pending request: " +
+                                "ICEfaces ID set [" + _entry.getKey() + "]");
+                    }
                     return (Handler)_entry.getValue();
                 }
             }
@@ -93,7 +133,9 @@ public class RequestManager {
         synchronized (pendingRequestMap) {
             pendingRequestMap.put(iceFacesIdSet, handler);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Pushed pending request: " + iceFacesIdSet);
+                LOG.debug(
+                    "Parked pending request: " +
+                        "ICEfaces ID set [" + iceFacesIdSet + "]");
             }
         }
     }
