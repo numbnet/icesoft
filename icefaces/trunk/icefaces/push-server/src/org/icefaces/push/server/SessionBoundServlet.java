@@ -52,7 +52,6 @@ implements Server {
 
     public SessionBoundServlet(
         final SessionManager sessionManager,
-        final ExecuteQueue executeQueue,
         final Timer timer, final Configuration configuration,
         final SessionDispatcher.Monitor monitor) {
 
@@ -67,7 +66,7 @@ implements Server {
                         iceFacesIdSet,
                         new ReceiveUpdatedViewsHandler(
                             request, iceFacesIdSet, sessionManager,
-                            executeQueue, timer, configuration)
+                            timer, configuration)
                     ).handle();
                 }
             });
@@ -75,9 +74,7 @@ implements Server {
             ".*block\\/dispose\\-views$",
             new DisposeViewsHandlerServer(monitor) {
                 public void handle(final Request request) {
-                    new DisposeViewsHandler(
-                        request, sessionManager, executeQueue
-                    ).handle();
+                    new DisposeViewsHandler(request, sessionManager).handle();
                 }
             });
         pathDispatcherServer.dispatchOn(

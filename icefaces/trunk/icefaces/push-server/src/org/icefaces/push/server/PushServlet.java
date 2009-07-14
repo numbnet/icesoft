@@ -92,7 +92,6 @@ extends HttpServlet {
                 new MessageService(servletConfig.getServletContext());
             final SessionManager _sessionManager =
                 new SessionManager(_servletConfigConfiguration, messageService);
-            final ExecuteQueue _executeQueue = new ExecuteQueue();
             SessionDispatcher _sessionDispatcher =
                 new SessionDispatcher(
                     _servletContextConfiguration, getServletContext()) {
@@ -104,7 +103,7 @@ extends HttpServlet {
 
                         return
                             new SessionBoundServlet(
-                                _sessionManager, _executeQueue, timer,
+                                _sessionManager, timer,
                                 _servletContextConfiguration, monitor);
                     }
                 };
