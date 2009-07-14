@@ -43,6 +43,7 @@ import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.util.ServerUtility;
 
 import java.io.IOException;
+import java.util.Timer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -64,6 +65,7 @@ extends HttpServlet {
     private MessageService messageService;
     private PathDispatcher pathDispatcher = new PathDispatcher();
     private ServletContext servletContext;
+    private final Timer timer = new Timer();
 
     public void destroy() {
         super.destroy();
@@ -102,7 +104,8 @@ extends HttpServlet {
 
                         return
                             new SessionBoundServlet(
-                                _sessionManager, _executeQueue, monitor);
+                                _sessionManager, _executeQueue, timer,
+                                _servletContextConfiguration, monitor);
                     }
                 };
             pathDispatcher.dispatchOn(

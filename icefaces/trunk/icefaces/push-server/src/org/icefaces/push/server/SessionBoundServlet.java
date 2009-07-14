@@ -31,8 +31,9 @@
  */
 package org.icefaces.push.server;
 
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
@@ -40,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Set;
+import java.util.Timer;
 
 //todo: rename to SessionBoundServer
 public class SessionBoundServlet
@@ -51,6 +53,7 @@ implements Server {
     public SessionBoundServlet(
         final SessionManager sessionManager,
         final ExecuteQueue executeQueue,
+        final Timer timer, final Configuration configuration,
         final SessionDispatcher.Monitor monitor) {
 
         pathDispatcherServer = new PathDispatcherServer();
@@ -64,7 +67,7 @@ implements Server {
                         iceFacesIdSet,
                         new ReceiveUpdatedViewsHandler(
                             request, iceFacesIdSet, sessionManager,
-                            executeQueue)
+                            executeQueue, timer, configuration)
                     ).handle();
                 }
             });
