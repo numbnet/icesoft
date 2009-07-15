@@ -33,11 +33,9 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,7 +51,7 @@ implements
     private static final Log LOG = LogFactory.getLog(SessionManager.class);
 
     private final Map sessionMap = new HashMap();
-    private final List freeList = new ArrayList();
+    private final Map freeMap = new HashMap();
 
     private final RequestManager requestManager;
     private final UpdatedViewsManager updatedViewsManager;
@@ -106,9 +104,10 @@ implements
             // ignore interrupts.
         }
         synchronized (requestManager) {
-            synchronized (freeList) {
+            synchronized (freeMap) {
                 // Marking the specified ICEfaces ID eligible for removal.
-                freeList.add(
+                freeMap.put(
+                    iceFacesId,
                     new Record(iceFacesId, System.currentTimeMillis()));
                 Handler _handler = requestManager.pull(iceFacesId);
                 if (_handler != null) {
@@ -172,13 +171,18 @@ implements
 
     public boolean isValid(final String iceFacesId) {
         synchronized (sessionMap) {
-            if (sessionMap.containsKey(iceFacesId)) {
-                return true;
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("ICEfaces ID '" + iceFacesId + "' is not valid!");
+            synchronized (freeMap) {
+                if (sessionMap.containsKey(iceFacesId) &&
+                    !freeMap.containsKey(iceFacesId)) {
+
+                    return true;
+                } else {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "ICEfaces ID '" + iceFacesId + "' is not valid!");
+                    }
+                    return false;
                 }
-                return false;
             }
         }
     }
@@ -262,16 +266,16 @@ implements
     }
 
     private void cleanUp(final String iceFacesId) {
-        synchronized (freeList) {
+        synchronized (freeMap) {
             synchronized (requestManager) {
                 synchronized (sessionMap) {
-                    Iterator _records = freeList.iterator();
-                    int _size = freeList.size();
+                    Iterator _records = freeMap.values().iterator();
+                    int _size = freeMap.size();
                     long _currentTime = System.currentTimeMillis();
                     for (int i = 0; i < _size; i++) {
                         Record _record = (Record)_records.next();
                         if (iceFacesId.equals(_record.iceFacesId)) {
-                            // ICEfaces ID is still in use, remove from freeList
+                            // ICEfaces ID is still in use, remove from freeMap
                             _records.remove();
                         } else if (_currentTime - _record.timestamp >= 60000) {
                             if (sessionMap.containsKey(iceFacesId)) {
@@ -280,10 +284,6 @@ implements
                                         "ICEfaces ID disposed: " + iceFacesId);
                                 }
                                 sessionMap.remove(iceFacesId);
-                            }
-                            Handler _handler = requestManager.pull(iceFacesId);
-                            if (_handler != null) {
-                                _handler.handle();
                             }
                             updatedViewsManager.remove(iceFacesId);
                             _records.remove();
