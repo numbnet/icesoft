@@ -5,11 +5,27 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
-import com.icesoft.faces.webapp.http.common.*;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.ServerProxy;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
-import com.icesoft.faces.webapp.http.core.*;
+import com.icesoft.faces.webapp.http.core.DisposeBeans;
+import com.icesoft.faces.webapp.http.core.DisposeViews;
+import com.icesoft.faces.webapp.http.core.MultiViewServer;
+import com.icesoft.faces.webapp.http.core.PageTest;
+import com.icesoft.faces.webapp.http.core.PushServerDetector;
+import com.icesoft.faces.webapp.http.core.ReceivePing;
+import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
+import com.icesoft.faces.webapp.http.core.RequestVerifier;
+import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.faces.webapp.http.core.SendUpdates;
+import com.icesoft.faces.webapp.http.core.SingleViewServer;
+import com.icesoft.faces.webapp.http.core.UploadServer;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
@@ -18,10 +34,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
-//todo: rename to MainSessionBoundServer and move in com.icesoft.faces.webapp.http.core
-public class MainSessionBoundServlet implements Server, PageTest {
+public class MainSessionBoundServlet extends PathDispatcher implements PageTest {
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final String ResourcePrefix = "/block/resource/";
     private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
@@ -43,7 +63,6 @@ public class MainSessionBoundServlet implements Server, PageTest {
     private final Map views = Collections.synchronizedMap(new HashMap());
     private final ViewQueue allUpdatedViews = new ViewQueue();
     private final Collection synchronouslyUpdatedViews = new HashSet();
-    private final PathDispatcherServer dispatcher = new PathDispatcherServer();
     private final String sessionID;
     private boolean pageLoaded = false;
     private Runnable shutdown;
@@ -63,17 +82,16 @@ public class MainSessionBoundServlet implements Server, PageTest {
             } else {
                 disposeViews = OKServer;
                 handler = new DisposeViewsHandler();
-                handler.setCallback(
-                        new DisposeViewsHandler.Callback() {
-                            public void disposeView(final String sessionIdentifier, final String viewIdentifier) {
-                                if (sessionID.equals(sessionIdentifier)) {
-                                    View view = (View) views.remove(viewIdentifier);
-                                    if (view != null) {
-                                        view.dispose();
-                                    }
-                                }
+                handler.setCallback(new DisposeViewsHandler.Callback() {
+                    public void disposeView(final String sessionIdentifier, final String viewIdentifier) {
+                        if (sessionID.equals(sessionIdentifier)) {
+                            View view = (View) views.remove(viewIdentifier);
+                            if (view != null) {
+                                view.dispose();
                             }
-                        });
+                        }
+                    }
+                });
                 messageService.addMessageHandler(handler, MessageServiceClient.PUSH_TOPIC_NAME);
             }
         } else {
@@ -101,19 +119,21 @@ public class MainSessionBoundServlet implements Server, PageTest {
         Server upload = new UploadServer(views, configuration);
         Server receiveSendUpdates = new RequestVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
-        dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
-        dispatcher.dispatchOn(".*block\\/receive\\-updated\\-views$", sendUpdatedViews);
-        dispatcher.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
-        dispatcher.dispatchOn(".*block\\/ping$", receivePing);
-        dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
-        dispatcher.dispatchOn(ResourceRegex, resourceDispatcher);
-        dispatcher.dispatchOn(".*uploadHtml", upload);
-        dispatcher.dispatchOn(".*", new ServerProxy(viewServlet) {
+        dispatchOn(".*block\\/receive\\-updated\\-views$", new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()));
+        PathDispatcherServer dispatcherServer = new PathDispatcherServer();
+        dispatcherServer.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
+        dispatcherServer.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
+        dispatcherServer.dispatchOn(".*block\\/ping$", receivePing);
+        dispatcherServer.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
+        dispatcherServer.dispatchOn(ResourceRegex, resourceDispatcher);
+        dispatcherServer.dispatchOn(".*uploadHtml", upload);
+        dispatcherServer.dispatchOn(".*", new ServerProxy(viewServlet) {
             public void service(Request request) throws Exception {
                 pageLoaded = true;
                 super.service(request);
             }
         });
+        dispatchOn(".*", new BasicAdaptingServlet(dispatcherServer));
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
@@ -128,7 +148,7 @@ public class MainSessionBoundServlet implements Server, PageTest {
                 }
                 ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
                 //shutdown all contained servers
-                dispatcher.shutdown();
+                MainSessionBoundServlet.super.shutdown();
                 //dispose all views
                 Iterator viewIterator = views.values().iterator();
                 while (viewIterator.hasNext()) {
@@ -154,10 +174,6 @@ public class MainSessionBoundServlet implements Server, PageTest {
         } else {
             return (String) o;
         }
-    }
-
-    public void service(Request request) throws Exception {
-        dispatcher.service(request);
     }
 
     public void shutdown() {

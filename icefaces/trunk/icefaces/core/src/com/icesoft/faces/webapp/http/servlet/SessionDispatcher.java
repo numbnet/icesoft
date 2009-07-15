@@ -1,9 +1,6 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.env.Authorization;
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,27 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
+public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
-    private final static CurrentServer CurrentSessionBoundServer = new CurrentServer();
     private final Map sessionBoundServers = new HashMap();
     private final Map activeRequests = new HashMap();
     private ServletContext context;
 
-    public SessionDispatcher(Configuration configuration, ServletContext context) {
-        super(new Server() {
-            public void service(Request request) throws Exception {
-                //lookup session bound server -- this is a lock-free strategy
-                CurrentSessionBoundServer.lookup().service(request);
-            }
-
-            public void shutdown() {
-                //the shutdown is executed by the overriding SessionDispatcher.shutdown method 
-            }
-        }, configuration, context);
-        //avoid instance collision -- Glassfish shares EAR module classloaders
+    public SessionDispatcher(ServletContext context) {
         associateSessionDispatcher(context);
         this.context = context;
     }
@@ -56,26 +41,25 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         checkSession(session);
         //attach session bound server to the current thread -- this is a lock-free strategy
         try {
-            CurrentSessionBoundServer.attach(lookupServer(session));
             //put the request in the pool of active request in case HttpServletRequest.isUserInRole need to be called
             addRequest(request);
-            super.service(request, response);
+            //lookup session bound server -- this is a lock-free strategy
+            lookupServer(session).service(request, response);
         } finally {
             //remove the request from the active requests pool
             removeRequest(request);
-            CurrentSessionBoundServer.detach();
         }
     }
 
     public void shutdown() {
         Iterator i = sessionBoundServers.values().iterator();
         while (i.hasNext()) {
-            Server server = (Server) i.next();
-            server.shutdown();
+            PseudoServlet pseudoServlet = (PseudoServlet) i.next();
+            pseudoServlet.shutdown();
         }
     }
 
-    protected abstract Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) throws Exception;
+    protected abstract PseudoServlet newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) throws Exception;
 
     protected void checkSession(HttpSession session) throws Exception {
         final String id = session.getId();
@@ -102,16 +86,16 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         }
     }
 
-    protected Server lookupServer(final HttpSession session) {
+    protected PseudoServlet lookupServer(final HttpSession session) {
         return lookupServer(session.getId());
     }
 
-    protected Server lookupServer(final String sessionId) {
-        return (Server) sessionBoundServers.get(sessionId);
+    protected PseudoServlet lookupServer(final String sessionId) {
+        return (PseudoServlet) sessionBoundServers.get(sessionId);
     }
 
     private void sessionShutdown(HttpSession session) {
-        Server servlet = (Server) sessionBoundServers.get(session.getId());
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
         servlet.shutdown();
     }
 
@@ -196,15 +180,15 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
-    public static Server getSingletonSessionServer(final HttpSession session, ServletContext context) {
+    public static PseudoServlet getSingletonSessionServer(final HttpSession session, ServletContext context) {
         return lookupSessionDispatcher(context).lookupServer(session);
     }
 
-    public static Server getSingletonSessionServer(final String sessionId, Map applicationMap) {
+    public static PseudoServlet getSingletonSessionServer(final String sessionId, Map applicationMap) {
         return lookupSessionDispatcher(applicationMap).lookupServer(sessionId);
     }
 
-    public static Server getSingletonSessionServer(final String sessionId, final ServletContext servletContext) {
+    public static PseudoServlet getSingletonSessionServer(final String sessionId, final ServletContext servletContext) {
         return lookupSessionDispatcher(servletContext).lookupServer(sessionId);
     }
 
@@ -234,7 +218,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
                 };
                 monitor.setDaemon(true);
                 monitor.start();
-            } catch (Exception e)  {
+            } catch (Exception e) {
                 Log.error("Unable to initialize Session Monitor ", e);
             }
         }
@@ -286,9 +270,9 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         public boolean isExpired() {
 
             long elapsedInterval = System.currentTimeMillis() - lastAccess;
-            try { 
+            try {
                 int maxInterval = session.getMaxInactiveInterval();
-            // 4496 return true if session is already expired
+                // 4496 return true if session is already expired
                 Object o = session.getAttribute(POSITIVE_SESSION_TIMEOUT);
 
                 // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
@@ -331,20 +315,6 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
         public void addInSessionContext(ServletContext context) {
             contexts.add(context);
-        }
-    }
-
-    private static class CurrentServer extends ThreadLocal {
-        public Server lookup() {
-            return (Server) get();
-        }
-
-        public void attach(Server server) {
-            set(server);
-        }
-
-        public void detach() {
-            set(null);
         }
     }
 }

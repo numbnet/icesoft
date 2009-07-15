@@ -1,17 +1,16 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.application.ProductInfo;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.env.Authorization;
+import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
-import com.icesoft.faces.application.ProductInfo;
 import com.icesoft.net.messaging.AbstractMessageHandler;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
@@ -26,14 +25,11 @@ import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
-import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.Properties;
+import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.ServerUtility;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.URI;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -42,13 +38,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.File;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.URI;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
+    private static final PseudoServlet NotFound = new BasicAdaptingServlet(new ResponseHandlerServer(new NotFoundHandler("")));
 
     static {
         final String headless = "java.awt.headless";
@@ -89,8 +87,8 @@ public class MainServlet extends HttpServlet {
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionDispatcher = new SessionDispatcher(configuration, context) {
-                protected Server newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
+                protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, getMessageServiceClient(configuration), blockingRequestHandlerContext, authorization);
                 }
             };
@@ -101,37 +99,22 @@ public class MainServlet extends HttpServlet {
             //don't create new session for resources belonging to expired user sessions
             dispatcher.dispatchOn(".*(block\\/resource\\/)", new SessionVerifier(sessionDispatcher, false));
             if (!configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
-                dispatcher.dispatchOn(
-                    ".*(block\\/message)",
-                    new PseudoServlet() {
-                        private PseudoServlet notFound =
-                            new EnvironmentAdaptingServlet(
-                                new Server() {
-                                    public void service(final Request request) throws Exception {
-                                        request.respondWith(new NotFoundHandler(""));
-                                    }
-
-                                    public void shutdown() {
-                                        // do nothing.
-                                    }
-                                },
-                                configuration,
-                                context);
-
-                        public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-                            if (messageServiceClient != null &&
-                                messageServiceClient.getMessageServiceAdapter() instanceof HttpAdapter) {
-
-                                ((HttpAdapter)messageServiceClient.getMessageServiceAdapter()).getHttpMessagingDispatcher().service(request, response);
-                            } else {
-                                notFound.service(request, response);
+                dispatcher.dispatchOn(".*(block\\/message)",
+                        new PseudoServlet() {
+                            public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                if (messageServiceClient != null &&
+                                        messageServiceClient.getMessageServiceAdapter() instanceof HttpAdapter) {
+                                    HttpAdapter httpAdapter = (HttpAdapter) messageServiceClient.getMessageServiceAdapter();
+                                    httpAdapter.getHttpMessagingDispatcher().service(request, response);
+                                } else {
+                                    NotFound.service(request, response);
+                                }
                             }
-                        }
 
-                        public void shutdown() {
-                            // do nothing.
-                        }
-                    });
+                            public void shutdown() {
+                                // do nothing.
+                            }
+                        });
             }
             //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
@@ -161,20 +144,20 @@ public class MainServlet extends HttpServlet {
             } else {
                 throw new ServletException(e);
             }
-        } catch (RuntimeException e) {                                                                       
+        } catch (RuntimeException e) {
             //ICE-4261: We cannot wrap RuntimeExceptions as ServletExceptions because of support for Jetty
             //Continuations.  However, if the message of a RuntimeException is null, Tomcat won't
             //properly redirect to the configured error-page.  So we need a new RuntimeException
             //that actually includes a message.
-            if( e.getMessage() != null ){
+            if (e.getMessage() != null) {
                 throw e;
             }
             // ICE-4507 let Jetty continuation messages get through untouched
             String errorClassname = e.getClass().getName();
-            if (errorClassname.startsWith("org.mortbay.jetty") ) {
+            if (errorClassname.startsWith("org.mortbay.jetty")) {
                 throw e;
-            } 
-            throw new RuntimeException("wrapped Exception: " + errorClassname,e);
+            }
+            throw new RuntimeException("wrapped Exception: " + errorClassname, e);
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {
@@ -190,7 +173,7 @@ public class MainServlet extends HttpServlet {
     }
 
     private synchronized MessageServiceClient getMessageServiceClient(
-        final Configuration configuration) {
+            final Configuration configuration) {
 
         if (!detectionDone) {
             if (!configuration.
@@ -206,7 +189,7 @@ public class MainServlet extends HttpServlet {
     private boolean isJMSAvailable() {
         try {
             this.getClass().getClassLoader().
-                loadClass("javax.jms.TopicConnectionFactory");
+                    loadClass("javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
@@ -215,14 +198,14 @@ public class MainServlet extends HttpServlet {
 
     private void setUpMessageServiceClient(final Configuration configuration) {
         String blockingRequestHandler =
-            configuration.getAttribute(
-                "blockingRequestHandler", "auto-detect");
+                configuration.getAttribute(
+                        "blockingRequestHandler", "auto-detect");
         if (blockingRequestHandler.equalsIgnoreCase("icefaces")) {
             // Adapt to Push environment.
             if (LOG.isInfoEnabled()) {
                 LOG.info(
-                    "Blocking Request Handler: " +
-                        "\"" + blockingRequestHandler + "\"");
+                        "Blocking Request Handler: " +
+                                "\"" + blockingRequestHandler + "\"");
             }
             if (LOG.isInfoEnabled()) {
                 LOG.info("Adapting to Push environment.");
@@ -231,20 +214,20 @@ public class MainServlet extends HttpServlet {
             // Adapt to Server Push environment.
             if (LOG.isInfoEnabled()) {
                 LOG.info(
-                    "Blocking Request Handler: " +
-                        "\"" + blockingRequestHandler + "\"");
+                        "Blocking Request Handler: " +
+                                "\"" + blockingRequestHandler + "\"");
             }
             messageServiceClient =
-                new MessageServiceClient(
-                    new HttpAdapter(localAddress, localPort, context),
-                    currentContextPath.lookup());
+                    new MessageServiceClient(
+                            new HttpAdapter(localAddress, localPort, context),
+                            currentContextPath.lookup());
             testMessageService(configuration);
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
-                        "Push Server not found - the Push Server must be " +
-                            "deployed to support multiple asynchronous " +
-                            "applications.");
+                            "Push Server not found - the Push Server must be " +
+                                    "deployed to support multiple asynchronous " +
+                                    "applications.");
                 }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
@@ -254,15 +237,15 @@ public class MainServlet extends HttpServlet {
             if (blockingRequestHandler.equalsIgnoreCase("auto-detect")) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info(
-                        "Blocking Request Handler: " +
-                            "\"" + blockingRequestHandler + "\"");
+                            "Blocking Request Handler: " +
+                                    "\"" + blockingRequestHandler + "\"");
                 }
             } else {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
-                        "INVALID Blocking Request Handler: " +
-                            "\"" + blockingRequestHandler + "\" - " +
-                                "Using \"auto-detect\"");
+                            "INVALID Blocking Request Handler: " +
+                                    "\"" + blockingRequestHandler + "\" - " +
+                                    "Using \"auto-detect\"");
                 }
             }
             // Auto-detect environment.
@@ -272,29 +255,29 @@ public class MainServlet extends HttpServlet {
             }
             if (isJMSAvailable) {
                 messageServiceClient =
-                    new MessageServiceClient(
-                        new JMSAdapter(context),
-                        currentContextPath.lookup());
+                        new MessageServiceClient(
+                                new JMSAdapter(context),
+                                currentContextPath.lookup());
                 testMessageService(configuration);
             }
             if (messageServiceClient == null) {
                 try {
                     messageServiceClient =
-                        new MessageServiceClient(
-                            new HttpAdapter(localAddress, localPort, context),
-                            currentContextPath.lookup());
+                            new MessageServiceClient(
+                                    new HttpAdapter(localAddress, localPort, context),
+                                    currentContextPath.lookup());
                     testMessageService(configuration);
-                } catch (Exception e)  {
+                } catch (Exception e) {
                     LOG.warn(
-                        "Unable to set up MessageServiceClient ", e);
+                            "Unable to set up MessageServiceClient ", e);
                 }
             }
             if (messageServiceClient == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn(
-                        "Push Server not found - the Push Server must be " +
-                            "deployed to support multiple asynchronous " +
-                            "applications.");
+                            "Push Server not found - the Push Server must be " +
+                                    "deployed to support multiple asynchronous " +
+                                    "applications.");
                 }
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Adapting to Push environment.");
@@ -306,12 +289,12 @@ public class MainServlet extends HttpServlet {
                 // todo: make message selector static to avoid instantiating
                 //       the message handler
                 messageServiceClient.
-                    subscribe(
-                        MessageServiceClient.PUSH_TOPIC_NAME,
-                        new DisposeViewsHandler().getMessageSelector());
+                        subscribe(
+                                MessageServiceClient.PUSH_TOPIC_NAME,
+                                new DisposeViewsHandler().getMessageSelector());
                 messageServiceClient.start();
                 ContextEventRepeater.
-                    setMessageServiceClient(messageServiceClient);
+                        setMessageServiceClient(messageServiceClient);
             } catch (Exception exception) {
                 // todo: log some message
                 messageServiceClient = null;
@@ -326,132 +309,132 @@ public class MainServlet extends HttpServlet {
                 messageServiceClient.stop();
             } catch (MessageServiceException exception) {
                 LOG.error(
-                    "Failed to close connection due to some internal error!",
-                    exception);
+                        "Failed to close connection due to some internal error!",
+                        exception);
             }
         }
     }
 
     private void testMessageService(final Configuration configuration) {
         String blockingRequestHandlerContext =
-            configuration.getAttribute(
-                "blockingRequestHandlerContext", "push-server");
+                configuration.getAttribute(
+                        "blockingRequestHandlerContext", "push-server");
         MessageHandler acknowledgeMessageHandler =
-            new AbstractMessageHandler(
-                new MessageSelector(
-                    new Equal(
-                        new Identifier(Message.MESSAGE_TYPE),
-                        new StringLiteral("Presence")))) {
+                new AbstractMessageHandler(
+                        new MessageSelector(
+                                new Equal(
+                                        new Identifier(Message.MESSAGE_TYPE),
+                                        new StringLiteral("Presence")))) {
 
-                public void handle(final Message message) {
-                    if (message instanceof TextMessage) {
-                        String text = ((TextMessage)message).getText();
-                        int begin, end;
-                        begin = 0;
-                        end = text.indexOf(";");
-                        if (end != -1 &&
-                            text.substring(begin, end).
-                                equals("Acknowledge")) {
+                    public void handle(final Message message) {
+                        if (message instanceof TextMessage) {
+                            String text = ((TextMessage) message).getText();
+                            int begin, end;
+                            begin = 0;
+                            end = text.indexOf(";");
+                            if (end != -1 &&
+                                    text.substring(begin, end).
+                                            equals("Acknowledge")) {
 
-                            String product =
-                                text.substring(
-                                    begin = end + 1,
-                                    end = text.indexOf(";", begin));
-                            String primary =
-                                text.substring(
-                                    begin = end + 1,
-                                    end = text.indexOf(";", begin));
-                            String secondary =
-                                text.substring(
-                                    begin = end + 1,
-                                    end = text.indexOf(";", begin));
-                            String tertiary =
-                                text.substring(
-                                    begin = end + 1,
-                                    end = text.indexOf(";", begin));
-                            String releaseType =
-                                text.substring(
-                                    begin = end + 1,
-                                    end = text.indexOf(";", begin));
-                            if (LOG.isInfoEnabled()) {
-                                LOG.info(
-                                    "Push Server detected: \"" +
-                                        product + " " +
-                                        primary + "." +
-                                        secondary + "." +
-                                        tertiary +
-                                        (releaseType.equals("") ?
-                                            "" :
-                                            " " + releaseType) + "\"");
-                            }
-                            if (!primary.equals("x") &&
-                                !ProductInfo.PRIMARY.equals("x")) {
-
-                                if (!primary.equals(ProductInfo.PRIMARY) ||
-                                    !secondary.equals(ProductInfo.SECONDARY) ||
-                                    !tertiary.equals(ProductInfo.TERTIARY)) {
-
-                                    if (LOG.isWarnEnabled()) {
-                                        LOG.warn(
-                                            "ICEfaces / Push Server version " +
-                                                "mismatch! - " +
-                                                "Using \"" +
-                                                    ProductInfo.PRODUCT + " " +
-                                                    ProductInfo.PRIMARY + "." +
-                                                    ProductInfo.SECONDARY + "." +
-                                                    ProductInfo.TERTIARY + "\" " +
-                                                "with \"" +
+                                String product =
+                                        text.substring(
+                                                begin = end + 1,
+                                                end = text.indexOf(";", begin));
+                                String primary =
+                                        text.substring(
+                                                begin = end + 1,
+                                                end = text.indexOf(";", begin));
+                                String secondary =
+                                        text.substring(
+                                                begin = end + 1,
+                                                end = text.indexOf(";", begin));
+                                String tertiary =
+                                        text.substring(
+                                                begin = end + 1,
+                                                end = text.indexOf(";", begin));
+                                String releaseType =
+                                        text.substring(
+                                                begin = end + 1,
+                                                end = text.indexOf(";", begin));
+                                if (LOG.isInfoEnabled()) {
+                                    LOG.info(
+                                            "Push Server detected: \"" +
                                                     product + " " +
                                                     primary + "." +
                                                     secondary + "." +
-                                                    tertiary + "\" " +
-                                                "is not recommended.");
+                                                    tertiary +
+                                                    (releaseType.equals("") ?
+                                                            "" :
+                                                            " " + releaseType) + "\"");
+                                }
+                                if (!primary.equals("x") &&
+                                        !ProductInfo.PRIMARY.equals("x")) {
+
+                                    if (!primary.equals(ProductInfo.PRIMARY) ||
+                                            !secondary.equals(ProductInfo.SECONDARY) ||
+                                            !tertiary.equals(ProductInfo.TERTIARY)) {
+
+                                        if (LOG.isWarnEnabled()) {
+                                            LOG.warn(
+                                                    "ICEfaces / Push Server version " +
+                                                            "mismatch! - " +
+                                                            "Using \"" +
+                                                            ProductInfo.PRODUCT + " " +
+                                                            ProductInfo.PRIMARY + "." +
+                                                            ProductInfo.SECONDARY + "." +
+                                                            ProductInfo.TERTIARY + "\" " +
+                                                            "with \"" +
+                                                            product + " " +
+                                                            primary + "." +
+                                                            secondary + "." +
+                                                            tertiary + "\" " +
+                                                            "is not recommended.");
+                                        }
                                     }
                                 }
-                            }
-                            messageServiceClient.removeMessageHandler(
-                                this, MessageServiceClient.PUSH_TOPIC_NAME);
-                            if (LOG.isInfoEnabled()) {
-                                LOG.info(
-                                    "Using Push Server " +
-                                        "Blocking Request Handler");
+                                messageServiceClient.removeMessageHandler(
+                                        this, MessageServiceClient.PUSH_TOPIC_NAME);
+                                if (LOG.isInfoEnabled()) {
+                                    LOG.info(
+                                            "Using Push Server " +
+                                                    "Blocking Request Handler");
+                                }
                             }
                         }
                     }
-                }
-            };
+                };
         try {
             // throws MessageServiceException
             messageServiceClient.subscribe(
-                MessageServiceClient.PUSH_TOPIC_NAME,
-                acknowledgeMessageHandler.getMessageSelector());
+                    MessageServiceClient.PUSH_TOPIC_NAME,
+                    acknowledgeMessageHandler.getMessageSelector());
             messageServiceClient.addMessageHandler(
-                acknowledgeMessageHandler,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                    acknowledgeMessageHandler,
+                    MessageServiceClient.PUSH_TOPIC_NAME);
             // throws MessageServiceException
             messageServiceClient.start();
             Properties messageProperties = new Properties();
             messageProperties.setStringProperty(
-                Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                blockingRequestHandlerContext);
+                    Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                    blockingRequestHandlerContext);
             // throws MessageServiceException
             messageServiceClient.publishNow(
-                "Hello",
-                messageProperties,
-                "Presence",
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                    "Hello",
+                    messageProperties,
+                    "Presence",
+                    MessageServiceClient.PUSH_TOPIC_NAME);
             this.blockingRequestHandlerContext =
-                URI.create("/").resolve(blockingRequestHandlerContext + "/").
-                    toString();
+                    URI.create("/").resolve(blockingRequestHandlerContext + "/").
+                            toString();
         } catch (MessageServiceException exception) {
             // todo: log some message
             messageServiceClient.removeMessageHandler(
-                acknowledgeMessageHandler,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                    acknowledgeMessageHandler,
+                    MessageServiceClient.PUSH_TOPIC_NAME);
             try {
                 // throws MessageServiceException
                 messageServiceClient.unsubscribe(
-                    MessageServiceClient.PUSH_TOPIC_NAME);
+                        MessageServiceClient.PUSH_TOPIC_NAME);
             } catch (MessageServiceException e) {
                 // do nothing.
             }
