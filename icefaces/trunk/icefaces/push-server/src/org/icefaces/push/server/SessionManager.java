@@ -134,6 +134,28 @@ implements
         }
     }
 
+    public boolean hasViews(final Set iceFacesIdSet) {
+        synchronized (sessionMap) {
+            String[] _iceFacesIds =
+                (String[])
+                    iceFacesIdSet.toArray(new String[iceFacesIdSet.size()]);
+            for (int i = 0; i < _iceFacesIds.length; i++) {
+                if (hasViews(_iceFacesIds[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public boolean hasViews(final String iceFacesId) {
+        synchronized (sessionMap) {
+            return
+                sessionMap.containsKey(iceFacesId) &&
+                !((Session)sessionMap.get(iceFacesId)).viewNumberSet.isEmpty();
+        }
+    }
+
     public boolean isValid(final Set iceFacesIdSet) {
         synchronized (sessionMap) {
             String[] _iceFacesIds =
@@ -156,32 +178,6 @@ implements
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("ICEfaces ID '" + iceFacesId + "' is not valid!");
                 }
-                return false;
-            }
-        }
-    }
-
-    public boolean isValid(
-        final String iceFacesId, final String[] viewNumbers) {
-
-        synchronized (sessionMap) {
-            if (isValid(iceFacesId)) {
-                if (viewNumbers != null && viewNumbers.length != 0) {
-                    Set _viewNumberSet =
-                        ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
-                    for (int i = 0; i < viewNumbers.length; i++) {
-                        if (!_viewNumberSet.contains(viewNumbers[i])) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug(
-                                    "View Number '" + viewNumbers[i] + "' " +
-                                        "is not valid!");
-                            }
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            } else {
                 return false;
             }
         }
@@ -231,11 +227,13 @@ implements
                                         "[ICEfaces ID: " + iceFacesId + "]");
                         }
                         _viewNumberSet.remove(viewNumber);
-                        Handler _handler = requestManager.pull(iceFacesId);
-                        if (_handler != null) {
-                            _handler.handle();
-                        }
                         updatedViewsManager.remove(iceFacesId, viewNumber);
+                        if (!hasViews(iceFacesId)) {
+                            Handler _handler = requestManager.pull(iceFacesId);
+                            if (_handler != null) {
+                                _handler.handle();
+                            }
+                        }
                     }
                 }
             }
