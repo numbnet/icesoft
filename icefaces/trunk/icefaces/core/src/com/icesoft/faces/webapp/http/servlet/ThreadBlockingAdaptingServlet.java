@@ -2,15 +2,13 @@ package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
-
 import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class ThreadBlockingAdaptingServlet implements PseudoServlet {
     private static final Log LOG = LogFactory.getLog(ThreadBlockingAdaptingServlet.class);
@@ -33,57 +31,40 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
     }
 
     private class ThreadBlockingRequestResponse extends ServletRequestResponse {
-        private boolean blockResponse = true;
-        private Semaphore semaphore;
+        private final Semaphore semaphore;
 
         public ThreadBlockingRequestResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
             super(request, response);
+            semaphore = new Semaphore(1);
+            //Acquire semaphore hoping to have it released by a call to respondWith() method.
+            semaphore.acquire();
         }
 
         public void respondWith(final ResponseHandler handler) throws Exception {
             try {
                 super.respondWith(handler);
             } finally {
-                if (semaphore == null) {
-                    blockResponse = false;
-                } else {
-                    semaphore.release();
-                }
+                semaphore.release();
             }
         }
 
         public void blockUntilRespond() throws InterruptedException {
-            if (blockResponse) {
-                semaphore = new Semaphore(1);
-                /*
-                 * Acquire semaphore hoping to have it released by a call to
-                 * respondWith() method.
-                 */
-                semaphore.acquire();
-                /*
-                 * Block thread by trying to acquire the semaphore a second
-                 * time.
-                 */
-                boolean acquired = semaphore.tryAcquire(TIMEOUT, TimeUnit.MINUTES);
-                if (acquired) {
-                    // Release the semaphore previously acquired.
-                    semaphore.release();
-                } else {
-                    LOG.error(
-                        "No response sent to " +
-                            "request '" + request.getRequestURI() + "' " +
-                            "with ICEfaces ID '" +
-                                request.getParameter("ice.session") + "' " +
-                            "from " + request.getRemoteAddr() + " " +
-                            "in " + TIMEOUT + " minutes.  " +
+            //Block thread by trying to acquire the semaphore a second time.
+            boolean acquired = semaphore.tryAcquire(TIMEOUT, TimeUnit.MINUTES);
+            if (acquired) {
+                //Release the semaphore previously acquired.
+                semaphore.release();
+            } else {
+                LOG.error("No response sent to " +
+                        "request '" + request.getRequestURI() + "' " +
+                        "with ICEfaces ID '" +
+                        request.getParameter("ice.session") + "' " +
+                        "from " + request.getRemoteAddr() + " " +
+                        "in " + TIMEOUT + " minutes.  " +
                         "Unblocking " +
-                            "thread '" + Thread.currentThread().getName() + "'.");
-                    /*
-                     * Release the semaphore; most probably respondWith() method
-                     * was not invoked.
-                     */
-                    semaphore.release();
-                }
+                        "thread '" + Thread.currentThread().getName() + "'.");
+                //Release the semaphore; most probably respondWith() method was not invoked.
+                semaphore.release();
             }
         }
     }
