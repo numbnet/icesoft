@@ -132,7 +132,7 @@ public class LabelRenderer extends DomBasicInputRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
         domContext.stepOver();
     }
 

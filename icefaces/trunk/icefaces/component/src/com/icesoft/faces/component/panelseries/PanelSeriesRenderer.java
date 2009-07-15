@@ -74,7 +74,7 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
                                UIComponent uiComponent) throws IOException {
         validateParameters(facesContext, uiComponent, null);
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
         DOMContext.removeChildren(root);
         PanelSeries list = (PanelSeries) uiComponent;
