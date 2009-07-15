@@ -35,7 +35,6 @@
                                    value="#{citySelect.cityMatchPossibilities}"/>
                 </ice:selectInputText>
 
-                <ice:outputText value="#{cityDetails.lastRenderedTime}"/>
             </ice:panelGroup>
 
         </ice:form>
