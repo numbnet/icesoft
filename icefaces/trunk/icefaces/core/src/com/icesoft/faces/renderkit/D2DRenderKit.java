@@ -33,6 +33,11 @@ public class D2DRenderKit extends RenderKit {
 //System.out.println("D2DRenderKit.ctor()");
     }
     
+    public D2DRenderKit(RenderKit delegateRenderKit)  {
+        this();
+        this.delegateRenderKit = delegateRenderKit;
+    }
+    
     public void addRenderer(String family, String rendererType, Renderer renderer) {
 //System.out.println("D2DRenderKit.addRenderer()\n  family: " + family + "\n  rendererType: " + rendererType + "\n  renderer: " + renderer.getClass().getName());
         if (family == null || rendererType == null || renderer == null) {
