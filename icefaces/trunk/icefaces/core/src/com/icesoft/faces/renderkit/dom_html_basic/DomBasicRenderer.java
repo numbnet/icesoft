@@ -131,7 +131,7 @@ public abstract class DomBasicRenderer extends Renderer {
         renderEnd(facesContext, uiComponent,
                   getValue(facesContext, uiComponent));
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
 
         domContext.stepOver();
         JavascriptContext.fireEffect(uiComponent, facesContext);
