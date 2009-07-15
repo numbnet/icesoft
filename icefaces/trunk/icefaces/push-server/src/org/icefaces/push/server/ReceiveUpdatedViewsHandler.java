@@ -84,8 +84,8 @@ implements Handler, Runnable {
 
     public ReceiveUpdatedViewsHandler(
         final Request request, final Set iceFacesIdSet,
-        final SessionManager sessionManager,
-        final Timer timer, final Configuration configuration) {
+        final SessionManager sessionManager, final Timer timer,
+        final Configuration configuration) {
 
         super(request);
         this.iceFacesIdSet = iceFacesIdSet;
@@ -161,7 +161,9 @@ implements Handler, Runnable {
                     blockingConnectionTimeoutTask.cancel();
                     blockingConnectionTimeoutTask = null;
                 }
-                if (sessionManager.isValid(iceFacesIdSet)) {
+                if (sessionManager.isValid(iceFacesIdSet) &&
+                    sessionManager.hasViews(iceFacesIdSet)) {
+
                     updatedViewsList =
                         sessionManager.getUpdatedViewsManager().
                             pull(
