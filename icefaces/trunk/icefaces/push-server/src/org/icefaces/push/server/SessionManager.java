@@ -103,6 +103,12 @@ implements
         } catch (InterruptedException exception) {
             // ignore interrupts.
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "ICEfaces ID disposed: " +
+                    "Servlet Context Path [" + servletContextPath + "], " +
+                    "ICEfaces ID [" + iceFacesId + "]");
+        }
         synchronized (requestManager) {
             synchronized (freeMap) {
                 // Marking the specified ICEfaces ID eligible for removal.
@@ -120,13 +126,15 @@ implements
     public void iceFacesIdRetrieved(
         final String servletContextPath, final String iceFacesId) {
 
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "ICEfaces ID retrieved: " +
+                    "Servlet Context Path [" + servletContextPath + "], " +
+                    "ICEfaces ID [" + iceFacesId + "]");
+        }
         synchronized (sessionMap) {
             cleanUp(iceFacesId);
             if (!sessionMap.containsKey(iceFacesId)) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                        "ICEfaces ID retrieved: " + iceFacesId);
-                }
                 sessionMap.put(
                     iceFacesId, new Session(servletContextPath, iceFacesId));
             }
@@ -218,18 +226,19 @@ implements
         final String servletContextPath, final String iceFacesId,
         final String viewNumber) {
 
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "View Number disposed: " +
+                    "Servlet Context Path [" + servletContextPath + "], " +
+                    "ICEfaces ID [" + iceFacesId + "], " +
+                    "View Number [" + viewNumber + "]");
+        }
         synchronized (requestManager) {
             synchronized (sessionMap) {
                 if (sessionMap.containsKey(iceFacesId)) {
                     Set _viewNumberSet =
                         ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
                     if (_viewNumberSet.contains(viewNumber)) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug(
-                                "View Number disposed: " +
-                                    viewNumber + " " +
-                                        "[ICEfaces ID: " + iceFacesId + "]");
-                        }
                         _viewNumberSet.remove(viewNumber);
                         updatedViewsManager.remove(iceFacesId, viewNumber);
                         if (!hasViews(iceFacesId)) {
@@ -248,17 +257,18 @@ implements
         final String servletContextPath, final String iceFacesId,
         final String viewNumber) {
 
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "View Number retrieved: " +
+                    "Servlet Context Path [" + servletContextPath + "], " +
+                    "ICEfaces ID [" + iceFacesId + "], " +
+                    "View Number [" + viewNumber + "]");
+        }
         synchronized (sessionMap) {
             if (sessionMap.containsKey(iceFacesId)) {
                 Set _viewNumberSet =
                     ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
                 if (!_viewNumberSet.contains(viewNumber)) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "View Number retrieved: " +
-                                viewNumber + " " +
-                                    "[ICEfaces ID: " + iceFacesId + "]");
-                    }
                     _viewNumberSet.add(viewNumber);
                 }
             }
@@ -281,7 +291,8 @@ implements
                             if (sessionMap.containsKey(iceFacesId)) {
                                 if (LOG.isDebugEnabled()) {
                                     LOG.debug(
-                                        "ICEfaces ID disposed: " + iceFacesId);
+                                        "ICEfaces ID cleaned up: " +
+                                            "ICEfaces ID [" + iceFacesId + "]");
                                 }
                                 sessionMap.remove(iceFacesId);
                             }
