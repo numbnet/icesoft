@@ -140,6 +140,17 @@ implements Handler, Runnable {
                     }
                     // respond to pending request.
                     try {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "Send Close response to previous request: " +
+                                    "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                                    "Sequence Numbers [" +
+                                        new SequenceNumbers(
+                                            request.
+                                                getHeaderAsStrings(
+                                                    "X-Window-Cookie")) +
+                                    "]");
+                        }
                         _receiveUpdatedViewsHandler.request.
                             respondWith(CLOSE_RESPONSE_HANDLER);
                     } catch (Exception exception) {
@@ -184,6 +195,17 @@ implements Handler, Runnable {
                     state = STATE_RESPONSE_IS_READY;
                 } else {
                     try {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "Send Close response to request: " +
+                                    "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                                    "Sequence Numbers [" +
+                                        new SequenceNumbers(
+                                            request.
+                                                getHeaderAsStrings(
+                                                    "X-Window-Cookie")) +
+                                    "]");
+                        }
                         request.respondWith(CLOSE_RESPONSE_HANDLER);
                     } catch (Exception exception) {
                         if (LOG.isErrorEnabled()) {
@@ -199,6 +221,16 @@ implements Handler, Runnable {
             case STATE_RESPONSE_IS_READY :
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Response is Ready");
+                }
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(
+                        "Send Updated Views response to request: " +
+                            "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                            "Sequence Numbers [" +
+                                new SequenceNumbers(
+                                    request.
+                                        getHeaderAsStrings("X-Window-Cookie")) +
+                            "]");
                 }
                 respondWith(request, updatedViewsList);
                 state = STATE_DONE;
@@ -230,6 +262,17 @@ implements Handler, Runnable {
                     sessionManager.getRequestManager().pull(iceFacesIdSet);
             if (_receiveUpdatedViewsHandler != null) {
                 try {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Send Noop response to request: " +
+                                "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                                "Sequence Numbers [" +
+                                    new SequenceNumbers(
+                                        _receiveUpdatedViewsHandler.request.
+                                            getHeaderAsStrings(
+                                                "X-Window-Cookie")) +
+                                "]");
+                    }
                     _receiveUpdatedViewsHandler.request.
                         respondWith(NOOPResponse.Handler);
                 } catch (Exception exception) {
