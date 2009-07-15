@@ -62,14 +62,17 @@ implements Server {
                 public void handle(
                     final Request request, final Set iceFacesIdSet) {
 
-                    LOG.info(
-                        "([Push-Server]) :: Received request: " +
-                            "ICEfaces IDs [" + iceFacesIdSet + "], " +
-                            "Sequence Numbers [" +
-                                new SequenceNumbers(
-                                    request.
-                                        getHeaderAsStrings("X-Window-Cookie")) +
-                            "]");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Incoming receive-updated-views request: " +
+                                "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                                "Sequence Numbers [" +
+                                    new SequenceNumbers(
+                                        request.
+                                            getHeaderAsStrings(
+                                                "X-Window-Cookie")) +
+                                "]");
+                    }
                     new IDVerifier(
                         iceFacesIdSet,
                         new ReceiveUpdatedViewsHandler(
