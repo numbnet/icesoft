@@ -36,6 +36,8 @@ package com.icesoft.faces.async.render;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.util.StaticTimerUtility;
@@ -44,9 +46,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletSession;
-import javax.servlet.http.HttpSession;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -120,7 +121,7 @@ implements AsyncRenderer {
             Object session =
                 facesContext.getExternalContext().getSession(false);
             if (session != null) {
-                add(session);
+                add( getSessionID(session));
             } else {
                 LOG.warn(
                     "Unable to add current session: " +
@@ -155,10 +156,27 @@ implements AsyncRenderer {
 
     public boolean containsCurrentSession() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        return
-            facesContext != null &&
-                contains(facesContext.getExternalContext().getSession(false));
+        if( facesContext == null ){
+            return false;
+        }
+
+        return contains( getSessionID(facesContext.getExternalContext().getSession(false)) );
     }
+
+    private static String getSessionID(Object session){
+        if(session == null){
+            return null;
+        }
+
+        try {
+            Method getIdMethod = session.getClass().getMethod("getId", null );
+            Object id = getIdMethod.invoke(session,null);
+            return id.toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     /**
      * Remove all Renderables from the group and removes the reference to the
@@ -215,7 +233,7 @@ implements AsyncRenderer {
             Object session =
                 facesContext.getExternalContext().getSession(false);
             if (session != null) {
-                remove(session);
+                remove(getSessionID(session));
             } else {
                 LOG.warn(
                     "Unable to remove current session: " +
@@ -272,39 +290,18 @@ implements AsyncRenderer {
                 group.remove(reference);
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
-            } else if (object instanceof HttpSession) {
-                HttpSession httpSession = (HttpSession)object;
+            } else if (object instanceof String) {
+                String sessionId = (String)object;
                 try {
-                    // is valid?
-                    httpSession.getAttribute("nonExistentAttribute");
-                    // valid
-                    requestRender(httpSession.getId());
+                    requestRender(sessionId);
                 } catch (Exception exception) {
-                    // not valid
                     /*
                      * Remove from the CopyOnWriteArraySet is allowed here as
                      * the Iterator in requestRender(boolean) relies on an
                      * unchanging snapshot of the array at the time the Iterator
                      * was constructed.
                      */
-                    remove(httpSession);
-                }
-            } else if (object instanceof PortletSession) {
-                PortletSession portletSession = (PortletSession)object;
-                try {
-                    // is valid?
-                    portletSession.getAttribute("nonExistentAttribute");
-                    // valid
-                    requestRender(portletSession.getId());
-                } catch (Exception exception) {
-                    // not valid
-                    /*
-                     * Remove from the CopyOnWriteArraySet is allowed here as
-                     * the Iterator in requestRender(boolean) relies on an
-                     * unchanging snapshot of the array at the time the Iterator
-                     * was constructed.
-                     */
-                    remove(portletSession);
+                    remove(sessionId);
                 }
             }
         }
@@ -386,16 +383,16 @@ implements AsyncRenderer {
              */
             suppressedViewState = null;
         }
-        for (
-            Iterator i =
-                ((MainSessionBoundServlet)
-                    SessionDispatcher.
-                        getSingletonSessionServer(
-                            sessionId,
-                            RenderManager.getInstance().getServletContext())
-                ).getViews().values().iterator();
-            i.hasNext();
-            ) {
+
+        PseudoServlet serv = SessionDispatcher.getSingletonSessionServer(sessionId,
+                RenderManager.getInstance().getServletContext());
+        if (serv == null) {
+            group.remove(sessionId);
+            return;
+        }
+
+        for (Iterator i = ((MainSessionBoundServlet) serv).getViews().values().iterator();
+             i.hasNext();) {
 
             final PersistentFacesState viewState =
                 ((View) i.next()).getPersistentFacesState();
