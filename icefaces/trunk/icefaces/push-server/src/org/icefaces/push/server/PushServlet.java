@@ -33,7 +33,6 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.ServletConfigConfiguration;
@@ -42,8 +41,9 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.util.ServerUtility;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.util.Timer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -52,11 +52,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Timer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class PushServlet
-        extends HttpServlet {
+extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(PushServlet.class);
 
     private String localAddress;
@@ -74,7 +75,7 @@ public class PushServlet
     }
 
     public void init(final ServletConfig servletConfig)
-            throws ServletException {
+    throws ServletException {
         super.init(servletConfig);
         servletContext = servletConfig.getServletContext();
         if (LOG.isInfoEnabled()) {
@@ -82,59 +83,57 @@ public class PushServlet
         }
         try {
             final Configuration _servletConfigConfiguration =
-                    new ServletConfigConfiguration(
-                            "org.icefaces.push.server", servletConfig);
+                new ServletConfigConfiguration(
+                    "org.icefaces.push.server", servletConfig);
             final Configuration _servletContextConfiguration =
-                    new ServletContextConfiguration(
-                            "com.icesoft.faces", servletConfig.getServletContext());
+                new ServletContextConfiguration(
+                    "com.icesoft.faces", servletConfig.getServletContext());
             messageService =
-                    new MessageService(servletConfig.getServletContext());
+                new MessageService(servletConfig.getServletContext());
             final SessionManager _sessionManager =
-                    new SessionManager(_servletConfigConfiguration, messageService);
+                new SessionManager(_servletConfigConfiguration, messageService);
             SessionDispatcher _sessionDispatcher =
-                    new SessionDispatcher(servletContext) {
+                new SessionDispatcher(servletContext) {
+                    protected PseudoServlet newServer(
+                        final HttpSession httpSession, final Monitor monitor,
+                        final Authorization authorization) {
 
-                        protected PseudoServlet newServer(
-                                final HttpSession httpSession,
-                                final Monitor monitor,
-                                final Authorization authorization) {
-
-                            return new EnvironmentAdaptingServlet(
-                                    new SessionBoundServlet(
-                                            _sessionManager, timer,
-                                            _servletContextConfiguration, monitor), _servletContextConfiguration, servletContext);
-                        }
-                    };
+                        return
+                            new SessionBoundServlet(
+                                servletContext, _sessionManager, timer,
+                                _servletContextConfiguration, monitor);
+                    }
+                };
             pathDispatcher.dispatchOn(
-                    ".*(block\\/message)",
-                    ((HttpAdapter)
-                            messageService.getMessageServiceClient().
-                                    getMessageServiceAdapter()).
-                            getHttpMessagingDispatcher());
+                ".*(block\\/message)",
+                ((HttpAdapter)
+                    messageService.getMessageServiceClient().
+                        getMessageServiceAdapter()
+                ).getHttpMessagingDispatcher());
             pathDispatcher.dispatchOn(
-                    ".*",
-                    _sessionDispatcher);
+                ".*",
+                _sessionDispatcher);
             messageService.start();
         } catch (Exception exception) {
             LOG.error(
-                    "An error occurred while initializing the Push Server!",
-                    exception);
+                "An error occurred while initializing the Push Server!",
+                exception);
         }
     }
 
     protected void service(
-            final HttpServletRequest httpServletRequest,
-            final HttpServletResponse httpServletResponse)
-            throws IOException, ServletException {
+        final HttpServletRequest httpServletRequest,
+        final HttpServletResponse httpServletResponse)
+    throws IOException, ServletException {
         if (localAddress == null) {
             localAddress =
-                    ServerUtility.getLocalAddr(httpServletRequest, servletContext);
+                ServerUtility.getLocalAddr(httpServletRequest, servletContext);
             localPort =
-                    ServerUtility.getLocalPort(httpServletRequest, servletContext);
+                ServerUtility.getLocalPort(httpServletRequest, servletContext);
             if (messageService != null) {
                 MessageServiceAdapter adapter =
-                        messageService.getMessageServiceClient().
-                                getMessageServiceAdapter();
+                    messageService.getMessageServiceClient().
+                        getMessageServiceAdapter();
                 if (adapter instanceof HttpAdapter) {
                     ((HttpAdapter) adapter).setLocal(localAddress, localPort);
                 }
