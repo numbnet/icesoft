@@ -33,8 +33,11 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.servlet.BasicAdaptingServlet;
+import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
+import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
+import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import org.apache.commons.logging.Log;
@@ -43,61 +46,58 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Set;
 import java.util.Timer;
 
-//todo: rename to SessionBoundServer
+import javax.servlet.ServletContext;
+
 public class SessionBoundServlet
-implements Server {
+extends PathDispatcher
+implements PseudoServlet {
     private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
 
-    protected PathDispatcherServer pathDispatcherServer;
-
     public SessionBoundServlet(
-        final SessionManager sessionManager,
-        final Timer timer, final Configuration configuration,
+        final ServletContext servletContext,
+        final SessionManager sessionManager, final Timer timer,
+        final Configuration configuration,
         final SessionDispatcher.Monitor monitor) {
 
-        pathDispatcherServer = new PathDispatcherServer();
-        pathDispatcherServer.dispatchOn(
+        dispatchOn(
             ".*block\\/receive\\-updated\\-views$",
-            new SendUpdatedViewsServer(sessionManager, monitor) {
-                public void handle(
-                    final Request request, final Set iceFacesIdSet) {
+            new EnvironmentAdaptingServlet(
+                new SendUpdatedViewsServer(sessionManager, monitor) {
+                    public void handle(
+                        final Request request, final Set iceFacesIdSet) {
 
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "Incoming receive-updated-views request: " +
-                                "ICEfaces IDs [" + iceFacesIdSet + "], " +
-                                "Sequence Numbers [" +
-                                    new SequenceNumbers(
-                                        request.
-                                            getHeaderAsStrings(
-                                                "X-Window-Cookie")) +
-                                "]");
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "Incoming receive-updated-views request: " +
+                                    "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                                    "Sequence Numbers [" +
+                                        new SequenceNumbers(
+                                            request.
+                                                getHeaderAsStrings(
+                                                    "X-Window-Cookie")) +
+                                    "]");
+                        }
+                        new IDVerifier(
+                            iceFacesIdSet,
+                            new ReceiveUpdatedViewsHandler(
+                                request, iceFacesIdSet, sessionManager, timer,
+                                configuration)
+                        ).handle();
                     }
-                    new IDVerifier(
-                        iceFacesIdSet,
-                        new ReceiveUpdatedViewsHandler(
-                            request, iceFacesIdSet, sessionManager, timer,
-                            configuration)
-                    ).handle();
-                }
-            });
-        pathDispatcherServer.dispatchOn(
+                },
+                configuration,
+                servletContext));
+        PathDispatcherServer _pathDispatcherServer = new PathDispatcherServer();
+        _pathDispatcherServer.dispatchOn(
             ".*block\\/dispose\\-views$",
             new DisposeViewsHandlerServer(monitor) {
                 public void handle(final Request request) {
                     new DisposeViewsHandler(request, sessionManager).handle();
                 }
             });
-        pathDispatcherServer.dispatchOn(
+        _pathDispatcherServer.dispatchOn(
             ".*",
             new NotFoundServer());
-    }
-
-    public void service(Request request) throws Exception {
-        pathDispatcherServer.service(request);
-    }
-
-    public void shutdown() {
-        pathDispatcherServer.shutdown();
+        dispatchOn(".*", new BasicAdaptingServlet(_pathDispatcherServer));
     }
 }
