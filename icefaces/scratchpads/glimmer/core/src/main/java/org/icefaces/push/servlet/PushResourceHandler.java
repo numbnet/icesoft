@@ -26,7 +26,6 @@ import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
 import org.icefaces.push.MonitorRunner;
 import org.icefaces.push.SessionBoundServer;
-import org.icefaces.push.http.Server;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -59,8 +58,8 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
 
         final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
         monitor = new MonitorRunner(configuration.getAttributeAsLong("poolingInterval", 15000));
-        dispatcher = new SessionDispatcher(configuration, context) {
-            protected Server newServer(HttpSession session, Monitor sessionMonitor) {
+        dispatcher = new SessionDispatcher(context) {
+            protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
                 return new SessionBoundServer(session, monitor, sessionMonitor, configuration);
             }
         };
@@ -136,8 +135,8 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
             } else if (e.getMessage() != null) {
                 throw e;
             } else {
-                throw new RuntimeException( "wrapped Exception: " + 
-                        e.getClass().getName(), e );
+                throw new RuntimeException("wrapped Exception: " +
+                        e.getClass().getName(), e);
             }
         } catch (Exception e) {
             throw new ServletException(e);

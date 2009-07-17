@@ -22,11 +22,6 @@
 
 package org.icefaces.push.servlet;
 
-import org.icefaces.push.Configuration;
-import org.icefaces.push.http.AbstractServer;
-import org.icefaces.push.http.Request;
-import org.icefaces.push.http.Server;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,22 +36,15 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
+public abstract class SessionDispatcher implements PseudoServlet {
     private static Logger log = Logger.getLogger("org.icefaces.pushservlet");
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
-    private final static CurrentServer CurrentSessionBoundServer = new CurrentServer();
     private final Map sessionBoundServers = new HashMap();
     private ServletContext context;
     private boolean run = true;
 
-    public SessionDispatcher(Configuration configuration, ServletContext context) {
-        super(new AbstractServer() {
-            public void service(Request request) throws Exception {
-                //lookup session bound server -- this is a lock-free strategy
-                CurrentSessionBoundServer.lookup().service(request);
-            }
-        }, configuration, context);
+    public SessionDispatcher(ServletContext context) {
         //avoid instance collision -- Glassfish shares EAR module classloaders
         associateSessionDispatcher(context);
         this.context = context;
@@ -86,25 +74,19 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession(true);
         checkSession(session);
-        //attach session bound server to the current thread -- this is a lock-free strategy
-        try {
-            CurrentSessionBoundServer.attach(lookupServer(session));
-            super.service(request, response);
-        } finally {
-            CurrentSessionBoundServer.detach();
-        }
+        lookupServer(session).service(request, response);
     }
 
     public void shutdown() {
         Iterator i = sessionBoundServers.values().iterator();
         while (i.hasNext()) {
-            Server server = (Server) i.next();
-            server.shutdown();
+            PseudoServlet servlet = (PseudoServlet) i.next();
+            servlet.shutdown();
         }
         run = false;
     }
 
-    protected abstract Server newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
+    protected abstract PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
 
     public void touchSession(HttpSession session) {
         if (session != null) {
@@ -137,16 +119,16 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         }
     }
 
-    protected Server lookupServer(final HttpSession session) {
+    protected PseudoServlet lookupServer(final HttpSession session) {
         return lookupServer(session.getId());
     }
 
-    protected Server lookupServer(final String sessionId) {
-        return (Server) sessionBoundServers.get(sessionId);
+    protected PseudoServlet lookupServer(final String sessionId) {
+        return (PseudoServlet) sessionBoundServers.get(sessionId);
     }
 
     private void sessionShutdown(HttpSession session) {
-        Server servlet = (Server) sessionBoundServers.get(session.getId());
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
         servlet.shutdown();
     }
 
@@ -277,20 +259,6 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
         public void addInSessionContext(ServletContext context) {
             contexts.add(context);
-        }
-    }
-
-    private static class CurrentServer extends ThreadLocal {
-        public Server lookup() {
-            return (Server) get();
-        }
-
-        public void attach(Server server) {
-            set(server);
-        }
-
-        public void detach() {
-            set(null);
         }
     }
 }

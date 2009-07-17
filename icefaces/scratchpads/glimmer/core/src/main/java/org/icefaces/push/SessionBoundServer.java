@@ -24,13 +24,15 @@ package org.icefaces.push;
 
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.http.MimeTypeMatcher;
-import org.icefaces.push.http.standard.PathDispatcherServer;
+import org.icefaces.push.servlet.BasicAdaptingServlet;
+import org.icefaces.push.servlet.EnvironmentAdaptingServlet;
+import org.icefaces.push.servlet.PathDispatcher;
 import org.icefaces.push.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
 import java.util.Observable;
 
-public class SessionBoundServer extends PathDispatcherServer {
+public class SessionBoundServer extends PathDispatcher {
     public SessionBoundServer(final HttpSession session, MonitorRunner monitor, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
         Observable pingPongNotifier = new Observable() {
             public void notifyObservers(Object arg) {
@@ -43,10 +45,10 @@ public class SessionBoundServer extends PathDispatcherServer {
                 return session.getServletContext().getMimeType(path);
             }
         };
-        dispatchOn(".*icefaces\\/send\\-updated\\-views$", new SendUpdatedViews(session, pingPongNotifier, monitor, configuration));
-        dispatchOn(".*icefaces\\/ping$", new ReceivePing(pingPongNotifier));
-        dispatchOn(".*icefaces\\/dispose\\-window$", new DisposeWindowScope(WindowScopeManager.lookup(session, configuration)));
-        dispatchOn(".*icefaces\\/resource\\/.*", new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration));
+        dispatchOn(".*icefaces\\/send\\-updated\\-views$", new EnvironmentAdaptingServlet(new SendUpdatedViews(session, pingPongNotifier, monitor, configuration), configuration, session.getServletContext()));
+        dispatchOn(".*icefaces\\/ping$", new BasicAdaptingServlet(new ReceivePing(pingPongNotifier)));
+        dispatchOn(".*icefaces\\/dispose\\-window$", new BasicAdaptingServlet(new DisposeWindowScope(WindowScopeManager.lookup(session, configuration))));
+        dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 
 }
