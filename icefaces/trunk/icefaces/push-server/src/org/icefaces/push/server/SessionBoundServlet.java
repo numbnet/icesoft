@@ -33,7 +33,6 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.BasicAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
@@ -87,17 +86,14 @@ implements PseudoServlet {
                 },
                 configuration,
                 servletContext));
-        PathDispatcherServer _pathDispatcherServer = new PathDispatcherServer();
-        _pathDispatcherServer.dispatchOn(
+        dispatchOn(
             ".*block\\/dispose\\-views$",
-            new DisposeViewsHandlerServer(monitor) {
-                public void handle(final Request request) {
-                    new DisposeViewsHandler(request, sessionManager).handle();
-                }
-            });
-        _pathDispatcherServer.dispatchOn(
-            ".*",
-            new NotFoundServer());
-        dispatchOn(".*", new BasicAdaptingServlet(_pathDispatcherServer));
+            new BasicAdaptingServlet(
+                new DisposeViewsHandlerServer(monitor) {
+                    public void handle(final Request request) {
+                        new DisposeViewsHandler(request, sessionManager).handle();
+                    }
+                }));
+        dispatchOn(".*", new BasicAdaptingServlet(new NotFoundServer()));
     }
 }
