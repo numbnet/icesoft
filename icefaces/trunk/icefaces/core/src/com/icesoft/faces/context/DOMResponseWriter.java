@@ -369,13 +369,15 @@ public class DOMResponseWriter extends ResponseWriter {
         }
         String connectionLostRedirectURI;
         try {
-            connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
+            String uri = configuration.getAttribute("connectionLostRedirectURI");
+            connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
         } catch (ConfigurationException e) {
             connectionLostRedirectURI = "null";
         }
         String sessionExpiredRedirectURI;
         try {
-            sessionExpiredRedirectURI = "'" + configuration.getAttribute("sessionExpiredRedirectURI").replaceAll("'", "") + "'";
+            String uri = configuration.getAttribute("sessionExpiredRedirectURI");
+            sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
         } catch (ConfigurationException e) {
             sessionExpiredRedirectURI = "null";
         }
