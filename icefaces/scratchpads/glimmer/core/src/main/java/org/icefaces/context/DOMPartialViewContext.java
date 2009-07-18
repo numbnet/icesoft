@@ -23,9 +23,11 @@
 package org.icefaces.context;
 
 import org.icefaces.util.DOMUtils;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -38,10 +40,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-
-import org.icefaces.util.EnvUtils;
 
 public class DOMPartialViewContext extends PartialViewContextWrapper {
 
@@ -67,9 +70,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     @Override
-    public PartialResponseWriter getPartialResponseWriter()  {
+    public PartialResponseWriter getPartialResponseWriter() {
 
-        if (!EnvUtils.isICEfacesView(facesContext))  {
+        if (!EnvUtils.isICEfacesView(facesContext)) {
             return wrapped.getPartialResponseWriter();
         }
 
@@ -89,8 +92,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public void processPartial(PhaseId phaseId) {
-    
-        if (!EnvUtils.isICEfacesView(facesContext))  {
+
+        if (!EnvUtils.isICEfacesView(facesContext)) {
             wrapped.processPartial(phaseId);
             return;
         }
@@ -110,7 +113,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 exContext.addResponseHeader("Cache-Control", "no-cache");
 
                 Document oldDOM = writer.getOldDocument();
-
+                applyBrowserChanges(exContext.getRequestParameterValuesMap(), oldDOM);
                 UIViewRoot viewRoot = facesContext.getViewRoot();
                 writer.startDocument();
                 Iterator<UIComponent> itr = viewRoot.getChildren().iterator();
@@ -126,7 +129,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 partialWriter.startDocument();
                 Node[] diffs = new Node[0];
-                if (oldDOM != null && newDOM != null)  {
+                if (oldDOM != null && newDOM != null) {
                     diffs = DOMUtils.domDiff(oldDOM, newDOM);
                 } else {
                     // This shouldn't be the case. Typically it is a symptom that
@@ -136,7 +139,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     } else {
                         log.warning("New DOM is null during domDiff calculation");
                     }
-                } 
+                }
 
                 for (int i = 0; i < diffs.length; i++) {
                     Element element = (Element) diffs[i];
@@ -163,6 +166,112 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
         } else {
             super.processPartial(phaseId);
+        }
+    }
+
+    private void applyBrowserChanges(Map parameters, Document document) {
+        NodeList inputElements = document.getElementsByTagName("input");
+        int inputElementsLength = inputElements.getLength();
+        for (int i = 0; i < inputElementsLength; i++) {
+            Element inputElement = (Element) inputElements.item(i);
+            String id = inputElement.getAttribute("id");
+            if (!"".equals(id)) {
+                String name;
+                if (parameters.containsKey(id)) {
+                    String value = ((String[]) parameters.get(id))[0];
+                    //empty string is implied (default) when 'value' attribute is missing
+                    if ("".equals(value)) {
+                        inputElement.setAttribute("value", "");
+                    } else {
+                        if (inputElement.hasAttribute("value")) {
+                            inputElement.setAttribute("value", value);
+                        } else if (inputElement.getAttribute("type").equals("checkbox")) {
+                            inputElement.setAttribute("checked", "checked");
+                        }
+                    }
+                } else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
+                    String type = inputElement.getAttribute("type");
+                    if (type != null && (type.equals("checkbox") || type.equals("radio"))) {
+                        String currValue = inputElement.getAttribute("value");
+                        if (!"".equals(currValue)) {
+                            boolean found = false;
+                            // For multiple checkboxes, values can have length > 1,
+                            // but for multiple radios, values would have at most length=1
+                            String[] values = (String[]) parameters.get(name);
+                            if (values != null) {
+                                for (int v = 0; v < values.length; v++) {
+                                    if (currValue.equals(values[v])) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (found) {
+                                // For some reason, our multiple checkbox
+                                // components use checked="true", while
+                                // our single checkbox components use
+                                // checked="checked". The latter complying
+                                // with the HTML specification.
+                                // Also, radios use checked="checked"
+                                if (type.equals("checkbox")) {
+                                    inputElement.setAttribute("checked", "true");
+                                } else if (type.equals("radio")) {
+                                    inputElement.setAttribute("checked", "checked");
+                                }
+                            } else {
+                                inputElement.removeAttribute("checked");
+                            }
+                        }
+                    }
+                } else {
+                    if (inputElement.getAttribute("type").equals("checkbox")) {
+                        inputElement.removeAttribute("checked");
+                    }
+                }
+            }
+        }
+
+        NodeList textareaElements = document.getElementsByTagName("textarea");
+        int textareaElementsLength = textareaElements.getLength();
+        for (int i = 0; i < textareaElementsLength; i++) {
+            Element textareaElement = (Element) textareaElements.item(i);
+            String id = textareaElement.getAttribute("id");
+            if (!"".equals(id) && parameters.containsKey(id)) {
+                String value = ((String[]) parameters.get(id))[0];
+                Node firstChild = textareaElement.getFirstChild();
+                if (null != firstChild) {
+                    //set value on the Text node
+                    firstChild.setNodeValue(value);
+                } else {
+                    //DOM brought back from compression may have no
+                    //child for empty TextArea
+                    if (value != null && value.length() > 0) {
+                        textareaElement.appendChild(document.createTextNode(value));
+                    }
+                }
+            }
+        }
+
+        NodeList selectElements = document.getElementsByTagName("select");
+        int selectElementsLength = selectElements.getLength();
+        for (int i = 0; i < selectElementsLength; i++) {
+            Element selectElement = (Element) selectElements.item(i);
+            String id = selectElement.getAttribute("id");
+            if (!"".equals(id) && parameters.containsKey(id)) {
+                List values = Arrays.asList((String[]) parameters.get(id));
+
+                NodeList optionElements =
+                        selectElement.getElementsByTagName("option");
+                int optionElementsLength = optionElements.getLength();
+                for (int j = 0; j < optionElementsLength; j++) {
+                    Element optionElement = (Element) optionElements.item(j);
+                    if (values.contains(optionElement.getAttribute("value"))) {
+                        optionElement.setAttribute("selected", "selected");
+                    } else {
+                        optionElement.removeAttribute("selected");
+                    }
+                }
+            }
         }
     }
 
