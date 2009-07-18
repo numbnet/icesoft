@@ -40,12 +40,12 @@ import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.panelpopup.PanelPopup;
+import com.icesoft.faces.component.util.DelimitedProperties;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.DragDrop;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.icesoft.util.pooling.ClientIdPool;
@@ -73,6 +74,7 @@ public class GroupRenderer
     protected static final String STATUS = "status";
 
     protected static final String DROP = "dropID";
+    protected static final String HIDDEN_FILED = ":iceDND";    
     private static Log log = LogFactory.getLog(GroupRenderer.class);
 
     // Basically, everything is excluded
@@ -109,16 +111,11 @@ public class GroupRenderer
 
                 if (dndType != null) {
                     // Drag an drop needs some hidden fields
-                    Element statusField = createHiddenField(domContext,
-                                                            facesContext,
-                                                            uiComponent,
-                                                            STATUS);
-                    rootSpan.appendChild(statusField);
-
-                    Element targetID = createHiddenField(domContext,
-                                                         facesContext,
-                                                         uiComponent, DROP);
-                    rootSpan.appendChild(targetID);
+                    UIComponent form = findForm(uiComponent);
+                    String formId = form.getClientId(facesContext);
+                    
+                    FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId+HIDDEN_FILED));
+ 
                 }
             }
 
@@ -260,7 +257,7 @@ public class GroupRenderer
 
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
-
+        String clientId = component.getClientId(context);
         if (log.isTraceEnabled()) {
             log.trace("GroupRenderer:decode");
         }
@@ -279,13 +276,19 @@ public class GroupRenderer
             String dndType = getDndType(component);
 
             if (panel.getDraggable() != null || panel.getDropTarget() != null) {
-
-                Map requestMap = context.getExternalContext()
-                        .getRequestParameterValuesMap();
-                String fieldName =
-                        getHiddenFieldName(context, component, STATUS);
-                String status = getParamamterValue(
-                        (String[]) requestMap.get(fieldName));
+         
+                Map requestMap = context.getExternalContext().getRequestParameterMap();
+                
+                UIComponent form = findForm(component);
+                String formId = form.getClientId(context);
+                String hdnFld = ClientIdPool.get(formId+HIDDEN_FILED);
+                if (!requestMap.containsKey(hdnFld)) return;
+                String value = String.valueOf(requestMap.get(hdnFld));
+                DelimitedProperties delimitedProperties = new DelimitedProperties(value);
+                
+                String fieldName = clientId + STATUS;
+                String status = delimitedProperties.get(fieldName);
+                
                 if (status == null) {
                     if (log.isTraceEnabled()) {
                         log.trace("Drag Drop Status for ID [" +
@@ -295,9 +298,8 @@ public class GroupRenderer
                     }
                     return;
                 }
-                String targetID = getParamamterValue((String[]) requestMap
-                        .get(getHiddenFieldName(context, component, DROP)));
-
+                String targetID = delimitedProperties.get(clientId + DROP);
+                
                 Object targetDragValue = null;
                 Object targetDropValue = null;
 

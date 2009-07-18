@@ -79,7 +79,7 @@ Ice.DndEvent.prototype = {
     eventType:null,
     dragFire:null,
     dropFire:null,
-
+    submitInfo:new Ice.delimitedProperties(),
     initialize: function() {
     },
 
@@ -128,13 +128,8 @@ Ice.DndEvent.prototype = {
                 var formId = form.id;
                 var nothingEvent = new Object();
                 var cssUpdate = Ice.DnD.StyleReader.findCssField(ele, form);
-                fe = ele.getElementsByTagName('input');
-                Ice.DnD.logger.debug("Sending Drag Form. Form is [" + form.id + "] Type [" + fe[0].value + "]");
-                var ii = 0;
-                for (ii = 0; ii < fe.length; ii++) {
-                    Ice.DnD.logger.debug("Drag Form Field[" + fe[ii].name + "] Value [" + fe[ii].value + "]");
-                }
                 Ice.DnD.logger.debug("Submitting  drag form ID[" + form.id + "] CssUpdate [" + cssUpdate.value + "]!");
+                this.serializeSubmitInfo(form);
                 try {
                     iceSubmitPartial(form, ele, nothingEvent);
                 } catch(formExcept) {
@@ -152,6 +147,7 @@ Ice.DndEvent.prototype = {
                         iceSubmitPartial(form, this.drop.element, nothingEvent);
                     }
                 }
+                this.resetSubmitInfo(form);
             }
         } catch(exc) {
             Ice.DnD.logger.error("Could not find form in drag drop", exc);
@@ -160,50 +156,18 @@ Ice.DndEvent.prototype = {
     },
 
     populateDrag:function(ele, ignoreCss) {
-        var fe = ele.getElementsByTagName('input');
-        var ne = new Array();
-        var i = 0;
-        
-        var status = null;
-        var dropID = null;
-        
-        // We only want hidden fields.
-        for (i = 0; i < fe.length; i++) {
-            if (fe[i].type == 'hidden') {
-                if(fe[i].id.indexOf('status')> 1){
-                    status = fe[i];
-                }
-                if(fe[i].id.indexOf('dropID')> 1) {
-                    dropID = fe[i];
-                }
-            }
-        }
-
-        if (status != null) {
-            status.value = this.eventType;
-        }
-        if (this.drop && dropID != null) {
-            dropID.value = this.drop.element.id;
-        }
-        if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
-        return true;
+       this.submitInfo.set(ele.id+'status', this.eventType);
+       if (this.drop) {
+          this.submitInfo.set(ele.id+'dropID', this.drop.element.id);         
+       }
+       if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
+       return true;
     },
 
-    populateDrop:function(ele, ignoreCss) {
-        var fe = ele.getElementsByTagName('input');
-        var ne = new Array();
-        var i = 0;
-        // We only want hidden fields.
-        for (i = 0; i < fe.length; i++) {
-            if (fe[i].type == 'hidden') {
-                ne.push(fe[i]);
-            }
-        }
-        fe = ne;
-        fe[0].value = this.eventType;
-        fe[1].value = this.drag.element.id;
+    populateDrop:function(ele, ignoreCss) { 
+        this.submitInfo.set(ele.id+'status', this.eventType);
+        this.submitInfo.set(ele.id+'dropID', this.drag.element.id);      
         if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
-
         return true;
     },
 
@@ -216,6 +180,30 @@ Ice.DndEvent.prototype = {
             }
         }
         return result;
+    },
+    
+    serializeSubmitInfo: function (form) {
+        var str = this.submitInfo.getPropsAsString();
+        var hdn = this.getHiddenField(form); 
+        if(hdn)        
+           hdn.value=str.substring(0, str.length-1);        
+    },
+    
+    resetSubmitInfo: function(form) {
+        this.submitInfo.deleteAll();
+        var hdn = this.getHiddenField(form);
+        if(hdn)
+            hdn.value="";
+    },
+    
+    getHiddenField: function(form) {
+        var hdnId = form.id + ":iceDND";
+        var hdn = document.getElementsByName(hdnId)[0];
+        if (hdn)
+            return hdn;
+        else
+            Ice.DnD.logger.debug("Data field not found");
+        return null;
     }
 };
 
