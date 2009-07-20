@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 public class ThreadBlockingAdaptingServlet implements PseudoServlet {
     private static final Logger LOG = Logger.getLogger(ThreadBlockingAdaptingServlet.class.getName());
-    private static final int TIMEOUT = 10; // minutes
+    private static final int TIMEOUT = 600; // seconds
 
     private Server server;
 
@@ -71,7 +71,7 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
 
         public void blockUntilRespond() throws InterruptedException {
             //Block thread by trying to acquire the semaphore a second time.
-            boolean acquired = semaphore.tryAcquire(TIMEOUT, TimeUnit.MINUTES);
+            boolean acquired = semaphore.tryAcquire(TIMEOUT, TimeUnit.SECONDS);
             if (acquired) {
                 //Release the semaphore previously acquired.
                 semaphore.release();
