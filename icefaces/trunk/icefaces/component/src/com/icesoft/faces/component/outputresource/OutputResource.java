@@ -83,7 +83,7 @@ public class OutputResource extends UIComponentBase {
 			if( lastResourceHashCode != newResourceHashCode ){
 				Resource r = new RegisteredResource(this, currResource, fileName);
 				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-						r).getPath();
+						r).getRawPath();
 			}
 		}
 		return currResource;
