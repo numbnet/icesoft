@@ -186,11 +186,12 @@ public class PanelPopupRenderer extends GroupRenderer {
 			headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
 			handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
 			headerTd.setAttribute(HTML.ID_ATTR, handleId);
+            headerTd.setAttribute(HTML.STYLE_ATTR, "width:100%;");
 			headerTr.appendChild(headerTd);
             Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
             Element headerDiv = domContext.createElement("div");
             headerDiv.setAttribute(HTML.STYLE_ATTR, "width:1px;");
-            headerDiv.setAttribute("class", "icePnlPopHdr");
+            headerTdSpacer.setAttribute("class", "icePnlPopHdr");
             headerTdSpacer.appendChild(headerDiv);
             headerTr.appendChild(headerTdSpacer);
             // add header facet to header tr and add to table
@@ -211,7 +212,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 			bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
 			bodyTr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "-tr"));
 			bodyTr.appendChild(bodyTd);
-			// add body facet to body tr then add to table
+            bodyTd.setAttribute(HTML.COLSPAN_ATTR, "2");
+            // add body facet to body tr then add to table
 			table.appendChild(bodyTr);
 			// set the cursor parent to the new table row Element
 			// this will cause the renderChild method to append the child nodes
@@ -230,7 +232,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 					"text-align: right; float: right;");
 			Element footerTd = domContext.createElement(HTML.TD_ELEM);
 			footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
-			Element img = domContext.createElement(HTML.IMG_ELEM);
+            footerTd.setAttribute(HTML.COLSPAN_ATTR, "2");
+            Element img = domContext.createElement(HTML.IMG_ELEM);
 			img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
 					facesContext, "/xmlhttp/css/xp/css-images/resize.gif"));
 			img.setAttribute(HTML.STYLE_ATTR, "cursor: se-resize");
