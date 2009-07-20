@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,9 +74,13 @@ public class ResourceDispatcher implements Server {
         if (filename == null || filename.trim().equals("")) {
             dispatchFilename = uriFilename = "";
         } else {
-            filename = java.net.URLEncoder.encode(filename);
-            dispatchFilename = filename.replaceAll("\\+", "\\\\+");
-            uriFilename = filename;
+            dispatchFilename = convertToEscapedUnicode(filename);
+            try {
+                uriFilename = java.net.URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+            } catch (UnsupportedEncodingException e) {
+                uriFilename = filename;
+                e.printStackTrace();
+            }
         }
         final String name = prefix + encode(resource) + "/";
         if (!registered.contains(name)) {
@@ -183,6 +188,21 @@ public class ResourceDispatcher implements Server {
 
     private static String encode(Resource resource) {
         return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
+    }
+
+    public static String convertToEscapedUnicode(String s) {
+        char[] chars = s.toCharArray();
+        String hexStr;
+        StringBuffer stringBuffer = new StringBuffer(chars.length * 6);
+        String[] leadingZeros = {"0000", "000", "00", "0", ""};
+        for (int i = 0; i < chars.length; i++) {
+            hexStr = Integer.toHexString(chars[i]).toUpperCase();
+            stringBuffer.append("\\u");
+            stringBuffer.append(leadingZeros[hexStr.length()]);
+//            stringBuffer.append("0000".substring(0, 4 - hexStr.length()));
+            stringBuffer.append(hexStr);
+        }
+        return stringBuffer.toString();
     }
 
     private class RelativeResourceLinker implements ResourceLinker {
