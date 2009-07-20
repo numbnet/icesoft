@@ -259,7 +259,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.expandableTable.FilesRecordsManager
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <!-- group bean -->
      <managed-bean>
