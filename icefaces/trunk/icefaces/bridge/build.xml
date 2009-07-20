@@ -222,6 +222,7 @@
                 <file name="state_mon.js"/>
                 <file name="style.js"/>
                 <file name="initializer.js"/>
+                <file name="delimitedProperties.js"/> 
                 <file name="dragdrop_custom.js"/>
                 <file name="draggable_ext.js"/>
                 <file name="droppable_ext.js"/>
