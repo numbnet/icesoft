@@ -46,7 +46,6 @@ window.evaluate = eval;
     //include cookie.js
     //include delay.js
     //include element.js
-    namespace.$element = $element;
     namespace.$elementWithID = $elementWithID;
     namespace.enclosingBridge = enclosingBridge;
     //include event.js
@@ -60,7 +59,6 @@ window.evaluate = eval;
     //include connection.async.js
     //include submit.js
     namespace.submitEvent = submitEvent;
-    namespace.submitForm = submitForm;
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -130,7 +128,7 @@ window.evaluate = eval;
     onLoad(window, function() {
         each(document.getElementsByTagName('form'), function(f) {
             f.submit = function() {
-                submitForm(null, f);
+                submitEvent(null, f);
             };
             f.onsubmit = none;
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
