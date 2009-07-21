@@ -6,12 +6,10 @@
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces</artifactId>
   <version>1.8.1</version>
-  <licenses>
-     <license>
-        <name>Mozilla Public License, Version 1.1</name>
-        <url>http://www.opensource.org/licenses/mozilla1.1.php</url>
-     </license>
-  </licenses>
+  <packaging>jar</packaging>
+  <name>ICEfaces Core</name>
+  <url>http://www.icefaces.org</url> 
+  <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
   <dependencies>
     <dependency>
       <groupId>backport-util-concurrent</groupId>
@@ -81,6 +79,7 @@
        <version>1.2.2</version>
     </dependency>
   </dependencies>
-
-
+  <scm>
+    <url>http://anonsvn.icefaces.org/repo/icefaces/tags/icefaces-1.8.1/</url>
+  </scm> 
 </project>
