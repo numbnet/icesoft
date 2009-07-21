@@ -24,8 +24,10 @@ package org.icefaces.context;
 
 import org.icefaces.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -41,6 +43,7 @@ import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -143,9 +146,20 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 for (int i = 0; i < diffs.length; i++) {
                     Element element = (Element) diffs[i];
-                    partialWriter.startUpdate(element.getAttribute("id"));
-                    DOMUtils.printNode(element, outputWriter);
-                    partialWriter.endUpdate();
+                    if ("input".equalsIgnoreCase(element.getTagName())) {
+                        Map collectedTuples = new HashMap();
+                        NamedNodeMap attributes = element.getAttributes();
+                        for (int j = 0; j < attributes.getLength(); j++) {
+                            Attr attribute = (Attr) attributes.item(j);
+                            collectedTuples.put(attribute.getName(), attribute.getValue());
+                        }
+
+                        partialWriter.updateAttributes(element.getAttribute("id"), collectedTuples);
+                    } else {
+                        partialWriter.startUpdate(element.getAttribute("id"));
+                        DOMUtils.printNode(element, outputWriter);
+                        partialWriter.endUpdate();
+                    }
                 }
 
                 renderState();
