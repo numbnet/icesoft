@@ -36,6 +36,7 @@ function Event(event, capturingElement) {
         });
 
         method(serializeEventOn, function(self, query) {
+            serializeElementOn(capturingElement, query);
             addNameValue(query, 'ice.event.target', identifier(triggeredBy(self)));
             addNameValue(query, 'ice.event.captured', identifier(capturedBy(self)));
             addNameValue(query, 'ice.event.type', 'on' + type(self));
@@ -48,7 +49,7 @@ function Event(event, capturingElement) {
 function IEEvent(event, capturingElement) {
     return objectWithAncestors(function(method) {
         method(triggeredBy, function(self) {
-            return event.srcElement ? $element(event.srcElement) : null;
+            return event.srcElement ? event.srcElement : null;
         });
 
         method(cancelBubbling, function(self) {
@@ -68,7 +69,7 @@ function IEEvent(event, capturingElement) {
 function NetscapeEvent(event, capturingElement) {
     return objectWithAncestors(function(method) {
         method(triggeredBy, function(self) {
-            return event.target ? $element(event.target) : null;
+            return event.target ? event.target : null;
         });
 
         method(cancelBubbling, function(self) {
@@ -280,17 +281,16 @@ var KeyListenerNames = [ 'onkeydown', 'onkeypress', 'onkeyup', 'onhelp' ];
 
 function $event(e, element) {
     var capturedEvent = window.event || e;
-    var capturingElement = $element(element);
     if (capturedEvent && capturedEvent.type) {
         var eventType = 'on' + capturedEvent.type;
         if (contains(KeyListenerNames, eventType)) {
-            return window.event ? IEKeyEvent(event, capturingElement) : NetscapeKeyEvent(e, capturingElement);
+            return window.event ? IEKeyEvent(event, element) : NetscapeKeyEvent(e, element);
         } else if (contains(MouseListenerNames, eventType)) {
-            return window.event ? IEMouseEvent(event, capturingElement) : NetscapeMouseEvent(e, capturingElement);
+            return window.event ? IEMouseEvent(event, element) : NetscapeMouseEvent(e, element);
         } else {
-            return window.event ? IEEvent(event, capturingElement) : NetscapeEvent(e, capturingElement);
+            return window.event ? IEEvent(event, element) : NetscapeEvent(e, element);
         }
     } else {
-        return UnknownEvent(capturingElement);
+        return UnknownEvent(element);
     }
 }
