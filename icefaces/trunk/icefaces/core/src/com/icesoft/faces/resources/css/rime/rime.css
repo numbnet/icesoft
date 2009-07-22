@@ -653,6 +653,10 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
+.icePnlTbOn .MidMid>div {
+    padding: 1px 8px 5px 28px;	
+}
+
 .icePnlTbOn .RtMid {
     background: url( './css-images/Tab_RtMid.gif' ) repeat top left;
     border: none;
@@ -745,13 +749,17 @@ table.iceSelInpDate tbody tr td table{
 .icePnlTbOff .MidMid>a, .icePnlTbOff .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
-    padding: 0px 0px 0px 28px;
+    padding: 4px 8px 5px 28px;
     margin: 3px;
     font-weight: bold;
     text-decoration: none;
     color: #666;
     cursor: pointer;
     display: block;
+}
+
+.icePnlTbOff .MidMid>div {
+    padding: 1px 8px 5px 28px;	
 }
 
 .icePnlTbOff .MidMid>a:hover {
@@ -863,6 +871,10 @@ table.iceSelInpDate tbody tr td table{
     color: #666;
     cursor: pointer;
     display: block;
+}
+
+.icePnlTbOver .MidMid>div {
+    padding: 1px 8px 5px 28px;	
 }
 
 .icePnlTbOver .MidMid a:hover {
@@ -993,7 +1005,7 @@ table.iceSelInpDate tbody tr td table{
 .icePnlTbOnBtm .MidMid>a, .icePnlTbOnBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
-    padding: 0px 0px 0px 28px;
+    padding: 3px 8px 2px 28px;
     margin: 3px;
     font-weight: bold;
     text-decoration: none;
@@ -1001,6 +1013,12 @@ table.iceSelInpDate tbody tr td table{
     cursor: pointer;
     display: block;
 }
+
+.icePnlTbOnBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
+}	
+
 
 .icePnlTbOnBtm .RtMid {
     background: url( './css-images/Tab_Btm_RtMid.gif' ) repeat bottom left;
@@ -1096,7 +1114,7 @@ table.iceSelInpDate tbody tr td table{
 .icePnlTbOffBtm .MidMid>a, .icePnlTbOffBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
-    padding: 0px 0px 0px 28px;
+    padding: 3px 8px 2px 28px;
     margin: 3px;
     font-weight: bold;
     text-decoration: none;
@@ -1104,6 +1122,11 @@ table.iceSelInpDate tbody tr td table{
     cursor: pointer;
     display: block;
 }
+
+.icePnlTbOffBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
+}		
 
 .icePnlTbOffBtm .MidMid>a:hover, .icePnlTbOffBtm .MidMid>td:hover {
     font-weight: bold;
@@ -1204,13 +1227,18 @@ table.iceSelInpDate tbody tr td table{
 .icePnlTbOverBtm .MidMid>a, .icePnlTbOverBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
-    padding: 0px 0px 0px 28px;
+    padding: 3px 8px 2px 28px;    
     margin: 3px;
     font-weight: bold;
     text-decoration: none;
     color: #666;
     cursor: pointer;
     display: block;
+}
+
+.icePnlTbOverBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
 }
 
 .icePnlTbOverBtm .MidMid>a:hover, .icePnlTbOverBtm .MidMid>td:hover {
