@@ -126,6 +126,13 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
 			setRootElementId(facesContext, rootDiv, uiComponent);
 			rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+			if (uiComponent instanceof PanelTooltip) {
+		        if (((PanelTooltip)uiComponent).isDynamic() && !((PanelTooltip)uiComponent).isVisible()) {
+		            rootDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
+		            domContext.stepOver();
+		            return;
+		        }			    
+			}
 			Element table = domContext.createElement(HTML.TABLE_ELEM);
 			table.setAttribute(HTML.CELLPADDING_ATTR, "0");
 			table.setAttribute(HTML.CELLSPACING_ATTR, "0");
