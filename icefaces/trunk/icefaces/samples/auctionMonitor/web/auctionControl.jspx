@@ -95,6 +95,15 @@
                             action="#{LogBean.toggleTimeStamp}"
                             styleClass="buttons" style="width: 90px;"/></td>
                 </tr>
+                <tr>
+                    <td align="left">Clock Interval:</td>
+                    <td align="left">
+                    <ice:inputText
+                            value="#{ClockBean.tickInterval}"
+                            title="Milliseconds between clock ticks"
+                            action="#{ClockBean.updateInterval}"
+                            styleClass="textField" style="width: 90px;"/></td>
+                </tr>
             </table>
         </div>
         <ice:dataTable value="#{LogBean.controlLog}" var="control">
