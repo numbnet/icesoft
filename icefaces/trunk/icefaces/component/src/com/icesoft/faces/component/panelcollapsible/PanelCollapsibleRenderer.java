@@ -69,9 +69,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                       "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
                       panelCollapsible.isExpanded()+"'; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+            //this anchor should be known by the component only, so we are defining style to the component level
             Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
             anchor.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlClpFocus(this);");
             anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);"); 
+            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
             anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>"));
