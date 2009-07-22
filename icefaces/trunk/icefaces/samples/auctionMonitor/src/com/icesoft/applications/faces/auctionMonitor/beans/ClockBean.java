@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to control the background clock of the entire auction monitor By
- * queuing a render call every pollInterval (default 1000) milliseconds, this
+ * queuing a render call every tickInterval (default 1000) milliseconds, this
  * class allows the auction monitor UI to have ticking clocks In addition this
  * class will help AuctionBean maintain a list of the number of users online
  * through incrementUsers and decrementUsers
@@ -54,7 +54,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClockBean implements Renderable, DisposableBean {
     private static Log log = LogFactory.getLog(ClockBean.class);
     private IntervalRenderer clock;
-    private int pollInterval = 1000;
+    private static int tickInterval = 1000;
     private String autoLoad = " ";
     private PersistentFacesState state = null;
 
@@ -73,22 +73,30 @@ public class ClockBean implements Renderable, DisposableBean {
         return autoLoad;
     }
 
-    public void setPollInterval(int interval) {
-        pollInterval = interval;
+    public void setTickInterval(int interval) {
+        tickInterval = interval;
     }
 
-    public int getPollInterval() {
-        return pollInterval;
+    public int getTickInterval() {
+        return tickInterval;
+    }
+
+    public String updateInterval()  {
+        if (clock.getInterval() != tickInterval) {
+            clock.requestStop();
+            if (tickInterval > 500)  {
+                clock.setInterval(tickInterval);
+                clock.requestRender();
+            }
+        }
+        return "success";
     }
 
     public void setRenderManager(RenderManager manager) {
         if (manager != null) {
             clock = manager.getIntervalRenderer(INTERVAL_RENDERER_GROUP);
-            if (clock.getInterval() != pollInterval) {
-                clock.setInterval(pollInterval);
-            }
             clock.add(this);
-            clock.requestRender();
+            updateInterval();
         }
     }
 
