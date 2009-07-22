@@ -127,22 +127,24 @@ public class PanelTabSet
                 }
 
                 if (child instanceof PanelTab) {
-                    Iterator facets = child.getFacets().keySet().iterator();
-                    while (facets.hasNext()) {
-                        UIComponent facet = (UIComponent)
-                                child.getFacets().get(facets.next());
-                        if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                        facet.processDecodes(context);
-                        } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                        facet.processValidators(context);
-                        } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                        facet.processUpdates(context);
-                        } else {
-                        throw new IllegalArgumentException();
-                        }
-                    }                    
+                    //for the selected tab the facet will be processed by applyphase
                     if (tabIdx == selectedIndex) {
                         applyPhase(context, child, phaseId);
+                    } else {
+                        Iterator facets = child.getFacets().keySet().iterator();
+                        while (facets.hasNext()) {
+                            UIComponent facet = (UIComponent)
+                                    child.getFacets().get(facets.next());
+                            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                            facet.processDecodes(context);
+                            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                            facet.processValidators(context);
+                            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                            facet.processUpdates(context);
+                            } else {
+                            throw new IllegalArgumentException();
+                            }
+                        }                           
                     }
                     tabIdx++;
                 }
