@@ -141,7 +141,6 @@ public class DynamicTabSetBean implements Serializable {
     }
 
     public List getTabs() {
-        removeDeletedTab();
         return tabs;
     }
 
@@ -156,26 +155,6 @@ public class DynamicTabSetBean implements Serializable {
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
     }
-    
-    private void removeDeletedTab() {
-        if (tabs != null ) {
-            Iterator it = tabs.iterator();
-            int remove = -1;
-            while(it.hasNext()) {
-                Tab tab = (Tab)it.next();
-                if (tab.isDeleted()) {
-                    remove = tab.getIndex();
-                }
-            }
-            if (remove > -1) {
-                tabs.remove(remove);
-                for (int i=0; i < tabs.size(); i++) {
-                   ((Tab)tabs.get(i)).setIndex(i);           
-                }
-                tabIndex = tabs.size() -1;
-            }     
-        }        
-    }
 
     /**
      * Inner class that represents a tab object with a label, content, and an
@@ -184,7 +163,6 @@ public class DynamicTabSetBean implements Serializable {
     public class Tab {
         MsgString label;
         MsgString content;
-        private boolean deleted;
         private int index;
 
         Tab(MsgString label, MsgString content, int index) {
@@ -200,10 +178,6 @@ public class DynamicTabSetBean implements Serializable {
         public String getContent() {
             return content.toString();
         }
-        
-        public void closeTab(ActionEvent event) {
-            deleted = true;
-        }
 
         public int getIndex() {
             return index;
@@ -213,9 +187,9 @@ public class DynamicTabSetBean implements Serializable {
             this.index = index;
         }
 
-        public boolean isDeleted() {
-            return deleted;
-        }
+        public void closeTab(ActionEvent event) {
+           tabs.remove(this);
+        }          
     }
     
     public static class MsgString {
