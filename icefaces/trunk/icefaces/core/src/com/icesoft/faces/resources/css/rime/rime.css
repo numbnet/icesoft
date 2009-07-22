@@ -594,7 +594,7 @@ table.iceSelInpDate tbody tr td table{
     margin-right: 0;
 }
 
-.icePnlTbOn .MidMid td, .icePnlTbOn .MidMid>div {
+.icePnlTbOn .MidMid td, .icePnlTbOn .MidMid div.ptfd {
     font-weight: bold;
     white-space: nowrap;
     text-align: center;
@@ -641,7 +641,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOn .MidMid>a, .icePnlTbOn .MidMid>div {
+.icePnlTbOn .MidMid a, .icePnlTbOn .MidMid div.ptfd {
     background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -653,7 +653,7 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOn .MidMid>div {
+.icePnlTbOn .MidMid div.ptfd {
     padding: 1px 8px 5px 28px;	
 }
 
@@ -689,7 +689,7 @@ table.iceSelInpDate tbody tr td table{
     height: 1px;
 }
 
-* html .icePnlTbOn .MidMid>a,  * html .icePnlTbOn .MidMid>div{
+* html .icePnlTbOn .MidMid a,  * html .icePnlTbOn .MidMid div.ptfd{
     width: 1%;
 }
 
@@ -699,7 +699,7 @@ table.iceSelInpDate tbody tr td table{
     margin-right: 0;
 }
 
-.icePnlTbOff .MidMid td, .icePnlTbOff .MidMid>div {
+.icePnlTbOff .MidMid td, .icePnlTbOff .MidMid div.ptfd {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -746,7 +746,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOff .MidMid>a, .icePnlTbOff .MidMid>div {
+.icePnlTbOff .MidMid a, .icePnlTbOff .MidMid div.ptfd {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -758,11 +758,11 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOff .MidMid>div {
+.icePnlTbOff .MidMid div.ptfd {
     padding: 1px 8px 5px 28px;	
 }
 
-.icePnlTbOff .MidMid>a:hover {
+.icePnlTbOff .MidMid a:hover {
     font-weight: bold;
 }
 .icePnlTbOff .MidMid td:hover{
@@ -803,7 +803,7 @@ table.iceSelInpDate tbody tr td table{
     height: 1px;
 }
 
-* html .icePnlTbOff .MidMid>a,  * html .icePnlTbOff .MidMid>div{
+* html .icePnlTbOff .MidMid a,  * html .icePnlTbOff .MidMid div.ptfd{
     width: 1%;
 }
 
@@ -814,7 +814,7 @@ table.iceSelInpDate tbody tr td table{
 
 }
 
-.icePnlTbOver .MidMid td, .icePnlTbOver .MidMid>div {
+.icePnlTbOver .MidMid td, .icePnlTbOver .MidMid div.ptfd{
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -861,7 +861,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOver .MidMid>a, .icePnlTbOver .MidMid>div {
+.icePnlTbOver .MidMid a, .icePnlTbOver .MidMid div.ptfd {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 4px 8px 5px 28px;
@@ -873,7 +873,7 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOver .MidMid>div {
+.icePnlTbOver .MidMid  div.ptfd {
     padding: 1px 8px 5px 28px;	
 }
 
@@ -916,7 +916,7 @@ table.iceSelInpDate tbody tr td table{
     height: 1px;
 }
 
-* html .icePnlTbOver .MidMid>a, * html .icePnlTbOver .MidMid>div {
+* html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid div.ptfd  {
     width: 1%;
 }
 
@@ -958,7 +958,7 @@ table.iceSelInpDate tbody tr td table{
     margin-right: 0;
 }
 
-.icePnlTbOnBtm .MidMid>td, .icePnlTbOnBtm .MidMid>div {
+.icePnlTbOnBtm .MidMid td, .icePnlTbOnBtm .MidMid div.ptfd {
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
@@ -1002,7 +1002,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOnBtm .MidMid>a, .icePnlTbOnBtm .MidMid>div {
+.icePnlTbOnBtm .MidMid a, .icePnlTbOnBtm .MidMid div.ptfd{
     background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
@@ -1014,9 +1014,8 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOnBtm .MidMid>div {
+.icePnlTbOnBtm .MidMid div.ptfd {
     padding: 0px 0px 0px 28px;
-    margin: 3px;
 }	
 
 
@@ -1054,7 +1053,7 @@ table.iceSelInpDate tbody tr td table{
     height: 4px;
 }
 
-* html .icePnlTbOnBtm .MidMid>a, * html .icePnlTbOnBtm .MidMid>div {
+* html .icePnlTbOnBtm .MidMid a, * html .icePnlTbOnBtm .MidMid div.ptfd {
     width: 1%;
 }
 
@@ -1064,7 +1063,7 @@ table.iceSelInpDate tbody tr td table{
     margin-right: 0;
 }
 
-.icePnlTbOffBtm .MidMid td, .icePnlTbOffBtm .MidMid>div {
+.icePnlTbOffBtm .MidMid td, .icePnlTbOffBtm .MidMid div.ptfd {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -1111,7 +1110,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOffBtm .MidMid>a, .icePnlTbOffBtm .MidMid>div {
+.icePnlTbOffBtm .MidMid a, .icePnlTbOffBtm .MidMid div.ptfd {
     background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;
@@ -1123,12 +1122,11 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOffBtm .MidMid>div {
+.icePnlTbOffBtm .MidMid div.ptfd{
     padding: 0px 0px 0px 28px;
-    margin: 3px;
 }		
 
-.icePnlTbOffBtm .MidMid>a:hover, .icePnlTbOffBtm .MidMid>td:hover {
+.icePnlTbOffBtm .MidMid a:hover, .icePnlTbOffBtm .MidMid>td:hover {
     font-weight: bold;
 }
 
@@ -1166,7 +1164,7 @@ table.iceSelInpDate tbody tr td table{
     height: 4px;
 }
 
-* html .icePnlTbOffBtm .MidMid>a, * html .icePnlTbOffBtm .MidMid>td{
+* html .icePnlTbOffBtm .MidMid a, * html .icePnlTbOffBtm .MidMid td{
     width: 1%;
 }
 
@@ -1177,7 +1175,7 @@ table.iceSelInpDate tbody tr td table{
 
 }
 
-.icePnlTbOverBtm .MidMid td, .icePnlTbOverBtm .MidMid>div {
+.icePnlTbOverBtm .MidMid td, .icePnlTbOverBtm .MidMid div.ptfd {
     text-align: center;
     white-space: nowrap;
     font-weight: bold;
@@ -1224,7 +1222,7 @@ table.iceSelInpDate tbody tr td table{
     text-align: center;
 }
 
-.icePnlTbOverBtm .MidMid>a, .icePnlTbOverBtm .MidMid>div {
+.icePnlTbOverBtm .MidMid a, .icePnlTbOverBtm .MidMid div.ptfd {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
     padding: 3px 8px 2px 28px;    
@@ -1236,12 +1234,11 @@ table.iceSelInpDate tbody tr td table{
     display: block;
 }
 
-.icePnlTbOverBtm .MidMid>div {
+.icePnlTbOverBtm .MidMid div.ptfd {
     padding: 0px 0px 0px 28px;
-    margin: 3px;
 }
 
-.icePnlTbOverBtm .MidMid>a:hover, .icePnlTbOverBtm .MidMid>td:hover {
+.icePnlTbOverBtm .MidMid a:hover, .icePnlTbOverBtm .MidMid td:hover {
     font-weight: bold;
 }
 
@@ -1279,7 +1276,7 @@ table.iceSelInpDate tbody tr td table{
     height: 4px;
 }
 
-* html .icePnlTbOverBtm .MidMid>a {
+* html .icePnlTbOverBtm .MidMid a {
 
 }
 
@@ -1300,6 +1297,18 @@ table.iceSelInpDate tbody tr td table{
     border-top: 1px solid #ABABAB;
     border-left: 1px solid #ABABAB;
     background-color: #FFFFFF;
+}
+
+.icePnlTbOn .MidMid div.ptfd a , 
+.icePnlTbOff .MidMid div.ptfd a ,
+.icePnlTbOver .MidMid div.ptfd a ,
+.icePnlTbOnBtm .MidMid div.ptfd a ,
+.icePnlTbOffBtm .MidMid div.ptfd a ,
+.icePnlTbOverBtm .MidMid div.ptfd a {
+	background-image:none;
+	border:none;
+	margin:0;
+	padding:0;
 }
 
 
@@ -2156,7 +2165,7 @@ table.iceSelInpDate tbody tr td table{
     color: #ABABAB;
 }
 
-.icePnlTbOff .MidMid-dis>a, .icePnlTbOff .MidMid-dis>div {
+.icePnlTbOff .MidMid-dis a, .icePnlTbOff .MidMid-dis div.ptfd {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2246,7 +2255,7 @@ table.iceSelInpDate tbody tr td table{
     color: #ABABAB;
 }
 
-.icePnlTbOffBtm .MidMid-dis>a, .icePnlTbOffBtm .MidMid-dis>div{
+.icePnlTbOffBtm .MidMid-dis a, .icePnlTbOffBtm .MidMid-dis div.ptfd{
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2337,7 +2346,7 @@ table.iceSelInpDate tbody tr td table{
     color: #ABABAB;
 }
 
-.icePnlTbOnBtm .MidMid-dis>a, .icePnlTbOnBtm .MidMid-dis>a{
+.icePnlTbOnBtm .MidMid-dis a, .icePnlTbOnBtm .MidMid-dis a{
     text-decoration: none;
     color: #ABABAB;
     cursor: default;
@@ -2430,7 +2439,7 @@ table.iceSelInpDate tbody tr td table{
     color: #ABABAB;
 }
 
-.icePnlTbOn .MidMid-dis>a, .icePnlTbOn .MidMid-dis>div {
+.icePnlTbOn .MidMid-dis a, .icePnlTbOn .MidMid-dis div.ptfd {
     text-decoration: none;
     color: #ABABAB;
     cursor: default;

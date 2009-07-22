@@ -42,8 +42,11 @@ Ice.treeNavigator = {
 
            var ele = Event.element(event);
            var kc= event.keyCode;
-           imgSrc = ele.firstChild.getAttribute('src');
-
+           var imgSrc = null;
+           if (ele && ele.firstChild.getAttribute) {
+              imgSrc = ele.firstChild.getAttribute('src');
+           }
+          if (!imgSrc) return;
           switch (kc) {
 	          case 37: //left
 	          //root node

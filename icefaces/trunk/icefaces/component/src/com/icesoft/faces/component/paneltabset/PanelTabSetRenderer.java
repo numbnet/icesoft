@@ -644,6 +644,7 @@ public class PanelTabSetRenderer
                 Element div = domContext.createElement(HTML.DIV_ELEM); 
                 td_mid_mid.appendChild(div);
                 div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                div.setAttribute(HTML.CLASS_ATTR, "ptfd");
                 div.appendChild(link);
                 Node cursor = domContext.getCursorParent();
                 domContext.setCursorParent(div);
