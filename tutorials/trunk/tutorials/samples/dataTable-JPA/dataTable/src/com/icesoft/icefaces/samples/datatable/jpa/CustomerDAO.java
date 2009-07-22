@@ -62,6 +62,28 @@ public class CustomerDAO {
         }
     }
 
+	public void delete(Customer persistentInstance) {
+		EntityManagerHelper.log("deleting Customer instance", Level.INFO, null);
+		try {
+			getEntityManager().remove(getEntityManager().merge(persistentInstance));
+			EntityManagerHelper.log("delete successful", Level.INFO, null);
+		} catch (RuntimeException re) {
+			EntityManagerHelper.log("delete failed", Level.SEVERE, re);
+			throw re;
+		}
+	}
+
+	public void save(Customer transientInstance) {
+		EntityManagerHelper.log("saving Customer instance", Level.INFO, null);
+		try {
+			getEntityManager().persist(transientInstance);
+			EntityManagerHelper.log("save successful", Level.INFO, null);
+		} catch (RuntimeException re) {
+			EntityManagerHelper.log("save failed", Level.SEVERE, re);
+			throw re;
+		}
+	}
+
     @SuppressWarnings("unchecked")
     public List<Customer> findPageCustomers(String sortColumnName, boolean sortAscending, int startRow, int maxResults) {
         EntityManagerHelper.log("finding page Customer instances", Level.INFO,
