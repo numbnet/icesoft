@@ -610,6 +610,10 @@ input.iceSelInpDateClosePopup {
     display: block;
 }
 
+.icePnlTbOn .MidMid>div {
+    padding: 1px 8px 5px 28px;	
+}
+
 .icePnlTbOn .RtMid {
     background: url( './css-images/Tab_RtMid.gif' ) repeat top left;
     border: none;
@@ -709,6 +713,10 @@ input.iceSelInpDateClosePopup {
     color: #666;
     cursor: pointer;
     display: block;
+}
+
+.icePnlTbOff .MidMid>div {
+    padding: 1px 8px 5px 28px;	
 }
 
 .icePnlTbOff .MidMid a:hover {
@@ -822,6 +830,10 @@ input.iceSelInpDateClosePopup {
     display: block;
 }
 
+.icePnlTbOver .MidMid>div {
+    padding: 1px 8px 5px 28px;	
+}
+
 .icePnlTbOver .MidMid a:hover {
     font-weight: bold;
     color: #3581A5;
@@ -916,7 +928,6 @@ input.iceSelInpDateClosePopup {
     padding: 0;
     text-align: center;
     height: 1px;
-
 }
 
 .icePnlTbOnBtm .MidTop {
@@ -959,6 +970,11 @@ input.iceSelInpDateClosePopup {
     color: #666;
     cursor: pointer;
     display: block;
+}
+
+.icePnlTbOnBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
 }
 
 .icePnlTbOnBtm .RtMid {
@@ -1064,6 +1080,11 @@ input.iceSelInpDateClosePopup {
     display: block;
 }
 
+.icePnlTbOffBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
+}
+
 .icePnlTbOffBtm .MidMid a:hover {
     font-weight: bold;
 }
@@ -1163,7 +1184,7 @@ input.iceSelInpDateClosePopup {
 .icePnlTbOverBtm .MidMid>a, .icePnlTbOverBtm .MidMid>div {
     background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
     border: none;
-    padding: 3px 8px 2px 28px;
+    padding: 3px 8px 2px 28px;    
     margin: 3px;
     font-weight: bold;
     text-decoration: none;
@@ -1171,6 +1192,12 @@ input.iceSelInpDateClosePopup {
     cursor: pointer;
     display: block;
 }
+
+.icePnlTbOverBtm .MidMid>div {
+    padding: 0px 0px 0px 28px;
+    margin: 3px;
+}
+
 
 .icePnlTbOverBtm .MidMid a:hover {
     font-weight: bold;
