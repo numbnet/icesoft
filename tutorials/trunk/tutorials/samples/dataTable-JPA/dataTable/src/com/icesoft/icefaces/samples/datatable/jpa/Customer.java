@@ -33,10 +33,7 @@
 
 package com.icesoft.icefaces.samples.datatable.jpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {})
@@ -98,6 +95,7 @@ public class Customer implements java.io.Serializable {
 
     // Property accessors
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CUSTOMERNUMBER", unique = true, nullable = false, insertable = true, updatable = true)
     public Integer getCustomernumber() {
         return this.customernumber;

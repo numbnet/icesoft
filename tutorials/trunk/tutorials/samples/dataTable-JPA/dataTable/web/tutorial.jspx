@@ -142,15 +142,38 @@
                                 value="#{customerbean.tempcontactfirstname}"/>
                         <ice:inputText
                                 value="#{customerbean.tempcontactlastname}"/>
-                        <ice:commandButton value="Commit"
-                                           actionListener="#{customerbean.commit}"/>
-                        <ice:commandButton value="Cancel"
-                                           actionListener="#{customerbean.cancel}"/>
+                        <ice:panelGroup>
+                            <ice:commandButton value="Commit"
+                                               actionListener="#{customerbean.commit}"/>
+                            <ice:commandButton value="Cancel"
+                                               actionListener="#{customerbean.cancel}"/>
+                        </ice:panelGroup>
+                        <ice:commandButton value="Delete"
+                                           actionListener="#{customerbean.delete}"/>
                     </ice:panelGrid>
 
                 </ice:column>
 
             </ice:dataTable>
+            <!-- ADD RECORD ROW  -->
+            <ice:commandButton rendered="#{!sessionBean.addRecord}"
+                               value="Add Record"
+                               actionListener="#{sessionBean.toggleAddRecord}"/>
+            <ice:panelGrid columns="4"
+                           rendered="#{sessionBean.addRecord}"
+                           width="750px"
+                           columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn">
+                <ice:inputText
+                        value="#{sessionBean.tempcontactfirstname}"/>
+                <ice:panelGroup>
+                    <ice:inputText
+                            value="#{sessionBean.tempcontactlastname}"/>
+                    <ice:commandButton value="Add"
+                                       actionListener="#{sessionBean.add}"/>
+                    <ice:commandButton value="Cancel"
+                                       actionListener="#{sessionBean.toggleAddRecord}"/>
+                </ice:panelGroup>
+            </ice:panelGrid>
             <ice:messages/>
         </ice:form>
 

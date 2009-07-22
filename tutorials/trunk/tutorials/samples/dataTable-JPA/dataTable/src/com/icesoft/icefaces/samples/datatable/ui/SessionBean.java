@@ -35,6 +35,7 @@ package com.icesoft.icefaces.samples.datatable.ui;
 
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
@@ -45,6 +46,7 @@ import com.icesoft.icefaces.samples.datatable.jpa.CustomerDAO;
 import com.icesoft.icefaces.samples.datatable.jpa.EntityManagerHelper;
 
 import javax.faces.model.DataModel;
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,10 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
     // Current items in ui
     private List<CustomerBean> uiCustomerBeans = new ArrayList<CustomerBean>(pageSize);
 
+    private boolean addRecord;
+    private String tempcontactfirstname;
+    private String tempcontactlastname;
+
     public SessionBean() {
         // default sort header, sorting is performed during database query
         super(CONTACTFIRSTNAME);
@@ -106,6 +112,30 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         return CONTACTLASTNAME;
     }
 
+    public boolean isAddRecord() {
+        return addRecord;
+    }
+
+    public void setAddRecord(boolean addRecord) {
+        this.addRecord = addRecord;
+    }
+
+    public String getTempcontactfirstname() {
+        return tempcontactfirstname;
+    }
+
+    public void setTempcontactfirstname(String tempcontactfirstname) {
+        this.tempcontactfirstname = tempcontactfirstname;
+    }
+
+    public String getTempcontactlastname() {
+        return tempcontactlastname;
+    }
+
+    public void setTempcontactlastname(String tempcontactlastname) {
+        this.tempcontactlastname = tempcontactlastname;
+    }
+
     /**
      * This method is called when a render call is made from the server.  Render
      * calls are only made to views containing an updated record. The data is
@@ -122,6 +152,7 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
      */
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
+        renderManager.getOnDemandRenderer(SessionRenderer.ALL_SESSIONS).add(this);
     }
 
     public void renderingException(RenderingException arg0) {
@@ -177,6 +208,51 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()).requestRender();
     }
 
+    /**
+     * Commit updates Customer data to the database and requests a render of
+     * views containing the Customer data so they will be refreshed with the update.
+     */
+    public void delete(Customer customer) {
+        EntityManagerHelper.beginTransaction();
+        CUSTOMERDAO.delete(customer);
+        EntityManagerHelper.commit();
+        renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()).requestRender();
+        //renderManager.removeRenderer(renderManager.getOnDemandRenderer(customer.getCustomernumber().toString()));
+    }
+
+    /**
+     * Commit updates Customer data to the database and requests a render of
+     * views containing the Customer data so they will be refreshed with the update.
+     */
+    public void save(Customer customer) {
+        EntityManagerHelper.beginTransaction();
+        CUSTOMERDAO.save(customer);
+        EntityManagerHelper.commit();
+        renderManager.getOnDemandRenderer(SessionRenderer.ALL_SESSIONS).requestRender();
+    }
+
+    /**
+     * <p>Bound to commandButton actionListener in the ui that commits Customer
+     * changes to the database.</p>
+     */
+    public void add(ActionEvent e) {
+        Customer newCustomer = new Customer();
+        newCustomer.setContactfirstname(tempcontactfirstname);
+        newCustomer.setContactlastname(tempcontactlastname);
+        save(newCustomer);
+        addRecord = !addRecord;
+    }
+
+    /**
+     * <p>Bound to commandButton actionListener in the ui that cancels potential
+     * Customer changes to the database and unrenders the editable Customer
+     * details.</p>
+     */
+    public void toggleAddRecord(ActionEvent e) {
+        tempcontactfirstname = "";
+        tempcontactlastname = "";
+        addRecord = !addRecord;
+    }
 
     /**
      * This is where the Customer data is retrieved from the database and
@@ -193,7 +269,13 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
         if (endIndex > totalNumberCustomers) {
             endIndex = totalNumberCustomers;
         }
+        // The final record has been deleted, pushing us into the previous page
+        if(endIndex-startRow == 0){
+            startRow = startRow - pageSize;
+            onePageDataModel.setRowIndex(startRow);
 
+        }
+        
         // Query database for sorted results.
         List<Customer> pageCustomers = CUSTOMERDAO.findPageCustomers(sortColumnName, sortAscending, startRow, endIndex - startRow);
 

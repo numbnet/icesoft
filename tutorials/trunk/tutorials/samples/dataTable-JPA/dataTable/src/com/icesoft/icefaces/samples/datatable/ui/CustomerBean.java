@@ -122,4 +122,14 @@ public class CustomerBean {
         expanded = !expanded;
     }
 
+    /**
+     * <p>Bound to commandButton actionListener in the ui that cancels potential
+     * Customer changes to the database and unrenders the editable Customer
+     * details.</p>
+     */
+    public void delete(ActionEvent e) {
+        sessionBean.delete(customer);
+        expanded = !expanded;
+    }
+
 }
