@@ -2,11 +2,13 @@ package com.icesoft.faces.component.outputresource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +18,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 
 public class OutputResource extends UIComponentBase {
 
@@ -360,6 +363,7 @@ class RegisteredResource implements Resource {
     private String mimeType;
     private boolean isAttachment;
     private boolean isShared;
+    private String contentDispositionFileName;
 
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
         this.resource = resource;
@@ -369,6 +373,11 @@ class RegisteredResource implements Resource {
         mimeType = outputResource.getMimeType();
         isAttachment = outputResource.isAttachment();
         isShared = outputResource.isShared();
+        try {
+            contentDispositionFileName = encodeContentDispositionFilename(fileName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     public String calculateDigest() {
@@ -413,6 +422,10 @@ class RegisteredResource implements Resource {
             options.setAsAttachement();
         else if (isAttachment)
             options.setAsAttachement();
+
+        if (options instanceof ResourceDispatcher.ExtendedResourceOptions) {
+            ((ResourceDispatcher.ExtendedResourceOptions) options).setContentDispositionFileName(contentDispositionFileName);
+        }
     }
 
     private class ResourceOptions implements Resource.Options {
@@ -440,4 +453,58 @@ class RegisteredResource implements Resource {
             isAttachment = true;
         }
     }
+
+    private static String encodeContentDispositionFilename(String fileName) throws UnsupportedEncodingException {
+        if (fileName == null || fileName.trim().length() == 0) return null;
+
+        String userAgent = null;
+        Object o = FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        if (o instanceof HttpServletRequest) {
+            HttpServletRequest request = (HttpServletRequest) o;
+            userAgent = request.getHeader("user-agent").toLowerCase();
+        }
+        System.out.println("userAgent = " + userAgent);
+        if (userAgent == null || userAgent.trim().length() == 0) return null;
+
+        if (userAgent.indexOf("msie") > -1) return encodeForIE(fileName);
+
+        if (userAgent.indexOf("firefox") > -1) return encodeForFirefox(fileName);
+
+        return null;
+    }
+
+    // contributed by Robert Vojta
+    private static String encodeForIE(String fileName) throws UnsupportedEncodingException {
+        /*
+         * http://greenbytes.de/tech/tc2231/#attwithfnrawpctenca
+         *
+         * IE decodes %XY to characters and than if it detects
+         * UTF-8 stream (after decoding of %XY), than it creates
+         * UTF-8 string.
+         *
+         * We use this behavior to offer correct file name
+         * for download.
+         */
+        return java.net.URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+    }
+
+    // contributed by Robert Vojta
+    private static String encodeForFirefox(String fileName) throws UnsupportedEncodingException {
+        /*
+         * http://greenbytes.de/tech/tc2231/#attwithutf8fnplain
+         *
+         * Firefox is trying to be smart and decodes UTF-8 characters
+         * written as ISO-8859-1 bytes as UTF-8.
+         *
+         * We use this Firefox behavior to offer correct file name
+         * for download.
+         */
+        StringBuffer encodedFileName = new StringBuffer();
+        byte[] utf8Bytes = fileName.getBytes("UTF-8");
+        for (int i = 0; i < utf8Bytes.length; i++) {
+            encodedFileName.append((char) utf8Bytes[i]);
+        }
+        return encodedFileName.toString();
+    }
+
 }

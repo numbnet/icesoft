@@ -141,7 +141,8 @@ public class ResourceDispatcher implements Server {
             response.setHeader("Last-Modified", options.lastModified);
             response.setHeader("Expires", options.expiresBy);
             if (options.attachement) {
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + options.fileName + "\"");
+                String contentDispositionFileName = options.contentDispositionFileName == null ? options.fileName : options.contentDispositionFileName;
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + contentDispositionFileName + "\"");
             }
             InputStream inputStream = resource.open();
             if (inputStream == null) {
@@ -157,12 +158,13 @@ public class ResourceDispatcher implements Server {
         public void shutdown() {
         }
 
-        private class ResourceOptions implements Resource.Options {
+        private class ResourceOptions implements ExtendedResourceOptions {
             private Date lastModified = new Date();
             private Date expiresBy = monitor.expiresBy();
             private String mimeType;
             private String fileName;
             private boolean attachement;
+            private String contentDispositionFileName;
 
             public void setMimeType(String type) {
                 mimeType = type;
@@ -182,6 +184,10 @@ public class ResourceDispatcher implements Server {
 
             public void setAsAttachement() {
                 attachement = true;
+            }
+
+            public void setContentDispositionFileName(String contentDispositionFileName) {
+                this.contentDispositionFileName = contentDispositionFileName;
             }
         }
     }
@@ -240,5 +246,9 @@ public class ResourceDispatcher implements Server {
 
         public void setMimeType(String mimeType) {
         }
+    }
+
+    public interface ExtendedResourceOptions extends Resource.Options {
+        public void setContentDispositionFileName(String contentDispositionFileName);
     }
 }
