@@ -106,9 +106,6 @@
                 <f:facet name="label">
                         <ice:panelGrid columns="2">
                             <ice:outputText value="#{tab.label}"/>
-                            <ice:commandButton disabled= "#{dynamicTabbedPaneExample.tabsSize == 1}" 
-                            image="/xmlhttp/css/#{styleBean.currentStyle}/css-images/cal_off.gif" 
-                            actionListener="#{tab.closeTab}" />
                         </ice:panelGrid>
                 </f:facet>
                 <ice:panelGroup style="height:50px;">
