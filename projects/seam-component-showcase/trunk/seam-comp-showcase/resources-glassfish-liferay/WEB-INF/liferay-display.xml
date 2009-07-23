@@ -29,6 +29,7 @@
         <portlet id="components_progressBar"/>
         <portlet id="components_rich_text_editor"/>
         <portlet id="components_selection"/>
+        <portlet id="components_setEventPhase"/>        
         <portlet id="components_table_columns"/>
         <portlet id="components_table_dataPaging"/>
         <portlet id="components_table_expandable"/>
@@ -38,6 +39,7 @@
         <portlet id="components_table_sortableHeader"/>
         <portlet id="components_textEntry"/>
         <portlet id="components_tree"/>
+        <portlet id="components_output_resource"/>
         
     </category>
 

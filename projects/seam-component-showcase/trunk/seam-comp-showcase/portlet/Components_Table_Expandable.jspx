@@ -46,8 +46,8 @@
     <ice:portlet styleClass="componentBoxPortlet">
 
         <ice:outputStyle href="/xmlhttp/css/rime/rime-portlet.css"/>
-        <ice:outputStyle href="./css/showcase_style.css"/>
-        <h2>Expandable Data Table</h2>
+        <ice:outputStyle href="/css/showcase_style.css"/>
+
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
             <ice:panelGroup id="tableExpandableContentPanel" style="float:left;">

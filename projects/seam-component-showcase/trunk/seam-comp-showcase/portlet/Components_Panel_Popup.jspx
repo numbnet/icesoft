@@ -49,7 +49,7 @@
         <ice:outputText value="#{ctxtUtil.liferayScript}" escape="false"/>
 
         <ice:outputStyle href="/xmlhttp/css/rime/rime-portlet.css"/>
-        <ice:outputStyle href="./css/showcase_style.css"/>
+        <ice:outputStyle href="/css/showcase_style.css"/>
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
