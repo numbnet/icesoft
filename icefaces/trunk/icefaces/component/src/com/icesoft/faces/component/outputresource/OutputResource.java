@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.net.URLEncoder;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -373,11 +374,10 @@ class RegisteredResource implements Resource {
         mimeType = outputResource.getMimeType();
         isAttachment = outputResource.isAttachment();
         isShared = outputResource.isShared();
-        try {
-            contentDispositionFileName = encodeContentDispositionFilename(fileName);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        // ICE-4342
+        // Encoded filename in Content-Disposition header; to be used in save file dialog;
+        // See http://greenbytes.de/tech/tc2231/
+        contentDispositionFileName = encodeContentDispositionFilename(fileName);
     }
 
     public String calculateDigest() {
@@ -454,27 +454,34 @@ class RegisteredResource implements Resource {
         }
     }
 
-    private static String encodeContentDispositionFilename(String fileName) throws UnsupportedEncodingException {
-        if (fileName == null || fileName.trim().length() == 0) return null;
+    // ICE-4342
+    // Encode filename for Content-Disposition header; to be used in save file dialog;
+    // See http://greenbytes.de/tech/tc2231/
+    private static String encodeContentDispositionFilename(String fileName) {
+        if (fileName == null || fileName.trim().length() == 0) return "=\"\"";
 
+        String defaultFileName = "=\"" + fileName + "\"";
         String userAgent = null;
         Object o = FacesContext.getCurrentInstance().getExternalContext().getRequest();
         if (o instanceof HttpServletRequest) {
             HttpServletRequest request = (HttpServletRequest) o;
             userAgent = request.getHeader("user-agent").toLowerCase();
         }
-        System.out.println("userAgent = " + userAgent);
-        if (userAgent == null || userAgent.trim().length() == 0) return null;
+        if (userAgent == null || userAgent.trim().length() == 0) return defaultFileName;
 
-        if (userAgent.indexOf("msie") > -1) return encodeForIE(fileName);
+        try {
+            if (userAgent.indexOf("msie") > -1) return encodeForIE(fileName);
+            if (userAgent.indexOf("firefox") > -1 || userAgent.indexOf("opera") > -1) return encodeForFirefox(fileName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        if (userAgent.indexOf("firefox") > -1) return encodeForFirefox(fileName);
-
-        return null;
+        return defaultFileName;
     }
 
     // contributed by Robert Vojta
-    private static String encodeForIE(String fileName) throws UnsupportedEncodingException {
+    private static String encodeForIE(String fileName)
+            throws UnsupportedEncodingException {
         /*
          * http://greenbytes.de/tech/tc2231/#attwithfnrawpctenca
          *
@@ -485,26 +492,25 @@ class RegisteredResource implements Resource {
          * We use this behavior to offer correct file name
          * for download.
          */
-        return java.net.URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
-    }
-
-    // contributed by Robert Vojta
-    private static String encodeForFirefox(String fileName) throws UnsupportedEncodingException {
-        /*
-         * http://greenbytes.de/tech/tc2231/#attwithutf8fnplain
-         *
-         * Firefox is trying to be smart and decodes UTF-8 characters
-         * written as ISO-8859-1 bytes as UTF-8.
-         *
-         * We use this Firefox behavior to offer correct file name
-         * for download.
-         */
         StringBuffer encodedFileName = new StringBuffer();
-        byte[] utf8Bytes = fileName.getBytes("UTF-8");
-        for (int i = 0; i < utf8Bytes.length; i++) {
-            encodedFileName.append((char) utf8Bytes[i]);
-        }
+        encodedFileName.append("=\""); // ICEfaces 1.7.2 bug
+        encodedFileName.append(URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
+        encodedFileName.append("\""); // ICEfaces 1.7.2 bug
+
         return encodedFileName.toString();
     }
+    // contributed by Robert Vojta
+    private static String encodeForFirefox(String fileName)
+            throws UnsupportedEncodingException {
+        /*
+         * http://greenbytes.de/tech/tc2231/#attwithfn2231utf8 
+         */
+        StringBuffer encodedFileName = new StringBuffer();
 
+        encodedFileName.append("*=UTF-8''");
+
+        encodedFileName.append(URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
+
+        return encodedFileName.toString();
+    }
 }
