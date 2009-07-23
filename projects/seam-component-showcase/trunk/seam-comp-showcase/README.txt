@@ -6,7 +6,7 @@ doesn't require an ejb3 container and still uses Seam annotations and contexts.
 1.7.2 version:- The new outputResource component is now included.
 1.7.1 version:- include component binding example in dataPaginator example, the navigation is in conversation scope, so users can do multiple windows of the application in the same session (concurrent dom views).  Note though that all pages are not bookmarkable.  If it has page scope, a page refresh will probably set you back to original view of the application.  The conversationally scoped views will hold their view.  This application could be changed easily to have the key to the MResources table (which holds all the links to info for each of the components) could be the page paramter, but since pages are not always required to be bookmarkable, that has been left off.  This same table could also be used to load the documentation (in tabs similar to older version, etc).
 
-This app can be deployed in JBoss AS 4.x, WebLogic, Glassfish and Tomcat without the EJB3 container.  
+This app can be deployed in JBoss, WebLogic, Glassfish and Tomcat without the EJB3 container.  
 Note that the j2ee AS have asynch issues with the Seam2.0.0.GA since the jsf-1.2 implementation is used.
 The old distribution of seam-comp-showcase which is an ear deployment and uses the myfaces (jsf1.1 implementation)
 works better for these older servers.  The j5ee AS work much better with jsf1.2 implementations of which Seam2.0.x recommends.  There are also a few portlet targets available.
@@ -23,8 +23,8 @@ libraries exist on your machine.
 	(an example follows or you can just look at the build.properties file in this folder)
 
  for example:-
- 	jboss.home = C:/work/webserver/jboss-4.2.2.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.7.2/icefaces  
+ 	jboss.home = C:/work/webserver/jboss-4.2.3.GA 
+	icefacesSourceDirectory = C:/ICEfaces-1.8.1/icefaces  
 	jboss.seam.home = C:/Seam/jboss-seam-2.0.2.SP1     
 
 4. run target = copy-libs  (will copy all the required libraries from the above locations)
@@ -32,7 +32,7 @@ libraries exist on your machine.
 
 Specific Server instructions:-
 
-JBoss AS 4.2.x  (this is the default target for the ant script):
+JBoss AS 4.2.x or 5.x (this is the default target for the ant script):
   * Install JBoss AS with the default profile
   * ant jboss
   * Deploy dist-jboss/seam-comp-showcase.war
@@ -115,6 +115,13 @@ Jboss-4.2.2.GA/Liferay5.0.1.RC bundle
  * start AS
  * use URL:- http://localhost:8080/c/portal/login
  * sign in and create some pages and place some of the portlets on them. 
+
+Known issues with Liferay:- must have the following context-param set in web.xml as Liferay already uses compression of resources and default is true for ICEfaces compression.:-
+    <context-param>
+         <param-name>com.icesoft.faces.compressResources</param-name>
+         <param-value>false</param-value>
+     </context-param>
+
 
 Websphere -6.1
 admin console:- http://localhost:9060/ibm/console
