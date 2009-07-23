@@ -60,7 +60,11 @@
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
         <param-value>false</param-value>
     </context-param>
-
+    <!-- since 1.8.1 take compression off as Liferay already does this -->
+    <context-param>
+         <param-name>com.icesoft.faces.compressResources</param-name>
+         <param-value>false</param-value>
+     </context-param>
     <context-param> 
         <param-name>com.icesoft.faces.doJSFStateManagement</param-name>
 	<param-value>true</param-value>

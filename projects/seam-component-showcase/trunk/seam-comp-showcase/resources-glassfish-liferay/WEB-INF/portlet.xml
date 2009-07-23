@@ -532,6 +532,29 @@
         </portlet-info>
     </portlet>
 
+   <!-- =================================================================== -->
+    <!-- ICEfaces: Set Event Phase Portlet                      -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_setEventPhase</portlet-name>
+        <display-name>ICEfaces: Set Event Phase</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.portlet.viewPageURL</name>
+            <value>/Components_SetEventPhase.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Set Event Phase</title>
+            <short-title>Set Event Phase</short-title>
+            <keywords>ICEfaces Component Showcase Set Event Phase</keywords>
+        </portlet-info>
+    </portlet>
+
+
     <!-- =================================================================== -->
     <!-- ICEfaces: Table - Columns                                           -->
     <!-- =================================================================== -->
@@ -727,6 +750,28 @@
             <title>ICEfaces: Tree</title>
             <short-title>Tree</short-title>
             <keywords>ICEfaces Component Showcase Tree</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: OutputResource                                            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_output_resource</portlet-name>
+        <display-name>ICEfaces: Download Resource</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.portlet.viewPageURL</name>
+            <value>/Components_OutputResource.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Download Resource</title>
+            <short-title>OuputResource</short-title>
+            <keywords>ICEfaces Component Showcase OutputResource Download Resource</keywords>
         </portlet-info>
     </portlet>
 
