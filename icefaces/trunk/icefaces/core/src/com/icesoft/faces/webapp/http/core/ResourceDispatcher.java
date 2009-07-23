@@ -141,8 +141,7 @@ public class ResourceDispatcher implements Server {
             response.setHeader("Last-Modified", options.lastModified);
             response.setHeader("Expires", options.expiresBy);
             if (options.attachement) {
-                String contentDispositionFileName = options.contentDispositionFileName == null ? options.fileName : options.contentDispositionFileName;
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + contentDispositionFileName + "\"");
+                response.setHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
             }
             InputStream inputStream = resource.open();
             if (inputStream == null) {
@@ -185,7 +184,9 @@ public class ResourceDispatcher implements Server {
             public void setAsAttachement() {
                 attachement = true;
             }
-
+            // ICE-4342
+            // Encoded filename in Content-Disposition header; to be used in save file dialog;
+            // See http://greenbytes.de/tech/tc2231/
             public void setContentDispositionFileName(String contentDispositionFileName) {
                 this.contentDispositionFileName = contentDispositionFileName;
             }
