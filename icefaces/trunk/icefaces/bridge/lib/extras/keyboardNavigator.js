@@ -107,7 +107,7 @@ Ice.MenuBarKeyNavigator.addMethods({
     this.applyFocus('s');
   },
 
-  goNorth: function(event) {logger.info('north');
+  goNorth: function(event) { 
     this.applyFocus('n');  
   },
 
@@ -249,10 +249,13 @@ Ice.MenuBarKeyNavigator.addMethods({
      return "iceMnuPopVrtItem";
   },
     
-  hover: function(event) {
+  hover: function(event, element) {
+    if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
+        //already hovered do nothing
+        return;
+    }
+    Ice.Menu.currentHover = element.id;
     if (this.clicked) {
-        element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
-        if (!element) return;
         var submenu = $(element.id + '_sub');
         Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
         if (this.vertical) {
@@ -264,33 +267,33 @@ Ice.MenuBarKeyNavigator.addMethods({
     }
   },
   
-  mousedown: function(event) {
-    element = Event.element(event);  
+  mousedown: function(event, element) {
     if (this.clicked) {
         this.clicked = false;
     } else {
         this.clicked = true;    
-        this.hover(event);
+        this.hover(event, element);
     }
   },
   
-  focus: function(event) {
-    this.hover(event);
+  focus: function(event, element) {
+    this.hover(event, element);
   },
   
   configureRootItems: function () {
     var rootLevelItems = this.component.childNodes;
     for(i=0; i < rootLevelItems.length; i++) {
-	    if (rootLevelItems[i].tagName == "DIV") {
-	        if (Element.hasClassName(rootLevelItems[i], this.getMenuBarItemClass())) {
-	            rootLevelItems[i].onmouseover = this.hover.bindAsEventListener(this);
+        var element = rootLevelItems[i];
+	    if (element.tagName == "DIV") {
+	        if (Element.hasClassName(element, this.getMenuBarItemClass())) {
+	            element.onmouseover = this.hover.bindAsEventListener(this, element);
 		        //add focus support 
-		        var anch = rootLevelItems[i].firstChild;
+		        var anch = element.firstChild;
 		        if (anch.tagName == "A") {
-		            anch.onfocus = this.focus.bindAsEventListener(this);
+		            anch.onfocus = this.focus.bindAsEventListener(this, element);
 		        }
 		        if (this.displayOnClick) { 
-		            rootLevelItems[i].onmousedown = this.mousedown.bindAsEventListener(this);
+		            element.onmousedown = this.mousedown.bindAsEventListener(this, element);
 		            this.clicked = false;            
 		        }
 	        }

@@ -36,6 +36,7 @@ Ice.Menu = Class.create();
 Ice.Menu = {
     menuContext:null,
     currentMenu:null,
+    currentHover:null,    
     openMenus:new Array(0),
     printOpenMenus:function() {
     	var openMenuString = '';
@@ -70,6 +71,7 @@ Ice.Menu = {
         Ice.Menu.openMenus = new Array();
         Ice.Menu.currentMenu = null;
         Ice.Menu.menuContext = null;
+        Ice.Menu.currentHover = null;        
     },
     getPosition: function(element,positionProperty) {
 	    var position = 0;
@@ -79,44 +81,50 @@ Ice.Menu = {
 	    }
 	    return position;
     },
-    show: function(supermenu,submenu,submenuDiv) {
-    	supermenu=$(supermenu);
-    	submenu=$(submenu);
-    	submenuDiv=$(submenuDiv);
+    show: function(supermenu,submenu,submenuDiv) { 
 	    if (submenu) {
 	        var menu = $(submenu);
 	        //menu is already visible, don't do anything
             if (menu && menu.style.display=='') return;
             Ice.Menu.showMenuWithId(submenu);
+            var supmVPO = supermenu.viewportOffset(),
+                submVPO = submenu.viewportOffset(),
+                viewport = document.viewport,
+                supmOW = supermenu.offsetWidth,
+                submOW = submenu.offsetWidth,  
+                submOH = submenu.offsetHeight,  
+                supmOH = supermenu.offsetHeight;
+                submenuDiv = $(submenuDiv);
             if (submenuDiv) {
+                var subdOH = submenuDiv.offsetHeight;
                 // ICE-3196, ICE-3620
-                if (supermenu.viewportOffset().left + supermenu.offsetWidth + submenu.offsetWidth < document.viewport.getWidth()) {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supermenu.offsetWidth});
+                if (supmVPO.left + supmOW + submOW < viewport.getWidth()) {
+                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW});
                 } else {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submenu.offsetWidth});
+                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
                 }
-                if (submenuDiv.viewportOffset().top + submenu.offsetHeight < document.viewport.getHeight()) {
+                if (submenuDiv.viewportOffset().top + submOH < viewport.getHeight()) {
                     submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
                 } else {
-                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                        offsetTop:- submenu.offsetHeight + submenuDiv.offsetHeight});
+                     submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                         offsetTop:- submOH + subdOH});
                 }
             } else {
                 // ICE-3196, ICE-3620
-                if (supermenu.viewportOffset().left + submenu.offsetWidth < document.viewport.getWidth()) {
+                if (supmVPO.left + submOW < viewport.getWidth()) {
                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
                 } else {
                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
-                        offsetLeft:document.viewport.getWidth() - supermenu.viewportOffset().left - submenu.offsetWidth});
+                         offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
                 }
-                if (supermenu.viewportOffset().top + supermenu.offsetHeight + submenu.offsetHeight < document.viewport.getHeight()) {
-                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supermenu.offsetHeight});
+                if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
+                     submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
                 } else {
-                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.offsetHeight});
+                     submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
                 }
             }
-            if (submenu.viewportOffset().top < 0) { // ICE-3658
-                submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.viewportOffset().top});
+            if (submVPO.top < 0) { // ICE-3658
+             //   submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
