@@ -223,10 +223,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                             }
                         }
                     }
-                } else {
-                    if (inputElement.getAttribute("type").equals("checkbox")) {
-                        inputElement.removeAttribute("checked");
-                    }
                 }
             }
         }
