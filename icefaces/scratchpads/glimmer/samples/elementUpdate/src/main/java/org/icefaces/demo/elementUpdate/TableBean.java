@@ -9,6 +9,10 @@ import java.util.Random;
 public class TableBean {
     public int a, b, c, d, e, f;
 
+    public TableBean() {
+        generateIDs();
+    }
+
     public int getA() {
         return a;
     }
