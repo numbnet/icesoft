@@ -124,9 +124,9 @@ window.evaluate = eval;
         }
     }
 
-    //hijack browser form submit, instead submit through an Ajax request
     onLoad(window, function() {
         each(document.getElementsByTagName('form'), function(f) {
+            //hijack browser form submit, instead submit through an Ajax request
             f.submit = function() {
                 submitEvent(null, f);
             };
@@ -142,6 +142,13 @@ window.evaluate = eval;
                     };
                 };
             });
+
+            //propagate window ID -- this strategy works for POSTs sent by Mojarra
+            var i = document.createElement('input');
+            i.setAttribute('name', 'ice.window');
+            i.setAttribute('value', window.ice.window);
+            i.setAttribute('type', 'hidden');
+            f.appendChild(i);
         });
     });
 
