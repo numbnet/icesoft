@@ -62,7 +62,7 @@ public class InputBean {
     }
 
     public void toggleStyle() {
-        style = "".equals(style) ? "background-color: yellow; font-weight: bold;" : "";
+        style = "".equals(style) ? "background-color: red; color: white;" : "";
     }
 
     //------------------
