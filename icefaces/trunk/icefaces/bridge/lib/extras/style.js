@@ -92,20 +92,22 @@ Ice.modal = Class.create();
 Ice.modal = {
     running:false,
     target:null,
-    id:null,
+    ids: [],
     tabindexValues: [],
+    zIndexCount: 25000,
     start:function(target, iframeUrl,trigger, manualPosition) {
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
-        var iframe = document.getElementById('iceModalFrame');
+        var iframe = document.getElementById('iceModalFrame' + target);
         if (!iframe) {
             iframe = document.createElement('iframe');
             iframe.title = 'Ice Modal Frame';
             iframe.frameborder = "0";
-            iframe.id = 'iceModalFrame';
+            iframe.id = 'iceModalFrame' + target;
             iframe.src = iframeUrl;
-            iframe.style.zIndex = 25000;
+            iframe.style.zIndex = Ice.modal.zIndexCount;
+            Ice.modal.zIndexCount += 2;
             iframe.style.opacity = 0.5;
             iframe.style.filter = 'alpha(opacity=50)';
 
@@ -120,7 +122,7 @@ Ice.modal = {
             modal.parentNode.insertBefore(iframe, modal);
             var resize = function() {
                 //lookup element again because 'resize' closure is registered only once
-                var frame = document.getElementById('iceModalFrame');
+                var frame = document.getElementById('iceModalFrame' + target);
                 if (frame) {
                     var frameDisp = frame.style.display;
                     frame.style.display = "none";
@@ -160,7 +162,7 @@ Ice.modal = {
 
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
         Ice.modal.target = modal;
-        Ice.modal.id = target;
+        Ice.modal.ids.push(target);
         if (!Ice.modal.running) {
             Ice.modal.disableTabindex();
         }
@@ -173,12 +175,14 @@ Ice.modal = {
         }
     },
     stop:function(target) {
-        if (Ice.modal.id == target) {
-            var iframe = document.getElementById('iceModalFrame');
+        if (Ice.modal.ids.last() == target) {
+            var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 iframe.parentNode.removeChild(iframe);
+                Ice.modal.zIndexCount -= 2;
                 logger.debug('removed modal iframe for : ' + target);
             }
+            Ice.modal.ids.pop();
             Ice.modal.running = false;
             if (Ice.modal.trigger) {
                 Ice.Focus.setFocus(Ice.modal.trigger);
@@ -202,7 +206,7 @@ Ice.modal = {
             var list = focusables[listName]
             for (var j = 0; j < list.length; j++) {
                 var ele = list[j];
-                if (!Ice.modal.containedInId(ele,Ice.modal.id)) {
+                if (!Ice.modal.containedInId(ele,Ice.modal.ids.last())) {
                     var obj = {};
                     obj.element = ele;
                     obj.tabIndex = ele.tabIndex ? ele.tabIndex : '';
