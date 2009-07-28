@@ -242,6 +242,12 @@ implements AsyncRenderer {
         }
     }
 
+    String lastRenderInfo = "";
+
+    public String getLastRenderInfo()  {
+        return lastRenderInfo;
+    }
+
     /**
      * Request a render pass on all the Renderables in the group.  Render calls
      * that generate exceptions are passed back to the Renderable.renderException
@@ -257,6 +263,7 @@ implements AsyncRenderer {
         if (LOG.isTraceEnabled()) {
             LOG.trace(name + " preparing to render " + group.size());
         }
+        lastRenderInfo = "groupSize=" + group.size() + " startTime=" + System.currentTimeMillis();
         if (allowBroadcasting && isBroadcasted()) {
             // allow for potential broadcasting
             RenderManager.getInstance().requestRender(this);
