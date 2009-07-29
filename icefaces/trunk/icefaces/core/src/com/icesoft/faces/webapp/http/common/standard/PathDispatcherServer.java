@@ -15,7 +15,7 @@ public class PathDispatcherServer implements Server {
 
     public void service(Request request) throws Exception {
         String path = request.getURI().getPath();
-        ListIterator i = matchers.listIterator();
+        ListIterator i = new ArrayList(matchers).listIterator();
         while (i.hasNext()) {
             int index = i.nextIndex();
             Pattern pattern = (Pattern) i.next();
