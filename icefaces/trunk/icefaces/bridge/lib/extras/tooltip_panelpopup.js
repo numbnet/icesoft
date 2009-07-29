@@ -271,7 +271,8 @@ ToolTipPanelPopupUtil = {
         var element = $(id);
         var viewportDimensions = document.viewport.getDimensions();
         var elementDimensions = element.getDimensions();
-        var viewportOffset = element.viewportOffset();
+        var viewportOffset = {left: element.viewportOffset().left + element.cumulativeScrollOffset().left,
+                              top: element.viewportOffset().top + element.cumulativeScrollOffset().top};
         var positionedOffset = element.positionedOffset();
         var widthDiff = viewportDimensions.width - viewportOffset.left - elementDimensions.width;
         var heightDiff = viewportDimensions.height - viewportOffset.top - elementDimensions.height;
