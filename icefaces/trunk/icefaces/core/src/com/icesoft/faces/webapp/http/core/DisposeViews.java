@@ -34,7 +34,9 @@ public class DisposeViews implements Server {
                     }
                 }
             }
-
+            if (Log.isDebugEnabled())  {
+                Log.debug("Views disposed for " + sessionID + ". Remaining views: " + views);
+            }
         } else {
             //this usually happens with Seam filters in synchronous mode
             Log.warn("Request belonging to a different session. Most probably servlet filters mangled the request.");
