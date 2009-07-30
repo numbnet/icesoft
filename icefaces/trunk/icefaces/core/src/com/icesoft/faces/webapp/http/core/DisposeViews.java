@@ -26,12 +26,7 @@ public class DisposeViews implements Server {
                 View view = (View) views.remove(viewIdentifiers[i]);
                 // Jira 1616 Logout throws NPE.
                 if (view != null) {
-                    try {
-                        view.acquireLifecycleLock();
-                        view.dispose();
-                    } finally {
-                        view.releaseLifecycleLock();
-                    }
+                    view.dispose();
                 }
             }
             if (Log.isDebugEnabled())  {
