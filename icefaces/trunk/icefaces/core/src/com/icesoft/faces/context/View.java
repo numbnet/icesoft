@@ -209,11 +209,16 @@ public class View implements CommandQueue {
     }
 
     public void dispose() {
-        dispose.run();
-        ContextEventRepeater.viewNumberDisposed(
-                facesContext.getExternalContext().getSession(false),
-                sessionID,
-                Integer.parseInt(viewIdentifier));
+        try {
+            acquireLifecycleLock();
+            dispose.run();
+            ContextEventRepeater.viewNumberDisposed(
+                    facesContext.getExternalContext().getSession(false),
+                    sessionID,
+                    Integer.parseInt(viewIdentifier));
+        } finally {
+            releaseLifecycleLockUnconditionally();
+        }
     }
 
     public void installThreadLocals() {
