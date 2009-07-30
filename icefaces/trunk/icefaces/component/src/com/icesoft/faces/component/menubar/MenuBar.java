@@ -412,7 +412,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[8];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = displayOnClick;
         values[2] = imageDir;
@@ -421,6 +421,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         values[5] = renderedOnUserRole;
         values[6] = style;
         values[7] = styleClass;
+        values[8] = keyboardNavigationEnabled;
         return values;
     }
 
@@ -434,6 +435,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         renderedOnUserRole = (String) values[5];
         style = (String) values[6];
         styleClass = (String) values[7];
+        keyboardNavigationEnabled = (Boolean) values[8];        
     }
     
     public boolean isKeyboardNavigationEnabled() {

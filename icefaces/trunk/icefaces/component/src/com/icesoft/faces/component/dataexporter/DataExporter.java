@@ -41,6 +41,7 @@ public class DataExporter extends OutputResource {
 	private transient int _origDataModelHash = 0;
 	public final static String EXCEL_TYPE = "excel";
 	public final static String CSV_TYPE = "csv";
+	private Boolean ignorePagination;
 
 	public DataExporter() {
 	}
@@ -196,7 +197,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[7];
+            values = new Object[8];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -205,6 +206,7 @@ public class DataExporter extends OutputResource {
         values[4] = readyToExport? Boolean.TRUE : Boolean.FALSE;
         values[5] = _origType;
         values[6] = _origFor;
+        values[7] = ignorePagination;        
         return ((Object) (values));
     }
 
@@ -223,6 +225,7 @@ public class DataExporter extends OutputResource {
         readyToExport = ((Boolean) values[4]).booleanValue();        
         _origType = (String) values[5];
         _origFor = (String)values[6];
+        ignorePagination = (Boolean)values[7];        
     }
     
     public String getLabel() {
@@ -322,9 +325,14 @@ public class DataExporter extends OutputResource {
             UIData uiData, FacesContext fc) {
 
         try {
-            int rowIndex = uiData.getFirst();
+            int rowIndex = 0;
+            int numberOfRowsToDisplay = 0;  
+            if (!isIgnorePagination()) {
+                rowIndex = uiData.getFirst();
+                numberOfRowsToDisplay = uiData.getRows();
+            }
             int colIndex = 0;
-            int numberOfRowsToDisplay = uiData.getRows();
+ 
             int countOfRowsDisplayed = 0;
             uiData.setRowIndex(rowIndex);
 
@@ -396,4 +404,23 @@ public class DataExporter extends OutputResource {
     }
     
     public void addInfo() {}
+    
+    /**
+     * <p>Set the value of the <code>ignorePagination</code> property.</p>
+     */
+    public void setIgnorePagination(boolean ignorePagination) {
+        this.ignorePagination = new Boolean(ignorePagination);
+    }
+
+    /**
+     * <p>Return the value of the <code>ignorePagination</code> property.</p>
+     */
+    public boolean isIgnorePagination() {
+        if (ignorePagination != null) {
+            return ignorePagination.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("ignorePagination");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
+                .booleanValue() : false;
+    }    
 }
