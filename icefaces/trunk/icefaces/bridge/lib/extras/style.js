@@ -237,11 +237,14 @@ Ice.modal = {
 
 Ice.autoCentre = Class.create();
 Ice.autoCentre = {
-    id:null,
-    keepCentred:function() {
+    ids:[],
+    centerAll:function() {
+        Ice.autoCentre.ids.each(Ice.autoCentre.keepCentred);
+    },
+    keepCentred:function(id) {
         var scrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
         var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
-        var div = document.getElementById(Ice.autoCentre.id);
+        var div = document.getElementById(id);
         if (div) {
             var x = Math.round((Element.getWidth(document.body) - Element.getWidth(div)) / 2 + scrollX);
             if (x < 0) x = 0;
@@ -255,15 +258,20 @@ Ice.autoCentre = {
         }
     },
     start:function(target) {
-        Ice.autoCentre.id = target;
-        Ice.autoCentre.keepCentred();
-        Event.observe(window, 'resize', Ice.autoCentre.keepCentred);
-        Event.observe(window, 'scroll', Ice.autoCentre.keepCentred);
+        Ice.autoCentre.keepCentred(target);
+        if (Ice.autoCentre.ids.size() == 0) {
+            Event.observe(window, 'resize', Ice.autoCentre.centerAll);
+            Event.observe(window, 'scroll', Ice.autoCentre.centerAll);
+        }
+        if (Ice.autoCentre.ids.indexOf(target) < 0) {
+            Ice.autoCentre.ids.push(target);
+        }
     },
     stop:function(target) {
-        if (Ice.autoCentre.id == target) {
-            Event.stopObserving(window, 'resize', Ice.autoCentre.keepCentred);
-            Event.stopObserving(window, 'scroll', Ice.autoCentre.keepCentred);
+        Ice.autoCentre.ids = Ice.autoCentre.ids.without(target);
+        if (Ice.autoCentre.ids.size() == 0) {
+            Event.stopObserving(window, 'resize', Ice.autoCentre.centerAll);
+            Event.stopObserving(window, 'scroll', Ice.autoCentre.centerAll);
         }
     }
 };
