@@ -223,6 +223,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      */
     public Iterator getMessages() {
 
+        //ICE-1900
+        RequestStateManagerDelegate.clearMessages(this);
+
         // Jira #1358 The hashmap contains vectors of FacesMessages, not FacesMessages
         // See following method.
         ArrayList buffer = new ArrayList();
@@ -243,6 +246,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * @return list of FacesMessages
      */
     public Iterator getMessages(String clientId) {
+
+        //ICE-1900
+        RequestStateManagerDelegate.clearMessages(this, clientId);
+
         Object obj = faceMessages.get(clientId);
         if (obj == null) {
             if (log.isTraceEnabled()) {
