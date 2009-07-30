@@ -120,3 +120,16 @@
       <category>ICE_LAYOUT</category>
     </property-extension>
   </property>  
+  
+ <property>
+    <description>
+        This is false by default. If true the dataExporter
+        will ignore the "first" and "rows" properties on the associated dataTable.
+    </description>
+    <property-name>ignorePagination</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
+    </property-extension>
+  </property>  
