@@ -137,6 +137,7 @@ public class DOMResponseWriter extends ResponseWriter {
     private String blockingRequestHandlerContext;
     private Node cursor = document;
     private Node savedJSFStateCursor;
+    private boolean checkJavaScript;
 
     public DOMResponseWriter(final FacesContext context, final DOMSerializer serializer, final Configuration configuration, final Collection jsCode, final Collection cssCode, final String blockingRequestHandlerContext) {
         this.serializer = serializer;
@@ -144,6 +145,8 @@ public class DOMResponseWriter extends ResponseWriter {
         this.jsCode = jsCode;
         this.cssCode = cssCode;
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
+        this.checkJavaScript = configuration
+            .getAttributeAsBoolean("checkJavaScript", true);
         try {
             this.context = (BridgeFacesContext) context;
         } catch (ClassCastException e) {
@@ -448,11 +451,12 @@ public class DOMResponseWriter extends ResponseWriter {
         iframe.setAttribute("style",
                 "z-index: 10000; visibility: hidden; width: 0; height: 0; position: absolute; opacity: 0.22; filter: alpha(opacity=22);");
 
-
-        Element noscript = (Element) body.appendChild(document.createElement("noscript"));
-        Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
-        noscriptMeta.setAttribute("http-equiv", "refresh");
-        noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
+        if (checkJavaScript)  {
+            Element noscript = (Element) body.appendChild(document.createElement("noscript"));
+            Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
+            noscriptMeta.setAttribute("http-equiv", "refresh");
+            noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
+        }
 
         if (context.isContentIncluded()) {
             Element element = (Element) body.insertBefore(document.createElement("div"), configurationElement);
