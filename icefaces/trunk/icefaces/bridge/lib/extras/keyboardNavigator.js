@@ -153,8 +153,10 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   focusAnchor: function(item) {
       if (item) {
-          var anch = item.down('a');
-          anch.focus();
+          try {
+              var anch = item.down('a');
+              anch.focus();
+          } catch(e){}
       }
   },
   
@@ -249,10 +251,12 @@ Ice.MenuBarKeyNavigator.addMethods({
      return "iceMnuPopVrtItem";
   },
     
-  hover: function(event, element) {
-    if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
-        //already hovered do nothing
-        return;
+  hover: function(event, element, isMouseDown) {
+    if (!isMouseDown) {
+        if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
+            //already hovered do nothing
+            return;
+        }
     }
     Ice.Menu.currentHover = element.id;
     if (this.clicked) {
@@ -272,7 +276,7 @@ Ice.MenuBarKeyNavigator.addMethods({
         this.clicked = false;
     } else {
         this.clicked = true;    
-        this.hover(event, element);
+        this.hover(event, element, true);
     }
   },
   
