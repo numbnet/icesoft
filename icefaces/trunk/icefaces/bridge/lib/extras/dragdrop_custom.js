@@ -85,7 +85,7 @@ Ice.DndEvent.prototype = {
 
     submit: function() {
         var ele = this.drag.element;
-        var iframe = document.getElementById('iceModalFrame');
+        var iframe = document.getElementById('iceModalFrame' + ele.id);
         if(iframe) {
             ele.style.zIndex = parseInt(iframe.style.zIndex) + 1;
         }
