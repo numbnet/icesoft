@@ -44,6 +44,7 @@ import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
+import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.util.SeamUtilities;
@@ -139,9 +140,11 @@ public abstract class BridgeExternalContext extends ExternalContext {
             throw new IOException("Cannot dispatch on XMLHTTP request.");
         }
     };
-    protected static final Dispatcher RequestNotAvailable = new Dispatcher() {
+    protected final Dispatcher RequestNotAvailable = new Dispatcher() {
         public void dispatch(String path) throws IOException, FacesException {
-            throw new IOException("No request available for dispatch.");
+            //ignore 'send-receive-updates' requests that arrive after a 'dispose' request has been already received
+            Log.debug("View has been disposed. Ignoring dangling request.");
+            commandQueue.put(new NOOP());
         }
     };
     private static final String SEAM_LIFECYCLE_SHORTCUT = "com.icesoft.faces.shortcutLifecycle";
