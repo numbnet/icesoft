@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Map;
 import java.net.URLEncoder;
 
 import javax.faces.component.UIComponentBase;
@@ -457,18 +458,20 @@ class RegisteredResource implements Resource {
     // ICE-4342
     // Encode filename for Content-Disposition header; to be used in save file dialog;
     // See http://greenbytes.de/tech/tc2231/
+    // Some code suggested by Deryk Sinotte 
     private static String encodeContentDispositionFilename(String fileName) {
         if (fileName == null || fileName.trim().length() == 0) return "=\"\"";
 
         String defaultFileName = "=\"" + fileName + "\"";
         String userAgent = null;
-        Object o = FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if (o instanceof HttpServletRequest) {
-            HttpServletRequest request = (HttpServletRequest) o;
-            userAgent = request.getHeader("user-agent").toLowerCase();
-        }
+        Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
+        userAgent = (String) headerMap.get("user-agent");
+        //WebLogic does not provide the user-agent for some reason
+        //System.out.println("RegisteredResource.encodeContentDispositionFilename: user-agent = " + userAgent);
         if (userAgent == null || userAgent.trim().length() == 0) return defaultFileName;
 
+
+        userAgent = userAgent.toLowerCase();
         try {
             if (userAgent.indexOf("msie") > -1) return encodeForIE(fileName);
             if (userAgent.indexOf("firefox") > -1 || userAgent.indexOf("opera") > -1) return encodeForFirefox(fileName);
