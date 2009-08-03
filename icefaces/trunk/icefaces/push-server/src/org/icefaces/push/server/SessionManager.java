@@ -109,17 +109,13 @@ implements
                     "Servlet Context Path [" + servletContextPath + "], " +
                     "ICEfaces ID [" + iceFacesId + "]");
         }
-        synchronized (requestManager) {
-            synchronized (freeMap) {
-                // Marking the specified ICEfaces ID eligible for removal.
-                freeMap.put(
-                    iceFacesId,
-                    new Record(iceFacesId, System.currentTimeMillis()));
-                Handler _handler = requestManager.pull(iceFacesId);
-                if (_handler != null) {
-                    _handler.handle();
-                }
-            }
+        synchronized (freeMap) {
+            // Marking the specified ICEfaces ID eligible for removal.
+            freeMap.put(iceFacesId, new Record(iceFacesId, System.currentTimeMillis()));
+        }
+        Handler _handler = requestManager.pull(iceFacesId);
+        if (_handler != null) {
+            _handler.handle();
         }
     }
 
@@ -233,19 +229,17 @@ implements
                     "ICEfaces ID [" + iceFacesId + "], " +
                     "View Number [" + viewNumber + "]");
         }
-        synchronized (requestManager) {
-            synchronized (sessionMap) {
-                if (sessionMap.containsKey(iceFacesId)) {
-                    Set _viewNumberSet =
-                        ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
-                    if (_viewNumberSet.contains(viewNumber)) {
-                        _viewNumberSet.remove(viewNumber);
-                        updatedViewsManager.remove(iceFacesId, viewNumber);
-                        if (!hasViews(iceFacesId)) {
-                            Handler _handler = requestManager.pull(iceFacesId);
-                            if (_handler != null) {
-                                _handler.handle();
-                            }
+        synchronized (sessionMap) {
+            if (sessionMap.containsKey(iceFacesId)) {
+                Set _viewNumberSet =
+                    ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
+                if (_viewNumberSet.contains(viewNumber)) {
+                    _viewNumberSet.remove(viewNumber);
+                    updatedViewsManager.remove(iceFacesId, viewNumber);
+                    if (!hasViews(iceFacesId)) {
+                        Handler _handler = requestManager.pull(iceFacesId);
+                        if (_handler != null) {
+                            _handler.handle();
                         }
                     }
                 }
@@ -276,29 +270,27 @@ implements
     }
 
     private void cleanUp(final String iceFacesId) {
-        synchronized (freeMap) {
-            synchronized (requestManager) {
-                synchronized (sessionMap) {
-                    Iterator _records = freeMap.values().iterator();
-                    int _size = freeMap.size();
-                    long _currentTime = System.currentTimeMillis();
-                    for (int i = 0; i < _size; i++) {
-                        Record _record = (Record)_records.next();
-                        if (iceFacesId.equals(_record.iceFacesId)) {
-                            // ICEfaces ID is still in use, remove from freeMap
-                            _records.remove();
-                        } else if (_currentTime - _record.timestamp >= 60000) {
-                            if (sessionMap.containsKey(iceFacesId)) {
-                                if (LOG.isDebugEnabled()) {
-                                    LOG.debug(
-                                        "ICEfaces ID cleaned up: " +
-                                            "ICEfaces ID [" + iceFacesId + "]");
-                                }
-                                sessionMap.remove(iceFacesId);
+        synchronized (sessionMap) {
+            synchronized (freeMap) {
+                Iterator _records = freeMap.values().iterator();
+                int _size = freeMap.size();
+                long _currentTime = System.currentTimeMillis();
+                for (int i = 0; i < _size; i++) {
+                    Record _record = (Record)_records.next();
+                    if (iceFacesId.equals(_record.iceFacesId)) {
+                        // ICEfaces ID is still in use, remove from freeMap
+                        _records.remove();
+                    } else if (_currentTime - _record.timestamp >= 60000) {
+                        if (sessionMap.containsKey(iceFacesId)) {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(
+                                    "ICEfaces ID cleaned up: " +
+                                        "ICEfaces ID [" + iceFacesId + "]");
                             }
-                            updatedViewsManager.remove(iceFacesId);
-                            _records.remove();
+                            sessionMap.remove(iceFacesId);
                         }
+                        updatedViewsManager.remove(iceFacesId);
+                        _records.remove();
                     }
                 }
             }
