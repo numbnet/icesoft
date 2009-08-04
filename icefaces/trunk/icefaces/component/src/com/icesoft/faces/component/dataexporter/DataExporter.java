@@ -28,7 +28,17 @@ public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.DataExporter";
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.DataExporterRenderer";
-	
+    private static final OutputTypeHandler NoopOutputHandler = new OutputTypeHandler("no-data") {
+        public void writeHeaderCell(String text, int col) {
+        }
+
+        public void writeCell(Object output, int col, int row) {
+        }
+
+        public void flushFile() {
+        }
+    };
+
 	private boolean readyToExport = false;
 
 	private String _for;
@@ -260,32 +270,26 @@ public class DataExporter extends OutputResource {
                 .getCurrentInstance().getExternalContext().getSession(false))
                 .getServletContext();
 
-        try {
-            File exportDir = new File(context.getRealPath("/export"));
-            if (!exportDir.exists())
-                exportDir.mkdirs();
-            String pathWithoutExt = context.getRealPath("/export") + "/export_"
-                    + new Date().getTime();
+        File exportDir = new File(context.getRealPath("/export"));
+        if (!exportDir.exists())
+            exportDir.mkdirs();
+        String pathWithoutExt = context.getRealPath("/export") + "/export_"
+                + new Date().getTime();
 
-            if (getOutputTypeHandler() != null)
-                outputHandler = getOutputTypeHandler();
-            else if (DataExporter.EXCEL_TYPE.equals(getType())) {
-                outputHandler = new ExcelOutputHandler(pathWithoutExt + ".xls",
-                        fc, uiData.getId());
-            } else if (DataExporter.CSV_TYPE.equals(getType())) {
-                outputHandler = new CSVOutputHandler(pathWithoutExt + ".csv");
-            }
-            if (outputHandler == null) {
-                return null;
-            }
-            renderToHandler(outputHandler, uiData, fc);
-            setMimeType(outputHandler.getMimeType());
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (getOutputTypeHandler() != null)
+            outputHandler = getOutputTypeHandler();
+        else if (DataExporter.EXCEL_TYPE.equals(getType())) {
+            outputHandler = new ExcelOutputHandler(pathWithoutExt + ".xls",
+                    fc, uiData.getId());
+        } else if (DataExporter.CSV_TYPE.equals(getType())) {
+            outputHandler = new CSVOutputHandler(pathWithoutExt + ".csv");
+        } else {
+            outputHandler = NoopOutputHandler;
         }
-        return outputHandler != null ? outputHandler.getFile() : null;
+        renderToHandler(outputHandler, uiData, fc);
+        setMimeType(outputHandler.getMimeType());
 
+        return outputHandler.getFile();
     }
 
     private String encodeParentAndChildrenAsString(FacesContext fc,
