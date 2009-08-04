@@ -34,7 +34,8 @@ public class DataExporterRenderer extends BaseRenderer {
         String label = dataExporter.getLabel();
         String image = dataExporter.getImage();
         boolean linkRequired = false;
-        if (dataExporter.getType() != null ||
+        String type = dataExporter.getType();
+        if ( (type != null &&  !"".equals(type)) ||
                 dataExporter.getOutputTypeHandler() != null) {
             linkRequired = true;
         }
