@@ -418,22 +418,19 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
      * @return
      */
     private boolean keepSaved(FacesContext facesContext) {
-        Iterator childIds = savedChildren.keySet().iterator();
-        while (childIds.hasNext()) {
-            String childId = (String) childIds.next();
-            Iterator childMessages = facesContext.getMessages(childId);
-            while (childMessages.hasNext()) {
-                FacesMessage childMessage = (FacesMessage) childMessages.next();
-                if (childMessage.getSeverity()
-                        .compareTo(FacesMessage.SEVERITY_ERROR) >= 0) {
-                    return (true);
-                }
-            }
+        if (maximumSeverityAtLeastError(facesContext)) {
+            return true;
         }
         // return true if this component is nested inside a UIData 
         return (isNestedWithinUIData());
     }
 
+    private boolean maximumSeverityAtLeastError(FacesContext facesContext) {
+        FacesMessage.Severity maximumSeverity = facesContext.getMaximumSeverity();
+        return ( (maximumSeverity != null) &&
+                 (FacesMessage.SEVERITY_ERROR.compareTo(maximumSeverity) >= 0) );
+    }
+    
     private boolean isNestedWithinUIData() {
         UIComponent parent = this;
         while (null != (parent = parent.getParent())) {
