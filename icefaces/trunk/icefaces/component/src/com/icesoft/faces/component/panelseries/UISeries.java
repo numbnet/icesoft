@@ -258,7 +258,17 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
      * @see javax.faces.component.UIData#queueEvent(FacesEvent)
      */
     public void queueEvent(FacesEvent event) {
-        super.queueEvent(new RowEvent(this, event, getRowIndex()));
+        FacesEvent rowEvent = new RowEvent(this, event, getRowIndex());
+        // ICE-4822 : Don't have UISeries let its superclass UIData broadcast
+        // events too, since then we have redundant events. So, do behaviour
+        // of UIComponentBase.queueEvent(FacesEvent)
+        //super.queueEvent(rowEvent);
+        UIComponent parent = getParent();
+        if (parent == null) {
+            throw new IllegalStateException();
+        } else {
+            parent.queueEvent(rowEvent);
+        }
     }
 
 
