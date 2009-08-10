@@ -193,7 +193,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 			headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
 			handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
 			headerTd.setAttribute(HTML.ID_ATTR, handleId);
-            headerTd.setAttribute(HTML.STYLE_ATTR, "width:100%;");
+//            headerTd.setAttribute(HTML.STYLE_ATTR, "width:100%;");
 			headerTr.appendChild(headerTd);
             Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
             Element headerDiv = domContext.createElement("div");
