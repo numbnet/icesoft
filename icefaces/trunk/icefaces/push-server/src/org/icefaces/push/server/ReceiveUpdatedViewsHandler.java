@@ -248,6 +248,7 @@ implements Handler, Runnable {
     extends TimerTask {
         private final Set iceFacesIdSet;
         private final SessionManager sessionManager;
+        private final Thread originatingThread = Thread.currentThread();
 
         public BlockingConnectionTimeoutTask(
             final Set iceFacesIdSet, final SessionManager sessionManager) {
@@ -271,6 +272,9 @@ implements Handler, Runnable {
                                         _receiveUpdatedViewsHandler.request.
                                             getHeaderAsStrings(
                                                 "X-Window-Cookie")) +
+                                "], " +
+                                "Originating Thread [" +
+                                    originatingThread +
                                 "]");
                     }
                     _receiveUpdatedViewsHandler.request.
