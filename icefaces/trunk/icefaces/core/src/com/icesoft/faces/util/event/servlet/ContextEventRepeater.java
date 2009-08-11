@@ -111,8 +111,10 @@ implements HttpSessionListener, ServletContextListener {
         SessionDispatcherListener = new SessionDispatcher.Listener();
     }
 
-    private static List bufferedContextEvents = new ArrayList();
-    private static Map listeners = new WeakHashMap();
+    private static final List BUFFERED_CONTEXT_EVENTS = new ArrayList();
+    private static final Map LISTENERS = new WeakHashMap();
+    private static final Object MESSAGE_SERVICE_CLIENT_LOCK = new Object();
+
     private static Configuration servletContextConfiguration;
     private static String blockingRequestHandlerContext;
     private static MessageServiceClient messageServiceClient;
@@ -120,28 +122,30 @@ implements HttpSessionListener, ServletContextListener {
     private static AnnouncementMessageHandler announcementMessageHandler =
         new AnnouncementMessageHandler() {
             public void publishBufferedContextEvents() {
-                ContextEvent[] _contextEvents =
-                    (ContextEvent[])
-                        bufferedContextEvents.toArray(
-                            new ContextEvent[bufferedContextEvents.size()]);
-                if (_contextEvents.length != 0) {
-                    StringBuffer _message = new StringBuffer();
-                    for (int i = 0; i < _contextEvents.length; i++) {
-                        if (i != 0) {
-                            _message.append("\r\n");
+                synchronized (BUFFERED_CONTEXT_EVENTS) {
+                    ContextEvent[] _contextEvents =
+                        (ContextEvent[])
+                            BUFFERED_CONTEXT_EVENTS.toArray(
+                                new ContextEvent[BUFFERED_CONTEXT_EVENTS.size()]);
+                    if (_contextEvents.length != 0) {
+                        StringBuffer _message = new StringBuffer();
+                        for (int i = 0; i < _contextEvents.length; i++) {
+                            if (i != 0) {
+                                _message.append("\r\n");
+                            }
+                            _message.append(createMessage(_contextEvents[i]));
                         }
-                        _message.append(createMessage(_contextEvents[i]));
+                        Properties _messageProperties = new Properties();
+                        _messageProperties.
+                            setStringProperty(
+                                Message.DESTINATION_SERVLET_CONTEXT_PATH,
+                                blockingRequestHandlerContext);
+                        messageServiceClient.publish(
+                            _message.toString(),
+                            _messageProperties,
+                            BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE,
+                            MessageServiceClient.PUSH_TOPIC_NAME);
                     }
-                    Properties _messageProperties = new Properties();
-                    _messageProperties.
-                        setStringProperty(
-                            Message.DESTINATION_SERVLET_CONTEXT_PATH,
-                            blockingRequestHandlerContext);
-                    messageServiceClient.publish(
-                        _message.toString(),
-                        _messageProperties,
-                        BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE,
-                        MessageServiceClient.PUSH_TOPIC_NAME);
                 }
             }
         };
@@ -152,17 +156,18 @@ implements HttpSessionListener, ServletContextListener {
      *
      * @param contextEventListener the listener to be added.
      */
-    public synchronized static void addListener(
+    public static void addListener(
         final ContextEventListener contextEventListener) {
 
-        if (contextEventListener == null ||
-            listeners.containsKey(contextEventListener)) {
-
-            return;
-        }
-        listeners.put(contextEventListener, null);
-        if (contextEventListener.receiveBufferedEvents()) {
-            sendBufferedEvents(contextEventListener);
+        if (contextEventListener != null) {
+            synchronized (LISTENERS) {
+                if (!LISTENERS.containsKey(contextEventListener)) {
+                    LISTENERS.put(contextEventListener, null);
+                    if (contextEventListener.receiveBufferedEvents()) {
+                        sendBufferedEvents(contextEventListener);
+                    }
+                }
+            }
         }
     }
 
@@ -173,18 +178,21 @@ implements HttpSessionListener, ServletContextListener {
      *
      * @param event the servlet context event.
      */
-    public synchronized void contextDestroyed(final ServletContextEvent event) {
+    public void contextDestroyed(final ServletContextEvent event) {
         SessionDispatcherListener.contextDestroyed(event);
-
         ContextDestroyedEvent contextDestroyedEvent =
             new ContextDestroyedEvent(event);
-        Iterator it = listeners.keySet().iterator();
-        while (it.hasNext()) {
-            ((ContextEventListener) it.next()).
-                contextDestroyed(contextDestroyedEvent);
+        synchronized (LISTENERS) {
+            Iterator _listeners = LISTENERS.keySet().iterator();
+            while (_listeners.hasNext()) {
+                ((ContextEventListener)_listeners.next()).
+                    contextDestroyed(contextDestroyedEvent);
+            }
+            LISTENERS.clear();
+            synchronized (BUFFERED_CONTEXT_EVENTS) {
+                BUFFERED_CONTEXT_EVENTS.clear();
+            }
         }
-        listeners.clear();
-        bufferedContextEvents.clear();
         if (LOG.isInfoEnabled()) {
             ServletContext servletContext =
                 contextDestroyedEvent.getServletContext();
@@ -195,26 +203,26 @@ implements HttpSessionListener, ServletContextListener {
         }
     }
 
-    public synchronized void contextInitialized(
-        final ServletContextEvent event) {
-
+    public void contextInitialized(final ServletContextEvent event) {
         servletContextConfiguration =
             new ServletContextConfiguration(
                 "com.icesoft.faces", event.getServletContext());
         SessionDispatcherListener.contextInitialized(event);
     }
 
-    public synchronized static void iceFacesIdDisposed(
+    public static void iceFacesIdDisposed(
         final Object source, final String iceFacesId) {
 
         ICEfacesIDDisposedEvent iceFacesIdDisposedEvent =
             new ICEfacesIDDisposedEvent(source, iceFacesId);
-        Iterator _listeners = listeners.keySet().iterator();
-        while (_listeners.hasNext()) {
-            ((ContextEventListener) _listeners.next()).
-                iceFacesIdDisposed(iceFacesIdDisposedEvent);
+        synchronized (LISTENERS) {
+            Iterator _listeners = LISTENERS.keySet().iterator();
+            while (_listeners.hasNext()) {
+                ((ContextEventListener) _listeners.next()).
+                    iceFacesIdDisposed(iceFacesIdDisposedEvent);
+            }
+            removeBufferedEvents(iceFacesId);
         }
-        removeBufferedEvents(iceFacesId);
         if (messageServiceClient != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
@@ -242,16 +250,20 @@ implements HttpSessionListener, ServletContextListener {
      * @param source     the source of the event.
      * @param iceFacesId the ICEfaces ID.
      */
-    public synchronized static void iceFacesIdRetrieved(
+    public static void iceFacesIdRetrieved(
         final Object source, final String iceFacesId) {
 
         ICEfacesIDRetrievedEvent iceFacesIdRetrievedEvent =
             new ICEfacesIDRetrievedEvent(source, iceFacesId);
-        bufferedContextEvents.add(iceFacesIdRetrievedEvent);
-        Iterator _listeners = listeners.keySet().iterator();
-        while (_listeners.hasNext()) {
-            ((ContextEventListener) _listeners.next()).
-                iceFacesIdRetrieved(iceFacesIdRetrievedEvent);
+        synchronized (LISTENERS) {
+            synchronized (BUFFERED_CONTEXT_EVENTS) {
+                BUFFERED_CONTEXT_EVENTS.add(iceFacesIdRetrievedEvent);
+                Iterator _listeners = LISTENERS.keySet().iterator();
+                while (_listeners.hasNext()) {
+                    ((ContextEventListener) _listeners.next()).
+                        iceFacesIdRetrieved(iceFacesIdRetrievedEvent);
+                }
+            }
         }
         if (messageServiceClient != null) {
             Properties _messageProperties = new Properties();
@@ -278,16 +290,19 @@ implements HttpSessionListener, ServletContextListener {
      *
      * @param contextEventListener the listener to be removed.
      */
-    public synchronized static void removeListener(
+    public static void removeListener(
         final ContextEventListener contextEventListener) {
 
-        if (contextEventListener == null) {
-            return;
+        if (contextEventListener != null) {
+            synchronized (LISTENERS) {
+                if (LISTENERS.containsKey(contextEventListener)) {
+                    LISTENERS.remove(contextEventListener);
+                }
+            }
         }
-        listeners.remove(contextEventListener);
     }
 
-    public synchronized void sessionCreated(final HttpSessionEvent event) {
+    public void sessionCreated(final HttpSessionEvent event) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Session Created event: " + event.getSession().getId());
         }
@@ -299,7 +314,7 @@ implements HttpSessionListener, ServletContextListener {
      *
      * @param event the HTTP session event.
      */
-    public synchronized void sessionDestroyed(final HttpSessionEvent event) {
+    public void sessionDestroyed(final HttpSessionEvent event) {
         if (LOG.isDebugEnabled() ) {
             LOG.debug("Session Destroyed event: " + event.getSession().getId());
         }
@@ -308,62 +323,71 @@ implements HttpSessionListener, ServletContextListener {
         SessionDispatcherListener.sessionDestroyed(event);
         SessionDestroyedEvent sessionDestroyedEvent =
             new SessionDestroyedEvent(event);
-        Iterator _listeners = listeners.keySet().iterator();
-        while (_listeners.hasNext()) {
-            ((ContextEventListener) _listeners.next()).
-                sessionDestroyed(sessionDestroyedEvent);
+        synchronized (LISTENERS) {
+            Iterator _listeners = LISTENERS.keySet().iterator();
+            while (_listeners.hasNext()) {
+                ((ContextEventListener) _listeners.next()).
+                    sessionDestroyed(sessionDestroyedEvent);
+            }
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace("ICEfaces ID: " + sessionDestroyedEvent.getICEfacesID());
         }
     }
 
-    public synchronized static void setMessageServiceClient(
+    public static void setMessageServiceClient(
         final MessageServiceClient client) {
 
         if (client != null) {
-            blockingRequestHandlerContext =
-                servletContextConfiguration.getAttribute(
-                    "blockingRequestHandlerContext", "push-server");
-            messageServiceClient = client;
-            try {
-                messageServiceClient.subscribe(
-                    MessageServiceClient.PUSH_TOPIC_NAME,
-                    announcementMessageHandler.getMessageSelector());
-            } catch (MessageServiceException exception) {
-                if (LOG.isFatalEnabled()) {
-                    LOG.fatal(
-                        "\r\n" +
-                        "\r\n" +
-                        "Failed to subscribe to topic: " +
-                            MessageServiceClient.PUSH_TOPIC_NAME + "\r\n" +
-                        "    Exception message: " +
-                            exception.getMessage() + "\r\n" +
-                        "    Exception cause: " +
-                            exception.getCause() + "\r\n\r\n");
+            synchronized (MESSAGE_SERVICE_CLIENT_LOCK) {
+                if (messageServiceClient == null) {
+                    blockingRequestHandlerContext =
+                        servletContextConfiguration.getAttribute(
+                            "blockingRequestHandlerContext", "push-server");
+                    messageServiceClient = client;
+                    try {
+                        messageServiceClient.subscribe(
+                            MessageServiceClient.PUSH_TOPIC_NAME,
+                            announcementMessageHandler.getMessageSelector());
+                    } catch (MessageServiceException exception) {
+                        if (LOG.isFatalEnabled()) {
+                            LOG.fatal(
+                                "\r\n" +
+                                "\r\n" +
+                                "Failed to subscribe to topic: " +
+                                    MessageServiceClient.PUSH_TOPIC_NAME +
+                                    "\r\n" +
+                                "    Exception message: " +
+                                    exception.getMessage() + "\r\n" +
+                                "    Exception cause: " +
+                                    exception.getCause() + "\r\n\r\n");
+                        }
+                        blockingRequestHandlerContext = null;
+                        messageServiceClient = null;
+                        return;
+                    }
+                    messageServiceClient.addMessageHandler(
+                        announcementMessageHandler,
+                        MessageServiceClient.PUSH_TOPIC_NAME);
                 }
-                blockingRequestHandlerContext = null;
-                messageServiceClient = null;
-                return;
             }
-            messageServiceClient.addMessageHandler(
-                announcementMessageHandler,
-                MessageServiceClient.PUSH_TOPIC_NAME);
         }
     }
 
-    public synchronized static void viewNumberDisposed(
+    public static void viewNumberDisposed(
         final Object source, final String iceFacesId,
         final int viewNumber) {
 
         ViewNumberDisposedEvent viewNumberDisposedEvent =
             new ViewNumberDisposedEvent(source, iceFacesId, viewNumber);
-        Iterator _listeners = listeners.keySet().iterator();
-        while (_listeners.hasNext()) {
-            ((ContextEventListener)_listeners.next()).
-                viewNumberDisposed(viewNumberDisposedEvent);
+        synchronized (LISTENERS) {
+            Iterator _listeners = LISTENERS.keySet().iterator();
+            while (_listeners.hasNext()) {
+                ((ContextEventListener)_listeners.next()).
+                    viewNumberDisposed(viewNumberDisposedEvent);
+            }
+            removeBufferedEvents(iceFacesId, viewNumber);
         }
-        removeBufferedEvents(iceFacesId, viewNumber);
         if (messageServiceClient != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
@@ -394,17 +418,21 @@ implements HttpSessionListener, ServletContextListener {
      * @param iceFacesId the ICEfaces ID.
      * @param viewNumber the view number.
      */
-    public synchronized static void viewNumberRetrieved(
+    public static void viewNumberRetrieved(
         final Object source, final String iceFacesId,
         final int viewNumber) {
 
         ViewNumberRetrievedEvent viewNumberRetrievedEvent =
             new ViewNumberRetrievedEvent(source, iceFacesId, viewNumber);
-        bufferedContextEvents.add(viewNumberRetrievedEvent);
-        Iterator _listeners = listeners.keySet().iterator();
-        while (_listeners.hasNext()) {
-            ((ContextEventListener) _listeners.next()).
-                viewNumberRetrieved(viewNumberRetrievedEvent);
+        synchronized (LISTENERS) {
+            synchronized (BUFFERED_CONTEXT_EVENTS) {
+                BUFFERED_CONTEXT_EVENTS.add(viewNumberRetrievedEvent);
+                Iterator _listeners = LISTENERS.keySet().iterator();
+                while (_listeners.hasNext()) {
+                    ((ContextEventListener) _listeners.next()).
+                        viewNumberRetrieved(viewNumberRetrievedEvent);
+                }
+            }
         }
         if (messageServiceClient != null) {
             Properties _messageProperties = new Properties();
@@ -426,13 +454,6 @@ implements HttpSessionListener, ServletContextListener {
                             viewNumberRetrievedEvent.getICEfacesID() +
                         "]");
         }
-    }
-
-    ContextEvent[] getBufferedContextEvents() {
-        return
-            (ContextEvent[])
-                bufferedContextEvents.toArray(
-                    new ContextEvent[bufferedContextEvents.size()]);
     }
 
     private static String createMessage(final ContextEvent event) {
@@ -462,34 +483,38 @@ implements HttpSessionListener, ServletContextListener {
     private synchronized static void removeBufferedEvents(
         final String iceFacesId) {
 
-        Iterator it = bufferedContextEvents.iterator();
-        while (it.hasNext()) {
-            Object event = it.next();
-            if ((event instanceof ICEfacesIDRetrievedEvent &&
-                ((ICEfacesIDRetrievedEvent)event).
-                    getICEfacesID().equals(iceFacesId)) ||
-                (event instanceof ViewNumberRetrievedEvent &&
-                ((ViewNumberRetrievedEvent)event).
-                    getICEfacesID().equals(iceFacesId))) {
+        synchronized (BUFFERED_CONTEXT_EVENTS) {
+            Iterator _bufferedContextEvents = BUFFERED_CONTEXT_EVENTS.iterator();
+            while (_bufferedContextEvents.hasNext()) {
+                Object event = _bufferedContextEvents.next();
+                if ((event instanceof ICEfacesIDRetrievedEvent &&
+                    ((ICEfacesIDRetrievedEvent)event).
+                        getICEfacesID().equals(iceFacesId)) ||
+                    (event instanceof ViewNumberRetrievedEvent &&
+                    ((ViewNumberRetrievedEvent)event).
+                        getICEfacesID().equals(iceFacesId))) {
 
-                it.remove();
+                    _bufferedContextEvents.remove();
+                }
             }
         }
     }
 
-    private synchronized static void removeBufferedEvents(
+    private static void removeBufferedEvents(
         final String iceFacesId, final int viewNumber) {
 
-        Iterator it = bufferedContextEvents.iterator();
-        while (it.hasNext()) {
-            Object event = it.next();
-            if (event instanceof ViewNumberRetrievedEvent &&
-                ((ViewNumberRetrievedEvent)event).
-                    getICEfacesID().equals(iceFacesId) &&
-                ((ViewNumberRetrievedEvent)event).
-                    getViewNumber() == viewNumber) {
+        synchronized (BUFFERED_CONTEXT_EVENTS) {
+            Iterator _bufferedContextEvents = BUFFERED_CONTEXT_EVENTS.iterator();
+            while (_bufferedContextEvents.hasNext()) {
+                Object event = _bufferedContextEvents.next();
+                if (event instanceof ViewNumberRetrievedEvent &&
+                    ((ViewNumberRetrievedEvent)event).
+                        getICEfacesID().equals(iceFacesId) &&
+                    ((ViewNumberRetrievedEvent)event).
+                        getViewNumber() == viewNumber) {
 
-                it.remove();
+                    _bufferedContextEvents.remove();
+                }
             }
         }
     }
@@ -497,15 +522,17 @@ implements HttpSessionListener, ServletContextListener {
     private synchronized static void sendBufferedEvents(
         final ContextEventListener contextEventListener) {
 
-        Iterator it = bufferedContextEvents.iterator();
-        while (it.hasNext()) {
-            Object event = it.next();
-            if (event instanceof ICEfacesIDRetrievedEvent) {
-                contextEventListener.iceFacesIdRetrieved(
-                    (ICEfacesIDRetrievedEvent)event);
-            } else if (event instanceof ViewNumberRetrievedEvent) {
-                contextEventListener.viewNumberRetrieved(
-                    (ViewNumberRetrievedEvent)event);
+        synchronized (BUFFERED_CONTEXT_EVENTS) {
+            Iterator _bufferedContextEvents = BUFFERED_CONTEXT_EVENTS.iterator();
+            while (_bufferedContextEvents.hasNext()) {
+                Object event = _bufferedContextEvents.next();
+                if (event instanceof ICEfacesIDRetrievedEvent) {
+                    contextEventListener.iceFacesIdRetrieved(
+                        (ICEfacesIDRetrievedEvent)event);
+                } else if (event instanceof ViewNumberRetrievedEvent) {
+                    contextEventListener.viewNumberRetrieved(
+                        (ViewNumberRetrievedEvent)event);
+                }
             }
         }
     }
