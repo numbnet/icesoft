@@ -45,6 +45,11 @@ import java.util.Map;
  */
 public class NavigationBean {
 
+    private boolean extendedRender = false;
+    private boolean customRender = true;
+    private boolean tableRender = false;
+    private boolean layoutRender = false;
+    
     // selected include contents.
     private String selectedIncludePath = "/WEB-INF/includes/content/splash.xhtml";
 
@@ -87,5 +92,36 @@ public class NavigationBean {
         Map map = context.getExternalContext().getRequestParameterMap();
         selectedIncludePath = (String) map.get("includePath");
     }
-
+    
+    public boolean getExtendedRender() {
+        return extendedRender;
+    }
+    
+    public boolean getCustomRender() {
+        return customRender;
+    }
+    
+    public boolean getTableRender() {
+        return tableRender;
+    }
+    
+    public boolean getLayoutRender() {
+        return layoutRender;
+    }
+    
+    public void setExtendedRender(boolean extendedRender) {
+        this.extendedRender = extendedRender;
+    }
+    
+    public void setCustomRender(boolean customRender) {
+        this.customRender = customRender;
+    }
+    
+    public void setTableRender(boolean tableRender) {
+        this.tableRender = tableRender;
+    }
+    
+    public void setLayoutRender(boolean layoutRender) {
+        this.layoutRender = layoutRender;
+    }
 }
