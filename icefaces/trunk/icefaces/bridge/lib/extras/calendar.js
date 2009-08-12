@@ -21,7 +21,7 @@ Ice.Calendar.CloseListener = Class.create({
         this.buttonId = this.calendarId + '_cb'
         
         this.handler = this.closePopupOnClickOutside.bindAsEventListener(this);
-        Event.observe(document,'click',this.handler);
+        Event.observe(document,'mousedown',this.handler);
     },
     closePopupOnClickOutside: function(event) {
         if (this.getPopup()) {
@@ -54,7 +54,7 @@ Ice.Calendar.CloseListener = Class.create({
     },
     dispose: function() {
         Ice.Calendar.listeners[this.calendarId] = null;
-        Event.stopObserving(document,'click',this.handler);
+        Event.stopObserving(document,'mousedown',this.handler);
     },
     submit: function(event) {
         document.forms[this.formId][this.commandLinkId].value=this.getButton().id;
