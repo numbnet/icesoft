@@ -42,6 +42,7 @@ import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -59,7 +60,8 @@ import javax.faces.event.PhaseId;
  * <li>adds effects to the component</li> <ul>
  */
 
-public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
+public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
+        implements SeriesStateHolder {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlPanelGroup";
     public static final String RENDERER_TYPE = "com.icesoft.faces.Group";
@@ -758,6 +760,21 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         dropTargetScrollerId = (String) values[42];
     }
 
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object values[] = new Object[3];
+        values[0] = style;
+        values[1] = currentStyle;
+        values[2] = renderedStyle;
+        return values;
+    }
+
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object values[] = (Object[]) state;
+        style = (String) values[0];
+        currentStyle = (CurrentStyle) values[1];
+        renderedStyle = (String) values[2];
+    }
+    
     /**
      * <p>Return the given _style String as the <code>scrollableStyle</code> property.</p>
      * @param _style 
