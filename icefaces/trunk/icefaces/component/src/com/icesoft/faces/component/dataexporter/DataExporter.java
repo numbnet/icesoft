@@ -386,7 +386,7 @@ public class DataExporter extends OutputResource {
 
                     }
                     output = stringOutput;
-                    outputHandler.writeCell(output, colIndex, rowIndex);
+                    outputHandler.writeCell(output, colIndex, countOfRowsDisplayed);
                     colIndex++;
                 }
                 // keep track of rows displayed
