@@ -32,11 +32,12 @@
  */
 
 div.clearer {
-    clear: both;
-    height: 0;
-    line-height: .01em;
-    padding: 0;
-    margin: 0;
+    clear:both;
+	height:0px;
+    visibility: hidden;
+    line-height:.01em;
+	padding:0;
+	margin:0;
 }
 
 /* header begin */
@@ -48,12 +49,16 @@ div.header_container {
     background-image: url( './images/banner_bg.gif' );
     background-repeat: repeat-x;
     background-position: left top;
+    float:left;
+    width:100%;
 }
 div.header_content{
     height: 159px;
     background-image: url( './images/banner_logo.jpg' );
     background-repeat: no-repeat;
     background-position: right top;
+    float:left;
+    width:100%;
 }
 
 /* header end */
@@ -863,7 +868,7 @@ div.verticalAlignMdl{
 }
 
 .positionPanelContainer div.container{
-    background: #FFF url( '../xmlhttp/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
     color: #484848;
     padding-left: 5px;
     font-weight: normal;
@@ -988,4 +993,15 @@ div.verticalAlignMdl{
 }
 
 /* end media exmaple*/
+
+.pnlGrdClass {
+    width:70px;
+    text-align:left;
+    vertical-align:top;
+}
+.pnlGrdClassLong {
+    width:200px;
+    text-align:left;
+    vertical-align:top;
+}
 

@@ -22,6 +22,7 @@ insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('panelStack.jspx',
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('panelTabSet-static.jspx','panelTabSetStatic','/docs/panelTabSetDoc.html','http://facestutorials.icefaces.org/tutorial/tabset-tutorial.html')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('panelTabSet-dynamic.jspx','panelTabSetDynamic','/docs/panelTabSetDoc.html','http://facestutorials.icefaces.org/tutorial/tabset-tutorial.html')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('panelTooltip.jspx','panelTooltip','/docs/panelTooltipDoc.html','none')
+insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('panelConfirmation.jspx','panelConfirmation','/docs/panelConfirmationDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('selectInputText.jspx','selectInputText','/docs/selectInputTextDoc.html','http://facestutorials.icefaces.org/tutorial/autocomplete-tutorial.html')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('outputProgress.jspx','outputProgress','/docs/outputProgressDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('outputMedia.jspx','outputMedia','/docs/outputMediaDoc.html','none')
