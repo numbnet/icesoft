@@ -15,7 +15,7 @@ public class CSVOutputHandler extends OutputTypeHandler{
 	}
 
 	public void flushFile() {
-		buffer.deleteCharAt(buffer.lastIndexOf(","));		
+        deleteComma();
 		try{
 			FileWriter fw = new FileWriter(getFile());
 			fw.write(buffer.toString());
@@ -29,7 +29,7 @@ public class CSVOutputHandler extends OutputTypeHandler{
 
 	public void writeCell(Object output, int col, int row) {
 		if( row != rowIndex ){
-			buffer.deleteCharAt(buffer.lastIndexOf(","));
+            deleteComma();
 			buffer.append("\n");
 			rowIndex ++;
 		}
@@ -40,5 +40,12 @@ public class CSVOutputHandler extends OutputTypeHandler{
 	public void writeHeaderCell(String text, int col) {
 		//do nothing, no header to write for csv		
 	}
+
+    private void deleteComma() {
+        int comma = buffer.lastIndexOf(",");
+        if (comma > 0) {
+            buffer.deleteCharAt(comma);
+        }
+    }
 
 }
