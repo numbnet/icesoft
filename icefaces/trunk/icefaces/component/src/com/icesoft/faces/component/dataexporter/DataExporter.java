@@ -96,7 +96,10 @@ public class DataExporter extends OutputResource {
 		if( _origDataModelHash != 0 && _origDataModelHash != forComp.getValue().hashCode()){
 			reset();
 		}
-		_origDataModelHash = forComp.getValue().hashCode();
+		Object value = forComp.getValue();
+		if (null != value) {
+		    _origDataModelHash = forComp.getValue().hashCode();
+		}
 		return forComp;
 	}
 	
