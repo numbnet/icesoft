@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.DisplayEvent;
+import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.component.outputresource.OutputResource;
 import com.icesoft.faces.context.FileResource;
@@ -382,7 +383,7 @@ public class DataExporter extends OutputResource {
 
                         UIComponent nextChild = (UIComponent) childrenOfThisColumn
                                 .next();
-                        if (nextChild.isRendered()) {
+                        if (nextChild.isRendered() && !(nextChild instanceof RowSelector)) {
                             stringOutput += encodeParentAndChildrenAsString(fc,
                                     nextChild, stringOutput);
                         }
