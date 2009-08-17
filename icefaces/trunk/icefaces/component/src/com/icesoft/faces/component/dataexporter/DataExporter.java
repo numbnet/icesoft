@@ -15,9 +15,10 @@ import javax.faces.event.FacesEvent;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.icesoft.faces.application.D2DViewHandler;
-import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.component.outputresource.OutputResource;
@@ -29,6 +30,8 @@ public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.DataExporter";
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.DataExporterRenderer";
+	private final Log log = LogFactory.getLog(DataExporter.class);
+	
     private static final OutputTypeHandler NoopOutputHandler = new OutputTypeHandler("no-data") {
         public void writeHeaderCell(String text, int col) {
         }
@@ -297,24 +300,25 @@ public class DataExporter extends OutputResource {
     }
 
     private String encodeParentAndChildrenAsString(FacesContext fc,
-            UIComponent uic, String str) {
+            UIComponent uic) {
+        StringBuilder str = new StringBuilder();
         Object value = uic.getAttributes().get("value");
         if (value != null)
-            str += "" + value;
+            str.append(value);
         else {
             ValueBinding vb = uic.getValueBinding("value");
             if (vb != null)
-                str += String.valueOf(vb.getValue(fc));
+                str.append(vb.getValue(fc));
         }
 
         if (uic.getChildCount() > 0) {
             Iterator iter = uic.getChildren().iterator();
             while (iter.hasNext()) {
                 UIComponent child = (UIComponent) iter.next();
-                str += encodeParentAndChildrenAsString(fc, child, str);
+                str.append(encodeParentAndChildrenAsString(fc, child));
             }
         }
-        return str;
+        return str.toString();
     }
 
     protected List getRenderedChildColumnsList(UIComponent component) {
@@ -352,9 +356,7 @@ public class DataExporter extends OutputResource {
 
                 UIComponent headerComp = nextColumn.getFacet("header");
                 if (headerComp != null) {
-                    String headerText = "";
-                    headerText = encodeParentAndChildrenAsString(fc,
-                            headerComp, headerText);
+                    String headerText = encodeParentAndChildrenAsString(fc, headerComp);
                     if (headerText != null) {
                         outputHandler.writeHeaderCell(headerText, colIndex);
                     }
@@ -373,9 +375,7 @@ public class DataExporter extends OutputResource {
                 colIndex = 0;
                 while (childColumns.hasNext()) {
                     UIColumn nextColumn = (UIColumn) childColumns.next();
-
-                    Object output = null;
-                    String stringOutput = "";
+                    StringBuilder stringOutput = new StringBuilder();
 
                     Iterator childrenOfThisColumn = nextColumn.getChildren()
                             .iterator();
@@ -384,13 +384,16 @@ public class DataExporter extends OutputResource {
                         UIComponent nextChild = (UIComponent) childrenOfThisColumn
                                 .next();
                         if (nextChild.isRendered() && !(nextChild instanceof RowSelector)) {
-                            stringOutput += encodeParentAndChildrenAsString(fc,
-                                    nextChild, stringOutput);
+                            stringOutput.append(encodeParentAndChildrenAsString(fc,
+                                    nextChild));
+                            //a blank to separate 
+                            if (childrenOfThisColumn.hasNext()) {
+                                stringOutput.append(' '); 
+                            }
                         }
 
                     }
-                    output = stringOutput;
-                    outputHandler.writeCell(output, colIndex, countOfRowsDisplayed);
+                    outputHandler.writeCell(stringOutput.toString(), colIndex, countOfRowsDisplayed);
                     colIndex++;
                 }
                 // keep track of rows displayed
@@ -406,7 +409,7 @@ public class DataExporter extends OutputResource {
 
             outputHandler.flushFile();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("renderToHandler()", e);
         }
 
     }
