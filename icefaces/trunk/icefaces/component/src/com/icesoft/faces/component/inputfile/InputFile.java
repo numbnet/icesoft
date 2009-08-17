@@ -119,6 +119,8 @@ public class InputFile extends UICommand implements Serializable {
     private Boolean progressRender;
     private String submitOnUpload;
     private Boolean failOnEmptyFile;
+    private Boolean autoUpload;
+    
     /**
      * <p>Return the value of the <code>COMPONENT_TYPE</code> of this
      * component.</p>
@@ -228,7 +230,13 @@ public class InputFile extends UICommand implements Serializable {
         writer.write("\"/>");
         writer.write("<input type=\"hidden\" name=\"ice.view\"");
         writer.write(" value=\"" + context.getViewNumber() + "\"/>");
-        writer.write("<input type=\"file\" name=\"upload\"");
+        if (isAutoUpload()) {
+            writer.write("<input type=\"file\" name=\"upload\" onchange=\"form.submit()\"");
+        } else {
+            writer.write("<input type=\"file\" name=\"upload\"");           
+        }
+        if (isDisabled()) writer.write(" disabled=\"disabled\"");
+        
         writer.write(" size=\"" + getInputTextSize() + "\"");
         String inputTextClass = getInputTextClass();
         if (inputTextClass != null)
@@ -236,11 +244,13 @@ public class InputFile extends UICommand implements Serializable {
         String title = getTitle();
         if (title != null) writer.write(" title=\"" + title + "\"");
         writer.write("/>");
-        writer.write("<input type=\"submit\" value=\"" + getLabel() + "\"");
-        String buttonClass = getButtonClass();
-        if (buttonClass != null) writer.write(" class=\"" + buttonClass + "\"");
-        if (isDisabled()) writer.write(" disabled=\"disabled\"");
-        writer.write("/>");
+        if (!isAutoUpload()) {
+            writer.write("<input type=\"submit\" value=\"" + getLabel() + "\"");
+            String buttonClass = getButtonClass();
+            if (buttonClass != null) writer.write(" class=\"" + buttonClass + "\"");
+            if (isDisabled()) writer.write(" disabled=\"disabled\"");
+            writer.write("/>");
+        }
 
         // Retrieve the Node created by that state saving operation and
         // add it to the form root (otherwise it winds up outside the Form)
@@ -535,7 +545,7 @@ public class InputFile extends UICommand implements Serializable {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[31];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -568,7 +578,8 @@ public class InputFile extends UICommand implements Serializable {
         values[27] = onblur;
         values[28] = buttonClass;
         values[29] = size;
-        values[30] = failOnEmptyFile;        
+        values[30] = failOnEmptyFile;    
+        values[31] = autoUpload;            
         return ((Object) (values));
     }
 
@@ -610,7 +621,8 @@ public class InputFile extends UICommand implements Serializable {
         onblur = (String)values[27];
         buttonClass = (String)values[28];
         size = (String) values[29];
-        failOnEmptyFile = (Boolean) values[30];        
+        failOnEmptyFile = (Boolean) values[30];  
+        autoUpload = (Boolean) values[31];         
     }
 
     /**
@@ -1106,4 +1118,17 @@ public class InputFile extends UICommand implements Serializable {
         ValueBinding vb = getValueBinding("failOnEmptyFile");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : true;
     }
+    
+    public void setAutoUpload(boolean autoUpload) {
+        this.autoUpload = new Boolean(autoUpload);
+    }
+
+    public boolean isAutoUpload() {
+        if (autoUpload != null) {
+            return autoUpload.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("autoUpload");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : false;
+    }
+    
 }
