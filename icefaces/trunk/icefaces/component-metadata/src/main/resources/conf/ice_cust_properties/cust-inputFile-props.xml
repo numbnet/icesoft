@@ -428,3 +428,19 @@
 		</editor-class>
 	</property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+            This attribute is false by default. It makes the inputFile component 
+            to automatically upload the file on selection.
+        ]]>
+    </description>
+    <property-name>autoUpload</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+     </property-extension>
+</property>
+
+
