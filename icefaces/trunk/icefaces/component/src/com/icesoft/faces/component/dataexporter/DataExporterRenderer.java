@@ -33,6 +33,7 @@ public class DataExporterRenderer extends BaseRenderer {
         DataExporter dataExporter = (DataExporter)uiComponent;
         String label = dataExporter.getLabel();
         String image = dataExporter.getImage();
+        boolean renderLabelAsButton = dataExporter.isRenderLabelAsButton();
         boolean linkRequired = false;
         String type = dataExporter.getType();
         if ( (type != null &&  !"".equals(type)) ||
@@ -42,22 +43,31 @@ public class DataExporterRenderer extends BaseRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "container"), HTML.ID_ATTR);   
         if (linkRequired) {
-            writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);        
-            writer.writeAttribute(HTML.HREF_ATTR, "javascript:;", HTML.HREF_ATTR);
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "var form=formOf(this); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);        
-            if (image !=null) {
-                writer.startElement(HTML.IMG_ELEM, uiComponent);
-                writer.writeAttribute(HTML.SRC_ATTR, facesContext.
-                        getApplication().getViewHandler()
-                        .getResourceURL(facesContext, image), HTML.SRC_ATTR);  
-                writer.writeAttribute(HTML.TITLE_ATTR, label, HTML.TITLE_ATTR);
-                writer.writeAttribute(HTML.ALT_ATTR, label, HTML.ALT_ATTR);                
-                writer.endElement(HTML.IMG_ELEM);
+            if (renderLabelAsButton && image == null) {
+                writer.startElement(HTML.INPUT_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);        
+                writer.writeAttribute(HTML.TYPE_ATTR, HTML.BUTTON_ELEM, HTML.TYPE_ATTR);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);
+                writer.writeAttribute(HTML.VALUE_ATTR, label, HTML.VALUE_ATTR);                
+                writer.endElement(HTML.INPUT_ELEM);
             } else {
-                writer.write(label);
+                writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);        
+                writer.writeAttribute(HTML.HREF_ATTR, "javascript:;", HTML.HREF_ATTR);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "var form=formOf(this); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);        
+                if (image !=null) {
+                    writer.startElement(HTML.IMG_ELEM, uiComponent);
+                    writer.writeAttribute(HTML.SRC_ATTR, facesContext.
+                            getApplication().getViewHandler()
+                            .getResourceURL(facesContext, image), HTML.SRC_ATTR);  
+                    writer.writeAttribute(HTML.TITLE_ATTR, label, HTML.TITLE_ATTR);
+                    writer.writeAttribute(HTML.ALT_ATTR, label, HTML.ALT_ATTR);                
+                    writer.endElement(HTML.IMG_ELEM);
+                } else {
+                    writer.write(label);
+                }
+                writer.endElement(HTML.ANCHOR_ELEM);
             }
-            writer.endElement(HTML.ANCHOR_ELEM);
         }
         writer.endElement(HTML.DIV_ELEM);
 	}

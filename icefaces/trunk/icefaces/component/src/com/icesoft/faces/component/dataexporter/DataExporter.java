@@ -56,7 +56,7 @@ public class DataExporter extends OutputResource {
 	public final static String EXCEL_TYPE = "excel";
 	public final static String CSV_TYPE = "csv";
 	private Boolean ignorePagination;
-
+    private Boolean renderLabelAsButton;
 	public DataExporter() {
 	}
 	
@@ -433,5 +433,24 @@ public class DataExporter extends OutputResource {
         ValueBinding vb = getValueBinding("ignorePagination");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
-    }    
+    }   
+    
+    /**
+     * <p>Set the value of the <code>renderLabelAsButton</code> property.</p>
+     */
+    public void setRenderLabelAsButton(boolean renderLabelAsButton) {
+        this.renderLabelAsButton = new Boolean(renderLabelAsButton);
+    }
+
+    /**
+     * <p>Return the value of the <code>renderLabelAsButton</code> property.</p>
+     */
+    public boolean isRenderLabelAsButton() {
+        if (renderLabelAsButton != null) {
+            return renderLabelAsButton.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("renderLabelAsButton");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
+                .booleanValue() : false;
+    }     
 }
