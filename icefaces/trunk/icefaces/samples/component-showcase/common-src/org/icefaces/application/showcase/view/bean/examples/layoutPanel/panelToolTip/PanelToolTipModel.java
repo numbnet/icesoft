@@ -56,7 +56,11 @@ public class PanelToolTipModel {
     }
 
     public int getHoverDelayTime(){
-        return Integer.parseInt(hoverDelay);
+        try {
+            return Integer.parseInt(hoverDelay);
+        } catch (NumberFormatException e) { // ICE-4753
+            return 1000;
+        }
     }
 
     public void setHoverDelay(String hoverDelay) {
