@@ -1816,7 +1816,12 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             }
             
             if (setMilitaryHour != -1 || setMinute != -1) {
-                Date date = (Date) converter.getAsObject(facesContext, dateSelect, submittedDate);
+                Date date;
+                try {
+                    date = (Date) converter.getAsObject(facesContext, dateSelect, submittedDate);
+                } catch (Exception e) {
+                    date = null;
+                }
 //System.out.println("mergeTimeIntoDateString()    before calendar date: " + date);
                 if (date != null) {
                     TimeZone tz = dateSelect.resolveTimeZone(facesContext);
