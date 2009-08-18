@@ -405,7 +405,7 @@ public class PanelPopup extends HtmlPanelGroup {
         .get(CurrentStyle.class.getName());
         if (map != null) {
             String currentStyle = String.valueOf(map.get(getClientId(facesContext)));
-            if (currentStyle != null) {
+            if (!currentStyle.equals("null")) {
                 currentStyle = CustomComponentUtils.setPropertyValue
                                 (currentStyle, "display", display, true);
                 map.put(getClientId(facesContext), currentStyle);
