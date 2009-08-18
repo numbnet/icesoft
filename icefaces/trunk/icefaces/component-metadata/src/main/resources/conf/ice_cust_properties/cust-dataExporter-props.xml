@@ -133,3 +133,16 @@
       <default-value>false</default-value>
     </property-extension>
   </property>  
+  
+   <property>
+    <description>
+    This is false by default. If true the label text will be the label of a rendered button, instead of an anchor link.
+    </description>
+    <property-name>renderLabelAsButton</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
+    </property-extension>
+  </property>  
+  

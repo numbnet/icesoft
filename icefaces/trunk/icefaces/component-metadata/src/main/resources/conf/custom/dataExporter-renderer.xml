@@ -44,6 +44,14 @@
 		
 		The outputTypeHandler attribute allows developer to define custom output
 		formats.
+        <br/>
+            The <b>label</b>, <b>image</b> and <b>renderLabelAsButton</b> are interrelated. Their order of precedence are as follows:
+            <ul>
+                <li>If image URL is specified, the label text will become the alt text for the image, the image is 
+                a clickable anchor to trigger the export operation. This supercedes the following two configurations.</li>
+                <li>If renderLabelAsButton=true, the label text will used for a rendered button that will trigger the export operation.</li>
+                <li>(default) The label text is rendered as an anchor which, when clicked, will trigger the export operation.</li>
+            </ul>
 		</p>
 		         ]]>
 	</description>
