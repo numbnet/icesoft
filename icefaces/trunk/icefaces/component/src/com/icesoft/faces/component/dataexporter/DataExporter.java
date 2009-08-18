@@ -214,7 +214,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[8];
+            values = new Object[9];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -223,7 +223,8 @@ public class DataExporter extends OutputResource {
         values[4] = readyToExport? Boolean.TRUE : Boolean.FALSE;
         values[5] = _origType;
         values[6] = _origFor;
-        values[7] = ignorePagination;        
+        values[7] = ignorePagination; 
+        values[8] = renderLabelAsButton;         
         return ((Object) (values));
     }
 
@@ -242,7 +243,8 @@ public class DataExporter extends OutputResource {
         readyToExport = ((Boolean) values[4]).booleanValue();        
         _origType = (String) values[5];
         _origFor = (String)values[6];
-        ignorePagination = (Boolean)values[7];        
+        ignorePagination = (Boolean)values[7]; 
+        renderLabelAsButton = (Boolean)values[8];            
     }
     
     public String getLabel() {
