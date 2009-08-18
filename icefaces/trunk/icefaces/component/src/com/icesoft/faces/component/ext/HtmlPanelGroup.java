@@ -121,6 +121,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
     private String onmouseover;
     private String onmousemove;
     private String onmouseup;
+    private String title;    
     /**
      *
      */
@@ -1089,5 +1090,24 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
     public void setDropTargetScrollerId(String dropTargetScrollerId) {
         this.dropTargetScrollerId = dropTargetScrollerId;
     }
+    
+
+    /**
+     * <p>Set the value of the <code>title</code> property.</p>
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    /**
+     * <p>Return the value of the <code>title</code> property.</p>
+     */
+    public String getTitle() {
+        if (title != null) {
+            return title;
+        }
+        ValueBinding vb = getValueBinding("title");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }    
 }
 

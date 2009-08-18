@@ -37,7 +37,7 @@
 &events-props;
 &ice-att-menuPopup-props;
 &ice-att-contextValue-props;
-
+&pass-thru-title-props;
 <property>
 	<description>
 		The drop value of this panel, for use in DnDEvents. This value
