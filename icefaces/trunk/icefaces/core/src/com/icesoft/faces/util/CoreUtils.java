@@ -151,6 +151,7 @@ public class CoreUtils {
         boolean dynamic = false;
         String formId = "";
         String ctxValue = "";
+        boolean displayOnClick = false;
 
             UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
             if (panelTooltip != null/* && family type equals panelPopup*/) { 
@@ -169,6 +170,9 @@ public class CoreUtils {
                 if (uiComponent.getAttributes().get("contextValue") != null) {
                     ctxValue = String.valueOf(uiComponent.getAttributes().get("contextValue"));
                 }
+                if (panelTooltip.getAttributes().get("displayOnClick") != null) {
+                    displayOnClick = ((Boolean) panelTooltip.getAttributes().get("displayOnClick")).booleanValue();
+                }
             }
             UIComponent form = DomBasicRenderer.findForm(panelTooltip);
             if (form != null) {
@@ -179,7 +183,7 @@ public class CoreUtils {
         String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
         onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
         hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"','"+
-                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"'," + displayOnClick + ");";
         rootElement.setAttribute("onmouseover", onmouseover);
     }
     
