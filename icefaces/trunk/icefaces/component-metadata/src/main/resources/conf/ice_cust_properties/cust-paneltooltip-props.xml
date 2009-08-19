@@ -151,3 +151,18 @@
         <default-value>500</default-value>        
     </property-extension>
 </property>
+
+<property>
+<description>
+    <![CDATA[<p>
+        By default the tooltip will be displayed on the hover event, which
+        can be replaced with the click event by setting this attribute to true.</p>
+        ]]>
+</description>
+<property-name>displayOnClick</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_LAYOUT</category>
+    <default-value>false</default-value>
+</property-extension>
+</property>

@@ -33,10 +33,10 @@
  var visibleTooltipList = new Array();
  
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl) {
+  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOnClick) {
     this.src = srcComp;
     this.delay = delay || 500;
-    this.dynamic = (dynamic == "true"); 
+    this.dynamic = (dynamic == "true");
     this.tooltipCompId = tooltipCompId;
     this.srcCompId = srcComp.id;
     this.hideOn = hideOn;
@@ -63,7 +63,11 @@ ToolTipPanelPopup = Class.create({
     Event.observe(document, this.hideOn , this.hideEvent);
     Event.observe(document, "mousemove", this.eventMouseMove);
 
-    this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
+      if (displayOnClick) {
+          Event.observe(srcComp, "click", this.showPopup.bind(this));
+      } else {
+          this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
+      }
   },
 
   showPopup: function() {

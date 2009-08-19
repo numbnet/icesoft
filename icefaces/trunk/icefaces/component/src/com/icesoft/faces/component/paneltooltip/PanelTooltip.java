@@ -46,7 +46,8 @@ public class PanelTooltip extends PanelPopup{
     private String styleClass = null;
     
     private MethodBinding displayListener;
-    
+    private Boolean displayOnClick;
+
     public PanelTooltip() {
         setRendererType(DEFAULT_RENDERER_TYPE);
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
@@ -367,19 +368,34 @@ public class PanelTooltip extends PanelPopup{
         styleClass = (String)states[2];
         hideOn = (String)states[3];
         hoverDelay = (Integer)states[4];
+        displayOnClick = (Boolean) states[5];
     }
 
     public Object saveState(FacesContext context) {
         if(states == null){
-            states = new Object[5];
+            states = new Object[6];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, displayListener);
         states[2] = styleClass;
         states[3] = hideOn;
         states[4] = hoverDelay;
+        states[5] = displayOnClick;
         return states;
     }
 
+    public void setDisplayOnClick(boolean displayOnClick) {
+        this.displayOnClick = Boolean.valueOf(displayOnClick);
+    }
 
+    public boolean isDisplayOnClick() {
+        if (displayOnClick != null) {
+            return displayOnClick.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("displayOnClick");
+        if (vb != null) {
+            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        }
+        return false;
+    }
 }
