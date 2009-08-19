@@ -662,7 +662,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[43];
+        Object values[] = new Object[44];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -705,7 +705,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
         values[39] = onmouseover;
         values[40] = onmousemove;
         values[41] = onmouseup;        
-        values[42] = dropTargetScrollerId;        
+        values[42] = dropTargetScrollerId;    
+        values[43] = title;        
         return values;
 
     }
@@ -759,6 +760,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
         onmousemove= (String)values[40];
         onmouseup= (String)values[41];
         dropTargetScrollerId = (String) values[42];
+        title = (String) values[43];        
     }
 
     public Object saveSeriesState(FacesContext facesContext) {
