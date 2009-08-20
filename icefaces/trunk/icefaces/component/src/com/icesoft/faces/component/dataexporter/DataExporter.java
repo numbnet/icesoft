@@ -19,8 +19,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumn;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.outputresource.OutputResource;
 import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
@@ -57,6 +60,7 @@ public class DataExporter extends OutputResource {
 	public final static String CSV_TYPE = "csv";
 	private Boolean ignorePagination;
     private Boolean renderLabelAsButton;
+    private String styleClass;
 	public DataExporter() {
 	}
 	
@@ -214,7 +218,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[9];
+            values = new Object[10];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -224,7 +228,8 @@ public class DataExporter extends OutputResource {
         values[5] = _origType;
         values[6] = _origFor;
         values[7] = ignorePagination; 
-        values[8] = renderLabelAsButton;         
+        values[8] = renderLabelAsButton;     
+        values[9] = styleClass;           
         return ((Object) (values));
     }
 
@@ -244,7 +249,8 @@ public class DataExporter extends OutputResource {
         _origType = (String) values[5];
         _origFor = (String)values[6];
         ignorePagination = (Boolean)values[7]; 
-        renderLabelAsButton = (Boolean)values[8];            
+        renderLabelAsButton = (Boolean)values[8];  
+        styleClass = (String)values[9];         
     }
     
     public String getLabel() {
@@ -454,5 +460,18 @@ public class DataExporter extends OutputResource {
         ValueBinding vb = getValueBinding("renderLabelAsButton");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
-    }     
+    }
+    
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+    
+    public String getStyleClass() {
+        return Util.getQualifiedStyleClass(this, 
+                styleClass,
+                CSS_DEFAULT.DATAEXPORTER_DEFAULT_STYLE_CLASS,
+                "styleClass");
+    } 
+    
+    
 }
