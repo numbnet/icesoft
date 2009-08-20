@@ -42,6 +42,12 @@ public class DataExporterRenderer extends BaseRenderer {
         }
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "container"), HTML.ID_ATTR);   
+        String style = dataExporter.getStyle();
+        if (style != null) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, dataExporter.getStyleClass(), HTML.CLASS_ATTR);     
+        
         if (linkRequired) {
             if (renderLabelAsButton && image == null) {
                 writer.startElement(HTML.INPUT_ELEM, uiComponent);
