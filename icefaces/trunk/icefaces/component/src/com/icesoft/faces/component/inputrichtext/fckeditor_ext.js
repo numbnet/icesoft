@@ -143,11 +143,40 @@ FCKeditor.prototype.CreateIce = function(eleId)
 
 function FCKeditor_OnComplete( editorInstance ){
     var onCompleteInvoked = $(editorInstance.Name + 'onCompleteInvoked');
+    var fieldWithClientId = $(editorInstance.Name);
+    if (fieldWithClientId) {
+        fieldWithClientId["jsInstance"] = editorInstance;    
+    }
     if (onCompleteInvoked)onCompleteInvoked.value = true;    
     Ice.FCKeditorUtility.updateValue(editorInstance.Name);	
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
+}
+
+function handleApplicationFocus(clientId) {
+        var fieldWithClientId = $(clientId ); 
+        if (fieldWithClientId["app_focus_timer"])return;
+        var clearTimer;
+        clearTimer = function () {
+            clearInterval(fieldWithClientId["app_focus_timer"]);
+            Event.stopObserving(document, "click", clearTimer);
+            Event.stopObserving(document, "keydown", clearTimer);
+            };
+        Event.observe(document, "click", clearTimer);
+        Event.observe(document, "keydown", clearTimer); 
+        fieldWithClientId["app_focus_timer"] = window.setInterval(function () {
+        var editorInstance = null;
+        if (fieldWithClientId) {  
+           editorInstance = fieldWithClientId["jsInstance"]; 
+           if (editorInstance) {
+               try {
+                    editorInstance.Focus();
+               } catch (e) {logger.info(e);}
+               clearInterval(fieldWithClientId["app_focus_timer"]);
+           }
+         }
+       },500);
 }
 
 function toogleState(editorInstance) {
