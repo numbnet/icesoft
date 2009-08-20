@@ -834,6 +834,10 @@ div.verticalAlignMdl{
     left: 40%;
 }
 
+.corePopup table {
+    width: 100%;
+}
+
 .popupBody {
     margin-top: 25px;
     width: 100%;
