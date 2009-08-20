@@ -39,9 +39,11 @@ public class PanelToolTipModel {
 
     private String hideOn = "mouseout";
 
-    private String hoverDelay ="1000";
+    private String hoverDelay ="500";
 
     private boolean draggable;
+
+    private boolean displayOnClick = false;
 
     public String getHideOn() {
         return hideOn;
@@ -59,7 +61,7 @@ public class PanelToolTipModel {
         try {
             return Integer.parseInt(hoverDelay);
         } catch (NumberFormatException e) { // ICE-4753
-            return 1000;
+            return 500;
         }
     }
 
@@ -73,5 +75,13 @@ public class PanelToolTipModel {
 
     public void setDraggable(boolean draggable) {
         this.draggable = draggable;
+    }
+
+    public boolean isDisplayOnClick() {
+        return displayOnClick;
+    }
+
+    public void setDisplayOnClick(boolean displayOnClick) {
+        this.displayOnClick = displayOnClick;
     }
 }
