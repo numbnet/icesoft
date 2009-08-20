@@ -148,9 +148,6 @@ function FCKeditor_OnComplete( editorInstance ){
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
-    try {
-        editorInstance.Focus();
-    } catch (err) {logger.info(err);}      
 }
 
 function toogleState(editorInstance) {
