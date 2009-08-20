@@ -2886,3 +2886,10 @@ Disabeld classes for the calendar controls
     color: #000000;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+/*
+----------- DataExporter ----------
+*/
+.iceDatExp input{
+    font-family: Arial, Helvetica, sans-serif;
+}
