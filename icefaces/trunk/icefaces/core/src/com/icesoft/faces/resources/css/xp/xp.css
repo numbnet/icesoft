@@ -2903,3 +2903,9 @@ Disabled classes for the calendar controls
     margin: 0 20px 0 20px;
 }
 
+/*
+----------- DataExporter ----------
+*/
+.iceDatExp input{
+    font-family: Arial, Helvetica, sans-serif;
+}
