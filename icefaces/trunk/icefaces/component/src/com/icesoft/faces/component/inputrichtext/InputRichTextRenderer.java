@@ -36,6 +36,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
             		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + 
             		"', '"+ inputRichText.getSkin() +"'));");
+            //ICE-4760    
+            call.append("$('"+ clientId +"')[\"focus\"]= function(){handleApplicationFocus('"+ clientId+"');};");
+            
             String value = "";
             if (inputRichText.getValue() != null) {
                 value =  inputRichText.getValue().toString();
