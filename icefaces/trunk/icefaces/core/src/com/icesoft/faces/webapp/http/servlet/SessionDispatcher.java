@@ -129,15 +129,18 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private boolean inRole(String sessionID, String role) {
-        Iterator i = new ArrayList((Collection) activeRequests.get(sessionID)).iterator();
-        while (i.hasNext()) {
-            try {
-                HttpServletRequest request = (HttpServletRequest) i.next();
-                if (request.isUserInRole(role)) {
-                    return true;
+        Collection sessionRequests = (Collection) activeRequests.get(sessionID);
+        if (sessionRequests != null && !sessionRequests.isEmpty()) {
+            Iterator i = new ArrayList(sessionRequests).iterator();
+            while (i.hasNext()) {
+                try {
+                    HttpServletRequest request = (HttpServletRequest) i.next();
+                    if (request.isUserInRole(role)) {
+                        return true;
+                    }
+                } catch (Throwable t) {
+                    //ignore
                 }
-            } catch (Throwable t) {
-                //ignore
             }
         }
         return false;
