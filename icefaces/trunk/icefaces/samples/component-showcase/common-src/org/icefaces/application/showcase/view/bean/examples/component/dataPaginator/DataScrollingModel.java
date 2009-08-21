@@ -96,7 +96,7 @@ public class DataScrollingModel extends DataTableBase {
     public void dataModelChangeListener(ValueChangeEvent event){
         String oldPagingValue = (String)event.getOldValue();
 
-        if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
+        if ( oldPagingValue != null && oldPagingValue.equals(PAGINATOR_SCROLLING) &&
                 dataPaginatorBinding != null){
             dataPaginatorBinding.gotoFirstPage();
         }
