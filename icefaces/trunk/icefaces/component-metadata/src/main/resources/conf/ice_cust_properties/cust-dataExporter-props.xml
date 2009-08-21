@@ -167,3 +167,29 @@
     </property-extension>
 </property>
   
+  <property>
+    <description>
+        <![CDATA[    
+        <p>This attribute lets you define the order and number of columns that needs to be added to
+        the generated output. It takes comma separated column indexes. 
+        Note that index starts with 0. <br/><br/>
+        
+        If there are 6 columns in the table and you want to add only 1st, 4th 
+        and 6th column to the generated output:<br/>
+        &lt;ice:dataExporter includeColumns="0,3,5"... &gt;
+        <br/>
+        The column order of the above example can be changed a well:</br>
+        &lt;ice:dataExporter includeColumns="5,0,3"... &gt;
+        <br/>
+        By default all columns will be included to the output, and in the default order.
+        </p>
+        
+        ]]>
+    </description>
+    <property-name>includeColumns</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+    </property-extension>
+  </property>   
+  

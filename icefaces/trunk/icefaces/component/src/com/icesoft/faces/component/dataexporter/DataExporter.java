@@ -61,6 +61,7 @@ public class DataExporter extends OutputResource {
 	private Boolean ignorePagination;
     private Boolean renderLabelAsButton;
     private String styleClass;
+    private String includeColumns;
 	public DataExporter() {
 	}
 	
@@ -218,7 +219,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[10];
+            values = new Object[11];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -229,7 +230,9 @@ public class DataExporter extends OutputResource {
         values[6] = _origFor;
         values[7] = ignorePagination; 
         values[8] = renderLabelAsButton;     
-        values[9] = styleClass;           
+        values[9] = styleClass;
+        values[10] = includeColumns;         
+        
         return ((Object) (values));
     }
 
@@ -250,7 +253,8 @@ public class DataExporter extends OutputResource {
         _origFor = (String)values[6];
         ignorePagination = (Boolean)values[7]; 
         renderLabelAsButton = (Boolean)values[8];  
-        styleClass = (String)values[9];         
+        styleClass = (String)values[9];  
+        includeColumns = (String)values[10];         
     }
     
     public String getLabel() {
@@ -355,21 +359,23 @@ public class DataExporter extends OutputResource {
  
             int countOfRowsDisplayed = 0;
             uiData.setRowIndex(rowIndex);
-
+            String[] includeColumnsArray = null;
+            String includeColumns = getIncludeColumns();
+            if (includeColumns != null)
+                includeColumnsArray = includeColumns.split(",");
+                
             // write header
-            Iterator childColumns = getRenderedChildColumnsList(uiData)
-                    .iterator();
-            while (childColumns.hasNext()) {
-                UIColumn nextColumn = (UIColumn) childColumns.next();
-
-                UIComponent headerComp = nextColumn.getFacet("header");
-                if (headerComp != null) {
-                    String headerText = encodeParentAndChildrenAsString(fc, headerComp);
-                    if (headerText != null) {
-                        outputHandler.writeHeaderCell(headerText, colIndex);
-                    }
+            List columns = getRenderedChildColumnsList(uiData);
+            Iterator childColumns;
+            if (includeColumnsArray != null) {
+               renderInUserDefinedOrder(fc, outputHandler, columns, includeColumnsArray, colIndex, -1);
+            } else {
+                childColumns = columns.iterator();
+                while (childColumns.hasNext()) {
+                    UIColumn nextColumn = (UIColumn) childColumns.next();
+                    processColumnHeader(fc, outputHandler, nextColumn, colIndex);
+                    colIndex++;
                 }
-                colIndex++;
             }
 
             while (uiData.isRowAvailable()) {
@@ -379,30 +385,17 @@ public class DataExporter extends OutputResource {
                 }
 
                 // render the child columns; each one in a td
-                childColumns = getRenderedChildColumnsList(uiData).iterator();
                 colIndex = 0;
-                while (childColumns.hasNext()) {
-                    UIColumn nextColumn = (UIColumn) childColumns.next();
-                    StringBuilder stringOutput = new StringBuilder();
 
-                    Iterator childrenOfThisColumn = nextColumn.getChildren()
-                            .iterator();
-                    while (childrenOfThisColumn.hasNext()) {
-
-                        UIComponent nextChild = (UIComponent) childrenOfThisColumn
-                                .next();
-                        if (nextChild.isRendered() && !(nextChild instanceof RowSelector)) {
-                            stringOutput.append(encodeParentAndChildrenAsString(fc,
-                                    nextChild));
-                            //a blank to separate 
-                            if (childrenOfThisColumn.hasNext()) {
-                                stringOutput.append(' '); 
-                            }
-                        }
-
+                if (includeColumnsArray != null) {
+                    renderInUserDefinedOrder(fc, outputHandler, columns, includeColumnsArray, colIndex, countOfRowsDisplayed);
+                } else {
+                    childColumns = columns.iterator();
+                    while (childColumns.hasNext()) {
+                        UIColumn nextColumn = (UIColumn) childColumns.next();
+                        processColumn(fc, outputHandler, nextColumn, colIndex, countOfRowsDisplayed);
+                        colIndex++;
                     }
-                    outputHandler.writeCell(stringOutput.toString(), colIndex, countOfRowsDisplayed);
-                    colIndex++;
                 }
                 // keep track of rows displayed
                 countOfRowsDisplayed++;
@@ -473,5 +466,88 @@ public class DataExporter extends OutputResource {
                 "styleClass");
     } 
     
+    protected void processColumnHeader(FacesContext fc, 
+                                    OutputTypeHandler outputHandler,
+                                    UIColumn uiColumn, int colIndex) {
+        UIComponent headerComp = uiColumn.getFacet("header");
+        if (headerComp != null) {
+            String headerText = encodeParentAndChildrenAsString(fc, headerComp);
+            if (headerText != null) {
+                outputHandler.writeHeaderCell(headerText, colIndex);
+            }
+        }        
+    }
     
+    protected void processColumn(FacesContext fc, 
+            OutputTypeHandler outputHandler,
+            UIColumn uiColumn, int colIndex,
+            int countOfRowsDisplayed) {
+        StringBuilder stringOutput = new StringBuilder();
+
+        Iterator childrenOfThisColumn = uiColumn.getChildren()
+                .iterator();
+        while (childrenOfThisColumn.hasNext()) {
+
+            UIComponent nextChild = (UIComponent) childrenOfThisColumn
+                    .next();
+            if (nextChild.isRendered() && !(nextChild instanceof RowSelector)) {
+                stringOutput.append(encodeParentAndChildrenAsString(fc,
+                        nextChild));
+                //a blank to separate 
+                if (childrenOfThisColumn.hasNext()) {
+                    stringOutput.append(' '); 
+                }
+            }
+
+        }
+        outputHandler.writeCell(stringOutput.toString(), colIndex, countOfRowsDisplayed);
+        
+    }
+    
+    
+    /**
+      */
+    public String getIncludeColumns() {
+        if (this.includeColumns != null) {
+            return includeColumns;
+        }
+        ValueBinding vb = getValueBinding("includeColumns");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+     /**
+     */
+    public void setIncludeColumns(String includeColumns) {
+        this.includeColumns = includeColumns;
+    }    
+    
+    protected void renderInUserDefinedOrder(FacesContext fc,
+            OutputTypeHandler outputHandler, 
+            List columns,
+            String[] includeColumnsArray,
+            int colIndex,
+            int countOfRowsDisplayed
+            ) {
+        for (int i=0; i<includeColumnsArray.length; i++) {
+            int userIndex = 0;
+            try {
+                userIndex = Integer.parseInt(includeColumnsArray[i].trim());
+            } catch (Exception e) {
+                log.error("renderInUserDefinedOrder() invalid column index ", e);
+                continue;
+            }
+            if ( userIndex < 0 || userIndex > columns.size()) {
+                log.info("["+userIndex +"] is invalid column index. Column index is 0 based and should be less then from "+ columns.size());
+                continue;
+            }
+            UIColumn nextColumn = (UIColumn) columns.get(userIndex);
+            if (countOfRowsDisplayed == -1) {
+                processColumnHeader(fc, outputHandler, nextColumn, colIndex);
+            } else {
+                processColumn(fc, outputHandler, nextColumn, colIndex, countOfRowsDisplayed);
+            }
+            colIndex++; 
+        }
+                
+    }
 }
