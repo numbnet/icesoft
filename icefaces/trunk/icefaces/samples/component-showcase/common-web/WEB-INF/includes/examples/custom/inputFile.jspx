@@ -47,9 +47,13 @@ Once the file is uploaded, information about the file is displayed.
 
     <!-- file upload example -->
     <ice:panelGroup styleClass="exampleBox inputFileContainer">
-
+        <ice:panelGrid columns="2">
+            <ice:outputText value="Auto upload"/>
+            <ice:selectBooleanCheckbox partialSubmit="true" value="#{inputFileController.autoUpload}" />
+          
+        </ice:panelGrid>
         <!-- file upload usage with progress callback. -->
-        <ice:inputFile id="inputFileName" width="600"
+        <ice:inputFile id="inputFileName" width="600" autoUpload="#{inputFileController.autoUpload}"
                        progressListener="#{inputFileController.fileUploadProgress}"
                        actionListener="#{inputFileController.uploadFile}"/>
         <!-- progress bar, percent value is upated via progressListener-->

@@ -66,6 +66,7 @@ public class InputFileController implements Serializable {
     // file upload completed percent (Progress)
     private int fileProgress;
 
+    private boolean autoUpload = true;
     /**
      * <p>Action event method which is triggered when a user clicks on the
      * upload file button.  Uploaded files are added to a list so that user have
@@ -141,5 +142,13 @@ public class InputFileController implements Serializable {
 
     public List getFileList() {
         return fileList;
+    }
+
+    public boolean isAutoUpload() {
+        return autoUpload;
+    }
+
+    public void setAutoUpload(boolean autoUpload) {
+        this.autoUpload = autoUpload;
     }
 }
