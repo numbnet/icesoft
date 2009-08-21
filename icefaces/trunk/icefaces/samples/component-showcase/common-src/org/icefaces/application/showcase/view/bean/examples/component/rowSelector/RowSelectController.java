@@ -106,7 +106,8 @@ public class RowSelectController extends DataTableBase {
      * @param event jsf action event.
      */
     public void changeSelectionMode(ValueChangeEvent event) {
-        String newValue = event.getNewValue().toString(); 
+        
+    	String newValue = event.getNewValue() != null ? event.getNewValue().toString() : null; 
         multiple = false;
         enhancedMultiple = false;
         if ("Single".equals(newValue)){
