@@ -35,6 +35,7 @@ package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.FileResource;
+import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceRegistry;
 
 import javax.faces.component.UIGraphic;
@@ -68,8 +69,8 @@ public class ImageRenderer
                 }
             };
             return (((ResourceRegistry) facesContext).registerResource(bar)).getPath();
-        } else if (o instanceof FileResource) {
-            return (((ResourceRegistry) facesContext).registerResource((FileResource)o)).getPath();
+        } else if (o instanceof Resource) {
+            return (((ResourceRegistry) facesContext).registerResource((Resource)o)).getPath();
         } else {
             // delegate to the parent class
             return super.processSrcAttribute(facesContext, uiGraphic);
