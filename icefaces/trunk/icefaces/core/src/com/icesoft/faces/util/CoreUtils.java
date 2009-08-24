@@ -2,6 +2,7 @@ package com.icesoft.faces.util;
 
 import java.util.Iterator;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -234,5 +235,34 @@ public class CoreUtils {
             if (!st1[i].equals(st2[i])) return false;
         }
         return true;
+    }
+    
+    public static String getRealPath(FacesContext facesContext, String path) {
+        Object session = FacesContext
+        .getCurrentInstance().getExternalContext().getSession(false);
+        if (session == null) {
+            log.error("getRealPath() session is null", new NullPointerException());
+            return null;
+        }
+        if (isPortletEnvironment()) {
+            return getRealPath(session, "getPortletContext", path);
+        } else {
+            return getRealPath(session, "getServletContext", path);
+        }
+    }
+    
+    private static String getRealPath(Object session, String getContext, String path) {
+        try {
+            Method getContextMethod = session.getClass().getMethod(getContext, null);
+            Object context;
+            context = getContextMethod.invoke(session, null);
+            Class[] classargs = {String.class};
+            Method getRealPath =  context.getClass().getMethod("getRealPath", classargs);
+            Object[] args = {path};
+            return String.valueOf(getRealPath.invoke(context, args)); 
+        } catch (Exception e) {
+            log.error("Error getting realpath", e);
+            return null;
+        }        
     }
 }

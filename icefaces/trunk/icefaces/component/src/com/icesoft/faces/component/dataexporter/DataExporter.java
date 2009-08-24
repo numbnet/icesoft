@@ -28,6 +28,7 @@ import com.icesoft.faces.component.outputresource.OutputResource;
 import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
 
 public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
@@ -285,14 +286,11 @@ public class DataExporter extends OutputResource {
     private File createFile(FacesContext fc, String type) {
         UIData uiData = getUIData();
         OutputTypeHandler outputHandler = null;
-        ServletContext context = ((HttpSession) FacesContext
-                .getCurrentInstance().getExternalContext().getSession(false))
-                .getServletContext();
-
-        File exportDir = new File(context.getRealPath("/export"));
+        String path = CoreUtils.getRealPath(fc, "/export"); 
+        File exportDir = new File(path);
         if (!exportDir.exists())
             exportDir.mkdirs();
-        String pathWithoutExt = context.getRealPath("/export") + "/export_"
+        String pathWithoutExt = path + "/export_"
                 + new Date().getTime();
 
         if (getOutputTypeHandler() != null)
