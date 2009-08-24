@@ -34,18 +34,30 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.context.ByteArrayResource;
+import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.ResourceRegistry;
 
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class ImageRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ImageRenderer {
-
+    private static Log log = LogFactory.getLog(ImageRenderer.class);
     protected String processSrcAttribute(FacesContext facesContext, UIGraphic uiGraphic) {
         Object o = uiGraphic.getValue();
+        if (o == null) {
+            o = uiGraphic.getUrl();
+        }
+        if (o == null) {
+            log.error("The value of graphicImage component is missing", new NullPointerException());
+            return new String();
+        }
         if (o instanceof byte[]) {
             final Map attributes = uiGraphic.getAttributes();
             final String mimeType = attributes.containsKey("mimeType") ? String.valueOf(attributes.get("mimeType")) : "";
@@ -55,8 +67,9 @@ public class ImageRenderer
                     options.setMimeType(mimeType);
                 }
             };
-
             return (((ResourceRegistry) facesContext).registerResource(bar)).getPath();
+        } else if (o instanceof FileResource) {
+            return (((ResourceRegistry) facesContext).registerResource((FileResource)o)).getPath();
         } else {
             // delegate to the parent class
             return super.processSrcAttribute(facesContext, uiGraphic);
