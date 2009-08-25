@@ -43,7 +43,7 @@ public class PanelToolTipModel {
 
     private boolean draggable;
 
-    private boolean displayOnClick = false;
+    private String displayOn = "hover";
 
     public String getHideOn() {
         return hideOn;
@@ -77,11 +77,11 @@ public class PanelToolTipModel {
         this.draggable = draggable;
     }
 
-    public boolean isDisplayOnClick() {
-        return displayOnClick;
+    public String getDisplayOn() {
+        return displayOn;
     }
 
-    public void setDisplayOnClick(boolean displayOnClick) {
-        this.displayOnClick = displayOnClick;
+    public void setDisplayOn(String displayOn) {
+        this.displayOn = displayOn;
     }
 }

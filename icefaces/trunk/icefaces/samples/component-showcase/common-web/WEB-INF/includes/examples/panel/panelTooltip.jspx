@@ -46,12 +46,21 @@
 -->
 <ice:panelGroup styleClass="exampleBox panelToolTipContainer">
 
+    <ice:panelGroup style="display:inline;">
+        <ice:outputLabel value="#{msgs['page.panelTooltip.displayOn.label']}" for="displayOn"/>
+        <ice:selectOneMenu id="displayOn" value="#{tooltipController.panelToolTipModel.displayOn}" partialSubmit="true">
+            <f:selectItem itemValue="hover" itemLabel="#{msgs['page.panelTooltip.displayOn.label1']}"/>
+            <f:selectItem itemValue="click" itemLabel="#{msgs['page.panelTooltip.displayOn.label2']}"/>
+            <f:selectItem itemValue="altclick" itemLabel="#{msgs['page.panelTooltip.displayOn.label3']}"/>
+            <f:selectItem itemValue="dblclick" itemLabel="#{msgs['page.panelTooltip.displayOn.label4']}"/>
+        </ice:selectOneMenu>
+    </ice:panelGroup>
     <!-- tool tip duration config -->
     <ice:panelGroup style="display:inline;">
         <ice:outputLabel value="#{msgs['page.panelTooltip.duration.label']}"
-                         for="duration"/>
+                         for="duration" style="margin-left:1em;"/>
         <ice:selectOneMenu id="duration"
-                           partialSubmit="true" disabled="#{tooltipController.panelToolTipModel.displayOnClick}"
+                           partialSubmit="true" disabled="#{tooltipController.panelToolTipModel.displayOn != 'hover'}"
                            value="#{tooltipController.panelToolTipModel.hoverDelay}">
             <f:selectItem
                     itemValue="500"
@@ -63,10 +72,6 @@
                     itemValue="1500"
                     itemLabel="#{msgs['page.panelTooltip.duration.label3']}"/>
         </ice:selectOneMenu>
-    </ice:panelGroup>
-    <ice:panelGroup style="display:inline;">
-        <ice:outputLabel value="#{msgs['page.panelTooltip.displayOnClick.label']}" for="displayOnClick" style="margin:0em 0.5em 0em 1em"/>
-        <ice:selectBooleanCheckbox id="displayOnClick" value="#{tooltipController.panelToolTipModel.displayOnClick}" partialSubmit="true"/>
     </ice:panelGroup>
     <ice:messages />
 </ice:panelGroup>
@@ -88,7 +93,7 @@
                 <ice:outputText value="#{inventoryItem.name}"/>
             </ice:panelGroup>
     
-            <ice:panelTooltip id="pnlSerPanelToolTip" displayOnClick="#{tooltipController.panelToolTipModel.displayOnClick}"
+            <ice:panelTooltip id="pnlSerPanelToolTip" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
                               hideOn="#{tooltipController.panelToolTipModel.hideOn}"
                               hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                               style="width:100px;height:75px;text-align:left;">
@@ -146,7 +151,7 @@
     </ice:panelGroup>
 
     <!-- toolTip decloration that is ued for more then one panelGroup -->
-    <ice:panelTooltip id="provinceInfo" displayOnClick="#{tooltipController.panelToolTipModel.displayOnClick}"
+    <ice:panelTooltip id="provinceInfo" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
                       hideOn="#{tooltipController.panelToolTipModel.hideOn}"
                       hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                       displayListener="#{tooltipController.displayListener}"
