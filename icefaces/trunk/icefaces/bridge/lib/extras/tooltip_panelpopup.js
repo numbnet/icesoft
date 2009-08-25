@@ -92,10 +92,10 @@ ToolTipPanelPopup = Class.create({
         //static? just set the visibility= true 
        var tooltip = this.getTooltip();
         tooltip.style.visibility = "visible";
-        tooltip.style.top = (parseInt(this.y) + parseInt(8)) +"px";
-        tooltip.style.left = this.x+"px";
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
+        tooltip.style.top = this.y - tooltip.offsetHeight - 8 + "px";
+        tooltip.style.left = this.x+8+"px";
         ToolTipPanelPopupUtil.adjustPosition(tooltip);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
@@ -167,9 +167,15 @@ ToolTipPanelPopup = Class.create({
   },
 
   updateCordinate: function(event) {
-    if (Event.element(event) != this.src) return;
+    if (Event.element(event) != this.src && !event.element().descendantOf(this.src)) return;
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
+      if (!this.isTooltipVisible()) return;
+      var tooltip = this.getTooltip();
+      tooltip.style.top = this.y - tooltip.offsetHeight - 8 + "px";
+      tooltip.style.left = this.x + 8 + "px";
+      ToolTipPanelPopupUtil.adjustPosition(tooltip);
+      Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
   },
 
   srcOrchildOfSrcElement: function(ele) {
@@ -276,7 +282,7 @@ ToolTipPanelPopupUtil = {
         var viewportDimensions = document.viewport.getDimensions();
         var elementDimensions = element.getDimensions();
         var viewportOffset = {left: element.viewportOffset().left + element.cumulativeScrollOffset().left,
-                              top: element.viewportOffset().top + element.cumulativeScrollOffset().top};
+            top: element.viewportOffset().top + element.cumulativeScrollOffset().top};
         var positionedOffset = element.positionedOffset();
         var widthDiff = viewportDimensions.width - viewportOffset.left - elementDimensions.width;
         var heightDiff = viewportDimensions.height - viewportOffset.top - elementDimensions.height;
@@ -291,6 +297,12 @@ ToolTipPanelPopupUtil = {
         } else if (heightDiff < 0) {
             element.style.top = positionedOffset.top + heightDiff + "px";
         }
+    },
+    showPopup: function(id) {
+        var tooltip = $(id);
+        tooltip.style.top = parseInt(tooltip.style.top) - tooltip.offsetHeight - 8 + "px";
+        tooltip.style.left = parseInt(tooltip.style.left) + 8 + "px";
+        ToolTipPanelPopupUtil.adjustPosition(id);
     }
-}
+};
     
