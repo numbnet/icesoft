@@ -63,6 +63,8 @@ public class DataExporter extends OutputResource {
     private Boolean renderLabelAsButton;
     private String styleClass;
     private String includeColumns;
+    private int rows = Integer.MIN_VALUE;
+    private int first = Integer.MIN_VALUE;
 	public DataExporter() {
 	}
 	
@@ -106,6 +108,12 @@ public class DataExporter extends OutputResource {
 		if( _origDataModelHash != 0 && _origDataModelHash != forComp.getValue().hashCode()){
 			reset();
 		}
+		if (!isIgnorePagination() && ((first != Integer.MIN_VALUE && first != forComp.getFirst()) ||
+		        (rows != Integer.MIN_VALUE && rows != forComp.getRows()))  ) {
+		    reset(); 
+		}
+		
+
 		Object value = forComp.getValue();
 		if (null != value) {
 		    _origDataModelHash = forComp.getValue().hashCode();
@@ -220,7 +228,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[11];
+            values = new Object[13];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -233,7 +241,8 @@ public class DataExporter extends OutputResource {
         values[8] = renderLabelAsButton;     
         values[9] = styleClass;
         values[10] = includeColumns;         
-        
+        values[11] = new Integer(rows); 
+        values[12] = new Integer(first);         
         return ((Object) (values));
     }
 
@@ -255,7 +264,9 @@ public class DataExporter extends OutputResource {
         ignorePagination = (Boolean)values[7]; 
         renderLabelAsButton = (Boolean)values[8];  
         styleClass = (String)values[9];  
-        includeColumns = (String)values[10];         
+        includeColumns = (String)values[10];    
+        rows = ((Integer)values[11]).intValue(); 
+        first = ((Integer)values[12]).intValue();         
     }
     
     public String getLabel() {
@@ -273,18 +284,18 @@ public class DataExporter extends OutputResource {
         if (event != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String type = getType();
+            UIData uiData = getUIData();
             Resource res = getResource(); 
             if (res == null) {
-                File output = createFile(facesContext, type);
+                File output = createFile(facesContext, type, uiData);
                 setResource(new FileResource(output));
                 getResource();
             }
-            JavascriptContext.addJavascriptCall(facesContext, "window.open('" + getPath() + "');");
+            JavascriptContext.addJavascriptCall(facesContext, "window.open(\"" + getPath() + "\");");
         }
     }    
 
-    private File createFile(FacesContext fc, String type) {
-        UIData uiData = getUIData();
+    private File createFile(FacesContext fc, String type, UIData uiData) {
         OutputTypeHandler outputHandler = null;
         String path = CoreUtils.getRealPath(fc, "/export"); 
         File exportDir = new File(path);
@@ -352,6 +363,8 @@ public class DataExporter extends OutputResource {
             if (!isIgnorePagination()) {
                 rowIndex = uiData.getFirst();
                 numberOfRowsToDisplay = uiData.getRows();
+                first = rowIndex;
+                rows = numberOfRowsToDisplay;
             }
             int colIndex = 0;
  
