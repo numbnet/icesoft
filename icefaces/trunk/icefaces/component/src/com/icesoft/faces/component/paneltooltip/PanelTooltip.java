@@ -184,6 +184,7 @@ public class PanelTooltip extends PanelPopup{
             if (getState().equals("show")) {
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "top", getTooltipY(), true);
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "left", getTooltipX(), true);            
+                JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.showPopup('" + root.getAttribute("id") + "');");
             }
         }
         
