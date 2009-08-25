@@ -152,7 +152,7 @@ public class CoreUtils {
         boolean dynamic = false;
         String formId = "";
         String ctxValue = "";
-        boolean displayOnClick = false;
+        String displayOn = "hover";
 
             UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
             if (panelTooltip != null/* && family type equals panelPopup*/) { 
@@ -171,8 +171,8 @@ public class CoreUtils {
                 if (uiComponent.getAttributes().get("contextValue") != null) {
                     ctxValue = String.valueOf(uiComponent.getAttributes().get("contextValue"));
                 }
-                if (panelTooltip.getAttributes().get("displayOnClick") != null) {
-                    displayOnClick = ((Boolean) panelTooltip.getAttributes().get("displayOnClick")).booleanValue();
+                if (panelTooltip.getAttributes().get("displayOn") != null) {
+                    displayOn = String.valueOf(panelTooltip.getAttributes().get("displayOn"));
                 }
             }
             UIComponent form = DomBasicRenderer.findForm(panelTooltip);
@@ -181,11 +181,19 @@ public class CoreUtils {
             }
 
         Element rootElement = (Element) domContext.getRootNode();
-        String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
-        onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
+        String onAttr, onValue;
+        if (displayOn.equals("click") || displayOn.equals("dblclick")) {
+            onAttr = "on" + displayOn;
+        } else if (displayOn.equals("altclick")) {
+            onAttr = "oncontextmenu";
+        } else {
+            onAttr = "onmouseover";
+        }
+        onValue = String.valueOf(rootElement.getAttribute(onAttr));
+        onValue +="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
         hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"','"+
-                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"'," + displayOnClick + ");";
-        rootElement.setAttribute("onmouseover", onmouseover);
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"','" + displayOn + "');";
+        rootElement.setAttribute(onAttr, onValue);
     }
     
     public static void addAuxiliaryContexts(FacesContext facesContext)  {
