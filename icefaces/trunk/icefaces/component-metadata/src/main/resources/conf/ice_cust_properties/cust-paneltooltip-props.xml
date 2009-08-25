@@ -154,15 +154,24 @@
 
 <property>
 <description>
-    <![CDATA[<p>
-        By default the tooltip will be displayed on the hover event, which
-        can be replaced with the click event by setting this attribute to true.</p>
+    <![CDATA[
+            <p>
+        The following are the valid values for the displayOn attribute:
+            <ul>
+                <li> hover (default): cursor hover </li>
+                <li> click: left mouse button clicked </li>
+                <li> altclick: right mouse button clicked (tied to the "contextmenu" JS event) </li>
+                <li> dblclick: double click </li>
+            </ul>
         ]]>
 </description>
-<property-name>displayOnClick</property-name>
-<property-class>boolean</property-class>
+<property-name>displayOn</property-name>
+<property-class>java.lang.String</property-class>
 <property-extension>
-    <category>ICE_LAYOUT</category>
-    <default-value>false</default-value>
+    <category>ICE_COMPONENT</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+    <default-value>"hover"</default-value>
 </property-extension>
 </property>

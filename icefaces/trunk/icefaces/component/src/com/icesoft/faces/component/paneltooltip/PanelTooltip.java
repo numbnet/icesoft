@@ -46,7 +46,7 @@ public class PanelTooltip extends PanelPopup{
     private String styleClass = null;
     
     private MethodBinding displayListener;
-    private Boolean displayOnClick;
+    private String displayOn;
 
     public PanelTooltip() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -369,7 +369,7 @@ public class PanelTooltip extends PanelPopup{
         styleClass = (String)states[2];
         hideOn = (String)states[3];
         hoverDelay = (Integer)states[4];
-        displayOnClick = (Boolean) states[5];
+        displayOn = (String) states[5];
     }
 
     public Object saveState(FacesContext context) {
@@ -381,22 +381,22 @@ public class PanelTooltip extends PanelPopup{
         states[2] = styleClass;
         states[3] = hideOn;
         states[4] = hoverDelay;
-        states[5] = displayOnClick;
+        states[5] = displayOn;
         return states;
     }
 
-    public void setDisplayOnClick(boolean displayOnClick) {
-        this.displayOnClick = Boolean.valueOf(displayOnClick);
+    public void setDisplayOn(String displayOn) {
+        this.displayOn = displayOn;
     }
 
-    public boolean isDisplayOnClick() {
-        if (displayOnClick != null) {
-            return displayOnClick.booleanValue();
+    public String getDisplayOn() {
+        if (displayOn != null) {
+            return displayOn;
         }
-        ValueBinding vb = getValueBinding("displayOnClick");
-        if (vb != null) {
-            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        ValueBinding vb = getValueBinding("displayOn");
+        if (vb != null && vb.getValue(getFacesContext()) != null) {
+            return (String) vb.getValue(getFacesContext());
         }
-        return false;
+        return "hover";
     }
 }
