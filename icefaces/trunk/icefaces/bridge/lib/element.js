@@ -617,7 +617,7 @@
 
             //special case for the 'src' attribute (Safari bug?)
             var oldLocation = this.element.contentWindow.location.href;
-            var newLocation = newElement.contentWindow.location.href;
+            var newLocation = newElement.src;
             if (oldLocation != newLocation) {
                 this.element.contentWindow.location = newLocation;
             }
