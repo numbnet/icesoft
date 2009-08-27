@@ -152,31 +152,33 @@ function FCKeditor_OnComplete( editorInstance ){
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
+    if (fieldWithClientId["AppfocusRequested"]) {
+        try {
+             editorInstance.Focus();
+        } catch (e) {logger.info(e);}        
+    }
 }
 
 function handleApplicationFocus(clientId) {
-        var fieldWithClientId = $(clientId ); 
-        if (fieldWithClientId["app_focus_timer"])return;
-        var clearTimer;
-        clearTimer = function () {
-            clearInterval(fieldWithClientId["app_focus_timer"]);
-            Event.stopObserving(document, "click", clearTimer);
-            Event.stopObserving(document, "keydown", clearTimer);
-            };
-        Event.observe(document, "click", clearTimer);
-        Event.observe(document, "keydown", clearTimer); 
-        fieldWithClientId["app_focus_timer"] = window.setInterval(function () {
-        var editorInstance = null;
+        var fieldWithClientId = $(clientId); 
         if (fieldWithClientId) {  
            editorInstance = fieldWithClientId["jsInstance"]; 
            if (editorInstance) {
                try {
                     editorInstance.Focus();
                } catch (e) {logger.info(e);}
-               clearInterval(fieldWithClientId["app_focus_timer"]);
+           } else {
+            fieldWithClientId["AppfocusRequested"] = true;
+            var interruptFocus;
+            interruptFocus = function () {
+                Event.stopObserving(document, "click", interruptFocus);
+                Event.stopObserving(document, "keydown", interruptFocus);
+                fieldWithClientId["AppfocusRequested"]= false;
+            };
+            Event.observe(document, "click", interruptFocus);
+            Event.observe(document, "keydown", interruptFocus);           
            }
-         }
-       },500);
+        }
 }
 
 function toogleState(editorInstance) {
