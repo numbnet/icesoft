@@ -80,7 +80,7 @@ public class HtmlGraphicImage
     private Effect onkeyupeffect;
     private CurrentStyle currentStyle;
     private String mimeType = null;
-    private ImageByteArrayResource imageByteArrayResource;
+    private transient ImageByteArrayResource imageByteArrayResource;
     
     public HtmlGraphicImage() {
         super();
@@ -448,7 +448,6 @@ public class HtmlGraphicImage
         values[18] = visible;
         values[19] = mimeType;
         values[20] = styleClass;
-        values[21] = imageByteArrayResource;        
         return ((Object) (values));
     }
 
@@ -475,7 +474,6 @@ public class HtmlGraphicImage
         visible = (Boolean)values[18];
         mimeType = (String)values[19];
         styleClass = (String)values[20];
-        imageByteArrayResource = (ImageByteArrayResource)values[21];        
     }
     public String getByteArrayImagePath() {
         return imageByteArrayResource.getPath();
