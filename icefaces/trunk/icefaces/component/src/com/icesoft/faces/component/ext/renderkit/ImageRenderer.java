@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
+import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
@@ -45,6 +46,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 public class ImageRenderer
@@ -60,15 +64,7 @@ public class ImageRenderer
             return new String();
         }
         if (o instanceof byte[]) {
-            final Map attributes = uiGraphic.getAttributes();
-            final String mimeType = attributes.containsKey("mimeType") ? String.valueOf(attributes.get("mimeType")) : "";
-            ByteArrayResource bar = new ByteArrayResource((byte[]) o) {
-                public void withOptions(Options options) throws IOException {
-                    super.withOptions(options);
-                    options.setMimeType(mimeType);
-                }
-            };
-            return (((ResourceRegistry) facesContext).registerResource(bar)).getPath();
+            return ((HtmlGraphicImage)uiGraphic).getByteArrayImagePath();
         } else if (o instanceof Resource) {
             return (((ResourceRegistry) facesContext).registerResource((Resource)o)).getPath();
         } else {

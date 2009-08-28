@@ -33,8 +33,17 @@
 
 package com.icesoft.faces.component.ext;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Date;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.Resource;
+import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
@@ -71,7 +80,8 @@ public class HtmlGraphicImage
     private Effect onkeyupeffect;
     private CurrentStyle currentStyle;
     private String mimeType = null;
-
+    private ImageByteArrayResource imageByteArrayResource;
+    
     public HtmlGraphicImage() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -84,6 +94,17 @@ public class HtmlGraphicImage
                                          getFacesContext());
         }
         super.setValueBinding(s, vb);
+    }
+    
+    public void encodeBegin(FacesContext context) throws IOException {
+        Object value = getValue();
+        if (value instanceof byte[]) {
+            if (imageByteArrayResource == null) {
+                imageByteArrayResource = new ImageByteArrayResource(context,this);
+            }
+            imageByteArrayResource.setContent((byte[]) value);
+        }
+        super.encodeBegin(context);
     }
 
     /**
@@ -408,7 +429,7 @@ public class HtmlGraphicImage
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
@@ -427,6 +448,7 @@ public class HtmlGraphicImage
         values[18] = visible;
         values[19] = mimeType;
         values[20] = styleClass;
+        values[21] = imageByteArrayResource;        
         return ((Object) (values));
     }
 
@@ -453,5 +475,52 @@ public class HtmlGraphicImage
         visible = (Boolean)values[18];
         mimeType = (String)values[19];
         styleClass = (String)values[20];
+        imageByteArrayResource = (ImageByteArrayResource)values[21];        
+    }
+    public String getByteArrayImagePath() {
+        return imageByteArrayResource.getPath();
     }
 }
+
+class ImageByteArrayResource implements Resource, Serializable {
+    private Date lastModified;
+    private byte[] content;
+    private String digest;
+    private String mimetype;
+    private URI uri;
+
+    public ImageByteArrayResource(FacesContext context, HtmlGraphicImage component) {
+        this.lastModified =  new Date(System.currentTimeMillis());
+        this.digest = component.getClientId(context);
+        this.mimetype = component.getMimeType();
+        uri = ((ResourceRegistry) context).registerResource(this);
+    }
+    
+    public String calculateDigest() {
+        return digest;
+    }
+    
+    public Date lastModified() {
+        return lastModified;
+    }
+    
+    public InputStream open() throws IOException {
+          return new ByteArrayInputStream(content);
+    }
+
+    public void withOptions(Options options) throws IOException {
+        Date now = new Date();
+        options.setExpiresBy(now);
+        options.setLastModified(now);
+        options.setMimeType(mimetype);
+    }
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
+    public String getPath() {
+        return uri.getPath()+ "?"+ content.hashCode();
+    }
+}
+
+
