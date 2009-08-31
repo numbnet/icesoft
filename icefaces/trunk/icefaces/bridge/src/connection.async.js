@@ -50,10 +50,10 @@
             this.timeoutBomb = { cancel: Function.NOOP };
             this.heartbeat = { stop: Function.NOOP };
 
-            this.pingURI = configuration.context.current + 'block/ping';
-            this.getURI = configuration.context.current + 'block/receive-updates';
-            this.sendURI = configuration.context.current + 'block/send-receive-updates';
-            this.receiveURI = configuration.context.async + 'block/receive-updated-views';
+            this.pingURI = configuration.pingURI;
+            this.getURI = configuration.receiveUpdatesURI;
+            this.sendURI = configuration.sendReceiveUpdatesURI;
+            this.receiveURI = configuration.receiveUpdatedViewsURI;
 
             //clear connectionDownListeners to avoid bogus connection lost messages
             window.onBeforeUnload(function() {

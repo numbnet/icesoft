@@ -411,7 +411,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         } catch (URISyntaxException exception) {
             throw new RuntimeException(exception);
         }
-        redirector.redirect(uri.toString());
+        redirector.redirect(encodeResourceURL(uri.toString()));
         facesContext.resetLastViewID();
         facesContext.responseComplete();
     }
