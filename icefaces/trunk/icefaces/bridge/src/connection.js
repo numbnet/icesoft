@@ -81,7 +81,7 @@
     });
 
     This.SyncConnection = Object.subclass({
-        initialize: function(logger, configuration, defaultQuery) {
+        initialize: function(logger, configuration, defaultQuery, sessionID) {
             this.logger = logger.child('sync-connection');
             this.channel = new Ajax.Client(this.logger);
             this.defaultQuery = defaultQuery;
@@ -92,7 +92,7 @@
             this.connectionDownListeners = [];
             this.timeoutBomb = { cancel: Function.NOOP };
             this.logger.info('synchronous mode');
-            this.sendURI = configuration.context.current + 'block/send-receive-updates';
+            this.sendURI = configuration.sendReceiveUpdatesURI;
             var timeout = configuration.timeout ? configuration.timeout : 60000;
 
             //clear connectionDownListeners to avoid bogus connection lost messages

@@ -54,6 +54,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -146,7 +147,7 @@ public class DOMResponseWriter extends ResponseWriter {
         this.cssCode = cssCode;
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.checkJavaScript = configuration
-            .getAttributeAsBoolean("checkJavaScript", true);
+                .getAttributeAsBoolean("checkJavaScript", true);
         try {
             this.context = (BridgeFacesContext) context;
         } catch (ClassCastException e) {
@@ -341,6 +342,7 @@ public class DOMResponseWriter extends ResponseWriter {
         if (focusId != null && !focusId.equals("null")) {
             JavascriptContext.focus(context, focusId);
         }
+        ExternalContext externalContext = context.getExternalContext();
         ViewHandler handler = context.getApplication().getViewHandler();
         String sessionIdentifier = context.getIceFacesId();
         String viewIdentifier = context.getViewNumber();
@@ -388,6 +390,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         ResourceBundle localizedBundle = bridgeMessageResolver.bundleFor(context.getViewRoot().getLocale());
         //todo: build startup script only once on aplication startup
+        boolean synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
         String startupScript =
                 "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
@@ -395,20 +398,24 @@ public class DOMResponseWriter extends ResponseWriter {
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
-                        "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
+                        "synchronous: " + synchronousMode + "," +
                         "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
                         "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
                         "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
-                        "context: {" +
-                        "current: '" + contextPath + "'," +
-                        "async: '" + blockingRequestHandlerContext + "'}," +
-                        "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
-                        "heartbeat: {" +
-                        "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
-                        "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
-                        "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
-                        "}" +
+                        (synchronousMode ?
+                                //encode path for URL rewrite session tracking mode
+                                ("sendReceiveUpdatesURI: '" + externalContext.encodeResourceURL(contextPath + "block/send-receive-updates") + "',") :
+                                ("sendReceiveUpdatesURI: '" + contextPath + "block/send-receive-updates" + "'," +
+                                        "pingURI: '" + contextPath + "block/ping" + "'," +
+                                        "receiveUpdatesURI: '" + contextPath + "block/receive-updates" + "'," +
+                                        "receiveUpdatedViewsURI: '" + blockingRequestHandlerContext + "block/receive-updated-views" + "',") +
+                                        "heartbeat: {" +
+                                        "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
+                                        "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
+                                        "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) + "},"
+                        ) +
+                        "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) +
                         "}," +
                         "messages: {" +
                         "sessionExpired: '" + localizedBundle.getString("session-expired") + "'," +
@@ -430,7 +437,7 @@ public class DOMResponseWriter extends ResponseWriter {
         String iframeID = "history-frame:" + sessionIdentifier + ":" + viewIdentifier;
         iframe.setAttribute("id", iframeID);
         iframe.setAttribute("name", iframeID);
-        Object request = context.getExternalContext().getRequest();
+        Object request = externalContext.getRequest();
 
         final String frameURI;
         //another "workaround" to resolve the iframe URI
@@ -451,7 +458,7 @@ public class DOMResponseWriter extends ResponseWriter {
         iframe.setAttribute("style",
                 "z-index: 10000; visibility: hidden; width: 0; height: 0; position: absolute; opacity: 0.22; filter: alpha(opacity=22);");
 
-        if (checkJavaScript)  {
+        if (checkJavaScript) {
             Element noscript = (Element) body.appendChild(document.createElement("noscript"));
             Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
             noscriptMeta.setAttribute("http-equiv", "refresh");
