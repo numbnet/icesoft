@@ -99,32 +99,67 @@ Ice.Menu = {
                 var subdOH = submenuDiv.offsetHeight;
                 // ICE-3196, ICE-3620
                 if (supmVPO.left + supmOW + submOW < viewport.getWidth()) {
-                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW});
+                    if(Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW});
+                    
                 } else {
-                     submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
+                    if(Prototype.Browser.IE)
+                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW}, supmVPO);
+                    else 
+                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
+                    
                 }
                 if (submenuDiv.viewportOffset().top + submOH < viewport.getHeight()) {
-                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                    if(Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                    else 
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});          
                 } else {
-                     submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                         offsetTop:- submOH + subdOH});
+                    if(Prototype.Browser.IE)                
+                      Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                         offsetTop:- submOH + subdOH});   
+                    else
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                            offsetTop:- submOH + subdOH});
                 }
             } else {
                 // ICE-3196, ICE-3620
                 if (supmVPO.left + submOW < viewport.getWidth()) {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+                    if(Prototype.Browser.IE)   
+                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false}, supmVPO);
+                    else              
+                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+                                    
                 } else {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
-                         offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
+                    if(Prototype.Browser.IE)   
+                         Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false,
+                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO); 
+	                else
+	                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
+                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
+                
                 }
                 if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
-                     submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
+                    if(Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH}, supmVPO);
+                    else                 
+                        submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
+                     
                 } else {
-                     submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
+                    if(Prototype.Browser.IE)   
+                       Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH}, supmVPO);
+                    else              
+                       submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
+                      
                 }
             }
             if (submVPO.top < 0) { // ICE-3658
-             //   submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
+                if(Prototype.Browser.IE)
+                    Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
+                else
+                    submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
@@ -156,7 +191,12 @@ Ice.Menu = {
             iframe.setStyle({position: "absolute", opacity: 0}).hide();
             menuDiv.insert({before: iframe});
         }
-        iframe.clonePosition(menuDiv).show();
+        if (Prototype.Browser.IE) {
+            Ice.clonePositionIE(iframe, menuDiv);
+        } else {
+            Element.clonePosition(iframe, menuDiv);
+        }
+        iframe.show();
     },
     contextMenuPopup: function(event, popupMenu, targComp) {
         var dynamic = $(popupMenu + "_dynamic");
@@ -337,5 +377,74 @@ Ice.Menu = {
         if (element == undefined || element == document) return false;
         return Ice.Menu.isInMenu(element.parentNode, rootID);
     }
-}
+};
+
+//modified version of Prototype's Element.clonePosition for IE
+Ice.clonePositionIE = function(element, source, options, sourceVOS) {
+      logger.info('Using clonePosition() optimized for IE');
+        var options = Object.extend({
+            setLeft:    true,
+            setTop:     true,
+            setWidth:   true,
+            setHeight:  true,
+            offsetTop:  0,
+            offsetLeft: 0
+        }, arguments[2] || { });
+        element = $(element);
+    // find page position of source
+        var p = null;
+        if (sourceVOS){
+            p = sourceVOS;
+        } else {
+            p = source.viewportOffset();
+        }
+        
+
+
+    // find coordinate system to use
+        var delta = [0, 0];
+        var parent = null;
+    // delta [0,0] will do fine with position: fixed elements, 
+        // position:absolute needs offsetParent deltas
+        if (Element.getStyle(element, 'position') == 'absolute') {
+            parent = element.getOffsetParent();
+            
+            var top = Element.getStyle(parent, 'top');
+            var left = Element.getStyle(parent, 'left');
+            var bdyScrollTop = document.documentElement.scrollTop;
+            var bdyScrollLeft = document.documentElement.scrollLeft;            
+            var repositioned = false;
+            
+            _viewportOffset =  parent['_viewportOffset'];
+            
+            if (!_viewportOffset) {
+                parent['_top'] = null;
+                parent['_left'] = null;
+                parent['_bodyScrollTop'] = bdyScrollTop;
+                parent['_bodyScrollLeft'] = bdyScrollLeft;                
+                repositioned = true;
+            } else {
+                repositioned = !((parent['_top'] == top && parent['_left'] == left) && 
+                (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft)); 
+            }
+           
+            parent['_top'] = top;
+            parent['_left'] = left;
+            parent['_bodyScrollTop'] = bdyScrollTop;
+            parent['_bodyScrollLeft'] = bdyScrollLeft;   
+            if(repositioned) {
+                delta = parent.viewportOffset();
+                parent['_viewportOffset'] = delta;                 
+            } else {
+               delta = parent['_viewportOffset'];
+            }
+        }
+
+    // set position
+        if (options.setLeft)   element.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
+        if (options.setTop)    element.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
+        if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
+        if (options.setHeight) element.style.height = source.offsetHeight + 'px';
+        return element;
+    };
 
