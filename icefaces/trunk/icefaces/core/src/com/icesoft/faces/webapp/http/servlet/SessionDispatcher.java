@@ -260,6 +260,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
         private Monitor(HttpSession session) {
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
+            session.setAttribute(Monitor.class.getName(), this);
+        }
+
+        public static Monitor lookupSessionMonitor(HttpSession session) {
+            return (Monitor) session.getAttribute(Monitor.class.getName());
         }
 
         public void touchSession() {
