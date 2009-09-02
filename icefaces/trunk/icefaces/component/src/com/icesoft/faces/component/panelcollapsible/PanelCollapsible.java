@@ -336,4 +336,13 @@ public class PanelCollapsible extends UICommand {
         }
         return "expandedState";
     }
+    
+    public boolean hasInitiatedSubmit(FacesContext context) {
+        Map map = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context)+"Expanded";
+        if (map.containsKey(clientId) && !map.get(clientId).toString().equals("")) {
+            return true;
+        }
+        return false;
+    }
 }
