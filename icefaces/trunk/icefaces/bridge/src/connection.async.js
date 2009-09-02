@@ -236,22 +236,26 @@
             }
 
             this.blockingConnectionMonitor = function() {
-                if (shouldEstablishBlockingConnection()) {
-                    offerCandidature();
-                    this.logger.info('blocking connection not initialized...candidate for its creation');
-                } else {
-                    if (isWinningCandidate()) {
-                        if (!hasOwner()) {
-                            markAsOwned();
-                            //start blocking connection since no other view has started it
-                            initializeConnection();
-                        }
-                        updateLease();
-                    }
-                    if (hasOwner() && isLeaseExpired()) {
+                try {
+                    if (shouldEstablishBlockingConnection()) {
                         offerCandidature();
-                        this.logger.info('blocking connection lease expired...candidate for its creation');
+                        this.logger.info('blocking connection not initialized...candidate for its creation');
+                    } else {
+                        if (isWinningCandidate()) {
+                            if (!hasOwner()) {
+                                markAsOwned();
+                                //start blocking connection since no other view has started it
+                                initializeConnection();
+                            }
+                            updateLease();
+                        }
+                        if (hasOwner() && isLeaseExpired()) {
+                            offerCandidature();
+                            this.logger.info('blocking connection lease expired...candidate for its creation');
+                        }
                     }
+                } catch (e) {
+                    this.logger.info("could not determine the state of the blocking connection...retrying", e);
                 }
             }.bind(this).repeatExecutionEvery(pollingPeriod);
 
