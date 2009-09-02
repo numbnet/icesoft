@@ -48,10 +48,11 @@ function formOf(element) {
     throw 'Cannot find enclosing form.';
 }
 
-function iceSubmitPartial(form, component, evt) {
+function iceSubmitPartial(form, component, evt, query) {
     form = (form ? form : component.form);
-    var query = new Ice.Parameter.Query();
-
+    if(!query) {
+        query = new Ice.Parameter.Query();
+    }
     if (Ice.InputFileIdPreUpload)
         query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
     if (Ice.InputFileIdPostUpload)
@@ -76,11 +77,13 @@ function iceSubmitPartial(form, component, evt) {
     return false;
 }
 
-function iceSubmit(aForm, aComponent, anEvent) {
+function iceSubmit(aForm, aComponent, anEvent, query) {
     aForm = (aForm ? aForm : aComponent.form);
     var event = $event(anEvent, aComponent);
     var form = $element(aForm);
-    var query = new Ice.Parameter.Query();
+    if(!query) {
+        query = new Ice.Parameter.Query();
+    }
     if (Ice.InputFileIdPreUpload)
         query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
     if (Ice.InputFileIdPostUpload)
