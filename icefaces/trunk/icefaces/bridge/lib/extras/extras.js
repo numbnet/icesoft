@@ -404,6 +404,8 @@ Ice.simulateFocus = function(ele, anc) {
     ele.style.borderStyle='dotted';
     ele['_borderWidth'] = ele.style.borderWidth;   
     ele.style.borderWidth='1px 1px 1px 1px';
+    ele['_borderColor'] = ele.style.borderColor;   
+    ele.style.borderColor = 'black';    
 }
 
 Ice.simulateBlur = function(ele, anc) {
@@ -411,6 +413,6 @@ Ice.simulateBlur = function(ele, anc) {
         anc.style.visibility='visible';
     } 
     ele.style.borderStyle = ele['_borderStyle'];
-    ele.style.borderWidth = ele['_borderWidth'];    
-    
+    ele.style.borderWidth = ele['_borderWidth'];  
+    ele.style.borderColor = ele['_borderColor'];   
 }

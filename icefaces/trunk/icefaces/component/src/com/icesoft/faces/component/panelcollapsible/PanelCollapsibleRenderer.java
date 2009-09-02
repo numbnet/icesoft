@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -63,6 +64,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             UIComponent form = findForm(uiComponent);
             if(form == null) {
                 throw new FacesException("PanelCollapsible must be contained within a form");                
+            }
+            if (panelCollapsible.hasInitiatedSubmit(facesContext)) {
+                JavascriptContext.addJavascriptCall(facesContext,
+                        "document.getElementById('"+ uiComponent.getClientId(facesContext) + "')." +
+                                        "getElementsByTagName('a')[0].focus();");                
             }
             header.setAttribute(HTML.ONCLICK_ATTR, 
                 "document.forms['"+ form.getClientId(facesContext) +"']" +
