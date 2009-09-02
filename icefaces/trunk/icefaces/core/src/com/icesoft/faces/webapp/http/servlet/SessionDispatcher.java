@@ -39,15 +39,17 @@ public abstract class SessionDispatcher implements PseudoServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession(true);
         checkSession(session);
+
         //attach session bound server to the current thread -- this is a lock-free strategy
+        String id = session.getId();
         try {
             //put the request in the pool of active request in case HttpServletRequest.isUserInRole need to be called
-            addRequest(request);
+            addRequest(id, request);
             //lookup session bound server -- this is a lock-free strategy
             lookupServer(session).service(request, response);
         } finally {
             //remove the request from the active requests pool
-            removeRequest(request);
+            removeRequest(id, request);
         }
     }
 
@@ -103,8 +105,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         sessionBoundServers.remove(session.getId());
     }
 
-    private void addRequest(HttpServletRequest request) {
-        String key = request.getRequestedSessionId();
+    private void addRequest(String key, HttpServletRequest request) {
         synchronized (activeRequests) {
             if (activeRequests.containsKey(key)) {
                 List requests = (List) activeRequests.get(key);
@@ -117,13 +118,14 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    private void removeRequest(HttpServletRequest request) {
-        String key = request.getRequestedSessionId();
+    private void removeRequest(String key, HttpServletRequest request) {
         synchronized (activeRequests) {
             List requests = (List) activeRequests.get(key);
-            requests.remove(request);
-            if (requests.isEmpty()) {
-                activeRequests.remove(key);
+            if (requests != null) {
+                requests.remove(request);
+                if (requests.isEmpty()) {
+                    activeRequests.remove(key);
+                }
             }
         }
     }
