@@ -161,21 +161,10 @@ public class ServletExternalContext extends BridgeExternalContext {
         return convertEmptyStringToNull(requestPathInfo == null ? initialRequest.getPathInfo() : requestPathInfo);
     }
 
-    public String getRequestURI() {
-        String requestURI = (String) initialRequest.getAttribute("javax.servlet.forward.request_uri");
-        return requestURI == null ? initialRequest.getRequestURI() : requestURI;
-    }
-
     String contextPath = null;
 
     public String getRequestContextPath() {
-        if (null == contextPath) {
-            contextPath = (String) initialRequest.getAttribute("javax.servlet.forward.context_path");
-            if (null == contextPath) {
-                contextPath = initialRequest.getContextPath();
-            }
-        }
-        return contextPath;
+        return contextPath == null ? initialRequest.getContextPath() : contextPath;
     }
 
     public String getRequestServletPath() {

@@ -257,10 +257,6 @@ public class PortletExternalContext extends BridgeExternalContext {
         return (String) initialRequest.getAttribute(Constants.INC_PATH_INFO);
     }
 
-    public String getRequestURI() {
-        return (String) initialRequest.getAttribute(Constants.INC_REQUEST_URI);
-    }
-
     String contextPath = null;
 
     public String getRequestContextPath() {

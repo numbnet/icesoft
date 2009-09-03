@@ -48,18 +48,19 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
-import javax.faces.component.*;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.StateHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKitFactory;
-import java.beans.Beans;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
@@ -277,37 +278,6 @@ public class D2DViewHandler extends ViewHandler {
         }
     }
 
-    public static String getServletRequestPath(FacesContext context) {
-        if (Beans.isDesignTime()) {
-            //IDE scenario requires artificial path
-            return context.getViewRoot().getViewId();
-        }
-        ExternalContext externalContext = context.getExternalContext();
-        if (externalContext instanceof BridgeExternalContext) {
-            String uri = ((BridgeExternalContext) externalContext)
-                    .getRequestURI();
-            if (null == uri) {
-                if (log.isWarnEnabled()) {
-                    log
-                            .warn("Failing over to default request path");
-                }
-                uri = "default";
-
-            }
-            return uri;
-        }
-        return (externalContext.getRequestContextPath() +
-                externalContext.getRequestServletPath());
-    }
-
-    public static String getServletRequestPath(ExternalContext externalContext,
-                                               String viewId) {
-        if (externalContext == null) {
-            throw new IllegalStateException("ExternalContext is null");
-        }
-        return externalContext.getRequestContextPath() + viewId;
-    }
-
     public String getActionURL(FacesContext context, String viewId) {
         //Maybe should always use delegate
         // Temporary solution for ICE-30ot1mot1ponaa
@@ -485,7 +455,7 @@ public class D2DViewHandler extends ViewHandler {
 
                 renderResponse(context, root);
                 // make state saving changes to DOM before ending document
-                invokeStateSaving( context );
+                invokeStateSaving(context);
 
                 responseWriter.endDocument();
                 tracePrintComponentTree(context);
@@ -496,7 +466,7 @@ public class D2DViewHandler extends ViewHandler {
 
             renderResponse(context, root);
             // make state saving changes to DOM before ending document
-            invokeStateSaving( context );
+            invokeStateSaving(context);
 
             responseWriter.endDocument();
             tracePrintComponentTree(context);
@@ -662,7 +632,7 @@ public class D2DViewHandler extends ViewHandler {
      * the entire state is written if client side state saving is configured, or
      * a token is written if server side saving is configured.
      * <p/>
-     *
+     * <p/>
      * Because the way the FormRenderer doesn't currently use the DOMResponseWriter
      * the view from the DOMResponseWriter is not up to date with what the
      * FormRenderer is currently doing to the DOM, so this method will do nothing
@@ -681,7 +651,7 @@ public class D2DViewHandler extends ViewHandler {
      * This method invokes state saving on the stateManager. It also instructs
      * the DOMResponseWriter to save the DOM nodes written during writeState()
      * a method on the stateManager for the purposes of copying them to marker
-     * nodes later.  
+     * nodes later.
      *
      * @param context FacesContext
      */
@@ -708,24 +678,23 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         try {
-        // get JSF to write state (captured by DOMResponseWriter)
+            // get JSF to write state (captured by DOMResponseWriter)
             start = System.currentTimeMillis();
             sm.writeState(context, sv);
             if (log.isDebugEnabled()) {
                 log.debug("Serialized state written in: " + (System.currentTimeMillis() - start) / 1e9f + "seconds");
             }
         } catch (IOException ioe) {
-            log.error("IOException saving state: ",  ioe);
+            log.error("IOException saving state: ", ioe);
         } finally {
 
-           // turn off state saving node capture
+            // turn off state saving node capture
             if (writer != null && (writer instanceof DOMResponseWriter)) {
                 ((DOMResponseWriter) writer).setSaveNextNode(false);
-                ((DOMResponseWriter) writer).copyStateNodesToMarkers();                
+                ((DOMResponseWriter) writer).copyStateNodesToMarkers();
             }
-        } 
+        }
     }
-
 
 
     public Locale calculateLocale(FacesContext context) {
@@ -894,7 +863,7 @@ public class D2DViewHandler extends ViewHandler {
 
         // #3980 This enables state saving to work in jsf1.1 environment with the default settings
         // (since state saving is always on now)
-        ImplementationUtil.setJSFStateSaving((ImplementationUtil.isJSF12() || ImplementationUtil.isJSF2()) );
+        ImplementationUtil.setJSFStateSaving((ImplementationUtil.isJSF12() || ImplementationUtil.isJSF2()));
 
         actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
         try {
@@ -904,13 +873,13 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         boolean server = (stateManagementServerSide == null) ||
-                         stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER);
+                stateManagementServerSide.toLowerCase().equals(StateManager.STATE_SAVING_METHOD_SERVER);
         if (!server) {
             log.fatal("Client side state saving is not supported with ICEfaces");
             throw new UnsupportedOperationException("Client side state saving is not supported with ICEfaces");
         }
 
-         if (!ImplementationUtil.isJSFStateSaving()) {
+        if (!ImplementationUtil.isJSFStateSaving()) {
             log.debug("JSF State Management not configured");
         } else {
             log.debug("JSF State Management enabled - server side state saving");
@@ -993,18 +962,18 @@ public class D2DViewHandler extends ViewHandler {
         }
         return component;
     }
-    
+
     /**
-    * A version of findComponent() that attempts to locate a component by id (not clientId) 
-    * and searches into NamingContainers. If there are more than one component with the 
-    * provided id, the first one found will be returned
-    * 
-    * @param uiComponent the base component to search from
-    * @param componentId the id to search for
-    */
+     * A version of findComponent() that attempts to locate a component by id (not clientId)
+     * and searches into NamingContainers. If there are more than one component with the
+     * provided id, the first one found will be returned
+     *
+     * @param uiComponent the base component to search from
+     * @param componentId the id to search for
+     */
 
     public static UIComponent findComponentInView(UIComponent uiComponent,
-                                                String componentId) {
+                                                  String componentId) {
         UIComponent component = null;
         UIComponent child = null;
 
@@ -1024,5 +993,5 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
         return component;
-    }    
+    }
 }
