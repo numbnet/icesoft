@@ -80,6 +80,11 @@ public class D2DViewHandler extends ViewHandler {
         if (log.isInfoEnabled()) {
             log.info(new ProductInfo().toString());//Announce ICEfaces
         }
+
+        //ICE-4704
+        if (ImplementationUtil.isJSF2() && log.isWarnEnabled()) {
+            log.warn("JSF 2.0 libraries detected. This version of ICEfaces is not supported on JSF 2.0. JSF 1.1 or 1.2 are required.");
+        }
     }
 
     private final static String ACTION_URL_SUFFIX =
