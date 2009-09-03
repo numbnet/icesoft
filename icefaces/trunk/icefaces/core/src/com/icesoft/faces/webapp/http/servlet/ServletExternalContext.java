@@ -179,14 +179,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String getRequestServletPath() {
-        //crazy "workaround": solves the different behaviour MyFaces and Icefaces (including Sun-RI) need from this method
-        boolean callFromMyfaces = new Exception().getStackTrace()[1].getClassName().startsWith("org.apache.myfaces");
-        if (callFromMyfaces) {
-            return requestServletPath == null ? initialRequest.getServletPath() : requestServletPath;
-        } else {
-            String servletPath = (String) initialRequest.getAttribute("javax.servlet.forward.servlet_path");
-            return servletPath == null ? initialRequest.getServletPath() : servletPath;
-        }
+        return requestServletPath == null ? initialRequest.getServletPath() : requestServletPath;
     }
 
     public Set getResourcePaths(String path) {
