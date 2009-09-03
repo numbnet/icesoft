@@ -51,6 +51,7 @@ import com.icesoft.faces.util.CoreUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -169,7 +170,10 @@ public class TableRenderer
                 childColumnHasFacetWithName(uiData, facet);
         Element thead = null;
         if (headerFacet != null || childHeaderFacetExists) {
+            String clientId = uiData.getClientId(facesContext);
             thead = domContext.createElement(tag);
+            thead.setAttribute(HTML.ID_ATTR, ClientIdPool.get
+                    (clientId + NamingContainer.SEPARATOR_CHAR + tag));
             root.appendChild(thead);
 
 
