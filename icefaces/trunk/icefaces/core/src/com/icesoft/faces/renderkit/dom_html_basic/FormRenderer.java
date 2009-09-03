@@ -156,6 +156,8 @@ public class FormRenderer extends DomBasicRenderer {
                     .setAttribute(HTML.NAME_ATTR, conversationParamName);
 
             conversationIDElement.setAttribute(HTML.VALUE_ATTR, conversationId);
+            // # 4581 put id into hidden field for dom diffing.
+            conversationIDElement.setAttribute(HTML.ID_ATTR, "cid:" + formClientId );
             root.appendChild(conversationIDElement);
 
         }
