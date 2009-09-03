@@ -119,12 +119,15 @@
             org.icefaces.application.showcase.view.bean.examples.component.progressBar.OutputProgressController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
+        <!--
         <managed-property>
             <property-name>renderManager</property-name>
             <value>#{renderManager}</value>
         </managed-property>
+        -->
     </managed-bean>
     <!-- OutputProgress Render Manager-->
+    <!--
     <managed-bean>
         <managed-bean-name>renderManager</managed-bean-name>
         <managed-bean-class>
@@ -132,6 +135,7 @@
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+    -->
 
     <!-- Auto complete user specific values -->
     <managed-bean>
