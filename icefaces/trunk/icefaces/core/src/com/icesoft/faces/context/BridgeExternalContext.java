@@ -42,9 +42,9 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
-import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.util.SeamUtilities;
@@ -185,7 +185,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Configuration configuration;
     protected BridgeFacesContext facesContext;
 
-    protected BridgeExternalContext()  {
+    protected BridgeExternalContext() {
         this.viewIdentifier = null;
         this.commandQueue = null;
         this.defaultAuthorization = null;
@@ -204,8 +204,6 @@ public abstract class BridgeExternalContext extends ExternalContext {
         this.standardScope = SeamUtilities.isSeamEnvironment() ||
                 configuration.getAttributeAsBoolean("standardRequestScope", false);
     }
-
-    public abstract String getRequestURI();
 
     public abstract Writer getWriter(String encoding) throws IOException;
 
