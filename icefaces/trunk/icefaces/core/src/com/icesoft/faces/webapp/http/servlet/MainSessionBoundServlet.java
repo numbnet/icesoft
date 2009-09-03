@@ -26,6 +26,8 @@ import com.icesoft.faces.webapp.http.core.SendUpdates;
 import com.icesoft.faces.webapp.http.core.SingleViewServer;
 import com.icesoft.faces.webapp.http.core.UploadServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViewsImpl;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViews;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
@@ -75,9 +77,19 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         final Server disposeViews;
         final MessageHandler handler;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher, blockingRequestHandlerContext, authorization);
+            final AssociatedPageViews associatedPageViews = AssociatedPageViewsImpl.getImplementation(configuration);
+            viewServlet = new MultiViewServer(session,
+                    sessionID,
+                    sessionMonitor,
+                    views,
+                    allUpdatedViews,
+                    configuration,
+                    resourceDispatcher,
+                    blockingRequestHandlerContext,
+                    authorization,
+                    associatedPageViews);
             if (messageService == null) {
-                disposeViews = new DisposeViews(sessionID, views);
+                disposeViews = new DisposeViews(sessionID, views, associatedPageViews);
                 handler = null;
             } else {
                 disposeViews = OKServer;
@@ -87,6 +99,7 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
                         if (sessionID.equals(sessionIdentifier)) {
                             View view = (View) views.remove(viewIdentifier);
                             if (view != null) {
+                                associatedPageViews.disposeAssociatedViews(view);
                                 view.dispose();
                             }
                         }
