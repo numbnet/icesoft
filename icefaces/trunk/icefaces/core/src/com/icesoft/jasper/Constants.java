@@ -160,6 +160,12 @@ public class Constants {
     public static final String TMP_DIR = "javax.servlet.context.tempdir";
     public static final String FORWARD_SEEN = "javax.servlet.forward.seen";
 
+
+    /**
+     * ICE-3560 Name of the parameter used in portlet.xml to tell which Spring Web Flow to use
+     */
+    public static final String ORG_SPRINGFRAMEWORK_WEBFLOW_FLOW_ID = "org.springframework.webflow.FlowId";
+
     /**
      * Public Id and the Resource path (of the cached copy) of the DTDs for tag
      * library descriptors.

@@ -34,6 +34,7 @@
 package com.icesoft.faces.context;
 
 import javax.servlet.ServletContext;
+import javax.portlet.PortletContext;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
@@ -69,7 +70,8 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
                                         Lifecycle lifecycle) throws FacesException {
         //In the case of Spring Web Flow 2.0, return the BridgeFacesContext
         //already created for this request
-        if (context instanceof ServletContext) {
+        // ICE-3560 Operate in Portlet environment also  
+        if (context instanceof ServletContext || context instanceof PortletContext) {
             if (SeamUtilities.isSpringEnvironment())  {
                 PersistentFacesState persistentState = 
                         PersistentFacesState.getInstance();
