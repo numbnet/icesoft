@@ -98,6 +98,11 @@ public class MainPortlet extends GenericPortlet {
         //a portlet environment.
         addAttribute(renderRequest, Constants.PORTLET_KEY, PORTLET_MARKER);
 
+        // ICE-3560 Retrieve webflow key
+        //Retrieve the id of the flow and store it for later use
+        String flowKey = Constants.ORG_SPRINGFRAMEWORK_WEBFLOW_FLOW_ID;
+        addAttribute(renderRequest, flowKey, portletConfig.getInitParameter(flowKey));
+
         //We request a dispatcher for the actual resource which is typically
         //an .iface.  This maps to the proper handler, typically the ICEfaces
         //MainServlet which takes over the processing.
