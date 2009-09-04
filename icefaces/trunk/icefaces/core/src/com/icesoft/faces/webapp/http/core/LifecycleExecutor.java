@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-import com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet;
+import com.icesoft.faces.env.SpringWebFlowInstantiationServlet;
 
 import java.util.Map;
 
@@ -58,7 +58,7 @@ public abstract class LifecycleExecutor {
             }
         }
         if (null != flowExecutor)  {
-            appMap.put(SWF_EXEC, new SwfLifecycleExecutor() );
+            appMap.put(SWF_EXEC, new com.icesoft.faces.webapp.http.core.SwfLifecycleExecutor() );
         }
     }
     
