@@ -76,6 +76,7 @@ public class RowSelector extends UIPanel {
     private Boolean immediate;
     private Integer dblClickDelay;
     private Boolean preStyleOnSelection;
+    private String renderedOnUserRole = null;
     
     transient private List selectedRowsList = new ArrayList();
     
@@ -548,7 +549,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[18];
+        Object[] state = new Object[19];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -567,6 +568,7 @@ public class RowSelector extends UIPanel {
         state[15] = saveAttachedState(context, clickAction);
         state[16] = dblClickDelay;
         state[17] = preStyleOnSelection;
+        state[18] = renderedOnUserRole;
         return state;
     }
 
@@ -594,6 +596,7 @@ public class RowSelector extends UIPanel {
             restoreAttachedState(context, state[15]);
         dblClickDelay = (Integer) state[16];
         preStyleOnSelection = (Boolean) state[17];
+        renderedOnUserRole = (String) state[18]; 
     }
     
     private String styleClass;
@@ -660,4 +663,32 @@ public class RowSelector extends UIPanel {
         }
         return evt;
     }
+    
+    /**
+     * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
+    }
+
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public String getRenderedOnUserRole() {
+        if (renderedOnUserRole != null) {
+            return renderedOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    } 
 }
