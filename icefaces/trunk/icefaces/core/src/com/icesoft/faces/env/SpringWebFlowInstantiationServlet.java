@@ -1,4 +1,4 @@
-package com.icesoft.faces.webapp.http.servlet;
+package com.icesoft.faces.env;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
