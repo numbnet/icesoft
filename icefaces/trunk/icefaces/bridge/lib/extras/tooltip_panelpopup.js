@@ -94,8 +94,8 @@ ToolTipPanelPopup = Class.create({
         tooltip.style.visibility = "visible";
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
-        tooltip.style.top = this.y - tooltip.offsetHeight - 8 + "px";
-        tooltip.style.left = this.x+8+"px";
+        tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
+        tooltip.style.left = this.x+4+"px";
         ToolTipPanelPopupUtil.adjustPosition(tooltip);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
@@ -172,8 +172,8 @@ ToolTipPanelPopup = Class.create({
     this.y = Event.pointerY(event);
       if (!this.isTooltipVisible()) return;
       var tooltip = this.getTooltip();
-      tooltip.style.top = this.y - tooltip.offsetHeight - 8 + "px";
-      tooltip.style.left = this.x + 8 + "px";
+      tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
+      tooltip.style.left = this.x + 4 + "px";
       ToolTipPanelPopupUtil.adjustPosition(tooltip);
       Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
   },
@@ -280,28 +280,33 @@ ToolTipPanelPopupUtil = {
     adjustPosition: function(id) {
         var element = $(id);
         var viewportDimensions = document.viewport.getDimensions();
+        var viewportScrollOffsets = document.viewport.getScrollOffsets();
         var elementDimensions = element.getDimensions();
-        var viewportOffset = {left: element.viewportOffset().left + element.cumulativeScrollOffset().left,
-            top: element.viewportOffset().top + element.cumulativeScrollOffset().top};
+        var elementOffsets = element.cumulativeOffset();
         var positionedOffset = element.positionedOffset();
-        var widthDiff = viewportDimensions.width - viewportOffset.left - elementDimensions.width;
-        var heightDiff = viewportDimensions.height - viewportOffset.top - elementDimensions.height;
 
-        if (viewportOffset.left < 0) {
-            element.style.left = positionedOffset.left - viewportOffset.left + "px";
-        } else if (widthDiff < 0) {
-            element.style.left = positionedOffset.left + widthDiff + "px";
+        var diff = 0;
+        if (elementOffsets.left < viewportScrollOffsets.left) {
+            diff = viewportScrollOffsets.left - elementOffsets.left;
+        } else if (elementOffsets.left + elementDimensions.width > viewportScrollOffsets.left + viewportDimensions.width) {
+            diff = (elementOffsets.left + elementDimensions.width) - (viewportScrollOffsets.left + viewportDimensions.width);
+            diff = - Math.min(diff, (elementOffsets.left - viewportScrollOffsets.left));
         }
-        if (viewportOffset.top < 0) {
-            element.style.top = positionedOffset.top - viewportOffset.top + "px";
-        } else if (heightDiff < 0) {
-            element.style.top = positionedOffset.top + heightDiff + "px";
+        element.style.left = positionedOffset.left + diff + "px";
+        
+        diff = 0;
+        if (elementOffsets.top < viewportScrollOffsets.top) {
+            diff = viewportScrollOffsets.top - elementOffsets.top;
+        } else if (elementOffsets.top + elementDimensions.height > viewportScrollOffsets.top + viewportDimensions.height) {
+            diff = (elementOffsets.top + elementDimensions.height) - (viewportScrollOffsets.top + viewportDimensions.height);
+            diff = - Math.min(diff, (elementOffsets.top - viewportScrollOffsets.top));
         }
+        element.style.top = positionedOffset.top + diff + "px";
     },
     showPopup: function(id) {
         var tooltip = $(id);
-        tooltip.style.top = parseInt(tooltip.style.top) - tooltip.offsetHeight - 8 + "px";
-        tooltip.style.left = parseInt(tooltip.style.left) + 8 + "px";
+        tooltip.style.top = parseInt(tooltip.style.top) - tooltip.offsetHeight - 4 + "px";
+        tooltip.style.left = parseInt(tooltip.style.left) + 4 + "px";
         ToolTipPanelPopupUtil.adjustPosition(id);
     }
 };
