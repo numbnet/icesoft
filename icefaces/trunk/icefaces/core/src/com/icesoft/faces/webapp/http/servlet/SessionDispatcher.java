@@ -338,5 +338,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             //ignore
         }
+
+        public Monitor() {
+            //ignore
+        }
     }
 }
