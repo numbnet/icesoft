@@ -57,7 +57,9 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         public void run() {
             allUpdatedViews.removeAll(synchronouslyUpdatedViews);
             if (!allUpdatedViews.isEmpty()) {
-                Log.warn(allUpdatedViews + " views have accumulated updates");
+                if(Log.isDebugEnabled() ){
+                    Log.debug(allUpdatedViews + " views have accumulated updates");
+                }
             }
             allUpdatedViews.clear();
         }
