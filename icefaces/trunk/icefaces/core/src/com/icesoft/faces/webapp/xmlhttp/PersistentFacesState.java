@@ -331,18 +331,23 @@ public class PersistentFacesState implements Serializable {
      *
      * @param uri the relative or absolute URI.
      */
-    public void redirectTo(String uri) {
+    public void redirectTo(final String uri) {
         warnIfSynchronous();
-        try {
-            view.acquireLifecycleLock();
-            view.installThreadLocals();
-            view.getFacesContext().getExternalContext().redirect(uri);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            release();
-            view.releaseLifecycleLock();
-        }
+        executorService.execute(new Runnable()  {
+            public void run()  {
+                try {
+                    view.acquireLifecycleLock();
+                    view.installThreadLocals();
+                    view.getFacesContext().getExternalContext().redirect(uri);
+                } catch (Exception e) {
+                    log.error("Exception during redirectTo ", e);
+                    throw new RuntimeException(e);
+                } finally {
+                    release();
+                    view.releaseLifecycleLock();
+                }
+            }
+        });
     }
 
     /**
