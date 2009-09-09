@@ -43,10 +43,28 @@ extends DefaultMessageService {
 
     public CoreMessageService(
         final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final boolean retryOnFail, final String blockingRequestHandlerContext)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        super(messageServiceClient, scheduledThreadPoolExecutor, retryOnFail);
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
+    }
+
+    public CoreMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration, final String blockingRequestHandlerContext)
     throws IllegalArgumentException {
         // throws IllegalArgumentException
         super(messageServiceClient, scheduledThreadPoolExecutor, configuration);
+        this.blockingRequestHandlerContext = blockingRequestHandlerContext;
+    }
+
+    public CoreMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final Configuration configuration, final boolean retryOnFail, final String blockingRequestHandlerContext)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        super(messageServiceClient, scheduledThreadPoolExecutor, configuration, retryOnFail);
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
     }
 

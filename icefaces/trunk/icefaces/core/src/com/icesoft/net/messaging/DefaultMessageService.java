@@ -25,6 +25,7 @@ implements MessageServiceClient.Administrator {
 
     private final Configuration configuration;
     private final MessageServiceClient messageServiceClient;
+    private final boolean retryOnFail;
     private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
     private MessagePublisher currentMessagePublisher;
@@ -33,12 +34,29 @@ implements MessageServiceClient.Administrator {
     public DefaultMessageService(
         final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor)
     throws IllegalArgumentException {
-        this(messageServiceClient, scheduledThreadPoolExecutor, null);
+        // throws IllegalArgumentException 
+        this(messageServiceClient, scheduledThreadPoolExecutor, null, false);
+    }
+
+    public DefaultMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final boolean retryOnFail)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        this(messageServiceClient, scheduledThreadPoolExecutor, null, retryOnFail);
     }
 
     public DefaultMessageService(
         final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        this(messageServiceClient, scheduledThreadPoolExecutor, configuration, false);
+    }
+
+    public DefaultMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final Configuration configuration, final boolean retryOnFail)
     throws IllegalArgumentException {
         if (messageServiceClient == null) {
             throw new IllegalArgumentException("messageServiceClient is null");
@@ -50,6 +68,7 @@ implements MessageServiceClient.Administrator {
         this.messageServiceClient.setAdministrator(this);
         this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
         this.configuration = configuration;
+        this.retryOnFail = retryOnFail;
         this.currentMessagePublisher =
             new QueueMessagePublisher(this, messageServiceClient, scheduledThreadPoolExecutor);
     }
@@ -187,16 +206,16 @@ implements MessageServiceClient.Administrator {
     public final void setUp() {
         LOG.info("Setting up...");
         setUp(
-            configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
-            configuration.getAttributeAsInteger("maxRetries", DEFAULT_MAX_RETRIES));
+            !retryOnFail ? 0 : configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
+            !retryOnFail ? 0 : configuration.getAttributeAsInteger("maxRetries", DEFAULT_MAX_RETRIES));
     }
 
     public final boolean setUpNow() {
         LOG.info("Setting up now...");
         return
             setUpNow(
-                configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
-                configuration.getAttributeAsInteger("maxRetries", DEFAULT_MAX_RETRIES));
+                !retryOnFail ? 0 : configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
+                !retryOnFail ? 0 : configuration.getAttributeAsInteger("maxRetries", DEFAULT_MAX_RETRIES));
     }
 
     public final void start() {
@@ -288,10 +307,14 @@ implements MessageServiceClient.Administrator {
                 if (_failTimestamp > successTimestamp + 5000) {
                     tearDownNow();
                     if (setUpNow(
-                            configuration.getAttributeAsInteger(
-                                "intervalOnReconnect", DEFAULT_INTERVAL_ON_RECONNECT),
-                            configuration.getAttributeAsInteger(
-                                "maxRetriesOnReconnect", DEFAULT_MAX_RETRIES_ON_RECONNECT))) {
+                            !retryOnFail ?
+                                0 :
+                                configuration.getAttributeAsInteger(
+                                    "intervalOnReconnect", DEFAULT_INTERVAL_ON_RECONNECT),
+                            !retryOnFail ?
+                                0 :
+                                configuration.getAttributeAsInteger(
+                                    "maxRetriesOnReconnect", DEFAULT_MAX_RETRIES_ON_RECONNECT))) {
 
                         successTimestamp = System.currentTimeMillis();
                         succeeded = true;
@@ -356,9 +379,6 @@ implements MessageServiceClient.Administrator {
                 }
                 cancelled = true;
                 succeeded = true;
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Set up of the message service client succeeded.");
-                }
             } catch (Exception exception) {
                 if (retries++ == maxRetries) {
                     if (scheduledFuture != null) {
@@ -368,8 +388,8 @@ implements MessageServiceClient.Administrator {
                     cancelled = true;
                     // switch from a queue-based message publisher to a noop message publisher.
                     currentMessagePublisher = new NoopMessagePublisher();
-                    if (LOG.isFatalEnabled()) {
-                        LOG.fatal("Set up of the message service client failed!", exception);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Set up of the message service client failed: " + exception.getMessage());
                     }
                 }
             }

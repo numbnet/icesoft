@@ -66,10 +66,26 @@ extends DefaultMessageService {
 
     public PushServerMessageService(
         final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final boolean retryOnFail)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        super(messageServiceClient, scheduledThreadPoolExecutor, retryOnFail);
+    }
+
+    public PushServerMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration)
     throws IllegalArgumentException {
         // throws IllegalArgumentException
         super(messageServiceClient, scheduledThreadPoolExecutor, configuration);
+    }
+
+    public PushServerMessageService(
+        final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
+        final Configuration configuration, final boolean retryOnFail)
+    throws IllegalArgumentException {
+        // throws IllegalArgumentException
+        super(messageServiceClient, scheduledThreadPoolExecutor, configuration, retryOnFail);
     }
 
     public MessageHandler getBufferedContextEventsMessageHandler() {
