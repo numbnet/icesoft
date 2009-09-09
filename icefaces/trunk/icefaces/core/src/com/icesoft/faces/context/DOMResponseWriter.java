@@ -52,9 +52,9 @@ import org.w3c.dom.NodeList;
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -403,6 +403,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
                         "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
+                        "context: '" + contextPath + "', " +
                         (synchronousMode ?
                                 //encode path for URL rewrite session tracking mode
                                 ("sendReceiveUpdatesURI: '" + externalContext.encodeResourceURL(contextPath + "block/send-receive-updates") + "',") :
