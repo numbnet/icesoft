@@ -242,6 +242,7 @@ public class MainServlet extends HttpServlet {
                         new MessageServiceClient(new JMSAdapter(context), currentContextPath.lookup()),
                         scheduledThreadPoolExecutor,
                         new ServletContextConfiguration("com.icesoft.net.messaging", context),
+                        true,
                         configuration.getAttribute("blockingRequestHandlerContext", "push-server"));
                 if (coreMessageService.setUpNow()) {
                     this.blockingRequestHandlerContext = URI.create("/").resolve(blockingRequestHandlerContext + "/").toString();
