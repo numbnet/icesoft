@@ -53,14 +53,13 @@ public class MessageServiceClient {
     private static final Log LOG =
         LogFactory.getLog(MessageServiceClient.class);
 
+    private final Map messageHandlerMap = new HashMap();
+    private final Map messagePipelineMap = new HashMap();
+
+    private Administrator administrator;
     private MessageServiceConfiguration messageServiceConfiguration;
     private MessageServiceAdapter messageServiceAdapter;
-
-    private Map messageHandlerMap = new HashMap();
-    private Map messagePipelineMap = new HashMap();
-
     private Properties baseMessageProperties = new Properties();
-
     private String name;
 
     private Timer timer = new Timer();
@@ -155,6 +154,7 @@ public class MessageServiceClient {
             this.messageServiceConfiguration.setMessageMaxLength(10 * 1024);
         }
         this.messageServiceAdapter = messageServiceAdapter;
+        this.messageServiceAdapter.setMessageServiceClient(this);
     }
 
     /**
@@ -242,6 +242,10 @@ public class MessageServiceClient {
      */
     public MessageServiceConfiguration getMessageServiceConfiguration() {
         return messageServiceConfiguration;
+    }
+
+    public Administrator getAdministrator() {
+        return administrator;
     }
 
     /**
@@ -967,6 +971,10 @@ public class MessageServiceClient {
         }
     }
 
+    public void setAdministrator(final Administrator administrator) {
+        this.administrator = administrator;
+    }
+
     /**
      * <p>
      *   Starts this MessageServiceClient's delivery of incoming messages.
@@ -1291,5 +1299,11 @@ public class MessageServiceClient {
                 Message.SOURCE_SERVLET_CONTEXT_PATH, servletContextPath);
         }
         setBaseMessageProperties();
+    }
+    
+    public static interface Administrator {
+        void reconnect();
+        
+        boolean reconnectNow();
     }
 }

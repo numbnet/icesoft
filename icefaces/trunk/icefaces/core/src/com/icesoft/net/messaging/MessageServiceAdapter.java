@@ -63,6 +63,8 @@ public interface MessageServiceAdapter {
     public void close()
     throws MessageServiceException;
 
+    public MessageServiceClient getMessageServiceClient();
+
     public MessageServiceConfiguration getMessageServiceConfiguration();
 
     /**
@@ -152,6 +154,9 @@ public interface MessageServiceAdapter {
     public void removeMessageHandler(
         final MessageHandler messageHandler, final String topicName);
 
+    public void setMessageServiceClient(
+        final MessageServiceClient messageServiceClient);
+    
     /**
      * <p>
      *   Starts this MessageServiceAdapter's delivery of incoming messages.

@@ -50,7 +50,9 @@ package com.icesoft.net.messaging;
  * @see        Message
  */
 public interface MessageHandler {
-    public Callback getCallback();
+    void addCallback(Callback callback);
+    
+    void addCallback(Callback callback, MessageSelector messageSelector);
 
     /**
      * <p>
@@ -60,7 +62,7 @@ public interface MessageHandler {
      * @return     the MessageSelector
      * @see        #setMessageSelector(MessageSelector)
      */
-    public MessageSelector getMessageSelector();
+    MessageSelector getMessageSelector();
 
     /**
      * <p>
@@ -70,9 +72,9 @@ public interface MessageHandler {
      * @param      message
      *                 the message to be handled.
      */
-    public void handle(final Message message);
+    void handle(Message message);
 
-    public void setCallback(final Callback callback);
+    void removeCallback(Callback callback);
 
     /**
      * <p>
@@ -84,7 +86,7 @@ public interface MessageHandler {
      *                 the new MessageSelector.
      * @see        #getMessageSelector()
      */
-    public void setMessageSelector(final MessageSelector messageSelector);
+    void setMessageSelector(MessageSelector messageSelector);
 
     public static interface Callback { /* marker interface */ }
 }

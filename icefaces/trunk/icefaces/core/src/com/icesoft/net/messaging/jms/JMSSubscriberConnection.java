@@ -380,10 +380,8 @@ implements JMSConnection {
         }
     }
 
-    private static class MessageReceiver
+    private class MessageReceiver
     implements Runnable {
-        private static final Log LOG = LogFactory.getLog(MessageReceiver.class);
-
         private MessageListener messageListener;
         private TopicSubscriber topicSubscriber;
         private boolean stopRequested;
@@ -408,11 +406,10 @@ implements JMSConnection {
                     }
                 }
             } catch (JMSException exception) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(
-                        "Failed to receive message due to an internal error!",
-                        exception);
-                }
+                // reconnect will create a new instance of
+                // JMSSubscriberConnection.
+                jmsAdapter.
+                    getMessageServiceClient().getAdministrator().reconnectNow();
             }
             if (LOG.isDebugEnabled()) {
                 LOG.debug(this + " stopped.");

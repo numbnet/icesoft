@@ -39,13 +39,14 @@ import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import java.util.Set;
-import java.util.Timer;
 
 import javax.servlet.ServletContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class SessionBoundServlet
 extends PathDispatcher
@@ -54,7 +55,8 @@ implements PseudoServlet {
 
     public SessionBoundServlet(
         final ServletContext servletContext,
-        final SessionManager sessionManager, final Timer timer,
+        final SessionManager sessionManager,
+        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration,
         final SessionDispatcher.Monitor monitor) {
 
@@ -79,8 +81,8 @@ implements PseudoServlet {
                         new IDVerifier(
                             iceFacesIdSet,
                             new ReceiveUpdatedViewsHandler(
-                                request, iceFacesIdSet, sessionManager, timer,
-                                configuration)
+                                request, iceFacesIdSet, sessionManager,
+                                scheduledThreadPoolExecutor, configuration)
                         ).handle();
                     }
                 },

@@ -36,6 +36,7 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.servlet.CoreMessageService;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
@@ -67,7 +68,7 @@ implements Server {
         final HttpSession httpSession, final String iceFacesId,
         final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews, final Configuration configuration,
-        final MessageServiceClient messageServiceClient)
+        final CoreMessageService coreMessageService)
     throws MessageServiceException {
         blockingRequestHandlerContext =
             configuration.getAttribute(
@@ -106,7 +107,7 @@ implements Server {
                             setStringProperty(
                                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
                                 blockingRequestHandlerContext);
-                        messageServiceClient.publish(
+                        coreMessageService.publish(
                             iceFacesId + ";" +                    // ICEfaces ID
                                 _sequenceNumber + ";" +       // Sequence Number
                                 _stringWriter.toString(),        // Message Body

@@ -47,9 +47,9 @@ import com.icesoft.net.messaging.expression.StringLiteral;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,8 +65,7 @@ extends AbstractMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "UpdatedViews";
 
-    private static final Log LOG =
-        LogFactory.getLog(UpdatedViewsMessageHandler.class);
+    private static final Log LOG = LogFactory.getLog(UpdatedViewsMessageHandler.class);
 
     private static MessageSelector messageSelector;
     static {
@@ -74,20 +73,13 @@ implements MessageHandler {
             messageSelector =
                 new MessageSelector(
                     new And(
-                        new Equal(
-                            new Identifier(Message.MESSAGE_TYPE),
-                            new StringLiteral(MESSAGE_TYPE)),
+                        new Equal(new Identifier(Message.MESSAGE_TYPE), new StringLiteral(MESSAGE_TYPE)),
                         new Container(
                             new Or(
-                                new IsNull(
-                                    new Identifier(
-                                        Message.DESTINATION_NODE_ADDRESS)),
+                                new IsNull(new Identifier(Message.DESTINATION_NODE_ADDRESS)),
                                 new Equal(
-                                    new Identifier(
-                                        Message.DESTINATION_NODE_ADDRESS),
-                                    new StringLiteral(
-                                        InetAddress.getLocalHost().
-                                            getHostAddress()))))));
+                                    new Identifier(Message.DESTINATION_NODE_ADDRESS),
+                                    new StringLiteral(InetAddress.getLocalHost().getHostAddress()))))));
         } catch (UnknownHostException exception) {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal("Failed to get IP address for localhost!", exception);
@@ -111,25 +103,21 @@ implements MessageHandler {
             String _messageBody = ((TextMessage)message).getText();
             int _beginIndex = 0;
             int _endIndex = _messageBody.indexOf(";");
-            String _iceFacesId =
-                _messageBody.substring(_beginIndex, _endIndex);
+            String _iceFacesId = _messageBody.substring(_beginIndex, _endIndex);
             _beginIndex = _endIndex + 1;
             _endIndex = _messageBody.indexOf(";", _beginIndex);
-            long _sequenceNumber =
-                Long.parseLong(
-                    _messageBody.substring(_beginIndex, _endIndex));
+            long _sequenceNumber = Long.parseLong(_messageBody.substring(_beginIndex, _endIndex));
             _beginIndex = _endIndex + 1;
-            StringTokenizer _tokens =
-                new StringTokenizer(_messageBody.substring(_beginIndex), ",");
+            StringTokenizer _tokens = new StringTokenizer(_messageBody.substring(_beginIndex), ",");
             int _tokenCount = _tokens.countTokens();
             Set _updatedViewsSet = new HashSet(_tokenCount);
             for (int i = 0; i < _tokenCount; i++) {
                 _updatedViewsSet.add(_tokens.nextToken());
             }
-            if (callback != null) {
-                ((Callback)callback).sendUpdatedViews(
-                    new UpdatedViews(
-                        _iceFacesId, _sequenceNumber, _updatedViewsSet));
+            MessageHandler.Callback[] _callbacks = getCallbacks(message);
+            for (int i = 0; i < _callbacks.length; i++) {
+                ((Callback)_callbacks[i]).
+                    sendUpdatedViews(new UpdatedViews(_iceFacesId, _sequenceNumber, _updatedViewsSet));
             }
         }
     }

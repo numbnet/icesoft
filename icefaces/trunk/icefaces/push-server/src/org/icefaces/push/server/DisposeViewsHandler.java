@@ -112,7 +112,7 @@ implements Handler, Runnable {
                                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
                                 sessionManager.
                                     getServletContextPath(_parameterNames[i]));
-                        sessionManager.getMessageService().publish(
+                        sessionManager.getPushServerMessageService().publish(
                             _message.toString(),
                             _messageProperties,
                             DISPOSE_VIEWS_MESSAGE_TYPE,

@@ -31,32 +31,78 @@
  */
 package com.icesoft.net.messaging;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public abstract class AbstractMessageHandler
 implements MessageHandler {
-    protected Callback callback;
+    private static final Log LOG = LogFactory.getLog(AbstractMessageHandler.class);
+
+    protected final Map callbackMap = new HashMap();
+
     protected MessageSelector messageSelector;
 
     protected AbstractMessageHandler() {
         this(null);
     }
-
+                                         
     protected AbstractMessageHandler(final MessageSelector messageSelector) {
         this.messageSelector = messageSelector;
     }
 
-    public Callback getCallback() {
-        return callback;
+    public void addCallback(final Callback callback) {
+        this.addCallback(callback, null);
+    }
+
+    public void addCallback(final Callback callback, final MessageSelector messageSelector) {
+        if (callback != null) {
+            synchronized (callbackMap) {
+                callbackMap.put(callback, messageSelector);
+            }
+        }
     }
 
     public MessageSelector getMessageSelector() {
         return messageSelector;
     }
 
-    public void setCallback(final Callback callback) {
-        this.callback = callback;
+    public void removeCallback(final Callback callback) {
+        if (callback != null && callbackMap.containsKey(callback)) {
+            synchronized (callbackMap) {
+                if (callbackMap.containsKey(callback)) {
+                    callbackMap.remove(callback);
+                }
+            }
+        }
     }
 
     public void setMessageSelector(final MessageSelector messageSelector) {
         this.messageSelector = messageSelector;
+    }
+
+    protected Callback[] getCallbacks(final Message message) {
+        List _callbackList = new ArrayList();
+        if (message != null) {
+            synchronized (callbackMap) {
+                Set _entrySet = callbackMap.entrySet();
+                int _size = _entrySet.size();
+                Iterator _entries = _entrySet.iterator();
+                for (int i = 0; i < _size; i++) {
+                    Map.Entry _entry = (Map.Entry)_entries.next();
+                    MessageSelector _messageSelector = (MessageSelector)_entry.getValue();
+                    if (_messageSelector == null || _messageSelector.matches(message)) {
+                        _callbackList.add(_entry.getKey());
+                    }
+                }
+            }
+        }
+        return (Callback[])_callbackList.toArray(new Callback[_callbackList.size()]);
     }
 }

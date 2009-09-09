@@ -47,6 +47,7 @@ implements MessageServiceAdapter {
     protected static final String MESSAGING_PROPERTIES =
         "com.icesoft.net.messaging.properties";
 
+    protected MessageServiceClient messageServiceClient;
     protected MessageServiceConfiguration messageServiceConfiguration;
     protected Map topicPublisherMap = new HashMap();
     protected Map topicSubscriberMap = new HashMap();
@@ -67,6 +68,10 @@ implements MessageServiceAdapter {
         if (servletContext == null) {
             throw new IllegalArgumentException("servletContext is null");
         }
+    }
+
+    public MessageServiceClient getMessageServiceClient() {
+        return messageServiceClient;
     }
 
     public MessageServiceConfiguration getMessageServiceConfiguration() {
@@ -97,5 +102,11 @@ implements MessageServiceAdapter {
         return
             topicName != null && topicName.trim().length() != 0 &&
             topicSubscriberMap.containsKey(topicName);
+    }
+
+    public void setMessageServiceClient(
+        final MessageServiceClient messageServiceClient) {
+
+        this.messageServiceClient = messageServiceClient;
     }
 }

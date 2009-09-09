@@ -35,6 +35,7 @@ import com.icesoft.net.messaging.AbstractMessageHandler;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.TextMessage;
 import com.icesoft.net.messaging.expression.Equal;
 import com.icesoft.net.messaging.expression.Identifier;
 import com.icesoft.net.messaging.expression.StringLiteral;
@@ -42,7 +43,7 @@ import com.icesoft.net.messaging.expression.StringLiteral;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class AnnouncementMessageHandler
+public class AnnouncementMessageHandler
 extends AbstractMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "Announcement";
@@ -56,7 +57,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected AnnouncementMessageHandler() {
+    public AnnouncementMessageHandler() {
         super(messageSelector);
     }
 
@@ -67,12 +68,20 @@ implements MessageHandler {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
-        publishBufferedContextEvents();
+        if (message instanceof TextMessage) {
+            MessageHandler.Callback[] _callbacks = getCallbacks(message);
+            for (int i = 0; i < _callbacks.length; i++) {
+                ((Callback)_callbacks[i]).publishBufferedContextEvents();
+            }
+        }
     }
-
-    public abstract void publishBufferedContextEvents();
 
     public String toString() {
         return getClass().getName();
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void publishBufferedContextEvents();
     }
 }

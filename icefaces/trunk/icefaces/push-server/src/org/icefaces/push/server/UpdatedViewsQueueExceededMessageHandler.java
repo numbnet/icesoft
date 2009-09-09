@@ -48,14 +48,10 @@ extends AbstractMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "UpdatedViewsQueueExceeded";
 
-    private static final Log LOG =
-        LogFactory.getLog(UpdatedViewsQueueExceededMessageHandler.class);
+    private static final Log LOG = LogFactory.getLog(UpdatedViewsQueueExceededMessageHandler.class);
 
     private static MessageSelector messageSelector =
-        new MessageSelector(
-            new Equal(
-                new Identifier(Message.MESSAGE_TYPE),
-                new StringLiteral(MESSAGE_TYPE)));
+        new MessageSelector(new Equal(new Identifier(Message.MESSAGE_TYPE), new StringLiteral(MESSAGE_TYPE)));
 
     protected UpdatedViewsQueueExceededMessageHandler() {
         super(messageSelector);
@@ -69,9 +65,9 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            if (callback != null) {
-                ((Callback)callback).
-                    updatedViewsQueueExceeded(((TextMessage)message).getText());
+            MessageHandler.Callback[] _callbacks = getCallbacks(message);
+            for (int i = 0; i < _callbacks.length; i++) {
+                ((Callback)_callbacks[i]).updatedViewsQueueExceeded(((TextMessage)message).getText());
             }
         }
     }

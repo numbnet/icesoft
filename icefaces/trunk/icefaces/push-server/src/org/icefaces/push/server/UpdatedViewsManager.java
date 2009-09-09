@@ -53,7 +53,7 @@ public class UpdatedViewsManager {
     private static final Log LOG =
         LogFactory.getLog(UpdatedViewsManager.class);
 
-    protected final MessageService messageService;
+    protected final PushServerMessageService pushServerMessageService;
     protected final SessionManager sessionManager;
     protected final Map updatedViewsQueueMap = new HashMap();
 
@@ -61,13 +61,13 @@ public class UpdatedViewsManager {
 
     public UpdatedViewsManager(
         final Configuration configuration,
-        final MessageService messageService,
+        final PushServerMessageService pushServerMessageService,
         final SessionManager sessionManager) {
 
         setUpdatedViewsQueueSize(
             configuration.getAttributeAsInteger(
                 "updatedViewsQueueSize", 100));
-        this.messageService = messageService;
+        this.pushServerMessageService = pushServerMessageService;
         this.sessionManager = sessionManager;
     }
 
@@ -154,7 +154,7 @@ public class UpdatedViewsManager {
                         Message.DESTINATION_SERVLET_CONTEXT_PATH,
                         sessionManager.getServletContextPath(
                             updatedViews.getICEfacesID()));
-                    messageService.publish(
+                    pushServerMessageService.publish(
                         updatedViews.getICEfacesID(),
                         _messageProperties,
                         UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE,

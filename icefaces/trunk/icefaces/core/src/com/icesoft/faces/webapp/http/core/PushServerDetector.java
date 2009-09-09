@@ -4,7 +4,7 @@ import com.icesoft.faces.async.common.PushServerAdaptingServlet;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.faces.webapp.http.servlet.CoreMessageService;
 import com.icesoft.util.MonitorRunner;
 
 import java.util.Collection;
@@ -29,13 +29,13 @@ implements Server {
         final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner,
         final Configuration configuration,
-        final MessageServiceClient messageServiceClient,
+        final CoreMessageService coreMessageService,
         final PageTest pageTest) {
 
         if (factory == null) {
             synchronized (LOCK) {
                 if (factory == null) {
-                    if (messageServiceClient != null) {
+                    if (coreMessageService != null) {
                         factory = new PushServerAdaptingServletFactory();
                         fallbackFactory = new SendUpdatedViewsFactory();
                     } else {
@@ -48,7 +48,7 @@ implements Server {
             factory.newServer(
                 httpSession, icefacesID, synchronouslyUpdatedViews,
                 allUpdatedViews, monitorRunner, configuration,
-                messageServiceClient, pageTest);
+                coreMessageService, pageTest);
     }
 
     public void service(final Request request) throws Exception {
@@ -66,7 +66,7 @@ implements Server {
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
-            final MessageServiceClient messageServiceClient,
+            final CoreMessageService coreMessageService,
             final PageTest pageTest);
     }
 
@@ -78,7 +78,7 @@ implements Server {
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
-            final MessageServiceClient messageServiceClient,
+            final CoreMessageService coreMessageService,
             final PageTest pageTest) {
 
             try {
@@ -89,7 +89,7 @@ implements Server {
                         synchronouslyUpdatedViews,
                         allUpdatedViews,
                         configuration,
-                        messageServiceClient);
+                        coreMessageService);
             } catch (Exception exception) {
                 // Possible exceptions: MessageServiceException
                 LOG.warn(
@@ -104,7 +104,7 @@ implements Server {
                     factory.newServer(
                         httpSession, icefacesID, synchronouslyUpdatedViews,
                         allUpdatedViews, monitorRunner, configuration,
-                        messageServiceClient, pageTest);
+                        coreMessageService, pageTest);
             }
         }
     }
@@ -117,7 +117,7 @@ implements Server {
             final ViewQueue allUpdatedViews,
             final MonitorRunner monitorRunner,
             final Configuration configuration,
-            final MessageServiceClient messageServiceClient,
+            final CoreMessageService coreMessageService,
             final PageTest pageTest) {
 
             return
