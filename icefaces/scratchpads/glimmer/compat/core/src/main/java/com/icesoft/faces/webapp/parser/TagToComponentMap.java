@@ -373,8 +373,8 @@ final class NameRule extends Rule {
                             sb.append(rendererType);
                             sb.append("</renderer-type>\n");
                         }
-                        //TODO: is this handler necessary?
-//                        sb.append("\t\t\t<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>\n");
+                        //TODO: is this handler necessary?  Yes..required for method binding of custom comps
+                        sb.append("\t\t\t<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>\n");
                         sb.append("\t\t</component>\n\t</tag>\n");
                         faceletsTaglibXmlWriter.write(sb.toString());
                         System.out.print(sb.toString());
