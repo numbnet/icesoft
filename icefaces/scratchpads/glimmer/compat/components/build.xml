@@ -116,10 +116,10 @@
         <delete dir="${build.classes.dir}"/>
         <mkdir  dir="${build.classes.dir}"/>
 
-<echo>EXCLUDED FileUploadServlet, IceComponentHandler.java</echo>
+<echo>EXCLUDED FileUploadServlet</echo>
         <javac destdir="${build.classes.dir}" sourcepath=""
             debug="${compile.debug}" source="1.4" target="1.4"
-excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java com/icesoft/faces/component/facelets/IceComponentHandler.java"
+excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
         >
             <classpath refid="compile.run.classpath"/>
             <src location="${src.dir}"/>
