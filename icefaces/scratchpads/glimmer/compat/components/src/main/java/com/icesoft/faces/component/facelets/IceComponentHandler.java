@@ -1,9 +1,11 @@
 package com.icesoft.faces.component.facelets;
 
-import com.sun.facelets.tag.jsf.ComponentHandler;
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.MethodRule;
+import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRuleset;
+import javax.faces.view.facelets.ComponentConfig;
+import com.sun.faces.facelets.tag.MethodRule;
+
+
 import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.RowSelectorEvent;
@@ -24,6 +26,7 @@ public class IceComponentHandler extends ComponentHandler {
     public IceComponentHandler(ComponentConfig componentConfig) {
         super(componentConfig);
     }
+
     
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset m = super.createMetaRuleset(type);
@@ -65,3 +68,4 @@ public class IceComponentHandler extends ComponentHandler {
         return m;
     }
 }
+
