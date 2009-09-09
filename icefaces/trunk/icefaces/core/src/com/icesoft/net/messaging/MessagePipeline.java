@@ -150,15 +150,23 @@ public class MessagePipeline {
             try {
                 messageServiceClient.getMessageServiceAdapter().
                     publish(message, topicName);
+                publishTask.cancel();
                 publishTask = null;
-            } catch (MessageServiceException exception) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                        exception.getMessage() + "\r\n" +
-                        "Unable to publish message:\r\n\r\n" + message);
-                }
-            } finally {
                 message = null;
+            } catch (MessageServiceException exception) {
+                LOG.error("", exception);
+                if (messageServiceClient.getAdministrator().reconnectNow()) {
+                    publish();
+                } else {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            exception.getMessage() + "\r\n" +
+                                "Unable to publish message:\r\n\r\n" + message);
+                    }
+                    publishTask.cancel();
+                    publishTask = null;
+                    message = null;
+                }
             }
         }
     }

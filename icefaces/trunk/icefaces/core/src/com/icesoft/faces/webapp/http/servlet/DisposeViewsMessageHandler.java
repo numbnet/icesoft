@@ -9,17 +9,17 @@ import com.icesoft.net.messaging.expression.Equal;
 import com.icesoft.net.messaging.expression.Identifier;
 import com.icesoft.net.messaging.expression.StringLiteral;
 
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.StringTokenizer;
-
-public class DisposeViewsHandler
+public class DisposeViewsMessageHandler
 extends AbstractMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "DisposeViews";
 
-    private static final Log LOG = LogFactory.getLog(DisposeViewsHandler.class);
+    private static final Log LOG = LogFactory.getLog(DisposeViewsMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -27,7 +27,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected DisposeViewsHandler() {
+    protected DisposeViewsMessageHandler() {
         super(messageSelector);
     }
 
@@ -45,13 +45,11 @@ implements MessageHandler {
                 StringTokenizer _iceFacesIdViewNumberPair =
                     new StringTokenizer(
                         _iceFacesIdViewNumberPairs.nextToken(), ";");
-                if (callback != null) {
-                    ((Callback)callback).
-                        disposeView(
-                            // ICEfaces ID
-                            _iceFacesIdViewNumberPair.nextToken(),
-                            // View Number
-                            _iceFacesIdViewNumberPair.nextToken());
+                String _iceFacesId = _iceFacesIdViewNumberPair.nextToken();
+                String _viewNumber = _iceFacesIdViewNumberPair.nextToken();
+                MessageHandler.Callback[] _callbacks = getCallbacks(message);
+                for (int i = 0; i < _callbacks.length; i++) {
+                    ((Callback)_callbacks[i]).disposeView(_iceFacesId, _viewNumber);
                 }
             }
         }

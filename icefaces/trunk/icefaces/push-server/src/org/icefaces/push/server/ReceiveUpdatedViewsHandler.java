@@ -37,10 +37,12 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.core.NOOPResponse;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,23 +76,24 @@ implements Handler, Runnable {
 
     private final long blockingConnectionTimeout;
     private final SessionManager sessionManager;
-    private final Timer timer;
+    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    private BlockingConnectionTimeoutTask blockingConnectionTimeoutTask;
     private Set iceFacesIdSet;
+    private ScheduledFuture scheduledFuture;
     private List updatedViewsList;
     
     private int state = STATE_UNINITIALIZED;
 
     public ReceiveUpdatedViewsHandler(
         final Request request, final Set iceFacesIdSet,
-        final SessionManager sessionManager, final Timer timer,
+        final SessionManager sessionManager,
+        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration) {
 
         super(request);
         this.iceFacesIdSet = iceFacesIdSet;
         this.sessionManager = sessionManager;
-        this.timer = timer;
+        this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
         this.blockingConnectionTimeout =
             configuration.
                 getAttributeAsLong("blockingConnectionTimeout", 90000);
@@ -130,13 +133,10 @@ implements Handler, Runnable {
                         sessionManager.getRequestManager().
                             pull(iceFacesIdSet);
                 if (_receiveUpdatedViewsHandler != null) {
-                    if (_receiveUpdatedViewsHandler.
-                            blockingConnectionTimeoutTask != null) {
-
-                        _receiveUpdatedViewsHandler.
-                            blockingConnectionTimeoutTask.cancel();
-                        _receiveUpdatedViewsHandler.
-                            blockingConnectionTimeoutTask = null;
+                    if (_receiveUpdatedViewsHandler.scheduledFuture != null) {
+                        _receiveUpdatedViewsHandler.scheduledFuture.
+                            cancel(false);
+                        _receiveUpdatedViewsHandler.scheduledFuture = null;
                     }
                     // respond to pending request.
                     try {
@@ -168,9 +168,9 @@ implements Handler, Runnable {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Waiting for Response");
                 }
-                if (blockingConnectionTimeoutTask != null) {
-                    blockingConnectionTimeoutTask.cancel();
-                    blockingConnectionTimeoutTask = null;
+                if (scheduledFuture != null) {
+                    scheduledFuture.cancel(false);
+                    scheduledFuture = null;
                 }
                 if (sessionManager.isValid(iceFacesIdSet) &&
                     sessionManager.hasViews(iceFacesIdSet)) {
@@ -185,11 +185,12 @@ implements Handler, Runnable {
                     if (updatedViewsList == null || updatedViewsList.isEmpty()) {
                         sessionManager.getRequestManager().
                             push(iceFacesIdSet, this);
-                        timer.schedule(
-                            blockingConnectionTimeoutTask =
+                        scheduledFuture =
+                            scheduledThreadPoolExecutor.schedule(
                                 new BlockingConnectionTimeoutTask(
                                     iceFacesIdSet, sessionManager),
-                            blockingConnectionTimeout);
+                                blockingConnectionTimeout,
+                                TimeUnit.MILLISECONDS);
                         return;
                     }
                     state = STATE_RESPONSE_IS_READY;
@@ -245,7 +246,7 @@ implements Handler, Runnable {
     }
 
     private static class BlockingConnectionTimeoutTask
-    extends TimerTask {
+    implements Runnable {
         private final Set iceFacesIdSet;
         private final SessionManager sessionManager;
         private final Thread originatingThread = Thread.currentThread();

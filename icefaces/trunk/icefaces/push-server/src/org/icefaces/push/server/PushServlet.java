@@ -39,11 +39,13 @@ import com.icesoft.faces.webapp.http.servlet.ServletConfigConfiguration;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.net.messaging.MessageServiceAdapter;
+import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.util.ServerUtility;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+
 import java.io.IOException;
-import java.util.Timer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -60,17 +62,19 @@ public class PushServlet
 extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(PushServlet.class);
 
+    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
+        new ScheduledThreadPoolExecutor(10);
+
     private String localAddress;
     private int localPort;
-    private MessageService messageService;
+    private PushServerMessageService pushServerMessageService;
     private PathDispatcher pathDispatcher = new PathDispatcher();
     private ServletContext servletContext;
-    private final Timer timer = new Timer();
 
     public void destroy() {
         super.destroy();
-        messageService.stop();
-        messageService.close();
+        pushServerMessageService.stop();
+        pushServerMessageService.close();
         pathDispatcher.shutdown();
     }
 
@@ -87,11 +91,18 @@ extends HttpServlet {
                     "org.icefaces.push.server", servletConfig);
             final Configuration _servletContextConfiguration =
                 new ServletContextConfiguration(
-                    "com.icesoft.faces", servletConfig.getServletContext());
-            messageService =
-                new MessageService(servletConfig.getServletContext());
+                    "com.icesoft.faces", servletContext);
+            pushServerMessageService =
+                new PushServerMessageService(
+                    new MessageServiceClient(
+                        new HttpAdapter(servletContext), servletContext),
+                    scheduledThreadPoolExecutor,
+                    new ServletContextConfiguration(
+                        "com.icesoft.net.messaging", servletContext));
+            pushServerMessageService.setUpNow();
             final SessionManager _sessionManager =
-                new SessionManager(_servletConfigConfiguration, messageService);
+                new SessionManager(
+                    _servletConfigConfiguration, pushServerMessageService);
             SessionDispatcher _sessionDispatcher =
                 new SessionDispatcher(servletContext) {
                     protected PseudoServlet newServer(
@@ -100,20 +111,21 @@ extends HttpServlet {
 
                         return
                             new SessionBoundServlet(
-                                servletContext, _sessionManager, timer,
+                                servletContext, _sessionManager,
+                                scheduledThreadPoolExecutor,
                                 _servletContextConfiguration, monitor);
                     }
                 };
             pathDispatcher.dispatchOn(
                 ".*(block\\/message)",
                 ((HttpAdapter)
-                    messageService.getMessageServiceClient().
+                    pushServerMessageService.getMessageServiceClient().
                         getMessageServiceAdapter()
                 ).getHttpMessagingDispatcher());
             pathDispatcher.dispatchOn(
                 ".*",
                 _sessionDispatcher);
-            messageService.start();
+            pushServerMessageService.start();
         } catch (Exception exception) {
             LOG.error(
                 "An error occurred while initializing the Push Server!",
@@ -130,13 +142,11 @@ extends HttpServlet {
                 ServerUtility.getLocalAddr(httpServletRequest, servletContext);
             localPort =
                 ServerUtility.getLocalPort(httpServletRequest, servletContext);
-            if (messageService != null) {
-                MessageServiceAdapter adapter =
-                    messageService.getMessageServiceClient().
-                        getMessageServiceAdapter();
-                if (adapter instanceof HttpAdapter) {
-                    ((HttpAdapter) adapter).setLocal(localAddress, localPort);
-                }
+            MessageServiceAdapter adapter =
+                pushServerMessageService.getMessageServiceClient().
+                    getMessageServiceAdapter();
+            if (adapter instanceof HttpAdapter) {
+                ((HttpAdapter) adapter).setLocal(localAddress, localPort);
             }
         }
         try {

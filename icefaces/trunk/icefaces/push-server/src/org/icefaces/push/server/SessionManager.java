@@ -56,26 +56,27 @@ implements
     private final RequestManager requestManager;
     private final UpdatedViewsManager updatedViewsManager;
 
-    private MessageService messageService;
+    private PushServerMessageService pushServerMessageService;
 
     public SessionManager(
         final Configuration configuration,
-        final MessageService messageService) {
+        final PushServerMessageService pushServerMessageService) {
 
-        this.messageService = messageService;
-        this.messageService.setCallback(
-            BufferedContextEventsMessageHandler.Callback.class, this);
-        this.messageService.setCallback(
-            ContextEventMessageHandler.Callback.class, this);
-        this.messageService.setCallback(
-            UpdatedViewsMessageHandler.Callback.class, this);
+        this.pushServerMessageService = pushServerMessageService;
+        this.pushServerMessageService.getBufferedContextEventsMessageHandler().
+            addCallback(this);
+        this.pushServerMessageService.getContextEventMessageHandler().
+            addCallback(this);
+        this.pushServerMessageService.getUpdatedViewsMessageHandler().
+            addCallback(this);
         this.requestManager = new RequestManager();
         this.updatedViewsManager =
-            new UpdatedViewsManager(configuration, messageService, this);
+            new UpdatedViewsManager(
+                configuration, pushServerMessageService, this);
     }
 
-    public MessageService getMessageService() {
-        return messageService;
+    public PushServerMessageService getPushServerMessageService() {
+        return pushServerMessageService;
     }
 
     public RequestManager getRequestManager() {
@@ -138,57 +139,67 @@ implements
     }
 
     public boolean hasViews(final Set iceFacesIdSet) {
+        boolean _hasViews = false;
         synchronized (sessionMap) {
             String[] _iceFacesIds =
                 (String[])
                     iceFacesIdSet.toArray(new String[iceFacesIdSet.size()]);
             for (int i = 0; i < _iceFacesIds.length; i++) {
                 if (hasViews(_iceFacesIds[i])) {
-                    return true;
+                    _hasViews = true;
                 }
             }
-            return false;
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Has Views [" + iceFacesIdSet + "]: " + _hasViews);
+        }
+        return _hasViews;
     }
 
     public boolean hasViews(final String iceFacesId) {
+        boolean _hasViews;
         synchronized (sessionMap) {
-            return
+            _hasViews =
                 sessionMap.containsKey(iceFacesId) &&
                 !((Session)sessionMap.get(iceFacesId)).viewNumberSet.isEmpty();
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Has Views [" + iceFacesId + "]: " + _hasViews);
+        }
+        return _hasViews;
     }
 
     public boolean isValid(final Set iceFacesIdSet) {
+        boolean _isValid = false;
         synchronized (sessionMap) {
             String[] _iceFacesIds =
                 (String[])
                     iceFacesIdSet.toArray(new String[iceFacesIdSet.size()]);
             for (int i = 0; i < _iceFacesIds.length; i++) {
                 if (isValid(_iceFacesIds[i])) {
-                    return true;
+                    _isValid = true;
                 }
             }
-            return false;
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Is valid [" + iceFacesIdSet + "]: " + _isValid);
+        }
+        return _isValid;
     }
 
     public boolean isValid(final String iceFacesId) {
+        boolean _isValid;
         synchronized (sessionMap) {
             synchronized (freeMap) {
-                if (sessionMap.containsKey(iceFacesId) &&
-                    !freeMap.containsKey(iceFacesId)) {
-
-                    return true;
-                } else {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "ICEfaces ID '" + iceFacesId + "' is not valid!");
-                    }
-                    return false;
-                }
+                _isValid =
+                    sessionMap.containsKey(iceFacesId) &&
+                    !freeMap.containsKey(iceFacesId);
             }
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Is valid [" + iceFacesId + "]: " + _isValid);
+        }
+        return _isValid;
     }
 
     /**

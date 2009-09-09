@@ -34,11 +34,11 @@
 package com.icesoft.faces.util.event.servlet;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.servlet.CoreMessageService;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageServiceClient;
-import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.util.Properties;
 
 import java.util.ArrayList;
@@ -117,10 +117,10 @@ implements HttpSessionListener, ServletContextListener {
 
     private static Configuration servletContextConfiguration;
     private static String blockingRequestHandlerContext;
-    private static MessageServiceClient messageServiceClient;
+    private static CoreMessageService coreMessageService;
 
-    private static AnnouncementMessageHandler announcementMessageHandler =
-        new AnnouncementMessageHandler() {
+    private static AnnouncementMessageHandler.Callback callback =
+        new AnnouncementMessageHandler.Callback() {
             public void publishBufferedContextEvents() {
                 synchronized (BUFFERED_CONTEXT_EVENTS) {
                     ContextEvent[] _contextEvents =
@@ -140,7 +140,7 @@ implements HttpSessionListener, ServletContextListener {
                             setStringProperty(
                                 Message.DESTINATION_SERVLET_CONTEXT_PATH,
                                 blockingRequestHandlerContext);
-                        messageServiceClient.publish(
+                        coreMessageService.publish(
                             _message.toString(),
                             _messageProperties,
                             BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE,
@@ -223,13 +223,13 @@ implements HttpSessionListener, ServletContextListener {
             }
             removeBufferedEvents(iceFacesId);
         }
-        if (messageServiceClient != null) {
+        if (coreMessageService != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
                     blockingRequestHandlerContext);
-            messageServiceClient.publish(
+            coreMessageService.publish(
                 createMessage(iceFacesIdDisposedEvent),
                 _messageProperties,
                 CONTEXT_EVENT_MESSAGE_TYPE,
@@ -265,13 +265,13 @@ implements HttpSessionListener, ServletContextListener {
                 }
             }
         }
-        if (messageServiceClient != null) {
+        if (coreMessageService != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
                     blockingRequestHandlerContext);
-            messageServiceClient.publish(
+            coreMessageService.publish(
                 createMessage(iceFacesIdRetrievedEvent),
                 _messageProperties,
                 CONTEXT_EVENT_MESSAGE_TYPE,
@@ -335,40 +335,18 @@ implements HttpSessionListener, ServletContextListener {
         }
     }
 
-    public static void setMessageServiceClient(
-        final MessageServiceClient client) {
+    public static void setCoreMessageService(
+        final CoreMessageService messageService) {
 
-        if (client != null) {
+        if (messageService != null) {
             synchronized (MESSAGE_SERVICE_CLIENT_LOCK) {
-                if (messageServiceClient == null) {
+                if (coreMessageService == null) {
+                    coreMessageService = messageService;
+                    coreMessageService.getAnnouncementMessageHandler().
+                        addCallback(callback);
                     blockingRequestHandlerContext =
-                        servletContextConfiguration.getAttribute(
-                            "blockingRequestHandlerContext", "push-server");
-                    messageServiceClient = client;
-                    try {
-                        messageServiceClient.subscribe(
-                            MessageServiceClient.PUSH_TOPIC_NAME,
-                            announcementMessageHandler.getMessageSelector());
-                    } catch (MessageServiceException exception) {
-                        if (LOG.isFatalEnabled()) {
-                            LOG.fatal(
-                                "\r\n" +
-                                "\r\n" +
-                                "Failed to subscribe to topic: " +
-                                    MessageServiceClient.PUSH_TOPIC_NAME +
-                                    "\r\n" +
-                                "    Exception message: " +
-                                    exception.getMessage() + "\r\n" +
-                                "    Exception cause: " +
-                                    exception.getCause() + "\r\n\r\n");
-                        }
-                        blockingRequestHandlerContext = null;
-                        messageServiceClient = null;
-                        return;
-                    }
-                    messageServiceClient.addMessageHandler(
-                        announcementMessageHandler,
-                        MessageServiceClient.PUSH_TOPIC_NAME);
+                            servletContextConfiguration.getAttribute(
+                                    "blockingRequestHandlerContext", "push-server");
                 }
             }
         }
@@ -388,13 +366,13 @@ implements HttpSessionListener, ServletContextListener {
             }
             removeBufferedEvents(iceFacesId, viewNumber);
         }
-        if (messageServiceClient != null) {
+        if (coreMessageService != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
                     blockingRequestHandlerContext);
-            messageServiceClient.publish(
+            coreMessageService.publish(
                 createMessage(viewNumberDisposedEvent),
                 _messageProperties,
                 CONTEXT_EVENT_MESSAGE_TYPE,
@@ -434,13 +412,13 @@ implements HttpSessionListener, ServletContextListener {
                 }
             }
         }
-        if (messageServiceClient != null) {
+        if (coreMessageService != null) {
             Properties _messageProperties = new Properties();
             _messageProperties.
                 setStringProperty(
                     Message.DESTINATION_SERVLET_CONTEXT_PATH,
                     blockingRequestHandlerContext);
-            messageServiceClient.publish(
+            coreMessageService.publish(
                 createMessage(viewNumberRetrievedEvent),
                 _messageProperties,
                 CONTEXT_EVENT_MESSAGE_TYPE,

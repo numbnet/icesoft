@@ -50,14 +50,10 @@ extends AbstractMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "ResponseQueueExceeded";
 
-    private static final Log LOG =
-        LogFactory.getLog(ResponseQueueExceededMessageHandler.class);
+    private static final Log LOG = LogFactory.getLog(ResponseQueueExceededMessageHandler.class);
 
     private static MessageSelector messageSelector =
-        new MessageSelector(
-            new Equal(
-                new Identifier(Message.MESSAGE_TYPE),
-                new StringLiteral(MESSAGE_TYPE)));
+        new MessageSelector(new Equal(new Identifier(Message.MESSAGE_TYPE), new StringLiteral(MESSAGE_TYPE)));
 
     protected ResponseQueueExceededMessageHandler() {
         super(messageSelector);
@@ -68,13 +64,10 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            StringTokenizer _tokens =
-                new StringTokenizer(
-                    ((TextMessage)message).getText(), ";");
-            if (callback != null) {
-                ((Callback)callback).
-                    responseQueueExceeded(
-                        _tokens.nextToken(), _tokens.nextToken());
+            StringTokenizer _tokens = new StringTokenizer(((TextMessage) message).getText(), ";");
+            MessageHandler.Callback[] _callbacks = getCallbacks(message);
+            for (int i = 0; i < _callbacks.length; i++) {
+                ((Callback)_callbacks[i]).responseQueueExceeded(_tokens.nextToken(), _tokens.nextToken());
             }
         }
     }
@@ -85,7 +78,6 @@ implements MessageHandler {
 
     public static interface Callback
     extends MessageHandler.Callback {
-        public void responseQueueExceeded(
-            final String iceFacesId, final String viewNumber);
+        public void responseQueueExceeded(final String iceFacesId, final String viewNumber);
     }
 }

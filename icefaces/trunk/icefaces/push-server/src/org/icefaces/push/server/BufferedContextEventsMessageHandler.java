@@ -49,14 +49,10 @@ extends AbstractContextEventMessageHandler
 implements MessageHandler {
     protected static final String MESSAGE_TYPE = "BufferedContextEvents";
 
-    private static final Log LOG =
-        LogFactory.getLog(BufferedContextEventsMessageHandler.class);
+    private static final Log LOG = LogFactory.getLog(BufferedContextEventsMessageHandler.class);
 
     private static MessageSelector messageSelector =
-        new MessageSelector(
-            new Equal(
-                new Identifier(Message.MESSAGE_TYPE),
-                new StringLiteral(MESSAGE_TYPE)));
+        new MessageSelector(new Equal(new Identifier(Message.MESSAGE_TYPE), new StringLiteral(MESSAGE_TYPE)));
 
     public BufferedContextEventsMessageHandler() {
         super(messageSelector);
@@ -70,41 +66,39 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            StringTokenizer _messages =
-                new StringTokenizer(((TextMessage)message).getText());
+            StringTokenizer _messages = new StringTokenizer(((TextMessage)message).getText());
             while (_messages.hasMoreTokens()) {
-                StringTokenizer _tokens =
-                    new StringTokenizer(_messages.nextToken(), ";");
+                StringTokenizer _tokens = new StringTokenizer(_messages.nextToken(), ";");
                 String _event = _tokens.nextToken();
                 if (_event.equals("ICEfacesIDRetrieved")) {
                     // message-body:
                     //     <event-name>;<ICEfaces ID>
-                    if (callback != null) {
-                        ((Callback)callback).
+                    MessageHandler.Callback[] _callbacks = getCallbacks(message);
+                    for (int i = 0; i < _callbacks.length; i++) {
+                        ((Callback)_callbacks[i]).
                             iceFacesIdRetrieved(
-                                message.getStringProperty(
-                                    Message.SOURCE_SERVLET_CONTEXT_PATH),
+                                message.getStringProperty(Message.SOURCE_SERVLET_CONTEXT_PATH),
                                 _tokens.nextToken());
                     }
                 } else if (_event.equals("ViewNumberDisposed")) {
                     // message-body:
                     //     <event-name>;<ICEfaces ID>;<View Number>
-                    if (callback != null) {
-                        ((Callback)callback).
+                    MessageHandler.Callback[] _callbacks = getCallbacks(message);
+                    for (int i = 0; i < _callbacks.length; i++) {
+                        ((Callback)_callbacks[i]).
                             viewNumberDisposed(
-                                message.getStringProperty(
-                                    Message.SOURCE_SERVLET_CONTEXT_PATH),
+                                message.getStringProperty(Message.SOURCE_SERVLET_CONTEXT_PATH),
                                 _tokens.nextToken(),
                                 _tokens.nextToken());
                     }
                 } else if (_event.equals("ViewNumberRetrieved")) {
                     // message-body:
                     //     <event-name>;<ICEfaces ID>;<View Number>
-                    if (callback != null) {
-                        ((Callback)callback).
+                    MessageHandler.Callback[] _callbacks = getCallbacks(message);
+                    for (int i = 0; i < _callbacks.length; i++) {
+                        ((Callback)_callbacks[i]).
                             viewNumberRetrieved(
-                                message.getStringProperty(
-                                    Message.SOURCE_SERVLET_CONTEXT_PATH),
+                                message.getStringProperty(Message.SOURCE_SERVLET_CONTEXT_PATH),
                                 _tokens.nextToken(),
                                 _tokens.nextToken());
                     }

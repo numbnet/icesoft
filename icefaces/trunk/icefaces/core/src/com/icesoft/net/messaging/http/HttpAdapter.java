@@ -214,17 +214,20 @@ implements MessageServiceAdapter {
                 String _destinationServletContextPath =
                     message.getStringProperty(
                         Message.DESTINATION_SERVLET_CONTEXT_PATH);
-                _connection =
-                    (HttpURLConnection)
-                        new URL(
-                            "http",
-                            localAddress,
-                            localPort,
-                            (_destinationServletContextPath.startsWith("/") ?
-                                _destinationServletContextPath :
-                                "/" + _destinationServletContextPath
-                            ) + "/block/message"
-                        ).openConnection();
+                URL _url =
+                    new URL(
+                        "http",
+                        localAddress,
+                        localPort,
+                        (_destinationServletContextPath.startsWith("/") ?
+                            _destinationServletContextPath :
+                            "/" + _destinationServletContextPath
+                        ) + "/block/message"
+                    );
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Request-URI: [" + _url + "]");
+                }
+                _connection = (HttpURLConnection)_url.openConnection();
                 _connection.setDoInput(true);
                 _connection.setDoOutput(true);
                 _connection.setRequestMethod("POST");
@@ -262,6 +265,12 @@ implements MessageServiceAdapter {
             } catch (IOException exception) {
                 if (_connection != null) {
                     try {
+                        if (LOG.isWarnEnabled()) {
+                            LOG.warn(
+                                "Request-URI: [" + _connection.getURL() + "], " +
+                                "Status-Code: [" + _connection.getResponseCode() + "], " +
+                                "Reason-Phrase: [" + _connection.getResponseMessage() + "]");
+                        }
                         if (_connection.getResponseCode() == 503) {
                             // Service Unavailable
                             stop();
