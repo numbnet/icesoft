@@ -225,6 +225,9 @@
         switch (e.tagName.toLowerCase()) {
             case 'textarea':
             case 'input': return new This.InputElement(e);
+            case 'thead':
+            case 'tfoot':
+            case 'tbody':
             case 'th':
             case 'td':
             case 'tr': return new This.TableCellElement(e);
