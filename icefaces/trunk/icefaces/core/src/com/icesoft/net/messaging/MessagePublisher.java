@@ -36,4 +36,6 @@ public interface MessagePublisher {
     void publishNow(String textMessage, String topicName);
 
     void publishNow(String textMessage, String messageType, String topicName);
+    
+    void stop();
 }

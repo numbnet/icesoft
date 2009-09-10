@@ -66,4 +66,6 @@ implements MessagePublisher {
 
     public void publishNow(
         final String textMessage, final String messageType, final String topicName) {}
+
+    public void stop() {}
 }

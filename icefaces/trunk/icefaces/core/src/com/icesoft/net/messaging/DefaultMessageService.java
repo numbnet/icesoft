@@ -386,6 +386,7 @@ implements MessageServiceClient.Administrator {
                         scheduledFuture = null;
                     }
                     cancelled = true;
+                    currentMessagePublisher.stop();
                     // switch from a queue-based message publisher to a noop message publisher.
                     currentMessagePublisher = new NoopMessagePublisher();
                     if (LOG.isDebugEnabled()) {
