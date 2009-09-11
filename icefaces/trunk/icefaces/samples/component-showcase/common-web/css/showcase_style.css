@@ -950,6 +950,9 @@ div.verticalAlignMdl{
     border: 1px solid #DADADA;
     text-align: center;
 }
+.icePnlTlTip table {
+    width: 100%;
+}
 /* END PANEL TOOLTIP  */
 
 /* START OUTPUT PROGRESS */
