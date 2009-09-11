@@ -169,6 +169,7 @@ public class MainServlet extends HttpServlet {
             coreMessageService.stop();
             coreMessageService.tearDownNow();
         }
+        scheduledThreadPoolExecutor.shutdown();
     }
 
     private synchronized CoreMessageService getCoreMessageService(final Configuration configuration) {
