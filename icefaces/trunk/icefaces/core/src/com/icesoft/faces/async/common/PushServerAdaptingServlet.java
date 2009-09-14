@@ -56,13 +56,15 @@ import org.apache.commons.logging.LogFactory;
 
 public class PushServerAdaptingServlet
 implements Server {
+    private static final Log LOG =
+        LogFactory.getLog(PushServerAdaptingServlet.class);
     private static final String SEQUENCE_NUMBER_KEY =
         "com.icesoft.faces.sequenceNumber";
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
-    private static final Log LOG =
-        LogFactory.getLog(PushServerAdaptingServlet.class);
 
-    private String blockingRequestHandlerContext;
+    private final Object lock = new Object();
+
+    private final String blockingRequestHandlerContext;
 
     public PushServerAdaptingServlet(
         final HttpSession httpSession, final String iceFacesId,
@@ -80,17 +82,20 @@ implements Server {
                     synchronouslyUpdatedViews.clear();
                     Set _viewIdentifierSet = new HashSet(allUpdatedViews);
                     if (!_viewIdentifierSet.isEmpty()) {
-                        Long _sequenceNumber =
-                            (Long)httpSession.getAttribute(SEQUENCE_NUMBER_KEY);
-                        if (_sequenceNumber != null) {
+                        Long _sequenceNumber;
+                        synchronized (lock) {
                             _sequenceNumber =
-                                new Long(_sequenceNumber.longValue() + 1);
-                        } else {
-                            _sequenceNumber =
-                                new Long(1);
+                                (Long)httpSession.getAttribute(SEQUENCE_NUMBER_KEY);
+                            if (_sequenceNumber != null) {
+                                _sequenceNumber =
+                                    new Long(_sequenceNumber.longValue() + 1);
+                            } else {
+                                _sequenceNumber =
+                                    new Long(1);
+                            }
+                            httpSession.setAttribute(
+                                SEQUENCE_NUMBER_KEY, _sequenceNumber);
                         }
-                        httpSession.setAttribute(
-                            SEQUENCE_NUMBER_KEY, _sequenceNumber);
                         String[] _viewIdentifiers =
                             (String[])
                                 _viewIdentifierSet.toArray(
