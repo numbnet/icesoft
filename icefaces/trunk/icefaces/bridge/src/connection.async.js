@@ -159,6 +159,8 @@
                         }
                         if (response.getResponseHeader('X-Connection') != 'close') {
                             this.connect();
+                        } else {
+                            this.heartbeat.stop();
                         }
                     }.bind(this));
                     request.on(Connection.OK, Connection.Close);
