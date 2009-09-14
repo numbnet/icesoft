@@ -31,7 +31,6 @@
  */
 package org.icefaces.push.server;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -117,7 +116,7 @@ public class UpdatedViewsQueue {
     }
 
     public Iterator iterator() {
-        return new ArrayList(updatedViewsQueue).iterator();
+        return updatedViewsQueue.iterator();
     }
 
     public void purge(final long sequenceNumber) {
