@@ -69,6 +69,10 @@
         request
     </managed-bean-scope>
     <managed-property>
+        <property-name>tickInterval</property-name>
+        <value>1000</value>
+    </managed-property>
+    <managed-property>
         <property-name>renderManager</property-name>
         <value>#{rmanager}</value>
     </managed-property>
