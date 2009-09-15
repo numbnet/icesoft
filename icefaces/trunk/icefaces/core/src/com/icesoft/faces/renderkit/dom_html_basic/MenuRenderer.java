@@ -572,7 +572,8 @@ public class MenuRenderer extends DomBasicInputRenderer {
         if (uiComponent instanceof UISelectOne) {
             UISelectOne uiSelectOne = (UISelectOne) uiComponent;
             Object submittedValue = uiSelectOne.getSubmittedValue();
-            if (submittedValue != null) {
+            if (submittedValue != null && 
+                    String.valueOf(submittedValue).length() > 0) {
                 return new Object[]{submittedValue};
             }
         }
