@@ -263,8 +263,7 @@ Ice.MenuBarKeyNavigator.addMethods({
         var submenu = $(element.id + '_sub');
         Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
         if (this.vertical) {
-            var rootElement = element.up('.'+ this.getRootClass())
-            Ice.Menu.show(rootElement,submenu,element);
+            Ice.Menu.show(this.component,submenu,element);
         } else {
             Ice.Menu.show(element,submenu,null);
         }
