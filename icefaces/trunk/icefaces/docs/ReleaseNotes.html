@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&reg; v1.8.1 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8.2-RC1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -41,11 +41,12 @@ font-size: 110%
 <tbody>
 <tr>
 <td width="78%">
-<h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>&reg;</small></sup>
+<h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.1
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8.2-RC1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">May&nbsp;26th,&nbsp;2009</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">September
+15th,&nbsp;2009</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -57,8 +58,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="#Changes_182">Changes
+in v1.8.2-RC1 (This Release)</a></li>
 <li><a href="#Changes_181">Changes
-in v1.8.1 (This Release)</a></li>
+in v1.8.1</a></li>
 <li><a href="#Changes_180">Changes
 in v1.8.0</a></li>
 <li><a href="#MigrationNotes">Migration
@@ -94,8 +97,268 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_182"></a>Changes
+in&nbsp;v1.8.2-RC1 (This Release)</h2>
+<br>
+ICEfaces v1.8.2-RC1 is a release-candidate build that provides a
+preview of the more than
+140&nbsp;enhancements and fixes&nbsp;included in the upcoming
+ICEfaces v1.8.2 release. Although
+this build has successfully completed a degree of regression testing
+issues may
+still exist. It is not<span style="font-weight: bold;"> </span>recommended
+for production
+use.<br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> prior to using this release.&nbsp;Review
+the&nbsp;<a href="#MigrationNotes">Migration Notes</a>
+if you plan to use an existing ICEfaces 1.7.x application with 1.8.x. <br>
+<br>
+Please report any issues
+with this build to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback</a> forum.<br>
+<br>
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite&nbsp;</span><br>
+<br>
+<ul>
+<li>Support for keyboard navigation (optional) has been
+added to the following components:</li>
+<ul>
+<li>ice:menuBar</li>
+<li>ice:menuPopup</li>
+<li>ice:panelCollapsible</li>
+<li>ice:panelTabSet</li>
+<li>ice:tree</li>
+</ul>
+<li>The ice:panelTab component now supports an optional
+label facet which can be used to implement arbitrary labels, such as
+including a 'Close' button on each tab, etc.</li>
+<li>The ice:dataExporter component has been enhanced to:</li>
+<ul>
+<li>Add the ability to export the complete dataTable, or
+a specified subset of rows within a dataTable, regardless of whether a
+dataPaginator is used or not.</li>
+<li>Specify which columns, and their order of appearence,
+should be included in the export.</li>
+<li>Add the new option of rendering a button to initiate
+the export, in addition to an anchor link or image.</li>
+<li>Add support for ICEfaces standard 'styleClass' and
+'style' attributes.</li>
+<li>Support using dataExporter within a portlet
+environment.</li>
+<li>Improve the overall robustness of the component with
+respect to invalid data-sets, parameters, etc.</li>
+</ul>
+<li>The ice:panelTooltip component has been enhanced to:</li>
+<ul>
+<li>Support the new 'displayOn' attribute, which can be
+used to specify the triggering event type for displaying the tooltip
+panel. Valid options include 'hover' (with adjustable hoverDelay),
+'click', 'altclick', and 'dblclick'.</li>
+<li>Provide improved positioning of the panelTooltip to
+ensure it remains in the visible viewport, including tracking along
+with the mouse while over the target component.</li>
+</ul>
+<li>The ice:panelPopup component has been improved to:</li>
+<ul>
+<li>Support nesting multiple modal panelPopups.</li>
+<li>Support autosizing the modal panelPopup to the size
+of it's content if no size is specified.</li>
+<li>Position the popup panel using CSS techniques as an
+alternative to the autoCenter, autoPosition modes.</li>
+</ul>
+<li>The ice:inputFile component has been improved to:</li>
+<ul>
+<li>Support a new 'autoUpload' attribute
+which can be used to specify that a selected file should be
+automatically uploaded upon selection, instead of requiring the user
+to&nbsp;click the "Upload" button after the file has been selected.</li>
+<li>The TLD documentation for the ice:inputFile component
+has been updated to explain the different behaviors that may be seen
+when using this component in various browser versions, as the behavior
+of the underlying file input widget within the browsers has changed
+over time.</li>
+</ul>
+<li>The ice:graphicImage component has been enhanced to
+support specifying the image to be rendered via any valid ICEfaces
+Resource type:</li>
+<ul>
+<li>com.icesoft.faces.context.JarResource</li>
+<li>com.icesoft.faces.context.FileResource</li>
+<li>com.icesoft.faces.context.ByteArrayResource</li>
+</ul>
+<li>The ice:outputResource component has been enhanced to
+support the use of filenames that include special (non-ASCII)
+characters.&nbsp;</li>
+<li>The ice:menuBar component has been optimized to
+significantly improve rendering performance in Internet Explorer 6 and
+7 when used within a page with a large number of components. </li>
+<li>The following components have been optimized to improve
+rendering performance:</li>
+<ul>
+<li>ice:dataTable</li>
+<li>ice:panelGroup</li>
+<li>ice:panelSeries</li>
+</ul>
+<li>A new&nbsp;configuration parameter
+('com.icesoft.faces.ignoreUserRoleAttributes') has
+been added
+that can provide significant performance improvements in ICEfaces
+applications that do not require the use of the 'renderedOnUserRole' or
+'enabledOnUserRole' attributes. Note that this configuration is
+implemented statically. </li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework</span></li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li>The synchronization model used by the ICEfaces core
+framework and Push
+Server has been extensively reviewed and refactored in this release to
+resolve potential thread deadlock issues under high-load conditions,
+and improve overall
+performance.</li>
+<li>ICEfaces now supports deployment to browsers with cookies
+disabled. Note that this feature is limited to synchronous-mode
+ICEfaces applications (com.icesoft.faces.synchronousUpdate='true'),
+asynchronous applications (Ajax Push) still require cookies to be
+enabled in the browser.</li>
+<li>It is now possible to configure ICEfaces to not verify if
+JavaScript is enabled in the browser via the new
+'com.icesoft.faces.checkJavaScript' configuration parameter. Note that
+JavaScript support is still required in order for ICEfaces applications
+to function properly, this simply disables the active test and error
+message that ICEfaces normally performs/displays. Disabling the
+JavaScript test may improve search engine consumption of content in
+some cases.&nbsp;</li>
+<li>Improvements have been made to various areas related to
+logging and error reporting to provide more useful information
+and to reduce the number of confusing or overly-verbose log messages.</li>
+</ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party
+Libraries</span></li>
+</ul>
+<ul>
+<ul>
+<li>The Sun JSF 1.2&nbsp;runtime (Mojarra)
+libraries&nbsp;included in the<span style="font-family: Courier New,Courier,monospace;">
+"../icefaces/lib</span>"
+directory have been updated to JSF1.2_13_b01.</li>
+</ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party
+Frameworks</span></li>
+</ul>
+<ul>
+<ul>
+<li>MetaWidget</li>
+<ul>
+<li>ICEfaces is now supported by the <a href="http://www.metawidget.org/" target="_blank">MetaWidget</a>
+project. Metawidget is a 'smart User Interface widget' that populates
+itself, at runtime, with UI components to match the properties of your
+business objects. ICEfaces-specific examples are available:</li>
+<ul>
+<li><a href="http://metawidget.sourceforge.net/doc/reference/en/html/ch04s02.html#section-widgetbuilders-icefaces" target="_blank">Widget Builder</a></li>
+<li><a href="http://metawidget.sourceforge.net/doc/reference/en/html/ch01s03.html#section-introduction-part3-penguincolony" target="_blank">Penguin Colony Example</a></li>
+</ul>
+</ul>
+<li>Session Management - new features have been added to
+enable 3rd party frameworks that can by-pass the JSF lifecycle (such as
+Seam Remoting) to "touch" the ICEfaces sessions in order to avoid
+unintended session expiry from occurring.&nbsp;</li>
+<ul>
+<li>A new&nbsp;API for easy access to ICEfaces session
+monitor so that session timeout countdown can be reset
+programmatically. Usage example: <br>
+<br>
+<span style="font-family: monospace;">HttpServletRequest
+request = (HttpServletRequest) servletRequest; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">HttpSession
+session = request.getSession(); </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">if (session
+!= null) { </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+SessionDispatcher.Monitor.lookupSessionMonitor(session).touchSession();
+</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">}</span><span style="font-family: monospace;"> </span><br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;</span></li>
+<li>A<span style="font-family: monospace;"></span>
+new utility Servlet filter that resets the session timeout countdown
+for&nbsp;requests can be configured&nbsp;in the web.xml file.
+The filter allows application developers to selectively declare which
+requests should update the session timeout. Usage example: <br>
+<br>
+<span style="font-family: monospace;">&nbsp;&nbsp;
+&lt;filter&gt; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;Touch Session&lt;/filter-name&gt; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-class&gt;com.icesoft.faces.webapp.http.servlet.TouchSessionFilter&lt;/filter-class&gt;
+</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&lt;/filter&gt; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&lt;filter-mapping&gt; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;Touch Session&lt;/filter-name&gt; </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;url-pattern&gt;/seam/remoting/*&lt;/url-pattern&gt;
+</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&lt;/filter-mapping&gt;</span><span style="font-family: monospace;"> </span><br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span style="font-family: monospace;"> </span><br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span style="font-family: monospace;"> </span></li>
+</ul>
+</ul>
+</ul>
+<span style="font-weight: bold;"></span>
+<ul>
+<ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Sample
+Applications</span>
+<br>
+<ul>
+<br>
+<li>Component Showcase</li>
+<ul>
+<li>A new demo panel for the ice:panelConfirmation
+component (added in 1.8.0) has been created.</li>
+<li>The existing demo panels for ice:dataExporter,
+ice:inputFile, ice:panelTabSet (static), ice:panelTooltip have been
+enhanced to demonstrate new capabilities that were added
+to&nbsp;those components in this release.</li>
+</ul>
+<li>Auction Monitor</li>
+<ul>
+<li>A new configuration parameter ('tickInternal') has
+been added to the ClockBean, which can be used to specify the render
+interval delay between push notifications used to update the auction
+time remaining clocks via ICEfaces asynchronous push. This setting can
+be changed via the faces-config.xml for the AuctionMonitor sample. </li>
+</ul>
+</ul>
+</li>
+</ul>
+Refer to the <a href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10210" target="_blank">ICEfaces JIRA Change Log</a> for
+detailed information on all the changes included in this release.<br>
+<br>
 <h2><a name="Changes_181"></a>Changes
-in&nbsp;v1.8.1 (This Release)</h2>
+in&nbsp;v1.8.1</h2>
 <br>
 ICEfaces v1.8.1 is a maintenance release featuring over 60
 fixes and improvements.<br>
@@ -1000,7 +1263,7 @@ ICEfaces is supported on the following Java versions:<br>
 <td style="vertical-align: top;">Safari<br>
 </td>
 <td style="vertical-align: top; text-align: right;">2.x,
-3.x, 4.0 Beta<br>
+3.x, 4.0<br>
 </td>
 </tr>
 <tr>
@@ -1027,7 +1290,7 @@ Explorer<br>
 <td style="vertical-align: top;">Firefox<br>
 </td>
 <td style="vertical-align: top; text-align: right;">2.0,
-3.0<br>
+3.0, 3.5<br>
 </td>
 </tr>
 <tr>
@@ -1062,7 +1325,7 @@ Browsers</h3>
 </td>
 <td>iPhone, iPod Touch</td>
 <td style="vertical-align: top; text-align: right;">1.x,
-2.x<br>
+2.x, 3.x<br>
 </td>
 </tr>
 <tr>
@@ -1112,10 +1375,10 @@ Servers</h3>
 <tr>
 <td style="vertical-align: top;">BEA Systems Inc.<br>
 </td>
-<td style="vertical-align: top;">Weblogic Server<br>
+<td style="vertical-align: top;">WebLogic Server<br>
 </td>
 <td style="vertical-align: top; text-align: right;">8.1,
-9.2, 10.3<br>
+9.2<br>
 </td>
 </tr>
 <tr>
@@ -1138,6 +1401,11 @@ Application Server<br>
 <td style="vertical-align: top; text-align: right;">6.0.2,
 6.1, 7.0<br>
 </td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>WebLogic Server</td>
+<td style="text-align: right;">10.3.1</td>
 </tr>
 <tr>
 <td style="vertical-align: top;">Oracle<br>
@@ -1261,7 +1529,7 @@ tools:<br>
 Tools
 Platform<br>
 </td>
-<td style="vertical-align: top; text-align: right;">3.4<br>
+<td style="vertical-align: top; text-align: right;">3.5<br>
 </td>
 </tr>
 <tr>
@@ -1271,8 +1539,7 @@ Platform<br>
 Enterprise
 Workbench<br>
 </td>
-<td style="vertical-align: top; text-align: right;">6.5,
-7.x<br>
+<td style="vertical-align: top; text-align: right;">7.x<br>
 </td>
 </tr>
 <tr>
@@ -1286,7 +1553,7 @@ Workbench<br>
 <td style="vertical-align: top;">NetBeans<br>
 </td>
 <td style="vertical-align: top; text-align: right;">6.5,
-6.7 Beta<br>
+6.7<br>
 </td>
 </tr>
 </tbody>
@@ -1323,6 +1590,25 @@ Appendix B on pg. 116, it incorrectly states that the
 "com.icesoft.icefaces.blockUIOnSubmit" configuration parameter is
 "TRUE" by default.
 In fact, this parameter is "FALSE" (disabled) by default.</li>
+<li>To clarify the "Push Server" section in "Chapter 5 -
+Advanced Topics" section on pg. 74 -&nbsp;the Push Server <span style="font-weight: bold;">MUST</span> always be
+deployed with asynchronous ICEfaces&nbsp;portlets or the push
+functions of these portlets will not work.</li>
+<li><span style="font-weight: bold;"></span>The
+usage example in the Bridge Connection Status Events section in
+"Chapter 4 - ICEfaces Reference Information", on&nbsp;pg. 28 is
+incorrect. The corrected usage example is noted below:</li>
+<ul>
+<pre>&lt;body&gt; </pre>
+<pre>... </pre>
+<pre>&lt;script type="text/javascript"&gt; </pre>
+<pre> Ice.onSessionExpired('document:body', function() { </pre>
+<pre> alert('Session has expired!'); </pre>
+<pre> }); </pre>
+<pre>&lt;/script&gt; </pre>
+<pre>... </pre>
+<pre>&lt;/body&gt; </pre>
+</ul>
 </ul>
 </ul>
 <h3><a name="KIGeneral">General</a></h3>
