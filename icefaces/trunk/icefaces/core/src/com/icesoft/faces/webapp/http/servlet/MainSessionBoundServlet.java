@@ -127,13 +127,13 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
             receivePing = OKServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new RequestVerifier(sessionID, new PushServerDetector(session, sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, coreMessageService, this));
-            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views, this));
-            receivePing = new RequestVerifier(sessionID, new ReceivePing(views, this));
+            sendUpdatedViews = new RequestVerifier(configuration, sessionID, new PushServerDetector(session, sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, coreMessageService, this));
+            sendUpdates = new RequestVerifier(configuration, sessionID, new SendUpdates(configuration, views, this));
+            receivePing = new RequestVerifier(configuration, sessionID, new ReceivePing(views, this));
         }
 
         Server upload = new UploadServer(views, configuration);
-        Server receiveSendUpdates = new RequestVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
+        Server receiveSendUpdates = new RequestVerifier(configuration, sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
         dispatchOn(".*block\\/receive\\-updated\\-views$", new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()));
         PathDispatcherServer dispatcherServer = new PathDispatcherServer();
