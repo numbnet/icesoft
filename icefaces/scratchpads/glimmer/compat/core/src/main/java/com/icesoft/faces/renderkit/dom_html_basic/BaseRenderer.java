@@ -5,8 +5,6 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -16,12 +14,6 @@ import javax.faces.el.ValueBinding;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "icesubmit.js"),
-        @ResourceDependency(name = "prototype.js")
-        //todo: see why injecting ice-extras.js like this generates JS errors
-        //@ResourceDependency(name = "ice-extras.js")
-})
 public class BaseRenderer extends Renderer {
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         CurrentStyle.decode(facesContext, uiComponent);

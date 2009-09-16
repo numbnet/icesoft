@@ -27,7 +27,7 @@
               version="2.0"
               metadata-complete="false">
 
-    <!--    <ordering><after><others/></after></ordering>  -->
+    <name>ICEfaces core</name>
     <factory>
         <partial-view-context-factory>org.icefaces.context.DOMPartialViewContextFactory</partial-view-context-factory>
     </factory>
