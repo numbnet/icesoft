@@ -460,7 +460,7 @@ class RegisteredResource implements Resource {
     // See http://greenbytes.de/tech/tc2231/
     // Some code suggested by Deryk Sinotte 
     private static String encodeContentDispositionFilename(String fileName) {
-        if (fileName == null || fileName.trim().length() == 0) return "=\"\"";
+        if (fileName == null || fileName.trim().length() == 0) return null;
 
         String defaultFileName = "=\"" + fileName + "\"";
         String userAgent = null;

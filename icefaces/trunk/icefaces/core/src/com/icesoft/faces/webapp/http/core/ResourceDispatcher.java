@@ -140,7 +140,7 @@ public class ResourceDispatcher implements Server {
             response.setHeader("Content-Type", options.mimeType);
             response.setHeader("Last-Modified", options.lastModified);
             response.setHeader("Expires", options.expiresBy);
-            if (options.attachement) {
+            if (options.attachement && options.contentDispositionFileName != null) {
                 response.setHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
             }
             InputStream inputStream = resource.open();
