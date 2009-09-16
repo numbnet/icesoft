@@ -45,8 +45,6 @@ import org.w3c.dom.Element;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -68,12 +66,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "icesubmit.js"),
-        @ResourceDependency(name = "prototype.js")
-        //todo: see why injecting ice-extras.js like this generates JS errors
-        //@ResourceDependency(name = "ice-extras.js")
-})
 public abstract class DomBasicRenderer extends Renderer {
     public static final String ATTRIBUTES_THAT_ARE_SET_KEY =
             "javax.faces.component.UIComponentBase.attributesThatAreSet";
