@@ -36,6 +36,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.menuBar;
 import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -45,6 +47,8 @@ import javax.faces.event.ActionEvent;
  * stores the modified id information in a String. MenuBarBean also controls the
  * orientation of the Menu Bar.</p>
  */
+@ManagedBean(name = "menuBar")
+@ViewScoped
 public class MenuBarBean extends BaseBean {
 
     // records which menu item fired the event

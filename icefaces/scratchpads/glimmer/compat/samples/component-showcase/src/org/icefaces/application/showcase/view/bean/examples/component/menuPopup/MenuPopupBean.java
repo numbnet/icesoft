@@ -40,6 +40,8 @@ import com.icesoft.faces.context.effects.Pulsate;
 import com.icesoft.faces.context.effects.Shake;
 import org.icefaces.application.showcase.util.FacesUtils;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
@@ -55,6 +57,8 @@ import java.io.Serializable;
  *
  * @since 1.7
  */
+@ManagedBean(name = "menuPopupBean")
+@ViewScoped
 public class MenuPopupBean implements Serializable {
     /**
      * Shake event type

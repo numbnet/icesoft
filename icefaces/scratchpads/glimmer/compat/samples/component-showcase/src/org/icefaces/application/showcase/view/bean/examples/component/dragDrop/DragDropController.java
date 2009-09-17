@@ -41,6 +41,8 @@ import org.icefaces.application.showcase.util.RandomNumberGenerator;
 import org.icefaces.application.showcase.view.bean.examples.common.inventory.Inventory;
 import org.icefaces.application.showcase.view.bean.examples.common.inventory.InventoryItem;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
@@ -58,6 +60,8 @@ import java.io.Serializable;
  *
  * @since 1.7
  */
+@ManagedBean(name = "dragDropController")
+@ViewScoped
 public class DragDropController implements Serializable {
 
     /**
@@ -157,6 +161,8 @@ public class DragDropController implements Serializable {
      *              that was dragged by the user on the ShoppingCart dropzone on the JSPX
      *              page.
      */
+    
+ 
     public void addShoppingCartItem(DragEvent event) {
         // we are only concerned with the drop event
         if (event.getEventType() == DndEvent.DROPPED) {

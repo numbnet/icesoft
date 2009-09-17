@@ -31,11 +31,12 @@
  *
  */
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelToolTip;
+import java.io.Serializable;
 
 /**
  * @since 1.7
  */
-public class PanelToolTipModel {
+public class PanelToolTipModel implements Serializable{
 
     private String hideOn = "mouseout";
 

@@ -36,6 +36,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.setEventP
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -46,6 +48,8 @@ import javax.faces.model.SelectItem;
  *
  * @since 1.8
  */
+@ManagedBean(name = "setEventPhaseBean")
+@ViewScoped
 public class SetEventPhaseBean extends BaseBean {
     // If the setEventPhase component should be disabled
     private boolean disabled = false;

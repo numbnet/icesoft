@@ -35,6 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTa
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeListener;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.AbortProcessingException;
 import java.io.Serializable;
 
@@ -46,15 +48,17 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
+ @ManagedBean(name = "staticTabbedPaneExample")
+ @ViewScoped
 public class StaticTabSetBean implements TabChangeListener, Serializable {
 
     /**
      * The demo contains three tabs and thus we need three variables to store
      * their respective rendered states.
      */
-    private boolean tabbedPane1Visible;
-    private boolean tabbedPane2Visible;
-    private boolean tabbedPane3Visible;
+    private boolean tabbedPane1Visible=true;
+    private boolean tabbedPane2Visible=true;
+    private boolean tabbedPane3Visible=true;
 
     // selected tab index
     private String selectedIndex = "0";

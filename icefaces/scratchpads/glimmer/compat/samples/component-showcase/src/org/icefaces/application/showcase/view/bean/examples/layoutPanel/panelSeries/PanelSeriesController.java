@@ -34,6 +34,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSe
 
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
@@ -46,6 +48,8 @@ import java.io.Serializable;
  * @see org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase
  * @since 1.7
  */
+//@ManagedBean(name = "panelSeriesController")
+//@ViewScoped
 public class PanelSeriesController extends DataTableBase implements Serializable {
 
     // start off with 3 employees.

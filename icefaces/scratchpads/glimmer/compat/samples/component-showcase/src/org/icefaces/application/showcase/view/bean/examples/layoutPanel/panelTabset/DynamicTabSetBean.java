@@ -34,6 +34,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTa
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,8 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
+@ManagedBean(name = "dynamicTabbedPaneExample")
+@ViewScoped
 public class DynamicTabSetBean implements Serializable {
 
     private int tabIndex;
