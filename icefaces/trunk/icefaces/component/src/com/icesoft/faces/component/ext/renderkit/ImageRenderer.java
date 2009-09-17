@@ -34,8 +34,6 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
-import com.icesoft.faces.context.ByteArrayResource;
-import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceRegistry;
 
@@ -45,11 +43,6 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
 
 public class ImageRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ImageRenderer {
@@ -64,7 +57,7 @@ public class ImageRenderer
             return new String();
         }
         if (o instanceof byte[]) {
-            return ((HtmlGraphicImage)uiGraphic).getByteArrayImagePath();
+            return ((HtmlGraphicImage)uiGraphic).getByteArrayImagePath(facesContext);
         } else if (o instanceof Resource) {
             return (((ResourceRegistry) facesContext).registerResource((Resource)o)).getPath();
         } else {
