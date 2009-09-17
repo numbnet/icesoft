@@ -43,7 +43,7 @@
          Start of Component Example backing beans
          ||||||||||||||||||||||||||||||||||||||||
     -->
-    <!-- Tabbed Pane example bean-->
+    <!-- Tabbed Pane example bean
     <managed-bean>
         <description>
             Backing bean for tabbed pane example.
@@ -65,7 +65,7 @@
             <property-name>tabbedPane3Visible</property-name>
             <value>true</value>
         </managed-property>
-    </managed-bean>
+    </managed-bean> 
     <managed-bean>
         <description>
             Backing bean for tabbed pane example.
@@ -75,7 +75,7 @@
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTabset.DynamicTabSetBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>-->
     <managed-bean>
         <description>
             Backing bean panel series example.
@@ -84,7 +84,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSeries.PanelSeriesController
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
@@ -99,7 +99,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.tree.TreeController
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <!-- Calendar example bean  -->
     <managed-bean>
@@ -149,7 +149,7 @@
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-    <managed-bean>
+  <!--    <managed-bean>
         <description>
             This bean holds the user-specific autoComplete values and not the
             dictionary.
@@ -163,16 +163,16 @@
             <property-name>cityDictionary</property-name>
             <value>#{cityDictionary}</value>
         </managed-property>
-    </managed-bean>
+    </managed-bean> --> 
 
     <!-- Drag and Drop backing bean -->
-    <managed-bean>
+ <!--     <managed-bean>
         <managed-bean-name>dragDropController</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.dragDrop.DragDropController
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean> -->
     <!-- Popup Panel backing bean -->
     <managed-bean>
         <managed-bean-name>popup</managed-bean-name>
@@ -181,22 +181,22 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    <!-- Menu Bar backing bean -->
+    <!-- Menu Bar backing bean 
     <managed-bean>
         <managed-bean-name>menuBar</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.menuBar.MenuBarBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <!-- menu popup backing bean -->
+    </managed-bean> -->
+    <!-- menu popup backing bean 
     <managed-bean>
         <managed-bean-name>menuPopupBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.menuPopup.MenuPopupBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
 
     <!-- group bean -->
     <managed-bean>
@@ -334,21 +334,21 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    <!-- Positioned Panel -->
+    <!-- Positioned Panel 
     <managed-bean>
         <managed-bean-name>panelPositioned</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPositioned.PositionedPanelBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <!-- Collapsible Panel -->
     <managed-bean>
         <managed-bean-name>panelCollapsibleBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.model.entity.Person
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
     <!-- Managed Beans for outputChart examples -->
@@ -367,14 +367,14 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    <!-- FCKEditor  -->
+    <!-- FCKEditor  
     <managed-bean>
         <managed-bean-name>inputRichTextBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.inputRichText.InputRichTextBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>-->
     <!-- Gmap-->
     <managed-bean>
         <description>
@@ -422,14 +422,14 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
-    <!-- Set Event Phase -->
+    <!-- Set Event Phase 
     <managed-bean>
         <managed-bean-name>setEventPhaseBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.setEventPhase.SetEventPhaseBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
 
     <!-- data exporter -->
     <managed-bean>
