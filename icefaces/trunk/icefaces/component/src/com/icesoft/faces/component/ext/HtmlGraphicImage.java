@@ -47,6 +47,7 @@ import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.util.pooling.ClientIdPool;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -80,7 +81,6 @@ public class HtmlGraphicImage
     private Effect onkeyupeffect;
     private CurrentStyle currentStyle;
     private String mimeType = null;
-    private transient ImageByteArrayResource imageByteArrayResource;
     
     public HtmlGraphicImage() {
         super();
@@ -99,10 +99,7 @@ public class HtmlGraphicImage
     public void encodeBegin(FacesContext context) throws IOException {
         Object value = getValue();
         if (value instanceof byte[]) {
-            if (imageByteArrayResource == null) {
-                imageByteArrayResource = new ImageByteArrayResource(context,this);
-            }
-            imageByteArrayResource.setContent((byte[]) value);
+            getImageByteArrayResource(context).setContent((byte[]) value);
         }
         super.encodeBegin(context);
     }
@@ -475,8 +472,17 @@ public class HtmlGraphicImage
         mimeType = (String)values[19];
         styleClass = (String)values[20];
     }
-    public String getByteArrayImagePath() {
-        return imageByteArrayResource.getPath();
+    public String getByteArrayImagePath(FacesContext context) {
+        return getImageByteArrayResource(context).getPath();
+    }
+    
+    private ImageByteArrayResource getImageByteArrayResource(FacesContext context) {
+        if(!getAttributes().containsKey(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"))) {
+            ImageByteArrayResource imageByteArrayResource = new ImageByteArrayResource(context,this);
+            getAttributes().put(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"), imageByteArrayResource);
+            
+        }
+        return (ImageByteArrayResource)getAttributes().get(ClientIdPool.get(getClientId(context)+"ImgBytArrRes"));
     }
 }
 
