@@ -301,7 +301,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
                         session.setMaxInactiveInterval(maxInterval);
                     }
                 }
-                return elapsedInterval + 15000 > maxInterval * 1000;
+
+                //a negative time indicates the session should never timeout
+                if (maxInterval < 0) {
+                    return false;
+                } else {
+                    return elapsedInterval + 15000 > maxInterval * 1000;
+                }
             } catch (Exception e) {
                 return true;
             }
