@@ -37,6 +37,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.List;
@@ -47,6 +49,8 @@ import java.util.List;
  *
  * @since 1.7
  */
+@ManagedBean(name = "selectInputText")
+@ViewScoped
 public class SelectInputTextController extends BaseBean {
 
     private final Log log = LogFactory.getLog(this.getClass());

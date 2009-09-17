@@ -39,10 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 /**
  * Simple bean which holds a list of objects which is manipulated by the
  * position panel
  */
+@ManagedBean(name = "panelPositioned")
+@ViewScoped
 public class PositionedPanelBean implements Serializable {
 
     private List people;

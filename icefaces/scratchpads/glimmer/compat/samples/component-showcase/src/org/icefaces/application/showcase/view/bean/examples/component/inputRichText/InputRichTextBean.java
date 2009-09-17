@@ -1,5 +1,8 @@
 package org.icefaces.application.showcase.view.bean.examples.component.inputRichText;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 /*
@@ -43,6 +46,8 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
  *
  * @since 1.7
  */
+@ManagedBean(name = "inputRichTextBean")
+@ViewScoped
 public class InputRichTextBean extends BaseBean {
 
     public String getToolbarModeDefault() { return "Default"; }

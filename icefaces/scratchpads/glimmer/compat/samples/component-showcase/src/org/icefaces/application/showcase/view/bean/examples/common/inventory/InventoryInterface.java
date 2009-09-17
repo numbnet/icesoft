@@ -32,6 +32,7 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.common.inventory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +41,7 @@ import java.util.ArrayList;
  *
  * @since 1.7
  */
-public interface InventoryInterface {
+public interface InventoryInterface extends Serializable {
 
     /**
      * Gets a collection of items that makes up the inventory.
