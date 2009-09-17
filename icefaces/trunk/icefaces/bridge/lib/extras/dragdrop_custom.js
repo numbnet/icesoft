@@ -87,7 +87,7 @@ Ice.DndEvent.prototype = {
         var ele = this.drag.element;
         var iframe = document.getElementById('iceModalFrame' + ele.id);
         if(iframe) {
-            ele.style.zIndex = parseInt(iframe.style.zIndex) + 1;
+            ele.style.zIndex = parseInt(iframe.style.zIndex) + 2;
         }
         if (this.drag.options.sort == true)return;
         thisEv = ele.id + '-' + this.eventType;

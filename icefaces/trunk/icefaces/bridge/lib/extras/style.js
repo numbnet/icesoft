@@ -107,7 +107,7 @@ Ice.modal = {
             iframe.id = 'iceModalFrame' + target;
             iframe.src = iframeUrl;
             iframe.style.zIndex = Ice.modal.zIndexCount;
-            Ice.modal.zIndexCount += 2;
+            Ice.modal.zIndexCount += 3;
             iframe.style.opacity = 0.5;
             iframe.style.filter = 'alpha(opacity=50)';
 
@@ -120,6 +120,11 @@ Ice.modal = {
             iframe.style.left = '0';
             //trick to avoid bug in IE, see http://support.microsoft.com/kb/927917
             modal.parentNode.insertBefore(iframe, modal);
+            var modalDiv = document.createElement('div');
+            modalDiv.style.position = 'absolute';
+            modalDiv.style.zIndex = parseInt(iframe.style.zIndex) + 1;
+            modalDiv.style.backgroundColor = 'transparent';
+            modal.parentNode.insertBefore(modalDiv, modal);
             var resize = function() {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame' + target);
@@ -151,6 +156,7 @@ Ice.modal = {
                         modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
                     }
                     frame.style.display = frameDisp;
+                    $(frame.nextSibling).clonePosition(frame);
                 }
             };
             resize();
@@ -160,7 +166,7 @@ Ice.modal = {
 
         var modal = document.getElementById(target);
 
-        modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
+        modal.style.zIndex = parseInt(iframe.style.zIndex) + 2;
         Ice.modal.target = modal;
         Ice.modal.ids.push(target);
         if (!Ice.modal.running) {
@@ -178,11 +184,12 @@ Ice.modal = {
         if (Ice.modal.ids.last() == target) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
+                iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
-                Ice.modal.zIndexCount -= 2;
                 logger.debug('removed modal iframe for : ' + target);
             }
             Ice.modal.ids.pop();
+            Ice.modal.zIndexCount -= 3;
             Ice.modal.running = false;
             if (Ice.modal.trigger) {
                 Ice.Focus.setFocus(Ice.modal.trigger);
