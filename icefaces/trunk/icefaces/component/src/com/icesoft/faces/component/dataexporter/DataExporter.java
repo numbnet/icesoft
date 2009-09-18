@@ -12,15 +12,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.component.ext.taglib.Util;
@@ -322,7 +319,7 @@ public class DataExporter extends OutputResource {
 
     private String encodeParentAndChildrenAsString(FacesContext fc,
             UIComponent uic) {
-        StringBuilder str = new StringBuilder();
+        StringBuffer str = new StringBuffer();
         Object value = uic.getAttributes().get("value");
         if (value != null)
             str.append(value);
@@ -493,7 +490,7 @@ public class DataExporter extends OutputResource {
             OutputTypeHandler outputHandler,
             UIColumn uiColumn, int colIndex,
             int countOfRowsDisplayed) {
-        StringBuilder stringOutput = new StringBuilder();
+        StringBuffer stringOutput = new StringBuffer();
 
         Iterator childrenOfThisColumn = uiColumn.getChildren()
                 .iterator();
