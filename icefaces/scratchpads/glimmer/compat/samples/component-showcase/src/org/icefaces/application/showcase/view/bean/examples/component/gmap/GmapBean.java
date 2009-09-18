@@ -36,6 +36,9 @@ package org.icefaces.application.showcase.view.bean.examples.component.gmap;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -48,6 +51,8 @@ import com.icesoft.faces.component.gmap.GMapLatLng;
  *
  * @since 1.7
  */
+@ManagedBean(name = "gmap")
+@ViewScoped
 public class GmapBean  implements Serializable {
     // address to search for
 	private String geoCoderAddress = "";

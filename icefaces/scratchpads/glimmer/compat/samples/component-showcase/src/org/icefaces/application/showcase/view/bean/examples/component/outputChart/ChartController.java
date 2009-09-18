@@ -34,6 +34,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.outputCha
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -47,6 +49,8 @@ import java.util.Map;
  *
  * @since 1.7
  */
+@ManagedBean(name = "chartController")
+@ViewScoped
 public class ChartController implements Serializable {
 
     private static final String AREA_CHART_NAME = "Area";

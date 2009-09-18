@@ -32,11 +32,14 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.dataExporter;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
-
+@ManagedBean(name = "dataExporter")
+@ViewScoped
 public class DataExporter {
     private Effect changeEffect;
     private String type;

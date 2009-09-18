@@ -36,6 +36,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -60,6 +63,8 @@ import java.util.zip.ZipInputStream;
  *
  * @since 1.7
  */
+@ManagedBean(name = "cityDictionary")
+@ApplicationScoped
 public class CityDictionary implements Serializable {
 
     private static Log log = LogFactory.getLog(CityDictionary.class);

@@ -41,9 +41,12 @@ import java.util.Date;
 
 import com.icesoft.faces.context.Resource;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
-
+@ManagedBean(name = "resourceBean")
+@ViewScoped
 public class OutputResourceBean{
 	
 	private Resource imgResource;

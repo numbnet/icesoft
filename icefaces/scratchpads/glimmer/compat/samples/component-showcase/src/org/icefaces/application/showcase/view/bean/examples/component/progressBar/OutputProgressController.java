@@ -42,6 +42,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.progressB
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContextEvent;
@@ -68,8 +70,8 @@ import java.io.Serializable;
  * @see javax.servlet.ServletContextListener
  * @since 1.7
  */
-//public class OutputProgressController
-//        implements Renderable, ServletContextListener, DisposableBean, Serializable {
+@ManagedBean(name = "outputProgressController")
+@ViewScoped
 public class OutputProgressController {
 
     public static final Log log = LogFactory.getLog(OutputProgressController.class);

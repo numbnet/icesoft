@@ -33,12 +33,17 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.textEntry;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 /**
  * <p>The TextFieldsBean class is the backing bean for the Text Entry
  * demonstration. It is used to store the values of the input fields.</p>
  */
+@ManagedBean(name = "textFields")
+@ViewScoped
 public class TextFieldsBean extends BaseBean {
     /**
      * The different kinds of text input fields.

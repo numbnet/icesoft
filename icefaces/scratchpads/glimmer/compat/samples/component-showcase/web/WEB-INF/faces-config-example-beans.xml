@@ -90,7 +90,7 @@
             <value>#{employeeServiceImpl}</value>
         </managed-property>
     </managed-bean>
-    <!-- Tree example bean-->
+    <!-- Tree example bean
     <managed-bean>
         <description>
             Backing bean for tree example.
@@ -100,8 +100,8 @@
             org.icefaces.application.showcase.view.bean.examples.component.tree.TreeController
         </managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <!-- Calendar example bean  -->
+    </managed-bean>-->
+    <!-- Calendar example bean 
     <managed-bean>
         <description>
             Backing bean for dateSelect example.
@@ -111,21 +111,21 @@
             org.icefaces.application.showcase.view.bean.examples.component.selectInputDate.SelectInputDateBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>  -->
     <!-- OutputProgress properties (used for both determinate and indeterminate modes) -->
-    <managed-bean>
+   <!--   <managed-bean>
         <managed-bean-name>outputProgressController</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.progressBar.OutputProgressController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-        <!--
+      
         <managed-property>
             <property-name>renderManager</property-name>
             <value>#{renderManager}</value>
         </managed-property>
-        -->
-    </managed-bean>
+       
+    </managed-bean> -->
     <!-- OutputProgress Render Manager-->
     <!--
     <managed-bean>
@@ -137,7 +137,7 @@
     </managed-bean>
     -->
 
-    <!-- Auto complete user specific values -->
+    <!-- Auto complete user specific values 
     <managed-bean>
         <description>
             This bean holds the user-specific autoComplete values and not the
@@ -148,7 +148,7 @@
             org.icefaces.application.showcase.view.bean.examples.component.selectInputText.CityDictionary
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
   <!--    <managed-bean>
         <description>
             This bean holds the user-specific autoComplete values and not the
@@ -173,14 +173,14 @@
         </managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean> -->
-    <!-- Popup Panel backing bean -->
+    <!-- Popup Panel backing bean 
     <managed-bean>
         <managed-bean-name>popup</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPopup.PopupBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <!-- Menu Bar backing bean 
     <managed-bean>
         <managed-bean-name>menuBar</managed-bean-name>
@@ -204,7 +204,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.dataPaginator.DataScrollingModel
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
@@ -219,7 +219,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader.SortHeaderModel
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
@@ -231,7 +231,7 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.rowSelector.RowSelectController
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
@@ -243,48 +243,48 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.dataTable.ResizeableColumnModel
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
         </managed-property>
     </managed-bean>
-    <!-- Columns backing bean -->
+    <!-- Columns backing bean 
     <managed-bean>
         <managed-bean-name>columnsBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.columns.ColumnsBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <!-- Expandable Table Panel -->
+    </managed-bean> -->
+    <!-- Expandable Table Panel 
     <managed-bean>
         <managed-bean-name>filesRecordsManager</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.expandableTable.FilesRecordsManager
         </managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <!-- group bean -->
      <managed-bean>
         <managed-bean-name>groupBean</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.columnGroup.GroupingModel
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>view</managed-bean-scope>
         <managed-property>
             <property-name>employeeService</property-name>
             <value>#{employeeServiceImpl}</value>
         </managed-property>
     </managed-bean>
-    <!-- Panel stack example backing bean -->
+    <!-- Panel stack example backing bean 
     <managed-bean>
         <managed-bean-name>panelStack</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelStack.PanelStackBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> 
     <managed-bean>
         <description>
             Backing bean that controls panel layout
@@ -294,31 +294,31 @@
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelBorder.PanelBorderBean
         </managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <!-- Text fields and text areas backing bean -->
+    </managed-bean> -->
+    <!-- Text fields and text areas backing bean
     <managed-bean>
         <managed-bean-name>textFields</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.textEntry.TextFieldsBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <!-- Selection components backing bean -->
+    </managed-bean>  -->
+    <!-- Selection components backing bean 
     <managed-bean>
         <managed-bean-name>selectionTags</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.selection.SelectionTagsBean
         </managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-    <!-- Buttons And Links components backing bean -->
+    </managed-bean> -->
+    <!-- Buttons And Links components backing bean 
     <managed-bean>
         <managed-bean-name>buttonsAndLinks</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.buttonsAndLinks.ButtonsAndLinksBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <!-- Effects Beans -->
     <managed-bean>
         <managed-bean-name>effectsController</managed-bean-name>
@@ -351,22 +351,22 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for outputChart examples -->
+    <!-- Managed Beans for outputChart examples 
     <managed-bean>
         <managed-bean-name>chartController</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.outputChart.ChartController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <!-- File Upload example -->
+    </managed-bean> -->
+    <!-- File Upload example 
     <managed-bean>
         <managed-bean-name>inputFileController</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.inputFile.InputFileController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <!-- FCKEditor  
     <managed-bean>
         <managed-bean-name>inputRichTextBean</managed-bean-name>
@@ -375,19 +375,16 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>-->
-    <!-- Gmap-->
+    <!-- Gmap
     <managed-bean>
-        <description>
-
-        </description>
         <managed-bean-name>gmap</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.gmap.GmapBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
 
-    <!-- tool tip panel -->
+    <!-- tool tip panel
     <managed-bean>
         <description>
 
@@ -397,16 +394,16 @@
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelToolTip.PanelToolTipController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
+  </managed-bean>  -->
 
-    <!-- Media Bean -->
+    <!-- Media Bean 
     <managed-bean>
         <managed-bean-name>media</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.outputMedia.Media
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> 
 
     <managed-bean>
         <managed-bean-name>panelDividerBean</managed-bean-name>
@@ -414,13 +411,13 @@
             org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider.PanelDividerBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> 
     
     <managed-bean>
 		<managed-bean-name>resourceBean</managed-bean-name>
 		<managed-bean-class>org.icefaces.application.showcase.view.bean.examples.component.outputResource.OutputResourceBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
+	</managed-bean> -->
 
     <!-- Set Event Phase 
     <managed-bean>
@@ -432,13 +429,13 @@
     </managed-bean> -->
 
     <!-- data exporter -->
-    <managed-bean>
+   <!--  <managed-bean>
         <managed-bean-name>dataExporter</managed-bean-name>
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.dataExporter.DataExporter
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </managed-bean> -->
     <managed-bean>
         <managed-bean-name>dataExportData</managed-bean-name>
         <managed-bean-class>

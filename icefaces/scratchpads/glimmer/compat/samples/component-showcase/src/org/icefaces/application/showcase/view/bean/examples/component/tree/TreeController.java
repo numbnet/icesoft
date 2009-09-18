@@ -39,6 +39,8 @@ import org.icefaces.application.showcase.model.entity.Employee;
 import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -54,6 +56,8 @@ import java.io.Serializable;
  * @see NodeUserObject
  * @since 0.3.0
  */
+@ManagedBean(name = "treeController")
+@ViewScoped
 public class TreeController extends BaseBean implements Serializable {
 
     // tree default model, used as a value for the tree component

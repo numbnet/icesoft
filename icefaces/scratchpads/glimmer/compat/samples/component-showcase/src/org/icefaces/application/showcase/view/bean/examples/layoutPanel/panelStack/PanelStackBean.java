@@ -35,6 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSt
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
@@ -43,6 +45,8 @@ import java.io.Serializable;
  * demonstration and is used to store the selected panel state of the
  * ice:panelStack component. </p>
  */
+@ManagedBean(name = "panelStack")
+@ViewScoped
 public class PanelStackBean implements Serializable {
 
     //currently selected panel

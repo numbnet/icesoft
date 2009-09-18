@@ -33,6 +33,8 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.columns;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -48,6 +50,8 @@ import java.io.Serializable;
  *
  * @since 1.5
  */
+@ManagedBean(name = "columnsBean")
+@ViewScoped
 public class ColumnsBean implements Serializable {
 
     private DataModel columnDataModel;
