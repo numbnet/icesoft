@@ -104,7 +104,7 @@ public class D2DViewHandler extends ViewHandler {
     private String actionURLSuffix;
     //reloadInterval internally in milliseconds
     protected long reloadInterval;
-    protected long reloadIntervalDefault = 2;
+    protected long reloadIntervalDefault = 10;
     private boolean parametersInitialized = false;
 
     protected Parser parser;
