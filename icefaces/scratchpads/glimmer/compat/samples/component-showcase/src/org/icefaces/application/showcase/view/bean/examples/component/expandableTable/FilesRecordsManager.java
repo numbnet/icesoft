@@ -37,6 +37,8 @@ import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.util.StyleBean;
 
 import javax.faces.application.Application;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -56,6 +58,8 @@ import java.io.Serializable;
  * application /lib/sytle.css file can be edited to change the style properties
  * of the table.</p>
  */
+@ManagedBean(name = "filesRecordsManager")
+@ViewScoped
 public class FilesRecordsManager implements Serializable {
 
     private ArrayList inventoryGroupItemBeans;

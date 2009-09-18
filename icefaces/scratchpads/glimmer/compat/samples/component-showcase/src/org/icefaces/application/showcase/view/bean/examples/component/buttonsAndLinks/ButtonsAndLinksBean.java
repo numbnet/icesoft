@@ -36,6 +36,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.buttonsAn
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 /**
@@ -43,6 +45,8 @@ import javax.faces.event.ActionEvent;
  * links demonstration. It is used to store the input submitted by buttons and
  * links. It also has action listeners to record which button or link was clicked.</p>
  */
+@ManagedBean(name = "buttonsAndLinks")
+@ViewScoped
 public class ButtonsAndLinksBean extends BaseBean {
 
     /**

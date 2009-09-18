@@ -44,6 +44,8 @@ import java.util.GregorianCalendar;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -53,6 +55,8 @@ import javax.faces.model.SelectItem;
  *
  * @since 0.3
  */
+@ManagedBean(name = "dateSelect")
+@ViewScoped
 public class SelectInputDateBean extends BaseBean {
     /**
      * Variables to store the selected dates.

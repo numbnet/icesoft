@@ -33,6 +33,8 @@
 
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelBorder;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
@@ -45,6 +47,8 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
+@ManagedBean(name = "borderLayout")
+@ViewScoped
 public class PanelBorderBean implements Serializable {
 
     // five configurable areas that make up a BorderLayout

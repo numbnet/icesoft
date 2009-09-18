@@ -34,6 +34,8 @@
 package org.icefaces.application.showcase.facelets.navigation;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
@@ -43,6 +45,8 @@ import java.util.Map;
  *
  * @since 0.3.0
  */
+@ManagedBean(name = "navigation")
+@SessionScoped
 public class NavigationBean {
 
     private boolean extendedRender = false;

@@ -37,6 +37,9 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.util.*;
@@ -50,6 +53,8 @@ import java.io.File;
  *
  * @since 1.7
  */
+@ManagedBean(name = "inputFileController")
+@SessionScoped
 public class InputFileController implements Serializable {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);

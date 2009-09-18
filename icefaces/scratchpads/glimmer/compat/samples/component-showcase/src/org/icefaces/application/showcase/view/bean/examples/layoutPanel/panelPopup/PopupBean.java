@@ -35,6 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPo
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
@@ -44,6 +46,8 @@ import java.io.Serializable;
  * <p>This includes the modal and draggable user configurable message, as well
  * as the rendered and visibility state.</p>
  */
+@ManagedBean(name = "popup")
+@ViewScoped
 public class PopupBean implements Serializable {
     // user entered messages for both dialogs
     private String draggableMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultDraggableMessage");

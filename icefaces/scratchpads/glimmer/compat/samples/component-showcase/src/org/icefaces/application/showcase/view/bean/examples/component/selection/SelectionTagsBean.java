@@ -36,6 +36,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.selection
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
@@ -56,6 +58,8 @@ import javax.faces.model.SelectItem;
  *
  * @sinse 0.3.0
  */
+@ManagedBean(name = "selectionTags")
+@ViewScoped
 public class SelectionTagsBean extends BaseBean {
     // check box example value
     private boolean newUser;

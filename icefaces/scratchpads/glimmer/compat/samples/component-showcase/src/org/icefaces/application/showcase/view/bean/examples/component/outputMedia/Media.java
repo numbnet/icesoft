@@ -39,6 +39,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.io.Serializable;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+@ManagedBean(name = "media")
+@ViewScoped
 public class Media  implements Serializable {
     private static Map players = new HashMap();
 

@@ -32,6 +32,8 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
@@ -41,6 +43,8 @@ import java.io.Serializable;
  *
  * @since 1.7
  */
+@ManagedBean(name = "panelDividerBean")
+@ViewScoped
 public class PanelDividerBean  implements Serializable {
 
     public static final String ORIENTATION_HOR = "horizontal";

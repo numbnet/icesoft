@@ -38,6 +38,8 @@ import org.icefaces.application.showcase.util.RandomNumberGenerator;
 import org.icefaces.application.showcase.view.bean.examples.common.inventory.Inventory;
 import org.icefaces.application.showcase.view.bean.examples.common.inventory.InventoryItem;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.ValueHolder;
@@ -49,6 +51,8 @@ import java.io.Serializable;
 /**
  * @since 1.7
  */
+@ManagedBean(name = "tooltipController")
+@ViewScoped
 public class PanelToolTipController implements Serializable {
 
 
