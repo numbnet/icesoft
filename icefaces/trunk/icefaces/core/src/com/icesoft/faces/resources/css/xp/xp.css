@@ -274,6 +274,9 @@ fieldset {
     padding: 0px;
     display: block;
 }
+.iceSelInpDateDay .iceOutTxt {
+    color: #000000;
+}
 
 .iceSelInpDateCur a {
     text-decoration: none;
