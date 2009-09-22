@@ -32,6 +32,9 @@
   -->
 
 <project name="component-showcase" default="tomcat6.0">
+
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
     
     <import file="../build-common.xml"/>
     
