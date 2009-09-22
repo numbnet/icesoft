@@ -45,6 +45,8 @@ public class PanelToolTipModel {
 
     private String displayOn = "hover";
 
+    private boolean moveWithMouse = false;
+
     public String getHideOn() {
         return hideOn;
     }
@@ -83,5 +85,13 @@ public class PanelToolTipModel {
 
     public void setDisplayOn(String displayOn) {
         this.displayOn = displayOn;
+    }
+
+    public boolean isMoveWithMouse() {
+        return moveWithMouse;
+    }
+
+    public void setMoveWithMouse(boolean moveWithMouse) {
+        this.moveWithMouse = moveWithMouse;
     }
 }

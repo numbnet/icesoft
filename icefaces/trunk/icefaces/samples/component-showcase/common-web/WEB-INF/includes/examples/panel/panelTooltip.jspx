@@ -73,6 +73,10 @@
                     itemLabel="#{msgs['page.panelTooltip.duration.label3']}"/>
         </ice:selectOneMenu>
     </ice:panelGroup>
+    <ice:panelGroup style="display:inline;">
+        <ice:outputLabel value="#{msgs['page.panelTooltip.moveWithMouse.label']}" for="moveWithMouse" style="margin-left:1em;"/>
+        <ice:selectBooleanCheckbox id="moveWithMouse" partialSubmit="true" value="#{tooltipController.panelToolTipModel.moveWithMouse}"/>
+    </ice:panelGroup>
     <ice:messages />
 </ice:panelGroup>
 
@@ -94,7 +98,7 @@
             </ice:panelGroup>
     
             <ice:panelTooltip id="pnlSerPanelToolTip" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
-                              hideOn="#{tooltipController.panelToolTipModel.hideOn}"
+                              hideOn="#{tooltipController.panelToolTipModel.hideOn}" moveWithMouse="#{tooltipController.panelToolTipModel.moveWithMouse}"
                               hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                               style="width:100px;height:75px;text-align:left;">
                 <f:facet name="header">
@@ -152,7 +156,7 @@
 
     <!-- toolTip decloration that is ued for more then one panelGroup -->
     <ice:panelTooltip id="provinceInfo" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
-                      hideOn="#{tooltipController.panelToolTipModel.hideOn}"
+                      hideOn="#{tooltipController.panelToolTipModel.hideOn}" moveWithMouse="#{tooltipController.panelToolTipModel.moveWithMouse}"
                       hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                       displayListener="#{tooltipController.displayListener}"
                       style="width: 125px; height: 135px;" >
