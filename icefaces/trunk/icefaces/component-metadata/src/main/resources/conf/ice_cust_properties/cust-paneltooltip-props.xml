@@ -175,3 +175,21 @@
     <default-value>"hover"</default-value>
 </property-extension>
 </property>
+
+<property>
+<description>
+    <![CDATA[
+		When set to "true" this will cause the panelTooltip to track with the mouse.
+        Default is "false"
+    ]]>
+</description>
+<property-name>moveWithMouse</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_COMPONENT</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+    <default-value>false</default-value>
+</property-extension>
+</property>

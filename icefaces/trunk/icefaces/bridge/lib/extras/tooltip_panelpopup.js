@@ -33,7 +33,7 @@
  var visibleTooltipList = new Array();
  
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn) {
+  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true");
@@ -45,6 +45,7 @@ ToolTipPanelPopup = Class.create({
     this.formId = formId;
     this.ctxValue = ctxValue
     this.iFrameUrl = iFrameUrl;
+    this.moveWithMouse = moveWithMouse;
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -170,7 +171,7 @@ ToolTipPanelPopup = Class.create({
     if (Event.element(event) != this.src && !event.element().descendantOf(this.src)) return;
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
-      if (!this.isTooltipVisible()) return;
+      if (!this.isTooltipVisible() || !this.moveWithMouse) return;
       var tooltip = this.getTooltip();
       tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
       tooltip.style.left = this.x + 4 + "px";
