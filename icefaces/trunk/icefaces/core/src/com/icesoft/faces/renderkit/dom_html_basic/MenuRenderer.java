@@ -313,9 +313,15 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                                   selectItem.getValue());
         option.setAttribute("value", valueString);
 
-        if (isValueSelected(facesContext, selectItem, uiComponent,
-                            submittedValues, selectedValues))
-        {
+        boolean selected = isValueSelected(facesContext, selectItem, uiComponent,
+                submittedValues, selectedValues);
+        if (uiComponent instanceof HtmlSelectOneMenu) {
+            if (submittedValues == null && selectedValues== null && 
+                    (selectItem.getValue() == "" || selectItem.getValue() == null))
+                selected = true;
+        }
+        
+        if (selected) {
             option.setAttribute("selected", "selected");
         }
         if (selectItem.isDisabled()) {
@@ -572,8 +578,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
         if (uiComponent instanceof UISelectOne) {
             UISelectOne uiSelectOne = (UISelectOne) uiComponent;
             Object submittedValue = uiSelectOne.getSubmittedValue();
-            if (submittedValue != null && 
-                    String.valueOf(submittedValue).length() > 0) {
+            if (submittedValue != null) {
                 return new Object[]{submittedValue};
             }
         }
