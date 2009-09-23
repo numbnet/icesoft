@@ -22,7 +22,8 @@
     <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
-    
+  	<ant antfile="../generator/build.xml" target="dist"/>
+
     
   </target>
 
