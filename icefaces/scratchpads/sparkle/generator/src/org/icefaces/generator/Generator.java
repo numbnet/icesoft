@@ -1,4 +1,4 @@
-package com.icesoft.faces.component.generator;
+package org.icefaces.generator;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -6,12 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
+import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
+import org.icefaces.generator.xmlbuilder.TLDBuilder;
+
 import com.icesoft.faces.component.annotation.Component;
 import com.icesoft.faces.component.annotation.Property;
 import com.icesoft.faces.component.annotation.PropertyTemplate;
-import com.icesoft.faces.component.generator.xmlbuilder.FaceletTagLibBuilder;
-import com.icesoft.faces.component.generator.xmlbuilder.FacesConfigBuilder;
-import com.icesoft.faces.component.generator.xmlbuilder.TLDBuilder;
 
 public class Generator {
     static List<Class> components = null;

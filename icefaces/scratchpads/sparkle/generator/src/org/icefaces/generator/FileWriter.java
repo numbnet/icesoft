@@ -1,4 +1,4 @@
-package com.icesoft.faces.component.generator;
+package org.icefaces.generator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.Writer;

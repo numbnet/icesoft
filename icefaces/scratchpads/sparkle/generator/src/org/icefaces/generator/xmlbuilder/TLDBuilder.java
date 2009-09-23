@@ -1,4 +1,4 @@
-package com.icesoft.faces.component.generator.xmlbuilder;
+package org.icefaces.generator.xmlbuilder;
 
 import java.lang.reflect.Field;
 

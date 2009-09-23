@@ -1,4 +1,4 @@
-package com.icesoft.faces.component.generator;
+package org.icefaces.generator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
