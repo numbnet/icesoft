@@ -74,7 +74,9 @@ implements MessageServiceAdapter {
 
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug(
-                                    "Incoming message:\r\n\r\n" + message);
+                                    "[" +
+                                        messageServiceClient.getName() +
+                                    "] Incoming message:\r\n\r\n" + message);
                             }
                             Set _messageHandlerSet =
                                 (Set)messageHandlerMap.get(targetName);
@@ -243,7 +245,9 @@ implements MessageServiceAdapter {
                 _writer.flush();
                 if (LOG.isDebugEnabled()) {
                     LOG.debug(
-                        "Outgoing message:\r\n\r\n" +
+                        "[" +
+                            messageServiceClient.getName() +
+                        "] Outgoing message:\r\n\r\n" +
                             message);
                 }
                 _reader = new InputStreamReader(_connection.getInputStream());
