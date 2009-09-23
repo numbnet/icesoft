@@ -10,10 +10,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import com.icesoft.faces.component.util.CustomComponentUtils;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.Utils;
 
 public class TabSetRenderer extends Renderer{
     private static String YUI_TABSET_INDEX = "yti";
@@ -26,7 +24,7 @@ public class TabSetRenderer extends Renderer{
         if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
             String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
             String clientId = uiComponent.getClientId(facesContext);
-            TabSet tabSet = (TabSet) uiComponent;
+            TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
             if (clientId.equals(info[0])) {
                 try {
                     Integer tabIndex = new Integer(info[1]);
@@ -42,7 +40,7 @@ public class TabSetRenderer extends Renderer{
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        TabSet tabSet = (TabSet) uiComponent;
+        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -72,9 +70,9 @@ public class TabSetRenderer extends Renderer{
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        TabSet tabSet = (TabSet) uiComponent;        
+        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
-        String userDefinedClass = tabSet.getStyleClass();        
+        String userDefinedClass = String.valueOf(tabSet.getAttributes().get("styleClass"));       
         String styleClass = userDefinedClass != null ? 
                 userDefinedClass +" yui-navset": "yui-navset";
         String orientation = tabSet.getOrientation();
@@ -88,13 +86,13 @@ public class TabSetRenderer extends Renderer{
             styleClass+= " yui-navset-bottom";
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR); 
-        boolean isClientSide = tabSet.isClientSide();
+        boolean isClientSide = new Boolean(tabSet.getAttributes().get("clientSide").toString());
         int tabIndex = tabSet.getTabIndex();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
-        ", 'partialSubmit':"+ tabSet.isPartialSubmit()+ "});";
+        ", 'partialSubmit':"+ new Boolean(tabSet.getAttributes().get("partialSubmit").toString())+ "});";
         
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -116,7 +114,7 @@ public class TabSetRenderer extends Renderer{
             }  
             
             if (tabSet.oldTabIndex != Integer.MIN_VALUE && tabSet.oldTabIndex != tabIndex) {
-                JavascriptContext.addJavascriptCall(facesContext, execute);
+        //        JavascriptContext.addJavascriptCall(facesContext, execute);
             }
             tabSet.oldTabIndex = tabIndex;
         }
@@ -132,8 +130,8 @@ public class TabSetRenderer extends Renderer{
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
-        UIComponent labelFacet = ((Tab)tab).getLabelFacet();
-        if (((TabSet)tabSet).getTabIndex() == index) {
+        UIComponent labelFacet = ((TabAnnotated)tab).getLabelFacet();
+        if (((TabSetAnnotated)tabSet).getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
         if (labelFacet!= null) {
@@ -142,7 +140,7 @@ public class TabSetRenderer extends Renderer{
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
             writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
-            CustomComponentUtils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
+            Utils.renderChild(facesContext, ((TabAnnotated)tab).getLabelFacet());
             writer.startElement(HTML.ANCHOR_ELEM, tab);
             writer.endElement(HTML.ANCHOR_ELEM);               
             writer.endElement("em");
@@ -152,7 +150,7 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(HTML.HREF_ATTR, "#"+ clientId, HTML.CLASS_ATTR);
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.CLASS_ATTR);  
-            writer.write(((Tab)tab).getLabel());
+            writer.write(String.valueOf(tabSet.getAttributes().get("label")));
             writer.endElement("em");
             writer.endElement(HTML.ANCHOR_ELEM);        
         }
@@ -164,11 +162,12 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        if (((TabSet)tabSet).isClientSide()) {
-            CustomComponentUtils.renderChild(facesContext, tab);
+        boolean isClientSide = new Boolean(tabSet.getAttributes().get("clientSide").toString());
+        if (isClientSide) {
+            Utils.renderChild(facesContext, tab);
         } else {
-            if (((TabSet)tabSet).getTabIndex() == index) {
-                CustomComponentUtils.renderChild(facesContext, tab);
+            if (((TabSetAnnotated)tabSet).getTabIndex() == index) {
+                Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
             }
@@ -191,12 +190,12 @@ public class TabSetRenderer extends Renderer{
     }
     
     private void renderTab(FacesContext facesContext, UIComponent uiComponent, boolean isLabel) throws IOException{
-        TabSet tabSet = (TabSet) uiComponent;
+        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
         while (children.hasNext()) {
             UIComponent child = (UIComponent)children.next();
-            if (child instanceof Tab) {
+            if (child instanceof TabAnnotated) {
                 if (child.isRendered()) {
                     index++;
                     if(isLabel) {
