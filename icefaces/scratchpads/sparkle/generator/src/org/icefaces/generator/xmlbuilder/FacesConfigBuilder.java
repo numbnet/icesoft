@@ -1,12 +1,13 @@
-package com.icesoft.faces.component.generator.xmlbuilder;
+package org.icefaces.generator.xmlbuilder;
 
 import java.lang.reflect.Field;
 
+import org.icefaces.generator.FileWriter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.generator.FileWriter;
+import com.icesoft.faces.component.generator.XMLBuilder;
 
 
 public class FacesConfigBuilder extends XMLBuilder{
