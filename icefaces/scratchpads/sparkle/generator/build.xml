@@ -12,7 +12,7 @@
 
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
-        <fileset dir="${tomcat.lib.dir}" includes="*.jar"/>     
+    
   </path>
     
   <target name="init">
