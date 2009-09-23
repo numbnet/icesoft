@@ -446,7 +446,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             //clear the request map except when we have SWF2
             externalContext.release();
         }
-        
+
         onRelease.run();
         // #2807 release thread locals
         setCurrentInstance(null);
@@ -621,11 +621,20 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler linkerHandler) {
-        if (resource == null) {
+        try {
+            return resolve(registerResourceWithRelativePath(resource, linkerHandler).toString());
+        } catch (NullPointerException e) {
             log.warn("Cannot register a null resource");
             return null;
         }
-        return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
+    }
+
+    public URI registerResourceWithRelativePath(Resource resource) {
+        return registerResourceWithRelativePath(resource, null);
+    }
+
+    public URI registerResourceWithRelativePath(Resource resource, ResourceLinker.Handler linkerHandler) {
+        return resourceDispatcher.registerResource(resource, linkerHandler);
     }
 
     //adapting deprecated methods to current API

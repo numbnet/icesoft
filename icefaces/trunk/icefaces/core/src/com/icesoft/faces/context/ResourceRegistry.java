@@ -138,4 +138,26 @@ public interface ResourceRegistry {
      * @deprecated use {@link ResourceRegistry#registerResource(Resource,  ResourceLinker.Handler)} instead
      */
     URI registerNamedResource(String name, Resource resource, ResourceLinker.Handler linkerHandler);
+
+    /**
+     * Register resource to be served. The URI is *not* encoded by
+     * {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)}. The returned
+     * path starts from the web-application context path which is considered to be the root.
+     *
+     * @param resource the resource
+     * @return the URI of the resource
+     */
+    URI registerResourceWithRelativePath(Resource resource);
+
+    /**
+     * Register resource to be served. The URI is *not* encoded by
+     * {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)}. The returned
+     * path starts from the web-application context path which is considered to be the root.
+     *
+     * @param resource      the resource
+     * @param linkerHandler handler used to specify any other resource relatively
+     *                      referenced by the main resource (such as '@import' rules)
+     * @return the URI of the resource
+     */
+    URI registerResourceWithRelativePath(Resource resource, ResourceLinker.Handler linkerHandler);
 }
