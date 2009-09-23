@@ -118,7 +118,9 @@ implements JMSConnection {
                         topicPublisher.publish(_message);
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(
-                                "Outgoing message:\r\n\r\n" +
+                                "[" +
+                                    jmsAdapter.getMessageServiceClient().getName() +
+                                "] Outgoing message:\r\n\r\n" +
                                     toString(_message));
                         }
                     }

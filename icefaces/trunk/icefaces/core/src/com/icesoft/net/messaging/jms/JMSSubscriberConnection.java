@@ -306,10 +306,8 @@ implements JMSConnection {
         }
     }
 
-    private static class MessageListener
+    private class MessageListener
     implements javax.jms.MessageListener {
-        private static final Log LOG = LogFactory.getLog(MessageListener.class);
-
         private final Set messageHandlerSet = new HashSet();
         private final JMSSubscriberConnection jmsSubscriberConnection;
 
@@ -322,9 +320,18 @@ implements JMSConnection {
         public void onMessage(final javax.jms.Message message) {
             try {
                 Message _message = convert(message);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(
+                        "[" +
+                            jmsAdapter.getMessageServiceClient().getName() +
+                        "] Incoming message:\r\n\r\n" + _message);
+                }
                 if (jmsSubscriberConnection.accept(_message)) {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("Incoming message:\r\n\r\n" + _message);
+                        LOG.debug(
+                            "[" +
+                                jmsAdapter.getMessageServiceClient().getName() +
+                            "] Accepted message:\r\n\r\n" + _message);
                     }
                     MessageHandler[] _messageHandlers =
                         (MessageHandler[])

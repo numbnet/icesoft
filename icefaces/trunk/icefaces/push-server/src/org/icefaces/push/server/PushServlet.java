@@ -95,10 +95,11 @@ extends HttpServlet {
             pushServerMessageService =
                 new PushServerMessageService(
                     new MessageServiceClient(
+                        "Push Server MSC",
                         new HttpAdapter(servletContext), servletContext),
-                    scheduledThreadPoolExecutor,
-                    new ServletContextConfiguration(
-                        "com.icesoft.net.messaging", servletContext));
+                        scheduledThreadPoolExecutor,
+                        new ServletContextConfiguration(
+                            "com.icesoft.net.messaging", servletContext));
             pushServerMessageService.setUpNow();
             final SessionManager _sessionManager =
                 new SessionManager(
