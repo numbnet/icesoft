@@ -185,6 +185,12 @@ function toogleState(editorInstance) {
 
        var disabled = $(editorInstance.Name + 'Disabled');
        if (!disabled) return false;
+       if (disabled['oldDisValue']) {
+           if (disabled['oldDisValue'] == disabled.value) {
+              return false;
+           }
+       }
+       disabled['oldDisValue'] = disabled.value;
        if (disabled.value == "true") {
             if (document.all) {
                 editorInstance.EditorDocument.body.disabled = true;
