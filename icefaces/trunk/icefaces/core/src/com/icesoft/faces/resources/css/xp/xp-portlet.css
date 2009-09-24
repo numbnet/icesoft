@@ -2754,6 +2754,10 @@ Disabled classes for the calendar controls
     color: #999;
 }
 
+.icePnlClpsblHdr img, .icePnlClpsblColpsdHdr img {
+    border: 0;
+}
+
 .iceGmp{
     border-collapse:collapse;
     border-spacing:0px;

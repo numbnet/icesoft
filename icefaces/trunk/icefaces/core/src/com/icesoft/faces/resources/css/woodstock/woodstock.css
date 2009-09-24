@@ -2886,6 +2886,10 @@ Disabled classes for the calendar controls
     color: #000000;
 }
 
+.icePnlClpsblHdr img, .icePnlClpsblColpsdHdr img {
+    border: 0;
+}
+
 /*
 ----------- Google Maps --------
 */
