@@ -24,8 +24,13 @@ public class TouchSessionFilter implements Filter {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpSession session = request.getSession();
             if (session != null) {
-                SessionDispatcher.Monitor.lookupSessionMonitor(session).touchSession();
-                LOG.debug("Session last access time updated by " + request.getRequestURI() + " request.");
+                SessionDispatcher.Monitor mon = SessionDispatcher.Monitor.lookupSessionMonitor(session);
+                //If the first request is not an ICEfaces request, there will not be a monitor yet
+                //so we should check.
+                if(mon != null ){
+                    mon.touchSession();
+                    LOG.debug("Session last access time updated by " + request.getRequestURI() + " request.");
+                }
             }
         } finally {
             filterChain.doFilter(servletRequest, servletResponse);
