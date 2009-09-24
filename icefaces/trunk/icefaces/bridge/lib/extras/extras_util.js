@@ -53,6 +53,10 @@ Ice.util = {
                elementHeight < containerElementTop) {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.top =  "-" + newElementX + "px";
+            var iframe = $(element).up().next("iframe");
+            if (iframe) {
+                iframe.clonePosition(element);
+            }
         }
     },
     radioCheckboxEnter: function(form, component, evt) {
