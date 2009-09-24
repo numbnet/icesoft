@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -260,7 +264,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         return (SessionDispatcher) applicationMap.get(SessionDispatcher.class.getName());
     }
 
-    public static class Monitor {
+    public static class Monitor implements Externalizable {
         private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
         private Set contexts = new HashSet();
         private HttpSession session;
@@ -269,6 +273,11 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         private Monitor(HttpSession session) {
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
+            session.setAttribute(Monitor.class.getName(), this);
+        }
+
+        public static Monitor lookupSessionMonitor(HttpSession session) {
+            return (Monitor) session.getAttribute(Monitor.class.getName());
         }
 
         public void touchSession() {
@@ -324,6 +333,18 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
         public void addInSessionContext(ServletContext context) {
             contexts.add(context);
+        }
+
+        public void writeExternal(ObjectOutput out) throws IOException {
+            //ignore
+        }
+
+        public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+            //ignore
+        }
+
+        public Monitor() {
+            //ignore
         }
     }
 
