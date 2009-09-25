@@ -217,6 +217,7 @@ public class FormRenderer extends DomBasicRenderer {
 
             root.appendChild( n );
             ((Element) n).setAttribute( "id", id );
+            ((Element) n).setAttribute(HTML.STYLE_ATTR, "width:0px;height:0px;");
             domWriter.trackMarkerNode( n );
         }
 
