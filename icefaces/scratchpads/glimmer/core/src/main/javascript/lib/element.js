@@ -40,9 +40,24 @@ function enclosingBridge(element) {
 }
 
 function serializeElementOn(element, query) {
-    if (tag(element) == 'a') {
-        var name = element.name || element.id;
-        if (name) addNameValue(query, name, name);
+    var tagName = tag(element);
+    switch (tagName) {
+        case 'a':
+            var name = element.name || element.id;
+            if (name) addNameValue(query, name, name);
+            break;
+        case 'input':
+            switch (element.type) {
+                case 'image':
+                case 'submit':
+                case 'button': addNameValue(query, element.name, element.value); break;
+            }
+            break;
+        case 'button':
+            if (element.type == 'submit') addNameValue(query, element.name, element.value);
+            break;
+        default:
+        //do not serialize other elements
     }
 }
 
