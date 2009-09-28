@@ -3007,3 +3007,7 @@ Disabled classes for the calendar controls
 .icePnlCnfBtns input {
     margin: 0 20px 0 20px;
 }
+
+.icePnlTbLblLnk img {
+    border: 0;
+}
