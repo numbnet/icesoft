@@ -269,8 +269,8 @@ implements MessageServiceAdapter {
             } catch (IOException exception) {
                 if (_connection != null) {
                     try {
-                        if (LOG.isWarnEnabled()) {
-                            LOG.warn(
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
                                 "Request-URI: [" + _connection.getURL() + "], " +
                                 "Status-Code: [" + _connection.getResponseCode() + "], " +
                                 "Reason-Phrase: [" + _connection.getResponseMessage() + "]");

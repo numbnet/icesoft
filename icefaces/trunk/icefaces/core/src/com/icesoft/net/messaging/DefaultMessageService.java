@@ -89,16 +89,16 @@ implements MessageServiceClient.Administrator {
     public final void close() {
         synchronized (stateLock) {
             requestedState = STATE_CLOSED;
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Requested State: CLOSED");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Requested State: CLOSED");
             }
             if (currentState == STATE_TEAR_DOWN_DONE) {
                 try {
                     // throws MessageServiceException
                     messageServiceClient.close();
                     currentState = STATE_CLOSED;
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Current State: CLOSED");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Current State: CLOSED");
                     }
                 } catch (MessageServiceException exception) {
                     if (LOG.isErrorEnabled()) {
@@ -212,7 +212,7 @@ implements MessageServiceClient.Administrator {
     }
 
     public final void reconnect() {
-        LOG.info("Reconnecting...");
+        LOG.debug("Reconnecting...");
         if (scheduledThreadPoolExecutor == null) {
             // blocking reconnect
             reconnectNow();
@@ -223,20 +223,20 @@ implements MessageServiceClient.Administrator {
     }
 
     public final boolean reconnectNow() {
-        LOG.info("Reconnecting now...");
+        LOG.debug("Reconnecting now...");
         // blocking reconnect
         return new ReconnectTask().executeNow();
     }
 
     public final void setUp() {
-        LOG.info("Setting up...");
+        LOG.debug("Setting up...");
         setUp(
             !retryOnFail ? 0 : configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
             !retryOnFail ? 0 : configuration.getAttributeAsInteger("maxRetries", DEFAULT_MAX_RETRIES));
     }
 
     public final boolean setUpNow() {
-        LOG.info("Setting up now...");
+        LOG.debug("Setting up now...");
         return
             setUpNow(
                 !retryOnFail ? 0 : configuration.getAttributeAsInteger("interval", DEFAULT_INTERVAL),
@@ -246,16 +246,16 @@ implements MessageServiceClient.Administrator {
     public final void start() {
         synchronized (stateLock) {
             requestedState = STATE_STARTED;
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Requested State: STARTED");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Requested State: STARTED");
             }
             if (currentState == STATE_SET_UP_DONE) {
                 try {
                     // throws MessageServiceException
                     messageServiceClient.start();
                     currentState = STATE_STARTED;
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Current State: STARTED");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Current State: STARTED");
                     }
                 } catch (MessageServiceException exception) {
                     if (LOG.isFatalEnabled()) {
@@ -269,16 +269,16 @@ implements MessageServiceClient.Administrator {
     public final void stop() {
         synchronized (stateLock) {
             requestedState = STATE_STOPPED;
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Requested State: STOPPED");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Requested State: STOPPED");
             }
             if (currentState == STATE_STARTED) {
                 try {
                     // throws MessageServiceException
                     messageServiceClient.stop();
                     currentState = STATE_STOPPED;
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Current State: STOPPED");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Current State: STOPPED");
                     }
                 } catch (MessageServiceException exception) {
                     if (LOG.isFatalEnabled()) {
@@ -290,7 +290,7 @@ implements MessageServiceClient.Administrator {
     }
 
     public final void tearDown() {
-        LOG.info("Tearing down...");
+        LOG.debug("Tearing down...");
         if (scheduledThreadPoolExecutor == null) {
             // blocking tear down
             tearDownNow();
@@ -301,7 +301,7 @@ implements MessageServiceClient.Administrator {
     }
 
     public final boolean tearDownNow() {
-        LOG.info("Tearing down now...");
+        LOG.debug("Tearing down now...");
         // blocking tear down
         return new TearDownTask().executeNow();
     }
@@ -317,7 +317,7 @@ implements MessageServiceClient.Administrator {
     }
 
     private void setUp(final int interval, final int maxRetries) {
-        LOG.info("Setting up... (interval: [" + interval + "], maxRetries: [" + maxRetries + "])");
+        LOG.debug("Setting up... (interval: [" + interval + "], maxRetries: [" + maxRetries + "])");
         if (scheduledThreadPoolExecutor == null) {
             // blocking set up
             setUpNow(interval, maxRetries);
@@ -328,7 +328,7 @@ implements MessageServiceClient.Administrator {
     }
 
     private boolean setUpNow(final int interval, final int maxRetries) {
-        LOG.info("Setting up now... (interval: [" + interval + "], maxRetries: [" + maxRetries + "])");
+        LOG.debug("Setting up now... (interval: [" + interval + "], maxRetries: [" + maxRetries + "])");
         // blocking set up
         return new SetUpTask(interval, maxRetries).executeNow();
     }
@@ -350,7 +350,7 @@ implements MessageServiceClient.Administrator {
         }
 
         public void run() {
-            LOG.info("Executing Reconnect task...");
+            LOG.debug("Executing Reconnect task...");
             long _failTimestamp = System.currentTimeMillis();
             synchronized (reconnectLock) {
                 if (_failTimestamp > successTimestamp + 5000) {
@@ -376,7 +376,7 @@ implements MessageServiceClient.Administrator {
                 scheduledFuture.cancel(false);
                 scheduledFuture = null;
             }
-            LOG.info("Executing Reconnect task... (succeeded: [" + succeeded + "])");
+            LOG.debug("Executing Reconnect task... (succeeded: [" + succeeded + "])");
         }
 
         private void execute() {
@@ -418,7 +418,7 @@ implements MessageServiceClient.Administrator {
         }
 
         public void run() {
-            LOG.info("Executing Set Up task...");
+            LOG.debug("Executing Set Up task...");
             try {
                 // throws InvalidDestinationException, JMSException, NamingException
                 setUpMessageServiceClient();
@@ -431,14 +431,14 @@ implements MessageServiceClient.Administrator {
                 synchronized (stateLock) {
                     currentState = STATE_SET_UP_DONE;
                     if (LOG.isInfoEnabled()) {
-                        LOG.info("Current State: SET UP DONE");
+                        LOG.debug("Current State: SET UP DONE");
                     }
                     if (requestedState == STATE_STARTED) {
                         start();
                     }
                 }
             } catch (Exception exception) {
-                LOG.info("Exception: " + exception.getClass().getName() + ": " + exception.getMessage());
+                LOG.debug("Exception: " + exception.getClass().getName() + ": " + exception.getMessage());
                 tearDownNow();
                 if (retries++ == maxRetries) {
                     if (scheduledFuture != null) {
@@ -454,14 +454,14 @@ implements MessageServiceClient.Administrator {
                     }
                 }
             }
-            LOG.info("Executing Set Up task... (succeeded: [" + succeeded + "])");
+            LOG.debug("Executing Set Up task... (succeeded: [" + succeeded + "])");
         }
 
         private void execute() {
             synchronized (stateLock) {
                 currentState = STATE_SET_UP;
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Current State: SET UP");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: SET UP");
                 }
             }
             if (scheduledThreadPoolExecutor != null) {
@@ -475,8 +475,8 @@ implements MessageServiceClient.Administrator {
         private boolean executeNow() {
             synchronized (stateLock) {
                 currentState = STATE_SET_UP;
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Current State: SET UP");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: SET UP");
                 }
             }
             while (!cancelled) {
@@ -511,7 +511,7 @@ implements MessageServiceClient.Administrator {
         }
 
         public void run() {
-            LOG.info("Executing Tear Down task...");
+            LOG.debug("Executing Tear Down task...");
             try {
                 tearDownMessageServiceClient();
                 if (scheduledFuture != null) {
@@ -521,8 +521,8 @@ implements MessageServiceClient.Administrator {
                 succeeded = true;
                 synchronized (stateLock) {
                     currentState = STATE_TEAR_DOWN_DONE;
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Current State: TEAR DOWN DONE");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Current State: TEAR DOWN DONE");
                     }
                     if (requestedState == STATE_CLOSED) {
                         close();
@@ -534,14 +534,14 @@ implements MessageServiceClient.Administrator {
                     scheduledFuture = null;
                 }
             }
-            LOG.info("Executing Tear Down task... (succeeded: [" + succeeded + "])");
+            LOG.debug("Executing Tear Down task... (succeeded: [" + succeeded + "])");
         }
 
         private void execute() {
             synchronized (stateLock) {
                 currentState = STATE_TEAR_DOWN;
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Current State: TEAR DOWN");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: TEAR DOWN");
                 }
             }
             if (scheduledThreadPoolExecutor != null) {
@@ -554,8 +554,8 @@ implements MessageServiceClient.Administrator {
         private boolean executeNow() {
             synchronized (stateLock) {
                 currentState = STATE_TEAR_DOWN;
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Current State: TEAR DOWN");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: TEAR DOWN");
                 }
             }
             run();
