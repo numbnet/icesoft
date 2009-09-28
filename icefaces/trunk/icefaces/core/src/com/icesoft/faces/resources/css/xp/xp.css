@@ -2916,3 +2916,7 @@ Disabled classes for the calendar controls
 .iceDatExp input{
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.icePnlTbLblLnk img {
+    border: 0;
+}
