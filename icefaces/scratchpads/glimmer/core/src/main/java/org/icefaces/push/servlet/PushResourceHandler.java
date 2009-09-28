@@ -44,7 +44,8 @@ import java.util.regex.Pattern;
 
 public class PushResourceHandler extends ResourceHandler implements CurrentContext {
     private static Logger log = Logger.getLogger("org.icefaces.pushservlet");
-    private static final Pattern ICEfacesResourcePattern = Pattern.compile(".*/icefaces/.*");
+    private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
+    private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
     private SessionDispatcher dispatcher;
     private MonitorRunner monitor;
@@ -85,7 +86,8 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-        if (ICEfacesResourcePattern.matcher(request.getRequestURI()).find()) {
+        String requestURI = request.getRequestURI();
+        if (ICEfacesBridgeRequestPattern.matcher(requestURI).find() || ICEfacesResourceRequestPattern.matcher(requestURI).find()) {
             try {
                 service(request, response);
             } catch (ServletException e) {
@@ -99,7 +101,11 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
-        boolean resourceRequest = handler.isResourceRequest(facesContext) || ICEfacesResourcePattern.matcher(servletRequest.getRequestURI()).find();
+        String requestURI = servletRequest.getRequestURI();
+        boolean resourceRequest =
+                handler.isResourceRequest(facesContext) ||
+                        ICEfacesBridgeRequestPattern.matcher(requestURI).find() ||
+                        ICEfacesResourceRequestPattern.matcher(requestURI).find();
         if (!resourceRequest && servletRequest.getParameter("ice.session.donottouch") == null) {
             dispatcher.touchSession((HttpSession) externalContext.getSession(false));
         }

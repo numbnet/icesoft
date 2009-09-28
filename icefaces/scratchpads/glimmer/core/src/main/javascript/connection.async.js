@@ -58,8 +58,8 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         method(stopBeat, noop);
     });
 
-    var pingURI = configuration.context.current + 'icefaces/ping';
-    var receiveURI = configuration.context.async + 'icefaces/send-updated-views';
+    var pingURI = configuration.context.current + 'ping.icefaces.jsf';
+    var receiveURI = configuration.context.async + 'send-updated-views.icefaces.jsf';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {
