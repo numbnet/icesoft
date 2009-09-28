@@ -156,7 +156,7 @@ window.evaluate = eval;
 
     var asyncContext;
     onBeforeUnload(window, function() {
-        postSynchronously(Client(true), asyncContext + 'icefaces/dispose-window', function(query) {
+        postSynchronously(Client(true), asyncContext + 'dispose-window.icefaces.jsf', function(query) {
             addNameValue(query, 'ice.window', namespace.window);
         }, FormPost, noop);
     });
