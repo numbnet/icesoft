@@ -1083,10 +1083,10 @@ public class TableRenderer
                 width.append(";");                
             } catch (IndexOutOfBoundsException e) {
                 //width not defined for this index htmlDataTable.getColNumber()
-                e.printStackTrace();
+//                e.printStackTrace(); // for info. only
             } catch (NumberFormatException nfe) {
                 //self describing 
-                nfe.printStackTrace();                
+//                nfe.printStackTrace(); // for info. only
             }
         } else {
             if (isScrollable(htmlDataTable)) {
