@@ -137,7 +137,7 @@
     </managed-bean>
     -->
 
-    <!-- Auto complete user specific values 
+    <!-- Auto complete user specific values -->
     <managed-bean>
         <description>
             This bean holds the user-specific autoComplete values and not the
@@ -148,8 +148,8 @@
             org.icefaces.application.showcase.view.bean.examples.component.selectInputText.CityDictionary
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean> -->
-  <!--    <managed-bean>
+    </managed-bean> 
+    <managed-bean>
         <description>
             This bean holds the user-specific autoComplete values and not the
             dictionary.
@@ -158,12 +158,12 @@
         <managed-bean-class>
             org.icefaces.application.showcase.view.bean.examples.component.selectInputText.SelectInputTextController
         </managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
             <property-name>cityDictionary</property-name>
             <value>#{cityDictionary}</value>
         </managed-property>
-    </managed-bean> --> 
+    </managed-bean>  
 
     <!-- Drag and Drop backing bean -->
  <!--     <managed-bean>

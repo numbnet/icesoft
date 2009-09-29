@@ -33,6 +33,8 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.selectInputText;
 
+import java.io.Serializable;
+
 /**
  * <p>The City class is used to store city information for the Autocomplete
  * (selectInputText) example. The CityDictionary class builds a large List of
@@ -41,7 +43,7 @@ package org.icefaces.application.showcase.view.bean.examples.component.selectInp
  * @see org.icefaces.application.showcase.view.bean.examples.component.selectInputText.CityDictionary
  * @since 1.5
  */
-public class City {
+public class City implements Serializable {
 
     // attributes of each entry
     private String city;
