@@ -2846,7 +2846,7 @@ Disabled classes for the calendar controls
 .icePnlClpsblHdr, .icePnlClpsblHdr-dis {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( './css-images/table_col_header.gif' ) repeat-x top left;
@@ -2922,7 +2922,7 @@ Disabled classes for the calendar controls
 .icePnlClpsblColpsdHdr, .icePnlClpsblColpsdHdr-dis {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( './css-images/table_col_header.gif' ) repeat-x top left;
@@ -2935,7 +2935,7 @@ Disabled classes for the calendar controls
 
 .icePnlClpsblColpsdHdr .iceOutTxt, .icePnlClpsblHdr .iceOutTxt, 
 .icePnlClpsblColpsdHdr-dis .iceOutTxt, .icePnlClpsblHdr-dis .iceOutTxt {
-    padding-left: 22px;
+    padding-left: 21px;
 }
 
 .icePnlClpsblColpsdCnt, .icePnlClpsblColpsdCnt-dis {
@@ -2953,31 +2953,35 @@ Disabled classes for the calendar controls
 .icePnlClpsblHdr div, .icePnlClpsblHdr-dis div, .icePnlClpsblColpsdHdr div, .icePnlClpsblColpsdHdr-dis div {
     background-repeat: no-repeat;
     background-position: left top;
-    height: 18px;
+    height: 21px;
 }
 
 .icePnlClpsblHdr div {
     background: url( './css-images/PnlHdr_down.gif' ) no-repeat top left;
-    padding: 2px 0 0 5px;
-    margin: -2px 0 0 -3px;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;   
 }
 
 .icePnlClpsblHdr-dis div {
     background: url( './css-images/PnlHdr_down_dis.gif' ) no-repeat top left;
-    padding: 2px 0 0 5px;
-    margin: -2px 0 0 -3px;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;     
 }
 
 .icePnlClpsblColpsdHdr div {
     background: url( './css-images/PnlHdr_collapsed.gif' ) no-repeat top left;
-    padding: 2px 0 0 5px;
-    margin: -2px 0 0 -3px;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;     
 }
 
 .icePnlClpsblColpsdHdr-dis div {
     background: url( './css-images/PnlHdr_collapsed_dis.gif' ) no-repeat top left;
-    padding: 2px 0 0 5px;
-    margin: -2px 0 0 -3px;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;    
 }
 
 .icePnlClpsbl-dis, .icePnlClpsblHdr-dis, .icePnlClpsblCnt-dis,
