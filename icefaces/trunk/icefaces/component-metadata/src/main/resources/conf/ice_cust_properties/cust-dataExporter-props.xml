@@ -193,3 +193,24 @@
     </property-extension>
   </property>   
   
+     <property>
+    <description>
+        <![CDATA[    
+        <p>    
+        When used in a browser with a popup blocker enabled downloading the 
+        exported file will require two clicks instead of a single click. In this 
+        case the value of this attribute will be used to update the label for 
+        the dataExporter to reflect that the user must click the link/button/image 
+        again to complete the download process.. 
+        </p>
+        
+        ]]>        
+    </description>
+    <property-name>popupBlockerLabel</property-name>
+
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>
+    </property-extension>
+  </property>   
+  

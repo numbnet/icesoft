@@ -62,6 +62,7 @@ public class DataExporter extends OutputResource {
     private String includeColumns;
     private int rows = Integer.MIN_VALUE;
     private int first = Integer.MIN_VALUE;
+    private String popupBlockerLabel;
 	public DataExporter() {
 	}
 	
@@ -225,7 +226,7 @@ public class DataExporter extends OutputResource {
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[13];
+            values = new Object[14];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
@@ -239,7 +240,8 @@ public class DataExporter extends OutputResource {
         values[9] = styleClass;
         values[10] = includeColumns;         
         values[11] = new Integer(rows); 
-        values[12] = new Integer(first);         
+        values[12] = new Integer(first); 
+        values[13] = popupBlockerLabel;
         return ((Object) (values));
     }
 
@@ -263,7 +265,8 @@ public class DataExporter extends OutputResource {
         styleClass = (String)values[9];  
         includeColumns = (String)values[10];    
         rows = ((Integer)values[11]).intValue(); 
-        first = ((Integer)values[12]).intValue();         
+        first = ((Integer)values[12]).intValue();  
+        popupBlockerLabel = (String)values[13];         
     }
     
     public String getLabel() {
@@ -288,7 +291,9 @@ public class DataExporter extends OutputResource {
                 setResource(new FileResource(output));
                 getResource();
             }
-            JavascriptContext.addJavascriptCall(facesContext, "window.open(\"" + getPath() + "\");");
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.DataExporterOpenWindow(\"" + 
+                    getClientId(facesContext) + "\", \"" + getPath() + "\", \""+ getLabel() 
+                    +"\", \""+ getPopupBlockerLabel() +"\" );");
         }
     }    
 
@@ -558,4 +563,16 @@ public class DataExporter extends OutputResource {
         }
                 
     }
+
+    public String getPopupBlockerLabel() {
+        if (this.popupBlockerLabel != null) {
+            return popupBlockerLabel;
+        }
+        ValueBinding vb = getValueBinding("popupBlockerLabel");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setPopupBlockerLabel(String popupBlockerLabel) {
+        this.popupBlockerLabel = popupBlockerLabel;
+    }    
 }

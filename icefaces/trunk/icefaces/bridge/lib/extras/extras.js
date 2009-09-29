@@ -420,3 +420,26 @@ Ice.simulateBlur = function(ele, anc) {
     ele.style.borderWidth = ele['_borderWidth'];  
     ele.style.borderColor = ele['_borderColor'];   
 }
+
+
+Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
+    var wdo = window.open(path);
+    if (!wdo) {
+        var ele = $(clientId+'container').firstChild;
+        var lbl = popupBlockerLbl == "null"? label: popupBlockerLbl ;
+        ele.onclick= function() {
+           window.open(path);
+        };
+      
+        if (ele.tagName == "INPUT") {
+           ele.value=lbl;
+        } else {
+            if (ele.firstChild.tagName == "IMG") {
+               ele.firstChild.title = lbl;
+            } else {
+               ele.innerHTML = lbl;
+            }
+        }
+    }
+    new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
+}
