@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -49,8 +50,8 @@ import java.util.List;
  *
  * @since 1.7
  */
-@ManagedBean(name = "selectInputText")
-@ViewScoped
+//@ManagedBean(name = "selectInputText")
+//@SessionScoped
 public class SelectInputTextController extends BaseBean {
 
     private final Log log = LogFactory.getLog(this.getClass());
@@ -88,7 +89,7 @@ public class SelectInputTextController extends BaseBean {
      * @param event jsf value change event.
      */
     public void selectInputValueChanged(ValueChangeEvent event) {
-
+       System.out.println("in value Changed event");
         if (event.getComponent() instanceof SelectInputText) {
 
             // get the number of displayable records from the component

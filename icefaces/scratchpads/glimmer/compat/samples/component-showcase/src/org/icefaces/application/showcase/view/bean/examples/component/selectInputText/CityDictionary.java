@@ -63,8 +63,8 @@ import java.util.zip.ZipInputStream;
  *
  * @since 1.7
  */
-@ManagedBean(name = "cityDictionary")
-@ApplicationScoped
+//@ManagedBean(name = "cityDictionary")
+//@ApplicationScoped
 public class CityDictionary implements Serializable {
 
     private static Log log = LogFactory.getLog(CityDictionary.class);
