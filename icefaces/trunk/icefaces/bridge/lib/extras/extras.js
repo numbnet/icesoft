@@ -384,11 +384,15 @@ Ice.pnlTabOnBlur = function(ele, facet, kbs) {
 }
 
 Ice.pnlClpFocus = function(anc) {
-    Ice.simulateFocus(anc.parentNode, anc);
+    var parent = anc.parentNode;
+    Ice.simulateFocus(parent, anc);
+    parent.style.padding='0px'; 
 }
 
 Ice.pnlClpBlur = function(anc) {
-    Ice.simulateBlur(anc.parentNode, anc);
+    var parent = anc.parentNode;
+    Ice.simulateBlur(parent, anc);
+    parent.style.padding='1px';   
 }
 
 Ice.simulateFocus = function(ele, anc) {
