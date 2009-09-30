@@ -59,12 +59,12 @@
     </pre>
     </p>
     <p>In our demo, a bean named 'user' has been defined in the faces.config file as a session
-        scope bean.  The ice:inputFile actionListener is bound to a method in 'user'.  The actionListenert will
-        retrieve a reference to com.icesoft.faces.component.inputfile.InputFile from the component.  You can
-        then retrieve a reference to the File itself from the InputFile object.
+        scope bean.  The ice:inputFile actionListener is bound to a method in 'user'.  The actionListener will
+        retrieve a reference to com.icesoft.faces.component.inputfile.FileInfo from the component.  You can
+        then retrieve a reference to the File itself from the FileInfo object.
     </p>
     <p>We also have the following entry in our web.xml, which means the location of the uploaded files will be in
-       a folder named 'upload' located in the root folder of the application-context.
+       a folder named 'upload' located in the root of the application-context.
     </p>
     <pre>
     &lt;context-param&gt;
@@ -100,13 +100,6 @@
        This integer lets the ice:outputProgress component know the percentage progress of the
        file as it is being uploaded.
     </p>
-    <p>Here are some things to consider when implementing the progressListener, you can see the
-       implementation in the source code:<br />
-       The method must take a single argument of type java.util.EventObject.<br />
-       Beans which implement the progressListener must be in session scope.<br />
-       The PersistentFacesState must be set in the constructor of the implementing session bean.<br />
-       The developer must invoke a render() call on this PersistentFacesState instance.
-    </p>
 
 <div class="demo-instruction">
     <h3>Download the demo:</h3>
@@ -123,12 +116,12 @@
 
     <p>If you want to change the maximum file size that can be uploaded with the
         ice:inputFile component, you must add a context parameter to the web.xml
-        file.  The default maximum is 10 MB, we will change the maximum to 2 MB in
+        file.  The default maximum is 10 MB, we will change the maximum to 1 MB in
         the advanced demos by adding the following:</p>
     <pre>
     &lt;context-param&gt;
         &lt;param-name&gt;com.icesoft.faces.uploadMaxFileSize&lt;/param-name&gt;
-        &lt;param-value&gt;2097152&lt;/param-value&gt;
+        &lt;param-value&gt;1048576&lt;/param-value&gt;
     &lt;/context-param&gt;
     </pre>
 
@@ -136,30 +129,35 @@
 
     <p>An actionListener is invoked when the uploaded file is saved, or on any
         exception. This means the developer can perform an operation when the
-        component reaches one of the following four InputFile states:  [SAVED,
-        INVALID, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE].</p>
+        component reaches one of the following InputFile states:  [SAVED,
+        INVALID, INVALID_CONTENT_TYPE, INVALID_NAME_PATTERN, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE, UNSPECIFIED_NAME, UPLOADING].</p>
     <p> The advanced demo removes the ice:message component we used previously to
         output error messages.  Now we will use the actionListener method to query
         the component for its state and output the state with an ice:outputText
-        component.  When using the demo, try uploading a file greater than 2 MB in size
+        component.
+    </p>
+    <p>
+        When using the demo, try uploading a file greater than 1 MB in size
         to confirm we have changed the maximum file size with the addition of the context
-        parameter above.</p>
+        parameter above.
+    </p>
+    <p> We have also added fileNamePattern=".+\.pdf" as an attribute to
+        the component.  Try uploading valid .pdf and non-pdf files to test the component's
+        ability to apply a name pattern to the files selected for uploading.</p>
 
-    <h4>UniqueFile Attribute</h4>
+    <h4>UniqueFolder Attribute</h4>
 
     <p>The ice:inputFile component features an attribute that lets you manipulate
-        where the file will be saved.  The default behaviour of the component is to
-        create a folder at the root of your context with the session id as its name.
-        This allows you to easily associate files to a specific session.  If you add
-        the attribute uniqueFolder="false" to the component, files will be uploaded
-        to the context root and a folder will not be created.
+        where the file will be saved.  The default behaviour of the component is to upload
+        files to the context root.  If you add the attribute uniqueFolder="true" to the component
+        it will create a folder with the session id as its name.
+        This allows you to easily associate files to a specific session.
     </p>
-    <p>The advanced demo has two components under the heading UniqueFile Attribute, both of them
+    <p>The advanced demo has two components under the heading UniqueFolder Attribute, both of them
        have an outputText component underneath to show the location of the file after it has been
-       uploaded.  The first component shows the default behaviour of creating a folder in the
-       context root with the session id for a name and placing the file in that folder.  The
-       second component has the attribute uniqueFolder="false" which means the file will be uploaded
-       directly to the context root.
+       uploaded.  The first component shows the default behaviour of the component without uniqueFolder set to 'true'.
+       The second component has the attribute uniqueFolder="true" which means a folder
+       with the session id will be created and the file will be placed in that folder.
     </p>
 
 <div class="demo-instruction">
@@ -200,15 +198,15 @@
                     href="inputFile-progress-tutorial.zip">inputFile-progress
                 source code</a></td>
             <td class="bodyNotes"> An outputProgress component is added to the page and
-            connected to the progress of the uploading file<./td>
+            connected to the progress of the uploading file.</td>
         </tr>
         <tr>
             <td class="bodyExample">inputFile-advanced</td>
             <td class="bodySource"><a
                     href="inputFile-advanced-tutorial.zip">inputFile-advanced
                 source code</a></td>
-            <td class="bodyNotes">The maximum file size is altered.  The ActionListener and
-            UniqueFile attributes are explained.</td>
+            <td class="bodyNotes">The maximum file size is altered.  The actionListener,
+            uniqueFolder and fileNamePattern attributes are explained.</td>
         </tr>
     </tbody>
 </table>
@@ -221,6 +219,6 @@
     <a href="index.html"> Table of Contents</a>
 </p>
 
-<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+<p>Copyright 2009 ICEsoft Technologies Inc. All rights reserved.</p>
 </body>
 </html>
