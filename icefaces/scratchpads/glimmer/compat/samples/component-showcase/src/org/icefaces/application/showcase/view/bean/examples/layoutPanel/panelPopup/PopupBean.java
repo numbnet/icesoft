@@ -35,8 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPo
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+//import javax.annotation.PostConstruct;
+//import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 
 import javax.faces.bean.ViewScoped;
@@ -62,10 +62,10 @@ public class PopupBean implements Serializable {
     private boolean autoCentre = false;
 
     
-    @PostConstruct
-    public void init(){
-    	System.out.println("initializing popupBean");
-    }
+//    @PostConstruct
+//    public void init(){
+//    	System.out.println("initializing popupBean");
+//    }
     
     public String getDraggableMessage() {
         return draggableMessage;
@@ -133,8 +133,8 @@ public class PopupBean implements Serializable {
         modalRendered = !modalRendered;
         System.out.println("\t\t modalRendered now="+modalRendered);
     }
-    @PreDestroy
-    public void destroy(){
-    	System.out.println("destroying popup bean");
-    }
+//    @PreDestroy
+//    public void destroy(){
+//    	System.out.println("destroying popup bean");
+//    }
 }
