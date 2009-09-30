@@ -58,10 +58,20 @@
     &lt;/servlet-mapping&gt;
     </pre>
     </p>
-    <p>In our demo, a bean named user has been defined in the faces.config file as a session
-        scope bean.  The ice:inputFile component will upload a file and save a reference to it
-        in the user bean via the following attribute: file="#{user.file}".
+    <p>In our demo, a bean named 'user' has been defined in the faces.config file as a session
+        scope bean.  The ice:inputFile actionListener is bound to a method in 'user'.  The actionListenert will
+        retrieve a reference to com.icesoft.faces.component.inputfile.InputFile from the component.  You can
+        then retrieve a reference to the File itself from the InputFile object.
     </p>
+    <p>We also have the following entry in our web.xml, which means the location of the uploaded files will be in
+       a folder named 'upload' located in the root folder of the application-context.
+    </p>
+    <pre>
+    &lt;context-param&gt;
+            &lt;param-name>com.icesoft.faces.uploadDirectory&lt;/param-name&gt;
+            &lt;param-value&gt;upload&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    </pre>
     <p>If you attempt to upload an invalid entry, or a file greater in size than
         10 MB (the default limit for this component), you should see an appropriate
         error message output via an ice:message component.  The inputFile component
