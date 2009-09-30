@@ -1,30 +1,29 @@
 package com.icesoft.icefaces.tutorial.component.inputfile.basic;
 
-import java.io.File;
+import com.icesoft.faces.component.inputfile.FileInfo;
+import com.icesoft.faces.component.inputfile.InputFile;
+
+import javax.faces.event.ActionEvent;
+
 
 /**
  * <p>
  * A basic backing bean for a ice:inputFile component.  This bean contains a
- * reference to the file that is uploaded by the inputFile component.
+ * reference to FileInfo.
  * </p>
  */
 public class User {
 
-    File file;
-    String fileLocation;
+	private FileInfo currentFile;
 
-    public File getFile() {
-        return file;
-    }
-    
-    public String getFileLocation(){
-        return fileLocation;
-    }
+	public FileInfo getCurrentFile() {
+		return currentFile;
+	}
 
-    public void setFile(File file) {
-        this.file = file;
-        fileLocation = file.getPath();
-    }
+	public void uploadActionListener(ActionEvent actionEvent) {
+        InputFile inputFile = (InputFile) actionEvent.getSource();
+        currentFile = inputFile.getFileInfo();
+	}
     
 
 }
