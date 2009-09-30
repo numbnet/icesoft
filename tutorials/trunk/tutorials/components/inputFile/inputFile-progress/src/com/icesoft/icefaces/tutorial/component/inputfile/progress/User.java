@@ -1,11 +1,11 @@
 package com.icesoft.icefaces.tutorial.component.inputfile.progress;
 
-import java.io.File;
 import java.util.EventObject;
 
 import com.icesoft.faces.component.inputfile.InputFile;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.component.inputfile.FileInfo;
+
+import javax.faces.event.ActionEvent;
 
 /**
  * <p>
@@ -15,47 +15,36 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
  */
 public class User {
 
-    private File file;
-    private String fileLocation;
-    private int percent;
-    private PersistentFacesState state;
+	private FileInfo currentFile;
+	private int fileProgress;
 
-    public User(){
-        state = PersistentFacesState.getInstance();
+	public FileInfo getCurrentFile() {
+		return currentFile;
+	}
+
+    public int getFileProgress() {
+        return fileProgress;
     }
 
-    public File getFile() {
-        return file;
-    }
+	public void uploadActionListener(ActionEvent actionEvent) {
+        InputFile inputFile = (InputFile) actionEvent.getSource();
+        currentFile = inputFile.getFileInfo();
+	}
 
-    public String getFileLocation(){
-        return fileLocation;
-    }
+    /**
+     * <p>This method is bound to the inputFile component and is executed
+     * multiple times during the file upload process.  Every call allows
+     * the user to finds out what percentage of the file has been uploaded.
+     * This progress information can then be used with a progressBar component
+     * for user feedback on the file upload progress. </p>
+     *
+     * @param event holds a InputFile object in its source which can be probed
+     *              for the file upload percentage complete.
+     */
 
-    public int getPercent() {
-        return percent;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-        fileLocation = file.getPath();
-    }
-
-    public void setPercent(int percent) {
-        this.percent = percent;
-    }
-
-    // Required to bind the InputFile component to its OutputProgress component.
-    public void progress (EventObject event) {
-        InputFile inputFileComponent = (InputFile)event.getSource();
-        percent = inputFileComponent.getFileInfo().getPercent();
-        try {
-            if (state != null) {
-                state.render();
-            }
-        } catch (RenderingException ee) {
-            System.out.println(ee.getMessage());
-        }
-    }
+	public void progressListener(EventObject event) {
+        InputFile ifile = (InputFile) event.getSource();
+        fileProgress = ifile.getFileInfo().getPercent();
+	}
 
 }
