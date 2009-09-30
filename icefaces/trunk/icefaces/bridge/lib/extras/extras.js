@@ -424,7 +424,8 @@ Ice.simulateBlur = function(ele, anc) {
 
 Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
     var wdo = window.open(path);
-    if (!wdo || typeof(oWin) == "undefined") {
+
+    if (!wdo || typeof(wdo)== "undefined") {
         var ele = $(clientId+'container').firstChild;
         var lbl = popupBlockerLbl == "null"? label: popupBlockerLbl ;
         ele.onclick= function() {
