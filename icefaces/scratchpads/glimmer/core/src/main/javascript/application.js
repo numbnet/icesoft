@@ -63,6 +63,8 @@ window.evaluate = eval;
     namespace.addOnBlockingConnectionUnstable = operator();
     namespace.addOnBlockingConnectionLost = operator();
     namespace.addOnViewDisposal = operator();
+    namespace.addOnSubmitSend = operator();
+    namespace.addOnSubmitResponse = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -171,6 +173,8 @@ window.evaluate = eval;
         var sessionExpiredListeners = [];
         var serverErrorListeners = [];
         var viewDisposedListeners = [];
+        var submitSendListeners = [];
+        var submitResponseListeners = [];
 
         asyncContext = configuration.connection.context.async;
 
@@ -255,6 +259,18 @@ window.evaluate = eval;
             broadcast(blockingConnectionUnstableListeners);
         });
 
+        jsf.ajax.addOnEvent(function(e) {
+            switch (e.status) {
+                case 'begin': broadcast(submitSendListeners); break;
+                case 'complete': broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]); break;
+            }
+        });
+
+        jsf.ajax.addOnError(function(e) {
+            if (e.status == 'serverError')
+                broadcast(serverErrorListeners, [ e.responseText, e.responseXML ]);
+        });
+
         info(logger, 'bridge loaded!');
 
         return object(function(method) {
@@ -277,6 +293,14 @@ window.evaluate = eval;
 
             method(namespace.addOnViewDisposal, function(self, callback) {
                 append(viewDisposedListeners, callback);
+            });
+
+            method(namespace.addOnSubmitSend, function(self, callback) {
+                append(submitSendListeners, callback);
+            });
+
+            method(namespace.addOnSubmitResponse, function(self, callback) {
+                append(submitResponseListeners, callback);
             });
 
             method(namespace.disposeBridge, dispose);
