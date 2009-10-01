@@ -47,6 +47,7 @@ public class FacesConfigBuilder extends XMLBuilder{
         try {
             //renderkit
             String rendererType = FileWriter.getPropertyValue(clazz, "RENDERER_TYPE","getRendererType" );
+            if (rendererType  == null || "null".equals(rendererType)) return;
             Text comp_renderer_type_text = getDocument().createTextNode(rendererType);
             
             Field comp_family = clazz.getField("COMPONENT_FAMILY");

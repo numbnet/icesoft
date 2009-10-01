@@ -8,7 +8,7 @@
   <property name="dist"  location="dist"/>
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
-
+  <property name="exploded"  location="${build}/exploded"/>
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
         <pathelement path="../component/src"/>
@@ -19,13 +19,13 @@
   <target name="compile" 
         description="compile the source " >
     <echo message=".."/>        
-    <mkdir dir="${build}/exploded"/>
+    <mkdir dir="${exploded}"/>
     <mkdir dir="${build}/generated"/>
     <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
   	<ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
-    <javac srcdir="${build}/generated" destdir="${build}/exploded" debug="true">
+    <javac srcdir="${build}/generated" destdir="${exploded}" debug="true">
         <classpath refid="compile.run.classpath"/>
     </javac> 
   </target>
@@ -33,10 +33,10 @@
   <target name="dist" depends="compile" 
         description="generate the distribution" >
     <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+    <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/${ant.project.name}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/${ant.project.name}.jar" basedir="${exploded}"/>
   </target>
 
   <target name="clean"
