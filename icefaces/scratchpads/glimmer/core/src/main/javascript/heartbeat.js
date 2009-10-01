@@ -46,7 +46,7 @@ var Heartbeat;
             method(notify, function(self) {
                 if (++count == retries) {
                     try {
-                        callback();
+                        callback(retries);
                     } finally {
                         reset(self);
                     }
