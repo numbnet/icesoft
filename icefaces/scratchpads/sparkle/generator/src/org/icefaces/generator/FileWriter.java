@@ -88,7 +88,7 @@ public class FileWriter {
         try {
             // Prepare the DOM document for writing
             Source source = new DOMSource(doc);
-            File folder = new File(getWorkingFolder()+"../build/META-INF/");
+            File folder = new File(getWorkingFolder()+"META-INF/");
             
             if (!folder.exists()) {
                 folder.mkdirs();
