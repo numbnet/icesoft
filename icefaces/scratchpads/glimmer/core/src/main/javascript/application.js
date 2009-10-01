@@ -54,11 +54,15 @@ window.evaluate = eval;
     //include synchronizer.js
     //include command.js
     //include heartbeat.js
-    //include status.js
-    namespace.ComponentIndicators = ComponentIndicators;
     //include connection.async.js
     //include submit.js
     namespace.submitEvent = submitEvent;
+
+    namespace.addOnSessionExpiry = operator();
+    namespace.addOnServerError = operator();
+    namespace.addOnBlockingConnectionUnstable = operator();
+    namespace.addOnBlockingConnectionLost = operator();
+    namespace.addOnViewDisposal = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -162,13 +166,18 @@ window.evaluate = eval;
     });
 
     namespace.Application = function(configuration, container) {
+        var blockingConnectionLostListeners = [];
+        var blockingConnectionUnstableListeners = [];
+        var sessionExpiredListeners = [];
+        var serverErrorListeners = [];
+        var viewDisposedListeners = [];
+
         asyncContext = configuration.connection.context.async;
 
         var sessionID = configuration.session;
         //todo: can we rely on javax.faces.ViewState to identify the view?
         var viewID = document.getElementById('javax.faces.ViewState').value;
         var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
-        var indicators = DefaultIndicators(configuration, container);
         var commandDispatcher = CommandDispatcher();
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
             try {
@@ -181,9 +190,13 @@ window.evaluate = eval;
         });
 
         function dispose() {
-            dispose = noop;
-            delistView(sessionID, viewID);
-            shutdown(asyncConnection);
+            try {
+                dispose = noop;
+                delistView(sessionID, viewID);
+                broadcast(viewDisposedListeners);
+            } finally {
+                shutdown(asyncConnection);
+            }
         }
 
         onUnload(window, dispose);
@@ -192,9 +205,12 @@ window.evaluate = eval;
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
         register(commandDispatcher, 'session-expired', function() {
-            info(logger, 'session expired');
-            on(indicators.sessionExpired);
-            dispose();
+            try {
+                info(logger, 'session expired');
+                broadcast(sessionExpiredListeners);
+            } finally {
+                dispose();
+            }
         });
         register(commandDispatcher, 'macro', function(message) {
             each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
@@ -210,45 +226,60 @@ window.evaluate = eval;
             } else {
                 warn(logger, 'unknown content in response');
             }
-            off(indicators.connectionTrouble);
         });
 
         onServerError(asyncConnection, function(response) {
-            warn(logger, 'server side error');
-            off(indicators.busy);
-            if (blank(contentAsText(response))) {
-                on(indicators.serverError);
-            } else {
-                replaceContainerHTML(contentAsText(response), container);
+            try {
+                warn(logger, 'server side error');
+                var textContent = contentAsText(response);
+                if (!blank(textContent)) {
+                    replaceContainerHTML(textContent, container);
+                }
+                broadcast(serverErrorListeners, [ textContent, contentAsDOM(response) ]);
+            } finally {
+                dispose();
             }
-            dispose();
         });
 
-        whenDown(asyncConnection, function() {
-            warn(logger, 'connection to server was lost');
-            off(indicators.busy);
-            on(indicators.connectionLost);
-            dispose();
+        whenDown(asyncConnection, function(reconnectAttempts) {
+            try {
+                warn(logger, 'connection to server was lost');
+                broadcast(blockingConnectionLostListeners, [ reconnectAttempts ]);
+            } finally {
+                dispose();
+            }
         });
 
         whenTrouble(asyncConnection, function() {
             warn(logger, 'connection in trouble');
-            on(indicators.connectionTrouble);
+            broadcast(blockingConnectionUnstableListeners);
         });
 
         info(logger, 'bridge loaded!');
 
         return object(function(method) {
-            //public method used to modify bridge's status manager
-            method(namespace.resetIndicators, function(self, setup) {
-                each([indicators.busy, indicators.sessionExpired, indicators.serverError, indicators.connectionLost, indicators.connectionTrouble], off);
-                indicators = setup(DefaultIndicators(configuration, container), configuration);
-                info(logger, "status indicators were updated");
-            });
             //public method
-            method(namespace.disposeBridge, function(self) {
-                dispose();
+            method(namespace.addOnSessionExpiry, function(self, callback) {
+                append(sessionExpiredListeners, callback);
             });
+
+            method(namespace.addOnServerError, function(self, callback) {
+                append(serverErrorListeners, callback);
+            });
+
+            method(namespace.addOnBlockingConnectionUnstable, function(self, callback) {
+                append(blockingConnectionUnstableListeners, callback);
+            });
+
+            method(namespace.addOnBlockingConnectionLost, function(self, callback) {
+                append(blockingConnectionLostListeners, callback);
+            });
+
+            method(namespace.addOnViewDisposal, function(self, callback) {
+                append(viewDisposedListeners, callback);
+            });
+
+            method(namespace.disposeBridge, dispose);
         });
     };
 
