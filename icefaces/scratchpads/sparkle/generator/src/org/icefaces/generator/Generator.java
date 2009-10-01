@@ -10,9 +10,9 @@ import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
 import org.icefaces.generator.xmlbuilder.TLDBuilder;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.annotation.Property;
-import com.icesoft.faces.component.annotation.PropertyTemplate;
+import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.PropertyTemplate;
 
 public class Generator {
     static List<Class> components = null;
@@ -27,7 +27,7 @@ public class Generator {
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     
     static {
-        components = FileWriter.getAnnotatedComps();
+        components = FileWriter.getAnnotatedCompsFromFolder();
     }
     
 

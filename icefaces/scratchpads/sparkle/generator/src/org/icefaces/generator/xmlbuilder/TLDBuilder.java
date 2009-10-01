@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.annotation.Property;
+import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;

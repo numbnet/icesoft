@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.w3c.dom.Text;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.annotation.Property;
+import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
 
 public class TagClassGenerator {
     static StringBuilder generatedTagClass;

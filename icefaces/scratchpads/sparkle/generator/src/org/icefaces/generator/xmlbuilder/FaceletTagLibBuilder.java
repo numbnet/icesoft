@@ -5,10 +5,7 @@ import java.lang.reflect.Field;
 import org.icefaces.generator.FileWriter;
 import org.w3c.dom.Element;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.generator.XMLBuilder;
-
-
+import org.icefaces.component.annotation.Component;
 
 public class FaceletTagLibBuilder extends XMLBuilder{
     private Element tag;

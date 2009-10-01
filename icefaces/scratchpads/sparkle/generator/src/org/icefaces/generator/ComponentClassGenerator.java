@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.annotation.Property;
-
-
+import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
 
 public class ComponentClassGenerator {
     static StringBuilder generatedComponentClass;
