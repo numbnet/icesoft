@@ -12,24 +12,23 @@
 
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
-    
+      	<pathelement path="../component/build/exploded"/>
   </path>
     
-  <target name="init">
+  <target name="init" depends="compile">
     <!-- Create the time stamp -->
     <tstamp/>
-    <java classname="com.icesoft.faces.component.generator.Generator"  classpathref="compile.run.classpath" fork="true"
-    	classpath="bin">
-      
+    <java classname="org.icefaces.generator.Generator"  classpathref="compile.run.classpath" fork="true"
+    	classpath="${build}">
     </java>
   
   </target>
 
-  <target name="compile" depends="init"
+  <target name="compile" depends="clean"
         description="compile the source " >
     <echo message=".."/>        
     <mkdir dir="${build}"/>
-    <javac srcdir="${build}" destdir="${build}" debug="true">
+    <javac srcdir="${src}" destdir="${build}" debug="true">
 	<classpath refid="compile.run.classpath"/>
     </javac>            
  

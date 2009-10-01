@@ -28,14 +28,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-import com.icesoft.faces.component.annotation.Component;
+import org.icefaces.component.annotation.Component;
 
 public class FileWriter {
     public static void write(String fileName, String path, StringBuilder contents) {
         Writer writer = null;
         try
         {
-            String workingDir = getWorkingFolder()+ "../build/";
+            String workingDir = getWorkingFolder()+ "../generated/";
             File folder = new File(workingDir+ path);
             System.out.println(folder + path+ fileName);
             if (!folder.exists()) {
@@ -223,5 +223,53 @@ public class FileWriter {
         }
     return null;
     }    
+    
+    public static List<Class> getAnnotatedCompsFromFolder() {
+        System.out.println("Working folder "+ FileWriter.getWorkingFolder());
+        File file = new File(FileWriter.getWorkingFolder());
+
+        URLClassLoader clazzLoader = null;
+        try {
+            URL url = file.toURL();
+            clazzLoader = new URLClassLoader(new URL[]{url});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }    
+        List<Class> componentsList = new ArrayList<Class>();
+        printFile(file, componentsList, clazzLoader);
+       return componentsList; 
+    }
+    
+    public static void printFile(File file, List<Class> componentsList, URLClassLoader loader) {
+        
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                String path = files[i].getPath();
+                if (path.endsWith("class")) {
+                    path = path.substring(path.indexOf("org\\icefaces"), path.indexOf(".class"));
+                    path = path.replace('\\', '.');
+                    System.out.println(path);
+                    try {                    
+                        Class c = loader.loadClass(path);
+                        if (c.isAnnotationPresent(Component.class)) {
+                            System.out.println(" anno found on "+ path);
+                            componentsList.add(c);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }                     
+   
+                }
+               
+                if (files[i].isDirectory()) {
+                    printFile(files[i], componentsList, loader);
+                }
+            }
+        }
+        
+        
+
+    }
 }
 

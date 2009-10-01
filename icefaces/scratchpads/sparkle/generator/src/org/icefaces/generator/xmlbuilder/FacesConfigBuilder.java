@@ -6,8 +6,7 @@ import org.icefaces.generator.FileWriter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import com.icesoft.faces.component.annotation.Component;
-import com.icesoft.faces.component.generator.XMLBuilder;
+import org.icefaces.component.annotation.Component;
 
 
 public class FacesConfigBuilder extends XMLBuilder{

@@ -11,6 +11,8 @@
 
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+        <pathelement path="../component/src"/>
+
   </path>
     
 
@@ -18,13 +20,14 @@
         description="compile the source " >
     <echo message=".."/>        
     <mkdir dir="${build}/exploded"/>
-    
+    <mkdir dir="${build}/generated"/>
     <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
-  	<ant antfile="../generator/build.xml" target="dist"/>
-
-    
+  	<ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
+    <javac srcdir="${build}/generated" destdir="${build}/exploded" debug="true">
+        <classpath refid="compile.run.classpath"/>
+    </javac> 
   </target>
 
   <target name="dist" depends="compile" 
