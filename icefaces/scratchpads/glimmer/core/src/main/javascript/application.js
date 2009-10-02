@@ -178,7 +178,7 @@ window.evaluate = eval;
         var submitSendListeners = [];
         var submitResponseListeners = [];
         var beforeUpdateListeners = [];
-        var afterUpdateListeners = []
+        var afterUpdateListeners = [];
 
         asyncContext = configuration.connection.context.async;
 
