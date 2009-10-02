@@ -65,6 +65,8 @@ window.evaluate = eval;
     namespace.addOnViewDisposal = operator();
     namespace.addOnSubmitSend = operator();
     namespace.addOnSubmitResponse = operator();
+    namespace.addOnBeforeUpdate = operator();
+    namespace.addOnAfterUpdate = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -175,6 +177,8 @@ window.evaluate = eval;
         var viewDisposedListeners = [];
         var submitSendListeners = [];
         var submitResponseListeners = [];
+        var beforeUpdateListeners = [];
+        var afterUpdateListeners = []
 
         asyncContext = configuration.connection.context.async;
 
@@ -261,14 +265,22 @@ window.evaluate = eval;
 
         jsf.ajax.addOnEvent(function(e) {
             switch (e.status) {
-                case 'begin': broadcast(submitSendListeners); break;
-                case 'complete': broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]); break;
+                case 'begin':
+                    broadcast(submitSendListeners);
+                    break;
+                case 'complete':
+                    broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]);
+                    broadcast(beforeUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
+                    break;
+                case 'success':
+                    broadcast(afterUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
+                    break;
             }
         });
 
         jsf.ajax.addOnError(function(e) {
             if (e.status == 'serverError')
-                broadcast(serverErrorListeners, [ e.responseText, e.responseXML ]);
+                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
         });
 
         info(logger, 'bridge loaded!');
@@ -301,6 +313,14 @@ window.evaluate = eval;
 
             method(namespace.addOnSubmitResponse, function(self, callback) {
                 append(submitResponseListeners, callback);
+            });
+
+            method(namespace.addOnBeforeUpdate, function(self, callback) {
+                append(beforeUpdateListeners, callback);
+            });
+
+            method(namespace.addOnAfterUpdate, function(self, callback) {
+                append(afterUpdateListeners, callback);
             });
 
             method(namespace.disposeBridge, dispose);
