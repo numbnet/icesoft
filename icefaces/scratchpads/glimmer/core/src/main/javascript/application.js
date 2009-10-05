@@ -58,15 +58,15 @@ window.evaluate = eval;
     //include submit.js
     namespace.submitEvent = submitEvent;
 
-    namespace.addOnSessionExpiry = operator();
-    namespace.addOnServerError = operator();
-    namespace.addOnBlockingConnectionUnstable = operator();
-    namespace.addOnBlockingConnectionLost = operator();
-    namespace.addOnViewDisposal = operator();
-    namespace.addOnSubmitSend = operator();
-    namespace.addOnSubmitResponse = operator();
-    namespace.addOnBeforeUpdate = operator();
-    namespace.addOnAfterUpdate = operator();
+    namespace.onSessionExpiry = operator();
+    namespace.onServerError = operator();
+    namespace.onBlockingConnectionUnstable = operator();
+    namespace.onBlockingConnectionLost = operator();
+    namespace.onViewDisposal = operator();
+    namespace.onSubmitSend = operator();
+    namespace.onSubmitResponse = operator();
+    namespace.onBeforeUpdate = operator();
+    namespace.onAfterUpdate = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
@@ -287,39 +287,39 @@ window.evaluate = eval;
 
         return object(function(method) {
             //public method
-            method(namespace.addOnSessionExpiry, function(self, callback) {
+            method(namespace.onSessionExpiry, function(self, callback) {
                 append(sessionExpiredListeners, callback);
             });
 
-            method(namespace.addOnServerError, function(self, callback) {
+            method(namespace.onServerError, function(self, callback) {
                 append(serverErrorListeners, callback);
             });
 
-            method(namespace.addOnBlockingConnectionUnstable, function(self, callback) {
+            method(namespace.onBlockingConnectionUnstable, function(self, callback) {
                 append(blockingConnectionUnstableListeners, callback);
             });
 
-            method(namespace.addOnBlockingConnectionLost, function(self, callback) {
+            method(namespace.onBlockingConnectionLost, function(self, callback) {
                 append(blockingConnectionLostListeners, callback);
             });
 
-            method(namespace.addOnViewDisposal, function(self, callback) {
+            method(namespace.onViewDisposal, function(self, callback) {
                 append(viewDisposedListeners, callback);
             });
 
-            method(namespace.addOnSubmitSend, function(self, callback) {
+            method(namespace.onSubmitSend, function(self, callback) {
                 append(submitSendListeners, callback);
             });
 
-            method(namespace.addOnSubmitResponse, function(self, callback) {
+            method(namespace.onSubmitResponse, function(self, callback) {
                 append(submitResponseListeners, callback);
             });
 
-            method(namespace.addOnBeforeUpdate, function(self, callback) {
+            method(namespace.onBeforeUpdate, function(self, callback) {
                 append(beforeUpdateListeners, callback);
             });
 
-            method(namespace.addOnAfterUpdate, function(self, callback) {
+            method(namespace.onAfterUpdate, function(self, callback) {
                 append(afterUpdateListeners, callback);
             });
 
