@@ -46,6 +46,7 @@ import org.icefaces.push.SessionRenderable;
 //import org.apache.commons.logging.LogFactory;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import javax.faces.event.ActionEvent;
@@ -78,14 +79,14 @@ import java.io.Serializable;
  * @since 1.7
  */
 @ManagedBean(name = "outputProgressController")
-@ViewScoped
-public class OutputProgressController {
+@SessionScoped
+public class OutputProgressController{
 
     public static Logger log = Logger.getLogger("OutputProgressController");
 
     // long running thread will sleep 10 times for this duration.
     public static final long PROCCESS_SLEEP_LENGTH = 300;
-
+  
     // A thread pool is used to make this demo a little more scalable then
     // just creating a new thread for each user.
     protected static ThreadPoolExecutor longRunningTaskThreadPool =
@@ -97,7 +98,7 @@ public class OutputProgressController {
 //    private RenderManager renderManager;
 //    private PersistentFacesState persistentFacesState;
 //    private String sessionId;
-
+    
     // Model where we store the dynamic properties associated with outputProgress
     private OutputProgressModel outputProgressModel;
 
@@ -111,6 +112,7 @@ public class OutputProgressController {
 //        persistentFacesState = PersistentFacesState.getInstance();
         outputProgressModel = new OutputProgressModel();
         SessionRenderer.addCurrentSession("progressExample");
+        log.info("added example group to SessionRenderer");
     }
 
     /**
@@ -122,75 +124,12 @@ public class OutputProgressController {
      */
     public void startLongProcress(ActionEvent event) {
 
-        longRunningTaskThreadPool.execute(
-                    new LongOperationRunner(outputProgressModel));
+   //     
+    	log.info("run LongOperationRunner");
+    	longRunningTaskThreadPool.execute(new LongOperationRunner(outputProgressModel));
+        log.info("back from LongOperationRunner");
     }
-
-    /**
-     * Callback method that is called if any exception occurs during an attempt
-     * to render this Renderable.
-     * <p/>
-     * It is up to the application developer to implement appropriate policy
-     * when a RenderingException occurs.  Different policies might be
-     * appropriate based on the severity of the exception.  For example, if the
-     * exception is fatal (the session has expired), no further attempts should
-     * be made to render this Renderable and the application may want to remove
-     * the Renderable from some or all of the
-     * {@link com.icesoft.faces.async.render.GroupAsyncRenderer}s it
-     * belongs to. If it is a transient exception (like a client's connection is
-     * temporarily unavailable) then the application has the option of removing
-     * the Renderable from GroupRenderers or leaving them and allowing another
-     * render call to be attempted.
-     *
-     * @param renderingException The exception that occurred when attempting to
-     *                           render this Renderable.
-     */
-//    public void renderingException(RenderingException renderingException) {
-//        if (log.isTraceEnabled() &&
-//                renderingException instanceof TransientRenderingException) {
-//            log.trace("OutputProgressController Transient Rendering exception:", renderingException);
-//        } else if (renderingException instanceof FatalRenderingException) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("OutputProgressController Fatal rendering exception: ", renderingException);
-//            }
-//            renderManager.getOnDemandRenderer(sessionId).remove(this);
-//            renderManager.getOnDemandRenderer(sessionId).dispose();
-//        }
-//    }
-
-    /**
-     * Return the reference to the
-     * {@link com.icesoft.faces.webapp.xmlhttp.PersistentFacesState
-     * PersistentFacesState} associated with this Renderable.
-     * <p/>
-     * The typical (and recommended usage) is to get and hold a reference to the
-     * PersistentFacesState in the constructor of your managed bean and return
-     * that reference from this method.
-     *
-     * @return the PersistentFacesState associated with this Renderable
-     */
-//    public PersistentFacesState getState() {
-//        return persistentFacesState;
-//    }
-
-    /**
-     * Sets the application render manager reference and creates a new on
-     * demand render for this session id.
-     *
-     * @param renderManager RenderManager reference for this application.
-     *                      Usually called via the faces-config.xml using
-     *                      chaining.
-     */
-//    public void setRenderManager(RenderManager renderManager) {
-//        this.renderManager = renderManager;
-//
-//        // Casting to HttpSession ruins it for portlets, in this case we only
-//        // need a unique reference so we use the object hash
-//        sessionId = FacesContext.getCurrentInstance().getExternalContext()
-//                .getSession(false).toString();
-//        renderManager.getOnDemandRenderer(sessionId).add(this);
-//    }
-
+ 
     /**
      * Gets the outputProgressModel for this instance.
      *
@@ -201,38 +140,39 @@ public class OutputProgressController {
         return outputProgressModel;
     }
 
-    /**
-     * Called when the Servlet Context is created.
-     * @param event servlet context event.
-     */
-    public void contextInitialized(ServletContextEvent event) {
-    }
+//    /**
+//     * Called when the Servlet Context is created.
+//     * @param event servlet context event.
+//     */
+//    public void contextInitialized(ServletContextEvent event) {
+//    }
 
     /**
      * Called when the Servlet Context is about to be destroyed.  This method
      * calls shutdownNow on the thread pool.
      * @param event servlet context event.
      */
-    public void contextDestroyed(ServletContextEvent event) {
-        if (longRunningTaskThreadPool != null) {
-            longRunningTaskThreadPool.shutdownNow();
-  
- //           if (log.isDebugEnabled()) {
-                log.warning("Shutting down thread pool...");
- //           }
-        }
-    }
+//    public void contextDestroyed(ServletContextEvent event) {
+//        if (longRunningTaskThreadPool != null) {
+//            longRunningTaskThreadPool.shutdownNow();
+//  
+// //           if (log.isDebugEnabled()) {
+//                log.warning("Shutting down thread pool...");
+// //           }
+//        }
+//    }
 
     /**
      * Utility class to represent some server process that we want to monitor
      * using ouputProgress and server push.
      */
     protected class LongOperationRunner implements Runnable {
-   //     PersistentFacesState state = null;
         private OutputProgressModel ouputProgressModel;
+//        private SessionRenderer renderer;
 
          public LongOperationRunner(OutputProgressModel ouputProgressModel) {
 //            this.state = state;
+System.out.println("Constructor for LongOperationRunner");         	 
             this.ouputProgressModel = ouputProgressModel;
         }
 
@@ -246,25 +186,29 @@ public class OutputProgressController {
                     // pause the thread
                     Thread.sleep(PROCCESS_SLEEP_LENGTH);
                     // update the percent value
+ System.out.println("value of i="+i);
                     ouputProgressModel.setPercentComplete(i);
 //                    // call a render to update the component state
                     try {
+System.out.println("before rendering with SessionRenderer");
                         SessionRenderer.render("progressExample");
+ System.out.println("after rendereing with SessionRenderer");
                     } catch (IllegalStateException e) {
-                        log.warning("Error running progress thread.");
+ System.out.println("Error running progress thread.");
                         e.printStackTrace();
                     }
                 }
             }
             catch (InterruptedException e) {
-                log.warning("Error running progress thread.");
+  System.out.println("Interruped Exception running progress thread.");
                 e.printStackTrace();
             }
             ouputProgressModel.setPogressStarted(false);
-//            renderManager.getOnDemandRenderer(sessionId).requestRender();
-        }
-     }
+   System.out.println("setProgressStarted false");
+ //           renderManager.getOnDemandRenderer(sessionId).requestRender();
+                }
 
+    }
     /**
      * Dispose callback called due to a view closing or session
      * invalidation/timeout
@@ -277,6 +221,9 @@ public class OutputProgressController {
 //        renderManager.getOnDemandRenderer(sessionId).remove(this);
 //		renderManager.getOnDemandRenderer(sessionId).dispose();
 	}
+
+
+
 
    
 }
