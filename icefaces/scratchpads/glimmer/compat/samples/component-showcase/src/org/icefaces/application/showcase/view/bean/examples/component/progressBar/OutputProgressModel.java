@@ -32,6 +32,9 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.progressBar;
 
+import org.icefaces.push.SessionRenderable;
+import org.icefaces.push.SessionRenderer;
+
 /**
  * <p>The OutputProgressModel class stores properties that are used to dynamically
  * change the state of the respective inputProgressBar component</p>
@@ -40,7 +43,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.progressB
  * @since 1.7
  */
 public class OutputProgressModel {
-
+  
+	
     // true indicates intermdiate mode, false indicates standard output progress
     // mode.
     private boolean intermediatMode;
@@ -153,4 +157,6 @@ public class OutputProgressModel {
     public void setCompletedMessageEnabled(boolean completedMessageEnabled) {
         this.completedMessageEnabled = completedMessageEnabled;
     }
+
+
 }
