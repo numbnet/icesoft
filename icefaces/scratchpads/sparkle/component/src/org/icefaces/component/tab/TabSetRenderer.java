@@ -86,13 +86,13 @@ public class TabSetRenderer extends Renderer{
             styleClass+= " yui-navset-bottom";
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR); 
-        boolean isClientSide = new Boolean(tabSet.getAttributes().get("clientSide").toString());
+        boolean isClientSide = true; // new Boolean(tabSet.getAttributes().get("clientSide").toString());
         int tabIndex = tabSet.getTabIndex();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
-        ", 'partialSubmit':"+ new Boolean(tabSet.getAttributes().get("partialSubmit").toString())+ "});";
+        ", 'partialSubmit':true});";
         
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
