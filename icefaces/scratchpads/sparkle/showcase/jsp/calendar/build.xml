@@ -1,0 +1,40 @@
+<project name="calendar" default="war">
+
+    <property name="classes.dir" value="web/WEB-INF/classes"/>
+
+    <target name="clean">
+        <delete dir="dist"/>
+        <delete dir="${classes.dir}"/>
+        <!--delete dir="web/WEB-INF/lib"/-->
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="src" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="../../../../glimmer/lib">
+                    <include name="jsf-api.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="war" depends="compile">
+        <mkdir dir="dist"/>
+        <war basedir="web" destfile="dist/${ant.project.name}.war">
+            <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
+            <!--classes dir="${classes.dir}"/-->
+            <lib dir="../../../../glimmer/lib">
+                <include name="icefaces.jar"/>
+                <include name="jsf-api.jar"/>
+                <include name="jsf-impl.jar"/>
+            </lib>
+            <lib file="../../../component/dist/sparkle-comps.jar"/>
+        </war>
+    </target>
+
+    <target name="intellij" depends="war">
+        <delete dir="C:/IdeaProjects/calendar/out/exploded/calendarWeb"/>
+        <unwar src="dist/${ant.project.name}.war" dest="C:/IdeaProjects/calendar/out/exploded/calendarWeb"/>
+    </target>
+</project>
