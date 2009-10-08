@@ -13,7 +13,7 @@ import org.icefaces.component.annotation.Property;
 public class ComponentClassGenerator {
     static StringBuilder generatedComponentClass;
     static List<Field> generatedComponentProperties = new ArrayList<Field>();
-    
+  
     static void startComponentClass(Class clazz, Component component) {
         //initialize
         generatedComponentClass = new StringBuilder();
@@ -22,10 +22,9 @@ public class ComponentClassGenerator {
         // add entry to faces-config
         Generator.facesConfigBuilder.addEntry(clazz, component);
         Generator.faceletTagLibBuilder.addTagInfo(clazz, component);
-        
-        int classIndicator = component.component_class().lastIndexOf(".");
+        int classIndicator = Generator.getClassName(component).lastIndexOf(".");
         generatedComponentClass.append("package ");
-        generatedComponentClass.append(component.component_class().substring(0, classIndicator));
+        generatedComponentClass.append(Generator.getClassName(component).substring(0, classIndicator));
         generatedComponentClass.append(";\n\n");
         generatedComponentClass.append("import java.io.IOException;\n");
         generatedComponentClass.append("import java.util.List;\n");
@@ -36,12 +35,16 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("import javax.el.ValueExpression;\n\n");
         generatedComponentClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
         
-        generatedComponentClass.append("public class ");
-        generatedComponentClass.append(component.component_class().substring(classIndicator+1));
-        generatedComponentClass.append(" extends ");
-        generatedComponentClass.append(clazz.getSimpleName());
-        generatedComponentClass.append("{\n");
         
+        generatedComponentClass.append("public class ");
+        generatedComponentClass.append(Generator.getClassName(component).substring(classIndicator+1));
+        generatedComponentClass.append(" extends ");
+        generatedComponentClass.append(component.extends_class());
+        generatedComponentClass.append("{\n");
+
+        generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.component_type() + "\";");
+        generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = \""+ component.renderer_type() + "\";\n");
+       
     }
     
     static void endComponentClass() {
@@ -52,7 +55,7 @@ public class ComponentClassGenerator {
     
     static void createJavaFile() {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
-        String componentClass = component.component_class();
+        String componentClass = Generator.getClassName(component);
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
         System.out.println(">>>>>>>>>>> "+ fileName);
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
@@ -75,7 +78,7 @@ public class ComponentClassGenerator {
        
     static void addPropertyEnum() {
 
-        generatedComponentClass.append("\tprotected enum PropertyKeys {\n");        
+        generatedComponentClass.append("\n\tprotected enum PropertyKeys {\n");        
         for (int i = 0; i < generatedComponentProperties.size(); i++){
             generatedComponentClass.append("\t\t");     
             generatedComponentClass.append(generatedComponentProperties.get(i).getName()); 
@@ -96,7 +99,7 @@ public class ComponentClassGenerator {
                   Property prop = (Property)field.getAnnotation(Property.class);
                  
                   //set
-                  generatedComponentClass.append("\t/**\n"); 
+                  generatedComponentClass.append("\n\t/**\n"); 
                   generatedComponentClass.append("\t* <p>Set the value of the <code>");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append("</code> property.</p>");                
@@ -135,12 +138,12 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append("\", ");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(");\n");
-                  generatedComponentClass.append("\n\t}\n");
+                  generatedComponentClass.append("\t}\n");
                   
                   
                   
                   //get
-                  generatedComponentClass.append("\t/**\n"); 
+                  generatedComponentClass.append("\n\t/**\n"); 
                   generatedComponentClass.append("\t* <p>Return the value of the <code>");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append("</code> property.</p>");                

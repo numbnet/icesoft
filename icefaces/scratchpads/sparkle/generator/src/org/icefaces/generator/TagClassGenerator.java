@@ -20,10 +20,10 @@ public class TagClassGenerator {
     static void startComponentClass(Component component) {
         generatedTagClass = new StringBuilder();
         generatedTagProperties = new HashMap<String, Field>();
-        int classIndicator = component.component_class().lastIndexOf(".");
+        int classIndicator = Generator.getTagClassName(component).lastIndexOf(".");
         
         generatedTagClass.append("package ");
-        generatedTagClass.append(component.component_class().substring(0, classIndicator));
+        generatedTagClass.append(Generator.getTagClassName(component).substring(0, classIndicator));
         generatedTagClass.append(";\n\n");
         
         generatedTagClass.append("import com.sun.faces.util.Util;\n");
@@ -42,22 +42,14 @@ public class TagClassGenerator {
         generatedTagClass.append("import javax.servlet.jsp.JspException;\n\n");  
         generatedTagClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");        
         generatedTagClass.append("public class ");
-        generatedTagClass.append(component.component_class().substring(classIndicator+1));
+        generatedTagClass.append(Generator.getTagClassName(component).substring(classIndicator+1));
         generatedTagClass.append("Tag extends UIComponentELTag {\n");
         generatedTagClass.append("\tpublic String getRendererType() {\n\t\treturn \"");
-        String rendererType = FileWriter.getPropertyValue(Generator.currentClass, "RENDERER_TYPE","getRendererType" );
-        generatedTagClass.append(rendererType);   
+        
+        generatedTagClass.append(Generator.getRendererType(component));   
         generatedTagClass.append("\";\n\t}\n");
         generatedTagClass.append("\tpublic String getComponentType() {\n\t\treturn \"");
-        Field comp_type;
-        try {
-            comp_type = Generator.currentClass.getField("COMPONENT_TYPE");
-            generatedTagClass.append(String.valueOf(comp_type.get(comp_type)));            
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+        generatedTagClass.append(Generator.getComponentType(component)); 
         generatedTagClass.append("\";\n\t}\n");
     }
     
@@ -72,7 +64,7 @@ public class TagClassGenerator {
     
     static void createJavaFile() {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
-        String componentClass = component.component_class();
+        String componentClass = Generator.getTagClassName(component);
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + "Tag.java";
         System.out.println(">>>>>>>>>>> Tag"+ fileName);
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
@@ -84,7 +76,7 @@ public class TagClassGenerator {
     static void addProperties(Class clazz, Component component) {
         Generator.tldBuilder.addTagInfo(clazz, component);
         addSetters();
-        addSetProperties(component.component_class());
+        addSetProperties(Generator.getClassName(component));
     }
     
     static void updateFields(Class clazz) {

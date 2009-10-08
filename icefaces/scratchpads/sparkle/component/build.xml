@@ -21,10 +21,11 @@
     <echo message=".."/>        
     <mkdir dir="${exploded}"/>
     <mkdir dir="${build}/generated"/>
+    <ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
     <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
-  	<ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
+
     <javac srcdir="${build}/generated" destdir="${exploded}" debug="true">
         <classpath refid="compile.run.classpath"/>
     </javac> 

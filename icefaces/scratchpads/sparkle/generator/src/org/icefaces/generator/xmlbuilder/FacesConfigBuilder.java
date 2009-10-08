@@ -3,6 +3,7 @@ package org.icefaces.generator.xmlbuilder;
 import java.lang.reflect.Field;
 
 import org.icefaces.generator.FileWriter;
+import org.icefaces.generator.Generator;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -28,9 +29,7 @@ public class FacesConfigBuilder extends XMLBuilder{
         compElement.appendChild(compTypeElement);
         compElement.appendChild(compClassElement);
         try {
-            System.out.println("TYP CLASS IN FACESCONFIG "+ clazz.getSimpleName());
-            Field comp_type = clazz.getField("COMPONENT_TYPE");
-            Text comp_type_text = getDocument().createTextNode(String.valueOf(comp_type.get(comp_type)));
+            Text comp_type_text = getDocument().createTextNode(component.component_type());
             System.out.println("TYPE in CONFIG "+ comp_type_text);
             compTypeElement.appendChild(comp_type_text);
             compClassElement.appendChild(comp_class);
@@ -46,12 +45,18 @@ public class FacesConfigBuilder extends XMLBuilder{
     public void addRendererInfo(Class clazz, Component component) {
         try {
             //renderkit
-            String rendererType = FileWriter.getPropertyValue(clazz, "RENDERER_TYPE","getRendererType" );
-            if (rendererType  == null || "null".equals(rendererType)) return;
+            String rendererType = component.renderer_type();
+            if ("".equals(rendererType)) return;
             Text comp_renderer_type_text = getDocument().createTextNode(rendererType);
             
-            Field comp_family = clazz.getField("COMPONENT_FAMILY");
-            Text comp_family_text = getDocument().createTextNode(String.valueOf(comp_family.get(comp_family)));
+            String componentFamily = component.component_family();
+            if ("".equals(componentFamily)) {
+                Class extended = Class.forName(component.extends_class());
+                Field comp_family = extended.getField("COMPONENT_FAMILY");
+                componentFamily = String.valueOf(comp_family.get(comp_family));
+            }
+            
+            Text comp_family_text = getDocument().createTextNode(componentFamily);
             
             String rendererClass = component.renderer_class();
             if (rendererClass.equals(component.EMPTY)) {
