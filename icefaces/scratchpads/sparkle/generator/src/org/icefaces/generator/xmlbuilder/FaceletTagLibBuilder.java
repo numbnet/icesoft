@@ -3,6 +3,7 @@ package org.icefaces.generator.xmlbuilder;
 import java.lang.reflect.Field;
 
 import org.icefaces.generator.FileWriter;
+import org.icefaces.generator.Generator;
 import org.w3c.dom.Element;
 
 import org.icefaces.component.annotation.Component;
@@ -18,7 +19,6 @@ public class FaceletTagLibBuilder extends XMLBuilder{
     }
 
     public void addTagInfo(Class clazz, Component component) {
-        String tagName = component.component_class().substring((component.component_class().lastIndexOf('.')+1));
         
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
@@ -27,11 +27,8 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         Element component_element = getDocument().createElement("component");
         tag.appendChild(component_element);
         try {
-            Field comp_type = clazz.getField("COMPONENT_TYPE");
-            addNode(component_element, "component-type", String.valueOf(comp_type.get(comp_type)));
-
-            String rendererType = FileWriter.getPropertyValue(clazz, "RENDERER_TYPE","getRendererType" );
-            addNode(component_element, "renderer-type", rendererType);
+            addNode(component_element, "component-type", Generator.getComponentType(component));
+            addNode(component_element, "renderer-type", Generator.getRendererType(component));
         } catch (Exception e) {
             e.printStackTrace();
         } 

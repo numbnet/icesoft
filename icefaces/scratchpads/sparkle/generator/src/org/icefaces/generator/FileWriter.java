@@ -224,9 +224,9 @@ public class FileWriter {
     return null;
     }    
     
-    public static List<Class> getAnnotatedCompsFromFolder() {
-        System.out.println("Working folder "+ FileWriter.getWorkingFolder());
-        File file = new File(FileWriter.getWorkingFolder());
+    public static List<Class> getAnnotatedCompsList() {
+        System.out.println("Working folder "+ (FileWriter.getWorkingFolder()+"../../../generator/build"));
+        File file = new File(FileWriter.getWorkingFolder()+"../../../generator/build");
 
         URLClassLoader clazzLoader = null;
         try {
@@ -236,11 +236,11 @@ public class FileWriter {
             e.printStackTrace();
         }    
         List<Class> componentsList = new ArrayList<Class>();
-        printFile(file, componentsList, clazzLoader);
+        processRequest(file, componentsList, clazzLoader);
        return componentsList; 
     }
     
-    public static void printFile(File file, List<Class> componentsList, URLClassLoader loader) {
+    public static void processRequest(File file, List<Class> componentsList, URLClassLoader loader) {
         
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -249,11 +249,10 @@ public class FileWriter {
                 if (path.endsWith("class")) {
                     path = path.substring(path.indexOf("org\\icefaces"), path.indexOf(".class"));
                     path = path.replace('\\', '.');
-                    System.out.println(path);
-                    try {                    
+                     try {                    
                         Class c = loader.loadClass(path);
                         if (c.isAnnotationPresent(Component.class)) {
-                            System.out.println(" anno found on "+ path);
+                            System.out.println("Meta class found = "+ path);
                             componentsList.add(c);
                         }
                     } catch (Exception e) {
@@ -263,7 +262,7 @@ public class FileWriter {
                 }
                
                 if (files[i].isDirectory()) {
-                    printFile(files[i], componentsList, loader);
+                    processRequest(files[i], componentsList, loader);
                 }
             }
         }

@@ -27,11 +27,12 @@ public class Generator {
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     
     static {
-        components = FileWriter.getAnnotatedCompsFromFolder();
+        components = FileWriter.getAnnotatedCompsList();
     }
     
 
     public static void main(String[] a) {
+        System.out.println("Generator starts.....");        
         loadPropertyTemplate();
         Iterator<Class> iterator = components.iterator();
         while (iterator.hasNext()) {
@@ -43,6 +44,7 @@ public class Generator {
     }
     
     static void processClass(Class clazz) {
+
         currentClass = clazz;
         processAnnotation(currentClass, true);
         //by now all properties should be set into the "fieldsForTagAndComponentClasses",
@@ -182,5 +184,47 @@ public class Generator {
                 propertyTemplate.put(fields[i].getName(), fields[i]);   
             }
         }
+    }
+    
+    public static String getClassName(Component component) {
+        String generatedClass = component.generated_class();
+        if (generatedClass.equals("")) {
+            generatedClass = component.component_class();
+        } 
+        return generatedClass;
+    }
+    
+    public static String getTagClassName(Component component) {
+        return component.component_class();
+    } 
+    
+    public static String getComponentType(Component component) {
+        String componentType = component.component_type();
+        if ("".equals(componentType)) {
+            try {
+                Class extended = Class.forName(component.extends_class());
+                Field comp_type = extended.getField("COMPONENT_TYPE");
+                componentType = String.valueOf(comp_type.get(comp_type));            
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+        }
+        return componentType;
+    }
+    
+    public static String getRendererType(Component component) {
+        String rendererType = component.renderer_type();
+        if ("".equals(rendererType)) {
+            try {
+                Class extended = Class.forName(component.extends_class());
+                Field renderer_type = extended.getDeclaredField("RENDERER_TYPE");
+                rendererType = String.valueOf(renderer_type.get(renderer_type));            
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+        }
+        return rendererType;
     }
 }
