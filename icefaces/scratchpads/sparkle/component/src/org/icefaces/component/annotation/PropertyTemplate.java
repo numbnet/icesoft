@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.MethodExpression;
+import javax.faces.component.UIComponent;
 
 public class PropertyTemplate {
     public final static String ONBLUR = "onblur";
@@ -99,7 +100,7 @@ public class PropertyTemplate {
     //------------------- UIComponentBase
     public final static String ID = "id";
     public final static String RENDERED = "rendered";
-        
+    public final static String BINDING = "binding";       
     @Property(tlddoc="The component identifier for this component. This value " +
             "must be unique within the closest parent component that is a naming container. ")
     protected String id;
@@ -109,11 +110,14 @@ public class PropertyTemplate {
     		"be rendered (during Render Response Phase), or processed on any subsequent form submit. ")
     protected Boolean rendered;
     
+    @Property( tlddoc="The ValueExpression linking this component to a property in a backing bean ")
+    private UIComponent binding; 
     
     public static List UIComponentBase = new ArrayList();
     static {
         UIComponentBase.add(ID);
         UIComponentBase.add(RENDERED);
+        UIComponentBase.add(BINDING);        
     } 
     
     //----------------------------------
