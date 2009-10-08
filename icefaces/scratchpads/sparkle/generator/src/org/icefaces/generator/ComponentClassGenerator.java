@@ -44,8 +44,12 @@ public class ComponentClassGenerator {
 
         generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.component_type() + "\";");
         generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = \""+ component.renderer_type() + "\";\n");
-       
+        
+        generatedComponentClass.append("\n\tpublic String getFamily() {\n\t\treturn \"");
+        generatedComponentClass.append(Generator.getFamily(component));
+        generatedComponentClass.append("\";\n\t}\n\n");
     }
+
     
     static void endComponentClass() {
         generatedComponentClass.append("\n}");

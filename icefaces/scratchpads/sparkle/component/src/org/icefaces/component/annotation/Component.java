@@ -14,7 +14,7 @@ public @interface Component {
   String extends_class();
   String renderer_class()default EMPTY;
   String component_class();
-  String generated_class();
+  String generated_class()default EMPTY;
   String renderer_type();
   String component_type();
   String component_family() default EMPTY;
