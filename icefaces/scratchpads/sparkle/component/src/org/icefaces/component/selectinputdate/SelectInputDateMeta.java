@@ -3,7 +3,6 @@ package org.icefaces.component.selectinputdate;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
-import javax.faces.component.UIComponentBase;
 import java.util.Date;
 
 @Component(component_class = "org.icefaces.component.selectinputdate.SelectInputDate", 
@@ -15,10 +14,8 @@ import java.util.Date;
         renderer_type="com.icesoft.faces.Calendar"
         )
 public class SelectInputDateMeta {
-    public static final String COMPONENT_FAMILY = "";
-    public static final String COMPONENT_TYPE = "";
 
     @Property
-    protected Date selectedDate;
+    private Date selectedDate;
 
 }
