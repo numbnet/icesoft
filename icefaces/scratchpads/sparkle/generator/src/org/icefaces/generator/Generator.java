@@ -227,4 +227,19 @@ public class Generator {
         }
         return rendererType;
     }
+    
+    public static String getFamily(Component component) {
+        String componentFamily = component.component_family();
+        if ("".equals(componentFamily)) {
+            try {
+                Class extended = Class.forName(component.extends_class());
+                Field comp_family = extended.getField("COMPONENT_FAMILY");
+                componentFamily = String.valueOf(comp_family.get(comp_family));
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+        }
+        return componentFamily;
+    }
 }
