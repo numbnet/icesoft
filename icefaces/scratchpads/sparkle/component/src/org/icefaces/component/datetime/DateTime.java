@@ -13,7 +13,6 @@ public class DateTime extends DateTimeBase{
           SimpleDateFormat dFormat = new SimpleDateFormat(format.toString());
           value = dFormat.format(date);
       }
-      System.out.println("partialSubmit "+ this.getAttributes().get("partialSubmit"));
       return value;
     }
 }

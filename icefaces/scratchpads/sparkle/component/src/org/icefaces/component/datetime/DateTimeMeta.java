@@ -1,6 +1,8 @@
 package org.icefaces.component.datetime;
 
 
+import javax.faces.component.UIComponent;
+
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
@@ -18,4 +20,14 @@ public class DateTimeMeta{
     
     @Property
     private String format;
+
+    @Property (inherit=true, useTemplate=true)
+    private String id;
+    
+    @Property (inherit=true, useTemplate=true)
+    private Boolean rendered;
+    
+    @Property (inherit=true, useTemplate=true)
+    private UIComponent binding;    
+
 }
