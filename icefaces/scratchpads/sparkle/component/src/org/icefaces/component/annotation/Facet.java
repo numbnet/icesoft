@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Facet {
     String name() default "";
-    String javadoc_set() default "";
-    String javadoc_get() default "";
+    String javadocGet() default "";
+    String javadocSet() default "";
 }

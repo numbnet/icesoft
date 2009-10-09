@@ -10,12 +10,12 @@ import java.lang.annotation.Target;
 public @interface Property {
     boolean isMethodExpression() default false;
     boolean isTransient() default false;
-    String default_value() default "false";
+    String defaultValue() default "false";
     String name() default "";
     String type() default "";
     String tlddoc() default "";
-    String javadocSet() default "";
     String javadocGet() default "";    
+    String javadocSet() default "";
     //tld requires this info
     boolean required() default false;
     boolean useTemplate() default false;

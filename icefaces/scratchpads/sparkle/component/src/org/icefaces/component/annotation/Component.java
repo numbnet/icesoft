@@ -9,17 +9,17 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Component {
-  String EMPTY = "";
-  String tag_name();
-  String extends_class();
-  String renderer_class()default EMPTY;
-  String component_class();
-  String generated_class()default EMPTY;
-  String renderer_type();
-  String component_type();
-  String component_family() default EMPTY;
-  String base_tagclass() default "javax.faces.webapp.UIComponentELTag";
-  String handler_class() default "com.icesoft.faces.component.facelets.IceComponentHandler";
+  final String EMPTY = "";
+  String tagName();
+  String extendsClass();
+  String rendererClass()default EMPTY;
+  String componentClass();
+  String generatedClass()default EMPTY;
+  String rendererType();
+  String componentType();
+  String componentFamily() default EMPTY;
+  String baseTagClass() default "javax.faces.webapp.UIComponentELTag";
+  String handlerClass() default "com.icesoft.faces.component.facelets.IceComponentHandler";
   String javadoc() default "";
   String tlddoc() default "";  
   String[] includeProperties() default {};

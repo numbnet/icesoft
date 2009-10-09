@@ -7,12 +7,12 @@ import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
 
-@Component(tag_name="tab",
-        component_class="org.icefaces.component.tab.Tab",
-        component_type = "com.icesoft.faces.Tab",
-        renderer_type="",
-        extends_class = "javax.faces.component.UICommand", 
-        generated_class = "org.icefaces.component.tab.TabBase")
+@Component(tagName ="tab",
+        componentClass ="org.icefaces.component.tab.Tab",
+        componentType = "com.icesoft.faces.Tab",
+        rendererType ="",
+        extendsClass = "javax.faces.component.UICommand", 
+        generatedClass = "org.icefaces.component.tab.TabBase")
 public class TabMeta {
     @Property   
     protected String label;
