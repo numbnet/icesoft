@@ -66,9 +66,7 @@ public class TagClassGenerator {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         String componentClass = Generator.getTagClassName(component);
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + "Tag.java";
-        System.out.println(">>>>>>>>>>> Tag"+ fileName);
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
-        System.out.println(">>>>>>>>>>> pack "+ pack); 
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         FileWriter.write(fileName, path, generatedTagClass);        
     }
@@ -80,7 +78,6 @@ public class TagClassGenerator {
     }
     
     static void updateFields(Class clazz) {
-        System.out.println("updATEFILEDSSSS "+ clazz.getSimpleName());
         Field[] fields = clazz.getDeclaredFields();
         for (int i=0; i<fields.length; i++) {
             Field field = fields[i];
@@ -88,7 +85,6 @@ public class TagClassGenerator {
             addToTagClass = field.isAnnotationPresent(Property.class);
             if(!addToTagClass) {
                 if (Generator.propertyTemplate.containsKey(clazz.getSimpleName())) {
-                    System.out.println("Looking for "+ clazz.getSimpleName() + " and "+ field.getName() );
                     if (((List)Generator.propertyTemplate.get(clazz.getSimpleName())).contains(field.getName())) {
                         addToTagClass = true;
                     }
@@ -104,17 +100,13 @@ public class TagClassGenerator {
     
     static void addSetters() {
         //set
-        System.out.println("Add setters called "+ generatedTagProperties.size());
         Iterator<String> iterator = Generator.fieldsForTagClass.keySet().iterator();
         while (iterator.hasNext()){
             Field field = Generator.fieldsForTagClass.get(iterator.next());
             Property property = field.getAnnotation(Property.class);
             //must be inherited property from non-icefaces class
             if (property == null || property.useTemplate()) {
-                System.out.println("Fiel NAMEMEMEM "+ field.getName());
-                System.out.println("Fieldddd "+ Generator.propertyTemplate.get("styleClass"));
                 Field o = (Field)Generator.propertyTemplate.get(field.getName());
-                System.out.println("Fiel NAMEMEMEM >>>>>  "+ o.getName());                
                 property = (Property) o.getAnnotation(Property.class);
             }
             Generator.tldBuilder.addAttributeInfo(field, property);

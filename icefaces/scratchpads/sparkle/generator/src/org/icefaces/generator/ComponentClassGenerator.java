@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.Facet;
 
 public class ComponentClassGenerator {
     static StringBuilder generatedComponentClass;
@@ -61,9 +62,7 @@ public class ComponentClassGenerator {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         String componentClass = Generator.getClassName(component);
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
-        System.out.println(">>>>>>>>>>> "+ fileName);
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
-        System.out.println(">>>>>>>>>>> pack "+ pack);        
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         FileWriter.write(fileName, path, generatedComponentClass);        
     }
@@ -103,27 +102,9 @@ public class ComponentClassGenerator {
                   Property prop = (Property)field.getAnnotation(Property.class);
                  
                   //set
-                  generatedComponentClass.append("\n\t/**\n"); 
-                  generatedComponentClass.append("\t* <p>Set the value of the <code>");
-                  generatedComponentClass.append(field.getName());
-                  generatedComponentClass.append("</code> property.</p>");                
-                  if (prop.javadocSet() != null && !"".equals(prop.javadocSet())) {
-                      String[] lines = prop.javadocSet().split("\n");
-                      generatedComponentClass.append("\n\t* <p>Contents:");
-                       
-                      for (int j=0; j < lines.length; j++){
-                          if (j>0) {
-                              generatedComponentClass.append("\n\t* ");
-                          }
-                          generatedComponentClass.append(lines[j]);
-                          if (j == (lines.length-1)) {
-                              generatedComponentClass.append("</p>");
-                          }                        
-                      }
-                  } 
-                  generatedComponentClass.append("\n\t*/\n"); 
+ 
                   
-                  
+                  addJavaDoc(field.getName(), true, prop.javadocSet());
                   generatedComponentClass.append("\tpublic void set");
                   generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
                   generatedComponentClass.append(field.getName().substring(1));
@@ -147,27 +128,9 @@ public class ComponentClassGenerator {
                   
                   
                   //get
-                  generatedComponentClass.append("\n\t/**\n"); 
-                  generatedComponentClass.append("\t* <p>Return the value of the <code>");
-                  generatedComponentClass.append(field.getName());
-                  generatedComponentClass.append("</code> property.</p>");                
-                  if (prop.javadocGet() != null && !"".equals(prop.javadocGet())) {
-                      String[] lines = prop.javadocGet().split("\n");
-                      generatedComponentClass.append("\n\t* <p>Contents:");
-                       
-                      for (int j=0; j < lines.length; j++){
-                          if (j>0) {
-                              generatedComponentClass.append("\n\t* ");
-                          }
-                          generatedComponentClass.append(lines[j]);
-                          if (j == (lines.length-1)) {
-                              generatedComponentClass.append("</p>");
-                          }                        
-                      }
-                  } 
-                  generatedComponentClass.append("\n\t*/\n");    
+   
                   
-  
+                  addJavaDoc(field.getName(), false, prop.javadocGet());
                   generatedComponentClass.append("\tpublic ");
                   generatedComponentClass.append(field.getType().getName());
                   generatedComponentClass.append(" ");
@@ -185,15 +148,85 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(");\n\t}\n");
-                  
-                  
         }
+    }
+    
+    static void addJavaDoc(String name, boolean isSetter, String doc) {
+        generatedComponentClass.append("\n\t/**\n");
+        if (isSetter) {
+            generatedComponentClass.append("\t* <p>Set the value of the <code>");
+        } else {
+            generatedComponentClass.append("\t* <p>Return the value of the <code>");            
+        }
+        generatedComponentClass.append(name);
+        generatedComponentClass.append("</code> property.</p>");                
+        if (doc != null && !"".equals(doc)) {
+            String[] lines = doc.split("\n");
+            generatedComponentClass.append("\n\t* <p>Contents:");
+             
+            for (int j=0; j < lines.length; j++){
+                if (j>0) {
+                    generatedComponentClass.append("\n\t* ");
+                }
+                generatedComponentClass.append(lines[j]);
+                if (j == (lines.length-1)) {
+                    generatedComponentClass.append("</p>");
+                }                        
+            }
+        } 
+        generatedComponentClass.append("\n\t*/\n");         
+    }
+    
+  
+    
+    static void addFacet(Class clazz, Component component) {
+        Iterator<Field> iterator = Generator.fieldsForFacet.values().iterator();
+        while (iterator.hasNext()) {
+            Field field = iterator.next();
+            Facet facet = (Facet)field.getAnnotation(Facet.class);
+            String facetName = facet.name();
+            if ("".equals(facetName)) {
+                facetName = field.getName();
+            }
+            addJavaDoc(field.getName(), true, facet.javadoc_set());
+            generatedComponentClass.append("\tpublic void set");
+            generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
+            generatedComponentClass.append(field.getName().substring(1));
+
+            generatedComponentClass.append("(");
+            generatedComponentClass.append(field.getType().getName());
+            generatedComponentClass.append(" ");
+            generatedComponentClass.append(field.getName());
+            generatedComponentClass.append(") {\n\t\tgetFacets().put(\"");
+            generatedComponentClass.append(facetName);
+            generatedComponentClass.append("\", ");
+            generatedComponentClass.append(field.getName());
+            generatedComponentClass.append(");\n");
+            generatedComponentClass.append("\t}\n");
+            
+            
+            //getter
+            addJavaDoc(field.getName(), false, facet.javadoc_get());
+            generatedComponentClass.append("\tpublic ");
+            generatedComponentClass.append(field.getType().getName());
+            generatedComponentClass.append(" ");
+            generatedComponentClass.append("get");                    
+            generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
+            generatedComponentClass.append(field.getName().substring(1));
+            generatedComponentClass.append("() {\n");
+            generatedComponentClass.append("\t\t return getFacet(\"");
+            generatedComponentClass.append(facetName);
+            generatedComponentClass.append("\");\n\t}\n");            
+            
+        }
+
     }
     
     static void create() {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         ComponentClassGenerator.startComponentClass(Generator.currentClass, component);
         ComponentClassGenerator.addProperties(Generator.fieldsForComponentClass);  
+        ComponentClassGenerator.addFacet(Generator.currentClass, component);
         ComponentClassGenerator.endComponentClass();
     }
 }
