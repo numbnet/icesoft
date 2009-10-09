@@ -1,7 +1,6 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
-
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,43 +11,14 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-
-@Component(component_class="org.icefaces.component.tab.TabSet",
-        tag_name="tabSet"
-        )
-public class TabSetAnnotated extends UICommand{
-    public static final String COMPONENT_TYPE = "com.icesoft.faces.TabSet";
-    public static final String RENDERER_TYPE = "com.icesoft.faces.TabSetRenderer";
+public class TabSet extends TabSetBase {
  //   private static Resource JS = new TabSetJarResource("com/icesoft/faces/component/yui/tab/tabset.js");
     private Integer tabIndex;
     int oldTabIndex = Integer.MIN_VALUE;    
     private String orientation;
     String oldOrientation;   
     
-    @Property    
-    protected Boolean clientSide; 
-   
-    @Property    
-    protected Boolean partialSubmit;
-    
-    @Property    
-    protected String onupdate;
-    
-    @Property
-    protected String styleClass;
-    
-    @Property    
-    protected String style;
-    
     MethodBinding tabChangeListener;
-    
-    
-    public TabSetAnnotated() {
-        super();
-        setRendererType(RENDERER_TYPE);
-    }
     
     public UIComponent getHeadFacet() {
         return (UIComponent) getFacet("header");
