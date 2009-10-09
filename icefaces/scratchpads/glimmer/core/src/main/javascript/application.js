@@ -58,7 +58,6 @@ window.evaluate = eval;
     //include submit.js
     namespace.submitEvent = submitEvent;
 
-    namespace.onSessionExpiry = operator();
     namespace.onServerError = operator();
     namespace.onBlockingConnectionUnstable = operator();
     namespace.onBlockingConnectionLost = operator();
@@ -172,7 +171,6 @@ window.evaluate = eval;
     namespace.Application = function(configuration, container) {
         var blockingConnectionLostListeners = [];
         var blockingConnectionUnstableListeners = [];
-        var sessionExpiredListeners = [];
         var serverErrorListeners = [];
         var viewDisposedListeners = [];
         var submitSendListeners = [];
@@ -212,18 +210,6 @@ window.evaluate = eval;
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
-        register(commandDispatcher, 'session-expired', function() {
-            try {
-                info(logger, 'session expired');
-                broadcast(sessionExpiredListeners);
-            } finally {
-                dispose();
-            }
-        });
-        register(commandDispatcher, 'macro', function(message) {
-            each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
-        });
-
 
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');
@@ -239,11 +225,7 @@ window.evaluate = eval;
         onServerError(asyncConnection, function(response) {
             try {
                 warn(logger, 'server side error');
-                var textContent = contentAsText(response);
-                if (!blank(textContent)) {
-                    replaceContainerHTML(textContent, container);
-                }
-                broadcast(serverErrorListeners, [ textContent, contentAsDOM(response) ]);
+                broadcast(serverErrorListeners, [ statusCode(response), contentAsText(response), contentAsDOM(response) ]);
             } finally {
                 dispose();
             }
@@ -266,13 +248,17 @@ window.evaluate = eval;
         jsf.ajax.addOnEvent(function(e) {
             switch (e.status) {
                 case 'begin':
+                    //todo: broadcast only when submit was triggered by child element of the container element
                     broadcast(submitSendListeners);
                     break;
                 case 'complete':
+                    //todo: broadcast only when submit was triggered by child element of the container element
                     broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]);
+                    //todo: broadcast only when update is for child element of the container element
                     broadcast(beforeUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
                     break;
                 case 'success':
+                    //todo: broadcast only when update is for child element of the container element
                     broadcast(afterUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
                     break;
             }
@@ -286,11 +272,6 @@ window.evaluate = eval;
         info(logger, 'bridge loaded!');
 
         return object(function(method) {
-            //public method
-            method(namespace.onSessionExpiry, function(self, callback) {
-                append(sessionExpiredListeners, callback);
-            });
-
             method(namespace.onServerError, function(self, callback) {
                 append(serverErrorListeners, callback);
             });
