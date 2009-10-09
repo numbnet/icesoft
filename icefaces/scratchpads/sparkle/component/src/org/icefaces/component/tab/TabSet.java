@@ -76,10 +76,6 @@ public class TabSet extends TabSetBase {
         ValueBinding vb = getValueBinding("orientation");
         return vb != null ? ((String) vb.getValue(getFacesContext())) : "top";
     }    
-    
-    public void setClientSide(boolean clientSide) {
-        this.clientSide = new Boolean(clientSide);
-    }
 
     public void encodeBegin(FacesContext context) throws IOException {
         //load js.js, will be loaded once per view. It handled by the ICEFaces framework.
