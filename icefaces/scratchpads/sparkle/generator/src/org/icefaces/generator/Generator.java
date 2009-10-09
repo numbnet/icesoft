@@ -12,6 +12,7 @@ import org.icefaces.generator.xmlbuilder.TLDBuilder;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.Facet;
 import org.icefaces.component.annotation.PropertyTemplate;
 
 public class Generator {
@@ -24,6 +25,7 @@ public class Generator {
     static FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
     static Map propertyTemplate = new HashMap();
     static Map<String, Field> fieldsForComponentClass = new HashMap<String, Field>();
+    static Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     
     static {
@@ -52,7 +54,8 @@ public class Generator {
         ComponentClassGenerator.create();
         TagClassGenerator.create();
         fieldsForComponentClass.clear();
-        fieldsForTagClass.clear();            
+        fieldsForTagClass.clear(); 
+        fieldsForFacet.clear();
         System.out.println(ComponentClassGenerator.generatedComponentClass.toString());
         System.out.println();
         System.out.println(TagClassGenerator.generatedTagClass.toString());            
@@ -127,6 +130,8 @@ public class Generator {
                               fieldsForTagClass.put(field.getName(), field);
                           }                           
                       }
+                  } else if(field.isAnnotationPresent(Facet.class)){
+                      fieldsForFacet.put(field.getName(), field);
                   }
               }
           } 
@@ -134,36 +139,6 @@ public class Generator {
         if (clazz.getSuperclass() != null) {
             processAnnotation(clazz.getSuperclass(), false);
         }
-        
-        
-        
-//        if (clazz.isAnnotationPresent(Component.class)) {
-//            Component component = (Component) clazz.getAnnotation(Component.class);
-//            Property[] props = component.inheritedProperties();
-//            for (int i=0; i < props.length; i++) {
-//                inheritedProperties.put(props[i].name(), props[i]);
-//            }
-//   
-//            if (isBaseClass) {
-//                ComponentClassGenerator.startComponentClass(clazz, component);
-//                TagClassGenerator.startComponentClass(component);                
-//            }
-//        }
-//        if (clazz.getSuperclass() != null) {
-//            processClass(clazz.getSuperclass(), false);
-//        }
-//
-//        ComponentClassGenerator.addProperties(clazz);
-//        TagClassGenerator.updateFields(clazz);   
-//        
-//        if (clazz.isAnnotationPresent(Component.class)) {
-//            Component component = (Component) clazz.getAnnotation(Component.class);
-//            if (isBaseClass) {
-//                TagClassGenerator.addProperties(clazz, component);
-//                ComponentClassGenerator.endComponentClass();
-//                TagClassGenerator.endComponentClass();                
-//            }
-//        }        
     }
     
     //this method loads predefine properties 
@@ -180,7 +155,6 @@ public class Generator {
                     e.printStackTrace();
                 }            
             } else {
-                System.out.println("Adding "+ fields[i].getName());
                 propertyTemplate.put(fields[i].getName(), fields[i]);   
             }
         }
