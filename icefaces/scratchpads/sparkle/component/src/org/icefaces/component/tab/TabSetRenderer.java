@@ -24,7 +24,7 @@ public class TabSetRenderer extends Renderer{
         if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
             String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
             String clientId = uiComponent.getClientId(facesContext);
-            TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
+            TabSet tabSet = (TabSet) uiComponent;
             if (clientId.equals(info[0])) {
                 try {
                     Integer tabIndex = new Integer(info[1]);
@@ -40,7 +40,7 @@ public class TabSetRenderer extends Renderer{
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
+        TabSet tabSet = (TabSet) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -70,7 +70,7 @@ public class TabSetRenderer extends Renderer{
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;        
+        TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
         String userDefinedClass = String.valueOf(tabSet.getAttributes().get("styleClass"));       
         String styleClass = userDefinedClass != null ? 
@@ -130,8 +130,8 @@ public class TabSetRenderer extends Renderer{
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
-        UIComponent labelFacet = ((TabAnnotated)tab).getLabelFacet();
-        if (((TabSetAnnotated)tabSet).getTabIndex() == index) {
+        UIComponent labelFacet = ((Tab)tab).getLabelFacet();
+        if (((TabSet)tabSet).getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
         if (labelFacet!= null) {
@@ -140,7 +140,7 @@ public class TabSetRenderer extends Renderer{
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
             writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
-            Utils.renderChild(facesContext, ((TabAnnotated)tab).getLabelFacet());
+            Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
             writer.startElement(HTML.ANCHOR_ELEM, tab);
             writer.endElement(HTML.ANCHOR_ELEM);               
             writer.endElement("em");
@@ -166,7 +166,7 @@ public class TabSetRenderer extends Renderer{
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
-            if (((TabSetAnnotated)tabSet).getTabIndex() == index) {
+            if (((TabSet)tabSet).getTabIndex() == index) {
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
@@ -190,12 +190,12 @@ public class TabSetRenderer extends Renderer{
     }
     
     private void renderTab(FacesContext facesContext, UIComponent uiComponent, boolean isLabel) throws IOException{
-        TabSetAnnotated tabSet = (TabSetAnnotated) uiComponent;
+        TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
         while (children.hasNext()) {
             UIComponent child = (UIComponent)children.next();
-            if (child instanceof TabAnnotated) {
+            if (child instanceof Tab) {
                 if (child.isRendered()) {
                     index++;
                     if(isLabel) {
