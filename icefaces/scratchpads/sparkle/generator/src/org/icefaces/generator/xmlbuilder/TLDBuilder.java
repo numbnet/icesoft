@@ -23,13 +23,13 @@ public class TLDBuilder extends XMLBuilder{
     }
 
     public void addTagInfo(Class clazz, Component component) {
-        String tagName = component.component_class().substring((component.component_class().lastIndexOf('.')+1));
+        String tagName = component.componentClass().substring((component.componentClass().lastIndexOf('.')+1));
         
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
-        addNode(tag, "name", component.tag_name());
-        addNode(tag, "tag-class", component.component_class()+"Tag");
+        addNode(tag, "name", component.tagName());
+        addNode(tag, "tag-class", component.componentClass()+"Tag");
         addNode(tag, "body-content", "JSP");
         Element description = getDocument().createElement("description");  
         CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc());

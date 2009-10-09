@@ -5,13 +5,13 @@ import org.icefaces.component.annotation.Property;
 
 import java.util.Date;
 
-@Component(component_class = "org.icefaces.component.selectinputdate.SelectInputDate", 
-        tag_name = "selectInputDate",
-        extends_class="javax.faces.component.UIComponentBase",
-        component_family="javax.faces.Input",
-        component_type= "com.icesoft.faces.SelectInputDate",
-        renderer_class="org.icefaces.component.selectinputdate.SelectInputDateRenderer",
-        renderer_type="com.icesoft.faces.Calendar"
+@Component(componentClass = "org.icefaces.component.selectinputdate.SelectInputDate", 
+        tagName = "selectInputDate",
+        extendsClass ="javax.faces.component.UIComponentBase",
+        componentFamily ="javax.faces.Input",
+        componentType = "com.icesoft.faces.SelectInputDate",
+        rendererClass ="org.icefaces.component.selectinputdate.SelectInputDateRenderer",
+        rendererType ="com.icesoft.faces.Calendar"
         )
 public class SelectInputDateMeta {
 

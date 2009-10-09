@@ -1,8 +1,5 @@
 package org.icefaces.generator.xmlbuilder;
 
-import java.lang.reflect.Field;
-
-import org.icefaces.generator.FileWriter;
 import org.icefaces.generator.Generator;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -23,13 +20,13 @@ public class FacesConfigBuilder extends XMLBuilder{
         Element compElement = getDocument().createElement("component");
         Element compTypeElement = getDocument().createElement("component-type"); 
         Element compClassElement = getDocument().createElement("component-class"); 
-        Text comp_class =getDocument().createTextNode(component.component_class());
+        Text comp_class =getDocument().createTextNode(component.componentClass());
 
         getDocument().getDocumentElement().appendChild(compElement);
         compElement.appendChild(compTypeElement);
         compElement.appendChild(compClassElement);
         try {
-            Text comp_type_text = getDocument().createTextNode(component.component_type());
+            Text comp_type_text = getDocument().createTextNode(component.componentType());
             System.out.println("TYPE in CONFIG "+ comp_type_text);
             compTypeElement.appendChild(comp_type_text);
             compClassElement.appendChild(comp_class);
@@ -45,7 +42,7 @@ public class FacesConfigBuilder extends XMLBuilder{
     public void addRendererInfo(Class clazz, Component component) {
         try {
             //renderkit
-            String rendererType = component.renderer_type();
+            String rendererType = component.rendererType();
             if ("".equals(rendererType)) return;
             Text comp_renderer_type_text = getDocument().createTextNode(rendererType);
             
@@ -53,9 +50,9 @@ public class FacesConfigBuilder extends XMLBuilder{
 
             Text comp_family_text = getDocument().createTextNode(componentFamily);
             
-            String rendererClass = component.renderer_class();
+            String rendererClass = component.rendererClass();
             if (rendererClass.equals(component.EMPTY)) {
-                rendererClass = component.component_class()+ "Renderer";
+                rendererClass = component.componentClass()+ "Renderer";
             }
             Text rendererClassText = getDocument().createTextNode(rendererClass);
             

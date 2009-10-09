@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
@@ -40,11 +39,11 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("public class ");
         generatedComponentClass.append(Generator.getClassName(component).substring(classIndicator+1));
         generatedComponentClass.append(" extends ");
-        generatedComponentClass.append(component.extends_class());
+        generatedComponentClass.append(component.extendsClass());
         generatedComponentClass.append("{\n");
 
-        generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.component_type() + "\";");
-        generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = \""+ component.renderer_type() + "\";\n");
+        generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
+        generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = \""+ component.rendererType() + "\";\n");
         
         generatedComponentClass.append("\n\tpublic String getFamily() {\n\t\treturn \"");
         generatedComponentClass.append(Generator.getFamily(component));
@@ -188,7 +187,7 @@ public class ComponentClassGenerator {
             if ("".equals(facetName)) {
                 facetName = field.getName();
             }
-            addJavaDoc(field.getName(), true, facet.javadoc_set());
+            addJavaDoc(field.getName(), true, facet.javadocSet());
             generatedComponentClass.append("\tpublic void set");
             generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
             generatedComponentClass.append(field.getName().substring(1));
@@ -206,7 +205,7 @@ public class ComponentClassGenerator {
             
             
             //getter
-            addJavaDoc(field.getName(), false, facet.javadoc_get());
+            addJavaDoc(field.getName(), false, facet.javadocGet());
             generatedComponentClass.append("\tpublic ");
             generatedComponentClass.append(field.getType().getName());
             generatedComponentClass.append(" ");

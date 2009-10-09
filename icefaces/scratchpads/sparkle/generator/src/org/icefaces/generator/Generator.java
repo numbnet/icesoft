@@ -161,22 +161,22 @@ public class Generator {
     }
     
     public static String getClassName(Component component) {
-        String generatedClass = component.generated_class();
+        String generatedClass = component.generatedClass();
         if (generatedClass.equals("")) {
-            generatedClass = component.component_class();
+            generatedClass = component.componentClass();
         } 
         return generatedClass;
     }
     
     public static String getTagClassName(Component component) {
-        return component.component_class();
+        return component.componentClass();
     } 
     
     public static String getComponentType(Component component) {
-        String componentType = component.component_type();
+        String componentType = component.componentType();
         if ("".equals(componentType)) {
             try {
-                Class extended = Class.forName(component.extends_class());
+                Class extended = Class.forName(component.extendsClass());
                 Field comp_type = extended.getField("COMPONENT_TYPE");
                 componentType = String.valueOf(comp_type.get(comp_type));            
             } catch (Exception e) {
@@ -188,10 +188,10 @@ public class Generator {
     }
     
     public static String getRendererType(Component component) {
-        String rendererType = component.renderer_type();
+        String rendererType = component.rendererType();
         if ("".equals(rendererType)) {
             try {
-                Class extended = Class.forName(component.extends_class());
+                Class extended = Class.forName(component.extendsClass());
                 Field renderer_type = extended.getDeclaredField("RENDERER_TYPE");
                 rendererType = String.valueOf(renderer_type.get(renderer_type));            
             } catch (Exception e) {
@@ -203,10 +203,10 @@ public class Generator {
     }
     
     public static String getFamily(Component component) {
-        String componentFamily = component.component_family();
+        String componentFamily = component.componentFamily();
         if ("".equals(componentFamily)) {
             try {
-                Class extended = Class.forName(component.extends_class());
+                Class extended = Class.forName(component.extendsClass());
                 Field comp_family = extended.getField("COMPONENT_FAMILY");
                 componentFamily = String.valueOf(comp_family.get(comp_family));
             } catch (Exception e) {
