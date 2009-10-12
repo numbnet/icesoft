@@ -4,7 +4,9 @@
               version="2.0"
               metadata-complete="false">
     <ordering>
-        <after>ICEfaces core</after>
+        <after>
+            <name>ICEfaces core</name>
+        </after>
     </ordering>
     <application>
         <view-handler>com.icesoft.faces.application.ExtrasSetup</view-handler>
