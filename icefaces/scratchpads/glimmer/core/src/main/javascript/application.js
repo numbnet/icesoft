@@ -105,7 +105,7 @@ window.evaluate = eval;
                 broadcast(submitSendListeners);
                 break;
             case 'complete':
-                broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]);
+                broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
                 broadcast(beforeUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
                 break;
             case 'success':
