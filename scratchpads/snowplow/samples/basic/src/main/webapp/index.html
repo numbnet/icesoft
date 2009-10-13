@@ -4,14 +4,9 @@
     <script type="text/javascript" src="icepush.js"></script>
 </head>
 <body>
-<input type="hidden" id="javax.faces.ViewState" name="javax.faces.ViewState" value="222"/>
 <script type="text/javascript">
     ice.onLoad(function() {
-        try {
-            document.body.bridge = ice.Application({blockUI: false,session: 'DD6BFA0ECCA4B0C55092BB1E6869D603',connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}}, document.body);
-        } catch (e) {
-            alert(e);
-        }
+        ice.Application({session: 'DD6BFA0ECCA4B0C55092BB1E6869D603', view: 222, connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});
     });
 </script>
 </body>
