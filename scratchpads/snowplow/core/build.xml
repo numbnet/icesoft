@@ -1,7 +1,7 @@
 <project name="icepush" default="jar">
     <property file="build.properties"/>
-    <property name="java.dir" location="core/src/main/java"/>
-    <property name="lib.dir" location="./lib"/>
+    <property name="java.dir" location="src/main/java"/>
+    <property name="lib.dir" location="../lib"/>
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>

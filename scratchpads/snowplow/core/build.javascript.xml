@@ -35,8 +35,8 @@
 
 <project name="icepush.js" default="build">
     <property file="build.properties"/>
-    <property name="src.dir" location="core/src/main/javascript"/>
-    <property name="lib.dir" location="core/src/main/javascript/lib"/>
+    <property name="src.dir" location="src/main/javascript"/>
+    <property name="lib.dir" location="src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/javascript"/>
     <property name="script" location="${build.dir}/icepush.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
@@ -79,7 +79,7 @@
 
     <target name="build.bridge.compressed" depends="prepare" unless="no-compress">
         <echo message="Compressing Javascript code..."/>
-        <java jar="lib/yui-compressor.jar" fork="yes">
+        <java jar="../lib/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${script}"/>
