@@ -57,10 +57,7 @@
         <loadfile property="element.js" srcFile="${lib.dir}/element.js"/>
         <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
         <loadfile property="command.js" srcFile="${src.dir}/command.js"/>
-        <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
-        <loadfile property="heartbeat.js" srcFile="${src.dir}/heartbeat.js"/>
         <loadfile property="connection.async.js" srcFile="${src.dir}/connection.async.js"/>
-        <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
@@ -75,10 +72,7 @@
                 <filter token="element" value="${element.js}"/>
                 <filter token="event" value="${event.js}"/>
                 <filter token="command" value="${command.js}"/>
-                <filter token="status" value="${status.js}"/>
-                <filter token="heartbeat" value="${heartbeat.js}"/>
                 <filter token="connection.async" value="${connection.async.js}"/>
-                <filter token="submit" value="${submit.js}"/>
             </filterset>
         </copy>
     </target>
