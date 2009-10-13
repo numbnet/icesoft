@@ -54,11 +54,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     var listening = object(function(method) {
         method(remove, noop);
     });
-    var heartbeat = object(function(method) {
-        method(stopBeat, noop);
-    });
-
-    var receiveURI = configuration.context.async + 'send-updated-views.icefaces.jsf';
+    var receiveURI = configuration.context.async + 'block';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {

@@ -53,10 +53,7 @@ window.evaluate = eval;
     //include http.js
     //include synchronizer.js
     //include command.js
-    //include heartbeat.js
     //include connection.async.js
-    //include submit.js
-    namespace.submitEvent = submitEvent;
 
     namespace.onSessionExpiry = operator();
     namespace.onServerError = operator();
@@ -188,13 +185,7 @@ window.evaluate = eval;
         var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
         var commandDispatcher = CommandDispatcher();
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
-            try {
-                var newForm = document.createElement('form');
-                newForm.action = window.location.pathname;
-                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewID, 'ice.window': namespace.window});
-            } catch (e) {
-                warn(logger, 'failed to pick updates', e);
-            }
+            warn(logger, 'update needs to be picked: ' + viewID);
         });
 
         function dispose() {
@@ -261,26 +252,6 @@ window.evaluate = eval;
         whenTrouble(asyncConnection, function() {
             warn(logger, 'connection in trouble');
             broadcast(blockingConnectionUnstableListeners);
-        });
-
-        jsf.ajax.addOnEvent(function(e) {
-            switch (e.status) {
-                case 'begin':
-                    broadcast(submitSendListeners);
-                    break;
-                case 'complete':
-                    broadcast(submitResponseListeners, [ e.responseText, e.responseXML ]);
-                    broadcast(beforeUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
-                    break;
-                case 'success':
-                    broadcast(afterUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
-                    break;
-            }
-        });
-
-        jsf.ajax.addOnError(function(e) {
-            if (e.status == 'serverError')
-                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
         });
 
         info(logger, 'bridge loaded!');

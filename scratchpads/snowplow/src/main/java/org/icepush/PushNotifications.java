@@ -72,10 +72,10 @@ public class PushNotifications extends TimerTask implements Server {
     private String[] participatingViews;
 
     public PushNotifications(HttpSession session, final Timer monitorRunner, Configuration configuration) {
-        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 4000);
 
         //add monitor
-        monitorRunner.scheduleAtFixedRate(this, System.currentTimeMillis(), 2000);
+        monitorRunner.scheduleAtFixedRate(this, 0, 1000);
 
         //define blocking server
         activeServer = new Server() {
