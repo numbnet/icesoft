@@ -183,14 +183,12 @@ public class ComponentClassGenerator {
         while (iterator.hasNext()) {
             Field field = iterator.next();
             Facet facet = (Facet)field.getAnnotation(Facet.class);
-            String facetName = facet.name();
-            if ("".equals(facetName)) {
-                facetName = field.getName();
-            }
-            addJavaDoc(field.getName(), true, facet.javadocSet());
+            String facetName = field.getName();
+            addJavaDoc(field.getName() + " facet", true, facet.javadocSet());
             generatedComponentClass.append("\tpublic void set");
             generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
             generatedComponentClass.append(field.getName().substring(1));
+            generatedComponentClass.append("Facet");
 
             generatedComponentClass.append("(");
             generatedComponentClass.append(field.getType().getName());
@@ -205,13 +203,14 @@ public class ComponentClassGenerator {
             
             
             //getter
-            addJavaDoc(field.getName(), false, facet.javadocGet());
+            addJavaDoc(field.getName() + " facet", false, facet.javadocGet());
             generatedComponentClass.append("\tpublic ");
             generatedComponentClass.append(field.getType().getName());
             generatedComponentClass.append(" ");
             generatedComponentClass.append("get");                    
             generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
             generatedComponentClass.append(field.getName().substring(1));
+            generatedComponentClass.append("Facet");
             generatedComponentClass.append("() {\n");
             generatedComponentClass.append("\t\t return getFacet(\"");
             generatedComponentClass.append(facetName);

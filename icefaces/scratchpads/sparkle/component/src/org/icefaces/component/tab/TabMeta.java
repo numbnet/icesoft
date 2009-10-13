@@ -1,8 +1,5 @@
 package org.icefaces.component.tab;
 
-import javax.faces.component.UICommand;
-import javax.faces.component.UIComponent;
-
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 

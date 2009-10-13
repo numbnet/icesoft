@@ -1,5 +1,6 @@
 package org.icefaces.generator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.icefaces.generator.xmlbuilder.TLDBuilder;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.component.annotation.Facet;
+import org.icefaces.component.annotation.Facets;
 import org.icefaces.component.annotation.PropertyTemplate;
 
 public class Generator {
@@ -77,6 +79,7 @@ public class Generator {
           //This is annotated class 
           if (clazz.isAnnotationPresent(Component.class)) {
               Component component = (Component) clazz.getAnnotation(Component.class);
+              System.out.println(clazz.getDeclaredClasses());
               //first get all properties this annotated component wants to include
               //these properties should go to the component as well as tag class
               String[] props = component.includeProperties();
@@ -130,15 +133,14 @@ public class Generator {
                               fieldsForTagClass.put(field.getName(), field);
                           }                           
                       }
-                  } else if(field.isAnnotationPresent(Facet.class)){
-                      fieldsForFacet.put(field.getName(), field);
-                  }
+                  } 
               }
           } 
           
         if (clazz.getSuperclass() != null) {
             processAnnotation(clazz.getSuperclass(), false);
         }
+        processFacets(clazz);
     }
     
     //this method loads predefine properties 
@@ -215,5 +217,23 @@ public class Generator {
             } 
         }
         return componentFamily;
+    }
+    
+    private static void processFacets(Class clazz){
+        Class[] classes = clazz.getDeclaredClasses();
+        for (int i=0; i < classes.length; i++) {
+            if (classes[i].isAnnotationPresent(Facets.class)) {
+                Field[] fields = classes[i].getDeclaredFields();
+                for (int f=0; f < fields.length; f++) {
+                    Field field = fields[f];
+                    if (field.isAnnotationPresent(Facet.class)) {
+                        fieldsForFacet.put(field.getName(), field);
+                        System.out.println("Facet property"+ fields[f].getName());
+                    }
+
+                }
+
+            }
+        }
     }
 }
