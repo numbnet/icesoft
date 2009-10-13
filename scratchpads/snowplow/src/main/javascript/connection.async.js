@@ -58,7 +58,6 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         method(stopBeat, noop);
     });
 
-    var pingURI = configuration.context.current + 'ping.icefaces.jsf';
     var receiveURI = configuration.context.async + 'send-updated-views.icefaces.jsf';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
@@ -154,35 +153,11 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     //avoid error messages for 'pong' messages that arrive after blocking connection is closed
     register(commandDispatcher, 'pong', noop);
     //heartbeat setup
-    var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 50000;
+
+    //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore 
     var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
-    var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
 
     function initializeConnection() {
-        //stop the previous heartbeat instance
-        stopBeat(heartbeat);
-        heartbeat = Heartbeat(heartbeatInterval, heartbeatTimeout, logger);
-        onPing(heartbeat, function(pong) {
-            //re-register a pong command on every ping
-            register(commandDispatcher, 'pong', pong);
-            postAsynchronously(channel, pingURI, noop, FormPost, noop);
-        });
-
-        onLostPongs(heartbeat, connect);
-        onLostPongs(heartbeat, broadcaster(connectionTroubleListeners));
-        onLostPongs(heartbeat, broadcaster(connectionDownListeners), heartbeatRetries);
-
-        startBeat(heartbeat);
-        //wire up keyboard shortcut to toggle heartbeat
-        var heartbeatStarted = true;
-        onKeyPress(document, function(evt) {
-            var e = $event(evt, document.documentElement);
-            if (keyCode(e) == 46 && isCtrlPressed(e) && isShiftPressed(e)) {
-                heartbeatStarted ? stopBeat(heartbeat) : startBeat(heartbeat);
-                heartbeatStarted = !heartbeatStarted;
-            }
-        });
-
         connect();
     }
 
@@ -281,7 +256,6 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
                 //shutdown once
                 method(shutdown, noop);
                 connect = noop;
-                stopBeat(heartbeat);
             } catch (e) {
                 error(logger, 'error during shutdown', e);
                 //ignore, we really need to shutdown
