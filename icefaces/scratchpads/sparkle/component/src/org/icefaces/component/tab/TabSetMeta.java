@@ -1,5 +1,6 @@
 package org.icefaces.component.tab;
 
+import javax.el.MethodExpression;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -11,6 +12,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Facet;
+import org.icefaces.component.annotation.Facets;
 import org.icefaces.component.annotation.Property;
 
 @Component(
@@ -36,4 +39,18 @@ public class TabSetMeta {
     
     @Property    
     protected String style;
+    
+    @Property
+    protected MethodExpression tabChangeListener;
+    
+    @Facets
+    class MetaFacets {
+        @Facet
+        UIComponent header;
+        @Facet
+        UIComponent body;
+        @Facet
+        UIComponent footer;           
+    }
+
 }

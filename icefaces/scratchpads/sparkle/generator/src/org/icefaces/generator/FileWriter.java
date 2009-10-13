@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FileWriter {
         Writer writer = null;
         try
         {
-            String workingDir = getWorkingFolder()+ "../generated/";
+            String workingDir = URLDecoder.decode(getWorkingFolder()+ "../generated/");
             File folder = new File(workingDir+ path);
             System.out.println(folder + path+ fileName);
             if (!folder.exists()) {
@@ -88,7 +89,7 @@ public class FileWriter {
         try {
             // Prepare the DOM document for writing
             Source source = new DOMSource(doc);
-            File folder = new File(getWorkingFolder()+"META-INF/");
+            File folder = new File(URLDecoder.decode(getWorkingFolder()+"META-INF/"));
             
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -119,95 +120,6 @@ public class FileWriter {
         }
     }
     
-    public static void printClassLoader() {
-//        URLClassLoader sysLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-//        URL urls[] = sysLoader.getURLs();
-//        Thread.currentThread().getContextClassLoader().
-//        for (int i = 0; i < urls.length; i++) {
-//        System.out.println("Class in path "+ urls[i].toString());
-//        }
-    }
-    
-    public static URLClassLoader loadJar() {
-        URLClassLoader clazzLoader = null ;
-        Class clazz;
-        
-        File file = new File(FileWriter.getWorkingFolder()+ "../../lib/icefaces-comps.jar");
-        try {
-            URL url = file.toURL();
-            
-            
-            clazzLoader = new URLClassLoader(new URL[]{url});
-            System.out.println(clazzLoader.getURLs().length);
-            Class c = clazzLoader.loadClass("com.icesoft.faces.component.commandsortheader.CommandSortHeader");
-            System.out.println(c);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return clazzLoader;
-        
-//        filePath = “jar:file://” + filePath + “!/”;
-//        URL url = new File(filePath).toURL();
-//        clazzLoader = new URLClassLoader(new URL[]{url});
-//        clazz = clazzLoader.loadClass(name);
-//        return clazz.newInstance();
-    }
-    
-    
-    public static void printJarFile() {
-        ClassLoader classLoader = loadJar();
-        File file = new File(FileWriter.getWorkingFolder()+ "../../lib/icefaces-comps.jar");
-        try {
-            JarFile components = new JarFile(file);
-            Enumeration e = components.entries();
-            while (e.hasMoreElements()) {
-              try {  
-                  JarEntry entry = (JarEntry)e.nextElement();
-               //   System.out.println("---- "+ classLoader.loadClass("com.icesoft.faces.component.panelseries.PanelSeriesRenderer"));
-                  String name = entry.getName();
-                  long size = entry.getSize();
-                  long compressedSize = entry.getCompressedSize();
-                  System.out.println(
-                      name + "\t" + size + "\t" + compressedSize);      
-              } catch(Exception ee) {
-                  
-              }
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
-    public static List<Class> getAnnotatedComps() {
-        URLClassLoader clazzLoader = null ;
-        File file = new File(FileWriter.getWorkingFolder()+ "../../lib/icefaces-comps.jar");
-        List<Class> componentsList = new ArrayList<Class>();
-        try {
-            URL url = file.toURL();
-            clazzLoader = new URLClassLoader(new URL[]{url});
-
-            JarFile components = new JarFile(file);
-            Enumeration e = components.entries();
-            while (e.hasMoreElements()) {
-              JarEntry entry = (JarEntry)e.nextElement();
-              String name = entry.getName();
-              if (name.endsWith(".class") && !name.endsWith("Tag.class")) {
-                  String packageName = name.substring(0, name.lastIndexOf("class")-1).replace('/', '.');
-                          Class c = clazzLoader.loadClass(packageName);
-                  if (c.isAnnotationPresent(Component.class)) {
-                      System.out.println(" anno "+ c.getAnnotations().length);
-                      componentsList.add(c);
-                  }
-              }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }     
-        return componentsList;
-    }
-    
     public static String getPropertyValue(Class clazz, String fieldName, String methodName) {
         try {   
             Field field = clazz.getField(fieldName);
@@ -225,8 +137,7 @@ public class FileWriter {
     }    
     
     public static List<Class> getAnnotatedCompsList() {
-        System.out.println("Working folder "+ (FileWriter.getWorkingFolder()+"../../../generator/build"));
-        File file = new File(FileWriter.getWorkingFolder()+"../../../generator/build");
+        File file = new File(URLDecoder.decode(FileWriter.getWorkingFolder()+"../../../generator/build"));
 
         URLClassLoader clazzLoader = null;
         try {

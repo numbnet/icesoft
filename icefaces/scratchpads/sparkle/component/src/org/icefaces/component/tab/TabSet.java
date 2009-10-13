@@ -1,6 +1,8 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
+
+import javax.el.MethodExpression;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -17,20 +19,7 @@ public class TabSet extends TabSetBase {
     int oldTabIndex = Integer.MIN_VALUE;    
     private String orientation;
     String oldOrientation;   
-    
-    MethodBinding tabChangeListener;
-    
-    public UIComponent getHeadFacet() {
-        return (UIComponent) getFacet("header");
-    }
 
-    public UIComponent getBodyFacet() {
-        return (UIComponent) getFacet("body");
-    }
-    
-    public UIComponent getFooterFacet() {
-        return (UIComponent) getFacet("footer");
-    }
 
 //    private void loadJs() {
 //        //register the ICEfaces provided JS to be loaded
@@ -94,9 +83,9 @@ public class TabSet extends TabSetBase {
         if (event != null) {
             ValueChangeEvent e = (ValueChangeEvent)event;
             setTabIndex(((Integer)e.getNewValue()).intValue());
-            MethodBinding method = getTabChangeListener();
+            MethodExpression method = getTabChangeListener();
             if (method != null) {
-                method.invoke(getFacesContext(), new Object[]{event});
+                method.invoke(getFacesContext().getELContext(), new Object[]{event});
             }
         }
     }
@@ -111,13 +100,38 @@ public class TabSet extends TabSetBase {
         super.queueEvent(event);
     }  
     
-    public MethodBinding getTabChangeListener() {
-        return tabChangeListener;
-    }
+    
+    private Object[] values;
 
-    public void setTabChangeListener(MethodBinding tabChangeListener) {
-        this.tabChangeListener = tabChangeListener;
-    }       
+    public Object saveState(FacesContext facesContext) {
+
+        if (facesContext == null) {
+            throw new NullPointerException();
+        }
+        if (values == null) {
+            values = new Object[3];
+        }
+        
+        values[0] = super.saveState(facesContext);
+        values[1] = oldOrientation; 
+        values[2] = Integer.valueOf(oldTabIndex); 
+        return (values);        
+    }
+    
+    public void restoreState(FacesContext facesContext, Object state) {
+
+        if (facesContext == null) {
+            throw new NullPointerException();
+        }
+
+        if (state == null) {
+            return;
+        }
+        values = (Object[]) state;
+        super.restoreState(facesContext, values[0]);
+        oldOrientation = (String) values[1];
+        oldTabIndex = ((Integer) values[2]).intValue();        
+    }
 }
 
 //class TabSetJarResource extends JarResource {
