@@ -106,15 +106,15 @@ window.evaluate = eval;
 
     onBeforeUnload(window, delistWindowViews);
 
-    namespace.Application = function(configuration, container) {
+    namespace.Application = function(configuration) {
         var blockingConnectionLostListeners = [];
         var blockingConnectionUnstableListeners = [];
         var serverErrorListeners = [];
         var viewDisposedListeners = [];
 
         var sessionID = configuration.session;
-        //todo: can we rely on javax.faces.ViewState to identify the view?
-        var viewID = document.getElementById('javax.faces.ViewState').value;
+        var viewID = configuration.view;
+
         var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
         var commandDispatcher = CommandDispatcher();
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
