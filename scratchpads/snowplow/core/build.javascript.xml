@@ -35,8 +35,8 @@
 
 <project name="icepush.js" default="build">
     <property file="build.properties"/>
-    <property name="src.dir" location="${basedir}/src/main/javascript"/>
-    <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
+    <property name="src.dir" location="core/src/main/javascript"/>
+    <property name="lib.dir" location="core/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/javascript"/>
     <property name="script" location="${build.dir}/icepush.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
