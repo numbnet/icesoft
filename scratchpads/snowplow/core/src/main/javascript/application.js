@@ -51,26 +51,17 @@ window.evaluate = eval;
     //include event.js
     namespace.$event = $event;
     //include http.js
-    //include synchronizer.js
     //include command.js
     //include connection.async.js
 
-    namespace.onSessionExpiry = operator();
     namespace.onServerError = operator();
     namespace.onBlockingConnectionUnstable = operator();
     namespace.onBlockingConnectionLost = operator();
     namespace.onViewDisposal = operator();
-    namespace.onSubmitSend = operator();
-    namespace.onSubmitResponse = operator();
-    namespace.onBeforeUpdate = operator();
-    namespace.onAfterUpdate = operator();
+    namespace.disposeBridge = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
-
-    namespace.resetIndicators = operator();
-    namespace.disposeBridge = operator();
-
     var views = namespace.views = namespace.views || [];
 
     function enlistSession(sessionID, viewID) {
@@ -113,71 +104,13 @@ window.evaluate = eval;
         empty(views);
     }
 
-    function replaceContainerHTML(container, html) {
-        var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
-        var end = new RegExp('\<\/body\>', 'g').exec(html);
-        var body = html.substring(start.index, end.index + end[0].length)
-        var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
-        //strip <noscript> tag to fix Safari bug
-        // #3131 If this is a response from an error code, there may not be a <noscript> tag.
-        var startNoscript = new RegExp('\<noscript\>', 'g').exec(bodyContent);
-        if (startNoscript == null) {
-            container.innerHTML = bodyContent;
-        } else {
-            var endNoscript = new RegExp('\<\/noscript\>', 'g').exec(bodyContent);
-            container.innerHTML = substring(bodyContent, 0, startNoscript.index) + substring(bodyContent, endNoscript.index + 11, bodyContent.length);
-        }
-    }
-
-    onLoad(window, function() {
-        each(document.getElementsByTagName('form'), function(f) {
-            //hijack browser form submit, instead submit through an Ajax request
-            f.submit = function() {
-                submitEvent(null, f);
-            };
-            f.onsubmit = none;
-            each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
-                f[name] = function(e) {
-                    var event = e || window.event;
-                    var element = event.target || event.srcElement;
-                    f.onsubmit = function() {
-                        submitEvent(event, element, f);
-                        f.onsubmit = none;
-                        return false;
-                    };
-                };
-            });
-
-            //propagate window ID -- this strategy works for POSTs sent by Mojarra
-            var i = document.createElement('input');
-            i.setAttribute('name', 'ice.window');
-            i.setAttribute('value', window.ice.window);
-            i.setAttribute('type', 'hidden');
-            f.appendChild(i);
-        });
-    });
-
     onBeforeUnload(window, delistWindowViews);
-
-    var asyncContext;
-    onBeforeUnload(window, function() {
-        postSynchronously(Client(true), asyncContext + 'dispose-window.icefaces.jsf', function(query) {
-            addNameValue(query, 'ice.window', namespace.window);
-        }, FormPost, noop);
-    });
 
     namespace.Application = function(configuration, container) {
         var blockingConnectionLostListeners = [];
         var blockingConnectionUnstableListeners = [];
-        var sessionExpiredListeners = [];
         var serverErrorListeners = [];
         var viewDisposedListeners = [];
-        var submitSendListeners = [];
-        var submitResponseListeners = [];
-        var beforeUpdateListeners = [];
-        var afterUpdateListeners = [];
-
-        asyncContext = configuration.connection.context.async;
 
         var sessionID = configuration.session;
         //todo: can we rely on javax.faces.ViewState to identify the view?
@@ -203,38 +136,20 @@ window.evaluate = eval;
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
-        register(commandDispatcher, 'session-expired', function() {
-            try {
-                info(logger, 'session expired');
-                broadcast(sessionExpiredListeners);
-            } finally {
-                dispose();
-            }
-        });
-        register(commandDispatcher, 'macro', function(message) {
-            each(message.childNodes, curry(deserializeAndExecute, commandDispatcher));
-        });
-
 
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');
-            if (mimeType && startsWith(mimeType, 'text/html')) {
-                replaceContainerHTML(contentAsText(response), container);
-            } else if (mimeType && startsWith(mimeType, 'text/xml')) {
+            if (mimeType && startsWith(mimeType, 'text/xml')) {
                 deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
             } else {
-                warn(logger, 'unknown content in response');
+                warn(logger, 'unknown content in response >> ' + contentAsText(response));
             }
         });
 
         onServerError(asyncConnection, function(response) {
             try {
                 warn(logger, 'server side error');
-                var textContent = contentAsText(response);
-                if (!blank(textContent)) {
-                    replaceContainerHTML(textContent, container);
-                }
-                broadcast(serverErrorListeners, [ textContent, contentAsDOM(response) ]);
+                broadcast(serverErrorListeners, [ statusCode(reponse), contentAsText(response), contentAsDOM(response) ]);
             } finally {
                 dispose();
             }
@@ -257,11 +172,6 @@ window.evaluate = eval;
         info(logger, 'bridge loaded!');
 
         return object(function(method) {
-            //public method
-            method(namespace.onSessionExpiry, function(self, callback) {
-                append(sessionExpiredListeners, callback);
-            });
-
             method(namespace.onServerError, function(self, callback) {
                 append(serverErrorListeners, callback);
             });
@@ -276,22 +186,6 @@ window.evaluate = eval;
 
             method(namespace.onViewDisposal, function(self, callback) {
                 append(viewDisposedListeners, callback);
-            });
-
-            method(namespace.onSubmitSend, function(self, callback) {
-                append(submitSendListeners, callback);
-            });
-
-            method(namespace.onSubmitResponse, function(self, callback) {
-                append(submitResponseListeners, callback);
-            });
-
-            method(namespace.onBeforeUpdate, function(self, callback) {
-                append(beforeUpdateListeners, callback);
-            });
-
-            method(namespace.onAfterUpdate, function(self, callback) {
-                append(afterUpdateListeners, callback);
             });
 
             method(namespace.disposeBridge, dispose);
