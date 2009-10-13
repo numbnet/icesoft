@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class MultiViewServer implements Server {
     private int viewCount = 0;
+    private int viewCap = 0;
     private Map views;
     private ViewQueue asynchronouslyUpdatedViews;
     private String sessionID;
@@ -44,6 +45,7 @@ public class MultiViewServer implements Server {
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
         this.associatedPageViews = associatedPageViews;
+        this.viewCap = configuration.getAttributeAsInteger("viewCap", 20);
     }
 
     public void service(Request request) throws Exception {
@@ -71,6 +73,11 @@ public class MultiViewServer implements Server {
     }
 
     private View createView() throws Exception {
+        if (views.size()  > viewCap)  {
+            //check views.size rather than viewCount since disposed views
+            //are not a problem
+            throw new RuntimeException("Concurrent view limit exceeded.");
+        }
         String viewNumber = String.valueOf(++viewCount);
         View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
         associatedPageViews.add(view);
