@@ -11,7 +11,11 @@ import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViews;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class MultiViewServer implements Server {
+    private static final Log LOG = LogFactory.getLog(MultiViewServer.class);
     private int viewCount = 0;
     private int viewCap = 0;
     private Map views;
@@ -45,7 +49,7 @@ public class MultiViewServer implements Server {
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
         this.associatedPageViews = associatedPageViews;
-        this.viewCap = configuration.getAttributeAsInteger("viewCap", 20);
+        this.viewCap = configuration.getAttributeAsInteger("concurrentViewLimit", 20);
     }
 
     public void service(Request request) throws Exception {
@@ -76,6 +80,8 @@ public class MultiViewServer implements Server {
         if (views.size()  > viewCap)  {
             //check views.size rather than viewCount since disposed views
             //are not a problem
+            LOG.warn("Concurrent view limit of " + viewCap + 
+                " exceeded for session " + sessionID);
             throw new RuntimeException("Concurrent view limit exceeded.");
         }
         String viewNumber = String.valueOf(++viewCount);
