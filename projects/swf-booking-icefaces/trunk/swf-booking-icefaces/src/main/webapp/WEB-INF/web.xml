@@ -57,7 +57,7 @@
 		
     <servlet>
         <servlet-name>SpringWebFlowInstantiationServlet</servlet-name>
-        <servlet-class>com.icesoft.faces.env.SpringWebFlowInstantiationServlet</servlet-class>
+        <servlet-class>com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet</servlet-class> 
                 <init-param>
                         <param-name>contextConfigLocation</param-name>
                         <param-value>/WEB-INF/config/web-application-config.xml</param-value>
