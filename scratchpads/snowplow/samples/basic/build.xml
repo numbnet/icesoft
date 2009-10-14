@@ -40,7 +40,6 @@
         <exclude name="*grizzly*"/>
         <exclude name="*jetty*"/>
         <exclude name="*yui-compressor*"/>
-        <exclude name="*servlet-api*"/>
     </patternset>
 
     <target name="clean">
@@ -64,6 +63,7 @@
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
+                <fileset dir="../../core/build/dist"/>
             </classpath>
         </javac>
 
