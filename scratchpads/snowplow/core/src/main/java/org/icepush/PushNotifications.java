@@ -76,6 +76,12 @@ public class PushNotifications extends TimerTask implements Server {
                 resetTimeout();
                 respondIfViewsAvailable();
             }
+
+            public void addGroupMember(String groupName, String pushId) {
+            }
+
+            public void removeGroupMember(String groupName, String pushId) {
+            }
         };
         session.setAttribute(PushContext.class.getName(), pushContext);
 
