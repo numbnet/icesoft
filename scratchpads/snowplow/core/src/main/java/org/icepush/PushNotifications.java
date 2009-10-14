@@ -52,17 +52,7 @@ public class PushNotifications extends TimerTask implements Server {
             writer.write("<noop/>");
         }
     };
-    private static final ResponseHandler PongHandler = new FixedXMLContentHandler() {
-        public void writeTo(Writer writer) throws IOException {
-            writer.write("<pong/>");
-        }
-    };
-    private static final ResponseHandler AfterShutdownHandler = new FixedXMLContentHandler() {
-        public void writeTo(Writer writer) throws IOException {
-            writer.write("<session-expired/>");
-        }
-    };
-    private static final Server AfterShutdown = new ResponseHandlerServer(AfterShutdownHandler);
+    private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private final long timeoutInterval;
@@ -72,15 +62,27 @@ public class PushNotifications extends TimerTask implements Server {
     private String[] participatingViews;
 
     public PushNotifications(HttpSession session, final Timer monitorRunner, Configuration configuration) {
-        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 4000);
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
 
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
+        PushContext pushContext = new PushContext() {
+            public String createPushId(String browserId) {
+                return String.valueOf(System.currentTimeMillis());
+            }
+
+            public synchronized void notify(String targetName) {
+                updatedViews = new String[]{targetName};
+                resetTimeout();
+                respondIfViewsAvailable();
+            }
+        };
+        session.setAttribute(PushContext.class.getName(), pushContext);
 
         //define blocking server
         activeServer = new Server() {
             public void service(final Request request) throws Exception {
-                responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
+                resetTimeout();
                 respondIfPendingRequest(CloseResponse);
                 participatingViews = request.getParameterAsStrings("ice.view");
                 System.out.println("view >> " + Arrays.asList(participatingViews));
@@ -91,9 +93,13 @@ public class PushNotifications extends TimerTask implements Server {
             public void shutdown() {
                 //avoid creating new blocking connections after shutdown
                 activeServer = AfterShutdown;
-                respondIfPendingRequest(AfterShutdownHandler);
+                respondIfPendingRequest(CloseResponse);
             }
         };
+    }
+
+    private void resetTimeout() {
+        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
     }
 
     public void service(final Request request) throws Exception {
@@ -111,9 +117,10 @@ public class PushNotifications extends TimerTask implements Server {
         }
     }
 
-    private void respondIfViewsAvailable() {
+    private synchronized void respondIfViewsAvailable() {
         if (updatedViews != null && updatedViews.length > 0) {
             respondIfPendingRequest(new UpdatedViewsHandler(updatedViews));
+            updatedViews = null;
         }
     }
 
@@ -125,15 +132,6 @@ public class PushNotifications extends TimerTask implements Server {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    private void respondWhenRequestAvailable() {
-        try {
-            Request request = (Request) pendingRequest.take();
-            request.respondWith(PongHandler);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
