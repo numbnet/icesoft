@@ -27,6 +27,8 @@ public class ICEpushServlet extends HttpServlet {
         final ServletContext context = servletConfig.getServletContext();
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
         timer = new Timer(true);
+
+        //todo: replace SessionDispatcher with BrowserDispatcher -- dispatching based on the BROWSERID cookie
         dispatcher = new SessionDispatcher(context) {
             protected PseudoServlet newServer(HttpSession session) {
                 return new EnvironmentAdaptingServlet(new PushNotifications(session, timer, configuration), configuration, context);
