@@ -71,6 +71,9 @@ implements MessageServiceClient.Administrator {
         final MessageServiceClient messageServiceClient, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final Configuration configuration, final boolean retryOnFail)
     throws IllegalArgumentException {
+
+        DefaultMessageServiceContextListener.setMessageService(this);
+
         if (messageServiceClient == null) {
             throw new IllegalArgumentException("messageServiceClient is null");
         }
