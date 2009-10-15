@@ -172,7 +172,6 @@ public class CoreComponentUtils {
      * @param focusId Id of component to get the focus
      */
     public static void setFocusId(String focusId) {
-        FacesContext.getCurrentInstance().getExternalContext().
-                getRequestParameterMap().put("ice.focus", focusId);
+        FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("ice.focus", focusId);
     }
 }
