@@ -2,6 +2,7 @@ This is a WAR deployment of  seam component showcase example implemented in Seam
 doesn't require an ejb3 container and still uses Seam annotations and contexts. 
 
 ****NEAT THINGS IN THIS VERSION*****
+1.8.2 version:- panelConfirmation component
 1.8.0 version:- <ice:loadbundle> for changing language/locale, setPhaseEvent example and dataExporter component for export to excel or csv
 1.7.2 version:- The new outputResource component is now included.
 1.7.1 version:- include component binding example in dataPaginator example, the navigation is in conversation scope, so users can do multiple windows of the application in the same session (concurrent dom views).  Note though that all pages are not bookmarkable.  If it has page scope, a page refresh will probably set you back to original view of the application.  The conversationally scoped views will hold their view.  This application could be changed easily to have the key to the MResources table (which holds all the links to info for each of the components) could be the page paramter, but since pages are not always required to be bookmarkable, that has been left off.  This same table could also be used to load the documentation (in tabs similar to older version, etc).
@@ -15,17 +16,17 @@ works better for these older servers.  The j5ee AS work much better with jsf1.2 
 
 1.  download jboss-seam-2.x and unzip all files (as the libraries will be copied from these folders)--may have to build the jars
     NOTE THAT FOR PORTLET EXAMPLES*** you should have jboss-seam-2.0.2.SP1 or jboss-seam-2.1.0 as a minimum.
-2.  download and unzip Icefaces (now 1.8.0)
+2.  download and unzip Icefaces (now 1.8.2)
 
 3. update the following properties in build.properties file to point to 
-the appropriate directories where the jboss-4.2.* server, icefaces libraries and jboss-seam
+the appropriate directories where the jboss-4.2.x or jboss-5.x server, icefaces libraries and jboss-seam
 libraries exist on your machine.
 	(an example follows or you can just look at the build.properties file in this folder)
 
  for example:-
- 	jboss.home = C:/work/webserver/jboss-4.2.3.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.8.1/icefaces  
-	jboss.seam.home = C:/Seam/jboss-seam-2.0.2.SP1     
+ 	jboss.home = C:/work/webserver/jboss-5.1.0.GA 
+	icefacesSourceDirectory = C:/ICEfaces-1.8.2/icefaces  
+	jboss.seam.home = C:/Seam/jboss-seam-2.2.0.GA     
 
 4. run target = copy-libs  (will copy all the required libraries from the above locations)
 5. run target = copy-source (will copy over the jspx pages and beans from component-showcase)
