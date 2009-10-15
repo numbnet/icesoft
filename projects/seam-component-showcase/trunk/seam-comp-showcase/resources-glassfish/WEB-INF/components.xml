@@ -19,6 +19,7 @@
                   conversation-id-parameter="cid"/>
     
    <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
+  <component scope="APPLICATION" auto-create="true" name="messageBundleLoader" class="org.icefaces.application.showcase.util.MessageBundleLoader"/>
   <!--<transaction:entity-transaction entity-manager="#{entityManager}"/>                  -->
     <persistence:entity-manager-factory name="componentDatabase" /> 
     
