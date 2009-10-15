@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.util.CoreComponentUtils;
 
 public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
@@ -148,7 +149,8 @@ public class CoreUtils {
 
         //TODO: convert to :: utility findComponent
 //            UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
-            UIComponent panelTooltip = facesContext.getViewRoot().findComponent(panelTooltipId);
+//            UIComponent panelTooltip = facesContext.getViewRoot().findComponent(panelTooltipId);
+        UIComponent panelTooltip = CoreComponentUtils.findComponent(panelTooltipId, uiComponent);
             if (panelTooltip != null/* && family type equals panelPopup*/) { 
                 //replace the id with the clientid
                 panelTooltipId = panelTooltip.getClientId(facesContext);
