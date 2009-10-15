@@ -437,11 +437,19 @@ Ice.PanelDivider.onWindowResize = function() {
     });
 }
 
+Ice.PanelDivider.adjustSecondPaneSizeObservers = $H();
+
 Ice.PanelDivider.onLoad = function(divider, isHorizontal) {
     Event.stopObserving(window, "resize", Ice.PanelDivider.onWindowResize); // Will register multiple times if don't do this?
     Ice.PanelDivider.dividerHash.set(divider, isHorizontal); // Will replace existing, if any.
     Event.observe(window, "resize", Ice.PanelDivider.onWindowResize);
-    Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
+    var handler = Ice.PanelDivider.adjustSecondPaneSizeObservers.get(divider);
+    if (handler) { // DOM update
+        Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
+    } else { // first load
+        handler = Ice.PanelDivider.adjustSecondPaneSizeObservers.set(divider, Ice.PanelDivider.adjustSecondPaneSize.curry(divider, isHorizontal));
+        Event.observe(window, "load", handler);
+    }
     Ice.PanelDivider.adjustPercentBasedHeight(divider, isHorizontal);
 }
 
