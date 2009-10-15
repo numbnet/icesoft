@@ -2487,6 +2487,10 @@ Disabled classes for the calendar controls
     display: block;
 }
 
+.iceCmdSrtHdr table {
+    display: inline;
+}
+
 .iceCmdSrtHdr-dis {
     text-decoration: none;
     /*border: 1px solid #ABABAB;*/

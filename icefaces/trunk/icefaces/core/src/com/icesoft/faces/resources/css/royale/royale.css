@@ -2469,6 +2469,10 @@ Disabeld classes for the calendar controls
     color: #FFFFFF;
 }
 
+.iceCmdSrtHdr table {
+    display: inline;
+}
+
 .iceCmdSrtHdr-dis {
     color: #999999;
     font-family: Arial, Helvetica, sans-serif;
