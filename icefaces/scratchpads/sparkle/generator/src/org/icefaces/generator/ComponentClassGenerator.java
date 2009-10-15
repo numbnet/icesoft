@@ -43,7 +43,12 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("{\n");
 
         generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
-        generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = \""+ component.rendererType() + "\";\n");
+        String rendererType = null;
+        if (!"".equals(component.rendererType())) {
+            rendererType = "\""+ component.rendererType() + "\"";
+        }
+        
+        generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
         
         generatedComponentClass.append("\n\tpublic String getFamily() {\n\t\treturn \"");
         generatedComponentClass.append(Generator.getFamily(component));

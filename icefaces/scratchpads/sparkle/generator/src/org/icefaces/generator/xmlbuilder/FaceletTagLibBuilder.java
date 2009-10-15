@@ -25,7 +25,10 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         tag.appendChild(component_element);
         try {
             addNode(component_element, "component-type", Generator.getComponentType(component));
-            addNode(component_element, "renderer-type", Generator.getRendererType(component));
+            if (!"".equals(component.rendererType())) {
+                addNode(component_element, "renderer-type", component.rendererType());
+            }
+ 
         } catch (Exception e) {
             e.printStackTrace();
         } 

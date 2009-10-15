@@ -86,7 +86,7 @@ public class TabSetRenderer extends Renderer{
             styleClass+= " yui-navset-bottom";
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR); 
-        boolean isClientSide = true; // new Boolean(tabSet.getAttributes().get("clientSide").toString());
+        boolean isClientSide =true; // ((Boolean)tabSet.getAttributes().get("clientSide"));
         int tabIndex = tabSet.getTabIndex();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
@@ -150,7 +150,7 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(HTML.HREF_ATTR, "#"+ clientId, HTML.CLASS_ATTR);
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.CLASS_ATTR);  
-            writer.write(String.valueOf(tabSet.getAttributes().get("label")));
+            writer.write(String.valueOf(tab.getAttributes().get("label")));
             writer.endElement("em");
             writer.endElement(HTML.ANCHOR_ELEM);        
         }
@@ -162,7 +162,8 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        boolean isClientSide = new Boolean(tabSet.getAttributes().get("clientSide").toString());
+        
+        boolean isClientSide = true; //((TabSet)tabSet).isClientSide();
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {

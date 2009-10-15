@@ -1,4 +1,3 @@
-Ice.component.tabset= Class.create();
 Ice.component.tabset = {
     initialize:function(clientId) {
        logger.info('tabset initialize');

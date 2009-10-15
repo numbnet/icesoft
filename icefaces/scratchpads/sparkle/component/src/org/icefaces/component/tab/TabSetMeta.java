@@ -23,28 +23,31 @@ import org.icefaces.component.annotation.Property;
     componentType = "org.icesoft.faces.TabSet",
     rendererType = "org.icesoft.faces.TabSetRenderer",
     extendsClass = "javax.faces.component.UICommand",
-    generatedClass = "org.icefaces.component.tab.TabSetBase")
+    generatedClass = "org.icefaces.component.tab.TabSetBase",
+    componentFamily="com.icesoft.faces.TabSet"    
+)
 public class TabSetMeta {
     @Property    
-    protected Boolean clientSide; 
+    private Boolean clientSide; 
    
     @Property    
-    protected Boolean partialSubmit;
+    private Boolean partialSubmit;
     
     @Property    
-    protected String onupdate;
+    private String onupdate;
     
     @Property
-    protected String styleClass;
+    private String styleClass;
     
     @Property    
-    protected String style;
+    private String style;
     
     @Property
-    protected MethodExpression tabChangeListener;
+    private MethodExpression tabChangeListener;
+    
     
     @Facets
-    class MetaFacets {
+    class FacetsMeta{
         @Facet
         UIComponent header;
         @Facet
