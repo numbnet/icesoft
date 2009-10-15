@@ -1,6 +1,10 @@
 package org.icefaces.component.tab;
 
+import javax.faces.component.UIComponent;
+
 import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Facet;
+import org.icefaces.component.annotation.Facets;
 import org.icefaces.component.annotation.Property;
 
 
@@ -9,18 +13,32 @@ import org.icefaces.component.annotation.Property;
         componentType = "com.icesoft.faces.Tab",
         rendererType ="",
         extendsClass = "javax.faces.component.UICommand", 
-        generatedClass = "org.icefaces.component.tab.TabBase")
+        generatedClass = "org.icefaces.component.tab.TabBase",
+        componentFamily="com.icesoft.faces.TabSet"
+        )
 public class TabMeta {
     @Property   
-    protected String label;
+    private String label;
     @Property   
-    protected String dataSrc;
+    private String dataSrc;
     @Property   
-    protected Boolean cacheData;
+    private Boolean cacheData;
     @Property   
-    protected Boolean disabled;    
+    private Boolean disabled;    
     @Property (inherit=true)
-    protected String id;    
+    private String id;    
     @Property (inherit=true)
-    protected boolean rendered;
+    private boolean rendered;
+    
+    @Facets
+    class FacetsMeta{
+        @Facet
+        UIComponent header;
+        @Facet
+        UIComponent body;
+        @Facet
+        UIComponent footer;    
+        @Facet
+        UIComponent label;          
+    }    
 }

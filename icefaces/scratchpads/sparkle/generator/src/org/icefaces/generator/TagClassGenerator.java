@@ -44,10 +44,14 @@ public class TagClassGenerator {
         generatedTagClass.append("public class ");
         generatedTagClass.append(Generator.getTagClassName(component).substring(classIndicator+1));
         generatedTagClass.append("Tag extends UIComponentELTag {\n");
-        generatedTagClass.append("\tpublic String getRendererType() {\n\t\treturn \"");
+        generatedTagClass.append("\tpublic String getRendererType() {\n\t\treturn ");
+        String rendererType = null;
+        if (!"".equals(component.rendererType())) {
+            rendererType = "\""+ component.rendererType() + "\"";
+        }
         
-        generatedTagClass.append(Generator.getRendererType(component));   
-        generatedTagClass.append("\";\n\t}\n");
+        generatedTagClass.append(rendererType);   
+        generatedTagClass.append(";\n\t}\n");
         generatedTagClass.append("\tpublic String getComponentType() {\n\t\treturn \"");
         generatedTagClass.append(Generator.getComponentType(component)); 
         generatedTagClass.append("\";\n\t}\n");
