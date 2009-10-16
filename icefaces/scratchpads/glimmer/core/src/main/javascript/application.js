@@ -56,7 +56,10 @@ window.evaluate = eval;
     //include heartbeat.js
     //include connection.async.js
     //include submit.js
-    namespace.submitEvent = submitEvent;
+    namespace.singleSubmit = singleSubmit;
+    namespace.ss = singleSubmit;
+    namespace.submit = submit;
+    namespace.s = submit;
 
     var serverErrorListeners = [];
     namespace.onServerError = function(callback) {
