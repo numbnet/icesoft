@@ -164,10 +164,10 @@ window.evaluate = eval;
 
         //register command that handles the updated-views message
         register(commandDispatcher, 'updated-views', function(message) {
-            var views = split(message.firstChild.nodeValue, ' ');
             var text = message.firstChild;
             if (text && !blank(text.data)) {
-                update(updatedViews, join(asSet(concatenate(views, split(text.data, ' '))), ' '));
+                var viewIDs = collect(views, value);
+                update(updatedViews, join(asSet(concatenate(viewIDs, split(text.data, ' '))), ' '));
             } else {
                 warn(logger, "No updated views were returned.");
             }
@@ -176,10 +176,12 @@ window.evaluate = eval;
         //monitor & pick updates for this view
         var updatesMonitor = run(Delay(function() {
             try {
-                var views = split(value(updatedViews), ' ');
-                if (notEmpty(views)) {
-                    broadcast(notificationListeners, [ views ]);
-                    update(updatedViews, '');
+                var allUpdatedViews = split(value(updatedViews), ' ');
+                if (notEmpty(allUpdatedViews)) {
+                    broadcast(notificationListeners, [ allUpdatedViews ]);
+                    //remove only the views contained by this page since notificationListeners can only contain listeners from the current page 
+                    var viewIDs = collect(views, value);
+                    update(updatedViews, join(complement(allUpdatedViews, viewIDs), ' '));
                 }
             } catch (e) {
                 warn(logger, 'failed to listen for updates', e);
