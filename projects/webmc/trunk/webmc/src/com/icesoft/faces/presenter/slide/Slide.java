@@ -57,6 +57,7 @@ public class Slide {
 
     private String location;
     private boolean mobile;
+    private boolean isMovieSlide;
     
     public Slide(String location, boolean mobile) {
         this.location = location;
@@ -68,6 +69,14 @@ public class Slide {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public boolean getMovieSlide() {
+        return isMovieSlide;
+    }
+
+    public void setMovieSlide(boolean isMovieSlide) {
+        this.isMovieSlide = isMovieSlide;
     }
 
 	public boolean isMobile() {

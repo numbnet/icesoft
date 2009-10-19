@@ -43,6 +43,8 @@ import org.apache.commons.logging.LogFactory;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -214,8 +216,26 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
             File currentFile;
             for (int i = 0; i < generatedFiles.size(); i++) {
                 currentFile = (File) generatedFiles.get(i);
-                slideArray.add(new Slide(
-                        slideBaseDirectory + currentFile.getName(),mobile));
+                if (currentFile.getName().endsWith(".url"))  {
+                    //read the .url file for a URL
+                    String URL = null;
+                    try {
+                        URL = (new DataInputStream( 
+                                new FileInputStream(currentFile))).readLine();
+                        Slide slide = new Slide(URL, false);
+                        //could base this on the URL extension
+                        slide.setMovieSlide(true);
+                        slideArray.add(slide);
+                    } catch (Exception e)  {
+                        if (log.isErrorEnabled()) {
+                            log.error("Could not load .url file " +
+                                      currentFile.getName(), e);
+                        }
+                    }
+                } else {
+                    slideArray.add(new Slide(
+                            slideBaseDirectory + currentFile.getName(),mobile));
+                }
             }
             return (Slide[]) slideArray
                     .toArray(new Slide[slideArray.size()]);    	
@@ -251,6 +271,11 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                             
                             files.add(toAdd);
                         }
+                    } 
+                    if (toAdd.getName().endsWith(".url")) {
+                        copyInputStream(zf.getInputStream(currentEntry),
+                                new BufferedOutputStream(new FileOutputStream(toAdd)));                            
+                        files.add(toAdd);
                     }
                 }
             }
