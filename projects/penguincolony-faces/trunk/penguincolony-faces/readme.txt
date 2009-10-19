@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Welcome to the MetaWidget + ICEfaces "Penguin Colony" Demo!
+Welcome to the Metawidget + ICEfaces "Penguin Colony" Demo!
 --------------------------------------------------------------------------------
 
 It is a whimsical demo concerning details of penguins in a colony. 
@@ -7,7 +7,7 @@ The demo uses Metawidget to generate ICEfaces components based on an annotated b
 Metawidget dynamically creates the input boxes and command buttons, 
 and dynamically changes the UI in response to user events.
 
-Note that MetaWidget requires ICEfaces 1.8.2+.
+Note that Metawidget requires ICEfaces 1.8.2+.
 
 --------------------------------------------------------------------------------
 About Metawidget
