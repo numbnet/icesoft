@@ -62,9 +62,15 @@ public class MultiViewServer implements Server {
                     view = (View) views.get(viewIdentifier);
                 } else {
                     view = createView();
+                    if (LOG.isDebugEnabled())  {
+                        LOG.debug("View created: " + view + " " + request.getURI());
+                    }
                 }
             } else {
                 view = createView();
+                if (LOG.isDebugEnabled())  {
+                    LOG.debug("View created: " + view + " " + request.getURI());
+                }
             }
         }
 
