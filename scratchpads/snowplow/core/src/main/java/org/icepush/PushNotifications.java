@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PushNotifications extends TimerTask implements Server {
@@ -58,7 +59,7 @@ public class PushNotifications extends TimerTask implements Server {
     private final long timeoutInterval;
     private long responseTimeoutTime;
     private Server activeServer;
-    private String[] updatedViews;
+    private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
     private String[] participatingViews;
 
     public PushNotifications(HttpSession session, final Timer monitorRunner, Configuration configuration) {
@@ -67,12 +68,14 @@ public class PushNotifications extends TimerTask implements Server {
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
         PushContext pushContext = new PushContext() {
-            public String createPushId(String browserId) {
-                return String.valueOf(System.currentTimeMillis());
+            private int counter = 0;
+
+            public synchronized String createPushId(String browserId) {
+                return System.currentTimeMillis() + "." + counter++;
             }
 
             public synchronized void notify(String targetName) {
-                updatedViews = new String[]{targetName};
+                updatedViews.offer(targetName);
                 resetTimeout();
                 respondIfViewsAvailable();
             }
@@ -124,9 +127,10 @@ public class PushNotifications extends TimerTask implements Server {
     }
 
     private synchronized void respondIfViewsAvailable() {
-        if (updatedViews != null && updatedViews.length > 0) {
-            respondIfPendingRequest(new UpdatedViewsHandler(updatedViews));
-            updatedViews = null;
+        if (!updatedViews.isEmpty()) {
+            String[] views = (String[]) updatedViews.toArray(new String[0]);
+            updatedViews.removeAll(Arrays.asList(views));
+            respondIfPendingRequest(new UpdatedViewsHandler(views));
         }
     }
 
