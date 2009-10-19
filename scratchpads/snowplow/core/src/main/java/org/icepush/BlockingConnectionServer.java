@@ -62,7 +62,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
     private long responseTimeoutTime;
     private Server activeServer;
     private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
-    private String[] participatingViews;
+    //private String[] participatingViews;
 
     public BlockingConnectionServer(HttpSession session, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
@@ -90,8 +90,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
             public void service(final Request request) throws Exception {
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
-                participatingViews = request.getParameterAsStrings("ice.view");
-                System.out.println("view >> " + Arrays.asList(participatingViews));
+                //participatingViews = request.getParameterAsStrings("ice.view");
                 pendingRequest.put(request);
                 respondIfViewsAvailable();
             }
