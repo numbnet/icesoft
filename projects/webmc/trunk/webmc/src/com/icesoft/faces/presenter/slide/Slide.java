@@ -79,6 +79,29 @@ public class Slide {
         this.isMovieSlide = isMovieSlide;
     }
 
+    public String getPlayer()  {
+        if (location.endsWith(".mov"))  {
+            return "quicktime";
+        }  else if (location.endsWith(".mp4")) {
+            return "quicktime";
+        }  else if (location.endsWith(".m4v")) {
+            return "quicktime";
+        }  else if (location.endsWith(".swf")) {
+            return "flash";
+        }  else if (location.endsWith(".flv")) {
+            return "flash";
+        }  else if (location.endsWith(".mpg")) {
+            return "quicktime";
+        }  else if (location.endsWith(".mpeg")) {
+            return "quicktime";
+        }  else if (location.endsWith(".avi")) {
+            return "windows";
+        }  else if (location.endsWith(".wmv")) {
+            return "windows";
+        }
+        return "";
+    }
+
 	public boolean isMobile() {
 		return mobile;
 	}
