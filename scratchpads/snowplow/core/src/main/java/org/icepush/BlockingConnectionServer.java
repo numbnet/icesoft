@@ -78,7 +78,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
         };
         notifier.addObserver(new Observer() {
             public void update(Observable observable, Object o) {
-                updatedViews.offer(o);
+                updatedViews.add(o);
                 resetTimeout();
                 respondIfViewsAvailable();
             }
@@ -125,9 +125,13 @@ public class BlockingConnectionServer extends TimerTask implements Server {
 
     private synchronized void respondIfViewsAvailable() {
         if (!updatedViews.isEmpty()) {
-            String[] views = (String[]) updatedViews.toArray(new String[0]);
-            updatedViews.removeAll(Arrays.asList(views));
-            respondIfPendingRequest(new UpdatedViewsHandler(views));
+            final String[] views = (String[]) updatedViews.toArray(new String[0]);
+            respondIfPendingRequest(new UpdatedViewsHandler(views) {
+                public void writeTo(Writer writer) throws IOException {
+                    super.writeTo(writer);
+                    updatedViews.removeAll(Arrays.asList(views));
+                }
+            });
         }
     }
 
