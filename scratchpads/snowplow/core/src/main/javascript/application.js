@@ -54,10 +54,26 @@ window.evaluate = eval;
     //include command.js
     //include connection.async.js
 
-    namespace.onServerError = operator();
-    namespace.onBlockingConnectionUnstable = operator();
-    namespace.onBlockingConnectionLost = operator();
-    namespace.onViewDisposal = operator();
+    var serverErrorListeners = [];
+    namespace.onServerError = function(callback) {
+        append(serverErrorListeners, callback);
+    };
+
+    var blockingConnectionUnstableListeners = [];
+    namespace.onBlockingConnectionUnstable = function(callback) {
+        append(blockingConnectionUnstableListeners, callback);
+    };
+
+    var blockingConnectionLostListeners = [];
+    namespace.onBlockingConnectionLost = function(callback) {
+        append(blockingConnectionLostListeners, callback);
+    };
+
+    var viewDisposedListeners = [];
+    namespace.onViewDisposal = function(callback) {
+        append(viewDisposedListeners, callback);
+    };
+
     namespace.disposeBridge = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
@@ -107,11 +123,6 @@ window.evaluate = eval;
     onBeforeUnload(window, delistWindowViews);
 
     namespace.Application = function(configuration) {
-        var blockingConnectionLostListeners = [];
-        var blockingConnectionUnstableListeners = [];
-        var serverErrorListeners = [];
-        var viewDisposedListeners = [];
-
         var sessionID = configuration.session;
         var viewID = configuration.view;
 
@@ -125,7 +136,7 @@ window.evaluate = eval;
             try {
                 dispose = noop;
                 delistView(sessionID, viewID);
-                broadcast(viewDisposedListeners);
+                broadcast(viewDisposedListeners, [ viewID ]);
             } finally {
                 shutdown(asyncConnection);
             }
@@ -172,22 +183,6 @@ window.evaluate = eval;
         info(logger, 'bridge loaded!');
 
         return object(function(method) {
-            method(namespace.onServerError, function(self, callback) {
-                append(serverErrorListeners, callback);
-            });
-
-            method(namespace.onBlockingConnectionUnstable, function(self, callback) {
-                append(blockingConnectionUnstableListeners, callback);
-            });
-
-            method(namespace.onBlockingConnectionLost, function(self, callback) {
-                append(blockingConnectionLostListeners, callback);
-            });
-
-            method(namespace.onViewDisposal, function(self, callback) {
-                append(viewDisposedListeners, callback);
-            });
-
             method(namespace.disposeBridge, dispose);
         });
     };
