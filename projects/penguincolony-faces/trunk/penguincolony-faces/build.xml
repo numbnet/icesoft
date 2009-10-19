@@ -1,12 +1,8 @@
-<project name="metawidget" default="example-faces-penguincolony">
+<project name="penguincolony" default="example-faces-penguincolony">
 
 	<!-- Properties -->
 		
 	<property file="build.properties"/>
-	<property name="metawidget.name" value="${ant.project.name}-${metawidget.version}"/>
-    <property name="icefaces.root.dir" location="../../../../icefaces/trunk/icefaces" />
-    <property name="icefaces.lib.dir" location="${icefaces.root.dir}/lib" />
-    <property name="penguin.lib.dir" location="examples/src/web/faces/penguincolony/lib" />
 	<property name="run.dir" value="${build.dir}/run"/>	
 	
 	<!-- Clean -->
@@ -28,8 +24,8 @@
 
 		<javac sourcepath="" srcdir="examples/src/java" destdir="${build.dir}/example-classes" debug="${build.debug}" optimize="on" target="1.5">
 			<classpath>
-	            <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
-				<fileset dir="${penguin.lib.dir}" includes="*.jar"/>
+	            		<fileset dir="${icefaces.dir}/lib" includes="*.jar"/>
+				<fileset dir="examples/src/web/faces/penguincolony/lib" includes="*.jar"/>
 				<pathelement path="${build.dir}/classes"/>
 			</classpath>
 		</javac>
@@ -255,11 +251,11 @@
 			<classes dir="${build.dir}/example-classes">
 				<include name="org/metawidget/example/faces/penguincolony/**"/>
 			</classes>
-			<lib dir="${penguin.lib.dir}">
+			<lib dir="examples/src/web/faces/penguincolony/lib">
 				<include name="jstl*.jar"/>
 				<include name="metawidget.jar"/>
 			</lib>
-			<lib dir="${icefaces.lib.dir}">
+			<lib dir="${icefaces.dir}/lib">
 				<include name="backport-util-concurrent.jar"/>
 				<include name="commons-beanutils.jar"/>
 				<include name="commons-collections.jar"/>

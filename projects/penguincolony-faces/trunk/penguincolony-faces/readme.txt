@@ -25,12 +25,9 @@ See http://www.metawidget.org/ for more information.
 How to Build 
 --------------------------------------------------------------------------------
 
-1. In build.xml ensure the icefaces.home.dir property is pointing to the right 
-   location.  This property gives you access to the required 
-   .jar files in the ICEfaces lib folder.  If you have downloaded all the content 
-   from http://anonsvn.icefaces.org/repo/ this will point to the correct location 
-   by default.
-
+1. In build.properties ensure the icefaces.dir property is pointing to ICEfaces
+   install location (ie. /ICEfaces-1.8.2-bin/icefaces).
+   
 2. Version 1.6.5 or later of Ant is required.  From the installation directory, 
    invoke the following:
    
