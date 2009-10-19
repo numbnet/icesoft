@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,33 +22,47 @@ public class PageNotifier extends HttpServlet {
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         final PushContext pc = PushContextLocator.getInstance(httpServletRequest);
-        final String pushId = pc.createPushId(httpServletRequest.getSession(true).getId());
+        final String browserId = httpServletRequest.getSession(true).getId();
+        final String idA = pc.createPushId(browserId);
+        final String idB = pc.createPushId(browserId);
 
-        renderHTMLPage(pushId, httpServletResponse.getWriter());
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                pc.notify(pushId);
-            }
-        }, 0, 5000);
-    }
-
-    private void renderHTMLPage(String pushID, Writer w) throws IOException {
+        PrintWriter w = httpServletResponse.getWriter();
         w.write("<html><head><title>");
-        w.write(pushID);
+        w.write(idA + "; " + idB);
         w.write("</title>");
         w.write("<script type=\"text/javascript\" src=\"icepush.js\"></script>");
         w.write("</head><body>");
+
         w.write("<script type=\"text/javascript\">");
         w.write("ice.onLoad(function() {");
-        w.write("ice.Application({session: 'aaa', view: ");
-        w.write(pushID);
+        w.write("ice.Application({session: '" + browserId + "', view: ");
+        w.write(idA);
         w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
         w.write("});</script>");
+
         w.write("<script type=\"text/javascript\">");
         w.write("ice.onLoad(function() {");
-        w.write("ice.onNotification(function(pushIds) { ice.info(ice.logger, pushIds); });");
+        w.write("ice.Application({session: '" + browserId + "', view: ");
+        w.write(idB);
+        w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
         w.write("});</script>");
+
+        w.write("<script type=\"text/javascript\">");
+        //w.write("ice.onLoad(function() {");
+        w.write("ice.push.register([" + idA + ", " + idB + "], function(pushIds) { ice.info(ice.logger, pushIds); });");
+        w.write("</script>");
         w.write("</body></html>");
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                pc.notify(idA);
+            }
+        }, 0, 5000);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                pc.notify(idB);
+            }
+        }, 1000, 5000);
     }
 
     public void destroy() {
