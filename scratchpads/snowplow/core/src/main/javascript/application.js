@@ -128,6 +128,18 @@ window.evaluate = eval;
 
     onBeforeUnload(window, delistWindowViews);
 
+    //public API
+    namespace.push = {
+        register: function(pushIds, callback) {
+            namespace.onNotification(function(ids) {
+                var intersection = asArray(intersect(ids, pushIds));
+                if (notEmpty(intersection)) {
+                    callback(intersection);
+                }
+            });
+        }
+    };
+
     namespace.Application = function(configuration) {
         var sessionID = configuration.session;
         var viewID = configuration.view;
