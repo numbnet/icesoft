@@ -70,7 +70,9 @@
                          actionListener="#{participant.pointer}">
 	        <!-- Slide -->
 	        <ice:graphicImage id="presentationImage" value="#{participant.currentSlide.location}"
-	                          rendered="#{participant.slideTypePres}"/>
+	                          rendered="#{participant.slideTypePres and not participant.currentSlide.movieSlide}"/>
+	        <ice:outputMedia player="quicktime" source="#{participant.currentSlide.location}"
+	                          rendered="#{participant.slideTypePres and participant.currentSlide.movieSlide}"/>
 	    </ice:commandLink>
 	    <!-- Information Slide -->
         <ice:graphicImage id="infoSlide"
