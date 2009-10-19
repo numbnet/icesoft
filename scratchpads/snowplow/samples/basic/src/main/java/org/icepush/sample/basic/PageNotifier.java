@@ -1,7 +1,6 @@
 package org.icepush.sample.basic;
 
 import org.icepush.PushContext;
-import org.icepush.PushContextLocator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,10 +20,10 @@ public class PageNotifier extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        final PushContext pc = PushContextLocator.getInstance(httpServletRequest);
+        final PushContext pc = PushContext.getInstance(httpServletRequest);
         final String browserId = httpServletRequest.getSession(true).getId();
-        final String idA = pc.createPushId(browserId);
-        final String idB = pc.createPushId(browserId);
+        final String idA = pc.createPushId();
+        final String idB = pc.createPushId();
 
         PrintWriter w = httpServletResponse.getWriter();
         w.write("<html><head><title>");
@@ -48,7 +47,6 @@ public class PageNotifier extends HttpServlet {
         w.write("});</script>");
 
         w.write("<script type=\"text/javascript\">");
-        //w.write("ice.onLoad(function() {");
         w.write("ice.push.register([" + idA + ", " + idB + "], function(pushIds) { ice.info(ice.logger, pushIds); });");
         w.write("</script>");
         w.write("</body></html>");
