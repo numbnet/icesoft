@@ -573,7 +573,16 @@ public class TableRenderer
         if (rowCount == 0) {
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             tBody.appendChild(tr);
-            int cols = getNumberOfChildColumns(uiData);
+            int cols = 0;
+            Iterator it = getRenderedChildColumnsList(uiData).iterator();
+            while (it.hasNext()) {
+                UIComponent component = (UIComponent) it.next();
+                if (component instanceof UIColumns) {
+                    cols += ((UIColumns) component).getRowCount();
+                } else if (component instanceof UIColumn) {
+                    cols += 1;
+                }
+            }
             if( cols == 0 ) cols = 1;
             for(int i = 0 ; i < cols ; i++ ){
             	Element td = (Element) domContext.createElement(HTML.TD_ELEM);
