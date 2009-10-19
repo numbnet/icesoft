@@ -212,10 +212,6 @@ var broadcaster = function(items) {
     };
 };
 
-var empty = operator(function(items) {
-    items.length = 0;
-});
-
 var asArray = function(items) {
     return inject(items, [], append);
 };

@@ -222,7 +222,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
                 error(logger, 'error during shutdown', e);
                 //ignore, we really need to shutdown
             } finally {
-                each([onReceiveListeners, connectionDownListeners, onServerErrorListeners], empty);
+                onReceiveListeners = connectionDownListeners = onServerErrorListeners = [];
                 abort(listener);
                 stop(blockingConnectionMonitor);
                 remove(listening);
