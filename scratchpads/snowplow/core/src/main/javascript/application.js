@@ -123,7 +123,7 @@ window.evaluate = eval;
         each(views, function(v) {
             delistSession(key(v), value(v));
         });
-        empty(views);
+        namespace.views = views = [];
     }
 
     onBeforeUnload(window, delistWindowViews);
