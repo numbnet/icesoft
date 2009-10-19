@@ -30,6 +30,9 @@ public class DisposeViews implements Server {
                 // Jira 1616 Logout throws NPE.
                 if (view != null) {
                     associatedPageViews.disposeAssociatedViews(view);
+                    if (Log.isDebugEnabled())  {
+                        Log.debug("Disposing View: " + view);
+                    }
                     view.dispose();
                 }
             }
