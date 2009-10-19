@@ -54,6 +54,11 @@ window.evaluate = eval;
     //include command.js
     //include connection.async.js
 
+    var notificationListeners = [];
+    namespace.onNotification = function(callback) {
+        append(notificationListeners, callback);
+    };
+
     var serverErrorListeners = [];
     namespace.onServerError = function(callback) {
         append(serverErrorListeners, callback);
@@ -78,6 +83,7 @@ window.evaluate = eval;
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
     namespace.logger = Logger([ 'window' ], handler);
+    namespace.info = info;
     var views = namespace.views = namespace.views || [];
 
     function enlistSession(sessionID, viewID) {
@@ -132,21 +138,52 @@ window.evaluate = eval;
             warn(logger, 'update needs to be picked: ' + viewID);
         });
 
-        function dispose() {
-            try {
-                dispose = noop;
-                delistView(sessionID, viewID);
-                broadcast(viewDisposedListeners, [ viewID ]);
-            } finally {
-                shutdown(asyncConnection);
-            }
-        }
-
         onUnload(window, dispose);
         enlistView(sessionID, viewID);
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
+
+        //todo: factor out cookie & monitor into a bus abstraction
+        //read/create cookie that contains the updated views
+        var updatedViews = lookupCookie('ice.updated.views', function() {
+            return Cookie('ice.updated.views', '');
+        });
+
+        //register command that handles the updated-views message
+        register(commandDispatcher, 'updated-views', function(message) {
+            var views = split(message.firstChild.nodeValue, ' ');
+            var text = message.firstChild;
+            if (text && !blank(text.data)) {
+                update(updatedViews, join(asSet(concatenate(views, split(text.data, ' '))), ' '));
+            } else {
+                warn(logger, "No updated views were returned.");
+            }
+        });
+
+        //monitor & pick updates for this view
+        var updatesMonitor = run(Delay(function() {
+            try {
+                var views = split(value(updatedViews), ' ');
+                if (notEmpty(views)) {
+                    broadcast(notificationListeners, [ views ]);
+                    update(updatedViews, '');
+                }
+            } catch (e) {
+                warn(logger, 'failed to listen for updates', e);
+            }
+        }, 300));
+
+        function dispose() {
+            try {
+                dispose = noop;
+                delistView(sessionID, viewID);
+                broadcast(viewDisposedListeners, [ viewID ]);
+                stop(updatesMonitor);
+            } finally {
+                shutdown(asyncConnection);
+            }
+        }
 
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');

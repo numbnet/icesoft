@@ -73,23 +73,6 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         }
     };
 
-    //read/create cookie that contains the updated views
-    var updatedViews = lookupCookie('ice.updated.views', function() {
-        return Cookie('ice.updated.views', '');
-    });
-
-    //register command that handles the updated-views message
-    register(commandDispatcher, 'updated-views', function(message) {
-        var views = split(value(updatedViews), ' ');
-        var text = message.firstChild;
-        if (text && !blank(text.data)) {
-            update(updatedViews, join(asSet(concatenate(views, split(text.data, ' '))), ' '));
-        } else {
-            warn(logger, "No updated views were returned.");
-        }
-    });
-
-
     //remove the blocking connection marker so that everytime a new
     //bridge instance is created the blocking connection will
     //be re-established
@@ -146,11 +129,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     //build callbacks only after this.connection function was defined
     var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
-    //avoid error messages for 'pong' messages that arrive after blocking connection is closed
-    register(commandDispatcher, 'pong', noop);
-    //heartbeat setup
-
-    //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore 
+    //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore
     var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
 
     function initializeConnection() {
@@ -215,19 +194,6 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
         }
     }, pollingPeriod));
 
-    //monitor & pick updates for this view
-    var updatesMonitor = run(Delay(function() {
-        try {
-            var views = split(value(updatedViews), ' ');
-            if (contains(views, fullViewID)) {
-                pickUpdates(viewID);
-                update(updatedViews, join(complement(views, [ fullViewID ]), ' '));
-            }
-        } catch (e) {
-            warn(logger, 'failed to listen for updates', e);
-        }
-    }, 300));
-
     info(logger, 'asynchronous mode');
 
     return object(function(method) {
@@ -258,7 +224,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
             } finally {
                 each([onReceiveListeners, connectionDownListeners, onServerErrorListeners], empty);
                 abort(listener);
-                each([updatesMonitor, blockingConnectionMonitor], stop);
+                stop(blockingConnectionMonitor);
                 remove(listening);
             }
         });

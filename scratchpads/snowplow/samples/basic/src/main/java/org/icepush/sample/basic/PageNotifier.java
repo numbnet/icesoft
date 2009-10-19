@@ -42,8 +42,13 @@ public class PageNotifier extends HttpServlet {
         w.write("ice.onLoad(function() {");
         w.write("ice.Application({session: 'aaa', view: ");
         w.write(pushID);
-        w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});})");
-        w.write("</script></body></html>");
+        w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
+        w.write("});</script>");
+        w.write("<script type=\"text/javascript\">");
+        w.write("ice.onLoad(function() {");
+        w.write("ice.onNotification(function(pushIds) { ice.info(ice.logger, pushIds); });");
+        w.write("});</script>");
+        w.write("</body></html>");
     }
 
     public void destroy() {
