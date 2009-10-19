@@ -1,12 +1,34 @@
 package org.icepush;
 
-public interface PushContext {
+import javax.servlet.http.HttpServletRequest;
+import java.util.Observable;
 
-    String createPushId(String browserId);
+public class PushContext {
+    private int counter = 0;
+    private Observable notificationObservable;
 
-    void notify(String targetName);
+    public PushContext(Observable notificationObservable) {
+        this.notificationObservable = notificationObservable;
+    }
 
-    void addGroupMember(String groupName, String pushId);
+    public synchronized String createPushId() {
+        return System.currentTimeMillis() + "." + counter++;
+    }
 
-    void removeGroupMember(String groupName, String pushId);
+    public void notify(String targetName) {
+        notificationObservable.notifyObservers(targetName);
+    }
+
+    public void addGroupMember(String groupName, String pushId) {
+    }
+
+    public void removeGroupMember(String groupName, String pushId) {
+    }
+
+    public static synchronized PushContext getInstance(HttpServletRequest request) {
+        //the returned PushContext must be aware of the BROWSERID cookie and
+        //must have a reference to the application scope notification service
+        //request.getSession().getServletContext().getAttribute(NOTIFY_SERVICE);
+        return (PushContext) request.getSession().getAttribute(PushContext.class.getName());
+    }
 }

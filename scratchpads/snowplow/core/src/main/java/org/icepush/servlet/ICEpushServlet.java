@@ -1,7 +1,7 @@
 package org.icepush.servlet;
 
+import org.icepush.BlockingConnectionServer;
 import org.icepush.Configuration;
-import org.icepush.PushNotifications;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -31,7 +31,7 @@ public class ICEpushServlet extends HttpServlet {
         //todo: replace SessionDispatcher with BrowserDispatcher -- dispatching based on the BROWSERID cookie
         dispatcher = new SessionDispatcher(context) {
             protected PseudoServlet newServer(HttpSession session) {
-                return new EnvironmentAdaptingServlet(new PushNotifications(session, timer, configuration), configuration, context);
+                return new EnvironmentAdaptingServlet(new BlockingConnectionServer(session, timer, configuration), configuration, context);
             }
         };
     }
