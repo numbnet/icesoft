@@ -47,11 +47,11 @@
 	<ice:panelGroup
 		styleClass="exampleBox firstChildTitle outputMediaContainer">
 
-		<ice:panelGroup style="float:left;margin-right:5px;margin-bottom:10px;font-size:larger;">
+		<ice:panelGroup style="margin-right:5px;margin-bottom:10px;font-size:larger;">
 			<ice:outputText value="#{msgs['page.outputResource.label']}" />
 		</ice:panelGroup>
 
-		<ice:panelGrid style="float:left;" columns="2">
+		<ice:panelGrid columns="2">
 
             <ice:outputLabel for="imgRsource"
 				value="Display an image resource produced from a dynamic file stream:" />
