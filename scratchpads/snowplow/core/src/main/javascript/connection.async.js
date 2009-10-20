@@ -54,7 +54,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     var listening = object(function(method) {
         method(remove, noop);
     });
-    var receiveURI = configuration.context.async + 'block';
+    var receiveURI = configuration.context + 'block';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {
@@ -130,7 +130,7 @@ function AsyncConnection(logger, sessionID, viewID, configuration, commandDispat
     var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
     //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore
-    var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
+    var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
 
     function initializeConnection() {
         connect();

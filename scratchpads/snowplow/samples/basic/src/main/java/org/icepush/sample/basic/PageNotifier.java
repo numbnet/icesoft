@@ -33,21 +33,15 @@ public class PageNotifier extends HttpServlet {
         w.write("</head><body>");
 
         w.write("<script type=\"text/javascript\">");
-        w.write("ice.onLoad(function() {");
-        w.write("ice.Application({session: '" + browserId + "', view: '");
-        w.write(idA);
-        w.write("', connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
-        w.write("});</script>");
+        w.write("ice.push.init('" + browserId + "','" + idA + "','/icepush-basic/');");
+        w.write("</script>");
 
         w.write("<script type=\"text/javascript\">");
-        w.write("ice.onLoad(function() {");
-        w.write("ice.Application({session: '" + browserId + "', view: '");
-        w.write(idB);
-        w.write("', connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
-        w.write("});</script>");
+        w.write("ice.push.init('" + browserId + "','" + idB + "','/icepush-basic/');");
+        w.write("</script>");
 
         w.write("<script type=\"text/javascript\">");
-        w.write("ice.push.register([" + idA + ", " + idB + "], function(pushIds) { ice.info(ice.logger, pushIds); });");
+        w.write("ice.push.register([" + idA + ", " + idB + "], function(pushIds) { ice.info(ice.logger, ice.push.getCurrentNotifications()); });");
         w.write("</script>");
         w.write("</body></html>");
 
