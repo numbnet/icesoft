@@ -83,6 +83,7 @@ window.evaluate = eval;
     namespace.info = info;
     var views = namespace.views = namespace.views || [];
 
+    //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
     function enlistSession(sessionID, viewID) {
         try {
             var viewsCookie = lookupCookie('ice.views');
