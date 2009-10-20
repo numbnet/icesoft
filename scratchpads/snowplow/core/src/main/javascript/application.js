@@ -46,10 +46,7 @@ window.evaluate = eval;
     //include cookie.js
     //include delay.js
     //include element.js
-    namespace.$elementWithID = $elementWithID;
-    namespace.enclosingBridge = enclosingBridge;
     //include event.js
-    namespace.$event = $event;
     //include http.js
     //include command.js
     //include connection.async.js
