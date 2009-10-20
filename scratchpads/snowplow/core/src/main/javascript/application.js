@@ -156,7 +156,7 @@ window.evaluate = eval;
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
 
-        //todo: factor out cookie & monitor into a bus abstraction
+        //todo: factor out cookie & monitor into a communication bus abstraction
         //read/create cookie that contains the updated views
         var updatedViews = lookupCookie('ice.updated.views', function() {
             return Cookie('ice.updated.views', '');
@@ -166,8 +166,8 @@ window.evaluate = eval;
         register(commandDispatcher, 'updated-views', function(message) {
             var text = message.firstChild;
             if (text && !blank(text.data)) {
-                var viewIDs = collect(views, value);
-                update(updatedViews, join(asSet(concatenate(viewIDs, split(text.data, ' '))), ' '));
+                var notifiedViewIDs = split(value(updatedViews), ' ');
+                update(updatedViews, join(asSet(concatenate(notifiedViewIDs, split(text.data, ' '))), ' '));
             } else {
                 warn(logger, "No updated views were returned.");
             }
@@ -180,8 +180,8 @@ window.evaluate = eval;
                 if (notEmpty(allUpdatedViews)) {
                     broadcast(notificationListeners, [ allUpdatedViews ]);
                     //remove only the views contained by this page since notificationListeners can only contain listeners from the current page 
-                    var viewIDs = collect(views, value);
-                    update(updatedViews, join(complement(allUpdatedViews, viewIDs), ' '));
+                    var pageViewIDs = collect(views, value);
+                    update(updatedViews, join(complement(allUpdatedViews, pageViewIDs), ' '));
                 }
             } catch (e) {
                 warn(logger, 'failed to listen for updates', e);
