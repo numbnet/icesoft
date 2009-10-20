@@ -34,16 +34,16 @@ public class PageNotifier extends HttpServlet {
 
         w.write("<script type=\"text/javascript\">");
         w.write("ice.onLoad(function() {");
-        w.write("ice.Application({session: '" + browserId + "', view: ");
+        w.write("ice.Application({session: '" + browserId + "', view: '");
         w.write(idA);
-        w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
+        w.write("', connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
         w.write("});</script>");
 
         w.write("<script type=\"text/javascript\">");
         w.write("ice.onLoad(function() {");
-        w.write("ice.Application({session: '" + browserId + "', view: ");
+        w.write("ice.Application({session: '" + browserId + "', view: '");
         w.write(idB);
-        w.write(", connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
+        w.write("', connection: {heartbeat: {}, context: {current: '/icepush-basic/',async: '/icepush-basic/'}}});");
         w.write("});</script>");
 
         w.write("<script type=\"text/javascript\">");
