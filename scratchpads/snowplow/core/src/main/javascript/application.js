@@ -125,15 +125,20 @@ window.evaluate = eval;
 
     onBeforeUnload(window, delistWindowViews);
 
+    var currentNotifications = [];
     //public API
     namespace.push = {
         register: function(pushIds, callback) {
             namespace.onNotification(function(ids) {
-                var intersection = asArray(intersect(ids, pushIds));
-                if (notEmpty(intersection)) {
-                    callback(intersection);
+                currentNotifications = asArray(intersect(ids, pushIds));
+                if (notEmpty(currentNotifications)) {
+                    callback(currentNotifications);
                 }
             });
+        },
+
+        getCurrentNotifications: function() {
+            return currentNotifications;
         }
     };
 
