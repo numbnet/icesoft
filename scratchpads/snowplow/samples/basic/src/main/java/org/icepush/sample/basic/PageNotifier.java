@@ -53,12 +53,12 @@ public class PageNotifier extends HttpServlet {
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                pc.notify(idA);
+                pc.push(idA);
             }
         }, 0, 5000);
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                pc.notify(idB);
+                pc.push(idB);
             }
         }, 1000, 5000);
     }
