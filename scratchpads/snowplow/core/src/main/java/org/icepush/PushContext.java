@@ -15,7 +15,7 @@ public class PushContext {
         return System.currentTimeMillis() + "." + counter++;
     }
 
-    public void notify(String targetName) {
+    public void push(String targetName) {
         notificationObservable.notifyObservers(targetName);
     }
 
