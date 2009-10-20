@@ -40,8 +40,6 @@ window.evaluate = eval;
     //include collection.js
     //include string.js
     //include window.js
-    namespace.onLoad = curry(onLoad, window);
-    namespace.onUnload = curry(onUnload, window);
     //include logger.js
     //include cookie.js
     //include delay.js
@@ -129,6 +127,12 @@ window.evaluate = eval;
     var currentNotifications = [];
     //public API
     namespace.push = {
+        init: function(sessionID, pushID, contextName) {
+            onLoad(window, function() {
+                namespace.Bridge({session: sessionID, view: pushID, connection: { context: contextName }});
+            });
+        },
+
         register: function(pushIds, callback) {
             namespace.onNotification(function(ids) {
                 currentNotifications = asArray(intersect(ids, pushIds));
@@ -143,7 +147,7 @@ window.evaluate = eval;
         }
     };
 
-    namespace.Application = function(configuration) {
+    namespace.Bridge = function(configuration) {
         var sessionID = configuration.session;
         var viewID = configuration.view;
 
