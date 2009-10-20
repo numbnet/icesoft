@@ -211,7 +211,7 @@ window.evaluate = eval;
         onServerError(asyncConnection, function(response) {
             try {
                 warn(logger, 'server side error');
-                broadcast(serverErrorListeners, [ statusCode(reponse), contentAsText(response), contentAsDOM(response) ]);
+                broadcast(serverErrorListeners, [ statusCode(response), contentAsText(response), contentAsDOM(response) ]);
             } finally {
                 dispose();
             }
