@@ -31,9 +31,6 @@
  *
  */
 
-//trick YUI compressor to minify names -- see http://developer.yahoo.com/yui/compressor/#work
-window.evaluate = eval;
-
 (function(namespace) {
     //include functional.js
     //include oo.js
