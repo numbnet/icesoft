@@ -207,7 +207,7 @@ window.evaluate = eval;
             if (mimeType && startsWith(mimeType, 'text/xml')) {
                 deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
             } else {
-                warn(logger, 'unknown content in response >> ' + contentAsText(response));
+                warn(logger, 'unknown content in response - ' + mimeType + ', expected text/xml');
             }
         });
 
