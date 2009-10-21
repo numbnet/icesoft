@@ -46,8 +46,6 @@
     //include command.js
     //include connection.async.js
 
-    namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
-
     var notificationListeners = [];
     namespace.onNotification = function(callback) {
         append(notificationListeners, callback);
@@ -71,16 +69,17 @@
     namespace.disposeBridge = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+    namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
     namespace.logger = Logger([ 'icepush' ], handler);
     namespace.info = info;
     var views = namespace.views = namespace.views || [];
 
     //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
-    function enlistViewWithBrowser(viewID) {
+    function enlistViewsWithBrowser(viewIDs) {
         try {
             var viewsCookie = lookupCookie('ice.views');
             var registeredViews = split(value(viewsCookie), ' ');
-            update(viewsCookie, join(append(registeredViews, viewID), ' '));
+            update(viewsCookie, join(concatenate(registeredViews, viewIDs), ' '));
         } catch (e) {
             Cookie('ice.views', viewID);
         }
@@ -96,16 +95,14 @@
         }
     }
 
-    function enlistViewWithWindow(view) {
-        enlistViewWithBrowser(view);
-        append(views, view);
+    function enlistViewWithWindow(viewIDs) {
+        enlistViewsWithBrowser(viewIDs);
+        views = concatenate(views, viewIDs);
     }
 
-    function delistViewWithWindow(view) {
-        delistViewWithBrowser(view);
-        views = reject(views, function(id) {
-            return id == view;
-        });
+    function delistViewWithWindow(viewIDs) {
+        delistViewWithBrowser(viewIDs);
+        views = complement(views, viewIDs);
     }
 
     function delistWindowViews() {
@@ -119,7 +116,7 @@
     //public API
     namespace.push = {
         register: function(pushIds, callback) {
-            each(pushIds, enlistViewWithWindow);
+            enlistViewWithWindow(pushIds);
             namespace.onNotification(function(ids) {
                 currentNotifications = asArray(intersect(ids, pushIds));
                 if (notEmpty(currentNotifications)) {
@@ -128,9 +125,7 @@
             });
         },
 
-        deregister: function(pushIDs) {
-            each(pushIDs, delistViewWithWindow);
-        },
+        deregister: delistViewWithWindow,
 
         getCurrentNotifications: function() {
             return currentNotifications;
