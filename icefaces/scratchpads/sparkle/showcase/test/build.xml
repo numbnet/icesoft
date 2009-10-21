@@ -1,4 +1,4 @@
-<project name="sparkle-showcase" default="war">
+<project name="test" default="war">
 
     <property name="classes.dir" value="web/WEB-INF/classes"/>
 
