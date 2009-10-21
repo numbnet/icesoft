@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface Property {
     boolean isMethodExpression() default false;
     boolean isTransient() default false;
-    String defaultValue() default "false";
+    String defaultValue() default "";
     String name() default "";
     String type() default "";
     String tlddoc() default "";

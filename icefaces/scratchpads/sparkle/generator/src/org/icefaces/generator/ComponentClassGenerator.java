@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
+
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.component.annotation.Facet;
@@ -105,16 +107,21 @@ public class ComponentClassGenerator {
                   Field field = generatedComponentProperties.get(i);
                   Property prop = (Property)field.getAnnotation(Property.class);
                  
+                  boolean isBoolean = field.getType().getName().endsWith("boolean")||
+                  field.getType().getName().endsWith("java.lang.Boolean");
+                                    
                   //set
- 
-                  
                   addJavaDoc(field.getName(), true, prop.javadocSet());
                   generatedComponentClass.append("\tpublic void set");
                   generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
                   generatedComponentClass.append(field.getName().substring(1));
   
                   generatedComponentClass.append("(");
-                  generatedComponentClass.append(field.getType().getName());
+                  if (isBoolean) {
+                      generatedComponentClass.append("boolean");  
+                  } else {
+                      generatedComponentClass.append(field.getType().getName());
+                  }
                   generatedComponentClass.append(" ");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
@@ -131,15 +138,20 @@ public class ComponentClassGenerator {
                   
                   
                   
-                  //get
-   
+                  //get   
                   
                   addJavaDoc(field.getName(), false, prop.javadocGet());
+
                   generatedComponentClass.append("\tpublic ");
-                  generatedComponentClass.append(field.getType().getName());
+                  if (isBoolean) {
+                      generatedComponentClass.append("boolean");  
+                  } else {
+                      generatedComponentClass.append(field.getType().getName());
+                  }
                   generatedComponentClass.append(" ");
-                  if (field.getType().getName().endsWith("boolean")||
-                          field.getType().getName().endsWith("java.lang.Boolean")) {
+           
+                  
+                  if (isBoolean) {
                       generatedComponentClass.append("is");
                   } else {
                       generatedComponentClass.append("get");                    
@@ -151,6 +163,18 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(field.getType().getName());
                   generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
                   generatedComponentClass.append(field.getName());
+                  String defaultValue = prop.defaultValue();
+                  if (!"".equals(defaultValue)) {
+                      generatedComponentClass.append(", ");
+                      if (field.getType().getName().endsWith("String")) {
+                          generatedComponentClass.append("\"");
+                          generatedComponentClass.append(defaultValue);
+                          generatedComponentClass.append("\"");
+                      } else {
+                          generatedComponentClass.append(defaultValue);
+                      }
+                  }                  
+                  
                   generatedComponentClass.append(");\n\t}\n");
         }
     }
@@ -225,11 +249,95 @@ public class ComponentClassGenerator {
 
     }
     
+    static void addInternalFields() {
+        
+        //write properties
+        Iterator<Field> fields = Generator.internalFieldsForComponentClass.values().iterator();
+        while (fields.hasNext()) {
+            Field field = fields.next();
+            generatedComponentClass.append("\tprotected ");
+            generatedComponentClass.append(field.getType().getName());
+            generatedComponentClass.append(" ");            
+            generatedComponentClass.append(field.getName());
+            String defaultValue = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValue();
+            if (!"".equals(defaultValue)) {
+                generatedComponentClass.append(" = ");
+                if (field.getType().getName().endsWith("String")) {
+                    generatedComponentClass.append("\"");
+                    generatedComponentClass.append(defaultValue);
+                    generatedComponentClass.append("\"");
+                } else {
+                    generatedComponentClass.append(defaultValue);
+                }
+            }
+            generatedComponentClass.append(";\n");
+         
+        }
+        
+        //write saveState
+        fields = Generator.internalFieldsForComponentClass.values().iterator();
+        generatedComponentClass.append("\n\tprivate Object[] values;\n");
+        generatedComponentClass.append("\n\tpublic Object saveState(FacesContext context) {\n");
+        generatedComponentClass.append("\t\tif (context == null) {\n");
+        generatedComponentClass.append("\t\t\tthrow new NullPointerException();\n\t\t}");
+        generatedComponentClass.append("\n\t\tif (values == null) {\n");
+        generatedComponentClass.append("\t\t\tvalues = new Object[");
+        generatedComponentClass.append(Generator.internalFieldsForComponentClass.values().size()+1);
+        generatedComponentClass.append("];\n\t\t}\n");
+        generatedComponentClass.append("\t\tvalues[0] = super.saveState(context);\n");
+
+            
+        int i=1;
+        while (fields.hasNext()) {
+            Field field = fields.next();
+            generatedComponentClass.append("\t\tvalues[");
+            generatedComponentClass.append(i++);
+            generatedComponentClass.append("] = ");            
+            generatedComponentClass.append(field.getName());
+            generatedComponentClass.append(";\n");
+        }
+        generatedComponentClass.append("\t\treturn (values);\n");   
+        generatedComponentClass.append("\t}\n");
+        
+        
+
+        //writer restoreState
+        fields = Generator.internalFieldsForComponentClass.values().iterator();
+        generatedComponentClass.append("\n\tpublic void restoreState(FacesContext context, Object state) {\n");
+        generatedComponentClass.append("\t\tif (context == null) {\n");
+        generatedComponentClass.append("\t\t\tthrow new NullPointerException();\n\t\t}");
+        generatedComponentClass.append("\n\t\tif (state == null) {\n");
+        generatedComponentClass.append("\t\t\treturn;\n\t\t}\n");
+        generatedComponentClass.append("\t\tvalues = (Object[]) state;\n");
+        generatedComponentClass.append("\t\tsuper.restoreState(context, values[0]);\n");
+
+            
+        i=1;
+        while (fields.hasNext()) {
+            Field field = fields.next();
+            generatedComponentClass.append("\t\t");
+            generatedComponentClass.append(field.getName());
+            generatedComponentClass.append(" = ");
+            generatedComponentClass.append("(");
+            if (Generator.WrapperTypes.containsKey(field.getType().getName())) {
+                generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
+            } else {
+                generatedComponentClass.append(field.getType().getName());
+            }
+            generatedComponentClass.append(") values["); 
+            generatedComponentClass.append(i++);
+            generatedComponentClass.append("];\n");
+        }
+        generatedComponentClass.append("\t}\n");     
+        
+    }
+    
     static void create() {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         ComponentClassGenerator.startComponentClass(Generator.currentClass, component);
         ComponentClassGenerator.addProperties(Generator.fieldsForComponentClass);  
         ComponentClassGenerator.addFacet(Generator.currentClass, component);
+        ComponentClassGenerator.addInternalFields();
         ComponentClassGenerator.endComponentClass();
     }
 }
