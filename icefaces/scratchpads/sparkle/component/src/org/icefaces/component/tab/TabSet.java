@@ -98,39 +98,6 @@ public class TabSet extends TabSetBase {
         }
         super.queueEvent(event);
     }  
-    
-    
-    private Object[] values;
-
-    public Object saveState(FacesContext facesContext) {
-
-        if (facesContext == null) {
-            throw new NullPointerException();
-        }
-        if (values == null) {
-            values = new Object[3];
-        }
-        
-        values[0] = super.saveState(facesContext);
-        values[1] = oldOrientation; 
-        values[2] = Integer.valueOf(oldTabIndex); 
-        return (values);        
-    }
-    
-    public void restoreState(FacesContext facesContext, Object state) {
-
-        if (facesContext == null) {
-            throw new NullPointerException();
-        }
-
-        if (state == null) {
-            return;
-        }
-        values = (Object[]) state;
-        super.restoreState(facesContext, values[0]);
-        oldOrientation = (String) values[1];
-        oldTabIndex = ((Integer) values[2]).intValue();        
-    }
 }
 
 //class TabSetJarResource extends JarResource {
