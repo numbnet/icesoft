@@ -39,7 +39,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>icepush</servlet-name>
-        <url-pattern>/block</url-pattern>
+        <url-pattern>*.icepush</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -49,6 +49,10 @@
     <servlet-mapping>
         <servlet-name>notifier</servlet-name>
         <url-pattern>/test.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>notifier</servlet-name>
+        <url-pattern>/a/test.html</url-pattern>
     </servlet-mapping>
     <listener>
         <listener-class>org.icepush.servlet.ServletEnvironmentListener</listener-class>

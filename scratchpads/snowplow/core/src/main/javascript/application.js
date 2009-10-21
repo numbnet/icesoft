@@ -136,9 +136,8 @@
         var windowID = configuration.window;
         var logger = childLogger(namespace.logger, windowID);
         var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, windowID, configuration.connection, commandDispatcher);
+        var asyncConnection = AsyncConnection(logger, windowID, configuration.connection);
 
-        onUnload(window, dispose);
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
 
@@ -182,6 +181,8 @@
             }
         }
 
+        onUnload(window, dispose);
+
         onReceive(asyncConnection, function(response) {
             var mimeType = getHeader(response, 'Content-Type');
             if (mimeType && startsWith(mimeType, 'text/xml')) {
@@ -222,8 +223,7 @@
     };
 
     onLoad(window, function() {
-        var contextName = split(window.location.pathname, '/')[0];
-        namespace.Bridge({window: namespace.windowID, connection: { context: contextName }});
+        namespace.Bridge({window: namespace.windowID, connection: {}});
     });
 
     onKeyPress(document, function(ev) {
