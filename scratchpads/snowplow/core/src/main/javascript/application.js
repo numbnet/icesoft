@@ -82,42 +82,41 @@ window.evaluate = eval;
     var views = namespace.views = namespace.views || [];
 
     //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
-    function enlistSession(sessionID, viewID) {
+    function enlistViewInBrowser(viewID) {
         try {
             var viewsCookie = lookupCookie('ice.views');
-            var sessionViewTuples = split(value(viewsCookie), ' ');
-            update(viewsCookie, join(append(sessionViewTuples, sessionID + ':' + viewID), ' '));
+            var registeredViews = split(value(viewsCookie), ' ');
+            update(viewsCookie, join(append(registeredViews, viewID), ' '));
         } catch (e) {
-            Cookie('ice.views', sessionID + ':' + viewID);
+            Cookie('ice.views', viewID);
         }
     }
 
-    function delistSession(sessionID, viewID) {
+    function delistViewInBrowser(viewID) {
         if (existsCookie('ice.views')) {
             var viewsCookie = lookupCookie('ice.views');
-            var sessionViewTuples = split(value(viewsCookie), ' ');
-            var fullID = sessionID + ':' + viewID;
-            update(viewsCookie, join(reject(sessionViewTuples, function(tuple) {
-                return tuple == fullID;
+            var registeredViews = split(value(viewsCookie), ' ');
+            update(viewsCookie, join(reject(registeredViews, function(id) {
+                return id == viewID;
             }), ' '));
         }
     }
 
-    function enlistView(session, view) {
-        enlistSession(session, view);
-        append(views, Parameter(session, view));
+    function enlistViewInWindow(view) {
+        enlistViewInBrowser(view);
+        append(views, view);
     }
 
-    function delistView(session, view) {
-        delistSession(session, view);
-        views = reject(views, function(i) {
-            return key(i) == session && value(i) == view;
+    function delistViewInWindow(view) {
+        delistViewInBrowser(view);
+        views = reject(views, function(id) {
+            return id == view;
         });
     }
 
     function delistWindowViews() {
         each(views, function(v) {
-            delistSession(key(v), value(v));
+            delistViewInBrowser(v);
         });
         namespace.views = views = [];
     }
@@ -153,12 +152,10 @@ window.evaluate = eval;
 
         var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
         var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
-            warn(logger, 'update needs to be picked: ' + viewID);
-        });
+        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
         onUnload(window, dispose);
-        enlistView(sessionID, viewID);
+        enlistViewInWindow(viewID);
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
@@ -187,8 +184,7 @@ window.evaluate = eval;
                 if (notEmpty(allUpdatedViews)) {
                     broadcast(notificationListeners, [ allUpdatedViews ]);
                     //remove only the views contained by this page since notificationListeners can only contain listeners from the current page 
-                    var pageViewIDs = collect(views, value);
-                    update(updatedViews, join(complement(allUpdatedViews, pageViewIDs), ' '));
+                    update(updatedViews, join(complement(allUpdatedViews, views), ' '));
                 }
             } catch (e) {
                 warn(logger, 'failed to listen for updates', e);
@@ -198,7 +194,7 @@ window.evaluate = eval;
         function dispose() {
             try {
                 dispose = noop;
-                delistView(sessionID, viewID);
+                delistViewInWindow(viewID);
                 broadcast(viewDisposedListeners, [ viewID ]);
                 stop(updatesMonitor);
             } finally {
