@@ -16,9 +16,8 @@ import javax.faces.event.ValueChangeEvent;
 public class TabSet extends TabSetBase {
  //   private static Resource JS = new TabSetJarResource("com/icesoft/faces/component/yui/tab/tabset.js");
     private Integer tabIndex;
-    int oldTabIndex = Integer.MIN_VALUE;    
     private String orientation;
-    String oldOrientation;   
+ 
 
 
 //    private void loadJs() {

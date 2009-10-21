@@ -14,6 +14,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Facet;
 import org.icefaces.component.annotation.Facets;
+import org.icefaces.component.annotation.Field;
 import org.icefaces.component.annotation.Property;
 
 @Component(
@@ -27,6 +28,12 @@ import org.icefaces.component.annotation.Property;
     componentFamily="com.icesoft.faces.TabSet"    
 )
 public class TabSetMeta {
+    @Field(defaultValue="Integer.MIN_VALUE")
+    protected int oldIndex;
+    
+    @Field
+    protected String oldOrientation; 
+    
     @Property    
     private Boolean clientSide; 
    

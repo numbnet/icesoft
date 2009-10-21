@@ -27,11 +27,21 @@ public class Generator {
     static FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
     static Map propertyTemplate = new HashMap();
     static Map<String, Field> fieldsForComponentClass = new HashMap<String, Field>();
+    static Map<String, Field> internalFieldsForComponentClass = new HashMap<String, Field>();
     static Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
-    
+    static Map<String,String> WrapperTypes= new HashMap<String, String>();
     static {
         components = FileWriter.getAnnotatedCompsList();
+        WrapperTypes.put("boolean", "java.lang.Boolean");
+        WrapperTypes.put("byte", "java.lang.Byte");
+        WrapperTypes.put("char", "java.lang.Character");
+        WrapperTypes.put("double", "java.lang.Double");
+        WrapperTypes.put("float", "java.lang.Float");
+        WrapperTypes.put("int", "java.lang.Integer");
+        WrapperTypes.put("long", "java.lang.Long");
+        WrapperTypes.put("short", "java.lang.Short");
+        
     }
     
 
@@ -56,6 +66,7 @@ public class Generator {
         ComponentClassGenerator.create();
         TagClassGenerator.create();
         fieldsForComponentClass.clear();
+        internalFieldsForComponentClass.clear();
         fieldsForTagClass.clear(); 
         fieldsForFacet.clear();
         System.out.println(ComponentClassGenerator.generatedComponentClass.toString());
@@ -133,7 +144,9 @@ public class Generator {
                               fieldsForTagClass.put(field.getName(), field);
                           }                           
                       }
-                  } 
+                  }  else if (field.isAnnotationPresent(org.icefaces.component.annotation.Field.class)) {
+                      internalFieldsForComponentClass.put(field.getName(), field);
+                  }
               }
           } 
           
