@@ -29,7 +29,7 @@ import org.icefaces.component.annotation.Property;
 )
 public class TabSetMeta {
     @Field(defaultValue="Integer.MIN_VALUE")
-    protected int oldIndex;
+    protected int oldTabIndex;
     
     @Field
     protected String oldOrientation; 
