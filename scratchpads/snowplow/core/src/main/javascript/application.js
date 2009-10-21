@@ -49,6 +49,8 @@ window.evaluate = eval;
     //include command.js
     //include connection.async.js
 
+    namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
+
     var notificationListeners = [];
     namespace.onNotification = function(callback) {
         append(notificationListeners, callback);
@@ -67,11 +69,6 @@ window.evaluate = eval;
     var blockingConnectionLostListeners = [];
     namespace.onBlockingConnectionLost = function(callback) {
         append(blockingConnectionLostListeners, callback);
-    };
-
-    var viewDisposedListeners = [];
-    namespace.onViewDisposal = function(callback) {
-        append(viewDisposedListeners, callback);
     };
 
     namespace.disposeBridge = operator();
@@ -115,9 +112,7 @@ window.evaluate = eval;
     }
 
     function delistWindowViews() {
-        each(views, function(v) {
-            delistViewWithBrowser(v);
-        });
+        each(views, delistViewWithBrowser);
         namespace.views = views = [];
     }
 
@@ -126,13 +121,8 @@ window.evaluate = eval;
     var currentNotifications = [];
     //public API
     namespace.push = {
-        init: function(sessionID, pushID, contextName) {
-            onLoad(window, function() {
-                namespace.Bridge({session: sessionID, view: pushID, connection: { context: contextName }});
-            });
-        },
-
         register: function(pushIds, callback) {
+            each(pushIds, enlistViewWithWindow);
             namespace.onNotification(function(ids) {
                 currentNotifications = asArray(intersect(ids, pushIds));
                 if (notEmpty(currentNotifications)) {
@@ -141,22 +131,22 @@ window.evaluate = eval;
             });
         },
 
+        deregister: function(pushIDs) {
+            each(pushIDs, delistViewWithWindow);
+        },
+
         getCurrentNotifications: function() {
             return currentNotifications;
         }
     };
 
     namespace.Bridge = function(configuration) {
-        var sessionID = configuration.session;
-        var viewID = configuration.view;
-
-        var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
+        var windowID = configuration.window;
+        var logger = childLogger(namespace.logger, windowID);
         var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
+        var asyncConnection = AsyncConnection(logger, windowID, configuration.connection, commandDispatcher);
 
         onUnload(window, dispose);
-        enlistViewWithWindow(viewID);
-
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
 
@@ -194,8 +184,6 @@ window.evaluate = eval;
         function dispose() {
             try {
                 dispose = noop;
-                delistViewWithWindow(viewID);
-                broadcast(viewDisposedListeners, [ viewID ]);
                 stop(updatesMonitor);
             } finally {
                 shutdown(asyncConnection);
@@ -240,6 +228,11 @@ window.evaluate = eval;
             method(namespace.disposeBridge, dispose);
         });
     };
+
+    onLoad(window, function() {
+        var contextName = split(window.location.pathname, '/')[0];
+        namespace.Bridge({window: namespace.windowID, connection: { context: contextName }});
+    });
 
     onKeyPress(document, function(ev) {
         var e = $event(ev);

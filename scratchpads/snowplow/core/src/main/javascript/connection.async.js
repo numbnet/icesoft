@@ -39,7 +39,7 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-function AsyncConnection(logger, sessionID, viewID, configuration) {
+function AsyncConnection(logger, windowID, configuration) {
     var logger = childLogger(logger, 'async-connection');
     var channel = Client(false);
     var onReceiveListeners = [];
@@ -138,7 +138,6 @@ function AsyncConnection(logger, sessionID, viewID, configuration) {
 
     //monitor if the blocking connection needs to be started
     var pollingPeriod = 1000;
-    var fullViewID = sessionID + ':' + viewID;
     var leaseCookie = lookupCookie('ice.connection.lease', function() {
         return Cookie('ice.connection.lease', asString((new Date).getTime()));
     });
@@ -155,19 +154,19 @@ function AsyncConnection(logger, sessionID, viewID, configuration) {
     }
 
     function shouldEstablishBlockingConnection() {
-        return !existsCookie('ice.connection.running') || !startsWith(lookupCookieValue('ice.connection.running'), sessionID);
+        return !existsCookie('ice.connection.running') || !startsWith(lookupCookieValue('ice.connection.running'), windowID);
     }
 
     function offerCandidature() {
-        update(connectionCookie, fullViewID);
+        update(connectionCookie, windowID);
     }
 
     function isWinningCandidate() {
-        return startsWith(value(connectionCookie), fullViewID);
+        return startsWith(value(connectionCookie), windowID);
     }
 
     function markAsOwned() {
-        update(connectionCookie, fullViewID + ':acquired');
+        update(connectionCookie, windowID + ':acquired');
     }
 
     function hasOwner() {
