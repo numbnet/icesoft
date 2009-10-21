@@ -49,7 +49,7 @@ public class MultiViewServer implements Server {
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
         this.associatedPageViews = associatedPageViews;
-        this.viewCap = configuration.getAttributeAsInteger("concurrentViewLimit", 20);
+        this.viewCap = configuration.getAttributeAsInteger("concurrentViewLimit", 50);
     }
 
     public void service(Request request) throws Exception {
