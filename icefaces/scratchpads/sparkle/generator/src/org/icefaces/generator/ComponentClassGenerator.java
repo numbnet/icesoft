@@ -166,7 +166,8 @@ public class ComponentClassGenerator {
                   String defaultValue = prop.defaultValue();
                   if (!"".equals(defaultValue)) {
                       generatedComponentClass.append(", ");
-                      if (field.getType().getName().endsWith("String")) {
+                      if (field.getType().getName().endsWith("String") &&
+                              prop.defaultValueIsStringLiteral()) {
                           generatedComponentClass.append("\"");
                           generatedComponentClass.append(defaultValue);
                           generatedComponentClass.append("\"");
@@ -260,9 +261,11 @@ public class ComponentClassGenerator {
             generatedComponentClass.append(" ");            
             generatedComponentClass.append(field.getName());
             String defaultValue = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValue();
+            boolean defaultValueIsStringLiteral = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValueIsStringLiteral();            
             if (!"".equals(defaultValue)) {
                 generatedComponentClass.append(" = ");
-                if (field.getType().getName().endsWith("String")) {
+                if (field.getType().getName().endsWith("String") &&
+                                           defaultValueIsStringLiteral) {
                     generatedComponentClass.append("\"");
                     generatedComponentClass.append(defaultValue);
                     generatedComponentClass.append("\"");

@@ -20,4 +20,5 @@ public @interface Property {
     boolean required() default false;
     boolean useTemplate() default false;
     boolean inherit() default false;
+    boolean defaultValueIsStringLiteral() default true;
 }

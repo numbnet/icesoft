@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 public @interface Field {
     boolean isTransient() default false;
     String defaultValue() default "";
-    String javadocGet() default "";    
-    String javadocSet() default "";
+    String javadoc() default ""; 
+    boolean defaultValueIsStringLiteral() default true;
 }
