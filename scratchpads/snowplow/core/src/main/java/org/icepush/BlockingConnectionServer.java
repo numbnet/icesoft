@@ -33,6 +33,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -62,7 +64,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
     private long responseTimeoutTime;
     private Server activeServer;
     private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
-    //private String[] participatingViews;
+    private List participatingViews = Collections.emptyList();
 
     public BlockingConnectionServer(HttpSession session, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
@@ -78,9 +80,12 @@ public class BlockingConnectionServer extends TimerTask implements Server {
         };
         notifier.addObserver(new Observer() {
             public void update(Observable observable, Object o) {
-                updatedViews.add(o);
-                resetTimeout();
-                respondIfViewsAvailable();
+                //stop sending notifications if pushID are not used anymore by the browser  
+                if (participatingViews.contains(o)) {
+                    updatedViews.add(o);
+                    resetTimeout();
+                    respondIfViewsAvailable();
+                }
             }
         });
         session.setAttribute(PushContext.class.getName(), new PushContext(notifier));
@@ -90,7 +95,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
             public void service(final Request request) throws Exception {
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
-                //participatingViews = request.getParameterAsStrings("ice.view");
+                participatingViews = Arrays.asList(request.getParameterAsStrings("ice.view"));
                 pendingRequest.put(request);
                 respondIfViewsAvailable();
             }
