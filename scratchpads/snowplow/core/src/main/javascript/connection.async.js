@@ -142,7 +142,7 @@ function AsyncConnection(logger, windowID, configuration) {
         return Cookie('ice.connection.lease', asString((new Date).getTime()));
     });
     var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
-        return Cookie('ice.connection.running', '-');
+        return Cookie('ice.connection.running', '');
     });
 
     function updateLease() {
@@ -154,7 +154,7 @@ function AsyncConnection(logger, windowID, configuration) {
     }
 
     function shouldEstablishBlockingConnection() {
-        return !existsCookie('ice.connection.running') || !startsWith(lookupCookieValue('ice.connection.running'), windowID);
+        return !existsCookie('ice.connection.running') || isEmpty(lookupCookieValue('ice.connection.running'));
     }
 
     function offerCandidature() {
