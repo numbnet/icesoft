@@ -77,12 +77,12 @@ window.evaluate = eval;
     namespace.disposeBridge = operator();
 
     var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-    namespace.logger = Logger([ 'window' ], handler);
+    namespace.logger = Logger([ 'icepush' ], handler);
     namespace.info = info;
     var views = namespace.views = namespace.views || [];
 
     //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
-    function enlistViewInBrowser(viewID) {
+    function enlistViewWithBrowser(viewID) {
         try {
             var viewsCookie = lookupCookie('ice.views');
             var registeredViews = split(value(viewsCookie), ' ');
@@ -92,7 +92,7 @@ window.evaluate = eval;
         }
     }
 
-    function delistViewInBrowser(viewID) {
+    function delistViewWithBrowser(viewID) {
         if (existsCookie('ice.views')) {
             var viewsCookie = lookupCookie('ice.views');
             var registeredViews = split(value(viewsCookie), ' ');
@@ -102,13 +102,13 @@ window.evaluate = eval;
         }
     }
 
-    function enlistViewInWindow(view) {
-        enlistViewInBrowser(view);
+    function enlistViewWithWindow(view) {
+        enlistViewWithBrowser(view);
         append(views, view);
     }
 
-    function delistViewInWindow(view) {
-        delistViewInBrowser(view);
+    function delistViewWithWindow(view) {
+        delistViewWithBrowser(view);
         views = reject(views, function(id) {
             return id == view;
         });
@@ -116,7 +116,7 @@ window.evaluate = eval;
 
     function delistWindowViews() {
         each(views, function(v) {
-            delistViewInBrowser(v);
+            delistViewWithBrowser(v);
         });
         namespace.views = views = [];
     }
@@ -155,7 +155,7 @@ window.evaluate = eval;
         var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher);
 
         onUnload(window, dispose);
-        enlistViewInWindow(viewID);
+        enlistViewWithWindow(viewID);
 
         register(commandDispatcher, 'noop', noop);
         register(commandDispatcher, 'parsererror', ParsingError);
@@ -194,7 +194,7 @@ window.evaluate = eval;
         function dispose() {
             try {
                 dispose = noop;
-                delistViewInWindow(viewID);
+                delistViewWithWindow(viewID);
                 broadcast(viewDisposedListeners, [ viewID ]);
                 stop(updatesMonitor);
             } finally {
