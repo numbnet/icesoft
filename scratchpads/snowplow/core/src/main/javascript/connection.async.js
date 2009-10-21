@@ -39,7 +39,7 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 
-function AsyncConnection(logger, sessionID, viewID, configuration, commandDispatcher, pickUpdates) {
+function AsyncConnection(logger, sessionID, viewID, configuration) {
     var logger = childLogger(logger, 'async-connection');
     var channel = Client(false);
     var onReceiveListeners = [];
