@@ -106,12 +106,14 @@ function okButtonHandler(ev) {
     var button = YAHOO.util.Dom.get("show1up");
     this.hide();
     button.innerHTML = "Show Calendar";
-    var form = formOf(YAHOO.util.Dom.get(this.id));
+//    var form = formOf(YAHOO.util.Dom.get(this.id));
     var fieldName = this.containerId.replace(/_rd$/, "_cc");
     var selected = this.cfg.getProperty("selected");
-    form[fieldName].value = selected[0][1] + "/" + selected[0][2] + "/" + selected[0][0];
-    form[form.id + ":_idcl"].value = this.id;
-    iceSubmitPartial(form, YAHOO.util.Dom.get(this.id), undefined);
+//    form[fieldName].value = selected[0][1] + "/" + selected[0][2] + "/" + selected[0][0];
+//    form[form.id + ":_idcl"].value = this.id;
+//    iceSubmitPartial(form, YAHOO.util.Dom.get(this.id), undefined);
+    ice.submit(ev, YAHOO.util.Dom.get(this.id)); 
+//    ice.singleSubmit(ev, YAHOO.util.Dom.get(this.id));
 }
 
 function pageChangeHandler() {
