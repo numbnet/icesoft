@@ -673,6 +673,7 @@ public class PanelTabSet
         restoreAttachedState(context, values[32]);
         if (restoredListenerList != null) {
             if (null != listenerList) {
+                listenerList.clear();
                 listenerList.addAll(restoredListenerList);
             } else {
                 listenerList = restoredListenerList;
