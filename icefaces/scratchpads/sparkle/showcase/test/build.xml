@@ -27,9 +27,11 @@
                 <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
             </lib>
+<!--
             <lib dir="../../../glimmer/compat/lib">
                 <include name="jstl.jar"/>
             </lib>
+-->
             <lib file="../../component/dist/sparkle-comps.jar"/>
         </war>
     </target>

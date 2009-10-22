@@ -7,7 +7,13 @@ import java.util.Date;
 @ManagedBean
 @SessionScoped
 public class Calendar {
-    private Date selectedDate = new Date(97, 6, 23, 12, 38);
+    private java.util.Calendar calendar = java.util.Calendar.getInstance();
+    private Date selectedDate;
+
+    public Calendar() {
+        calendar.set(2009, 10, 18, 20, 38);
+        selectedDate = calendar.getTime();
+    }
 
     public Date getSelectedDate() {
         return selectedDate;
