@@ -141,17 +141,33 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     }
                 }
 
+                //reload page in case "html" or "head" element is updated
+                boolean reload = false;
                 for (int i = 0; i < diffs.length; i++) {
                     Element element = (Element) diffs[i];
-                    partialWriter.startUpdate(element.getAttribute("id"));
-                    DOMUtils.printNode(element, outputWriter);
-                    partialWriter.endUpdate();
+                    String tag = element.getTagName();
+                    if ("html".equals(tag) || "head".equals(tag)) {
+                        reload = true;
+                        break;
+                    }
                 }
 
-                renderState();
-                renderExtensions();
+                if (reload) {
+                    partialWriter.startEval();
+                    partialWriter.write("window.location.reload();");
+                    partialWriter.endEval();
+                } else {
+                    for (int i = 0; i < diffs.length; i++) {
+                        Element element = (Element) diffs[i];
+                        partialWriter.startUpdate(element.getAttribute("id"));
+                        DOMUtils.printNode(element, outputWriter);
+                        partialWriter.endUpdate();
+                    }
+                    renderState();
+                    renderExtensions();
+                }
+
                 partialWriter.endDocument();
-                return;
             } catch (IOException ex) {
                 ex.printStackTrace();
                 //should put back the original ResponseWriter
@@ -162,8 +178,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 // Throw the exception
                 throw ex;
             }
-
-
         } else {
             super.processPartial(phaseId);
         }
