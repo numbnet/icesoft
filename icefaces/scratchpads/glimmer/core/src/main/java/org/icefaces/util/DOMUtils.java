@@ -22,7 +22,16 @@
 
 package org.icefaces.util;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Entity;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.xml.parsers.DocumentBuilder;
@@ -32,11 +41,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -76,7 +85,7 @@ public class DOMUtils {
             Method setErrorCheckingMethod = null;
             try {
                 setErrorCheckingMethod = doc.getClass().getMethod("setErrorChecking",
-                                                                  new Class[]{boolean.class});
+                        new Class[]{boolean.class});
                 setErrorCheckingMethod.invoke(doc, new Object[]{Boolean.FALSE});
             } catch (Exception e) {
                 if (log.isLoggable(Level.FINE)) {
@@ -115,7 +124,7 @@ public class DOMUtils {
     public static void printChildNodes(Node node, Writer writer) throws IOException {
         NodeList children = node.getChildNodes();
         int l = children.getLength();
-        for (int i = 0; i < l; i++)  {
+        for (int i = 0; i < l; i++) {
             printNode(children.item(i), writer);
         }
     }
@@ -138,7 +147,7 @@ public class DOMUtils {
                 if (nodes != null) {
                     for (int i = 0; i < nodes.getLength(); i++) {
                         printNode(nodes.item(i), writer, depth + 1,
-                                  allowAddingWhitespace, false);
+                                allowAddingWhitespace, false);
                     }
                 }
                 break;
@@ -187,8 +196,8 @@ public class DOMUtils {
                             }
                         }
                         printNode(children.item(i), writer, depth + 1,
-                                  allowAddingWhitespace,
-                                  childAddTrailingNewline);
+                                allowAddingWhitespace,
+                                childAddTrailingNewline);
                     }
                 }
 
@@ -267,20 +276,20 @@ public class DOMUtils {
      * @param oldDOM original dom Document
      * @param newDOM changed dom Document
      * @return array of top-level nodes in newDOM that differ from oldDOM, an
-     * empty array if no nodes are different
+     *         empty array if no nodes are different
      */
     public static Node[] domDiff(Document oldDOM, Document newDOM) {
         List<Node> nodeDiffs = new Vector<Node>();
         compareNodes(nodeDiffs, oldDOM.getDocumentElement(),
-                     newDOM.getDocumentElement());
+                newDOM.getDocumentElement());
 
         Node[] prunedDiff = null;
         try {
             prunedDiff = pruneAncestors(nodeDiffs);
-        } catch (Exception e)  {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return (prunedDiff==null) ? new Node[0] : prunedDiff;  
+        return (prunedDiff == null) ? new Node[0] : prunedDiff;
     }
 
 
@@ -309,7 +318,7 @@ public class DOMUtils {
             return false;
         }
         if (!compareStrings(oldNode.getNodeValue(),
-                            newNode.getNodeValue())) {
+                newNode.getNodeValue())) {
             //might not have an id
             nodeDiffs.add(newNode);
             return false;
@@ -329,7 +338,7 @@ public class DOMUtils {
         boolean allChildrenMatch = true;
         for (int i = 0; i < newChildLength; i++) {
             if (!compareNodes(nodeDiffs, oldChildNodes.item(i),
-                              newChildNodes.item(i))) {
+                    newChildNodes.item(i))) {
                 allChildrenMatch = false;
             }
         }
@@ -411,7 +420,8 @@ public class DOMUtils {
 
     }
 
-    public static Element ascendToNodeWithID(Node node) {
+    public static Element ascendToNodeWithID(final Node start) {
+        Node node = start;
         while (null != node) {
             if (node instanceof Element) {
                 String id = ((Element) node).getAttribute("id");
@@ -421,8 +431,8 @@ public class DOMUtils {
             }
             node = node.getParentNode();
         }
-        //it's going to be null at this point
-        return (Element) node;
+        //stop DOM diffing at the root
+        return start.getOwnerDocument().getDocumentElement();
     }
 
     /**
@@ -677,8 +687,8 @@ public class DOMUtils {
             /* "&#255;" -- latin small letter y with diaeresis, U+00FF ISOlat1 */,
     };
 
-    private static Node[] pruneAncestors(List nodeList)  {
-        Node[] changed =  (Node[]) nodeList.toArray(new Node[0]);
+    private static Node[] pruneAncestors(List nodeList) {
+        Node[] changed = (Node[]) nodeList.toArray(new Node[0]);
         HashMap depthMaps = new HashMap();
         for (int i = 0; i < changed.length; i++) {
             Element changeRoot =
@@ -743,7 +753,7 @@ public class DOMUtils {
 
     //prune the children by looking for ancestors in the parents collection 
     private static void pruneAncestors(Integer parentDepth, Collection parents,
-                                Integer childDepth, Collection children) {
+                                       Integer childDepth, Collection children) {
         Iterator parentList = parents.iterator();
         while (parentList.hasNext()) {
             Node parent = (Node) parentList.next();
@@ -768,7 +778,7 @@ public class DOMUtils {
     }
 
     private static boolean isAncestor(Integer parentDepth, Node parent,
-                               Integer childDepth, Node child) {
+                                      Integer childDepth, Node child) {
         if (!parent.hasChildNodes()) {
             return false;
         }
@@ -786,17 +796,17 @@ public class DOMUtils {
     }
 
 
-    public static String toDebugStringDeep(Node node)  {
+    public static String toDebugStringDeep(Node node) {
         return toDebugStringDeep(node, "");
     }
 
-    static String toDebugStringDeep(Node node, String indent)  {
+    static String toDebugStringDeep(Node node, String indent) {
         String result = toDebugString(node) + "\n";
         indent = indent + "  ";
         NodeList nodes = node.getChildNodes();
         if (nodes != null) {
             for (int i = 0; i < nodes.getLength(); i++) {
-               result += indent + toDebugStringDeep(nodes.item(i), indent);
+                result += indent + toDebugStringDeep(nodes.item(i), indent);
             }
         }
         return result;
