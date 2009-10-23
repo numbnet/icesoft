@@ -22,7 +22,7 @@ public class DefaultMessageServiceContextListener implements ServletContextListe
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         if (messageService != null) {
             System.out.println("DefaultMessageServiceContextListener.contextDestroyed: requesting stop...");
-            messageService.stop();
+            messageService.close();
             System.out.println("DefaultMessageServiceContextListener.contextDestroyed: stopped");
         }
     }
