@@ -1,12 +1,15 @@
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.component.CompatDOMResponseWriter;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.context.DOMPartialViewContext;
+import org.icefaces.context.DOMResponseWriter;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import java.io.IOException;
+import java.io.Writer;
 
 public class CompatDOMPartialViewContext extends DOMPartialViewContext {
 
@@ -26,5 +29,9 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    protected DOMResponseWriter createDOMResponseWriter(Writer outputWriter) {
+        return new CompatDOMResponseWriter(outputWriter);
     }
 }
