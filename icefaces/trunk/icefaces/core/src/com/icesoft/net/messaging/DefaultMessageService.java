@@ -425,11 +425,7 @@ implements MessageServiceClient.Administrator {
             try {
                 // throws InvalidDestinationException, JMSException, NamingException
                 setUpMessageServiceClient();
-                if (scheduledFuture != null) {
-                    scheduledFuture.cancel(false);
-                    scheduledFuture = null;
-                }
-                cancelled = true;
+                cancel();
                 succeeded = true;
                 synchronized (stateLock) {
                     currentState = STATE_SET_UP_DONE;
@@ -444,11 +440,7 @@ implements MessageServiceClient.Administrator {
                 LOG.debug("Exception: " + exception.getClass().getName() + ": " + exception.getMessage());
                 tearDownNow();
                 if (retries++ == maxRetries) {
-                    if (scheduledFuture != null) {
-                        scheduledFuture.cancel(false);
-                        scheduledFuture = null;
-                    }
-                    cancelled = true;
+                    cancel();
                     currentMessagePublisher.stop();
                     // switch from a queue-based message publisher to a noop message publisher.
                     currentMessagePublisher = new NoopMessagePublisher();
@@ -458,6 +450,14 @@ implements MessageServiceClient.Administrator {
                 }
             }
             LOG.debug("Executing Set Up task... (succeeded: [" + succeeded + "])");
+        }
+
+        private void cancel() {
+            if (scheduledFuture != null) {
+                scheduledFuture.cancel(false);
+                scheduledFuture = null;
+            }
+            cancelled = true;
         }
 
         private void execute() {
@@ -485,11 +485,21 @@ implements MessageServiceClient.Administrator {
             while (!cancelled) {
                 run();
                 if (!cancelled) {
+                    synchronized (stateLock) {
+                        if (requestedState == STATE_CLOSED) {
+                            cancel();
+                        }
+                    }
                     try {
                         // throws InterruptedException
                         Thread.sleep(interval);
                     } catch (InterruptedException exception) {
                         // do nothing
+                    }
+                    synchronized (stateLock) {
+                        if (requestedState == STATE_CLOSED) {
+                            cancel();
+                        }
                     }
                 }
             }
@@ -528,6 +538,9 @@ implements MessageServiceClient.Administrator {
                         LOG.debug("Current State: TEAR DOWN DONE");
                     }
                     if (requestedState == STATE_CLOSED) {
+                        currentMessagePublisher.stop();
+                        // switch from a queue-based message publisher to a noop message publisher.
+                        currentMessagePublisher = new NoopMessagePublisher();
                         close();
                     }
                 }
