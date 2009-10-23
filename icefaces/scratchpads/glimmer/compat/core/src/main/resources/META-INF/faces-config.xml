@@ -8,6 +8,10 @@
             <name>ICEfaces core</name>
         </after>
     </ordering>
+    <render-kit>
+        <render-kit-id>xHTML_BASIC</render-kit-id>
+        <render-kit-class>com.icesoft.faces.component.CompatDOMRenderKit</render-kit-class>
+    </render-kit>
     <application>
         <view-handler>com.icesoft.faces.application.ExtrasSetup</view-handler>
     </application>

@@ -105,7 +105,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 //it may be for error handling cases
                 //facesContext.getAttributes().put(ORIGINAL_WRITER, orig);
                 Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
-                DOMResponseWriter writer = new DOMResponseWriter(outputWriter);
+                DOMResponseWriter writer = createDOMResponseWriter(outputWriter);
                 facesContext.setResponseWriter(writer);
 
                 ExternalContext exContext = facesContext.getExternalContext();
@@ -297,5 +297,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     protected void renderExtensions() {
         //do nothing.
+    }
+
+    protected DOMResponseWriter createDOMResponseWriter(Writer outputWriter) {
+        return new DOMResponseWriter(outputWriter);
     }
 }
