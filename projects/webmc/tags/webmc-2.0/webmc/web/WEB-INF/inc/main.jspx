@@ -40,7 +40,7 @@
 	    <ui:include src="navigationpanel.jspx"/>
 	</ice:panelGroup>
 
-	<ice:form id="mainForm" styleClass="mainForm">
+	<ice:form id="mainForm" >
         <div class="mainBackground" >
 
 			<div class="presentationDIV">
