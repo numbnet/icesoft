@@ -30,24 +30,17 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
+<f:view renderKitId="xHTML_BASIC" xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets">
-
 <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
               var="msgs"/>
-
-<ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 <html>
 <head>
     <title>
         <ice:outputText value="WebMC"/>
     </title>
-    <ice:outputStyle href="resources/css/login.css"/>
-    <ice:outputStyle href="resources/css/styles.css"/>
     <!-- Viewport settings for the Safari mobile devices -->
     <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
     <!-- Shows the Chat Log -->

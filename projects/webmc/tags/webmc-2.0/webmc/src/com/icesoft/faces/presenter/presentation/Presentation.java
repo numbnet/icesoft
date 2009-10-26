@@ -32,7 +32,8 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import com.icesoft.faces.async.render.OnDemandRenderer;
+//import com.icesoft.faces.async.render.OnDemandRenderer;
+import org.icefaces.application.PushRenderer;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
 import com.icesoft.faces.presenter.document.ZipPresentationDocument;
@@ -67,7 +68,7 @@ public class Presentation extends PresentationInfo {
     private int currentSlideNumber = DEFAULT_SLIDE_NUMBER;
     private int progress = -1;
     private long lastFileProgressTime = 0L;
-    private OnDemandRenderer renderer;
+//    private OnDemandRenderer renderer;
     private PresentationDocument document;
     private File parentFile;
     private PresentationManagerBean manager;
@@ -81,10 +82,11 @@ public class Presentation extends PresentationInfo {
     public Presentation() {
     }
 
-    public Presentation(String name, String password, Participant moderator,
-    		OnDemandRenderer renderer) {
+//    public Presentation(String name, String password, Participant moderator,
+//    		OnDemandRenderer renderer) {
+    public Presentation(String name, String password, Participant moderator)  {
         super(name, password, moderator);
-        this.renderer = renderer;
+//        this.renderer = renderer;
     }
 
     public int getCurrentSlideNumber() {
@@ -369,10 +371,12 @@ public class Presentation extends PresentationInfo {
      * @param participant to add
      */
     public void addParticipant(Participant participant) {
-        renderer.add(participant);
+//        renderer.add(participant);
+        PushRenderer.addCurrentSession(getName());
 
         if (log.isInfoEnabled()) {
-            log.info("Added participant " + participant.getFirstName() + " to " + name + " (renderer: " + renderer + ")");
+//            log.info("Added participant " + participant.getFirstName() + " to " + name + " (renderer: " + renderer + ")");
+            log.info("Added participant " + participant.getFirstName() + " to " + name);
         }
         if (!participants.contains(participant)) {
             participants.add(participant);
@@ -428,20 +432,20 @@ public class Presentation extends PresentationInfo {
      */
     public void removeParticipant(Participant participant) {
         try {
-            renderer.remove(participant);
+//            renderer.remove(participant);
             // We dispose of the renderer here because it can be used to chat 
             // after the presentation has concluded, once it's empty we dispose.
-            if(renderer.isEmpty()){
-            	renderer.dispose();
-            }
+//            if(renderer.isEmpty()){
+//            	renderer.dispose();
+//            }
             participants.remove(participant);
         }catch (Exception removeError) {
             if (log.isErrorEnabled()) {
                 removeError.printStackTrace();
                 log.error("Error removing participant " +
                           participant.getFirstName() +
-                          " from the presentation " + name +
-                          " as well as the renderer " + renderer);
+                          " from the presentation " + name);
+//                          " as well as the renderer " + renderer);
             }
         }
         if (participant.isModerator()) {
@@ -745,14 +749,15 @@ public class Presentation extends PresentationInfo {
      * Convenience method to safely call request render
      */
     public void requestOnDemandRender() {
-        if (renderer != null) {
-            renderer.requestRender();
-        }
-        else {
-            if (log.isErrorEnabled()) {
-                log.error("Renderer for presentation " + name + " is null");
-            }
-        }
+        PushRenderer.render(getName());
+//        if (renderer != null) {
+//            renderer.requestRender();
+//        }
+//        else {
+//            if (log.isErrorEnabled()) {
+//                log.error("Renderer for presentation " + name + " is null");
+//            }
+//        }
     }
 
 }

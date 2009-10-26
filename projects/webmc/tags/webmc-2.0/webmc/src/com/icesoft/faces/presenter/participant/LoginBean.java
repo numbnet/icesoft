@@ -34,7 +34,7 @@ package com.icesoft.faces.presenter.participant;
 
 import com.icesoft.faces.presenter.presentation.PresentationManager;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
-import com.icesoft.faces.async.render.OnDemandRenderer;
+//import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.component.ext.HtmlInputSecret;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.HtmlForm;
@@ -58,7 +58,7 @@ public class LoginBean {
     private String presentationName = "";
     private String presentationPassword;
     private HtmlInputText firstNameField = null;
-    private OnDemandRenderer loginPageRenderer;
+//    private OnDemandRenderer loginPageRenderer;
     private boolean invalidPassword = false;
     private boolean invalidPresentation = false;
     
@@ -98,13 +98,13 @@ public class LoginBean {
         this.firstNameField = firstNameField;
     }
 
-    public OnDemandRenderer getLoginPageRenderer() {
-        return loginPageRenderer;
-    }
+//    public OnDemandRenderer getLoginPageRenderer() {
+//        return loginPageRenderer;
+//    }
 
-    public void setLoginPageRenderer(OnDemandRenderer loginPageRenderer) {
-        this.loginPageRenderer = loginPageRenderer;
-    }
+//    public void setLoginPageRenderer(OnDemandRenderer loginPageRenderer) {
+//        this.loginPageRenderer = loginPageRenderer;
+//    }
 
 	public boolean isInvalidPassword() {
 		return invalidPassword;
@@ -122,24 +122,24 @@ public class LoginBean {
 		this.invalidPresentation = invalidPresentation;
 	}
 
-    /**
-     * Convenience method to add the parent participant to the login renderer
-     */
-    public void addRenderable() {
-        if (loginPageRenderer != null) {
-            loginPageRenderer.add(parent);
-        }
-    }
-
-    /**
-     * Convenience method to remove the parent participant from the login
-     * renderer
-     */
-    public void removeRenderable() {
-        if (loginPageRenderer != null) {
-            loginPageRenderer.remove(parent);
-        }
-    }
+//    /**
+//     * Convenience method to add the parent participant to the login renderer
+//     */
+//    public void addRenderable() {
+//        if (loginPageRenderer != null) {
+//            loginPageRenderer.add(parent);
+//        }
+//    }
+//
+//    /**
+//     * Convenience method to remove the parent participant from the login
+//     * renderer
+//     */
+//    public void removeRenderable() {
+//        if (loginPageRenderer != null) {
+//            loginPageRenderer.remove(parent);
+//        }
+//    }
 
     /**
      * Method called when the "Viewer" tab is selected on the front end pages

@@ -32,10 +32,11 @@
  */
 package com.icesoft.faces.presenter.participant;
 
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.faces.async.render.Renderable;
+//import com.icesoft.faces.async.render.RenderManager;
+//import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.ext.HtmlInputText;
-import com.icesoft.faces.context.DisposableBean;
+//import com.icesoft.faces.context.DisposableBean;
+import org.icefaces.application.PushRenderer;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.presenter.chat.Message;
@@ -47,10 +48,10 @@ import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
-import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+//import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
+//import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+//import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+//import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -71,7 +72,8 @@ import org.apache.commons.logging.LogFactory;
  * viewer or moderator, and manage the UI level functionality such as status
  * messages, chatting, slide changing, etc.
  */
-public class Participant extends ParticipantInfo implements Renderable, DisposableBean {
+//public class Participant extends ParticipantInfo implements Renderable, DisposableBean {
+public class Participant extends ParticipantInfo  {
     private static Log log = LogFactory.getLog(Participant.class);
     private static final int HIGHLIGHT_TIME = 4000;
 
@@ -80,14 +82,14 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private LoginBean loginBean = new LoginBean(this);
     private PresentationManagerBean presentationManager;
     private Presentation presentation;
-    private PersistentFacesState state;
+//    private PersistentFacesState state;
     private ChatView chatView = new ChatView();
     private ParticipantView participantView = new ParticipantView();
     private String chatMessage = "";
     private String statusMessage;
     private Effect statusEffect;
     private Effect messageEffect;
-    private RenderManager renderManager;
+//    private RenderManager renderManager;
     private UIData participantsTable;
     private HtmlInputText chatMessageField = null;
     private boolean moderatorDialog = false;
@@ -104,7 +106,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
     public Participant() {
         super();
-        state = PersistentFacesState.getInstance();
+//        state = PersistentFacesState.getInstance();
+
     }
 
     public int getRole() {
@@ -137,11 +140,12 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
     public void setPresentation(Presentation presentation) {
         this.presentation = presentation;
+        PushRenderer.addCurrentSession(presentation.getName());
     }
 
-    public PersistentFacesState getState() {
-        return state;
-    }
+//    public PersistentFacesState getState() {
+//        return state;
+//    }
 
     public ChatView getChatView() {
         return chatView;
@@ -169,7 +173,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * @return participant view list
      */
     public Participant[] getParticipantViewList() {
-        state = PersistentFacesState.getInstance();
+//        state = PersistentFacesState.getInstance();
         return (participantView.getView());
     }
 
@@ -193,23 +197,23 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         return messageEffect;
     }
 
-    public RenderManager getRenderManager() {
-        return renderManager;
-    }
+//    public RenderManager getRenderManager() {
+//        return renderManager;
+//    }
     
-    /**
-     * Method to set the render manager This should be called from faces-config
-     * on initialization In addition this method will set the loginBean's
-     * renderer
-     *
-     * @param renderManager to set
-     */
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-        loginBean.setLoginPageRenderer(
-                renderManager.getOnDemandRenderer("loginPageRenderer"));
-        loginBean.addRenderable();
-    }
+//    /**
+//     * Method to set the render manager This should be called from faces-config
+//     * on initialization In addition this method will set the loginBean's
+//     * renderer
+//     *
+//     * @param renderManager to set
+//     */
+//    public void setRenderManager(RenderManager renderManager) {
+//        this.renderManager = renderManager;
+//        loginBean.setLoginPageRenderer(
+//                renderManager.getOnDemandRenderer("loginPageRenderer"));
+//        loginBean.addRenderable();
+//    }
 
     /**
      * Method to get the bound participant table This is necessary to be able to
@@ -314,7 +318,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      */
 	public boolean isMobile() {
         if(!mobileSniffed){
-			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+//			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	        String useragent = request.getHeader("user-agent");
 	        String agent = useragent.toLowerCase();
 	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
@@ -738,8 +743,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             presentation.setPointerX((int)Math.rint((double)Integer.parseInt((String) requestParams.get("ice.event.x"))/scale-10));
             presentation.setPointerY((int)Math.rint((double)Integer.parseInt((String) requestParams.get("ice.event.y"))/scale+23));        	
         }
-        
-        presentation.requestOnDemandRender();
+        PushRenderer.render(presentation.getName());
+//        presentation.requestOnDemandRender();
     }
     
     public String getPointerClass(){
@@ -776,45 +781,45 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 		}
 	}
 
-    /**
-     * Method to refresh PersistentFacesState in login.jspx.
-     *
-     * @return null
-     */
-    public String getRefreshPersistentFacesState() {
-        state = PersistentFacesState.getInstance();
-        return null;
-    }
-    
-    /**
-     * Method called when any level of rendering exception happens.  In the case
-     * of a non-transient (ie: fatal) rendering exception, the user will be
-     * logged out.
-     *
-     * @param renderingException that occurred
-     */
-    public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled() &&
-                renderingException instanceof TransientRenderingException) {
-            log.debug("Transient Rendering exception for Participant " + firstName + ":", renderingException);
-        } else if (renderingException instanceof FatalRenderingException) {
-            if (log.isDebugEnabled()) {
-                log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
-            }
-            if(loggedIn){
-                logout();
-            }
-        }
-    }
-
-	public void dispose() throws Exception {
-        if (log.isDebugEnabled()) {
-            log.debug("Participant " + firstName + " Disposed - logging out");
-        }
-        if(loggedIn){
-            logout();
-	    }
-		loginBean.removeRenderable();
-	}
+//    /**
+//     * Method to refresh PersistentFacesState in login.jspx.
+//     *
+//     * @return null
+//     */
+//    public String getRefreshPersistentFacesState() {
+//        state = PersistentFacesState.getInstance();
+//        return null;
+//    }
+//    
+//    /**
+//     * Method called when any level of rendering exception happens.  In the case
+//     * of a non-transient (ie: fatal) rendering exception, the user will be
+//     * logged out.
+//     *
+//     * @param renderingException that occurred
+//     */
+//    public void renderingException(RenderingException renderingException) {
+//        if (log.isDebugEnabled() &&
+//                renderingException instanceof TransientRenderingException) {
+//            log.debug("Transient Rendering exception for Participant " + firstName + ":", renderingException);
+//        } else if (renderingException instanceof FatalRenderingException) {
+//            if (log.isDebugEnabled()) {
+//                log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
+//            }
+//            if(loggedIn){
+//                logout();
+//            }
+//        }
+//    }
+//
+//	public void dispose() throws Exception {
+//        if (log.isDebugEnabled()) {
+//            log.debug("Participant " + firstName + " Disposed - logging out");
+//        }
+//        if(loggedIn){
+//            logout();
+//	    }
+//		loginBean.removeRenderable();
+//	}
 
 }
