@@ -44,6 +44,9 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.faces.webapp.UIComponentTag;
 import javax.faces.webapp.UIComponentELTag;
+import javax.faces.webapp.ConverterTag;
+import javax.faces.webapp.AttributeTag;
+import javax.faces.webapp.ValidatorTag;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
@@ -71,7 +74,8 @@ public class ELSetPropertiesRule extends Rule {
                     ("name".equals(name)) ||
                     ("var".equals(name))) {
                     values.put(name, value);
-                } else if (top instanceof UIComponentTag) {
+                } else if (top instanceof UIComponentTag || top instanceof ConverterTag 
+                            || top instanceof AttributeTag || top instanceof ValidatorTag) {
                     //must be a JSF 1.1 tag
                     values.put(name, value);
                 } else if ("action".equals(name)) {
