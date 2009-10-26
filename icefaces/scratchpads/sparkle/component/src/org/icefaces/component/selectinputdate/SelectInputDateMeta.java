@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Component(componentClass = "org.icefaces.component.selectinputdate.SelectInputDate", 
         tagName = "selectInputDate",
-        extendsClass ="javax.faces.component.UIComponentBase",
+        extendsClass ="javax.faces.component.UIInput",
         componentFamily ="javax.faces.Input",
         componentType = "com.icesoft.faces.SelectInputDate",
         rendererClass ="org.icefaces.component.selectinputdate.SelectInputDateRenderer",

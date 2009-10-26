@@ -6,6 +6,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Calendar;
@@ -31,7 +32,8 @@ public class SelectInputDateRenderer extends Renderer {
         String clientId = component.getClientId(context);
         writer.endElement(HTML.DIV_ELEM);
 
-        Date value = selectInputDate.getSelectedDate();
+        Date value = (Date) selectInputDate.getValue();
+//        Date value = selectInputDate.getSelectedDate();
         Calendar timeKeeper = Calendar.getInstance();
         timeKeeper.setTime(value == null ? new Date() : value);
         String pageDate = (timeKeeper.get(Calendar.MONTH) + 1) + "/" + timeKeeper.get(Calendar.YEAR);
@@ -68,5 +70,14 @@ public class SelectInputDateRenderer extends Renderer {
             }
             System.out.println();
         }
+        selectInputDate.setSubmittedValue(paramValuesMap.get(clientId)[0]);
+//        selectInputDate.setSubmittedValue("10/23/1988 21:34");
+    }
+
+    @Override
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        super.getConvertedValue(context, component, submittedValue);
+        SelectInputDate selectInputDate = (SelectInputDate) component;
+        return selectInputDate.getConverter().getAsObject(context, component, (String) submittedValue);
     }
 }

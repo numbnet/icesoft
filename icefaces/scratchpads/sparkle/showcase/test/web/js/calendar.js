@@ -9,9 +9,11 @@ YAHOO.lang.extend(YAHOO.YIP.Calendar, YAHOO.widget.Calendar, {
         YAHOO.YIP.Calendar.superclass.render.call(this);
         var table = YAHOO.util.Dom.get(this.id);
         var tfoot = table.appendChild(document.createElement("tfoot"));
-        var selId = this.containerId.replace(/_rd$/, "_hr");
+        var selId = this.containerId + "_hr";
+//        var selId = this.containerId.replace(/_rd$/, "_hr");
         var hrSel = "<select onchange='hrSelectHandler(form, this, event);' id='" + selId + "' name='" + selId + "'>";
-        selId = this.containerId.replace(/_rd$/, "_min");
+        selId = this.containerId + "_min";
+//        selId = this.containerId.replace(/_rd$/, "_min");
         var minSel = "<select onchange='minSelectHandler(form, this, event);' id='" + selId + "' name='" + selId + "'>";
         var i;
         for (i = 0; i < 24; i++) {
@@ -102,17 +104,19 @@ function calButtonHandler(ev) {
 }
 
 function okButtonHandler(ev) {
-//    alert("OK");
     var button = YAHOO.util.Dom.get("show1up");
     this.hide();
     button.innerHTML = "Show Calendar";
-//    var form = formOf(YAHOO.util.Dom.get(this.id));
-    var fieldName = this.containerId.replace(/_rd$/, "_cc");
     var selected = this.cfg.getProperty("selected");
-//    form[fieldName].value = selected[0][1] + "/" + selected[0][2] + "/" + selected[0][0];
-//    form[form.id + ":_idcl"].value = this.id;
-//    iceSubmitPartial(form, YAHOO.util.Dom.get(this.id), undefined);
-    ice.submit(ev, YAHOO.util.Dom.get(this.id)); 
+    var hr = YAHOO.util.Dom.get(this.containerId + "_hr").value;
+    var min = YAHOO.util.Dom.get(this.containerId + "_min").value;
+    var container = YAHOO.util.Dom.get(this.containerId);
+    var element = document.createElement("input");
+    YAHOO.util.Dom.setAttribute(element, "name", this.containerId);
+    YAHOO.util.Dom.setAttribute(element, "type", "hidden");
+    YAHOO.util.Dom.setAttribute(element, "value", selected[0][1] + "/" + selected[0][2] + "/" + selected[0][0] + " " + hr + ":" + min);
+    container.appendChild(element);
+    ice.submit(ev, YAHOO.util.Dom.get(this.id));
 //    ice.singleSubmit(ev, YAHOO.util.Dom.get(this.id));
 }
 

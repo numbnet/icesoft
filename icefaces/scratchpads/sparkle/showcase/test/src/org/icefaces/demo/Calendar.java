@@ -7,12 +7,11 @@ import java.util.Date;
 @ManagedBean
 @SessionScoped
 public class Calendar {
-    private java.util.Calendar calendar = java.util.Calendar.getInstance();
     private Date selectedDate;
 
     public Calendar() {
-        calendar.set(2009, 10, 18, 20, 38);
-        selectedDate = calendar.getTime();
+        selectedDate = java.util.Calendar.getInstance().getTime();
+        System.out.println("selectedDate.getTimezoneOffset() = " + selectedDate.getTimezoneOffset());
     }
 
     public Date getSelectedDate() {
