@@ -30,7 +30,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class InputRichText extends UIInput {
-    public static final String COMPONENET_TYPE = "com.icesoft.faces.InputRichText";
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
     private static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
     private static final Resource FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
@@ -117,7 +117,7 @@ public class InputRichText extends UIInput {
     }
 
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
 
     public InputRichText() {
