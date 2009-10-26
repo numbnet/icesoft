@@ -54,7 +54,7 @@ import javax.faces.event.PhaseId;
  */
 public class PanelPositioned extends UISeries {
 
-    public static final String COMPONENET_TYPE =
+    public static final String COMPONENT_TYPE =
             "com.icesoft.faces.dragdrop.PanelPositioned";
     public static final String DEFAULT_RENDERER_TYPE =
             "com.icesoft.faces.dragdrop.PanelPositionedRenderer";

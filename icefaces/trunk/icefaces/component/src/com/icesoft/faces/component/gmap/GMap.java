@@ -13,7 +13,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class GMap extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMap";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
     private static final String DEFAULT_LONGITUDE = "-101.162109375";
     private static final String DEFAULT_LATITUDE = "56.46249048388979";
@@ -36,7 +36,7 @@ public class GMap extends UIPanel{
     }
     
     public String getComponentType() {
-        return COMPONENET_TYPE;
+        return COMPONENT_TYPE;
     }
     
 	public String getLongitude() {

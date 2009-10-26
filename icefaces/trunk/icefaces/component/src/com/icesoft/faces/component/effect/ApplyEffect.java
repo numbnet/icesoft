@@ -7,7 +7,7 @@ import javax.faces.el.ValueBinding;
 import javax.faces.component.UIComponentBase;
 
 public class ApplyEffect extends UIComponentBase {
-    public static final String COMPONENET_TYPE = "com.icesoft.faces.ApplyEffect";
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.ApplyEffect";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.ApplyEffectRenderer";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.ApplyEffectFamily";
     private Boolean fire;
