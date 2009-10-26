@@ -2,7 +2,9 @@
 window.Ice = {};
 
 function iceSubmitPartial(form, component, evt) {
-    ice.submit(evt, component, form || formOf(component));
+    ice.submit(evt, component || form, function(parameter) {
+        parameter('ice.submit.partial', true);
+    });
     return false;
 }
 
@@ -15,7 +17,7 @@ function iceSubmit(form, component, evt) {
             return false;
         }
     }
-    ice.submit(evt, component || form, form || formOf(component));
+    ice.submit(evt, component || form);
     return false;
 }
 
