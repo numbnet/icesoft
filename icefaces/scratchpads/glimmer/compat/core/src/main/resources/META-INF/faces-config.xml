@@ -12,6 +12,9 @@
         <render-kit-id>xHTML_BASIC</render-kit-id>
         <render-kit-class>com.icesoft.faces.component.CompatDOMRenderKit</render-kit-class>
     </render-kit>
+    <lifecycle>
+        <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
+    </lifecycle>
     <application>
         <view-handler>com.icesoft.faces.application.ExtrasSetup</view-handler>
     </application>

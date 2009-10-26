@@ -33,10 +33,15 @@ var submit;
         }
     };
 
-    submit = function (event, element) {
+    submit = function (event, element, additionalParameters) {
         event = event || null;
         var options = {execute: '@all', render: '@all', 'ice.window': namespace.window};
         serializeEventToOptions(event, element, options);
+        if (additionalParameters) {
+            additionalParameters(function(name, value) {
+                options[name] = value;
+            });
+        }
         jsf.ajax.request(element, event, options);
     };
 })();
