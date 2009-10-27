@@ -29,7 +29,6 @@ import org.icepush.http.Server;
 import org.icepush.http.standard.FixedXMLContentHandler;
 import org.icepush.http.standard.ResponseHandlerServer;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -66,21 +65,14 @@ public class BlockingConnectionServer extends TimerTask implements Server {
     private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
     private List participatingViews = Collections.emptyList();
 
-    public BlockingConnectionServer(HttpSession session, final Timer monitorRunner, Configuration configuration) {
+    public BlockingConnectionServer(Observable notifier, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
 
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
-        Observable notifier = new Observable() {
-            public synchronized void notifyObservers(Object o) {
-                setChanged();
-                super.notifyObservers(o);
-                clearChanged();
-            }
-        };
         notifier.addObserver(new Observer() {
             public void update(Observable observable, Object o) {
-                //stop sending notifications if pushID are not used anymore by the browser  
+                //stop sending notifications if pushID are not used anymore by the browser
                 if (participatingViews.contains(o)) {
                     updatedViews.add(o);
                     resetTimeout();
@@ -88,7 +80,6 @@ public class BlockingConnectionServer extends TimerTask implements Server {
                 }
             }
         });
-        session.setAttribute(PushContext.class.getName(), new PushContext(notifier));
 
         //define blocking server
         activeServer = new Server() {

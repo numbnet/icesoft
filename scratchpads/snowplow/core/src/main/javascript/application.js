@@ -114,6 +114,7 @@ if (!window.ice) {
         onBeforeUnload(window, delistWindowViews);
 
         var currentNotifications = [];
+        var apiChannel = Client(true);
         //public API
         namespace.push = {
             register: function(pushIds, callback) {
@@ -130,6 +131,22 @@ if (!window.ice) {
 
             getCurrentNotifications: function() {
                 return currentNotifications;
+            },
+
+            createPushId: function() {
+                var id;
+                postSynchronously(apiChannel, 'create-push-id.icepush', noop, FormPost, function(response) {
+                    id = contentAsText(response);
+                });
+                return id;
+            },
+
+            notify: function(ids) {
+                postAsynchronously(apiChannel, 'notify.icepush', function(q) {
+                    each(ids, function(id) {
+                        addNameValue(q, 'id', id);
+                    });
+                }, FormPost, noop);
             }
         };
 
