@@ -37,6 +37,7 @@ Ice.Menu = {
     menuContext:null,
     currentMenu:null,
     currentHover:null,    
+    lastClickedMenu:null,   
     openMenus:new Array(0),
     printOpenMenus:function() {
     	var openMenuString = '';
