@@ -29,6 +29,7 @@ public class OutputResource extends UIComponentBase {
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.OutputResourceRenderer";
     private static Log log = LogFactory.getLog(OutputResource.class);
 	protected Resource resource;
+	protected transient RegisteredResource registeredResource;
 	private String mimeType;
 	private Date lastModified;
 	private String fileName;
@@ -83,14 +84,12 @@ public class OutputResource extends UIComponentBase {
 	    }
 	    if (currResource == null) return null;
 		final String fileName = getFileName();
-        if( currResource != null ){
-			int newResourceHashCode = currResource.hashCode();
-			if( lastResourceHashCode != newResourceHashCode ){
-				Resource r = new RegisteredResource(this, currResource, fileName);
+        if( registeredResource == null ){
+            registeredResource = new RegisteredResource(this, currResource, fileName);
 				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-						r).getRawPath();
-			}
+				        registeredResource).getRawPath();
 		}
+        registeredResource.updateContents(this, currResource, fileName);
 		return currResource;
 	}
 	
@@ -324,7 +323,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return path;
+		return path + "?"+ registeredResource.calculateDigest().hashCode();
 	}
 	
 	public boolean isShared(){
@@ -358,27 +357,19 @@ public class OutputResource extends UIComponentBase {
 }
 
 class RegisteredResource implements Resource {
-    private final Resource resource;
-    private final String fileName;
+    private Resource resource;
+    private String fileName;
     private String label;
     private Date lastModified;
     private String mimeType;
     private boolean isAttachment;
     private boolean isShared;
-    private String contentDispositionFileName;
+    private String userAgent;
 
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
-        this.resource = resource;
-        this.fileName = fileName;
-        label = outputResource.getLabel();
-        lastModified = outputResource.getLastModified();
-        mimeType = outputResource.getMimeType();
-        isAttachment = outputResource.isAttachment();
-        isShared = outputResource.isShared();
-        // ICE-4342
-        // Encoded filename in Content-Disposition header; to be used in save file dialog;
-        // See http://greenbytes.de/tech/tc2231/
-        contentDispositionFileName = encodeContentDispositionFilename(fileName);
+        updateContents(outputResource, resource, fileName);
+        Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
+        userAgent = (String) headerMap.get("user-agent");
     }
 
     public String calculateDigest() {
@@ -393,21 +384,36 @@ class RegisteredResource implements Resource {
         return resource.open();
     }
 
+    void updateContents(OutputResource outputResource, Resource resource, String fileName) {
+        this.resource= resource;
+        this.fileName = fileName;
+        label = outputResource.getLabel();
+        lastModified = outputResource.getLastModified();
+        mimeType = outputResource.getMimeType();
+        isAttachment = outputResource.isAttachment();
+        isShared = outputResource.isShared();
+    }
+    
+    
     public void withOptions(Options options) {
         ResourceOptions resourceOptions = new ResourceOptions();
         try {
             resource.withOptions(resourceOptions);
         } catch (IOException e) {
         }
+        String fName = null;
+        
         if (resourceOptions.fileName != null)
-            options.setFileName(resourceOptions.fileName);
-        else if (fileName != null)
-            options.setFileName(fileName);
-        else if (resource instanceof FileResource)
-            options.setFileName(((FileResource) resource).getFile()
+            fName = resourceOptions.fileName;
+        else if (fileName != null) {
+            fName = fileName;            
+        } else if (resource instanceof FileResource) {
+            fName =(((FileResource) resource).getFile()
                     .getName());
-        else if (label != null)
-            options.setFileName(label.replace(' ', '_'));
+        } else if (label != null)
+            fName = label.replace(' ', '_');
+        
+        options.setFileName(fName);
 
         if (resourceOptions.lastModified != null)
             options.setLastModified(resourceOptions.lastModified);
@@ -424,8 +430,8 @@ class RegisteredResource implements Resource {
         else if (isAttachment)
             options.setAsAttachement();
 
-        if (options instanceof ResourceDispatcher.ExtendedResourceOptions) {
-            ((ResourceDispatcher.ExtendedResourceOptions) options).setContentDispositionFileName(contentDispositionFileName);
+        if (fName != null && options instanceof ResourceDispatcher.ExtendedResourceOptions) {
+            ((ResourceDispatcher.ExtendedResourceOptions) options).setContentDispositionFileName(encodeContentDispositionFilename(fName));
         }
     }
 
@@ -459,13 +465,11 @@ class RegisteredResource implements Resource {
     // Encode filename for Content-Disposition header; to be used in save file dialog;
     // See http://greenbytes.de/tech/tc2231/
     // Some code suggested by Deryk Sinotte 
-    private static String encodeContentDispositionFilename(String fileName) {
+    private String encodeContentDispositionFilename(String fileName) {
         if (fileName == null || fileName.trim().length() == 0) return null;
 
         String defaultFileName = "=\"" + fileName + "\"";
-        String userAgent = null;
-        Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
-        userAgent = (String) headerMap.get("user-agent");
+
         //WebLogic does not provide the user-agent for some reason
         //System.out.println("RegisteredResource.encodeContentDispositionFilename: user-agent = " + userAgent);
         if (userAgent == null || userAgent.trim().length() == 0) return defaultFileName;
