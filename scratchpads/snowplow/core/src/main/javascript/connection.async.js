@@ -54,7 +54,7 @@ function AsyncConnection(logger, windowID, configuration) {
     var listening = object(function(method) {
         method(remove, noop);
     });
-    var receiveURI = 'connection.icepush';
+    var receiveURI = 'listen.icepush';
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {
