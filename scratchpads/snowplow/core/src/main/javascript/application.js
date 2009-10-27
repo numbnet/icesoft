@@ -31,203 +31,205 @@
  *
  */
 
-(function(namespace) {
-    //include functional.js
-    //include oo.js
-    //include collection.js
-    //include string.js
-    //include window.js
-    //include logger.js
-    //include cookie.js
-    //include delay.js
-    //include element.js
-    //include event.js
-    //include http.js
-    //include command.js
-    //include connection.async.js
+if (!window.ice) {
+    (function(namespace) {
+        //include functional.js
+        //include oo.js
+        //include collection.js
+        //include string.js
+        //include window.js
+        //include logger.js
+        //include cookie.js
+        //include delay.js
+        //include element.js
+        //include event.js
+        //include http.js
+        //include command.js
+        //include connection.async.js
 
-    var notificationListeners = [];
-    namespace.onNotification = function(callback) {
-        append(notificationListeners, callback);
-    };
+        var notificationListeners = [];
+        namespace.onNotification = function(callback) {
+            append(notificationListeners, callback);
+        };
 
-    var serverErrorListeners = [];
-    namespace.onServerError = function(callback) {
-        append(serverErrorListeners, callback);
-    };
+        var serverErrorListeners = [];
+        namespace.onServerError = function(callback) {
+            append(serverErrorListeners, callback);
+        };
 
-    var blockingConnectionUnstableListeners = [];
-    namespace.onBlockingConnectionUnstable = function(callback) {
-        append(blockingConnectionUnstableListeners, callback);
-    };
+        var blockingConnectionUnstableListeners = [];
+        namespace.onBlockingConnectionUnstable = function(callback) {
+            append(blockingConnectionUnstableListeners, callback);
+        };
 
-    var blockingConnectionLostListeners = [];
-    namespace.onBlockingConnectionLost = function(callback) {
-        append(blockingConnectionLostListeners, callback);
-    };
+        var blockingConnectionLostListeners = [];
+        namespace.onBlockingConnectionLost = function(callback) {
+            append(blockingConnectionLostListeners, callback);
+        };
 
-    namespace.disposeBridge = operator();
+        namespace.disposeBridge = operator();
 
-    var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-    namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
-    namespace.logger = Logger([ 'icepush' ], handler);
-    namespace.info = info;
-    var views = namespace.views = namespace.views || [];
+        var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+        namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
+        namespace.logger = Logger([ 'icepush' ], handler);
+        namespace.info = info;
+        var views = namespace.views = namespace.views || [];
 
-    //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
-    function enlistViewsWithBrowser(viewIDs) {
-        try {
-            var viewsCookie = lookupCookie('ice.views');
-            var registeredViews = split(value(viewsCookie), ' ');
-            update(viewsCookie, join(concatenate(registeredViews, viewIDs), ' '));
-        } catch (e) {
-            Cookie('ice.views', viewID);
+        //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
+        function enlistViewsWithBrowser(viewIDs) {
+            try {
+                var viewsCookie = lookupCookie('ice.views');
+                var registeredViews = split(value(viewsCookie), ' ');
+                update(viewsCookie, join(concatenate(registeredViews, viewIDs), ' '));
+            } catch (e) {
+                Cookie('ice.views', viewID);
+            }
         }
-    }
 
-    function delistViewWithBrowser(viewID) {
-        if (existsCookie('ice.views')) {
-            var viewsCookie = lookupCookie('ice.views');
-            var registeredViews = split(value(viewsCookie), ' ');
-            update(viewsCookie, join(reject(registeredViews, function(id) {
-                return id == viewID;
-            }), ' '));
+        function delistViewWithBrowser(viewID) {
+            if (existsCookie('ice.views')) {
+                var viewsCookie = lookupCookie('ice.views');
+                var registeredViews = split(value(viewsCookie), ' ');
+                update(viewsCookie, join(reject(registeredViews, function(id) {
+                    return id == viewID;
+                }), ' '));
+            }
         }
-    }
 
-    function enlistViewWithWindow(viewIDs) {
-        enlistViewsWithBrowser(viewIDs);
-        views = concatenate(views, viewIDs);
-    }
+        function enlistViewWithWindow(viewIDs) {
+            enlistViewsWithBrowser(viewIDs);
+            views = concatenate(views, viewIDs);
+        }
 
-    function delistViewWithWindow(viewIDs) {
-        delistViewWithBrowser(viewIDs);
-        views = complement(views, viewIDs);
-    }
+        function delistViewWithWindow(viewIDs) {
+            delistViewWithBrowser(viewIDs);
+            views = complement(views, viewIDs);
+        }
 
-    function delistWindowViews() {
-        each(views, delistViewWithBrowser);
-        namespace.views = views = [];
-    }
+        function delistWindowViews() {
+            each(views, delistViewWithBrowser);
+            namespace.views = views = [];
+        }
 
-    onBeforeUnload(window, delistWindowViews);
+        onBeforeUnload(window, delistWindowViews);
 
-    var currentNotifications = [];
-    //public API
-    namespace.push = {
-        register: function(pushIds, callback) {
-            enlistViewWithWindow(pushIds);
-            namespace.onNotification(function(ids) {
-                currentNotifications = asArray(intersect(ids, pushIds));
-                if (notEmpty(currentNotifications)) {
-                    callback(currentNotifications);
+        var currentNotifications = [];
+        //public API
+        namespace.push = {
+            register: function(pushIds, callback) {
+                enlistViewWithWindow(pushIds);
+                namespace.onNotification(function(ids) {
+                    currentNotifications = asArray(intersect(ids, pushIds));
+                    if (notEmpty(currentNotifications)) {
+                        callback(currentNotifications);
+                    }
+                });
+            },
+
+            deregister: delistViewWithWindow,
+
+            getCurrentNotifications: function() {
+                return currentNotifications;
+            }
+        };
+
+        namespace.Bridge = function(configuration) {
+            var windowID = configuration.window;
+            var logger = childLogger(namespace.logger, windowID);
+            var commandDispatcher = CommandDispatcher();
+            var asyncConnection = AsyncConnection(logger, windowID, configuration.connection);
+
+            register(commandDispatcher, 'noop', noop);
+            register(commandDispatcher, 'parsererror', ParsingError);
+
+            //todo: factor out cookie & monitor into a communication bus abstraction
+            //read/create cookie that contains the updated views
+            var updatedViews = lookupCookie('ice.updated.views', function() {
+                return Cookie('ice.updated.views', '');
+            });
+
+            //register command that handles the updated-views message
+            register(commandDispatcher, 'updated-views', function(message) {
+                var text = message.firstChild;
+                if (text && !blank(text.data)) {
+                    var notifiedViewIDs = split(value(updatedViews), ' ');
+                    update(updatedViews, join(asSet(concatenate(notifiedViewIDs, split(text.data, ' '))), ' '));
+                } else {
+                    warn(logger, "No updated views were returned.");
                 }
             });
-        },
 
-        deregister: delistViewWithWindow,
-
-        getCurrentNotifications: function() {
-            return currentNotifications;
-        }
-    };
-
-    namespace.Bridge = function(configuration) {
-        var windowID = configuration.window;
-        var logger = childLogger(namespace.logger, windowID);
-        var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, windowID, configuration.connection);
-
-        register(commandDispatcher, 'noop', noop);
-        register(commandDispatcher, 'parsererror', ParsingError);
-
-        //todo: factor out cookie & monitor into a communication bus abstraction
-        //read/create cookie that contains the updated views
-        var updatedViews = lookupCookie('ice.updated.views', function() {
-            return Cookie('ice.updated.views', '');
-        });
-
-        //register command that handles the updated-views message
-        register(commandDispatcher, 'updated-views', function(message) {
-            var text = message.firstChild;
-            if (text && !blank(text.data)) {
-                var notifiedViewIDs = split(value(updatedViews), ' ');
-                update(updatedViews, join(asSet(concatenate(notifiedViewIDs, split(text.data, ' '))), ' '));
-            } else {
-                warn(logger, "No updated views were returned.");
-            }
-        });
-
-        //monitor & pick updates for this view
-        var updatesMonitor = run(Delay(function() {
-            try {
-                var allUpdatedViews = split(value(updatedViews), ' ');
-                if (notEmpty(allUpdatedViews)) {
-                    broadcast(notificationListeners, [ allUpdatedViews ]);
-                    //remove only the views contained by this page since notificationListeners can only contain listeners from the current page 
-                    update(updatedViews, join(complement(allUpdatedViews, views), ' '));
+            //monitor & pick updates for this view
+            var updatesMonitor = run(Delay(function() {
+                try {
+                    var allUpdatedViews = split(value(updatedViews), ' ');
+                    if (notEmpty(allUpdatedViews)) {
+                        broadcast(notificationListeners, [ allUpdatedViews ]);
+                        //remove only the views contained by this page since notificationListeners can only contain listeners from the current page
+                        update(updatedViews, join(complement(allUpdatedViews, views), ' '));
+                    }
+                } catch (e) {
+                    warn(logger, 'failed to listen for updates', e);
                 }
-            } catch (e) {
-                warn(logger, 'failed to listen for updates', e);
-            }
-        }, 300));
+            }, 300));
 
-        function dispose() {
-            try {
-                dispose = noop;
-                stop(updatesMonitor);
-            } finally {
-                shutdown(asyncConnection);
+            function dispose() {
+                try {
+                    dispose = noop;
+                    stop(updatesMonitor);
+                } finally {
+                    shutdown(asyncConnection);
+                }
             }
-        }
 
-        onUnload(window, dispose);
+            onUnload(window, dispose);
 
-        onReceive(asyncConnection, function(response) {
-            var mimeType = getHeader(response, 'Content-Type');
-            if (mimeType && startsWith(mimeType, 'text/xml')) {
-                deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
-            } else {
-                warn(logger, 'unknown content in response - ' + mimeType + ', expected text/xml');
-            }
+            onReceive(asyncConnection, function(response) {
+                var mimeType = getHeader(response, 'Content-Type');
+                if (mimeType && startsWith(mimeType, 'text/xml')) {
+                    deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
+                } else {
+                    warn(logger, 'unknown content in response - ' + mimeType + ', expected text/xml');
+                }
+            });
+
+            onServerError(asyncConnection, function(response) {
+                try {
+                    warn(logger, 'server side error');
+                    broadcast(serverErrorListeners, [ statusCode(response), contentAsText(response), contentAsDOM(response) ]);
+                } finally {
+                    dispose();
+                }
+            });
+
+            whenDown(asyncConnection, function(reconnectAttempts) {
+                try {
+                    warn(logger, 'connection to server was lost');
+                    broadcast(blockingConnectionLostListeners, [ reconnectAttempts ]);
+                } finally {
+                    dispose();
+                }
+            });
+
+            whenTrouble(asyncConnection, function() {
+                warn(logger, 'connection in trouble');
+                broadcast(blockingConnectionUnstableListeners);
+            });
+
+            info(logger, 'bridge loaded!');
+
+            return object(function(method) {
+                method(namespace.disposeBridge, dispose);
+            });
+        };
+
+        onLoad(window, function() {
+            namespace.Bridge({window: namespace.windowID, connection: {}});
         });
 
-        onServerError(asyncConnection, function(response) {
-            try {
-                warn(logger, 'server side error');
-                broadcast(serverErrorListeners, [ statusCode(response), contentAsText(response), contentAsDOM(response) ]);
-            } finally {
-                dispose();
-            }
+        onKeyPress(document, function(ev) {
+            var e = $event(ev);
+            if (isEscKey(e)) cancelDefaultAction(e);
         });
-
-        whenDown(asyncConnection, function(reconnectAttempts) {
-            try {
-                warn(logger, 'connection to server was lost');
-                broadcast(blockingConnectionLostListeners, [ reconnectAttempts ]);
-            } finally {
-                dispose();
-            }
-        });
-
-        whenTrouble(asyncConnection, function() {
-            warn(logger, 'connection in trouble');
-            broadcast(blockingConnectionUnstableListeners);
-        });
-
-        info(logger, 'bridge loaded!');
-
-        return object(function(method) {
-            method(namespace.disposeBridge, dispose);
-        });
-    };
-
-    onLoad(window, function() {
-        namespace.Bridge({window: namespace.windowID, connection: {}});
-    });
-
-    onKeyPress(document, function(ev) {
-        var e = $event(ev);
-        if (isEscKey(e)) cancelDefaultAction(e);
-    });
-})(window.ice = window.ice || new Object);
+    })(window.ice = new Object);
+}
