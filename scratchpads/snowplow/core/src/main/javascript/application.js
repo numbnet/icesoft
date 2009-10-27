@@ -143,7 +143,7 @@ if (!window.ice) {
 
             notify: function(ids) {
                 postAsynchronously(apiChannel, 'notify.icepush', function(q) {
-                    each(ids, curry(q, 'id'));
+                    each(ids, curry(addNameValue, q, 'id'));
                 }, FormPost, noop);
             }
         };
