@@ -260,6 +260,11 @@ Ice.MenuBarKeyNavigator.addMethods({
     }
     Ice.Menu.currentHover = element.id;
     if (this.clicked) {
+       if (Ice.Menu.lastClickedMenu != this.component.id) {
+          this.clicked = false;
+          return;
+       }    
+    
         var submenu = $(element.id + '_sub');
         Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
         if (this.vertical) {
@@ -271,6 +276,7 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
   
   mousedown: function(event, element) {
+    Ice.Menu.lastClickedMenu = this.component.id;
     if (this.clicked) {
         this.clicked = false;
     } else {
@@ -315,6 +321,7 @@ Ice.MenuBarKeyNavigator.addMethods({
           elt = elt.up(".iceMnuItm a[onclick^='return false']");
       }
       if (!(baritem && this.clicked) && !elt) {
+        Ice.Menu.lastClickedMenue = null;
         Ice.Menu.hideAll();
         if (this.displayOnClick) {       
             this.clicked = false;
@@ -324,6 +331,7 @@ Ice.MenuBarKeyNavigator.addMethods({
    },
    
    hideAllDocument:function(event) {
+    Ice.Menu.lastClickedMenu = "document";
      if (this.displayOnClick) {       
          this.clicked = false;
      } 
@@ -334,7 +342,7 @@ Ice.MenuBarKeyNavigator.addMethods({
      element = Event.element(event);    
      var baritem = element.up('.'+ this.getMenuBarItemClass());
      if (baritem && this.displayOnClick) {
-        this.mousedown(event);
+        this.mousedown(event, baritem);
      }
    }
 
