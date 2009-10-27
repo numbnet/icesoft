@@ -30,17 +30,21 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view renderKitId="xHTML_BASIC" xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets">
 <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
               var="msgs"/>
-<html>
-<head>
+<f:view renderKitId="xHTML_BASIC" contentType="text/html">
+<h:head>
     <title>
         <ice:outputText value="WebMC"/>
     </title>
+<!--
+    <ice:outputStyle href="resources/css/login.css"/>
+    <ice:outputStyle href="resources/css/styles.css"/>
+-->
     <!-- Viewport settings for the Safari mobile devices -->
     <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
     <!-- Shows the Chat Log -->
@@ -49,9 +53,10 @@
             window.open(sUrl, '', 'width=800, height=600, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
         }
     </script>
-</head>
+    <h:outputScript name="jsf.js" library="javax.faces"/>
+</h:head>
 
-<body>
+<h:body>
     <!-- The rootDiv is required for Safari -->
     <div id="rootDiv">
         <!-- Performs browser sniffing and sets mobile boolean in bean -->
@@ -59,6 +64,6 @@
         <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.jspx':'WEB-INF/inc/login.jspx'}"/>
 
     </div>
-</body>
-</html>
+</h:body>
 </f:view>
+</html>
