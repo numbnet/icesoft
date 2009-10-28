@@ -25,7 +25,7 @@
 <project name="scopes" default="war">
     
     <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
+    <property file="../../build/build.properties"/>
+    <import file="../../build/common.xml"/>
         
 </project>
