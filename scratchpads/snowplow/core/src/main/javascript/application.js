@@ -67,8 +67,6 @@ if (!window.ice) {
             append(blockingConnectionLostListeners, callback);
         };
 
-        namespace.disposeBridge = operator();
-
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
         namespace.logger = Logger([ 'icepush' ], handler);
@@ -148,7 +146,7 @@ if (!window.ice) {
             }
         };
 
-        namespace.Bridge = function(configuration) {
+        function Bridge(configuration) {
             var windowID = configuration.window;
             var logger = childLogger(namespace.logger, windowID);
             var commandDispatcher = CommandDispatcher();
@@ -232,14 +230,10 @@ if (!window.ice) {
             });
 
             info(logger, 'bridge loaded!');
-
-            return object(function(method) {
-                method(namespace.disposeBridge, dispose);
-            });
-        };
+        }
 
         onLoad(window, function() {
-            namespace.Bridge({window: namespace.windowID, connection: {}});
+            Bridge({window: namespace.windowID, connection: {}});
         });
 
         onKeyPress(document, function(ev) {
