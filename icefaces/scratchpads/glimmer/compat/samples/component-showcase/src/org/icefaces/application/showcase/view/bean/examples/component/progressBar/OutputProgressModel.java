@@ -32,9 +32,6 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.progressBar;
 
-import org.icefaces.push.SessionRenderable;
-import org.icefaces.push.SessionRenderer;
-
 /**
  * <p>The OutputProgressModel class stores properties that are used to dynamically
  * change the state of the respective inputProgressBar component</p>
