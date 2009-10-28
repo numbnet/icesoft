@@ -78,12 +78,7 @@ public class PushRenderer  {
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
-        Map sessionMap = externalContext.getSessionMap();
-        Object sessionRenderer = sessionMap.get("DEFAULT_SESSION_RENDERER");
-        if (null == sessionRenderer)  {
-            sessionRenderer = new SessionRenderableAdaptor();
-            sessionMap.put("DEFAULT_SESSION_RENDERER", sessionRenderer);
-        }
+
         group.add(new SessionHolder(externalContext.getSession(false)));
     }
 
