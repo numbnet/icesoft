@@ -28,7 +28,7 @@ public class PageNotifier extends HttpServlet {
         w.write("<html><head><title>");
         w.write(idA + "; " + idB);
         w.write("</title>");
-        w.write("<script type=\"text/javascript\" src=\"icepush.js\"></script>");
+        w.write("<script type=\"text/javascript\" src=\"code.icepush\"></script>");
         w.write("</head><body>");
 
         w.write("<script type=\"text/javascript\">");
