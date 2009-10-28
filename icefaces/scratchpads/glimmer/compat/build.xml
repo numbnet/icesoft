@@ -33,11 +33,15 @@
         </subant>
     </target>
 
+    <target name="clean">
+    </target>
+
     <target name="allclean">
         <subant target="clean">
             <fileset dir="." includes="*/build.xml"/>
         </subant>
     </target>
+
 
 </project>
 
