@@ -36,6 +36,8 @@
         </subant>
     </target>
 
+    <target name="clean">
+    </target>
 
     <target name="generate" depends="template.copy,replace.tokens">
     </target>

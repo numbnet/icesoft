@@ -26,7 +26,7 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." excludes="HtmlUnitTest/build.xml compat/build.xml" includes="*/build.xml"/>
+            <fileset dir="." excludes="compat/build.xml" includes="*/build.xml"/>
         </subant> 
     </target>
 
@@ -36,10 +36,9 @@
             </subant>
     </target>
 
-
     <target name="allclean">
         <subant target="clean">
-            <fileset dir="." excludes="HtmlUnitTest/build.xml" includes="*/build.xml"/>
+            <fileset dir="." includes="*/build.xml"/>
         </subant>
     </target>
 

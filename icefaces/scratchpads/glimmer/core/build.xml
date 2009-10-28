@@ -7,6 +7,7 @@
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
+    <property name="javadocs.dir" location="${build.dir}/javadocs"/>
 
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
@@ -71,6 +72,18 @@
               todir="${lib.dir}"
               overwrite="true"/>
     </target>
+    
+    <target name="javadoc">
+        <delete dir="${javadocs.dir}"/>
+        <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 API" failonerror="true">
+            <fileset dir="${java.dir}" defaultexcludes="yes">
+                <include name="org/**"/>
+            </fileset>
+            <doctitle><![CDATA[<h2>ICEfaces 2 API</h2>]]></doctitle>
+        </javadoc>
+    </target>
+
+
 
 
 </project>
