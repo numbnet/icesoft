@@ -37,6 +37,8 @@ import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
@@ -46,22 +48,36 @@ import java.io.IOException;
 
 public class ImageRenderer extends DomBasicRenderer {
 
+    private static Log log = LogFactory.getLog(ImageRenderer.class);
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_GRAPHICIMAGE);
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
         validateParameters(facesContext, uiComponent, UIGraphic.class);
         UIGraphic uiGraphic = (UIGraphic) uiComponent;
+        String url = uiGraphic.getUrl();
+        String tag = "img";
+        if (url != null) url = url.trim();
+        if (url == null || url.length() == 0 || url.equals("/")) {
+            log.warn("The URL of graphicImage component " + uiGraphic.getId() + " is missing.");
+            tag = "span";
+        }
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         if (!domContext.isInitialized()) {
-            Element root = domContext.createElement("img");
+            Element root = domContext.createElement(tag);
             domContext.setRootNode(root);
         }
         Element root = (Element) domContext.getRootNode();
 
         setRootElementId(facesContext, root, uiGraphic);
+
+        if (tag.equals("span")) {
+            root.appendChild(domContext.createTextNode("???"));
+            domContext.stepOver();
+            return;
+        }
 
         String srcAttribute = processSrcAttribute(facesContext, uiGraphic);
         root.setAttribute("src", srcAttribute);
