@@ -51,29 +51,9 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
                     if (log.isLoggable(Level.FINE)) {
                         log.log(Level.FINE,"AsyncContext ARP available: " + isAsyncARPAvailable);
                     }
-                    // checking if GlassFish ARP is available...
-                    boolean isGlassFishARPAvailable = isGlassFishARPAvailable();
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE,"GlassFish ARP available: " + isGlassFishARPAvailable);
-                    }
-                    // checking if Jetty ARP is available...
-                    boolean isJettyARPAvailable = isJettyARPAvailable();
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE,"Jetty ARP available: " + isJettyARPAvailable);
-                    }
                     if (isAsyncARPAvailable && configuration.getAttributeAsBoolean("useARP", isAsyncARPAvailable)) {
                         log.log(Level.INFO,"Adapting to Servlet 3.0 AsyncContext ARP environment");
                         factory = new AsyncAdaptingServletFactory();
-                        // instantiate a fallback factory for creating fallback servlets.
-                        fallbackFactory = new ThreadBlockingAdaptingServletFactory();
-                    } else if (isGlassFishARPAvailable && configuration.getAttributeAsBoolean("useARP", isGlassFishARPAvailable)) {
-                        log.log(Level.INFO,"Adapting to GlassFish ARP environment");
-                        factory = new GlassFishAdaptingServletFactory();
-                        // instantiate a fallback factory for creating fallback servlets.
-                        fallbackFactory = new ThreadBlockingAdaptingServletFactory();
-                    } else if (isJettyARPAvailable && configuration.getAttributeAsBoolean("useARP", configuration.getAttributeAsBoolean("useJettyContinuations", isJettyARPAvailable))) {
-                        log.log(Level.INFO,"Adapting to Jetty ARP environment");
-                        factory = new JettyAdaptingServletFactory();
                         // instantiate a fallback factory for creating fallback servlets.
                         fallbackFactory = new ThreadBlockingAdaptingServletFactory();
                     } else {
@@ -123,24 +103,6 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
         }
     }
 
-    private boolean isGlassFishARPAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass("com.sun.enterprise.web.connector.grizzly.comet.CometEngine");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
-    }
-
-    private boolean isJettyARPAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass("org.mortbay.util.ajax.Continuation");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
-    }
-
     private static interface EnvironmentAdaptingServletFactory {
         public PseudoServlet newServlet(final Server server, final ServletContext servletContext);
     }
@@ -148,27 +110,6 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
     private static class AsyncAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
         public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
             return new AsyncAdaptingServlet(server);
-        }
-    }
-
-    private static class GlassFishAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
-            try {
-                return new GlassFishAdaptingServlet(server, servletContext);
-            } catch (ServletException exception) {
-                log.log(Level.WARNING,"Failed to adapt to GlassFish ARP environment. Falling back to Thread Blocking environment.", exception);
-                synchronized (LOCK) {
-                    factory = fallbackFactory;
-                    fallbackFactory = null;
-                }
-                return factory.newServlet(server, servletContext);
-            }
-        }
-    }
-
-    private static class JettyAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
-            return new JettyAdaptingServlet(server);
         }
     }
 
