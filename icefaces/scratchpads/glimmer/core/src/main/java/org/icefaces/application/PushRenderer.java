@@ -78,6 +78,9 @@ public class PushRenderer  {
      * @param groupName the name of the group of sessions to render.
      */
     public static void render(String groupName)  {
+        if (null == renderGroups)  {
+            return;
+        }
         Set group = (Set) renderGroups.get(groupName);
         if (null == group)  {
             return;

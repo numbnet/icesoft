@@ -30,7 +30,11 @@ public class SessionRenderableAdaptor implements SessionRenderable, SessionRende
     }
     
     public void renderViews()  {
-        sessionRenderer.renderViews();
+        try {
+            sessionRenderer.renderViews();
+        } catch (Exception e)  {
+            e.printStackTrace();
+        }
     }
     
 }
