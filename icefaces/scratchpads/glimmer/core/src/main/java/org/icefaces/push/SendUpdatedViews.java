@@ -107,7 +107,7 @@ public class SendUpdatedViews implements Server, Runnable {
                 responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
                 respondIfPendingRequest(CloseResponse);
                 participatingViews = request.getParameterAsStrings("ice.view");
-                System.out.println("view >> " + Arrays.asList(participatingViews));
+//System.out.println("view >> " + Arrays.asList(participatingViews));
                 pendingRequest.put(request);
                 respondIfViewsAvailable();
             }
