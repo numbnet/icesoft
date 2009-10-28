@@ -40,7 +40,28 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.push.SessionRenderableAdaptor;
 
 public class PushRenderer  {
+    public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
     private static Hashtable renderGroups = new Hashtable();
+
+    /**
+     * Add the current view to the specified group. Groups 
+     * are automatically garbage collected when all members become
+     * unable to receive push updates.
+     *
+     * @param groupName the name of the group to add the current view to
+     */
+    public static synchronized void addCurrentView(String groupName)  {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * Remove the current view from the specified group. 
+     *
+     * @param groupName the name of the group to remove the current view from
+     */
+    public static synchronized void removeCurrentView(String groupName)  {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
     /**
      * Add the current session to the specified group. Groups of sessions
@@ -64,6 +85,15 @@ public class PushRenderer  {
             sessionMap.put("DEFAULT_SESSION_RENDERER", sessionRenderer);
         }
         group.add(new SessionHolder(externalContext.getSession(false)));
+    }
+
+    /**
+     * Remove the current view from the specified group.  Use of this method is
+     * optional as group membership is maintained automatically as clients leave.
+     *
+     * @param groupName the name of the group to remove the current view from
+     */
+    public static synchronized void removeCurrentSession(String groupName)  {
     }
     
     /**
