@@ -73,14 +73,13 @@ if (!window.ice) {
         namespace.info = info;
         var views = namespace.views = namespace.views || [];
 
-        //todo: track only the views without their associated session -- the blocking connection is bound to one session/browser ID anyway
         function enlistViewsWithBrowser(viewIDs) {
             try {
                 var viewsCookie = lookupCookie('ice.views');
                 var registeredViews = split(value(viewsCookie), ' ');
                 update(viewsCookie, join(concatenate(registeredViews, viewIDs), ' '));
             } catch (e) {
-                Cookie('ice.views', viewID);
+                Cookie('ice.views', join(viewIDs, ' '));
             }
         }
 
