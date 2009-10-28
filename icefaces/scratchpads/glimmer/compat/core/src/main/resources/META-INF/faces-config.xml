@@ -8,10 +8,12 @@
             <name>ICEfaces core</name>
         </after>
     </ordering>
+<!--
     <render-kit>
         <render-kit-id>xHTML_BASIC</render-kit-id>
         <render-kit-class>com.icesoft.faces.component.CompatDOMRenderKit</render-kit-class>
     </render-kit>
+-->
     <lifecycle>
         <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
     </lifecycle>
