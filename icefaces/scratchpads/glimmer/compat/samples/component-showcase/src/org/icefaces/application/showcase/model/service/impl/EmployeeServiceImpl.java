@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.model.service.EmployeeService;
 import org.icefaces.application.showcase.model.entity.Employee;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,7 +50,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @since 1.7
  */
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService, Serializable {
 
     private static final Log logger =
             LogFactory.getLog(EmployeeServiceImpl.class);
