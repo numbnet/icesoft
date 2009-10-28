@@ -46,8 +46,6 @@
 
     <target name="jar" depends="compile, build.bridge" description="fill the jar">
         <jar destfile="${dist.dir}/${ant.project.name}.jar">
-            <metainf dir="${build.dir}/javascript"/>
-
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
                 <section name="org.icefaces">
@@ -60,6 +58,7 @@
                 </section>
             </manifest>
             <fileset dir="${classes.dir}"/>
+            <fileset dir="${build.dir}/javascript"/>
         </jar>
     </target>
 </project>
