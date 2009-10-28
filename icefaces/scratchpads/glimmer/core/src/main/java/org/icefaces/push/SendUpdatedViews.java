@@ -90,6 +90,11 @@ public class SendUpdatedViews implements Server, Runnable {
                 updatedViews = null;
             }
         };
+        Object adaptor = session.getAttribute("DEFAULT_SESSION_RENDERER");
+        if (null == adaptor)  {
+            adaptor = new SessionRenderableAdaptor();
+            session.setAttribute("DEFAULT_SESSION_RENDERER", adaptor);
+        }
         Enumeration e = session.getAttributeNames();
         while (e.hasMoreElements()) {
             Object value = session.getAttribute((String) e.nextElement());
