@@ -25,17 +25,21 @@ public class WindowScopeSetup extends ViewHandlerWrapper {
 
     public UIViewRoot createView(FacesContext context, String viewId) {
         UIViewRoot root = handler.createView(context, viewId);
-        final String id = WindowScopeManager.lookup(context).determineWindowID(context);
-        root.addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                writer.startElement("script", this);
-                writer.writeAttribute("id", "ice-window-init", null);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeText("window.ice.window = " + id + ";", null);
-                writer.endElement("script");
-            }
-        }, "body");
+        try {
+            final String id = WindowScopeManager.lookup(context).determineWindowID(context);
+            root.addComponentResource(context, new UIOutput() {
+                public void encodeBegin(FacesContext context) throws IOException {
+                    ResponseWriter writer = context.getResponseWriter();
+                    writer.startElement("script", this);
+                    writer.writeAttribute("id", "ice-window-init", null);
+                    writer.writeAttribute("type", "text/javascript", null);
+                    writer.writeText("window.ice.window = " + id + ";", null);
+                    writer.endElement("script");
+                }
+            }, "body");
+        } catch (Exception e)  {
+            e.printStackTrace();
+        }
         return root;
     }
 }
