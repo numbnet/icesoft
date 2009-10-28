@@ -56,6 +56,9 @@ public class WindowELResolver extends ELResolver {
 
 
     private Object lookup(ELContext elContext, WindowScopeManager.ScopeMap scope, String key) {
+        if (null == scope)  {
+            return null;
+        }
         Object value = scope.get(key);
         elContext.setPropertyResolved(value != null);
         return value;
