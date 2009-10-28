@@ -32,19 +32,9 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.progressBar;
 
-//import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.SessionRenderer;
-import org.icefaces.push.SessionRenderable;
-//import com.icesoft.faces.context.DisposableBean;
 
-
-//import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-//import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-//import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-//import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
-
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
@@ -57,10 +47,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-//import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
-//import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
-//import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
-
 import java.io.Serializable;
 
 /**
@@ -68,14 +54,8 @@ import java.io.Serializable;
  * for the OutputProgress demo.  This includes the the starting a long
  * running process to show how the progress bar can be used to monitor a
  * process on the server. </p>
- * <p>This class is especially interesting shows a usage scenario for the
- * Renderable and ServletContextListener interfaces.  The Renderable
- * interface is used for the server side pushes needed to update the
- * outputProgress state.  The ServletContextListener is used to showdown
- * the thread pool when the server shuts down. </p>
  *
  * @see com.icesoft.faces.async.render.RenderManager
- * @see javax.servlet.ServletContextListener
  * @since 1.7
  */
 @ManagedBean(name = "outputProgressController")
@@ -92,12 +72,6 @@ public class OutputProgressController{
     protected static ThreadPoolExecutor longRunningTaskThreadPool =
             new ThreadPoolExecutor(5, 15, 30, TimeUnit.SECONDS,
                     new LinkedBlockingQueue(20));
-
-    // render manager for the application, uses session id for on demand
-    // render group.
-//    private RenderManager renderManager;
-//    private PersistentFacesState persistentFacesState;
-//    private String sessionId;
     
     // Model where we store the dynamic properties associated with outputProgress
     private OutputProgressModel outputProgressModel;
@@ -109,10 +83,8 @@ public class OutputProgressController{
      * interface.
      */
     public OutputProgressController() {
-//        persistentFacesState = PersistentFacesState.getInstance();
         outputProgressModel = new OutputProgressModel();
         SessionRenderer.addCurrentSession("progressExample");
-        log.info("added example group to SessionRenderer");
     }
 
     /**
@@ -123,11 +95,7 @@ public class OutputProgressController{
      * @param event
      */
     public void startLongProcress(ActionEvent event) {
-
-   //     
-    	log.info("run LongOperationRunner");
     	longRunningTaskThreadPool.execute(new LongOperationRunner(outputProgressModel));
-        log.info("back from LongOperationRunner");
     }
  
     /**
@@ -140,39 +108,14 @@ public class OutputProgressController{
         return outputProgressModel;
     }
 
-//    /**
-//     * Called when the Servlet Context is created.
-//     * @param event servlet context event.
-//     */
-//    public void contextInitialized(ServletContextEvent event) {
-//    }
-
-    /**
-     * Called when the Servlet Context is about to be destroyed.  This method
-     * calls shutdownNow on the thread pool.
-     * @param event servlet context event.
-     */
-//    public void contextDestroyed(ServletContextEvent event) {
-//        if (longRunningTaskThreadPool != null) {
-//            longRunningTaskThreadPool.shutdownNow();
-//  
-// //           if (log.isDebugEnabled()) {
-//                log.warning("Shutting down thread pool...");
-// //           }
-//        }
-//    }
-
     /**
      * Utility class to represent some server process that we want to monitor
      * using ouputProgress and server push.
      */
     protected class LongOperationRunner implements Runnable {
         private OutputProgressModel ouputProgressModel;
-//        private SessionRenderer renderer;
 
          public LongOperationRunner(OutputProgressModel ouputProgressModel) {
-//            this.state = state;
-System.out.println("Constructor for LongOperationRunner");         	 
             this.ouputProgressModel = ouputProgressModel;
         }
 
@@ -186,44 +129,19 @@ System.out.println("Constructor for LongOperationRunner");
                     // pause the thread
                     Thread.sleep(PROCCESS_SLEEP_LENGTH);
                     // update the percent value
- System.out.println("value of i="+i);
                     ouputProgressModel.setPercentComplete(i);
-//                    // call a render to update the component state
-                    try {
-System.out.println("before rendering with SessionRenderer");
                         SessionRenderer.render("progressExample");
- System.out.println("after rendereing with SessionRenderer");
-                    } catch (IllegalStateException e) {
- System.out.println("Error running progress thread.");
-                        e.printStackTrace();
-                    }
                 }
             }
-            catch (InterruptedException e) {
-  System.out.println("Interruped Exception running progress thread.");
-                e.printStackTrace();
-            }
+            catch (InterruptedException e) { }
             ouputProgressModel.setPogressStarted(false);
-   System.out.println("setProgressStarted false");
- //           renderManager.getOnDemandRenderer(sessionId).requestRender();
-                }
+        }
 
     }
-    /**
-     * Dispose callback called due to a view closing or session
-     * invalidation/timeout
-     */
-	public void dispose() throws Exception {
-   //     if (log.isTraceEnabled()) {
-            log.warning("OutputProgressController dispose OnDemandRenderer for session ");
-  //      }
-       //how to remove it from the SessionRenderer???
-//        renderManager.getOnDemandRenderer(sessionId).remove(this);
-//		renderManager.getOnDemandRenderer(sessionId).dispose();
-	}
 
-
-
-
+    @PreDestroy
+    public void dispose()  {
+        longRunningTaskThreadPool.shutdown();
+    }
    
 }
