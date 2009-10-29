@@ -8605,10 +8605,11 @@ var Sortable = {
 
     create: function(element, o, override) {
         element = $(element);
-        if (Ice.DnD.alreadySort(element)) {
-            Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
-            return;
+        if (element['_sorted']) {
+           Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
+           return;	
         }
+        element['_sorted'] = true;
         var monitor = new Ice.SortableMonitor(element, o);
         var options = Object.extend({
             element:     element,
