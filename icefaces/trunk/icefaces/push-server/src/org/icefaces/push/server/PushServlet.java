@@ -76,6 +76,7 @@ extends HttpServlet {
         pushServerMessageService.stop();
         pushServerMessageService.close();
         pathDispatcher.shutdown();
+        scheduledThreadPoolExecutor.shutdownNow(); 
     }
 
     public void init(final ServletConfig servletConfig)
