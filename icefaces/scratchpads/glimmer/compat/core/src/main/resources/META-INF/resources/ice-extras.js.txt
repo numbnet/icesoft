@@ -8487,9 +8487,15 @@ Droppables.add = function(ele, options) {
     for (i = 0; i < monitors.length; i++) {
         monitor = monitors[i];
         if (monitor.id == ele && monitor.type == 'Droppable') {
-            return;
+            if (ele['hasDroppable']) {
+            	return;
+            } else {
+            	monitor.removeMe=true;
+            	Ice.StateMon.removeMonitors();
+            }
         }
     }
+    ele['hasDroppable'] = true;
     Droppables.ORIGINAL_add(ele, options);
     if (options && !options.sort) {
         var monitor = new Ice.DroppableMonitor($(ele), options);
@@ -8605,11 +8611,10 @@ var Sortable = {
 
     create: function(element, o, override) {
         element = $(element);
-        if (element['_sorted']) {
-           Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
-           return;	
+        if (Ice.DnD.alreadySort(element)) {
+            Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
+            return;
         }
-        element['_sorted'] = true;
         var monitor = new Ice.SortableMonitor(element, o);
         var options = Object.extend({
             element:     element,
@@ -11694,3 +11699,9 @@ Ice.Menu = {
     }
 }
 
+ice.onAfterUpdate(function() {
+    if (Ice.StateMon) {
+        Ice.StateMon.checkAll();
+        Ice.StateMon.rebuild();
+    }
+});
