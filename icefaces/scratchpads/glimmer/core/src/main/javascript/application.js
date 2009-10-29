@@ -190,7 +190,7 @@ window.evaluate = eval;
         each(document.getElementsByTagName('form'), function(f) {
             //hijack browser form submit, instead submit through an Ajax request
             f.submit = function() {
-                submitEvent(null, f);
+                submit(null, f);
             };
             f.onsubmit = none;
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
@@ -198,7 +198,7 @@ window.evaluate = eval;
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
                     f.onsubmit = function() {
-                        submitEvent(event, element, f);
+                        submit(event, element);
                         f.onsubmit = none;
                         return false;
                     };
