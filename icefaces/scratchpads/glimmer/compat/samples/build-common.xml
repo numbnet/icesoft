@@ -76,7 +76,11 @@
         <include name="just-ice.jar" if="just-ice" />
     </patternset>
     
-    <patternset id="additional.compile.lib.jars"/>
+    <patternset id="additional.compile.lib.jars">
+        <include name="javax.annotation.jar"  />
+        <include name="javax.servlet.jar"  />
+    </patternset>
+
     
     <patternset id="portlet.conf.files">
         <include name="**/*.xml" if="liferay"/>

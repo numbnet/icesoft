@@ -46,14 +46,6 @@
                 "
             />
 
-
-    <patternset id="additional.compile.lib.jars"
-                includes="
-                javax.servlet.jar
-                "
-            />
-
-
     <target name="build.war" depends="compile">
         <build.war />
     </target>
