@@ -38,6 +38,7 @@ import com.icesoft.applications.faces.auctionMonitor.Message;
 import com.icesoft.applications.faces.auctionMonitor.MessageLog;
 import com.icesoft.faces.async.render.SessionRenderer;
 //import com.icesoft.faces.context.DisposableBean;
+import javax.annotation.PreDestroy;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -88,7 +89,6 @@ public class UserBean  {
 
 
     public UserBean() {
-        System.out.println("Replace dispose() with @PreDestroy");
         SessionRenderer.addCurrentSession("auction");
     }
 
@@ -428,7 +428,8 @@ public class UserBean  {
     /**
      * View has been disposed either by window closing or a session timeout.
      */
-    public void dispose() throws Exception {
+    @PreDestroy
+    public void dispose()  {
         if (log.isDebugEnabled()) {
             log.debug("UserBean Dispose called - cleaning up");
         }
