@@ -135,6 +135,7 @@
         </ice:panelGroup>
         <!-- Empty Cell -->
         <ice:panelGroup rendered="#{!participant.mobile}" /> 
+        <ice:panelGroup rendered="#{!participant.mobile}" /> 
         <!-- Viewer inputs password -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
             <!-- Empty Cell when password not required -->
