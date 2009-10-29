@@ -35,6 +35,8 @@ package org.icefaces.demo.auction.beans;
 
 import org.icefaces.application.PushRenderer;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -52,27 +54,22 @@ import javax.faces.bean.ApplicationScoped;
 public class ClockBean  {
     private int pollInterval = 1000;
     private String autoLoad = " ";
-    private boolean isRunning = true;
 
     private static final String AUTO_LOAD = "ClockBean-Loaded";
+    
+    private Timer clockTimer = null;
+    private TimerTask renderTask = new TimerTask()  {
+        public void run() {
+            PushRenderer.render("auction");
+        }
+    };
 
     public ClockBean() {
     }
 
     @PostConstruct
     public void renderPeriodically() {
-        Thread thread = new Thread("Auction Clock Thread") {
-            public void run() {
-                while (isRunning) {
-                    try {
-                        Thread.sleep(pollInterval);
-                    } catch (InterruptedException e) { }
-                    PushRenderer.render("auction");
-                }
-            }
-        };
-        thread.setDaemon(true);
-        thread.start();
+        setPollInterval(pollInterval);
     }
 
     public String getAutoLoad() {
@@ -83,15 +80,16 @@ public class ClockBean  {
     }
 
     public void setPollInterval(int interval) {
+        if (null != clockTimer)  {
+            clockTimer.cancel();
+        }
         pollInterval = interval;
+        clockTimer = new Timer(true);
+        clockTimer.schedule(renderTask, 0, pollInterval);
     }
 
     public int getPollInterval() {
         return pollInterval;
     }
 
-    @PreDestroy
-    public void dispose()  {
-        isRunning = false;
-    }
 }
