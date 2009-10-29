@@ -52,7 +52,7 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name = "ReadmeBean")
 @SessionScoped
 public class ReadmeBean {
-//    private static Log log = LogFactory.getLog(ReadmeBean.class);
+    private static Logger log = Logger.getLogger("org.icefaces.auction.readmebean");
     private String readmeText = "";
     private boolean expanded = false;
     private String buttonLabel = README;
@@ -105,7 +105,7 @@ public class ReadmeBean {
             Reader readmeReader =
                     new InputStreamReader(this.getClass().getClassLoader()
                             .getResourceAsStream(
-                            "com/icesoft/applications/faces/auctionMonitor/readme.html"));
+                            "org/icefaces/demo/auction/readme.html"));
             StringWriter readmeWriter = new StringWriter();
 
             char[] buf = new char[2000];
@@ -115,11 +115,9 @@ public class ReadmeBean {
                     readmeWriter.write(buf, 0, len);
                 }
             } catch (IOException e) {
-//                if (log.isErrorEnabled()) {
-//                    log.error(
-//                            "Something went wrong while parsing the readme file, likely because of " +
-//                            e);
-//                }
+                if (log.isLoggable(Level.WARNING)) {
+                    log.log(Level.WARNING,"Unable to load Readme: " + e);
+                }
             }
             // clean up the stream reader
             readmeReader.close();
@@ -132,11 +130,9 @@ public class ReadmeBean {
             return true;
 
         } catch (Exception e) {
-//            if (log.isWarnEnabled()) {
-//                log.warn(
-//                        "General error while attempting to load the readme file, cause may be " +
-//                        e);
-//            }
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING,"Unable to load Readme: " + e);
+            }
         }
 
         return false;
