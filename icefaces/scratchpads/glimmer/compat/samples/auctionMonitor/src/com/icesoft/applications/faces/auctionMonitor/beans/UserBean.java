@@ -46,6 +46,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,7 +56,7 @@ import org.apache.commons.logging.LogFactory;
  * messages and viewing information
  */
 //public class UserBean implements DisposableBean {
-public class UserBean  {
+public class UserBean implements Serializable  {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";

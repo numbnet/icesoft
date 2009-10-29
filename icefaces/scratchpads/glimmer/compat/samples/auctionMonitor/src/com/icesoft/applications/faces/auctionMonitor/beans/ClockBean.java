@@ -40,6 +40,8 @@ import com.icesoft.faces.async.render.SessionRenderer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -51,7 +53,7 @@ import org.apache.commons.logging.LogFactory;
  * through incrementUsers and decrementUsers
  */
 //public class ClockBean implements Renderable, DisposableBean {
-public class ClockBean  {
+public class ClockBean implements Serializable {
     private static Log log = LogFactory.getLog(ClockBean.class);
 //    private IntervalRenderer clock;
     private int pollInterval = 1000;

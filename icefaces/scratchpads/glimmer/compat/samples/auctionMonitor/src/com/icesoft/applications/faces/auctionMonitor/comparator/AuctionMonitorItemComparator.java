@@ -37,11 +37,13 @@ import com.icesoft.applications.faces.auctionMonitor.beans.AuctionMonitorItemBea
 
 import java.util.Comparator;
 
+import java.io.Serializable;
+
 /**
  * General comparator used as a base class for all other comparators Overall
  * this class performs a comparison of two auction items
  */
-public abstract class AuctionMonitorItemComparator implements Comparator {
+public abstract class AuctionMonitorItemComparator implements Comparator, Serializable {
     public boolean isAscending = true;
 
     public int compare(Object o1, Object o2) {

@@ -47,12 +47,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Arrays;
+import java.io.Serializable;
 
 /**
  * Class used to handle searching and sorting of auction items, as well as front
  * end interpretation
  */
-public class AuctionBean  {
+public class AuctionBean implements Serializable  {
     private static Log log = LogFactory.getLog(AuctionBean.class);
     private static int userCount = 0;
     public static final String RENDERER_NAME = "demand";
