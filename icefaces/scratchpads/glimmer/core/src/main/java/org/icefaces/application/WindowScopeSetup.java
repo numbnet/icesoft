@@ -8,7 +8,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class WindowScopeSetup extends ViewHandlerWrapper {
+    private static Logger log = Logger.getLogger("org.icefaces.windowscope");
     private ViewHandler handler;
 
     public WindowScopeSetup() {
@@ -38,7 +42,9 @@ public class WindowScopeSetup extends ViewHandlerWrapper {
                 }
             }, "body");
         } catch (Exception e)  {
-            e.printStackTrace();
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING,"WindowScope createView: " + e);
+            }
         }
         return root;
     }
