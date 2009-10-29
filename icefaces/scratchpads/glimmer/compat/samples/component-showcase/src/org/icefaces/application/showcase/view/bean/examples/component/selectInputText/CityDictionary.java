@@ -143,7 +143,8 @@ public class CityDictionary implements Serializable {
         }
 
         try {
-            SelectItem searchItem = new SelectItem("", searchWord); 
+            SelectItem searchItem = new SelectItem("", searchWord);
+            init();
             int insert = Collections.binarySearch(
                     cityDictionary,
                     searchItem,
