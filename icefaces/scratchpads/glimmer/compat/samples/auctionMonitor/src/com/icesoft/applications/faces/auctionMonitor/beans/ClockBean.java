@@ -35,12 +35,11 @@ package com.icesoft.applications.faces.auctionMonitor.beans;
 
 //import com.icesoft.faces.async.render.IntervalRenderer;
 //import com.icesoft.faces.async.render.RenderManager;
-//import com.icesoft.faces.async.render.Renderable;
-//import com.icesoft.faces.context.DisposableBean;
-//import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-//import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-//import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-//import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.faces.async.render.SessionRenderer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,17 +55,34 @@ public class ClockBean  {
     private static Log log = LogFactory.getLog(ClockBean.class);
 //    private IntervalRenderer clock;
     private int pollInterval = 1000;
+    private static Thread thread = null;
+    private boolean isRunning = true;
     private String autoLoad = " ";
-//    private PersistentFacesState state = null;
 
     private static final String AUTO_LOAD = "ClockBean-Loaded";
     private static final String INTERVAL_RENDERER_GROUP = "clock";
 
     public ClockBean() {
-        System.out.println("Replace IntervalRenderer with supported API");
-        System.out.println("Replace dispose with @PreDestroy");
-//        state = PersistentFacesState.getInstance();
         AuctionBean.incrementUsers();
+    }
+
+    @PostConstruct
+    public synchronized void renderPeriodically() {
+        if (null != thread)  {
+            return;
+        }
+        thread = new Thread("Auction Clock Thread") {
+            public void run() {
+                while (isRunning) {
+                    try {
+                        Thread.sleep(pollInterval);
+                    } catch (InterruptedException e) { }
+                    SessionRenderer.render("auction");
+                }
+            }
+        };
+        thread.setDaemon(true);
+        thread.start();
     }
 
     public String getAutoLoad() {
@@ -84,59 +100,9 @@ public class ClockBean  {
         return pollInterval;
     }
 
-//    public void setRenderManager(RenderManager manager) {
-//        if (manager != null) {
-//            clock = manager.getIntervalRenderer(INTERVAL_RENDERER_GROUP);
-//            if (clock.getInterval() != pollInterval) {
-//                clock.setInterval(pollInterval);
-//            }
-//            clock.add(this);
-//            clock.requestRender();
-//        }
-//    }
-
-    /**
-     * Method to get the render manager, just return null to satisfy WAS
-     */
-//    public RenderManager getRenderManager() {
-//        return null;
-//    }
-//
-//    public PersistentFacesState getState() {
-//        return state;
-//    }
-
-//    public void renderingException(RenderingException renderingException) {
-//        if (log.isDebugEnabled() &&
-//                renderingException instanceof TransientRenderingException) {
-//            log.debug("ClockBean Transient Rendering exception:", renderingException);
-//        } else if (renderingException instanceof FatalRenderingException) {
-//            if (log.isDebugEnabled()) {
-//                log.debug("ClockBean Fatal rendering exception: ", renderingException);
-//            }
-//            performCleanup();
-//        }
-//    }
-
-    protected boolean performCleanup() {
-//        try {
-//            if (clock != null && clock.contains(this)) {
-//                clock.remove(this);
-//                AuctionBean.decrementUsers();
-//            }
-//            return true;
-//        } catch (Exception failedCleanup) {
-//            if (log.isErrorEnabled()) {
-//                log.error("Failed to cleanup a clock bean", failedCleanup);
-//            }
-//        }
-        return false;
+    @PreDestroy
+    public void dispose()  {
+        isRunning = false;
     }
 
-    public void dispose() throws Exception {
-        if (log.isDebugEnabled()) {
-            log.debug("ClockBean Dispose called - cleaning up");
-        }
-        performCleanup();
-    }
 }

@@ -40,13 +40,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Serializable;
 
 /**
  * Class used to handle all readme interaction (including reading the html file,
  * on page button management, etc.) The readme.html file contains the demo notes
  * for auction monitor
  */
-public class ReadmeBean {
+public class ReadmeBean implements Serializable {
     private static Log log = LogFactory.getLog(ReadmeBean.class);
     private String readmeText = "";
     private boolean expanded = false;
