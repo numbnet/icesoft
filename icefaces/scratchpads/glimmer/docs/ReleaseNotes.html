@@ -1,0 +1,362 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>ICEfaces&reg; v2.0 Alpha 1 Release Notes</title>
+  <style>
+body, td, th, input {
+font-family:verdana,sans-serif;
+font-size:80%;
+}
+code, pre {
+font-size:110% }
+body {
+color:#333333;
+margin-right:40px;
+margin-bottom:3em;
+margin-left:40px;
+}
+h2{
+font-size:150%;
+font-weight:normal;
+}
+h3 {
+font-size:125%;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family:arial,verdana,sans-serif;
+margin:1em 0pt 0.2em;
+}
+h1, h2 {
+border-bottom:1px solid #AAAAAA;
+font-weight: bold;
+}
+h4 {
+font-size: 110%
+}
+  </style>
+</head>
+<body>
+<div style="border: 1px solid rgb(187, 187, 187);">
+<table
+ style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;"
+ border="0" width="100%">
+  <tbody>
+    <tr>
+      <td width="78%">
+      <h1
+ style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>&reg;</small></sup>
+v2.0 Alpha 1 </h1>
+      <h2
+ style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">Release
+Notes</h2>
+      <p style="margin-left: 16px; margin-bottom: 12px;">October
+30th,&nbsp;2009</p>
+      </td>
+      <td align="center" valign="middle" width="22%"><img
+ alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div><br>
+<h2><a name="Overview"></a>Overview</h2>
+This document contains the following sections:<br>
+<ul>
+  <li><a href="#AboutThisRelease">About This Release</a></li>
+  <li><a href="#Runtime_Dep">Runtime Dependencies</a> </li>
+  <li><a href="#Known_Issues">Known Issues</a><br>
+    <ul>
+    </ul>
+  </li>
+  <li><a href="#About_ICEfaces">About
+ICEfaces </a></li>
+  <li><a href="#License_Management">License
+information</a></li>
+</ul>
+<br>
+<h2><a name="AboutThisRelease"></a>About This Release</h2>
+<br>
+ICEfaces v2.0 Alpha 1 is an early developer milestone for the
+next-generation of ICEfaces, designed for JSF 2.0.<br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release.&nbsp;Review the&nbsp;<a
+ href="ReleaseNotes.html#MigrationNotes">Migration Notes</a>
+if you plan to port an existing ICEfaces 1.x application with 2.0 Alpha
+1. <br>
+<br>
+This release includes the following:<br>
+<h3>ICEfaces 2.0 Core</h3>
+<br>
+The new ICEfaces 2.0 ("Glimmer") core is suitable for deployment to any
+JSF 2.0.1 runtime environment. By deploying the icefaces.jar in a JSF 2
+application you can immediately benefit from ICEfaces Direct-to-Dom
+architecture, with all page updates becoming smooth partial-page
+updates without requiring use of the JSF 2 f:ajax tag (of course, using
+f:ajax works also).<br>
+<br>
+Internally, the changes are significant, and many simplifications
+were possible within ICEfaces through use of the standard JSF Ajax
+features (such as PartialViewContext and jsf.js). For the application
+developer, though, the major changes at this point lie with JSF 2.0
+itself. For instance, two significant benefits from JSF 2.0 are that
+Facelets is now standard, and that you have the option to use
+annotations rather than faces-config.xml for managed bean definitions.<br>
+<h4>Notable Changes</h4>
+<ul>
+  <li>new packaging, <code style="font-weight: bold;">org.icefaces.*</code>
+    <br>
+  </li>
+  <li>a new push API, <code>org.icefaces.application.PushRenderer</code>.</li>
+  <li>Servlet 3.0 implementations are automatically detected to take
+advantage of asynchronous NIO features.</li>
+  <li>3rd party library dependencies have been minimized / eliminated
+for simplified configuration and deployment.</li>
+  <li>No need for a separate ICEfaces servlet configuration.<br>
+  </li>
+  <li>No custom ICEfaces view-handler is required thereby improving
+integration with "well-behaved" 3rd party JSF components.</li>
+</ul>
+<h4>Configuration Tips</h4>
+<ul>
+  <li>web.xml</li>
+  <ul>
+    <li>it is recommended to set the "<code>javax.faces.PROJECT_STAGE</code>"
+configuration
+parameter
+to
+"<code>Production</code>" to avoid potential issues with
+dynamically inserted faces message components.
+      <p> <code>&lt;param-name&gt;javax.faces.PROJECT_STAGE&lt;/param-name&gt;<br>
+&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp;&lt;param-value&gt;Production&lt;/param-value&gt;</code> </p>
+    </li>
+    <li>no other <code>web.xml</code> configuration changes are
+required</li>
+  </ul>
+  <li>the icefaces.jar must be in the classpath<br>
+  </li>
+  <li>the <code>&lt;f:view&gt;</code> tag must be the first tag on the
+page, preceding the
+HTML tag (<code>&lt;f:view&gt;&lt;html&gt;</code>, not <code>&lt;html&gt;&lt;f:view&gt;</code>).</li>
+  <li>the <code>&lt;f:view&gt;</code> tag must configure the "<code>xHTML_BASIC</code>"
+renderKit:&nbsp;
+
+
+
+
+
+
+    <code>&lt;f:view renderKitId="xHTML_BASIC"&gt;</code></li>
+</ul>
+Note that the new ICEfaces core is <span style="font-weight: bold;">not</span>
+directly backwards compatible with ICEfaces 1.x applications. Anyone
+wanting to port and existing ICEfaces 1.x application to ICEfaces 2.0
+should see the following section on "ICEfaces 1.x Compatibility
+Support".<br>
+<br>
+<h3>ICEfaces 1.x Compatibility Support</h3>
+<br>
+To ease the effort required to port existing ICEfaces 1.x applications
+to the JSF2/ICEfaces 2.0 this release includes the following
+backwards-compatibility features:<br>
+<h4>ICEfaces 1.8 Compatibility APIs</h4>
+<ul>
+  <li>A set of ICEfaces 1.8 APIs that can optionally be used with
+ICEfaces 2.0 to ease migration of existing applications or custom
+components that may require them.</li>
+  <li>Contained in the <span style="font-weight: bold;">icefaces-compat.jar</span><br>
+  </li>
+  <li>Note that the following ICEfaces 1.8 APIs are <span
+ style="font-weight: bold;">not</span> available:<code><br>
+    </code></li>
+  <ul>
+    <li><code>com.icesoft.faces.context.DisposableBean</code> (use the
+JSF2 <code>@PostConstruct</code> and <code>@PreDestroy</code>
+annotations instead).</li>
+    <li>Certain push APIs (use <code>com.icesoft.faces.async.render.SessionRenderer</code>,
+or
+the
+new<span style="font-family: monospace;"> </span><code>org.icefaces.application.PushRenderer
+
+
+
+
+
+
+      </code>instead):</li>
+    <ul>
+      <li><code>com.icesoft.faces.async.render.OnDemandRenderer</code><br>
+        <code></code></li>
+      <li><code>com.icesoft.faces.async.render.IntervalRenderer</code></li>
+      <li><code>com.icesoft.faces.async.render.RenderManager</code></li>
+      <li><code>com.icesoft.faces.webapp.xmlhttp.PersistentFacesState</code></li>
+    </ul>
+  </ul>
+  <li>When using compatibility mode the following configuration is
+recommended (in the <code>web.xml</code> file) to emulate expected
+behavior that was included in the ICEfaces 1.8 Facelets implementation:<br>
+    <p><code>&lt;context-param&gt;<br>
+&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp;&lt;param-name&gt;javax.faces.FACELETS_SKIP_COMMENTS&lt;/param-name&gt;<br>
+&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp;&lt;param-value&gt;true&lt;/param-value&gt;<br>
+&lt;/context-param&gt;</code></p>
+  </li>
+</ul>
+<ul>
+  <ul>
+  </ul>
+</ul>
+<h4>ICEfaces 1.8 Compatible Component Suite </h4>
+<ul>
+  <li>Provides the ICEfaces 1.8 Component Suite in an ICEfaces 2.0
+compatible format.</li>
+  <li>Requires the ICEfaces 1.8 Compatibility APIs.</li>
+  <li>Contained in the <span style="font-weight: bold;">icefaces-comps-compat.jar</span></li>
+</ul>
+<br>
+<h3>Sample Applications</h3>
+<br>
+The following sample applications are included:<br>
+<ul>
+  <li>Auction (<code>/samples/auction</code>)<br>
+  </li>
+  <ul>
+    <li>Demonstrates using JSF2 standard components with ICEfaces and
+Ajax Push to provide an online auction application.</li>
+  </ul>
+</ul>
+<ul>
+  <li>Auction Monitor (<code>/compat/samples/auction)</code><br>
+  </li>
+  <ul>
+    <li>Demonstrates running the ICEfaces 1.8 version of the
+auctionMonitor sample application with ICEfaces 2 using the ICEfaces
+1.8
+compatibility jars (<code>icefaces-compat.jar</code>, <code>icefaces-comps-compat.jar</code>).</li>
+  </ul>
+</ul>
+<ul>
+  <li>Component Showcase (<code>/compat/samples/component-showcase)</code></li>
+  <ul>
+    <li>Demonstrates running the ICEfaces 1.8 version of the Component
+Showcase sample application with ICEfaces 2 using the ICEfaces 1.8
+compatibility jars (<code>icefaces-compat.jar</code>, <code>icefaces-comps-compat.jar</code>).</li>
+  </ul>
+</ul>
+<br>
+<h2><a name="Runtime_Dep"></a>Runtime Dependencies</h2>
+<br>
+This release requires the following:<br>
+<ul>
+  <li>JDK 1.5 or greater</li>
+  <li>Sun "Mojarra" JSF 2.0.1 runtime (included).</li>
+</ul>
+<br>
+<h2><a name="Known_Issues"></a>Known
+Issues</h2>
+<p>The following section describes the most commonly
+encountered
+known
+issues with this release:</p>
+<ul>
+  <li>JSPs are not supported by ICEfaces 2.0, use Facelets instead.<br>
+  </li>
+  <li>The included sample application .wars and builds are targeted for
+deployment
+to Tomcat 6. The included libraries may need to be altered if deploying
+to other application servers. See "<a target="_blank"
+ href="http://www.icefaces.org/docs/v1_8_2/htmlguide/devguide/appendixA.html#1033288">Appendix
+A
+- ICEfaces Library/App. Server Dependencies</a>" of the "ICEfaces 1.8
+Developer's Guide" for more details.<br>
+  </li>
+  <li>The compatible ICEfaces Component Suite included in this release
+is based on the ICEfaces 1.8.0 components. The components will be
+updated to the latest ICEfaces 1.8.x version in a future ICEfaces 2.0
+developer release.<br>
+  </li>
+  <li>The following ICEfaces 1.8 Component Suite components are not
+functional or have notable issues in this release:</li>
+  <ul>
+    <li>ice:inputFile</li>
+    <li>ice:loadBundle<br>
+    </li>
+    <li>ice:outputBody (use h:body instead)<br>
+    </li>
+    <li>ice:outputConnectionStatus</li>
+    <li>ice:outputHead (use h:head instead)<br>
+    </li>
+    <li>ice:outputHtml (use &lt;HTML&gt; tag instead)<br>
+    </li>
+    <li>ice:panelPopup (works, but has glitches with some settings, see
+      <a target="_blank" href="http://jira.icefaces.org/browse/ICE-5072">ICE-5072</a>
+for details)<br>
+    </li>
+    <li>ice:selectInputText (works, but is glitchy, see <a
+ target="_blank" href="http://jira.icefaces.org/browse/ICE-5033">ICE-5033</a>
+for details)</li>
+  </ul>
+  <li>In some cases an <code>NullPointerException</code> may be logged
+against the <code>org.icefaces.application.WindowScopeManager</code>.
+This runtime error can be safely ignored.
+    <p> </p>
+  </li>
+</ul>
+<br>
+<ul>
+</ul>
+<ul>
+</ul>
+<h2><a name="Support"></a>Support</h2>
+<p>Open source community support is available at <a
+ href="http://www.icefaces.org">http://www.icefaces.org</a>.<br>
+<br>
+</p>
+<h2><a name="About_ICEfaces"></a>About
+ICEfaces
+</h2>
+<p>ICEfaces delivers extensions to Java ServerFaces
+(JSF) that provide
+an
+AJAX-enabled rich presentation environment for JSF applications.
+ICEfaces
+brings value to any Java EE development project that needs to provide
+superior
+presentation capabilities to the web application user. In particular,
+ICEfaces provides the following features:</p>
+<ul>
+  <li>Smooth, incremental page updates that do not
+require a full page
+refresh to achieve presentation changes in the application.</li>
+  <li>Server-initiated
+asynchronous presentation updates for dynamic
+instantaneous data push (Ajax Push).</li>
+  <li>The ICEfaces Component
+Suite, a complete rich JSF component suite
+that fully leverages ICEfaces capabilities. </li>
+  <li>API
+support for rapid development of group-aware and
+collaborative applications, such as Chat, Webcast, social apps., etc.</li>
+</ul>
+<br>
+<h2><a name="License_Management"></a>License
+Notice</h2>
+<p class="Body">License agreements can be found in the
+<span style="font-weight: bold;">.../<span>install_dir</span>/</span><span
+ style="font-style: italic; font-weight: bold;"></span><span
+ style="font-weight: bold;">icefaces</span><span
+ style="font-style: italic; font-weight: bold;">/</span><span
+ style="font-weight: bold;">docs/license</span>
+directory.</p>
+<p class="Body"><small><br>
+&copy; Copyright
+2005-2009 ICEsoft Technologies, Inc.</small></p>
+</div>
+</body>
+</html>
