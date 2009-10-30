@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/lib/icefaces.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/lib/icefaces-compat.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/lib/jsf-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/lib/jsf-impl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/jxl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/krysalis-jCharts-1.0.0-alpha-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/commons-beanutils.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/commons-collections.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/commons-digester.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/jstl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/icefacesSource/glimmer/compat/lib/icefaces-comps-compat.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/com.sun.java.jdk.win32.x86_1.6.0.013"/>
+	<classpathentry kind="lib" path="C:/icefacesSource/glimmer/lib/javax.servlet.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
