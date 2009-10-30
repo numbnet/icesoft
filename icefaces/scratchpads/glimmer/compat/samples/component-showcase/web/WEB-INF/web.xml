@@ -89,6 +89,11 @@
         <param-value>upload</param-value>
     </context-param>
 
+     <context-param>
+      <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+      <param-value>true</param-value>
+    </context-param>
+
     <!-- Specifies to the ICEfaces framework whether to support multiple views of a
 single application from the same browser.  When running in a Portlet
 environment, this parameter must be set to true. -->
