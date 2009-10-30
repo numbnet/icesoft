@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view renderKitId="xHTML_BASIC"/>
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Ajax</title>
+    <h:outputScript name="jsf.js" library="javax.faces"/>
+</h:head>
+
+<h:body>
+
+    <h2>Easy Ajax Push Counter</h2>
+
+    <h:form>
+        <h:panelGrid columns="3">
+            <h:outputText value="Application counter:"/>
+            <h:outputText value="#{applicationCounter.count}"/>
+            <h:panelGroup>
+                <h:commandButton value="-"
+                                 actionListener="#{applicationCounter.decrement}"/>
+                <h:commandButton value="+"
+                                 actionListener="#{applicationCounter.increment}"/>
+            </h:panelGroup>
+
+            <h:outputText value="Session counter:"/>
+            <h:outputText value="#{sessionCounter.count}"/>
+            <h:panelGroup>
+                <h:commandButton value="-"
+                                 actionListener="#{sessionCounter.decrement}"/>
+                <h:commandButton value="+"
+                                 actionListener="#{sessionCounter.increment}"/>
+            </h:panelGroup>
+
+        </h:panelGrid>
+    </h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../../main/javascript/lib/oo.js"></script>
+    <script type="text/javascript" src="../../main/javascript/lib/functional.js"></script>
+    <script type="text/javascript" src="../../main/javascript/lib/collection.js"></script>
+    <script type="text/javascript" src="../../main/javascript/lib/delay.js"></script>
+    <script type="text/javascript" src="../../main/javascript/lib/logger.js"></script>
+    <script type="text/javascript" src="../../main/javascript/heartbeat.js"></script>
+    <script type="text/javascript" src="tool/unittest.js"></script>
+    <script type="text/javascript">
+        var noopHandler = object(function (method) {
+            method(threshold, noop);
+            method(log, noop);
+        });
+
+        window.onload = InPageRunner('Heartbeat test suite', function(test) {
+            test('trigger pong losts', function() {
+                var h = Heartbeat(1000, 500, Logger(['test'], noopHandler));
+                var pings = 0;
+                var pongs = 3;
+                startBeat(h);
+                onPing(h, function(pong) {
+                    //don't pong
+                    ++pings;
+                });
+                onLostPongs(h, function() {
+                    checkEqual(pings, pongs, 'number of pings are not matched by the number of lost pongs');
+                    stopBeat(h);
+                }, pongs);
+            });
+
+            test('ping-pong', function() {
+                var h = Heartbeat(100, 50, Logger(['test'], noopHandler));
+                var pings = 0;
+                startBeat(h);
+                onPing(h, function(pong) {
+                    pong();
+                    if (++pings > 10) stopBeat(h);
+                });
+                onLostPongs(h, function() {
+                    fail('there sould not be any pongs lost');
+                });
+            });
+        });
+    </script>
+</head>
+<body/>
+</html>
