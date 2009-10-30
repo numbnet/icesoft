@@ -38,6 +38,8 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -433,6 +435,12 @@ public class MenuBar extends UICommand implements NamingContainer {
         renderedOnUserRole = (String) values[5];
         style = (String) values[6];
         styleClass = (String) values[7];
+    }
+    
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback)
+        throws FacesException {
+        return true;
     }
 }
 
