@@ -35,6 +35,8 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -114,5 +116,11 @@ public abstract class MenuItemBase extends UICommand
         }
         return false;
     }
+    
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback)
+        throws FacesException {
+        return true;
+    }    
 
 }
