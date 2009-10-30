@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             version="2.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+
+    <portlet>
+        <portlet-name>counter</portlet-name>
+        <display-name>ICEfaces Counter Portlet</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/counter.jsf</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces Ajax Push Counter</title>
+            <short-title>Counter</short-title>
+            <keywords>ajax push counter</keywords>
+        </portlet-info>
+    </portlet>
+
+    <filter>
+        <filter-name>debugFilter</filter-name>
+        <filter-class>org.icefaces.sample.portlet.util.DebugPortletFilter</filter-class>
+        <lifecycle>RENDER_PHASE</lifecycle>
+        <init-param>
+            <name>message</name>
+            <value>blah</value>
+        </init-param>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>debugFilter</filter-name>
+        <portlet-name>counter</portlet-name>
+    </filter-mapping>
+
+</portlet-app>
+

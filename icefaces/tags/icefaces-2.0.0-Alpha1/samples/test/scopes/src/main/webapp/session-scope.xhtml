@@ -1,0 +1,33 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view renderKitId="xHTML_BASIC" contentType="text/html"/>
+<h:head>
+    <title>Session scoped counter</title>
+    <h:outputScript name="jsf.js" library="javax.faces"/>
+</h:head>
+<h:body>
+    <h2>Session scoped counter</h2>
+
+    <h3>
+        <h:outputText id="out" value="#{SessionScopedCounter.count}"/>
+    </h3>
+    <h:form id="form1" prependId="false">
+        <p>
+            <h:commandButton id="plus" value="+" action="#{SessionScopedCounter.increment}"/>
+            <h:commandButton id="minus" value="-" action="#{SessionScopedCounter.decrement}"/>
+        </p>
+        <p style="font-style: italic;">Multiple browser windows opened with this page will increment the same counter
+            instance.</p>
+        <a href="index.html">back to tests index</a>
+        <h:messages/>
+    </h:form>
+</h:body>
+</html>
+
