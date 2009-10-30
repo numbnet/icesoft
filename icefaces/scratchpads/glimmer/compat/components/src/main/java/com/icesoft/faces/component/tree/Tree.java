@@ -37,10 +37,17 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.util.CoreUtils;
 
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UIColumn;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -1315,6 +1322,158 @@ public class Tree extends UICommand implements NamingContainer {
     void setPathToExpandedNode(String pathToExpandedNode) {
         this.pathToExpandedNode = pathToExpandedNode;
     }
+    
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException {
+       
+        
+        if (null == context || null == clientId || null == callback) {
+            throw new NullPointerException();
+        }
+
+//        String myId = super.getClientId(context);
+//        boolean found = false;
+//        if (clientId.equals(myId)) {
+//            try {
+//                callback.invokeContextCallback(context, this);
+//                return true;
+//            }
+//            catch (Exception e) {
+//                throw new FacesException(e);
+//            }
+//        }
+        
+            return true;
+  
+    }
+    
+    @Override
+    public boolean visitTree(VisitContext context, 
+                             VisitCallback callback) {
+        if (!isVisitable(context))
+            return false;
+
+        // Push ourselves to EL
+        FacesContext facesContext = context.getFacesContext();
+        pushComponentToEL(facesContext, null);
+
+        try {
+
+            // Visit ourselves
+            VisitResult result = context.invokeVisitCallback(this, callback);
+            // If the visit is complete, short-circuit out and end the visit
+            if (result == VisitResult.COMPLETE)
+                return true;
+
+            // Visit children, short-circuiting as necessary
+            if ((result == VisitResult.ACCEPT)) {
+                
+
+                // Next column facets
+                if (visitTreeNodeFacets(context, callback))
+                    return true;
+
+                // And finally, visit rows
+                if (visitRows(context, callback))
+                    return true;
+            }
+        }
+        finally {
+            // Clean up - pop EL and restore old row index
+            popComponentFromEL(facesContext);
+        }
+
+        // Return false to allow the visit to continue
+        return false;
+    }
+
+    // Visit each facet of our child UIColumn components exactly once
+    private boolean visitTreeNodeFacets(VisitContext context, 
+                                      VisitCallback callback) {
+         if (getChildCount() > 0) {
+            for (UIComponent treeNode : getChildren()) {
+                if (treeNode.getFacetCount() > 0) {
+                    for (UIComponent columnFacet : treeNode.getFacets().values()) {
+                        if (columnFacet.visitTree(context, callback))
+                            return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    
+ 
+    private boolean visitRows(VisitContext context,  VisitCallback callback) {
+        //visit all TreeNodes
+        if (getChildCount() > 0) {
+            for (UIComponent kid : getChildren()) {
+                if (!(kid instanceof TreeNode)) {
+                    continue;
+                }
+                if (kid.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }
+        //visit through the model
+        this.visitTreeNodes((DefaultMutableTreeNode) getModel().getRoot(),
+                context, callback);
+        this.setCurrentNode(null);
+        return false;
+    }
+
+    
+
+    private void visitTreeNodes(DefaultMutableTreeNode currentNode, 
+                                  VisitContext visitContext,
+                                  VisitCallback callback) {
+        // set currentNode on tree
+        this.setCurrentNode(currentNode);
+
+        TreeNode treeNodeTemplate = (TreeNode) this.getChildren().get(0);
+        String pathToCurrentNode = TreeRenderer.getPathAsString(currentNode,
+                                                                (DefaultMutableTreeNode) getModel()
+                                                                        .getRoot());
+        treeNodeTemplate.setMutable(currentNode);
+        treeNodeTemplate.setId(ID_PREFIX + pathToCurrentNode);
+        treeNodeTemplate.setParent(this);
+
+        this.setNodePath(pathToCurrentNode);
+
+        // get TreeNode facets from treeNodeTemplate
+        UIComponent iconFacet;
+        UIComponent contentFacet;
+
+        iconFacet = treeNodeTemplate.getIcon();
+        contentFacet = treeNodeTemplate.getContent();
+        
+            if (iconFacet != null) {
+                iconFacet.visitTree(visitContext, callback);
+            }
+            if (contentFacet != null) {
+                contentFacet.visitTree(visitContext, callback);
+            }
+// 
+
+        // recurse currentRoot's children
+        IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
+        if (userObject.isExpanded()) {
+            int childCount = currentNode.getChildCount();
+            for (int childIndex = 0; childIndex < childCount; childIndex++) {
+                DefaultMutableTreeNode nextNode =
+                        (DefaultMutableTreeNode) currentNode
+                                .getChildAt(childIndex);
+
+                visitTreeNodes(nextNode,
+                                 visitContext,
+                                 callback);
+            }
+        }
+    }
+   
 }
 
 //  Private class to represent saved state information for the children of the Tree component
