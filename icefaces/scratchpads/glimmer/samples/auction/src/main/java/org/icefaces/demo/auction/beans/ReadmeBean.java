@@ -42,7 +42,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  * Class used to handle all readme interaction (including reading the html file,
@@ -50,7 +50,7 @@ import javax.faces.bean.SessionScoped;
  * for auction monitor
  */
 @ManagedBean(name = "ReadmeBean")
-@SessionScoped
+@ViewScoped
 public class ReadmeBean {
     private static Logger log = Logger.getLogger("org.icefaces.auction.readmebean");
     private String readmeText = "";

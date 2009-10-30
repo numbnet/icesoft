@@ -50,7 +50,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  * Bean class used to store user information, as well as local information for
@@ -58,7 +58,7 @@ import javax.faces.bean.SessionScoped;
  */
 //public class UserBean implements DisposableBean {
 @ManagedBean(name = "UserBean")
-@SessionScoped
+@ViewScoped
 public class UserBean  {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
