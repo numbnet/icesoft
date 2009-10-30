@@ -8,6 +8,7 @@
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
+    <property name="javadocs.dir" location="${build.dir}/javadocs"/>
 
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
@@ -76,6 +77,21 @@
               overwrite="true"/>
     </target>
 
+    <target name="javadoc">
+        <delete dir="${javadocs.dir}"/>
+        <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 Compatibility API" failonerror="true">
+            <fileset dir="${java.dir}">
+                <include name="com/icesoft/faces/context/DOMContext.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/HTML.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicInputRenderer.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicRenderer.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/PassThruAttributeRenderer.java"/>
+                <include name="com/icesoft/faces/async/render/SessionRenderer.java"/>
+                <include name="com/icesoft/faces/context/effects/**"/>
+            </fileset>
+            <doctitle><![CDATA[<h2>ICEfaces 2 Compatibility API</h2>]]></doctitle>
+        </javadoc>
+    </target>
 
 </project>
 
