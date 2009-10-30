@@ -1,0 +1,17 @@
+
+  
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        template="/WEB-INF/includes/templates/page-template.xhtml">
+
+      <ui:define name="page-content">
+
+          <ui:include src="#{navigation.selectedIncludePath}" /> 
+
+       </ui:define>  
+
+</ui:composition>
