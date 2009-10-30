@@ -118,7 +118,7 @@
 
 <echo>EXCLUDED FileUploadServlet</echo>
         <javac destdir="${build.classes.dir}" sourcepath=""
-            debug="${compile.debug}" source="1.4" target="1.4"
+            debug="${compile.debug}" source="1.5" target="1.5"
 excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
         >
             <classpath refid="compile.run.classpath"/>
