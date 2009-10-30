@@ -49,14 +49,14 @@ import java.util.logging.Logger;
 import java.util.Arrays;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  * Class used to handle searching and sorting of auction items, as well as front
  * end interpretation
  */
 @ManagedBean(name = "AuctionBean")
-@SessionScoped
+@ViewScoped
 public class AuctionBean  {
 //    private static Log log = LogFactory.getLog(AuctionBean.class);
     private static int userCount = 0;
