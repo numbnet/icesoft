@@ -37,6 +37,7 @@ import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -606,14 +607,15 @@ public class TreeRenderer extends DomBasicRenderer {
         imageLoaderDiv.appendChild(tree_nav_bottom_open);
         imageLoaderDiv.appendChild(tree_nav_top_close);
 
+        String hiddenTreeExpandFieldName =  CustomComponentUtils.getHiddenTreeExpandFieldName(
+                uiComponent.getClientId(facesContext),
+                CustomComponentUtils.getFormName(uiComponent,
+                                                 facesContext));
+        
         Element hiddenTreeExpand = domContext.createElement(HTML.INPUT_ELEM);
         hiddenTreeExpand.setAttribute(HTML.TYPE_ATTR, "hidden");
-        hiddenTreeExpand.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeExpandFieldName(
-                uiComponent.getClientId(
-                        facesContext),
-                CustomComponentUtils.getFormName(
-                        uiComponent,
-                        facesContext)));
+        hiddenTreeExpand.setAttribute(HTML.NAME_ATTR, hiddenTreeExpandFieldName);
+        hiddenTreeExpand.setAttribute(HTML.ID_ATTR, hiddenTreeExpandFieldName);
         Element hiddenTreeAction = domContext.createElement(HTML.INPUT_ELEM);
         hiddenTreeAction.setAttribute(HTML.TYPE_ATTR, "hidden");        
         hiddenTreeAction.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeActionFieldName(
@@ -624,6 +626,8 @@ public class TreeRenderer extends DomBasicRenderer {
                         facesContext)));
         rootNode.appendChild(hiddenTreeAction);
         rootNode.appendChild(hiddenTreeExpand);
+        JavascriptContext.addJavascriptCall(facesContext, 
+                "$('"+ hiddenTreeExpandFieldName +"').value='';");
         domContext.stepOver();
     }
 
