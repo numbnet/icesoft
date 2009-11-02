@@ -198,7 +198,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
             Element headerDiv = domContext.createElement("div");
             headerDiv.setAttribute(HTML.STYLE_ATTR, "width:1px;");
-            headerTdSpacer.setAttribute("class", "icePnlPopHdr");
+            headerTdSpacer.setAttribute(HTML.CLASS_ATTR, headerClass);
             headerTdSpacer.appendChild(headerDiv);
             headerTr.appendChild(headerTdSpacer);
             // add header facet to header tr and add to table
