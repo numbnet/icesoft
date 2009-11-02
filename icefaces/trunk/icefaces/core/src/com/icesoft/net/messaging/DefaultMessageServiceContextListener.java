@@ -1,18 +1,21 @@
 package com.icesoft.net.messaging;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 public class DefaultMessageServiceContextListener implements ServletContextListener {
 
+    private static Log log = LogFactory.getLog("com.icesoft.net.messaging.DefaultMessageServiceContextListener");
+
     private static DefaultMessageService messageService;
 
     public DefaultMessageServiceContextListener() {
-        System.out.println("DefaultMessageServiceContextListener: created " + this);
     }
 
     public static void setMessageService(DefaultMessageService messageService) {
-        System.out.println("DefaultMessageServiceContextListener.setMessageService: " + messageService);
         DefaultMessageServiceContextListener.messageService = messageService;
     }
 
@@ -21,9 +24,10 @@ public class DefaultMessageServiceContextListener implements ServletContextListe
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         if (messageService != null) {
-            System.out.println("DefaultMessageServiceContextListener.contextDestroyed: requesting stop...");
+            if (log.isDebugEnabled()) {
+                log.debug("requesting close of message service");
+            }
             messageService.close();
-            System.out.println("DefaultMessageServiceContextListener.contextDestroyed: stopped");
         }
     }
 }
