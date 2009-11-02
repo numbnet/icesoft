@@ -270,10 +270,7 @@ implements MessageServiceClient.Administrator {
     }
 
     public final void stop() {
-        if (currentMessagePublisher != null) {
-            currentMessagePublisher.stop();
-        } 
-        synchronized (stateLock) {
+       synchronized (stateLock) {
             requestedState = STATE_STOPPED;
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Requested State: STOPPED");
