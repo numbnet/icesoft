@@ -85,8 +85,9 @@ public class TabSetRenderer extends Renderer{
         } else if ("bottom".equalsIgnoreCase(orientation)) {
             styleClass+= " yui-navset-bottom";
         } 
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR); 
-        boolean isClientSide =true; // ((Boolean)tabSet.getAttributes().get("clientSide"));
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
+       // System.out.println("CLIENT SIDE "+ tabSet.isClientSide());
+        boolean isClientSide = false; // tabSet.isClientSide();
         int tabIndex = tabSet.getTabIndex();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
@@ -163,7 +164,7 @@ public class TabSetRenderer extends Renderer{
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         
-        boolean isClientSide = true; //((TabSet)tabSet).isClientSide();
+        boolean isClientSide = false; //((TabSet)tabSet).isClientSide();
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {

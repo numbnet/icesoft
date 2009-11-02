@@ -12,9 +12,6 @@ Ice.component.tabset = {
              logger.info('Tab Change');
              var o = Ice.component.getProperty(clientId, 'orientation');
              var t = Ice.component.getProperty(clientId, 'tabIdx');
-             logger.info('Tab Change ORI '+ o['new']);
-             logger.info('Tab Change tIdx '+ t['new']);
-             
              var form=formOf(document.getElementById(clientId)); 
              
              //create a utility form
@@ -27,62 +24,27 @@ Ice.component.tabset = {
                        
              if (hdn) { 
                   hdn.value = clientId + '='+ tabview.getTabIndex(event.newValue);
-                  var query = null;
                   var isClientSide = Ice.component.getProperty(clientId, 'isClientSide')['new'];
-                  logger.info('Tab Change isClientSide '+ isClientSide);                
-                  query = new Ice.Parameter.Query(); 
-                  query.add(hdn.id, hdn.value); 
-                                   
+                                  
                   if (isClientSide){
                      logger.info('Client side tab ');
                   } else {
+                  logger.info('Server side tab ');
                       var partialSubmit = Ice.component.getProperty(clientId, 'partialSubmit');
-                      if (partialSubmit) {
-                          iceSubmitPartial(form, hdn, event, query);
-                      } else {
-                          iceSubmit(form, hdn, event, query); 
-                      }               
+                      
+                      var options = {execute: '@all', render: '@all'};
+                              
+                       logger.info('partialSubmit '+ hdn +  event + options );
+          
+                      var param = function(parameter) {
+				 parameter(hdn.id, hdn.value);
+				 if (partialSubmit) {
+					parameter('ice.submit.partial', true);
+				 }
+		                }                  
+   		      jsf.ajax.request(hdn, event, options);            
                   }                  
              }             
-  
-/*            
-             if(obj['idxSetByRenderer']) { 
-                 obj['idxSetByRenderer']=false; 
-                 logger.info('the tab change caused by the server so do not do anything.'); 
-                 return; 
-             }  
-             var activeIndex = obj.get('activeIndex');
-             var form=formOf(document.getElementById(clientId)); 
-             logger.info('Dynamic form '+ form);
-             if (!form) { 
-                 form = Ice.yui.getUtilForm();
-             }
-             var hdn = Ice.yui.tabset.getInxFld(form); 
-             logger.info('2.Tab Change ..'+ hdn); 
-             logger.info('Tab Change ID ..'+ hdn.id);                         
-             if (hdn) { 
-                  hdn.value = clientId+ '='+ obj.get('activeIndex'); 
-                  var query = null; 
-                  logger.info('3.Tab Change'+ obj); 
-                  if (props.dynamic) {
-                      logger.info('Dynamic and ParitlaSubmit');  
-
-                      if (!form) { 
-                          logger.info('tabset is not inside the form'); 
-
-                          query = new Ice.Parameter.Query(); 
-                          logger.info('query object created ...'+ query);
-                          query.add(clientId + 'hdn', hdn.value);
-                      } 
-                      if (props.partialSubmit) {
-                          iceSubmitPartial(form, hdn, event, query);
-                      } else {
-                          iceSubmit(form, hdn, event, query); 
-                      }
-                   }//dynamic
-                  logger.info('Active index '+ obj.get('activeIndex')); 
-             }//hdn;    
-*/
        }//tabchange; 
        tabview.addListener('activeTabChange', tabChange);       
        return tabview;
@@ -117,6 +79,6 @@ Ice.component.tabset = {
        logger.info('execute ele '+ ele);
        logger.info('execute ele '+ ele.innerHTML);
        eval(ele.innerHTML);
-    } 
+    }
 };
 
