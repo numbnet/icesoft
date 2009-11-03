@@ -31,6 +31,7 @@ import org.icepush.http.standard.ResponseHandlerServer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -73,8 +74,10 @@ public class BlockingConnectionServer extends TimerTask implements Server {
         notifier.addObserver(new Observer() {
             public void update(Observable observable, Object o) {
                 //stop sending notifications if pushID are not used anymore by the browser
-                if (participatingViews.contains(o)) {
-                    updatedViews.add(o);
+                List pushIDs = new ArrayList(Arrays.asList((String[]) o));
+                pushIDs.retainAll(participatingViews);
+                if (!pushIDs.isEmpty()) {
+                    updatedViews.addAll(pushIDs);
                     resetTimeout();
                     respondIfViewsAvailable();
                 }
