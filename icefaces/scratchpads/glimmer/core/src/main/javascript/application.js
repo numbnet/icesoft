@@ -109,10 +109,10 @@ window.evaluate = eval;
                 break;
             case 'complete':
                 broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
-                broadcast(beforeUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
+                broadcast(beforeUpdateListeners, [ e.responseXML ]);
                 break;
             case 'success':
-                broadcast(afterUpdateListeners, [ e.responseXML.childNodes[0].childNodes[0].childNodes ]);
+                broadcast(afterUpdateListeners, [ e.responseXML ]);
                 break;
         }
     });
