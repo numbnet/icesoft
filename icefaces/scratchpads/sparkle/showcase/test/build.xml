@@ -14,6 +14,9 @@
                 <fileset dir="../../../glimmer/lib">
                     <include name="jsf-api.jar"/>
                 </fileset>
+                <fileset dir="../../../sparkle/component/dist">
+                    <include name="sparkle-comps.jar"/>
+                </fileset>                
             </classpath>
         </javac>
     </target>
