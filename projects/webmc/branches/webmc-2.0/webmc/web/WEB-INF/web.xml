@@ -55,7 +55,6 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
-        <url-pattern>/icefaces/*</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
