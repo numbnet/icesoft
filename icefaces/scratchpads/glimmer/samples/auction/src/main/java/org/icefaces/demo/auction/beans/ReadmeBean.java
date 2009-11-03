@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -51,7 +52,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "ReadmeBean")
 @ViewScoped
-public class ReadmeBean {
+public class ReadmeBean implements Serializable  {
     private static Logger log = Logger.getLogger("org.icefaces.auction.readmebean");
     private String readmeText = "";
     private boolean expanded = false;
