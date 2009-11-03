@@ -40,7 +40,7 @@
 	    <ui:include src="navigationpanel.jspx"/>
 	</ice:panelGroup>
 
-	<ice:form id="mainForm" >
+	<h:form class="mainForm" id="mainForm" >
         <div class="mainBackground" >
 
 			<div class="presentationDIV">
@@ -62,7 +62,7 @@
     		</div>
 
         </div>
-	</ice:form>
+	</h:form>
 
     <ice:panelGroup rendered="#{!participant.mobile}"
                     styleClass="footerBar">
