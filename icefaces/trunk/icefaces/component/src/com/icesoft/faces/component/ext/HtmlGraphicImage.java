@@ -501,7 +501,7 @@ class ImageByteArrayResource implements Resource, Serializable {
     }
     
     public String calculateDigest() {
-        return digest;
+        return String.valueOf(this.hashCode());
     }
     
     public Date lastModified() {
