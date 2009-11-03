@@ -4,9 +4,9 @@ window.Ice = {};
 function iceSubmitPartial(form, component, evt) {
     ice.submit(evt, component || form, function(parameter) {
         if (Ice.Menu != null && Ice.Menu.menuContext != null) {
-           parameter('ice.menuContext', Ice.Menu.menuContext);
+            parameter('ice.menuContext', Ice.Menu.menuContext);
         }
-        
+
         parameter('ice.submit.partial', true);
     });
     return false;
@@ -23,7 +23,7 @@ function iceSubmit(form, component, evt) {
     }
     ice.submit(evt, component || form, function(parameter) {
         if (Ice.Menu != null && Ice.Menu.menuContext != null) {
-           parameter('ice.menuContext', Ice.Menu.menuContext);
+            parameter('ice.menuContext', Ice.Menu.menuContext);
         }
 
     });

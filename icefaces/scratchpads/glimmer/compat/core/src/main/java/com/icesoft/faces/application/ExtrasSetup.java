@@ -27,9 +27,9 @@ public class ExtrasSetup extends ViewHandlerWrapper {
     public UIViewRoot createView(FacesContext context, String viewId) {
         UIViewRoot root = handler.createView(context, viewId);
 
-        root.addComponentResource(context, new JavascriptResourceOutput("prototype.js.txt"), "head");
-        root.addComponentResource(context, new JavascriptResourceOutput("icesubmit.js.txt"), "head");
-        root.addComponentResource(context, new JavascriptResourceOutput("ice-extras.js.txt"), "head");
+        root.addComponentResource(context, new JavascriptResourceOutput("prototype.js"), "head");
+        root.addComponentResource(context, new JavascriptResourceOutput("icesubmit.js"), "head");
+        root.addComponentResource(context, new JavascriptResourceOutput("ice-extras.js"), "head");
 
         return root;
     }
