@@ -7697,8 +7697,8 @@ Ice.modal = {
                 }
             };
             resize();
-            window.onResize(resize);
-            window.onScroll(resize);
+            Event.observe(window, "resize", resize);
+            Event.observe(window, "scroll", resize);
         }
 
         var modal = document.getElementById(target);
