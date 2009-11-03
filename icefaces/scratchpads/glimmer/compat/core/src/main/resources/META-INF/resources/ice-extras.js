@@ -7697,8 +7697,8 @@ Ice.modal = {
                 }
             };
             resize();
-            Event.observe(window, "resize", resize);
-            Event.observe(window, "scroll", resize);
+            window.onResize(resize);
+            window.onScroll(resize);
         }
 
         var modal = document.getElementById(target);
@@ -8488,10 +8488,10 @@ Droppables.add = function(ele, options) {
         monitor = monitors[i];
         if (monitor.id == ele && monitor.type == 'Droppable') {
             if (ele['hasDroppable']) {
-            	return;
+                return;
             } else {
-            	monitor.removeMe=true;
-            	Ice.StateMon.removeMonitors();
+                monitor.removeMe = true;
+                Ice.StateMon.removeMonitors();
             }
         }
     }
