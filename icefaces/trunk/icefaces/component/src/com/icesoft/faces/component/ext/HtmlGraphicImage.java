@@ -489,13 +489,11 @@ public class HtmlGraphicImage
 class ImageByteArrayResource implements Resource, Serializable {
     private Date lastModified;
     private byte[] content;
-    private String digest;
     private String mimetype;
     private URI uri;
 
     public ImageByteArrayResource(FacesContext context, HtmlGraphicImage component) {
         this.lastModified =  new Date(System.currentTimeMillis());
-        this.digest = component.getClientId(context);
         this.mimetype = component.getMimeType();
         uri = ((ResourceRegistry) context).registerResource(this);
     }
