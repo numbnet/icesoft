@@ -1,0 +1,57 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+
+        >
+<f:view renderKitId="xHTML_BASIC" contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Calendar</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css" />
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/tabview/assets/skins/sam/tabview.css" />
+<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/tabview/tabview-min.js"></script>  
+<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/yui.js"></script>
+<script type="text/javascript" src="js/tabset.js"></script>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+    <h:form styleClass=" yui-skin-sam">
+    <b> Tabset inside dataTable</b>
+       <h:messages />
+       <h:dataTable  value="#{tabBean.movies}" var="movie">
+            <h:column>
+            <ann:tabSet  dynamic="true" tabIndex="#{movie.tabindex}">
+            <ann:tab label="#{movie.director}" rendered="#{movie.rendered1}">
+                   
+                <h:outputText value="#{movie.plot}"/> 
+                
+            </ann:tab>
+            <ann:tab label="#{movie.title}" rendered="#{movie.rendered2}" >
+                   <h:outputText value="#{movie.genre}"/> <br/>
+             </ann:tab>   
+        </ann:tabSet>
+         <h:commandButton value="Hide tab1" actionListener="#{movie.hideTab1}" /> 
+         <h:commandButton value="Hide tab2" actionListener="#{movie.hideTab2}" /> 
+         <h:commandButton value="show All" actionListener="#{movie.showTabs}" />
+            </h:column>
+      </h:dataTable>
+      <h:commandButton value="Add " actionListener="#{tabBean.addMovie}" />      
+      <h:commandButton value="goto main page" action="main"/> 
+    </h:form>
+
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
