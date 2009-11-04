@@ -16,7 +16,10 @@
                 </fileset>
                 <fileset dir="../../../sparkle/component/dist">
                     <include name="sparkle-comps.jar"/>
-                </fileset>                
+                </fileset>
+                <fileset dir="../../../../trunk/icefaces/lib">
+                    <include name="el-api.jar"/>
+                </fileset>                 
             </classpath>
         </javac>
     </target>
