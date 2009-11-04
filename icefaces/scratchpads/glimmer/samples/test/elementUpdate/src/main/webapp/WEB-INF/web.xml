@@ -54,9 +54,15 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ICEpush</servlet-name>
+        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/icefaces/*</url-pattern>
+        <servlet-name>ICEpush</servlet-name>
+        <url-pattern>*.icepush</url-pattern>
     </servlet-mapping>
 
     <!-- Welcome File Configuration -->

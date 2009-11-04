@@ -24,7 +24,6 @@ package org.icefaces.push.servlet;
 
 import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
-import org.icefaces.push.MonitorRunner;
 import org.icefaces.push.SessionBoundServer;
 
 import javax.faces.application.Resource;
@@ -48,7 +47,6 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
     private SessionDispatcher dispatcher;
-    private MonitorRunner monitor;
 
     private ResourceHandler handler;
 
@@ -58,10 +56,9 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
         context.setAttribute(PushResourceHandler.class.getName(), this);
 
         final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
-        monitor = new MonitorRunner(configuration.getAttributeAsLong("poolingInterval", 15000));
         dispatcher = new SessionDispatcher(context) {
             protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-                return new SessionBoundServer(session, monitor, sessionMonitor, configuration);
+                return new SessionBoundServer(session, sessionMonitor, configuration);
             }
         };
     }
@@ -161,7 +158,6 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
 
     private void dispose() {
         dispatcher.shutdown();
-        monitor.stop();
     }
 
     //todo: factor out into a ServletContextDispatcher

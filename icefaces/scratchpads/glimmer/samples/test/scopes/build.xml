@@ -23,9 +23,10 @@
 -->
 
 <project name="scopes" default="war">
-    
+
     <property file="./build.properties"/>
     <property file="../../build/build.properties"/>
+    <property name="lib.dir" location="../../../lib"/>
     <import file="../../build/common.xml"/>
-        
+
 </project>

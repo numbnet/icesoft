@@ -1,14 +1,14 @@
 package org.icefaces.push;
 
+import org.icefaces.application.WindowScopeManager;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class BridgeSetup extends ViewHandlerWrapper {
@@ -32,6 +32,16 @@ public class BridgeSetup extends ViewHandlerWrapper {
         root.addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 ResponseWriter writer = context.getResponseWriter();
+                writer.startElement("script", this);
+                writer.writeAttribute("type", "text/javascript", null);
+                writer.writeAttribute("src", "code.icepush", null);
+                writer.endElement("script");
+            }
+        }, "head");
+
+        root.addComponentResource(context, new UIOutput() {
+            public void encodeBegin(FacesContext context) throws IOException {
+                ResponseWriter writer = context.getResponseWriter();
                 Resource bridgeCode = context.getApplication().getResourceHandler().createResource("bridge.js");
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
@@ -40,24 +50,14 @@ public class BridgeSetup extends ViewHandlerWrapper {
             }
         }, "head");
 
+        final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
         root.addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 ResponseWriter writer = context.getResponseWriter();
-                ExternalContext externalContext = context.getExternalContext();
-                String sessionID = ((HttpSession) externalContext.getSession(true)).getId();
-                String contextPath = externalContext.getRequestContextPath();
+
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
-                writer.writeText("ice.onLoad(function() { try {" +
-                        "document.body.bridge = ice.Application({" +
-                        "blockUI: false," +
-                        "session: '" + sessionID + "'," +
-                        "connection: {" +
-                        "heartbeat: {}," +
-                        "context: {current: '" + contextPath + "/',async: '" + contextPath + "/'}" +
-                        "}," +
-                        "messages: {sessionExpired: 'User Session Expired',connectionLost: 'Network Connection Interrupted',serverError: 'Server Internal Error',description: 'To reconnect click the Reload button on the browser or click the button below',buttonText: 'Reload'}}," +
-                        "document.body); } catch (e) { alert(e); }; });", null);
+                writer.writeText("ice.push.register(['" + windowID + "'], ice.retrieveUpdate);", null);
                 writer.endElement("script");
             }
         }, "body");

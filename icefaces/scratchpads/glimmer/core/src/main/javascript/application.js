@@ -31,275 +31,133 @@
  *
  */
 
-//trick YUI compressor to minify names -- see http://developer.yahoo.com/yui/compressor/#work
-window.evaluate = eval;
+if (!window.ice || !window.ice.icefaces) {
+    (function(namespace) {
+        namespace.icefaces = true;
+        //include functional.js
+        //include oo.js
+        //include collection.js
+        //include string.js
+        //include window.js
+        //include logger.js
+        //include event.js
+        //include element.js
+        //include http.js
+        //include submit.js
+        namespace.singleSubmit = singleSubmit;
+        namespace.ss = singleSubmit;
+        namespace.submit = submit;
+        namespace.s = submit;
 
-(function(namespace) {
-    //include functional.js
-    //include oo.js
-    //include collection.js
-    //include string.js
-    //include window.js
-    namespace.onLoad = curry(onLoad, window);
-    namespace.onUnload = curry(onUnload, window);
-    //include logger.js
-    //include cookie.js
-    //include delay.js
-    //include element.js
-    namespace.$elementWithID = $elementWithID;
-    namespace.enclosingBridge = enclosingBridge;
-    //include event.js
-    namespace.$event = $event;
-    //include http.js
-    //include synchronizer.js
-    //include command.js
-    //include heartbeat.js
-    //include connection.async.js
-    //include submit.js
-    namespace.singleSubmit = singleSubmit;
-    namespace.ss = singleSubmit;
-    namespace.submit = submit;
-    namespace.s = submit;
+        var serverErrorListeners = [];
+        namespace.onServerError = function(callback) {
+            append(serverErrorListeners, callback);
+        };
 
-    var serverErrorListeners = [];
-    namespace.onServerError = function(callback) {
-        append(serverErrorListeners, callback);
-    };
+        var viewDisposedListeners = [];
+        namespace.onViewDisposal = function(callback) {
+            append(viewDisposedListeners, callback);
+        };
 
-    var blockingConnectionUnstableListeners = [];
-    namespace.onBlockingConnectionUnstable = function(callback) {
-        append(blockingConnectionUnstableListeners, callback);
-    };
+        var submitSendListeners = [];
+        namespace.onSubmitSend = function(callback) {
+            append(submitSendListeners, callback);
+        };
 
-    var blockingConnectionLostListeners = [];
-    namespace.onBlockingConnectionLost = function(callback) {
-        append(blockingConnectionLostListeners, callback);
-    };
+        var submitResponseListeners = [];
+        namespace.onSubmitResponse = function(callback) {
+            append(submitResponseListeners, callback);
+        };
 
-    var viewDisposedListeners = [];
-    namespace.onViewDisposal = function(callback) {
-        append(viewDisposedListeners, callback);
-    };
+        var beforeUpdateListeners = [];
+        namespace.onBeforeUpdate = function(callback) {
+            append(beforeUpdateListeners, callback);
+        };
 
-    var submitSendListeners = [];
-    namespace.onSubmitSend = function(callback) {
-        append(submitSendListeners, callback);
-    };
+        var afterUpdateListeners = [];
+        namespace.onAfterUpdate = function(callback) {
+            append(afterUpdateListeners, callback);
+        };
 
-    var submitResponseListeners = [];
-    namespace.onSubmitResponse = function(callback) {
-        append(submitResponseListeners, callback);
-    };
-
-    var beforeUpdateListeners = [];
-    namespace.onBeforeUpdate = function(callback) {
-        append(beforeUpdateListeners, callback);
-    };
-
-    var afterUpdateListeners = [];
-    namespace.onAfterUpdate = function(callback) {
-        append(afterUpdateListeners, callback);
-    };
-
-    //wire callbacks into JSF bridge
-    jsf.ajax.addOnEvent(function(e) {
-        switch (e.status) {
-            case 'begin':
-                broadcast(submitSendListeners);
-                break;
-            case 'complete':
-                broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
-                broadcast(beforeUpdateListeners, [ e.responseXML ]);
-                break;
-            case 'success':
-                broadcast(afterUpdateListeners, [ e.responseXML ]);
-                break;
-        }
-    });
-
-    jsf.ajax.addOnError(function(e) {
-        if (e.status == 'serverError')
-            broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
-    });
-
-    var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-    namespace.logger = Logger([ 'window' ], handler);
-
-    namespace.resetIndicators = operator();
-    namespace.disposeBridge = operator();
-
-    var views = namespace.views = namespace.views || [];
-
-    function enlistSession(sessionID, viewID) {
-        try {
-            var viewsCookie = lookupCookie('ice.views');
-            var sessionViewTuples = split(value(viewsCookie), ' ');
-            update(viewsCookie, join(append(sessionViewTuples, sessionID + ':' + viewID), ' '));
-        } catch (e) {
-            Cookie('ice.views', sessionID + ':' + viewID);
-        }
-    }
-
-    function delistSession(sessionID, viewID) {
-        if (existsCookie('ice.views')) {
-            var viewsCookie = lookupCookie('ice.views');
-            var sessionViewTuples = split(value(viewsCookie), ' ');
-            var fullID = sessionID + ':' + viewID;
-            update(viewsCookie, join(reject(sessionViewTuples, function(tuple) {
-                return tuple == fullID;
-            }), ' '));
-        }
-    }
-
-    function enlistView(session, view) {
-        enlistSession(session, view);
-        append(views, Parameter(session, view));
-    }
-
-    function delistView(session, view) {
-        delistSession(session, view);
-        views = reject(views, function(i) {
-            return key(i) == session && value(i) == view;
+        //wire callbacks into JSF bridge
+        jsf.ajax.addOnEvent(function(e) {
+            switch (e.status) {
+                case 'begin':
+                    broadcast(submitSendListeners);
+                    break;
+                case 'complete':
+                    broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+                    broadcast(beforeUpdateListeners, [ e.responseXML ]);
+                    break;
+                case 'success':
+                    broadcast(afterUpdateListeners, [ e.responseXML ]);
+                    break;
+            }
         });
-    }
 
-    function delistWindowViews() {
-        each(views, function(v) {
-            delistSession(key(v), value(v));
+        //notify errors captured by JSF bridge
+        jsf.ajax.addOnError(function(e) {
+            if (e.status == 'serverError')
+                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
         });
-        empty(views);
-    }
 
-    function replaceContainerHTML(container, html) {
-        var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
-        var end = new RegExp('\<\/body\>', 'g').exec(html);
-        var body = html.substring(start.index, end.index + end[0].length)
-        var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
-        //strip <noscript> tag to fix Safari bug
-        // #3131 If this is a response from an error code, there may not be a <noscript> tag.
-        var startNoscript = new RegExp('\<noscript\>', 'g').exec(bodyContent);
-        if (startNoscript == null) {
-            container.innerHTML = bodyContent;
-        } else {
-            var endNoscript = new RegExp('\<\/noscript\>', 'g').exec(bodyContent);
-            container.innerHTML = substring(bodyContent, 0, startNoscript.index) + substring(bodyContent, endNoscript.index + 11, bodyContent.length);
-        }
-    }
+        var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+        var logger = Logger([ 'window' ], handler);
 
-    onLoad(window, function() {
-        each(document.getElementsByTagName('form'), function(f) {
-            //hijack browser form submit, instead submit through an Ajax request
-            f.submit = function() {
-                submit(null, f);
-            };
-            f.onsubmit = none;
-            each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
-                f[name] = function(e) {
-                    var event = e || window.event;
-                    var element = event.target || event.srcElement;
-                    f.onsubmit = function() {
-                        submit(event, element);
-                        f.onsubmit = none;
-                        return false;
-                    };
-                };
-            });
-
-            //propagate window ID -- this strategy works for POSTs sent by Mojarra
-            var i = document.createElement('input');
-            i.setAttribute('name', 'ice.window');
-            i.setAttribute('value', window.ice.window);
-            i.setAttribute('type', 'hidden');
-            f.appendChild(i);
+        var viewState;
+        onLoad(window, function() {
+            viewState = document.getElementById('javax.faces.ViewState').value;
         });
-    });
-
-    onBeforeUnload(window, delistWindowViews);
-
-    var asyncContext;
-    onBeforeUnload(window, function() {
-        postSynchronously(Client(true), asyncContext + 'dispose-window.icefaces.jsf', function(query) {
-            addNameValue(query, 'ice.window', namespace.window);
-        }, FormPost, noop);
-    });
-
-    namespace.Application = function(configuration, container) {
-        asyncContext = configuration.connection.context.async;
-
-        var sessionID = configuration.session;
-        //todo: can we rely on javax.faces.ViewState to identify the view?
-        var viewID = document.getElementById('javax.faces.ViewState').value;
-        var logger = childLogger(namespace.logger, sessionID.substring(0, 4) + '#' + viewID);
-        var commandDispatcher = CommandDispatcher();
-        var asyncConnection = AsyncConnection(logger, sessionID, viewID, configuration.connection, commandDispatcher, function(viewID) {
+        namespace.retrieveUpdate = function() {
             try {
                 var newForm = document.createElement('form');
                 newForm.action = window.location.pathname;
-                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewID, 'ice.window': namespace.window});
+                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
+        };
+
+        //redirect vanilla form submits
+        onLoad(window, function() {
+            each(document.getElementsByTagName('form'), function(f) {
+                //hijack browser form submit, instead submit through an Ajax request
+                f.submit = function() {
+                    submit(null, f);
+                };
+                f.onsubmit = none;
+                each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
+                    f[name] = function(e) {
+                        var event = e || window.event;
+                        var element = event.target || event.srcElement;
+                        f.onsubmit = function() {
+                            submit(event, element);
+                            f.onsubmit = none;
+                            return false;
+                        };
+                    };
+                });
+
+                //propagate window ID -- this strategy works for POSTs sent by Mojarra
+                var i = document.createElement('input');
+                i.setAttribute('name', 'ice.window');
+                i.setAttribute('value', window.ice.window);
+                i.setAttribute('type', 'hidden');
+                f.appendChild(i);
+            });
         });
 
-        function dispose() {
-            try {
-                dispose = noop;
-                delistView(sessionID, viewID);
-                broadcast(viewDisposedListeners, [ viewID ]);
-            } finally {
-                shutdown(asyncConnection);
-            }
-        }
-
-        onUnload(window, dispose);
-        enlistView(sessionID, viewID);
-
-        register(commandDispatcher, 'noop', noop);
-        register(commandDispatcher, 'parsererror', ParsingError);
-
-        onReceive(asyncConnection, function(response) {
-            var mimeType = getHeader(response, 'Content-Type');
-            if (mimeType && startsWith(mimeType, 'text/html')) {
-                replaceContainerHTML(contentAsText(response), container);
-            } else if (mimeType && startsWith(mimeType, 'text/xml')) {
-                deserializeAndExecute(commandDispatcher, contentAsDOM(response).documentElement);
-            } else {
-                warn(logger, 'unknown content in response');
-            }
+        var client = Client(true);
+        onBeforeUnload(window, function() {
+            postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
+                addNameValue(query, 'ice.window', namespace.window);
+            }, FormPost, noop);
         });
 
-        onServerError(asyncConnection, function(response) {
-            try {
-                warn(logger, 'server side error');
-                broadcast(serverErrorListeners, [ statusCode(response), contentAsText(response), contentAsDOM(response) ]);
-            } finally {
-                dispose();
-            }
+        onKeyPress(document, function(ev) {
+            var e = $event(ev);
+            if (isEscKey(e)) cancelDefaultAction(e);
         });
+    })(window.ice);
+}
 
-        whenDown(asyncConnection, function(reconnectAttempts) {
-            try {
-                warn(logger, 'connection to server was lost');
-                broadcast(blockingConnectionLostListeners, [ reconnectAttempts ]);
-            } finally {
-                dispose();
-            }
-        });
-
-        whenTrouble(asyncConnection, function() {
-            warn(logger, 'connection in trouble');
-            broadcast(blockingConnectionUnstableListeners);
-        });
-
-        info(logger, 'bridge loaded!');
-
-        return object(function(method) {
-            method(namespace.disposeBridge, dispose);
-        });
-    };
-
-    onKeyPress(document, function(ev) {
-        var e = $event(ev);
-        if (isEscKey(e)) cancelDefaultAction(e);
-    });
-})(window.ice = window.ice || new Object);

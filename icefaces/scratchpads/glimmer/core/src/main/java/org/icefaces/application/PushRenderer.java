@@ -22,44 +22,40 @@
 
 package org.icefaces.application;
 
-import java.util.Map;
-import java.util.Hashtable;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.lang.ref.WeakReference;
-
-import javax.servlet.http.HttpSession;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.portlet.PortletSession;
-
 import org.icefaces.push.SessionRenderer;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.push.SessionRenderableAdaptor;
 
-public class PushRenderer  {
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
+import javax.servlet.http.HttpSession;
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
+
+public class PushRenderer {
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
     private static Hashtable renderGroups = new Hashtable();
 
     /**
-     * Add the current view to the specified group. Groups 
+     * Add the current view to the specified group. Groups
      * are automatically garbage collected when all members become
      * unable to receive push updates.
      *
      * @param groupName the name of the group to add the current view to
      */
-    public static synchronized void addCurrentView(String groupName)  {
+    public static synchronized void addCurrentView(String groupName) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
-     * Remove the current view from the specified group. 
+     * Remove the current view from the specified group.
      *
      * @param groupName the name of the group to remove the current view from
      */
-    public static synchronized void removeCurrentView(String groupName)  {
+    public static synchronized void removeCurrentView(String groupName) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -70,9 +66,9 @@ public class PushRenderer  {
      *
      * @param groupName the name of the group to add the current session to
      */
-    public static synchronized void addCurrentSession(String groupName)  {
+    public static synchronized void addCurrentSession(String groupName) {
         Set group = (Set) renderGroups.get(groupName);
-        if (null == group)  {
+        if (null == group) {
             group = new HashSet();
             renderGroups.put(groupName, group);
         }
@@ -88,41 +84,41 @@ public class PushRenderer  {
      *
      * @param groupName the name of the group to remove the current view from
      */
-    public static synchronized void removeCurrentSession(String groupName)  {
+    public static synchronized void removeCurrentSession(String groupName) {
     }
-    
+
     /**
      * Render the specified group of sessions by performing the JavaServer Faces
-     * execute and render lifecycle phases.  If a FacesContext is in the 
+     * execute and render lifecycle phases.  If a FacesContext is in the
      * scope of the current thread scope, the current view will not be
      * asynchronously rendered
-     * (it is already rendered as a result of the user event being 
+     * (it is already rendered as a result of the user event being
      * processed).  For more fine-grained control
      * use the RenderManager API.
      *
      * @param groupName the name of the group of sessions to render.
      */
-    public static void render(String groupName)  {
-        if (null == renderGroups)  {
+    public static void render(String groupName) {
+        if (null == renderGroups) {
             return;
         }
         Set group = (Set) renderGroups.get(groupName);
-        if (null == group)  {
+        if (null == group) {
             return;
         }
 
 //        PersistentFacesState suppressedView = PersistentFacesState.getInstance();
 
         Iterator sessionHolders = group.iterator();
-        while (sessionHolders.hasNext())  {
+        while (sessionHolders.hasNext()) {
             SessionHolder sessionHolder = (SessionHolder) sessionHolders.next();
             HttpSession session = (HttpSession) sessionHolder.getSession();
-            if ( (null != session) && (isValid(session)) )  {
-                SessionRenderer sessionRenderer = (SessionRenderer) session.getAttribute("DEFAULT_SESSION_RENDERER");
-                if (null != sessionRenderer)  {
+            if ((null != session) && (isValid(session))) {
+                SessionRenderer sessionRenderer = (SessionRenderer) session.getAttribute(SessionRenderer.class.getName());
+                if (null != sessionRenderer) {
                     sessionRenderer.renderViews();
                 }
-           } else {
+            } else {
                 //remove any null or expired sessions
                 group.remove(sessionHolder);
                 removeGroupIfEmpty(groupName);
@@ -130,11 +126,11 @@ public class PushRenderer  {
         }
     }
 
-    static boolean isValid(HttpSession session)  {
+    static boolean isValid(HttpSession session) {
         try {
             Object test = session.getAttribute("isTheSessionValid?");
             return true;
-        } catch (IllegalStateException e)  {
+        } catch (IllegalStateException e) {
         }
         return false;
     }
@@ -143,49 +139,49 @@ public class PushRenderer  {
     //all empty groups.  We can either run this during notification of session
     //shutdown or have a ReferenceQueue that we poll() in addCurrentSession()
     //(if addCurrentSession() is never called, the leak is not significant)
-    static synchronized void removeGroupIfEmpty(String groupName)  {
+    static synchronized void removeGroupIfEmpty(String groupName) {
         Set group = (Set) renderGroups.get(groupName);
-        if (null == group)  {
+        if (null == group) {
             return;
         }
-        if (group.isEmpty())  {
+        if (group.isEmpty()) {
             renderGroups.remove(groupName);
         }
     }
-    
+
 }
 
 
-class SessionHolder   {
+class SessionHolder {
     WeakReference sessionReference = null;
     String sessionId = null;
 
-    public SessionHolder(Object session)  {
+    public SessionHolder(Object session) {
         sessionReference = new WeakReference(session);
-        if (session instanceof HttpSession)  {
-            sessionId = ((HttpSession)session).getId();
+        if (session instanceof HttpSession) {
+            sessionId = ((HttpSession) session).getId();
         }
-        if (EnvUtils.instanceofPortletSession(session))  {
+        if (EnvUtils.instanceofPortletSession(session)) {
             sessionId = ((PortletSession) session).getId();
         }
     }
-    
-    public Object getSession()  {
+
+    public Object getSession() {
         return sessionReference.get();
     }
 
-    public String getId()  {
+    public String getId() {
         return sessionId;
     }
 
-    public boolean equals(Object o)  {
-        if (o instanceof SessionHolder)  {
+    public boolean equals(Object o) {
+        if (o instanceof SessionHolder) {
             return (sessionId.equals(((SessionHolder) o).getId()));
         }
         return false;
     }
-    
-    public int hashCode()  {
+
+    public int hashCode() {
         return sessionId.hashCode();
     }
 }

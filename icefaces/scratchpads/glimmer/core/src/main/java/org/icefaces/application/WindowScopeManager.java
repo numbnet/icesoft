@@ -11,10 +11,12 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+//todo: factor out window manager that can be used to manage the window scope 
 public class WindowScopeManager {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
@@ -22,6 +24,8 @@ public class WindowScopeManager {
     private HashMap windowScopedMaps = new HashMap();
     private LinkedList disposedWindowScopedMaps = new LinkedList();
     private long expirationPeriod;
+    private Observable activatedWindowNotifier = new ReadyObservable();
+    private Observable disactivatedWindowNotifier = new ReadyObservable();
 
     public WindowScopeManager(Configuration configuration) {
         expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 600);
@@ -42,7 +46,13 @@ public class WindowScopeManager {
         }
 
         if (id == null) {
-            ScopeMap scopeMap = disposedWindowScopedMaps.isEmpty() ? new ScopeMap(context) : (ScopeMap) disposedWindowScopedMaps.removeFirst();
+            ScopeMap scopeMap;
+            if (disposedWindowScopedMaps.isEmpty()) {
+                scopeMap = new ScopeMap(context);
+            } else {
+                scopeMap = (ScopeMap) disposedWindowScopedMaps.removeFirst();
+            }
+            activatedWindowNotifier.notifyObservers(scopeMap.getId());
             CurrentScope.associate(scopeMap.id);
             windowScopedMaps.put(scopeMap.id, scopeMap);
             return scopeMap.id;
@@ -61,12 +71,17 @@ public class WindowScopeManager {
     }
 
     public synchronized void disposeWindow(String id) {
+        disactivatedWindowNotifier.notifyObservers(id);
         ((ScopeMap) windowScopedMaps.get(id)).dispose();
     }
 
     public class ScopeMap extends HashMap {
         private String id = generateID();
         private long timestamp = -1;
+
+        public String getId() {
+            return id;
+        }
 
         public ScopeMap(FacesContext facesContext) {
             boolean processingEvents = facesContext.isProcessingEvents();
@@ -99,23 +114,22 @@ public class WindowScopeManager {
         }
     }
 
-    public static WindowScopeManager lookup(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        Map session = externalContext.getSessionMap();
-
-        Object o = session.get(WindowScopeManager.class.getName());
-        final WindowScopeManager manager;
-        if (o == null) {
-            manager = new WindowScopeManager(new ExternalContextConfiguration("org.icefaces", externalContext));
-            session.put(WindowScopeManager.class.getName(), manager);
-        } else {
-            manager = (WindowScopeManager) o;
-        }
-
-        return manager;
+    public void onActivatedWindow(Observer observer) {
+        activatedWindowNotifier.addObserver(observer);
     }
 
-    public static WindowScopeManager lookup(HttpSession session, Configuration configuration) {
+    public void onDisactivatedWindow(Observer observer) {
+        disactivatedWindowNotifier.addObserver(observer);
+    }
+
+    public synchronized static WindowScopeManager lookup(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(true);
+        ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
+        return lookup(session, configuration);
+    }
+
+    public synchronized static WindowScopeManager lookup(HttpSession session, Configuration configuration) {
         Object o = session.getAttribute(WindowScopeManager.class.getName());
         final WindowScopeManager manager;
         if (o == null) {
@@ -135,6 +149,14 @@ public class WindowScopeManager {
 
         void associate(String windowID) {
             set(windowID);
+        }
+    }
+
+    private static class ReadyObservable extends Observable {
+        public synchronized void notifyObservers(Object o) {
+            setChanged();
+            super.notifyObservers(o);
+            clearChanged();
         }
     }
 }
