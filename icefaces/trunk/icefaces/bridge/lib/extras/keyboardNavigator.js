@@ -260,7 +260,7 @@ Ice.MenuBarKeyNavigator.addMethods({
     }
     Ice.Menu.currentHover = element.id;
     if (this.clicked) {
-       if (Ice.Menu.lastClickedMenu != this.component.id) {
+       if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
           this.clicked = false;
           return;
        }    
