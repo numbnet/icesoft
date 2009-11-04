@@ -43,7 +43,6 @@
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
-                <fileset dir="../../snowplow/core/build/dist" includes="*.jar"/>
             </classpath>
         </javac>
     </target>
