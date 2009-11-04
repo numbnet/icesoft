@@ -39,6 +39,8 @@ if (!window.ice || !window.ice.icefaces) {
         //include collection.js
         //include string.js
         //include window.js
+        namespace.onLoad = curry(onLoad, window);
+        namespace.onUnload = curry(onUnload, window);
         //include logger.js
         //include event.js
         //include element.js
