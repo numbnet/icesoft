@@ -28,19 +28,25 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 public class ServletEnvironmentListener implements ServletContextListener, HttpSessionListener {
+    //todo: get rid of this listener when BROWSERID is introduced
+    org.icepush.servlet.ServletEnvironmentListener ICEpushListener = new org.icepush.servlet.ServletEnvironmentListener();
+
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        ICEpushListener.contextInitialized(servletContextEvent);
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        ICEpushListener.contextDestroyed(servletContextEvent);
         PushResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        //TODO: investigate this, avoid management of sessions by ICEfaces
-//        SessionDispatcher.notifySessionStartup(httpSessionEvent.getSession());
+        ICEpushListener.sessionCreated(httpSessionEvent);
+        SessionDispatcher.notifySessionStartup(httpSessionEvent.getSession());
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+        ICEpushListener.sessionDestroyed(httpSessionEvent);
         SessionDispatcher.notifySessionShutdown(httpSessionEvent.getSession());
     }
 }

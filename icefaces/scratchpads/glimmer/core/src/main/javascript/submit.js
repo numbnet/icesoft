@@ -13,7 +13,7 @@ var submit;
     //set these variables only once
     var singleSubmitForm;
     var viewState;
-    namespace.onLoad(function() {
+    onLoad(window, function() {
         singleSubmitForm = document.createElement('form');
         singleSubmitForm.action = window.location.pathname;
         viewState = document.getElementById('javax.faces.ViewState').value;

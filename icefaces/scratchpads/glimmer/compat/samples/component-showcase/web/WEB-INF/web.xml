@@ -89,9 +89,9 @@
         <param-value>upload</param-value>
     </context-param>
 
-     <context-param>
-      <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-      <param-value>true</param-value>
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
     </context-param>
 
     <!-- Specifies to the ICEfaces framework whether to support multiple views of a
@@ -261,6 +261,16 @@ synchronous update mode and disable AJAX push features. -->
     <servlet-mapping>
         <servlet-name>Resource Servlet</servlet-name>
         <url-pattern>/xmlhttp/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ICEpush</servlet-name>
+        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ICEpush</servlet-name>
+        <url-pattern>*.icepush</url-pattern>
     </servlet-mapping>
 
     <!-- Persistent Faces Servlet Mapping -->
