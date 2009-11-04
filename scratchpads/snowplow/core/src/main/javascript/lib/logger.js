@@ -147,7 +147,7 @@ function WindowLogHandler(thresholdPriority, name) {
     }
 
     function showWindow() {
-        var logWindow = window.open('', 'log.' + name, 'scrollbars=1,width=800,height=680');
+        var logWindow = window.open('', '_blank', 'scrollbars=1,width=800,height=680');
         try {
             var windowDocument = logWindow.document;
             var documentBody = windowDocument.body;
