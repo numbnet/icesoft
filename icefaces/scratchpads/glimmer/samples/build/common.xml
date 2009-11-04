@@ -38,6 +38,7 @@
 
     <patternset id="lib.distribute.icefaces">
         <include name="icefaces.jar" unless="no.ice"/>
+        <include name="icepush.jar" unless="no.ice"/>
         <exclude name="*.jar" if="no.ice"/>
     </patternset>
 
