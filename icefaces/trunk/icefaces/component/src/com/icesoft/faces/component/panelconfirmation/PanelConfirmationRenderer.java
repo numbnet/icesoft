@@ -166,6 +166,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
             Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
 	        clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
 	        clientOnly.setAttribute(HTML.ID_ATTR, id + "clientOnly");
+            clientOnly.setAttribute(HTML.NAME_ATTR, id + "clientOnly");
 	        rootDiv.appendChild(clientOnly);
         }
         
@@ -190,6 +191,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         acceptButton.setAttribute(HTML.VALUE_ATTR, acceptLabel);
         acceptButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
         acceptButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-accept"));
+        acceptButton.setAttribute(HTML.NAME_ATTR, ClientIdPool.get(id + "-accept"));
         acceptButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.accept();return false;");
         td.appendChild(acceptButton);
     }
@@ -207,6 +209,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         cancelButton.setAttribute(HTML.VALUE_ATTR, cancelLabel);
         cancelButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
         cancelButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-cancel"));
+        cancelButton.setAttribute(HTML.NAME_ATTR, ClientIdPool.get(id + "-cancel"));
         cancelButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.cancel();return false;");
         td.appendChild(cancelButton);
     }
