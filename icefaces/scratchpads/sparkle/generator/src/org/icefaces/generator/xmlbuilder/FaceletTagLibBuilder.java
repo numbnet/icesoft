@@ -12,7 +12,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         super("icefaces.taglib.xml");
         Element root = getDocument().createElement("facelet-taglib");
         getDocument().appendChild(root);
-        addNode(root, "namespace", "http://www.icesoft.com/icefaces/component/annotated");
+        addNode(root, "namespace", Generator.namespace);
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -32,6 +32,9 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         } catch (Exception e) {
             e.printStackTrace();
         } 
+        if (Generator.currentClassHasMethodExpression) {
+            addNode(component_element, "handler-class", clazz.getName()+ "Handler");
+        }
         //addNode(component_element, "handler-class", component.handlerClass());
     }
 }
