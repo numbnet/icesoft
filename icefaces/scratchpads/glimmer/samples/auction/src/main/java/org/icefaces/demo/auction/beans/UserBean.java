@@ -45,6 +45,7 @@ import javax.faces.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.io.Serializable;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ import javax.faces.bean.ViewScoped;
 //public class UserBean implements DisposableBean {
 @ManagedBean(name = "UserBean")
 @ViewScoped
-public class UserBean  {
+public class UserBean implements Serializable {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";
