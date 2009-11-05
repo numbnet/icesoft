@@ -20,6 +20,11 @@ import org.icefaces.component.annotation.PropertyTemplate;
 public class Generator {
     static List<Class> components = null;
     static Class currentClass;
+    
+    //will be set by the Generator.processAnnotation(), will help in identifying
+    //whether the componentHandler is required or not.
+    public static boolean currentClassHasMethodExpression;
+    
     static Map< Field, Property> currentFields = new HashMap<Field, Property>();
     static Map<String, Property> inheritedProperties = new HashMap<String, Property>();
     static TLDBuilder tldBuilder = new TLDBuilder();
@@ -31,6 +36,7 @@ public class Generator {
     static Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     static Map<String,String> WrapperTypes= new HashMap<String, String>();
+    public final static String namespace = "http://www.icesoft.com/icefaces/component/annotated";
     static {
         components = FileWriter.getAnnotatedCompsList();
         WrapperTypes.put("boolean", "java.lang.Boolean");
@@ -64,15 +70,24 @@ public class Generator {
         //by now all properties should be set into the "fieldsForTagAndComponentClasses",
         //so lets create component and tag file
         ComponentClassGenerator.create();
+        ComponentHandlerGenerator.create();
         TagClassGenerator.create();
-        fieldsForComponentClass.clear();
-        internalFieldsForComponentClass.clear();
-        fieldsForTagClass.clear(); 
-        fieldsForFacet.clear();
+        
+        //clean the attribute list up, for next available component 
+        cleanup();
+        
         System.out.println(ComponentClassGenerator.generatedComponentClass.toString());
         System.out.println();
         System.out.println(TagClassGenerator.generatedTagClass.toString());            
 
+    }
+    
+    static void cleanup() {
+        fieldsForComponentClass.clear();
+        internalFieldsForComponentClass.clear();
+        fieldsForTagClass.clear(); 
+        fieldsForFacet.clear();
+        currentClassHasMethodExpression = false;
     }
     /**
      * This method should prepare the properties:
@@ -136,8 +151,14 @@ public class Generator {
                           if (!fieldsForTagClass.containsKey(field.getName())) {                       
                               fieldsForTagClass.put(field.getName(), field);
                           }                              
-                      } else {//annotated prpoperties defined on the component should go to the component as well as tag class
-                          if (!fieldsForComponentClass.containsKey(field.getName())) {                       
+                      } else {//annotated properties defined on the component should 
+                          //go to the component as well as tag class
+                          
+                          
+                          if (!fieldsForComponentClass.containsKey(field.getName())) { 
+                              if (property.isMethodExpression()) {
+                                  currentClassHasMethodExpression = true;
+                              }
                               fieldsForComponentClass.put(field.getName(), field);
                           } 
                           if (!fieldsForTagClass.containsKey(field.getName())) {                       

@@ -49,7 +49,7 @@ public class TabSetMeta {
     @Property    
     private String style;
     
-    @Property
+    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression tabChangeListener;
     
     

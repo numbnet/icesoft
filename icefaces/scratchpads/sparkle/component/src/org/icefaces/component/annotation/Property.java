@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Property {
     boolean isMethodExpression() default false;
+    String methodExpressionArgument() default "";
     boolean isTransient() default false;
     String defaultValue() default "";
     String name() default "";

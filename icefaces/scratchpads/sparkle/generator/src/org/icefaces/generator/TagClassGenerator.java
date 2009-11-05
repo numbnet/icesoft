@@ -1,5 +1,6 @@
 package org.icefaces.generator;
 
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,9 +179,20 @@ public class TagClassGenerator {
             Field field = Generator.fieldsForTagClass.get(iterator.next());
             generatedTagClass.append("\t\tif ("); 
             generatedTagClass.append(field.getName()); 
-            generatedTagClass.append(" != null) {\n\t\t\t_component.setValueExpression(\"");
-            generatedTagClass.append(field.getName());
-            generatedTagClass.append("\", ");
+            generatedTagClass.append(" != null) {\n\t\t\t_component.set");
+            Property property = (Property) field.getAnnotation(Property.class);
+            if (property.isMethodExpression()) {
+                generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
+                generatedTagClass.append(field.getName().substring(1));  
+            } else {
+                generatedTagClass.append("ValueExpression");            
+            }
+            generatedTagClass.append("(");
+            if (!property.isMethodExpression()) {
+                generatedTagClass.append("\"");
+                generatedTagClass.append(field.getName());
+                generatedTagClass.append("\", ");
+            }
             generatedTagClass.append(field.getName());  
             generatedTagClass.append(");\n");    
             generatedTagClass.append("\t\t}\n");              
