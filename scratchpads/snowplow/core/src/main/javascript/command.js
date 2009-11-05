@@ -13,7 +13,7 @@ function CommandDispatcher() {
         });
 
         method(deserializeAndExecute, function(self, message) {
-            var messageName = message.tagName;
+            var messageName = message.nodeName;
             var found = detect(commands, function(cell) {
                 return key(cell) == messageName;
             }, function() {
