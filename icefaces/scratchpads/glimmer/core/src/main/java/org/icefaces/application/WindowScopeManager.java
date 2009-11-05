@@ -72,7 +72,12 @@ public class WindowScopeManager {
 
     public synchronized void disposeWindow(String id) {
         disactivatedWindowNotifier.notifyObservers(id);
-        ((ScopeMap) windowScopedMaps.get(id)).dispose();
+        ScopeMap scopeMap = (ScopeMap) windowScopedMaps.get(id);
+        //verify if the ScopeMap is present
+        //it's possible to have dispose-window request arriving after an application restart or re-deploy
+        if (scopeMap != null) {
+            scopeMap.dispose();
+        }
     }
 
     public class ScopeMap extends HashMap {
