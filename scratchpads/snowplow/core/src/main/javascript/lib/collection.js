@@ -113,16 +113,25 @@ var detect = operator(function(items, iterator, notDetectedThunk) {
     return notDetectedThunk ? notDetectedThunk(items) : null;
 });
 
-var contains = operator(function(items, item) {
-    var size = items.length;
-    for (var i = 0; i < size; i++) {
-        if (items[i] == item) {
-            return true;
-        }
-    }
+var contains = operator($witch(function(condition) {
+    condition(isString, function(items, item) {
+        return items.indexOf(item) > -1;
+    });
 
-    return false;
-});
+    condition(isArray, function(items, item) {
+        var size = items.length;
+        for (var i = 0; i < size; i++) {
+            if (items[i] == item) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+
+    condition(any, operationNotSupported);
+}));
+
 
 var size = operator(function(items) {
     return items.length;
