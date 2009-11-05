@@ -32,6 +32,7 @@
                 <include name="icefaces.jar"/>
                 <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
+                <include name="icepush.jar"/>
             </lib>
 <!--
             <lib dir="../../../glimmer/compat/lib">
