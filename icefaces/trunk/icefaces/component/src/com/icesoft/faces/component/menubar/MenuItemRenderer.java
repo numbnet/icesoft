@@ -313,7 +313,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
             if ( (!menuItem.isLinkSpecified()) &&
                  (onclick == null || onclick.length() == 0) ) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
         
@@ -393,7 +393,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
             if ( (!menuItem.isLinkSpecified()) &&
                  (onclick == null || onclick.length() == 0) ) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
         anchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
