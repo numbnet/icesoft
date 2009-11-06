@@ -111,11 +111,15 @@ function okButtonHandler(ev) {
     var hr = YAHOO.util.Dom.get(this.containerId + "_hr").value;
     var min = YAHOO.util.Dom.get(this.containerId + "_min").value;
     var container = YAHOO.util.Dom.get(this.containerId);
-    var element = document.createElement("input");
-    YAHOO.util.Dom.setAttribute(element, "name", this.containerId);
-    YAHOO.util.Dom.setAttribute(element, "type", "hidden");
+    var element = YAHOO.util.Dom.get(this.containerId + "_hidden");
+    if (!element) {
+        element = document.createElement("input");
+        YAHOO.util.Dom.setAttribute(element, "id", this.containerId + "_hidden");
+        YAHOO.util.Dom.setAttribute(element, "name", this.containerId);
+        YAHOO.util.Dom.setAttribute(element, "type", "hidden");
+        container.appendChild(element);
+    }
     YAHOO.util.Dom.setAttribute(element, "value", selected[0][1] + "/" + selected[0][2] + "/" + selected[0][0] + " " + hr + ":" + min);
-    container.appendChild(element);
     ice.submit(ev, YAHOO.util.Dom.get(this.id));
 //    ice.singleSubmit(ev, YAHOO.util.Dom.get(this.id));
 }
