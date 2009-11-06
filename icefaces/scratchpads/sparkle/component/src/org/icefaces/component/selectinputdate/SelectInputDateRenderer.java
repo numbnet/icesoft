@@ -46,6 +46,9 @@ public class SelectInputDateRenderer extends Renderer {
         System.out.println("selectedMinute = " + selectedMinute);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.write("Calendar.init('" + clientId + "','" + pageDate + "','" + selectedDate + "'," + selectedHour + "," + selectedMinute + ");");
+//        writer.writeAttribute(HTML.ID_ATTR, clientId + "_js", null);
+//        writer.writeText("Calendar.init('" + clientId + "','" + pageDate + "','" + selectedDate + "'," + selectedHour + "," + selectedMinute + ");", null);
+//        writer.writeText("YAHOO.example.calendar.init();", null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
