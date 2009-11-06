@@ -45,7 +45,7 @@ import org.icefaces.demo.auction.stubs.StubServer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.faces.bean.ManagedBean;
@@ -57,7 +57,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "AuctionBean")
 @ViewScoped
-public class AuctionBean  {
+public class AuctionBean implements Serializable {
 //    private static Log log = LogFactory.getLog(AuctionBean.class);
     private static int userCount = 0;
     public static final String RENDERER_NAME = "demand";
