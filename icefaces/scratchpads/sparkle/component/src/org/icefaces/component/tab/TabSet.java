@@ -1,11 +1,14 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
+import java.io.Writer;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -18,7 +21,9 @@ public class TabSet extends TabSetBase {
     private Integer tabIndex;
     private String orientation;
  
-
+    public TabSet() {
+        loadDependency(FacesContext.getCurrentInstance());        
+    }
 
 //    private void loadJs() {
 //        //register the ICEfaces provided JS to be loaded
@@ -98,6 +103,25 @@ public class TabSet extends TabSetBase {
         }
         super.queueEvent(event);
     }  
+    
+    private void loadDependency(FacesContext context) {
+        context.getViewRoot().addComponentResource(context, new UIOutput() {
+            public void encodeBegin(FacesContext context) throws IOException {
+                ResponseWriter writer = context.getResponseWriter();
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/element/element-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/tabview/tabview-min.js");
+            }
+        }, "head");        
+    }
+    
+    private void writeJavascriptExternFile(ResponseWriter writer, String url) throws IOException {
+        writer.startElement("script", this);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("src", url, null);
+        writer.endElement("script");
+    }
 }
 
 //class TabSetJarResource extends JarResource {
