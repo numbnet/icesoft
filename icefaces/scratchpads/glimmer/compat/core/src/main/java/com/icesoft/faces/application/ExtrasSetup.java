@@ -35,19 +35,10 @@ public class ExtrasSetup extends ViewHandlerWrapper {
     }
 
     private static class JavascriptResourceOutput extends UIOutput {
-        private String path;
 
         private JavascriptResourceOutput(String path) {
-            this.path = path;
-        }
-
-        public void encodeBegin(FacesContext context) throws IOException {
-            ResponseWriter writer = context.getResponseWriter();
-            Resource bridgeCode = context.getApplication().getResourceHandler().createResource(path);
-            writer.startElement("script", this);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.writeAttribute("src", bridgeCode.getRequestPath(), null);
-            writer.endElement("script");
+            setRendererType("javax.faces.resource.Script");
+            getAttributes().put("name", path);
         }
     }
 }

@@ -30,17 +30,13 @@ public class WindowScopeSetup extends ViewHandlerWrapper {
     public UIViewRoot createView(FacesContext context, String viewId) {
         UIViewRoot root = handler.createView(context, viewId);
         try {
-            final String id = WindowScopeManager.lookup(context).determineWindowID(context);
-            root.addComponentResource(context, new UIOutput() {
-                public void encodeBegin(FacesContext context) throws IOException {
-                    ResponseWriter writer = context.getResponseWriter();
-                    writer.startElement("script", this);
-                    writer.writeAttribute("id", "ice-window-init", null);
-                    writer.writeAttribute("type", "text/javascript", null);
-                    writer.writeText("window.ice.window = " + id + ";", null);
-                    writer.endElement("script");
-                }
-            }, "body");
+            String id = WindowScopeManager.lookup(context).determineWindowID(context);
+            
+            UIOutput output = new UIOutput();
+            output.getAttributes().put("escape", "false");
+            output.setValue("<script type=\"text/javascript\">window.ice.window = " + id + ";</script>");
+            root.addComponentResource(context, output, "body");
+
         } catch (Exception e)  {
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING,"WindowScope createView: " + e);
