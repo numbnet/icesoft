@@ -28,39 +28,30 @@ public class BridgeSetup extends ViewHandlerWrapper {
 
     public UIViewRoot createView(FacesContext context, String viewId) {
         UIViewRoot root = handler.createView(context, viewId);
+        UIOutput output;
 
-        root.addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                writer.startElement("script", this);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", "code.icepush", null);
-                writer.endElement("script");
-            }
-        }, "head");
+        //replace with icepush.js resource in icepush.jar
+        output = new UIOutput();
+        output.getAttributes().put("escape", "false");
+        output.setValue("<script src='code.icepush' type='text/javascript'></script>");
+        root.addComponentResource(context, output, "head");
 
-        root.addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                Resource bridgeCode = context.getApplication().getResourceHandler().createResource("bridge.js");
-                writer.startElement("script", this);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", bridgeCode.getRequestPath(), null);
-                writer.endElement("script");
-            }
-        }, "head");
+        output = new UIOutput();
+        output.setRendererType("javax.faces.resource.Script");
+        output.getAttributes().put("name", "bridge.js");
+        root.addComponentResource(context, output, "head");
 
-        final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
-        root.addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-
-                writer.startElement("script", this);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeText("ice.push.register(['" + windowID + "'], ice.retrieveUpdate);", null);
-                writer.endElement("script");
-            }
-        }, "body");
+        try {
+            String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+            output = new UIOutput();
+            output.getAttributes().put("escape", "false");
+            output.setValue("<script type=\"text/javascript\">ice.push.register(['" + windowID + "'], ice.retrieveUpdate);</script>");
+            root.addComponentResource(context, output, "body");
+        } catch (Exception e)  {
+            //could re-throw as a FacesException, but WindowScope failure should
+            //not be fatal to the application
+            e.printStackTrace();
+        }
 
         return root;
     }
