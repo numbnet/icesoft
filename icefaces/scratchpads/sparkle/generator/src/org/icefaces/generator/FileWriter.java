@@ -157,6 +157,7 @@ public class FileWriter {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {
                 String path = files[i].getPath();
+                System.out.println(path);
                 if (path.endsWith("class") && path.indexOf("org\\icefaces") > 1) {
                     path = path.substring(path.indexOf("org\\icefaces"), path.indexOf(".class"));
                     path = path.replace('\\', '.');
