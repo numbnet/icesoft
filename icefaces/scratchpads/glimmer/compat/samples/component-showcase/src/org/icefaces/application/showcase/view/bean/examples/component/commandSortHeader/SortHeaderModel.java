@@ -39,6 +39,8 @@ import org.icefaces.application.showcase.util.FacesUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.PhaseListener;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -46,6 +48,8 @@ import javax.faces.event.PhaseId;
 /**
  *
  */
+@ManagedBean
+@ViewScoped
 public class SortHeaderModel extends DataTableBase implements PhaseListener {
 
     private static final Log logger =

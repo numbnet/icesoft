@@ -32,15 +32,19 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.dataExporter;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
+
+import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 @ManagedBean(name = "dataExporter")
 @ViewScoped
-public class DataExporter {
+public class DataExporter extends DataTableBase{
     private Effect changeEffect;
     private String type;
 

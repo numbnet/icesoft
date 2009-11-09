@@ -38,6 +38,10 @@ import org.icefaces.application.showcase.model.entity.Employee;
 
 import java.util.ArrayList;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.NoneScoped;
+
 /**
  * <p>The class DataTableBase is the base implementation for all DataTable
  * related examples.  This class should be extended for any dataTable example
@@ -45,9 +49,12 @@ import java.util.ArrayList;
  *
  * @since 1.7
  */
+@ManagedBean(eager=true)
+//@NoneScoped
 public class DataTableBase extends BaseBean {
 
     // mock service that retreives employee data
+	@ManagedProperty(value="#{employeeServiceImpl}")
     protected EmployeeService employeeService;
 
     // internal list of retreived records.

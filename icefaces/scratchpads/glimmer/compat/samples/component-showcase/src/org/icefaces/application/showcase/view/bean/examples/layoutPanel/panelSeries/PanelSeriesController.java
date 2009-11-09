@@ -48,8 +48,8 @@ import java.io.Serializable;
  * @see org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase
  * @since 1.7
  */
-//@ManagedBean(name = "panelSeriesController")
-//@ViewScoped
+@ManagedBean(name = "panelSeriesController")
+@ViewScoped
 public class PanelSeriesController extends DataTableBase implements Serializable {
 
     // start off with 3 employees.
