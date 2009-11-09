@@ -4,6 +4,7 @@
     </description>
   <property file="build.properties"/>    
   <property name="src" location="src"/>
+  <property name="resources" location="resources"/>  
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
   <property name="conf"  location="conf"/>
@@ -21,6 +22,7 @@
     <echo message=".."/>        
     <mkdir dir="${exploded}"/>
     <mkdir dir="${build}/generated"/>
+    
     <ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
     <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
     	<classpath refid="compile.run.classpath"/>
@@ -29,6 +31,10 @@
     <javac srcdir="${build}/generated" destdir="${exploded}" debug="true">
         <classpath refid="compile.run.classpath"/>
     </javac> 
+    
+    <copy todir="${exploded}/META-INF/resources">
+	    <fileset dir="${resources}"/>
+    </copy>    
   </target>
 
   <target name="dist" depends="compile" 
