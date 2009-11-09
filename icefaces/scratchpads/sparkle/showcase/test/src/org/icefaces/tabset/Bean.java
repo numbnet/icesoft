@@ -100,6 +100,11 @@ public class Bean {
         }
         
     }
+    
+   public void tabsetChangeListener(ValueChangeEvent event) {
+        System.out.println("tabsetChangeListener "+ event.getComponent());
+   }
+   
     public String getInpTxt() {
         return inpTxt;
     }
@@ -383,4 +388,6 @@ public class Bean {
     public void setLabelFacetIndex(int labelFacetIndex) {
         this.labelFacetIndex = labelFacetIndex;
     }
+    
+
 }
