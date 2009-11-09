@@ -142,6 +142,14 @@ if (!window.ice) {
                 postAsynchronously(apiChannel, 'notify.icepush', function(q) {
                     each(ids, curry(addNameValue, q, 'id'));
                 }, FormPost, noop);
+            },
+
+            post: function(uri, parameters, responseCallback) {
+                postAsynchronously(apiChannel, uri, function(query) {
+                    parameters(curry(addNameValue, query));
+                }, FormPost, function(response) {
+                    responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
+                });
             }
         };
 
