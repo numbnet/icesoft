@@ -8903,12 +8903,10 @@ Autocompleter.Base.prototype = {
             (navigator.appVersion.indexOf('MSIE') > 0) &&
             (navigator.userAgent.indexOf('Opera') < 0) &&
             (Element.getStyle(this.update, 'position') == 'absolute')) {
-            var sendURI = Ice.ElementModel.Element.adaptToElement(this.element).findConnection().sendURI;
-            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                     'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="' + webappContext + 'xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
+                    'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
@@ -11507,10 +11505,7 @@ Ice.Menu = {
         if (parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE") + 5)) >= 7) return;
         var iframe = menuDiv.iframe;
         if (!iframe) {
-            var sendURI = Ice.ElementModel.Element.adaptToElement(menuDiv).findConnection().sendURI;
-            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
-            var iframeSrc = webappContext + "xmlhttp/blank";
-            menuDiv.iframe = iframe = new Element("iframe", {src: iframeSrc, frameborder: "0", scrolling: "no"});
+            menuDiv.iframe = iframe = new Element("iframe", {src: 'javascript:\'<html></html>\';', frameborder: "0", scrolling: "no"});
             iframe.setStyle({position: "absolute", opacity: 0}).hide();
             menuDiv.insert({before: iframe});
         }
