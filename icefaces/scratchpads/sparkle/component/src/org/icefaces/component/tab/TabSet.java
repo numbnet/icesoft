@@ -1,11 +1,10 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.el.MethodExpression;
-import javax.faces.component.UICommand;
-import javax.faces.component.UIComponent;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -16,8 +15,12 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
+@ResourceDependencies({
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab")
+})
 public class TabSet extends TabSetBase {
- //   private static Resource JS = new TabSetJarResource("com/icesoft/faces/component/yui/tab/tabset.js");
     private Integer tabIndex;
     private String orientation;
  
@@ -25,13 +28,6 @@ public class TabSet extends TabSetBase {
         loadDependency(FacesContext.getCurrentInstance());        
     }
 
-//    private void loadJs() {
-//        //register the ICEfaces provided JS to be loaded
-//        ResourceRegistry registry =
-//            (ResourceRegistry) FacesContext.getCurrentInstance();
-//            registry.loadJavascriptCode(JS);
-//    }
-    
     public void setTabIndex(int tabindex) {
         this.tabIndex = new Integer(tabindex);
         //TODO need to be changed in the processUpdate. However this property is not 
@@ -71,8 +67,6 @@ public class TabSet extends TabSetBase {
     }    
 
     public void encodeBegin(FacesContext context) throws IOException {
-        //load js.js, will be loaded once per view. It handled by the ICEFaces framework.
-       // loadJs();
         super.encodeBegin(context);
     }
     
@@ -108,6 +102,8 @@ public class TabSet extends TabSetBase {
         context.getViewRoot().addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 ResponseWriter writer = context.getResponseWriter();
+                writeCssExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css");
+                writeCssExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/tabview/assets/skins/sam/tabview.css");                
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/element/element-min.js");
@@ -122,15 +118,12 @@ public class TabSet extends TabSetBase {
         writer.writeAttribute("src", url, null);
         writer.endElement("script");
     }
+    
+    private void writeCssExternFile(ResponseWriter writer, String url) throws IOException {
+        writer.startElement("link", this);
+        writer.writeAttribute("rel", "stylesheet", null);
+        writer.writeAttribute("type", "text/css", null);        
+        writer.writeAttribute("href", url, null);
+        writer.endElement("link");
+    }    
 }
-
-//class TabSetJarResource extends JarResource {
-//
-//    public TabSetJarResource(String path) {
-//        super(path);
-//    }
-//    
-//    public void withOptions(Options options) throws IOException {
-//    
-//    }
-//}
