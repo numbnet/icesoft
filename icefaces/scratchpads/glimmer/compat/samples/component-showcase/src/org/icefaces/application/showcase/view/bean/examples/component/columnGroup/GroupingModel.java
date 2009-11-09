@@ -32,6 +32,9 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.columnGroup;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 /**
@@ -40,6 +43,8 @@ import org.icefaces.application.showcase.view.bean.examples.component.dataTable.
  *
  * @since 1.7
  */
+@ManagedBean(name="groupBean")
+@ViewScoped
 public class GroupingModel extends DataTableBase {
 
     protected void init(){

@@ -32,6 +32,8 @@
  */
 package org.icefaces.application.showcase.util;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -44,6 +46,8 @@ import java.io.Serializable;
  *
  * @since 1.6
  */
+@ManagedBean(name="ctxtUtil")
+@ApplicationScoped
 public class ContextUtilBean {
 
     private static final String IFRAME_PREFIX = "<iframe src=\"";

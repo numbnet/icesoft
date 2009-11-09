@@ -35,12 +35,18 @@ package org.icefaces.application.showcase.model.entity;
 
 import java.io.Serializable;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 /**
  * <p>The Person class is used in many of the examples to show simple data
  * interactions in a business context.</p>
  *
  * @since 1.0
  */
+
+@ManagedBean(name="panelCollapsibleBean")
+@ViewScoped
 public class Person  implements Serializable {
 
     public static final String LAST_NAME_COLUMN = "lastName";

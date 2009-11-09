@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
@@ -50,13 +51,14 @@ import java.util.List;
  *
  * @since 1.7
  */
-//@ManagedBean(name = "selectInputText")
-//@SessionScoped
+@ManagedBean(name = "selectInputText")
+@ViewScoped
 public class SelectInputTextController extends BaseBean {
 
     private final Log log = LogFactory.getLog(this.getClass());
 
     // city dictionary
+    @ManagedProperty(value="#{cityDictionary}")
     private CityDictionary cityDictionary;
 
     // list of possible city matches for a given city dictionary lookup

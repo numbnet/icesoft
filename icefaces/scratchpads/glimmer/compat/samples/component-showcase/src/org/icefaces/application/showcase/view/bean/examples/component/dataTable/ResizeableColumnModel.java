@@ -32,12 +32,18 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.dataTable;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 /**
  * <p>The ResizeableColumnModel provides data for the resizeable column
  * demo.</p>
  *
  * @since 1.7
  */
+
+@ManagedBean(name="resizeableColumnBean")
+@ViewScoped
 public class ResizeableColumnModel extends DataTableBase {
 
     protected void init(){

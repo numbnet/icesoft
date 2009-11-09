@@ -37,6 +37,9 @@ import com.icesoft.faces.context.effects.*;
 import java.util.HashMap;
 import java.util.Collection;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import org.icefaces.application.showcase.view.bean.BaseBean;
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
@@ -47,6 +50,8 @@ import org.icefaces.application.showcase.util.MessageBundleLoader;
  *
  * @since 1.7
  */
+@ManagedBean
+@ViewScoped
 public class EffectsModel extends BaseBean {
 
     // current effect that consists of a label and the actual Effect.

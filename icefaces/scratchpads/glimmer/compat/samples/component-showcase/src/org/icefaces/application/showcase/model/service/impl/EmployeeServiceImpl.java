@@ -44,12 +44,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
 /**
  * <p>Mock Employee Service layer implementation.  The methods in this class
  * provide data that are used in several of the component showcase examples.</p>
  *
  * @since 1.7
  */
+@ManagedBean(eager=true)
+@ApplicationScoped
 public class EmployeeServiceImpl implements EmployeeService, Serializable {
 
     private static final Log logger =

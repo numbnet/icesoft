@@ -33,6 +33,7 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.expandableTable;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 /**
@@ -43,7 +44,7 @@ import java.util.GregorianCalendar;
  * <p>The class instance variables are a direct map from the original ascii
  * expandable table specification. </p>
  */
-public class FilesRecord {
+public class FilesRecord implements Serializable{
 
     // simple list of files records.
     protected String description = "";

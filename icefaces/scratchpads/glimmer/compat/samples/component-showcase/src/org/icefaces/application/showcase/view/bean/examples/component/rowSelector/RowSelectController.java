@@ -41,6 +41,8 @@ import java.util.Iterator;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.RowSelectorEvent;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 
 /**
@@ -51,6 +53,8 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @since 1.7
  */
+@ManagedBean
+@ViewScoped
 public class RowSelectController extends DataTableBase {
 
     // list of selected employees

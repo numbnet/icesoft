@@ -34,6 +34,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.dataPagin
 
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
 
@@ -49,6 +51,8 @@ import com.icesoft.faces.component.datapaginator.DataPaginator;
  *
  * @since 1.7
  */
+@ManagedBean
+@ViewScoped
 public class DataScrollingModel extends DataTableBase {
     /**
      * dataTable will have no pagging or scrolling enabled.

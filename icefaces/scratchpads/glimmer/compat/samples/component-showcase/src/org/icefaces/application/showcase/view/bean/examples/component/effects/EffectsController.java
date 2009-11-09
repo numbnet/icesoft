@@ -35,6 +35,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.effects;
 import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.bean.BeanNames;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
@@ -46,6 +48,9 @@ import java.io.Serializable;
  *
  * @sinse 1.7
  */
+
+@ManagedBean(eager=true)
+@ApplicationScoped
 public class EffectsController implements Serializable {
 
     /**

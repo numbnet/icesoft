@@ -4,6 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.util.Locale;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
  * @since 1.8
  *
  */
+@ManagedBean(name= "localeBean")
+@SessionScoped
 public class LocaleBean {
 
     private static final Log logger =

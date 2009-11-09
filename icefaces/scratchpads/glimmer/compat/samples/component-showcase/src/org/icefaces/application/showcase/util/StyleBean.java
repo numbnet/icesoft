@@ -37,6 +37,8 @@ import org.icefaces.application.showcase.view.bean.NavigationNames;
 
 import javax.faces.model.SelectItem;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,8 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
+@ManagedBean
+@SessionScoped
 public class StyleBean implements Serializable {
 
     // possible theme choices
