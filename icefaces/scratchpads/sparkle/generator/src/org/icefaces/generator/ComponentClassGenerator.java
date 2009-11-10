@@ -65,12 +65,17 @@ public class ComponentClassGenerator {
     }
     
     static void createJavaFile() {
+        System.out.println("____________________________Creating component class_________________________");
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         String componentClass = Generator.getClassName(component);
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
+        System.out.println("____FileName "+ fileName);
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
+        System.out.println("____package "+ pack);        
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
+        System.out.println("____path "+ path);         
         FileWriter.write(fileName, path, generatedComponentClass);        
+        System.out.println("____________________________Creating component class ends_________________________");
     }
 
     static void addProperties(Map<String, Field> properties) {
