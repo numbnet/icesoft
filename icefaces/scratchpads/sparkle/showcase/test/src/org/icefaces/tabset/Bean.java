@@ -36,6 +36,8 @@ public class Bean {
     private String orientation;
     private String txt1;
     private String txt2;
+    private String txt3;
+    private String txt4;    
     private String tabContents = "The TabView control is defined by YAHOO.widget.TabView. To create a TabView from existing markup you can simply pass the id (or object reference) for the HTMLElement that will become the TabView. If you follow the default markup pattern outlined below, the tabs will be constructed automatically.";
     private List movies = new ArrayList();
     private String title;
@@ -387,6 +389,22 @@ public class Bean {
     }
     public void setLabelFacetIndex(int labelFacetIndex) {
         this.labelFacetIndex = labelFacetIndex;
+    }
+
+    public String getTxt3() {
+        return txt3;
+    }
+
+    public void setTxt3(String txt3) {
+        this.txt3 = txt3;
+    }
+
+    public String getTxt4() {
+        return txt4;
+    }
+
+    public void setTxt4(String txt4) {
+        this.txt4 = txt4;
     }
     
 
