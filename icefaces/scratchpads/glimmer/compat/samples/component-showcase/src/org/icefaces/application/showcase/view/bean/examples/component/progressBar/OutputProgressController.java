@@ -40,7 +40,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import javax.faces.event.ActionEvent;
-import javax.servlet.ServletContextEvent;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -59,8 +58,8 @@ import java.io.Serializable;
  * @since 1.7
  */
 @ManagedBean(name = "outputProgressController")
-@SessionScoped
-public class OutputProgressController{
+@ViewScoped
+public class OutputProgressController implements Serializable{
 
     public static Logger log = Logger.getLogger("OutputProgressController");
 
