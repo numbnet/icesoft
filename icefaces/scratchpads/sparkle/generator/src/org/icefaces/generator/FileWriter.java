@@ -157,10 +157,13 @@ public class FileWriter {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {
                 String path = files[i].getPath();
-                System.out.println(path);
-                if (path.endsWith("class") && path.indexOf("org\\icefaces") > 1) {
-                    path = path.substring(path.indexOf("org\\icefaces"), path.indexOf(".class"));
-                    path = path.replace('\\', '.');
+                if (path.endsWith("class")) {
+                    System.out.println("1. separatorChar "+ files[i].separatorChar);
+                    System.out.println("2. separatorChar "+ path); 
+                    path = path.replace(files[i].separatorChar, '.');
+                    path = path.substring(path.indexOf("org.icefaces"), path.indexOf(".class"));
+                    System.out.println("3.separatorChar "+ path);                    
+        
                      try {                    
                         Class c = loader.loadClass(path);
                         if (c.isAnnotationPresent(Component.class)) {
