@@ -23,9 +23,9 @@ public class SessionBoundServlet extends PathDispatcher {
         PushContext pushContext = new PushContext(notifier);
         session.setAttribute(PushContext.class.getName(), pushContext);
 
-        dispatchOn(".*listen\\.icepush$", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, session.getServletContext()));
-        dispatchOn(".*create-push-id\\.icepush$", new CreatePushID(pushContext));
-        dispatchOn(".*notify\\.icepush$", new NotifyPushID(pushContext));
+        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, session.getServletContext()));
+        dispatchOn(".*create-push-id\\.icepush", new CreatePushID(pushContext));
+        dispatchOn(".*notify\\.icepush", new NotifyPushID(pushContext));
     }
 
     private static class CreatePushID extends AbstractPseudoServlet {
