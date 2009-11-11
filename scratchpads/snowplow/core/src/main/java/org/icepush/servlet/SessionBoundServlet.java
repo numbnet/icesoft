@@ -28,7 +28,7 @@ public class SessionBoundServlet extends PathDispatcher {
         dispatchOn(".*notify\\.icepush$", new NotifyPushID(pushContext));
     }
 
-    private static class CreatePushID implements PseudoServlet {
+    private static class CreatePushID extends AbstractPseudoServlet {
         private final PushContext pushContext;
 
         public CreatePushID(PushContext pushContext) {
@@ -39,12 +39,9 @@ public class SessionBoundServlet extends PathDispatcher {
             response.getWriter().write(pushContext.createPushId());
             response.getWriter().write("\n\n");
         }
-
-        public void shutdown() {
-        }
     }
 
-    private static class NotifyPushID implements PseudoServlet {
+    private static class NotifyPushID extends AbstractPseudoServlet {
         private final PushContext pushContext;
 
         public NotifyPushID(PushContext pushContext) {
@@ -56,9 +53,6 @@ public class SessionBoundServlet extends PathDispatcher {
             for (int i = 0; i < ids.length; i++) {
                 pushContext.push(ids[i]);
             }
-        }
-
-        public void shutdown() {
         }
     }
 }
