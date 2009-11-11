@@ -35,7 +35,6 @@ public class ServletEnvironmentListener implements ServletContextListener, HttpS
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        SessionDispatcher.notifySessionStartup(httpSessionEvent.getSession());
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {

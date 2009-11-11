@@ -2,6 +2,7 @@ package org.icepush.servlet;
 
 import org.icepush.CodeServer;
 import org.icepush.Configuration;
+import org.icepush.PushContext;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.Observable;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,16 +28,24 @@ public class ICEpushServlet extends HttpServlet {
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
 
+        timer = new Timer(true);
         final ServletContext context = servletConfig.getServletContext();
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
-        timer = new Timer(true);
+        final Observable notifier = new Observable() {
+            public synchronized void notifyObservers(Object o) {
+                setChanged();
+                super.notifyObservers(o);
+                clearChanged();
+            }
+        };
+        final PushContext pushContext = new PushContext(notifier, context);
 
         //todo: replace SessionDispatcher with BrowserDispatcher -- dispatching based on the BROWSERID cookie
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new SessionDispatcher(context) {
             protected PseudoServlet newServer(HttpSession session) {
-                return new SessionBoundServlet(session, timer, configuration);
+                return new SessionBoundServlet(context, pushContext, notifier, timer, configuration);
             }
         });
 

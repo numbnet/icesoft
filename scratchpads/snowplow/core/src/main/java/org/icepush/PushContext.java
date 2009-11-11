@@ -1,7 +1,6 @@
 package org.icepush;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +11,9 @@ public class PushContext {
     private Observable notificationObservable;
     private Map groups = new HashMap();
 
-    public PushContext(Observable notificationObservable) {
+    public PushContext(Observable notificationObservable, ServletContext context) {
         this.notificationObservable = notificationObservable;
+        context.setAttribute(PushContext.class.getName(), this);
     }
 
     public synchronized String createPushId() {
@@ -52,14 +52,7 @@ public class PushContext {
         }
     }
 
-    public static synchronized PushContext getInstance(HttpServletRequest request) {
-        return getInstance(request.getSession());
-    }
-
-    public static synchronized PushContext getInstance(HttpSession session) {
-        //the returned PushContext must be aware of the BROWSERID cookie and
-        //must have a reference to the application scope notification service
-        //request.getSession().getServletContext().getAttribute(NOTIFY_SERVICE);
-        return (PushContext) session.getAttribute(PushContext.class.getName());
+    public static synchronized PushContext getInstance(ServletContext context) {
+        return (PushContext) context.getAttribute(PushContext.class.getName());
     }
 }
