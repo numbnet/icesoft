@@ -55,16 +55,6 @@
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ICEpush</servlet-name>
-        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ICEpush</servlet-name>
-        <url-pattern>*.icepush</url-pattern>
-    </servlet-mapping>
-
     <!-- Welcome File Configuration -->
 
     <welcome-file-list>

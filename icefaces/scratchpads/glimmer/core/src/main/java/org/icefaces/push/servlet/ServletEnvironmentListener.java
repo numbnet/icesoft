@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 public class ServletEnvironmentListener implements ServletContextListener, HttpSessionListener {
-    //todo: get rid of this listener when BROWSERID is introduced
+    //todo: get rid of this li`stener when BROWSERID is introduced
     org.icepush.servlet.ServletEnvironmentListener ICEpushListener = new org.icepush.servlet.ServletEnvironmentListener();
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -37,7 +37,8 @@ public class ServletEnvironmentListener implements ServletContextListener, HttpS
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         ICEpushListener.contextDestroyed(servletContextEvent);
-        PushResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
+        ICEfacesResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
+        ICEpushResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {

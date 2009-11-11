@@ -25,6 +25,7 @@ package org.icefaces.push.servlet;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
 import org.icefaces.push.SessionBoundServer;
+import org.icepush.PushContext;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -41,8 +42,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class PushResourceHandler extends ResourceHandler implements CurrentContext {
-    private static Logger log = Logger.getLogger("org.icefaces.pushservlet");
+public class ICEfacesResourceHandler extends ResourceHandler implements CurrentContext {
+    private static Logger log = Logger.getLogger(ICEfacesResourceHandler.class.getName());
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
@@ -50,15 +51,16 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
 
     private ResourceHandler handler;
 
-    public PushResourceHandler(ResourceHandler handler) {
+    public ICEfacesResourceHandler(ResourceHandler handler) {
         this.handler = handler;
         ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        context.setAttribute(PushResourceHandler.class.getName(), this);
+        context.setAttribute(ICEfacesResourceHandler.class.getName(), this);
 
         final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
+        final PushContext pushContext = PushContext.getInstance(context);
         dispatcher = new SessionDispatcher(context) {
             protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-                return new SessionBoundServer(session, sessionMonitor, configuration);
+                return new SessionBoundServer(pushContext, session, sessionMonitor, configuration);
             }
         };
     }
@@ -153,11 +155,7 @@ public class PushResourceHandler extends ResourceHandler implements CurrentConte
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        ((PushResourceHandler) context.getAttribute(PushResourceHandler.class.getName())).dispose();
-    }
-
-    private void dispose() {
-        dispatcher.shutdown();
+        ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher.shutdown();
     }
 
     //todo: factor out into a ServletContextDispatcher

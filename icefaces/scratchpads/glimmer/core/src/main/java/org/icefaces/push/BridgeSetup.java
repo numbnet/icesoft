@@ -33,7 +33,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
         //replace with icepush.js resource in icepush.jar
         output = new UIOutput();
         output.getAttributes().put("escape", "false");
-        output.setValue("<script src='code.icepush' type='text/javascript'></script>");
+        output.setValue("<script src='code.icepush.jsf' type='text/javascript'></script>");
         root.addComponentResource(context, output, "head");
 
         output = new UIOutput();
