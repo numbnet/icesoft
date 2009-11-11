@@ -108,15 +108,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    public static void notifySessionStartup(HttpSession session) {
-        SessionDispatcher sessionDispatcher = lookupSessionDispatcher(session.getServletContext());
-        try {
-            sessionDispatcher.checkSession(session);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void notifySessionShutdown(final HttpSession session) {
         notifySessionShutdown(session, session.getServletContext());
     }

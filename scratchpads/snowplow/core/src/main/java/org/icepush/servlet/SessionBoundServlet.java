@@ -4,26 +4,16 @@ import org.icepush.BlockingConnectionServer;
 import org.icepush.Configuration;
 import org.icepush.PushContext;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Observable;
 import java.util.Timer;
 
 public class SessionBoundServlet extends PathDispatcher {
 
-    public SessionBoundServlet(HttpSession session, final Timer monitorRunner, Configuration configuration) {
-        Observable notifier = new Observable() {
-            public synchronized void notifyObservers(Object o) {
-                setChanged();
-                super.notifyObservers(o);
-                clearChanged();
-            }
-        };
-        PushContext pushContext = new PushContext(notifier);
-        session.setAttribute(PushContext.class.getName(), pushContext);
-
-        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, session.getServletContext()));
+    public SessionBoundServlet(ServletContext context, PushContext pushContext, Observable notifier, final Timer monitorRunner, Configuration configuration) {
+        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, context));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID(pushContext));
         dispatchOn(".*notify\\.icepush", new NotifyPushID(pushContext));
     }

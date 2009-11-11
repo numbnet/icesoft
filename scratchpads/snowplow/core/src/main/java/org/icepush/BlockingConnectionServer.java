@@ -43,7 +43,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class BlockingConnectionServer extends TimerTask implements Server {
+public class BlockingConnectionServer extends TimerTask implements Server, Observer {
     private static final ResponseHandler CloseResponse = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             //let the bridge know that this blocking connection should not be re-initialized
@@ -65,24 +65,14 @@ public class BlockingConnectionServer extends TimerTask implements Server {
     private Server activeServer;
     private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
     private List participatingViews = Collections.emptyList();
+    private Observable notifier;
 
     public BlockingConnectionServer(Observable notifier, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
-
+        this.notifier = notifier;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
-        notifier.addObserver(new Observer() {
-            public void update(Observable observable, Object o) {
-                //stop sending notifications if pushID are not used anymore by the browser
-                List pushIDs = new ArrayList(Arrays.asList((String[]) o));
-                pushIDs.retainAll(participatingViews);
-                if (!pushIDs.isEmpty()) {
-                    updatedViews.addAll(pushIDs);
-                    resetTimeout();
-                    respondIfViewsAvailable();
-                }
-            }
-        });
+        notifier.addObserver(this);
 
         //define blocking server
         activeServer = new Server() {
@@ -102,8 +92,16 @@ public class BlockingConnectionServer extends TimerTask implements Server {
         };
     }
 
-    private void resetTimeout() {
-        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
+    public void update(Observable observable, Object o) {
+        //stop sending notifications if pushID are not used anymore by the browser
+        //todo: verify if this kind of filtering is scalable enough
+        List pushIDs = new ArrayList(Arrays.asList((String[]) o));
+        pushIDs.retainAll(participatingViews);
+        if (!pushIDs.isEmpty()) {
+            updatedViews.addAll(pushIDs);
+            resetTimeout();
+            respondIfViewsAvailable();
+        }
     }
 
     public void service(final Request request) throws Exception {
@@ -112,6 +110,7 @@ public class BlockingConnectionServer extends TimerTask implements Server {
 
     public void shutdown() {
         cancel();
+        notifier.deleteObserver(this);
         activeServer.shutdown();
     }
 
@@ -131,6 +130,10 @@ public class BlockingConnectionServer extends TimerTask implements Server {
                 }
             });
         }
+    }
+
+    private void resetTimeout() {
+        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
     }
 
     private void respondIfPendingRequest(ResponseHandler handler) {
