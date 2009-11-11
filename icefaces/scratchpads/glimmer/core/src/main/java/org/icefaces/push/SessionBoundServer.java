@@ -36,26 +36,27 @@ import java.util.Observer;
 public class SessionBoundServer extends PathDispatcher {
     private static final String ICEFacesBridgeRequestPattern = "\\.icefaces\\.jsf$";
 
-    public SessionBoundServer(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
+    public SessionBoundServer(final PushContext pushContext, final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
         final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
             public String mimeTypeFor(String path) {
                 return session.getServletContext().getMimeType(path);
             }
         };
         final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
+        final String groupName = session.getId();
         windowScopeManager.onActivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
-                PushContext.getInstance(session).addGroupMember(session.getId(), (String) o);
+                pushContext.addGroupMember(groupName, (String) o);
             }
         });
         windowScopeManager.onDisactivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
-                PushContext.getInstance(session).removeGroupMember(session.getId(), (String) o);
+                pushContext.removeGroupMember(groupName, (String) o);
             }
         });
         final SessionRenderer sessionRenderer = new SessionRenderer() {
             public void renderViews() {
-                PushContext.getInstance(session).push(session.getId());
+                pushContext.push(groupName);
             }
         };
         session.setAttribute(SessionRenderer.class.getName(), sessionRenderer);

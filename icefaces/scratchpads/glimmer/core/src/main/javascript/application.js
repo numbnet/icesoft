@@ -51,6 +51,10 @@ if (!window.ice || !window.ice.icefaces) {
         namespace.submit = submit;
         namespace.s = submit;
 
+        //todo: find better solution for configuring ICEpush
+        //this is meant to be used by ICEpush JS code
+        namespace.uriextension = '.jsf';
+
         var serverErrorListeners = [];
         namespace.onServerError = function(callback) {
             append(serverErrorListeners, callback);
