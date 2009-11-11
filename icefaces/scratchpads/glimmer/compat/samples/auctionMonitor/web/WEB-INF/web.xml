@@ -194,18 +194,7 @@ synchronous update mode and disable AJAX push features. -->
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/icefaces/*</url-pattern>
     </servlet-mapping>
-
-
-    <servlet>
-        <servlet-name>ICEpush</servlet-name>
-        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ICEpush</servlet-name>
-        <url-pattern>*.icepush</url-pattern>
-    </servlet-mapping>
-
+    
     <!-- Persistent Faces Servlet Mapping -->
     <!--
         <servlet-mapping>
