@@ -21,11 +21,11 @@ public class PageNotifier extends HttpServlet {
         pushContext = PushContext.getInstance(servletConfig.getServletContext());
     }
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        final String idA = pushContext.createPushId();
-        final String idB = pushContext.createPushId();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        final String idA = pushContext.createPushId(request, response);
+        final String idB = pushContext.createPushId(request, response);
 
-        PrintWriter w = httpServletResponse.getWriter();
+        PrintWriter w = response.getWriter();
         w.write("<html><head><title>");
         w.write(idA + "; " + idB);
         w.write("</title>");
