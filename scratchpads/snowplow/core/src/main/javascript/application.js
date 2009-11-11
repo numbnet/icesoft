@@ -113,6 +113,7 @@ if (!window.ice) {
         var currentNotifications = [];
         var apiChannel = Client(true);
         //public API
+        namespace.uriextension = '';
         namespace.push = {
             register: function(pushIds, callback) {
                 enlistViewWithWindow(pushIds);
@@ -132,14 +133,14 @@ if (!window.ice) {
 
             createPushId: function() {
                 var id;
-                postSynchronously(apiChannel, 'create-push-id.icepush', noop, FormPost, function(response) {
+                postSynchronously(apiChannel, 'create-push-id.icepush' + namespace.uriextension, noop, FormPost, function(response) {
                     id = contentAsText(response);
                 });
                 return id;
             },
 
             notify: function(ids) {
-                postAsynchronously(apiChannel, 'notify.icepush', function(q) {
+                postAsynchronously(apiChannel, 'notify.icepush' + namespace.uriextension, function(q) {
                     each(ids, curry(addNameValue, q, 'id'));
                 }, FormPost, noop);
             },
