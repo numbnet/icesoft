@@ -10,6 +10,14 @@ var submit;
         serializeOn($event(event, element), collectingQuery);
     }
 
+    function serializeAdditionalParameters(additionalParameters, options) {
+        if (additionalParameters) {
+            additionalParameters(function(name, value) {
+                options[name] = value;
+            });
+        }
+    }
+
     //set these variables only once
     var singleSubmitForm;
     var viewState;
@@ -19,7 +27,7 @@ var submit;
         viewState = document.getElementById('javax.faces.ViewState').value;
     });
 
-    singleSubmit = function (event, element) {
+    singleSubmit = function (event, element, additionalParameters) {
         var clonedElement = element.cloneNode(true);
         singleSubmitForm.appendChild(clonedElement);
 
@@ -27,6 +35,7 @@ var submit;
             event = event || null;
             var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewState};
             serializeEventToOptions(event, element, options);
+            serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
         } finally {
             singleSubmitForm.removeChild(clonedElement);
@@ -37,11 +46,7 @@ var submit;
         event = event || null;
         var options = {execute: '@all', render: '@all', 'ice.window': namespace.window};
         serializeEventToOptions(event, element, options);
-        if (additionalParameters) {
-            additionalParameters(function(name, value) {
-                options[name] = value;
-            });
-        }
+        serializeAdditionalParameters(additionalParameters, options);
         jsf.ajax.request(element, event, options);
     };
 })();
