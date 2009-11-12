@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Observable;
 import java.util.Timer;
 
-public class SessionBoundServlet extends PathDispatcher {
+public class BrowserBoundServlet extends PathDispatcher {
 
-    public SessionBoundServlet(ServletContext context, PushContext pushContext, Observable notifier, final Timer monitorRunner, Configuration configuration) {
+    public BrowserBoundServlet(ServletContext context, PushContext pushContext, Observable notifier, final Timer monitorRunner, Configuration configuration) {
         dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, context));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID(pushContext));
         dispatchOn(".*notify\\.icepush", new NotifyPushID(pushContext));
@@ -26,7 +26,7 @@ public class SessionBoundServlet extends PathDispatcher {
         }
 
         public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-            response.getWriter().write(pushContext.createPushId());
+            response.getWriter().write(pushContext.createPushId(request, response));
             response.getWriter().write("\n\n");
         }
     }

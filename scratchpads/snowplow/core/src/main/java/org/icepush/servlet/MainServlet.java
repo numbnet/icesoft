@@ -10,7 +10,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.net.SocketException;
 import java.util.Observable;
 import java.util.Timer;
@@ -34,12 +33,11 @@ public class MainServlet implements PseudoServlet {
         };
         final PushContext pushContext = new PushContext(notifier, context);
 
-        //todo: replace SessionDispatcher with BrowserDispatcher -- dispatching based on the BROWSERID cookie
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
-        pathDispatcher.dispatchOn(".*", new SessionDispatcher(context) {
-            protected PseudoServlet newServer(HttpSession session) {
-                return new SessionBoundServlet(context, pushContext, notifier, timer, configuration);
+        pathDispatcher.dispatchOn(".*", new BrowserDispatcher() {
+            protected PseudoServlet newServer(String browserID) {
+                return new BrowserBoundServlet(context, pushContext, notifier, timer, configuration);
             }
         });
 
