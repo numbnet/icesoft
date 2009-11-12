@@ -1,7 +1,9 @@
 package org.icefaces.push;
 
 import org.icefaces.application.WindowScopeManager;
+import org.icefaces.util.EnvUtils;
 
+import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
@@ -10,9 +12,11 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class BridgeSetup extends ViewHandlerWrapper {
     private ViewHandler handler;
+    private static String BRIDGE_SETUP_MARKER = BridgeSetup.class.getName();
 
     public BridgeSetup() {
         super();
@@ -26,9 +30,27 @@ public class BridgeSetup extends ViewHandlerWrapper {
         return handler;
     }
 
-    public UIViewRoot createView(FacesContext context, String viewId) {
-        UIViewRoot root = handler.createView(context, viewId);
+    public void renderView(FacesContext context, UIViewRoot root) 
+    throws IOException, FacesException  {
+        if (!EnvUtils.isICEfacesView(context)) {
+            handler.renderView(context, root);
+            return;
+        }
+
+        Map rootAttributes = root.getAttributes();
+        if (rootAttributes.containsKey(BRIDGE_SETUP_MARKER))  {
+            handler.renderView(context, root);
+            return;
+        }
+        rootAttributes.put(BRIDGE_SETUP_MARKER, BRIDGE_SETUP_MARKER);
+
         UIOutput output;
+
+        output = new UIOutput();
+        output.setRendererType("javax.faces.resource.Script");
+        output.getAttributes().put("name", "jsf.js");
+        output.getAttributes().put("library", "javax.faces");
+        root.addComponentResource(context, output, "head");
 
         //replace with icepush.js resource in icepush.jar
         output = new UIOutput();
@@ -42,6 +64,13 @@ public class BridgeSetup extends ViewHandlerWrapper {
         root.addComponentResource(context, output, "head");
 
         try {
+            String id = WindowScopeManager.lookup(context).determineWindowID(context);
+            
+            output = new UIOutput();
+            output.getAttributes().put("escape", "false");
+            output.setValue("<script type=\"text/javascript\">window.ice.window = " + id + ";</script>");
+            root.addComponentResource(context, output, "body");
+
             String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
             output = new UIOutput();
             output.getAttributes().put("escape", "false");
@@ -53,6 +82,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
             e.printStackTrace();
         }
 
-        return root;
+        handler.renderView(context, root);
+        return;
     }
 }

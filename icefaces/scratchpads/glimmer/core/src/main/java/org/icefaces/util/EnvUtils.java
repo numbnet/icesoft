@@ -23,7 +23,9 @@
 package org.icefaces.util;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +34,8 @@ import org.icefaces.render.DOMRenderKit;
 public class EnvUtils {
     private static Logger log = Logger.getLogger("org.icefaces.util.EnvUtils");
     private static Class PortletSessionClass;
+    public static String ICEFACES_RENDER = "org.icefaces.render";
+    public static String ICEFACES_AUTO = "org.icefaces.render.auto";
 
     static {
         try {
@@ -49,9 +53,27 @@ public class EnvUtils {
     }
 
     public static boolean isICEfacesView(FacesContext facesContext)  {
-        if (facesContext.getRenderKit() instanceof DOMRenderKit)  {
-            return true;
+        Map attributes = facesContext.getAttributes();
+        Object icefacesRender = attributes.get(ICEFACES_RENDER);
+        //may need a marker property to indicate when all ICEfaces
+        //params have been lazily initialized
+        if (null == icefacesRender)  {
+            ExternalContext externalContext = facesContext.getExternalContext();
+            Map initParams = externalContext.getInitParameterMap();
+            String icefacesAuto = (String) initParams.get(ICEFACES_AUTO);
+            if ( (null == icefacesAuto) || ("true".equalsIgnoreCase(icefacesAuto)) )  {
+                //"true" or null is "true" as default
+                icefacesRender = Boolean.TRUE;
+            } else {
+                icefacesRender = Boolean.FALSE;
+            }
+            attributes.put(ICEFACES_RENDER, icefacesRender);
         }
-        return false;
+        //using .equals on Boolean to obtain boolean robustly
+        return (Boolean.TRUE.equals(icefacesRender));
+//        if (facesContext.getRenderKit() instanceof DOMRenderKit)  {
+//            return true;
+//        }
+//        return false;
     }
 }

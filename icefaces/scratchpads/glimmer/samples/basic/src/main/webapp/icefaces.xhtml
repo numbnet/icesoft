@@ -6,14 +6,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://icefaces.org/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-<f:view renderKitId="xHTML_BASIC" contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <title>Ajax</title>
-   <h:outputScript name="jsf.js" library="javax.faces" />
+    <title>ICEfaces Ajax</title>
 </h:head>
 <h:body>
+    <ice:config render="true" />
     <h:form id="form1" prependId="false">
 
         <h2>Show / Hide based on backing bean</h2>
@@ -26,11 +26,15 @@
         <br/>
         <h:commandButton id="button1" value="Show/Hide"
                          actionListener="#{basic.toggle}">
-            <f:ajax execute="@all" render="@all" />
         </h:commandButton>
         <br/>
         <h:outputText value="Reload entire page: "/>
         <h:commandButton id="reload" value="reload"/>
+        <br/>
+        <h:outputLink value="icefaces.jsf">ICEfaces Page</h:outputLink>
+        <!--remove the ampersand escaping once the DOCTYPE is fixed -->
+        &amp;nbsp;&amp;nbsp;
+        <h:outputLink value="nonicefaces.jsf">Stock JSF Page</h:outputLink>
         <h:messages/>
     </h:form>
 
