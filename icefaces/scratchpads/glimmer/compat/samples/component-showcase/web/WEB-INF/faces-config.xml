@@ -48,7 +48,6 @@
     </factory>
     <application>
     <render-kit>
-        <render-kit-id>xHTML_BASIC</render-kit-id>
         <render-kit-class>com.icesoft.faces.component.CompatDOMRenderKit</render-kit-class>
     </render-kit>
 

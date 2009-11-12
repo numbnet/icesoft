@@ -4,9 +4,9 @@
               version="2.0"
               metadata-complete="false">
     <ordering>
-        <after>
+        <before>
             <name>ICEfaces core</name>
-        </after>
+        </before>
     </ordering>
 <!--
     <render-kit>

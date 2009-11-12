@@ -92,7 +92,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public void processPartial(PhaseId phaseId) {
-
         if (!EnvUtils.isICEfacesView(facesContext)) {
             wrapped.processPartial(phaseId);
             return;
@@ -184,6 +183,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     private void applyBrowserChanges(Map parameters, Document document) {
+        if (null == document)  {
+            log.warning("DOM is null during applyBrowserChanges");
+            return;
+        }
         NodeList inputElements = document.getElementsByTagName("input");
         int inputElementsLength = inputElements.getLength();
         for (int i = 0; i < inputElementsLength; i++) {

@@ -31,11 +31,13 @@ import javax.faces.render.Renderer;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.FactoryFinder;
 import javax.faces.render.ResponseStateManager;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseStream;
 import javax.faces.render.ClientBehaviorRenderer;
 
 import org.icefaces.context.DOMResponseWriter;
+import org.icefaces.util.EnvUtils;
 
 public class DOMRenderKit extends RenderKit {
     RenderKit delegate;
@@ -59,7 +61,6 @@ public class DOMRenderKit extends RenderKit {
     }
 
     public Renderer getRenderer(String family, String type)  {
-//        System.out.println("getRenderer " + family + " " + type);
         return delegate.getRenderer(family, type);
     }
 
@@ -68,6 +69,9 @@ public class DOMRenderKit extends RenderKit {
     }
 
     public  ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding)  {
+        if (!EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
+            return delegate.createResponseWriter(writer, contentTypeList, encoding);
+        }
         ResponseWriter responseWriter = new DOMResponseWriter(writer);
         return responseWriter;
     }
@@ -77,7 +81,6 @@ public class DOMRenderKit extends RenderKit {
     }
     
     public Iterator getComponentFamilies()  {
-        System.out.println("getComponentFamilies ");
         return delegate.getComponentFamilies();
     }
 
