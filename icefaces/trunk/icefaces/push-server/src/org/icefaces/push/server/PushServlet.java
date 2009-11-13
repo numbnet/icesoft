@@ -74,6 +74,7 @@ extends HttpServlet {
     public void destroy() {
         super.destroy();
         pushServerMessageService.stop();
+        pushServerMessageService.tearDownNow();
         pushServerMessageService.close();
         pathDispatcher.shutdown();
         scheduledThreadPoolExecutor.shutdownNow(); 
@@ -97,14 +98,17 @@ extends HttpServlet {
                 new PushServerMessageService(
                     new MessageServiceClient(
                         "Push Server MSC",
-                        new HttpAdapter(servletContext), servletContext),
-                        scheduledThreadPoolExecutor,
-                        new ServletContextConfiguration(
-                            "com.icesoft.net.messaging", servletContext));
+                        new HttpAdapter(servletContext),
+                        servletContext),
+                    scheduledThreadPoolExecutor,
+                    new ServletContextConfiguration(
+                        "com.icesoft.net.messaging", servletContext));
             pushServerMessageService.setUpNow();
             final SessionManager _sessionManager =
                 new SessionManager(
-                    _servletConfigConfiguration, pushServerMessageService);
+                    _servletConfigConfiguration,
+                    scheduledThreadPoolExecutor,
+                    pushServerMessageService);
             SessionDispatcher _sessionDispatcher =
                 new SessionDispatcher(servletContext) {
                     protected PseudoServlet newServer(

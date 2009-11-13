@@ -33,6 +33,8 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -60,6 +62,7 @@ implements
 
     public SessionManager(
         final Configuration configuration,
+        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final PushServerMessageService pushServerMessageService) {
 
         this.pushServerMessageService = pushServerMessageService;
@@ -69,7 +72,7 @@ implements
             addCallback(this);
         this.pushServerMessageService.getUpdatedViewsMessageHandler().
             addCallback(this);
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(scheduledThreadPoolExecutor);
         this.updatedViewsManager =
             new UpdatedViewsManager(
                 configuration, pushServerMessageService, this);

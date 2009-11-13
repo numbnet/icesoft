@@ -1,5 +1,7 @@
 package org.icefaces.push.server;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,9 +15,19 @@ public class RequestManager {
 
     private final Map pendingRequestMap = new HashMap();
 
-    {
+    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+
+    public RequestManager(
+        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor)
+    throws IllegalArgumentException {
+        if (scheduledThreadPoolExecutor == null) {
+            throw
+                new IllegalArgumentException(
+                    "scheduledThreadPoolExecutor is null");
+        }
+        this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
         if (LOG.isDebugEnabled()) {
-            new Thread(
+            this.scheduledThreadPoolExecutor.execute(
                 new Runnable() {
                     public void run() {
                         while (true) {
@@ -46,8 +58,7 @@ public class RequestManager {
                             }
                         }
                     }
-                }
-            ).start();
+                });
         }
     }
 
