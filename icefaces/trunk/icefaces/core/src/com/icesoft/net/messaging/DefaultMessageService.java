@@ -97,6 +97,9 @@ implements MessageServiceClient.Administrator {
             }
             if (currentState == STATE_TEAR_DOWN_DONE) {
                 try {
+                    currentMessagePublisher.stop();
+                    // switch from a queue-based message publisher to a noop message publisher.
+                    currentMessagePublisher = new NoopMessagePublisher();
                     // throws MessageServiceException
                     messageServiceClient.close();
                     currentState = STATE_CLOSED;
@@ -270,7 +273,7 @@ implements MessageServiceClient.Administrator {
     }
 
     public final void stop() {
-       synchronized (stateLock) {
+        synchronized (stateLock) {
             requestedState = STATE_STOPPED;
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Requested State: STOPPED");
@@ -429,7 +432,7 @@ implements MessageServiceClient.Administrator {
                 succeeded = true;
                 synchronized (stateLock) {
                     currentState = STATE_SET_UP_DONE;
-                    if (LOG.isInfoEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("Current State: SET UP DONE");
                     }
                     if (requestedState == STATE_STARTED) {
@@ -441,12 +444,10 @@ implements MessageServiceClient.Administrator {
                 tearDownNow();
                 if (retries++ == maxRetries) {
                     cancel();
-                    currentMessagePublisher.stop();
-                    // switch from a queue-based message publisher to a noop message publisher.
-                    currentMessagePublisher = new NoopMessagePublisher();
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Set up of the message service client failed: " + exception.getMessage());
                     }
+                    close();
                 }
             }
             LOG.debug("Executing Set Up task... (succeeded: [" + succeeded + "])");
@@ -488,6 +489,7 @@ implements MessageServiceClient.Administrator {
                     synchronized (stateLock) {
                         if (requestedState == STATE_CLOSED) {
                             cancel();
+                            break;
                         }
                     }
                     try {
@@ -499,6 +501,7 @@ implements MessageServiceClient.Administrator {
                     synchronized (stateLock) {
                         if (requestedState == STATE_CLOSED) {
                             cancel();
+                            break;
                         }
                     }
                 }
@@ -538,9 +541,6 @@ implements MessageServiceClient.Administrator {
                         LOG.debug("Current State: TEAR DOWN DONE");
                     }
                     if (requestedState == STATE_CLOSED) {
-                        currentMessagePublisher.stop();
-                        // switch from a queue-based message publisher to a noop message publisher.
-                        currentMessagePublisher = new NoopMessagePublisher();
                         close();
                     }
                 }
