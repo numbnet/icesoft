@@ -53,15 +53,22 @@
         },
 
         asURIEncodedString: function() {
-            return this.parameters.inject('', function(result, association, index) {
-                return result += (index == 0) ? association.asURIEncodedString() : '&' + association.asURIEncodedString();
-            });
+            var result = [];
+            for (var i = 0, length = this.parameters.length; i < length; i++) {
+                result.push(this.parameters[i].asURIEncodedString());
+            }
+            return result.join('&');
         },
 
         asString: function() {
-            return this.parameters.inject('', function(result, parameter, index) {
-                return result + '\n| ' + parameter.asString() + ' |';
-            });
+            var result = [];
+            var length = this.parameters.length;
+            var limit = 25;
+            var displayPartialy = length > limit;
+            for (var i = 0; i < limit; i++) {
+                result.push('| ' + this.parameters[i].asString() + ' |');
+            }
+            return result.join('\n') + (displayPartialy ? '\n......\n......' : '');
         },
 
         sendOn: function(connection) {
@@ -70,7 +77,7 @@
 
         serializeOn: function(query) {
             this.parameters.each(function(parameter) {
-                parameter.serializeOn(query);
+                query.addParameter(parameter);
             });
         }
     });
