@@ -168,6 +168,7 @@ public class MainServlet extends HttpServlet {
         if (coreMessageService != null) {
             coreMessageService.stop();
             coreMessageService.tearDownNow();
+            coreMessageService.close();
         }
         scheduledThreadPoolExecutor.shutdownNow();
     }
