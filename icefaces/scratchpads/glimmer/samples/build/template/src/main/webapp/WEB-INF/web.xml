@@ -47,23 +47,13 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>
 
-    <!--<servlet>-->
-        <!--<servlet-name>Faces Servlet</servlet-name>-->
-        <!--<servlet-class>org.icefaces.webapp.ICEFacesServlet</servlet-class>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>Faces Servlet</servlet-name>-->
-        <!--<url-pattern>/basic/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
+        <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>
