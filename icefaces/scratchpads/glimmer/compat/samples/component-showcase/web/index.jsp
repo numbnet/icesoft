@@ -30,14 +30,6 @@
   ~ this file under either the MPL or the LGPL License."
   ~
   -->
-<html>
-    <head>
-        <title>ICEsoft Component Showcase-compat version for ICEfaces-2</title>
-    </head>
-    <body>
-    <%
-        String redirectURL = "./showcase.jsf";
-        response.sendRedirect(redirectURL);
-    %>
-    </body>
-</html>
+<%
+    response.sendRedirect("showcase.jsf");
+%>
