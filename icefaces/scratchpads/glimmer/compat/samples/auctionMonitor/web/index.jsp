@@ -1,8 +1,4 @@
-<html>
-	<head>
-	</head>
-	
-	<body>
-		<jsp:forward page="auctionMonitor.jsf" />
-	</body>
-</html>
+<%
+    response.sendRedirect("auctionMonitor.jsf");
+%>
+
