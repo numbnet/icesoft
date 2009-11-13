@@ -220,8 +220,10 @@ implements JMSConnection {
                                 new MessageListener(this), topicSubscriber);
                         try {
                             // throws RejectedExecutionException
-                            jmsAdapter.getExecutorService().
-                                execute(messageReceiver);
+                            jmsAdapter.
+                                getMessageServiceClient().
+                                    getScheduledThreadPoolExecutor().
+                                        execute(messageReceiver);
                         } catch (RejectedExecutionException exception) {
                             if (LOG.isFatalEnabled()) {
                                 LOG.fatal(

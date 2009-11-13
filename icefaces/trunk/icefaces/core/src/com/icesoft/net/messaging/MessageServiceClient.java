@@ -31,7 +31,12 @@
  */
 package com.icesoft.net.messaging;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.util.ServerUtility;
+import com.icesoft.util.ThreadFactory;
+
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -40,7 +45,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Timer;
 
 import javax.servlet.ServletContext;
 
@@ -53,108 +57,77 @@ public class MessageServiceClient {
     private static final Log LOG =
         LogFactory.getLog(MessageServiceClient.class);
 
+    private static final int DEFAULT_MESSAGE_MAX_LENGTH = 4 * 1024;
+    private static final int DEFAULT_THREAD_POOL_SIZE = 15;
+    private static final int DEFAULT_MESSAGE_MAX_DELAY = 100;
+
     private final Map messageHandlerMap = new HashMap();
     private final Map messagePipelineMap = new HashMap();
 
     private Administrator administrator;
     private MessageServiceConfiguration messageServiceConfiguration;
     private MessageServiceAdapter messageServiceAdapter;
+    private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     private Properties baseMessageProperties = new Properties();
     private String name;
 
-    private Timer timer = new Timer();
-
-    public MessageServiceClient(
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter,
-        final ServletContext servletContext)
-    throws IllegalArgumentException {
-        this(
-            null,
-            messageServiceConfiguration,
-            messageServiceAdapter,
-            servletContext);
-    }
-
-    public MessageServiceClient(
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter,
-        final String servletContextPath)
-    throws IllegalArgumentException {
-        this(
-            null,
-            messageServiceConfiguration,
-            messageServiceAdapter,
-            servletContextPath);
-    }
-
     public MessageServiceClient(
         final MessageServiceAdapter messageServiceAdapter,
         final ServletContext servletContext)
     throws IllegalArgumentException {
-        this(null, null, messageServiceAdapter, servletContext);
+        this(null, messageServiceAdapter, servletContext, null);
     }
 
     public MessageServiceClient(
         final MessageServiceAdapter messageServiceAdapter,
-        final String servletContextPath)
+        final ServletContext servletContext, final String servletContextPath)
     throws IllegalArgumentException {
-        this(null, null, messageServiceAdapter, servletContextPath);
-    }
-
-    public MessageServiceClient(
-        final String name,
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter,
-        final ServletContext servletContext)
-    throws IllegalArgumentException {
-        this(name, messageServiceConfiguration, messageServiceAdapter);
-        setBaseMessageProperties(servletContext);
-    }
-
-    public MessageServiceClient(
-        final String name,
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter,
-        final String servletContextPath)
-    throws IllegalArgumentException {
-        this(name, messageServiceConfiguration, messageServiceAdapter);
-        setBaseMessageProperties(servletContextPath);
+        this(null, messageServiceAdapter, servletContext, servletContextPath);
     }
 
     public MessageServiceClient(
         final String name, final MessageServiceAdapter messageServiceAdapter,
         final ServletContext servletContext)
     throws IllegalArgumentException {
-        this(name, null, messageServiceAdapter, servletContext);
+        this(name, messageServiceAdapter, servletContext, null);
     }
 
     public MessageServiceClient(
         final String name, final MessageServiceAdapter messageServiceAdapter,
-        final String servletContextPath)
-    throws IllegalArgumentException {
-        this(name, null, messageServiceAdapter, servletContextPath);
-    }
-
-    private MessageServiceClient(
-        final String name,
-        final MessageServiceConfiguration messageServiceConfiguration,
-        final MessageServiceAdapter messageServiceAdapter)
+        final ServletContext servletContext, final String servletContextPath)
     throws IllegalArgumentException {
         if (messageServiceAdapter == null) {
             throw new IllegalArgumentException("messageServiceAdapter is null");
         }
-        this.name = name;
-        if (messageServiceConfiguration != null) {
-            this.messageServiceConfiguration = messageServiceConfiguration;
-        } else {
-            this.messageServiceConfiguration =
-                new MessageServiceConfigurationProperties();
-            this.messageServiceConfiguration.setMessageMaxDelay(100);
-            this.messageServiceConfiguration.setMessageMaxLength(10 * 1024);
+        if (servletContext == null) {
+            throw new IllegalArgumentException("servletContext is null");
         }
+        this.name = name;
         this.messageServiceAdapter = messageServiceAdapter;
         this.messageServiceAdapter.setMessageServiceClient(this);
+        Configuration _servletContextConfiguration =
+            new ServletContextConfiguration(
+                "com.icesoft.net.messaging", servletContext);
+        messageServiceConfiguration =
+            new MessageServiceConfigurationProperties();
+        messageServiceConfiguration.setMessageMaxDelay(
+            _servletContextConfiguration.getAttributeAsInteger(
+                "messageMaxDelay", DEFAULT_MESSAGE_MAX_DELAY));
+        messageServiceConfiguration.setMessageMaxLength(
+            _servletContextConfiguration.getAttributeAsInteger(
+                "messageMaxLength", DEFAULT_MESSAGE_MAX_LENGTH));
+        if (servletContextPath != null) {
+            setBaseMessageProperties(servletContextPath);
+        } else {
+            setBaseMessageProperties(servletContext);
+        }
+        ThreadFactory _threadFactory = new ThreadFactory();
+        _threadFactory.setPrefix("MSC Thread");
+        scheduledThreadPoolExecutor =
+            new ScheduledThreadPoolExecutor(
+                _servletContextConfiguration.getAttributeAsInteger(
+                    "threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
+                _threadFactory);
     }
 
     /**
@@ -215,6 +188,7 @@ public class MessageServiceClient {
      */
     public void close()
     throws MessageServiceException {
+        scheduledThreadPoolExecutor.shutdownNow();
         try {
             messageServiceAdapter.close();
         } finally {
@@ -271,6 +245,10 @@ public class MessageServiceClient {
      */
     public String[] getPublisherTopicNames() {
         return messageServiceAdapter.getPublisherTopicNames();
+    }
+
+    public ScheduledThreadPoolExecutor getScheduledThreadPoolExecutor() {
+        return scheduledThreadPoolExecutor;
     }
 
     /**
@@ -1154,19 +1132,6 @@ public class MessageServiceClient {
         }
     }
 
-    void schedule(final PublishTask publishTask, final long delay) {
-        try {
-            timer.schedule(publishTask, delay);
-        } catch (IllegalStateException exception) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(
-                    "Task already scheduled or cancelled, " +
-                        "timer was cancelled, or timer thread terminated.",
-                    exception);
-            }
-        }
-    }
-
     private static void addMessageProperties(
         final Properties messageProperties, final Message message) {
 
@@ -1258,7 +1223,9 @@ public class MessageServiceClient {
             _messagePipeline =
                 (MessagePipeline)messagePipelineMap.get(_messagePipelineId);
         } else {
-            _messagePipeline = new MessagePipeline(this, topicName);
+            _messagePipeline =
+                new MessagePipeline(
+                    this, topicName, scheduledThreadPoolExecutor);
             messagePipelineMap.put(_messagePipelineId,  _messagePipeline);
         }
         _messagePipeline.enqueue(message);
@@ -1282,15 +1249,7 @@ public class MessageServiceClient {
     }
     
     private void setBaseMessageProperties(final ServletContext servletContext) {
-        if (servletContext != null) {
-            String _servletContextPath =
-                ServerUtility.getServletContextPath(servletContext);
-            if (_servletContextPath != null) {
-                baseMessageProperties.setProperty(
-                    Message.SOURCE_SERVLET_CONTEXT_PATH, _servletContextPath);
-            }
-        }
-        setBaseMessageProperties();
+        setBaseMessageProperties(servletContext != null ? ServerUtility.getServletContextPath(servletContext) : null);
     }
 
     private void setBaseMessageProperties(final String servletContextPath) {

@@ -37,10 +37,6 @@ import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceException;
-import com.icesoft.util.ThreadFactory;
-
-import edu.emory.mathcs.backport.java.util.concurrent.Executors;
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,20 +69,6 @@ implements MessageServiceAdapter {
 
     private InitialContext initialContext;
     private TopicConnectionFactory topicConnectionFactory;
-
-    private ExecutorService executorService;
-
-    public JMSAdapter(final JMSProviderConfiguration jmsProviderConfiguration)
-    throws IllegalArgumentException {
-        super(jmsProviderConfiguration);
-        this.jmsProviderConfigurations =
-            new JMSProviderConfiguration[] {
-                jmsProviderConfiguration
-            };
-        ThreadFactory _threadFactory = new ThreadFactory();
-        _threadFactory.setPrefix("MessageReceiver Thread");
-        executorService = Executors.newCachedThreadPool(_threadFactory);
-    }
 
     public JMSAdapter(final ServletContext servletContext)
     throws IllegalArgumentException {
@@ -122,9 +104,6 @@ implements MessageServiceAdapter {
             this.jmsProviderConfigurations[0].
                 setTopicConnectionFactoryName("ConnectionFactory");
         }
-        ThreadFactory _threadFactory = new ThreadFactory();
-        _threadFactory.setPrefix("MessageReceiver Thread");
-        executorService = Executors.newCachedThreadPool(_threadFactory);
     }
 
     public void addMessageHandler(
@@ -177,7 +156,6 @@ implements MessageServiceAdapter {
                     }
                     topicSubscriberMap.clear();
                 }
-                executorService.shutdown();
                 topicConnectionFactory = null;
                 if (initialContext != null) {
                     try {
@@ -343,7 +321,10 @@ implements MessageServiceAdapter {
                         // throws NamingException.
                         _jmsSubscriberConnection =
                             new JMSSubscriberConnection(
-                                lookUpTopic(topicName), this);
+                                lookUpTopic(topicName),
+                                this,
+                                getMessageServiceClient().
+                                    getScheduledThreadPoolExecutor());
                     } catch (NamingException exception) {
                         throw new MessageServiceException(exception);
                     }
@@ -382,12 +363,28 @@ implements MessageServiceAdapter {
             if (topicSubscriberMap.containsKey(topicName)) {
 //                synchronized (topicSubscriberMap) {
 //                    if (topicSubscriberMap.containsKey(topicName)) {
+                        JMSSubscriberConnection _jmsSubscriberConnection =
+                            (JMSSubscriberConnection)
+                                topicSubscriberMap.remove(topicName);
+                        MessageServiceException _messageServiceException = null;
                         try {
-                            ((JMSSubscriberConnection)
-                                topicSubscriberMap.get(topicName)).
-                                    unsubscribe();
+                            _jmsSubscriberConnection.stop();
                         } catch (JMSException exception) {
-                            throw new MessageServiceException(exception);
+                            // do nothing.
+                        }
+                        try {
+                            _jmsSubscriberConnection.unsubscribe();
+                        } catch (JMSException exception) {
+                            _messageServiceException =
+                                new MessageServiceException(exception);
+                        }
+                        try {
+                            _jmsSubscriberConnection.close();
+                        } catch (JMSException exception) {
+                            // do nothing.
+                        }
+                        if (_messageServiceException != null) {
+                            throw _messageServiceException;
                         }
 //                    }
 //                }
@@ -397,10 +394,6 @@ implements MessageServiceAdapter {
 
     TopicConnectionFactory getTopicConnectionFactory() {
         return topicConnectionFactory;
-    }
-
-    ExecutorService getExecutorService() {
-        return executorService;
     }
 
     private JMSProviderConfiguration[] getJMSProviderConfigurations(

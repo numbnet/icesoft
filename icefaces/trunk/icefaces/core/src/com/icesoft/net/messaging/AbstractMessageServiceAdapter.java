@@ -52,17 +52,6 @@ implements MessageServiceAdapter {
     protected Map topicPublisherMap = new HashMap();
     protected Map topicSubscriberMap = new HashMap();
 
-    protected AbstractMessageServiceAdapter(
-        final MessageServiceConfiguration messageServiceConfiguration)
-    throws IllegalArgumentException {
-        if (messageServiceConfiguration == null) {
-            throw
-                new IllegalArgumentException(
-                    "messageServiceConfiguration is null");
-        }
-        this.messageServiceConfiguration = messageServiceConfiguration;
-    }
-
     protected AbstractMessageServiceAdapter(final ServletContext servletContext)
     throws IllegalArgumentException {
         if (servletContext == null) {

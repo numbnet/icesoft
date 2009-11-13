@@ -31,6 +31,10 @@
  */
 package com.icesoft.net.messaging;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
+import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -73,17 +77,14 @@ import org.apache.commons.logging.LogFactory;
 public class MessagePipeline {
     private static final Log LOG = LogFactory.getLog(MessagePipeline.class);
 
-    private MessageServiceClient messageServiceClient;
-    private String topicName;
+    private final Object messageLock = new Object();
+    private final MessageServiceClient messageServiceClient;
+    private final String topicName;
+
     private Message message;
     private PublishTask publishTask;
 
-    private final Object messageLock = new Object();
-
-    public MessagePipeline(
-        final MessageServiceClient messageServiceClient,
-        final String topicName) {
-
+    public MessagePipeline(final MessageServiceClient messageServiceClient, final String topicName) {
         this.messageServiceClient = messageServiceClient;
         this.topicName = topicName;
     }
@@ -119,27 +120,26 @@ public class MessagePipeline {
         synchronized (messageLock) {
             if (this.message == null) {
                 this.message = message;
-                publishTask = new PublishTask(this);
                 if (this.message.getLength() >=
-                        messageServiceClient.getMessageServiceConfiguration().
-                            getMessageMaxLength()) {
+                        messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
 
-                    messageServiceClient.schedule(publishTask, 0);
+                    publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
+                    publishTask.execute();
                 } else {
-                    messageServiceClient.schedule(
-                        publishTask,
-                        messageServiceClient.getMessageServiceConfiguration().
-                            getMessageMaxDelay());
+                    publishTask =
+                        new PublishTask(
+                            messageServiceClient.getMessageServiceConfiguration().getMessageMaxDelay(),
+                            messageServiceClient.getScheduledThreadPoolExecutor());
+                    publishTask.execute();
                 }
             } else {
                 this.message.append(message);
                 if (this.message.getLength() >=
-                        messageServiceClient.getMessageServiceConfiguration().
-                            getMessageMaxLength()) {
+                        messageServiceClient.getMessageServiceConfiguration().getMessageMaxLength()) {
 
                     publishTask.cancel();
-                    publishTask = new PublishTask(this);
-                    messageServiceClient.schedule(publishTask, 0);
+                    publishTask = new PublishTask(0, messageServiceClient.getScheduledThreadPoolExecutor());
+                    publishTask.execute();
                 }
             }
         }
@@ -148,8 +148,7 @@ public class MessagePipeline {
     void publish() {                  
         synchronized (messageLock) {
             try {
-                messageServiceClient.getMessageServiceAdapter().
-                    publish(message, topicName);
+                messageServiceClient.getMessageServiceAdapter().publish(message, topicName);
                 publishTask.cancel();
                 publishTask = null;
                 message = null;
@@ -168,6 +167,40 @@ public class MessagePipeline {
                     message = null;
                 }
             }
+        }
+    }
+
+    private class PublishTask
+    implements Runnable {
+        private final long delay;
+        private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+
+        private boolean cancelled = false;
+        private boolean succeeded = false;
+
+        private ScheduledFuture scheduledFuture;
+
+        private PublishTask(final long delay, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
+            this.delay = delay;
+            this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
+        }
+
+        public void run() {
+            publish();
+            cancel();
+            succeeded = true;
+        }
+
+        private void cancel() {
+            if (scheduledFuture != null) {
+                scheduledFuture.cancel(false);
+                scheduledFuture = null;
+            }
+            cancelled = true;
+        }
+
+        private void execute() {
+            scheduledFuture = scheduledThreadPoolExecutor.schedule(this, delay, TimeUnit.MILLISECONDS);
         }
     }
 }
