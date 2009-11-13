@@ -1223,9 +1223,7 @@ public class MessageServiceClient {
             _messagePipeline =
                 (MessagePipeline)messagePipelineMap.get(_messagePipelineId);
         } else {
-            _messagePipeline =
-                new MessagePipeline(
-                    this, topicName, scheduledThreadPoolExecutor);
+            _messagePipeline = new MessagePipeline(this, topicName);
             messagePipelineMap.put(_messagePipelineId,  _messagePipeline);
         }
         _messagePipeline.enqueue(message);
