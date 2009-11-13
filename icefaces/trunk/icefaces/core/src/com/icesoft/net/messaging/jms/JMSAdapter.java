@@ -321,10 +321,7 @@ implements MessageServiceAdapter {
                         // throws NamingException.
                         _jmsSubscriberConnection =
                             new JMSSubscriberConnection(
-                                lookUpTopic(topicName),
-                                this,
-                                getMessageServiceClient().
-                                    getScheduledThreadPoolExecutor());
+                                lookUpTopic(topicName), this);
                     } catch (NamingException exception) {
                         throw new MessageServiceException(exception);
                     }
