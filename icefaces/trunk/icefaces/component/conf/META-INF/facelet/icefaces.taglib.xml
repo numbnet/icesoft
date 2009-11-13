@@ -555,6 +555,13 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>repeat</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.Repeat</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>rowSelector</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.RowSelector</component-type>

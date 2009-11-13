@@ -147,6 +147,7 @@
 <!ENTITY ice-PanelPositioned-component SYSTEM "ice/components/PanelPositioned-component.xml">
 <!ENTITY ice-UISeries-component SYSTEM "ice/components/UISeries-component.xml">
 <!ENTITY ice-DataExporter-component SYSTEM "ice/components/DataExporter-component.xml">
+<!ENTITY ice-Repeat-component SYSTEM "ice/components/Repeat-component.xml">
   ]>
 <faces-config>
     &ice-ApplyEffect-component;
@@ -227,7 +228,8 @@
     &ice-Tree-component;
     &ice-PanelPositioned-component;
     &ice-UISeries-component;
-    &ice-DataExporter-component;    
+    &ice-DataExporter-component; 
+    &ice-Repeat-component; 
     <render-kit>
             &ice-ApplyEffect-renderer;
             &ice-PanelBorder-renderer;
@@ -293,6 +295,6 @@
             &ice-TreeNode-renderer;
             &ice-Tree-renderer;
             &ice-PanelPositioned-renderer;
-            &ice-DataExporter-renderer;            
+            &ice-DataExporter-renderer; 
     </render-kit>
 </faces-config>

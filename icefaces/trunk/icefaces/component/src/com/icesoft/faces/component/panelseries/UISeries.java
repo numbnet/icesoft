@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.model.SetDataModel;
@@ -692,6 +693,18 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             }
         }
     }
+    
+    /*
+     *  (non-Javadoc)
+     * @see javax.faces.component.UIComponent#isRendered()
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    } 
+    
 }
 
 class ChildState implements Serializable {

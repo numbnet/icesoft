@@ -76,17 +76,6 @@ public class PanelSeries extends UISeries {
         return (COMPONENT_FAMILY);
     }
 
-    /*
-     *  (non-Javadoc)
-     * @see javax.faces.component.UIComponent#isRendered()
-     */
-    public boolean isRendered() {
-        if (!Util.isRenderedOnUserRole(this)) {
-            return false;
-        }
-        return super.isRendered();
-    }
-
 
     /**
      * <p>Set the value of the <code>styleClass</code> property.</p>
