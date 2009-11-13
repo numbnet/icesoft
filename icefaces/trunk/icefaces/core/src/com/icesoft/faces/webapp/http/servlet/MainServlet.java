@@ -213,7 +213,11 @@ public class MainServlet extends HttpServlet {
             String blockingRequestHandlerContext = configuration.getAttribute("blockingRequestHandlerContext", "push-server");
             coreMessageService =
                 new CoreMessageService(
-                    new MessageServiceClient("Core MSC", new HttpAdapter(localAddress, localPort, context), currentContextPath.lookup()),
+                    new MessageServiceClient(
+                        "Core MSC",
+                        new HttpAdapter(localAddress, localPort, context),
+                        context,
+                        currentContextPath.lookup()),
                     scheduledThreadPoolExecutor,
                     new ServletContextConfiguration("com.icesoft.net.messaging", context),
                     blockingRequestHandlerContext);
@@ -240,7 +244,11 @@ public class MainServlet extends HttpServlet {
             if (isJMSAvailable) {
                 coreMessageService =
                     new CoreMessageService(
-                        new MessageServiceClient("Core MSC", new JMSAdapter(context), currentContextPath.lookup()),
+                        new MessageServiceClient(
+                            "Core MSC",
+                            new JMSAdapter(context),
+                            context,
+                            currentContextPath.lookup()),
                         scheduledThreadPoolExecutor,
                         new ServletContextConfiguration("com.icesoft.net.messaging", context),
                         true,
@@ -254,7 +262,11 @@ public class MainServlet extends HttpServlet {
             if (coreMessageService == null) {
                 coreMessageService =
                     new CoreMessageService(
-                        new MessageServiceClient("Core MSC", new HttpAdapter(localAddress, localPort, context), currentContextPath.lookup()),
+                        new MessageServiceClient(
+                            "Core MSC",
+                            new HttpAdapter(localAddress, localPort, context),
+                            context,
+                            currentContextPath.lookup()),
                         scheduledThreadPoolExecutor,
                         new ServletContextConfiguration("com.icesoft.net.messaging", context),
                         configuration.getAttribute("blockingRequestHandlerContext", "push-server"));
