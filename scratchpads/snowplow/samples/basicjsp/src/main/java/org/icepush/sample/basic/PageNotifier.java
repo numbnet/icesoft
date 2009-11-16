@@ -14,17 +14,18 @@ import java.util.TimerTask;
 
 public class PageNotifier extends HttpServlet {
     private Timer timer;
+    private PushContext pushContext;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         timer = new Timer(true);
+        pushContext = PushContext.getInstance(servletConfig.getServletContext());
     }
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        final PushContext pc = PushContext.getInstance(httpServletRequest);
-        final String idA = pc.createPushId();
-        final String idB = pc.createPushId();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        final String idA = pushContext.createPushId(request, response);
+        final String idB = pushContext.createPushId(request, response);
 
-        PrintWriter w = httpServletResponse.getWriter();
+        PrintWriter w = response.getWriter();
         w.write("<html><head><title>");
         w.write(idA + "; " + idB);
         w.write("</title>");
@@ -38,12 +39,12 @@ public class PageNotifier extends HttpServlet {
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                pc.push(idA);
+                pushContext.push(idA);
             }
         }, 0, 5000);
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                pc.push(idB);
+                pushContext.push(idB);
             }
         }, 1000, 5000);
     }
