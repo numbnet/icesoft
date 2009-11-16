@@ -12,6 +12,7 @@
 	<attribute>
 		<name>group</name>
 		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 	<attribute>
 		<name>notifier</name>
@@ -19,6 +20,24 @@
 	</attribute>
 	<attribute>
 		<name>callback</name>
+		<required>true</required>
+	</attribute>
+</tag>
+<tag>
+	<name>region</name>
+	<tagclass>org.icepush.sample.basic.RegionTag</tagclass>
+	<info>ice.push.region</info>
+	<attribute>
+		<name>id</name>
+		<required>true</required>
+	</attribute>
+	<attribute>
+		<name>group</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>notifier</name>
 		<required>true</required>
 	</attribute>
 </tag>
