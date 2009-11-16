@@ -34,6 +34,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.util.DOMUtils;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -154,8 +155,8 @@ public class MessagesRenderer extends DomBasicRenderer {
             String styleClass = styleAndStyleClass[1];
 
             String[] summaryAndDetail = getSummaryAndDetail(nextFacesMessage);
-            String summary = summaryAndDetail[0];
-            String detail = summaryAndDetail[1];
+            String summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
+            String detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
 
             boolean showSummary = ((UIMessages) uiComponent).isShowSummary();
             boolean showDetail = ((UIMessages) uiComponent).isShowDetail();
