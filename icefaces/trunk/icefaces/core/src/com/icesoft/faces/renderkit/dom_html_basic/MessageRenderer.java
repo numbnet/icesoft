@@ -36,6 +36,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
+import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -113,8 +114,8 @@ public class MessageRenderer extends DomBasicRenderer {
         boolean tooltip = getToolTipAttribute(uiComponent);
 
         String[] summaryAndDetail = getSummaryAndDetail(facesMessage);
-        String summary = summaryAndDetail[0];
-        String detail = summaryAndDetail[1];
+        String summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
+        String detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
 
         // showSummary
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
