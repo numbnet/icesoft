@@ -61,11 +61,12 @@
         },
 
         asString: function() {
+            var limit = 25;
             var result = [];
             var length = this.parameters.length;
-            var limit = 25;
             var displayPartialy = length > limit;
-            for (var i = 0; i < limit; i++) {
+            length = length < limit ? length : limit;
+            for (var i = 0; i < length; i++) {
                 result.push('| ' + this.parameters[i].asString() + ' |');
             }
             return result.join('\n') + (displayPartialy ? '\n......\n......' : '');
@@ -86,7 +87,7 @@
         var query = new This.Query;
         execute.apply(this, [ query ]);
         return query;
-    }
+    };
 
     This.Association = Object.subclass({
         initialize: function(name, value) {
