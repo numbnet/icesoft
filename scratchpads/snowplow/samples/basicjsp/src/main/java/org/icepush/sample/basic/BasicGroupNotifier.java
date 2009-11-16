@@ -1,30 +1,47 @@
 package org.icepush.sample.basic;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
+import java.util.Iterator;
 import org.icepush.PushContext;
 
-public class BasicGroupNotifier {
+public class BasicGroupNotifier extends Thread {
+    private HashSet groups;
     private PushContext pushContext;
-    private String group;
 
     public BasicGroupNotifier() {
-	pushContext = null;
-	group = null;
+	groups = new HashSet();
     }
-    public String getGroup() {
-	return group;
-    }
-    public void setGroup(String grp) {
-	this.group = grp;
-    }
+    
     public PushContext getPushContext() {
 	return pushContext;
     }
     public void setPushContext(PushContext pc) {
-	this.pushContext = pc;
+	pushContext = pc;
     }
+
+    public void addGroup(String group) {
+	groups.add(group);
+    }
+    public void removeGroup(String group) {
+	groups.remove(group);
+    }
+
     public void push() {
-	if (pushContext != null && group != null) {
+	if (pushContext == null) {
+	    System.out.println("PushContext is null");
+	}
+	for (Iterator i=groups.iterator(); i.hasNext();) {
+	    String group = (String)i.next();
+	    System.out.println("Pushing to group " + group);
 	    pushContext.push(group);
-	}     
+	}
+    }
+
+    public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	response.setContentType("text/html");
+	response.setContentLength(0);
     }
 }
