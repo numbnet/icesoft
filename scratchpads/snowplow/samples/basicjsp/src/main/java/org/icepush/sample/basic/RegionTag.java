@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.icepush.PushContext;
 
-public class RegisterTag extends TagSupport {
+public class RegionTag extends TagSupport {
 
+    private String id;
     private String group;
     private String notifier;
-    private String callback;
 
     @Override
 	public int doStartTag() throws JspException {
@@ -37,6 +37,7 @@ public class RegisterTag extends TagSupport {
 		pc.createPushId(request,(HttpServletResponse)(pageContext.getResponse()));
 	    
 	    // Add to group;
+	    notifierBean.setPushContext(pc);
 	    notifierBean.addGroup(group);
 	    pc.addGroupMember(group, pushid);
 
@@ -45,31 +46,55 @@ public class RegisterTag extends TagSupport {
 
 	    //Write script to register;
 	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "']," + callback + ");");
+	    w.write("ice.push.register(['" + pushid + "'], function() {");
+	    w.write("ice.push.post('" + request.getContextPath() + 
+		    "/pushnotifier/notify.html', function(parameter) {");
+	    w.write("parameter('notifier', '" + notifier + "');");
+	    w.write("}, function(statusCode, responseText) {");
+	    w.write("replaceDiv('" + id + "', responseText);");
+	    w.write("}); });");
 	    w.write("</script>");
 
+	    //Write the div;
+	    w.write("<div id=\"" + id + "\">");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	return SKIP_BODY;
+	return EVAL_BODY_INCLUDE;
     }
 
+
+    @Override
+	public int doEndTag() throws JspException {
+
+	try {
+	    //Get the writer object for output.
+	    JspWriter w = pageContext.getOut();
+
+	    //Close the div;
+	    w.write("</div>");
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return EVAL_PAGE;
+    }
+
+    public String getId() {
+	return id;
+    }
+    public void setId(String id) {
+	this.id = id;
+    }
     public String getGroup() {
 	return group;
     }
     public void setGroup(String grp) {
 	this.group = grp;
-	}
+	} 
     public String getNotifier() {
 	return notifier;
     }
     public void setNotifier(String notifier) {
 	this.notifier = notifier;
-    }
-    public String getCallback() {
-	return callback;
-    }
-    public void setCallback(String cb) {
-	this.callback = cb;
     }
 }
