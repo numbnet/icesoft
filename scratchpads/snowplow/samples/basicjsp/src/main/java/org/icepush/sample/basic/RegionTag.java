@@ -38,8 +38,12 @@ public class RegionTag extends TagSupport {
 	    
 	    // Add to group;
 	    notifierBean.setPushContext(pc);
+	    if (group == null) {
+		group = pushid;
+	    } else {
+		pc.addGroupMember(group, pushid);
+	    }
 	    notifierBean.addGroup(group);
-	    pc.addGroupMember(group, pushid);
 
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
@@ -60,6 +64,7 @@ public class RegionTag extends TagSupport {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+	group = null;
 	return EVAL_BODY_INCLUDE;
     }
 

@@ -11,7 +11,7 @@
 	<info>ice.push.register</info>
 	<attribute>
 		<name>group</name>
-		<required>true</required>
+		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 	<attribute>
@@ -33,7 +33,7 @@
 	</attribute>
 	<attribute>
 		<name>group</name>
-		<required>true</required>
+		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 	<attribute>

@@ -37,8 +37,13 @@ public class RegisterTag extends TagSupport {
 		pc.createPushId(request,(HttpServletResponse)(pageContext.getResponse()));
 	    
 	    // Add to group;
-	    notifierBean.addGroup(group);
-	    pc.addGroupMember(group, pushid);
+	    notifierBean.setPushContext(pc);
+	    if (group == null) {
+		notifierBean.addGroup(pushid);
+	    } else {
+		notifierBean.addGroup(group);
+		pc.addGroupMember(group, pushid);
+	    }
 
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
