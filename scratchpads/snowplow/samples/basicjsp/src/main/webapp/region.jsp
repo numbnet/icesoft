@@ -3,11 +3,10 @@
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <%@taglib prefix="icep" uri="/WEB-INF/icepush.tld"%>
 
-<%-- 
 <jsp:useBean id="requestNotifier" class="org.icepush.sample.basic.IntervalGroupNotifier" scope="session">
 	<jsp:setProperty name="requestNotifier" property="interval" value="3000"/>
 </jsp:useBean>
---%>
+
 <jsp:useBean id="sessionNotifier" class="org.icepush.sample.basic.IntervalGroupNotifier" scope="session">
 	<jsp:setProperty name="sessionNotifier" property="interval" value="5000"/>
 </jsp:useBean>
@@ -25,13 +24,11 @@
 </head>
 <body>
 	<h1>Testing ICEpush in JSP.</h1>
-<%--
-	Request Region
-	<icep:region id="request-region" group="${session.id}" notifier="requestNotifier">
+	Window Region
+	<icep:region id="request-region" notifier="requestNotifier">
 &nbsp 
 	</icep:region>
 	<br/>
---%>
 	Session Region
 	<icep:region id="session-region" group="session" notifier="sessionNotifier">
 &nbsp 
