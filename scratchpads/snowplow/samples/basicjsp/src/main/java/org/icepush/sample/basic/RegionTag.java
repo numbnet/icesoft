@@ -54,6 +54,7 @@ public class RegionTag extends TagSupport {
 	    w.write("ice.push.post('" + request.getContextPath() + 
 		    "/pushnotifier/notify.html', function(parameter) {");
 	    w.write("parameter('notifier', '" + notifier + "');");
+	    w.write("parameter('group', '" + group + "');");
 	    w.write("}, function(statusCode, responseText) {");
 	    w.write("replaceDiv('" + id + "', responseText);");
 	    w.write("}); });");

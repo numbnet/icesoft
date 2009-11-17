@@ -9,16 +9,19 @@ import org.icepush.PushContext;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 public class IntervalGroupNotifier extends BasicGroupNotifier {
     private long interval;
     private Timer timer;
-    private Integer counter=new Integer(0);
+    private Hashtable counters;
 
     public IntervalGroupNotifier() {
 	super();
 	interval = -1;
         timer = null;
+	counters = new Hashtable();
     }
 
     public long getInterval() {
@@ -28,8 +31,19 @@ public class IntervalGroupNotifier extends BasicGroupNotifier {
 	this.interval = interval;
 	startTimer();
     }
-    public Integer getCounter() {
-	return counter;
+
+    @Override
+    public void addGroup(String group) {
+	super.addGroup(group);
+	if (!counters.containsKey(group)) {
+	    counters.put(group, new Integer(0));
+	}
+    }
+
+    @Override
+    public void removeGroup(String group) {
+	super.removeGroup(group);
+	counters.remove(group);
     }
 
     @Override
@@ -39,8 +53,15 @@ public class IntervalGroupNotifier extends BasicGroupNotifier {
     
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	final String group = (String)request.getParameter("group");
+	Integer counter = (Integer)counters.get(group);
+	String body;
+	if (counter == null) {
+	    body = new String("");
+	} else {
+	    body = counter.toString();
+	}
 	response.setContentType("text/html");
-	String body = counter.toString();
 	PrintWriter writer = response.getWriter();
 	writer.write(body);
 	response.setContentLength(body.length());
@@ -55,7 +76,12 @@ public class IntervalGroupNotifier extends BasicGroupNotifier {
 	}
         timer.scheduleAtFixedRate(new TimerTask() {
 		public void run() {
-		    counter++;
+		    Enumeration e = counters.keys();
+		    while (e.hasMoreElements()) {
+			String group = (String)e.nextElement();
+			int counter = ((Integer)counters.get(group)).intValue();
+			counters.put(group, new Integer(++counter));
+		    }
 		    push();
 		}
 	    }, interval, interval);
