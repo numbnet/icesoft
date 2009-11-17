@@ -30,12 +30,9 @@ public class BasicGroupNotifier extends Thread {
     }
 
     public void push() {
-	if (pushContext == null) {
-	    System.out.println("PushContext is null");
-	}
 	for (Iterator i=groups.iterator(); i.hasNext();) {
 	    String group = (String)i.next();
-	    System.out.println("Pushing to group " + group);
+	    //	    System.out.println("Pushing to group " + group);
 	    pushContext.push(group);
 	}
     }
