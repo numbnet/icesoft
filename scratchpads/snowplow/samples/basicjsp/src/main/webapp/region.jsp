@@ -12,7 +12,7 @@
 	<jsp:setProperty name="sessionNotifier" property="interval" value="5000"/>
 </jsp:useBean>
 
-<jsp:useBean id="applicationNotifier" class="org.icepush.sample.basic.IntervalGroupNotifier" scope="session">
+<jsp:useBean id="applicationNotifier" class="org.icepush.sample.basic.IntervalGroupNotifier" scope="application">
 	<jsp:setProperty name="applicationNotifier" property="interval" value="10000"/>
 </jsp:useBean>
 
@@ -27,14 +27,14 @@
 	<h1>Testing ICEpush in JSP.</h1>
 <%--
 	Request Region
-	<icep:region id="request-region" group="%= request.getId() %.1" notifier="requestNotifier">
-<%= request.getId() %> &nbsp 
+	<icep:region id="request-region" group="${session.id}" notifier="requestNotifier">
+&nbsp 
 	</icep:region>
 	<br/>
 --%>
 	Session Region
-	<icep:region id="session-region" group="#{session.id}" notifier="sessionNotifier">
-<%= session.getId() %> &nbsp 
+	<icep:region id="session-region" group="session" notifier="sessionNotifier">
+&nbsp 
 	</icep:region>
 	<br/>
 	Application Region
