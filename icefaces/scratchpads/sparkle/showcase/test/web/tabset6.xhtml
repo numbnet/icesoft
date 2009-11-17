@@ -17,27 +17,37 @@
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body>
-    <h:form styleClass=" yui-skin-sam">
+    <h:panelGroup styleClass=" yui-skin-sam">
        <ann:tabSet>
             <ann:tab label="Tab 1" >
-                <h:inputText value="#{tabBean.txt1}"/>    
-                <h:inputText value="#{tabBean.txt2}"/>                  
+                <h:form>
+			<h:inputText value="#{tabBean.txt1}"/>    
+			<h:inputText value="#{tabBean.txt2}"/>  
+			<h:commandButton value="Save" />			
+                </h:form>                
             </ann:tab>       
             <ann:tab label="Tab 2" >
-                <h:inputText value="#{tabBean.txt3}"/>    
-          
+                <h:form>            
+                	<h:inputText value="#{tabBean.txt3}"/> 
+                	<h:commandButton value="Save" />
+                </h:form>
             </ann:tab>
             <ann:tab label="Tab 3" >
-                <h:inputText value="#{tabBean.txt4}"/>    
+                <h:form> 
+                	<h:inputText value="#{tabBean.txt4}"/> 
+                	<h:commandButton value="Save" />
+             	
+                </h:form>                 	
             </ann:tab>
         </ann:tabSet> 
+        
         <h:panelGrid>
         	<h:outputText value="#{tabBean.txt1}"/> 
         	<h:outputText value="#{tabBean.txt2}"/> 
         	<h:outputText value="#{tabBean.txt3}"/> 
         	<h:outputText value="#{tabBean.txt4}"/>         	
         </h:panelGrid>        
-    </h:form>
+    </h:panelGroup>
 
    <a href="index.html"> Goto Main page </a>    
 </h:body>

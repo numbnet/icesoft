@@ -17,28 +17,38 @@
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body>
-    <h:form styleClass=" yui-skin-sam">
+The tabset is inside a form, and first tab has required fields so tab can not be changed until fields have values:
+       <h:form>    <h:messages /> 
+    <h:panelGroup styleClass=" yui-skin-sam">
        <ann:tabSet>
             <ann:tab label="Tab 1" >
-                <h:inputText value="#{tabBean.txt1}"/>    
-                <h:inputText value="#{tabBean.txt2}"/>                  
+         <h:panelGrid columns="3">
+			<h:outputText value="Required Field: "/>   <h:inputText value="#{tabBean.txt1}" required="true" />   <h:outputText value="#{tabBean.txt1}"/>  
+			<h:outputText value="Required Field: "/>   <h:inputText value="#{tabBean.txt2}" required="true" />   <h:outputText value="#{tabBean.txt2}"/> 
+	 </h:panelGrid>			
+			<h:commandButton value="Save" />			
+                  
             </ann:tab>       
             <ann:tab label="Tab 2" >
-                <h:inputText value="#{tabBean.txt3}"/>    
-          
+                	<h:inputText value="#{tabBean.txt3}"/> 
+                	<h:commandButton value="Save" />
             </ann:tab>
             <ann:tab label="Tab 3" >
-                <h:inputText value="#{tabBean.txt4}"/>    
+                	<h:inputText value="#{tabBean.txt4}"/> 
+                	<h:commandButton value="Save" />
+             	
             </ann:tab>
         </ann:tabSet> 
+                            	
+        
         <h:panelGrid>
-        	<h:outputText value="#{tabBean.txt1}"/> 
-        	<h:outputText value="#{tabBean.txt2}"/> 
+        	
+        	
         	<h:outputText value="#{tabBean.txt3}"/> 
         	<h:outputText value="#{tabBean.txt4}"/>         	
         </h:panelGrid>        
-    </h:form>
-
+    </h:panelGroup>
+ </h:form>    
    <a href="index.html"> Goto Main page </a>    
 </h:body>
 </html>
