@@ -22,12 +22,15 @@ public class PushModeSerializer implements DOMSerializer {
     private View view;
     private BridgeFacesContext context;
     private String viewNumber;
+    private boolean coalesce;
 
     public PushModeSerializer(BridgeFacesContext.DocumentStore store, View view, BridgeFacesContext context, String viewNumber) {
         this.store = store;
         this.view = view;
         this.context = context;
         this.viewNumber = viewNumber;
+        coalesce = context.configuration
+                .getAttributeAsBoolean("coalesceUpdates", true);
     }
 
     public void serialize(final Document document) throws IOException {
@@ -92,7 +95,7 @@ public class PushModeSerializer implements DOMSerializer {
                 view.preparePage(new PreparedPage(document));
                 view.put(new Reload(viewNumber));
             } else {
-                view.put(new UpdateElements(elements));
+                view.put(new UpdateElements(coalesce, elements));
             }
         }
     }

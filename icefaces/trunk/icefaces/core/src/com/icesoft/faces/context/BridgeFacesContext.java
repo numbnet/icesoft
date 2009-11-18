@@ -113,7 +113,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private String sessionID;
     private String viewNumber;
     private View view;
-    private Configuration configuration;
+    public Configuration configuration;
     private Collection jsCodeURIs = new ArrayList();
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
