@@ -12,7 +12,7 @@
 </jsp:useBean>
 
 <jsp:useBean id="applicationNotifier" class="org.icepush.sample.basic.IntervalGroupNotifier" scope="application">
-	<jsp:setProperty name="applicationNotifier" property="interval" value="10000"/>
+	<jsp:setProperty name="applicationNotifier" property="interval" value="7000"/>
 </jsp:useBean>
 
 <html>
