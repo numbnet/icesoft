@@ -15,9 +15,11 @@ public class UpdateElements extends AbstractCommand {
     private final static Pattern START_CDATA = Pattern.compile("<\\!\\[CDATA\\[");
     private final static Pattern END_CDATA = Pattern.compile("\\]\\]>");
     private Element[] updates;
+    private boolean coalesce = true;
 
-    public UpdateElements(Element[] updates) {
+    public UpdateElements(boolean coalesce, Element[] updates) {
         this.updates = updates;
+        this.coalesce = coalesce;
     }
 
     public Command coalesceWithPrevious(UpdateElements updateElementsCommand) {
@@ -41,10 +43,13 @@ public class UpdateElements extends AbstractCommand {
         }
         coallescedUpdates.addAll(Arrays.asList(updates));
 
-        return new UpdateElements((Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
+        return new UpdateElements(coalesce, (Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
     }
 
     public Command coalesceWithNext(Command command) {
+        if (!coalesce)  {
+            return command;
+        }
         return command.coalesceWithPrevious(this);
     }
 
