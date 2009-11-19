@@ -19,6 +19,7 @@ import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.ServerUtility;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +63,11 @@ public class MainServlet extends HttpServlet {
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
         context = servletConfig.getServletContext();
+        //Strange hack to ensure classes are loaded for shutdown (ICE-5155)
+        ScheduledThreadPoolExecutor disposableExecutor = new ScheduledThreadPoolExecutor(1);
+        disposableExecutor.shutdownNow();
+        StringBuilder disposableBuilder = new StringBuilder();
+
         try {
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
             final IdGenerator idGenerator = new IdGenerator(context.getResource("/WEB-INF/web.xml").getPath());
