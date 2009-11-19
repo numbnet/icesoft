@@ -66,7 +66,7 @@ public class MainServlet extends HttpServlet {
         //Strange hack to ensure classes are loaded for shutdown (ICE-5155)
         ScheduledThreadPoolExecutor disposableExecutor = new ScheduledThreadPoolExecutor(1);
         disposableExecutor.shutdownNow();
-        StringBuilder disposableBuilder = new StringBuilder();
+        //end of (ICE-5155) preload
 
         try {
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
