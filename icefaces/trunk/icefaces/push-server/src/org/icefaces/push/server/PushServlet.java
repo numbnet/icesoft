@@ -71,6 +71,12 @@ extends HttpServlet {
     private PathDispatcher pathDispatcher = new PathDispatcher();
     private ServletContext servletContext;
 
+    // Strange hack to ensure classes are loaded for shutdown (ICE-5155)
+    {
+        ScheduledThreadPoolExecutor disposableExecutor = new ScheduledThreadPoolExecutor(1);
+        disposableExecutor.shutdownNow();
+    }
+
     public void destroy() {
         super.destroy();
         pushServerMessageService.stop();
