@@ -35,31 +35,24 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ice="http://www.icesoft.com/icefaces/component"
       xmlns:icecore="http://icefaces.org/tld/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      locale="#{localeBean.usedLocale}">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <f:loadBundle
-            basename="org.icefaces.application.showcase.view.resources.messages"
-            var="msgs"/>
+  
+<f:view id="template_page_id" locale="#{localeBean.currentLanguage}">
+ 
 
 
     <h:head>
-
+    <f:loadBundle
+            basename="org.icefaces.application.showcase.view.resources.messages"
+            var="msgs"/>
         <title id="dynamicTitle">
             <ui:insert name="title">#{msgs[applicationModel.currentNode.contentDescriptor.title]}</ui:insert>
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <h:outputScript name="jsf.js" library="javax.faces"/>
         
-        <!-- <script type="text/javascript" src="ice-extras.js"></script>
-        <ui:remove> <h:outputScript name="ice-extras.js"/>
-        -->
-        <h:outputText style="padding-top:0; padding-bottom:0;"
-                      value="#{styleBean.style}" escape="false"/>
-        <!--
-        </ui:remove>
-        -->
-        <link rel='stylesheet' type='text/css' href='./css/showcase_style.css'/>
+         <link rel='stylesheet' type='text/css' href='./css/showcase_style.css'/>
         <link rel='stylesheet' type='text/css' href='./css/showcase_overrides.css'/>
         <link rel='stylesheet' type='text/css' href='./css/showcase_layout.css'/>
         <link href="./css/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
@@ -107,129 +100,8 @@
         <ui:insert name="footer">
             <ui:include src="/WEB-INF/includes/content/footer.xhtml"/>
         </ui:insert>
-        <ui:remove>
-            <!--    PRELOAD IMAGES need for roleovers and layout in general, javascript is only
-          loaded once per refresh which is good enough.  This improves overall user
-          experience as they shouldn't have to wait for images to show up after the
-          initial load. -->
-
-            <script language="JavaScript" type="text/javascript">
-                var preloaded = new Array();
-
-                function preload_images() {
-                    for (var i = 0; i &lt; arguments.length; i++) {
-                        preloaded[i] = document.createElement('img');
-                        preloaded[i].setAttribute('src', arguments[i]);
-                    }
-                }
-
-                preload_images(
-                        './xmlhttp/css/rime/css-images/arrow-ff.gif',
-                        './xmlhttp/css/rime/css-images/arrow-ff-dis.gif',
-                        './xmlhttp/css/rime/css-images/arrow-first.gif',
-                        './xmlhttp/css/rime/css-images/arrow-first-dis.gif',
-                        './xmlhttp/css/rime/css-images/arrow-fr.gif',
-                        './xmlhttp/css/rime/css-images/arrow-fr-dis.gif',
-                        './xmlhttp/css/rime/css-images/arrow-last.gif',
-                        './xmlhttp/css/rime/css-images/arrow-last-dis.gif',
-                        './xmlhttp/css/rime/css-images/arrow-next.gif',
-                        './xmlhttp/css/rime/css-images/arrow-next-dis.gif',
-                        './xmlhttp/css/rime/css-images/arrow-previous.gif',
-                        './xmlhttp/css/rime/css-images/arrow-previous-dis.gif',
-                        './xmlhttp/css/rime/css-images/bottom_menu_bg.png',
-                        './xmlhttp/css/rime/css-images/bottom_menu_btn_bg_on.png',
-                        './xmlhttp/css/rime/css-images/bullet.gif',
-                        './xmlhttp/css/rime/css-images/cal_arrow_left.gif',
-                        './xmlhttp/css/rime/css-images/cal_arrow_left_dis.gif',
-                        './xmlhttp/css/rime/css-images/cal_arrow_right.gif',
-                        './xmlhttp/css/rime/css-images/cal_arrow_right_dis.gif',
-                        './xmlhttp/css/rime/css-images/cal_button.gif',
-                        './xmlhttp/css/rime/css-images/cal_off.gif',
-                        './xmlhttp/css/rime/css-images/column_sort_asc.gif',
-                        './xmlhttp/css/rime/css-images/column_sort_desc.gif',
-                        './xmlhttp/css/rime/css-images/connect_active.gif',
-                        './xmlhttp/css/rime/css-images/connect_caution.gif',
-                        './xmlhttp/css/rime/css-images/connect_disconnected.gif',
-                        './xmlhttp/css/rime/css-images/connect_idle.gif',
-                        './xmlhttp/css/rime/css-images/contentContainer_bg.gif',
-                        './xmlhttp/css/rime/css-images/contentContainer_bg_up.gif',
-                        './xmlhttp/css/rime/css-images/off-left-bot.gif',
-                        './xmlhttp/css/rime/css-images/off-left-top-dis.gif',
-                        './xmlhttp/css/rime/css-images/off-mid-bot.gif',
-                        './xmlhttp/css/rime/css-images/off-mid-top-dis.gif',
-                        './xmlhttp/css/rime/css-images/off-right-bot.gif',
-                        './xmlhttp/css/rime/css-images/off-right-top-dis.gif',
-                        './xmlhttp/css/rime/css-images/PnlClpsblCnt_bullet.gif',
-                        './xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif',
-                        './xmlhttp/css/rime/css-images/PnlHdr_collapsed.gif',
-                        './xmlhttp/css/rime/css-images/PnlHdr_down.gif',
-                        './xmlhttp/css/rime/css-images/ProgFill_bg.gif',
-                        './xmlhttp/css/rime/css-images/ProgFill_Indet_Bg_active.gif',
-                        './xmlhttp/css/rime/css-images/ProgFill_Indet_Bg_inactive.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_LftBtm.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_LftBtm_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_LftMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_LftMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_MidBtm.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_MidBtm_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_MidMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_MidMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_RtBtm.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_RtBtm_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_RtMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_Btm_RtMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_LftMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_LftMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_LftTop.gif',
-                        './xmlhttp/css/rime/css-images/Tab_LftTop_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidMid_bullet.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidMid_bullet_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidMid_bullet_over.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidTop.gif',
-                        './xmlhttp/css/rime/css-images/Tab_MidTop_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_RtMid.gif',
-                        './xmlhttp/css/rime/css-images/Tab_RtMid_off.gif',
-                        './xmlhttp/css/rime/css-images/Tab_RtTop.gif',
-                        './xmlhttp/css/rime/css-images/Tab_RtTop_off.gif',
-                        './xmlhttp/css/rime/css-images/table-border.gif',
-                        './xmlhttp/css/rime/css-images/table_col_header.gif',
-                        './xmlhttp/css/rime/css-images/theme_bg.gif',
-                        './xmlhttp/css/rime/css-images/theme_change_bg.gif',
-                        './xmlhttp/css/rime/css-images/tree_close.gif',
-                        './xmlhttp/css/rime/css-images/tree_document.gif',
-                        './xmlhttp/css/rime/css-images/tree_folder_closed.gif',
-                        './xmlhttp/css/rime/css-images/tree_folder_doc.gif',
-                        './xmlhttp/css/rime/css-images/tree_folder_open.gif',
-                        './xmlhttp/css/rime/css-images/tree_line_blank.gif',
-                        './xmlhttp/css/rime/css-images/tree_line_last_node.gif',
-                        './xmlhttp/css/rime/css-images/tree_line_middle_node.gif',
-                        './xmlhttp/css/rime/css-images/tree_line_vertical.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_bottom_close.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_bottom_open.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_middle_close.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_middle_open.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_top_close.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_top_close_no_siblings.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_top_open.gif',
-                        './xmlhttp/css/rime/css-images/tree_nav_top_open_no_siblings.gif',
-                        './xmlhttp/css/rime/css-images/tree_open.gif',
-
-                        './css/images/navigation-tree/tree_folder_closed.gif',
-                        './css/images/navigation-tree/tree_folder_open.gif',
-                        './css/images/navigation-tree/tree_node.gif',
-                        './css/images/navigation-tree/tree_node_rollover.gif',
-                        './css/images/navigation-tree/tree_node_selected.gif',
-
-                        './images/panelStack/address-thumb.png',
-                        './images/panelStack/auction-thumb.png',
-                        './images/panelStack/mobility-thumb.png',
-                        './images/panelStack/timezone-thumb.png'
-
-                        );
-            </script>
-        </ui:remove>
     </h:body>
+ </f:view>
 </html>
  
+

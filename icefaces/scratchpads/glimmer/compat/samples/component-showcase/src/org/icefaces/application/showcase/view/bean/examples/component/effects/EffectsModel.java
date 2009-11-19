@@ -34,6 +34,7 @@ package org.icefaces.application.showcase.view.bean.examples.component.effects;
 
 import com.icesoft.faces.context.effects.*;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -190,7 +191,7 @@ public class EffectsModel extends BaseBean {
      * Wrapper class to make it easy to display the different Effects with a
      * discriptive label. 
      */
-    public class EffectWrapper {
+    public class EffectWrapper implements Serializable{
         private Effect effect;
         private String title;
 

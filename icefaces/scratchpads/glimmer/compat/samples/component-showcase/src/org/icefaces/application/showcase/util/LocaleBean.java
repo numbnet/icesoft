@@ -8,10 +8,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 
+import com.sun.faces.facelets.tag.jsf.core.LoadBundleHandler;
+import javax.faces.component.UIViewRoot;
 /**
  * <p>The LocaleBean is responsible for keeping track of the current application
  * locale.  The locale of the application can be changed using the a
@@ -74,9 +79,16 @@ public class LocaleBean {
             currentLanguage="de";
         }
         // finally change the local for the view root.
-        if (!currentLanguage.equals(locale.getLanguage())) {
+        if (!currentLanguage.equals(locale.getLanguage())) 
+        {
             usedLocale = new Locale(currentLanguage);
             ctx.getViewRoot().setLocale(usedLocale);
+            try {
+				ctx.getExternalContext().redirect("/component-showcase/index.jsp");
+			} catch (IOException e) {
+	//unable to force redirect to load new bundle
+				e.printStackTrace();
+			}
         }
     }
 
