@@ -55,10 +55,10 @@ public class ImageRenderer extends DomBasicRenderer {
 
         validateParameters(facesContext, uiComponent, UIGraphic.class);
         UIGraphic uiGraphic = (UIGraphic) uiComponent;
-        String url = uiGraphic.getUrl();
+        String srcAttribute = processSrcAttribute(facesContext, uiGraphic);
         String tag = "img";
-        if (url != null) url = url.trim();
-        if (url == null || url.length() == 0 || url.equals("/")) {
+        if (srcAttribute != null) srcAttribute = srcAttribute.trim();
+        if (srcAttribute == null || srcAttribute.length() == 0 || srcAttribute.equals("/")) {
             log.warn("The URL of graphicImage component " + uiGraphic.getId() + " is missing.");
             tag = "span";
         }
@@ -79,7 +79,6 @@ public class ImageRenderer extends DomBasicRenderer {
             return;
         }
 
-        String srcAttribute = processSrcAttribute(facesContext, uiGraphic);
         root.setAttribute("src", srcAttribute);
 
         String styleClass = String.valueOf(uiComponent.getAttributes().get("styleClass"));
