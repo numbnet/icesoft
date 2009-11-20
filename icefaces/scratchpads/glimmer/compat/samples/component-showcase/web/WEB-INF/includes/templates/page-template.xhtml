@@ -38,10 +38,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
   
-<f:view id="template_page_id" locale="#{localeBean.currentLanguage}">
- 
-
-
+  <f:view locale="#{localeBean.currentLanguage}">
     <h:head>
     <f:loadBundle
             basename="org.icefaces.application.showcase.view.resources.messages"
@@ -50,9 +47,9 @@
             <ui:insert name="title">#{msgs[applicationModel.currentNode.contentDescriptor.title]}</ui:insert>
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-        <h:outputScript name="jsf.js" library="javax.faces"/>
-        
-         <link rel='stylesheet' type='text/css' href='./css/showcase_style.css'/>
+        <h:outputText style="padding-top:0; padding-bottom:0;"
+                      value="#{styleBean.style}" escape="false"/>
+        <link rel='stylesheet' type='text/css' href='./css/showcase_style.css'/>
         <link rel='stylesheet' type='text/css' href='./css/showcase_overrides.css'/>
         <link rel='stylesheet' type='text/css' href='./css/showcase_layout.css'/>
         <link href="./css/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
