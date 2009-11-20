@@ -263,6 +263,16 @@
             };
             messageContainer.appendChild(buttonElement);
             var resize = function() {
+                if (typeof window.width != "function") {
+                    window.width = function() {
+                        return window.innerWidth ? window.innerWidth : (document.documentElement && document.documentElement.clientWidth) ? document.documentElement.clientWidth : document.body.clientWidth;
+                    };
+                }
+                if (typeof window.height != "function") {
+                    window.height = function() {
+                        return window.innerHeight ? window.innerHeight : (document.documentElement && document.documentElement.clientHeight) ? document.documentElement.clientHeight : document.body.clientHeight;
+                    };
+                }
                 messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
                 messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
             }.bind(this);
