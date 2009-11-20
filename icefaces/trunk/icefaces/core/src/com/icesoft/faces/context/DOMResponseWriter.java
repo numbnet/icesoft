@@ -395,6 +395,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
+                        "fullListenerCleanup: " + configuration.getAttribute("fullJSListenerCleanup", "false") + "," +
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
