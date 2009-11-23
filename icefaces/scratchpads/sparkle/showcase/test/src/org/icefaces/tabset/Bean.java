@@ -49,6 +49,8 @@ public class Bean {
     private String delayedContents ="Tab contextns";
     private boolean closeButton;
     private int labelFacetIndex=0;
+    
+    private boolean formRendered = true;
     public Bean() {
         Movie m1 = new Movie();
         m1.setTitle("The Shawshank Redemption (1994)");
@@ -252,15 +254,19 @@ public class Bean {
         this.orientation = orientation;
     }
     public String getTxt1() {
+        System.out.println("getTxt1()" + txt1);
         return txt1;
     }
     public void setTxt1(String txt1) {
+        System.out.println("setTxt1()" + txt1);        
         this.txt1 = txt1;
     }
     public String getTxt2() {
+        System.out.println("getTxt2()" + txt2);        
         return txt2;
     }
     public void setTxt2(String txt2) {
+        System.out.println("setTxt2()" + txt2);        
         this.txt2 = txt2;
     }
     public String getTabContents() {
@@ -392,20 +398,36 @@ public class Bean {
     }
 
     public String getTxt3() {
+        System.out.println("getTxt3()" + txt3);         
         return txt3;
     }
 
     public void setTxt3(String txt3) {
+        System.out.println("setTxt3()" + txt3);         
         this.txt3 = txt3;
     }
 
     public String getTxt4() {
+        System.out.println("getTxt4()" + txt4);         
         return txt4;
     }
 
     public void setTxt4(String txt4) {
+        System.out.println("setTxt4()" + txt4);         
         this.txt4 = txt4;
     }
     
+    public void formRenderedChange(ActionEvent event) {
+        formRendered = !formRendered;
+        System.out.println("Form rendered value change to "+ formRendered);
+    }
 
+    public boolean isFormRendered() {
+        return formRendered;
+    }
+
+    public void setFormRendered(boolean formRendered) {
+        this.formRendered = formRendered;
+    }
+    
 }
