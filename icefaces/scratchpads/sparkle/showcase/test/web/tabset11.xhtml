@@ -1,0 +1,131 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSet</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+
+<style type="text/css">
+.yui-navset button {
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+.yui-skin-sam .yui-navset-left .yui-nav div.yui-navdiv, .yui-skin-sam .yui-navset-right .yui-nav div.yui-navdiv {
+border-width:1px 0;
+}
+.yui-skin-sam .yui-navset-left .yui-nav div.yui-navdiv em, .yui-skin-sam .yui-navset .yui-navset-left .yui-nav div.yui-navdiv em, .yui-skin-sam .yui-navset-right .yui-nav div.yui-navdiv em {
+border-width:0 0 0 1px;
+left:-1px;
+padding:0.2em 0.75em;
+top:auto;
+}
+.yui-skin-sam .yui-navset-right .yui-nav div.yui-navdiv em {
+border-width:0 1px 0 0;
+left:auto;
+right:-1px;
+}
+
+.yui-skin-sam .yui-navset-left .yui-nav div.yui-navdiv, .yui-skin-sam .yui-navset-left .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset-left .yui-nav a:hover, .yui-skin-sam .yui-navset-right .yui-nav div.yui-navdiv, .yui-skin-sam .yui-navset-right .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset-right .yui-nav a:hover, .yui-skin-sam .yui-navset-bottom .yui-nav div.yui-navdiv, .yui-skin-sam .yui-navset-bottom .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset-bottom .yui-nav a:hover {
+background-image:none;
+}
+
+.yui-skin-sam .yui-navset .yui-navset-bottom .yui-nav div.yui-navdiv em, .yui-skin-sam .yui-navset-bottom .yui-nav div.yui-navdiv em {
+border-width:0 0 1px;
+bottom:-1px;
+top:auto;
+}
+
+.yui-skin-sam .yui-navset .yui-nav div.yui-navdiv, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav div.yui-navdiv {
+background:#D8D8D8 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll 0 0;
+border-color:#A3A3A3;
+border-style:solid;
+border-width:0 1px;
+color:#000000;
+position:relative;
+text-decoration:none;
+}
+.yui-skin-sam .yui-navset .yui-nav div.yui-navdiv em, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav div.yui-navdiv em {
+border-color:#A3A3A3;
+border-style:solid;
+border-width:1px 0 0;
+bottom:0;
+left:0;
+padding:0.25em 0.75em;
+position:relative;
+right:0;
+top:-1px;
+}
+.yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:#2647A0 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+color:#FFFFFF;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv em {
+padding:0.35em 0.75em;
+}
+.yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv em {
+border-color:#243356;
+}
+
+.yui-navset .yui-nav a {
+position:relative;
+}
+.yui-navset .yui-nav li div.yui-navdiv, .yui-navset-top .yui-nav li div.yui-navdiv, .yui-navset-bottom .yui-nav li div.yui-navdiv {
+display:inline-block;
+vertical-align:bottom;
+}
+.yui-navset-left .yui-nav li div.yui-navdiv, .yui-navset-right .yui-nav li div.yui-navdiv {
+display:block;
+}
+.yui-navset-bottom .yui-nav li div.yui-navdiv {
+vertical-align:text-top;
+}
+.yui-navset .yui-nav li div.yui-navdiv em, .yui-navset-top .yui-nav li div.yui-navdiv em, .yui-navset-bottom .yui-nav li div.yui-navdiv em {
+display:block;
+}
+
+
+.yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv, .yui-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv em {
+border-color:#243356;
+}
+</style>
+    <h:form styleClass=" yui-skin-sam">
+       <ann:tabSet>
+            <ann:tab label="Tab 1">
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ann:tab>       
+            <ann:tab >
+                <f:facet name="label">
+                    <h:panelGrid columns="3">
+                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/image1.gif"/>                    
+                            <h:outputText value=" Tab is using label facet "/>
+                            <h:commandButton value="close"/>                            
+                    </h:panelGrid>                   
+                </f:facet>            
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ann:tab>
+            <ann:tab label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ann:tab>
+        </ann:tabSet> 
+    </h:form>
+
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
