@@ -7,3 +7,18 @@ function formOf(element) {
 
     throw 'Cannot find enclosing form.';
 }
+
+Ice.isEventSourceInputElement = function(event) {
+    var elem = Ice.eventTarget(event);
+    var tag = elem.tagName.toLowerCase();
+    if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Ice.eventTarget = function(event) {
+       event = event || window.event;           
+       return(event.target || event.srcElement);
+}
