@@ -12,38 +12,33 @@ Ice.component.tabset = {
              logger.info('Tab Change');
              var o = Ice.component.getProperty(clientId, 'orientation');
              var t = Ice.component.getProperty(clientId, 'tabIdx');
-             var form=formOf(document.getElementById(clientId)); 
-             
-             //create a utility form
-             if (!form) { 
-                 form = Ice.component.getUtilForm();
-             }             
-             
+             try {
+             	var form=formOf(document.getElementById(clientId)); 
+             } catch(e) {
+             	logger.info(e);
+             }
              //get hidden hidden field which keeps tab index
              var hdn = thiz.getHdnFld(form); 
-                       
+             logger.info('hdn found '+ hdn );       
              if (hdn) { 
+                  event.target = document.getElementById(clientId);
+                  tbset = document.getElementById(clientId);
                   hdn.value = clientId + '='+ tabview.getTabIndex(event.newValue);
                   var isClientSide = Ice.component.getProperty(clientId, 'isClientSide')['new'];
-                                  
+               
                   if (isClientSide){
                      logger.info('Client side tab ');
                   } else {
-                  logger.info('Server side tab ');
-                      var partialSubmit = Ice.component.getProperty(clientId, 'partialSubmit');
-                      
-                      var options = {execute: '@all', render: '@all'};
-                              
-                       logger.info('partialSubmit '+ hdn +  event + options );
-          
-                      var param = function(parameter) {
-				 parameter(hdn.id, hdn.value);
-				 if (partialSubmit) {
-					parameter('ice.submit.partial', true);
-				 }
-		                }                  
-   		      jsf.ajax.request(hdn, event, options);            
-                  }                  
+ 	             logger.info('Server side tab '+ event);
+		     try {
+ 		     	ice.singleSubmit(event, tbset, function(parameter) {
+ 		     	   parameter('yti', hdn.value);
+ 		     	}); 
+		     } catch(e) {
+			logger.info(e);
+		     } 	             
+
+ 		  }                  
              }             
        }//tabchange; 
        tabview.addListener('activeTabChange', tabChange);       
@@ -59,20 +54,34 @@ Ice.component.tabset = {
    
     getHdnFld: function(form) {  logger.info('getInxFld called: '+ form); 
         var fn = "yti";
-        var yti = YAHOO.util.Dom.getElementBy(function(ele) {
-            if (ele.id == fn) return true;
-        }, 'input', form);
-        logger.info('getInxFld yti: '+ yti);         
-        if (YAHOO.lang.isUndefined(yti.id)) {
-           logger.info('getInxFld creatinggg : '+ yti);  
-           yti = document.createElement('input');
-           yti.setAttribute('id', fn);
-           yti.setAttribute('name', fn);           
-           yti.setAttribute('type', 'hidden');
-           form.appendChild(yti);   
+        var yti;
+        if (form) {
+		yti = YAHOO.util.Dom.getElementBy(function(ele) {
+		    if (ele.id == fn) return true;
+		}, 'input', form);
+		if(!yti) {
+		        logger.info('Form was fouond but filed not found adding to form');
+			yti = this.createHiddenField(fn);
+			form.appendChild(yti);
+		}
+        } else {//now add to body
+                yti = document.getElementById(fn);
+		if(!yti) {
+		        logger.info('Form was not fouond and filed not found adding to body');
+			yti = this.createHiddenField(fn);
+			document.body.appendChild(yti);
+		}        
         }
         return yti;
     },  
+    
+    createHiddenField:function(name) {
+	   yti = document.createElement('input');
+	   yti.setAttribute('id',  name);
+	   yti.setAttribute('name', name);           
+	   yti.setAttribute('type', 'hidden');
+	   return yti;
+    },
     
     execute: function(_id) {
        var ele = document.getElementById(_id+'call');

@@ -172,6 +172,7 @@ public class TabSetRenderer extends Renderer{
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
+                writer.write("&nbsp;");
             }
         }
  //       if (((TabSet)tabSet).getTabIndex() != index) {

@@ -16,8 +16,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 @ResourceDependencies({
-    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab")
 })
 public class TabSet extends TabSetBase {
@@ -108,6 +108,7 @@ public class TabSet extends TabSetBase {
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/element/element-min.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/tabview/tabview-min.js");
+                writeInlineStyle(writer);                
             }
         }, "head");        
     }
@@ -126,6 +127,16 @@ public class TabSet extends TabSetBase {
         writer.writeAttribute("href", url, null);
         writer.endElement("link");
     }  
+    
+    private void writeInlineStyle(ResponseWriter writer)  throws IOException {
+        writer.startElement("style", this);
+        writer.writeAttribute("type", "text/css", null);        
+        writer.write(".iceOutConStatActv {background-color: transparent;"+
+                "background-image: url( \"images/connect_active.gif\" );"+
+                "background-repeat: no-repeat;"+
+                "}");
+        writer.endElement("style");        
+    }
     
     private Object[] values;
 
