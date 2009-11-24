@@ -1,7 +1,7 @@
 YAHOO.namespace('YIP');
 
-YAHOO.YIP.Calendar = function(container) {
-    YAHOO.YIP.Calendar.superclass.constructor.call(this, container);
+YAHOO.YIP.Calendar = function(container, config) {
+    YAHOO.YIP.Calendar.superclass.constructor.call(this, container, config);
 };
 
 YAHOO.lang.extend(YAHOO.YIP.Calendar, YAHOO.widget.Calendar, {
@@ -39,14 +39,15 @@ var Calendar = {};
 Calendar.init = function(container, pagedate, selectedDate, selectedHour, selectedMinute) {
     YAHOO.namespace("example.calendar");
     YAHOO.example.calendar.init = function() {
-        YAHOO.example.calendar.cal1 = new YAHOO.YIP.Calendar(container);
+        YAHOO.example.calendar.cal1 = new YAHOO.YIP.Calendar(container, {navigator:true});
         YAHOO.example.calendar.cal1.cfg.setProperty("pagedate", pagedate);
         YAHOO.example.calendar.cal1.cfg.setProperty("selected", selectedDate);
 //        YAHOO.example.calendar.cal1.cfg.setProperty("close", true);
         YAHOO.example.calendar.cal1.hour = selectedHour;
         YAHOO.example.calendar.cal1.minute = selectedMinute;
         YAHOO.example.calendar.cal1.selectEvent.subscribe(mySelectHandler, YAHOO.example.calendar.cal1, true);
-        YAHOO.example.calendar.cal1.changePageEvent.subscribe(pageChangeHandler, YAHOO.example.calendar.cal1, true);
+        YAHOO.example.calendar.cal1.renderEvent.subscribe(pageChangeHandler, YAHOO.example.calendar.cal1, true);
+//        YAHOO.example.calendar.cal1.changePageEvent.subscribe(pageChangeHandler, YAHOO.example.calendar.cal1, true);
         YAHOO.example.calendar.cal1.hide();
         YAHOO.example.calendar.cal1.render();
         YAHOO.util.Event.addListener("show1up", "click", calButtonHandler, YAHOO.example.calendar.cal1, true);
