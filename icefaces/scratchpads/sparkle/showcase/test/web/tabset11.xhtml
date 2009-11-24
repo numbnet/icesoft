@@ -105,16 +105,18 @@ border-color:#243356;
 }
 </style>
     <h:form styleClass=" yui-skin-sam">
-       <ann:tabSet>
+       <ann:tabSet tabIndex="#{tabBean.labelFacetIndex}">
             <ann:tab label="Tab 1">
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
             </ann:tab>       
-            <ann:tab >
+            <ann:tab rendered="#{tabBean.faceTabRendered}">
                 <f:facet name="label">
                     <h:panelGrid columns="3">
                             <h:graphicImage style="border:none;width:12px; height:12px;" url="images/image1.gif"/>                    
                             <h:outputText value=" Tab is using label facet "/>
-                            <h:commandButton value="close"/>                            
+                            <h:commandButton id="closeTab" value="close" actionListener="#{tabBean.closeTab}">
+		                       <f:ajax execute="closeTab" render="@all" />
+		                    </h:commandButton>                                       
                     </h:panelGrid>                   
                 </f:facet>            
                 <h:outputText value="#{tabBean.tabContents}"/>            
@@ -123,7 +125,7 @@ border-color:#243356;
                 <h:outputText value="Test ...."/>            
             </ann:tab>
         </ann:tabSet> 
-    </h:form>
+    </h:form>          
 
    <a href="index.html"> Goto Main page </a>    
 </h:body>
