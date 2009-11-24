@@ -27,27 +27,46 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ServletEnvironmentListener implements ServletContextListener, HttpSessionListener {
+    private static Logger log = Logger.getLogger("org.icefaces.push");
     //todo: get rid of this li`stener when BROWSERID is introduced
-    org.icepush.servlet.ServletEnvironmentListener ICEpushListener = new org.icepush.servlet.ServletEnvironmentListener();
+    ServletContextListener ICEpushServletListener = null;
+    HttpSessionListener ICEpushHttpListener = null;
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ICEpushListener.contextInitialized(servletContextEvent);
+        try {
+            ICEpushServletListener = new org.icepush.servlet.ServletEnvironmentListener();
+            ICEpushHttpListener = new org.icepush.servlet.ServletEnvironmentListener();
+        } catch (Throwable t)  {
+            log.log(Level.INFO, "Ajax Push features are not installed and Ajax Push is disabled for this application.");
+        }
+        if (null != ICEpushServletListener)  {
+            ICEpushServletListener.contextInitialized(servletContextEvent);
+        }
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        ICEpushListener.contextDestroyed(servletContextEvent);
+        if (null != ICEpushServletListener)  {
+            ICEpushServletListener.contextDestroyed(servletContextEvent);
+        }
         ICEfacesResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
         ICEpushResourceHandler.notifyContextShutdown(servletContextEvent.getServletContext());
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        ICEpushListener.sessionCreated(httpSessionEvent);
+        if (null != ICEpushHttpListener)  {
+            ICEpushHttpListener.sessionCreated(httpSessionEvent);
+        }
         SessionDispatcher.notifySessionStartup(httpSessionEvent.getSession());
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        ICEpushListener.sessionDestroyed(httpSessionEvent);
+        if (null != ICEpushHttpListener)  {
+            ICEpushHttpListener.sessionDestroyed(httpSessionEvent);
+        }
         SessionDispatcher.notifySessionShutdown(httpSessionEvent.getSession());
     }
 }

@@ -55,14 +55,26 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
         this.handler = handler;
         ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         context.setAttribute(ICEfacesResourceHandler.class.getName(), this);
+        try {
+            dispatcher = new PushSessionDispatcher(context);
+        } catch (Throwable t)  {
+            log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
+        }
+    }
 
-        final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
-        final PushContext pushContext = PushContext.getInstance(context);
-        dispatcher = new SessionDispatcher(context) {
-            protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-                return new SessionBoundServer(pushContext, session, sessionMonitor, configuration);
-            }
-        };
+    private class PushSessionDispatcher extends SessionDispatcher  {
+        PushContext pushContext;
+        Configuration configuration;
+
+        PushSessionDispatcher(ServletContext context)  {
+            super(context);
+            pushContext = PushContext.getInstance(context);
+            configuration = new ServletContextConfiguration("org.icefaces", context);
+        }
+        
+        protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
+            return new SessionBoundServer(pushContext, session, sessionMonitor, configuration);
+        }
     }
 
     public Resource createResource(String s) {
@@ -106,7 +118,9 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
                         ICEfacesBridgeRequestPattern.matcher(requestURI).find() ||
                         ICEfacesResourceRequestPattern.matcher(requestURI).find();
         if (!resourceRequest && servletRequest.getParameter("ice.session.donottouch") == null) {
-            dispatcher.touchSession((HttpSession) externalContext.getSession(false));
+            if (null != dispatcher)  {
+                dispatcher.touchSession((HttpSession) externalContext.getSession(false));
+            }
         }
         return resourceRequest;
     }
@@ -116,6 +130,9 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        if (null == dispatcher) {
+            return;
+        }
         try {
             currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
@@ -155,7 +172,11 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher.shutdown();
+        SessionDispatcher shutdownDispatcher = 
+            ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher;
+        if (null != shutdownDispatcher)  {
+            shutdownDispatcher.shutdown();
+        }
     }
 
     //todo: factor out into a ServletContextDispatcher

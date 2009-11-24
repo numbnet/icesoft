@@ -13,16 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ICEpushResourceHandler extends ResourceHandler {
+    private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
     private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush\\.jsf$");
     private ResourceHandler handler;
     private MainServlet mainServlet;
 
     public ICEpushResourceHandler(ResourceHandler handler) {
-        this.handler = handler;
-        ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        mainServlet = new MainServlet(context);
-        context.setAttribute(ICEpushResourceHandler.class.getName(), this);
+        try {
+            this.handler = handler;
+            ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            mainServlet = new MainServlet(context);
+            context.setAttribute(ICEpushResourceHandler.class.getName(), this);
+        } catch (Throwable t)  {
+            log.log(Level.INFO, "Ajax Push Resource Handling not available: " + t);
+        }
     }
 
     public Resource createResource(String s) {
@@ -42,6 +50,10 @@ public class ICEpushResourceHandler extends ResourceHandler {
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
+        if (null == mainServlet)  {
+            handler.handleResourceRequest(facesContext);
+            return;
+        }
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
@@ -77,6 +89,12 @@ public class ICEpushResourceHandler extends ResourceHandler {
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        ((ICEpushResourceHandler) context.getAttribute(ICEpushResourceHandler.class.getName())).mainServlet.shutdown();
+        try {
+            ((ICEpushResourceHandler) context.getAttribute(ICEpushResourceHandler.class.getName())).mainServlet.shutdown();
+        } catch (Throwable t) {
+            //no need to log this exception for optional Ajax Push, but may be
+            //useful for diagnosing other failures
+            log.log(Level.INFO, "MainServlet not found in application scope: " + t);
+        }
     }
 }
