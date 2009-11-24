@@ -49,6 +49,7 @@ public class Bean {
     private String delayedContents ="Tab contextns";
     private boolean closeButton;
     private int labelFacetIndex=0;
+    private boolean closeTabValue;
     
     private boolean formRendered = true;
     public Bean() {
@@ -429,5 +430,13 @@ public class Bean {
     public void setFormRendered(boolean formRendered) {
         this.formRendered = formRendered;
     }
-    
+
+    public boolean isCloseTabValue() {
+        return closeTabValue;
+    }
+
+    public void setCloseTabValue(boolean closeTabValue) {
+        this.closeTabValue = closeTabValue;
+    }
+   
 }
