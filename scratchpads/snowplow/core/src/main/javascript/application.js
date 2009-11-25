@@ -32,7 +32,12 @@
  */
 
 if (!window.ice) {
+    window.ice = new Object;
+}
+
+if (!window.ice.push) {
     (function(namespace) {
+        window.ice.push = true;
         //include functional.js
         //include oo.js
         //include collection.js
@@ -248,5 +253,5 @@ if (!window.ice) {
             var e = $event(ev);
             if (isEscKey(e)) cancelDefaultAction(e);
         });
-    })(window.ice = new Object);
+    })(window.ice);
 }
