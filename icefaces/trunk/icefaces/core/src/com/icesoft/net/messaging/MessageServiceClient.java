@@ -128,6 +128,9 @@ public class MessageServiceClient {
                 _servletContextConfiguration.getAttributeAsInteger(
                     "threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
                 _threadFactory);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Message Service Client - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
+        }
     }
 
     /**
