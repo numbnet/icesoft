@@ -16,7 +16,7 @@
     <ice:config render="true" />
     <h:form id="form1" prependId="false">
 
-        <h2>Show / Hide based on backing bean</h2>
+        <h2>ICEfaces: Show / Hide based on backing bean</h2>
         <h:panelGroup id="pg1">
         <h:outputText id="out1" value="Show" rendered="#{basic.visible}"/>
         </h:panelGroup>
@@ -31,8 +31,12 @@
         <h:outputText value="Reload entire page: "/>
         <h:commandButton id="reload" value="reload"/>
         <br/>
-        <h:outputLink value="icefaces.jsf">ICEfaces Page</h:outputLink>
+        <h:commandButton action="/icefaces.jsf" value="ICEfaces Page" />
         <!--remove the ampersand escaping once the DOCTYPE is fixed -->
+        &amp;nbsp;&amp;nbsp;
+        <h:commandButton action="/nonicefaces.jsf" value="Stock JSF Page" />
+        <br/>
+        <h:outputLink value="icefaces.jsf">ICEfaces Page</h:outputLink>
         &amp;nbsp;&amp;nbsp;
         <h:outputLink value="nonicefaces.jsf">Stock JSF Page</h:outputLink>
         <h:messages/>
