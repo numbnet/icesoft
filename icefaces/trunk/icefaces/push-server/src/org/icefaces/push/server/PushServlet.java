@@ -42,6 +42,7 @@ import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.util.ServerUtility;
+import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -62,8 +63,9 @@ public class PushServlet
 extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(PushServlet.class);
 
-    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
-        new ScheduledThreadPoolExecutor(10);
+    private static final int DEFAULT_THREAD_POOL_SIZE = 10;
+
+    private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
     private String localAddress;
     private int localPort;
@@ -100,6 +102,16 @@ extends HttpServlet {
             final Configuration _servletContextConfiguration =
                 new ServletContextConfiguration(
                     "com.icesoft.faces", servletContext);
+            ThreadFactory _threadFactory = new ThreadFactory();
+            _threadFactory.setPrefix("Push Server Thread");
+            scheduledThreadPoolExecutor =
+                new ScheduledThreadPoolExecutor(
+                    new ServletContextConfiguration("org.icefaces.push.server", servletContext).
+                        getAttributeAsInteger("threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
+                    _threadFactory);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Push Server - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
+            }
             pushServerMessageService =
                 new PushServerMessageService(
                     new MessageServiceClient(

@@ -17,9 +17,9 @@ import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.ServerUtility;
+import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +39,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
+
+    private static final int DEFAULT_THREAD_POOL_SIZE = 10;
+
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
     private static final PseudoServlet NotFound = new BasicAdaptingServlet(new ResponseHandlerServer(new NotFoundHandler("")));
 
@@ -49,7 +52,7 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(10);
+    private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
     private PathDispatcher dispatcher = new PathDispatcher();
     private ServletContext context;
@@ -67,9 +70,17 @@ public class MainServlet extends HttpServlet {
         ScheduledThreadPoolExecutor disposableExecutor = new ScheduledThreadPoolExecutor(1);
         disposableExecutor.shutdownNow();
         //end of (ICE-5155) preload
-
         try {
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
+            ThreadFactory _threadFactory = new ThreadFactory();
+            _threadFactory.setPrefix("Core Thread");
+            scheduledThreadPoolExecutor =
+                new ScheduledThreadPoolExecutor(
+                    configuration.getAttributeAsInteger("threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
+                    _threadFactory);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Core - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
+            }
             final IdGenerator idGenerator = new IdGenerator(context.getResource("/WEB-INF/web.xml").getPath());
             final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
                 public String mimeTypeFor(String extension) {
