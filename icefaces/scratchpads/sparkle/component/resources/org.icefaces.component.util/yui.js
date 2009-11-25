@@ -32,7 +32,8 @@
  */
 logger = {
    info: function(msg) {
-   	console.info (msg);
+    if (window["console"])
+   	    window["console"].info (msg);
    }
 };
 

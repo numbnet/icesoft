@@ -135,26 +135,30 @@ public class TabSetRenderer extends Renderer{
         if (((TabSet)tabSet).getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
-        if (labelFacet!= null) {
+//        if (labelFacet!= null) {
             writer.startElement(HTML.DIV_ELEM, tab);  
             writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
             writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
-            Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
+            
+            if (labelFacet!= null)
+                Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
+            else
+                writer.write(String.valueOf(tab.getAttributes().get("label")));
             writer.startElement(HTML.ANCHOR_ELEM, tab);
             writer.endElement(HTML.ANCHOR_ELEM);               
             writer.endElement("em");
             writer.endElement(HTML.DIV_ELEM);        
-        } else {
-            writer.startElement(HTML.ANCHOR_ELEM, tab);        
-            writer.writeAttribute(HTML.HREF_ATTR, "#"+ clientId, HTML.CLASS_ATTR);
-            writer.startElement("em", tab);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.CLASS_ATTR);  
-            writer.write(String.valueOf(tab.getAttributes().get("label")));
-            writer.endElement("em");
-            writer.endElement(HTML.ANCHOR_ELEM);        
-        }
+//        } else {
+//            writer.startElement(HTML.ANCHOR_ELEM, tab);        
+//            writer.writeAttribute(HTML.HREF_ATTR, "#"+ clientId, HTML.CLASS_ATTR);
+//            writer.startElement("em", tab);
+//            writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.CLASS_ATTR);  
+//            writer.write(String.valueOf(tab.getAttributes().get("label")));
+//            writer.endElement("em");
+//            writer.endElement(HTML.ANCHOR_ELEM);        
+//        }
         writer.endElement(HTML.LI_ELEM);
     }    
     private void renderTabBody(FacesContext facesContext, 

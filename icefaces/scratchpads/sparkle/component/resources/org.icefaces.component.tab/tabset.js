@@ -30,13 +30,13 @@ Ice.component.tabset = {
                      logger.info('Client side tab ');
                   } else {
  	             logger.info('Server side tab '+ event);
-		     try {
- 		     	ice.singleSubmit(event, tbset, function(parameter) {
- 		     	   parameter('yti', hdn.value);
- 		     	}); 
-		     } catch(e) {
-			logger.info(e);
-		     } 	             
+			     try {
+	 		     	ice.singleSubmit(event, tbset, function(parameter) {
+	 		     	   parameter('yti', hdn.value);
+	 		     	}); 
+			     } catch(e) {
+				logger.info(e);
+			     } 	             
 
  		  }                  
              }             
@@ -65,12 +65,12 @@ Ice.component.tabset = {
 			form.appendChild(yti);
 		}
         } else {//now add to body
-                yti = document.getElementById(fn);
-		if(!yti) {
-		        logger.info('Form was not fouond and filed not found adding to body');
-			yti = this.createHiddenField(fn);
-			document.body.appendChild(yti);
-		}        
+            yti = document.getElementById(fn);
+			if(!yti) {
+			    logger.info('Form was not fouond and filed not found adding to body');
+				yti = this.createHiddenField(fn);
+				document.body.appendChild(yti);
+			}        
         }
         return yti;
     },  

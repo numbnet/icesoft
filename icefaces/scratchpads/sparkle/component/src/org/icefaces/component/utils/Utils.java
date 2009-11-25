@@ -1,9 +1,12 @@
 package org.icefaces.component.utils;
 
+import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 
 public class Utils {
@@ -35,4 +38,23 @@ public class Utils {
         child.encodeEnd(facesContext);
     }
 
+    public static UIComponent findNamingContainer(UIComponent uiComponent) {
+        UIComponent parent = uiComponent.getParent();
+        while (parent != null) {
+            if (parent instanceof NamingContainer) {
+                break;
+            }
+            parent = parent.getParent();
+        }
+        return parent;
+    }
+
+
+    public static UIComponent findForm(UIComponent uiComponent) {
+        UIComponent parent = uiComponent.getParent();
+        while (parent != null && !(parent instanceof UIForm)) {
+            parent = findNamingContainer(parent);
+        }
+        return parent;
+    }
 }
