@@ -18,7 +18,8 @@ import javax.faces.event.ValueChangeEvent;
 @ResourceDependencies({
     @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab")
+    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
+    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
 public class TabSet extends TabSetBase {
     private Integer tabIndex;
