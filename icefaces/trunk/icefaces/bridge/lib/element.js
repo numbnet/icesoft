@@ -145,16 +145,7 @@
 
             var elements = this.element.getElementsByTagName('*');
             var length = elements.length;
-            if (this.findBridge().fullListenerCleanup) {
-                for (var i = 0; i < length; i++) {
-                    var element = elements[i];
-                    //todo: avoid wrapping the elements just before disposing them
-                    //disconnect listeners
-                    $element(element).eachListenerName(function(listenerName) {
-                        element[listenerName.toLowerCase()] = null;
-                    });
-                }
-            } else {
+            if (this.findBridge().optimizedJSListenerCleanup) {
                 for (var i = 0; i < length; i++) {
                     var element = elements[i];
                     element.onkeypress = null;
@@ -167,6 +158,15 @@
                     element.onchange = null;
                     element.onfocus = null;
                     element.onblur = null;
+                }
+            } else {
+                for (var i = 0; i < length; i++) {
+                    var element = elements[i];
+                    //todo: avoid wrapping the elements just before disposing them
+                    //disconnect listeners
+                    $element(element).eachListenerName(function(listenerName) {
+                        element[listenerName.toLowerCase()] = null;
+                    });
                 }
             }
         },
