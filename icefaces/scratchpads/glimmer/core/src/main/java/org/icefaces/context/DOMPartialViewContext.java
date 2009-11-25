@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.icefaces.event.DetectNavigationPhaseListener;
+
 public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     private static Logger log = Logger.getLogger("org.icefaces.context");
@@ -97,6 +99,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             return;
         }
 
+        boolean didNavigate = Boolean.TRUE.equals( 
+                facesContext.getAttributes()
+                .get(DetectNavigationPhaseListener.NAVIGATED) );
         if (isRenderAll() && (phaseId == PhaseId.RENDER_RESPONSE)) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
@@ -155,6 +160,12 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.startEval();
                     partialWriter.write("window.location.reload();");
                     partialWriter.endEval();
+                } else if (didNavigate) {
+                    partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
+                    DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
+                    partialWriter.endUpdate();
+                    renderState();
+                    renderExtensions();
                 } else {
                     for (int i = 0; i < diffs.length; i++) {
                         Element element = (Element) diffs[i];
