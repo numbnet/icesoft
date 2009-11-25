@@ -31,7 +31,11 @@
  *
  */
 
-if (!window.ice || !window.ice.icefaces) {
+if (!window.ice) {
+    window.ice = new Object;
+}
+
+if (!window.ice.icefaces) {
     (function(namespace) {
         namespace.icefaces = true;
         //include functional.js
