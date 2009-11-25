@@ -35,9 +35,9 @@ if (!window.ice) {
     window.ice = new Object;
 }
 
-if (!window.ice.push) {
+if (!window.ice.icepush) {
     (function(namespace) {
-        window.ice.push = true;
+        window.ice.icepush = true;
         //include functional.js
         //include oo.js
         //include collection.js
