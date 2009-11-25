@@ -30,6 +30,10 @@ import org.icefaces.push.servlet.SessionDispatcher;
 import org.icepush.PushContext;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -46,6 +50,12 @@ public class SessionBoundServer extends PathDispatcher {
         final String groupName = session.getId();
         windowScopeManager.onActivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                HttpServletRequest request = (HttpServletRequest) context.getRequest();
+                HttpServletResponse response = (HttpServletResponse) context.getResponse();
+                //this call will set the browser ID cookie 
+                pushContext.createPushId(request, response);
+
                 pushContext.addGroupMember(groupName, (String) o);
             }
         });
