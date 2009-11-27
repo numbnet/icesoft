@@ -1,6 +1,6 @@
 package com.icesoft.icefaces.samples.taxi;
 
-//import com.icesoft.faces.component.ext.RowSelectorEvent;
+import com.icesoft.faces.component.ext.RowSelectorEvent;
 import com.icesoft.icefaces.samples.taxi.dialogs.DialogManager;
 import com.icesoft.icefaces.samples.taxi.dialogs.OptionPane;
 import com.icesoft.icefaces.samples.taxi.util.Command;
@@ -285,15 +285,13 @@ public class Mediator  {
      *
      * @param event jsf action event
      */
-//    public void selectTaxiClientRequest(RowSelectorEvent event) {
-    public String selectTaxiClientRequest() {
+    public void selectTaxiClientRequest(RowSelectorEvent event) {
 
         // We get the selected index of our local array list.  We then get
         // the selected object so that we can find it in the main list.  This
         // is needed to avoid concurrency issue.
 
-//        int selectedIndex = event.getRow();
-        int selectedIndex = 99;
+        int selectedIndex = event.getRow();
 
 
         TaxiRequestWrapper currentRequest = taxiRequests.get(selectedIndex);
@@ -333,7 +331,6 @@ public class Mediator  {
         // popup indicating the record has already been requested.
         // todo: add popup for you can't select this. 
         
-        return "success";
     }
 
     /**
