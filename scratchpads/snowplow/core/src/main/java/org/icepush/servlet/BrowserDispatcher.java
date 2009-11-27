@@ -22,30 +22,35 @@
 
 package org.icepush.servlet;
 
+import org.icepush.Configuration;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public abstract class BrowserDispatcher implements PseudoServlet {
-    private static final Logger log = Logger.getLogger(BrowserDispatcher.class.getName());
-    private final Map sessionBoundServers = new HashMap();
+    private final static Logger log = Logger.getLogger(BrowserDispatcher.class.getName());
+    private final Map browserBoundServlets = new HashMap();
+    private final long browserTimeout;
 
-    public BrowserDispatcher() {
-        //todo: discard unused browserIDs by monitoring their activity
+    public BrowserDispatcher(Configuration configuration) {
+        this.browserTimeout = configuration.getAttributeAsLong("browserTimeout", 10 * 60 * 1000);
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        discardUnusedServlets();
         String browserID = getBrowserIDFromCookie(request);
         checkSession(browserID);
         lookupServer(browserID).service(request, response);
     }
 
     public void shutdown() {
-        Iterator i = sessionBoundServers.values().iterator();
+        Iterator i = browserBoundServlets.values().iterator();
         while (i.hasNext()) {
             PseudoServlet servlet = (PseudoServlet) i.next();
             servlet.shutdown();
@@ -55,15 +60,15 @@ public abstract class BrowserDispatcher implements PseudoServlet {
     protected abstract PseudoServlet newServer(String browserID) throws Exception;
 
     protected void checkSession(String browserID) throws Exception {
-        synchronized (sessionBoundServers) {
-            if (!sessionBoundServers.containsKey(browserID)) {
-                sessionBoundServers.put(browserID, this.newServer(browserID));
+        synchronized (browserBoundServlets) {
+            if (!browserBoundServlets.containsKey(browserID)) {
+                browserBoundServlets.put(browserID, new BrowserEntry(browserID, this.newServer(browserID)));
             }
         }
     }
 
     protected PseudoServlet lookupServer(final String browserID) {
-        return (PseudoServlet) sessionBoundServers.get(browserID);
+        return (PseudoServlet) browserBoundServlets.get(browserID);
     }
 
     private static String getBrowserIDFromCookie(HttpServletRequest request) {
@@ -75,5 +80,46 @@ public abstract class BrowserDispatcher implements PseudoServlet {
         }
 
         return null;
+    }
+
+    private void discardUnusedServlets() {
+        Iterator i = new ArrayList(browserBoundServlets.values()).iterator();
+        while (i.hasNext()) {
+            BrowserEntry entry = (BrowserEntry) i.next();
+            entry.discardIfExpired();
+        }
+    }
+
+    private class BrowserEntry implements PseudoServlet {
+        private String id;
+        private PseudoServlet servlet;
+        private long lastAccess = System.currentTimeMillis();
+
+        private BrowserEntry(String id, PseudoServlet servlet) {
+            this.id = id;
+            this.servlet = servlet;
+        }
+
+        public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+            lastAccess = System.currentTimeMillis();
+            servlet.service(request, response);
+        }
+
+        public void shutdown() {
+            servlet.shutdown();
+        }
+
+        public void discardIfExpired() {
+            if (lastAccess + browserTimeout < System.currentTimeMillis()) {
+                try {
+                    servlet.shutdown();
+                } catch (Throwable t) {
+                    log.fine("Failed to discard browser bound server for ID=" + id);
+                } finally {
+                    browserBoundServlets.remove(id);
+                    log.fine("Discarded browser bound server for ID=" + id);
+                }
+            }
+        }
     }
 }
