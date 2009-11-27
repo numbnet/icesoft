@@ -1,0 +1,16 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+        
+<ui:composition template="./WEB-INF/inc-templates/client_template.jspx">
+
+    <ui:define name="pageContent">
+        <!-- import dynamic include of default content -->
+        <ui:include src="#{clientmediator.screensManager.currentContentScreen.include}"/>
+    </ui:define>
+
+</ui:composition>
+
+</f:view>

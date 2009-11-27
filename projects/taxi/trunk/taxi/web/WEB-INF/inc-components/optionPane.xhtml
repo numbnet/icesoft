@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:f="http://java.sun.com/jsf/core">
+<head>
+    <title>Option Pane Component</title>
+</head>
+<body>
+Facelets Custom Utilities Library - optionPane and dialog component
+<ui:composition>
+    <ice:panelPopup draggable="true" modal="#{modal}"
+                    visible="#{optionPaneBean.rendered}" rendered="true"
+                    style="#{style}" styleClass="#{styleClass}">
+        <f:facet name="header">
+            <ice:outputText value="${optionPaneBean.title}"/>
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGroup>
+
+                <!--  use message as path to dynamic content. -->
+                <ui:include src="#{optionPaneBean.message}" />
+
+                <ice:panelGroup style="padding: 10px;">
+                    <ice:commandButton
+                            value="Ok"
+                            title="OK" alt="OK"
+                            actionListener="#{optionPaneBean.okButtonAction}"
+                            rendered="#{optionPaneBean.okButtonVisible}"/>
+                    <ice:commandButton
+                            value="Yes"
+                            title="Yes" alt="Yes"
+                            image="./css/images/button_yes.png"
+                            actionListener="#{optionPaneBean.yesButtonAction}"
+                            rendered="#{optionPaneBean.yesButtonVisible}"/>
+                    <ice:commandButton
+                            value="No"
+                            title="No" alt="No"
+                            image="./css/images/button_no.png"
+                            actionListener="#{optionPaneBean.noButtonAction}"
+                            rendered="#{optionPaneBean.noButtonVisible}"/>
+                    <ice:commandButton
+                            value="Cancel"
+                            title="Cancel" alt="Cancel"
+                            actionListener="#{optionPaneBean.cancelButtonAction}"
+                            rendered="#{optionPaneBean.cancelButtonVisible}"/>
+                </ice:panelGroup>
+            </ice:panelGroup>
+        </f:facet>
+    </ice:panelPopup>
+</ui:composition>
+</body>
+</html>
