@@ -22,7 +22,7 @@
  *
 -->
 
-<project name="icepush-basic" default="war">
+<project name="icepush-basic-jsp" default="war">
 
     <property file="build.properties"/>
 
@@ -83,7 +83,7 @@
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
-                <patternset refid="lib.deploy" />
+                <patternset refid="lib.deploy"/>
             </lib>
             <lib dir="../../core/build/dist"/>
             <classes dir="${classes.dir}"/>
