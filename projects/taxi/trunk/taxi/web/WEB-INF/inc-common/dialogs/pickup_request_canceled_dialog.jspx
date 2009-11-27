@@ -1,0 +1,22 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="pickupRequestMesssage">
+
+
+    <p>This request has been cancelled by the client.<br />
+       Please selected another taxi request from the list. 
+    </p>
+
+    <!-- only render button if request status is pending(0), user can't cancel
+         if the request has been processed by a taxi driver. -->
+    <ice:commandButton
+            value="Ok"
+            title="Ok" alt="OK"
+            image="./css/images/button_ok.png"
+            actionListener="#{clientmediator.dialogManager.pickupRequestStatusDialog.okButtonAction}" />
+
+</div>
+
