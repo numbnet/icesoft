@@ -1,6 +1,6 @@
 Ice.component.tabset = {
     initialize:function(clientId) {
-       logger.info('tabset initialize');
+       logger.info('1. tabset initialize');
        var tabview = new YAHOO.widget.TabView(clientId);  
        var o = Ice.component.getProperty(clientId, 'orientation');
        if(o) {
@@ -8,40 +8,46 @@ Ice.component.tabset = {
           tabview.set('orientation', o['new']);
        }
        var thiz = this;
+       logger.info('2. tabset initialize');
+        if (!Ice.component.registeredComponents[clientId]) {
+         logger.info('2.1 tabset initialize');
+            var onupdate = Ice.component.getProperty(clientId, 'onupdate');
+            if (onupdate["new"] != null) {
+	      	    logger.info('2.2 tabset initialize');	
+	            ice.onAfterUpdate(function() {
+	            	tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
+	                onupdate["new"](clientId, tabview );
+	            });
+	           logger.info('2.3 tabset initialize');     
+            }       
+        }       
+       logger.info('3. tabset initialize');
        var tabChange=function(event) {
-             logger.info('Tab Change');
+            logger.info('on tab change ');
              var o = Ice.component.getProperty(clientId, 'orientation');
              var t = Ice.component.getProperty(clientId, 'tabIdx');
-             try {
-             	var form=formOf(document.getElementById(clientId)); 
-             } catch(e) {
-             	logger.info(e);
-             }
-             //get hidden hidden field which keeps tab index
-             var hdn = thiz.getHdnFld(form); 
-             logger.info('hdn found '+ hdn );       
-             if (hdn) { 
-                  event.target = document.getElementById(clientId);
-                  tbset = document.getElementById(clientId);
-                  hdn.value = clientId + '='+ tabview.getTabIndex(event.newValue);
-                  var isClientSide = Ice.component.getProperty(clientId, 'isClientSide')['new'];
-               
-                  if (isClientSide){
-                     logger.info('Client side tab ');
-                  } else {
- 	             logger.info('Server side tab '+ event);
-			     try {
-	 		     	ice.singleSubmit(event, tbset, function(parameter) {
-	 		     	   parameter('yti', hdn.value);
-	 		     	}); 
-			     } catch(e) {
-				logger.info(e);
-			     } 	             
+	  event.target = document.getElementById(clientId);
+	  tbset = document.getElementById(clientId);
+	  currentTabIndex = clientId + '='+ tabview.getTabIndex(event.newValue);
+	  var isClientSide = Ice.component.getProperty(clientId, 'isClientSide');
 
- 		  }                  
-             }             
+	  if (isClientSide && isClientSide['new']){
+	     logger.info('Client side tab ');
+	  } else {
+	     logger.info('Server side tab '+ event);
+		     try {
+			ice.singleSubmit(event, tbset, function(parameter) {
+			   parameter('yti', currentTabIndex);
+			}); 
+		     } catch(e) {
+			logger.info(e);
+		     } 	             
+
+	  }                  
+                         
        }//tabchange; 
        tabview.addListener('activeTabChange', tabChange);       
+logger.info('4. tabset initialize');       
        return tabview;
    },
    
@@ -88,6 +94,6 @@ Ice.component.tabset = {
        logger.info('execute ele '+ ele);
        logger.info('execute ele '+ ele.innerHTML);
        eval(ele.innerHTML);
-    }
+    }   
 };
 
