@@ -4,6 +4,7 @@ var stop = operator();
 function Delay(f, milliseconds) {
     return object(function(method) {
         var id = null;
+
         method(run, function(self, times) {
             //avoid starting a new process
             if (id) return;
