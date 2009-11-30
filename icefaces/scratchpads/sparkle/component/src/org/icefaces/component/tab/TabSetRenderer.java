@@ -89,10 +89,12 @@ public class TabSetRenderer extends Renderer{
        // System.out.println("CLIENT SIDE "+ tabSet.isClientSide());
         boolean isClientSide = false; // tabSet.isClientSide();
         int tabIndex = tabSet.getTabIndex();
+        String onupdate = tabSet.getOnupdate();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
+        ", 'onupdate':"+ onupdate +        
         ", 'partialSubmit':true});";
         
 
@@ -147,6 +149,7 @@ public class TabSetRenderer extends Renderer{
             else
                 writer.write(String.valueOf(tab.getAttributes().get("label")));
             writer.startElement(HTML.ANCHOR_ELEM, tab);
+            writer.writeAttribute(HTML.STYLE_ATTR, "visibility:hidden", HTML.STYLE_ATTR); 
             writer.endElement(HTML.ANCHOR_ELEM);               
             writer.endElement("em");
             writer.endElement(HTML.DIV_ELEM);        

@@ -32,15 +32,18 @@
  */
 logger = {
    info: function(msg) {
-    if (window["console"])
-   	    window["console"].info (msg);
+	   if (window["console"]) {
+	   	    window["console"].info (msg);
+	   }else {
+	        alert(msg);
+	   }
    }
 };
 
 Ice = {};
 Ice.component = {
     logEnabled: true,
-    
+    registeredComponents:[],
     register:function(_id, lib) {
        this.log('register called', {'_id': _id, 'lib': lib});
        var ele = this.getElement(_id);
@@ -55,7 +58,8 @@ Ice.component = {
           ele['ICE']['obj'] = comp;
           this.log('register called', {'component added ':comp});
           ele.onmouseover = null; 
-          return comp;         
+          this.registeredComponents[_id] = comp;          
+          return this.registeredComponents[_id];         
        }
     },
     
@@ -140,5 +144,7 @@ Ice.component = {
            logger.info('Utility form was not found created one'); 
         }
         return uform;
-    }     
+    }
+    
+         
 };
