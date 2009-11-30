@@ -48,7 +48,7 @@
     <!-- common application build include -->
     <import file="${common.build.dir}/build-common.xml"/>
 
-     <patternset id="additional.compile.lib.jars" includes="servlet-api.jar "  />
+     <patternset id="additional.compile.lib.jars" includes="javax.servlet.jar"  />
     
     <!-- jars needed for form validation -->
     <patternset id="validation.jars"
