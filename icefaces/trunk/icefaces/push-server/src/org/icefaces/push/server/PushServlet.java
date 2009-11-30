@@ -98,7 +98,7 @@ extends HttpServlet {
         try {
             final Configuration _servletConfigConfiguration =
                 new ServletConfigConfiguration(
-                    "org.icefaces.push.server", servletConfig);
+                    "com.icesoft.faces", servletConfig);
             final Configuration _servletContextConfiguration =
                 new ServletContextConfiguration(
                     "com.icesoft.faces", servletContext);
@@ -106,8 +106,8 @@ extends HttpServlet {
             _threadFactory.setPrefix("Push Server Thread");
             scheduledThreadPoolExecutor =
                 new ScheduledThreadPoolExecutor(
-                    new ServletContextConfiguration("org.icefaces.push.server", servletContext).
-                        getAttributeAsInteger("threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
+                    _servletConfigConfiguration.
+                        getAttributeAsInteger("pushServerThreadPoolSize", DEFAULT_THREAD_POOL_SIZE),
                     _threadFactory);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Push Server - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
