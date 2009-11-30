@@ -14,7 +14,7 @@
           content="text/html; charset=utf-8"></meta>
     <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
     <title>
-        <ice:outputText value="ICEfaces Taxi Demo - Taxi Cab"/>
+        ICEfaces Taxi Demo - Taxi Cab
     </title>
     <ice:outputStyle href="css/mobile_ajax.css" />
 </h:head>
