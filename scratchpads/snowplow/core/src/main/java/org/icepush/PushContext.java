@@ -16,6 +16,7 @@ import java.util.Observer;
 public class PushContext {
     private static final ThreadLocal CurrentBrowserID = new ThreadLocal();
     private static final String BrowserIDCookieName = "ice.push.browser";
+    private static final int GroupScanningTimeResolution = 3000;//ms
     private int browserCounter = 0;
     private int pushCounter = 0;
     private Observable outboundNotifications;
@@ -27,12 +28,19 @@ public class PushContext {
         this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
         context.setAttribute(PushContext.class.getName(), this);
         inboundNotifications.addObserver(new Observer() {
+            private long lastScan = System.currentTimeMillis();
+
             public void update(Observable observable, Object o) {
-                List pushIDs = (List) o;
-                Iterator i = new ArrayList(groups.values()).iterator();
-                while (i.hasNext()) {
-                    Group group = (Group) i.next();
-                    group.touch(pushIDs);
+                long now = System.currentTimeMillis();
+                //avoid to scan/touch the groups on each notification
+                if (lastScan + GroupScanningTimeResolution < now) {
+                    lastScan = now;
+                    List pushIDs = (List) o;
+                    Iterator i = new ArrayList(groups.values()).iterator();
+                    while (i.hasNext()) {
+                        Group group = (Group) i.next();
+                        group.touch(pushIDs);
+                    }
                 }
             }
         });
