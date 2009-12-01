@@ -67,12 +67,12 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private List participatingViews = Collections.emptyList();
     private Observable notifier;
 
-    public BlockingConnectionServer(Observable notifier, final Timer monitorRunner, Configuration configuration) {
+    public BlockingConnectionServer(Observable outboundNotifier, final Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
-        this.notifier = notifier;
+        this.notifier = outboundNotifier;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
-        notifier.addObserver(this);
+        outboundNotifier.addObserver(this);
 
         //define blocking server
         activeServer = new Server() {
@@ -82,6 +82,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                 participatingViews = Arrays.asList(request.getParameterAsStrings("ice.view"));
                 pendingRequest.put(request);
                 respondIfViewsAvailable();
+                inboundNotifier.notifyObservers(participatingViews);
             }
 
             public void shutdown() {
