@@ -210,7 +210,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
      * @param session Session to invalidate
      */
     private static void notifySessionShutdown(final HttpSession session, final ServletContext context) {
-        lookupSessionDispatcher(context).notifySessionShutdown(session);
+        SessionDispatcher sessionDispatcher = lookupSessionDispatcher(context);
+        if (sessionDispatcher != null) {
+            sessionDispatcher.notifySessionShutdown(session);
+        }
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
