@@ -99,7 +99,7 @@ public class MainServlet extends HttpServlet {
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(context, configuration) {
                 protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, getCoreMessageService(configuration), blockingRequestHandlerContext, authorization);
                 }

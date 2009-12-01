@@ -128,7 +128,7 @@ extends HttpServlet {
                     scheduledThreadPoolExecutor,
                     pushServerMessageService);
             SessionDispatcher _sessionDispatcher =
-                new SessionDispatcher(servletContext) {
+                new SessionDispatcher(servletContext, _servletContextConfiguration) {
                     protected PseudoServlet newServer(
                         final HttpSession httpSession, final Monitor monitor,
                         final Authorization authorization) {
