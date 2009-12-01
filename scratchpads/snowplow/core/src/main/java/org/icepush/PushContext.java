@@ -6,20 +6,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 public class PushContext {
     private static final ThreadLocal CurrentBrowserID = new ThreadLocal();
     private static final String BrowserIDCookieName = "ice.push.browser";
     private int browserCounter = 0;
     private int pushCounter = 0;
-    private Observable notificationObservable;
+    private Observable outboundNotifications;
     private Map groups = new HashMap();
+    private long groupTimeout;
 
-    public PushContext(Observable notificationObservable, ServletContext context) {
-        this.notificationObservable = notificationObservable;
+    public PushContext(Observable outboundNotifications, Observable inboundNotifications, Configuration configuration, ServletContext context) {
+        this.outboundNotifications = outboundNotifications;
+        this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
         context.setAttribute(PushContext.class.getName(), this);
+        inboundNotifications.addObserver(new Observer() {
+            public void update(Observable observable, Object o) {
+                List pushIDs = (List) o;
+                Iterator i = new ArrayList(groups.values()).iterator();
+                while (i.hasNext()) {
+                    Group group = (Group) i.next();
+                    group.touch(pushIDs);
+                }
+            }
+        });
     }
 
     public synchronized String createPushId(HttpServletRequest request, HttpServletResponse response) {
@@ -36,32 +52,27 @@ public class PushContext {
     public void push(String targetName) {
         Object o = groups.get(targetName);
         if (o == null) {
-            notificationObservable.notifyObservers(new String[]{targetName});
+            outboundNotifications.notifyObservers(new String[]{targetName});
         } else {
-            notificationObservable.notifyObservers(((ArrayList) o).toArray(new String[0]));
+            outboundNotifications.notifyObservers(((Group) o).getPushIDs());
         }
     }
 
+    //todo: this method needs the browser ID since pushIDs are unique only for the same browser
     public void addGroupMember(String groupName, String pushId) {
         Object o = groups.get(groupName);
         if (o == null) {
-            ArrayList pushIDList = new ArrayList();
-            pushIDList.add(pushId);
-            groups.put(groupName, pushIDList);
+            groups.put(groupName, new Group(groupName, pushId));
         } else {
-            ArrayList pushIDList = (ArrayList) o;
-            pushIDList.add(pushId);
+            ((Group) o).addID(pushId);
         }
     }
 
     public void removeGroupMember(String groupName, String pushId) {
         Object o = groups.get(groupName);
         if (o != null) {
-            ArrayList pushIDList = (ArrayList) o;
-            pushIDList.remove(pushId);
-            if (pushIDList.isEmpty()) {
-                groups.remove(groupName);
-            }
+            Group group = (Group) o;
+            group.removeID(pushId);
         }
     }
 
@@ -91,5 +102,49 @@ public class PushContext {
     private synchronized String generatePushID() {
         //todo: find better algorithm
         return Integer.toHexString((++pushCounter) + hashCode());
+    }
+
+    private class Group {
+        private String name;
+        private long lastAccess = System.currentTimeMillis();
+        private HashSet pushIDList = new HashSet();
+
+        private Group(String name, String firstPushId) {
+            this.name = name;
+            this.addID(firstPushId);
+        }
+
+        private void touch(List pushIDs) {
+            Iterator i = pushIDs.iterator();
+            while (i.hasNext()) {
+                String pushID = (String) i.next();
+                if (pushIDList.contains(pushID)) {
+                    lastAccess = System.currentTimeMillis();
+                    //no need to touch again
+                    //return right away without checking the expiration
+                    return;
+                }
+            }
+
+            //expire group
+            if (lastAccess + groupTimeout < System.currentTimeMillis()) {
+                groups.remove(name);
+            }
+        }
+
+        private void removeID(String id) {
+            pushIDList.remove(id);
+            if (pushIDList.isEmpty()) {
+                groups.remove(name);
+            }
+        }
+
+        private void addID(String id) {
+            pushIDList.add(id);
+        }
+
+        private String[] getPushIDs() {
+            return (String[]) pushIDList.toArray(new String[0]);
+        }
     }
 }

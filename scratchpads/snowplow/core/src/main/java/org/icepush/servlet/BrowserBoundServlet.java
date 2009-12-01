@@ -12,8 +12,8 @@ import java.util.Timer;
 
 public class BrowserBoundServlet extends PathDispatcher {
 
-    public BrowserBoundServlet(ServletContext context, PushContext pushContext, Observable notifier, final Timer monitorRunner, Configuration configuration) {
-        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(notifier, monitorRunner, configuration), configuration, context));
+    public BrowserBoundServlet(ServletContext context, PushContext pushContext, Observable outboundNotifier, Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
+        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(outboundNotifier, inboundNotifier, monitorRunner, configuration), configuration, context));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID(pushContext));
         dispatchOn(".*notify\\.icepush", new NotifyPushID(pushContext));
     }

@@ -24,20 +24,15 @@ public class MainServlet implements PseudoServlet {
     public MainServlet(final ServletContext context) {
         timer = new Timer(true);
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
-        final Observable notifier = new Observable() {
-            public synchronized void notifyObservers(Object o) {
-                setChanged();
-                super.notifyObservers(o);
-                clearChanged();
-            }
-        };
-        final PushContext pushContext = new PushContext(notifier, context);
+        final Observable outboundNotifier = new ReadyObservable();
+        final Observable inboundNotifier = new ReadyObservable();
+        final PushContext pushContext = new PushContext(outboundNotifier, inboundNotifier, configuration, context);
 
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(context, pushContext, notifier, timer, configuration);
+                return new BrowserBoundServlet(context, pushContext, outboundNotifier, inboundNotifier, timer, configuration);
             }
         });
 
@@ -78,5 +73,13 @@ public class MainServlet implements PseudoServlet {
     public void shutdown() {
         dispatcher.shutdown();
         timer.cancel();
+    }
+
+    private static class ReadyObservable extends Observable {
+        public synchronized void notifyObservers(Object o) {
+            setChanged();
+            super.notifyObservers(o);
+            clearChanged();
+        }
     }
 }
