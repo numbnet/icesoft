@@ -72,11 +72,11 @@ var Client = function(autoclose) {
     if (window.XMLHttpRequest) {
         newNativeRequest = function() {
             return new XMLHttpRequest();
-        }
+        };
     } else if (window.ActiveXObject) {
         newNativeRequest = function() {
             return new window.ActiveXObject('Microsoft.XMLHTTP');
-        }
+        };
     } else {
         throw 'cannot create XMLHttpRequest';
     }
