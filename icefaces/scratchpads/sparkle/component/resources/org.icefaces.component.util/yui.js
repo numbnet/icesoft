@@ -35,7 +35,7 @@ logger = {
 	   if (window["console"]) {
 	   	    window["console"].info (msg);
 	   }else {
-	        alert(msg);
+	        //alert(msg);
 	   }
    }
 };
