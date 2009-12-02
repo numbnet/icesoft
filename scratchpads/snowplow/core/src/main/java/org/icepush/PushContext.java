@@ -39,7 +39,8 @@ public class PushContext {
                     Iterator i = new ArrayList(groups.values()).iterator();
                     while (i.hasNext()) {
                         Group group = (Group) i.next();
-                        group.touch(pushIDs);
+                        group.touchIfMatching(pushIDs);
+                        group.discardIfExpired();
                     }
                 }
             }
@@ -122,7 +123,7 @@ public class PushContext {
             this.addID(firstPushId);
         }
 
-        private void touch(List pushIDs) {
+        private void touchIfMatching(List pushIDs) {
             Iterator i = pushIDs.iterator();
             while (i.hasNext()) {
                 String pushID = (String) i.next();
@@ -133,7 +134,9 @@ public class PushContext {
                     return;
                 }
             }
+        }
 
+        private void discardIfExpired() {
             //expire group
             if (lastAccess + groupTimeout < System.currentTimeMillis()) {
                 groups.remove(name);
