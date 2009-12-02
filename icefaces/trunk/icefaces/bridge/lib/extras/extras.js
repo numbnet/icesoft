@@ -444,3 +444,6 @@ Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
     }
     new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
 }
+
+Prototype.Browser.Safari4 = navigator.userAgent.indexOf('4.0.4 Safari') > -1;
+Prototype.Browser.Chrome = navigator.userAgent.indexOf('Chrome') > -1;

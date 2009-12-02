@@ -253,7 +253,9 @@ Ice.ResizableGrid.addMethods({
     var container = this.getContainerElement();
     var children = container.firstChild.firstChild.childNodes;
     var gap = 2;
-    if (Prototype.Browser.Gecko) {
+    if (Prototype.Browser.Gecko || 
+        Prototype.Browser.Safari4 ||
+        Prototype.Browser.Chrome) {
         gap+=2;
     }
     var widths ="";
