@@ -53,7 +53,7 @@
 	      <artifact:pom id="compatPom" file="maven2/icefaces-compat.pom"> 
 	     	 <localRepository refid="local.repository"/>
 	      </artifact:pom>
-	      	<echo> installing icefaces-compat-${icecompat.version} to local repository</echo>
+	      	<echo> installing icefaces-compat-${compatPom.version} to local repository</echo>
 	      <artifact:install file="lib/icefaces-compat.jar" >
 	      	 <localRepository refid="local.repository"/>      	
 	         	  <pom refid="compatPom"/>
