@@ -13,14 +13,14 @@
    
   <properties>
     <servlet.api.version>3.0</servlet.api.version>
-    <jsf.version>2.0.FCS</jsf.version>
+    <jsf.version>2.0.1-FCS</jsf.version>
     <servlet.jsp.version>2.1</servlet.jsp.version>
   </properties>
 
   <dependencies>
      <dependency>
             <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-push</artifactId>
+            <artifactId>icepush</artifactId>
             <version>${version}</version>
      </dependency>
      <dependency>
