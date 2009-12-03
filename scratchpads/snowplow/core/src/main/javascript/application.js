@@ -150,6 +150,14 @@ if (!window.ice.icepush) {
                 }, FormPost, noop);
             },
 
+            get: function(uri, parameters, responseCallback) {
+                getAsynchronously(apiChannel, uri, function(query) {
+                    parameters(curry(addNameValue, query));
+                }, noop, function(response) {
+                    responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
+                });
+            },
+
             post: function(uri, parameters, responseCallback) {
                 postAsynchronously(apiChannel, uri, function(query) {
                     parameters(curry(addNameValue, query));
