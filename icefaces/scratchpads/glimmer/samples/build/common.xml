@@ -45,7 +45,6 @@
     <patternset id="lib.distribute.jsf">
         <include name="jsf-api.jar" unless="no.jsf"/>
         <include name="jsf-impl.jar" unless="no.jsf"/>
-        <exclude name="*.jar" if="no.jsf"/>
     </patternset>
 
     <patternset id="lib.distribute.portlet">
