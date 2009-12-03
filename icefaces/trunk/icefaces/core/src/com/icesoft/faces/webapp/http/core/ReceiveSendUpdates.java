@@ -6,22 +6,20 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
-import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.util.pooling.CSSNamePool;
+import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.util.pooling.ELPool;
 import com.icesoft.util.pooling.XhtmlPool;
-
-import java.util.Collection;
-import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Collection;
+import java.util.Map;
 
 public class ReceiveSendUpdates implements Server {
 
@@ -30,6 +28,12 @@ public class ReceiveSendUpdates implements Server {
         public void respond(Response response) throws Exception {
             response.setStatus(500);
             response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
+        }
+    };
+    private static final ResponseHandler MalformedParameterHandler = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+            response.setStatus(500);
+            response.writeBody().write("Cannot lookup view instance. 'ice.view' parameter is malformed.".getBytes());
         }
     };
     private static Lifecycle lifecycle;
@@ -55,6 +59,8 @@ public class ReceiveSendUpdates implements Server {
         String viewNumber = request.getParameter("ice.view");
         if (viewNumber == null) {
             request.respondWith(MissingParameterHandler);
+        } else if (!ViewIdVerifier.isValid(viewNumber)) {
+            request.respondWith(MalformedParameterHandler);
         } else {
             if (!pageTest.isLoaded()) {
                 request.respondWith(new ReloadResponse(""));
@@ -70,14 +76,15 @@ public class ReceiveSendUpdates implements Server {
                         //mark that updates for this view are sent on the UI connection
                         //this avoids unblocking the blocking connection for updates generated during the execution of JSF lifecycle
                         synchronouslyUpdatedViews.add(viewNumber);
-                        try  {
+                        try {
                             renderCycle(view.getFacesContext());
-                        } catch (Exception e)  {
-                            String viewID = "Unknown View"; 
+                        } catch (Exception e) {
+                            String viewID = "Unknown View";
                             try {
                                 viewID = view.getFacesContext().getViewRoot().getViewId();
-                            } catch (NullPointerException npe)  { }
-                            LOG.error("Exception occured during rendering on " + 
+                            } catch (NullPointerException npe) {
+                            }
+                            LOG.error("Exception occured during rendering on " +
                                     request.getURI() + " [" + viewID + "]", e);
                             throw e;
                         }

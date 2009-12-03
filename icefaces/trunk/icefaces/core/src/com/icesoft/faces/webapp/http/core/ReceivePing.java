@@ -3,14 +3,13 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Pong;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Response;
-
-import java.util.Map;
-
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.common.Server;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Map;
 
 public class ReceivePing implements Server {
     private static final Log LOG = LogFactory.getLog(ReceivePing.class);
@@ -35,12 +34,14 @@ public class ReceivePing implements Server {
             request.respondWith(new ReloadResponse(""));
         } else {
             String viewIdentifier = request.getParameter("ice.view");
-            CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
-            if (queue != null) {
-                queue.put(PONG);
-            } else {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("could not get a valid queue for " + viewIdentifier);
+            if (ViewIdVerifier.isValid(viewIdentifier)) {
+                CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
+                if (queue != null) {
+                    queue.put(PONG);
+                } else {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn("could not get a valid queue for " + viewIdentifier);
+                    }
                 }
             }
             request.respondWith(NOOPResponse.Handler);

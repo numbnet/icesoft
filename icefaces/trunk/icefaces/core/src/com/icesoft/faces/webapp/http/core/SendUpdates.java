@@ -7,13 +7,12 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class SendUpdates implements Server {
     private static final Log LOG = LogFactory.getLog(SendUpdates.class);
@@ -26,7 +25,7 @@ public class SendUpdates implements Server {
         this.commandQueues = commandQueues;
         this.pageTest = pageTest;
         debugDOMUpdate = configuration
-            .getAttributeAsBoolean("debugDOMUpdate", false);
+                .getAttributeAsBoolean("debugDOMUpdate", false);
     }
 
     public void service(final Request request) throws Exception {
@@ -51,7 +50,7 @@ public class SendUpdates implements Server {
 
         public void writeTo(Writer writer) throws IOException {
             String viewIdentifier = request.getParameter("ice.view");
-            if (commandQueues.containsKey(viewIdentifier)) {
+            if (ViewIdVerifier.isValid(viewIdentifier) && commandQueues.containsKey(viewIdentifier)) {
                 CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
                 Command command = queue.take();
                 if (SendUpdates.debugDOMUpdate) {
@@ -59,7 +58,7 @@ public class SendUpdates implements Server {
                     //environments
                     System.out.println(command);
                 }
-                if (LOG.isTraceEnabled())  {
+                if (LOG.isTraceEnabled()) {
                     LOG.trace(command);
                 }
                 command.serializeTo(writer);

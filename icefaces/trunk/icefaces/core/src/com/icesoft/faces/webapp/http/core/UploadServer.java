@@ -1,10 +1,10 @@
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.component.inputfile.UploadConfig;
 import com.icesoft.faces.component.inputfile.FileInfo;
-import com.icesoft.faces.component.inputfile.UploadStateHolder;
-import com.icesoft.faces.component.inputfile.FileUploadUnspecifiedNameException;
 import com.icesoft.faces.component.inputfile.FileUploadInvalidNamePatternException;
+import com.icesoft.faces.component.inputfile.FileUploadUnspecifiedNameException;
+import com.icesoft.faces.component.inputfile.UploadConfig;
+import com.icesoft.faces.component.inputfile.UploadStateHolder;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -15,20 +15,20 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.OutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 public class UploadServer implements Server {
@@ -77,56 +77,58 @@ public class UploadServer implements Server {
                                 viewIdentifier = Streams.asString(item.openStream());
                             }
                         } else {
-                            final View view = (View) views.get(viewIdentifier);
-                            view.installThreadLocals();
-                            final PersistentFacesState state = view.getPersistentFacesState();
-                            final BridgeFacesContext context = view.getFacesContext();
+                            if (ViewIdVerifier.isValid(viewIdentifier)) {
+                                final View view = (View) views.get(viewIdentifier);
+                                view.installThreadLocals();
+                                final PersistentFacesState state = view.getPersistentFacesState();
+                                final BridgeFacesContext context = view.getFacesContext();
 
-                            if (log.isDebugEnabled()) {
-                                log.debug("UploadServer");
-                                log.debug("  viewIdentifier: " + viewIdentifier);
-                                log.debug("  componentID: " + componentID);
-                            }
-
-                            UploadConfig componentUploadConfig = null;
-                            String key = viewIdentifier + " " + componentID;
-                            Object sessionObj = context.getExternalContext().getSession(false);
-                            if (sessionObj != null) {
-                                synchronized(sessionObj) {
-                                    Map map = context.getExternalContext().getSessionMap();
-                                    componentUploadConfig = (UploadConfig) map.get(key);
+                                if (log.isDebugEnabled()) {
+                                    log.debug("UploadServer");
+                                    log.debug("  viewIdentifier: " + viewIdentifier);
+                                    log.debug("  componentID: " + componentID);
                                 }
-                            }
-                            UploadConfig uploadConfig = new UploadConfig(
-                                componentUploadConfig, componentID,
-                                maxSize, uniqueFolder,
-                                uploadDirectory, uploadDirectoryAbsolute);
-                            if (log.isDebugEnabled()) {
-                                log.debug("  session map key: " + key);
-                                log.debug("  componentUploadConfig: " + componentUploadConfig);
-                                log.debug("  uploadConfig: " + uploadConfig);
-                            }
-                            FileInfo fileInfo = new FileInfo();
-                            fileInfo.setStatus(FileInfo.UPLOADING);
-                            progressCalculator.setLifecycleState(
-                                state, uploadConfig, fileInfo);
-                            String iframeContent = null;
-                            try {
-                                upload(
-                                    item,
-                                    fileInfo,
-                                    uploadConfig,
-                                    servletRequest.getSession().getServletContext(),
-                                    servletRequest.getRequestedSessionId());
-                                UploadStateHolder stateHolder = progressCalculator.doLifecycle();
-                                iframeContent = getResultingIframeContent(context, stateHolder);
-                            } catch (IOException e) {
-                                log.warn("File upload problem", e);
-                            } catch (Throwable t) {
-                                log.warn("File upload issue", t);
-                            } finally {
-                                request.respondWith(new StringContentHandler(
-                                        "text/html", "UTF-8", iframeContent));
+
+                                UploadConfig componentUploadConfig = null;
+                                String key = viewIdentifier + " " + componentID;
+                                Object sessionObj = context.getExternalContext().getSession(false);
+                                if (sessionObj != null) {
+                                    synchronized (sessionObj) {
+                                        Map map = context.getExternalContext().getSessionMap();
+                                        componentUploadConfig = (UploadConfig) map.get(key);
+                                    }
+                                }
+                                UploadConfig uploadConfig = new UploadConfig(
+                                        componentUploadConfig, componentID,
+                                        maxSize, uniqueFolder,
+                                        uploadDirectory, uploadDirectoryAbsolute);
+                                if (log.isDebugEnabled()) {
+                                    log.debug("  session map key: " + key);
+                                    log.debug("  componentUploadConfig: " + componentUploadConfig);
+                                    log.debug("  uploadConfig: " + uploadConfig);
+                                }
+                                FileInfo fileInfo = new FileInfo();
+                                fileInfo.setStatus(FileInfo.UPLOADING);
+                                progressCalculator.setLifecycleState(
+                                        state, uploadConfig, fileInfo);
+                                String iframeContent = null;
+                                try {
+                                    upload(
+                                            item,
+                                            fileInfo,
+                                            uploadConfig,
+                                            servletRequest.getSession().getServletContext(),
+                                            servletRequest.getRequestedSessionId());
+                                    UploadStateHolder stateHolder = progressCalculator.doLifecycle();
+                                    iframeContent = getResultingIframeContent(context, stateHolder);
+                                } catch (IOException e) {
+                                    log.warn("File upload problem", e);
+                                } catch (Throwable t) {
+                                    log.warn("File upload issue", t);
+                                } finally {
+                                    request.respondWith(new StringContentHandler(
+                                            "text/html", "UTF-8", iframeContent));
+                                }
                             }
                         }
                     }
@@ -140,13 +142,12 @@ public class UploadServer implements Server {
             }
 
             protected void upload(
-                FileItemStream stream,
-                FileInfo fileInfo,
-                UploadConfig uploadConfig,
-                ServletContext servletContext,
-                String sessionId)
-                throws IOException
-            {
+                    FileItemStream stream,
+                    FileInfo fileInfo,
+                    UploadConfig uploadConfig,
+                    ServletContext servletContext,
+                    String sessionId)
+                    throws IOException {
                 // InputFile uploadDirectory attribute takes precedence,
                 //  but if it's not given, then default to the
                 //  com.icesoft.faces.uploadDirectory context-param
@@ -199,24 +200,23 @@ public class UploadServer implements Server {
                         if (uploadConfig.isFailOnEmptyFile()) {
                             if (fileLength == 0) {
                                 throw new FileUploadBase.FileUploadIOException(
-                                        new FileUploadBase.UnknownSizeException()); 
+                                        new FileUploadBase.UnknownSizeException());
                             }
-                        }                        
+                        }
                         if (log.isDebugEnabled())
                             log.debug("fileLength: " + fileLength + ((fileLength > uploadConfig.getSizeMax().longValue()) ? "  TOO LARGE" : ""));
                         fileInfo.setStatus(FileInfo.SAVED);
                         fileInfo.setPercent(100);
                         fileInfo.setFile(file);
-                        fileInfo.setSize( fileLength );
+                        fileInfo.setSize(fileLength);
                     } else {
-                        throw new FileUploadInvalidNamePatternException("The file name '"+fileName+"' does not match with the file name pattern '"+namePattern+"'");
+                        throw new FileUploadInvalidNamePatternException("The file name '" + fileName + "' does not match with the file name pattern '" + namePattern + "'");
                     }
                 } catch (FileUploadBase.FileUploadIOException uploadException) {
                     Throwable cause = uploadException.getCause();
                     if (cause instanceof Exception) {
-                        fileInfo.setException((Exception)cause);
-                    }
-                    else {
+                        fileInfo.setException((Exception) cause);
+                    } else {
                         fileInfo.setException(uploadException);
                     }
 
@@ -256,10 +256,10 @@ public class UploadServer implements Server {
                         file = null;
                     }
                 }
-                
+
                 log.debug("upload(-)  Method bottom");
             }
-            
+
             protected String getResultingIframeContent(BridgeFacesContext context, UploadStateHolder stateHolder) {
                 String iframeContent = null;
                 long startTime = System.currentTimeMillis();
@@ -274,16 +274,19 @@ public class UploadServer implements Server {
                     if (iframeContent != null) {
                         break;
                     }
-                    
+
                     long now = System.currentTimeMillis();
                     if ((now - startTime) >= 5000L) {
                         break;
                     }
-                    try { Thread.sleep(100L); } catch(InterruptedException e) {}
-                } while(stateHolder.isAsyncLifecycle());
+                    try {
+                        Thread.sleep(100L);
+                    } catch (InterruptedException e) {
+                    }
+                } while (stateHolder.isAsyncLifecycle());
                 return iframeContent;
             }
-            
+
             public void portlet(Object request, Object response, Object config) {
                 throw new IllegalAccessError("Cannot upload using a portlet request/response.");
             }
@@ -305,7 +308,7 @@ public class UploadServer implements Server {
 
         public ProgressCalculator(boolean lifecycleOnCallingThread) {
             this.lifecycleOnCallingThread = lifecycleOnCallingThread;
-        } 
+        }
 
         public void progress(long read, long total) {
             if (total > 0) {
@@ -314,11 +317,10 @@ public class UploadServer implements Server {
                 int granularNotifiablePercentage = percentage - percentageAboveGranularity;
                 boolean shouldNotify = granularNotifiablePercentage > lastGranularlyNotifiablePercent;
                 if (shouldNotify && (lastTime > 0) &&
-                    (granularNotifiablePercentage != 0) &&
-                    (granularNotifiablePercentage != 100))
-                {
+                        (granularNotifiablePercentage != 0) &&
+                        (granularNotifiablePercentage != 100)) {
                     long now = System.currentTimeMillis();
-                    if ( (now - lastTime) < TIME_MILLISECONDS ) {
+                    if ((now - lastTime) < TIME_MILLISECONDS) {
                         shouldNotify = false;
                     }
                 }
@@ -339,27 +341,26 @@ public class UploadServer implements Server {
             // Always setAllCurrentInstances() right away, in case we never 
             //  get progress, notifications, and are immediately done, in case
             //  InputFile.upload(-) needs things setup
-            if(state != null) {
+            if (state != null) {
                 state.setAllCurrentInstances();
             }
             potentiallyNotify();
         }
-        
+
         protected void potentiallyNotify() {
             if (state != null &&
-                uploadConfig != null &&
-                fileInfo != null &&
-                // If finished because bad fileNamePattern, can still get more
-                // progress, which we should discard, since already reset 
-                // progress to 0. Progress seems to come in when sending 
-                // response, possibly as side effect of buffer flushing?
-                !fileInfo.isFinished() &&
-                lastGranularlyNotifiablePercent >= 0 &&
-                lastGranularlyNotifiablePercent < 100 &&
-                !state.isSynchronousMode() &&
-                uploadConfig.isProgressListener() &&
-                uploadConfig.isProgressRender())
-            {
+                    uploadConfig != null &&
+                    fileInfo != null &&
+                    // If finished because bad fileNamePattern, can still get more
+                    // progress, which we should discard, since already reset
+                    // progress to 0. Progress seems to come in when sending
+                    // response, possibly as side effect of buffer flushing?
+                    !fileInfo.isFinished() &&
+                    lastGranularlyNotifiablePercent >= 0 &&
+                    lastGranularlyNotifiablePercent < 100 &&
+                    !state.isSynchronousMode() &&
+                    uploadConfig.isProgressListener() &&
+                    uploadConfig.isProgressRender()) {
                 if (log.isDebugEnabled())
                     log.debug("UploadServer  progress :: " + lastGranularlyNotifiablePercent);
                 fileInfo.setPercent(lastGranularlyNotifiablePercent);
@@ -369,15 +370,15 @@ public class UploadServer implements Server {
         }
 
         /**
-         * @return UploadStateHolder encapsulating whether the lifecycle will 
-         * happen on another thread, asynchronously, as well as the rendered 
-         * IFRAME content, which is necessary for the Servlet Response
+         * @return UploadStateHolder encapsulating whether the lifecycle will
+         *         happen on another thread, asynchronously, as well as the rendered
+         *         IFRAME content, which is necessary for the Servlet Response
          */
         public UploadStateHolder doLifecycle() {
             UploadStateHolder stateHolder = null;
             try {
                 if (log.isDebugEnabled())
-                    log.debug("UploadServer  doLifecycle :: " + uploadConfig.getClientId() + " in form '"+uploadConfig.getFormClientId()+"'" + " -> " + fileInfo);
+                    log.debug("UploadServer  doLifecycle :: " + uploadConfig.getClientId() + " in form '" + uploadConfig.getFormClientId() + "'" + " -> " + fileInfo);
                 // Pass a copy of the FileInfo into the InputFile Component,
                 // since it might be asynchronously passed in, and the file
                 // have completed uploading by the time it's used. On the 
@@ -386,27 +387,26 @@ public class UploadServer implements Server {
                 // more than once, which can corrupt the applications's
                 // data model.
                 stateHolder = new UploadStateHolder(
-                    uploadConfig, (FileInfo) fileInfo.clone());
+                        uploadConfig, (FileInfo) fileInfo.clone());
 
                 // Seam throws spurious exceptions with PFS.renderLater
                 //  so we'll work-around that for now. Fix later.
                 if (lifecycleOnCallingThread ||
-                      SeamUtilities.isSeamEnvironment() ||
-                      SeamUtilities.isSpringSecurityEnvironment()  ||
-                      SeamUtilities.isSpringEnvironment()) {
-                    
+                        SeamUtilities.isSeamEnvironment() ||
+                        SeamUtilities.isSpringSecurityEnvironment() ||
+                        SeamUtilities.isSpringEnvironment()) {
+
                     stateHolder.setAsyncLifecycle(false);
                     stateHolder.install();
                     state.setupAndExecuteAndRender();
                     state.setAllCurrentInstances();
-                }
-                else {
+                } else {
                     stateHolder.setAsyncLifecycle(true);
                     state.renderLater(stateHolder, false);
                     Thread.yield();
                 }
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 log.warn("Problem rendering view during file upload", e);
             }
             return stateHolder;

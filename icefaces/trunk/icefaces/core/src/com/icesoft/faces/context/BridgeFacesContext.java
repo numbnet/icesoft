@@ -62,6 +62,7 @@ import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewHandler;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -94,6 +95,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private static final Log log = LogFactory.getLog(BridgeFacesContext.class);
     //todo: factor out the page template extension pattern to reuse it MainServlet.java as well (maybe in configuration)
     private static final Pattern PageTemplatePattern = Pattern.compile(".*(\\.iface$|\\.jsf$|\\.faces$|\\.jsp$|\\.jspx$|\\.xhtml$|\\.seam$)");
+    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + NamingContainer.SEPARATOR_CHAR + "([\\w\\_]*))*$");
     private static final Runnable Noop = new Runnable() {
         public void run() {
         }
@@ -372,7 +374,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      */
     public String getFocusId() {
         Map map = externalContext.getRequestParameterMap();
-        return (String) (map.containsKey("ice.focus") ? map.get("ice.focus") : "");
+        String focusedElement = (String) map.get("ice.focus");
+        return focusedElement != null && ClientIdPattern.matcher(focusedElement).matches() ? focusedElement : "";
     }
 
     /**
