@@ -229,9 +229,9 @@ public class HtmlForm
             //see if the event source has actionListener defined on it
             Object listener = tempEvent.getComponent().getAttributes().get("actionListener");
 
-            //if listener is null, it means that component doesn't defines actionListener, 
-            //so form should take care of it
-            if (listener == null) {
+            //if actionListener is not defined on the source component AND the form
+            //component defines one then it means that form should take care of it
+            if (listener == null && getActionListener() != null) {
                  
                  //now create a new ActionEvent, so the form component can be set 
                  //as an event source
