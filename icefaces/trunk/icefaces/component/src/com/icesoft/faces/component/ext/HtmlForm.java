@@ -36,14 +36,22 @@ package com.icesoft.faces.component.ext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.panelseries.UISeries.RowEvent;
 
+import javax.faces.component.ActionSource;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
+import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
+import javax.faces.event.FacesEvent;
 
 
 public class HtmlForm
         extends javax.faces.component.html.HtmlForm
-        implements IceExtended {
+        implements IceExtended, ActionSource {
 
     public static final String COMPONENT_TYPE = "com.icesoft.faces.HtmlForm";
     public static final String RENDERER_TYPE = "com.icesoft.faces.Form";
@@ -52,7 +60,11 @@ public class HtmlForm
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
     private String styleClass = null;
-
+    private MethodBinding action = null;
+    private MethodBinding actionListener = null;
+    private boolean immediate = false;
+    private boolean immediateSet = false;
+    
     public HtmlForm() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -170,13 +182,17 @@ public class HtmlForm
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[6];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
         values[3] = renderedOnUserRole;
         values[4] = autocomplete;
         values[5] = styleClass;
+        values[6] = saveAttachedState(context, action);
+        values[7] = saveAttachedState(context, actionListener);
+        values[8] = immediate ? Boolean.TRUE : Boolean.FALSE;
+        values[9] = immediateSet ? Boolean.TRUE : Boolean.FALSE;        
         return ((Object) (values));
     }
 
@@ -192,7 +208,162 @@ public class HtmlForm
         renderedOnUserRole = (String) values[3];
         autocomplete = (String) values[4];
         styleClass = (String) values[5];
+        action = (MethodBinding) restoreAttachedState(context, values[6]);
+        actionListener =
+                (MethodBinding) restoreAttachedState(context, values[7]);
+        immediate = ((Boolean) values[8]).booleanValue();
+        immediateSet = ((Boolean) values[9]).booleanValue();        
     }
+    
+    public void queueEvent(FacesEvent event) {
+        FacesEvent tempEvent = event;
+
+        //if its a rowEvent, then get the actual faces event
+        if (event instanceof RowEvent) {
+            tempEvent = ((RowEvent)event).getFacesEvent();
+        }
+
+        //now check if its an action event
+        if (tempEvent instanceof ActionEvent) {
+
+            //see if the event source has actionListener defined on it
+            Object listener = tempEvent.getComponent().getAttributes().get("actionListener");
+
+            //if listener is null, it means that component doesn't defines actionListener, 
+            //so form should take care of it
+            if (listener == null) {
+                 
+                 //now create a new ActionEvent, so the form component can be set 
+                 //as an event source
+                 FacesEvent newEvent = new ActionEvent(this);
+                 
+                 //if its a rowEvent, then swap the actual FacesEvent, this will 
+                 //give us a benefit of dealing with UISeries event, and form.broadcast 
+                 //will be called in a proper iteration
+                 if (event instanceof RowEvent) {
+                     ((RowEvent)event).setFacesEvent(newEvent);
+                 } else {
+                     //this component is not inside any UIData, so just queue 
+                     //actionEvent belongs to form
+                     super.queueEvent(newEvent);
+                     return;
+                 }
+            }
+        }
+        //it means that either the event was not an actionEvent or if it was an 
+        //actionEvent but the component has defined an actionListener as well.
+        super.queueEvent(event);
+    } 
+    
+    //this should be called only for those actionEvents which are not handled by their components. 
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        try {
+            super.broadcast(event);
+        } catch (IllegalArgumentException e) {
+        }
+        if ((event instanceof ActionEvent)) {
+            ActionEvent actionEvent = (ActionEvent) event;
+            try {
+                MethodBinding actionListenerBinding = getActionListener();
+                if (actionListenerBinding != null) {
+                    actionListenerBinding.invoke(
+                        getFacesContext(), new Object[]{actionEvent});
+                }
+            } catch (EvaluationException e) {
+                Throwable cause = e.getCause();
+                if (cause != null &&
+                    cause instanceof AbortProcessingException) {
+                    throw(AbortProcessingException) cause;
+                } else {
+                    throw e;
+                }
+            }
+
+            ActionListener listener =
+                    getFacesContext().getApplication().getActionListener();
+            if (listener != null) {
+                listener.processAction((ActionEvent) event);
+            }
+        }
+
+    }    
+    
+    
+    /**
+     * <p>Set the value of the <code>action</code> property.</p>
+     */
+    public void setAction(MethodBinding action) {
+        this.action = action;
+    }
+
+    /**
+     * <p>Return the value of the <code>action</code> property.</p>
+     */
+    public MethodBinding getAction() {
+        return action;
+    }
+
+    /* (non-Javadoc)
+     * @see javax.faces.component.ActionSource#setActionListener(javax.faces.el.MethodBinding)
+     */
+    public void setActionListener(MethodBinding actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    /* (non-Javadoc)
+     * @see javax.faces.component.ActionSource#getActionListener()
+     */
+    public MethodBinding getActionListener() {
+        return actionListener;
+    }
+
+    /* (non-Javadoc)
+     * @see javax.faces.component.ActionSource#addActionListener(javax.faces.event.ActionListener)
+     */
+    public void addActionListener(ActionListener listener) {
+        addFacesListener(listener);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.faces.component.ActionSource#getActionListeners()
+     */
+    public ActionListener[] getActionListeners() {
+        return (ActionListener[]) getFacesListeners(ActionListener.class);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.faces.component.ActionSource#removeActionListener(javax.faces.event.ActionListener)
+     */
+    public void removeActionListener(ActionListener listener) {
+        removeFacesListener(listener);
+    }
+    
+    /**
+     * <p>Return the value of the <code>immediate</code> property.</p>
+     */
+    public boolean isImmediate() {
+        if (this.immediateSet) {
+            return (this.immediate);
+        }
+        ValueBinding vb = getValueBinding("immediate");
+        if (vb != null) {
+            return (Boolean.TRUE.equals(vb.getValue(getFacesContext())));
+        } else {
+            return (this.immediate);
+        }
+    }
+
+    /**
+     * <p>Set the value of the <code>immediate</code> property.</p>
+     */
+    public void setImmediate(boolean immediate) {
+        if (immediate != this.immediate) {
+            this.immediate = immediate;
+        }
+        this.immediateSet = true;
+
+    }    
+
 }
 
 
