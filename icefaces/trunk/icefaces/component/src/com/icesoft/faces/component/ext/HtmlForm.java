@@ -217,11 +217,25 @@ public class HtmlForm
     
     public void queueEvent(FacesEvent event) {
         FacesEvent tempEvent = event;
-
-        //if its a rowEvent, then get the actual faces event
+        RowEvent rowEvent = null;
+        
         if (event instanceof RowEvent) {
-            tempEvent = ((RowEvent)event).getFacesEvent();
+            rowEvent = (RowEvent)event;
+            //support for nested UISeries components
+            while(true) {
+                //if its a rowEvent, then get the actual faces event
+                if (rowEvent instanceof RowEvent) {
+                    tempEvent = rowEvent.getFacesEvent();
+                    if (tempEvent instanceof RowEvent){
+                        rowEvent = (RowEvent)tempEvent;
+                    } else {
+                        break;
+                    }
+                }
+            }            
         }
+        
+
 
         //now check if its an action event
         if (tempEvent instanceof ActionEvent) {
@@ -240,8 +254,8 @@ public class HtmlForm
                  //if its a rowEvent, then swap the actual FacesEvent, this will 
                  //give us a benefit of dealing with UISeries event, and form.broadcast 
                  //will be called in a proper iteration
-                 if (event instanceof RowEvent) {
-                     ((RowEvent)event).setFacesEvent(newEvent);
+                 if (rowEvent != null) {
+                     rowEvent.setFacesEvent(newEvent);
                  } else {
                      //this component is not inside any UIData, so just queue 
                      //actionEvent belongs to form
