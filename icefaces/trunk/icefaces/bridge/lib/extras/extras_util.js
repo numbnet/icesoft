@@ -58,6 +58,25 @@ Ice.util = {
                 iframe.clonePosition(element);
             }
         }
+        var inputWidth = $(containerElement).select("input:first-child")[0].getWidth();
+        var elementWidth = $(element).getWidth();
+        var elementCumulativeLeft = Element.cumulativeOffset($(element)).left;
+        var documentY = document.viewport.getScrollOffsets().left + document.viewport.getWidth();
+        var containerElementLeft = Element.cumulativeOffset($(containerElement)).left ;
+        diff = elementCumulativeLeft - containerElementLeft ;
+        var elementY = elementCumulativeLeft + $(element).getWidth();
+        var newElementY = elementWidth + diff;
+      
+        if (documentY < elementY && 
+              newElementY < documentY && 
+               elementWidth < containerElementLeft) {
+            $(element).parentNode.style.position = "absolute";
+            $(element).parentNode.style.left =  "-" + (elementWidth - inputWidth) + "px";
+            iframe = $(element).up().next("iframe");
+            if (iframe) {
+                iframe.clonePosition(element);
+            }
+        }
     },
     radioCheckboxEnter: function(form, component, evt) {
         if (evt.keyCode == Event.KEY_RETURN) {
