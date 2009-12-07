@@ -240,12 +240,13 @@ public class HtmlForm
         //now check if its an action event
         if (tempEvent instanceof ActionEvent) {
 
-            //see if the event source has actionListener defined on it
+            //see if the event source has action or actionListener defined on it
+            Object action = tempEvent.getComponent().getAttributes().get("action");
             Object listener = tempEvent.getComponent().getAttributes().get("actionListener");
 
-            //if actionListener is not defined on the source component AND the form
+            //if neither action nor actionListener is defined on the source component AND the form
             //component defines one then it means that form should take care of it
-            if (listener == null && getActionListener() != null) {
+            if (action == null && listener == null && getActionListener() != null) {
                  
                  //now create a new ActionEvent, so the form component can be set 
                  //as an event source
@@ -265,7 +266,7 @@ public class HtmlForm
             }
         }
         //it means that either the event was not an actionEvent or if it was an 
-        //actionEvent but the component has defined an actionListener as well.
+        //actionEvent but the component has defined an action or actionListener as well.
         super.queueEvent(event);
     } 
     
