@@ -46,7 +46,9 @@ public class PanelTooltip extends PanelPopup{
     private String styleClass = null;
     
     private MethodBinding displayListener;
-    
+    private String displayOn;
+    private Boolean moveWithMouse;
+
     public PanelTooltip() {
         setRendererType(DEFAULT_RENDERER_TYPE);
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
@@ -183,6 +185,7 @@ public class PanelTooltip extends PanelPopup{
             if (getState().equals("show")) {
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "top", getTooltipY(), true);
                 updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "left", getTooltipX(), true);            
+                JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.showPopup('" + root.getAttribute("id") + "');");
             }
         }
         
@@ -367,19 +370,49 @@ public class PanelTooltip extends PanelPopup{
         styleClass = (String)states[2];
         hideOn = (String)states[3];
         hoverDelay = (Integer)states[4];
+        displayOn = (String) states[5];
+        moveWithMouse = (Boolean) states[6];
     }
 
     public Object saveState(FacesContext context) {
         if(states == null){
-            states = new Object[5];
+            states = new Object[7];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, displayListener);
         states[2] = styleClass;
         states[3] = hideOn;
         states[4] = hoverDelay;
+        states[5] = displayOn;
+        states[6] = moveWithMouse;
         return states;
     }
 
+    public void setDisplayOn(String displayOn) {
+        this.displayOn = displayOn;
+    }
 
+    public String getDisplayOn() {
+        if (displayOn != null) {
+            return displayOn;
+        }
+        ValueBinding vb = getValueBinding("displayOn");
+        if (vb != null && vb.getValue(getFacesContext()) != null) {
+            return (String) vb.getValue(getFacesContext());
+        }
+        return "hover";
+    }
+
+    public boolean isMoveWithMouse() {
+        if (moveWithMouse != null) return moveWithMouse.booleanValue();
+        ValueBinding vb = getValueBinding("moveWithMouse");
+        if (vb == null) return false;
+        Object o = vb.getValue(getFacesContext());
+        if (o == null) return false;
+        return (Boolean.valueOf(o.toString())).booleanValue();
+    }
+
+    public void setMoveWithMouse(boolean moveWithMouse) {
+        this.moveWithMouse = Boolean.valueOf(moveWithMouse);
+    }
 }

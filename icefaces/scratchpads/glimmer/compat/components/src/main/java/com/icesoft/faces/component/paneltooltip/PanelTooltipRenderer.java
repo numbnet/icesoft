@@ -40,9 +40,6 @@ public class PanelTooltipRenderer extends PanelPopupRenderer{
         if ("none".equals(panelTooltip.getHideOn())) {
             panelTooltip.removeTooltipFromVisibleList(facesContext);
         }
-        if (panelTooltip.isDynamic() && !panelTooltip.isVisible()) {
-            return;
-        }
         super.encodeBegin(facesContext, uiComponent);
     }
     
