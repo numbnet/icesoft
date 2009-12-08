@@ -55,7 +55,7 @@ public class MenuPopupRenderer extends MenuBarRenderer {
     
     protected void trailingEncodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
         Element menuDiv = (Element) domContext.getRootNode();
         if(menuDiv != null) {
         

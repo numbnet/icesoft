@@ -297,7 +297,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
             throws IOException {
 
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
 
         Element select = (Element) domContext.getRootNode();
         Element option = domContext.createElement("option");
@@ -453,7 +453,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
             throws IOException {
 
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
 
         Element rootSelectElement = (Element) domContext.getRootNode();
         DOMContext.removeChildrenByTagName(rootSelectElement, "option");
