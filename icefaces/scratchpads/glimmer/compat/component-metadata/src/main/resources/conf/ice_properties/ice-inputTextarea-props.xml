@@ -55,3 +55,31 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+	<description>
+	   <![CDATA[
+		The maximum number of characters that may be entered in this field.<br/>
+        This is not in the HTML specification for textarea, so it has been 
+        implemented in Javascript. The caveat is that characters beyond the limit
+        may appear briefly, before the ending of the text is truncated.
+		]]>		
+    </description>  
+  
+    <property-name>maxlength</property-name>
+    <property-class>int</property-class>    
+    <property-extension>
+        <category>ADVANCED</category>
+		<editor-class>
+			&integerEditor;
+		</editor-class>
+		<named-value>
+			<name>minValue</name>
+			<expression>new Integer(0)</expression>
+		</named-value>
+		<named-value>
+			<name>unsetValue</name>
+			<expression>new Integer(Integer.MIN_VALUE)</expression>
+		</named-value>
+    </property-extension>
+</property>

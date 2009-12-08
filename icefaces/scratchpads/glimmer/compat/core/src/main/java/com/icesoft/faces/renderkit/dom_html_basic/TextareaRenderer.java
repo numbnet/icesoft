@@ -34,100 +34,93 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
-import com.icesoft.faces.context.DOMContext;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.icefaces.util.DOMUtils;
+
 import java.io.IOException;
 
-public class TextareaRenderer extends DomBasicInputRenderer {
+public class TextareaRenderer extends BaseInputRenderer {
+    protected static final String ONMOUSEDOWN_FOCUS = "this.focus();";
 
-    //private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXTAREA);
-    //handled onmousedown rows
-    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ONBLUR_ATTR, HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+    private static final String[] passThruExcludes = new String[] {
+        HTML.ROWS_ATTR, HTML.COLS_ATTR, HTML.ONMOUSEDOWN_ATTR };
+    private static final String[] passThruAttributes =
+        AttributeConstants.getAttributes(
+            AttributeConstants.H_INPUTTEXTAREA, passThruExcludes);
            
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException {
+        super.encodeBegin(facesContext, uiComponent);
+        DomBasicRenderer.validateParameters(facesContext, uiComponent, UIInput.class);
+        
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        writer.startElement(HTML.TEXTAREA_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+        
+        renderHtmlAttributes(facesContext, writer, uiComponent);
+        PassThruAttributeWriter.renderBooleanAttributes(
+                writer, 
+                uiComponent, 
+                PassThruAttributeWriter.EMPTY_STRING_ARRAY);
     
-    public void encodeBegin(FacesContext context, UIComponent component)
-            throws IOException {
-        validateParameters(context, component, UIInput.class);
-    }
-
-    public void encodeChildren(FacesContext context, UIComponent component) {
-        validateParameters(context, component, UIInput.class);
-    }
-
-    protected void renderEnd(FacesContext facesContext, UIComponent component,
-                             String currentValue)
-            throws IOException {
-
-        validateParameters(facesContext, component, UIInput.class);
-
-        DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, component);
-
-        if (!domContext.isInitialized()) {
-            Element root = domContext.createElement("textarea");
-            domContext.setRootNode(root);
-            setRootElementId(facesContext, root, component);
-            root.setAttribute("name", component.getClientId(facesContext));
-            Text valueNode = domContext.getDocument().createTextNode("");
-            root.appendChild(valueNode);
-        }
-        Element root = (Element) domContext.getRootNode();
-
-        String styleClass =
-                (String) component.getAttributes().get("styleClass");
+        Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
-            root.setAttribute("class", styleClass);
-        }
-        
-        String autoComplete =
-                (String) component.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
-        if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
-            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
-        }
-        PassThruAttributeRenderer
-                .renderHtmlAttributes(facesContext, component, passThruAttributes);
-        String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
-        Object attribute;
-        for (int i = 0; i < attributes.length; i++) {
-            attribute = component.getAttributes().get(attributes[i]);
-            if (attribute instanceof Boolean && ((Boolean) attribute).booleanValue()) {
-                root.setAttribute(attributes[i], attributes[i]);
-            }
+            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+    }
+
+        renderNumericAttributeOrDefault(writer, uiComponent, HTML.ROWS_ATTR, "2");
+        renderNumericAttributeOrDefault(writer, uiComponent, HTML.COLS_ATTR, "20");
+    }
+
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) 
+            throws IOException {
+        super.encodeChildren(facesContext, uiComponent);
+        DomBasicRenderer.validateParameters(facesContext, uiComponent, UIInput.class);
+    }
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException {
+        //it must call the super.encode to support effects and facesMessage recovery
+        super.encodeEnd(facesContext, uiComponent);
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        String currentValue = getValue(facesContext, uiComponent);
+        if (currentValue != null && currentValue.length() > 0) {
+            writer.write(DOMUtils.escapeAnsi(currentValue));
         }
 
-        Object rows = component.getAttributes().get("rows");
-        if (rows != null && ((Integer)rows).intValue() > -1) {
-            root.setAttribute("rows", rows.toString());
-        } else {
-            root.setAttribute("rows", "2");
+        writer.endElement(HTML.TEXTAREA_ELEM);
         }
         
-        Object cols = component.getAttributes().get("cols");
-        if (cols != null && ((Integer)cols).intValue() > -1) {
-            root.setAttribute("cols", cols.toString());
-        } else {
-            root.setAttribute("cols", "20");
+    protected void renderNumericAttributeOrDefault(
+        ResponseWriter writer, UIComponent uiComponent,
+        String attribName, String defaultValue)
+            throws IOException {
+        Object val = uiComponent.getAttributes().get(attribName);
+        if (val == null || ((Integer)val).intValue() <= -1) {
+            val = defaultValue;
+            }
+        writer.writeAttribute(attribName, val, attribName);
         }
-        
-        Text valueNode = (Text) root.getFirstChild();
-        if (currentValue != null) {
-            valueNode.setData(currentValue);
-        } else {
-            // this is necessary due to a restriction on the 
-            // structure of the textarea element in the DOM
-            valueNode.setData("");
-        }
+
+    protected void renderHtmlAttributes(
+        FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
+            throws IOException {
+        PassThruAttributeWriter.renderHtmlAttributes(
+            writer, uiComponent, passThruAttributes);
 
         //fix for ICE-2514
-        String mousedownScript = (String)component.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
-        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript,"this.focus;"));        
-        domContext.stepOver();
+        String app = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+        String rend = ONMOUSEDOWN_FOCUS;
+        String combined = DomBasicRenderer.combinedPassThru(app, rend);
+        writer.writeAttribute(HTML.ONMOUSEDOWN_ATTR, combined, HTML.ONMOUSEDOWN_ATTR);
     }
-
-
 }

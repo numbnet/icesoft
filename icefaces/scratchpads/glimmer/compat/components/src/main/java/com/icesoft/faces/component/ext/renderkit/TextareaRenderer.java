@@ -1,3 +1,4 @@
+
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -33,95 +34,58 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import com.icesoft.faces.component.IceExtended;
-import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.component.ext.HtmlInputTextarea;
+import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+
 import java.io.IOException;
-import org.w3c.dom.Element;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.component.UIInput;
-import org.w3c.dom.Text;
+import javax.faces.context.ResponseWriter;
 
 public class TextareaRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TextareaRenderer {
 
-    //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_INPUTTEXTAREA);
-    //handled onblur onmousedown rows 
-    private static final String[] passThruAttributes = 
-               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR, HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
-           
+    protected static final String ONMOUSEDOWN_FOCUS = "this.focus();";
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.ROWS_ATTR, HTML.COLS_ATTR };
+    private static final String[] PASSTHRU_JS_EVENTS = LocalEffectEncoder.maskEvents(
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_INPUTTEXTAREA));
+    private static final String[] PASSTHRU =
+            ExtendedAttributeConstants.getAttributes(
+                ExtendedAttributeConstants.ICE_INPUTTEXTAREA,
+                new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
 
-    protected void renderEnd(FacesContext facesContext, UIComponent component,
-            String currentValue)
+    protected void renderHtmlAttributes(
+        FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
             throws IOException {
-
-        validateParameters(facesContext, component, UIInput.class);
-
-        DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, component);
-
-        if (!domContext.isInitialized()) {
-            Element root = domContext.createElement("textarea");
-            domContext.setRootNode(root);
-            setRootElementId(facesContext, root, component);
-            root.setAttribute("name", component.getClientId(facesContext));
-            Text valueNode = domContext.getDocument().createTextNode("");
-            root.appendChild(valueNode);
+        HtmlInputTextarea inputTextarea = (HtmlInputTextarea) uiComponent;
+        PassThruAttributeWriter.renderHtmlAttributes(
+            writer, uiComponent, PASSTHRU);
+        Map rendererJS = new HashMap(4);
+        rendererJS.put(
+            HTML.ONMOUSEDOWN_ATTR, ONMOUSEDOWN_FOCUS);
+        int maxlength = inputTextarea.getMaxlength();
+        if (maxlength >= 0) {
+            // The most recent char is not a part of the textarea's value when
+            // the onkey* events fire, so if you mouse away, it'll have one 
+            // too many chars, hence the need for onchange. Can't just be
+            // onchange though, since it doesn't fire as you type, in FF3.
+            String handler = "Ice.txtAreaMaxLen(this,"+maxlength+");"; 
+            rendererJS.put(HTML.ONKEYDOWN_ATTR, handler);
+            rendererJS.put(HTML.ONCHANGE_ATTR, handler);
         }
-        Element root = (Element) domContext.getRootNode();
-
-        String styleClass =
-                (String) component.getAttributes().get("styleClass");
-        if (styleClass != null) {
-            root.setAttribute("class", styleClass);
+        if (inputTextarea.getPartialSubmit()) {
+            rendererJS.put(
+                HTML.ONBLUR_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
         }
-
-        String autoComplete =
-                (String) component.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
-        if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
-            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
-        }
-        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, component, passThruAttributes);
-        String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
-        Object attribute;
-        for (int i = 0; i < attributes.length; i++) {
-            attribute = component.getAttributes().get(attributes[i]);
-            if (attribute instanceof Boolean && ((Boolean) attribute).booleanValue()) {
-                root.setAttribute(attributes[i], attributes[i]);
-            }
-        }
-
-        Object rows = component.getAttributes().get("rows");
-        if (rows != null && ((Integer) rows).intValue() > -1) {
-            root.setAttribute("rows", rows.toString());
-        } else {
-            root.setAttribute("rows", "2");
-        }
-
-        Object cols = component.getAttributes().get("cols");
-        if (cols != null && ((Integer) cols).intValue() > -1) {
-            root.setAttribute("cols", cols.toString());
-        } else {
-            root.setAttribute("cols", "20");
-        }
-
-        Text valueNode = (Text) root.getFirstChild();
-        if (currentValue != null) {
-            valueNode.setData(currentValue);
-        } else {
-            // this is necessary due to a restriction on the 
-            // structure of the textarea element in the DOM
-            valueNode.setData("");
-        }
-        if (((IceExtended) component).getPartialSubmit()) {
-            root.setAttribute("onblur", this.ICESUBMITPARTIAL);
-        }
-        //fix for ICE-2514
-        String mousedownScript = (String)component.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
-        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript,"this.focus;"));
-        domContext.stepOver();
+        LocalEffectEncoder.encode(
+            facesContext, uiComponent, PASSTHRU_JS_EVENTS, rendererJS, null, writer);                
     }
 }
