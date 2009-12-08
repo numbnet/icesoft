@@ -350,7 +350,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * selectedItem. Note that this component can only keep a reference 
      * to the last selectedItem if its value field is Serializable.</p>
      */
-    protected void setSelectedItem(String key) {
+    public void setSelectedItem(String key) {
 //System.out.println("SIT.setSelectedItem()  key: " + key);
         SelectItem selItm = null;
         if (key != null) {

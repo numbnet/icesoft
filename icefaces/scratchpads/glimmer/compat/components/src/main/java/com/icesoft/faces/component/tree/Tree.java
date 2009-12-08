@@ -39,6 +39,7 @@ import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
@@ -57,6 +58,8 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -169,6 +172,7 @@ public class Tree extends UICommand implements NamingContainer {
     private String hideRootNode;
     private String hideNavigation;
     private String pathToExpandedNode;
+    private Boolean keyboardNavigationEnabled;
     
     transient private DefaultMutableTreeNode currentNode;
     private String nodePath;
@@ -225,21 +229,50 @@ public class Tree extends UICommand implements NamingContainer {
         return this.currentNode;
     }
 
+    public void encodeBegin(FacesContext context) throws IOException {
+        if (!keepSaved(context)) {
+            savedChildren = new HashMap();
+        }
+        super.encodeBegin(context);
+
+    }
+
+    private boolean keepSaved(FacesContext context) {
+    
+        Iterator clientIds = savedChildren.keySet().iterator();
+        while (clientIds.hasNext()) {
+            String clientId = (String) clientIds.next();
+            Iterator messages = context.getMessages(clientId);
+            while (messages.hasNext()) {
+                FacesMessage message = (FacesMessage) messages.next();
+                if (message.getSeverity().compareTo(FacesMessage.SEVERITY_ERROR)
+                    >= 0) {
+                    return (true);
+                }
+            }
+        }
+        return false;
+    
+    }    
+
+    
     /**
      * @param nodePath
      */
     public void setNodePath(String nodePath) {
         FacesContext facesContext = getFacesContext();
+        this.nodePath = nodePath;
         // save the state of the last node
         saveChildrenState(facesContext);
 
-        this.nodePath = nodePath;
+
+        // put the current node on the request map
+        this.setCurrentVarToRequestMap(facesContext, getCurrentNode());
+    
 
         // restore the state for current node
         restoreChildrenState(facesContext);
 
-        // put the current node on the request map
-        this.setCurrentVarToRequestMap(facesContext, getCurrentNode());
 
     }
 
@@ -779,7 +812,7 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[27];
+        Object values[] = new Object[28];
         values[0] = super.saveState(context);
         values[1] = title;        
         values[2] = navigationEventType;
@@ -806,7 +839,8 @@ public class Tree extends UICommand implements NamingContainer {
         values[23] = hideNavigation;
         values[24] = nodePath;
         values[25] = savedChildren;
-        values[26] = pathToExpandedNode;        
+        values[26] = pathToExpandedNode; 
+        values[27] = keyboardNavigationEnabled;      
         
 
         return (values);
@@ -848,7 +882,8 @@ public class Tree extends UICommand implements NamingContainer {
         hideNavigation = (String) values[23];
         nodePath = (String) values[24];
         savedChildren = (Map) values[25];
-        pathToExpandedNode = (String) values[26];        
+        pathToExpandedNode = (String) values[26];
+        keyboardNavigationEnabled = (Boolean) values[27];        
     }
 
 
@@ -864,8 +899,10 @@ public class Tree extends UICommand implements NamingContainer {
         if (!isRendered()) {
             return;
         }
+        if (null == savedChildren || !keepSaved(context)) {
+            savedChildren = new HashMap();
+        }
 
-        savedChildren = new HashMap();
 
         this.processTreeNodes((DefaultMutableTreeNode) getModel().getRoot(),
                               PhaseId.APPLY_REQUEST_VALUES, context);
@@ -1473,7 +1510,20 @@ public class Tree extends UICommand implements NamingContainer {
             }
         }
     }
-   
+
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }
 }
 
 //  Private class to represent saved state information for the children of the Tree component
