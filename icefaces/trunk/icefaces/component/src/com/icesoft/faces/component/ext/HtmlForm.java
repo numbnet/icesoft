@@ -246,7 +246,7 @@ public class HtmlForm
 
             //if neither action nor actionListener is defined on the source component AND the form
             //component defines one then it means that form should take care of it
-            if (action == null && listener == null && getActionListener() != null) {
+            if ((action == null && listener == null) && (getActionListener() != null || getAction() != null)) {
                  
                  //now create a new ActionEvent, so the form component can be set 
                  //as an event source
