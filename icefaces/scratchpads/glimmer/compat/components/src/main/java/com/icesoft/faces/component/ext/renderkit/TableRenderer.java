@@ -51,6 +51,7 @@ import com.icesoft.faces.util.CoreUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -116,7 +117,6 @@ public class TableRenderer
 
     public void writeColStyles(String[] columnStyles, int columnStylesMaxIndex,
                                int columnStyleIndex, Element td,
-                               int colNumber,
                                UIComponent uiComponent
                                 ) {
         if (columnStyles.length > 0) {
@@ -170,7 +170,10 @@ public class TableRenderer
                 childColumnHasFacetWithName(uiData, facet);
         Element thead = null;
         if (headerFacet != null || childHeaderFacetExists) {
+            String clientId = uiData.getClientId(facesContext);
             thead = domContext.createElement(tag);
+            thead.setAttribute(HTML.ID_ATTR, ClientIdPool.get
+                    (clientId + NamingContainer.SEPARATOR_CHAR + tag));
             root.appendChild(thead);
 
 
@@ -216,49 +219,41 @@ public class TableRenderer
                                     String facet,
                                     String element,
                                     boolean header) throws IOException {
-        StringTokenizer columnWitdths = getColumnWidths(uiComponent);
+        HtmlDataTable htmlDataTable = (HtmlDataTable)uiComponent;
         DOMContext domContext =
             DOMContext.getDOMContext(facesContext, uiComponent);
             Element tr = domContext.createElement("tr");
             thead.appendChild(tr);
             List childList = uiComponent.getChildren();
             Iterator childColumns = childList.iterator();
-            String width = null;
             int columnIndex = 1;
             int headerStyleLength = getHeaderStyles(uiComponent).length;
             int styleIndex = 0;
+            String[] columnWidths = getColumnWidthsArray(htmlDataTable);
+            htmlDataTable.setColNumber(-1);
             while (childColumns.hasNext()) {
-
                 UIComponent nextColumn = (UIComponent) childColumns.next();
 
-                if (columnWitdths != null && columnWitdths.hasMoreTokens()) {
-                    width = columnWitdths.nextToken();
-                } else {
-                    if (isScrollable(uiComponent)) {
-                        width = "100%";
-
-                    } else {
-                        width = null;
-                    }
-
-                }
                 if (!nextColumn.isRendered()) continue;
                 if (nextColumn instanceof UIColumn) {
+                    htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
                     processUIColumnHeader(facesContext, uiComponent,
                                           (UIColumn) nextColumn, tr, domContext,
-                                          facet, element, width,
+                                          facet, element,
                                           columnIndex,
                                           styleIndex,
-                                          !childColumns.hasNext());
+                                          !childColumns.hasNext(),
+                                          columnWidths);
                     columnIndex++;
                 } else if (nextColumn instanceof UIColumns) {
                     columnIndex = processUIColumnsHeader(facesContext,
                                                          uiComponent,
                                                          (UIColumns) nextColumn,
                                                          tr, domContext, facet,
-                                                         element, width, columnIndex,
+                                                         element, columnIndex,
                                                          styleIndex,
-                                                         headerStyleLength);
+                                                         headerStyleLength,
+                                                         columnWidths);
                 }
 
                 if (styleIndex++ == (headerStyleLength-1)) {
@@ -425,9 +420,10 @@ public class TableRenderer
                                        UIComponent uiComponent,
                                        UIColumn nextColumn, Element tr,
                                        DOMContext domContext, String facet,
-                                       String element, String width, int columnIndex,
+                                       String element, int columnIndex,
                                        int styleIndex,
-                                       boolean lastChild)
+                                       boolean lastChild,
+                                       String[] columnsWidth)
             throws IOException {
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         Element th = domContext.createElement(element);
@@ -477,9 +473,9 @@ public class TableRenderer
         } else {
             th.setAttribute("class",getFooterClass(htmlDataTable));
         }
-
+        String width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
         if (width != null) {
-            th.setAttribute("style", "width:" + width + ";overflow:hidden;");
+            th.setAttribute("style", width);
         }
         //th.setAttribute("colgroup", "col");
         UIComponent nextFacet = getFacetByName(nextColumn, facet);
@@ -495,9 +491,10 @@ public class TableRenderer
                                        UIComponent uiComponent,
                                        UIColumns nextColumn, Element tr,
                                        DOMContext domContext, String facet,
-                                       String element, String width, int columnIndex,
+                                       String element, int columnIndex,
                                        int styleIndex,
-                                       int headerStyleLength)
+                                       int headerStyleLength,
+                                       String[] columnsWidth)
             throws IOException {
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         int rowIndex = nextColumn.getFirst();
@@ -507,7 +504,7 @@ public class TableRenderer
         String sortColumn = htmlDataTable.getSortColumn();
         while (nextColumn.isRowAvailable()) {
             UIComponent headerFacet = getFacetByName(nextColumn, facet);
-
+            htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
             if (headerFacet != null) {
                 Node oldParent = domContext.getCursorParent();
                 Element th = domContext.createElement(element);
@@ -520,8 +517,9 @@ public class TableRenderer
                     }                    
                 }
                 th.setAttribute("class",styleClass);
+                String width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
                 if (width != null) {
-                    th.setAttribute("style", "width:" + width + ";");
+                    th.setAttribute("style", width);
                 }
                 //th.setAttribute("colgroup", "col");
                 domContext.setCursorParent(th);
@@ -575,7 +573,16 @@ public class TableRenderer
         if (rowCount == 0) {
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             tBody.appendChild(tr);
-            int cols = getNumberOfChildColumns(uiData);
+            int cols = 0;
+            Iterator it = getRenderedChildColumnsList(uiData).iterator();
+            while (it.hasNext()) {
+                UIComponent component = (UIComponent) it.next();
+                if (component instanceof UIColumns) {
+                    cols += ((UIColumns) component).getRowCount();
+                } else if (component instanceof UIColumn) {
+                    cols += 1;
+                }
+            }
             if( cols == 0 ) cols = 1;
             for(int i = 0 ; i < cols ; i++ ){
             	Element td = (Element) domContext.createElement(HTML.TD_ELEM);
@@ -594,7 +601,6 @@ public class TableRenderer
         String rowStyles[] = getRowStyles(uiComponent);
         int rowStyleIndex = 0;
         int rowStylesMaxIndex = rowStyles.length - 1;
-
         RowSelector rowSelector = getRowSelector(uiComponent);
         boolean rowSelectorFound = rowSelector != null;
         boolean toggleOnClick = false;
@@ -644,7 +650,6 @@ public class TableRenderer
             hiddenClickCountField = clickCountField;
         }
         
-        List columnWidthList = getColumnWidthsAsList(uiComponent);
         Boolean isResizable = null;
         String columnStyles[] = getColumnStyleClasses(uiComponent);
         int columnStyleIndex;
@@ -710,7 +715,7 @@ public class TableRenderer
                     tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
-                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='" +
+                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
                         getPortletAlternateRowClass(selectedClass, rowIndex) + "'"); // ICE-2571
             }
             domContext.setCursorParent(tBody);
@@ -723,21 +728,13 @@ public class TableRenderer
                     rowStyleIndex = 0;
                }
             }
-            int colNumber = 1;
-            Iterator columnWidths = null;
-            if (columnWidthList != null) {
-                columnWidths = columnWidthList.iterator();
-            }
+            uiData.setColNumber(-1);
+            String[] columnWidths = getColumnWidthsArray(uiData);
             while (childs.hasNext()) {
-                String width = "100%";
-                if (scrollable &&
-                    columnWidths != null &&
-                    columnWidths.hasNext()) {
-                    width = (String) columnWidths.next();
-                }
                 UIComponent nextChild = (UIComponent) childs.next();
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
+                        uiData.setColNumber(uiData.getColNumber()+1);                        
                         Element td = domContext.createElement(HTML.TD_ELEM);
                         String iceColumnStyle = null;
                         String iceColumnStyleClass = null;
@@ -784,12 +781,11 @@ public class TableRenderer
                             td.appendChild(hiddenClickCountField);
                         }
                         writeColStyles(columnStyles, columnStylesMaxIndex,
-                                       columnStyleIndex, td, colNumber++,
-                                       uiComponent);
+                                       columnStyleIndex, td, uiComponent);
 
-                        if (scrollable && width != null)  {
-                            td.setAttribute("style", "width:" + width +
-                            ";overflow:hidden;");
+                        String width = getWidthFromColumnWidthsArray(uiData, columnWidths);
+                        if (width != null) {
+                            td.setAttribute("style", width );
                         }
                         if (iceColumnStyle != null) {
                             String existingStyle = td.getAttribute(HTML.STYLE_ATTR);
@@ -835,14 +831,16 @@ public class TableRenderer
                         domContext.setCursorParent(td);
                         encodeParentAndChildren(facesContext, nextChild);
                         domContext.setCursorParent(oldCursorParent);
-
                     } else if (nextChild instanceof UIColumns) {
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
-                                      columnStyleIndex, colNumber, width, hiddenInputNode, hiddenClickedRowField, hiddenClickCountField);
+                                      columnStyleIndex,
+                                      hiddenInputNode, hiddenClickedRowField, 
+                                      hiddenClickCountField,
+                                      columnWidths);
                         nextChild.encodeEnd(facesContext);
-                        colNumber = uiData.getColNumber();
+                       
                     }
                 }
 
@@ -864,10 +862,12 @@ public class TableRenderer
     private void encodeColumns(FacesContext facesContext, UIComponent columns,
                                DOMContext domContext, Node tr,
                                String[] columnStyles, int columnStylesMaxIndex,
-                               int columnStyleIndex, int colNumber,
-                               String width, Element rowSelectorHiddenField,
-                               Element clickEventRowField, Element clickEventCountField) throws IOException {
+                               int columnStyleIndex, 
+                               Element rowSelectorHiddenField,
+                               Element clickEventRowField, Element clickEventCountField,
+                               String[] columnWidths) throws IOException {
         UIColumns uiList = (UIColumns) columns;
+        HtmlDataTable table = ((HtmlDataTable) uiList.getParent());
         int rowIndex = uiList.getFirst();
         uiList.setRowIndex(rowIndex);
         int numberOfRowsToDisplay = uiList.getRows();
@@ -879,6 +879,7 @@ public class TableRenderer
                 (countOfRowsDisplayed >= numberOfRowsToDisplay)) {
                 break;
             }
+            table.setColNumber(table.getColNumber()+1); 
             Iterator childs;
             childs = columns.getChildren().iterator();
             Element td = domContext.createElement(HTML.TD_ELEM);
@@ -889,10 +890,9 @@ public class TableRenderer
                 td.appendChild(clickEventRowField);
                 td.appendChild(clickEventCountField);
             }
-            if (width != null && !width.equals("100%")) {
-
-                td.setAttribute("style",
-                                "width:" + width + ";overflow:hidden;");
+            String width = getWidthFromColumnWidthsArray(table, columnWidths);
+            if (width != null) {
+                td.setAttribute("style", width );
             }
             domContext.setCursorParent(oldCursorParent);
             tr.appendChild(td);
@@ -901,7 +901,7 @@ public class TableRenderer
                 if (nextChild.isRendered()) {
                     domContext.setCursorParent(td);
                     writeColStyles(columnStyles, columnStylesMaxIndex,
-                                   columnStyleIndex, td, colNumber++,
+                                   columnStyleIndex, td,
                                    columns.getParent());
                     if (++columnStyleIndex > columnStylesMaxIndex) {
                         columnStyleIndex = 0;
@@ -914,7 +914,7 @@ public class TableRenderer
             countOfRowsDisplayed++;
             uiList.setRowIndex(rowIndex);
         }
-        ((HtmlDataTable) uiList.getParent()).setColNumber(colNumber);
+
         uiList.setRowIndex(-1);
     }
 
@@ -1079,5 +1079,38 @@ public class TableRenderer
                 ((com.icesoft.faces.component.ext.UIColumn)child).resetGroupState();
             }
         }
+    }
+    
+    protected String getWidthFromColumnWidthsArray(HtmlDataTable htmlDataTable, 
+                                    String[] columnWidths) {
+        StringBuffer width = new StringBuffer();
+        //guaranteed no null
+        if (columnWidths.length > 0) {
+            try {
+                width.append("width:");                 
+                width.append(columnWidths[htmlDataTable.getColNumber()]);
+                width.append(";");                
+            } catch (IndexOutOfBoundsException e) {
+                //width not defined for this index htmlDataTable.getColNumber()
+//                e.printStackTrace(); // for info. only
+            } catch (NumberFormatException nfe) {
+                //self describing 
+//                nfe.printStackTrace(); // for info. only
+            }
+        } else {
+            if (isScrollable(htmlDataTable)) {
+                width.append("width:100%;");
+            }
+        }
+        
+        if (isScrollable(htmlDataTable)) {
+            width.append("overflow:hidden;");
+        } 
+        return width.length()>0? width.toString() : null;
+    }
+    
+    protected String[] getColumnWidthsArray(HtmlDataTable htmlDataTable) {
+        String columnWidths = htmlDataTable.getColumnWidths();
+        return columnWidths!= null ? columnWidths.split(",") : new String[]{};
     }
 }
