@@ -40,6 +40,8 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
 import com.icesoft.util.pooling.ClientIdPool;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.w3c.dom.Element;
 
 import javax.faces.application.Application;
@@ -67,6 +69,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class DomBasicRenderer extends Renderer {
+    private static final Log log = LogFactory.getLog(DomBasicRenderer.class);
     public static final String ATTRIBUTES_THAT_ARE_SET_KEY =
             "javax.faces.component.UIComponentBase.attributesThatAreSet";
 
@@ -128,7 +131,7 @@ public abstract class DomBasicRenderer extends Renderer {
         renderEnd(facesContext, uiComponent,
                 getValue(facesContext, uiComponent));
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.getDOMContext(facesContext, uiComponent);
 
         domContext.stepOver();
         JavascriptContext.fireEffect(uiComponent, facesContext);
@@ -197,7 +200,8 @@ public abstract class DomBasicRenderer extends Renderer {
 
     public static String converterGetAsString(FacesContext facesContext,
                                               UIComponent uiComponent,
-                                              Object currentValue) {
+                                              Object currentValue)
+    {
         if (!(uiComponent instanceof ValueHolder)) {
             if (currentValue != null) {
                 return currentValue.toString();
@@ -475,7 +479,7 @@ public abstract class DomBasicRenderer extends Renderer {
      *                              uiComponent is not assignable to the given
      *                              type.
      */
-    public void validateParameters(FacesContext facesContext,
+    public static void validateParameters(FacesContext facesContext,
                                    UIComponent uiComponent,
                                    Class validComponentType) {
 
@@ -496,12 +500,15 @@ public abstract class DomBasicRenderer extends Renderer {
                             + uiComponent.getClass() + "]");
         }
 
+        if (log.isDebugEnabled()) {
         if ((uiComponent instanceof UIInput) || (uiComponent instanceof UICommand)) {
             if (findForm(uiComponent) == null) {
-                throw new NullPointerException("Missing Form - the UIComponent of type ["
+                    log.debug("Missing Form - the UIComponent of type [" 
                         + uiComponent.getClass() + "] requires a containing form.");
             }
         }
+      }
+
     }
 
     /**
