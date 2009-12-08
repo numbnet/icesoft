@@ -178,7 +178,15 @@ public class TreeRenderer extends DomBasicRenderer {
         // clean up, and remove nodes
         DOMContext.removeChildren(rootDomNode);
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-
+        if (treeComponent.isKeyboardNavigationEnabled()) {
+            String keyboardSupport = "return Ice.treeNavigator.handleFocus(event, this);";
+            String userKeyDown = (String) uiComponent.getAttributes().get(HTML.ONKEYDOWN_ATTR);
+            String keydown = DomBasicRenderer.combinedPassThru(userKeyDown, keyboardSupport);
+            rootDomNode.setAttribute(HTML.ONKEYDOWN_ATTR, keydown);
+            String userClick = (String) uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
+            String click = DomBasicRenderer.combinedPassThru(userClick, keyboardSupport);        
+            rootDomNode.setAttribute(HTML.ONCLICK_ATTR, click);     
+        }
         domContext.stepInto(uiComponent);
 
     }
@@ -325,14 +333,21 @@ public class TreeRenderer extends DomBasicRenderer {
                            TreeNode treeNode,
                            Element parentDOMNode) {
 
+        treeComponent.setNodePath(null);
+        treeComponent.setCurrentNode(currentNode);
         String pathToCurrentRoot =
                 getPathAsString(currentNode, treeComponentRootNode);
         boolean hideRootNode = isHideRootNode(treeComponent);
         boolean hideNavigation = isHideNavigation(treeComponent);
 
+        String pathToCurrentNode = TreeRenderer.getPathAsString(currentNode,
+                (DefaultMutableTreeNode) treeComponent.getModel()
+                        .getRoot());
+        
         treeNode.setMutable(currentNode);
         treeNode.setId(Tree.ID_PREFIX + pathToCurrentRoot);
         treeNode.setParent(treeComponent);
+        treeComponent.setNodePath(pathToCurrentNode);
 
         // efficiency and simplicity
         IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
