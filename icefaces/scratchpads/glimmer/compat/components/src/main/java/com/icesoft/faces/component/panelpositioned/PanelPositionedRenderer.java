@@ -182,7 +182,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
         try {
             validateParameters(facesContext, uiComponent, null);
             DOMContext domContext =
-                    DOMContext.attachDOMContext(facesContext, uiComponent);
+                    DOMContext.getDOMContext(facesContext, uiComponent);
 
             Element root = (Element) domContext.getRootNode();
             PanelPositioned series = (PanelPositioned) uiComponent;
