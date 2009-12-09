@@ -114,6 +114,7 @@ public class MainServlet extends HttpServlet {
                 dispatcher.dispatchOn(".*(block\\/message)",
                         new PseudoServlet() {
                             public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                CoreMessageService coreMessageService = getCoreMessageService(configuration);
                                 if (coreMessageService != null && coreMessageService.getMessageServiceClient().getMessageServiceAdapter() instanceof HttpAdapter) {
                                     ((HttpAdapter)coreMessageService.getMessageServiceClient().getMessageServiceAdapter()).getHttpMessagingDispatcher().service(request, response);
                                 } else {
