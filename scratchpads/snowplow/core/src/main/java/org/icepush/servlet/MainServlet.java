@@ -32,7 +32,7 @@ public class MainServlet implements PseudoServlet {
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(context, pushContext, outboundNotifier, inboundNotifier, timer, configuration);
+                return new BrowserBoundServlet(pushContext, outboundNotifier, inboundNotifier, timer, configuration);
             }
         });
 
