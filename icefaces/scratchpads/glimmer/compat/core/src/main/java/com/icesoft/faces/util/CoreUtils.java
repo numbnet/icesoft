@@ -9,6 +9,9 @@ import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Element;
 
+import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.util.String;
+
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;
@@ -146,7 +149,9 @@ public class CoreUtils {
         boolean dynamic = false;
         String formId = "";
         String ctxValue = "";
-
+        String displayOn = "hover";
+        boolean moveWithMouse = false;
+        
         //TODO: convert to :: utility findComponent
 //            UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
 //            UIComponent panelTooltip = facesContext.getViewRoot().findComponent(panelTooltipId);
@@ -167,6 +172,12 @@ public class CoreUtils {
                 if (uiComponent.getAttributes().get("contextValue") != null) {
                     ctxValue = String.valueOf(uiComponent.getAttributes().get("contextValue"));
                 }
+                if (panelTooltip.getAttributes().get("displayOn") != null) {
+                    displayOn = String.valueOf(panelTooltip.getAttributes().get("displayOn"));
+                }
+                if (panelTooltip.getAttributes().get("moveWithMouse") != null) {
+                    moveWithMouse = ((Boolean) panelTooltip.getAttributes().get("moveWithMouse")).booleanValue();
+                }                
             }
             UIComponent form = DomBasicRenderer.findForm(panelTooltip);
             if (form != null) {
@@ -174,11 +185,19 @@ public class CoreUtils {
             }
 
         Element rootElement = (Element) domContext.getRootNode();
-        String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
-        onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
+        String onAttr, onValue;
+        if (displayOn.equals("click") || displayOn.equals("dblclick")) {
+            onAttr = "on" + displayOn;
+        } else if (displayOn.equals("altclick")) {
+            onAttr = "oncontextmenu";
+        } else {
+            onAttr = "onmouseover";
+        }
+        onValue = String.valueOf(rootElement.getAttribute(onAttr));
+        onValue +="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
         hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"','"+
-                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
-        rootElement.setAttribute("onmouseover", onmouseover);
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"','" + displayOn + "'," + moveWithMouse + ");";
+        rootElement.setAttribute(onAttr, onValue);
     }
    
     public static boolean objectsEqual(Object ob1, Object ob2) {
