@@ -36,6 +36,7 @@ public class PageNotifier extends HttpServlet {
         w.write("ice.push.register(['" + idA + "', '" + idB + "'], function(pushIds) { ice.info(ice.logger, ice.push.getCurrentNotifications()); });");
         w.write("</script>");
         w.write("</body></html>");
+        response.setContentType("text/html");
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
