@@ -16,7 +16,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 public class PanelCollapsible extends UICommand {
-    public static final String COMPONENET_TYPE = "com.icesoft.faces.PanelCollapsible";
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelCollapsible";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.PanelCollapsibleRenderer";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.PanelCollapsible";
     private String style;
