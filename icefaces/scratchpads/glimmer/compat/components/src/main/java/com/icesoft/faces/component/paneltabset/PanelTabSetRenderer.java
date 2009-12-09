@@ -37,6 +37,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -45,6 +46,7 @@ import org.icefaces.util.DOMUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.faces.FacesException;
@@ -466,6 +468,9 @@ public class PanelTabSetRenderer
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));
+                        JavascriptContext.addJavascriptCall(facesContext,
+                                "document.getElementById('"+ paramName + "').focus();");
+                        
                         return;
                     }
                     tabIdx++;
@@ -489,6 +494,9 @@ public class PanelTabSetRenderer
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));
+                        JavascriptContext.addJavascriptCall(facesContext,
+                                "document.getElementById('"+ paramName + "').focus();");
+                        
                         return;
                     }
                     tabIdx++;
@@ -583,12 +591,21 @@ public class PanelTabSetRenderer
         this.renderSpacerImage(domContext, td_bot_mid);
         this.renderSpacerImage(domContext, td_bot_right);
 
+        UIComponent labelFacet = tab.getLabelFacet();
         String disableStyleClassSuffix;
-
+        
         if (disabled) {
             disableStyleClassSuffix = "-dis";
-            Text text = domContext.createTextNode(label);
-            td_mid_mid.appendChild(text);
+            if (labelFacet == null) {
+                Text text = domContext.createTextNode(label);
+                td_mid_mid.appendChild(text);
+            } else {
+                Node cursor = domContext.getCursorParent();
+                domContext.setCursorParent(td_mid_mid);
+                CustomComponentUtils.renderChild(facesContext, labelFacet);
+                domContext.setCursorParent(cursor);
+            }
+
         } else {
             disableStyleClassSuffix = "";
             // Build a command link
@@ -597,11 +614,47 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.NAME_ATTR, linkId);
             link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
-            // set focus handler
-            link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
-            link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
-            td_mid_mid.appendChild(link);
-            renderLinkText(label, domContext, link, tab, tabSet);
+            link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
+            
+            if (labelFacet == null) {
+                td_mid_mid.appendChild(link);
+                // set focus handler
+                if (tabSet.isKeyboardNavigationEnabled()) {
+                    link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, false, true);");
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, false, true);");   
+                } else {
+                    link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, false, false);");
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, false, false);");
+                }
+
+                renderLinkText(label, domContext, link, tab, tabSet);                
+            } else {
+                //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
+                label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>";
+                // set focus handler
+                if (tabSet.isKeyboardNavigationEnabled()) {
+                    link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, true);");
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, true);");   
+                } else {
+                    link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, false);");
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, false);");
+                }
+                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");                
+                Element div = domContext.createElement(HTML.DIV_ELEM); 
+                td_mid_mid.appendChild(div);
+                div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                div.setAttribute(HTML.CLASS_ATTR, "ptfd");
+                div.appendChild(link);
+                Node cursor = domContext.getCursorParent();
+                domContext.setCursorParent(div);
+                CustomComponentUtils.renderChild(facesContext, labelFacet);
+                domContext.setCursorParent(cursor);  
+
+                Text spacer = domContext.createTextNode(label);
+                link.appendChild(spacer);
+            }
+
 
             Map parameterMap = getParameterMap(facesContext, tab);
             renderOnClick(facesContext, tabSet, tab, link, parameterMap);

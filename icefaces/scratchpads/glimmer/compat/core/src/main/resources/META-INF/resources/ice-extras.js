@@ -11815,3 +11815,63 @@ Ice.treeNavigator = {
             Ice.treeNavigator.anchors = anchors;
          }//updateAnchor
   }// func ends
+  
+  Ice.tabNavigator = function(event) {
+       var ele = Event.element(event);
+       var kc= event.keyCode;
+       switch (kc) {
+          case 37:
+          case 38:
+             var preCell = ele.up('.icePnlTb').previousSibling;
+             if (preCell) {
+                 var lnk = preCell.down('.icePnlTbLblLnk');
+                 if(lnk) {
+                    lnk.focus();
+                 }
+             }
+             if (ele.up('.icePnlTb')) {
+                 if (event.preventDefault){
+                     event.preventDefault();
+                 } else if (event.returnValue){
+                     event.returnValue = false;
+                 }
+             }           
+          break; 
+          case 39:
+          case 40:
+             var nextCell = ele.up('.icePnlTb').nextSibling;
+             if (nextCell && Element.hasClassName(nextCell, 'icePnlTb')) {
+                 var lnk = nextCell.down('.icePnlTbLblLnk');
+                 if(lnk) {
+                    lnk.focus();
+                 }
+             }
+             if (ele.up('.icePnlTb')) {
+                 if (event.preventDefault){
+                     event.preventDefault();
+                 } else if (event.returnValue){
+                     event.returnValue = false;
+                 }
+             }
+          break;            
+       
+      }    
+  }
+  
+  Ice.pnlTabOnFocus = function(ele, facet, kbs) {
+      setFocus(ele.id);
+      if(kbs) { 
+          Event.observe(ele, 'keydown', Ice.tabNavigator); 
+      }   
+      if (!facet) return;
+      Ice.simulateFocus(ele.parentNode, ele);
+  }
+  
+  Ice.pnlTabOnBlur = function(ele, facet, kbs) {
+      if(kbs) { 
+          Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+      }
+      if (!facet)return;    
+      setFocus('');
+      Ice.simulateBlur(ele.parentNode, ele);
+  }

@@ -34,13 +34,13 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTa
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.io.Serializable;
-
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 /**
  * The DynamicTabSetBean is the backing bean for the TabbedPane showcase
  * demonstration.  It is used to dynamically add and remove tabs used in
@@ -52,7 +52,8 @@ import java.io.Serializable;
 @ViewScoped
 public class DynamicTabSetBean implements Serializable {
 
-    private int tabIndex;
+    private int tabIndex =-1;
+    private int tabLabelIndex = 2;
     private String newTabLabel;
     private String newTabContent;
     private List tabs = new ArrayList();
@@ -63,13 +64,13 @@ public class DynamicTabSetBean implements Serializable {
         Tab newTab1 = new Tab(
             new MsgString("bean.panelTabSet.dynamic.default.label1", true, null),
             new MsgString("bean.panelTabSet.dynamic.default.content1", true, null)
-        );
+        , ++tabIndex);
         tabs.add(newTab1);
         
         Tab newTab2 = new Tab(
             new MsgString("bean.panelTabSet.dynamic.default.label2", true, null),
             new MsgString("bean.panelTabSet.dynamic.default.content2", true, null)
-        );
+        , ++tabIndex);
         tabs.add(newTab2);
     }
 
@@ -97,24 +98,26 @@ public class DynamicTabSetBean implements Serializable {
     public void addTab(ActionEvent event) {
 
         MsgString label, content;
+        tabIndex = tabIndex + 1;
+        tabLabelIndex = tabLabelIndex+ 1;
         // assign default label if it's blank
         if (newTabLabel.equals("")) {
             label = new MsgString("bean.panelTabSet.dynamic.labelString", true,
-                new MsgString(Integer.toString(tabIndex + 1), false, null));
+                new MsgString(Integer.toString(tabLabelIndex), false, null));
         }
         else {
             label = new MsgString(newTabLabel, false, null);
         }
         if (newTabContent.equals("")) {
             content = new MsgString("bean.panelTabSet.dynamic.contentString", true,
-                new MsgString(Integer.toString(tabIndex + 1), false, null));
+                new MsgString(Integer.toString(tabLabelIndex), false, null));
         }
         else {
             content = new MsgString(newTabContent, false, null);
         }
 
         // set the new tab from the input
-        Tab newTab = new Tab(label, content);
+        Tab newTab = new Tab(label, content, tabIndex);
 
         // add to both tabs and select options of selectRadiobox
         tabs.add(newTab);
@@ -160,13 +163,15 @@ public class DynamicTabSetBean implements Serializable {
      * Inner class that represents a tab object with a label, content, and an
      * index.
      */
-    public static class Tab implements Serializable{
+    public class Tab {
         MsgString label;
         MsgString content;
-        
-        Tab(MsgString label, MsgString content) {
+        private int index;
+
+        Tab(MsgString label, MsgString content, int index) {
             this.label = label;
             this.content = content;
+            this.index = index;
         }
         
         public String getLabel() {
@@ -176,6 +181,18 @@ public class DynamicTabSetBean implements Serializable {
         public String getContent() {
             return content.toString();
         }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public void closeTab(ActionEvent event) {
+           tabs.remove(this);
+        }          
     }
     
     public static class MsgString {

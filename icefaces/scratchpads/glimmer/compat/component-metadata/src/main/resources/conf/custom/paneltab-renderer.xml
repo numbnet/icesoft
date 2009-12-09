@@ -34,7 +34,19 @@
 
 <renderer>
 	<description>
-	<![CDATA[<p>Renders an individual Panel Tab. Must be contained within a TabbedPane. ]]>
+	<![CDATA[<p>Renders an individual Panel Tab. Must be contained within a TabbedPane. <br/>
+	The label facet can be defined to the tab (e.g.)
+	<pre>
+	&lt;ice:panelTab&gt;
+                      &lt;f:facet name="label"&gt;
+                        &lt;ice:panelGroup&gt;
+                              &lt;ice:outputText value="Tab 1"/&gt;
+                          &lt;/ice:panelGroup&gt;
+                      &lt;/f:facet&gt;  
+                     &lt;ice:outputText value="Contents"/&gt; 
+    &lt;/ice:panelTab&gt;  
+    </pre>                                        
+	]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
 	<renderer-type>com.icesoft.faces.TabbedPaneTab</renderer-type>
