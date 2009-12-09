@@ -90,12 +90,11 @@ public class PanelTabSet
      * The method binding for a TabChangeListener.
      */
     private MethodBinding _tabChangeListener = null;
-
+    private Boolean keyboardNavigationEnabled;
     /* (non-Javadoc)
      * @see javax.faces.component.UIComponent#decode(javax.faces.context.FacesContext)
      */
     public void decode(FacesContext context) {
-        eventQueued = false;
     	reconcileListeners();
         super.decode(context);
     }
@@ -128,8 +127,24 @@ public class PanelTabSet
                 }
 
                 if (child instanceof PanelTab) {
+                    //for the selected tab the facet will be processed by applyphase
                     if (tabIdx == selectedIndex) {
                         applyPhase(context, child, phaseId);
+                    } else {
+                        Iterator facets = child.getFacets().keySet().iterator();
+                        while (facets.hasNext()) {
+                            UIComponent facet = (UIComponent)
+                                    child.getFacets().get(facets.next());
+                            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                            facet.processDecodes(context);
+                            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                            facet.processValidators(context);
+                            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                            facet.processUpdates(context);
+                            } else {
+                            throw new IllegalArgumentException();
+                            }
+                        }                           
                     }
                     tabIdx++;
                 }
@@ -146,6 +161,7 @@ public class PanelTabSet
                 UIComponent childOrFacet =
                         getUIComponent((UIComponent) it.next());
                 if (childOrFacet instanceof PanelTab) {
+                    
                     if (tabIdx == selectedIndex) {
                         applyPhase(context, childOrFacet, phaseId);
                     }
@@ -211,9 +227,7 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-        if (!isImmediate() && eventQueued) {
-            _selectedIndex.validate(context, this);            
-        }        
+       
         applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
     }
 
@@ -229,6 +243,9 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
+        if (!isImmediate() && eventQueued) {
+            _selectedIndex.validate(context, this);            
+        }            
         _selectedIndex.updateModel(context, this);
         applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
     
@@ -574,7 +591,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[35];
+        Object values[] = new Object[36];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -609,7 +626,8 @@ public class PanelTabSet
         values[31] = visible;
         values[32] = saveAttachedState(context, listenerList);   
         values[33] = immediate;   
-        values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;;  
+        values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;
+        values[35] = keyboardNavigationEnabled;
         return ((Object) (values));
     }
 
@@ -655,13 +673,15 @@ public class PanelTabSet
         restoreAttachedState(context, values[32]);
         if (restoredListenerList != null) {
             if (null != listenerList) {
+                listenerList.clear();
                 listenerList.addAll(restoredListenerList);
             } else {
                 listenerList = restoredListenerList;
             }            
         }
         immediate = (Boolean)values[33];
-        border_set = ((Boolean) values[34]).booleanValue();        
+        border_set = ((Boolean) values[34]).booleanValue(); 
+        keyboardNavigationEnabled = (Boolean) values[35];         
     }
 
     public Object saveSeriesState(FacesContext facesContext) {
@@ -1193,6 +1213,7 @@ public class PanelTabSet
     
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
+        eventQueued = false;
     }
 
         
@@ -1208,5 +1229,20 @@ public class PanelTabSet
             }
         }
         super.queueEvent(event);
-    }        
+    }   
+    
+
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }
 }
