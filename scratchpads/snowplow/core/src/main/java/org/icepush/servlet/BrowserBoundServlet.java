@@ -4,7 +4,6 @@ import org.icepush.BlockingConnectionServer;
 import org.icepush.Configuration;
 import org.icepush.PushContext;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Observable;
@@ -12,8 +11,8 @@ import java.util.Timer;
 
 public class BrowserBoundServlet extends PathDispatcher {
 
-    public BrowserBoundServlet(ServletContext context, PushContext pushContext, Observable outboundNotifier, Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
-        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(outboundNotifier, inboundNotifier, monitorRunner, configuration), configuration, context));
+    public BrowserBoundServlet(PushContext pushContext, Observable outboundNotifier, Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
+        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(outboundNotifier, inboundNotifier, monitorRunner, configuration), configuration));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID(pushContext));
         dispatchOn(".*notify\\.icepush", new NotifyPushID(pushContext));
     }
