@@ -22,7 +22,7 @@
  *
 -->
 
-<project name="basic" default="war.no.jsf">
+<project name="basic" default="war">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
