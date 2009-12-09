@@ -22,7 +22,7 @@
  *
 -->
 
-<project name="scopes" default="war.no.jsf">
+<project name="scopes" default="war">
 
     <property file="./build.properties"/>
     <property file="../../build/build.properties"/>

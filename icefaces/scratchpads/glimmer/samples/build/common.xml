@@ -42,9 +42,8 @@
 	        <exclude name="jsf-impl.jar"  unless="jsf"/>
 	    </patternset>
 	    <patternset id="lib.distribute.ice" includes="icefaces.jar icepush.jar">
-	        <exclude name="icefaces.jar" if="no.ice"/>
-            <exclude name="icepush.jar"  if="no.ice"/>
-            <exclude name="icepush.jar"  if="no.push"/>
+	        <exclude name="icefaces.jar" unless="ice"/>
+            <exclude name="icepush.jar"  unless="push"/>
 	    </patternset>
     </patternset>
 
@@ -79,7 +78,7 @@
         </copy>
     </target>
 
-    <target name="war" depends="compile" description="generate .war file">
+    <target name="war.basic" depends="compile" description="generate .war file">
         <war basedir="${web.dir}" 
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
@@ -91,18 +90,46 @@
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
     </target>
 
-    <target name="war.jsf" description="generate .war file (includes JSF libraries)">
-        <antcall target="war">
+    <target name="war"
+            depends="war.ice.push"
+            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
+    </target>
+
+    <target name="war.jsf"
+            description="generate .war file (includes the JSF libraries, excludes ICEfaces and ICEpush)">
+        <antcall target="war.basic">
             <param name="jsf" value="true"/>
         </antcall>
     </target>
 
-    <target name="war.no.jsf" description="generate .war file (excludes JSF libraries)">
-        <antcall target="war">
+    <target name="war.jsf.ice"
+            description="generate .war file (includes the JSF libraries and ICEfaces, excludes ICEpush)">
+        <antcall target="war.basic">
+            <param name="jsf" value="true"/>
+            <param name="ice" value="true"/>
         </antcall>
     </target>
 
-    <target name="deploy.gf3" depends="war" description="copy .war file to Glassfish v3 autodeploy directory">
+    <target name="war.ice.push"
+            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
+        <antcall target="war.basic">
+            <param name="ice"  value="true"/>
+            <param name="push" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="war.jsf.ice.push"
+            description="generate .war file (includes ICEfaces, ICEpush, and the JSF libraries)">
+        <antcall target="war.basic">
+            <param name="jsf"  value="true"/>
+            <param name="ice"  value="true"/>
+            <param name="push" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="deploy.gf3"
+            depends="war"
+            description="copy .war file to Glassfish v3 autodeploy directory">
         <copy todir="${glassfish.v3.deploy}">
             <fileset dir="${dist.dir}">
                 <include name="${ant.project.name}.war"/>
