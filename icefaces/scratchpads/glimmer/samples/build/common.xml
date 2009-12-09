@@ -36,20 +36,16 @@
         <include name="*.jar"/>
     </patternset>
 
-    <patternset id="lib.distribute.icefaces">
-        <include name="icefaces.jar" unless="no.ice"/>
-        <include name="icepush.jar" unless="no.ice"/>
-        <exclude name="*.jar" if="no.ice"/>
-    </patternset>
-
-    <patternset id="lib.distribute.jsf">
-        <include name="jsf-api.jar" unless="no.jsf"/>
-        <include name="jsf-impl.jar" unless="no.jsf"/>
-    </patternset>
-
-    <patternset id="lib.distribute.portlet">
-        <include name="portletbridge*.jar" if="bridge.jboss"/>
-        <include name="jsf-portlet*.jar" if="bridge.apache"/>
+    <patternset id="lib.distribute">
+	    <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
+	        <exclude name="jsf-api.jar"   unless="jsf"/>
+	        <exclude name="jsf-impl.jar"  unless="jsf"/>
+	    </patternset>
+	    <patternset id="lib.distribute.ice" includes="icefaces.jar icepush.jar">
+	        <exclude name="icefaces.jar" if="no.ice"/>
+            <exclude name="icepush.jar"  if="no.ice"/>
+            <exclude name="icepush.jar"  if="no.push"/>
+	    </patternset>
     </patternset>
 
     <target name="clean">
@@ -88,13 +84,22 @@
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
-                <patternset refid="lib.distribute.icefaces"/>
-                <patternset refid="lib.distribute.jsf"/>
-                <patternset refid="lib.distribute.portlet"/>
+                <patternset refid="lib.distribute"/>
             </lib>
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
+    </target>
+
+    <target name="war.jsf" description="generate .war file (includes JSF libraries)">
+        <antcall target="war">
+            <param name="jsf" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="war.no.jsf" description="generate .war file (excludes JSF libraries)">
+        <antcall target="war">
+        </antcall>
     </target>
 
     <target name="deploy.gf3" depends="war" description="copy .war file to Glassfish v3 autodeploy directory">
