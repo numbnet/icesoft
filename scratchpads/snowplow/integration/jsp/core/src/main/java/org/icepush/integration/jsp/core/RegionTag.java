@@ -5,29 +5,26 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.icepush.PushContext;
-import org.icepush.integration.common.notify.BasicGroupNotifier;
+import org.icepush.integration.common.notify.Notifier;
+import org.icepush.integration.common.notify.GroupNotifier;
 
 public class RegionTag extends TagSupport {
 
     private String id;
     private String group;
     private String notifier;
+    private String page;
 
     @Override
 	public int doStartTag() throws JspException {
 
 	try {
-	    // Find the notifier bean;
-	    BasicGroupNotifier notifierBean = (BasicGroupNotifier)pageContext.findAttribute(notifier);
-	    if (notifierBean == null) {
-		throw( new JspException("Could not find notifier bean " + notifier));
-	    } 
-
 	    // Get a push id;
 	    final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
 	    if (pc == null) {
@@ -37,53 +34,69 @@ public class RegionTag extends TagSupport {
   	    final String pushid = 
 		pc.createPushId(request,(HttpServletResponse)(pageContext.getResponse()));
 	    
-	    // Add to group;
-	    notifierBean.setPushContext(pc);
-	    if (group == null) {
-		group = pushid;
-	    } else {
+	    // Find the notifier bean;
+	    Notifier notifierBean = null;
+	    if (notifier != null) {
+		notifierBean = (Notifier)pageContext.findAttribute(notifier);
+		if (notifierBean != null) {
+		    notifierBean.setPushContext(pc);
+		} else {
+		    throw( new JspException("Could not find notifier bean " + notifier));
+		} 
+	    } 
+
+	    // Set group if there is one;
+	    if (group != null) {
 		pc.addGroupMember(group, pushid);
+	    } else {
+		group = pushid;
 	    }
-	    notifierBean.addGroup(group);
+	    try {
+		// Set group in notifier;
+		GroupNotifier gnotifier = (GroupNotifier)notifierBean;
+		gnotifier.setGroup(group);
+	    } catch (ClassCastException e) {
+	    }
 
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
 
 	    //Write script to register;
+	    if (id == null) {
+		id = pushid;
+	    }
 	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "'], function() {");
-	    w.write("ice.push.post('" + request.getContextPath() + 
-		    "/pushnotifier/notify.html', function(parameter) {");
-	    w.write("parameter('notifier', '" + notifier + "');");
-	    w.write("parameter('group', '" + group + "');");
-	    w.write("}, function(statusCode, responseText) {");
-	    w.write("replaceDiv('" + id + "', responseText);");
-	    w.write("}); });");
+	    w.write("ice.push.register(['" + pushid + "'], function(){");
+	    w.write("getRegion('" + request.getContextPath() + page +
+		    "', '" + id + "','" + group + "');}");
+	    w.write(");");
 	    w.write("</script>");
 
 	    //Write the div;
 	    w.write("<div id=\"" + id + "\">");
+	    w.flush();
+
+	    //Include the page;
+	    try {
+		String params = new String("?group=" + group);
+		pageContext.getServletContext().getRequestDispatcher(page+params).
+		    include(pageContext.getRequest(),pageContext.getResponse());
+	    } catch (IOException ioe) {
+		ioe.printStackTrace();
+	    } catch (ServletException se) {
+		se.printStackTrace();
+	    }
+
+	    //Close the div;
+	    w.write("</div>");
+
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
 	group = null;
-	return EVAL_BODY_INCLUDE;
-    }
-
-
-    @Override
-	public int doEndTag() throws JspException {
-
-	try {
-	    //Get the writer object for output.
-	    JspWriter w = pageContext.getOut();
-
-	    //Close the div;
-	    w.write("</div>");
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return EVAL_PAGE;
+	id=null;
+	notifier=null;
+	return SKIP_BODY;
     }
 
     public String getId() {
@@ -103,5 +116,11 @@ public class RegionTag extends TagSupport {
     }
     public void setNotifier(String notifier) {
 	this.notifier = notifier;
+    }
+    public String getPage() {
+	return page;
+    }
+    public void setPage(String page) {
+	this.page = page;
     }
 }

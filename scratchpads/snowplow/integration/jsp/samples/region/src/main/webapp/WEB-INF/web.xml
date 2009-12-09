@@ -42,19 +42,6 @@
         <url-pattern>*.icepush</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>notifier</servlet-name>
-        <servlet-class>org.icepush.integration.common.notify.NotificationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>notifier</servlet-name>
-        <url-pattern>/pushnotifier/notify.html</url-pattern>
-    </servlet-mapping>
-
-    <listener>
-        <listener-class>org.icepush.servlet.ServletEnvironmentListener</listener-class>
-    </listener>
-
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

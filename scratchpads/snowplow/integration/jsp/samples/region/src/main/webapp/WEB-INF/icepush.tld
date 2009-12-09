@@ -26,10 +26,11 @@
 <tag>
 	<name>region</name>
 	<tagclass>org.icepush.integration.jsp.core.RegionTag</tagclass>
-	<info>ice.push.region</info>
+	<info>icepush.region</info>
 	<attribute>
 		<name>id</name>
-		<required>true</required>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 	<attribute>
 		<name>group</name>
@@ -38,7 +39,13 @@
 	</attribute>
 	<attribute>
 		<name>notifier</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>page</name>
 		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
 	</attribute>
 </tag>
 </taglib>
