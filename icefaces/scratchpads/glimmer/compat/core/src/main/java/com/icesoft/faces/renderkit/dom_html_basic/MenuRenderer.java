@@ -39,8 +39,7 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.*;
 import javax.faces.component.html.HtmlSelectManyCheckbox;
@@ -57,6 +56,8 @@ import javax.faces.model.SelectItemGroup;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class MenuRenderer extends DomBasicInputRenderer {
 
@@ -312,9 +313,15 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                                   selectItem.getValue());
         option.setAttribute("value", valueString);
 
-        if (isValueSelected(facesContext, selectItem, uiComponent,
-                            submittedValues, selectedValues))
-        {
+        boolean selected = isValueSelected(facesContext, selectItem, uiComponent,
+                submittedValues, selectedValues);
+        if (uiComponent instanceof HtmlSelectOneMenu) {
+            if (submittedValues == null && selectedValues== null && 
+                    (selectItem.getValue() == "" || selectItem.getValue() == null))
+                selected = true;
+        }
+        
+        if (selected) {
             option.setAttribute("selected", "selected");
         }
         if (selectItem.isDisabled()) {
@@ -322,7 +329,8 @@ public class MenuRenderer extends DomBasicInputRenderer {
         }
 
         Document doc = domContext.getDocument();
-        Text labelNode = doc.createTextNode(selectItem.getLabel());
+        String label = selectItem.getLabel();
+        Text labelNode = doc.createTextNode(label == null ? valueString : label);
         option.appendChild(labelNode);
     }
 
