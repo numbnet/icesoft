@@ -124,9 +124,10 @@ extends HttpServlet {
             pushServerMessageService.setUpNow();
             final SessionManager _sessionManager =
                 new SessionManager(
-                    _servletConfigConfiguration,
                     scheduledThreadPoolExecutor,
-                    pushServerMessageService);
+                    pushServerMessageService,
+                    new UpdatedViewsManager(
+                        _servletContextConfiguration, pushServerMessageService));
             SessionDispatcher _sessionDispatcher =
                 new SessionDispatcher(servletContext, _servletContextConfiguration) {
                     protected PseudoServlet newServer(

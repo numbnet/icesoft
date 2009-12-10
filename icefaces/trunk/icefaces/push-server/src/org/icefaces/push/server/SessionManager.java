@@ -31,8 +31,6 @@
  */
 package org.icefaces.push.server;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import java.util.HashMap;
@@ -61,9 +59,9 @@ implements
     private PushServerMessageService pushServerMessageService;
 
     public SessionManager(
-        final Configuration configuration,
         final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
-        final PushServerMessageService pushServerMessageService) {
+        final PushServerMessageService pushServerMessageService,
+        final UpdatedViewsManager updatedViewsManager) {
 
         this.pushServerMessageService = pushServerMessageService;
         this.pushServerMessageService.getBufferedContextEventsMessageHandler().
@@ -73,9 +71,8 @@ implements
         this.pushServerMessageService.getUpdatedViewsMessageHandler().
             addCallback(this);
         this.requestManager = new RequestManager(scheduledThreadPoolExecutor);
-        this.updatedViewsManager =
-            new UpdatedViewsManager(
-                configuration, pushServerMessageService, this);
+        this.updatedViewsManager = updatedViewsManager;
+        this.updatedViewsManager.setSessionManager(this);
     }
 
     public PushServerMessageService getPushServerMessageService() {

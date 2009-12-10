@@ -54,21 +54,19 @@ public class UpdatedViewsManager {
         LogFactory.getLog(UpdatedViewsManager.class);
 
     protected final PushServerMessageService pushServerMessageService;
-    protected final SessionManager sessionManager;
     protected final Map updatedViewsQueueMap = new HashMap();
 
+    protected SessionManager sessionManager;
     protected int updatedViewsQueueSize;
 
     public UpdatedViewsManager(
         final Configuration configuration,
-        final PushServerMessageService pushServerMessageService,
-        final SessionManager sessionManager) {
+        final PushServerMessageService pushServerMessageService) {
 
         setUpdatedViewsQueueSize(
             configuration.getAttributeAsInteger(
                 "updatedViewsQueueSize", 100));
         this.pushServerMessageService = pushServerMessageService;
-        this.sessionManager = sessionManager;
     }
 
     public int getUpdatedViewsQueueSize() {
@@ -129,8 +127,7 @@ public class UpdatedViewsManager {
                         (UpdatedViewsQueue)
                             updatedViewsQueueMap.get(_iceFacesId);
                 } else {
-                    _updatedViewsQueue =
-                        newUpdatedViewsQueue(_iceFacesId, this);
+                    _updatedViewsQueue = newUpdatedViewsQueue(_iceFacesId);
                     updatedViewsQueueMap.put(_iceFacesId, _updatedViewsQueue);
                 }
                 try {
@@ -143,8 +140,8 @@ public class UpdatedViewsManager {
                                         _updatedViewsQueue.getSize() + "]");
                     }
                 } catch (UpdatedViewsQueueExceededException exception) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info(
                             "Updated views queue exceeded: " +
                                 updatedViews.getICEfacesID());
                     }
@@ -207,10 +204,11 @@ public class UpdatedViewsManager {
         this.updatedViewsQueueSize = updatedViewsQueueSize;
     }
 
-    protected UpdatedViewsQueue newUpdatedViewsQueue(
-        final String iceFacesId,
-        final UpdatedViewsManager updatedViewsManager) {
-        
-        return new UpdatedViewsQueue(iceFacesId, updatedViewsManager);
+    protected UpdatedViewsQueue newUpdatedViewsQueue(final String iceFacesId) {
+        return new UpdatedViewsQueue(iceFacesId, this);
+    }
+
+    void setSessionManager(final SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 }
