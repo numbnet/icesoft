@@ -127,10 +127,17 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
 			setRootElementId(facesContext, rootDiv, uiComponent);
 			rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+			if (uiComponent instanceof PanelTooltip) {
+		        if (((PanelTooltip)uiComponent).isDynamic() && !((PanelTooltip)uiComponent).isVisible()) {
+		            rootDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
+		            domContext.stepOver();
+		            return;
+		        }			    
+			}
 			Element table = domContext.createElement(HTML.TABLE_ELEM);
 			table.setAttribute(HTML.CELLPADDING_ATTR, "0");
 			table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-			table.setAttribute(HTML.WIDTH_ATTR, "100%");
+//			table.setAttribute(HTML.WIDTH_ATTR, "100%");
 			rootDiv.appendChild(table);
 /*
             Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
@@ -154,6 +161,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 				Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
 				scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
 						HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
+                scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
                 scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
 				Node node = domContext.createTextNode(script);
 				scriptEle.appendChild(node);
@@ -186,7 +194,14 @@ public class PanelPopupRenderer extends GroupRenderer {
 			headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
 			handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
 			headerTd.setAttribute(HTML.ID_ATTR, handleId);
+//            headerTd.setAttribute(HTML.STYLE_ATTR, "width:100%;");
 			headerTr.appendChild(headerTd);
+            Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
+            Element headerDiv = domContext.createElement("div");
+            headerDiv.setAttribute(HTML.STYLE_ATTR, "width:1px;");
+            headerTdSpacer.setAttribute(HTML.CLASS_ATTR, headerClass);
+            headerTdSpacer.appendChild(headerDiv);
+            headerTr.appendChild(headerTdSpacer);
 			// add header facet to header tr and add to table
 			table.appendChild(headerTr);
 			// set the cursor parent to the new table row Element
@@ -205,6 +220,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 			bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
 			bodyTr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "-tr"));
 			bodyTr.appendChild(bodyTd);
+            bodyTd.setAttribute(HTML.COLSPAN_ATTR, "2");
 			// add body facet to body tr then add to table
 			table.appendChild(bodyTr);
 			// set the cursor parent to the new table row Element
@@ -224,6 +240,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 					"text-align: right; float: right;");
 			Element footerTd = domContext.createElement(HTML.TD_ELEM);
 			footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
+            footerTd.setAttribute(HTML.COLSPAN_ATTR, "2");
 			Element img = domContext.createElement(HTML.IMG_ELEM);
 			img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
 					facesContext, "/xmlhttp/css/xp/css-images/resize.gif"));
@@ -256,8 +273,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 		String autoPositionJS = null;
         boolean positionOnLoadOnly = panelPopup.isPositionOnLoadOnly();
         boolean dragged = panelPopup.isDragged();
-        if (panelPopup.getAutoPosition() != null && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			String positions = panelPopup.getAutoPosition();
+        if (positions != null && !positions.equalsIgnoreCase("manual") && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			if( positions.indexOf(',') < 1 ){
 				log.warn("The autoPosition attribute should be used with an "
 						+" x and y value for the position, such as '20,40'");
@@ -319,8 +336,9 @@ public class PanelPopupRenderer extends GroupRenderer {
                     CoreComponentUtils.setFocusId("");
                 }
                 
+                String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
 				call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-						+ "', '" + trigger + "');";
+                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");";
 				if (log.isTraceEnabled()) {
 					log.trace("Starting Modal Function");
 				}

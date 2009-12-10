@@ -39,9 +39,8 @@
 &ice-effects-props;
 &events-props;
 
-<!--
 <property>
-	<description>Used to render a resizable popup.</description>
+	<description>This attribute is currently unsupported.</description>
 	<property-name>resizable</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
@@ -50,7 +49,6 @@
         <is-hidden>true</is-hidden>
 	</property-extension>
 </property>
--->
 
 <property>
 	<description>
@@ -138,7 +136,9 @@
 	<description>
 		Used to keep the popup positioned on the screen through
 		scrolling events. Use a string of x and y px values (e.g.
-		autoPostion="35,200").
+		autoPostion="35,200"). For a modal popup, use "manual" to disable
+        automatic centering on the document. Then specify top, left
+        positions by style or styleClass.
 	</description>
 	<property-name>autoPosition</property-name>
 	<property-class>java.lang.String</property-class>

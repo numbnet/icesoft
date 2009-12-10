@@ -204,11 +204,23 @@ public class PanelPopup extends HtmlPanelGroup {
 	 */
 	public boolean isRendered() {
 		if (!Util.isRenderedOnUserRole(this)) {
+	        stopModal();
 			return false;
 		}
-		return super.isRendered();
+	    boolean rendered = super.isRendered();
+		if (!rendered) {
+            stopModal();
+		}
+	    return rendered; 
 	}
 
+	private void stopModal() {
+        String caller = new Exception().getStackTrace()[2].getMethodName();
+        if(caller.startsWith("render")) {   
+            JavascriptContext.addJavascriptCall(getFacesContext(), 
+                "Ice.modal.stop('" + getClientId(getFacesContext()) + "');");
+        }	    
+	}
 	/**
 	 * @return the headerClass style class name.
 	 */
@@ -273,11 +285,9 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * 
 	 * @return false
 	 */
-/*
 	public boolean isResizable() {
 		return false; // resizable functionality is not added yet
 	}
-*/
 
 	/**
 	 * Sets the resizable attribute of the component. Note: The resizable
@@ -286,11 +296,9 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * @param resizable
 	 *            a value of true will set the component to be resizable
 	 */
-/*
 	public void setResizable(boolean resizable) {
 		this.resizable = Boolean.valueOf(resizable);
 	}
-*/
 
 	/**
 	 * @return true if the component is modal.
@@ -397,7 +405,7 @@ public class PanelPopup extends HtmlPanelGroup {
         .get(CurrentStyle.class.getName());
         if (map != null) {
             String currentStyle = String.valueOf(map.get(getClientId(facesContext)));
-            if (currentStyle != null) {
+            if (!currentStyle.equals("null")) {
                 currentStyle = CustomComponentUtils.setPropertyValue
                                 (currentStyle, "display", display, true);
                 map.put(getClientId(facesContext), currentStyle);
