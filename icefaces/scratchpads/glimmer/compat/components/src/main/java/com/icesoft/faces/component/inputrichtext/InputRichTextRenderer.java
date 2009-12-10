@@ -48,6 +48,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                     + "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() +
                     "', '" + inputRichText.getHeight() + "', '" + inputRichText.getToolbar() + "', '" + inputRichText.getCustomConfigPath() +
                     "', '" + inputRichText.getSkin() + "'));");
+            //ICE-4760    
+            call.append("$('"+ clientId +"')[\"focus\"]= function(){handleApplicationFocus('"+ clientId+"');};");
+            
             String value = "";
             if (inputRichText.getValue() != null) {
                 value = inputRichText.getValue().toString();
@@ -57,6 +60,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             addHiddenField(domContext, root, ClientIdPool.get(clientId + "Disabled"),
                     String.valueOf(inputRichText.isDisabled()));
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
+            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));            
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));
             root.appendChild(script);

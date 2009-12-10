@@ -55,8 +55,9 @@ Ice.FCKeditor.prototype = {
 	this.thirdPartyObject.Width = width;
 	this.thirdPartyObject.Height = height;
 	this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
-	this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;		
-          this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
+	this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;
+    this.thirdPartyObject.Config["FloatingPanelsZIndex"] = 28000;
+    this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
 	this.thirdPartyObject.ToolbarSet  = toolbar;
 	if (custConPath !="null") {
 	     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
@@ -124,7 +125,7 @@ Ice.FCKeditorUtility = {
                 if (!oEditor) return;
                 var editorValue = $(ele);
                 var saveOnSubmit = $(ele + 'saveOnSubmit');
-                if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) { 
+                if (saveOnSubmit && editorValue) { 
                     var valueHolder = $(ele + 'valueHolder');
                     editorValue.value = oEditor.GetXHTML(true);
                    valueHolder.value = editorValue.value;
@@ -142,20 +143,54 @@ FCKeditor.prototype.CreateIce = function(eleId)
 
 function FCKeditor_OnComplete( editorInstance ){
     var onCompleteInvoked = $(editorInstance.Name + 'onCompleteInvoked');
+    var fieldWithClientId = $(editorInstance.Name);
+    if (fieldWithClientId) {
+        fieldWithClientId["jsInstance"] = editorInstance;    
+    }
     if (onCompleteInvoked)onCompleteInvoked.value = true;    
     Ice.FCKeditorUtility.updateValue(editorInstance.Name);	
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
-    try {
-        editorInstance.Focus();
-    } catch (err) {logger.info(err);}      
+    if (fieldWithClientId["AppfocusRequested"]) {
+        try {
+             editorInstance.Focus();
+        } catch (e) {logger.info(e);}        
+    }
+}
+
+function handleApplicationFocus(clientId) {
+        var fieldWithClientId = $(clientId); 
+        if (fieldWithClientId) {  
+           editorInstance = fieldWithClientId["jsInstance"]; 
+           if (editorInstance) {
+               try {
+                    editorInstance.Focus();
+               } catch (e) {logger.info(e);}
+           } else {
+            fieldWithClientId["AppfocusRequested"] = true;
+            var interruptFocus;
+            interruptFocus = function () {
+                Event.stopObserving(document, "click", interruptFocus);
+                Event.stopObserving(document, "keydown", interruptFocus);
+                fieldWithClientId["AppfocusRequested"]= false;
+            };
+            Event.observe(document, "click", interruptFocus);
+            Event.observe(document, "keydown", interruptFocus);           
+           }
+        }
 }
 
 function toogleState(editorInstance) {
 
        var disabled = $(editorInstance.Name + 'Disabled');
        if (!disabled) return false;
+       if (disabled['oldDisValue']) {
+           if (disabled['oldDisValue'] == disabled.value) {
+              return false;
+           }
+       }
+       disabled['oldDisValue'] = disabled.value;
        if (disabled.value == "true") {
             if (document.all) {
                 editorInstance.EditorDocument.body.disabled = true;
