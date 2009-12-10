@@ -23,7 +23,7 @@ import java.io.IOException;
 /**
  * This Test class is experimenting with the icefaces 2.0 auction application
  */
-public class FirstTestClass extends TestCase {
+public class AuctionTest extends TestCase {
 
     //    @Test
     /**
@@ -128,11 +128,11 @@ public class FirstTestClass extends TestCase {
 
 
     public static junit.framework.Test suite() {
-        return new junit.framework.JUnit4TestAdapter(FirstTestClass.class);
+        return new junit.framework.JUnit4TestAdapter(AuctionTest.class);
     }
 
     public static void main(String args[]) {
-        org.junit.runner.JUnitCore.main("org.icefaces.htmlunit.FirstTestClass");
+        org.junit.runner.JUnitCore.main("org.icefaces.htmlunit.AuctionTest");
     }
 
     /**
