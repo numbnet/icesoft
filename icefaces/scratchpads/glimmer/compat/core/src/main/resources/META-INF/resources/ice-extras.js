@@ -7134,11 +7134,7 @@ Ice.clickEvent = Class.create({
 });
 
 Ice.preventTextSelection = function(event) {
-    var evt = event || window.event;
-    var evt = Event.extend(evt);
-    var elem = evt.element();
-    var tag = elem.tagName.toLowerCase();
-    if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
+    if (Ice.isEventSourceInputElement(event)) {
         return true;
     } else {
         Ice.disableTxtSelection(document.body);
@@ -7167,6 +7163,18 @@ Ice.enableTxtSelection = function (element) {
 Ice.txtAreaMaxLen = function(field, maxlength) {
     if (maxlength >= 0 && field.value.length > maxlength) {
         field.value = field.value.substring(0, maxlength);
+    }
+}
+
+Ice.isEventSourceInputElement = function(event) {
+    var evt = event || window.event;
+    var evt = Event.extend(evt);
+    var elem = evt.element();
+    var tag = elem.tagName.toLowerCase();
+    if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
+        return true;
+    } else {
+        return false;
     }
 }
 /*
