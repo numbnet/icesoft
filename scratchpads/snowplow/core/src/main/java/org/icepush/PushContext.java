@@ -71,7 +71,6 @@ public class PushContext {
         }
     }
 
-    //todo: this method needs the browser ID since pushIDs are unique only for the same browser
     public void addGroupMember(String groupName, String pushId) {
         Object o = groups.get(groupName);
         if (o == null) {
