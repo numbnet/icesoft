@@ -580,7 +580,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     }
 
     //  Event associated with the specific rowindex
-    class RowEvent extends FacesEvent {
+    public class RowEvent extends FacesEvent {
         private FacesEvent event = null;
         private int eventRowIndex = -1;
 
@@ -595,6 +595,9 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             return (this.event);
         }
 
+        public void setFacesEvent(FacesEvent event) {
+            this.event = event;
+        }
         public boolean isAppropriateListener(FacesListener listener) {
             return false;
         }
