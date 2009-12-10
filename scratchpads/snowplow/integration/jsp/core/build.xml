@@ -65,7 +65,6 @@
                 </fileset>
                 <fileset dir="../../../core/build/dist/"/>
 		<pathelement location="../../common/notify/build/classes"/>
-		<pathelement location="../../common/group/build/classes"/>
             </classpath>
         </javac>
 
@@ -86,7 +85,6 @@
             </manifest>
             <fileset dir="${classes.dir}"/>
             <fileset dir="../../common/notify/build/classes/"/>
-            <fileset dir="../../common/group/build/classes/"/>
             <fileset dir="${web.dir}"/>
         </jar>
     </target>
