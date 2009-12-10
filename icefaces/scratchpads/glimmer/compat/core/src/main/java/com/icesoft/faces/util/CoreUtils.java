@@ -9,9 +9,6 @@ import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Element;
 
-import com.icesoft.faces.util.CoreUtils;
-import com.icesoft.faces.util.String;
-
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;

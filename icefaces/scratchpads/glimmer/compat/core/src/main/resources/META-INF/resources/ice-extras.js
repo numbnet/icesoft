@@ -11880,20 +11880,58 @@ Ice.treeNavigator = {
       }    
   }
   
-  Ice.pnlTabOnFocus = function(ele, facet, kbs) {
-      setFocus(ele.id);
-      if(kbs) { 
-          Event.observe(ele, 'keydown', Ice.tabNavigator); 
-      }   
-      if (!facet) return;
-      Ice.simulateFocus(ele.parentNode, ele);
-  }
-  
-  Ice.pnlTabOnBlur = function(ele, facet, kbs) {
-      if(kbs) { 
-          Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
-      }
-      if (!facet)return;    
-      setFocus('');
-      Ice.simulateBlur(ele.parentNode, ele);
-  }
+Ice.pnlTabOnFocus = function(ele, facet, kbs) {
+    setFocus(ele.id);
+    if(kbs) { 
+        Event.observe(ele, 'keydown', Ice.tabNavigator); 
+    }   
+    if (!facet) return;
+    Ice.simulateFocus(ele.parentNode, ele);
+}
+
+Ice.pnlTabOnBlur = function(ele, facet, kbs) {
+    if(kbs) { 
+        Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
+    }
+    if (!facet)return;    
+    setFocus('');
+    Ice.simulateBlur(ele.parentNode, ele);
+}
+
+Ice.pnlClpFocus = function(anc) {
+    var parent = anc.parentNode;
+    Ice.simulateFocus(parent, anc);
+    parent.style.padding='0px'; 
+}
+
+Ice.pnlClpBlur = function(anc) {
+    var parent = anc.parentNode;
+    Ice.simulateBlur(parent, anc);
+    parent.style.padding='1px';   
+}
+
+Ice.simulateFocus = function(ele, anc) {
+    if(!document.all) {
+        anc.style.visibility='hidden';
+    } 
+    anc.style.borderStyle='none';
+    anc.style.outlineStyle='none'; 
+    anc.style.borderWidth='0px';
+    anc.style.outlineWidth='0px'; 
+    anc.style.margin='0px';  
+    ele['_borderStyle'] = ele.style.borderStyle;     
+    ele.style.borderStyle='dotted';
+    ele['_borderWidth'] = ele.style.borderWidth;   
+    ele.style.borderWidth='1px 1px 1px 1px';
+    ele['_borderColor'] = ele.style.borderColor;   
+    ele.style.borderColor = 'black';    
+}
+
+Ice.simulateBlur = function(ele, anc) {
+    if(!document.all) {    
+        anc.style.visibility='visible';
+    } 
+    ele.style.borderStyle = ele['_borderStyle'];
+    ele.style.borderWidth = ele['_borderWidth'];  
+    ele.style.borderColor = ele['_borderColor'];   
+}

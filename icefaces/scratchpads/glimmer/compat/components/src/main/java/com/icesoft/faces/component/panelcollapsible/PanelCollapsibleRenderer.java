@@ -12,12 +12,14 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.util.CoreUtils;
 
 public class PanelCollapsibleRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes =
@@ -63,11 +65,28 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             if(form == null) {
                 throw new FacesException("PanelCollapsible must be contained within a form");                
             }
+            if (panelCollapsible.hasInitiatedSubmit(facesContext)) {
+                JavascriptContext.addJavascriptCall(facesContext,
+                        "document.getElementById('"+ uiComponent.getClientId(facesContext) + "')." +
+                                        "getElementsByTagName('a')[0].focus();");                
+            }
             header.setAttribute(HTML.ONCLICK_ATTR, 
                 "document.forms['"+ form.getClientId(facesContext) +"']" +
                       "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
                       panelCollapsible.isExpanded()+"'; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+            Element div = domContext.createElement(HTML.DIV_ELEM);
+            div.setAttribute(HTML.STYLE_ATTR, "padding:1px;background-image:none;width:100%;");
+            header.appendChild(div);
+            //this anchor should be known by the component only, so we are defining style to the component level
+            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
+            anchor.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlClpFocus(this);");
+            anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);"); 
+            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
+            anchor.setAttribute(HTML.HREF_ATTR, "#"); 
+            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>"));
+            div.appendChild(anchor);
         }
 
     }
@@ -82,7 +101,13 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
     	//if headerfacet found, get the header div and render all its children
         UIComponent headerFacet = uiComponent.getFacet("header");
         if(headerFacet != null){
-        	Element header = (Element)domContext.getRootNode().getFirstChild();
+            Element header = null;
+            if (panelCollapsible.isToggleOnClick() && 
+                    !panelCollapsible.isDisabled()) {
+                header = (Element)domContext.getRootNode().getFirstChild().getFirstChild();
+            } else {
+                header = (Element)domContext.getRootNode().getFirstChild();
+            }
         	domContext.setCursorParent(header);
         	CustomComponentUtils.renderChild(facesContext,headerFacet);
         }

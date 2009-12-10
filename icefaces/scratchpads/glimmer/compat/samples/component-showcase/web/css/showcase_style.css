@@ -562,7 +562,7 @@ div.verticalAlignMdl{
 .navPnlClpsblHdr {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
@@ -626,7 +626,7 @@ div.verticalAlignMdl{
 .navPnlClpsblColpsdHdr {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
@@ -688,9 +688,15 @@ div.verticalAlignMdl{
 
 .navPnlClpsblHdr div, .navPnlClpsblHdr-dis div  {
     background: url( './images/navigation_tree/tree_folder_open.gif' ) no-repeat 0 3px;
+    margin:0 0 0 -2px;  
+    padding:1px 0 0 5px;
+    background-position: 3px 2px;         
 }
 .navPnlClpsblColpsdHdr div, .navPnlClpsblColpsdHdr-dis div {
     background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat 0 3px;
+    margin:0 0 0 -2px;  
+    padding:1px 0 0 5px;
+    background-position: 3px 2px;         
 }
 /* end of navigation panel collapsible */
 
