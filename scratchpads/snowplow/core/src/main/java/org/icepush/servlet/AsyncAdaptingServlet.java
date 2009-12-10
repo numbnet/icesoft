@@ -19,7 +19,7 @@ public class AsyncAdaptingServlet implements PseudoServlet {
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         if (!request.isAsyncSupported()) {
-            throw new EnvironmentAdaptingException("Servlet 3.0 asynchronous feature not supported.");
+            throw new EnvironmentAdaptingException();
         }
         AsyncRequestResponse requestResponse = new AsyncRequestResponse(request, response);
         server.service(requestResponse);
@@ -38,8 +38,11 @@ public class AsyncAdaptingServlet implements PseudoServlet {
         }
 
         public void respondWith(final ResponseHandler handler) throws Exception {
-            super.respondWith(handler);
-            asyncContext.complete();
+            try {
+                super.respondWith(handler);
+            } finally {
+                asyncContext.complete();
+            }
         }
     }
 }
