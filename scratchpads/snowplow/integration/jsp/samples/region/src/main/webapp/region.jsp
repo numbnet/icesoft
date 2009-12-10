@@ -2,9 +2,6 @@
 <%@page pageEncoding="UTF-8"%>
 <%@taglib prefix="icep" uri="/WEB-INF/icepush.tld"%>
 
-<jsp:useBean id="uniqueGroupName" class="org.icepush.integration.common.group.UniqueName" scope="application">
-</jsp:useBean>
-
 <jsp:useBean id="windowNotifier" class="org.icepush.integration.jsp.samples.region.IntervalTrigger" scope="session">
 	<jsp:setProperty name="windowNotifier" property="interval" value="3000"/>
 </jsp:useBean>
