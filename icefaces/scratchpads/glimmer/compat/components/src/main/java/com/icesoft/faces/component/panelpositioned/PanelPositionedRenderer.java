@@ -247,7 +247,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                         getHiddenFieldName(context, component, INPUT_ID);
                 Iterator names = requestParameters.keySet().iterator();
                 names = requestParameters.keySet().iterator();
-
+                List processedElementsList = new ArrayList();
                 while (names.hasNext()) {
                     String name = (String) names.next();
                     int lastIndex = -1;
@@ -274,7 +274,6 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
 
                             String s = st.nextToken(); // Third token is always the keyword 'changed' used to indicate this filed has changed. (Even if its blank now)
 
-
                             int currentIndex = 0;
 
                             while (st.hasMoreTokens()) {
@@ -291,7 +290,10 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                                                   index + "] to [" +
                                                   currentIndex + "]");
                                     }
-                                    newList.add(obj);
+                                    if (!processedElementsList.contains(id)) {
+                                        newList.add(obj);
+                                        processedElementsList.add(id);
+                                    }
 
                                 } else {
                                     // Value is not from this list, check the cache
