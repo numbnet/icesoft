@@ -10,42 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.icepush.PushContext;
-import org.icepush.integration.common.notify.BasicGroupNotifier;
+import org.icepush.integration.common.notify.Notifier;
+import org.icepush.integration.common.notify.GroupNotifier;
 
-public class RegisterTag extends TagSupport {
+public class RegisterTag extends BaseTag {
 
-    private String group;
-    private String notifier;
     private String callback;
 
     @Override
 	public int doStartTag() throws JspException {
+	int i = super.doStartTag();
 
 	try {
-	    // Find the notifier bean;
-	    BasicGroupNotifier notifierBean = (BasicGroupNotifier)pageContext.findAttribute(notifier);
-	    if (notifierBean == null) {
-		throw( new JspException("Could not find notifier bean " + notifier));
-	    } 
-
-	    // Get a push id;
-	    final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
-	    if (pc == null) {
-		throw(new JspException("PushContext not available in RegisterTag.doStartTag()"));
-	    }
-	    final HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-  	    final String pushid = 
-		pc.createPushId(request,(HttpServletResponse)(pageContext.getResponse()));
-	    
-	    // Add to group;
-	    notifierBean.setPushContext(pc);
-	    if (group == null) {
-		notifierBean.addGroup(pushid);
-	    } else {
-		notifierBean.addGroup(group);
-		pc.addGroupMember(group, pushid);
-	    }
-
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
 
@@ -60,18 +36,6 @@ public class RegisterTag extends TagSupport {
 	return SKIP_BODY;
     }
 
-    public String getGroup() {
-	return group;
-    }
-    public void setGroup(String grp) {
-	this.group = grp;
-	}
-    public String getNotifier() {
-	return notifier;
-    }
-    public void setNotifier(String notifier) {
-	this.notifier = notifier;
-    }
     public String getCallback() {
 	return callback;
     }

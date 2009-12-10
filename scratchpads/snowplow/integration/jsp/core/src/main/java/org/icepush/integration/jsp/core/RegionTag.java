@@ -14,50 +14,16 @@ import org.icepush.PushContext;
 import org.icepush.integration.common.notify.Notifier;
 import org.icepush.integration.common.notify.GroupNotifier;
 
-public class RegionTag extends TagSupport {
+public class RegionTag extends BaseTag {
 
-    private String id;
-    private String group;
-    private String notifier;
     private String page;
+    private String id;
 
     @Override
-	public int doStartTag() throws JspException {
+    public int doStartTag() throws JspException {
+	int i = super.doStartTag();
 
 	try {
-	    // Get a push id;
-	    final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
-	    if (pc == null) {
-		throw(new JspException("PushContext not available in RegisterTag.doStartTag()"));
-	    }
-	    final HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-  	    final String pushid = 
-		pc.createPushId(request,(HttpServletResponse)(pageContext.getResponse()));
-	    
-	    // Find the notifier bean;
-	    Notifier notifierBean = null;
-	    if (notifier != null) {
-		notifierBean = (Notifier)pageContext.findAttribute(notifier);
-		if (notifierBean != null) {
-		    notifierBean.setPushContext(pc);
-		} else {
-		    throw( new JspException("Could not find notifier bean " + notifier));
-		} 
-	    } 
-
-	    // Set group if there is one;
-	    if (group != null) {
-		pc.addGroupMember(group, pushid);
-	    } else {
-		group = pushid;
-	    }
-	    try {
-		// Set group in notifier;
-		GroupNotifier gnotifier = (GroupNotifier)notifierBean;
-		gnotifier.setGroup(group);
-	    } catch (ClassCastException e) {
-	    }
-
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
 
@@ -67,7 +33,7 @@ public class RegionTag extends TagSupport {
 	    }
 	    w.write("<script type=\"text/javascript\">");
 	    w.write("ice.push.register(['" + pushid + "'], function(){");
-	    w.write("getRegion('" + request.getContextPath() + page +
+	    w.write("getRegion('" + ((HttpServletRequest)pageContext.getRequest()).getContextPath() + page +
 		    "', '" + id + "','" + group + "');}");
 	    w.write(");");
 	    w.write("</script>");
@@ -93,9 +59,6 @@ public class RegionTag extends TagSupport {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	group = null;
-	id=null;
-	notifier=null;
 	return SKIP_BODY;
     }
 
@@ -104,18 +67,6 @@ public class RegionTag extends TagSupport {
     }
     public void setId(String id) {
 	this.id = id;
-    }
-    public String getGroup() {
-	return group;
-    }
-    public void setGroup(String grp) {
-	this.group = grp;
-	} 
-    public String getNotifier() {
-	return notifier;
-    }
-    public void setNotifier(String notifier) {
-	this.notifier = notifier;
     }
     public String getPage() {
 	return page;
