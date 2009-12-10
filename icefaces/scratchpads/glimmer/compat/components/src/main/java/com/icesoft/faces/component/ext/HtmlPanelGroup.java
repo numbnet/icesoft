@@ -42,6 +42,7 @@ import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -59,7 +60,8 @@ import javax.faces.event.PhaseId;
  * <li>adds effects to the component</li> <ul>
  */
 
-public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
+public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup
+        implements SeriesStateHolder {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.HtmlPanelGroup";
     public static final String RENDERER_TYPE = "com.icesoft.faces.Group";
@@ -75,6 +77,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private Object dragValue;
 
     private String dropTarget;
+    private String dropTargetScrollerId;
     private MethodBinding dropListener;
     private Object dropValue;
 
@@ -118,6 +121,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private String onmouseover;
     private String onmousemove;
     private String onmouseup;
+    private String title;    
     /**
      *
      */
@@ -658,7 +662,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[42];
+        Object values[] = new Object[44];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -701,6 +705,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[39] = onmouseover;
         values[40] = onmousemove;
         values[41] = onmouseup;        
+        values[42] = dropTargetScrollerId;    
+        values[43] = title;        
         return values;
 
     }
@@ -753,6 +759,23 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         onmouseover= (String)values[39];
         onmousemove= (String)values[40];
         onmouseup= (String)values[41];          
+        dropTargetScrollerId = (String) values[42];
+        title = (String) values[43];        
+    }
+
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object values[] = new Object[3];
+        values[0] = style;
+        values[1] = currentStyle;
+        values[2] = renderedStyle;
+        return values;
+    }
+
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object values[] = (Object[]) state;
+        style = (String) values[0];
+        currentStyle = (CurrentStyle) values[1];
+        renderedStyle = (String) values[2];
     }
 
     /**
@@ -1057,5 +1080,36 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         this.onkeyup = onkeyup;
     }
     
+    public String getDropTargetScrollerId() {
+        if (dropTargetScrollerId != null) return dropTargetScrollerId;
+        ValueBinding vb = getValueBinding("dropTargetScrollerId");
+        if (vb == null) return null;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return null;
+        return value.toString();
+    }
+
+    public void setDropTargetScrollerId(String dropTargetScrollerId) {
+        this.dropTargetScrollerId = dropTargetScrollerId;
+    }
+    
+
+    /**
+     * <p>Set the value of the <code>title</code> property.</p>
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    /**
+     * <p>Return the value of the <code>title</code> property.</p>
+     */
+    public String getTitle() {
+        if (title != null) {
+            return title;
+        }
+        ValueBinding vb = getValueBinding("title");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }    
 }
 

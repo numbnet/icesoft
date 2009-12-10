@@ -8046,7 +8046,7 @@ Ice.DndEvent.prototype = {
         var ele = this.drag.element;
         var iframe = document.getElementById('iceModalFrame');
         if (iframe) {
-            ele.style.zIndex = parseInt(iframe.style.zIndex) + 1;
+            ele.style.zIndex = parseInt(iframe.style.zIndex) + 2;
         }
         if (this.drag.options.sort == true)return;
         thisEv = ele.id + '-' + this.eventType;
@@ -11934,4 +11934,37 @@ Ice.simulateBlur = function(ele, anc) {
     ele.style.borderStyle = ele['_borderStyle'];
     ele.style.borderWidth = ele['_borderWidth'];  
     ele.style.borderColor = ele['_borderColor'];   
-}
+};
+//related class com.icesoft.faces.component.util.DelimitedProperties 
+Ice.delimitedProperties = Class.create({
+  initialize: function() {
+    this.props = {};
+  },
+
+  set: function(key, value) {
+    this.props[key] = value;
+  },
+  
+  get:function(key) {
+    this.props[key];
+  },
+  
+  deleteAll: function() {
+    for (p in this.props) {
+       delete this.props[p];
+    }
+  },
+  
+  getPropsAsString:function() {
+     var str = "";
+     for (p in this.props) {
+       str+= p + '!'+ this.props[p] +',';
+     }
+     return str;
+  },
+  
+  getPropsAsObject:function() {
+     return this.props;
+  }
+});
+
