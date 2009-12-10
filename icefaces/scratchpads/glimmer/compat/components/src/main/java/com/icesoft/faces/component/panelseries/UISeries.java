@@ -38,7 +38,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.model.SetDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
 import com.icesoft.util.CoreComponentUtils;
-
+import com.icesoft.faces.component.ext.taglib.Util;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -692,6 +692,18 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             }
         }
     }
+    
+    /*
+     *  (non-Javadoc)
+     * @see javax.faces.component.UIComponent#isRendered()
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    } 
+    
 }
 
 class ChildState implements Serializable {
