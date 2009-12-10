@@ -107,13 +107,11 @@ public class PushContext {
     }
 
     private synchronized String generateBrowserID() {
-        //todo: find better algorithm
-        return Long.toHexString(++browserCounter) + Long.toHexString(System.currentTimeMillis());
+        return Long.toString(++browserCounter, 36) + Long.toString(System.currentTimeMillis(), 36);
     }
 
     private synchronized String generateSubID() {
-        //todo: find better algorithm
-        return Integer.toHexString((++subCounter) + (hashCode() / 10000));
+        return Integer.toString((++subCounter) + (hashCode() / 10000), 36);
     }
 
     private class Group {
