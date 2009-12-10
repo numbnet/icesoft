@@ -18,7 +18,7 @@ public class PushContext {
     private static final String BrowserIDCookieName = "ice.push.browser";
     private static final int GroupScanningTimeResolution = 3000;//ms
     private int browserCounter = 0;
-    private int pushCounter = 0;
+    private int subCounter = 0;
     private Observable outboundNotifications;
     private Map groups = new HashMap();
     private long groupTimeout;
@@ -49,13 +49,17 @@ public class PushContext {
 
     public synchronized String createPushId(HttpServletRequest request, HttpServletResponse response) {
         String browserID = getBrowserIDFromCookie(request);
-        if (browserID == null && CurrentBrowserID.get() == null) {
-            browserID = generateBrowserID();
-            CurrentBrowserID.set(browserID);
-            response.addCookie(new Cookie(BrowserIDCookieName, browserID));
+        if (browserID == null) {
+            if (CurrentBrowserID.get() == null) {
+                browserID = generateBrowserID();
+                CurrentBrowserID.set(browserID);
+                response.addCookie(new Cookie(BrowserIDCookieName, browserID));
+            } else {
+                browserID = (String) CurrentBrowserID.get();
+            }
         }
 
-        return generatePushID();
+        return browserID + ":" + generateSubID();
     }
 
     public void push(String targetName) {
@@ -105,12 +109,12 @@ public class PushContext {
 
     private synchronized String generateBrowserID() {
         //todo: find better algorithm
-        return (System.currentTimeMillis() + "." + (++browserCounter));
+        return Long.toHexString(++browserCounter) + Long.toHexString(System.currentTimeMillis());
     }
 
-    private synchronized String generatePushID() {
+    private synchronized String generateSubID() {
         //todo: find better algorithm
-        return Integer.toHexString((++pushCounter) + hashCode());
+        return Integer.toHexString((++subCounter) + (hashCode() / 10000));
     }
 
     private class Group {
