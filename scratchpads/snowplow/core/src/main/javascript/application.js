@@ -150,6 +150,20 @@ if (!window.ice.icepush) {
                 }, FormPost, noop);
             },
 
+            addGroupMember: function(group, id) {
+                postAsynchronously(apiChannel, 'add-group-member.icepush' + namespace.uriextension, function(q) {
+                    addNameValue(q, 'group', group);
+                    addNameValue(q, 'id', id);
+                }, FormPost, noop);
+            },
+
+            removeGroupMember: function(group, id) {
+                postAsynchronously(apiChannel, 'remove-group-member.icepush' + namespace.uriextension, function(q) {
+                    addNameValue(q, 'group', group);
+                    addNameValue(q, 'id', id);
+                }, FormPost, noop);
+            },
+
             get: function(uri, parameters, responseCallback) {
                 getAsynchronously(apiChannel, uri, function(query) {
                     parameters(curry(addNameValue, query));
