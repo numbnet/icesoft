@@ -59,6 +59,9 @@ public class RegionTag extends BaseTag {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+	id = null;
+        group = null;
+	notifier = null;
 	return SKIP_BODY;
     }
 
