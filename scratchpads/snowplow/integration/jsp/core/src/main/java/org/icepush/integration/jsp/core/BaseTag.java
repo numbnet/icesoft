@@ -54,6 +54,13 @@ public class BaseTag extends TagSupport {
     return SKIP_BODY;
     }
 
+    @Override
+    public void release() {
+	group = null;
+	notifier = null;
+	pushid = null;
+    }
+    
     public String getGroup() {
 	return group;
     }
