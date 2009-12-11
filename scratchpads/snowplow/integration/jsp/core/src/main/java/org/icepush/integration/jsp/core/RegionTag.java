@@ -59,10 +59,16 @@ public class RegionTag extends BaseTag {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	id = null;
-        group = null;
-	notifier = null;
+	release();
 	return SKIP_BODY;
+    }
+
+    @Override
+    public void release() {
+	super.release();
+	id = null;
+	page = null;
+	pushid = null;
     }
 
     public String getId() {
