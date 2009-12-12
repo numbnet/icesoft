@@ -3,7 +3,6 @@ package org.icepush.integration.jsp.core;
 import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
 import org.icepush.PushContext;

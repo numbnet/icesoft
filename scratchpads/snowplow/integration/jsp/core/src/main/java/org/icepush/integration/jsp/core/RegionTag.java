@@ -4,15 +4,9 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.icepush.PushContext;
-import org.icepush.integration.common.notify.Notifier;
-import org.icepush.integration.common.notify.GroupNotifier;
 
 public class RegionTag extends BaseTag {
 
@@ -22,7 +16,7 @@ public class RegionTag extends BaseTag {
     @Override
     public int doStartTag() throws JspException {
 	int i = super.doStartTag();
-
+	String id = getId();
 	try {
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
@@ -66,17 +60,10 @@ public class RegionTag extends BaseTag {
     @Override
     public void release() {
 	super.release();
-	id = null;
+	setId(null);
 	page = null;
-	pushid = null;
     }
 
-    public String getId() {
-	return id;
-    }
-    public void setId(String id) {
-	this.id = id;
-    }
     public String getPage() {
 	return page;
     }
