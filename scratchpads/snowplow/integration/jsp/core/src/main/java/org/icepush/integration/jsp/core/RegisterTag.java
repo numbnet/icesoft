@@ -4,14 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.icepush.PushContext;
-import org.icepush.integration.common.notify.Notifier;
-import org.icepush.integration.common.notify.GroupNotifier;
 
 public class RegisterTag extends BaseTag {
 
@@ -33,7 +25,15 @@ public class RegisterTag extends BaseTag {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+
+	release();
 	return SKIP_BODY;
+    }
+
+    @Override
+    public void release() {
+	super.release();
+	callback = null;
     }
 
     public String getCallback() {

@@ -55,10 +55,18 @@ public class IntervalTrigger extends GroupNotifier{
 			counter++;
 			Enumeration e = offsets.keys();
 			while (e.hasMoreElements()) {
-			    push((String)e.nextElement());
+			    String grp = (String) e.nextElement();
+			    System.out.println(System.currentTimeMillis() + ": Pushing to " + grp);
+			    push(grp);
 			}
 		    }
 		}, interval, interval);
 	}
+    }
+
+    public void finalize() {
+	System.out.println("Finallizing");
+	timer.cancel();
+	timer = null;
     }
 }
