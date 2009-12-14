@@ -41,6 +41,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private static final String OLD_DOM = "org.icefaces.old-dom";
     private static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
+    private static final String XML_MARKER = "<?xml";
     private static final String DOCTYPE_MARKER = "<!DOCTYPE";
 
     private Writer writer;
@@ -105,7 +106,7 @@ public class DOMResponseWriter extends ResponseWriter {
             //Write out the provided DOCTYPE directly to the underlying writer.
             //Parsing and manipulating it as a DOM node is awkward and likely
             //unnecessary.
-            if (data.startsWith(DOCTYPE_MARKER)) {
+            if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
                 writer.write(data);
                 return;
             }
