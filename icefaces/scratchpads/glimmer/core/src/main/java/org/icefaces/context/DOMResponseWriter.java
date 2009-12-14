@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.PartialViewContext;
 
 public class DOMResponseWriter extends ResponseWriter {
 
@@ -103,9 +104,14 @@ public class DOMResponseWriter extends ResponseWriter {
         try {
             String data = new String(cbuf, off, len);
 
-            //Do not attempt to handle the <?xml or <!DOCTYPE preamble as
-            //DOM nodes directly or write them to the underlying stream.
+            //Write out the <?xml or <!DOCTYPE preamble as text rather than
+            //trying to handle them as DOM nodes, but only if it's not an
+            //Ajax request.  In that case we ignore them.
             if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
+                PartialViewContext pvc = FacesContext.getCurrentInstance().getPartialViewContext();
+                if( pvc == null || !pvc.isAjaxRequest() ){
+                    writer.write(data);
+                }
                 return;
             }
 
