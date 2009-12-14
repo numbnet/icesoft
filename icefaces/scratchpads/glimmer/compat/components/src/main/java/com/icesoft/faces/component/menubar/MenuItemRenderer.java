@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.menubar; 
 
+import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
@@ -237,7 +238,8 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             Element anch = (Element)topLevelDiv.getChildNodes().item(0);
             String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
             onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
-            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
+            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.onmouseover();");              
         }
         if ((uiComponent.getChildCount() > 0) &&
             (((MenuItem) uiComponent).isChildrenMenuItem())) {
@@ -310,7 +312,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
             if ( (!menuItem.isLinkSpecified()) &&
                  (onclick == null || onclick.length() == 0) ) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
         
@@ -390,10 +392,11 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
             if ( (!menuItem.isLinkSpecified()) &&
                  (onclick == null || onclick.length() == 0) ) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
-
+        anchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
+                menuItem.getClientId(facesContext)+ ":"+LINK_SUFFIX));
         if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
             subImg.setAttribute(HTML.SRC_ATTR,

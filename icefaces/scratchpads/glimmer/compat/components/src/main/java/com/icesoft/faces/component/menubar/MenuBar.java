@@ -108,6 +108,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String renderedOnUserRole = null;
     private String noIcons;
     private Boolean displayOnClick;
+    private Boolean keyboardNavigationEnabled;        
     /**
      * default no args constructor
      */
@@ -403,7 +404,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
-        if (!(this instanceof MenuPopup)) {
+        if (isKeyboardNavigationEnabled()) {
             String call = "new Ice.MenuBarKeyNavigator('" + 
             getClientId(context) +"', " +
             isDisplayOnClick() +");";
@@ -413,7 +414,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[8];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = displayOnClick;
         values[2] = imageDir;
@@ -422,6 +423,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         values[5] = renderedOnUserRole;
         values[6] = style;
         values[7] = styleClass;
+        values[8] = keyboardNavigationEnabled;        
         return values;
     }
 
@@ -435,6 +437,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         renderedOnUserRole = (String) values[5];
         style = (String) values[6];
         styleClass = (String) values[7];
+        keyboardNavigationEnabled = (Boolean) values[8];          
     }
     
     public boolean invokeOnComponent(FacesContext context, String clientId,
@@ -442,5 +445,20 @@ public class MenuBar extends UICommand implements NamingContainer {
         throws FacesException {
         return true;
     }
+
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    } 
 }
 
