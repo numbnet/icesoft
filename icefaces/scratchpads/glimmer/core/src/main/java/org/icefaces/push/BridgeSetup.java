@@ -3,11 +3,14 @@ package org.icefaces.push;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Map;
 
 public class BridgeSetup extends ViewHandlerWrapper {
     private ViewHandler handler;
@@ -25,12 +28,19 @@ public class BridgeSetup extends ViewHandlerWrapper {
         return handler;
     }
 
-    public UIViewRoot createView(FacesContext context, String viewId) {
+    public void renderView(FacesContext context, UIViewRoot root)
+            throws IOException, FacesException {
         if (!EnvUtils.isICEfacesView(context)) {
-            return handler.createView(context, viewId);
+            handler.renderView(context, root);
+            return;
         }
 
-        UIViewRoot root = handler.createView(context, viewId);
+        Map rootAttributes = root.getAttributes();
+        if (rootAttributes.containsKey(BRIDGE_SETUP_MARKER)) {
+            handler.renderView(context, root);
+            return;
+        }
+        rootAttributes.put(BRIDGE_SETUP_MARKER, BRIDGE_SETUP_MARKER);
 
         UIOutput output;
 
@@ -70,7 +80,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
             e.printStackTrace();
         }
 
-
-        return root;
+        handler.renderView(context, root);
+        return;
     }
 }
