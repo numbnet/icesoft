@@ -103,11 +103,9 @@ public class DOMResponseWriter extends ResponseWriter {
         try {
             String data = new String(cbuf, off, len);
 
-            //Write out the provided DOCTYPE directly to the underlying writer.
-            //Parsing and manipulating it as a DOM node is awkward and likely
-            //unnecessary.
+            //Do not attempt to handle the <?xml or <!DOCTYPE preamble as
+            //DOM nodes directly or write them to the underlying stream.
             if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
-                writer.write(data);
                 return;
             }
 
