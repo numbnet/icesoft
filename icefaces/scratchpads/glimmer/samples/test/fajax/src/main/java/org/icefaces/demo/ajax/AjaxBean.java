@@ -19,7 +19,6 @@ public class AjaxBean implements Serializable {
     }
 
     public void toggle(ActionEvent ae) {
-        System.out.println("AjaxBean: toggling");
         toggleCount++;
         visible = !visible;
     }
