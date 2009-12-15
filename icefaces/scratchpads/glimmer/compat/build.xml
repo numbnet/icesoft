@@ -22,18 +22,16 @@
  *
 -->
 
-<project name="icefaces-compat" default="all" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="icefaces-compat" default="all" >
 	
 	<property file="../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>
     
-	<path id="maven-ant-tasks.classpath" path="${lib.dir}/maven-ant-tasks-2.1.10.jar" />
-	  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
-	           uri="antlib:org.apache.maven.artifact.ant"
-	           classpathref="maven-ant-tasks.classpath" />
     <target name="all">
         <subant>
-            <fileset dir="." includes="core/build.xml"/>
+            <fileset dir="." includes="core/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+            </fileset>
         </subant> 
         <subant>
             <fileset dir="." includes="components/build.xml samples/build.xml"/>
@@ -45,29 +43,10 @@
 
     <target name="allclean">
         <subant target="clean">
-            <fileset dir="." includes="*/build.xml"/>
+            <fileset dir="." includes="*/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+            </fileset>
         </subant>
     </target>
-	<target name="install">
-	      <artifact:localRepository id="local.repository" path="${local.repository}" layout="default" />
-	      <artifact:pom id="compatPom" file="maven2/icefaces-compat.pom"> 
-	     	 <localRepository refid="local.repository"/>
-	      </artifact:pom>
-	      	<echo> installing icefaces-compat-${compatPom.version} to local repository</echo>
-	      <artifact:install file="lib/icefaces-compat.jar" >
-	      	 <localRepository refid="local.repository"/>      	
-	         	  <pom refid="compatPom"/>
-	      </artifact:install>	
-	      <artifact:pom id="compatCompsPom" file="maven2/icefaces-comps-compat.pom"> 
-	    	 <localRepository refid="local.repository"/>
-	      </artifact:pom>
-	       <echo>installing icefaces-${compatCompsPom.version} to local repository</echo>
-	      <artifact:install file="lib/icefaces-comps-compat.jar" >
-	      	 <localRepository refid="local.repository"/>      	
-	    	  <pom refid="compatCompsPom"/>
-	      </artifact:install>
-	      
-	    </target>
-
 </project>
 
