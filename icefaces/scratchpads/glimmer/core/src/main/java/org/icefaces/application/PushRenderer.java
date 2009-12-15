@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 import java.lang.ref.WeakReference;
-import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -69,7 +69,7 @@ public class PushRenderer {
     public static synchronized void addCurrentSession(String groupName) {
         Set group = (Set) renderGroups.get(groupName);
         if (null == group) {
-            group = new HashSet();
+            group = new CopyOnWriteArraySet();
             renderGroups.put(groupName, group);
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance()
