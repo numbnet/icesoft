@@ -88,6 +88,7 @@ public class Util extends Object {
      *         in one of these roles, false otherwise
      */
     public static boolean isRenderedOnUserRole(UIComponent component) {
+        if (ignoreUserRoleAttributes())  { return true; }
         String userRole;
         if (component instanceof IceExtended) {
             userRole = ((IceExtended) component).getRenderedOnUserRole();
@@ -136,6 +137,7 @@ public class Util extends Object {
      *         in one of these roles, false otherwise
      */
     public static boolean isEnabledOnUserRole(UIComponent component) {
+        if (ignoreUserRoleAttributes())  { return true; }
         String userRole;
         if (component instanceof IceExtended) {
             userRole = ((IceExtended) component).getEnabledOnUserRole();
@@ -158,6 +160,20 @@ public class Util extends Object {
             }
         }
         return false;
+    }
+
+    private static boolean ignoreUserRoleTested = false;
+    private static boolean ignoreUserRole = false;
+    
+    public static boolean ignoreUserRoleAttributes()  {
+        if (!ignoreUserRoleTested)  {
+            String ignoreAttributesParam = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getInitParameter("com.icesoft.faces.ignoreUserRoleAttributes");
+            ignoreUserRole = "true".equalsIgnoreCase(ignoreAttributesParam);
+            ignoreUserRoleTested = true;
+        }
+        return ignoreUserRole;
     }
 
     public static boolean isParentPartialSubmit(UIComponent uiComponent) {
