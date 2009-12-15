@@ -32,13 +32,17 @@
 
     <target name="world" depends="all">
             <subant>
-                <fileset dir="." includes="compat/build.xml"/>
+                <fileset dir="." includes="compat/build.xml">
+                    <exclude name="**/maven2/build.xml"/>
+                </fileset>
             </subant>
     </target>
 
     <target name="allclean">
         <subant target="clean">
-            <fileset dir="." includes="*/build.xml"/>
+            <fileset dir="." includes="*/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+		</fileset>
         </subant>
     </target>
 
