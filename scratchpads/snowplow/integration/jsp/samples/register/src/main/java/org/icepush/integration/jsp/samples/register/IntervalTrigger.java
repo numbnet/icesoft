@@ -1,4 +1,4 @@
-package org.icepush.integration.jsp.samples.region;
+package org.icepush.integration.jsp.samples.register;
 
 import org.icepush.PushContext;
 import org.icepush.integration.common.notify.GroupNotifier;
@@ -7,11 +7,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Hashtable;
 import java.util.Enumeration;
+import javax.annotation.PreDestroy;
 
 public class IntervalTrigger extends GroupNotifier{
     private long interval;
     private long counter;
     private Timer timer;
+    private TimerList timerList;
     private Hashtable offsets;
 
     public IntervalTrigger() {
@@ -19,6 +21,7 @@ public class IntervalTrigger extends GroupNotifier{
 	interval = -1;
         timer = null;
 	counter = Long.MIN_VALUE;
+	timerList = null;
 	offsets = new Hashtable();
     }
 
@@ -50,6 +53,10 @@ public class IntervalTrigger extends GroupNotifier{
     private void startTimer() {
 	if (timer == null) {
 	    timer = new Timer(true);
+	    if (timerList != null) {
+		System.out.println("Adding timer at startTimer");
+		timerList.addTimer(timer);
+	    }
 	    timer.scheduleAtFixedRate(new TimerTask() {
 		    public void run() {
 			counter++;
@@ -64,9 +71,11 @@ public class IntervalTrigger extends GroupNotifier{
 	}
     }
 
-    public void finalize() {
-	System.out.println("Finallizing");
-	timer.cancel();
-	timer = null;
+    public void setTimerList(TimerList timerList) {
+	this.timerList = timerList;
+	if (timer != null) {
+	    System.out.println("Adding timer at setTimerList");
+	    timerList.addTimer(timer);
+	}
     }
 }

@@ -21,6 +21,13 @@ the <jsp:usebean> does not intantiate the bean, so will not set the properties f
 <jsp:setProperty name="sessionNotifier" property="interval" value="5000"/>
 <jsp:setProperty name="applicationNotifier" property="interval" value="7000"/>
 
+<%
+public void jspDestroy() {
+	windowNotifier.stopTimer();
+	sessionNotifier.stopTimer();
+	applicationNotifier.stopTimer();
+}
+%>
 
 <html>
 <head>
