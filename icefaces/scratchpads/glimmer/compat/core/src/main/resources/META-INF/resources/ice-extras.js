@@ -8921,6 +8921,8 @@ Autocompleter.Base.prototype = {
                                   if (!update.style.position || update.style.position == 'absolute') {
                                       update.style.position = 'absolute';
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                                      update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                                          offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
                                   }
                                   Effect.Appear(update, {duration:0.15});
                               };
@@ -8950,14 +8952,16 @@ Autocompleter.Base.prototype = {
             (navigator.appVersion.indexOf('MSIE') > 0) &&
             (navigator.userAgent.indexOf('Opera') < 0) &&
             (Element.getStyle(this.update, 'position') == 'absolute')) {
+            var sendURI = Ice.ElementModel.Element.adaptToElement(this.element).findConnection().sendURI;
+            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                     'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
+                    'src="' + webappContext + 'xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-        this.element.focus();
+        this.element.focus();        
     },
 
     fixIEOverlapping: function() {
@@ -9000,8 +9004,8 @@ Autocompleter.Base.prototype = {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
-                    //this.selectEntry();
-                    //Event.stop(event);
+                //this.selectEntry();
+                //Event.stop(event);
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
@@ -9019,17 +9023,23 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_RIGHT:
                     return;
                 case Event.KEY_UP:
-                    this.markPrevious();
-                    this.render();
-                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    Event.stop(event);
-                    return;
+                    //ICE-4549 (the KEY_UP and KEY_DOWN would be handled by the onkeydown event for IE and WebKit)
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                      
+                        this.markPrevious();
+                        this.render();
+                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                        Event.stop(event);
+                        return;
+	                }
                 case Event.KEY_DOWN:
-                    this.markNext();
-                    this.render();
-                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                    Event.stop(event);
-                    return;
+                    //ICE-4549 
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                 
+                        this.markNext();
+                        this.render();
+                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                        Event.stop(event);
+                        return;
+                    }
 
             }
         }
@@ -9460,6 +9470,9 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             Ice.Autocompleter.logger.debug("Sending partial submit");
             iceSubmitPartial(form, this.element, event);
         }
+        
+           var indexName = this.element.id + "_idx";
+           form[indexName].value = "";
     },
 
     onComplete: function(request) {
