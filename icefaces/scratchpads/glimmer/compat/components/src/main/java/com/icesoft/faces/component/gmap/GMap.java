@@ -31,7 +31,7 @@ public class GMap extends UIPanel {
     private String renderedOnUserRole = null;
 
     public GMap() {
-        loadJsLibrary(FacesContext.getCurrentInstance());
+        //loadJsLibrary(FacesContext.getCurrentInstance());
     }
 
     public String getRendererType() {
