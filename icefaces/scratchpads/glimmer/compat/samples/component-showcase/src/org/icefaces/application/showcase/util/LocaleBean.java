@@ -82,13 +82,6 @@ public class LocaleBean {
         if (!currentLanguage.equals(locale.getLanguage())) 
         {
             usedLocale = new Locale(currentLanguage);
-            ctx.getViewRoot().setLocale(usedLocale);
-            try {
-				ctx.getExternalContext().redirect("/component-showcase/index.jsp");
-			} catch (IOException e) {
-	//unable to force redirect to load new bundle
-				e.printStackTrace();
-			}
         }
     }
 

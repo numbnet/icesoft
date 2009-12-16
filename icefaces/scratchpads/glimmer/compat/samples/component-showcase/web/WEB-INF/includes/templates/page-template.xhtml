@@ -39,10 +39,11 @@
 
   
   <f:view locale="#{localeBean.currentLanguage}">
-    <h:head>
-    <f:loadBundle
+
+    <ice:loadBundle
             basename="org.icefaces.application.showcase.view.resources.messages"
             var="msgs"/>
+     <h:head>
         <title id="dynamicTitle">
             <ui:insert name="title">#{msgs[applicationModel.currentNode.contentDescriptor.title]}</ui:insert>
         </title>
