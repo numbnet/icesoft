@@ -139,4 +139,8 @@ public class ResourceRegistryLocator {
             }
         }
     }
+
+    public interface ExtendedResourceOptions extends Resource.Options {
+        public void setContentDispositionFileName(String contentDispositionFileName);
+    }
 }

@@ -37,6 +37,8 @@ import org.icefaces.util.Base64;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,9 +98,13 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
         if (filename == null || filename.trim().equals("")) {
             dispatchFilename = uriFilename = "";
         } else {
-            filename = java.net.URLEncoder.encode(filename);
-            dispatchFilename = filename.replaceAll("\\+", "\\\\+");
-            uriFilename = filename;
+            dispatchFilename = convertToEscapedUnicode(filename);
+            try {
+                uriFilename = java.net.URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+            } catch (UnsupportedEncodingException e) {
+                uriFilename = filename;
+                e.printStackTrace();
+            }
         }
         final String name = prefix + "/" + encode(resource) + "/";
         if (!registered.contains(name)) {
@@ -158,21 +164,30 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
             response.setHeader("Content-Type", options.mimeType);
             response.setHeader("Last-Modified", options.lastModified);
             response.setHeader("Expires", options.expiresBy);
-            if (options.attachement) {
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + options.fileName + "\"");
+            if (options.attachement && options.contentDispositionFileName != null) {
+                response.setHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
             }
-            response.writeBodyFrom(resource.open());
+            InputStream inputStream = resource.open();
+            if (inputStream == null) {
+                throw new IOException("Resource of type " + resource.getClass().getName() + "[digest: " +
+                        resource.calculateDigest() + "; mime-type: " + options.mimeType +
+                        (options.attachement ? "; attachment: " + options.fileName : "") +
+                        "] returned a null input stream.");
+            } else {
+                response.writeBodyFrom(inputStream);
+            }
         }
 
         public void shutdown() {
         }
 
-        private class ResourceOptions implements DynamicResource.Options {
+        private class ResourceOptions implements ExtendedResourceOptions {
             private Date lastModified = new Date();
             private Date expiresBy = monitor.expiresBy();
             private String mimeType;
             private String fileName;
             private boolean attachement;
+            private String contentDispositionFileName;
 
             public void setMimeType(String type) {
                 mimeType = type;
@@ -193,11 +208,32 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
             public void setAsAttachement() {
                 attachement = true;
             }
+            // ICE-4342
+            // Encoded filename in Content-Disposition header; to be used in save file dialog;
+            // See http://greenbytes.de/tech/tc2231/
+            public void setContentDispositionFileName(String contentDispositionFileName) {
+                this.contentDispositionFileName = contentDispositionFileName;
+            }
         }
     }
 
     private static String encode(DynamicResource resource) {
         return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
+    }
+
+    public static String convertToEscapedUnicode(String s) {
+        char[] chars = s.toCharArray();
+        String hexStr;
+        StringBuffer stringBuffer = new StringBuffer(chars.length * 6);
+        String[] leadingZeros = {"0000", "000", "00", "0", ""};
+        for (int i = 0; i < chars.length; i++) {
+            hexStr = Integer.toHexString(chars[i]).toUpperCase();
+            stringBuffer.append("\\u");
+            stringBuffer.append(leadingZeros[hexStr.length()]);
+//            stringBuffer.append("0000".substring(0, 4 - hexStr.length()));
+            stringBuffer.append(hexStr);
+        }
+        return stringBuffer.toString();
     }
 
     private class RelativeResourceLinker implements DynamicResourceLinker {
@@ -235,5 +271,9 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
 
         public void setMimeType(String mimeType) {
         }
+    }
+
+    public interface ExtendedResourceOptions extends DynamicResource.Options {
+        public void setContentDispositionFileName(String contentDispositionFileName);
     }
 }
