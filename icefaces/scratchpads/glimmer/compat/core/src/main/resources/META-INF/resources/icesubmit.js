@@ -59,7 +59,8 @@ var setFocus;
         throw 'Cannot find enclosing form.';
     }
 
-    setFocus = noop;
+    setFocus = function() {
+    };
 
     window.onLoad = ice.onLoad;
     window.onUnload = ice.onUnload;
