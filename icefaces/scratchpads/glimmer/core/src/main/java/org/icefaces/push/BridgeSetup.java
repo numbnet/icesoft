@@ -11,8 +11,11 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BridgeSetup extends ViewHandlerWrapper {
+    private static Logger log = Logger.getLogger("org.icefaces.util.DOMUtil");
     private static final String Marker = BridgeSetup.class.getName();
     private ViewHandler handler;
 
@@ -29,7 +32,11 @@ public class BridgeSetup extends ViewHandlerWrapper {
     }
 
     public UIViewRoot createView(FacesContext context, String viewId) {
-        WindowScopeManager.lookup(context).determineWindowID(context);
+        try {
+            WindowScopeManager.lookup(context).determineWindowID(context);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "Unable to set up WindowScope ", e);
+        }
         return handler.createView(context, viewId);
     }
 
