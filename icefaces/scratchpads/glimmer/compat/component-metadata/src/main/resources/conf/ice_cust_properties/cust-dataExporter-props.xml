@@ -34,10 +34,11 @@
   -->
 
 <!--todo -->
+&core-props;
 &base-props;
 <property>
 	<description>
-		Id of the dataTable.
+		  ID of the dataTable that this dataExporter component will export data from.
 	</description>
 	<property-name>for</property-name>
 	<property-class>java.lang.String</property-class>
@@ -51,8 +52,7 @@
 
  <property>
 	<description>
-	The value of this attribute will be rendered as an hyper link which can be 
-	clicked to create the file.
+	    Note: This is deprecated as of 1.8.1. Specifying a value for this attribute will have no effect.
 	</description>
     <property-name>clickToCreateFileText</property-name>
 
@@ -110,34 +110,10 @@
 
   <property>
     <description>
-        Setting this property to false will not require a click to create a file.
-        Default value is true.
-    </description>
-    <property-name>clickToCreateFile</property-name>
-    <property-class>boolean</property-class>
-    <property-extension>
-      <category>ICE_LAYOUT</category>
-      <default-value>true</default-value>
-    </property-extension>
-  </property>
-  
-  <property>
-    <description>
-        The image path that will be used to display an image for create file link 
-        instead of text.
-        The text assigned to "clickToCreateFileText" attribute will be assigned 
-        to "alt" and "title" property of the image.
-    </description>
-    <property-name>clickToCreateFileImage</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-      <category>ICE_LAYOUT</category>
-    </property-extension>
-  </property>  
-  
-    <property>
-    <description>
-        The image path that will be used to display an image for download file link instead of text. 
+        The URL of an image that will be rendered instead of the 'label' attribute 
+        text which the user can click on to initiate a data export download. When 
+        this attribute is specified, the 'label' text will be used for the 'title' 
+        and 'alt' text on the image element.
     </description>
     <property-name>image</property-name>
     <property-class>java.lang.String</property-class>
@@ -145,3 +121,96 @@
       <category>ICE_LAYOUT</category>
     </property-extension>
   </property>  
+  
+ <property>
+    <description>
+        This is false by default. If true the dataExporter
+        will ignore the "first" and "rows" properties on the associated dataTable.
+    </description>
+    <property-name>ignorePagination</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
+    </property-extension>
+  </property>  
+  
+   <property>
+    <description>
+    This is false by default. If true the label text will be the label of a rendered button, instead of an anchor link.
+    </description>
+    <property-name>renderLabelAsButton</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
+    </property-extension>
+  </property>  
+  
+  <property>
+    <description>
+        <![CDATA[
+             <p>
+              Space-separated list of CSS style class(es) to be applied when this
+              element is rendered. This value must be passed through as the 
+              "class" attribute on generated markup.<br/>
+              Default value is <b>iceDatExp<b/></p>
+        ]]>
+    </description>
+    <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &styleClassEditor;
+        </editor-class>
+    </property-extension>
+</property>
+  
+  <property>
+    <description>
+        <![CDATA[    
+        <p>This attribute lets you define the order and number of columns that needs to be added to
+        the generated output. It takes comma separated column indexes. 
+        Note that index starts with 0. <br/><br/>
+        
+        If there are 6 columns in the table and you want to add only 1st, 4th 
+        and 6th column to the generated output:<br/>
+        &lt;ice:dataExporter includeColumns="0,3,5"... &gt;
+        <br/>
+        The column order of the above example can be changed a well:</br>
+        &lt;ice:dataExporter includeColumns="5,0,3"... &gt;
+        <br/>
+        By default all columns will be included to the output, and in the default order.
+        </p>
+        
+        ]]>
+    </description>
+    <property-name>includeColumns</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+    </property-extension>
+  </property>   
+  
+     <property>
+    <description>
+        <![CDATA[    
+        <p>    
+        When used in a browser with a popup blocker enabled downloading the 
+        exported file will require two clicks instead of a single click. In this 
+        case the value of this attribute will be used to update the label for 
+        the dataExporter to reflect that the user must click the link/button/image 
+        again to complete the download process.. 
+        </p>
+        
+        ]]>        
+    </description>
+    <property-name>popupBlockerLabel</property-name>
+
+    <property-extension>
+      <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>
+    </property-extension>
+  </property>   
+  
