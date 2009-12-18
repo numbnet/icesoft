@@ -7,14 +7,17 @@ var formOf;
 var setFocus;
 
 (function() {
+    function noop() {
+    }
+
     function resetHiddenFieldsFor(aForm) {
         var elements = aForm.elements;
         var length = elements.length;
         for (var i = 0; i < length; i++) {
             var formElement = elements[i];
-            if (formElement.type == 'hidden' && formElement.id == '' && 
-                    formElement.name != 'javax.faces.ViewState' && 
-                    formElement.name != 'ice.window')  {
+            if (formElement.type == 'hidden' && formElement.id == '' &&
+                formElement.name != 'javax.faces.ViewState' &&
+                formElement.name != 'ice.window') {
                 formElement.value = '';
             }
         }
@@ -61,15 +64,12 @@ var setFocus;
         }
 
         throw 'Cannot find enclosing form.';
-    }
-
-    setFocus = function() {
     };
+
+    setFocus = noop;
 
     window.onLoad = ice.onLoad;
     window.onUnload = ice.onUnload;
-    var noop = function() {
-    };
     window.logger = {debug: noop, info: noop, warn: noop, error: noop, child: function() {
         return window.logger
     }};
