@@ -36,6 +36,7 @@ package com.icesoft.faces.component.outputconnectionstatus;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.util.pooling.ClientIdPool;
 import org.icefaces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -43,8 +44,6 @@ import org.w3c.dom.Text;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-
-import com.icesoft.util.pooling.ClientIdPool;
 
 public class OutputConnectionStatusRenderer extends DomBasicRenderer {
 
@@ -89,12 +88,9 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
                     lostID, false));
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "script"));            
+            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "script"));
             script.appendChild(domContext.createTextNode(
-                    "'" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.attachStatusManager(" +
-                            "function(defaultStatusManager) {" +
-                            "return new Ice.Status.ComponentStatusManager('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', defaultStatusManager, " + component.isShowPopupOnDisconnect() + ", " + component.isDisplayHourglassWhenActive() + ");" +
-                            "});"
+                    "ice.onLoad(function(){ice.ComponentIndicators('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', " + component.isShowPopupOnDisconnect() + ", " + component.isDisplayHourglassWhenActive() + ");});"
             ));
             root.appendChild(script);
         }
@@ -110,7 +106,7 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
         if (!visible) {
             div.setAttribute(HTML.STYLE_ATTR, "visibility: hidden;");
         }
-        if ( (null == label) || ("".equals(label)) )  {
+        if ((null == label) || ("".equals(label))) {
             return div;
         }
         if (label != null) {

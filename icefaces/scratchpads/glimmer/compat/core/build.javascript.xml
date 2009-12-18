@@ -37,8 +37,8 @@
     <property file="build.properties"/>
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
-    <property name="build.dir" location="${basedir}/build/javascript/resources"/>
-    <property name="script" location="${build.dir}/bridge.js"/>
+    <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
+    <property name="script" location="${build.dir}/status.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" description="Collate bridge code">
@@ -50,42 +50,19 @@
         <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
         <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
-        <loadfile property="http.js" srcFile="${lib.dir}/http.js"/>
-        <loadfile property="cookie.js" srcFile="${lib.dir}/cookie.js"/>
-        <loadfile property="logger.js" srcFile="${lib.dir}/logger.js"/>
-        <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
-        <loadfile property="element.js" srcFile="${lib.dir}/element.js"/>
-        <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
-        <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
-        <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
+        <copy file="${src.dir}/status.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
                 <filter token="oo" value="${oo.js}"/>
                 <filter token="collection" value="${collection.js}"/>
                 <filter token="string" value="${string.js}"/>
                 <filter token="window" value="${window.js}"/>
-                <filter token="http" value="${http.js}"/>
-                <filter token="cookie" value="${cookie.js}"/>
-                <filter token="logger" value="${logger.js}"/>
-                <filter token="delay" value="${delay.js}"/>
-                <filter token="element" value="${element.js}"/>
-                <filter token="event" value="${event.js}"/>
-                <filter token="submit" value="${submit.js}"/>
             </filterset>
         </copy>
     </target>
 
-    <target name="build.bridge.compressed" depends="prepare" unless="no-compress">
-        <echo message="Compressing Javascript code..."/>
-        <java jar="../lib/yui-compressor.jar" fork="yes">
-            <arg line="--preserve-semi"/>
-            <arg value="-o"/>
-            <arg value="${script}"/>
-            <arg value="${tmp}"/>
-        </java>
-    </target>
-
-    <target name="build.bridge.uncompressed" depends="prepare" if="no-compress">
+    <target name="build.bridge.uncompressed" depends="prepare">
+        <touch file="${script}"/>
         <move file="${tmp}" tofile="${script}" overwrite="yes">
             <filterchain>
                 <stripjavacomments/>
@@ -98,7 +75,7 @@
         <delete file="${tmp}"/>
     </target>
 
-    <target name="build" depends="build.bridge.compressed, build.bridge.uncompressed, build.cleanup"
+    <target name="build" depends="build.bridge.uncompressed, build.cleanup"
             description="Build bridge"/>
 
     <target name="clean">
