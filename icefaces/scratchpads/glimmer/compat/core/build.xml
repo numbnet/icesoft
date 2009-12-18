@@ -2,7 +2,7 @@
 
     <property file="build.properties"/>
     <property name="java.dir" location="./src/main/java"/>
-    <property name="meta.dir" location="./src/main/resources/META-INF"/>
+    <property name="resources.dir" location="./src/main/resources"/>
     <property name="lib.dir" location="../../lib"/>
     <property name="compat.lib.dir" location="../lib"/>
     <property name="build.dir" location="./build"/>
@@ -10,12 +10,12 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="javadocs.dir" location="${build.dir}/javadocs"/>
 
-	<path id="maven-ant-tasks.classpath" path="${lib.dir}/maven-ant-tasks-2.1.10.jar" />
-	  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
-	           uri="antlib:org.apache.maven.artifact.ant"
-	           classpathref="maven-ant-tasks.classpath" />
+    <path id="maven-ant-tasks.classpath" path="${lib.dir}/maven-ant-tasks-2.1.10.jar"/>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+             uri="antlib:org.apache.maven.artifact.ant"
+             classpathref="maven-ant-tasks.classpath"/>
 
-	
+
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
     </tstamp>
@@ -32,6 +32,10 @@
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${build.dir}/dist"/>
+        <copy todir="${build.dir}/resources">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+        <ant antfile="build.javascript.xml" target="build" inheritall="false"/>
     </target>
 
     <target name="compile" depends="pre.compile" description="compile ICEfaces compatibility classes">
@@ -56,7 +60,7 @@
 
     <target name="jar" depends="compile" description="assemble icefaces-compat.jar">
         <jar destfile="${dist.dir}/${ant.project.name}.jar">
-            <metainf dir="${meta.dir}"/>
+            <metainf dir="${build.dir}/resources/META-INF"/>
 
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
@@ -70,7 +74,7 @@
                 </section>
             </manifest>
             <fileset dir="${classes.dir}"/>
-            <fileset dir="./src/main/resources/css"/>
+            <fileset dir="${build.dir}/resources/css"/>
             <!-- fileset dir="${build.dir}/javascript"/ -->
         </jar>
         <copy file="${dist.dir}/${ant.project.name}.jar" todir="${compat.lib.dir}" overwrite="true"/>
@@ -98,6 +102,6 @@
             <doctitle><![CDATA[<h2>ICEfaces 2 Compatibility API</h2>]]></doctitle>
         </javadoc>
     </target>
-	
+
 </project>
 

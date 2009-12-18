@@ -107,7 +107,7 @@ if (!window.ice.icefaces) {
 
         //notify errors captured by JSF bridge
         jsf.ajax.addOnError(function(e) {
-            if (e.status == 'serverError')
+            if (e.status == 'serverError' || e.status == 'httpError')
                 broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
         });
 
@@ -122,6 +122,7 @@ if (!window.ice.icefaces) {
             try {
                 var newForm = document.createElement('form');
                 newForm.action = window.location.pathname;
+                debug(logger, 'picking updates for view ' + viewState);
                 jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
