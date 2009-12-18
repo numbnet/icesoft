@@ -690,13 +690,13 @@ div.verticalAlignMdl{
     background: url( './images/navigation_tree/tree_folder_open.gif' ) no-repeat 0 3px;
     margin:0 0 0 -2px;  
     padding:1px 0 0 5px;
-    background-position: 3px 2px;         
+    background-position: 3px 2px;      
 }
 .navPnlClpsblColpsdHdr div, .navPnlClpsblColpsdHdr-dis div {
     background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat 0 3px;
     margin:0 0 0 -2px;  
     padding:1px 0 0 5px;
-    background-position: 3px 2px;         
+    background-position: 3px 2px;  
 }
 /* end of navigation panel collapsible */
 
@@ -840,6 +840,10 @@ div.verticalAlignMdl{
     left: 40%;
 }
 
+.corePopup table {
+    width: 100%;
+}
+
 .popupBody {
     margin-top: 25px;
     width: 100%;
@@ -951,6 +955,9 @@ div.verticalAlignMdl{
     margin: 8px;
     border: 1px solid #DADADA;
     text-align: center;
+}
+.icePnlTlTip table {
+    width: 100%;
 }
 /* END PANEL TOOLTIP  */
 
