@@ -12,7 +12,11 @@ var setFocus;
         var length = elements.length;
         for (var i = 0; i < length; i++) {
             var formElement = elements[i];
-            if (formElement.type == 'hidden' && formElement.id == '') formElement.value = '';
+            if (formElement.type == 'hidden' && formElement.id == '' && 
+                    formElement.name != 'javax.faces.ViewState' && 
+                    formElement.name != 'ice.window')  {
+                formElement.value = '';
+            }
         }
     }
 
