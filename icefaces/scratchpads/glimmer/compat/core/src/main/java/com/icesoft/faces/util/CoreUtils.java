@@ -1,14 +1,18 @@
 package com.icesoft.faces.util;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.w3c.dom.Element;
 
+import com.icesoft.faces.component.dataexporter.DataExporter;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;
@@ -16,7 +20,8 @@ import com.icesoft.util.CoreComponentUtils;
 public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
 	private static Boolean portletEnvironment;
-
+    private static final Log log = LogFactory.getLog(CoreUtils.class);
+    
     public static String resolveResourceURL(FacesContext facesContext, String path) {
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
@@ -223,4 +228,33 @@ public class CoreUtils {
         }
         return true;
     }
+    
+    public static String getRealPath(FacesContext facesContext, String path) {
+        Object session = FacesContext
+        .getCurrentInstance().getExternalContext().getSession(false);
+        if (session == null) {
+            log.error("getRealPath() session is null", new NullPointerException());
+            return null;
+        }
+        if (isPortletEnvironment()) {
+            return getRealPath(session, "getPortletContext", path);
+        } else {
+            return getRealPath(session, "getServletContext", path);
+        }
+    }
+    
+    private static String getRealPath(Object session, String getContext, String path) {
+        try {
+            Method getContextMethod = session.getClass().getMethod(getContext, null);
+            Object context;
+            context = getContextMethod.invoke(session, null);
+            Class[] classargs = {String.class};
+            Method getRealPath =  context.getClass().getMethod("getRealPath", classargs);
+            Object[] args = {path};
+            return String.valueOf(getRealPath.invoke(context, args)); 
+        } catch (Exception e) {
+            log.error("Error getting realpath", e);
+            return null;
+        }        
+    }    
 }
