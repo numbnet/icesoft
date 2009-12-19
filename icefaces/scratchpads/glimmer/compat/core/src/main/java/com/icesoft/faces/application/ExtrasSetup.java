@@ -64,7 +64,7 @@ public class ExtrasSetup extends ViewHandlerWrapper {
 
         ResourceBundle localizedBundle = defaultBridgeMessages;
         try {
-            ResourceBundle.getBundle("bridge-messages", context.getViewRoot().getLocale());
+            localizedBundle = ResourceBundle.getBundle("bridge-messages", context.getViewRoot().getLocale());
         } catch (MissingResourceException e) {
             localizedBundle = defaultBridgeMessages;
         }
