@@ -57,10 +57,9 @@ public class ExtrasSetup extends ViewHandlerWrapper {
         }
         rootAttributes.put(EXTRAS_SETUP_MARKER, EXTRAS_SETUP_MARKER);
 
+        root.addComponentResource(context, new JavascriptResourceOutput("compat.js"), "head");
         root.addComponentResource(context, new JavascriptResourceOutput("prototype.js"), "head");
-        root.addComponentResource(context, new JavascriptResourceOutput("icesubmit.js"), "head");
         root.addComponentResource(context, new JavascriptResourceOutput("ice-extras.js"), "head");
-        root.addComponentResource(context, new JavascriptResourceOutput("status.js"), "head");
 
         ResourceBundle localizedBundle = defaultBridgeMessages;
         try {

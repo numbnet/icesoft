@@ -220,7 +220,7 @@ public class JavascriptContext {
         } else {
             map.remove(FOCUS_APP_KEY);
             map.remove(FOCUS_COMP_KEY);
-            return "Ice.Focus.setFocus('" + focus + "');";
+            return "ice.applyFocus('" + focus + "');";
         }
     }
 
@@ -439,15 +439,12 @@ public class JavascriptContext {
      * @return
      */
     public static String getFocus(FacesContext context) {
-        String focusId;
-        if (true) throw new UnsupportedOperationException("TODO implement getFocus");
-        //TODO: use getFocus utility function
-//        String focusId = ((BridgeFacesContext) context).getFocusId();
-//        Map map = context.getExternalContext().getRequestMap();
-//        if (map.containsKey(FOCUS_COMP_KEY))
-//            focusId = (String) map.get(FOCUS_COMP_KEY);
-//        if (map.containsKey(FOCUS_APP_KEY))
-//            focusId = (String) map.get(FOCUS_APP_KEY);
+        String focusId = CoreComponentUtils.getFocusId(context);
+        Map map = context.getExternalContext().getRequestMap();
+        if (map.containsKey(FOCUS_COMP_KEY))
+            focusId = (String) map.get(FOCUS_COMP_KEY);
+        if (map.containsKey(FOCUS_APP_KEY))
+            focusId = (String) map.get(FOCUS_APP_KEY);
         return focusId;
     }
 
