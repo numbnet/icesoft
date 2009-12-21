@@ -38,7 +38,7 @@
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
-    <property name="script" location="${build.dir}/status.js"/>
+    <property name="script" location="${build.dir}/compat.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" description="Collate bridge code">
@@ -50,13 +50,21 @@
         <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
         <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
-        <copy file="${src.dir}/status.js" tofile="${tmp}" overwrite="yes">
+        <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
+        <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
+        <loadfile property="focus.js" srcFile="${src.dir}/focus.js"/>
+        <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
+        <copy file="${src.dir}/compat.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
                 <filter token="oo" value="${oo.js}"/>
                 <filter token="collection" value="${collection.js}"/>
                 <filter token="string" value="${string.js}"/>
                 <filter token="window" value="${window.js}"/>
+                <filter token="delay" value="${delay.js}"/>
+                <filter token="status" value="${status.js}"/>
+                <filter token="focus" value="${focus.js}"/>
+                <filter token="submit" value="${submit.js}"/>
             </filterset>
         </copy>
     </target>

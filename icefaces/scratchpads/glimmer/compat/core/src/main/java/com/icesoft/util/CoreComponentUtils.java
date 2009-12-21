@@ -1,19 +1,23 @@
 package com.icesoft.util;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  *
  */
 public class CoreComponentUtils {
+    private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + NamingContainer.SEPARATOR_CHAR + "([\\w\\_]*))*$");
 
-       /**
+    /**
      * Find a component with an id specified in the following ways <code>
-     *
+     * <p/>
      * <ul><li>
      * :componetId - Absolute id, search starts at UIViewRoot </li><li>
      * componentId - Relative id, search starts at nearest parent namingContainer or ViewRoot</li><li>
@@ -21,7 +25,7 @@ public class CoreComponentUtils {
      * </code>
      *
      * @param clientId id of component
-     * @param base UIComponent base to start searching from
+     * @param base     UIComponent base to start searching from
      */
     public static UIComponent findComponent(String clientId, UIComponent base) {
 //System.out.println("    findComponent()  clientId: " + clientId + "  base: " + base);
@@ -107,6 +111,7 @@ public class CoreComponentUtils {
 
     /**
      * Find a component with a given id, given a starting component
+     *
      * @param uiComponent
      * @param componentId
      * @return
@@ -136,16 +141,16 @@ public class CoreComponentUtils {
     }
 
     /**
-    * A version of findComponent() that attempts to locate a component by id (not clientId)
-    * and searches into NamingContainers. If there are more than one component with the
-    * provided id, the first one found will be returned
-    *
-    * @param uiComponent the base component to search from
-    * @param componentId the id to search for
-    */
+     * A version of findComponent() that attempts to locate a component by id (not clientId)
+     * and searches into NamingContainers. If there are more than one component with the
+     * provided id, the first one found will be returned
+     *
+     * @param uiComponent the base component to search from
+     * @param componentId the id to search for
+     */
 
     public static UIComponent findComponentInView(UIComponent uiComponent,
-                                                String componentId) {
+                                                  String componentId) {
         UIComponent component = null;
         UIComponent child = null;
 
@@ -168,10 +173,23 @@ public class CoreComponentUtils {
     }
 
     /**
-     * ICE-4417 Migrate method for setting focus id. 
+     * ICE-4417 Migrate method for setting focus id.
+     *
      * @param focusId Id of component to get the focus
      */
     public static void setFocusId(String focusId) {
         FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("ice.focus", focusId);
+    }
+
+    /**
+     * Return the id of the Element that currently has focus in the browser.
+     *
+     * @return String
+     */
+    public static String getFocusId(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        Map map = externalContext.getRequestParameterMap();
+        String focusedElement = (String) map.get("ice.focus");
+        return focusedElement != null && ClientIdPattern.matcher(focusedElement).matches() ? focusedElement : "";
     }
 }
