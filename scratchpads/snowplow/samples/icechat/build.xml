@@ -5,6 +5,7 @@
 	<property name="cdi.jar.name" value="jee6/middle/beans/dist/IceChatCDI.jar"/>
 	<property name="model.jar.name" value="jee6/middle/model/dist/IceChatModel.jar"/>
 	<property name="ejb.jar.name" value="jee6/middle/ejb/dist/IceChatEJB.jar"/>
+	<property name="gwt.war.name" value="jee6/web/gwt/dist/IceChatModule.war"/>
 	<property name="ear.name" value="IceChat.ear"/>
 	
 	<path id="compile.path">
@@ -21,11 +22,13 @@
 		<delete dir="${build.dir}"/>
 		<delete dir="${dist.dir}"/>
 		<ant inheritAll="false" antfile="jee6/middle/beans/build.xml" target="clean"/>
+		<ant inheritAll="false" antfile="jee6/web/gwt/build.xml" target="clean"/>
 	</target>
 	
 	<target name="compile">
 		<mkdir dir="${build.dir}"/>
 		<ant inheritAll="false" antfile="jee6/middle/beans/build.xml" target="jar"/>
+		<ant inheritAll="false" antfile="jee6/web/gwt/build.xml" target="war"/>
 	</target>
 
 	<target name="build" depends="compile">
@@ -33,9 +36,10 @@
 		<copy file="${ejb.jar.name}" tofile="${build.dir}/IceChatEJB.jar"/>
 		<mkdir dir="${build.dir}/lib"/>
 		<copy file="${model.jar.name}" tofile="${build.dir}/lib/IceChatModel.jar"/>
+		<copy file="${gwt.war.name}" tofile="${build.dir}/gwt.war"/>
 	</target>
 	
-	<target name="dist" depends="compile">
+	<target name="dist" depends="build">
 		<echo>Building IceChat Ear</echo>
 		<mkdir dir="${dist.dir}"/>
 		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
