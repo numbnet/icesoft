@@ -1,0 +1,44 @@
+<project default="jar">
+
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="cdi.jar.name" value="jee6/middle/beans/dist/IceChatCDI.jar"/>
+	<property name="model.jar.name" value="jee6/middle/model/dist/IceChatModel.jar"/>
+	<property name="ejb.jar.name" value="jee6/middle/ejb/dist/IceChatEJB.jar"/>
+	<property name="ear.name" value="IceChat.ear"/>
+	
+	<path id="compile.path">
+		<pathelement location="${model.jar.name}"/>
+		<pathelement location="${ejb.jar.name}"/>
+		<fileset dir="${gf.compile.path}">
+			<include name="**/*.jar"/>
+		</fileset>
+		
+
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<ant inheritAll="false" antfile="jee6/middle/beans/build.xml" target="clean"/>
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${build.dir}"/>
+		<ant inheritAll="false" antfile="jee6/middle/beans/build.xml" target="jar"/>
+	</target>
+
+	<target name="build" depends="compile">
+		<copy file="${cdi.jar.name}" tofile="${build.dir}/IceChatCDI.jar"/>
+		<copy file="${ejb.jar.name}" tofile="${build.dir}/IceChatEJB.jar"/>
+		<mkdir dir="${build.dir}/lib"/>
+		<copy file="${model.jar.name}" tofile="${build.dir}/lib/IceChatModel.jar"/>
+	</target>
+	
+	<target name="dist" depends="compile">
+		<echo>Building IceChat Ear</echo>
+		<mkdir dir="${dist.dir}"/>
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
+		</jar>
+	</target>
+</project>

@@ -1,0 +1,40 @@
+<project default="jar">
+	<property name="java.dir" value="src/main/java"/>
+	<property name="resources.dir" value="src/main/resources"/>
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jar.name" value="IceChatModel.jar"/>
+	<property name="gf.compile.path" value="../../common_lib/gfv3"/>
+	
+	<path id="compile.path">
+		<fileset dir="${gf.compile.path}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<echo>Cleaning Model...</echo>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+	
+	<target name="init-compile">
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="compile" depends="init-compile">
+		<echo>Compiling Model...</echo>
+		<javac srcdir="${java.dir}" destdir="${build.dir}">
+			<classpath refid="compile.path"/>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<echo>Building Model Jar...</echo>
+		<mkdir dir="${dist.dir}"/>
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${jar.name}">
+			<!-- uncomment if we include a meta inf dir in the future-->
+			<!--metainf dir="${resources.dir}/META-INF"/-->
+		</jar>
+	</target>
+</project>
