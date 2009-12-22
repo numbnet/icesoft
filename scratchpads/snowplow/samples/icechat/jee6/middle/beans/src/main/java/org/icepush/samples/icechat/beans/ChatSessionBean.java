@@ -8,7 +8,7 @@ package org.icepush.samples.icechat.beans;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import test.User;
+import org.icepush.samples.icechat.model.User;
 
 /**
  *

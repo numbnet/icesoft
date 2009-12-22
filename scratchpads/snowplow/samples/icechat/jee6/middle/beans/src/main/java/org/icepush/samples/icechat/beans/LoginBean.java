@@ -67,11 +67,11 @@ public class LoginBean {
     }
 
     public void login(){
-        chatSession.setUser(chatManagerFacade.getChatManager().login(userName, password));
+        chatSession.setUser(chatManagerFacade.getChatService().login(userName, password));
     }
 
     public void register(){
-        chatSession.setUser(chatManagerFacade.getChatManager().register(userName, nickName, password));
+        chatSession.setUser(chatManagerFacade.getChatService().register(userName, nickName, password));
     }
 
     /**

@@ -7,7 +7,7 @@ package org.icepush.samples.icechat.beans;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import test.ChatManagerLocal;
+import org.icepush.samples.icechat.model.ChatServiceLocal;
 
 /**
  *
@@ -17,20 +17,20 @@ import test.ChatManagerLocal;
 public class ChatManagerFacadeBean {
 
     @EJB
-    private ChatManagerLocal chatManager;
+    private ChatServiceLocal chatService;
 
     /**
      * @return the chatManager
      */
-    public ChatManagerLocal getChatManager() {
-        return chatManager;
+    public ChatServiceLocal getChatService() {
+        return chatService;
     }
 
     /**
      * @param chatManager the chatManager to set
      */
-    public void setChatManager(ChatManagerLocal chatManager) {
-        this.chatManager = chatManager;
+    public void setChatManager(ChatServiceLocal chatService) {
+        this.chatService = chatService;
     }
 
 }
