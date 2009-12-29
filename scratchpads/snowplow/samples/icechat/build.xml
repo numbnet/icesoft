@@ -1,0 +1,8 @@
+<project default="jee6-glassfish3-jsf2-ejb-nodb" name="icechat">
+
+
+	<target name="jee6-glassfish3-jsf2-ejb-nodb">
+		<ant antfile="build.xml" target="jee6-glassfish3-jsf2-ejb-nodb" dir="./jee6"/>
+	</target>
+	
+</project>
