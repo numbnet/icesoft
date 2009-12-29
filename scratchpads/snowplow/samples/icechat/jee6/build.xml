@@ -1,0 +1,97 @@
+<project default="jee6-glassfish3-jsf2-ejb-nodb" name="icechat-jee6">
+
+	<property file="build-common.properties"/>
+	<property file="local.properties"/>
+	
+	<target name="jee6-glassfish3-jsf2-ejb-nodb">
+		<echo>Building IceChat Ear for JEE6/GlassFish3/EJB without persistence</echo>
+		
+		<!--build the common api dependancies-->
+		<antcall target="jar-api-dependancies"/>
+		
+		<antcall target="jar-ejb-nodb"/>
+		
+		<antcall target="jar-cdi-beans"/>
+		
+		<antcall target="war-jsf2"/>
+		
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dir}/lib"/>
+		
+		<!-- TODO copy jars into build folder for ear -->
+		<copy file="./model/dist/${icechat.model.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/api/dist/${icechat.service.api.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/ejb-nodb/dist/${icechat.service.ejb.nodb.jar.name}" todir="${build.dir}"/>
+		<copy file="./beans/dist/${icechat.beans.jar.name}" todir="${build.dir}"/>
+		<copy file="./web/jsf2/dist/${icechat.jsf2.war.name}" todir="${build.dir}"/>
+		
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
+		</jar>
+		
+	</target>
+	
+	<target name="jee6-glassfish3-gwt-ejb-nodb">
+		<echo>Building IceChat Ear for JEE6/GlassFish3/EJB without persistence</echo>
+		
+		<!--build the common api dependancies-->
+		<antcall target="jar-api-dependancies"/>
+		
+		<antcall target="jar-ejb-nodb"/>
+		
+		<antcall target="jar-cdi-beans"/>
+		
+		<antcall target="war-gwt"/>
+		
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dir}/lib"/>
+		
+		<!-- TODO copy jars into build folder for ear -->
+		<copy file="./model/dist/${icechat.model.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/api/dist/${icechat.service.api.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/ejb-nodb/dist/${icechat.service.ejb.nodb.jar.name}" todir="${build.dir}"/>
+		<copy file="./beans/dist/${icechat.beans.jar.name}" todir="${build.dir}"/>
+		<copy file="./web/gwt/dist/${icechat.gwt.war.name}" todir="${build.dir}"/>
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
+		</jar>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${dist.dir}"/>
+		<delete dir="${build.dir}"/>
+		<ant target="clean" dir="./service/ejb"/>
+		<ant target="clean" dir="./model"/>
+		<ant target="clean" dir="./service/api"/>
+		<ant target="clean" dir="./service/ejb-nodb"/>
+	</target>
+	
+	<target name="jar-api-dependancies">
+		<!-- build the model jar"-->
+		<ant target="jar" dir="./model"/>
+		<ant target="jar" dir="./service/api"/>
+	</target>
+	
+	<target name="jar-ejb">
+		<!-- build the ejb component that uses derby-->
+		<ant target="jar" dir="./service/ejb"/>
+	</target>
+	
+	<target name="jar-ejb-nodb">
+		<!-- build the ejb component that uses a singleton to manage state-->
+		<ant target="jar" dir="./service/ejb-nodb"/>
+	</target>
+	
+	<target name="jar-cdi-beans">
+		<ant target="jar" dir="./beans"/>
+	</target>
+	
+	<target name="war-gwt">
+		<ant inheritAll="false" target="war" dir="./web/gwt"/>
+	</target>
+	
+	<target name="war-jsf2">
+		<ant target="war" dir="./web/jsf2"/>
+	</target>
+	
+</project>
