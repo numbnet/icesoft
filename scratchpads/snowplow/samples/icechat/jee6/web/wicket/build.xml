@@ -11,7 +11,13 @@
 		<fileset dir="../../service/api/dist">
 			<include name="**/*.jar"/>
 		</fileset>
+		<fileset dir="../../model/dist">
+					<include name="**/*.jar"/>
+		</fileset>
 		<fileset dir="../../beans/dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="./src/main/webapp/WEB-INF/lib">
 			<include name="**/*.jar"/>
 		</fileset>
 	</path>
@@ -76,7 +82,7 @@
 			</fileset>
 		</copy>
 		
-		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${icechat.jsf2.war.name}" 
+		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${icechat.wicket.war.name}" 
 			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
 		</war>
 		
@@ -89,6 +95,13 @@
 		<javac srcdir="${java.dir}" destdir="${build.dir}/classes">
 			<classpath refid="compile.path"/>
 		</javac>
+		<copy todir="${build.dir}/classes" preservelastmodified="true" verbose="true">
+			<fileset dir="${java.dir}">
+				<include name="**"/>
+				<exclude name="**/*.class"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
 	</target>
 
 </project>
