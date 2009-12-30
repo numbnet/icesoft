@@ -1,0 +1,45 @@
+<project name="icechat-api" default="jar">
+	
+	<property file="../build-common.properties"/>
+	
+	<path id="compile.path">
+		<fileset dir="./lib">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="../api/dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="../lib">
+			<include name="**/*.jar"/>
+		</fileset>	
+		<fileset dir="../beans/dist">
+			<include name="**/*.jar"/>
+		</fileset>	
+	</path>
+
+	<target name="clean">
+		<echo>Cleaning CDI Beans...</echo>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+	
+	<target name="init-compile" depends="clean">
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="compile" depends="init-compile">
+		<echo>Compiling CDI Beans...</echo>
+		<javac srcdir="${java.dir}" destdir="${build.dir}">
+			<classpath refid="compile.path"/>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<echo>Building CDI Beans Jar...</echo>
+		<mkdir dir="${dist.dir}"/>
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${icechat.cdi.jar.name}">
+			<!-- uncomment if we include a meta inf dir in the future-->
+			<metainf dir="${resources.dir}/META-INF"/>
+		</jar>
+	</target>
+</project>
