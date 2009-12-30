@@ -3,8 +3,8 @@
 	<property file="build-common.properties"/>
 	<property file="local.properties"/>
 	
-	<target name="jee6-glassfish3-jsf2-ejb-nodb">
-		<echo>Building IceChat Ear for JEE6/GlassFish3/EJB without persistence</echo>
+	<target name="jee6-glassfish3-jsf2-ejb-nodb" depends="clean">
+		<echo>Building JSF2 icechat ear for JEE6/GlassFish3/EJB without persistence</echo>
 		
 		<!--build the common api dependancies-->
 		<antcall target="jar-api-dependancies"/>
@@ -31,8 +31,8 @@
 		
 	</target>
 	
-	<target name="jee6-glassfish3-gwt-ejb-nodb">
-		<echo>Building IceChat Ear for JEE6/GlassFish3/EJB without persistence</echo>
+	<target name="jee6-glassfish3-gwt-ejb-nodb" depends="clean">
+		<echo>Building gwt icechat ear for JEE6/GlassFish3/EJB without persistence</echo>
 		
 		<!--build the common api dependancies-->
 		<antcall target="jar-api-dependancies"/>
@@ -56,6 +56,35 @@
 		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
 		</jar>
 	</target>
+	
+	<target name="jee6-glassfish3-wicket-ejb-nodb" depends="clean">
+		<echo>Building wicket icechat ear for JEE6/GlassFish3/EJB without persistence</echo>
+		
+		<!--build the common api dependancies-->
+		<antcall target="jar-api-dependancies"/>
+		
+		<antcall target="jar-ejb-nodb"/>
+		
+		<antcall target="jar-cdi-beans"/>
+		
+		<antcall target="war-wicket"/>
+		
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dir}/lib"/>
+		
+		<!-- TODO copy jars into build folder for ear -->
+		<copy file="./model/dist/${icechat.model.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/api/dist/${icechat.service.api.jar.name}" todir="${build.dir}/lib"/>
+		<copy file="./service/ejb-nodb/dist/${icechat.service.ejb.nodb.jar.name}" todir="${build.dir}"/>
+		<copy file="./beans/dist/${icechat.beans.jar.name}" todir="${build.dir}"/>
+		<copy file="./web/wicket/dist/${icechat.wicket.war.name}" todir="${build.dir}"/>
+		
+		<jar basedir="${build.dir}" destfile="${dist.dir}/${ear.name}">
+		</jar>
+		
+	</target>
+
 	
 	<target name="clean">
 		<delete dir="${dist.dir}"/>
@@ -93,5 +122,10 @@
 	<target name="war-jsf2">
 		<ant target="war" dir="./web/jsf2"/>
 	</target>
+	
+	<target name="war-wicket">
+		<ant target="war" dir="./web/wicket"/>
+	</target>
+
 	
 </project>
