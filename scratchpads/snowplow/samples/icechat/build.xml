@@ -1,16 +1,20 @@
-<project default="jee6-glassfish3-jsf2-ejb-nodb" name="icechat">
+<project default="wicket" name="icechat">
 	
-	<target name="jee6-glassfish3-jsf2-ejb-nodb">
-		<ant antfile="build.xml" target="jee6-glassfish3-jsf2-ejb-nodb" dir="./jee6"/>
+	<target name="api">
+		<ant antfile="build.xml" target="jar" dir="./api"/>
 	</target>
 	
-	<target name="jee6-glassfish3-wicket-ejb-nodb">
-		<ant antfile="build.xml" target="jee6-glassfish3-wicket-ejb-nodb" dir="./jee6"/>
+	<target name="beans" depends="api">
+		<ant antfile="build.xml" target="jar" dir="./beans"/>
 	</target>
 	
-	<target name="jee6-glassfish3-gwt-ejb-nodb">
-		<ant antfile="build.xml" target="jee6-glassfish3-gwt-ejb-nodb" dir="./jee6"/>
+	<target name="cdi-beans" depends="beans">
+		<ant antfile="build.xml" target="jar" dir="./cdi"/>
 	</target>
+		
+	<target name="wicket" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./web/wicket"/>
+	</target>	
 		
 
 </project>
