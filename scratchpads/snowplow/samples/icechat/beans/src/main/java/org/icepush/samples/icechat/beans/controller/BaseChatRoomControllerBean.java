@@ -10,7 +10,7 @@ import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
 
-public class ChatRoomControllerBean implements Serializable, IChatRoomController{
+public abstract class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
 	
 	private static final long serialVersionUID = 3046754615536057774L;
 
@@ -18,12 +18,12 @@ public class ChatRoomControllerBean implements Serializable, IChatRoomController
 	
 	private IPushRequestContext pushRequestContext;
 	
+	private static Logger log = Logger.getLogger(BaseChatRoomControllerBean.class.getName());
+	
 	public void setPushRequestContext(IPushRequestContext pushRequestContext) {
 		this.pushRequestContext = pushRequestContext;
 	}
 
-	private static Logger log;
-			
 	public UserChatSession createNewChatRoom(String chatRoomName, String userName, String password){
 		UserChatSession session = chatService.createNewChatRoom(chatRoomName, userName, password);
 		PushContext pushContext = pushRequestContext.getPushContext();

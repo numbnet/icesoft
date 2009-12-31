@@ -7,14 +7,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.icepush.samples.icechat.IPushRequestContext;
-import org.icepush.samples.icechat.beans.controller.LoginControllerBean;
+import org.icepush.samples.icechat.beans.controller.BaseLoginControllerBean;
 import org.icepush.samples.icechat.controller.model.ICredentialsBean;
 import org.icepush.samples.icechat.service.IChatService;
 
 
 @Named
 @SessionScoped
-public class LoginController extends LoginControllerBean implements Serializable{
+public class LoginController extends BaseLoginControllerBean implements Serializable{
 	
 	@Inject
 	@Override

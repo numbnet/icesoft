@@ -20,5 +20,9 @@
 		<ant antfile="build.xml" target="war" dir="./web/jsf2"/>
 	</target>	
 
+	<target name="gwt" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./web/gwt"/>
+	</target>	
+
 
 </project>
