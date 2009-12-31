@@ -12,7 +12,7 @@ import org.icepush.samples.icechat.service.IChatService;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 
-public class LoginControllerBean implements Serializable, ILoginController{
+public abstract class BaseLoginControllerBean implements Serializable, ILoginController{
 	
 	
 	private IChatService chatService;
