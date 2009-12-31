@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebRequest;
@@ -39,6 +40,7 @@ public class HomePage extends WebPage {
 
 	public HomePage() {
 		super();
+                add(new ContextImage("banner_hdr","./img/banner_hdr.jpg"));
 		final Form loginForm = new Form("login");
 		loginForm.add(new RequiredTextField<String>("userName", new Model() {
 			public Serializable getObject() {
