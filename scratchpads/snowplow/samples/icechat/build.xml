@@ -1,4 +1,4 @@
-<project default="wicket" name="icechat">
+<project default="jsf2" name="icechat">
 	
 	<target name="api">
 		<ant antfile="build.xml" target="jar" dir="./api"/>
@@ -15,6 +15,10 @@
 	<target name="wicket" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/wicket"/>
 	</target>	
-		
+
+	<target name="jsf2" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./web/jsf2"/>
+	</target>	
+
 
 </project>
