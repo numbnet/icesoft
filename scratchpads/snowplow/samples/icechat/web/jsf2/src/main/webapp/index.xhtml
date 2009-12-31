@@ -50,7 +50,7 @@
 	        	<div class="chatRooms">
 	        		<h3>Chat Rooms</h3>
                 	<h:form id="chatRooms">
-		            	<ui:repeat value="#{chatManagerFacade.chatRooms}" var="room">
+		            	<ui:repeat value="#{chatManagerFacadeBean.chatRooms}" var="room">
 	                		<div>
 	                			<h:commandLink value="#{room.name}" 
 		                			actionListener="#{chatManagerVC.openChatSession(room.name)}"/>
@@ -70,20 +70,20 @@
 	                </h:form>
 	        	</div>
 	        	
-	        	<h:panelGroup rendered="#{not empty currentChatSessionHolder.session}">
+	        	<h:panelGroup rendered="#{not empty currentChatSessionHolderBean.session}">
 		        	<div class="chatRoomView">
 		        		<h:form id="chatRoomView">
-			                <div class="chatRoomHeader">Chat Room '#{currentChatSessionHolder.session.room.name}'</div>
+			                <div class="chatRoomHeader">Chat Room '#{currentChatSessionHolderBean.session.room.name}'</div>
 			                <div class="chatRoomContainer">
 			                	<div class="chatRoomUsers">
 			                		<div class="chatViewSubHeader">Who's Here?</div>
-		                			<ui:repeat value="#{currentChatSessionHolder.session.room.userChatSessions}" var="chatSession">
+		                			<ui:repeat value="#{currentChatSessionHolderBean.session.room.userChatSessions}" var="chatSession">
 				                		<div>#{chatSession.user.displayName}</div>
 				                	</ui:repeat>
 			                	</div>
 			                	<div class="chatRoomMessages">
 			                		<div class="chatViewSubHeader">Messages</div>
-		                			<ui:repeat value="#{currentChatSessionHolder.session.room.messages}" var="msg">
+		                			<ui:repeat value="#{currentChatSessionHolderBean.session.room.messages}" var="msg">
 				                		<div>
 				                			<h:outputText value="#{msg.created}">
 				                				<f:convertDateTime type="both" dateStyle="short" timeStyle="short"/>

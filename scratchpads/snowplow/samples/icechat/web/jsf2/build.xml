@@ -17,9 +17,13 @@
 		<fileset dir="../../cdi/dist">
 			<include name="**/*.jar"/>
 		</fileset>	
-		<fileset dir="./src/main/webapp/WEB-INF/lib">
+		<fileset dir="./lib">
 			<include name="**/*.jar"/>
-		</fileset>
+		</fileset>	
+		<fileset dir="../../cdi/lib">
+			<include name="**/*.jar"/>
+		</fileset>	
+
 	</path>
 	
 	<target name="clean">
@@ -89,7 +93,7 @@
     </target>
 	
 	<target name="compile" depends="clean">
-		<echo>Compiling Wicket...</echo>
+		<echo>Compiling JSF2...</echo>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dir}/classes"/>
 		<javac srcdir="${java.dir}" destdir="${build.dir}/classes">
