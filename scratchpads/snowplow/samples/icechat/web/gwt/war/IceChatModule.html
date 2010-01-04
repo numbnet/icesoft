@@ -15,6 +15,8 @@
     <!--                                                               -->
     <link type="text/css" rel="stylesheet" href="IceChatModule.css">
 
+    <link rel='stylesheet' type='text/css' href='./common/css/style-common.css'/>
+
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
@@ -41,7 +43,21 @@
   <!-- to create a completely dynamic UI.        -->
   <!--                                           -->
   <body>
-	<input type="button" onclick="ice.push.notify(['chatRoom1']);" value="notify"/>
+      <div class="header_container">
+            <div class="header_content"><img width="109px" height="100px" style="float: left;" src="./common/img/banner_hdr.jpg"/>
+                <div style="font-size: 20pt; color: rgb(15, 101, 184); margin-top: 45px;">
+                    <span style="font-weight: bold;">ICEpush</span>
+                    <span style="font-style: italic; font-family: Times New Roman;"> with GWT 2.0</span>
+                </div>
+            </div>
+      </div>
+      <div id="credentials" style="float: right;">
+
+      </div>
+      
+      <div id="appPanel">
+          
+      </div>
     <!-- OPTIONAL: include this if you want history support -->
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
     

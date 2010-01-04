@@ -56,6 +56,12 @@
 				<include name="icepush.jar"/>
 			</fileset>
 	</copy>
+	
+	<copy todir="war/common" preservelastmodified="false" verbose="true">
+			<fileset dir="../../common">
+				<include name="**/*"/>
+			</fileset>
+	</copy>
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
       <classpath>
         <pathelement location="${java.dir}"/>

@@ -33,7 +33,7 @@ public class RegisterScreen extends AbstractScreen{
 	public RegisterScreen(){
 		DialogBox panel = new DialogBox();
 		panel.setText("Please Provide Some Additional Information");
-		
+		panel.setGlassEnabled(true);
 		VerticalPanel root = new VerticalPanel();
 		
 		errorLabel = new Label();

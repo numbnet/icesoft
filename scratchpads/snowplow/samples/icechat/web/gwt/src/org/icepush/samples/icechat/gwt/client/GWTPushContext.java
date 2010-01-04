@@ -39,7 +39,6 @@ public class GWTPushContext{
 			this.addGroupMember(group, id);
 		}
 		
-		Window.alert("id:" + id);
 		this.register(id,listener);
 		
 	}
