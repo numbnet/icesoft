@@ -58,7 +58,7 @@ if (!window.ice.icepush) {
         };
 
         var serverErrorListeners = [];
-        namespace.onServerError = function(callback) {
+        namespace.onBlockingConnectionServerError = function(callback) {
             append(serverErrorListeners, callback);
         };
 
