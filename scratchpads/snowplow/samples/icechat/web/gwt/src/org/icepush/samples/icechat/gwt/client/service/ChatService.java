@@ -1,8 +1,9 @@
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.service;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.List;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
 
 /**
@@ -11,5 +12,5 @@ import java.util.List;
 @RemoteServiceRelativePath("chat")
 public interface ChatService extends RemoteService {
   	public void createChatRoom(String name);
-   	public List<String> getChatRooms();
+   	public List<ChatRoomHandle> getChatRooms();
 }

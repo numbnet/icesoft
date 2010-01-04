@@ -11,7 +11,6 @@ public class GWTPushContext{
 		simply initialize the underlying native engine.
 	*/
 	private GWTPushContext(){
-		Window.alert("Loading context...");
 		this.init();
 	}
 	
@@ -20,11 +19,11 @@ public class GWTPushContext{
 	*/
 	public void addPushEventListener(PushEventListener listener, List<String> groupNames, String pushId){
 		
-		/*
+		
 		for(String group: groupNames){
 			this.addGroupMember(group, pushId);
 		}
-		*/
+		
 		this.register(pushId,listener);
 		
 	}
@@ -32,17 +31,25 @@ public class GWTPushContext{
 	/**
 		register a new listener to the specified list of render groups.
 	*/
-	public void addPushEventListener(PushEventListener listener, String[] groupNames, String id){
-		/*String id = this.createPushId();
+	public void addPushEventListener(PushEventListener listener, String[] groupNames){
+		
+		String id = this.createPushId();
 		
 		for(String group: groupNames){
 			this.addGroupMember(group, id);
 		}
-		*/
+		
 		Window.alert("id:" + id);
 		this.register(id,listener);
 		
 	}
+
+        /**
+         * removes this push event listener from the push notifications
+         */
+        public void removePushEventListener(PushEventListener listener){
+            this.unregister(listener);
+        }
 	
 	/**
 		retrieve the singleton instance of the GWT push context.
@@ -59,7 +66,7 @@ public class GWTPushContext{
 	/* wrap the native js API for easier use */
 	
 	/**
-		initialize the ICEpush engine.
+            initialize the ICEpush engine.
 	*/
 	private native void init()/*-{
 		
@@ -68,11 +75,11 @@ public class GWTPushContext{
 		
 		//create a function to get called on notification.
 		$wnd.ice.push.gwtRootCallback = function(){
-			$wnd.alert('notification recieved');
+			for(var i = 0; i < $wnd.ice.push.gwtRegisteredCallbacks.length; i++){
+                            var listener = $wnd.ice.push.gwtRegisteredCallbacks[i];
+                            listener.@org.icepush.samples.icechat.gwt.client.PushEventListener::onPushEvent()();
+                        }
 		}
-		
-		
-		//$wnd.ice.push.register(['chatRoom1'], $wnd.ice.push.gwtRootCallback);
 		
 		
 	}-*/;
@@ -88,10 +95,20 @@ public class GWTPushContext{
 		registers a list of push ids to a callback function.
 	*/
 	private native void register(String pushId, PushEventListener listener)/*-{
-		
-		//$wnd.ice.push.register(new Array(pushId),listener.@org.icepush.samples.icechat.gwt.client.PushEventListener::onPushEvent());
+		$wnd.ice.push.gwtRegisteredCallbacks.push(listener)
 		$wnd.ice.push.register(new Array(pushId), $wnd.ice.push.gwtRootCallback);
 	}-*/;
+
+        private native void unregister(PushEventListener listener)/*-{
+                var index = -1;
+                for(var i = 0; i < $wnd.ice.push.gwtRegisteredCallbacks.length; i++){
+                    if($wnd.ice.push.gwtRegisteredCallbacks[i] == listener){
+                        index = i;
+                    }
+                }
+                $wnd.ice.push.gwtRegisteredCallbacks.splice(index,1);
+                
+         }-*/;
 	
 	/**
 		creates a new push id.
