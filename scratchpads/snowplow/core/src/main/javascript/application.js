@@ -192,8 +192,8 @@ if (!window.ice.icepush) {
 
             //todo: factor out cookie & monitor into a communication bus abstraction
             //read/create cookie that contains the notified pushID
-            var notifiedPushIDs = lookupCookie('ice.updated.views', function() {
-                return Cookie('ice.updated.views', '');
+            var notifiedPushIDs = lookupCookie('ice.notified.pushids', function() {
+                return Cookie('ice.notified.pushids', '');
             });
 
             //register command that handles the updated-views message
