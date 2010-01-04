@@ -25,7 +25,6 @@ public class BrowserBoundServlet extends PathDispatcher {
     private class CreatePushID extends AbstractPseudoServlet {
         public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
             response.getWriter().write(pushContext.createPushId(request, response));
-            response.getWriter().write("\n\n");
         }
     }
 
