@@ -80,17 +80,17 @@ if (!window.ice.icepush) {
 
         function enlistPushIDsWithBrowser(ids) {
             try {
-                var idsCookie = lookupCookie('ice.views');
+                var idsCookie = lookupCookie('ice.pushids');
                 var registeredIDs = split(value(idsCookie), ' ');
                 update(idsCookie, join(concatenate(registeredIDs, ids), ' '));
             } catch (e) {
-                Cookie('ice.views', join(ids, ' '));
+                Cookie('ice.pushids', join(ids, ' '));
             }
         }
 
         function delistPushIDWithBrowser(id) {
-            if (existsCookie('ice.views')) {
-                var idsCookie = lookupCookie('ice.views');
+            if (existsCookie('ice.pushids')) {
+                var idsCookie = lookupCookie('ice.pushids');
                 var registeredIDs = split(value(idsCookie), ' ');
                 update(idsCookie, join(reject(registeredIDs, function(registeredID) {
                     return registeredID == id;

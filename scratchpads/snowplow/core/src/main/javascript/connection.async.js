@@ -100,7 +100,7 @@ function AsyncConnection(logger, windowID, configuration) {
     }
 
     function registeredSessions() {
-        return split(lookupCookieValue('ice.views'), ' ');
+        return split(lookupCookieValue('ice.pushids'), ' ');
     }
 
     function connect() {
