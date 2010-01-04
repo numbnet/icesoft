@@ -108,7 +108,7 @@ function AsyncConnection(logger, windowID, configuration) {
         close(listener);
         debug(logger, "connect...");
         listener = postAsynchronously(channel, receiveURI, function(q) {
-            each(registeredSessions(), curry(addNameValue, q, 'ice.view'));
+            each(registeredSessions(), curry(addNameValue, q, 'ice.pushid'));
         }, function(request) {
             FormPost(request);
             sendXWindowCookie(request);
@@ -181,7 +181,7 @@ function AsyncConnection(logger, windowID, configuration) {
             if (isWinningCandidate()) {
                 if (!hasOwner()) {
                     markAsOwned();
-                    //start blocking connection since no other view has started it
+                    //start blocking connection since no other window has started it
                     initializeConnection();
                 }
                 updateLease();
