@@ -196,8 +196,8 @@ if (!window.ice.icepush) {
                 return Cookie('ice.notified.pushids', '');
             });
 
-            //register command that handles the updated-views message
-            register(commandDispatcher, 'updated-views', function(message) {
+            //register command that handles the notified-pushids message
+            register(commandDispatcher, 'notified-pushids', function(message) {
                 var text = message.firstChild;
                 if (text && !blank(text.data)) {
                     var ids = split(value(notifiedPushIDs), ' ');

@@ -63,8 +63,8 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private final long timeoutInterval;
     private long responseTimeoutTime;
     private Server activeServer;
-    private ConcurrentLinkedQueue updatedViews = new ConcurrentLinkedQueue();
-    private List participatingViews = Collections.emptyList();
+    private ConcurrentLinkedQueue notifiedPushIDs = new ConcurrentLinkedQueue();
+    private List participatingPushIDs = Collections.emptyList();
     private Observable notifier;
 
     public BlockingConnectionServer(Observable outboundNotifier, final Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
@@ -79,10 +79,10 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
             public void service(final Request request) throws Exception {
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
-                participatingViews = Arrays.asList(request.getParameterAsStrings("ice.view"));
+                participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
                 pendingRequest.put(request);
-                respondIfViewsAvailable();
-                inboundNotifier.notifyObservers(participatingViews);
+                respondIfNotificationsAvailable();
+                inboundNotifier.notifyObservers(participatingPushIDs);
             }
 
             public void shutdown() {
@@ -97,11 +97,11 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         //stop sending notifications if pushID are not used anymore by the browser
         //todo: verify if this kind of filtering is scalable enough
         List pushIDs = new ArrayList(Arrays.asList((String[]) o));
-        pushIDs.retainAll(participatingViews);
+        pushIDs.retainAll(participatingPushIDs);
         if (!pushIDs.isEmpty()) {
-            updatedViews.addAll(pushIDs);
+            notifiedPushIDs.addAll(pushIDs);
             resetTimeout();
-            respondIfViewsAvailable();
+            respondIfNotificationsAvailable();
         }
     }
 
@@ -121,13 +121,13 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         }
     }
 
-    private synchronized void respondIfViewsAvailable() {
-        if (!updatedViews.isEmpty()) {
-            final String[] views = (String[]) updatedViews.toArray(new String[0]);
-            respondIfPendingRequest(new UpdatedViewsHandler(views) {
+    private synchronized void respondIfNotificationsAvailable() {
+        if (!notifiedPushIDs.isEmpty()) {
+            final String[] ids = (String[]) notifiedPushIDs.toArray(new String[0]);
+            respondIfPendingRequest(new NotificationHandler(ids) {
                 public void writeTo(Writer writer) throws IOException {
                     super.writeTo(writer);
-                    updatedViews.removeAll(Arrays.asList(views));
+                    notifiedPushIDs.removeAll(Arrays.asList(ids));
                 }
             });
         }
@@ -148,20 +148,20 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         }
     }
 
-    private class UpdatedViewsHandler extends FixedXMLContentHandler {
-        private String[] views;
+    private class NotificationHandler extends FixedXMLContentHandler {
+        private String[] pushIDs;
 
-        private UpdatedViewsHandler(String[] views) {
-            this.views = views;
+        private NotificationHandler(String[] pushIDs) {
+            this.pushIDs = pushIDs;
         }
 
         public void writeTo(Writer writer) throws IOException {
-            writer.write("<updated-views>");
-            for (String updatedView : views) {
-                writer.write(updatedView);
+            writer.write("<notified-pushids>");
+            for (String id : pushIDs) {
+                writer.write(id);
                 writer.write(' ');
             }
-            writer.write("</updated-views>");
+            writer.write("</notified-pushids>");
         }
     }
 }
