@@ -76,44 +76,44 @@ if (!window.ice.icepush) {
         namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
         namespace.logger = Logger([ 'icepush' ], handler);
         namespace.info = info;
-        var views = namespace.views = namespace.views || [];
+        var pushIdentifiers = [];
 
-        function enlistViewsWithBrowser(viewIDs) {
+        function enlistPushIDsWithBrowser(ids) {
             try {
-                var viewsCookie = lookupCookie('ice.views');
-                var registeredViews = split(value(viewsCookie), ' ');
-                update(viewsCookie, join(concatenate(registeredViews, viewIDs), ' '));
+                var idsCookie = lookupCookie('ice.views');
+                var registeredIDs = split(value(idsCookie), ' ');
+                update(idsCookie, join(concatenate(registeredIDs, ids), ' '));
             } catch (e) {
-                Cookie('ice.views', join(viewIDs, ' '));
+                Cookie('ice.views', join(ids, ' '));
             }
         }
 
-        function delistViewWithBrowser(viewID) {
+        function delistPushIDWithBrowser(id) {
             if (existsCookie('ice.views')) {
-                var viewsCookie = lookupCookie('ice.views');
-                var registeredViews = split(value(viewsCookie), ' ');
-                update(viewsCookie, join(reject(registeredViews, function(id) {
-                    return id == viewID;
+                var idsCookie = lookupCookie('ice.views');
+                var registeredIDs = split(value(idsCookie), ' ');
+                update(idsCookie, join(reject(registeredIDs, function(registeredID) {
+                    return registeredID == id;
                 }), ' '));
             }
         }
 
-        function enlistViewWithWindow(viewIDs) {
-            enlistViewsWithBrowser(viewIDs);
-            views = concatenate(views, viewIDs);
+        function enlistPushIDWithWindow(id) {
+            enlistPushIDsWithBrowser(id);
+            pushIdentifiers = concatenate(pushIdentifiers, id);
         }
 
-        function delistViewWithWindow(viewIDs) {
-            delistViewWithBrowser(viewIDs);
-            views = complement(views, viewIDs);
+        function delistPushIDWithWindow(id) {
+            delistPushIDWithBrowser(id);
+            pushIdentifiers = complement(pushIdentifiers, id);
         }
 
-        function delistWindowViews() {
-            each(views, delistViewWithBrowser);
-            namespace.views = views = [];
+        function delistWindowPushIDs() {
+            each(pushIdentifiers, delistPushIDWithBrowser);
+            pushIdentifiers = [];
         }
 
-        onBeforeUnload(window, delistWindowViews);
+        onBeforeUnload(window, delistWindowPushIDs);
 
         var currentNotifications = [];
         var apiChannel = Client(true);
@@ -121,7 +121,7 @@ if (!window.ice.icepush) {
         namespace.uriextension = '';
         namespace.push = {
             register: function(pushIds, callback) {
-                enlistViewWithWindow(pushIds);
+                enlistPushIDWithWindow(pushIds);
                 namespace.onNotification(function(ids) {
                     currentNotifications = asArray(intersect(ids, pushIds));
                     if (notEmpty(currentNotifications)) {
@@ -130,7 +130,7 @@ if (!window.ice.icepush) {
                 });
             },
 
-            deregister: delistViewWithWindow,
+            deregister: delistPushIDWithWindow,
 
             getCurrentNotifications: function() {
                 return currentNotifications;
@@ -191,8 +191,8 @@ if (!window.ice.icepush) {
             register(commandDispatcher, 'parsererror', ParsingError);
 
             //todo: factor out cookie & monitor into a communication bus abstraction
-            //read/create cookie that contains the updated views
-            var updatedViews = lookupCookie('ice.updated.views', function() {
+            //read/create cookie that contains the notified pushID
+            var notifiedPushIDs = lookupCookie('ice.updated.views', function() {
                 return Cookie('ice.updated.views', '');
             });
 
@@ -200,21 +200,21 @@ if (!window.ice.icepush) {
             register(commandDispatcher, 'updated-views', function(message) {
                 var text = message.firstChild;
                 if (text && !blank(text.data)) {
-                    var notifiedViewIDs = split(value(updatedViews), ' ');
-                    update(updatedViews, join(asSet(concatenate(notifiedViewIDs, split(text.data, ' '))), ' '));
+                    var ids = split(value(notifiedPushIDs), ' ');
+                    update(notifiedPushIDs, join(asSet(concatenate(ids, split(text.data, ' '))), ' '));
                 } else {
-                    warn(logger, "No updated views were returned.");
+                    warn(logger, "No notification was returned.");
                 }
             });
 
-            //monitor & pick updates for this view
-            var updatesMonitor = run(Delay(function() {
+            //monitor & pick updates for this window
+            var notificationMonitor = run(Delay(function() {
                 try {
-                    var allUpdatedViews = split(value(updatedViews), ' ');
-                    if (notEmpty(allUpdatedViews)) {
-                        broadcast(notificationListeners, [ allUpdatedViews ]);
-                        //remove only the views contained by this page since notificationListeners can only contain listeners from the current page
-                        update(updatedViews, join(complement(allUpdatedViews, views), ' '));
+                    var ids = split(value(notifiedPushIDs), ' ');
+                    if (notEmpty(ids)) {
+                        broadcast(notificationListeners, [ ids ]);
+                        //remove only the pushIDs contained by this page since notificationListeners can only contain listeners from the current page
+                        update(notifiedPushIDs, join(complement(ids, pushIdentifiers), ' '));
                     }
                 } catch (e) {
                     warn(logger, 'failed to listen for updates', e);
@@ -224,7 +224,7 @@ if (!window.ice.icepush) {
             function dispose() {
                 try {
                     dispose = noop;
-                    stop(updatesMonitor);
+                    stop(notificationMonitor);
                 } finally {
                     shutdown(asyncConnection);
                 }
