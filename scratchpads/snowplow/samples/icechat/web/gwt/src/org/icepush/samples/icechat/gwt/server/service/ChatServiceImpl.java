@@ -1,5 +1,6 @@
-package org.icepush.samples.icechat.gwt.server;
+package org.icepush.samples.icechat.gwt.server.service;
 
+import org.icepush.samples.icechat.gwt.client.service.ChatService;
 import org.icepush.samples.icechat.gwt.client.UserService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.icepush.samples.icechat.gwt.push.adapter.GWTPushRequestContextAdaptor;
@@ -9,6 +10,8 @@ import org.icepush.samples.icechat.gwt.client.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.icepush.samples.icechat.gwt.client.chat.ChatHandleBuilder;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
 
 
@@ -22,17 +25,21 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
        	GWTPushRequestContextAdaptor pushAdaptor = GWTPushRequestContextAdaptor.getInstance(this.getServletContext(),getThreadLocalRequest(),getThreadLocalResponse());
        	PushContext pushContext = pushAdaptor.getPushContext();
        	
-       	//pushContext.addGroupMember(name,pushAdaptor.getCurrentPushId());
-       	//System.out.println("adding " + pushAdaptor.getCurrentPushId() + " to group: '" + name+ "'");
-       	pushContext.push(name);
+       	pushContext.push("chatRoomIndex");
        	
-       	System.out.println("pushing to group: " + name);
        }catch(Exception e){
        		e.printStackTrace();
        }
     }
     
-    public List<String> getChatRooms(){
-    	return this.chatRooms;
+    public List<ChatRoomHandle> getChatRooms(){
+        List<ChatRoomHandle> result = new ArrayList<ChatRoomHandle>(this.chatRooms.size());
+
+        for(String chatName: this.chatRooms){
+            ChatHandleBuilder builder = new ChatHandleBuilder();
+            ChatRoomHandle handle = builder.createHandle(chatName);
+            result.add(handle);
+        }
+    	return result;
     }
 }

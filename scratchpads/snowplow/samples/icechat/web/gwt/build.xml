@@ -52,7 +52,7 @@
 
   <target name="devmode" depends="javac" description="Run development mode">
   	<copy todir="war/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset dir="../../../lib">
+			<fileset dir="../../lib">
 				<include name="icepush.jar"/>
 			</fileset>
 	</copy>
@@ -165,6 +165,40 @@ Test targets suppressed because -junit argument was not specified when running w
 		</copy-->
 		
   </target>
+  
+  <target name="build-server" depends="javac" description="Build this project">
+  	<delete dir="${build.dir}"/>
+  	<mkdir dir="${build.dir}"/>
+  	<copy todir="${build.dir}">
+  		<fileset dir="war">
+			<include name="**"/>
+		</fileset>
+  	</copy>
+  	<!--copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../service/api/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../model/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../beans/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../../lib">
+				<include name="icepush.jar"/>
+			</fileset>
+		</copy-->
+		
+  </target>
+
 
   <target name="war" depends="build" description="Create a war file">
   	<mkdir dir="${dist.dir}"/>
@@ -174,6 +208,11 @@ Test targets suppressed because -junit argument was not specified when running w
   <target name="clean" description="s this project">
     <delete dir="war/WEB-INF/classes" failonerror="false" />
     <delete dir="war/icechatmodule" failonerror="false" />
+  </target>
+  
+  <target name="server" depends="build-server" description="rebuild server component.">
+  	<mkdir dir="${dist.dir}"/>
+    <zip destfile="${dist.dir}/${icechat.gwt.war.name}" basedir="${build.dir}"/>
   </target>
 
 </project>
