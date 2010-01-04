@@ -23,7 +23,7 @@ public class LoginScreen extends AbstractScreen{
 	public LoginScreen(){
 		DialogBox panel = new DialogBox();
 		panel.setText("Please Login");
-		
+		panel.setGlassEnabled(true);
 		VerticalPanel root = new VerticalPanel();
 		root.setPixelSize(250, 150);
 

@@ -61,9 +61,11 @@ public class ChatRoomListPanel extends Composite {
     @UiHandler("createChatRoomButton")
     public void doCreateChatRoom(ClickEvent ev) {
         namePopup = new DialogBox();
-
+        namePopup.setText("Please enter a name:");
+        namePopup.setGlassEnabled(true);
         HorizontalPanel rootPanel = new HorizontalPanel();
         Label instructions = new Label("Please enter a name of the ChatRoom:");
+        
         nameText = new TextBox();
         Button createButton = new Button("Create");
         createButton.addClickHandler(new ClickHandler() {
@@ -74,8 +76,8 @@ public class ChatRoomListPanel extends Composite {
                 AsyncCallback<Void> callback = new AsyncCallback<Void>() {
 
                     public void onSuccess(Void result) {
-                        namePopup.setVisible(false);
-
+                        namePopup.hide();
+                        refreshChatList();
                     }
 
                     public void onFailure(Throwable t) {
@@ -90,8 +92,8 @@ public class ChatRoomListPanel extends Composite {
         rootPanel.add(createButton);
 
         namePopup.add(rootPanel);
-        namePopup.setVisible(true);
         namePopup.center();
+        namePopup.show();
 
 
     }
