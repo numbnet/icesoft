@@ -10,11 +10,8 @@ import javax.faces.event.ActionEvent;
 import org.icepush.samples.icechat.cdi.controller.LoginController;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
-@ManagedBean(name="jsfLoginController")
-@RequestScoped
 public class JSFLoginController {
 	
-	@ManagedProperty(name="loginController", value="#{loginController}")
 	private LoginController loginController;
 	
 	public void setLoginController(LoginController loginController) {
