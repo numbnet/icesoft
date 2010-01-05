@@ -15,10 +15,17 @@
         <property name="loginFormData" ref="loginFormData"/>
     </bean>
 
+    <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController">
+        <property name="loginFormData" ref="loginFormData"/>
+    </bean>    
+
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
         <property name="loginFormData" ref="loginFormData"/>
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="login"/>
+        <property name="validator">
+            <bean class="org.icepush.samples.icechat.spring.mvc.LoginFormValidator"/>
+        </property>        
         <property name="successView" value="chat.htm"/>
     </bean>
 

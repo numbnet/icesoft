@@ -30,20 +30,27 @@
                 <div style="text-align: right;">
                     <fmt:message key="userName"/>
                     <form:input path="userName" maxlength="50"/>
+                    <div id="loginMessages">
+                        <form:errors path="userName"/>
+                    </div>
                 </div>
                 <div style="text-align:right;">
                     <fmt:message key="nickName"/>
                     <form:input path="nickName" maxlength="50"/>
+                    <div id="loginMessages">
+                        <form:errors path="nickName"/>
+                    </div>
                 </div>
                 <div style="text-align:right;">
                     <fmt:message key="password"/>
                     <form:password path="password" maxlength="15"/>
+                    <div id="loginMessages">
+                        <form:errors path="password"/>
+                    </div>
                 </div>
                 <div style="text-align:right;margin-top:20px;">
                     <input type="submit" value="Login">
                 </div>
-                <div id="loginMessages">
-                    <form:errors/>
                 </div>
             </form:form>
             </div>            

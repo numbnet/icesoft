@@ -24,6 +24,8 @@
 
         <div class="body_container">
             <c:out value="Welcome ${user.userName} (${user.nickName}) to ICEchat."/>
+
+            <a href="logout.htm">Logout</a>
         </div>
     </body>
 </html>
