@@ -4,6 +4,8 @@ import org.icefaces.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.component.UIOutput;
@@ -55,15 +57,19 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 output.getAttributes().put("library", "javax.faces");
                 root.addComponentResource(context, output, "head");
 
+                Application application = context.getApplication();
+                String invalidateHTTPCache = application.getProjectStage() == ProjectStage.Development ? "?a" + hashCode() : "";
+
                 //replace with icepush.js resource in icepush.jar
                 output = new UIOutput();
                 output.getAttributes().put("escape", "false");
-                output.setValue("<script src='code.icepush.jsf' type='text/javascript'></script>");
+                output.setValue("<script src='code.icepush.jsf" + invalidateHTTPCache + "'  type='text/javascript'></script>");
                 root.addComponentResource(context, output, "head");
 
+                String path = application.getResourceHandler().createResource("bridge.js").getRequestPath();
                 output = new UIOutput();
-                output.setRendererType("javax.faces.resource.Script");
-                output.getAttributes().put("name", "bridge.js");
+                output.getAttributes().put("escape", "false");
+                output.setValue("<script src='" + path + invalidateHTTPCache + "'  type='text/javascript'></script>");
                 root.addComponentResource(context, output, "head");
 
                 try {
