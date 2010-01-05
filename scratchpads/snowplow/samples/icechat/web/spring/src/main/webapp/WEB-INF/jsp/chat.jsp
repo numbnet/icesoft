@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/jsp/header.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -24,29 +23,7 @@
         </div>
 
         <div class="body_container">
-            <form:form method="post" commandName="login">
-            <div class="login">
-                <h2>ICEchat Login</h2>
-                <div style="text-align: right;">
-                    <fmt:message key="userName"/>
-                    <form:input path="userName" maxlength="50"/>
-                </div>
-                <div style="text-align:right;">
-                    <fmt:message key="nickName"/>
-                    <form:input path="nickName" maxlength="50"/>
-                </div>
-                <div style="text-align:right;">
-                    <fmt:message key="password"/>
-                    <form:password path="password" maxlength="15"/>
-                </div>
-                <div style="text-align:right;margin-top:20px;">
-                    <input type="submit" value="Login">
-                </div>
-                <div id="loginMessages">
-                    <form:errors/>
-                </div>
-            </form:form>
-            </div>            
+            <c:out value="Welcome ${user.userName} (${user.nickName}) to ICEchat."/>
         </div>
     </body>
 </html>
