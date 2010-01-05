@@ -11,17 +11,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class LoginFormController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
+    private LoginFormData loginFormData;
+
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        logger.info("Returning hello view");
+        String now = (new Date()).toString();
 
-        return new ModelAndView("chat.jsp");
+        return new ModelAndView("login", "user", loginFormData);
     }
 
+    public void setLoginFormData(LoginFormData loginFormData) { this.loginFormData = loginFormData; }
 }
