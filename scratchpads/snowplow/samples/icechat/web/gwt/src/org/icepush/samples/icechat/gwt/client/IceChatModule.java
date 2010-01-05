@@ -1,20 +1,13 @@
 package org.icepush.samples.icechat.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.RootPanel;
 
 
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -41,7 +34,13 @@ public class IceChatModule implements EntryPoint {
 
         RootPanel.get("credentials").add(topPanel);
 
-        mainPanel.add(new ChatRoomListPanel(), DockPanel.EAST);
+
+        mainPanel.add(new ChatScreen(), DockPanel.EAST);
+        mainPanel.add(new ChatRoomListPanel(), DockPanel.WEST);
+
+        //setup table widths...
+        mainPanel.setCellWidth(MainPanelRegistry.getInstance().getChatRoomListPanel(), "250px");
+        mainPanel.setSpacing(30);
 
         RootPanel.get("appPanel").add(mainPanel);
 

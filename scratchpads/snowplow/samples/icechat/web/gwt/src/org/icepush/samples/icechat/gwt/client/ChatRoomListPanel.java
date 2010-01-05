@@ -45,8 +45,6 @@ public class ChatRoomListPanel extends Composite {
         }
     };
 
-   
-
     public ChatRoomListPanel() {
         MainPanelRegistry.getInstance().registerChatRoomListPanel(this);
         initWidget(binder.createAndBindUi(this));
@@ -65,7 +63,7 @@ public class ChatRoomListPanel extends Composite {
         namePopup.setGlassEnabled(true);
         HorizontalPanel rootPanel = new HorizontalPanel();
         Label instructions = new Label("Please enter a name of the ChatRoom:");
-        
+
         nameText = new TextBox();
         Button createButton = new Button("Create");
         createButton.addClickHandler(new ClickHandler() {
@@ -104,6 +102,7 @@ public class ChatRoomListPanel extends Composite {
         AsyncCallback<List<ChatRoomHandle>> callback = new AsyncCallback<List<ChatRoomHandle>>() {
 
             public void onFailure(Throwable caught) {
+                Window.alert("error: " + caught.getMessage());
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -111,12 +110,7 @@ public class ChatRoomListPanel extends Composite {
                 ChatRoomListPanel.this.chatRoomList.clear();
                 for (ChatRoomHandle handle : result) {
                     Anchor link = new Anchor(handle.getName());
-                    link.addClickHandler(new ClickHandler() {
-
-                        public void onClick(ClickEvent event) {
-                            Window.alert("loading chatroom");
-                        }
-                    });
+                    link.addClickHandler(new LoadChatRoomHandler(handle));
 
                     ChatRoomListPanel.this.chatRoomList.add(link);
                 }
@@ -128,9 +122,20 @@ public class ChatRoomListPanel extends Composite {
 
     }
 
+    public class LoadChatRoomHandler implements ClickHandler {
+
+        private ChatRoomHandle handle;
+
+        public LoadChatRoomHandler(ChatRoomHandle handle) {
+            this.handle = handle;
+        }
+
+        public void onClick(ClickEvent event) {
+            MainPanelRegistry.getInstance().getChatScreen().loadNewChatRoom(LoadChatRoomHandler.this.handle);
+        }
+    }
+
     @UiTemplate(value = "ChatRoomListPanelLayout.ui.xml")
     public interface ChatRoomListPanelLayoutBinder extends UiBinder<Panel, ChatRoomListPanel> {
     };
-
-    
 }

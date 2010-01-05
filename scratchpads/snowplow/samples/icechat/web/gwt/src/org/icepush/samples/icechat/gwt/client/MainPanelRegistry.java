@@ -12,7 +12,8 @@ package org.icepush.samples.icechat.gwt.client;
 public class MainPanelRegistry {
 
     private CredentialsPanel credentialsPanel;
-	private ChatRoomListPanel chatRoomListPanel;
+    private ChatRoomListPanel chatRoomListPanel;
+    private ChatScreen chatScreen;
 
     public CredentialsPanel getCredentialsPanel() {
         return credentialsPanel;
@@ -29,6 +30,15 @@ public class MainPanelRegistry {
     public ChatRoomListPanel getChatRoomListPanel(){
     	return this.chatRoomListPanel;
     }
+
+    public ChatScreen getChatScreen() {
+        return chatScreen;
+    }
+
+    public void registerChatScreen(ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
+    }
+
     
     
     

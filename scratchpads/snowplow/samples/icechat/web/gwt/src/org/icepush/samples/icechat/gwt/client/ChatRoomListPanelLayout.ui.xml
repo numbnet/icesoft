@@ -6,8 +6,6 @@
                         font-size: 14pt;
                         font-weight: bold;
                     }
-
-                    .chat
                 </ui:style>
     <gwt:HTMLPanel>
 
