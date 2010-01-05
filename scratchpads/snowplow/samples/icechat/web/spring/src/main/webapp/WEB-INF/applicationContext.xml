@@ -3,19 +3,40 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
        
-	<bean id="loginController"
-      	  class="org.icepush.samples.icechat.cdi.controller.LoginController">
-	</bean>
-    
-	<bean id="jsfLoginController"
-      	  class="org.icepush.samples.icechat.jsf.JSFLoginController"
-          scope="request">
-          <property name="loginController" ref="loginController" />
-	</bean>
-    
-	<bean id="pushRequestContext"
-      	  class="org.icepush.samples.icechat.jsf.JSFPushRequestContextAdapter"
-          scope="request">
-	</bean>
+<!-- Data Validation -->
+<bean id="loginFormValidator" class="org.LoginFormValidator"/>
+
+<!-- Page Controller -->
+<bean id="loginFormController" class="org.developers.blog.examples.spring.mvc.LoginFormController">
+  <property name="validator" ref="loginFormValidator"/>
+  <property name="formView" value="LoginForm.jsp"/>
+  <!-- jump page, defined at urlMapping bean -->
+  <property name="successView" value="ResultPage.html"/>
+  <!-- alias name for command data object for accessing at the jsp page -->
+  <property name="commandName" value="loginData"/>
+  <!-- accessing data object -->
+  <property name="commandClass" value="org.developers.blog.examples.spring.mvc.LoginFormData"/>
+</bean>
+
+<!-- controller of the result page -->
+<bean id="resultPageController" class="org.developers.blog.examples.spring.mvc.ResultPageController">
+</bean>
+
+<!-- Mapping request URL to controller bean -->
+<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+  <property name="urlMap">
+    <map>
+      <entry key="Login.html"><ref bean="loginFormController"/></entry>
+      <entry key="ResultPage.html"><ref bean="resultPageController"/></entry>
+    </map>
+   </property>
+</bean>
+
+<!-- view resolver -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  <property name="viewClass"><value>org.springframework.web.servlet.view.JstlView</value></property>
+  <property name="prefix" value="/jsp/"/>
+  <property name="suffix"><value></value></property>
+</bean>
     
 </beans>
