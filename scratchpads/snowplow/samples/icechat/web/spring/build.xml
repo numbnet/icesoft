@@ -78,6 +78,12 @@
 				<include name="icepush.jar"/>
 			</fileset>
 		</copy>
+        
+		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="./lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</copy>        
 		
 		<mkdir dir="${build.dir}/webapp/WEB-INF/classes"/>
 		<copy todir="${build.dir}/webapp/WEB-INF/classes" preservelastmodified="true" verbose="true">

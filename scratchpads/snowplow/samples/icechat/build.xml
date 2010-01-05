@@ -14,15 +14,18 @@
 		
 	<target name="wicket" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/wicket"/>
-	</target>	
+	</target>
 
 	<target name="jsf2" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/jsf2"/>
-	</target>	
+	</target>
 
 	<target name="gwt" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/gwt"/>
-	</target>	
+	</target>
 
+	<target name="spring" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./web/spring"/>
+	</target>
 
 </project>

@@ -8,10 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.icepush.samples.icechat.AbstractPushRequestContext;
 
-@Named(value="pushRequestContext")
-@RequestScoped
 public class JSFPushRequestContextAdapter extends AbstractPushRequestContext{	
-	
 	
 	public JSFPushRequestContextAdapter(){
 		FacesContext fc = FacesContext.getCurrentInstance();
