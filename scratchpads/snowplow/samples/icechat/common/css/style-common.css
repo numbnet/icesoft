@@ -35,10 +35,14 @@ div.header_content {
 	width: 100%;
 }
 
-div.body_container {
+.body_container {
 	float: left;
-	margin-top: -80px;
+	
 	width: 100%;
+}
+
+.body_container_pos{
+	margin-top: -80px;
 }
 
 /* centers in parent as long as parent is larger then child*/
@@ -124,6 +128,10 @@ div.footer_content a:hover {
 	margin: 40px 0.5% 0.5%;
 	padding: 10px;
 	text-align: right;
+	
+}
+
+.chatSession_pos {
 	width: 92%;
 }
 
@@ -131,10 +139,15 @@ div.footer_content a:hover {
 	border: 5px solid #B9D6E8;
 	color: #0F65B8;
 	float: left;
+	padding: 10px;
+	
+}
+
+.chatRooms_pos{
 	height: 100%;
 	margin: 0 0.5%;
 	min-height: 400px;
-	padding: 10px;
+	
 	position: relative;
 	width: 14%;
 	overflow: auto;

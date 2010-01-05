@@ -32,11 +32,11 @@
             </div>
         </div>
         
-        <div class="body_container">
+        <div class="body_container body_container_pos">
             
 	        <h:panelGroup  rendered="#{not empty loginController.currentUser}">
 	        
-	        	<div class="chatSession">
+	        	<div class="chatSession chatSession_pos">
 	        		<h:form id="chatSession">
 		                You are logged in as #{loginController.currentUser.userName}
 		                <h:outputText rendered="#{not empty loginController.currentUser.nickName}"
@@ -47,7 +47,7 @@
 	        	
 	        	<div class="clearer"/>
 	        	
-	        	<div class="chatRooms">
+	        	<div class="chatRooms chatRooms_pos">
 	        		<h3>Chat Rooms</h3>
                 	<h:form id="chatRooms">
 		            	<ui:repeat value="#{chatManagerFacadeBean.chatRooms}" var="room">
