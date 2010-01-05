@@ -3,24 +3,15 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/applicationContext.xml</param-value>
-    </context-param>
-    
     <servlet>
-        <servlet-name>web</servlet-name>
+        <servlet-name>springapp</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>web</servlet-name>
-        <url-pattern>/*.html</url-pattern>
+        <servlet-name>springapp</servlet-name>
+        <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
     
     <session-config>
@@ -28,6 +19,6 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>chat.jsp</welcome-file>
+        <welcome-file>login.htm</welcome-file>
     </welcome-file-list>
 </web-app>
