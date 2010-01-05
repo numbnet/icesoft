@@ -71,11 +71,12 @@ public class ChatRoomListPanel extends Composite {
             public void onClick(ClickEvent event) {
                 ChatServiceAsync service = (ChatServiceAsync) GWT.create(ChatService.class);
 
-                AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+                AsyncCallback<ChatRoomHandle> callback = new AsyncCallback<ChatRoomHandle>() {
 
-                    public void onSuccess(Void result) {
+                    public void onSuccess(ChatRoomHandle result) {
                         namePopup.hide();
                         refreshChatList();
+                        MainPanelRegistry.getInstance().getChatScreen().loadNewChatRoom(result);
                     }
 
                     public void onFailure(Throwable t) {

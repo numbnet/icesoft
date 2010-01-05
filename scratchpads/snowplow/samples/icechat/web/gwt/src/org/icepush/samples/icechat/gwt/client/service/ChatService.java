@@ -12,7 +12,7 @@ import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
  */
 @RemoteServiceRelativePath("chat")
 public interface ChatService extends RemoteService {
-  	public void createChatRoom(String name);
+  	public ChatRoomHandle createChatRoom(String name);
    	public List<ChatRoomHandle> getChatRooms();
 
         public void joinChatRoom(ChatRoomHandle handle, String username);

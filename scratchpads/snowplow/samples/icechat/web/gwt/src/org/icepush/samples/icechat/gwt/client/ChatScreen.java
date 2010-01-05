@@ -2,6 +2,9 @@ package org.icepush.samples.icechat.gwt.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyEvent;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -25,32 +28,25 @@ public class ChatScreen extends Composite {
 
     @UiField
     Label chatRoomNameLabel;
-    
     @UiField
     VerticalPanel roomUserList;
-
     @UiField
     VerticalPanel messagesList;
-
     @UiField
     Panel chatUsersPanel;
-
     @UiField
     ScrollPanel messagesScrollingPanel;
-    
     @UiField
     HorizontalPanel horizontalLayoutPanel;
-
     @UiField
     HorizontalPanel chatControlsPanel;
-
     @UiField
     Button newMessageButton;
-
     @UiField
     TextBox newMessageTextbox;
-
     private ChatRoomHandle currentChatRoom;
+
+
 
     public ChatScreen() {
         Binder binder = GWT.create(Binder.class);
@@ -59,13 +55,36 @@ public class ChatScreen extends Composite {
         MainPanelRegistry.getInstance().registerChatScreen(this);
 
         horizontalLayoutPanel.setCellWidth(chatUsersPanel, "250px");
+        horizontalLayoutPanel.setCellHeight(chatUsersPanel, "100%");
         chatControlsPanel.setCellWidth(newMessageButton, "60px");
+
+//        newMessageTextbox.addKeyPressHandler(new KeyPressHandler() {
+//
+//            public void onKeyPress(KeyPressEvent event) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//        })
+
         
-        
+
+
     }
 
-    @UiHandler(value={"newMessageButton"})
-    public void sendChatMessage(ClickEvent ev){
+
+    @UiHandler(value={"newMessageTextbox"})
+    public void onKeyPressed(KeyPressEvent ev){
+        if(ev.getCharCode() == 13)
+            sendChatMessage();
+    }
+
+
+
+    @UiHandler(value = {"newMessageButton"})
+    public void onButtonPressed(ClickEvent ev){
+        sendChatMessage();
+    }
+
+    public void sendChatMessage() {
         ChatServiceAsync service = GWT.create(ChatService.class);
         AsyncCallback<Void> sendMessageCallback = new AsyncCallback<Void>() {
 
@@ -74,7 +93,7 @@ public class ChatScreen extends Composite {
             }
 
             public void onSuccess(Void result) {
-                ChatScreen.this.refreshChatRoom(currentChatRoom);
+                ChatScreen.this.newMessageTextbox.setText("");
             }
         };
 
@@ -84,6 +103,7 @@ public class ChatScreen extends Composite {
 
     public void show() {
         this.setVisible(true);
+
     }
 
     public void hide() {
@@ -93,7 +113,7 @@ public class ChatScreen extends Composite {
     public void loadNewChatRoom(ChatRoomHandle handle) {
         this.chatRoomNameLabel.setText(handle.getName());
         this.messagesList.clear();
-        
+
         this.show();
 
         ChatServiceAsync service = GWT.create(ChatService.class);
@@ -102,9 +122,26 @@ public class ChatScreen extends Composite {
 
         service.joinChatRoom(handle, UserSession.getInstance().getCredentials().getUserName(), joinCallback);
 
+        GWTPushContext.getInstance().addPushEventListener(new PushEventListener() {
+
+            public void onPushEvent() {
+                //on a push notification, fetch new messages.
+                ChatScreen.this.refreshChatRoom(currentChatRoom);
+            }
+        }, new String[]{handle.getName()});
+
+        GWTPushContext.getInstance().addPushEventListener(new PushEventListener() {
+
+            public void onPushEvent() {
+                //on a push notification, fetch new messages.
+                ChatScreen.this.refreshParticipants(currentChatRoom);
+            }
+        }, new String[]{handle.getName() + "-participants"});
+
+
     }
 
-    public void refreshChatRoom(ChatRoomHandle handle){
+    public void refreshChatRoom(ChatRoomHandle handle) {
         ChatServiceAsync service = GWT.create(ChatService.class);
 
         AsyncCallback<ChatRoomHandle> callback = new AsyncCallback<ChatRoomHandle>() {
@@ -115,13 +152,13 @@ public class ChatScreen extends Composite {
 
             public void onSuccess(ChatRoomHandle result) {
                 List<ChatRoomMessage> messages = result.getNextMessages();
-                for(ChatRoomMessage message: messages){
+                for (ChatRoomMessage message : messages) {
                     Label messageText = new Label(message.getText(), true);
                     HorizontalPanel authorPanel = new HorizontalPanel();
 
                     Label messageAuthor = new Label(message.getNickname());
                     HTMLPanel messageSays = new HTMLPanel("&nbsp; Says:");
-                    
+
                     messageAuthor.getElement().setAttribute("style", "font-weight: bold");
 
                     authorPanel.add(messageAuthor);
@@ -132,7 +169,7 @@ public class ChatScreen extends Composite {
                     messagePanel.add(authorPanel);
                     messagePanel.add(messageText);
                     messagePanel.add(new HTMLPanel("<br />"));
-           
+
                     ChatScreen.this.messagesList.add(messagePanel);
                 }
                 ChatScreen.this.currentChatRoom = result;
@@ -141,6 +178,8 @@ public class ChatScreen extends Composite {
         };
 
         service.getMessages(handle, callback);
+
+
     }
 
     public interface Binder extends UiBinder<Panel, ChatScreen> {
@@ -154,30 +193,38 @@ public class ChatScreen extends Composite {
             this.handle = handle;
         }
 
-         public void onFailure(Throwable caught) {
+        public void onFailure(Throwable caught) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void onSuccess(Void result) {
+            ChatScreen.this.refreshParticipants(handle);
+            currentChatRoom = handle;
+            refreshChatRoom(handle);
+
+
+        }
+    }
+
+    public void refreshParticipants(ChatRoomHandle handle) {
+        AsyncCallback<List<String>> getParticipants = new AsyncCallback<List<String>>() {
+
+            public void onFailure(Throwable caught) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public void onSuccess(Void result) {
-                AsyncCallback<List<String>> getParticipants = new AsyncCallback<List<String>>() {
+            public void onSuccess(List<String> result) {
+                ChatScreen.this.roomUserList.clear();
+                for (String participant : result) {
+                    Label particLabel = new Label(participant);
+                    ChatScreen.this.roomUserList.add(particLabel);
+                }
 
-                    public void onFailure(Throwable caught) {
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
 
-                    public void onSuccess(List<String> result) {
-                        ChatScreen.this.roomUserList.clear();
-                        for (String participant : result) {
-                            Label particLabel = new Label(participant);
-                            ChatScreen.this.roomUserList.add(particLabel);
-                        }
-                    }
-                };
-
-                ChatServiceAsync service = GWT.create(ChatService.class);
-                service.getParticipants(handle, getParticipants);
-                currentChatRoom = handle;
-                refreshChatRoom(handle);
             }
+        };
+
+        ChatServiceAsync service = GWT.create(ChatService.class);
+        service.getParticipants(handle, getParticipants);
     }
 }

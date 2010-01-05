@@ -32,9 +32,10 @@
                 <gwt:HTMLPanel ui:field="chatUsersPanel">
                     <div class="chatRoomUsers" style="width: 100%;">
                         <div class="chatViewSubHeader">Hows Here?</div>
-                        <gwt:VerticalPanel ui:field="roomUserList" stylePrimaryName="{style.boldBlueText}">
-
-                        </gwt:VerticalPanel>
+                        <gwt:ScrollPanel height="300px">
+                            <gwt:VerticalPanel ui:field="roomUserList" stylePrimaryName="{style.boldBlueText}">
+                            </gwt:VerticalPanel>
+                        </gwt:ScrollPanel>
                     </div>
 
                 </gwt:HTMLPanel>
