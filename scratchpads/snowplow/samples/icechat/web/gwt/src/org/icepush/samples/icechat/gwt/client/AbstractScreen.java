@@ -2,7 +2,6 @@ package org.icepush.samples.icechat.gwt.client;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.Window;
 
 public abstract class AbstractScreen {
 
