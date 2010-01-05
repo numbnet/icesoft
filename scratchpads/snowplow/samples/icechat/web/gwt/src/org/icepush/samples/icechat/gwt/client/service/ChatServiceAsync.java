@@ -6,7 +6,7 @@ import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
 public interface ChatServiceAsync {
 
-    void createChatRoom(String name, AsyncCallback<Void> callback);
+    void createChatRoom(String name, AsyncCallback<ChatRoomHandle> callback);
 
     void getChatRooms(AsyncCallback<List<ChatRoomHandle>> callback);
     

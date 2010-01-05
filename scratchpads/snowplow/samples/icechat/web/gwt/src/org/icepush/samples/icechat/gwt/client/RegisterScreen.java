@@ -68,9 +68,6 @@ public class RegisterScreen extends AbstractScreen{
 				if(!RegisterScreen.this.passwordText.getText().equals(RegisterScreen.this.confirmPasswordText.getText())){
 					RegisterScreen.this.errorLabel.setText("Error: passwords do not match...");
 					RegisterScreen.this.errorLabel.setVisible(true);
-				}else if(RegisterScreen.this.passwordText.getText().length() < 8){
-					RegisterScreen.this.errorLabel.setText("Error: password must be at least 8 characters long...");
-					RegisterScreen.this.errorLabel.setVisible(true);
 				}else{
 					RegisterScreen.this.errorLabel.setVisible(false);
 					
