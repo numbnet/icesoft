@@ -11,8 +11,15 @@
         <property name="password" value="testing"/>
     </bean>
 
+    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController">
+        <property name="loginFormData" ref="loginFormData"/>
+    </bean>
+
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
         <property name="loginFormData" ref="loginFormData"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="login"/>
+        <property name="successView" value="chat.htm"/>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

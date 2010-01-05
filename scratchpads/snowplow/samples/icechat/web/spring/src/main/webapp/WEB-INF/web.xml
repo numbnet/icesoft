@@ -13,6 +13,13 @@
         <servlet-name>springapp</servlet-name>
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/spring</taglib-uri>
+            <taglib-location>/WEB-INF/tld/spring-form.tld</taglib-location>
+        </taglib>
+    </jsp-config>
     
     <session-config>
         <session-timeout>30</session-timeout>
