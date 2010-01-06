@@ -5,9 +5,15 @@
     <property file="local.properties"/>
 
     <path id="compile.path">
-        <fileset dir="../../lib">
-            <include name="**/*.jar"/>
-        </fileset>
+		<fileset dir="../../api/dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="../../lib">
+			<include name="**/*.jar"/>
+		</fileset>	
+		<fileset dir="../../beans/dist">
+			<include name="**/*.jar"/>
+		</fileset>
         <fileset dir="./lib">
             <include name="**/*.jar"/>
         </fileset>
@@ -28,6 +34,18 @@
                 <include name="**"/>
             </fileset>
         </copy>
+        
+		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../api/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+        
+		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../beans/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
 
         <copy todir="${build.dir}/webapp/css" preservelastmodified="true" verbose="true">
             <fileset dir="../../common/css">
