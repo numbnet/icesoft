@@ -7,8 +7,17 @@
         <title>ICEpush ICEchat (Spring MVC)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
+        <script type="text/javascript" src="code.icepush"></script>
     </head>
     <body>
+
+        <script type="text/javascript">
+            ice.push.register(['${chat.pushRequestContext.currentPushId}'],
+                function() {
+                    window.location.reload();
+                }
+            );
+        </script>
 
         <div class="header_container">
             <div class="header_content">
