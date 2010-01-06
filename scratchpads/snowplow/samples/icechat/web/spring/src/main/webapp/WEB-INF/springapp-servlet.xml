@@ -5,38 +5,38 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="loginFormData" class="org.icepush.samples.icechat.spring.mvc.LoginFormData">
+    <bean id="loginFormData" class="org.icepush.samples.icechat.spring.mvc.LoginFormData" scope="session">
     </bean>
 
-    <bean id="chatService" class="org.icepush.samples.icechat.spring.impl.BaseChatService">
+    <bean id="chatService" class="org.icepush.samples.icechat.spring.impl.BaseChatService" scope="singleton">
     </bean>    
 
-    <bean id="loginController" class="org.icepush.samples.icechat.spring.impl.BaseLoginController">
+    <bean id="loginController" class="org.icepush.samples.icechat.spring.impl.BaseLoginController" scope="session">
         <property name="credentialsBean" ref="loginFormData"/>
         <property name="chatService" ref="chatService"/>
     </bean>
 
-    <bean id="chatManagerFacade" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade">
+    <bean id="chatManagerFacade" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade" scope="singleton">
         <property name="chatService" ref="chatService"/>
     </bean>
 
-    <bean id="currentChatSessionHolder" class="org.icepush.samples.icechat.spring.impl.BaseCurrentChatSessionHolder">
+    <bean id="currentChatSessionHolder" class="org.icepush.samples.icechat.spring.impl.BaseCurrentChatSessionHolder" scope="session">
     </bean>
 
-    <bean id="chatManagerViewController" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController">
+    <bean id="chatManagerViewController" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController" scope="session">
         <property name="loginController" ref="loginController"/>
         <property name="chatService" ref="chatService"/>
         <property name="currentChatSessionHolder" ref="currentChatSessionHolder"/>
     </bean>    
 
-    <bean id="chatFormData" class="org.icepush.samples.icechat.spring.mvc.ChatFormData">
+    <bean id="chatFormData" class="org.icepush.samples.icechat.spring.mvc.ChatFormData" scope="session">
         <property name="loginController" ref="loginController"/>
         <property name="chatManagerFacade" ref="chatManagerFacade"/>
         <property name="chatManagerViewController" ref="chatManagerViewController"/>
         <property name="currentChatSessionHolder" ref="currentChatSessionHolder"/>
     </bean>
 
-    <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
+    <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController" scope="request">
         <property name="loginFormData" ref="loginFormData"/>
         <property name="baseLoginController" ref="loginController"/>
         <property name="sessionForm" value="true"/>
@@ -47,11 +47,11 @@
         <property name="successView" value="chat.htm"/>
     </bean>
 
-    <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController">
+    <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController" scope="request">
         <property name="baseLoginController" ref="loginController"/>
     </bean>
 
-    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController">
+    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController" scope="request">
         <property name="chatFormData" ref="chatFormData"/>
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="chat"/>
