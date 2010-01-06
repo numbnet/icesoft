@@ -43,7 +43,7 @@
             </div>
 
             <div class="chatRooms chatRooms_pos">
-                <h3>Chat Rooms</h3>
+                <center><h3>Chat Rooms</h3></center>
 
                 <table width="100%" cellspacing="2" cellpadding="2">
                 <c:forEach var="room" items="${chat.chatManagerFacade.chatRooms}">
@@ -59,18 +59,25 @@
                 </c:forEach>
                 </table>
 
+                <hr width="100%" style="border: 0; border-top: 5px solid #B9D6E8;"/>
+
                 <form:form method="post" commandName="chat">
-                    <!--<div class="createNewChatRoom">-->
-                        <fmt:message key="roomTitle"/>
-                        <br/>
-                        <fmt:message key="roomName"/>
-
-                        <form:input path="newChatRoom.name" maxlength="50"
-                                    style="width: 100px; margin-top: 5px;"/>
-
-                        <input type="submit" name="submit.newRoom" value="Create"
-                               style="margin-top: 5px;"/>
-                    <!--</div>-->
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="100%" colspan="2" align="center">
+                                <fmt:message key="roomTitle"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="70%">
+                                <form:input path="newChatRoom.name" maxlength="50"
+                                            style="width: 100%;"/>
+                            </td>
+                            <td width="30%">
+                                <input type="submit" name="submit.newRoom" value="Create"/>
+                            </td>
+                        </tr>
+                    </table>
                 </form:form>
             </div>
 
@@ -112,7 +119,7 @@
                             <fmt:message key="newMessage"/>
                             
                             <form:input path="newMessage.message" maxlength="1024"
-                                        style="width: 40%;"/>
+                                        style="width: 60%;"/>
                             
                             <input type="submit" name="submit.sendMessage" value="Send"/>
                         </form:form>
@@ -123,7 +130,7 @@
 
         <c:if test="${empty chat.loginController.currentUser}">
             <div class="body_container">
-                Please <a href="login.htm">login</a> first before attempting to chat...
+                <p>Please <a href="login.htm">login</a> first before attempting to chat...</p>
             </div>
         </c:if>
     </body>
