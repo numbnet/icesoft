@@ -19,7 +19,7 @@ public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomCont
 	
 	private ICurrentChatSessionHolderBean currentChatSessionHolder;
 	
-	private INewChatRoomMessageBean newChatRoomMessageBean;;
+	private INewChatRoomMessageBean newChatRoomMessageBean;
 	
 	public void setLoginController(ILoginController loginController) {
 		this.loginController = loginController;
