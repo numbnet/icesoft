@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/jsp/header.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -49,7 +48,7 @@
                     </div>
                 </div>
                 <div style="text-align:right;margin-top:20px;">
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Login"/>
                 </div>
                 </div>
             </form:form>

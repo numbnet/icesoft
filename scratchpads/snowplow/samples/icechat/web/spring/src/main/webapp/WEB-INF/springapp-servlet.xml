@@ -8,22 +8,52 @@
     <bean id="loginFormData" class="org.icepush.samples.icechat.spring.mvc.LoginFormData">
     </bean>
 
-    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController">
-        <property name="loginFormData" ref="loginFormData"/>
+    <bean id="chatService" class="org.icepush.samples.icechat.spring.impl.BaseChatService">
+    </bean>    
+
+    <bean id="loginController" class="org.icepush.samples.icechat.spring.impl.BaseLoginController">
+        <property name="credentialsBean" ref="loginFormData"/>
+        <property name="chatService" ref="chatService"/>
     </bean>
 
-    <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController">
-        <property name="loginFormData" ref="loginFormData"/>
+    <bean id="chatManagerFacade" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade">
+        <property name="chatService" ref="chatService"/>
+    </bean>
+
+    <bean id="currentChatSessionHolder" class="org.icepush.samples.icechat.spring.impl.BaseCurrentChatSessionHolder">
+    </bean>
+
+    <bean id="chatManagerViewController" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController">
+        <property name="loginController" ref="loginController"/>
+        <property name="chatService" ref="chatService"/>
+        <property name="currentChatSessionHolder" ref="currentChatSessionHolder"/>
+    </bean>    
+
+    <bean id="chatFormData" class="org.icepush.samples.icechat.spring.mvc.ChatFormData">
+        <property name="loginController" ref="loginController"/>
+        <property name="chatManagerFacade" ref="chatManagerFacade"/>
+        <property name="chatManagerViewController" ref="chatManagerViewController"/>
     </bean>
 
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
         <property name="loginFormData" ref="loginFormData"/>
+        <property name="baseLoginController" ref="loginController"/>
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="login"/>
         <property name="validator">
             <bean class="org.icepush.samples.icechat.spring.mvc.LoginFormValidator"/>
         </property>        
         <property name="successView" value="chat.htm"/>
+    </bean>
+
+    <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController">
+        <property name="baseLoginController" ref="loginController"/>
+    </bean>
+
+    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController">
+        <property name="chatFormData" ref="chatFormData"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="chat"/>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

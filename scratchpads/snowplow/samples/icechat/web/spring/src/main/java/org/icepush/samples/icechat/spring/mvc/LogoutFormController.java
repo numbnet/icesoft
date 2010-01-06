@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icepush.samples.icechat.spring.impl.BaseLoginController;
 
 import java.io.IOException;
 
@@ -17,15 +18,21 @@ public class LogoutFormController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
-    private LoginFormData loginFormData;
+    private BaseLoginController baseLoginController;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        loginFormData.clear();
+        if (baseLoginController != null) {
+            if (baseLoginController.getCredentialsBean() != null) {
+                ((LoginFormData) baseLoginController.getCredentialsBean()).clear();
+            }
+
+            baseLoginController.logout();
+        }
 
         return new ModelAndView(new RedirectView("login.htm"));
     }
 
-    public LoginFormData getLoginFormData() { return loginFormData; }
+    public BaseLoginController getBaseLoginController() { return baseLoginController; }
 
-    public void setLoginFormData(LoginFormData loginFormData) { this.loginFormData = loginFormData; }
+    public void setBaseLoginController(BaseLoginController baseLoginController) { this.baseLoginController = baseLoginController; }
 }

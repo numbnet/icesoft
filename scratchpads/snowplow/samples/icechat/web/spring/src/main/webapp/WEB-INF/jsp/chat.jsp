@@ -22,10 +22,54 @@
             </div>
         </div>
 
-        <div class="body_container">
-            <c:out value="Welcome ${user.userName} (${user.nickName}) to ICEchat."/>
+        <c:if test="${!empty chat.loginController.currentUser}">
+            <div class="body_container body_container_pos">
 
-            <a href="logout.htm">Logout</a>
-        </div>
+                <div class="chatSession chatSession_pos">
+                    <c:out value="You are logged in as ${chat.loginController.currentUser.userName} (${chat.loginController.currentUser.nickName})"/>
+                    <a href="logout.htm">Logout</a>
+                </div>
+
+                <div class="clearer"/>
+            </div>
+
+            <div class="chatRooms chatRooms_pos">
+                <h3>Chat Rooms</h3>
+
+                <form:form method="post" commandName="chat">
+                <table width="100%" cellspacing="2" cellpadding="2">
+                <c:forEach var="room" items="${chat.chatManagerFacade.chatRooms}">
+                    <tr>
+                        <td>
+                            <input type="hidden" name="submit.joinRoom.name" value="${room.name}"/>
+                            <input type="submit" name="submit.joinRoom" value="${room.name}"
+                                   style="width: 100%;"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </table>
+                </form:form>
+
+                <form:form method="post" commandName="chat">
+                    <!--<div class="createNewChatRoom">-->
+                        <fmt:message key="roomTitle"/>
+                        <br/>
+                        <fmt:message key="roomName"/>
+
+                        <form:input path="newChatRoom.name" maxlength="50"
+                                    style="width: 100px; margin-top: 5px;"/>
+
+                        <input type="submit" name="submit.newRoom" value="Create"
+                               style="margin-top: 5px;"/>
+                    <!--</div>-->
+                </form:form>
+            </div>
+        </c:if>
+
+        <c:if test="${empty chat.loginController.currentUser}">
+            <div class="body_container">
+                Please <a href="login.htm">login</a> first before attempting to chat...
+            </div>
+        </c:if>
     </body>
 </html>
