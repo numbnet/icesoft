@@ -39,6 +39,8 @@
     </target>
 
     <target name="clean">
+        <delete file="lib/icefaces-compat.jar"/>
+        <delete file="lib/icefaces-comps-compat.jar"/>
     </target>
 
     <target name="allclean">

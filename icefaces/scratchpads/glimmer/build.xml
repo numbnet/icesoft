@@ -44,6 +44,7 @@
                 <exclude name="**/maven2/build.xml"/>
 		</fileset>
         </subant>
+        <delete file="lib/icefaces.jar"/>
     </target>
 
 </project>
