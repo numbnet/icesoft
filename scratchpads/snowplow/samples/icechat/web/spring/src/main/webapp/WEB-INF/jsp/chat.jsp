@@ -36,19 +36,19 @@
             <div class="chatRooms chatRooms_pos">
                 <h3>Chat Rooms</h3>
 
-                <form:form method="post" commandName="chat">
                 <table width="100%" cellspacing="2" cellpadding="2">
                 <c:forEach var="room" items="${chat.chatManagerFacade.chatRooms}">
                     <tr>
                         <td>
-                            <input type="hidden" name="submit.joinRoom.name" value="${room.name}"/>
-                            <input type="submit" name="submit.joinRoom" value="${room.name}"
-                                   style="width: 100%;"/>
+                            <form:form method="post" commandName="chat">
+                                <input type="hidden" name="submit.joinRoom.name" value="${room.name}"/>
+                                <input type="submit" name="submit.joinRoom" value="${room.name}"
+                                       style="width: 100%;"/>
+                            </form:form>
                         </td>
                     </tr>
                 </c:forEach>
                 </table>
-                </form:form>
 
                 <form:form method="post" commandName="chat">
                     <!--<div class="createNewChatRoom">-->
