@@ -20,4 +20,6 @@ public interface ChatService extends RemoteService {
 
         public void sendMessage(String message, String username, ChatRoomHandle handle);
         public ChatRoomHandle getMessages(ChatRoomHandle handle);
+        public void sendCharacterNotification(String username, ChatRoomHandle handle,String newText);
+        public String getCurrentCharacters(String username, ChatRoomHandle handle);
 }

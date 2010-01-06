@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.screens;
 
 /**
  *

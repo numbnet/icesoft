@@ -15,7 +15,7 @@
     <!--fileset dir="../../common_lib/gfv3" includes="*.jar"/-->
     <!-- Add any additional non-server libs (such as JUnit) -->
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
-    <pathelement location="../../../lib/icepush.jar"/>
+    <pathelement location="../../../../core/build/dist/icepush.jar"/>
   </path>
 
   <target name="libs" description="Copy libs to WEB-INF/lib">

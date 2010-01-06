@@ -19,6 +19,8 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
     private List<String> chatRooms = new ArrayList<String>();
     private HashMap<String, List<String>> participants = new HashMap<String, List<String>>();
 
+    private HashMap<String, String> participantTextBoxes = new HashMap<String, String>();
+
     private HashMap<String, List<ChatRoomMessage>> chatMessages  = new HashMap<String, List<ChatRoomMessage>>();
 
     public ChatRoomHandle createChatRoom(String name) {
@@ -47,6 +49,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
     }
 
     public void joinChatRoom(ChatRoomHandle handle,String username) {
+        System.out.println("Joining Chat Room...");
         List<String> participantList = this.participants.get(handle.getName());
         if(participantList == null){
             participantList = new ArrayList<String>();
@@ -57,16 +60,21 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
             return; //already joined.
         }
 
+        this.participantTextBoxes.put(username + handle.getName(), "");
+        
         participantList.add(username);
         PushContext.getInstance(this.getServletContext()).push(handle.getName()+"-participants");
+
 
     }
 
     public List<String> getParticipants(ChatRoomHandle handle) {
+        System.out.println("Getting Participants");
         return this.participants.get(handle.getName());
     }
 
     public void sendMessage(String message, String username, ChatRoomHandle handle) {
+        System.out.println("Sending message: '" + message + "'");
         List<ChatRoomMessage> messages = this.chatMessages.get(handle.getName());
         if(messages == null){
             messages = new ArrayList<ChatRoomMessage>();
@@ -75,12 +83,15 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
 
         ChatMessageBuilder builder = new ChatMessageBuilder();
         messages.add(builder.createChatMessage(message, username));
+
+        participantTextBoxes.put(username + handle.getName(), "");
+
         PushContext.getInstance(this.getServletContext()).push(handle.getName());
-        
+        PushContext.getInstance(this.getServletContext()).push(username+handle.getName().replaceAll(" ", "_"));
     }
 
     public ChatRoomHandle getMessages(ChatRoomHandle handle) {
-
+        
         List<ChatRoomMessage> result = new ArrayList<ChatRoomMessage>();
         if(this.chatMessages.get(handle.getName()) == null){
             return handle; //return the unchanged handle.
@@ -92,6 +103,21 @@ public class ChatServiceImpl extends RemoteServiceServlet implements ChatService
 
         ChatHandleBuilder builder = new ChatHandleBuilder();
         builder.addMessages(handle, result);
+        System.out.println("Getting new messages...found " + handle.getNextMessages().size() + " (new index: " + handle.getMessageIndex() + ")");
         return handle;
     }
+
+    public void sendCharacterNotification(String username, ChatRoomHandle handle, String newText) {
+        this.participantTextBoxes.put(username + handle.getName(), newText);
+
+        System.out.println("Push [" + username + handle.getName().replaceAll(" ", "_") + "]");
+        PushContext.getInstance(this.getServletContext()).push(username + handle.getName().replaceAll(" ", "_"));
+
+    }
+
+    public String getCurrentCharacters(String username, ChatRoomHandle handle){
+        return this.participantTextBoxes.get(username + handle.getName());
+    }
+
+ 
 }

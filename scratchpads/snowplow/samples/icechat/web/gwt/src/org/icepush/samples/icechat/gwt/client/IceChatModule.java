@@ -1,5 +1,9 @@
 package org.icepush.samples.icechat.gwt.client;
 
+import org.icepush.samples.icechat.gwt.client.screens.MainPanelRegistry;
+import org.icepush.samples.icechat.gwt.client.screens.ChatScreen;
+import org.icepush.samples.icechat.gwt.client.screens.ChatRoomListPanel;
+import org.icepush.samples.icechat.gwt.client.screens.CredentialsPanel;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 

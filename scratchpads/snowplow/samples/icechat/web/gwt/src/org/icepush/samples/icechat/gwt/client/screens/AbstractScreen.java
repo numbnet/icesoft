@@ -1,4 +1,4 @@
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.screens;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;

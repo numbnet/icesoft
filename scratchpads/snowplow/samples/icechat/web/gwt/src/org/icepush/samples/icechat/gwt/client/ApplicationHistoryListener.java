@@ -1,5 +1,6 @@
 package org.icepush.samples.icechat.gwt.client;
 
+import org.icepush.samples.icechat.gwt.client.screens.PopupRegistry;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.Window;
 

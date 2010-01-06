@@ -1,7 +1,8 @@
 package org.icepush.samples.icechat.gwt.client;
 
-import java.util.List;
 import com.google.gwt.user.client.Window;
+import java.util.Arrays;
+import java.util.List;
 
 public class GWTPushContext{
 
@@ -19,25 +20,28 @@ public class GWTPushContext{
 	*/
 	public void addPushEventListener(PushEventListener listener, List<String> groupNames, String pushId){
 		
-		
+		listener.setPushId(pushId);
 		for(String group: groupNames){
 			this.addGroupMember(group, pushId);
 		}
+
+                listener.setGroups(groupNames.toArray(new String[]{}));
 		
 		this.register(pushId,listener);
 		
 	}
 	
 	/**
-		register a new listener to the specified list of render groups.
+            register a new listener to the specified list of render groups.
 	*/
 	public void addPushEventListener(PushEventListener listener, String[] groupNames){
 		
 		String id = this.createPushId();
-		
+		listener.setPushId(id);
 		for(String group: groupNames){
 			this.addGroupMember(group, id);
 		}
+                listener.setGroups(groupNames);
 		
 		this.register(id,listener);
 		
@@ -47,7 +51,13 @@ public class GWTPushContext{
          * removes this push event listener from the push notifications
          */
         public void removePushEventListener(PushEventListener listener){
-            this.unregister(listener);
+            this.unregisterUserCallbacks(listener);
+            this.deregister(listener.getPushId());
+
+            for(String group: listener.getGroups()){
+             this.removeGroupMember(group, listener.getPushId());
+            }
+            
         }
 	
 	/**
@@ -73,10 +83,16 @@ public class GWTPushContext{
 		$wnd.ice.push.gwtRegisteredCallbacks = new Array(); 
 		
 		//create a function to get called on notification.
-		$wnd.ice.push.gwtRootCallback = function(){
+		$wnd.ice.push.gwtRootCallback = function(pushIds){
 			for(var i = 0; i < $wnd.ice.push.gwtRegisteredCallbacks.length; i++){
                             var listener = $wnd.ice.push.gwtRegisteredCallbacks[i];
-                            listener.@org.icepush.samples.icechat.gwt.client.PushEventListener::onPushEvent()();
+
+                            var listenerId = listener.@org.icepush.samples.icechat.gwt.client.PushEventListener::getPushId()();
+                            
+                            if(listenerId == pushIds){
+                                listener.@org.icepush.samples.icechat.gwt.client.PushEventListener::onPushEvent()();
+                            }
+
                         }
 		}
 		
@@ -84,11 +100,24 @@ public class GWTPushContext{
 	}-*/;
 	
 	/**
-		adds a push id to a server side render group.
+         * @param groupName the group name
+         * @param pushId the push id to register to this group.
+	 *	adds a push id to a server side render group.
 	*/
 	private native void addGroupMember(String groupName, String pushId)/*-{
 		$wnd.ice.push.addGroupMember(groupName, pushId);
 	}-*/;
+
+        /**
+         *
+         * @param groupName the group name
+         * @param pushId the push id to unregister from this group.
+         *
+         * removes a specified push id from a render group.
+         */
+        private native void removeGroupMember(String groupName, String pushId)/*-{
+            $wnd.ice.push.removeGroupMember(groupName, pushId);
+        }-*/;
 	
 	/**
 		registers a list of push ids to a callback function.
@@ -98,13 +127,19 @@ public class GWTPushContext{
 		$wnd.ice.push.register(new Array(pushId), $wnd.ice.push.gwtRootCallback);
 	}-*/;
 
-        private native void unregister(PushEventListener listener)/*-{
+        private native void deregister(String pushId)/*-{
+            $wnd.ice.push.deregister(pushId);
+         }-*/;
+
+
+        private native void unregisterUserCallbacks(PushEventListener listener)/*-{
                 var index = -1;
                 for(var i = 0; i < $wnd.ice.push.gwtRegisteredCallbacks.length; i++){
                     if($wnd.ice.push.gwtRegisteredCallbacks[i] == listener){
                         index = i;
                     }
                 }
+
                 $wnd.ice.push.gwtRegisteredCallbacks.splice(index,1);
                 
          }-*/;
