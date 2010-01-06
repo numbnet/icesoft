@@ -30,7 +30,7 @@
                     <a href="logout.htm">Logout</a>
                 </div>
 
-                <div class="clearer"/>
+                <div class="clearer">&nbsp;</div>
             </div>
 
             <div class="chatRooms chatRooms_pos">
@@ -64,6 +64,52 @@
                     <!--</div>-->
                 </form:form>
             </div>
+
+            <c:if test="${!empty chat.currentChatSessionHolder.session}">
+                <div class="chatRoomView">
+                    <div class="chatRoomHeader">
+                        <c:out value="Chat Room '${chat.currentChatSessionHolder.session.room.name}'"/>
+                    </div>
+
+                    <div class="chatRoomContainer">
+                        <div class="chatRoomUsers">
+                            <div class="chatViewSubHeader">Who's Here?</div>
+                            <table>
+                            <c:forEach var="chatSession" items="${chat.currentChatSessionHolder.session.room.userChatSessions}">
+                                <tr><td>
+                                <c:out value="${chatSession.user.displayName}"/>
+                                </td></tr>
+                            </c:forEach>
+                            </table>
+                        </div>
+
+                        <div class="chatRoomMessages">
+                            <div class="chatViewSubHeader">Messages</div>
+                            <table>
+                            <c:forEach var="msg" items="${chat.currentChatSessionHolder.session.room.messages}">
+                                <tr><td>
+                                    [<fmt:formatDate value="${msg.created}" type="both" dateStyle="short" timeStyle="short"/>]
+                                    <b><c:out value="${msg.userChatSession.user.displayName}: "/></b><c:out value="${msg.message}"/>
+                                </td></tr>
+                            </c:forEach>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="clearer">&nbsp;</div>
+
+                    <div class="addNewMessage">
+                        <form:form method="post" commandName="chat">
+                            <fmt:message key="newMessage"/>
+                            
+                            <form:input path="newMessage.message" maxlength="1024"
+                                        style="width: 40%;"/>
+                            
+                            <input type="submit" name="submit.sendMessage" value="Send"/>
+                        </form:form>
+                    </div>
+                </div>
+            </c:if>
         </c:if>
 
         <c:if test="${empty chat.loginController.currentUser}">

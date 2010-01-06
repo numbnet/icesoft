@@ -32,7 +32,10 @@ public class ChatFormController extends AbstractFormController {
             chatFormData.setPushRequestContext(new BasePushRequestContext(request, response));
         }
 
-        if (request.getParameter("submit.newRoom") != null) {
+        if (request.getParameter("submit.sendMessage") != null) {
+            sendMessage();
+        }
+        else if (request.getParameter("submit.newRoom") != null) {
             newRoom();
         }
         else if (request.getParameter("submit.joinRoom") != null) {
@@ -46,7 +49,17 @@ public class ChatFormController extends AbstractFormController {
         return chatFormData;
     }
 
+    private void sendMessage() {
+        chatFormData.getChatManagerViewController().setNewChatRoomMessageBean(chatFormData.getNewMessage());
+        chatFormData.getChatManagerViewController().sendNewMessage();
+
+        // Reset the message text
+        chatFormData.getNewMessage().setMessage(null);
+    }
+
     private void newRoom() {
+        logger.info("Create Room '" + chatFormData.getNewChatRoom().getName() + "' by " + chatFormData.getLoginController().getCurrentUser().getUserName());
+
         chatFormData.getChatManagerViewController().setNewChatRoomBean(chatFormData.getNewChatRoom());
         chatFormData.getChatManagerViewController().createNewChatRoom();
         
@@ -55,6 +68,8 @@ public class ChatFormController extends AbstractFormController {
     }
 
     private void joinRoom(String name) {
+        logger.info("Join Room '" + name + "' by " + chatFormData.getLoginController().getCurrentUser().getUserName());
+
         if (name != null) {
             chatFormData.getChatManagerViewController().openChatSession(name);
         }

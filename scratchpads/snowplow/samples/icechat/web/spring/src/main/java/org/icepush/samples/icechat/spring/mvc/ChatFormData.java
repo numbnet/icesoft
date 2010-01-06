@@ -5,6 +5,8 @@ import org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade;
 import org.icepush.samples.icechat.spring.impl.BaseChatRoom;
 import org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController;
 import org.icepush.samples.icechat.spring.impl.BasePushRequestContext;
+import org.icepush.samples.icechat.spring.impl.BaseCurrentChatSessionHolder;
+import org.icepush.samples.icechat.spring.impl.BaseChatMessage;
 
 public class ChatFormData {
     private BasePushRequestContext pushRequestContext;
@@ -12,10 +14,13 @@ public class ChatFormData {
     private BaseLoginController loginController;
     private BaseChatManagerFacade chatManagerFacade;
     private BaseChatManagerViewController chatManagerViewController;
+    private BaseCurrentChatSessionHolder currentChatSessionHolder;
     private BaseChatRoom newChatRoom;
+    private BaseChatMessage newMessage;
 
     public ChatFormData() {
         newChatRoom = new BaseChatRoom();
+        newMessage = new BaseChatMessage();
     }
 
     public BasePushRequestContext getPushRequestContext() {
@@ -58,11 +63,27 @@ public class ChatFormData {
         this.chatManagerViewController = chatManagerViewController;
     }
 
+    public BaseCurrentChatSessionHolder getCurrentChatSessionHolder() {
+        return currentChatSessionHolder;
+    }
+
+    public void setCurrentChatSessionHolder(BaseCurrentChatSessionHolder currentChatSessionHolder) {
+        this.currentChatSessionHolder = currentChatSessionHolder;
+    }
+
     public BaseChatRoom getNewChatRoom() {
         return newChatRoom;
     }
 
     public void setNewChatRoom(BaseChatRoom newChatRoom) {
         this.newChatRoom = newChatRoom;
+    }
+
+    public BaseChatMessage getNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage(BaseChatMessage newMessage) {
+        this.newMessage = newMessage;
     }
 }
