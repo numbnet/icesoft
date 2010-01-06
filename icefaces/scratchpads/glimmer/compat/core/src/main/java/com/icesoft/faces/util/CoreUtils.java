@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.w3c.dom.Element;
 
-import com.icesoft.faces.component.dataexporter.DataExporter;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;
@@ -245,9 +244,9 @@ public class CoreUtils {
     
     private static String getRealPath(Object session, String getContext, String path) {
         try {
-            Method getContextMethod = session.getClass().getMethod(getContext, null);
+            Method getContextMethod = session.getClass().getMethod(getContext, (Class) null);
             Object context;
-            context = getContextMethod.invoke(session, null);
+            context = getContextMethod.invoke(session, (Object) null);
             Class[] classargs = {String.class};
             Method getRealPath =  context.getClass().getMethod("getRealPath", classargs);
             Object[] args = {path};
