@@ -40,9 +40,6 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
         if (configuration.getAttributeAsBoolean("useAsyncContext", isAsyncARPAvailable())) {
             log.log(Level.INFO, "Adapting to Servlet 3.0 AsyncContext environment");
             servlet = new AsyncAdaptingServlet(server);
-        } else if (configuration.getAttributeAsBoolean("useJettyContinuations", isJettyARPAvailable())) {
-            log.log(Level.INFO, "Adapting to Jetty continuations environment");
-            servlet = new JettyAdaptingServlet(server);
         } else {
             log.log(Level.INFO, "Adapting to Thread Blocking environment");
             servlet = new ThreadBlockingAdaptingServlet(server);
@@ -66,15 +63,6 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
     private boolean isAsyncARPAvailable() {
         try {
             this.getClass().getClassLoader().loadClass("javax.servlet.AsyncContext");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
-    }
-
-    private boolean isJettyARPAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass("org.mortbay.util.ajax.Continuation");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
