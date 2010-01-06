@@ -1,30 +1,20 @@
 package org.icepush.samples.icechat.spring.mvc;
 
-public class LoginFormData {
-    private String userName;
-    private String nickName;
-    private String password;
+import org.icepush.samples.icechat.beans.model.BaseCredentialsBean;
 
+public class LoginFormData extends BaseCredentialsBean {
     public LoginFormData() {
     }
 
     public LoginFormData(String userName, String nickName, String password) {
-        this.userName = userName;
-        this.nickName = nickName;
-        this.password = password;
+        setUserName(userName);
+        setNickName(nickName);
+        setPassword(password);
     }
 
-    public String getUserName() { return userName; }
-    public String getNickName() { return nickName; }
-    public String getPassword() { return password; }
-    
-    public void setUserName(String userName) { this.userName = userName; }
-    public void setNickName(String nickName) { this.nickName = nickName; }
-    public void setPassword(String password) { this.password = password; }
-
     public void clear() {
-        userName = null;
-        nickName = null;
-        password = null;
+        setUserName(null);
+        setNickName(null);
+        setPassword(null);
     }
 }

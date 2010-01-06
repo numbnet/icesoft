@@ -6,9 +6,6 @@
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean id="loginFormData" class="org.icepush.samples.icechat.spring.mvc.LoginFormData">
-        <property name="userName" value="carlo.gug"/>
-        <property name="nickName" value="Carlo G"/>
-        <property name="password" value="testing"/>
     </bean>
 
     <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController">
@@ -17,7 +14,7 @@
 
     <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController">
         <property name="loginFormData" ref="loginFormData"/>
-    </bean>    
+    </bean>
 
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
         <property name="loginFormData" ref="loginFormData"/>
