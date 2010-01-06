@@ -33,6 +33,7 @@
         <property name="loginController" ref="loginController"/>
         <property name="chatManagerFacade" ref="chatManagerFacade"/>
         <property name="chatManagerViewController" ref="chatManagerViewController"/>
+        <property name="currentChatSessionHolder" ref="currentChatSessionHolder"/>
     </bean>
 
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController">
