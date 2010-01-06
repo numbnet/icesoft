@@ -1,25 +1,26 @@
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.screens;
 
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
-import org.icepush.samples.icechat.gwt.client.UserService;
-import org.icepush.samples.icechat.gwt.client.UserServiceAsync;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import org.icepush.samples.icechat.gwt.client.Credentials;
+import org.icepush.samples.icechat.gwt.client.User;
+import org.icepush.samples.icechat.gwt.client.UserService;
+import org.icepush.samples.icechat.gwt.client.UserServiceAsync;
+import org.icepush.samples.icechat.gwt.client.UserSession;
 
 
 public class RegisterScreen extends AbstractScreen{
@@ -87,6 +88,8 @@ public class RegisterScreen extends AbstractScreen{
 					
 					User user = new User();
 					user.setUsername(RegisterScreen.this.usernameText.getText());
+                                        user.setNickname(RegisterScreen.this.nicknameText.getText());
+                                        user.setPassword(RegisterScreen.this.passwordText.getText());
 					service.register(user, callback);
 				}
 			}

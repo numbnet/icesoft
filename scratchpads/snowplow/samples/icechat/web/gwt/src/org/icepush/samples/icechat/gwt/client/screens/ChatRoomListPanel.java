@@ -1,4 +1,4 @@
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.screens;
 
 import org.icepush.samples.icechat.gwt.client.service.ChatService;
 import org.icepush.samples.icechat.gwt.client.service.ChatServiceAsync;
@@ -21,10 +21,11 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.TextBox;
+import java.util.HashMap;
 import java.util.List;
-import org.icepush.samples.icechat.gwt.client.chat.ChatHandleBuilder;
+import org.icepush.samples.icechat.gwt.client.GWTPushContext;
+import org.icepush.samples.icechat.gwt.client.PushEventListener;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
 public class ChatRoomListPanel extends Composite {
@@ -44,6 +45,8 @@ public class ChatRoomListPanel extends Composite {
             ChatRoomListPanel.this.refreshChatList();
         }
     };
+
+
 
     public ChatRoomListPanel() {
         MainPanelRegistry.getInstance().registerChatRoomListPanel(this);
@@ -77,6 +80,7 @@ public class ChatRoomListPanel extends Composite {
                         namePopup.hide();
                         refreshChatList();
                         MainPanelRegistry.getInstance().getChatScreen().loadNewChatRoom(result);
+                        
                     }
 
                     public void onFailure(Throwable t) {
@@ -132,6 +136,7 @@ public class ChatRoomListPanel extends Composite {
         }
 
         public void onClick(ClickEvent event) {
+           
             MainPanelRegistry.getInstance().getChatScreen().loadNewChatRoom(LoadChatRoomHandler.this.handle);
         }
     }

@@ -1,4 +1,4 @@
-package org.icepush.samples.icechat.gwt.client;
+package org.icepush.samples.icechat.gwt.client.screens;
 
 
 import java.util.HashMap;

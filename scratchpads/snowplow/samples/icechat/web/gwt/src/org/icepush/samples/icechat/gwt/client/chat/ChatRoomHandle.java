@@ -11,6 +11,7 @@ public class ChatRoomHandle implements Serializable{
 
     private String chatRoomName;
     private int messageIndex;
+    
 
     private List<ChatRoomMessage> nextMessages = new ArrayList<ChatRoomMessage>();
 

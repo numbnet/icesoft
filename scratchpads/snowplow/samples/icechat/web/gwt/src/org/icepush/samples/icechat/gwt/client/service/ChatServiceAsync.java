@@ -17,4 +17,8 @@ public interface ChatServiceAsync {
     void sendMessage(String message, String username, ChatRoomHandle handle, AsyncCallback<Void> callback);
 
     void getMessages(ChatRoomHandle handle, AsyncCallback<ChatRoomHandle> callback);
+
+    void sendCharacterNotification(String username, ChatRoomHandle handle, String newText, AsyncCallback<Void> callback);
+
+    void getCurrentCharacters(String username, ChatRoomHandle handle, AsyncCallback<String> callback);
 }
