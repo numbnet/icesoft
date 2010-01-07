@@ -32,7 +32,9 @@ public class LoginFormController extends SimpleFormController {
         if ((errors != null) && (errors.getErrorCount() == 0)) {
             try{
                 if (baseLoginController.getPushRequestContext() == null) {
-                    baseLoginController.setPushRequestContext(new BasePushRequestContext(request, response));
+                    PushRequestManager.getInstance().setPushRequestContext(new BasePushRequestContext(request, response));
+                    
+                    baseLoginController.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
                 }
 
                 baseLoginController.register();

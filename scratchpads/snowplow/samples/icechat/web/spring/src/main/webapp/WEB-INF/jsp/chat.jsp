@@ -14,7 +14,8 @@
         <script type="text/javascript">
             ice.push.register(['${chat.pushRequestContext.currentPushId}'],
                 function() {
-                    window.location.reload();
+                    //window.location.reload();
+                    window.location = window.location.href;
                 }
             );
         </script>

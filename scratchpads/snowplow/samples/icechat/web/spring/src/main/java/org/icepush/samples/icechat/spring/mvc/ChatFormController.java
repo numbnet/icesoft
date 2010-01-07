@@ -23,13 +23,17 @@ public class ChatFormController extends AbstractFormController {
 
     public ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
                                  BindException errors) throws Exception {
+        if (chatFormData.getPushRequestContext() == null) {
+            chatFormData.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
+        }
+
         return new ModelAndView("chat", "chat", chatFormData);
     }
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
                                                  Object command, BindException errors) throws Exception {
         if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(new BasePushRequestContext(request, response));
+            chatFormData.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
         }
 
         if (request.getParameter("submit.sendMessage") != null) {
