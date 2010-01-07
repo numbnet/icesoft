@@ -7,14 +7,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.DateTimeConverter;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.Map;
+import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.text.DateFormat;
 
 public class SelectInputDate2Renderer extends Renderer {
+    SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.CANADA);
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        System.out.println("\nSelectInputDate2Renderer.encodeBegin");
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
@@ -24,38 +29,45 @@ public class SelectInputDate2Renderer extends Renderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        System.out.println("\nSelectInputDate2Renderer.encodeEnd");
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate2 selectInputDate = (SelectInputDate2) component;
         String clientId = component.getClientId(context);
         writer.endElement(HTML.DIV_ELEM);
 
-        Date value = (Date) selectInputDate.getValue();
-        Calendar timeKeeper = Calendar.getInstance();
-        timeKeeper.setTime(value == null ? new Date() : value);
-        String pageDate = (timeKeeper.get(Calendar.MONTH) + 1) + "/" + timeKeeper.get(Calendar.YEAR);
-        String selectedDate = (timeKeeper.get(Calendar.MONTH) + 1) + "/" + timeKeeper.get(Calendar.DAY_OF_MONTH) + "/" + timeKeeper.get(Calendar.YEAR);
-        int selectedHour = timeKeeper.get(Calendar.HOUR_OF_DAY);
-        int selectedMinute = timeKeeper.get(Calendar.MINUTE);
-        System.out.println("pageDate = " + pageDate);
-        System.out.println("selectedDate = " + selectedDate);
-        System.out.println("selectedHour = " + selectedHour);
-        System.out.println("selectedMinute = " + selectedMinute);
-        String params = "{divId:'" + clientId + "'}";
+        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
+        Date date = (Date) selectInputDate.getValue();
+        if (date == null) {
+            Calendar calendar = Calendar.getInstance(converter.getTimeZone(), converter.getLocale());
+            date = calendar.getTime();
+        }
+        String dateStr = converter.getAsString(context, selectInputDate, date);
+        formatter.setTimeZone(converter.getTimeZone());
+        formatter.applyPattern("MM/yyyy");
+        String pageDate = formatter.format(date);
+        formatter.applyPattern("MM/dd/yyyy");
+        String selectedDate = formatter.format(date);
+        formatter.applyPattern("H");
+        String selectedHour = formatter.format(date);
+        formatter.applyPattern("m");
+        String selectedMinute = formatter.format(date);
+        String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
+                "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
+                "',selectedMinute:'" + selectedMinute + "'}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
-//        writer.write("Calendar.init('" + clientId + "','" + pageDate + "','" + selectedDate + "'," + selectedHour + "," + selectedMinute + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("\nSelectInputDateRenderer.decode");
+        System.out.println("\nSelectInputDate2Renderer.decode");
         super.decode(context, component);
         SelectInputDate2 selectInputDate = (SelectInputDate2) component;
         String clientId = component.getClientId(context);
-        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+//        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Map<String, String[]> paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
         String key;
         String[] values;
@@ -70,12 +82,23 @@ public class SelectInputDate2Renderer extends Renderer {
             }
             System.out.println();
         }
-        selectInputDate.setSubmittedValue(paramValuesMap.get(clientId)[0]);
-//        selectInputDate.setSubmittedValue("10/23/1988 21:34");
+        String dateString = paramValuesMap.get(clientId)[0];
+        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
+        formatter.setTimeZone(converter.getTimeZone());
+//        formatter.setTimeZone(TimeZone.getDefault());
+        formatter.applyPattern("yyyy-M-d H:m");
+        try {
+            dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        selectInputDate.setSubmittedValue(dateString);
     }
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        System.out.println("\nSelectInputDate2Renderer.getConvertedValue");
+        System.out.println("submittedValue = " + submittedValue);
         super.getConvertedValue(context, component, submittedValue);
         SelectInputDate2 selectInputDate = (SelectInputDate2) component;
         return selectInputDate.getConverter().getAsObject(context, component, (String) submittedValue);
