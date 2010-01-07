@@ -30,10 +30,7 @@ public class ChatFormData {
     public void setPushRequestContext(BasePushRequestContext pushRequestContext) {
         this.pushRequestContext = pushRequestContext;
 
-        if ((loginController != null) && (loginController.getPushRequestContext() == null)) {
-            loginController.setPushRequestContext(this.pushRequestContext);
-        }
-
+        // Cascade the push request context to child classes that need it
         if (chatManagerViewController != null) {
             chatManagerViewController.setPushRequestContext(this.pushRequestContext);
         }
