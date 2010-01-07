@@ -32,10 +32,6 @@ public class ChatFormController extends AbstractFormController {
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
                                                  Object command, BindException errors) throws Exception {
-        if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
-        }
-
         if (request.getParameter("submit.sendMessage") != null) {
             sendMessage();
         }
