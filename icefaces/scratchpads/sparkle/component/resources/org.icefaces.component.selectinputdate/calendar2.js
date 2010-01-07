@@ -3,10 +3,11 @@ YAHOO.namespace("icefaces.calendar.calendars");
 YAHOO.icefaces.calendar.init = function(params) {
     Element = YAHOO.util.Element;
     Event = YAHOO.util.Event;
+    Dom = YAHOO.util.Dom;
 
     var rootDivId = params.divId;
     var rootDiv = new Element(rootDivId);
-    var inputEl = new Element(document.createElement("input"), {type:"text", value:""});
+    var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr});
     var buttonEl = new Element(document.createElement("button"), {type:"button"});
     var imageEl = new Element(document.createElement("img"), {src:"images/cal_button.gif"});
     inputEl.appendTo(rootDiv);
@@ -14,15 +15,22 @@ YAHOO.icefaces.calendar.init = function(params) {
     imageEl.appendTo(buttonEl);
 
     var cancelClick = function() {
-        dialog.hide();
+        this.hide();
     };
-    var okClick = function() {
+    var okClick = function(evt, dialog) {
+//        for(var i=0; i<arguments.length; i++) {
+//            alert(arguments[i]);
+//        }
+        this.hide();
         if (calendar.getSelectedDates().length > 0) {
             var selDate = calendar.getSelectedDates()[0];
-            var dateStr = selDate.getFullYear() + "-" + (selDate.getMonth() + 1) + "-" + selDate.getDate();
-            inputEl.setAttributes({value:dateStr}, true);
+            var dateStr = selDate.getFullYear() + "-" + (selDate.getMonth() + 1) + "-" + selDate.getDate() +
+                    " " + params.selectedHour + ":" + params.selectedMinute;
+//            inputEl.setAttributes({value:dateStr}, true);
+            ice.submit(evt, Dom.get(calendar.id), function(p) {
+                p(rootDivId, dateStr);
+            });
         }
-        dialog.hide();
     };
     var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
         visible:false,
@@ -36,6 +44,8 @@ YAHOO.icefaces.calendar.init = function(params) {
     dialog.render(rootDiv);
 
     var calendar = new YAHOO.widget.Calendar(rootDivId + "_cal", {
+        pagedate:params.pageDate,
+        selected:params.selectedDate,
         iframe:false,
         HIDE_BLANK_WEEKS:true,
         navigator:true
@@ -46,6 +56,14 @@ YAHOO.icefaces.calendar.init = function(params) {
         dialog.show();
     };
     var domReady = function() {
+        Event.addListener(document, "click", function(e) {
+            var el = Event.getTarget(e);
+            var dialogEl = dialog.element;
+            var showBtn = buttonEl.get("element");
+            if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
+                dialog.hide();
+            }
+        });
         buttonEl.addListener("click", buttonClick);
     };
 
