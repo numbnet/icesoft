@@ -19,6 +19,7 @@ public class LoginFormController extends SimpleFormController {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
+    private PushRequestManager pushRequestManager;
     private LoginFormData loginFormData;
     private BaseLoginController baseLoginController;
 
@@ -32,9 +33,9 @@ public class LoginFormController extends SimpleFormController {
         if ((errors != null) && (errors.getErrorCount() == 0)) {
             try{
                 if (baseLoginController.getPushRequestContext() == null) {
-                    PushRequestManager.getInstance().setPushRequestContext(new BasePushRequestContext(request, response));
+                    pushRequestManager.setPushRequestContext(new BasePushRequestContext(request, response));
                     
-                    baseLoginController.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
+                    baseLoginController.setPushRequestContext(pushRequestManager.getPushRequestContext());
                 }
 
                 baseLoginController.register();
@@ -53,9 +54,11 @@ public class LoginFormController extends SimpleFormController {
         return loginFormData;
     }
 
+    public PushRequestManager getPushRequestManager() { return pushRequestManager; }
     public LoginFormData getLoginFormData() { return loginFormData; }
     public BaseLoginController getBaseLoginController() { return baseLoginController; }
 
+    public void setPushRequestManager(PushRequestManager pushRequestManager) { this.pushRequestManager = pushRequestManager; }
     public void setLoginFormData(LoginFormData loginFormData) { this.loginFormData = loginFormData; }
     public void setBaseLoginController(BaseLoginController baseLoginController) { this.baseLoginController = baseLoginController; }
 }

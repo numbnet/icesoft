@@ -5,6 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean id="pushRequestManager" class="org.icepush.samples.icechat.spring.mvc.PushRequestManager" scope="session">
+    </bean>
+
     <bean id="loginFormData" class="org.icepush.samples.icechat.spring.mvc.LoginFormData" scope="session">
     </bean>
 
@@ -37,6 +40,7 @@
     </bean>
 
     <bean name="/login.htm" class="org.icepush.samples.icechat.spring.mvc.LoginFormController" scope="request">
+        <property name="pushRequestManager" ref="pushRequestManager"/>
         <property name="loginFormData" ref="loginFormData"/>
         <property name="baseLoginController" ref="loginController"/>
         <property name="sessionForm" value="true"/>
@@ -52,6 +56,7 @@
     </bean>
 
     <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController" scope="request">
+        <property name="pushRequestManager" ref="pushRequestManager"/>
         <property name="chatFormData" ref="chatFormData"/>
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="chat"/>

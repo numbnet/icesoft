@@ -5,7 +5,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icepush.samples.icechat.spring.impl.BasePushRequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +14,7 @@ public class ChatFormController extends AbstractFormController {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
+    private PushRequestManager pushRequestManager;
     private ChatFormData chatFormData;
 
     public ChatFormController() {
@@ -24,7 +24,7 @@ public class ChatFormController extends AbstractFormController {
     public ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
                                  BindException errors) throws Exception {
         if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
+            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
         }
 
         return new ModelAndView("chat", "chat", chatFormData);
@@ -33,7 +33,7 @@ public class ChatFormController extends AbstractFormController {
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
                                                  Object command, BindException errors) throws Exception {
         if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(PushRequestManager.getInstance().getPushRequestContext());
+            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
         }
 
         if (request.getParameter("submit.sendMessage") != null) {
@@ -77,6 +77,14 @@ public class ChatFormController extends AbstractFormController {
         if (name != null) {
             chatFormData.getChatManagerViewController().openChatSession(name);
         }
+    }
+
+    public PushRequestManager getPushRequestManager() {
+        return pushRequestManager;
+    }
+
+    public void setPushRequestManager(PushRequestManager pushRequestManager) {
+        this.pushRequestManager = pushRequestManager;
     }
 
     public ChatFormData getChatFormData() {
