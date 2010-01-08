@@ -38,7 +38,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     private final ServletContext context;
     private final HttpSession session;
     private RequestAttributes requestAttributes;
-    private HttpServletRequest initialRequest;
+    private ServletEnvironmentRequest initialRequest;
     private HttpServletResponse response;
     private Dispatcher dispatcher;
     private List locales;
@@ -168,6 +168,13 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String getRequestServletPath() {
+        String requestServletPath = null;
+        //avoid using javax.servlet.forward.servlet_path for error pages because the internal dispatch executed by
+        //the servlet container will return the servlet path of the AJAX request instead the page load request
+        if (initialRequest.getAttribute("javax.servlet.error.status_code") == null &&
+                initialRequest.getAttribute("javax.servlet.error.exception") == null) {
+            requestServletPath = (String) initialRequest.getAttribute("javax.servlet.forward.servlet_path");
+        }
         return requestServletPath == null ? initialRequest.getServletPath() : requestServletPath;
     }
 
