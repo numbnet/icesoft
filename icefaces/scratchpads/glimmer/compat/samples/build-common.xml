@@ -199,6 +199,9 @@
             <war basedir="${web.content.dir}" destfile="${dist.dir}/@{war.file.name}" duplicate="fail"
                  webxml="${web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
                 <add.filesets/>
+                <metainf dir="./src">
+                	<include name="context.xml"/>
+                </metainf>
             </war>
 
         </sequential>
