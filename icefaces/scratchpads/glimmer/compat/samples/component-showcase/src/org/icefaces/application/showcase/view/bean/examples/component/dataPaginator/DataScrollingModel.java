@@ -35,9 +35,15 @@ package org.icefaces.application.showcase.view.bean.examples.component.dataPagin
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
+
+// since jsf2.0 component binding does not work with View scope, look up the binding in the
+//component tree with this
+import com.icesoft.util.CoreComponentUtils;
 
 import com.icesoft.faces.component.datapaginator.DataPaginator;
 
@@ -102,6 +108,7 @@ public class DataScrollingModel extends DataTableBase {
 
         if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
                 dataPaginatorBinding != null){
+ System.out.println("changelistener event sets dpb to first page dpb="+this.dataPaginatorBinding);       	
             dataPaginatorBinding.gotoFirstPage();
         }
     }
@@ -132,6 +139,13 @@ public class DataScrollingModel extends DataTableBase {
 
     public void setDataPaginatorBinding(DataPaginator dataPaginatorBinding) {
         this.dataPaginatorBinding = dataPaginatorBinding;
+        if (this.dataPaginatorBinding==null){
+        	System.out.println("dataPagBinding is null so must set it");
+        	FacesContext facesContext = FacesContext.getCurrentInstance();
+        	String id=this.dataPaginatorBinding.getClientId(facesContext);
+        	this.dataPaginatorBinding = (DataPaginator)CoreComponentUtils.findComponent(id,facesContext.getViewRoot());
+        }
+        else System.out.println("dpb not null set to="+this.dataPaginatorBinding);
     }
 
     /**
