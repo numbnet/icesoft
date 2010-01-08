@@ -108,7 +108,6 @@ public class DataScrollingModel extends DataTableBase {
 
         if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
                 dataPaginatorBinding != null){
- System.out.println("changelistener event sets dpb to first page dpb="+this.dataPaginatorBinding);       	
             dataPaginatorBinding.gotoFirstPage();
         }
     }
@@ -140,12 +139,13 @@ public class DataScrollingModel extends DataTableBase {
     public void setDataPaginatorBinding(DataPaginator dataPaginatorBinding) {
         this.dataPaginatorBinding = dataPaginatorBinding;
         if (this.dataPaginatorBinding==null){
-        	System.out.println("dataPagBinding is null so must set it");
+        	//component binding not working properly yet in jsf2.0.1.fcs in View scope so look it up
+            //in component tree
         	FacesContext facesContext = FacesContext.getCurrentInstance();
         	String id=this.dataPaginatorBinding.getClientId(facesContext);
         	this.dataPaginatorBinding = (DataPaginator)CoreComponentUtils.findComponent(id,facesContext.getViewRoot());
         }
-        else System.out.println("dpb not null set to="+this.dataPaginatorBinding);
+        
     }
 
     /**
