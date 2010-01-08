@@ -2,7 +2,7 @@
   
     <servlet>
     <servlet-name>userService</servlet-name>
-    <servlet-class>org.icepush.samples.icechat.gwt.server.UserServiceImpl</servlet-class>
+    <servlet-class>org.icepush.samples.icechat.gwt.server.service.UserServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

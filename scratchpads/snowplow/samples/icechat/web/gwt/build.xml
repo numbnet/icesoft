@@ -20,6 +20,8 @@
     <!-- Add any additional non-server libs (such as JUnit) -->
     
     <pathelement location="../../../../core/build/dist/icepush.jar"/>
+  	<pathelement location="../../api/dist/icechat-api.jar"/>
+  	<pathelement location="../../beans/dist/icechat-beans.jar"/>
   </path>
   
   <path id="project.test.class.path">
@@ -58,12 +60,14 @@
     </java>
   </target>
 
-  <target name="devmode" depends="javac" description="Run development mode">
+  <target name="devmode" depends="javac,copy-classpath" description="Run development mode">
   	<copy todir="war/WEB-INF/lib" preservelastmodified="true" verbose="true">
 			<fileset dir="../../lib">
 				<include name="icepush.jar"/>
 			</fileset>
 	</copy>
+  	<copy file="../../beans/dist/icechat-beans.jar" todir="war/WEB-INF/lib"/>
+  	<copy file="../../api/dist/icechat-api.jar" todir="war/WEB-INF/lib"/>
 	
 	<copy todir="war/common" preservelastmodified="false" verbose="true">
 			<fileset dir="../../common">
@@ -76,6 +80,7 @@
         <path refid="project.class.path"/>
       </classpath>
       <jvmarg value="-Xmx256M"/>
+      <jvmarg value="-ea"/>
       <arg value="-startupUrl"/>
       <arg value="IceChatModule.html"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
@@ -167,7 +172,7 @@
 
   <target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
 
-  <target name="build" depends="gwtc" description="Build this project">
+  <target name="build" depends="gwtc,copy-classpath" description="Build this project">
   	<delete dir="${build.dir}"/>
   	<mkdir dir="${build.dir}"/>
   	<copy todir="${build.dir}">
@@ -199,8 +204,13 @@
 		</copy-->
 		
   </target>
+	
+	<target name="copy-classpath">
+		<copy file="../../beans/dist/icechat-beans.jar" todir="war/WEB-INF/lib"/>
+	  	<copy file="../../api/dist/icechat-api.jar" todir="war/WEB-INF/lib"/>
+	</target>
   
-  <target name="build-server" depends="javac" description="Build this project">
+  <target name="build-server" depends="javac,copy-classpath" description="Build this project">
   	<delete dir="${build.dir}"/>
   	<mkdir dir="${build.dir}"/>
   	<copy todir="${build.dir}">
@@ -208,6 +218,8 @@
 			<include name="**"/>
 		</fileset>
   	</copy>
+  	
+
   	<!--copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
 			<fileset dir="../../service/api/dist">
 				<include name="*.jar"/>

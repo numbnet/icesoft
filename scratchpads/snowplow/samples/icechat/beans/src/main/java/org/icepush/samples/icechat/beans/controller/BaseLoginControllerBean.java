@@ -9,13 +9,14 @@ import org.icepush.samples.icechat.controller.ILoginController;
 import org.icepush.samples.icechat.controller.model.ICredentialsBean;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.service.IChatService;
+import org.icepush.samples.icechat.service.exception.ConfigurationException;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 
-public abstract class BaseLoginControllerBean implements Serializable, ILoginController{
+public class BaseLoginControllerBean implements Serializable, ILoginController{
 	
 	
-	private IChatService chatService;
+	protected IChatService chatService;
 	
 	private ICredentialsBean credentialsBean;
 	
@@ -56,15 +57,23 @@ public abstract class BaseLoginControllerBean implements Serializable, ILoginCon
     }
 	
 	public void login(String userName, String password) throws LoginFailedException{
+		if(chatService==null)
+			throw new ConfigurationException(this.getClass(), "chatService", "null.  Please initialize before calling login()");
 		currentUser = chatService.login(userName, password);
 	}
 
     public void register(){
+    	if(chatService==null)
+			throw new ConfigurationException(this.getClass(), "chatService", "null.  Please initialize before calling register()");
+    	
     	currentUser = chatService.register(credentialsBean.getUserName(), credentialsBean.getNickName(), 
     			credentialsBean.getPassword());
     }
     
     public void register(String userName, String nickName, String password){
+    	if(chatService==null)
+			throw new ConfigurationException(this.getClass(), "chatService", "null.  Please initialize before calling register()");
+    	
     	currentUser = chatService.register(userName, nickName, password);
     }
     
