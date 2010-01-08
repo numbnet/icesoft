@@ -1,6 +1,6 @@
-package org.icepush.samples.icechat.gwt.server;
+package org.icepush.samples.icechat.gwt.server.service;
 
-import org.icepush.samples.icechat.gwt.client.UserService;
+import org.icepush.samples.icechat.gwt.client.service.UserService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import java.util.HashMap;
 import org.icepush.samples.icechat.gwt.client.User;

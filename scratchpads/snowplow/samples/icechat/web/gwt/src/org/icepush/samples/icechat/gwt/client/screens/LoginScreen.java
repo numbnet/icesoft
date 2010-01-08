@@ -18,8 +18,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import org.icepush.samples.icechat.gwt.client.Credentials;
-import org.icepush.samples.icechat.gwt.client.UserService;
-import org.icepush.samples.icechat.gwt.client.UserServiceAsync;
+import org.icepush.samples.icechat.gwt.client.service.UserService;
+import org.icepush.samples.icechat.gwt.client.service.UserServiceAsync;
 import org.icepush.samples.icechat.gwt.client.UserSession;
 
 public class LoginScreen extends AbstractScreen {
