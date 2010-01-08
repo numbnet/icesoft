@@ -9,7 +9,7 @@ public class ICEchatWicketApplication  extends WeldApplication{
 	@Override
 	public Class<? extends Page> getHomePage()
 	{
-		return HomePage.class;
+		return LoginPage.class;
 	}
 
 }

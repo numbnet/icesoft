@@ -12,8 +12,8 @@
         is found, "deployment" is the default.
     -->
     <context-param>
-        <param-name>configuration</param-name>
-        <param-value>deployment</param-value>
+        <param-name>wicket.configuration</param-name>
+        <param-value>DEVELOPMENT</param-value>
     </context-param>
 
     <filter>

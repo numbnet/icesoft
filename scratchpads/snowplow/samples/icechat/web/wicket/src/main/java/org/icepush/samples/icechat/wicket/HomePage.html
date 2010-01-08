@@ -4,10 +4,10 @@
         <title>ICEpush ICEchat (Wicket)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
-        <script type="text/javascript" src="code.icepush"></script>
+        <!--<script type="text/javascript" src="code.icepush"></script>-->
     </head>
     <body>
-
+<!--
         <script type="text/javascript">
             ice.push.register(['#{pushRequestContext.currentPushId}'],
                 function(){
@@ -15,7 +15,7 @@
                 }
             );
         </script>
-
+-->
         <div class="header_container">
             <div class="header_content">
                 <img width="109px" height="100px"
@@ -28,108 +28,6 @@
             </div>
         </div>
 
-        <div class="body_container">
-
-            <div class="login">
-                <form wicket:id="login">
-                    <h2>ICEchat Login</h2>
-                    <div style="text-align:right;">
-                        <label for="userName">User Name </label>
-                        <input wicket:id="userName"/>
-                    </div>
-                    <div style="text-align:right;">
-                        <label for="nickName">Nick Name </label>
-                        <input wicket:id="nickName"/>
-                    </div>
-                    <div style="text-align:right;">
-                        <label for="password">Password</label>
-                        <input type="password" wicket:id="password"/>
-                    </div>
-                    <div style="text-align:right;margin-top:20px;">
-                        <input wicket:id="login" type="button" value="Login"/>
-                        <input wicket:id="register" type="button" value="Register"/>
-                    </div>
-                    <div id="loginMessages">
-                        <span wicket:id="loginMessages"/>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-<!--
-            <h:panelGroup  rendered="#{not empty loginController.currentUser}">
-
-                <div class="chatSession">
-                    <h:form id="chatSession">
-                        You are logged in as #{loginController.currentUser.userName}
-                        <h:outputText rendered="#{not empty loginController.currentUser.nickName}"
-                            value="(#{loginController.currentUser.nickName})"/>&nbsp;
-                        <h:commandButton value="Logout" actionListener="#{loginController.logout}"/>
-                    </h:form>
-                </div>
-
-                <div class="clearer"/>
-
-                <div class="chatRooms">
-                    <h3>Chat Rooms</h3>
-                    <h:form id="chatRooms">
-                        <ui:repeat value="#{chatManagerFacade.chatRooms}" var="room">
-                            <div>
-                                <h:commandLink value="#{room.name}"
-                                    actionListener="#{chatManagerVC.openChatSession(room.name)}"/>
-                            </div>
-                        </ui:repeat>
-                    </h:form>
-                    <h:form id="createNewChatRoom">
-                        <div class="createNewChatRoom">
-                            Create New Chat Room
-                            <br/>
-                            <h:outputLabel for="newChatRoomName" value="Name"/>&nbsp;
-                            <h:inputText id="newChatRoomName" value="#{newChatRoomBean.name}"
-                                required="true" style="width: 100px;margin-top:5px;"/>
-                            <h:commandButton value="Create" style="margin-top:5px;"
-                                actionListener="#{chatManagerVC.createNewChatRoom}"/>
-                        </div>
-                    </h:form>
-                </div>
-
-                <h:panelGroup rendered="#{not empty currentChatSessionHolder.session}">
-                    <div class="chatRoomView">
-                        <h:form id="chatRoomView">
-                            <div class="chatRoomHeader">Chat Room '#{currentChatSessionHolder.session.room.name}'</div>
-                            <div class="chatRoomContainer">
-                                <div class="chatRoomUsers">
-                                    <div class="chatViewSubHeader">Who's Here?</div>
-                                    <ui:repeat value="#{currentChatSessionHolder.session.room.userChatSessions}" var="chatSession">
-                                        <div>#{chatSession.user.displayName}</div>
-                                    </ui:repeat>
-                                </div>
-                                <div class="chatRoomMessages">
-                                    <div class="chatViewSubHeader">Messages</div>
-                                    <ui:repeat value="#{currentChatSessionHolder.session.room.messages}" var="msg">
-                                        <div>
-                                            <h:outputText value="#{msg.created}">
-                                                <f:convertDateTime type="both" dateStyle="short" timeStyle="short"/>
-                                            </h:outputText>
-                                            &nbsp;#{msg.userChatSession.user.displayName} said
-                                            &nbsp;'#{msg.message}'
-                                        </div>
-                                    </ui:repeat>
-                                </div>
-                            </div>
-                            <div class="clearer"/>
-                            <div class="addNewMessage">
-                                New Message&nbsp;<h:inputText value="#{newChatRoomMessageBean.message}"
-                                    style="width:40%;"/>
-                                <h:commandButton value="Send" actionListener="#{chatManagerVC.sendNewMessage}"/>
-                            </div>
-                        </h:form>
-                    </div>
-                </h:panelGroup>
-
-            </h:panelGroup>
--->
     </body>
 </html>
 
