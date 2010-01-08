@@ -18,8 +18,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.User;
-import org.icepush.samples.icechat.gwt.client.UserService;
-import org.icepush.samples.icechat.gwt.client.UserServiceAsync;
+import org.icepush.samples.icechat.gwt.client.service.UserService;
+import org.icepush.samples.icechat.gwt.client.service.UserServiceAsync;
 import org.icepush.samples.icechat.gwt.client.UserSession;
 
 
