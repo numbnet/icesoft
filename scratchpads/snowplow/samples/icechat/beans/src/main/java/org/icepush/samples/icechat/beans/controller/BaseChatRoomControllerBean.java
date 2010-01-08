@@ -10,7 +10,7 @@ import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
 
-public abstract class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
+public class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
 	
 	private static final long serialVersionUID = 3046754615536057774L;
 

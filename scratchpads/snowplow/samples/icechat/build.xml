@@ -20,8 +20,12 @@
 		<ant antfile="build.xml" target="war" dir="./web/jsf2"/>
 	</target>
 
-	<target name="gwt" depends="cdi-beans">
+	<target name="gwt" depends="beans">
 		<ant antfile="build.xml" target="war" dir="./web/gwt"/>
+	</target>
+	
+	<target name="gwt-devmode" depends="beans">
+		<ant antfile="build.xml" target="devmode" dir="./web/gwt"/>
 	</target>
 
 	<target name="spring" depends="cdi-beans">
