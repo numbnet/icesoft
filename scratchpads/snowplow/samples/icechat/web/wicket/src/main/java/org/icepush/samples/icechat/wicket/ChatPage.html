@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <head>
+        <title>Chat View (Wicket)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
+        <!--<script type="text/javascript" src="code.icepush"></script>-->
+    </head>
+    <body>
+<!--
+        <script type="text/javascript">
+            ice.push.register(['#{pushRequestContext.currentPushId}'],
+                function(){
+                    window.location.reload();
+                }
+            );
+        </script>
+-->
+        <div class="header_container">
+            <div class="header_content">
+                <img width="109px" height="100px"
+                                  wicket:id="banner_hdr"
+                                  style="float:left"/>
+                <div style="font-size:20pt;color:#0F65B8;margin-top:45px;">
+                    <span style="font-weight:bold;">ICEpush</span>
+                    <span style="font-style:italic;font-family:Times New Roman"> with Wicket</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="body_container">
+            <div class="chatSession">
+                <form wicket:id="chatSession">
+                    You are logged in as
+                    <span wicket:id="userName">userName</span>
+                    <span wicket:id="nickName">nickName</span>
+                    &nbsp;
+                    <input wicket:id="logout" type="button" value="Logout"/>
+                </form>
+            </div>
+
+            <div class="clearer"/>
+
+            <div class="chatRooms">
+                <h3>Chat Rooms</h3>
+                <form wicket:id="chatRooms">
+                    <div>
+                        <span wicket:id="chatRoomsListView">
+                            <input wicket:id="name" type="button" /><br/>
+                        </span>
+                        <!--<input wicket:id="chatRoomRepeater" type="button" />-->
+                    </div>
+                </form>
+                <form wicket:id="createNewChatRoom">
+                    <div class="createNewChatRoom">
+                        Create New Chat Room
+                        <br/>
+                        <label for="newChatRoomName">Name&nbsp;</label>
+                        <input wicket:id="name" style="width: 100px;margin-top:5px;"/>
+                        <input wicket:id="register" style="margin-top:5px;" type="button" value="Create"/>
+                    </div>
+                </form>
+            </div>
+
+            <span wicket:id="chatRoomView"/>
+
+        </div>
+    </body>
+</html>
