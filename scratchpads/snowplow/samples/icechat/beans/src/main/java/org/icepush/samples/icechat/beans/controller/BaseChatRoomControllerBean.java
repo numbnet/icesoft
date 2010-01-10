@@ -26,9 +26,9 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 
 	public UserChatSession createNewChatRoom(String chatRoomName, String userName, String password){
                 UserChatSession session = chatService.createNewChatRoom(chatRoomName, userName, password);
-	//	PushContext pushContext = pushRequestContext.getPushContext();
-        //pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
-        //pushContext.push(chatRoomName);
+		PushContext pushContext = pushRequestContext.getPushContext();
+        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
+        pushContext.push(chatRoomName);
         log.info("created new chat session: " + session);
 		return session;
 	}
@@ -38,9 +38,9 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 		for( ChatRoom room : chatService.getChatRooms() ){
 			if( room.getName().equals(chatRoomName)){
 				session = chatService.loginToChatRoom(chatRoomName, userName, password);
-//				PushContext pushContext = pushRequestContext.getPushContext();
-//		        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
-//		        pushContext.push(chatRoomName);
+				PushContext pushContext = pushRequestContext.getPushContext();
+		        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
+		        pushContext.push(chatRoomName);
 			}
 		}		
 		return session;
