@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -50,6 +51,8 @@ public class ChatScreen extends Composite {
     @UiField
     TextBox newMessageTextbox;
     private ChatRoomHandle currentChatRoom;
+    
+    private int characterIndex = 0;
 
 
     private ChatServiceAsync chatService = GWT.create(ChatService.class);
@@ -75,11 +78,21 @@ public class ChatScreen extends Composite {
 
     @UiHandler(value={"newMessageTextbox"})
     public void onKeyUp(KeyUpEvent ev){
-        if(ev.getNativeKeyCode() == 13)
+    	
+        if(ev.getNativeKeyCode() == 13){
             sendChatMessage();
-        else if(ev.getNativeKeyCode() == 32){
-            sendCharacterNotification();
+            characterIndex = 0;
+            return;
+        }else if(ev.getNativeKeyCode() >= 32 && ev.getNativeKeyCode() <= 127){
+           characterIndex ++;
         }
+        
+        if(characterIndex % 3 == 0){ //send every third key
+        	sendCharacterNotification();
+        }
+//        else if(ev.getNativeKeyCode() == 32){
+//            sendCharacterNotification();
+//        }
     }
 
 
@@ -259,7 +272,9 @@ public class ChatScreen extends Composite {
                 ChatScreen.this.roomUserList.clear();
                 for (String participant : result) {
                     Label particLabel = new Label(participant);
-                    Label awarenessLabel = new Label();
+                    HTML awarenessLabel = new HTML();
+                    
+                    
                     HorizontalPanel scribePanel = new HorizontalPanel();
 
                     /* @TODO
@@ -271,6 +286,8 @@ public class ChatScreen extends Composite {
                     
                     scribePanel.add(img);
                     scribePanel.add(awarenessLabel);
+                    
+                    
                     awarenessLabel.getElement().setAttribute("style", "color: red; font-weight: normal;");
                     ChatScreen.this.roomUserList.add(particLabel);
                     ChatScreen.this.roomUserList.add(scribePanel);
@@ -293,12 +310,12 @@ public class ChatScreen extends Composite {
     }
 
     public class CharacterPushListener extends PushEventListener{
-        private Label awarenessLabel;
+        private HTML awareness;
         private Image awarenessImage;
         private String username;
         private ChatRoomHandle handle;
-        public CharacterPushListener(String username, ChatRoomHandle handle, Label awarenessLabel, Image awarenessImage){
-            this.awarenessLabel = awarenessLabel;
+        public CharacterPushListener(String username, ChatRoomHandle handle, HTML awareness, Image awarenessImage){
+        	this.awareness = awareness;
             this.awarenessImage = awarenessImage;
             this.handle = handle;
             this.username = username;
@@ -313,7 +330,20 @@ public class ChatScreen extends Composite {
                 }
 
                 public void onSuccess(String result) {
-                    CharacterPushListener.this.awarenessLabel.setText(result);
+                	int index = result.lastIndexOf(" ");
+                	if(index >= 0){
+                		StringBuilder html = new StringBuilder();
+                		html.append(result.substring(0, index));
+                		html.append(" <b>");
+                		html.append(result.substring(index));
+                		html.append("</b>");
+                		
+                		awareness.setHTML(html.toString());
+                		
+                	}else{
+                		awareness.setHTML("<b>" + result + "</b>");
+                	}
+                    
                     awarenessImage.setVisible(!result.equals(""));
                    
                 }
