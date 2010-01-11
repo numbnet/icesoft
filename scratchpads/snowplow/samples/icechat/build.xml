@@ -4,6 +4,10 @@
 		<ant antfile="build.xml" target="jar" dir="./api"/>
 	</target>
 	
+	<target name="auth" depends="api">
+		<ant antfile="build.xml" target="jar" dir="./auth"/>
+	</target>
+	
 	<target name="beans" depends="api">
 		<ant antfile="build.xml" target="jar" dir="./beans"/>
 	</target>
@@ -12,7 +16,11 @@
 		<ant antfile="build.xml" target="jar" dir="./cdi"/>
 	</target>
 		
-	<target name="wicket" depends="cdi-beans">
+	<target name="jaxrs" depends="cdi-beans">
+		<ant antfile="build.xml" target="jar" dir="./jee6/jaxrs"/>
+	</target>
+
+	<target name="wicket" depends="cdi-beans"> 
 		<ant antfile="build.xml" target="war" dir="./web/wicket"/>
 	</target>
 
@@ -27,6 +35,10 @@
 	<target name="gwt-devmode" depends="beans">
 		<ant antfile="build.xml" target="devmode" dir="./web/gwt"/>
 	</target>
+
+	<target name="ajax" depends="auth,beans">
+		<ant antfile="build.xml" target="war" dir="./web/ajax"/>
+	</target>	
 
 	<target name="spring" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/spring"/>
