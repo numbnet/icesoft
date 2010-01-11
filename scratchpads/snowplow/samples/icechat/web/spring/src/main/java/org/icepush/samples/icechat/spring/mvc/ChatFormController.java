@@ -27,7 +27,7 @@ public class ChatFormController extends AbstractFormController {
             chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
         }
 
-        return new ModelAndView("chat", "chat", chatFormData);
+        return super.showForm(request, errors, "chat");
     }
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
@@ -42,7 +42,9 @@ public class ChatFormController extends AbstractFormController {
             joinRoom(request.getParameter("submit.joinRoom.name"));
         }
 
-        return new ModelAndView("chat", "chat", chatFormData);
+        ModelAndView modelAndView = new ModelAndView("chat");
+        modelAndView.addObject("chat", chatFormData);
+        return modelAndView;
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
