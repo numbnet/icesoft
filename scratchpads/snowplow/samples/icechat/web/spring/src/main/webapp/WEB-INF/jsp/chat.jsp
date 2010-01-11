@@ -50,7 +50,7 @@
             <div class="chatRooms chatRooms_pos">
                 <center><h3>Chat Rooms</h3></center>
 
-                <table width="100%" cellspacing="2" cellpadding="2">
+                <table width="99%" cellspacing="2" cellpadding="2">
                 <c:forEach var="room" items="${chat.chatManagerFacade.chatRooms}">
                     <tr>
                         <td>
@@ -64,10 +64,10 @@
                 </c:forEach>
                 </table>
 
-                <hr width="100%" style="border: 0; border-top: 5px solid #B9D6E8;"/>
+                <hr width="99%" style="border: 0; border-top: 5px solid #B9D6E8;"/>
 
                 <form:form method="post" commandName="chat">
-                    <table width="100%" cellspacing="0" cellpadding="0">
+                    <table width="99%" cellspacing="0" cellpadding="0">
                         <tr>
                             <td width="100%" colspan="2" align="center">
                                 <fmt:message key="roomTitle"/>
@@ -106,7 +106,7 @@
 
                         <div class="chatRoomMessages">
                             <div class="chatViewSubHeader">Messages</div>
-                            <table>
+                            <table width="100%" cellspacing="2" cellpadding="2">
                             <c:forEach var="msg" items="${chat.currentChatSessionHolder.session.room.messages}">
                                 <tr><td>
                                     [<fmt:formatDate value="${msg.created}" type="both" dateStyle="short" timeStyle="short"/>]
