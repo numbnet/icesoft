@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
         <script type="text/javascript" src="code.icepush"></script>
     </head>
-    <body>
+    <body onload="focusChat();">
 
         <script type="text/javascript">
             ice.push.register(['${chat.pushRequestContext.currentPushId}'],
@@ -18,6 +18,10 @@
                     window.location = window.location.href;
                 }
             );
+
+            function focusChat() {
+                document.getElementById('messageInput').focus();
+            }
         </script>
 
         <div class="header_container">
@@ -119,7 +123,7 @@
                         <form:form method="post" commandName="chat">
                             <fmt:message key="newMessage"/>
                             
-                            <form:input path="newMessage.message" maxlength="1024"
+                            <form:input id="messageInput" path="newMessage.message" maxlength="1024"
                                         style="width: 60%;"/>
                             
                             <input type="submit" name="submit.sendMessage" value="Send"/>
