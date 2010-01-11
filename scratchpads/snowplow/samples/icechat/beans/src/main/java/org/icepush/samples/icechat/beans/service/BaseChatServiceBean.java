@@ -103,7 +103,6 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 	public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index) {
 		
 		ChatRoom room = chatRooms.get(chatRoom);
-		System.out.println("reading messages - there are " + room.getMessages().size());
 		if (room != null) {
 			index = Math.max(0, index);
 			index = Math.min(index, room.getMessages().size());
@@ -156,7 +155,6 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 					msg.setMessage(message);
 					msg.setUserChatSession(chatSession);
 					chatSession.getRoom().getMessages().add(msg);
-					System.out.println("Added message - now there are " + chatSession.getRoom().getMessages().size());
 				}
 			}
 		}

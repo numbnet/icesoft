@@ -87,8 +87,6 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public List<String> getParticipants(ChatRoomHandle handle) {
-//		System.out.println("Getting Participants");
-//		return this.participants.get(handle.getName());
 		
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 				.getServletContext());
@@ -106,7 +104,6 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 	public void sendMessage(String message, String username,
 			ChatRoomHandle handle) {
 		
-		
 		User currentUser = AuthenticationProvider
 			.getSessionUser(getThreadLocalRequest());
 
@@ -114,7 +111,6 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 			.getServletContext());
 		
 		chatService.sendNewMessage(handle.getName(), currentUser.getUserName(), currentUser.getPassword(), message);
-
 
 		participantTextBoxes.put(username + handle.getName(), "");
 
