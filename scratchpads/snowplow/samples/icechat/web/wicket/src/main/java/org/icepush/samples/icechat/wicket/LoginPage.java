@@ -17,7 +17,7 @@ import org.icepush.samples.icechat.service.exception.LoginFailedException;
  *
  * @author bkroeger
  */
-public final class LoginPage extends HomePage {
+public final class LoginPage extends AppBasePage {
     public LoginPage() {
         super ();
         final Form loginForm = new Form("login",compoundCredentialsBean);

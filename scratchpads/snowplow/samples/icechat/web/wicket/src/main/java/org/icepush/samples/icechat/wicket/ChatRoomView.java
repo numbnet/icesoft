@@ -5,7 +5,6 @@
 
 package org.icepush.samples.icechat.wicket;
 import java.util.Iterator;
-import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,11 +16,11 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
-import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
-import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.UserChatSession;
+import org.icepush.samples.icechat.wicket.model.CurrentChatSessionHolderBean;
+import org.icepush.samples.icechat.wicket.model.NewChatRoomMessageBean;
+import org.icepush.samples.icechat.wicket.view.ChatManagerViewControllerBean;
 
 /**
  *
@@ -29,7 +28,6 @@ import org.icepush.samples.icechat.model.UserChatSession;
  */
 public final class ChatRoomView extends Panel {
 
-    @Inject
     ChatManagerViewControllerBean chatManagerVC;
 
     private final ListView messagesListView;
@@ -66,7 +64,7 @@ public final class ChatRoomView extends Panel {
 	chatRoomForm.add(new AjaxButton("send") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
                             chatManagerVC.sendNewMessage();
-                            setResponsePage(getPage());
+                            setResponsePage(getPage().getClass());
 			}
 		});
 
