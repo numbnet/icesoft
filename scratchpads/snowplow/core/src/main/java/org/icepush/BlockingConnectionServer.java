@@ -68,7 +68,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private Observable notifier;
 
     public BlockingConnectionServer(Observable outboundNotifier, final Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
-        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 3000);
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
         this.notifier = outboundNotifier;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
