@@ -31,7 +31,7 @@
             <gwt:HorizontalPanel ui:field="horizontalLayoutPanel" gwt:spacing="10" stylePrimaryName="{style.fillWidth}">
                 <gwt:HTMLPanel ui:field="chatUsersPanel">
                     <div class="chatRoomUsers" style="width: 100%;">
-                        <div class="chatViewSubHeader">Hows Here?</div>
+                        <div class="chatViewSubHeader">Who's Here?</div>
                         <gwt:ScrollPanel height="300px">
                             <gwt:VerticalPanel ui:field="roomUserList" stylePrimaryName="{style.boldBlueText}">
                             </gwt:VerticalPanel>
