@@ -1085,7 +1085,7 @@ public class TableRenderer
                                     String[] columnWidths) {
         StringBuffer width = new StringBuffer();
         //guaranteed no null
-        if (columnWidths.length > 0) {
+        if (columnWidths.length > 0 && htmlDataTable.getColNumber() < columnWidths.length) {
             try {
                 width.append("width:");                 
                 width.append(columnWidths[htmlDataTable.getColNumber()]);
