@@ -11,6 +11,7 @@ import org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import java.util.Map;
 
 public class ChatFormController extends AbstractFormController {
 
@@ -27,11 +28,12 @@ public class ChatFormController extends AbstractFormController {
 
     public ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
                                  BindException errors) throws Exception {
-        if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
-        }
+        Map<String,Object> model = errors.getModel();
+        model.put("chat", chatFormData);
+        model.put("loginController", loginController);
+        model.put("chatManagerFacade", chatManagerFacade);
 
-        return buildModelAndView();
+        return showForm(request, errors, "chat", model);
     }
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
@@ -46,20 +48,16 @@ public class ChatFormController extends AbstractFormController {
             joinRoom(request.getParameter("submit.joinRoom.name"));
         }
 
-        return buildModelAndView();
-    }
-
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
-        return chatFormData;
-    }
-
-    protected ModelAndView buildModelAndView() {
         ModelAndView modelAndView = new ModelAndView("chat");
         modelAndView.addObject("chat", chatFormData);
         modelAndView.addObject("loginController", loginController);
         modelAndView.addObject("chatManagerFacade", chatManagerFacade);
 
         return modelAndView;
+    }
+
+    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+        return chatFormData;
     }
 
     private void sendMessage() {
@@ -114,6 +112,10 @@ public class ChatFormController extends AbstractFormController {
     }
 
     public void setChatFormData(ChatFormData chatFormData) {
+        if (chatFormData.getPushRequestContext() == null) {
+            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
+        }
+
         this.chatFormData = chatFormData;
     }
 

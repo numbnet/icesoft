@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
         <script type="text/javascript" src="code.icepush"></script>
     </head>
-    <body onload="focusChat();">
+    <body><!-- onload="focusChat();" -->
 
         <script type="text/javascript">
             ice.push.register(['${chat.pushRequestContext.currentPushId}'],
@@ -18,9 +18,12 @@
                     window.location = window.location.href;
                 }
             );
-
+        </script>
+        <script type="text/javascript">
             function focusChat() {
-                document.getElementById('messageInput').focus();
+                if (document.getElementById('messageInput')) {
+                    document.getElementById('messageInput').focus();
+                }
             }
         </script>
 
