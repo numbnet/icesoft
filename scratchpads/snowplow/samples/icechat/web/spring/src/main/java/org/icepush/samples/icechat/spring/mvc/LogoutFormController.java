@@ -26,7 +26,11 @@ public class LogoutFormController implements Controller {
                 ((LoginFormData) baseLoginController.getCredentialsBean()).clear();
             }
 
+            // Request a logout
             baseLoginController.logout();
+
+            // Destroy our session
+            request.getSession(false).invalidate();
         }
 
         return new ModelAndView(new RedirectView("login.htm"));
