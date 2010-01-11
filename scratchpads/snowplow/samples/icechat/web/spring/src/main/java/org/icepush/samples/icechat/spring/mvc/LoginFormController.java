@@ -54,11 +54,27 @@ public class LoginFormController extends SimpleFormController {
         return loginFormData;
     }
 
-    public PushRequestManager getPushRequestManager() { return pushRequestManager; }
-    public LoginFormData getLoginFormData() { return loginFormData; }
-    public BaseLoginController getBaseLoginController() { return baseLoginController; }
+    public PushRequestManager getPushRequestManager() {
+        return pushRequestManager;
+    }
 
-    public void setPushRequestManager(PushRequestManager pushRequestManager) { this.pushRequestManager = pushRequestManager; }
-    public void setLoginFormData(LoginFormData loginFormData) { this.loginFormData = loginFormData; }
-    public void setBaseLoginController(BaseLoginController baseLoginController) { this.baseLoginController = baseLoginController; }
+    public void setPushRequestManager(PushRequestManager pushRequestManager) {
+        this.pushRequestManager = pushRequestManager;
+    }
+
+    public LoginFormData getLoginFormData() {
+        return loginFormData;
+    }
+
+    public void setLoginFormData(LoginFormData loginFormData) {
+        this.loginFormData = loginFormData;
+    }
+
+    public BaseLoginController getBaseLoginController() {
+        return baseLoginController;
+    }
+
+    public void setBaseLoginController(BaseLoginController baseLoginController) {
+        this.baseLoginController = baseLoginController;
+    }
 }
