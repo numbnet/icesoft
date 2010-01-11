@@ -4,7 +4,6 @@
  */
 
 package org.icepush.samples.icechat.wicket;
-import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -16,25 +15,22 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.icepush.samples.icechat.beans.model.BaseNewChatRoomBean;
-import org.icepush.samples.icechat.cdi.facade.ChatManagerFacadeBean;
-import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
-import org.icepush.samples.icechat.cdi.service.ChatServiceApplicationBean;
-import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.ChatRoom;
+import org.icepush.samples.icechat.wicket.facade.ChatManagerFacadeBean;
+import org.icepush.samples.icechat.wicket.model.CurrentChatSessionHolderBean;
+import org.icepush.samples.icechat.wicket.service.ChatServiceApplicationBean;
+import org.icepush.samples.icechat.wicket.view.ChatManagerViewControllerBean;
 
 /**
  *
  * @author bkroeger
  */
-public final class ChatPage extends HomePage {
+public final class ChatPage extends AppBasePage {
 
-    @Inject
     ChatManagerViewControllerBean chatManagerVC;
 
-    @Inject
     ChatManagerFacadeBean chatManagerFacadeBean;
 
-    @Inject
     ChatServiceApplicationBean chatService;
 
     private NewChatRoomBean newChatRoomBean = new NewChatRoomBean();
@@ -67,7 +63,7 @@ public final class ChatPage extends HomePage {
         add(chatSession);
 
         final Form chatRooms = new Form("chatRooms");
-        chatRooms.setOutputMarkupId(true);
+        //chatRooms.setOutputMarkupId(true);
         
         chatRooms.add(chatRoomsListView = new ListView("chatRoomsListView", chatManagerFacadeBean.getChatRooms()){
             public void populateItem(final ListItem listItem){
@@ -75,7 +71,7 @@ public final class ChatPage extends HomePage {
                 listItem.add(new AjaxButton("name",new Model(chatRoom.getName())) {
                     protected void onSubmit(AjaxRequestTarget target, Form form) {
                         chatManagerVC.openChatSession(chatRoom.getName());
-                        setResponsePage(getPage());
+                        setResponsePage(getPage().getClass());
                     }
 	        });
                 
@@ -92,8 +88,8 @@ public final class ChatPage extends HomePage {
                             chatManagerVC.setNewChatRoomBean(newChatRoomBean);
                             chatManagerVC.createNewChatRoom();
                             chatRoomsListView.modelChanged();
-                            target.addComponent(chatRooms);
-                            //setResponsePage(getPage());
+                            //target.addComponent(chatRooms);
+                            setResponsePage(getPage().getClass());
 			}
 		});
         add(createNewChatRoom);
