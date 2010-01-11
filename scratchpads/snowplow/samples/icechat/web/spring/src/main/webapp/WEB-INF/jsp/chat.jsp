@@ -36,11 +36,11 @@
             </div>
         </div>
 
-        <c:if test="${!empty chat.loginController.currentUser}">
+        <c:if test="${!empty loginController.currentUser}">
             <div class="body_container body_container_pos">
 
                 <div class="chatSession chatSession_pos">
-                    <c:out value="You are logged in as ${chat.loginController.currentUser.userName} (${chat.loginController.currentUser.nickName})"/>
+                    <c:out value="You are logged in as ${loginController.currentUser.userName} (${loginController.currentUser.nickName})"/>
                     <a href="logout.htm">Logout</a>
                 </div>
 
@@ -51,7 +51,7 @@
                 <center><h3>Chat Rooms</h3></center>
 
                 <table width="99%" cellspacing="2" cellpadding="2">
-                <c:forEach var="room" items="${chat.chatManagerFacade.chatRooms}">
+                <c:forEach var="room" items="${chatManagerFacade.chatRooms}">
                     <tr>
                         <td>
                             <form:form method="post" commandName="chat">
@@ -133,7 +133,7 @@
             </c:if>
         </c:if>
 
-        <c:if test="${empty chat.loginController.currentUser}">
+        <c:if test="${empty loginController.currentUser}">
             <div class="body_container">
                 <p>Please <a href="login.htm">login</a> first before attempting to chat...</p>
             </div>

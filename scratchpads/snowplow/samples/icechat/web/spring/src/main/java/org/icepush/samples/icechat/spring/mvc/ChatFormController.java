@@ -5,6 +5,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icepush.samples.icechat.spring.impl.BaseLoginController;
+import org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,8 @@ public class ChatFormController extends AbstractFormController {
 
     private PushRequestManager pushRequestManager;
     private ChatFormData chatFormData;
+    private BaseLoginController loginController;
+    private BaseChatManagerFacade chatManagerFacade;
 
     public ChatFormController() {
         super();
@@ -27,7 +31,7 @@ public class ChatFormController extends AbstractFormController {
             chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
         }
 
-        return super.showForm(request, errors, "chat");
+        return buildModelAndView();
     }
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
@@ -42,13 +46,20 @@ public class ChatFormController extends AbstractFormController {
             joinRoom(request.getParameter("submit.joinRoom.name"));
         }
 
-        ModelAndView modelAndView = new ModelAndView("chat");
-        modelAndView.addObject("chat", chatFormData);
-        return modelAndView;
+        return buildModelAndView();
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         return chatFormData;
+    }
+
+    protected ModelAndView buildModelAndView() {
+        ModelAndView modelAndView = new ModelAndView("chat");
+        modelAndView.addObject("chat", chatFormData);
+        modelAndView.addObject("loginController", loginController);
+        modelAndView.addObject("chatManagerFacade", chatManagerFacade);
+
+        return modelAndView;
     }
 
     private void sendMessage() {
@@ -73,7 +84,7 @@ public class ChatFormController extends AbstractFormController {
             chatFormData.getNewChatRoom().setName("Default");
         }
 
-        logger.info("Create Room '" + chatFormData.getNewChatRoom().getName() + "' by " + chatFormData.getLoginController().getCurrentUser().getUserName());
+        logger.info("Create Room '" + chatFormData.getNewChatRoom().getName() + "' by " + loginController.getCurrentUser().getUserName());
 
         chatFormData.getChatManagerViewController().setNewChatRoomBean(chatFormData.getNewChatRoom());
         chatFormData.getChatManagerViewController().createNewChatRoom();
@@ -84,7 +95,7 @@ public class ChatFormController extends AbstractFormController {
 
     private void joinRoom(String name) {
         if (name != null) {
-            logger.info("Join Room '" + name + "' by " + chatFormData.getLoginController().getCurrentUser().getUserName());
+            logger.info("Join Room '" + name + "' by " + loginController.getCurrentUser().getUserName());
 
             chatFormData.getChatManagerViewController().openChatSession(name);
         }
@@ -104,5 +115,21 @@ public class ChatFormController extends AbstractFormController {
 
     public void setChatFormData(ChatFormData chatFormData) {
         this.chatFormData = chatFormData;
+    }
+
+    public BaseLoginController getLoginController() {
+        return loginController;
+    }
+
+    public void setLoginController(BaseLoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    public BaseChatManagerFacade getChatManagerFacade() {
+        return chatManagerFacade;
+    }
+
+    public void setChatManagerFacade(BaseChatManagerFacade chatManagerFacade) {
+        this.chatManagerFacade = chatManagerFacade;
     }
 }
