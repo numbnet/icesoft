@@ -1,6 +1,5 @@
 package org.icepush.samples.icechat.wicket;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,15 +11,14 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.icepush.samples.icechat.AbstractPushRequestContext;
 import org.icepush.samples.icechat.IPushRequestContext;
 import org.icepush.samples.icechat.beans.model.BaseCredentialsBean;
-import org.icepush.samples.icechat.cdi.controller.LoginController;
+import org.icepush.samples.icechat.wicket.controller.LoginController;
 
-public class HomePage extends WebPage {
+public class AppBasePage extends WebPage {
 
-	@Inject
 	LoginController loginController;
-	
+
 	//@EJB
-    //private ChatServiceLocal chatService;
+        //private ChatServiceLocal chatService;
 	
 	IPushRequestContext pushRequestContext;
 
@@ -30,7 +28,7 @@ public class HomePage extends WebPage {
 
         CompoundPropertyModel compoundCredentialsBean = new CompoundPropertyModel(credentialsBean);
 
-	public HomePage() {
+	public AppBasePage() {
 		super();
                 add(new ContextImage("banner_hdr","./img/banner_hdr.jpg"));
 	}
@@ -53,6 +51,14 @@ public class HomePage extends WebPage {
 		}
 		return pushRequestContext;
 	}
+
+    public CompoundPropertyModel getCompoundCredentialsBean() {
+        return compoundCredentialsBean;
+    }
+
+    public void setCompoundCredentialsBean(CompoundPropertyModel compoundCredentialsBean) {
+        this.compoundCredentialsBean = compoundCredentialsBean;
+    }
 
 }
 
