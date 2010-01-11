@@ -17,10 +17,14 @@ import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
+/**
+ * @TODO This class does not look threadsafe....
+ * 
+ */
 public abstract class BaseChatServiceBean implements Serializable, IChatService {
 
-	private Map<String, ChatRoom> chatRooms = new HashMap<String, ChatRoom>();
-	private Map<String, User> users = new HashMap<String, User>();
+	protected Map<String, ChatRoom> chatRooms = new HashMap<String, ChatRoom>();
+	protected Map<String, User> users = new HashMap<String, User>();
 
 	public BaseChatServiceBean() {
 		chatRooms = new HashMap<String, ChatRoom>();
@@ -85,8 +89,9 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
+
 	public List<Message> getAllChatRoomMessages(String chatRoom) {
-		ChatRoom room = chatRooms.get("chatRoom");
+		ChatRoom room = chatRooms.get(chatRoom);
 		if (room != null) {
 			return room.getMessages();
 		} else {
@@ -94,15 +99,27 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
+	
 	public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index) {
-		ChatRoom room = chatRooms.get("chatRoom");
+		
+		ChatRoom room = chatRooms.get(chatRoom);
+		System.out.println("reading messages - there are " + room.getMessages().size());
 		if (room != null) {
-			return room.getMessages().size() >= index ? room.getMessages()
-					.subList(index, room.getMessages().size() - 1) : null;
+			index = Math.max(0, index);
+			index = Math.min(index, room.getMessages().size());
+			//now index should be bounded properly.
+			return room.getMessages().subList(index, room.getMessages().size());
+			
+			
+			//TODO this seems incorrect...
+//			return room.getMessages().size() >= index ? room.getMessages()
+//					.subList(index, room.getMessages().size() - 1) : null;
 		} else {
 			return null;
 		}
 	}
+	
+
 
 	public UserChatSession createNewChatRoom(String name, String userName,
 			String password) {
@@ -139,6 +156,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 					msg.setMessage(message);
 					msg.setUserChatSession(chatSession);
 					chatSession.getRoom().getMessages().add(msg);
+					System.out.println("Added message - now there are " + chatSession.getRoom().getMessages().size());
 				}
 			}
 		}

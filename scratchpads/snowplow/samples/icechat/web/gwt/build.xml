@@ -14,8 +14,9 @@
     <!--pathelement location="../../service/api/dist/${icechat.service.api.jar.name}"/>
     <pathelement location="../../model/dist/${icechat.model.jar.name}"/>
     <pathelement location="../../beans/dist/${icechat.beans.jar.name}"/-->
-    <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
+    
     <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
+  	<!--fileset dir="war/WEB-INF/lib" includes="**/*.jar"/-->
     <!--fileset dir="../../common_lib/gfv3" includes="*.jar"/-->
     <!-- Add any additional non-server libs (such as JUnit) -->
     

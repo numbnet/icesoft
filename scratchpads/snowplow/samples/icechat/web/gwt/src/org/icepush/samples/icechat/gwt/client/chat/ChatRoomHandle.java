@@ -17,6 +17,7 @@ public class ChatRoomHandle implements Serializable{
 
     protected void initialize(String name){
         this.chatRoomName = name;
+        this.messageIndex = 0;
     }
 
     public String getName(){

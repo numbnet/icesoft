@@ -142,7 +142,6 @@ public class ChatScreen extends Composite {
 
         while(keys.hasNext()){
             String key = keys.next();
-            Window.alert("Removing: [" + key + "]");
             GWTPushContext.getInstance().removePushEventListener(this.characterListeners.get(key));
         }
 
