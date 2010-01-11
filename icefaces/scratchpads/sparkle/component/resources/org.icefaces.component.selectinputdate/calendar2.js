@@ -4,6 +4,7 @@ YAHOO.icefaces.calendar.init = function(params) {
     Element = YAHOO.util.Element;
     Event = YAHOO.util.Event;
     Dom = YAHOO.util.Dom;
+    KeyListener = YAHOO.util.KeyListener;
 
     var rootDivId = params.divId;
     var rootDiv = new Element(rootDivId);
@@ -55,6 +56,17 @@ YAHOO.icefaces.calendar.init = function(params) {
     var buttonClick = function() {
         dialog.show();
     };
+    var inputEnter = function(evType, fireArgs, subscribeObj) {
+//        for (var i = 0; i < arguments.length; i++) {
+//            alert(arguments[i]);
+//        }
+        var dateStr = this.value;
+        ice.submit(fireArgs[1], this, function(p) {
+            p(rootDivId, dateStr);
+        });
+    };
+    var inputKL = new KeyListener(inputEl.get("element"), {keys:KeyListener.KEY.ENTER},
+                                  {fn:inputEnter, scope:inputEl.get("element"), correctScope:true});
     var domReady = function() {
         Event.addListener(document, "click", function(e) {
             var el = Event.getTarget(e);
@@ -65,6 +77,7 @@ YAHOO.icefaces.calendar.init = function(params) {
             }
         });
         buttonEl.addListener("click", buttonClick);
+        inputKL.enable();
     };
 
     Event.onDOMReady(domReady);
