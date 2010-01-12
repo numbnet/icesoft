@@ -4,6 +4,7 @@
  */
 package org.icepush.samples.icechat.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,22 +15,25 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Singleton;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.api.ChatServiceLocal;
-import org.icepush.samples.icechat.service.api.exception.LoginFailedException;
+import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 /**
  *
  * @author pbreau
  */
 @Singleton
-public class ChatServiceSingletonEJB implements ChatServiceLocal {
+public class ChatServiceSingletonEJB implements ChatServiceLocal, Serializable {
 
-    private Map<String, ChatRoom> chatRooms = new HashMap<String,ChatRoom>();
+    private static final long serialVersionUID = 1L;
+	private Map<String, ChatRoom> chatRooms = new HashMap<String,ChatRoom>();
     private Map<String, User> users = new HashMap<String,User>();
     
     public ChatServiceSingletonEJB(){

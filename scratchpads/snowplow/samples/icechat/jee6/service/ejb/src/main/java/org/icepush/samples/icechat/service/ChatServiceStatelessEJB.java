@@ -18,7 +18,7 @@ import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.api.ChatServiceLocal;
-import org.icepush.samples.icechat.service.api.exception.LoginFailedException;
+import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 /**
  *
