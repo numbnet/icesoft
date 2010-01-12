@@ -26,7 +26,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         if (calendar.getSelectedDates().length > 0) {
             var selDate = calendar.getSelectedDates()[0];
             var dateStr = selDate.getFullYear() + "-" + (selDate.getMonth() + 1) + "-" + selDate.getDate() +
-                    " " + params.selectedHour + ":" + params.selectedMinute;
+                    " " + hrSelEl.get("value") + ":" + minSelEl.get("value");
 //            inputEl.setAttributes({value:dateStr}, true);
             ice.submit(evt, Dom.get(calendar.id), function(p) {
                 p(rootDivId, dateStr);
@@ -42,6 +42,29 @@ YAHOO.icefaces.calendar.init = function(params) {
     });
     dialog.setHeader("Date of Birth");
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
+    var hrSelEl = new Element(document.createElement("select"));
+    var optionEl;
+    for (i = 0; i < 24; i++) {
+        optionEl = new Element(document.createElement("option"), {value:i});
+        if (i == params.selectedHour) optionEl.set("selected", "selected", true);
+        optionEl.appendChild(document.createTextNode(i));
+        optionEl.appendTo(hrSelEl);
+    }
+//    dialog.appendToBody(hrSelEl.get("element"));
+//    dialog.appendToBody(document.createTextNode(":"));
+    var minSelEl = new Element(document.createElement("select"));
+    for (i = 0; i < 60; i++) {
+        optionEl = new Element(document.createElement("option"), {value:i});
+        if (i == params.selectedMinute) optionEl.set("selected", "selected", true);
+        optionEl.appendChild(document.createTextNode(i));
+        optionEl.appendTo(minSelEl);
+    }
+//    dialog.appendToBody(minSelEl.get("element"));
+    var docFrag = document.createDocumentFragment();
+    docFrag.appendChild(hrSelEl.get("element"));
+    docFrag.appendChild(document.createTextNode(" : "));
+    docFrag.appendChild(minSelEl.get("element"));
+    dialog.appendToBody(docFrag);
     dialog.render(rootDiv);
 
     var calendar = new YAHOO.widget.Calendar(rootDivId + "_cal", {
