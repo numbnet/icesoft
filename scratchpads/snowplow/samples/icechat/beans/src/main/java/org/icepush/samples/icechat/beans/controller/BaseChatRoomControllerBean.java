@@ -9,6 +9,7 @@ import org.icepush.samples.icechat.controller.IChatRoomController;
 import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
+import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 public class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
 	
@@ -24,13 +25,11 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 		this.pushRequestContext = pushRequestContext;
 	}
 
-	public UserChatSession createNewChatRoom(String chatRoomName, String userName, String password){
-                UserChatSession session = chatService.createNewChatRoom(chatRoomName, userName, password);
+	public void createNewChatRoom(String chatRoomName, String userName, String password){
+        chatService.createNewChatRoom(chatRoomName, userName, password);
 		PushContext pushContext = pushRequestContext.getPushContext();
         pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
         pushContext.push(chatRoomName);
-        log.info("created new chat session: " + session);
-		return session;
 	}
 	
 	public UserChatSession openChatSession(String chatRoomName, String userName, String password){
@@ -46,8 +45,9 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 		return session;
 	}
 	
-	public void sendNewMessage(String chatRoomName, String newMessage, String userName, String password){
-		chatService.sendNewMessage(chatRoomName, userName, password,	newMessage);
+	public void sendNewMessage(String chatRoomName, String newMessage, String userName, String password)
+		throws UnauthorizedException{
+		chatService.sendNewMessage(chatRoomName, userName, password, newMessage);
 		PushContext pushContext = pushRequestContext.getPushContext();
         pushContext.push(chatRoomName);
 	}

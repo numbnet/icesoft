@@ -25,8 +25,18 @@ public class UserChatSession implements Serializable{
     private Date exited;
 
     private boolean live;
+    
+    private String currentDraft;
 
-    public UserChatSession(){
+    public String getCurrentDraft() {
+		return currentDraft;
+	}
+
+	public void setCurrentDraft(String currentDraft) {
+		this.currentDraft = currentDraft;
+	}
+
+	public UserChatSession(){
         entered = new Date();
     }
 
