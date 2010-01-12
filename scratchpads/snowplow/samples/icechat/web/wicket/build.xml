@@ -116,7 +116,7 @@
 		<echo>Compiling Wicket...</echo>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dir}/classes"/>
-		<javac srcdir="${java.dir}" destdir="${build.dir}/classes">
+		<javac srcdir="${java.dir}" destdir="${build.dir}/classes" debug="true" debuglevel="lines, vars, and source">
 			<classpath refid="compile.path"/>
 		</javac>
 		<copy todir="${build.dir}/classes" preservelastmodified="true" verbose="true">
