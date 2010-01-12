@@ -27,43 +27,34 @@
                 </div>
             </div>
         </div>
-
-        <div class="body_container">
-            <div class="chatSession">
-                <form wicket:id="chatSession">
-                    You are logged in as
-                    <span wicket:id="userName">userName</span>
-                    <span wicket:id="nickName">nickName</span>
-                    &nbsp;
-                    <input wicket:id="logout" type="button" value="Logout"/>
-                </form>
-            </div>
-
-            <div class="clearer"/>
-
-            <div class="chatRooms">
-                <h3>Chat Rooms</h3>
-                <form wicket:id="chatRooms">
-                    <div>
-                        <span wicket:id="chatRoomsListView">
-                            <input wicket:id="name" type="button" /><br/>
-                        </span>
-                        <!--<input wicket:id="chatRoomRepeater" type="button" />-->
+            <div class="chatRoomView">
+                <form wicket:id="chatRoomForm">
+                    <div class="chatRoomHeader">
+                        Chat Room <span wicket:id="currentChatSessionHolder.session.room.name">currentChatSessionHolder.session.room.name</span>
                     </div>
-                </form>
-                <form wicket:id="createNewChatRoom">
-                    <div class="createNewChatRoom">
-                        Create New Chat Room
-                        <br/>
-                        <label for="newChatRoomName">Name&nbsp;</label>
-                        <input wicket:id="name" style="width: 100px;margin-top:5px;"/>
-                        <input wicket:id="register" style="margin-top:5px;" type="button" value="Create"/>
+                    <div class="chatRoomContainer">
+                        <div class="chatRoomUsers">
+                            <div class="chatViewSubHeader">Who's Here?</div>
+                            <span wicket:id="usersListView">
+                                <span wicket:id="userName">userChatSession.user.displayName</span><br/>
+                            </span>
+                        </div>
+                        <div class="chatRoomMessages">
+                            <div class="chatViewSubHeader">Messages</div>
+                            <span wicket:id="messagesListView">
+                                <span wicket:id="created">msg.created</span>
+                                &nbsp;<span wicket:id="userChatSession.user.displayName">msg.userChatSession.user.displayName</span> said
+                                &nbsp;'<span wicket:id="message">msg.message</span>'<br/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="clearer"/>
+                    <div class="addNewMessage">
+                        New Message&nbsp;
+                        <input wicket:id="messageInput" style="width:40%;"/>
+                        <input wicket:id="send" type="button" value="Send"/>
                     </div>
                 </form>
             </div>
-
-            <span wicket:id="chatRoomView"/>
-
-        </div>
     </body>
 </html>

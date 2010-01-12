@@ -18,7 +18,7 @@ public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomCont
 	
 	private INewChatRoomBean newChatRoomBean;
 	
-	private ICurrentChatSessionHolderBean currentChatSessionHolder;
+	protected ICurrentChatSessionHolderBean currentChatSessionHolder;
 	
 	private INewChatRoomMessageBean newChatRoomMessageBean;
 	
