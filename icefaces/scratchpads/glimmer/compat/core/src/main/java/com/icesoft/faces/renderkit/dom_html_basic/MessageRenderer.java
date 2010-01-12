@@ -79,7 +79,10 @@ public class MessageRenderer extends DomBasicRenderer {
             }
         }
 
-
+        if(facesMessage.isRendered() && !((UIMessage)uiComponent).isRedisplay()){
+            return;
+        }
+        facesMessage.rendered();
         // Remove the previous message 
         DOMContext.removeChildren(root);
 
