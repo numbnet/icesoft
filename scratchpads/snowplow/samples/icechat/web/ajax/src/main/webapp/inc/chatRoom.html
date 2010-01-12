@@ -1,0 +1,25 @@
+<div class="chatRoom">
+	<form id="chatRoomForm">
+		<input type="hidden" id="roomName" value=""/>
+		<div class="chatRoomHeader">
+			Chat Room '<span id="currentChatRoomName"></span>'
+		</div>
+		<div class="chatRoomContainer">
+			<div class="chatRoomUsers">
+				<div class="chatViewSubHeader">Who's Here?</div>
+				<div id="users"></div>
+			</div>
+			<div class="chatRoomMessages">
+				<div class="chatViewSubHeader">Messages</div>
+				<div id="chatRoomMessages"></div>
+			</div>
+		</div>
+		<div class="clearer"></div>
+		<div class="addNewMessage">
+			New Message&nbsp;
+			<input type="text" id="newChatRoomMessage" style="width:40%;" />
+			<input type="button" onclick="sendNewChatRoomMessage();"
+				value="Send" />
+		</div>
+	</form>
+</div>
