@@ -40,6 +40,10 @@
 		<ant antfile="build.xml" target="war" dir="./web/ajax"/>
 	</target>	
 
+	<target name="jquery" depends="ajax">
+		<ant antfile="build.xml" target="war" dir="./web/jquery"/>
+	</target>	
+
 	<target name="spring" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/spring"/>
 	</target>
