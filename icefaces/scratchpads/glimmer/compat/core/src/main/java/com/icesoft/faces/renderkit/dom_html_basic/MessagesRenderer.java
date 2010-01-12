@@ -147,7 +147,10 @@ public class MessagesRenderer extends DomBasicRenderer {
         while (messagesIterator.hasNext()) {
 
             nextFacesMessage = (FacesMessage) messagesIterator.next();
-
+            if(nextFacesMessage.isRendered() && !((UIMessages)uiComponent).isRedisplay()){
+                return;
+            }
+            nextFacesMessage.rendered();
             String[] styleAndStyleClass =
                     getStyleAndStyleClass(uiComponent, nextFacesMessage);
             String style = styleAndStyleClass[0];
