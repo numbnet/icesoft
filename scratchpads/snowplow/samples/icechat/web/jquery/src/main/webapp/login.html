@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>ICEpush ICEchat (AJAX)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
+        <!-- script type="text/javascript" src="code.icepush"></script-->
+        <script type="text/javascript" src="./js/icechat.js"></script>
+    </head>
+    <body>
+    
+    	<div id="headerContainer" class="header_container">
+    		<!-- script type="text/javascript">loadHeader(document.getElementById("headerContainer"));</script-->
+    		<div class="header_content"><img width="109px" height="100px"
+				src="./img/banner_hdr.jpg" style="float: left" />
+				<div style="font-size: 20pt; color: #0F65B8; margin-top: 45px;float:left;">
+					<span style="font-weight: bold;">ICEpush</span> 
+					<span style="font-style: italic; font-family: Times New Roman"> with jQuery</span>
+				</div>
+				<div style="float:right;margin-top:45px;">
+					<img src="./img/jquery.gif" width="170px"/>
+				</div>
+			</div>    		
+    	</div>
+        
+        <div class="body_container body_container_pos" id="content">
+        
+        	<div id="loginPanel">
+	        	<div class="login">
+		            <form id="login">
+		                <h2>ICEchat Login</h2>
+		                <div style="text-align:right;">
+		                    <label for="userName">User Name </label>
+		                    <input type="text" id="userName"/>
+		                </div>
+		                <div style="text-align:right;">
+		                    <label for="nickName">Nick Name </label>
+		                    <input type="text" id="nickName"/>
+		                </div>
+		                <div style="text-align:right;">
+		                    <label for="password">Password </label>
+		                    <input type="password" id="password"/>
+		                </div>
+		                <div style="text-align:right;margin-top:20px;">
+		                    <input type="button" id="login" value="Login" onclick="window.login();"/>
+		                    <input type="button" id="register" value="Register" onclick="window.register();"/>
+		                </div>
+		                <div id="loginMessagesPanel">
+		                	<span id="loginMessages"/>
+		                </div>	            
+		               
+		            </form>
+	            </div>
+	        </div>         
+        </div>
+    </body>
+</html>
+
