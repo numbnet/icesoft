@@ -96,6 +96,11 @@ public class ChatRoom implements Serializable{
     	}
     	return false;
     }
+    
+    @Override
+    public String toString(){
+    	return "<div><a href=\"javascript:openChatRoom('" + this.name + "');\">" + this.name + "</a></div>";
+    }
 
 
 }

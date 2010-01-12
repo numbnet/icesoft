@@ -1,23 +1,25 @@
 package org.icepush.samples.icechat.gwt.server.service;
 
-import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
-import org.icepush.samples.icechat.gwt.client.service.ChatService;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import org.icepush.samples.icechat.gwt.push.adapter.GWTPushRequestContextAdaptor;
-import org.icepush.samples.icechat.gwt.server.service.beans.AuthenticationProvider;
-import org.icepush.samples.icechat.gwt.server.service.beans.ChatServiceBean;
-import org.icepush.PushContext;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.icepush.PushContext;
 import org.icepush.samples.icechat.gwt.client.chat.ChatHandleBuilder;
 import org.icepush.samples.icechat.gwt.client.chat.ChatMessageBuilder;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
+import org.icepush.samples.icechat.gwt.client.service.ChatService;
+import org.icepush.samples.icechat.gwt.push.adapter.GWTPushRequestContextAdaptor;
+import org.icepush.samples.icechat.gwt.server.service.beans.AuthenticationProvider;
+import org.icepush.samples.icechat.gwt.server.service.beans.ChatServiceBean;
 import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
+import org.icepush.samples.icechat.service.exception.UnauthorizedException;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class ChatServiceImpl extends RemoteServiceServlet implements
 		ChatService {
@@ -34,7 +36,9 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 				.getServletContext());
-		UserChatSession session = chatService.createNewChatRoom(name,
+		chatService.createNewChatRoom(name,
+				currentUser.getUserName(), currentUser.getPassword());
+		UserChatSession session = chatService.loginToChatRoom(name, 
 				currentUser.getUserName(), currentUser.getPassword());
 		//    	
 		// this.chatRooms.add(name);
@@ -110,14 +114,20 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 			.getServletContext());
 		
-		chatService.sendNewMessage(handle.getName(), currentUser.getUserName(), currentUser.getPassword(), message);
+		try{
+			chatService.sendNewMessage(handle.getName(), currentUser.getUserName(), currentUser.getPassword(), message);
 
-		participantTextBoxes.put(username + handle.getName(), "");
+			participantTextBoxes.put(username + handle.getName(), "");
 
-		PushContext.getInstance(this.getServletContext())
-				.push(handle.getName());
-		PushContext.getInstance(this.getServletContext()).push(
-				username + handle.getName().replaceAll(" ", "_"));
+			PushContext.getInstance(this.getServletContext())
+					.push(handle.getName());
+			PushContext.getInstance(this.getServletContext()).push(
+					username + handle.getName().replaceAll(" ", "_"));
+		}
+		catch(UnauthorizedException e){
+			e.printStackTrace();
+		}
+		
 	}
 
 	public ChatRoomHandle getMessages(ChatRoomHandle handle) {

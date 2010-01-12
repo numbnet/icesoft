@@ -8,6 +8,7 @@ import org.icepush.samples.icechat.controller.model.ICurrentChatSessionHolderBea
 import org.icepush.samples.icechat.controller.model.INewChatRoomBean;
 import org.icepush.samples.icechat.controller.model.INewChatRoomMessageBean;
 import org.icepush.samples.icechat.model.UserChatSession;
+import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 import org.icepush.samples.icechat.view.IChatManagerViewController;
 
 public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomControllerBean 
@@ -40,11 +41,9 @@ public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomCont
 	}
 
 	public void createNewChatRoom(){
-		UserChatSession newChatSession = createNewChatRoom(newChatRoomBean.getName(), 
+		createNewChatRoom(newChatRoomBean.getName(), 
 				loginController.getCurrentUser().getUserName(),
 				loginController.getCurrentUser().getPassword());
-		if( newChatSession != null )
-			currentChatSessionHolder.setSession(newChatSession);
 	}
 	
 	public void openChatSession(String chatRoom){
@@ -57,11 +56,16 @@ public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomCont
 	
 	public void sendNewMessage(){
 		if( currentChatSessionHolder.getSession() != null ){
-			sendNewMessage(currentChatSessionHolder.getSession().getRoom().getName(), 
-					newChatRoomMessageBean.getMessage(),
-					loginController.getCurrentUser().getUserName(),
-					loginController.getCurrentUser().getPassword());
-			newChatRoomMessageBean.setMessage(null);
+			try{
+				sendNewMessage(currentChatSessionHolder.getSession().getRoom().getName(), 
+						newChatRoomMessageBean.getMessage(),
+						loginController.getCurrentUser().getUserName(),
+						loginController.getCurrentUser().getPassword());
+				newChatRoomMessageBean.setMessage(null);
+			}
+			catch(UnauthorizedException e){
+				e.printStackTrace();
+			}
 		}
 		
 	}

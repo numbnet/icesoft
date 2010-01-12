@@ -110,5 +110,8 @@ public class User implements Serializable{
     	return nickName != null ? nickName : userName;
     }
 
+    public String toString(){
+    	return nickName != null ? nickName + " (" + userName + ")" : userName;
+    }
 
 }

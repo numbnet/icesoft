@@ -8,27 +8,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.icepush.PushContext;
 import org.icepush.samples.icechat.IPushRequestContext;
 
-public abstract class AbstractPushRequestContext implements Serializable, IPushRequestContext{
+public abstract class AbstractPushRequestContext implements Serializable,
+		IPushRequestContext {
 
-	private String currentPushId;
+	protected String currentPushId;
 	private PushContext pushContext;
-	
+
 	public String getCurrentPushId() {
 		return currentPushId;
 	}
-	
-	public PushContext getPushContext(){
+
+	public PushContext getPushContext() {
 		return pushContext;
 	}
 
-	protected void intializePushContext(HttpServletRequest request, HttpServletResponse response)
-		throws IllegalArgumentException{
-		if( request == null )
+	protected void intializePushContext(HttpServletRequest request,
+			HttpServletResponse response) throws IllegalArgumentException {
+		if (request == null)
 			throw new IllegalArgumentException("HttpServletRequest is null");
-		if( response == null )
+		if (response == null)
 			throw new IllegalArgumentException("HttpServletResponse is null");
-		pushContext = PushContext.getInstance(request.getSession().getServletContext());
+		pushContext = PushContext.getInstance(request.getSession()
+				.getServletContext());
 		currentPushId = pushContext.createPushId(request, response);
 	}
-	
+
+
 }
