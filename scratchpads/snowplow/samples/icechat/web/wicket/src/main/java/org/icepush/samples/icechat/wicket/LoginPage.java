@@ -11,21 +11,34 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.icepush.samples.icechat.beans.model.BaseCredentialsBean;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
+import org.icepush.samples.icechat.wicket.controller.LoginController;
 
 /**
  *
  * @author bkroeger
  */
 public final class LoginPage extends AppBasePage {
+
+    LoginController loginController = new LoginController();
+
+    CredentialsBean credentialsBean = new CredentialsBean();
+    class CredentialsBean extends BaseCredentialsBean{}
+
+    CompoundPropertyModel compoundLoginController = new CompoundPropertyModel(loginController);
+
     public LoginPage() {
         super ();
-        final Form loginForm = new Form("login",compoundCredentialsBean);
+        loginController.setChatService(chatService);
+        loginController.setCredentialsBean(credentialsBean);
+        final Form loginForm = new Form("login",compoundLoginController);
 
-        loginForm.add(new RequiredTextField<String>("userName"));
-        loginForm.add(new TextField<String>("nickName"));
-        loginForm.add(new PasswordTextField("password"));
-        loginForm.add(new AjaxButton("login") {
+        loginForm.add(new RequiredTextField<String>("credentialsBean.userName"));
+        loginForm.add(new TextField<String>("credentialsBean.nickName"));
+        loginForm.add(new PasswordTextField("credentialsBean.password"));
+        loginForm.add(new AjaxButton("loginButton") {
                 protected void onSubmit(AjaxRequestTarget target, Form form) {
                         try {
                             loginController.login(credentialsBean.getUserName(),
@@ -34,17 +47,17 @@ public final class LoginPage extends AppBasePage {
                         } catch (LoginFailedException e) {
                                 this.warn(e.getMessage());
                         }
-                        setResponsePage(new ChatPage(compoundCredentialsBean));
+                        setResponsePage(new ChatRoomsPage(compoundLoginController));
                 }
         });
-        loginForm.add(new AjaxButton("register") {
+        loginForm.add(new AjaxButton("registerButton") {
                 protected void onSubmit(AjaxRequestTarget target, Form form) {
 
                     loginController.register(credentialsBean.getUserName(),
                                              credentialsBean.getNickName(),
                                              credentialsBean.getPassword());
                     loginForm.setVisible(false);
-                    setResponsePage(new ChatPage(compoundCredentialsBean));
+                    setResponsePage(new ChatRoomsPage(compoundLoginController));
                 }
         });
         add(loginForm);

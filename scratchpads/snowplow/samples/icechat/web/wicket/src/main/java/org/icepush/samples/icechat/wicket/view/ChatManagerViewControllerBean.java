@@ -6,9 +6,6 @@
 package org.icepush.samples.icechat.wicket.view;
 
 import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.icepush.samples.icechat.IPushRequestContext;
 import org.icepush.samples.icechat.controller.ILoginController;
@@ -53,4 +50,8 @@ public class ChatManagerViewControllerBean extends
 	public void setPushRequestContext(IPushRequestContext pushRequestContext) {
 		super.setPushRequestContext(pushRequestContext);
 	}
+
+        public ICurrentChatSessionHolderBean getCurrentChatSessionHolder(){
+            return currentChatSessionHolder;
+        }
 }
