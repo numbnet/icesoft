@@ -17,15 +17,15 @@ import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
-import org.icepush.samples.icechat.service.api.ChatServiceLocal;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
+import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 /**
  *
  * @author pbreau
  */
 @Stateless
-public class ChatServiceStatelessEJB implements ChatServiceLocal {
+public class ChatServiceStatelessEJB implements IChatService {
 
     @PersistenceContext(unitName = "ChatMgr-ejbPU")
     private EntityManager em;
@@ -85,23 +85,15 @@ public class ChatServiceStatelessEJB implements ChatServiceLocal {
                 .setParameter("name", chatRoom).setFirstResult(index).getResultList();
     }
 
-    public UserChatSession createNewChatRoom(String name, String userName, String password) {
-        UserChatSession chatSession = null;
-    	User user = (User)em.createQuery("select object(o) from User as o where o.userName = :userName and o.password = :password")
+    public void createNewChatRoom(String name, String userName, String password) {
+        User user = (User)em.createQuery("select object(o) from User as o where o.userName = :userName and o.password = :password")
                 .setParameter("userName", userName).setParameter("password", password).getSingleResult();
         if( user != null ){
             ChatRoom room = new ChatRoom();
             room.setCreated(new Date());
             room.setName(name);
             em.persist(room);
-
-            chatSession = new UserChatSession();
-            chatSession.setLive(true);
-            chatSession.setUser(user);
-            chatSession.setRoom(room);
-            em.persist(chatSession);
         }
-        return chatSession;
     }
 
     public void sendNewMessage(String chatRoom, String userName, String password, String message) {
@@ -154,6 +146,33 @@ public class ChatServiceStatelessEJB implements ChatServiceLocal {
         em.persist(user);
         return user;
     }
+
+	@Override
+	public ChatRoom getChatRoom(String roomName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getChatRoomUsers(String chatRoomName, String userName,
+			String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserChatSession getUserChatSession(String roomName, String userName,
+			String password) throws UnauthorizedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateCurrentDraft(String draft, String roomName,
+			String userName, String password) throws UnauthorizedException {
+		// TODO Auto-generated method stub
+		
+	}
     
  
 }
