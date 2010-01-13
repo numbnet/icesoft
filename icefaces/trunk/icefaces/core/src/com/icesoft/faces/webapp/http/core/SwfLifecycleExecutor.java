@@ -19,6 +19,7 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.definition.registry.NoSuchFlowDefinitionException;
 import org.springframework.webflow.executor.FlowExecutionResult;
 import org.springframework.webflow.executor.FlowExecutor;
+import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.env.SpringWebFlowInstantiationServlet;
 
@@ -33,6 +34,7 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
     private PortletRequest portletRequest = null;
     private PortletResponse portletResponse = null;
     private FlowExecutorUtil flowExecutorUtil = null;
+    private static final Log Log = LogFactory.getLog(SwfLifecycleExecutor.class);
 
 
     public void apply(FacesContext facesContext)  {
@@ -58,8 +60,8 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             }
         }
         catch (NoSuchFlowDefinitionException e)  {
-            getJsfLifecycleExecutor(facesContext);
-//            jsfExecutor.apply(facesContext);
+            Log.warn("No flow definition found for: " + selectedExternalContext.getContextPath()  );
+            getJsfLifecycleExecutor(facesContext).apply(facesContext);
         }
 
         FlowExecutionHandler flowExecutionHandler = FlowExecutionHandlerFactory.getInstance(externalContext, result, selectedExternalContext, facesContext);
