@@ -124,11 +124,11 @@
                 value="#{msgs['node.effects.label']}"/>
     </ice:commandLink>
     <br/>
-    <ice:commandLink id="inputFileContentPanel"
+    <ice:commandLink id="inputFileContentPanel" disabled="true" 
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/inputFile.xhtml" />
         <ice:outputText
-                value="#{msgs['node.inputFile.label']}"/>
+                value="#{msgs['node.inputFile.label']} Still to come"/>
     </ice:commandLink>
     <br/>
     <ice:commandLink id="gMapContentPanel"
