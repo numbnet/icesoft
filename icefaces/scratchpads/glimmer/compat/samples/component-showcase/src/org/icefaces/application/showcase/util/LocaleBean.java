@@ -82,6 +82,7 @@ public class LocaleBean {
         if (!currentLanguage.equals(locale.getLanguage())) 
         {
             usedLocale = new Locale(currentLanguage);
+            ctx.getViewRoot().setLocale(usedLocale); 
         }
     }
 
