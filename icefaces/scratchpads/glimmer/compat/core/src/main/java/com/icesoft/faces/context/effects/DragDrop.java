@@ -134,7 +134,6 @@ public class DragDrop {
                                        String hoverClass) {
         String id = uiComponent.getClientId(facesContext);
         String scrollid = (String) uiComponent.getAttributes().get("dropTargetScrollerId");
- System.out.println("scrollid="+scrollid);
         if (scrollid != null && scrollid.trim().length() > 0) {
             UIComponent scroller = CoreComponentUtils.findComponentInView(facesContext.getViewRoot(), scrollid);
             if (scroller != null) {
