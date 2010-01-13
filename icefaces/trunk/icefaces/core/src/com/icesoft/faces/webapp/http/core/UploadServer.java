@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -389,12 +390,18 @@ public class UploadServer implements Server {
                 stateHolder = new UploadStateHolder(
                         uploadConfig, (FileInfo) fileInfo.clone());
 
+                 if (SeamUtilities.isSpring2Environment()) {
+
+                    stateHolder.setAsyncLifecycle(false);
+                    stateHolder.install();
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    LifecycleExecutor.getLifecycleExecutor(fc).apply(fc);
+
                 // Seam throws spurious exceptions with PFS.renderLater
                 //  so we'll work-around that for now. Fix later.
-                if (lifecycleOnCallingThread ||
-                        SeamUtilities.isSeamEnvironment() ||
-                        SeamUtilities.isSpringSecurityEnvironment() ||
-                        SeamUtilities.isSpringEnvironment()) {
+                 } else if (lifecycleOnCallingThread ||
+                            SeamUtilities.isSeamEnvironment() ||
+                            SeamUtilities.isSpringSecurityEnvironment() ) {
 
                     stateHolder.setAsyncLifecycle(false);
                     stateHolder.install();
@@ -405,8 +412,7 @@ public class UploadServer implements Server {
                     state.renderLater(stateHolder, false);
                     Thread.yield();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 log.warn("Problem rendering view during file upload", e);
             }
             return stateHolder;
