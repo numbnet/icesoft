@@ -244,9 +244,9 @@ public class CoreUtils {
     
     private static String getRealPath(Object session, String getContext, String path) {
         try {
-            Method getContextMethod = session.getClass().getMethod(getContext, (Class) null);
+            Method getContextMethod = session.getClass().getMethod(getContext,  new Class[0]);
             Object context;
-            context = getContextMethod.invoke(session, (Object) null);
+            context = getContextMethod.invoke(session, new Object[0]);
             Class[] classargs = {String.class};
             Method getRealPath =  context.getClass().getMethod("getRealPath", classargs);
             Object[] args = {path};
