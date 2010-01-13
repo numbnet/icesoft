@@ -5,7 +5,7 @@ function lookupCookieValue(name) {
         throw 'Cannot find value for cookie: ' + name;
     });
 
-    return contains(tupleString, '=') ? split(tupleString, '=')[1] : '';
+    return decodeURIComponent(contains(tupleString, '=') ? split(tupleString, '=')[1] : '');
 }
 
 function lookupCookie(name, failThunk) {
@@ -41,7 +41,7 @@ function Cookie(name, val, path) {
         });
 
         method(update, function(self, val) {
-            document.cookie = name + '=' + val + '; path=' + path;
+            document.cookie = name + '=' + encodeURIComponent(val) + '; path=' + path;
             return self;
         });
 
