@@ -38,7 +38,7 @@ public class FileUploadPhaseListener implements PhaseListener {
                     log.debug("FileUploadPhaseListener.beforePhase()  uploadConfig: " + uploadConfig);
                     log.debug("FileUploadPhaseListener.beforePhase()  fileInfo: " + fileInfo);
                 }
-                if (clientId != null && formClientId != null) {
+                if (clientId != null) {
                     FacesContext context = phaseEvent.getFacesContext();
                     Map parameterMap = context.getExternalContext().
                         getRequestParameterMap();
