@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -129,9 +130,22 @@ public class WindowScopeManager {
 
     public synchronized static WindowScopeManager lookup(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(true);
+        Map sessionMap = externalContext.getSessionMap();
         ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
-        return lookup(session, configuration);
+        return lookup(sessionMap, configuration);
+    }
+
+    public synchronized static WindowScopeManager lookup(Map sessionMap, Configuration configuration) {
+        Object o = sessionMap.get(WindowScopeManager.class.getName());
+        final WindowScopeManager manager;
+        if (o == null) {
+            manager = new WindowScopeManager(configuration);
+            sessionMap.put(WindowScopeManager.class.getName(), manager);
+        } else {
+            manager = (WindowScopeManager) o;
+        }
+
+        return manager;
     }
 
     public synchronized static WindowScopeManager lookup(HttpSession session, Configuration configuration) {
