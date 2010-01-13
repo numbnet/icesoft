@@ -26,7 +26,7 @@ public class LoadBundle extends UIOutput{
     transient private Locale oldLocale;
     transient private String oldBasename = new String();
     transient private ResourceBundle bundle;
-    transient private Map map;
+    private Map map;
     
     public LoadBundle() {
         setRendererType(null);
@@ -38,6 +38,9 @@ public class LoadBundle extends UIOutput{
     
     public String getComponentType() {
         return COMPONENT_TYPE;
+    }
+    public void decode(FacesContext context) {
+        context.getExternalContext().getRequestMap().put(getVar(), map); 
     }
     
     public void encodeBegin(FacesContext context) throws IOException {
@@ -180,11 +183,12 @@ public class LoadBundle extends UIOutput{
      */
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[3];
+            values = new Object[4];
         }
         values[0] = super.saveState(context);
         values[1] = basename;
         values[2] = var;
+        values[3] = map;
         return ((Object) (values));
     }
 
@@ -196,6 +200,7 @@ public class LoadBundle extends UIOutput{
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         basename = (String) values[1];
-        var = (String) values[2];        
+        var = (String) values[2];    
+        map = (Map) values[3];
     }    
 }
