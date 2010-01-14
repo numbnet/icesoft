@@ -4,6 +4,7 @@
  */
 
 package org.icepush.samples.icechat.wicket;
+import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -12,14 +13,14 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.icepush.samples.icechat.beans.model.BaseNewChatRoomBean;
+import org.icepush.samples.icechat.cdi.controller.LoginController;
+import org.icepush.samples.icechat.cdi.facade.ChatManagerFacadeBean;
+import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
+import org.icepush.samples.icechat.cdi.model.NewChatRoomBean;
+import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
+import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.ChatRoom;
-import org.icepush.samples.icechat.wicket.controller.LoginController;
-import org.icepush.samples.icechat.wicket.facade.ChatManagerFacadeBean;
-import org.icepush.samples.icechat.wicket.model.CurrentChatSessionHolderBean;
-import org.icepush.samples.icechat.wicket.view.ChatManagerViewControllerBean;
 
 /**
  *
@@ -27,37 +28,47 @@ import org.icepush.samples.icechat.wicket.view.ChatManagerViewControllerBean;
  */
 public final class ChatRoomsPage extends AppBasePage {
 
-    ChatManagerViewControllerBean chatManagerVC = new ChatManagerViewControllerBean();
+    // Session Scoped
+    @Inject
+    @RemoveAmbiguity
+    LoginController loginController;
+    CompoundPropertyModel compoundLoginController;
+    
+    @Inject
+    ChatManagerFacadeBean chatManagerFacadeBean;
+    CompoundPropertyModel compoundChatManagerFacadeBean;
+    
+    // Request Scoped
+    @Inject
+    ChatManagerViewControllerBean chatManagerVC;
     CompoundPropertyModel compoundChatManagerVC;
 
-    ChatManagerFacadeBean chatManagerFacadeBean = new ChatManagerFacadeBean();
-    CompoundPropertyModel compoundChatManagerFacadeBean;
-
-    NewChatRoomBean newChatRoomBean = new NewChatRoomBean();
-    class NewChatRoomBean extends BaseNewChatRoomBean{}
+    // Model Annotation
+    @Inject
+    NewChatRoomBean newChatRoomBean;
     CompoundPropertyModel compoundNewChatRoomBean;
 
-    CurrentChatSessionHolderBean currentChatSessionHolderBean = new CurrentChatSessionHolderBean();
+    @Inject
+    CurrentChatSessionHolderBean currentChatSessionHolderBean;
     CompoundPropertyModel compoundCurrentChatSessionHolderBean;
 
     final ListView chatRoomsListView;
-    final LoginController loginController;
 
-    public ChatRoomsPage(IModel model) {
+    public ChatRoomsPage() {
         super ();
-
-        loginController = (LoginController)model.getObject();
-        chatManagerVC.setChatService(AppBasePage.chatService);
+        System.out.println("CONSTRUCTOR: CHATROOMS PAGE !!");
+        chatManagerVC.setChatService(chatService);
         chatManagerVC.setLoginController(loginController);
         chatManagerVC.setCurrentChatSessionHolder(currentChatSessionHolderBean);
-        chatManagerFacadeBean.setChatService(AppBasePage.chatService);
+        chatManagerFacadeBean.setChatService(chatService);
 
-        compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
+        compoundLoginController = new CompoundPropertyModel(loginController);
         compoundChatManagerFacadeBean = new CompoundPropertyModel(chatManagerFacadeBean);
+        compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
         compoundNewChatRoomBean = new CompoundPropertyModel(newChatRoomBean);
         compoundCurrentChatSessionHolderBean = new CompoundPropertyModel(currentChatSessionHolderBean);
 
-        Form chatSession = new Form("chatSession",model);
+        Form chatSession = new Form("chatSession",compoundLoginController);
         chatSession.add(new Label("credentialsBean.userName"));
         chatSession.add(new Label("credentialsBean.nickName"));
 	chatSession.add(new AjaxButton("logout") {
@@ -77,7 +88,7 @@ public final class ChatRoomsPage extends AppBasePage {
                 listItem.add(new AjaxButton("name",new Model(chatRoom.getName())) {
                     protected void onSubmit(AjaxRequestTarget target, Form form) {
                         chatManagerVC.openChatSession(chatRoom.getName());
-                        setResponsePage(new ChatPage(compoundChatManagerVC));
+                        setResponsePage(new ChatPage());
                     }
 	        });
                 
@@ -91,12 +102,11 @@ public final class ChatRoomsPage extends AppBasePage {
 	createNewChatRoom.add(new AjaxButton("registerButton") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
                             // room was null when this call made outside of this scope
+                            System.out.println("NEWCHATROOMBEAN" + newChatRoomBean.getName() + loginController.getCurrentUser().getUserName());
                             chatManagerVC.setNewChatRoomBean(newChatRoomBean);
-                            System.out.println("LoginController " + loginController);
-                                        System.out.println("username" + loginController.getCurrentUser().getUserName());
-            System.out.println("password" + loginController.getCurrentUser().getPassword());
                             chatManagerVC.createNewChatRoom();
-                            newChatRoomBean = new NewChatRoomBean();
+                            // NECESSARY WITH INJECTION?
+                            //newChatRoomBean = new NewChatRoomBean();
                             chatRoomsListView.modelChanged();
                             //target.addComponent(chatRooms);
                             setResponsePage(getPage());
