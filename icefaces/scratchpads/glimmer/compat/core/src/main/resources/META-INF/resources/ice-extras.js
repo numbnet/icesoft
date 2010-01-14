@@ -8952,12 +8952,10 @@ Autocompleter.Base.prototype = {
             (navigator.appVersion.indexOf('MSIE') > 0) &&
             (navigator.userAgent.indexOf('Opera') < 0) &&
             (Element.getStyle(this.update, 'position') == 'absolute')) {
-            var sendURI = Ice.ElementModel.Element.adaptToElement(this.element).findConnection().sendURI;
-            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                     'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="' + webappContext + 'xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
+                    'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
