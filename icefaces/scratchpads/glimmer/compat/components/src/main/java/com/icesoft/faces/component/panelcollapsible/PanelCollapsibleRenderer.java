@@ -75,6 +75,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                       "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
                       panelCollapsible.isExpanded()+"'; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext)+"hdr");
             Element div = domContext.createElement(HTML.DIV_ELEM);
             div.setAttribute(HTML.STYLE_ATTR, "padding:1px;background-image:none;width:100%;");
             header.appendChild(div);
