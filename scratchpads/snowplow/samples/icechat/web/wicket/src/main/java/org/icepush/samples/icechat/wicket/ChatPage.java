@@ -5,6 +5,7 @@
 
 package org.icepush.samples.icechat.wicket;
 import java.util.ArrayList;
+import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -12,13 +13,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
+import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.UserChatSession;
-import org.icepush.samples.icechat.wicket.model.NewChatRoomMessageBean;
-import org.icepush.samples.icechat.wicket.view.ChatManagerViewControllerBean;
 
 /**
  *
@@ -29,26 +30,30 @@ public final class ChatPage extends AppBasePage {
     private final ListView messagesListView;
     private final ListView usersListView;
 
-    NewChatRoomMessageBean composingMessage = new NewChatRoomMessageBean();
+    @Inject
+    NewChatRoomMessageBean composingMessage;
 
-    String messageInput = "Default";
+    String messageInput = "";
 
+    @Inject
     ChatManagerViewControllerBean chatManagerVC;
+    CompoundPropertyModel compoundChatManagerVC;
 
-    public ChatPage(IModel model) {
+    public ChatPage() {
         super ();
-        chatManagerVC = (ChatManagerViewControllerBean)model.getObject();
-        chatManagerVC.setNewChatRoomMessageBean(composingMessage);
+        System.out.println("CONSTRUCTOR: CHAT PAGE !!");
+        compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
 
-        getPushRequestContext();
+        // ICEpush code
+/*        getPushRequestContext();
         chatManagerVC.setPushRequestContext(pushRequestContext);
         pushRequestContext.getPushContext().addGroupMember(chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getName(), pushRequestContext.getCurrentPushId());
         Label pushJavascript = new Label("pushJavascript", new Model("ice.push.register('" + pushRequestContext.getCurrentPushId() + "',function(){window.location.reload();});"));
         pushJavascript.setEscapeModelStrings(false);
         add(pushJavascript);
-
+*/
         
-        Form chatRoomForm = new Form("chatRoomForm",model);
+        Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.add(new Label("currentChatSessionHolder.session.room.name"));
 
         chatRoomForm.add(usersListView = new ListView("usersListView", (ArrayList)chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getUserChatSessions()){
@@ -73,6 +78,7 @@ public final class ChatPage extends AppBasePage {
 	chatRoomForm.add(new AjaxButton("send") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
                             composingMessage.setMessage(messageInput);
+                            chatManagerVC.setNewChatRoomMessageBean(composingMessage);
                             chatManagerVC.sendNewMessage();
                             messagesListView.modelChanged();
                             setResponsePage(getPage());
