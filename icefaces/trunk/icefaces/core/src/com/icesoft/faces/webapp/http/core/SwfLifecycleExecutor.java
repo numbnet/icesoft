@@ -20,6 +20,7 @@ import org.springframework.webflow.definition.registry.NoSuchFlowDefinitionExcep
 import org.springframework.webflow.executor.FlowExecutionResult;
 import org.springframework.webflow.executor.FlowExecutor;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.icesoft.faces.env.SpringWebFlowInstantiationServlet;
 
