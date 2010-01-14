@@ -156,6 +156,7 @@ Ice.Menu = {
                       
                 }
             }
+            submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
             if (submVPO.top < 0) { // ICE-3658
                 if(Prototype.Browser.IE)
                     Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
