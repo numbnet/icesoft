@@ -28,14 +28,12 @@ public final class LoginPage extends AppBasePage {
     @RemoveAmbiguity
     LoginController loginController;
 
-    @Inject
-    CredentialsBean credentialsBean;
+    CredentialsBean credentialsBean = new CredentialsBean();
 
     CompoundPropertyModel compoundLoginController = new CompoundPropertyModel(loginController);
 
     public LoginPage() {
         super ();
-        System.out.println("CONSTRUCTOR: LOGIN PAGE !!");
         loginController.setChatService(chatService);
         loginController.setCredentialsBean(credentialsBean);
         final Form loginForm = new Form("login",compoundLoginController);
@@ -48,7 +46,6 @@ public final class LoginPage extends AppBasePage {
                         try {
                             loginController.login(credentialsBean.getUserName(),
                                             credentialsBean.getPassword());
-                            //loginForm.setVisible(false);
                         } catch (LoginFailedException e) {
                                 this.warn(e.getMessage());
                         }
@@ -61,7 +58,6 @@ public final class LoginPage extends AppBasePage {
                     loginController.register(credentialsBean.getUserName(),
                                              credentialsBean.getNickName(),
                                              credentialsBean.getPassword());
-                    //loginForm.setVisible(false);
                     setResponsePage(new ChatRoomsPage());
                 }
         });

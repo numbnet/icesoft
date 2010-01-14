@@ -19,7 +19,6 @@ import org.icepush.samples.icechat.cdi.facade.ChatManagerFacadeBean;
 import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomBean;
 import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
-import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.ChatRoom;
 
 /**
@@ -28,7 +27,7 @@ import org.icepush.samples.icechat.model.ChatRoom;
  */
 public final class ChatRoomsPage extends AppBasePage {
 
-    // Session Scoped
+    // Session Scoped Beans
     @Inject
     @RemoveAmbiguity
     LoginController loginController;
@@ -38,25 +37,20 @@ public final class ChatRoomsPage extends AppBasePage {
     ChatManagerFacadeBean chatManagerFacadeBean;
     CompoundPropertyModel compoundChatManagerFacadeBean;
     
-    // Request Scoped
     @Inject
-    ChatManagerViewControllerBean chatManagerVC;
+    ChatManagerViewControllerSessionBean chatManagerVC;
     CompoundPropertyModel compoundChatManagerVC;
 
-    // Model Annotation
-    @Inject
-    NewChatRoomBean newChatRoomBean;
+    NewChatRoomBean newChatRoomBean = new NewChatRoomBean();
     CompoundPropertyModel compoundNewChatRoomBean;
 
-    @Inject
-    CurrentChatSessionHolderBean currentChatSessionHolderBean;
+    CurrentChatSessionHolderBean currentChatSessionHolderBean = new CurrentChatSessionHolderBean();
     CompoundPropertyModel compoundCurrentChatSessionHolderBean;
 
     final ListView chatRoomsListView;
 
     public ChatRoomsPage() {
         super ();
-        System.out.println("CONSTRUCTOR: CHATROOMS PAGE !!");
         chatManagerVC.setChatService(chatService);
         chatManagerVC.setLoginController(loginController);
         chatManagerVC.setCurrentChatSessionHolder(currentChatSessionHolderBean);
@@ -80,7 +74,7 @@ public final class ChatRoomsPage extends AppBasePage {
         add(chatSession);
 
         final Form chatRooms = new Form("chatRoomsForm",compoundChatManagerFacadeBean);
-        //chatRooms.setOutputMarkupId(true);
+        chatRooms.setOutputMarkupId(true);
         
         chatRooms.add(chatRoomsListView = new ListView("chatRooms"){
             public void populateItem(final ListItem listItem){
@@ -101,15 +95,10 @@ public final class ChatRoomsPage extends AppBasePage {
         createNewChatRoom.add(new RequiredTextField<String>("name"));
 	createNewChatRoom.add(new AjaxButton("registerButton") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-                            // room was null when this call made outside of this scope
-                            System.out.println("NEWCHATROOMBEAN" + newChatRoomBean.getName() + loginController.getCurrentUser().getUserName());
                             chatManagerVC.setNewChatRoomBean(newChatRoomBean);
                             chatManagerVC.createNewChatRoom();
-                            // NECESSARY WITH INJECTION?
-                            //newChatRoomBean = new NewChatRoomBean();
                             chatRoomsListView.modelChanged();
-                            //target.addComponent(chatRooms);
-                            setResponsePage(getPage());
+                            target.addComponent(chatRooms);
 			}
 		});
         add(createNewChatRoom);

@@ -5,8 +5,8 @@ import javax.inject.Named;
 
 import org.icepush.samples.icechat.AbstractPushRequestContext;
 
-@Named(value="pushRequestContext")
-@RequestScoped
+//@Named(value="pushRequestContext")
+//@RequestScoped
 public class WicketPushContextAdapter extends AbstractPushRequestContext {
 	
 	public WicketPushContextAdapter(){

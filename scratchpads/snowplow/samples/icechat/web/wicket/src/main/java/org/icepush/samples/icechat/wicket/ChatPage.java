@@ -14,10 +14,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
-import org.icepush.samples.icechat.cdi.view.ChatManagerViewControllerBean;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.UserChatSession;
 
@@ -30,18 +28,16 @@ public final class ChatPage extends AppBasePage {
     private final ListView messagesListView;
     private final ListView usersListView;
 
-    @Inject
-    NewChatRoomMessageBean composingMessage;
+    NewChatRoomMessageBean composingMessage = new NewChatRoomMessageBean();
 
     String messageInput = "";
 
     @Inject
-    ChatManagerViewControllerBean chatManagerVC;
+    ChatManagerViewControllerSessionBean chatManagerVC;
     CompoundPropertyModel compoundChatManagerVC;
 
     public ChatPage() {
         super ();
-        System.out.println("CONSTRUCTOR: CHAT PAGE !!");
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
 
         // ICEpush code
@@ -53,7 +49,8 @@ public final class ChatPage extends AppBasePage {
         add(pushJavascript);
 */
         
-        Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
+        final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
+        chatRoomForm.setOutputMarkupId(true);
         chatRoomForm.add(new Label("currentChatSessionHolder.session.room.name"));
 
         chatRoomForm.add(usersListView = new ListView("usersListView", (ArrayList)chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getUserChatSessions()){
@@ -81,7 +78,7 @@ public final class ChatPage extends AppBasePage {
                             chatManagerVC.setNewChatRoomMessageBean(composingMessage);
                             chatManagerVC.sendNewMessage();
                             messagesListView.modelChanged();
-                            setResponsePage(getPage());
+                            target.addComponent(chatRoomForm);
 			}
 		});
 
