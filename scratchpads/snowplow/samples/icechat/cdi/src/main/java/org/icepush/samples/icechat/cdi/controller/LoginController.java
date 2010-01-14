@@ -10,12 +10,10 @@ import org.icepush.samples.icechat.IPushRequestContext;
 import org.icepush.samples.icechat.beans.controller.BaseLoginControllerBean;
 import org.icepush.samples.icechat.controller.model.ICredentialsBean;
 import org.icepush.samples.icechat.service.IChatService;
-import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
 
 
 @Named
 @SessionScoped
-@RemoveAmbiguity
 public class LoginController extends BaseLoginControllerBean implements Serializable{
 	
 	@Inject

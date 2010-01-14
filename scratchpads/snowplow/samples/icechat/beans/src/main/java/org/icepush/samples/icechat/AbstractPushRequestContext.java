@@ -15,7 +15,6 @@ public abstract class AbstractPushRequestContext implements Serializable,
 	private PushContext pushContext;
 
 	public String getCurrentPushId() {
-            System.out.println("gETTING PUSHID: " + currentPushId);
 		return currentPushId;
 	}
 
@@ -25,19 +24,13 @@ public abstract class AbstractPushRequestContext implements Serializable,
 
 	protected void intializePushContext(HttpServletRequest request,
 			HttpServletResponse response) throws IllegalArgumentException {
-                System.out.println("Initializing");
-		if (request == null){
-                    System.out.println("Request NULL");
-                    throw new IllegalArgumentException("HttpServletRequest is null");
-                }
-                if (response == null){
-                        System.out.println("Response NULL");
+		if (request == null)
+			throw new IllegalArgumentException("HttpServletRequest is null");
+		if (response == null)
 			throw new IllegalArgumentException("HttpServletResponse is null");
-                }
-                pushContext = PushContext.getInstance(request.getSession()
+		pushContext = PushContext.getInstance(request.getSession()
 				.getServletContext());
-		System.out.println("CREATING PUSH ID!!!!");
-                currentPushId = pushContext.createPushId(request, response);
+		currentPushId = pushContext.createPushId(request, response);
 	}
 
 
