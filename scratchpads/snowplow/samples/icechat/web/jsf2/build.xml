@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="icechat-jsf2" default="war">
-	
-	<property file="../../build-common.properties"/>
-	<property file="local.properties"/>
-	
-	<path id="compile.path">
-		<fileset dir="../../api/dist">
-			<include name="**/*.jar"/>
-		</fileset>
-		<fileset dir="../../lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../beans/dist">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../cdi/dist">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="./lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../cdi/lib">
-			<include name="**/*.jar"/>
-		</fileset>	
+    
+    <property file="../../build-common.properties"/>
+    <property file="local.properties"/>
+    
+    <path id="compile.path">
+        <fileset dir="../../api/dist">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="../../lib">
+            <include name="**/*.jar"/>
+        </fileset>  
+        <fileset dir="../../beans/dist">
+            <include name="**/*.jar"/>
+        </fileset>  
+        <fileset dir="../../cdi/dist">
+            <include name="**/*.jar"/>
+        </fileset>  
+        <fileset dir="./lib">
+            <include name="**/*.jar"/>
+        </fileset>  
+        <fileset dir="../../cdi/lib">
+            <include name="**/*.jar"/>
+        </fileset>  
 
-	</path>
-	
-	<target name="clean">
-		<delete dir="${build.dir}" failonerror="false" />
-		<delete dir="${dist.dir}" failonerror="false" />
-	</target>
-	
-	<target name="war" depends="compile">
-        
-		<mkdir dir="${dist.dir}"/>
-		
-		<mkdir dir="${build.dir}/webapp"/>
-		<copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true">
-			<fileset dir="./src/main/webapp">	
-				<include name="**"/>
-			</fileset>
-		</copy>
-
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset dir="../../api/dist">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset dir="../../beans/dist">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset dir="../../cdi/dist">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/webapp/css" preservelastmodified="true" verbose="true">
-			<fileset dir="../../common/css">
-				<include name="**"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/webapp/img" preservelastmodified="true" verbose="true">
-			<fileset dir="../../common/img">
-				<include name="**"/>
-			</fileset>
-		</copy>
-
-		
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset dir="../../lib">
-				<include name="icepush.jar"/>
-			</fileset>
-		</copy>
-		
-		<mkdir dir="${build.dir}/webapp/WEB-INF/classes"/>
-		<copy todir="${build.dir}/webapp/WEB-INF/classes" preservelastmodified="true" verbose="true">
-			<fileset dir="${build.dir}/classes">
-				<include name="**"/>
-			</fileset>
-		</copy>
-		
-		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${war.name}" 
-			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
-		</war>
-		
+    </path>
+    
+    <target name="clean">
+        <delete dir="${build.dir}" failonerror="false" />
+        <delete dir="${dist.dir}" failonerror="false" />
     </target>
-	
-	<target name="compile" depends="clean">
-		<echo>Compiling JSF2...</echo>
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.dir}/classes"/>
-		<javac srcdir="${java.dir}" destdir="${build.dir}/classes" debug="true" debuglevel="lines, vars, and source">
-			<classpath refid="compile.path"/>
-		</javac>
-		<copy todir="${build.dir}/classes" preservelastmodified="true" verbose="true">
-			<fileset dir="${java.dir}">
-				<include name="**"/>
-				<exclude name="**/*.class"/>
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-	</target>
+    
+    <target name="war" depends="compile">
+        
+        <mkdir dir="${dist.dir}"/>
+        
+        <mkdir dir="${build.dir}/webapp"/>
+        <copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true">
+            <fileset dir="./src/main/webapp">   
+                <include name="**"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+            <fileset dir="../../api/dist">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+            <fileset dir="../../beans/dist">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+            <fileset dir="../../cdi/dist">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${build.dir}/webapp/css" preservelastmodified="true" verbose="true">
+            <fileset dir="../../common/css">
+                <include name="**"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${build.dir}/webapp/img" preservelastmodified="true" verbose="true">
+            <fileset dir="../../common/img">
+                <include name="**"/>
+            </fileset>
+        </copy>
+
+        
+        <copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+            <fileset dir="../../lib">
+                <include name="icepush.jar"/>
+            </fileset>
+        </copy>
+        
+        <mkdir dir="${build.dir}/webapp/WEB-INF/classes"/>
+        <copy todir="${build.dir}/webapp/WEB-INF/classes" preservelastmodified="true" verbose="true">
+            <fileset dir="${build.dir}/classes">
+                <include name="**"/>
+            </fileset>
+        </copy>
+        
+        <war basedir="${build.dir}/webapp" destfile="${dist.dir}/${war.name}" 
+            webxml="${build.dir}/webapp/WEB-INF/web.xml">           
+        </war>
+        
+    </target>
+    
+    <target name="compile" depends="clean">
+        <echo>Compiling JSF2...</echo>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
+        <javac srcdir="${java.dir}" destdir="${build.dir}/classes" debug="true" debuglevel="lines,vars,source">
+            <classpath refid="compile.path"/>
+        </javac>
+        <copy todir="${build.dir}/classes" preservelastmodified="true" verbose="true">
+            <fileset dir="${java.dir}">
+                <include name="**"/>
+                <exclude name="**/*.class"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
 
 </project>
