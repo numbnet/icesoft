@@ -203,7 +203,7 @@ var ComponentIndicators;
                 if (overlay) {
                     if (isIEBrowser) {
                         var blankOverlay = document.createElement('iframe');
-                        blankOverlay.setAttribute('src', this.configuration.connection.context.current + "xmlhttp/blank");
+                        blankOverlay.setAttribute('src', "javascript:'<html></html>'");
                         blankOverlay.setAttribute('frameborder', '0');
                         document.body.replaceChild(blankOverlay, overlay);
                         document.body.removeChild(blankOverlay);
