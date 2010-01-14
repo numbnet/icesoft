@@ -1,7 +1,6 @@
 package org.icepush.samples.icechat.cdi.view;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,7 +13,7 @@ import org.icepush.samples.icechat.service.IChatService;
 import org.icepush.samples.icechat.view.IChatManagerViewController;
 
 @Named(value="chatManagerVC")
-@SessionScoped
+@RequestScoped
 public class ChatManagerViewControllerBean extends
 		org.icepush.samples.icechat.beans.view.BaseChatManagerViewControllerBean
 		implements IChatManagerViewController {
@@ -56,8 +55,4 @@ public class ChatManagerViewControllerBean extends
 	public void setPushRequestContext(IPushRequestContext pushRequestContext) {
 		super.setPushRequestContext(pushRequestContext);
 	}
-
-        public ICurrentChatSessionHolderBean getCurrentChatSessionHolder(){
-            return currentChatSessionHolder;
-        }
 }

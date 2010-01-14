@@ -27,9 +27,9 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 
 	public void createNewChatRoom(String chatRoomName, String userName, String password){
         chatService.createNewChatRoom(chatRoomName, userName, password);
-	//	PushContext pushContext = pushRequestContext.getPushContext();
-        //pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
-        //pushContext.push(chatRoomName);
+		PushContext pushContext = pushRequestContext.getPushContext();
+        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
+        pushContext.push(chatRoomName);
 	}
 	
 	public UserChatSession openChatSession(String chatRoomName, String userName, String password){
@@ -37,9 +37,9 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 		for( ChatRoom room : chatService.getChatRooms() ){
 			if( room.getName().equals(chatRoomName)){
 				session = chatService.loginToChatRoom(chatRoomName, userName, password);
-//				PushContext pushContext = pushRequestContext.getPushContext();
-//		        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
-//		        pushContext.push(chatRoomName);
+				PushContext pushContext = pushRequestContext.getPushContext();
+		        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
+		        pushContext.push(chatRoomName);
 			}
 		}		
 		return session;
@@ -48,8 +48,8 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 	public void sendNewMessage(String chatRoomName, String newMessage, String userName, String password)
 		throws UnauthorizedException{
 		chatService.sendNewMessage(chatRoomName, userName, password, newMessage);
-//		PushContext pushContext = pushRequestContext.getPushContext();
-//                pushContext.push(chatRoomName);
+		PushContext pushContext = pushRequestContext.getPushContext();
+        pushContext.push(chatRoomName);
 	}
 	
 	public void setChatService(IChatService chatService){
