@@ -7,15 +7,7 @@
         <script type="text/javascript" src="code.icepush"></script>
     </head>
     <body>
-<!--
-        <script type="text/javascript">
-            ice.push.register(['#{pushRequestContext.currentPushId}'],
-                function(){
-                    window.location.reload();
-                }
-            );
-        </script>
--->
+
         <div class="header_container">
             <div class="header_content">
                 <img width="109px" height="100px"
@@ -28,6 +20,15 @@
             </div>
         </div>
 
+<!--    Wicket Renders this out to the page with the appropriate PushId
+        <script type="text/javascript">
+            ice.push.register(['#{pushRequestContext.currentPushId}'],
+                function(){
+                    window.location.reload();
+                }
+            );
+        </script>
+-->
         <script wicket:id="pushJavascript" type="text/javascript">
         </script>
 
