@@ -117,8 +117,7 @@ implements Server {
                                 _sequenceNumber + ";" +       // Sequence Number
                                 _stringWriter.toString(),        // Message Body
                             _messageProperties,
-                            UPDATED_VIEWS_MESSAGE_TYPE,
-                            MessageServiceClient.PUSH_TOPIC_NAME);
+                            UPDATED_VIEWS_MESSAGE_TYPE);
                     }
                 }
             });

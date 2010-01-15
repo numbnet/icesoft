@@ -15,57 +15,37 @@ implements MessagePublisher {
         // do nothing...
     }                                                     
 
-    public void publish(
-        final Serializable objectMessage, final Properties messageProperties, final String topicName) {}
+    public void publish(final Serializable objectMessage) {}
 
-    public void publish(
-        final Serializable objectMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {}
+    public void publish(final Serializable objectMessage, final Properties messageProperties) {}
 
-    public void publish(
-        final Serializable objectMessage, final String topicName) {}
+    public void publish(final Serializable objectMessage, final Properties messageProperties, final String messageType) {}
 
-    public void publish(
-        final Serializable objectMessage, final String messageType, final String topicName) {}
+    public void publish(final Serializable objectMessage, final String messageType) {}
 
-    public void publish(
-        final String textMessage, final Properties messageProperties, final String topicName) {}
+    public void publish(final String textMessage) {}
 
-    public void publish(
-        final String textMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {}
+    public void publish(final String textMessage, final Properties messageProperties) {}
 
-    public void publish(
-        final String textMessage, final String topicName) {}
+    public void publish(final String textMessage, final Properties messageProperties, final String messageType) {}
 
-    public void publish(
-        final String textMessage, final String messageType, final String topicName) {}
+    public void publish(final String textMessage, final String messageType) {}
 
-    public void publishNow(
-        final Serializable objectMessage, final Properties messageProperties, final String topicName) {}
+    public void publishNow(final Serializable objectMessage) {}
 
-    public void publishNow(
-        final Serializable objectMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {}
+    public void publishNow(final Serializable objectMessage, final Properties messageProperties) {}
 
-    public void publishNow(
-        final Serializable objectMessage, final String topicName) {}
+    public void publishNow(final Serializable objectMessage, final Properties messageProperties, final String messageType) {}
 
-    public void publishNow(
-        final Serializable objectMessage, final String messageType, final String topicName) {}
+    public void publishNow(final Serializable objectMessage, final String messageType) {}
 
-    public void publishNow(
-        final String textMessage, final Properties messageProperties, final String topicName) {}
+    public void publishNow(final String textMessage) {}
 
-    public void publishNow(
-        final String textMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {}
+    public void publishNow(final String textMessage, final Properties messageProperties) {}
 
-    public void publishNow(
-        final String textMessage, final String topicName) {}
+    public void publishNow(final String textMessage, final Properties messageProperties, final String messageType) {}
 
-    public void publishNow(
-        final String textMessage, final String messageType, final String topicName) {}
+    public void publishNow(final String textMessage, final String messageType) {}
 
     public void stop() {}
 }

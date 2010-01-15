@@ -143,8 +143,7 @@ implements HttpSessionListener, ServletContextListener {
                         coreMessageService.publish(
                             _message.toString(),
                             _messageProperties,
-                            BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE,
-                            MessageServiceClient.PUSH_TOPIC_NAME);
+                            BUFFERED_CONTEXT_EVENTS_MESSAGE_TYPE);
                     }
                 }
             }
@@ -232,8 +231,7 @@ implements HttpSessionListener, ServletContextListener {
             coreMessageService.publish(
                 createMessage(iceFacesIdDisposedEvent),
                 _messageProperties,
-                CONTEXT_EVENT_MESSAGE_TYPE,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                CONTEXT_EVENT_MESSAGE_TYPE);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -274,8 +272,7 @@ implements HttpSessionListener, ServletContextListener {
             coreMessageService.publish(
                 createMessage(iceFacesIdRetrievedEvent),
                 _messageProperties,
-                CONTEXT_EVENT_MESSAGE_TYPE,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                CONTEXT_EVENT_MESSAGE_TYPE);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -375,8 +372,7 @@ implements HttpSessionListener, ServletContextListener {
             coreMessageService.publish(
                 createMessage(viewNumberDisposedEvent),
                 _messageProperties,
-                CONTEXT_EVENT_MESSAGE_TYPE,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                CONTEXT_EVENT_MESSAGE_TYPE);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -421,8 +417,7 @@ implements HttpSessionListener, ServletContextListener {
             coreMessageService.publish(
                 createMessage(viewNumberRetrievedEvent),
                 _messageProperties,
-                CONTEXT_EVENT_MESSAGE_TYPE,
-                MessageServiceClient.PUSH_TOPIC_NAME);
+                CONTEXT_EVENT_MESSAGE_TYPE);
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
