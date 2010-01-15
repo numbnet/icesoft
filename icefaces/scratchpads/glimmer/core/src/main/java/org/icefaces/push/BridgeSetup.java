@@ -5,7 +5,6 @@ import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
-import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.component.UIOutput;
@@ -58,7 +57,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 root.addComponentResource(context, output, "head");
 
                 Application application = context.getApplication();
-                String invalidateHTTPCache = application.getProjectStage() == ProjectStage.Development ? "?a" + hashCode() : "";
+                String invalidateHTTPCache = "?a" + hashCode();
 
                 //replace with icepush.js resource in icepush.jar
                 output = new UIOutput();
