@@ -4,7 +4,6 @@
  */
 
 package org.icepush.samples.icechat.wicket;
-import java.util.ArrayList;
 import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -13,8 +12,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
 import org.icepush.samples.icechat.model.Message;
@@ -24,7 +23,7 @@ import org.icepush.samples.icechat.model.UserChatSession;
  *
  * @author bkroeger
  */
-public final class ChatPage extends AppBasePage {
+public final class ChatPanel extends Panel {
 
     private final ListView messagesListView;
     private final ListView usersListView;
@@ -37,23 +36,15 @@ public final class ChatPage extends AppBasePage {
     ChatManagerViewControllerSessionBean chatManagerVC;
     CompoundPropertyModel compoundChatManagerVC;
 
-    public ChatPage() {
-        super ();
+    public ChatPanel(String id) {
+        super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
 
-        // ICEpush code
-        getPushRequestContext();
-        chatManagerVC.setPushRequestContext(pushRequestContext);
-        Label pushJavascript = new Label("pushJavascript", new Model("ice.push.register('" + pushRequestContext.getCurrentPushId() + "',function(){window.location.reload();});"));
-        pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);
-
-        
         final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);
         chatRoomForm.add(new Label("currentChatSessionHolder.session.room.name"));
 
-        chatRoomForm.add(usersListView = new ListView("usersListView", (ArrayList)chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getUserChatSessions()){
+        chatRoomForm.add(usersListView = new ListView("currentChatSessionHolder.session.room.userChatSessions"){
             public void populateItem(final ListItem listItem){
                 final UserChatSession userChatSession = (UserChatSession)listItem.getModelObject();
                 listItem.add(new Label("userName",userChatSession.getUser().getDisplayName()));
@@ -61,7 +52,7 @@ public final class ChatPage extends AppBasePage {
             }
         });
 
-        chatRoomForm.add(messagesListView = new ListView("messagesListView", chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getMessages()){
+        chatRoomForm.add(messagesListView = new ListView("currentChatSessionHolder.session.room.messages"){
             public void populateItem(final ListItem listItem){
                 final Message message = (Message)listItem.getModelObject();
                 listItem.add(new Label("created",message.getCreated().toString()));
@@ -85,8 +76,8 @@ public final class ChatPage extends AppBasePage {
         add(chatRoomForm);
     }
 
-    /*
-    These two methods will cause the component to render.
+    
+    //These two methods will cause the component to render.
     @Override
      protected boolean callOnBeforeRenderIfNotVisible(){
         return true;
@@ -95,12 +86,23 @@ public final class ChatPage extends AppBasePage {
     @Override
         protected void onBeforeRender () {
         super.onBeforeRender();
-        setVisible(true);
+        if(chatManagerVC.getCurrentChatSessionHolder().getSession() !=null){
+            usersListView.modelChanged();
+            messagesListView.modelChanged();
+            setVisible(true);
+        }else{
+            setVisible(false);
+        }
     }
-    This method will also cause the component to render, but is less efficient as this method is called many times in the lifecycle.
+    
+    /*This method will also cause the component to render, but is less efficient as this method is called many times in the lifecycle.
     @Override
         public boolean isVisible(){
-         return true;
-     }
-      */
+        if(chatManagerVC.getCurrentChatSessionHolder().getSession() !=null){
+            return true;
+        }else{
+            return false;
+        }
+     }*/
+    
 }
