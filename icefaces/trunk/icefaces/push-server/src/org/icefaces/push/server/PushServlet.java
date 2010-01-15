@@ -175,6 +175,7 @@ extends HttpServlet {
             }
         }
         try {
+            httpServletResponse.addHeader("X-Powered-By", ProductInfo.PRODUCT);
             pathDispatcher.service(httpServletRequest, httpServletResponse);
         } catch (RuntimeException exception) {
             throw exception;
