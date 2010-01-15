@@ -10,6 +10,7 @@ import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
+import com.icesoft.faces.application.ProductInfo;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
@@ -146,6 +147,7 @@ public class MainServlet extends HttpServlet {
         }
         try {
             currentContextPath.attach(request.getContextPath());
+            response.addHeader("X-Powered-By", ProductInfo.PRODUCT);
             dispatcher.service(request, response);
         } catch (SocketException e) {
             if ("Broken pipe".equals(e.getMessage())) {
