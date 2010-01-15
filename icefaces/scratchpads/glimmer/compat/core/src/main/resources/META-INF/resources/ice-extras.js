@@ -7005,6 +7005,9 @@ Ice.PanelCollapsible = {
 Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
     var ctrlKyFld = document.getElementsByName(hdnFld + 'ctrKy');
     var sftKyFld = document.getElementsByName(hdnFld + 'sftKy');
+    if (!event)
+        var event = window.event;
+
     if (ctrlKyFld.length > 0) {
         ctrlKyFld = ctrlKyFld[0];
     } else {
@@ -7022,15 +7025,14 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
     if (sftKyFld && event) {
         sftKyFld.value = event.shiftKey;
     }
+    var targ;
+
+    if (event.target)
+       targ = event.target;
+    else if (event.srcElement)
+       targ = event.srcElement;            
     try {
         if (useEvent) {
-            var targ;
-            if (!event)
-                var event = window.event;
-            if (event.target)
-                targ = event.target;
-            else if (event.srcElement)
-                targ = event.srcElement;
             // Some versions of Safari return the text node,
             //  while other browsers return the parent tag
             if (targ.nodeType == 3)
@@ -7070,11 +7072,14 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 row.onmouseout = Prototype.emptyFunction;
             }
         }
-        var fld = document.forms[formId][hdnFld];
+        var form = document.getElementById(formId);
+        var fld = form[hdnFld];
         fld.value = rowid;
+        fld.id = fld.name; //fix for ICE-5275
         var nothingEvent = new Object();
-        iceSubmitPartial(null, fld, nothingEvent);
+        iceSubmitPartial(form, fld, event);
         setFocus('');
+        fld.id = ""; //preserve ICE-2874
     } catch(e) {
         console.log("Error in rowSelector[" + e + "]");
     }
