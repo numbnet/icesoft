@@ -24,6 +24,7 @@ var submit;
     onLoad(window, function() {
         singleSubmitForm = document.createElement('form');
         singleSubmitForm.action = window.location.pathname;
+        singleSubmitForm.id = 'void';
         viewState = document.getElementById('javax.faces.ViewState').value;
     });
 
