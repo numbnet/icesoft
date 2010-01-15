@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
 import org.icepush.samples.icechat.model.Message;
@@ -41,13 +42,12 @@ public final class ChatPage extends AppBasePage {
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
 
         // ICEpush code
-/*        getPushRequestContext();
+        getPushRequestContext();
         chatManagerVC.setPushRequestContext(pushRequestContext);
-        pushRequestContext.getPushContext().addGroupMember(chatManagerVC.getCurrentChatSessionHolder().getSession().getRoom().getName(), pushRequestContext.getCurrentPushId());
         Label pushJavascript = new Label("pushJavascript", new Model("ice.push.register('" + pushRequestContext.getCurrentPushId() + "',function(){window.location.reload();});"));
         pushJavascript.setEscapeModelStrings(false);
         add(pushJavascript);
-*/
+
         
         final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);

@@ -62,6 +62,13 @@ public final class ChatRoomsPage extends AppBasePage {
         compoundNewChatRoomBean = new CompoundPropertyModel(newChatRoomBean);
         compoundCurrentChatSessionHolderBean = new CompoundPropertyModel(currentChatSessionHolderBean);
 
+        // ICEpush code
+        getPushRequestContext();
+        chatManagerVC.setPushRequestContext(pushRequestContext);
+        Label pushJavascript = new Label("pushJavascript", new Model("ice.push.register('" + pushRequestContext.getCurrentPushId() + "',function(){window.location.reload();});"));
+        pushJavascript.setEscapeModelStrings(false);
+        add(pushJavascript);
+
         Form chatSession = new Form("chatSession",compoundLoginController);
         chatSession.add(new Label("credentialsBean.userName"));
         chatSession.add(new Label("credentialsBean.nickName"));
