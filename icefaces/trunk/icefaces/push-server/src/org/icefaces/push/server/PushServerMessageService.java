@@ -49,8 +49,7 @@ extends DefaultMessageService {
                                 append(ProductInfo.REVISION).
                                     toString(),
                             _messageProperties,
-                            "Presence",
-                            MessageServiceClient.PUSH_TOPIC_NAME);
+                            "Presence");
                     }
                 }
             }
@@ -104,7 +103,6 @@ extends DefaultMessageService {
     throws MessageServiceException {
         // throws MessageServiceException
         getMessageServiceClient().subscribe(
-            MessageServiceClient.PUSH_TOPIC_NAME,
             new MessageSelector(
                 new Or(
                     helloMessageHandler.getMessageSelector().getExpression(),
@@ -113,27 +111,19 @@ extends DefaultMessageService {
                         new Or(
                             contextEventMessageHandler.getMessageSelector().getExpression(),
                             updatedViewsMessageHandler.getMessageSelector().getExpression())))));
-        getMessageServiceClient().
-            addMessageHandler(helloMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            addMessageHandler(bufferedContextEventsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            addMessageHandler(contextEventMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            addMessageHandler(updatedViewsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().addMessageHandler(helloMessageHandler);
+        getMessageServiceClient().addMessageHandler(bufferedContextEventsMessageHandler);
+        getMessageServiceClient().addMessageHandler(contextEventMessageHandler);
+        getMessageServiceClient().addMessageHandler(updatedViewsMessageHandler);
     }
 
     protected void tearDownMessageServiceClient()
     throws MessageServiceException {
-        getMessageServiceClient().
-            removeMessageHandler(updatedViewsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            removeMessageHandler(contextEventMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            removeMessageHandler(bufferedContextEventsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            removeMessageHandler(helloMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().removeMessageHandler(updatedViewsMessageHandler);
+        getMessageServiceClient().removeMessageHandler(contextEventMessageHandler);
+        getMessageServiceClient().removeMessageHandler(bufferedContextEventsMessageHandler);
+        getMessageServiceClient().removeMessageHandler(helloMessageHandler);
         // throws MessageServiceException
-        getMessageServiceClient().unsubscribe(MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().unsubscribe();
     }
 }
