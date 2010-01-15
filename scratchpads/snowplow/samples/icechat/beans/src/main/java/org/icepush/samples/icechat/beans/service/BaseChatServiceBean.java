@@ -2,15 +2,10 @@ package org.icepush.samples.icechat.beans.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
 
 import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.Message;
@@ -24,36 +19,15 @@ import org.icepush.samples.icechat.service.exception.UnauthorizedException;
  * @TODO This class does not look threadsafe....
  * 
  */
-public abstract class BaseChatServiceBean implements Serializable, IChatService {
-
-	protected Map<String, ChatRoom> chatRooms = new HashMap<String, ChatRoom>();
-	protected Map<String, User> users = new HashMap<String, User>();
-
-	private static Logger LOG = Logger.getLogger(BaseChatServiceBean.class
-			.getName());
+public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
+		implements Serializable, IChatService {
 
 	public BaseChatServiceBean() {
 		chatRooms = new HashMap<String, ChatRoom>();
 		users = new HashMap<String, User>();
 	}
 
-	public List<ChatRoom> getChatRooms() {
-		return new ArrayList<ChatRoom>(chatRooms.values());
-	}
-
-	public Collection<User> getOnlineUsers() {
-		Set<User> onlineUsers = new HashSet<User>();
-		for (User user : users.values()) {
-			for (UserChatSession chatSession : user.getChatSessions()) {
-				if (chatSession.isLive()) {
-					onlineUsers.add(user);
-				}
-			}
-		}
-
-		return onlineUsers;
-	}
-
+	@Deprecated
 	public UserChatSession loginToChatRoom(String chatRoom, String userName,
 			String password) {
 		ChatRoom room = chatRooms.get(chatRoom);
@@ -79,6 +53,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		return session;
 	}
 
+	@Deprecated
 	public void logoutOfChatRoom(String chatRoom, String userName,
 			String password) {
 		ChatRoom room = chatRooms.get(chatRoom);
@@ -95,39 +70,8 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
-
-	public List<Message> getAllChatRoomMessages(String chatRoom) {
-		ChatRoom room = chatRooms.get(chatRoom);
-		if (room != null) {
-			return room.getMessages();
-		} else {
-			return null;
-		}
-	}
-
-	
-	public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index) {
-		
-		ChatRoom room = chatRooms.get(chatRoom);
-		if (room != null) {
-			index = Math.max(0, index);
-			index = Math.min(index, room.getMessages().size());
-			//now index should be bounded properly.
-			return room.getMessages().subList(index, room.getMessages().size());
-			
-			
-			//TODO this seems incorrect...
-//			return room.getMessages().size() >= index ? room.getMessages()
-//					.subList(index, room.getMessages().size() - 1) : null;
-		} else {
-			return null;
-		}
-	}
-	
-
-
-	public void createNewChatRoom(String name, String userName,
-			String password) {
+	@Deprecated
+	public void createNewChatRoom(String name, String userName, String password) {
 		User user = users.get(userName);
 		UserChatSession chatSession = null;
 		if (user != null && user.getPassword().equals(password)) {
@@ -150,17 +94,16 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
-	public ChatRoom getChatRoom(String roomName) {
-		return chatRooms.get(roomName);
-	}
-
+	@Deprecated
+	@Override
 	public void sendNewMessage(String chatRoom, String userName,
 			String password, String message) throws UnauthorizedException {
 		User user = validateUser(userName, password);
 		ChatRoom room = getChatRoom(chatRoom);
 		if (room != null) {
-			if( !room.hasUserSession(userName))
-				throw new UnauthorizedException("user '" + userName + "' not in room '" + chatRoom + "', ignoring message");
+			if (!room.hasUserSession(userName))
+				throw new UnauthorizedException("user '" + userName
+						+ "' not in room '" + chatRoom + "', ignoring message");
 			for (UserChatSession chatSession : user.getChatSessions()) {
 				if (chatSession.getRoom().getName().equals(chatRoom)) {
 					Message msg = new Message();
@@ -180,26 +123,30 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 	}
 
 	@Override
+	@Deprecated
 	public void updateCurrentDraft(String draft, String roomName,
 			String userName, String password) throws UnauthorizedException {
-		UserChatSession session = getUserChatSession(roomName, userName, password);
-		if( session != null ){
+		UserChatSession session = getUserChatSession(roomName, userName,
+				password);
+		if (session != null) {
 			session.setCurrentDraft(draft);
 		}
 	}
 
 	@Override
+	@Deprecated
 	public UserChatSession getUserChatSession(String roomName, String userName,
 			String password) throws UnauthorizedException {
 		User user = validateUser(userName, password);
-		for( UserChatSession s : user.getChatSessions() ){
-			if( s.getRoom().getName().equals(roomName)){
+		for (UserChatSession s : user.getChatSessions()) {
+			if (s.getRoom().getName().equals(roomName)) {
 				return s;
 			}
 		}
 		return null;
 	}
 
+	@Deprecated
 	public User validateUser(String userName, String password)
 			throws UnauthorizedException {
 		User user = users.get(userName);
@@ -209,6 +156,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		return user;
 	}
 
+	@Deprecated
 	public void createNewUser(String userName, String nickName, String password) {
 		User user = new User();
 		user.setUserName(userName);
@@ -218,6 +166,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 
 	}
 
+	@Deprecated
 	public void setUserAvatar(String userName, String password, byte[] avatar) {
 		User user = users.get(userName);
 		if (user != null && user.getPassword().equals(password)) {
@@ -225,6 +174,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
+	@Deprecated
 	public User login(String userName, String password)
 			throws LoginFailedException {
 		User user = users.get(userName);
@@ -235,6 +185,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 					"The provided username and password are not recognized.");
 	}
 
+	@Deprecated
 	public User register(String userName, String nickName, String password) {
 		if (users.get(userName) == null) {
 			User user = new User();
@@ -248,6 +199,7 @@ public abstract class BaseChatServiceBean implements Serializable, IChatService 
 		}
 	}
 
+	@Deprecated
 	public List<User> getChatRoomUsers(String chatRoomName, String userName,
 			String password) {
 		List<User> userList = null;

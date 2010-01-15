@@ -89,6 +89,7 @@ public class ChatRoom implements Serializable{
         this.messages = messages;
     }
     
+    @Deprecated
     public boolean hasUserSession(String userName){
     	for( UserChatSession userSession : userChatSessions ){
     		if( userSession.getUser().getUserName().equals(userName))
@@ -96,6 +97,15 @@ public class ChatRoom implements Serializable{
     	}
     	return false;
     }
+    public boolean isUserInRoom(User user){
+    	for(UserChatSession session: userChatSessions){
+    		if(session.getUser().equals(user)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     
     @Override
     public String toString(){

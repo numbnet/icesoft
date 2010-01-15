@@ -8,6 +8,7 @@ package org.icepush.samples.icechat.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
@@ -23,6 +24,9 @@ public class User implements Serializable{
     
     private Collection<UserChatSession> chatSessions = new ArrayList<UserChatSession>();
 
+    private String sessionToken;
+    private Date lastTouch = new Date();
+    
     private byte[] avatar;
 
     public User(){
@@ -114,4 +118,22 @@ public class User implements Serializable{
     	return nickName != null ? nickName + " (" + userName + ")" : userName;
     }
 
+    
+    public void touchUser(){
+    	this.lastTouch = new Date();
+    }
+
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
+	}
+
+	public Date getLastTouch() {
+		return lastTouch;
+	}
+    
+    
 }

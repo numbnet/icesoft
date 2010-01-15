@@ -1,5 +1,6 @@
 package org.icepush.samples.icechat.gwt.client.screens;
 
+import org.icepush.samples.icechat.gwt.client.UserSession;
 import org.icepush.samples.icechat.gwt.client.service.ChatService;
 import org.icepush.samples.icechat.gwt.client.service.ChatServiceAsync;
 import com.google.gwt.core.client.GWT;
@@ -22,10 +23,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.icesoft.icepush.integration.gwt.GWTPushContext;
+import com.icesoft.icepush.integration.gwt.PushEventListener;
+
 import java.util.HashMap;
 import java.util.List;
-import org.icepush.samples.icechat.gwt.client.GWTPushContext;
-import org.icepush.samples.icechat.gwt.client.PushEventListener;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
 public class ChatRoomListPanel extends Composite {
@@ -87,7 +89,7 @@ public class ChatRoomListPanel extends Composite {
                         Window.alert("Failed to create a new ChatRoom.  Please wait a minute and try again.");
                     }
                 };
-                service.createChatRoom(nameText.getText(), callback);
+                service.createChatRoom( nameText.getText(), UserSession.getInstance().getCredentials().getSessionToken(), callback);
             }
         });
         rootPanel.add(instructions);
