@@ -19,12 +19,15 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.icesoft.icepush.integration.gwt.GWTPushContext;
+import com.icesoft.icepush.integration.gwt.PushEventListener;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import org.icepush.samples.icechat.gwt.client.GWTPushContext;
-import org.icepush.samples.icechat.gwt.client.PushEventListener;
+
 import org.icepush.samples.icechat.gwt.client.UserSession;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
 import org.icepush.samples.icechat.gwt.client.service.ChatService;
@@ -57,8 +60,9 @@ public class ChatScreen extends Composite {
 
     private ChatServiceAsync chatService = GWT.create(ChatService.class);
 
-    private HashMap<String, PushEventListener> characterListeners = new HashMap<String,PushEventListener>();
-
+    private HashMap<String, CharacterPushListener> characterListeners = new HashMap<String,CharacterPushListener>();
+    
+    PushEventListener currentDraftListener;
     PushEventListener currentMessagesPushListener;
     PushEventListener currentParticipantsPushListener;
 
@@ -83,11 +87,11 @@ public class ChatScreen extends Composite {
             sendChatMessage();
             characterIndex = 0;
             return;
-        }else if(ev.getNativeKeyCode() >= 32 && ev.getNativeKeyCode() <= 127){
+        }else{
            characterIndex ++;
         }
         
-        if(characterIndex % 3 == 0){ //send every third key
+        if(characterIndex % 2 == 0){ //send every second key
         	sendCharacterNotification();
         }
 //        else if(ev.getNativeKeyCode() == 32){
@@ -114,7 +118,7 @@ public class ChatScreen extends Composite {
             }
         };
 
-        chatService.sendMessage(this.newMessageTextbox.getText(), UserSession.getInstance().getCredentials().getUserName(), currentChatRoom, sendMessageCallback);
+        chatService.sendMessage(this.newMessageTextbox.getText(), UserSession.getInstance().getCredentials().getSessionToken(), currentChatRoom, sendMessageCallback);
         ChatScreen.this.newMessageTextbox.setText("");
     }
 
@@ -149,20 +153,9 @@ public class ChatScreen extends Composite {
 
         this.show();
 
-
-        //clear out all previous character listeners.
-        Iterator<String> keys = this.characterListeners.keySet().iterator();
-
-        while(keys.hasNext()){
-            String key = keys.next();
-            GWTPushContext.getInstance().removePushEventListener(this.characterListeners.get(key));
-        }
-
-        this.characterListeners.clear();
-
         JoinChatRoomCallback joinCallback = new JoinChatRoomCallback(handle);
 
-        chatService.joinChatRoom(handle, UserSession.getInstance().getCredentials().getUserName(), joinCallback);
+        chatService.joinChatRoom(handle, UserSession.getInstance().getCredentials().getSessionToken(), joinCallback);
 
         //first stop listening to push events for the old chat room.
         if(this.currentMessagesPushListener != null)
@@ -171,6 +164,10 @@ public class ChatScreen extends Composite {
         if(this.currentParticipantsPushListener != null)
             GWTPushContext.getInstance().removePushEventListener(this.currentParticipantsPushListener);
 
+        if(this.currentDraftListener != null){
+        	GWTPushContext.getInstance().removePushEventListener(this.currentDraftListener);
+        }
+        
         this.currentMessagesPushListener = new PushEventListener() {
 
             public void onPushEvent() {
@@ -179,7 +176,7 @@ public class ChatScreen extends Composite {
             }
         };
 
-        GWTPushContext.getInstance().addPushEventListener(this.currentMessagesPushListener, new String[]{handle.getName()});
+        GWTPushContext.getInstance().addPushEventListener(this.currentMessagesPushListener, new String[]{handle.getName().replaceAll(" ", "_")});
 
 
         this.currentParticipantsPushListener = new PushEventListener() {
@@ -192,6 +189,14 @@ public class ChatScreen extends Composite {
 
         GWTPushContext.getInstance().addPushEventListener(this.currentParticipantsPushListener, new String[]{handle.getName() + "-participants"});
 
+        this.currentDraftListener = new PushEventListener() {
+			
+			@Override
+			public void onPushEvent() {
+				ChatScreen.this.updateDraft();
+				
+			}
+		};
 
     }
 
@@ -270,6 +275,8 @@ public class ChatScreen extends Composite {
 
             public void onSuccess(List<String> result) {
                 ChatScreen.this.roomUserList.clear();
+                ChatScreen.this.characterListeners.clear();
+                
                 for (String participant : result) {
                     Label particLabel = new Label(participant);
                     HTML awarenessLabel = new HTML();
@@ -293,10 +300,8 @@ public class ChatScreen extends Composite {
                     ChatScreen.this.roomUserList.add(scribePanel);
                     if(!ChatScreen.this.characterListeners.containsKey(participant + ChatScreen.this.currentChatRoom.getName().replaceAll(" ", "_")) && !participant.equals(UserSession.getInstance().getCredentials().getUserName())){
                         //register a new listener for this participant. (if not already registered and not for the current user).
-                        CharacterPushListener pushListener = new CharacterPushListener(participant, currentChatRoom, awarenessLabel, img);
-
-                        GWTPushContext.getInstance().addPushEventListener(pushListener, new String[]{participant + ChatScreen.this.currentChatRoom.getName().replaceAll(" ", "_")});
-                        ChatScreen.this.characterListeners.put(participant + ChatScreen.this.currentChatRoom.getName().replaceAll(" ", "_"), pushListener);
+                        CharacterPushListener pushListener = new CharacterPushListener(awarenessLabel, img);
+                        ChatScreen.this.characterListeners.put(participant, pushListener);
                         
                     }
                 }
@@ -308,48 +313,70 @@ public class ChatScreen extends Composite {
         
         chatService.getParticipants(handle, getParticipants);
     }
+    
+    private void updateDraft(){
+    	AsyncCallback<ChatRoomDraft> callback = new AsyncCallback<ChatRoomDraft>() {
 
-    public class CharacterPushListener extends PushEventListener{
+			@Override
+			public void onFailure(Throwable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(ChatRoomDraft draft) {
+				ChatScreen.this.characterListeners.get(draft.getUserSessionToken()).updateDraft(draft.getText());
+			}
+		};
+		
+		this.chatService.getNextDraftUpdate(currentChatRoom, callback);
+    	
+    }
+
+    public class CharacterPushListener{
         private HTML awareness;
         private Image awarenessImage;
-        private String username;
-        private ChatRoomHandle handle;
-        public CharacterPushListener(String username, ChatRoomHandle handle, HTML awareness, Image awarenessImage){
+        public CharacterPushListener(HTML awareness, Image awarenessImage){
         	this.awareness = awareness;
             this.awarenessImage = awarenessImage;
-            this.handle = handle;
-            this.username = username;
+
         }
 
-        @Override
-        public void onPushEvent() {
-            AsyncCallback<String> callback = new AsyncCallback<String>() {
-
-                public void onFailure(Throwable caught) {
-                    throw new UnsupportedOperationException("Not supported yet.");
-                }
-
-                public void onSuccess(String result) {
-                	int index = result.lastIndexOf(" ");
-                	if(index >= 0){
-                		StringBuilder html = new StringBuilder();
-                		html.append(result.substring(0, index));
-                		html.append(" <b>");
-                		html.append(result.substring(index));
-                		html.append("</b>");
-                		
-                		awareness.setHTML(html.toString());
-                		
-                	}else{
-                		awareness.setHTML("<b>" + result + "</b>");
-                	}
-                    
-                    awarenessImage.setVisible(!result.equals(""));
-                   
-                }
-            };
-
-           ChatScreen.this.chatService.getCurrentCharacters(username, handle, callback);
+       
+        public void updateDraft(String text) {
+        	
+        	int index = text.lastIndexOf(" ");
+        	if(index >= 0){
+        		StringBuilder html = new StringBuilder();
+        		html.append(text.substring(0, index));
+        		html.append(" <b>");
+        		html.append(text.substring(index));
+        		html.append("</b>");
+        		
+        		awareness.setHTML(html.toString());
+        		
+        	}else{
+        		awareness.setHTML("<b>" + text + "</b>");
+        	}
+            
+            awarenessImage.setVisible(!text.equals(""));
+            
+            
+//            AsyncCallback<String> callback = new AsyncCallback<String>() {
+//
+//                public void onFailure(Throwable caught) {
+//                    throw new UnsupportedOperationException("Not supported yet.");
+//                }
+//
+//                public void onSuccess(String result) {
+//                	
+//                   
+//                }
+//            };
+//            Chat
+//           ChatScreen.this.chatService.getCurrentCharacters(username, handle, callback);
         }
     }
+    
+  
 }

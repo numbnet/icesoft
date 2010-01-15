@@ -47,5 +47,7 @@
 	<target name="spring" depends="cdi-beans">
 		<ant antfile="build.xml" target="war" dir="./web/spring"/>
 	</target>
+	
+	
 
 </project>

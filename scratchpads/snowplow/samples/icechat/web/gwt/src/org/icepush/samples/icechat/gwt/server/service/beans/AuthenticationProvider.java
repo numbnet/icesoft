@@ -1,5 +1,6 @@
 package org.icepush.samples.icechat.gwt.server.service.beans;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +24,7 @@ public class AuthenticationProvider {
 	 * @return  a boolean indicating whether the authentication was successful or not.
 	 *
 	 */
+	@Deprecated
 	public boolean authenticateThread(String username, String password){
 		ChatServiceBean bean = ChatServiceBean.getInstance(session.getServletContext());
 		try {
@@ -42,6 +44,7 @@ public class AuthenticationProvider {
 	 * @param password
 	 * @return a boolean indicating whether the authentication was successful or not.
 	 */
+	@Deprecated
 	public boolean isValidCredentials(String username, String password){
 		ChatServiceBean bean = ChatServiceBean.getInstance(session.getServletContext());
 		try {
@@ -59,6 +62,7 @@ public class AuthenticationProvider {
 	 * @param req the current HTTP Servlet Request.
 	 * @return
 	 */
+	@Deprecated
 	public static User getSessionUser(HttpServletRequest req){
 		if(req.getSession().getAttribute(User.class.getName()) == null){
 			return null;
@@ -66,4 +70,13 @@ public class AuthenticationProvider {
 		return (User) req.getSession().getAttribute(User.class.getName());
 		
 	}
+	
+	
+	
+	public static User getSessionUser(ServletContext context, String sessionToken){
+		return ChatServiceBean.getInstance(context)
+				.getSessionUser(sessionToken);			
+	}
+	
+	
 }
