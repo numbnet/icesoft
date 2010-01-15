@@ -72,6 +72,14 @@ public class ClockBean  {
         setPollInterval(pollInterval);
     }
 
+    @PreDestroy
+    public void cleanup(){
+        System.out.println("ClockBean.cleanup: NOPE");
+        if (null != clockTimer)  {
+            clockTimer.cancel();
+        }
+    }
+
     public String getAutoLoad() {
         if (" ".equals(autoLoad)) {
             autoLoad = AUTO_LOAD;
