@@ -21,6 +21,7 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.addHeader("X-Powered-By", "Thread Blocking Adapting Servlet");
         ThreadBlockingRequestResponse requestResponse = new ThreadBlockingRequestResponse(request, response);
         server.service(requestResponse);
         requestResponse.blockUntilRespond();

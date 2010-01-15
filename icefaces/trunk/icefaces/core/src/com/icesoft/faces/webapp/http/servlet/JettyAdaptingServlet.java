@@ -21,6 +21,7 @@ public class JettyAdaptingServlet implements PseudoServlet {
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        response.addHeader("X-Powered-By", "Jetty Adapting Servlet");
         if (requests.containsKey(request)) {
             ResponseHandler handler = (ResponseHandler) requests.remove(request);
             handler.respond(new ServletRequestResponse(request, response));

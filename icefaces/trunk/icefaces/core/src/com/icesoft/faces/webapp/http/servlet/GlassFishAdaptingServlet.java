@@ -55,6 +55,7 @@ implements PseudoServlet {
     public void service(
         final HttpServletRequest request, final HttpServletResponse response)
     throws Exception {
+        response.addHeader("X-Powered-By", "GlassFish Adapting Servlet");
         GlassFishRequestResponse requestResponse =
             new GlassFishRequestResponse(request, response);
         server.service(requestResponse);
