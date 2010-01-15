@@ -32,8 +32,8 @@
         <script wicket:id="pushJavascript" type="text/javascript">
         </script>
 
-        <div class="body_container">
-            <div class="chatSession">
+        <div class="body_container body_container_pos">
+            <div class="chatSession chatSession_pos">
                 <form wicket:id="chatSession">
                     You are logged in as
                     <span wicket:id="credentialsBean.userName">userName</span>
@@ -45,7 +45,7 @@
 
             <div class="clearer"/>
 
-            <div class="chatRooms">
+            <div class="chatRooms chatRooms_pos">
                 <h3>Chat Rooms</h3>
                 <form wicket:id="chatRoomsForm">
                     <div>
@@ -64,6 +64,7 @@
                     </div>
                 </form>
             </div>
+            <div wicket:id="chatPanel" class="chatRoomView"/>
         </div>
     </body>
 </html>

@@ -51,6 +51,7 @@ public final class ChatRoomsPage extends AppBasePage {
 
     public ChatRoomsPage() {
         super ();
+        // Initialize Model
         chatManagerVC.setChatService(chatService);
         chatManagerVC.setLoginController(loginController);
         chatManagerVC.setCurrentChatSessionHolder(currentChatSessionHolderBean);
@@ -69,6 +70,7 @@ public final class ChatRoomsPage extends AppBasePage {
         pushJavascript.setEscapeModelStrings(false);
         add(pushJavascript);
 
+        // Add Components to page
         Form chatSession = new Form("chatSession",compoundLoginController);
         chatSession.add(new Label("credentialsBean.userName"));
         chatSession.add(new Label("credentialsBean.nickName"));
@@ -81,21 +83,19 @@ public final class ChatRoomsPage extends AppBasePage {
         add(chatSession);
 
         final Form chatRooms = new Form("chatRoomsForm",compoundChatManagerFacadeBean);
-        chatRooms.setOutputMarkupId(true);
-        
+        chatRooms.setOutputMarkupId(true);        
         chatRooms.add(chatRoomsListView = new ListView("chatRooms"){
             public void populateItem(final ListItem listItem){
                 final ChatRoom chatRoom = (ChatRoom)listItem.getModelObject();
                 listItem.add(new AjaxButton("name",new Model(chatRoom.getName())) {
                     protected void onSubmit(AjaxRequestTarget target, Form form) {
                         chatManagerVC.openChatSession(chatRoom.getName());
-                        setResponsePage(new ChatPage());
+                        setResponsePage(getPage());
                     }
 	        });
                 
             }
         });
-
         add(chatRooms);
 
         Form createNewChatRoom = new Form("createNewChatRoomForm",compoundNewChatRoomBean);
@@ -109,6 +109,8 @@ public final class ChatRoomsPage extends AppBasePage {
 			}
 		});
         add(createNewChatRoom);
+
+        add(new ChatPanel("chatPanel"));
 
     }
 
