@@ -18,7 +18,16 @@
                 </div>
             </div>
         </div>
- 
+        
+ <!--   Wicket Renders this out to the page with the appropriate PushId
+        <script type="text/javascript">
+            ice.push.register(['#{pushRequestContext.currentPushId}'],
+                function(){
+                    window.location.reload();
+                }
+            );
+        </script>
+-->
         <script wicket:id="pushJavascript" type="text/javascript">
         </script>
             <div class="chatRoomView">
