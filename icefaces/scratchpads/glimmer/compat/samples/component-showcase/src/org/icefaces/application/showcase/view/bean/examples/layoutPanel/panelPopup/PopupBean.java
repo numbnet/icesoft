@@ -87,7 +87,6 @@ public class PopupBean implements Serializable {
     }
 
     public boolean getModalRendered() {
-    	System.out.println("getMOdalRendered="+this.modalRendered);
         return modalRendered;
     }
 
