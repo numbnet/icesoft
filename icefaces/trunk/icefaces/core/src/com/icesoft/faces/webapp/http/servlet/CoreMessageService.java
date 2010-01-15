@@ -85,18 +85,15 @@ extends DefaultMessageService {
         LOG.debug("Setting up Message Service Client...");
         try {
             // throws MessageServiceException
-            getMessageServiceClient().
-                subscribe(MessageServiceClient.PUSH_TOPIC_NAME, acknowledgeMessageHandler.getMessageSelector());
-            getMessageServiceClient().
-                addMessageHandler(acknowledgeMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+            getMessageServiceClient().subscribe(acknowledgeMessageHandler.getMessageSelector());
+            getMessageServiceClient().addMessageHandler(acknowledgeMessageHandler);
             // throws MessageServiceException
             getMessageServiceClient().start();
             Properties _messageProperties = new Properties();
             _messageProperties.setStringProperty(
                 Message.DESTINATION_SERVLET_CONTEXT_PATH, blockingRequestHandlerContext);
             // throws MessageServiceException
-            getMessageServiceClient().
-                publishNow("Hello", _messageProperties, "Presence", MessageServiceClient.PUSH_TOPIC_NAME);
+            getMessageServiceClient().publishNow("Hello", _messageProperties, "Presence");
         } catch (MessageServiceException exception) {
             try {
                 // throws MessageServiceException
@@ -104,11 +101,10 @@ extends DefaultMessageService {
             } catch (MessageServiceException e) {
                 // do nothing...
             }
-            getMessageServiceClient().
-                removeMessageHandler(acknowledgeMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+            getMessageServiceClient().removeMessageHandler(acknowledgeMessageHandler);
             try {
                 // throws MessageServiceException
-                getMessageServiceClient().unsubscribe(MessageServiceClient.PUSH_TOPIC_NAME);
+                getMessageServiceClient().unsubscribe();
             } catch (MessageServiceException e) {
                 // do nothing...
             }
@@ -117,26 +113,21 @@ extends DefaultMessageService {
         // throws MessageServiceException
         getMessageServiceClient().
             subscribe(
-                MessageServiceClient.PUSH_TOPIC_NAME,
                 new MessageSelector(
                     new Or(
                         announcementMessageHandler.getMessageSelector().getExpression(),
                         disposeViewsMessageHandler.getMessageSelector().getExpression())));
-        getMessageServiceClient().
-            addMessageHandler(announcementMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            addMessageHandler(disposeViewsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().addMessageHandler(announcementMessageHandler);
+        getMessageServiceClient().addMessageHandler(disposeViewsMessageHandler);
     }
 
     protected void tearDownMessageServiceClient()
     throws MessageServiceException {
         LOG.debug("Tearing down Message Service Client...");
-        getMessageServiceClient().
-            removeMessageHandler(disposeViewsMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
-        getMessageServiceClient().
-            removeMessageHandler(announcementMessageHandler, MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().removeMessageHandler(disposeViewsMessageHandler);
+        getMessageServiceClient().removeMessageHandler(announcementMessageHandler);
         // throws MessageServiceException
-        getMessageServiceClient().unsubscribe(MessageServiceClient.PUSH_TOPIC_NAME);
+        getMessageServiceClient().unsubscribe();
     }
 
     public static class AcknowledgeMessageHandler
@@ -192,8 +183,7 @@ extends DefaultMessageService {
                             }
                         }
                     }
-                    coreMessageService.getMessageServiceClient().
-                        removeMessageHandler(this, MessageServiceClient.PUSH_TOPIC_NAME);
+                    coreMessageService.getMessageServiceClient().removeMessageHandler(this);
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Using Push Server Blocking Request Handler");
                     }
