@@ -119,102 +119,68 @@ implements MessageServiceClient.Administrator {
         return messageServiceClient;
     }
 
-    public final void publish(
-        final Serializable object, final Properties messageProperties, final String topicName) {
-
-        currentMessagePublisher.publish(object, messageProperties, topicName);
+    public final void publish(final Serializable object) {
+        currentMessagePublisher.publish(object);
     }
 
-    public final void publish(
-        final Serializable object, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
-        currentMessagePublisher.publish(object, messageProperties, messageType, topicName);
+    public final void publish(final Serializable object, final Properties messageProperties) {
+        currentMessagePublisher.publish(object, messageProperties);
     }
 
-    public final void publish(
-        final Serializable object, final String topicName) {
-
-        currentMessagePublisher.publish(object, topicName);
+    public final void publish(final Serializable object, final Properties messageProperties, final String messageType) {
+        currentMessagePublisher.publish(object, messageProperties, messageType);
     }
 
-    public final void publish(
-        final Serializable object, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publish(object, messageType, topicName);
+    public final void publish(final Serializable object, final String messageType) {
+        currentMessagePublisher.publish(object, messageType);
     }
 
-    public final void publish(
-        final String text, final Properties messageProperties, final String topicName) {
-
-        currentMessagePublisher.publish(text, messageProperties, topicName);
+    public final void publish(final String text) {
+        currentMessagePublisher.publish(text);
     }
 
-    public final void publish(
-        final String text, final Properties messageProperties, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publish(text, messageProperties, messageType, topicName);
+    public final void publish(final String text, final Properties messageProperties) {
+        currentMessagePublisher.publish(text, messageProperties);
     }
 
-    public final void publish(
-        final String text, final String topicName) {
-
-        currentMessagePublisher.publish(text, topicName);
+    public final void publish(final String text, final Properties messageProperties, final String messageType) {
+        currentMessagePublisher.publish(text, messageProperties, messageType);
     }
 
-    public final void publish(
-        final String text, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publish(text, messageType, topicName);
+    public final void publish(final String text, final String messageType) {
+        currentMessagePublisher.publish(text, messageType);
     }
 
-    public final void publishNow(
-        final Serializable object, final Properties messageProperties, final String topicName) {
-
-        currentMessagePublisher.publishNow(object, messageProperties, topicName);
+    public final void publishNow(final Serializable object) {
+        currentMessagePublisher.publishNow(object);
     }
 
-    public final void publishNow(
-        final Serializable object, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
-        currentMessagePublisher.publishNow(object, messageProperties, messageType, topicName);
+    public final void publishNow(final Serializable object, final Properties messageProperties) {
+        currentMessagePublisher.publishNow(object, messageProperties);
     }
 
-    public final void publishNow(
-        final Serializable object, final String topicName) {
-
-        currentMessagePublisher.publishNow(object, topicName);
+    public final void publishNow(final Serializable object, final Properties messageProperties, final String messageType) {
+        currentMessagePublisher.publishNow(object, messageProperties, messageType);
     }
 
-    public final void publishNow(
-        final Serializable object, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publishNow(object, messageType, topicName);
+    public final void publishNow(final Serializable object, final String messageType) {
+        currentMessagePublisher.publishNow(object, messageType);
     }
 
-    public final void publishNow(
-        final String text, final Properties messageProperties, final String topicName) {
-
-        currentMessagePublisher.publishNow(text, messageProperties, topicName);
+    public final void publishNow(final String text) {
+        currentMessagePublisher.publishNow(text);
     }
 
-    public final void publishNow(
-        final String text, final Properties messageProperties, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publishNow(text, messageProperties, messageType, topicName);
+    public final void publishNow(final String text, final Properties messageProperties) {
+        currentMessagePublisher.publishNow(text, messageProperties);
     }
 
-    public final void publishNow(
-        final String text, final String topicName) {
-
-        currentMessagePublisher.publishNow(text, topicName);
+    public final void publishNow(final String text, final Properties messageProperties, final String messageType) {
+        currentMessagePublisher.publishNow(text, messageProperties, messageType);
     }
 
-    public final void publishNow(
-        final String text, final String messageType, final String topicName) {
-
-        currentMessagePublisher.publishNow(text, messageType, topicName);
+    public final void publishNow(final String text, final String messageType) {
+        currentMessagePublisher.publishNow(text, messageType);
     }
 
     public final void reconnect() {

@@ -57,122 +57,102 @@ implements MessagePublisher {
                 TimeUnit.MILLISECONDS);
     }
 
-    public void publish(
-        final Serializable objectMessage, final Properties messageProperties, final String topicName) {
-
+    public void publish(final Serializable objectMessage) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(objectMessage, messageProperties, topicName);
+                        messageServiceClient.publish(objectMessage);
                     }
                 });
         }
     }
 
-    public void publish(
-        final Serializable objectMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
+    public void publish(final Serializable objectMessage, final Properties messageProperties) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(objectMessage, messageProperties, messageType, topicName);
+                        messageServiceClient.publish(objectMessage, messageProperties);
                     }
                 });
         }
     }
 
-    public void publish(
-        final Serializable objectMessage, final String topicName) {
-
+    public void publish(final Serializable objectMessage, final Properties messageProperties, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(objectMessage, topicName);
+                        messageServiceClient.publish(objectMessage, messageProperties, messageType);
                     }
                 });
         }
     }
 
-    public void publish(
-        final Serializable objectMessage, final String messageType, final String topicName) {
-
+    public void publish(final Serializable objectMessage, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(objectMessage, messageType, topicName);
+                        messageServiceClient.publish(objectMessage, messageType);
                     }
                 });
         }
     }
 
-    public void publish(
-        final String textMessage, final Properties messageProperties, final String topicName) {
-
+    public void publish(final String textMessage) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(textMessage, messageProperties, topicName);
+                        messageServiceClient.publish(textMessage);
                     }
                 });
         }
     }
 
-    public void publish(
-        final String textMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
+    public void publish(final String textMessage, final Properties messageProperties) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(textMessage, messageProperties, messageType, topicName);
+                        messageServiceClient.publish(textMessage, messageProperties);
                     }
                 });
         }
     }
 
-    public void publish(
-        final String textMessage, final String topicName) {
-
+    public void publish(final String textMessage, final Properties messageProperties, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(textMessage, topicName);
+                        messageServiceClient.publish(textMessage, messageProperties, messageType);
                     }
                 });
         }
     }
 
-    public void publish(
-        final String textMessage, final String messageType, final String topicName) {
-
+    public void publish(final String textMessage, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
-                        messageServiceClient.publish(textMessage, messageType, topicName);
+                        messageServiceClient.publish(textMessage, messageType);
                     }
                 });
         }
     }
 
-    public void publishNow(
-        final Serializable objectMessage, final Properties messageProperties, final String topicName) {
-
+    public void publishNow(final Serializable objectMessage) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(objectMessage, messageProperties, topicName);
+                            messageServiceClient.publishNow(objectMessage);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -183,17 +163,14 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final Serializable objectMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
+    public void publishNow(final Serializable objectMessage, final Properties messageProperties) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(objectMessage, messageProperties, messageType, topicName);
+                            messageServiceClient.publishNow(objectMessage, messageProperties);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -204,16 +181,14 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final Serializable objectMessage, final String topicName) {
-
+    public void publishNow(final Serializable objectMessage, final Properties messageProperties, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(objectMessage, topicName);
+                            messageServiceClient.publishNow(objectMessage, messageProperties, messageType);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -224,16 +199,14 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final Serializable objectMessage, final String messageType, final String topicName) {
-
+    public void publishNow(final Serializable objectMessage, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(objectMessage, messageType, topicName);
+                            messageServiceClient.publishNow(objectMessage, messageType);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -244,16 +217,31 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final String textMessage, final Properties messageProperties, final String topicName) {
+    public void publishNow(final String textMessage) {
+        if (!stopped) {
+            messageQueue.offer(
+                new Runnable() {
+                    public void run() {
+                        try {
+                            messageServiceClient.publishNow(textMessage);
+                        } catch (MessageServiceException exception) {
+                            if (defaultMessageService.reconnectNow()) {
+                                run();
+                            }
+                        }
+                    }
+                });
+        }
+    }
 
+    public void publishNow(final String textMessage, final Properties messageProperties) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(textMessage, messageProperties, topicName);
+                            messageServiceClient.publishNow(textMessage, messageProperties);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -264,17 +252,14 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final String textMessage, final Properties messageProperties, final String messageType,
-        final String topicName) {
-
+    public void publishNow(final String textMessage, final Properties messageProperties, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
                             // throws MessageServiceException
-                            messageServiceClient.publishNow(textMessage, messageProperties, messageType, topicName);
+                            messageServiceClient.publishNow(textMessage, messageProperties, messageType);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
@@ -285,34 +270,13 @@ implements MessagePublisher {
         }
     }
 
-    public void publishNow(
-        final String textMessage, final String topicName) {
-
+    public void publishNow(final String textMessage, final String messageType) {
         if (!stopped) {
             messageQueue.offer(
                 new Runnable() {
                     public void run() {
                         try {
-                            messageServiceClient.publishNow(textMessage, topicName);
-                        } catch (MessageServiceException exception) {
-                            if (defaultMessageService.reconnectNow()) {
-                                run();
-                            }
-                        }
-                    }
-                });
-        }
-    }
-
-    public void publishNow(
-        final String textMessage, final String messageType, final String topicName) {
-
-        if (!stopped) {
-            messageQueue.offer(
-                new Runnable() {
-                    public void run() {
-                        try {
-                            messageServiceClient.publishNow(textMessage, messageType, topicName);
+                            messageServiceClient.publishNow(textMessage, messageType);
                         } catch (MessageServiceException exception) {
                             if (defaultMessageService.reconnectNow()) {
                                 run();
