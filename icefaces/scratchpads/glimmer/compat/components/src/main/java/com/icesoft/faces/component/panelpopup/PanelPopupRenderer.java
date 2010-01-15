@@ -305,9 +305,9 @@ public class PanelPopupRenderer extends GroupRenderer {
         if (panelPopup instanceof PanelTooltip) {
             JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
         }
-
-        JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
-                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
+        String iframeUrl = "javascript:\'<html></html>\'";
+        JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "',\"" +
+                iframeUrl + "\");");
     }
     
     protected void doPassThru(FacesContext facesContext, UIComponent uiComponent,
@@ -321,8 +321,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 	private String modalJavascript(UIComponent uiComponent, Boolean modal, Boolean visible,
 			FacesContext facesContext, String clientId) {
 		String call = null;
-		String iframeUrl = CoreUtils.resolveResourceURL(facesContext,
-				"/xmlhttp/blank");
+		String iframeUrl = "javascript:\'<html></html>\'";
 		if (modal != null) {
 			if (modal.booleanValue() && visible.booleanValue()) {
                 String trigger = "";
@@ -337,8 +336,8 @@ public class PanelPopupRenderer extends GroupRenderer {
                 }
                 
                 String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
-				call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");";
+				call = "Ice.modal.start('" + clientId + "', \"" + iframeUrl
+                        + "\", '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");";
 				if (log.isTraceEnabled()) {
 					log.trace("Starting Modal Function");
 				}
