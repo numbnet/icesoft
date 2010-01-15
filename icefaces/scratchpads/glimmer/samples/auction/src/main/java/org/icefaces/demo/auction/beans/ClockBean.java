@@ -74,7 +74,6 @@ public class ClockBean  {
 
     @PreDestroy
     public void cleanup(){
-        System.out.println("ClockBean.cleanup: NOPE");
         if (null != clockTimer)  {
             clockTimer.cancel();
         }
