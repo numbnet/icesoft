@@ -30,7 +30,7 @@
         </subant> 
     </target>
 
-    <target name="allclean">
+    <target name="clean">
         <subant target="clean">
             <fileset dir="." includes="*/build.xml"/>
         </subant>
