@@ -115,8 +115,7 @@ implements Handler, Runnable {
                         sessionManager.getPushServerMessageService().publish(
                             _message.toString(),
                             _messageProperties,
-                            DISPOSE_VIEWS_MESSAGE_TYPE,
-                            MessageServiceClient.PUSH_TOPIC_NAME);
+                            DISPOSE_VIEWS_MESSAGE_TYPE);
                     }
                 }
                 try {
