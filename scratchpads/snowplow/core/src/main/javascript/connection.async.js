@@ -99,31 +99,39 @@ function AsyncConnection(logger, windowID, configuration) {
         };
     }
 
-    function registeredSessions() {
+    function registeredPushIds() {
         return split(lookupCookieValue('ice.pushids'), ' ');
     }
 
     function connect() {
-        debug(logger, "closing previous connection...");
-        close(listener);
-        debug(logger, "connect...");
-        listener = postAsynchronously(channel, receiveURI, function(q) {
-            each(registeredSessions(), curry(addNameValue, q, 'ice.pushid'));
-        }, function(request) {
-            FormPost(request);
-            sendXWindowCookie(request);
-        }, $witch(function (condition) {
-            condition(OK, function(response) {
-                if (notEmpty(contentAsText(response))) {
-                    receiveCallback(response);
-                }
-                receiveXWindowCookie(response);
-                if (getHeader(response, 'X-Connection') != 'close') {
-                    connect();
-                }
-            });
-            condition(ServerInternalError, retryOnServerError);
-        }));
+        try {
+            debug(logger, "closing previous connection...");
+            close(listener);
+            debug(logger, "connect...");
+            listener = postAsynchronously(channel, receiveURI, function(q) {
+                each(registeredPushIds(), curry(addNameValue, q, 'ice.pushid'));
+            }, function(request) {
+                FormPost(request);
+                sendXWindowCookie(request);
+            }, $witch(function (condition) {
+                condition(OK, function(response) {
+                    if (notEmpty(contentAsText(response))) {
+                        receiveCallback(response);
+                    } else {
+                        info(logger, 'received empty response');
+                    }
+                    receiveXWindowCookie(response);
+                    if (getHeader(response, 'X-Connection') != 'close') {
+                        connect();
+                    } else {
+                        info('blocking connection stopped at server\'s request');
+                    }
+                });
+                condition(ServerInternalError, retryOnServerError);
+            }));
+        } catch (e) {
+            error(logger, 'failed to re-initiate blocking connection', e);
+        }
     }
 
     //build callbacks only after this.connection function was defined
