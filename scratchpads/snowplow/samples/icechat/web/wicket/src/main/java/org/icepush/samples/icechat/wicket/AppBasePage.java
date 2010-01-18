@@ -25,12 +25,11 @@ public class AppBasePage extends WebPage {
 	public AppBasePage() {
 		super();
                 add(new ContextImage("banner_hdr","./img/banner_hdr.jpg"));
-                System.out.println("CALLING APP BASE PAGE NO_ARGS CONSTRUCTOR!!!!");
+                add(new ContextImage("wicketLogo","./img/logos/wicket.png"));
 	}
 	
 	class WicketPushRequestContextAdapter extends AbstractPushRequestContext{
 		public WicketPushRequestContextAdapter(){
-			System.out.println("CREATING WICKETPUSHREQUESTCONTEXTADAPTER");
 			//TODO tied to servlet, not portlet
 			WebRequest webRequest = (WebRequest)getWebRequestCycle().getRequest();
 			WebResponse webResponse = (WebResponse)getWebRequestCycle().getResponse();
