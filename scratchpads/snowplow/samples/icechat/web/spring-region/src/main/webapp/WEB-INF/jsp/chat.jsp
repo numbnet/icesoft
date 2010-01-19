@@ -8,25 +8,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
         <script type="text/javascript" src="code.icepush"></script>
+        <script type="text/javascript" src="icepushUtil.js"></script>
     </head>
-    <body><!-- onload="focusChat();" -->
-
-        <script type="text/javascript">
-            ice.push.register(['${chat.pushRequestContext.currentPushId}'],
-                function() {
-                    //window.location.reload();
-                    window.location = window.location.href;
-                }
-            );
-        </script>
-        <script type="text/javascript">
-            function focusChat() {
-                if (document.getElementById('messageInput')) {
-                    document.getElementById('messageInput').focus();
-                }
-            }
-        </script>
-
+    <body>
         <div class="header_container">
             <div class="header_content">
                 <img width="109px" height="100px"
@@ -108,15 +92,7 @@
                         </div>
 
                         <div class="chatRoomMessages">
-                            <div class="chatViewSubHeader">Messages</div>
-                            <table width="100%" cellspacing="2" cellpadding="2">
-                            <c:forEach var="msg" items="${chat.currentChatSessionHolder.session.room.messages}">
-                                <tr><td>
-                                    [<fmt:formatDate value="${msg.created}" type="both" dateStyle="short" timeStyle="short"/>]
-                                    <b><c:out value="${msg.userChatSession.user.displayName}: "/></b><c:out value="${msg.message}"/>
-                                </td></tr>
-                            </c:forEach>
-                            </table>
+                            <icep:region group="${chat.currentChatSessionHolder.session.room.name}" notifier="${chat.chatNotifier}" page="WEB-INF/jsp/messages.jsp"/>
                         </div>
                     </div>
 
