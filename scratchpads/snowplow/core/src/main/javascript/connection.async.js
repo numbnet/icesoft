@@ -115,17 +115,17 @@ function AsyncConnection(logger, windowID, configuration) {
                 sendXWindowCookie(request);
             }, $witch(function (condition) {
                 condition(OK, function(response) {
-                    if (notEmpty(contentAsText(response))) {
-                        receiveCallback(response);
+                    var reconnect = getHeader(response, 'X-Connection') != 'close';
+                    var emptyResponse = notEmpty(contentAsText(response));
+
+                    if (reconnect) {
+                        if (not(emptyResponse)) warn(logger, 'empty response received');
                     } else {
-                        info(logger, 'received empty response');
+                        info(logger, 'blocking connection stopped at server\'s request...');
                     }
+                    if (emptyResponse) receiveCallback(response);
                     receiveXWindowCookie(response);
-                    if (getHeader(response, 'X-Connection') != 'close') {
-                        connect();
-                    } else {
-                        info('blocking connection stopped at server\'s request');
-                    }
+                    if (reconnect) connect();
                 });
                 condition(ServerInternalError, retryOnServerError);
             }));
