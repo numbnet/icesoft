@@ -35,7 +35,12 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class PushRenderer {
+    private static Logger log = Logger.getLogger(PushRenderer.class.getName());
+
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
     private static Hashtable renderGroups = new Hashtable();
 
@@ -74,8 +79,12 @@ public class PushRenderer {
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
-
-        group.add(new SessionHolder(externalContext.getSession(false)));
+        Object currentSession = externalContext.getSession(false);
+        if (log.isLoggable(Level.FINEST)) {
+            log.finest( "addCurrentSession " + currentSession + 
+                       " to group " + groupName );
+        }
+        group.add(new SessionHolder(currentSession));
     }
 
     /**
@@ -115,6 +124,10 @@ public class PushRenderer {
             HttpSession session = (HttpSession) sessionHolder.getSession();
             if ((null != session) && (isValid(session))) {
                 SessionRenderer sessionRenderer = (SessionRenderer) session.getAttribute(SessionRenderer.class.getName());
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest( "render " + sessionRenderer +
+                       " in group " + groupName );
+                }
                 if (null != sessionRenderer) {
                     sessionRenderer.renderViews();
                 }
@@ -145,6 +158,9 @@ public class PushRenderer {
             return;
         }
         if (group.isEmpty()) {
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest( "removing group " + groupName );
+            }
             renderGroups.remove(groupName);
         }
     }
