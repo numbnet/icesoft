@@ -38,11 +38,13 @@ public class WindowScopeManager {
 
     public synchronized String determineWindowID(FacesContext context) {
         String id = context.getExternalContext().getRequestParameterMap().get("ice.window");
+        System.out.println("WindowScopeManager.determineWindowID: " + id);
         try {
             for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
                 ((ScopeMap) scopeMap).discardIfExpired(context);
             }
         } catch (Throwable e) {
+            System.out.println("WindowScopeManager.determineWindowID");
             Log.log(Level.FINE, "Failed to remove window scope map", e);
         }
 
@@ -121,6 +123,7 @@ public class WindowScopeManager {
     }
 
     public void onActivatedWindow(Observer observer) {
+        System.out.println("WindowScopeManager.onActivatedWindow: " + observer);
         activatedWindowNotifier.addObserver(observer);
     }
 
@@ -130,6 +133,9 @@ public class WindowScopeManager {
 
     public synchronized static WindowScopeManager lookup(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
+        //ICE-5281:  We require that a session be available at this point and it may not have
+        //           been created otherwise.
+        Object session = externalContext.getSession(true);
         Map sessionMap = externalContext.getSessionMap();
         ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
         return lookup(sessionMap, configuration);
@@ -173,6 +179,7 @@ public class WindowScopeManager {
 
     private static class ReadyObservable extends Observable {
         public synchronized void notifyObservers(Object o) {
+            System.out.println("WindowScopeManager$ReadyObservable.notifyObservers: " + o);
             setChanged();
             super.notifyObservers(o);
             clearChanged();
