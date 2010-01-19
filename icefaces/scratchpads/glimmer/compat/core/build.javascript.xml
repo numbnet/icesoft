@@ -36,12 +36,16 @@
 <project name="bridge" default="build">
     <property file="build.properties"/>
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
+    <property name="extras.dir" location="${src.dir}/extras"/>
+    <property name="prototype.dir" location="${src.dir}/prototype"/>
+    <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>    
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
     <property name="script" location="${build.dir}/compat.js"/>
+    <property name="icefaces-compat.js" location="${build.dir}/icefaces-compat.js"/>    
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
-    <target name="prepare" description="Collate bridge code">
+    <target name="prepare" depends="build.icefaces.compat" description="Collate bridge code">
         <tstamp/>
         <echoproperties/>
         <mkdir dir="${build.dir}"/>
@@ -69,6 +73,31 @@
         </copy>
     </target>
 
+
+    <target name="build.icefaces.compat"  description="Collate compat components code">
+        <tstamp/>
+        <echoproperties/>
+        <mkdir dir="${build.dir}"/>    
+        <concat destfile="${icefaces-compat.js}" append="yes" fixlastline="yes">
+            <filelist dir="${prototype.dir}">
+                <file name="HEADER"/>  
+                <file name="prototype.js"/>
+            </filelist>
+            <filelist dir="${scriptaculous.dir}">
+                <file name="builder.js"/>
+                <file name="effects.js"/>
+                <file name="dragdrop.js"/>
+                <file name="controls.js"/>
+                <file name="slider.js"/>
+                <file name="sound.js"/>
+            </filelist>
+            <filelist dir="${extras.dir}">
+                <file name="extras.js"/>
+            </filelist>
+        </concat>
+    </target>
+
+    
     <target name="build.bridge.uncompressed" depends="prepare">
         <touch file="${script}"/>
         <move file="${tmp}" tofile="${script}" overwrite="yes">
