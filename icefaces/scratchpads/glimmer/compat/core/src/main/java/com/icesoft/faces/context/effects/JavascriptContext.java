@@ -91,7 +91,7 @@ public class JavascriptContext {
     /**
      * URL of the ICE Extras lib
      */
-    public static final String ICE_EXTRAS = "/xmlhttp" + StartupTime.getStartupInc() + "ice-extras.js";
+    public static final String ICE_EXTRAS = "/xmlhttp" + StartupTime.getStartupInc() + "icefaces-compat.js";
 
     /**
      * Include a script tag in the &lt;head&gt; section of the page with the src
