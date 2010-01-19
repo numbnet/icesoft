@@ -13,6 +13,7 @@ public class ChatFormData {
     private BaseCurrentChatSessionHolder currentChatSessionHolder;
     private BaseChatRoom newChatRoom;
     private BaseChatMessage newMessage;
+    private ChatNotifier chatNotifier;
 
     public ChatFormData() {
         newChatRoom = new BaseChatRoom();
@@ -62,5 +63,13 @@ public class ChatFormData {
 
     public void setNewMessage(BaseChatMessage newMessage) {
         this.newMessage = newMessage;
+    }
+
+    public ChatNotifier getChatNotifier() {
+        return chatNotifier;
+    }
+
+    public void setChatNotifier(ChatNotifier chatNotifier) {
+        this.chatNotifier = chatNotifier;
     }
 }
