@@ -28,6 +28,8 @@ public class ChatFormController extends AbstractFormController {
 
     public ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
                                  BindException errors) throws Exception {
+        logger.info("showForm " + errors.getModel());
+
         Map<String,Object> model = errors.getModel();
         model.put("chat", chatFormData);
         model.put("loginController", loginController);
@@ -38,6 +40,8 @@ public class ChatFormController extends AbstractFormController {
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
                                                  Object command, BindException errors) throws Exception {
+        logger.info("processFormSubmission " + errors.getModel());
+
         if (request.getParameter("submit.sendMessage") != null) {
             sendMessage();
         }
@@ -86,7 +90,8 @@ public class ChatFormController extends AbstractFormController {
 
         chatFormData.getChatManagerViewController().setNewChatRoomBean(chatFormData.getNewChatRoom());
         chatFormData.getChatManagerViewController().createNewChatRoom();
-        
+        chatFormData.getChatManagerViewController().openChatSession(chatFormData.getNewChatRoom().getName());
+
         // Reset the desired name
         chatFormData.getNewChatRoom().setName(null);
     }
