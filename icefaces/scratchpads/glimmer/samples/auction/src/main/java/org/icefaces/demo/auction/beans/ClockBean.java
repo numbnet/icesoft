@@ -37,6 +37,8 @@ import org.icefaces.application.PushRenderer;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -52,6 +54,9 @@ import javax.faces.bean.ApplicationScoped;
 @ManagedBean(name = "ClockBean")
 @ApplicationScoped
 public class ClockBean  {
+
+    private static Logger log = Logger.getLogger(ClockBean.class.getName());
+    
     private int pollInterval = 1000;
     private String autoLoad = " ";
 
@@ -61,6 +66,9 @@ public class ClockBean  {
     private TimerTask renderTask = new TimerTask()  {
         public void run() {
             PushRenderer.render("auction");
+            if( log.isLoggable(Level.FINEST) ){
+                log.fine("render done for 'auction' using " + clockTimer);
+            }
         }
     };
 
@@ -76,6 +84,9 @@ public class ClockBean  {
     public void cleanup(){
         if (null != clockTimer)  {
             clockTimer.cancel();
+        }
+        if( log.isLoggable(Level.FINEST) ){
+            log.finest("cleaning up " + clockTimer);
         }
     }
 

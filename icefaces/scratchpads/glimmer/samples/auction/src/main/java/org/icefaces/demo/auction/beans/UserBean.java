@@ -61,6 +61,9 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "UserBean")
 @ViewScoped
 public class UserBean implements Serializable {
+
+    private static Logger log = Logger.getLogger(UserBean.class.getName());
+
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";
@@ -96,6 +99,9 @@ public class UserBean implements Serializable {
 
     public UserBean() {
         PushRenderer.addCurrentSession("auction");
+        if( log.isLoggable(Level.FINEST) ){
+            log.finest("added current session to renderer 'auction'");
+        }
     }
 
     public boolean isMinimized() {
