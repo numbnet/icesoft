@@ -225,7 +225,7 @@ var Class = (function() {
 
 
   function isHash(object) {
-    return object instanceof Hash;
+    return object instanceof Hashtable;
   }
 
   function isFunction(object) {
@@ -1108,10 +1108,10 @@ Array.from = $A;
   if (!arrayProto.lastIndexOf) arrayProto.lastIndexOf = lastIndexOf;
 })();
 function $H(object) {
-  return new Hash(object);
+  return new Hashtable(object);
 };
 
-var Hash = Class.create(Enumerable, (function() {
+var Hashtable = Class.create(Enumerable, (function() {
   function initialize(object) {
     this._object = Object.isHash(object) ? object.toObject() : Object.clone(object);
   }
@@ -1164,7 +1164,7 @@ var Hash = Class.create(Enumerable, (function() {
   }
 
   function update(object) {
-    return new Hash(object).inject(this, function(result, pair) {
+    return new Hashtable(object).inject(this, function(result, pair) {
       result.set(pair.key, pair.value);
       return result;
     });
@@ -1198,7 +1198,7 @@ var Hash = Class.create(Enumerable, (function() {
   }
 
   function clone() {
-    return new Hash(this);
+    return new Hashtable(this);
   }
 
   return {
@@ -1221,7 +1221,7 @@ var Hash = Class.create(Enumerable, (function() {
   };
 })());
 
-Hash.from = $H;
+Hashtable.from = $H;
 Object.extend(Number.prototype, (function() {
   function toColorPart() {
     return this.toPaddedString(2, 16);
@@ -4698,7 +4698,7 @@ Element.addMethods();
 
 /*------------------------------- DEPRECATED -------------------------------*/
 
-Hash.toQueryString = Object.toQueryString;
+Hashtable.toQueryString = Object.toQueryString;
 
 var Toggle = { display: Element.toggle };
 
