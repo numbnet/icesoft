@@ -131,7 +131,7 @@ function WindowLogHandler(thresholdPriority, name) {
         if (categoryMatcher.test(categoryName)) {
             var elementDocument = logContainer.ownerDocument;
             var timestamp = new Date();
-            var completeMessage = '[' + categoryName + '] : ' + message + (exception ? ('\n' + exception) : '');
+            var completeMessage = join(['[', categoryName, '] : ', message, (exception ? join(['\n', exception.name, ' <', exception.message, '>'], '') : '')], '');
             each(split(completeMessage, '\n'), function(line) {
                 if (/(\w+)/.test(line)) {
                     var eventNode = elementDocument.createElement('div');
