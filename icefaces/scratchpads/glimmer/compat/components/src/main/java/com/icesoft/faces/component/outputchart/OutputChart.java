@@ -437,10 +437,13 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
 
     void generateClientSideImageMap(DOMContext domContext, Element map) {
         if (isClientSideImageMap()) {
+            String clientId = getClientId();
+            int i = 0;
             Iterator area = getGeneratedImageMapArea().values().iterator();
             while (area.hasNext()) {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
                 Text areaNode = domContext.createTextNode(areaMap.toHTML(
+                        "id='"+ clientId + i++ + "' "+
                         "title ='" + areaMap.getLengendLabel() +
                         "' href=\"javascript:;\" onclick=\"document.forms['" +
                         getParentFormId() + "']['" + ICE_CHART_COMPONENT +
