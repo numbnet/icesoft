@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PushContext {
+    private static final Logger log = Logger.getLogger(PushContext.class.getName());
     private static final ThreadLocal CurrentBrowserID = new ThreadLocal();
     private static final String BrowserIDCookieName = "ice.push.browser";
     private static final int GroupScanningTimeResolution = 3000;//ms
@@ -59,14 +62,24 @@ public class PushContext {
             }
         }
 
-        return browserID + ":" + generateSubID();
+        String id = browserID + ":" + generateSubID();
+        if (log.isLoggable(Level.FINEST)) {
+            log.finest("Created new pushId '" + id + "'.");
+        }
+        return id;
     }
 
     public void push(String targetName) {
         Object o = groups.get(targetName);
         if (o == null) {
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Push notification triggered for '" + targetName + "' pushId.");
+            }
             outboundNotifications.notifyObservers(new String[]{targetName});
         } else {
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Push notification triggered for '" + targetName + "' group.");
+            }
             outboundNotifications.notifyObservers(((Group) o).getPushIDs());
         }
     }
@@ -78,6 +91,10 @@ public class PushContext {
         } else {
             ((Group) o).addID(pushId);
         }
+
+        if (log.isLoggable(Level.FINEST)) {
+            log.finest("Added pushId '" + pushId + "' to group '" + groupName + "'.");
+        }
     }
 
     public void removeGroupMember(String groupName, String pushId) {
@@ -85,6 +102,10 @@ public class PushContext {
         if (o != null) {
             Group group = (Group) o;
             group.removeID(pushId);
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Added pushId '" + pushId + "' to group '" + groupName + "'.");
+            }
         }
     }
 
@@ -121,6 +142,9 @@ public class PushContext {
 
         private Group(String name, String firstPushId) {
             this.name = name;
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("'" + name + "' push group created.");
+            }
             this.addID(firstPushId);
         }
 
@@ -140,6 +164,9 @@ public class PushContext {
         private void discardIfExpired() {
             //expire group
             if (lastAccess + groupTimeout < System.currentTimeMillis()) {
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("'" + name + "' push group expired.");
+                }
                 groups.remove(name);
             }
         }
@@ -147,6 +174,9 @@ public class PushContext {
         private void removeID(String id) {
             pushIDList.remove(id);
             if (pushIDList.isEmpty()) {
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("Disposed '" + name + "' push group since it no longer contains any pushIds.");
+                }
                 groups.remove(name);
             }
         }

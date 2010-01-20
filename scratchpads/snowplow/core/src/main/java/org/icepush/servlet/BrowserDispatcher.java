@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class BrowserDispatcher implements PseudoServlet {
@@ -98,6 +99,9 @@ public abstract class BrowserDispatcher implements PseudoServlet {
         private BrowserEntry(String id, PseudoServlet servlet) {
             this.id = id;
             this.servlet = servlet;
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("New browser detected, assigning ID '" + id + "'.");
+            }
         }
 
         public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -112,6 +116,9 @@ public abstract class BrowserDispatcher implements PseudoServlet {
         public void discardIfExpired() {
             if (lastAccess + browserTimeout < System.currentTimeMillis()) {
                 try {
+                    if (log.isLoggable(Level.FINEST)) {
+                        log.finest("Discard browser with ID '" + id + "' since is no longer used.");
+                    }
                     servlet.shutdown();
                 } catch (Throwable t) {
                     log.fine("Failed to discard browser bound server for ID=" + id);

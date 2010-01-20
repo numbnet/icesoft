@@ -42,19 +42,30 @@ import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
+    private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
     private static final ResponseHandler CloseResponse = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             //let the bridge know that this blocking connection should not be re-initialized
             response.setHeader("X-Connection", "close");
             response.setHeader("Content-Length", 0);
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Close current blocking connection.");
+            }
         }
     };
     //Define here to avoid classloading problems after application exit
     private static final ResponseHandler NoopHandler = new FixedXMLContentHandler() {
         public void writeTo(Writer writer) throws IOException {
             writer.write("<noop/>");
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Sending NoOp.");
+            }
         }
     };
     private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
@@ -80,6 +91,9 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
                 participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("Participating pushIds: " + participatingPushIDs + ".");
+                }
                 pendingRequest.put(request);
                 respondIfNotificationsAvailable();
                 inboundNotifier.notifyObservers(participatingPushIDs);
@@ -127,6 +141,10 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
             respondIfPendingRequest(new NotificationHandler(ids) {
                 public void writeTo(Writer writer) throws IOException {
                     super.writeTo(writer);
+
+                    if (log.isLoggable(Level.FINEST)) {
+                        log.finest("Sending notifications for " + notifiedPushIDs + ".");
+                    }
                     notifiedPushIDs.removeAll(Arrays.asList(ids));
                 }
             });
