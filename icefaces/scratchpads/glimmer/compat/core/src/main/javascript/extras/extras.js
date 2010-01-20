@@ -4279,6 +4279,7 @@ Ice.MenuBarKeyNavigator.addMethods({
 
     hover: function(event) {
         if (this.clicked) {
+            try {
             element = Event.element(event).up('.' + this.getMenuBarItemClass());
             if (!element) return;
             var submenu = $(element.id + '_sub');
@@ -4289,6 +4290,7 @@ Ice.MenuBarKeyNavigator.addMethods({
             } else {
                 Ice.Menu.show(element, submenu, null);
             }
+            } catch(e) {logger.info(e);}
         }
     },
 
