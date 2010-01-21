@@ -90,6 +90,10 @@
     <target name="javadoc">
         <delete dir="${javadocs.dir}"/>
         <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 Compatibility API" failonerror="true">
+        	<classpath>
+                <pathelement location="../lib/icefaces-compat.jar"/>
+                <pathelement location="../lib/icefaces-comps-compat.jar"/>
+            </classpath>
             <fileset dir="${java.dir}">
                 <include name="com/icesoft/faces/context/DOMContext.java"/>
                 <include name="com/icesoft/faces/renderkit/dom_html_basic/HTML.java"/>
