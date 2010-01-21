@@ -38,6 +38,7 @@ import org.icefaces.application.showcase.util.RandomNumberGenerator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.Serializable;
 
 /**
  * <p>The ChartModelAxial class purpose is to show how the outputChart component
@@ -47,7 +48,7 @@ import java.util.Arrays;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelAxial extends AbstractChartData {
+public class ChartModelAxial extends AbstractChartData implements Serializable {
 
     private ArrayList chartData;
 

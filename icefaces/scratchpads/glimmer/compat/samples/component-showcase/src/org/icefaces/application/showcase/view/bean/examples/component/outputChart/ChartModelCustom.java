@@ -45,6 +45,7 @@ import org.krysalis.jcharts.types.ChartType;
 import org.krysalis.jcharts.properties.util.ChartFont;
 import java.awt.*;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * <p>The ChartModelCustom class purpose is to show how the outputChart component
@@ -56,7 +57,7 @@ import java.util.ArrayList;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelCustom extends AbstractChartData {
+public class ChartModelCustom extends AbstractChartData implements Serializable {
 
     public static final Log log = LogFactory.getLog(ChartModelCustom.class);
 
