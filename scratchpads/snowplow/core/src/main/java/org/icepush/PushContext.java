@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 public class PushContext {
     private static final Logger log = Logger.getLogger(PushContext.class.getName());
-    private static final ThreadLocal CurrentBrowserID = new ThreadLocal();
     private static final String BrowserIDCookieName = "ice.push.browser";
     private static final int GroupScanningTimeResolution = 3000;//ms
     private int browserCounter = 0;
@@ -53,12 +52,14 @@ public class PushContext {
     public synchronized String createPushId(HttpServletRequest request, HttpServletResponse response) {
         String browserID = getBrowserIDFromCookie(request);
         if (browserID == null) {
-            if (CurrentBrowserID.get() == null) {
+            String currentBrowserID = (String) 
+                    request.getAttribute(BrowserIDCookieName);
+            if (null == currentBrowserID) {
                 browserID = generateBrowserID();
-                CurrentBrowserID.set(browserID);
                 response.addCookie(new Cookie(BrowserIDCookieName, browserID));
+                request.setAttribute(BrowserIDCookieName, browserID);
             } else {
-                browserID = (String) CurrentBrowserID.get();
+                browserID = currentBrowserID;
             }
         }
 
