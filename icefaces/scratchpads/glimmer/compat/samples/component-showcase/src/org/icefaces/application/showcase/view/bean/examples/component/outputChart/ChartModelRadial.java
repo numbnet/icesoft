@@ -39,6 +39,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.io.Serializable;
 
 /**
  * <p>The ChartModelAxial class purpose is to show how the outputChart component
@@ -48,7 +49,7 @@ import java.util.Collection;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelRadial extends AbstractChartData {
+public class ChartModelRadial extends AbstractChartData implements Serializable {
 
     public ArrayList chartData;
 
