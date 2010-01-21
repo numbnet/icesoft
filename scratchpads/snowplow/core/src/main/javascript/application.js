@@ -115,6 +115,10 @@ if (!window.ice.icepush) {
 
         onBeforeUnload(window, delistWindowPushIDs);
 
+        function throwServerError(response) {
+            throw 'Server internal error: ' + contentAsText(response);
+        }
+
         var currentNotifications = [];
         var apiChannel = Client(true);
         //public API
@@ -138,46 +142,61 @@ if (!window.ice.icepush) {
 
             createPushId: function() {
                 var id;
-                postSynchronously(apiChannel, 'create-push-id.icepush' + namespace.uriextension, noop, FormPost, function(response) {
-                    id = contentAsText(response);
-                });
+                postSynchronously(apiChannel, 'create-push-id.icepush' + namespace.uriextension, noop, FormPost, $witch(function (condition) {
+                    condition(OK, function(response) {
+                        id = contentAsText(response);
+                    });
+                    condition(ServerInternalError, throwServerError);
+                }));
                 return id;
             },
 
             notify: function(ids) {
                 postAsynchronously(apiChannel, 'notify.icepush' + namespace.uriextension, function(q) {
                     each(ids, curry(addNameValue, q, 'id'));
-                }, FormPost, noop);
+                }, FormPost, $witch(function(condition) {
+                    condition(ServerInternalError, throwServerError);
+                }));
             },
 
             addGroupMember: function(group, id) {
                 postAsynchronously(apiChannel, 'add-group-member.icepush' + namespace.uriextension, function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
-                }, FormPost, noop);
+                }, FormPost, $witch(function(condition) {
+                    condition(ServerInternalError, throwServerError);
+                }));
             },
 
             removeGroupMember: function(group, id) {
                 postAsynchronously(apiChannel, 'remove-group-member.icepush' + namespace.uriextension, function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
-                }, FormPost, noop);
+                }, FormPost, $witch(function(condition) {
+                    condition(ServerInternalError, throwServerError);
+                }));
             },
 
             get: function(uri, parameters, responseCallback) {
                 getAsynchronously(apiChannel, uri, function(query) {
                     parameters(curry(addNameValue, query));
-                }, noop, function(response) {
-                    responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
-                });
+                }, noop, $witch(function(condition) {
+                    condition(OK, function(response) {
+                        responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
+                    });
+                    condition(ServerInternalError, throwServerError);
+                }));
             },
 
             post: function(uri, parameters, responseCallback) {
                 postAsynchronously(apiChannel, uri, function(query) {
                     parameters(curry(addNameValue, query));
-                }, FormPost, function(response) {
-                    responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
-                });
+                }, FormPost, $witch(function(condition) {
+                    condition(OK, function(response) {
+                        responseCallback(statusCode(response), contentAsText(response), contentAsDOM(response));
+                    });
+                    condition(ServerInternalError, throwServerError);
+                }));
             }
         };
 
