@@ -1,8 +1,8 @@
 <project name="icefaces" default="lib" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
-    <property file="../build.properties"/>
-    <property name="lib.dir" location="../../lib"/>
-    <property name="build.dir" location="../build"/>
+    <property file="../core/build.properties"/>
+    <property name="lib.dir" location="../lib"/>
+    <property name="build.dir" location="../lib"/>
     <property name="finalNameGlimmer" value="${glimmer.artifactId}-${mvn.version}"/>
     <property name="finalNameCompat" value="${compat.artifactId}-${mvn.version}"/>
     <property name="finalNameCompsCompat" value="${comps.compat.artifactId}-${mvn.version}"/>
@@ -24,11 +24,11 @@
       	 <localRepository refid="local.repository"/>      	
          	  <pom refid="icepushPom"/>
       </artifact:install>	
-      <artifact:pom id="glimmerPom" file="glimmer.pom"> 
+      <artifact:pom id="glimmerPom" file="icefaces.pom"> 
     	 <localRepository refid="local.repository"/>
       </artifact:pom>
        <echo>installing icefaces-${glimmerPom.version} to local repository</echo>
-      <artifact:install file="${build.dir}/dist/icefaces.jar" >
+      <artifact:install file="${build.dir}/icefaces.jar" >
       	 <localRepository refid="local.repository"/>      	
     	  <pom refid="glimmerPom"/>
       </artifact:install>
