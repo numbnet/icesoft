@@ -74,9 +74,11 @@ public abstract class BrowserDispatcher implements PseudoServlet {
 
     private static String getBrowserIDFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if ("ice.push.browser".equals(cookie.getName())) {
-                return cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("ice.push.browser".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
 
