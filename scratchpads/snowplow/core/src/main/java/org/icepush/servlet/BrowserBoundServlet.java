@@ -24,6 +24,7 @@ public class BrowserBoundServlet extends PathDispatcher {
 
     private class CreatePushID extends AbstractPseudoServlet {
         public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+            response.setContentType("text/plain");
             response.getWriter().write(pushContext.createPushId(request, response));
         }
     }
@@ -34,6 +35,8 @@ public class BrowserBoundServlet extends PathDispatcher {
             for (String id : ids) {
                 pushContext.push(id);
             }
+            response.setContentType("text/plain");
+            response.setContentLength(0);
         }
     }
 
@@ -42,6 +45,8 @@ public class BrowserBoundServlet extends PathDispatcher {
             String group = request.getParameter("group");
             String pushID = request.getParameter("id");
             pushContext.addGroupMember(group, pushID);
+            response.setContentType("text/plain");
+            response.setContentLength(0);
         }
     }
 
@@ -50,6 +55,8 @@ public class BrowserBoundServlet extends PathDispatcher {
             String group = request.getParameter("group");
             String pushID = request.getParameter("id");
             pushContext.removeGroupMember(group, pushID);
+            response.setContentType("text/plain");
+            response.setContentLength(0);
         }
     }
 }
