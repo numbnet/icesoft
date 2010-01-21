@@ -64,7 +64,7 @@
         <exclude name="el-api.jar" if="jsf12"/>
         <exclude name="el-api.jar" if="serverel"/>
         <exclude name="el-api.jar" if="noelapi"/>
-        <exclude name="jstl.jar" if="serverjsf"/>
+        <exclude name="jstl.jar" if="serverjsf" unless="jsf" />
         <exclude name="xercesImpl.jar" if="websphere6"/>
         <exclude name="xml-apis.jar" if="websphere6"/>
         <exclude name="xercesImpl.jar" if="jsf12"/>
