@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="auctionMonitor" default="tomcat6.0">
+<project name="auctionMonitor" default="glassfishv3">
     
     <import file="../build-common.xml"/>
     
