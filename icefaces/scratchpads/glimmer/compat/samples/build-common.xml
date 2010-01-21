@@ -108,7 +108,7 @@
                 <include name="jsf-api-1.2.jar"  if="jsf12" unless="myfaces"/>
                 <include name="jsf-impl-1.2.jar" if="jsf12" unless="myfaces"/>
         -->
-        <exclude name="*.jar" if="serverjsf"/>
+        <exclude name="*.jar" if="serverjsf" unless="jsf"/>
     </patternset>
 
     <macrodef name="clean">
