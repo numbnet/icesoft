@@ -26,9 +26,11 @@ public class CompatDOMResponseWriter extends DOMResponseWriter {
         Document document = getDocument();
         //full-page requests write directly to the response
         Node body = document.getElementsByTagName("body").item(0);
-        Element script = (Element) body.appendChild(document.createElement("script"));
+        Element div = (Element) body.appendChild(document.createElement("div"));
+        div.setAttribute("id", "dynamic-code");
+        div.setAttribute("style", "visibility: hidden; display: none;");
+        Element script = (Element) div.appendChild(document.createElement("script"));
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("id", "dynamic-code");
         if (!isPartialRequest) {
             script.appendChild(document.createTextNode(JavascriptContext.getJavascriptCalls(FacesContext.getCurrentInstance())));
         }
