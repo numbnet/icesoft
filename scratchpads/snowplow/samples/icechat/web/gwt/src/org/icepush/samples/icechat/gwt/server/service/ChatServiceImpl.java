@@ -2,11 +2,13 @@ package org.icepush.samples.icechat.gwt.server.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.icepush.PushContext;
+import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.chat.ChatHandleBuilder;
 import org.icepush.samples.icechat.gwt.client.chat.ChatMessageBuilder;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
@@ -98,16 +100,20 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public List<String> getParticipants(ChatRoomHandle handle) {
+	public List<Credentials> getParticipants(ChatRoomHandle handle) {
 		
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 				.getServletContext());
 		
 		List<User> users = chatService.getChatRoomParticipants(handle.getName());
 		
-		List<String> userNames = new ArrayList<String>(users.size());
+		List<Credentials> userNames = new ArrayList<Credentials>(users.size());
 		for(User u: users){
-			userNames.add(u.getUserName());
+			Credentials cred = new Credentials();
+			cred.setUserName(u.getUserName());
+			cred.setSessionToken(u.getSessionToken());
+			
+			userNames.add(cred);
 		}
 		return userNames;
 		
@@ -127,12 +133,13 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 
 			List<User> allUsers = chatService.getChatRoomParticipants(handle.getName());
 			for(User user: allUsers){
-				if(this.draftMessages.get(user.getUserName()) == null){
-					this.draftMessages.put(user.getUserName(), new LinkedBlockingQueue<ChatRoomDraft>());
+				if(this.draftMessages.get(user.getSessionToken()) == null){
+					this.draftMessages.put(user.getSessionToken(), new LinkedBlockingQueue<ChatRoomDraft>());
 				} 
 				ChatRoomDraft userDraft = new ChatRoomDraft();
 				userDraft.setText("");
-				this.draftMessages.get(user.getUserName()).add(userDraft);
+				userDraft.setUserSessionToken(sessionToken);
+				this.draftMessages.get(user.getSessionToken()).add(userDraft);
 			}
 			
 			PushContext.getInstance(this.getServletContext())
@@ -187,8 +194,8 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 			} 
 			ChatRoomDraft userDraft = new ChatRoomDraft();
 			userDraft.setText(newText);
-//			userDraft.setUsername(username);
-			this.draftMessages.get(user.getUserName()).add(userDraft);
+			userDraft.setUserSessionToken(sessionToken);
+			this.draftMessages.get(user.getSessionToken()).add(userDraft);
 		}
 		
 		PushContext.getInstance(this.getServletContext()).push(
@@ -201,11 +208,17 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		return this.participantTextBoxes.get(username + handle.getName());
 	}
 	
-	public ChatRoomDraft getNextDraftUpdate(ChatRoomHandle handle){
-		User currentUser = AuthenticationProvider
-		.getSessionUser(getThreadLocalRequest());
-		
-		return this.draftMessages.get(currentUser.getUserName()).poll();
+	public List<ChatRoomDraft> getNextDraftUpdate(String userSessionToken, ChatRoomHandle handle){
+
+		List<ChatRoomDraft> result = new LinkedList<ChatRoomDraft>();
+		while(!this.draftMessages.get(userSessionToken).isEmpty()){
+			result.add(this.draftMessages.get(userSessionToken).poll());
+		}
+		return result;
+	}
+	
+	public void endLongPoll(){
+		PushContext.getInstance(this.getServletContext()).push("chatRoomIndex");
 	}
 
 }

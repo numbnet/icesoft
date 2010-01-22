@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.UserSession;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
@@ -133,7 +134,7 @@ public class ChatScreen extends Composite {
 
             }
         };
-        chatService.sendCharacterNotification( UserSession.getInstance().getCredentials().getUserName(), currentChatRoom, this.newMessageTextbox.getText(), callback);
+        chatService.sendCharacterNotification( UserSession.getInstance().getCredentials().getSessionToken(), currentChatRoom, this.newMessageTextbox.getText(), callback);
 
     }
 
@@ -155,7 +156,7 @@ public class ChatScreen extends Composite {
 
         JoinChatRoomCallback joinCallback = new JoinChatRoomCallback(handle);
 
-        chatService.joinChatRoom(handle, UserSession.getInstance().getCredentials().getSessionToken(), joinCallback);
+        
 
         //first stop listening to push events for the old chat room.
         if(this.currentMessagesPushListener != null)
@@ -197,6 +198,30 @@ public class ChatScreen extends Composite {
 				
 			}
 		};
+		
+		GWTPushContext.getInstance().addPushEventListener(this.currentDraftListener, new String[]{handle.getName() + "-draft"});
+		
+		/*TODO remove this hack.  This is required as a workaround to PUSH-22*/
+		
+		chatService.endLongPoll(new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable arg0) {
+				
+				
+			}
+
+			@Override
+			public void onSuccess(Void arg0) {
+				//do nothing...
+			}
+		});
+		/* end of hack */
+		
+		
+		//now joing the chatroom
+		
+		chatService.joinChatRoom(handle, UserSession.getInstance().getCredentials().getSessionToken(), joinCallback);
 
     }
 
@@ -267,18 +292,18 @@ public class ChatScreen extends Composite {
     }
 
     public void refreshParticipants(ChatRoomHandle handle) {
-        AsyncCallback<List<String>> getParticipants = new AsyncCallback<List<String>>() {
+        AsyncCallback<List<Credentials>> getParticipants = new AsyncCallback<List<Credentials>>() {
 
             public void onFailure(Throwable caught) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public void onSuccess(List<String> result) {
+            public void onSuccess(List<Credentials> result) {
                 ChatScreen.this.roomUserList.clear();
                 ChatScreen.this.characterListeners.clear();
                 
-                for (String participant : result) {
-                    Label particLabel = new Label(participant);
+                for (Credentials participant : result) {
+                    Label particLabel = new Label(participant.getUserName());
                     HTML awarenessLabel = new HTML();
                     
                     
@@ -298,10 +323,10 @@ public class ChatScreen extends Composite {
                     awarenessLabel.getElement().setAttribute("style", "color: red; font-weight: normal;");
                     ChatScreen.this.roomUserList.add(particLabel);
                     ChatScreen.this.roomUserList.add(scribePanel);
-                    if(!ChatScreen.this.characterListeners.containsKey(participant + ChatScreen.this.currentChatRoom.getName().replaceAll(" ", "_")) && !participant.equals(UserSession.getInstance().getCredentials().getUserName())){
+                    if(!ChatScreen.this.characterListeners.containsKey(participant.getSessionToken())){
                         //register a new listener for this participant. (if not already registered and not for the current user).
                         CharacterPushListener pushListener = new CharacterPushListener(awarenessLabel, img);
-                        ChatScreen.this.characterListeners.put(participant, pushListener);
+                        ChatScreen.this.characterListeners.put(participant.getSessionToken(), pushListener);
                         
                     }
                 }
@@ -315,7 +340,7 @@ public class ChatScreen extends Composite {
     }
     
     private void updateDraft(){
-    	AsyncCallback<ChatRoomDraft> callback = new AsyncCallback<ChatRoomDraft>() {
+    	AsyncCallback<List<ChatRoomDraft>> callback = new AsyncCallback<List<ChatRoomDraft>>() {
 
 			@Override
 			public void onFailure(Throwable arg0) {
@@ -324,12 +349,13 @@ public class ChatScreen extends Composite {
 			}
 
 			@Override
-			public void onSuccess(ChatRoomDraft draft) {
-				ChatScreen.this.characterListeners.get(draft.getUserSessionToken()).updateDraft(draft.getText());
+			public void onSuccess(List<ChatRoomDraft> drafts) {
+				for(ChatRoomDraft draft: drafts)
+					ChatScreen.this.characterListeners.get(draft.getUserSessionToken()).updateDraft(draft.getText());
 			}
 		};
 		
-		this.chatService.getNextDraftUpdate(currentChatRoom, callback);
+		this.chatService.getNextDraftUpdate(UserSession.getInstance().getCredentials().getSessionToken(), currentChatRoom, callback);
     	
     }
 
