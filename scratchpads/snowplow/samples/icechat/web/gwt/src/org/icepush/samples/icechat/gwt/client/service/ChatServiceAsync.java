@@ -3,6 +3,7 @@ package org.icepush.samples.icechat.gwt.client.service;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
 
+import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
 
@@ -14,7 +15,7 @@ public interface ChatServiceAsync {
     
     void joinChatRoom(ChatRoomHandle handle, String sessionToken, AsyncCallback<Void> callback);
     
-    void getParticipants(ChatRoomHandle handle, AsyncCallback<List<String>> callback );
+    void getParticipants(ChatRoomHandle handle, AsyncCallback<List<Credentials>> callback );
 
     void sendMessage(String message, String sessionToken, ChatRoomHandle handle, AsyncCallback<Void> callback);
 
@@ -24,5 +25,7 @@ public interface ChatServiceAsync {
 
     void getCurrentCharacters(String sessionToken, ChatRoomHandle handle, AsyncCallback<String> callback);
     
-    void getNextDraftUpdate(ChatRoomHandle handle, AsyncCallback<ChatRoomDraft> callback);
+    void getNextDraftUpdate(String userSessionToken, ChatRoomHandle handle, AsyncCallback<List<ChatRoomDraft>> callback);
+    
+    void endLongPoll(AsyncCallback<Void> callback);
 }
