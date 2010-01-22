@@ -2077,13 +2077,15 @@ Autocompleter.Base.prototype = {
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
                               function(element, update) {
-                                  if (!update.style.position || update.style.position == 'absolute') {
+                                try {
+                                  if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
                                       update.style.position = 'absolute';
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
                                       update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
                                           offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
                                   }
                                   Effect.Appear(update, {duration:0.15});
+                                } catch(e){logger.info(e);}  
                               };
         this.options.onHide = this.options.onHide ||
                               function(element, update) {
@@ -2106,6 +2108,7 @@ Autocompleter.Base.prototype = {
     },
 
     show: function() {
+      try {  
         if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
         if (!this.iefix &&
             (navigator.appVersion.indexOf('MSIE') > 0) &&
@@ -2118,14 +2121,17 @@ Autocompleter.Base.prototype = {
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-        this.element.focus();        
+        this.element.focus();     
+      } catch (e) {logger.info(e);}
     },
 
     fixIEOverlapping: function() {
+      try {
         Position.clone(this.update, this.iefix);
         this.iefix.style.zIndex = 1;
         this.update.style.zIndex = 2;
         Element.show(this.iefix);
+      } catch(e) {logger.info(e);}
     },
 
     hide: function() {
@@ -2285,7 +2291,6 @@ Autocompleter.Base.prototype = {
         this.selectEntry();
         this.getUpdatedChoices(true, event, idx);
         this.hide();
-
     },
 
     onBlur: function(event) {
