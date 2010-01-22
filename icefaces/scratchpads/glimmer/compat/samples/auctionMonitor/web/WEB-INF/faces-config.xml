@@ -68,7 +68,7 @@
             com.icesoft.applications.faces.auctionMonitor.beans.ClockBean
         </managed-bean-class>
         <managed-bean-scope>
-            view
+            application
         </managed-bean-scope>
         <!--
             <managed-property>

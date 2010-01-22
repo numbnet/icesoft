@@ -88,6 +88,9 @@ public class ClockBean implements Serializable {
     }
 
     public String getAutoLoad() {
+        if (null == thread)  {
+           renderPeriodically(); 
+        }
         if (" ".equals(autoLoad)) {
             autoLoad = AUTO_LOAD;
         }
