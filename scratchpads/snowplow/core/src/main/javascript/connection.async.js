@@ -38,6 +38,7 @@ var onServerError = operator();
 var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
+var resetConnection = operator();
 
 function AsyncConnection(logger, windowID, configuration) {
     var logger = childLogger(logger, 'async-connection');
@@ -177,10 +178,15 @@ function AsyncConnection(logger, windowID, configuration) {
         update(connectionCookie, windowID + ':acquired');
     }
 
+    function isOwner() {
+        return value(connectionCookie) == (windowID + ':acquired');
+    }
+
     function hasOwner() {
         return endsWith(value(connectionCookie), ':acquired');
     }
 
+    var lastRegisteredPushIds = registeredPushIds();
     var blockingConnectionMonitor = run(Delay(function() {
         if (shouldEstablishBlockingConnection()) {
             offerCandidature();
@@ -198,6 +204,16 @@ function AsyncConnection(logger, windowID, configuration) {
                 offerCandidature();
                 info(logger, 'blocking connection lease expired...candidate for its creation');
             }
+        }
+
+        if (isOwner()) {
+            var currentlyRegisterdPushIds = registeredPushIds();
+            if ((size(currentlyRegisterdPushIds) != size(lastRegisteredPushIds)) ||
+                notEmpty(complement(currentlyRegisterdPushIds, lastRegisteredPushIds))) {
+                //reconnect to send the current list of pushIDs
+                connect();
+            }
+            lastRegisteredPushIds = currentlyRegisterdPushIds;
         }
     }, pollingPeriod));
 
