@@ -90,13 +90,18 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
             public void service(final Request request) throws Exception {
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
-                participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
-                if (log.isLoggable(Level.FINEST)) {
-                    log.finest("Participating pushIds: " + participatingPushIDs + ".");
-                }
                 pendingRequest.put(request);
-                respondIfNotificationsAvailable();
-                inboundNotifier.notifyObservers(participatingPushIDs);
+                try {
+                    participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
+                    if (log.isLoggable(Level.FINEST)) {
+                        log.finest("Participating pushIds: " + participatingPushIDs + ".");
+                    }
+                    respondIfNotificationsAvailable();
+                    inboundNotifier.notifyObservers(participatingPushIDs);
+                } catch (RuntimeException e) {
+                    log.fine("Request does not contain pushIDs.");
+                    respondIfPendingRequest(NoopHandler);
+                }
             }
 
             public void shutdown() {
