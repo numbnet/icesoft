@@ -43,12 +43,14 @@ public class BaseTag extends TagSupport {
 	} else {
 	    group = pushid;
 	}
-	try {
-	    // Set group in notifier;
-	    GroupNotifier gnotifier = (GroupNotifier)notifierBean;
-	    gnotifier.setGroup(group);
-	} catch (ClassCastException e) {
-	}
+    try {
+        // Set group in notifier;
+        GroupNotifier gnotifier = (GroupNotifier)notifierBean;
+        if (null != gnotifier)  {
+            gnotifier.setGroup(group);
+        }
+    } catch (ClassCastException e) {
+    }
 
     return SKIP_BODY;
     }
