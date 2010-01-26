@@ -81,14 +81,7 @@
 
                     <div class="chatRoomContainer">
                         <div class="chatRoomUsers">
-                            <div class="chatViewSubHeader">Who's Here?</div>
-                            <table>
-                            <c:forEach var="chatSession" items="${chat.currentChatSessionHolder.session.room.userChatSessions}">
-                                <tr><td>
-                                <c:out value="${chatSession.user.displayName}"/>
-                                </td></tr>
-                            </c:forEach>
-                            </table>
+                            <icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/users.htm"/>
                         </div>
 
                         <div class="chatRoomMessages">
