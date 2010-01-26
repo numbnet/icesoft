@@ -23,6 +23,8 @@
 package org.icefaces.render;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.Writer;
 import java.io.OutputStream;
 
@@ -38,9 +40,20 @@ import javax.faces.render.ClientBehaviorRenderer;
 
 import org.icefaces.context.DOMResponseWriter;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.application.ProductInfo;
 
 public class DOMRenderKit extends RenderKit {
+
+    private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
+
     RenderKit delegate;
+
+    //Announce ICEfaces 2.0
+    static {
+        if (log.isLoggable(Level.INFO)) {
+            log.info(new ProductInfo().toString());
+        }
+    }
 
     public DOMRenderKit(RenderKit delegate)  {
         this.delegate = delegate;
