@@ -9,7 +9,13 @@
   <packaging>jar</packaging>
   <name>ICEfaces Core</name>
   <url>http://www.icefaces.org</url> 
-  <description>icepush is the non-jsf dependent, push facility from ICEfaces.</description> 
-   
+  <description>icepush is the push facility from ICEfaces.</description> 
+    <dependencies>
+      <dependency>
+        <groupId>org.icefaces</groupId>
+        <artifactId>icefaces</artifactId>
+        <version>${version}</version>
+      </dependency>     
+    </dependencies>
 
  </project>

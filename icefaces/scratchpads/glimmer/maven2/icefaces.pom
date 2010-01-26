@@ -12,17 +12,10 @@
   <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
    
   <properties>
-    <servlet.api.version>3.0</servlet.api.version>
     <jsf.version>2.0.2-FCS</jsf.version>
-    <servlet.jsp.version>2.1</servlet.jsp.version>
   </properties>
 
   <dependencies>
-     <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icepush</artifactId>
-            <version>${version}</version>
-     </dependency>
      <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>jsf-api</artifactId>
@@ -33,12 +26,6 @@
             <artifactId>jsf-impl</artifactId>
             <version>${jsf.version}</version>
      </dependency>
-     <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${servlet.api.version}</version>
-     </dependency>
-
   </dependencies>
 
  </project>
