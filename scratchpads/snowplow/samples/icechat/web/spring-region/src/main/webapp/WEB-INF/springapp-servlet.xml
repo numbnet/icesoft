@@ -62,6 +62,10 @@
         <property name="commandName" value="chat"/>
     </bean>
 
+    <bean name="/messages.htm" class="org.icepush.samples.icechat.spring.mvc.MessagesFormController" scope="session">
+        <property name="chatFormData" ref="chatFormData"/>
+    </bean>
+
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages"/>
     </bean>

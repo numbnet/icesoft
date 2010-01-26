@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="chatRoomMessages">
-                            <icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="WEB-INF/jsp/messages.jsp"/>
+                            <icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/messages.htm"/>
                         </div>
                     </div>
 
