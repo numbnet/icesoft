@@ -10,7 +10,6 @@ import org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 import java.util.Map;
 
 public class ChatFormController extends AbstractFormController {
@@ -26,22 +25,23 @@ public class ChatFormController extends AbstractFormController {
         super();
     }
 
+    public Object formBackingObject(HttpServletRequest request) {
+        return chatFormData;
+    }
+
     public ModelAndView showForm(HttpServletRequest request, HttpServletResponse response,
                                  BindException errors) throws Exception {
-        logger.info("showForm " + errors.getModel());
-
         Map<String,Object> model = errors.getModel();
-        model.put("chat", chatFormData);
         model.put("loginController", loginController);
         model.put("chatManagerFacade", chatManagerFacade);
 
-        return showForm(request, errors, "chat", model);
+        logger.info("showForm " + errors.getModel());
+
+        return new ModelAndView("talk", model);
     }
 
     public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response,
                                                  Object command, BindException errors) throws Exception {
-        logger.info("processFormSubmission " + errors.getModel());
-
         if (request.getParameter("submit.sendMessage") != null) {
             sendMessage();
         }
@@ -52,16 +52,13 @@ public class ChatFormController extends AbstractFormController {
             joinRoom(request.getParameter("submit.joinRoom.name"));
         }
 
-        ModelAndView modelAndView = new ModelAndView("chat");
-        modelAndView.addObject("chat", chatFormData);
-        modelAndView.addObject("loginController", loginController);
-        modelAndView.addObject("chatManagerFacade", chatManagerFacade);
+        Map<String,Object> model = errors.getModel();
+        model.put("loginController", loginController);
+        model.put("chatManagerFacade", chatManagerFacade);
 
-        return modelAndView;
-    }
+        logger.info("processFormSubmission " + errors.getModel());
 
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
-        return chatFormData;
+        return new ModelAndView("redir", model);
     }
 
     private void sendMessage() {
