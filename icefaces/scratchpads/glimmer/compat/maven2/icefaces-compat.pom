@@ -13,7 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>org.icefaces</groupId>
-      <artifactId>icefaces-comps</artifactId>
+      <artifactId>icefaces</artifactId>
       <version>${version}</version>
     </dependency>       
 
