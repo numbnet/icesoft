@@ -29,7 +29,7 @@ public class WindowScopeManager {
     private Observable disactivatedWindowNotifier = new ReadyObservable();
 
     public WindowScopeManager(Configuration configuration) {
-        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 600);
+        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 1000);
     }
 
     public ScopeMap lookupWindowScope() {
@@ -40,7 +40,10 @@ public class WindowScopeManager {
         String id = context.getExternalContext().getRequestParameterMap().get("ice.window");
         try {
             for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
-                ((ScopeMap) scopeMap).discardIfExpired(context);
+                ScopeMap map = (ScopeMap) scopeMap;
+                if (!map.getId().equals(id)) {
+                    map.discardIfExpired(context);
+                }
             }
         } catch (Throwable e) {
             Log.log(Level.FINE, "Failed to remove window scope map", e);
@@ -53,15 +56,21 @@ public class WindowScopeManager {
             } else {
                 scopeMap = (ScopeMap) disposedWindowScopedMaps.removeFirst();
             }
-            activatedWindowNotifier.notifyObservers(scopeMap.getId());
-            CurrentScope.associate(scopeMap.id);
-            windowScopedMaps.put(scopeMap.id, scopeMap);
+            scopeMap.activate();
             return scopeMap.id;
         } else {
             if (windowScopedMaps.containsKey(id)) {
                 CurrentScope.associate(id);
                 return id;
             } else {
+                //this must be a postback request while the window is reloading or redirecting
+                for (Object disposedScopeMap : new ArrayList(disposedWindowScopedMaps)) {
+                    ScopeMap scopeMap = (ScopeMap) disposedScopeMap;
+                    if (scopeMap.getId().equals(id)) {
+                        scopeMap.activate();
+                        return id;
+                    }
+                }
                 throw new RuntimeException("Unknown window scope ID: " + id);
             }
         }
@@ -77,7 +86,7 @@ public class WindowScopeManager {
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
-            scopeMap.dispose();
+            scopeMap.disactivate();
         }
     }
 
@@ -114,7 +123,13 @@ public class WindowScopeManager {
             }
         }
 
-        private void dispose() {
+        private void activate() {
+            activatedWindowNotifier.notifyObservers(id);
+            CurrentScope.associate(id);
+            windowScopedMaps.put(id, this);
+        }
+
+        private void disactivate() {
             timestamp = System.currentTimeMillis();
             disposedWindowScopedMaps.addLast(windowScopedMaps.remove(id));
         }
