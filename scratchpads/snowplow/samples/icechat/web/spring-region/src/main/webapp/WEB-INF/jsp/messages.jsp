@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <div class="chatViewSubHeader">Messages</div>
 <table width="100%" cellspacing="2" cellpadding="2">
 <c:forEach var="msg" items="${chat.currentChatSessionHolder.session.room.messages}">
