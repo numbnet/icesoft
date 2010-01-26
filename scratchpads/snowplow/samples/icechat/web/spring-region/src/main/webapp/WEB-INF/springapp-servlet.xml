@@ -46,14 +46,14 @@
         <property name="validator">
             <bean class="org.icepush.samples.icechat.spring.mvc.LoginFormValidator"/>
         </property>        
-        <property name="successView" value="chat.htm"/>
+        <property name="successView" value="talk.htm"/>
     </bean>
 
     <bean name="/logout.htm" class="org.icepush.samples.icechat.spring.mvc.LogoutFormController" scope="session">
         <property name="baseLoginController" ref="loginController"/>
     </bean>
 
-    <bean name="/chat.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController" scope="session">
+    <bean name="/talk.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController" scope="session">
         <property name="pushRequestManager" ref="pushRequestManager"/>
         <property name="chatFormData" ref="chatFormData"/>
         <property name="loginController" ref="loginController"/>
@@ -63,6 +63,10 @@
     </bean>
 
     <bean name="/messages.htm" class="org.icepush.samples.icechat.spring.mvc.MessagesFormController" scope="session">
+        <property name="chatFormData" ref="chatFormData"/>
+    </bean>
+
+    <bean name="/users.htm" class="org.icepush.samples.icechat.spring.mvc.UsersFormController" scope="session">
         <property name="chatFormData" ref="chatFormData"/>
     </bean>
 

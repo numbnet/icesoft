@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-public class MessagesFormController implements Controller {
+public class UsersFormController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
     private ChatFormData chatFormData;
 
-    public MessagesFormController() {
+    public UsersFormController() {
         super();
     }
 
     public ModelAndView handleRequest(HttpServletRequest request,
                                       HttpServletResponse response) throws ServletException, IOException {
-        return new ModelAndView("messages", "chat", chatFormData);
+        return new ModelAndView("users", "chat", chatFormData);
     }
 
     public ChatFormData getChatFormData() {
