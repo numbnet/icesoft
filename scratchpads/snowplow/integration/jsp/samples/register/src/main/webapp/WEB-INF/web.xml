@@ -42,6 +42,11 @@
         <url-pattern>*.icepush</url-pattern>
     </servlet-mapping>
 
+    <listener>
+        <listener-class>
+            org.icepush.integration.jsp.core.GroupIntervalTimer
+	</listener-class>
+    </listener>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
