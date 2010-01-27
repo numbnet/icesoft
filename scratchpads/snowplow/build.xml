@@ -1,7 +1,8 @@
 <project default="build-all">
 	<property name="build.dir" value="build"/>
-	<property name="dist.build.dir" value="build/dist"/>
+	<property name="dist.build.dir" value="build/lib"/>
 	<property name="bin.dist.dir" value="dist"/>
+	<property name="bin.sample.dir" value="build/dist"/>
 	
 	<target name="jar-core">
 		<ant antfile="build.xml" dir="./core" target="clean"/>
@@ -24,6 +25,7 @@
 	<target name="common-pre-assemble" depends="pre-assemble-clean">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.build.dir}"/>
+		<mkdir dir="${bin.sample.dir}"/>
 		<copy file="./core/build/dist/icepush.jar" todir="${dist.build.dir}"/>
 	</target>
 	
@@ -33,7 +35,9 @@
 		<copy todir="${build.dir}">
 			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
 		</copy>
+		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="bin-samples"/>
 		<antcall target="zip-distribution"/>
+		
 	</target>
 	
 	<target name="zip-distribution">
@@ -56,7 +60,7 @@
 	<target name="build-all" depends="init,jar-core">
 		<!-- build all the distributions -->
 		<antcall target="dist-gwt-bin"/>
-		<!--antcall target="dist-jsp-bin"/-->
+		<antcall target="dist-jsp-bin"/>
 		
 		
 		<!-- cleanup unnecessary leftover folders.-->
