@@ -16,7 +16,7 @@
 	</attribute>
 	<attribute>
 		<name>notifier</name>
-		<required>true</required>
+		<required>false</required>
 	</attribute>
 	<attribute>
 		<name>callback</name>
@@ -46,6 +46,21 @@
 		<name>page</name>
 		<required>true</required>
 		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+</tag>
+<tag>
+	<name>pushPeriodic</name>
+	<tagclass>org.icepush.integration.jsp.core.PushPeriodicTag</tagclass>
+	<info>ice.push.register</info>
+	<attribute>
+		<name>group</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
+	<attribute>
+		<name>interval</name>
+		<required>true</required>
+		<type>java.lang.Long</type>
 	</attribute>
 </tag>
 </taglib>
