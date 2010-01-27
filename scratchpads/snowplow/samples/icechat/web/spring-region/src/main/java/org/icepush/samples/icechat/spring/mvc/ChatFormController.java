@@ -7,8 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icepush.samples.icechat.spring.impl.BaseLoginController;
 import org.icepush.samples.icechat.spring.impl.BaseChatManagerFacade;
-import org.icepush.samples.icechat.model.ChatRoom;
-import org.icepush.samples.icechat.model.UserChatSession;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +17,6 @@ public class ChatFormController extends AbstractFormController {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
-    private PushRequestManager pushRequestManager;
     private ChatFormData chatFormData;
     private BaseLoginController loginController;
     private BaseChatManagerFacade chatManagerFacade;
@@ -100,35 +97,10 @@ public class ChatFormController extends AbstractFormController {
 
     private void joinRoom(String name) {
         if (name != null) {
-            try{
-                // Attempt to find if the user is already in the chat room
-                // If they are we won't bother joining it again
-                for (ChatRoom currentRoom: chatManagerFacade.getChatRooms()) {
-                    for (UserChatSession currentSession : currentRoom.getUserChatSessions()) {
-                        if (loginController.getCurrentUser().getUserName().equals(currentSession.getUser().getUserName())) {
-                            logger.info("User already in room! Attempted to join room '" + name + "' by " + loginController.getCurrentUser().getUserName() + " failed.");
-                            return;
-                        }
-                    }
-                }
-            }catch (Exception failedCheck) {
-                logger.warn("Failed to check if a user is present in the chat room '" + name + "'.",
-                            failedCheck);
-            }
-
-
             logger.info("Join Room '" + name + "' by " + loginController.getCurrentUser().getUserName());
 
             chatFormData.getChatManagerViewController().openChatSession(name);
         }
-    }
-
-    public PushRequestManager getPushRequestManager() {
-        return pushRequestManager;
-    }
-
-    public void setPushRequestManager(PushRequestManager pushRequestManager) {
-        this.pushRequestManager = pushRequestManager;
     }
 
     public ChatFormData getChatFormData() {
@@ -136,10 +108,6 @@ public class ChatFormController extends AbstractFormController {
     }
 
     public void setChatFormData(ChatFormData chatFormData) {
-        if (chatFormData.getPushRequestContext() == null) {
-            chatFormData.setPushRequestContext(pushRequestManager.getPushRequestContext());
-        }
-
         this.chatFormData = chatFormData;
     }
 

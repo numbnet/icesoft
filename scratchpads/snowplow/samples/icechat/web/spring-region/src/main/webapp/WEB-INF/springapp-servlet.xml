@@ -27,6 +27,7 @@
     </bean>
 
     <bean id="chatManagerViewController" class="org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController" scope="session">
+        <property name="pushRequestManager" ref="pushRequestManager"/>
         <property name="loginController" ref="loginController"/>
         <property name="chatService" ref="chatService"/>
         <property name="currentChatSessionHolder" ref="currentChatSessionHolder"/>
@@ -54,7 +55,6 @@
     </bean>
 
     <bean name="/talk.htm" class="org.icepush.samples.icechat.spring.mvc.ChatFormController" scope="session">
-        <property name="pushRequestManager" ref="pushRequestManager"/>
         <property name="chatFormData" ref="chatFormData"/>
         <property name="loginController" ref="loginController"/>
         <property name="chatManagerFacade" ref="chatManagerFacade"/>

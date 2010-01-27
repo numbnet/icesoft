@@ -17,17 +17,21 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 
 	private IChatService chatService;
 	
-	private IPushRequestContext pushRequestContext;
+	protected IPushRequestContext pushRequestContext;
 	
 	private static Logger log = Logger.getLogger(BaseChatRoomControllerBean.class.getName());
 	
 	public void setPushRequestContext(IPushRequestContext pushRequestContext) {
 		this.pushRequestContext = pushRequestContext;
 	}
+    
+    public IPushRequestContext getPushRequestContext() {
+        return pushRequestContext;
+    }
 
 	public void createNewChatRoom(String chatRoomName, String userName, String password){
         chatService.createNewChatRoom(chatRoomName, userName, password);
-		PushContext pushContext = pushRequestContext.getPushContext();
+		PushContext pushContext = this.getPushRequestContext().getPushContext();
         pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
         pushContext.push(chatRoomName);
 	}
@@ -37,7 +41,7 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 		for( ChatRoom room : chatService.getChatRooms() ){
 			if( room.getName().equals(chatRoomName)){
 				session = chatService.loginToChatRoom(chatRoomName, userName, password);
-				PushContext pushContext = pushRequestContext.getPushContext();
+				PushContext pushContext = this.getPushRequestContext().getPushContext();
 		        pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
 		        pushContext.push(chatRoomName);
 			}
@@ -48,7 +52,7 @@ public class BaseChatRoomControllerBean implements Serializable, IChatRoomContro
 	public void sendNewMessage(String chatRoomName, String newMessage, String userName, String password)
 		throws UnauthorizedException{
 		chatService.sendNewMessage(chatRoomName, userName, password, newMessage);
-		PushContext pushContext = pushRequestContext.getPushContext();
+		PushContext pushContext = this.getPushRequestContext().getPushContext();
         pushContext.push(chatRoomName);
 	}
 	

@@ -23,6 +23,12 @@
             </div>
         </div>
 
+        <c:if test="${empty loginController.currentUser}">
+            <div class="body_container">
+                <p>Please <a href="login.htm">login</a> first before attempting to chat...</p>
+            </div>
+        </c:if>        
+
         <c:if test="${!empty loginController.currentUser}">
             <div class="body_container body_container_pos">
 
@@ -103,12 +109,6 @@
                     </div>
                 </div>
             </c:if>
-        </c:if>
-
-        <c:if test="${empty loginController.currentUser}">
-            <div class="body_container">
-                <p>Please <a href="login.htm">login</a> first before attempting to chat...</p>
-            </div>
         </c:if>
     </body>
 </html>
