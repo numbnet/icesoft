@@ -221,6 +221,16 @@ implements AsyncRenderer {
     }
 
     /**
+     * Removes a sessionID, via a String, from
+     * this group.
+     *
+     * @param String sessionID  to remove
+     */
+    public void remove(final String id) {
+        group.remove(id);
+    }
+
+    /**
      * <p>
      *   Removes the current session, via a <code>WeakReference</code>, from
      *   this <code>GroupAsyncRenderer</code>.
@@ -291,10 +301,19 @@ implements AsyncRenderer {
              *     synchronization is needed while traversing the iterator.  The
              *     iterator does NOT support the remove method."
              */
-            WeakReference reference = (WeakReference)i.next();
-            Object object = reference.get();
-            if (object == null) {
-                group.remove(reference);
+            Object nextObject = i.next();
+            Object object;
+            if (nextObject instanceof WeakReference)  {
+                WeakReference reference = (WeakReference)nextObject;
+                object = reference.get();
+            } else {
+                object = nextObject;
+            }
+            if (LOG.isTraceEnabled()) {
+                LOG.trace(name + " rendering group member " + object);
+            }
+            if ((object == null) && (nextObject instanceof WeakReference)) {
+                group.remove(nextObject);
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof String) {
@@ -350,6 +369,23 @@ implements AsyncRenderer {
             }
         }
     }
+    private void add(String id) {
+        // todo: remove synchronized block as CopyOnWriteArraySet is used?
+        synchronized (group) {
+            if (!group.contains(id)) {
+                if (group.add(id)) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " added " + id);
+                    }
+                } else {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(name + " already contains " + id);
+                    }
+                }
+            }
+        }
+    }
+
 
     private boolean contains(final Object object) {
         for (Iterator i = group.iterator(); i.hasNext(); ) {
