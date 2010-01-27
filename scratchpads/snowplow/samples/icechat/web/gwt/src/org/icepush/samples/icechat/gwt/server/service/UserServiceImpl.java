@@ -10,7 +10,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class UserServiceImpl extends RemoteServiceServlet implements
 		UserService {
 
-	@Override
+
 	public Credentials register(String name) {
 		// TODO Auto-generated method stub
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this.getServletContext());

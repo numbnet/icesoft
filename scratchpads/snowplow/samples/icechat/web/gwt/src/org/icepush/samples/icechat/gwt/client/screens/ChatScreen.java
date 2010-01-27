@@ -29,8 +29,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.icesoft.icepush.integration.gwt.GWTPushContext;
-import com.icesoft.icepush.integration.gwt.PushEventListener;
+import org.icepush.samples.icechat.gwt.client.GWTPushContext;
+import org.icepush.samples.icechat.gwt.client.PushEventListener;
 
 public class ChatScreen extends Composite {
 
@@ -203,13 +203,12 @@ public class ChatScreen extends Composite {
 		
 		chatService.endLongPoll(new AsyncCallback<Void>() {
 
-			@Override
+
 			public void onFailure(Throwable arg0) {
 				
 				
 			}
-
-			@Override
+			
 			public void onSuccess(Void arg0) {
 				//do nothing...
 			}
@@ -340,13 +339,11 @@ public class ChatScreen extends Composite {
     private void updateDraft(){
     	AsyncCallback<List<ChatRoomDraft>> callback = new AsyncCallback<List<ChatRoomDraft>>() {
 
-			@Override
 			public void onFailure(Throwable arg0) {
 				// TODO Auto-generated method stub
 				
 			}
-
-			@Override
+			
 			public void onSuccess(List<ChatRoomDraft> drafts) {
 				for(ChatRoomDraft draft: drafts)
 					ChatScreen.this.characterListeners.get(draft.getUserSessionToken()).updateDraft(draft.getText());

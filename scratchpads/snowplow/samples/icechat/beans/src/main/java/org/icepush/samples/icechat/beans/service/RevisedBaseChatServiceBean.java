@@ -34,12 +34,12 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 			.getName());
 
 	
-	@Override
+	
 	public List<ChatRoom> getChatRooms() {
 		return new ArrayList<ChatRoom>(chatRooms.values());
 	}
 
-	@Override
+	
 	public Collection<User> getOnlineUsers() {
 		Set<User> onlineUsers = new HashSet<User>();
 		for (User user : users.values()) {
@@ -54,7 +54,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 	}
 	
 
-	@Override
+	
 	public List<Message> getAllChatRoomMessages(String chatRoom) {
 		ChatRoom room = chatRooms.get(chatRoom);
 		if (room != null) {
@@ -65,7 +65,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 	}
 
 	
-	@Override
+	
 	public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index) {
 		
 		ChatRoom room = chatRooms.get(chatRoom);
@@ -79,12 +79,12 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		}
 	}
 	
-	@Override
+	
 	public ChatRoom getChatRoom(String roomName) {
 		return chatRooms.get(roomName);
 	}
 	
-	@Override
+	
 	public void createNewChatRoom(String chatRoomName, User user) {
 		if (user != null) {
 			if (chatRooms.get(chatRoomName) == null) {
@@ -101,7 +101,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		}
 	}
 
-	@Override
+	
 	public void createNewUser(String username) {
 		User user = new User();
 		user.setUserName(username);
@@ -110,7 +110,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		
 	}
 
-	@Override
+	
 	public List<User> getChatRoomUsers(String chatRoomName) {
 		List<User> userList = null;
 		ChatRoom room = chatRooms.get(chatRoomName);
@@ -125,7 +125,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		return userList;
 	}
 
-	@Override
+	
 	public UserChatSession getUserChatSession(String roomName, User user) {
 		for (UserChatSession s : user.getChatSessions()) {
 			if (s.getRoom().getName().equals(roomName)) {
@@ -136,7 +136,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		return null;
 	}
 
-	@Override
+	
 	public UserChatSession loginToChatRoom(String chatRoom, User user) {
 		ChatRoom room = chatRooms.get(chatRoom);
 		UserChatSession session = null;
@@ -164,7 +164,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		return session;
 	}
 
-	@Override
+
 	public void logoutOfChatRoom(String chatRoom, User user) {
 		ChatRoom room = chatRooms.get(chatRoom);
 		if (room != null) {
@@ -185,7 +185,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		
 	}
 
-	@Override
+
 	public User register(String username) {
 		
 			User user = new User();
@@ -196,7 +196,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		
 	}
 
-	@Override
+
 	public void sendNewMessage(String chatRoom, User user, String message)
 			throws UnauthorizedException {
 		ChatRoom room = getChatRoom(chatRoom);
@@ -222,7 +222,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		
 	}
 
-	@Override
+
 	public void setUserAvator(User user, byte[] avatar) {
 		if (user != null) {
 			user.setAvatar(avatar);
@@ -232,7 +232,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		
 	}
 
-	@Override
+
 	public void updateCurrentDraft(String draft, String roomName, User user) {
 		UserChatSession session = getUserChatSession(roomName, user);
 		if (session != null) {
@@ -240,8 +240,7 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 		}
 		
 	}
-	
-	@Override
+
 	public User getSessionUser(String sessionToken){
 		return users.get(sessionToken);
 	}

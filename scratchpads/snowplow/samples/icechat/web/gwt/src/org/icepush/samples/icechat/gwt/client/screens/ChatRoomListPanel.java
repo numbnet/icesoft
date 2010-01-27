@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.icesoft.icepush.integration.gwt.GWTPushContext;
-import com.icesoft.icepush.integration.gwt.PushEventListener;
+import org.icepush.samples.icechat.gwt.client.GWTPushContext;
+import org.icepush.samples.icechat.gwt.client.PushEventListener;
 
 public class ChatRoomListPanel extends Composite {
 

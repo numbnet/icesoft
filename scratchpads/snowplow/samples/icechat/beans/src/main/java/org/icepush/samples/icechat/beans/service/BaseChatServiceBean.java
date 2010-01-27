@@ -95,7 +95,6 @@ public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 	}
 
 	@Deprecated
-	@Override
 	public void sendNewMessage(String chatRoom, String userName,
 			String password, String message) throws UnauthorizedException {
 		User user = validateUser(userName, password);
@@ -122,7 +121,6 @@ public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 
 	}
 
-	@Override
 	@Deprecated
 	public void updateCurrentDraft(String draft, String roomName,
 			String userName, String password) throws UnauthorizedException {
@@ -133,7 +131,6 @@ public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 		}
 	}
 
-	@Override
 	@Deprecated
 	public UserChatSession getUserChatSession(String roomName, String userName,
 			String password) throws UnauthorizedException {

@@ -10,15 +10,11 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.icesoft.icepush.integration.gwt.PushEventListener;
-
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class IceChatModule implements EntryPoint {
-
-    private PushEventListener listener;
 
     /**
      * This is the entry point method.
