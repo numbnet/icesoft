@@ -2,13 +2,10 @@ package org.icepush.samples.icechat.spring.mvc;
 
 import org.icepush.samples.icechat.spring.impl.BaseChatRoom;
 import org.icepush.samples.icechat.spring.impl.BaseChatManagerViewController;
-import org.icepush.samples.icechat.spring.impl.BasePushRequestContext;
 import org.icepush.samples.icechat.spring.impl.BaseCurrentChatSessionHolder;
 import org.icepush.samples.icechat.spring.impl.BaseChatMessage;
 
 public class ChatFormData {
-    private BasePushRequestContext pushRequestContext;
-
     private BaseChatManagerViewController chatManagerViewController;
     private BaseCurrentChatSessionHolder currentChatSessionHolder;
     private BaseChatRoom newChatRoom;
@@ -17,19 +14,6 @@ public class ChatFormData {
     public ChatFormData() {
         newChatRoom = new BaseChatRoom();
         newMessage = new BaseChatMessage();
-    }
-
-    public BasePushRequestContext getPushRequestContext() {
-        return pushRequestContext;
-    }
-
-    public void setPushRequestContext(BasePushRequestContext pushRequestContext) {
-        this.pushRequestContext = pushRequestContext;
-
-        // Cascade the push request context to child classes that need it
-        if (chatManagerViewController != null) {
-            chatManagerViewController.setPushRequestContext(this.pushRequestContext);
-        }
     }
 
     public BaseChatManagerViewController getChatManagerViewController() {
