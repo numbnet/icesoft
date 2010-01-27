@@ -53,7 +53,7 @@ public class RequestStateManagerDelegate {
 
     public static void clearMessages(FacesContext fc, String clientID) {
 
-        if (!detected || fc == null || clientID == null) {
+        if (!detected || fc == null) {
             return;
         }
 
