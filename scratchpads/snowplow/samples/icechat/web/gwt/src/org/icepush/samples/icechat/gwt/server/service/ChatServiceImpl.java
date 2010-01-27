@@ -200,6 +200,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		
 		PushContext.getInstance(this.getServletContext()).push(
 				handle.getName().replaceAll(" ", "_") + "-draft");
+		
 
 	}
 

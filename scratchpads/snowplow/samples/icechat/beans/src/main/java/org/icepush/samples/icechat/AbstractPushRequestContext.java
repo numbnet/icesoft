@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.icepush.PushContext;
-import org.icepush.samples.icechat.IPushRequestContext;
 
 public abstract class AbstractPushRequestContext implements Serializable,
 		IPushRequestContext {

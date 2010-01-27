@@ -1,0 +1,65 @@
+<project default="build-all">
+	<property name="build.dir" value="build"/>
+	<property name="dist.build.dir" value="build/dist"/>
+	<property name="bin.dist.dir" value="dist"/>
+	
+	<target name="jar-core">
+		<ant antfile="build.xml" dir="./core" target="clean"/>
+		<ant antfile="build.xml" dir="./core" target="jar"/>
+	</target>
+	
+	<target name="dist-gwt-bin" depends="">
+		<antcall target="build-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="gwt"/>
+		</antcall>
+	</target>
+	<target name="dist-jsp-bin" depends="">
+		<antcall target="build-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="jsp"/>
+		</antcall>
+	</target>
+	
+	<target name="common-pre-assemble" depends="pre-assemble-clean">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.build.dir}"/>
+		<copy file="./core/build/dist/icepush.jar" todir="${dist.build.dir}"/>
+	</target>
+	
+	<target name="build-with-path-offset" depends="common-pre-assemble">
+		<echo>Building Integration: ${target.path.offset}</echo>
+		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="bin-dist"/>
+		<copy todir="${build.dir}">
+			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
+		</copy>
+		<antcall target="zip-distribution"/>
+	</target>
+	
+	<target name="zip-distribution">
+		<zip destfile="${bin.dist.dir}/icepush-${target.path.offset}.zip" basedir="${build.dir}"></zip>
+	</target>
+	
+	<target name="pre-assemble-clean">
+		<delete dir="${build.dir}"/>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${bin.dist.dir}"/>
+	</target>
+	
+	<target name="cleanup-after-build" depends="pre-assemble-clean">
+		
+	</target>
+	
+	
+	<target name="build-all" depends="init,jar-core">
+		<!-- build all the distributions -->
+		<antcall target="dist-gwt-bin"/>
+		<!--antcall target="dist-jsp-bin"/-->
+		
+		
+		<!-- cleanup unnecessary leftover folders.-->
+		<antcall target="cleanup-after-build"/>
+	</target>
+</project>

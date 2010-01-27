@@ -4,7 +4,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 

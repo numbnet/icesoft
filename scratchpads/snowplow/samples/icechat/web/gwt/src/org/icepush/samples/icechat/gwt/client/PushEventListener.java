@@ -1,8 +1,5 @@
 package org.icepush.samples.icechat.gwt.client;
 
-import java.lang.String;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class PushEventListener{
 

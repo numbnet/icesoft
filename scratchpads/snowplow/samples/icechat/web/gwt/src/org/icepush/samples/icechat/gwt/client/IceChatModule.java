@@ -1,18 +1,15 @@
 package org.icepush.samples.icechat.gwt.client;
 
-import org.icepush.samples.icechat.gwt.client.screens.MainPanelRegistry;
-import org.icepush.samples.icechat.gwt.client.screens.ChatScreen;
 import org.icepush.samples.icechat.gwt.client.screens.ChatRoomListPanel;
+import org.icepush.samples.icechat.gwt.client.screens.ChatScreen;
 import org.icepush.samples.icechat.gwt.client.screens.CredentialsPanel;
+import org.icepush.samples.icechat.gwt.client.screens.MainPanelRegistry;
 import org.icepush.samples.icechat.gwt.client.screens.StartScreen;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.RootPanel;
-
-
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.icesoft.icepush.integration.gwt.PushEventListener;
 
 

@@ -76,8 +76,5 @@
     </junit-->
   </target>
 	
-	<target name="dist-bin"></target>
-	
-	<target name="dist-src"></target>
 	
 </project>

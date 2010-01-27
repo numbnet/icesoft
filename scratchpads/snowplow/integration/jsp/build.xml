@@ -1,0 +1,17 @@
+<project default="bin-dist">
+	
+	<!-- all integrations must provide this target
+	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
+	 -->
+	<target name="bin-dist">
+		<echo>Building ICEpush GWT Binary Integration</echo>
+		<antcall target="jar-jsp-core"/>
+		<copy file="./integration/gwt/core/dist/icepush-jsp.jar" todir="${dist.build.dir}"/>
+	</target>
+	
+	<target name="jar-jsp-core">
+		<ant antfile="build.xml" dir="./integration/jsp/core" target="jar"/>
+	</target>
+	
+	
+</project>

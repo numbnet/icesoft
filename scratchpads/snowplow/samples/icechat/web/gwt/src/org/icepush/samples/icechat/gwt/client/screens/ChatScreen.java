@@ -1,12 +1,22 @@
 package org.icepush.samples.icechat.gwt.client.screens;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.icepush.samples.icechat.gwt.client.Credentials;
+import org.icepush.samples.icechat.gwt.client.UserSession;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
+import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
+import org.icepush.samples.icechat.gwt.client.service.ChatService;
+import org.icepush.samples.icechat.gwt.client.service.ChatServiceAsync;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -21,18 +31,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.icesoft.icepush.integration.gwt.GWTPushContext;
 import com.icesoft.icepush.integration.gwt.PushEventListener;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import org.icepush.samples.icechat.gwt.client.Credentials;
-import org.icepush.samples.icechat.gwt.client.UserSession;
-import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
-import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
-import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
-import org.icepush.samples.icechat.gwt.client.service.ChatService;
-import org.icepush.samples.icechat.gwt.client.service.ChatServiceAsync;
 
 public class ChatScreen extends Composite {
 
