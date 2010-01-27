@@ -2,8 +2,8 @@ package org.icepush.samples.icechat.beans.model;
 
 import java.io.Serializable;
 
-import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.controller.model.ICurrentChatSessionHolderBean;
+import org.icepush.samples.icechat.model.UserChatSession;
 
 public abstract class BaseCurrentChatSessionHolderBean implements ICurrentChatSessionHolderBean, Serializable {
 

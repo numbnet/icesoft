@@ -1,11 +1,12 @@
 package org.icepush.samples.icechat.gwt.client;
 
+import static org.junit.Assert.fail;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 public class GWTPushContextTests{
 		
 	private Mockery context = new Mockery();

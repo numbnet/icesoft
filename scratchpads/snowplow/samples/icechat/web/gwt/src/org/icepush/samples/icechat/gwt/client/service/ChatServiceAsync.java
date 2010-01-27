@@ -1,11 +1,12 @@
 package org.icepush.samples.icechat.gwt.client.service;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
 
 import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ChatServiceAsync {
 

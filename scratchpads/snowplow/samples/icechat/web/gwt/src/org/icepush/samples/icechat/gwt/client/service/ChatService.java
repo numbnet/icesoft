@@ -1,13 +1,13 @@
 package org.icepush.samples.icechat.gwt.client.service;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.List;
 
 import org.icepush.samples.icechat.gwt.client.Credentials;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomDraft;
 import org.icepush.samples.icechat.gwt.client.chat.ChatRoomHandle;
-import org.icepush.samples.icechat.gwt.client.chat.ChatRoomMessage;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 
 

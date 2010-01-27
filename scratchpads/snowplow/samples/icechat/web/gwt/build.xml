@@ -211,6 +211,7 @@
 	<target name="copy-classpath">
 		<copy file="../../beans/dist/icechat-beans.jar" todir="war/WEB-INF/lib"/>
 	  	<copy file="../../api/dist/icechat-api.jar" todir="war/WEB-INF/lib"/>
+		<copy file="../../../../integration/gwt/dist/icepush-gwt.jar" todir="war/WEB-INF/lib"/>
 	</target>
   
   <target name="build-server" depends="javac,copy-classpath" description="Build this project">

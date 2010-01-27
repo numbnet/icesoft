@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.icepush.samples.icechat.beans.service.BaseChatServiceBean;
-import org.icepush.samples.icechat.beans.service.RevisedBaseChatServiceBean;
 import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
