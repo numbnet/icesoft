@@ -37,13 +37,12 @@ public class StartScreen extends DialogBox{
 		
 		AsyncCallback<Credentials> callback = new AsyncCallback<Credentials>() {
 
-			@Override
+
 			public void onFailure(Throwable arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
 			public void onSuccess(Credentials credentials) {
 				UserSession.getInstance().setCredentials(credentials);
 				MainPanelRegistry.getInstance().getCredentialsPanel().setUsername(credentials.getUserName());

@@ -1,12 +1,10 @@
-<project default="bin-dist">
+<project default="bin-dist" name="icepush-spring build interface.">
 	
 	<!-- all integrations must provide this target
 	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
 	 -->
 	<target name="bin-dist">
-		<echo>Building ICEpush GWT Binary Integration</echo>
-		<antcall target="jar-gwt-core"/>
-		<copy file="./integration/gwt/core/dist/icepush-gwt.jar" todir="${dist.build.dir}"/>
+		<!-- nothing required here - no specific integration bundle. -->
 	</target>
 	
 	<!-- all integrations must provide this target
@@ -14,14 +12,13 @@
 		- target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
 	-->
 	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./samples/icechat" target="gwt"/>
-		<copy file="./samples/icechat/web/gwt/dist/icechat-gwt.war" todir="${bin.sample.dir}"></copy>
-		
+		<ant antfile="build.xml" dir="./samples/icechat" target="spring"/>
+		<copy file="./samples/icechat/web/spring/dist/icechat-spring.war" todir="${bin.sample.dir}"></copy>
+		<ant antfile="build.xml" dir="./samples/icechat" target="spring-region"/> 
+		<copy file="./samples/icechat/web/spring-region/dist/icechat-spring-region.war" todir="${bin.sample.dir}"></copy>
 	</target>
 	
-	<target name="jar-gwt-core">
-		<ant antfile="build.xml" dir="./integration/gwt/core" target="jar"/>
-	</target>
+	
 	
 	
 </project>

@@ -48,6 +48,10 @@
 		<ant antfile="build.xml" target="war" dir="./web/spring"/>
 	</target>
 	
+	<target name="spring-region" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./web/spring-region"/>
+	</target>
+	
 	
 
 </project>
