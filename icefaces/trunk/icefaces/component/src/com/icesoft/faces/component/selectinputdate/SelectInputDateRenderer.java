@@ -1609,7 +1609,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                 if (enterKeyPressed) {
                     dateSelect.setHoursSubmittedValue(null);
                     dateSelect.setMinutesSubmittedValue(null);
-                    component.queueEvent(new ActionEvent(component));
+                    if ("13".equalsIgnoreCase(String.valueOf(requestParameterMap.get("ice.event.keycode")))) {
+                        component.queueEvent(new ActionEvent(component));
+                    }
                 }
             }
         }
@@ -1653,7 +1655,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             decodeInputText(facesContext, component);
             dateSelect.setHoursSubmittedValue(null);
             dateSelect.setMinutesSubmittedValue(null);
-            component.queueEvent(new ActionEvent(component));
+            if ("13".equalsIgnoreCase(String.valueOf(requestParameterMap.get("ice.event.keycode")))) {
+                component.queueEvent(new ActionEvent(component));
+            }
         }
         // not a nav event
         dateSelect.setNavEvent(false);
