@@ -4,10 +4,11 @@
   <groupId>org.icefaces.samples</groupId>
   <artifactId>component-showcase</artifactId>
   <packaging>war</packaging>
-  <name>component-showcase</name>
+  <name>@{artifactId}</name>
   <version>2.0-A2</version>
   <description />
   <build>
+    <finalName>${artifactId}</finalName>
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <outputDirectory>${basedir}/web/WEB-INF/classes</outputDirectory>
     <resources>
@@ -15,6 +16,7 @@
         <directory>${basedir}/src</directory>
         <excludes>
           <exclude>**/*.java</exclude>
+          <exclude>**/.svn/*</exclude>
         </excludes>
       </resource>
     </resources>
@@ -23,7 +25,18 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <webappDirectory>${basedir}/web</webappDirectory>
-          <warSourceDirectory>${basedir}/web</warSourceDirectory>
+          <webResources>
+              <resource>
+                 <directory>${basedir}/web</directory>
+                 <excludes>
+                    <exclude>**/.svn/</exclude>
+                    <exclude>**/.svn/*</exclude>
+                    <exclude>**/.svn</exclude>
+                 </excludes>
+              </resource>
+          </webResources>
+    <!--       <warSourceDirectory>${basedir}/web</warSourceDirectory> -->
+          <packagingExcludes>**/.svn/*</packagingExcludes> 
         </configuration>
       </plugin>
       <plugin>
@@ -36,23 +49,8 @@
     </plugins>
   </build>
   <dependencies>
-  <!--    <dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>2.0.2.FCS</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-impl</artifactId>
-      <version>2.0.2.FCS</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.icefaces</groupId>
-    	<artifactId>icefaces-compat</artifactId>
-    	<version>${version}</version>
-    </dependency> -->
+  <!--  using transition, only need to ask for comps-compat jar as it will ask for
+            icefaces-compat, which will ask for icefaces jar -->
     <dependency>
     	<groupId>org.icefaces</groupId>
     	<artifactId>icefaces-comps-compat</artifactId>
@@ -69,14 +67,20 @@
     	</exclusions>
     </dependency>
     <dependency>
- 	<groupId>net.sourceforge.jexcelapi</groupId>
- 	<artifactId>jxl</artifactId>
- 	<version>2.6.8</version>
+ 	   <groupId>net.sourceforge.jexcelapi</groupId>
+ 	   <artifactId>jxl</artifactId>
+ 	   <version>2.6.8</version>
+ 	   <exclusions>
+ 	      <exclusion>
+             <groupId>log4j</groupId>
+             <artifactId>log4j</artifactId>
+ 	      </exclusion>
+ 	   </exclusions>
     </dependency>  
-      <dependency>
- 	<groupId>net.sf.jcharts</groupId>
- 	<artifactId>krysalis-jCharts</artifactId>
- 	<version>1.0.0-alpha-1</version>
+    <dependency>
+ 	   <groupId>net.sf.jcharts</groupId>
+ 	   <artifactId>krysalis-jCharts</artifactId>
+ 	   <version>1.0.0-alpha-1</version>
         <exclusions>
            <exclusion>
               <groupId>log4j</groupId>
@@ -84,22 +88,22 @@
            </exclusion>
         </exclusions>
     </dependency>
-      <dependency>
+    <dependency>
       	<groupId>javax.annotation</groupId>
       	<artifactId>jsr250-api</artifactId>
       	<version>1.0</version>
       	<scope>provided</scope>
-      </dependency>
-      <dependency>
+    </dependency>
+    <dependency>
       	<groupId>javax.servlet</groupId>
       	<artifactId>servlet-api</artifactId>
       	<version>2.5</version>
       	<scope>provided</scope>
-      </dependency>  
-      <dependency>
+     </dependency>  
+     <dependency>
          <groupId>org.icefaces</groupId>
          <artifactId>icepush</artifactId>
          <version>${version}</version>
-      </dependency>
+     </dependency>
   </dependencies>
 </project>
