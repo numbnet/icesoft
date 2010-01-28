@@ -5,6 +5,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,18 +32,24 @@ public class PushContext {
         context.setAttribute(PushContext.class.getName(), this);
         inboundNotifications.addObserver(new Observer() {
             private long lastScan = System.currentTimeMillis();
+            private HashSet pushIDs = new HashSet();
 
             public void update(Observable observable, Object o) {
                 long now = System.currentTimeMillis();
+                //accumulate pushIDs
+                pushIDs.addAll((List) o);
                 //avoid to scan/touch the groups on each notification
                 if (lastScan + GroupScanningTimeResolution < now) {
-                    lastScan = now;
-                    List pushIDs = (List) o;
-                    Iterator i = new ArrayList(groups.values()).iterator();
-                    while (i.hasNext()) {
-                        Group group = (Group) i.next();
-                        group.touchIfMatching(pushIDs);
-                        group.discardIfExpired();
+                    try {
+                        Iterator i = new ArrayList(groups.values()).iterator();
+                        while (i.hasNext()) {
+                            Group group = (Group) i.next();
+                            group.touchIfMatching(pushIDs);
+                            group.discardIfExpired();
+                        }
+                    } finally {
+                        lastScan = now;
+                        pushIDs = new HashSet();
                     }
                 }
             }
@@ -52,7 +59,7 @@ public class PushContext {
     public synchronized String createPushId(HttpServletRequest request, HttpServletResponse response) {
         String browserID = getBrowserIDFromCookie(request);
         if (browserID == null) {
-            String currentBrowserID = (String) 
+            String currentBrowserID = (String)
                     request.getAttribute(BrowserIDCookieName);
             if (null == currentBrowserID) {
                 browserID = generateBrowserID();
@@ -149,7 +156,7 @@ public class PushContext {
             this.addID(firstPushId);
         }
 
-        private void touchIfMatching(List pushIDs) {
+        private void touchIfMatching(Collection pushIDs) {
             Iterator i = pushIDs.iterator();
             while (i.hasNext()) {
                 String pushID = (String) i.next();
