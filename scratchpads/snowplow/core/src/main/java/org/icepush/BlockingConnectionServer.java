@@ -97,7 +97,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                         log.finest("Participating pushIds: " + participatingPushIDs + ".");
                     }
                     respondIfNotificationsAvailable();
-                    inboundNotifier.notifyObservers(participatingPushIDs);
+                    inboundNotifier.notifyObservers(new ArrayList(participatingPushIDs));
                 } catch (RuntimeException e) {
                     log.fine("Request does not contain pushIDs.");
                     respondIfPendingRequest(NoopHandler);
