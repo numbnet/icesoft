@@ -126,6 +126,9 @@ implements AsyncRenderer {
                 LOG.warn(
                     "Unable to add current session: " +
                         "no current session active");
+                System.out.println(
+                    "Unable to add current session: " +
+                        "no current session active");
                 throw
                     new IllegalStateException(
                         "Unable to add current session: " +
@@ -137,6 +140,9 @@ implements AsyncRenderer {
                     "Add current session cannot be done from non-JSF thread. " +
                         "Failed to add session to group '" + name + "'.");
             }
+System.out.println(
+                    "Add current session cannot be done from non-JSF thread. " +
+                        "Failed to add session to group '" + name + "'.");
         }
     }
 
@@ -237,7 +243,7 @@ implements AsyncRenderer {
      * </p>
      */
     public void removeCurrentSession() {
-        LOG.info("GroupAsyncRenderer.removeCurrentSession()");
+        System.out.println("GroupAsyncRenderer.removeCurrentSession()");
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
             Object session =
@@ -245,7 +251,7 @@ implements AsyncRenderer {
             if (session != null) {
                 remove(getSessionID(session));
             } else {
-                LOG.warn(
+                System.out.println(
                     "Unable to remove current session: " +
                         "no current session active");
             }
@@ -273,6 +279,8 @@ implements AsyncRenderer {
         if (LOG.isTraceEnabled()) {
             LOG.trace(name + " preparing to render " + group.size());
         }
+System.out.println(name + " preparing to render " + group.size());
+
         lastRenderInfo = "groupSize=" + group.size() + " startTime=" + System.currentTimeMillis();
         if (allowBroadcasting && isBroadcasted()) {
             // allow for potential broadcasting
@@ -312,6 +320,7 @@ implements AsyncRenderer {
             if (LOG.isTraceEnabled()) {
                 LOG.trace(name + " rendering group member " + object);
             }
+System.out.println(name + " rendering group member " + object);
             if ((object == null) && (nextObject instanceof WeakReference)) {
                 group.remove(nextObject);
             } else if (object instanceof Renderable) {
@@ -327,6 +336,7 @@ implements AsyncRenderer {
                      * unchanging snapshot of the array at the time the Iterator
                      * was constructed.
                      */
+System.out.println(exception + " exception caught, removing " + sessionId);
                     remove(sessionId);
                 }
             }
@@ -361,10 +371,12 @@ implements AsyncRenderer {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace(name + " added " + object);
                     }
+System.out.println(name + " added " + object);
                 } else {
                     if (LOG.isWarnEnabled()) {
                         LOG.warn(name + " already contains " + object);
                     }
+System.out.println(name + " already contains " + object);
                 }
             }
         }
@@ -377,10 +389,12 @@ implements AsyncRenderer {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace(name + " added " + id);
                     }
+System.out.println(name + " added id " + id);
                 } else {
                     if (LOG.isWarnEnabled()) {
                         LOG.warn(name + " already contains " + id);
                     }
+System.out.println(name + " already contains  id " + id);
                 }
             }
         }
@@ -406,12 +420,14 @@ implements AsyncRenderer {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace(name + " removing " + object);
                     }
+System.out.println(name + " removing " + object);
                     return;
                 }
             }
             if (LOG.isWarnEnabled()) {
                 LOG.warn(name + " does not contain " + object);
             }
+System.out.println("remove failed: " + name + " does not contain " + object);
         }
     }
 
