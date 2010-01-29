@@ -11,15 +11,16 @@
         <script type="text/javascript" src="code.icepush"></script>
     </h:head>
     <h:body>
-    
-    	<script type="text/javascript">
-    		ice.push.register(['#{pushRequestContext.currentPushId}'], 
-   	    		function(){
-					window.location.reload();
-   				}
-			);
-    	</script>
-    
+    	<h:form>
+    		<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+    		<script type="text/javascript">
+    			ice.push.register(['#{pushRequestContext.currentPushId}'],
+    				function(){
+    					jsf.ajax.request(this,event, {render:'chatPanel'};return false;
+    				});
+    		</script>
+    	</h:form>
+    	    
     	<div class="header_container">
             <div class="header_content">
                 <h:graphicImage width="109px" height="100px"
@@ -34,7 +35,7 @@
         
         <div class="body_container body_container_pos">
             
-	        <h:panelGroup  rendered="#{not empty loginController.currentUser}">
+	        <h:panelGroup id="chatPanel" rendered="#{not empty loginController.currentUser}">
 	        
 	        	<div class="chatSession chatSession_pos">
 	        		<h:form id="chatSession">

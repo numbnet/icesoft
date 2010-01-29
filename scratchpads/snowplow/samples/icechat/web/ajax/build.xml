@@ -14,9 +14,9 @@
 		<fileset dir="../../beans/dist">
 			<include name="**/*.jar"/>
 		</fileset>	
-		<fileset dir="../../cdi/dist">
+		<!--fileset dir="../../cdi/dist">
 			<include name="**/*.jar"/>
-		</fileset>	
+		</fileset-->	
 		<fileset dir="./lib">
 			<include name="**/*.jar"/>
 		</fileset>	
@@ -104,7 +104,7 @@
 			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
 		</war>
 		
-		<copy file="${dist.dir}/${war.name}" todir="C:/server/apache-tomcat-6.0.20/webapps" preservelastmodified="true" verbose="true"/>
+		<copy file="${dist.dir}/${war.name}" todir="/home/philip/glassfish-v2.1/domains/domain1/autodeploy" preservelastmodified="true" verbose="true"/>
     </target>
 	
 	<target name="compile" depends="clean">

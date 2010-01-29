@@ -144,8 +144,12 @@ public abstract class RevisedBaseChatServiceBean implements IChatService{
 			if (user != null) {
 				if (room.isUserInRoom(user)) {
 					for (UserChatSession ucs : user.getChatSessions()) {
-						if (ucs.getRoom().getName().equals(chatRoom))
+						if (ucs.getRoom().getName().equals(chatRoom)){
+							ucs.setExited(null);
+							ucs.setEntered(new Date());
+							ucs.setLive(true);
 							session = ucs;
+						}
 					}
 				} else {
 					session = new UserChatSession();

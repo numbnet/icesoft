@@ -11,9 +11,9 @@
     <body>
     
     	<script type="text/javascript">
-    		window.pushId = ice.push.createPushId();
-    		ice.push.addGroupMember("icechat", window.pushId);
-    		ice.push.register([window.pushId], window.refreshChatRoomsList);
+    		var pushId = ice.push.createPushId();
+    		ice.push.addGroupMember("rooms", ice.push.createPushId());
+    		ice.push.register([pushId], window.refreshChatRoomsList);
        	</script>
     
     	<div id="headerContainer" class="header_container">

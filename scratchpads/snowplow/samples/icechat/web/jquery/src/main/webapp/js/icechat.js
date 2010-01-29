@@ -2,135 +2,61 @@
 /****************** SECURITY AND AUTHORIZATION ***********************************/
 
 function login() {
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
-		}
-	}
-	var loginForm = document.forms['login'];
-	var params = "op=login&" + getLoginFormParams();
-	xmlHttp.open("POST", "auth", true);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);	
+	$.post("auth",{
+		op:"login",
+		userName:$("#userName").val(),
+		nickName:$("#nickName").val(),
+		password:$("#password").val()
+			},function(){ window.location.reload();});
 }
-
-function getLoginFormParams(){
-	var loginForm = document.forms['login'];
-	return  "userName=" + loginForm.elements['userName'].value + "&nickName="
-			+ loginForm.elements['nickName'].value + "&password=" + loginForm.elements['password'].value;
-}
-
 function register() {
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
-		}
-	}
-	var form = document.forms['login'];
-	var params = "op=register&" + getLoginFormParams();
-	xmlHttp.open("POST", "auth", true);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);	
+	$.post("auth",{
+		op:"register",
+		userName:$("#userName").val(),
+		nickName:$("#nickName").val(),
+		password:$("#password").val()
+			},function(){ window.location.reload(); });
 }
 
 function logout() {
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
-		}
-	}
-	var params = "op=logout";
-	xmlHttp.open("POST", "auth", true);
-	xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlHttp.send(params);	
+	if( getCurrentRoomName() != null )
+		logoutOfChatRoom(getCurrentRoomName());
+	$.post("auth",{
+		op:"logout"
+	},function(){ window.location.reload(); });
 }
 
 
 /****************** TEMPLATES ***********************************/
 function loadHeader(parent){
-	doGet("inc/header.html",parent);
+	$(parent).load("inc/header.html");
 }
 
 function loadChatRoomsPanel(parent){
-	doGet("inc/chatRoomsPanel.html",parent);
+	$(parent).load("inc/chatRoomsPanel.html");	
 }
 
 function loadChatLogin(parent){
-	doGet("jsp/chatLogin.jsp",parent);
+	$(parent).load("jsp/chatLogin.jsp");
 }
 
 function loadChatPanel(parent){
-	doGetAndEval("inc/chatPanel.html",parent);	
+	$(parent).load("inc/chatPanel.html", function(){ evaluateScripts(parent)});	
 }
 
 function loadChatRoomTemplate(parent){
-	doGet("inc/chatRoom.html",parent);
+	$(parent).load("inc/chatRoom.html");
 }
 
 
 /****************** RESOURCES ***********************************/
 
-function createChatRoom(roomName) {
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName;
-	xmlHttp.open("POST", "createroom", false);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);
-}
-
-function getChatRoomUsers(roomName) {
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName;
-	xmlHttp.open("GET", "chatroomusers?" + params, false);
-	xmlHttp.send(params);	
-	return xmlHttp.responseText;
-}
-
-function getChatRooms(){
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.open("GET", "chatrooms", false);
-	xmlHttp.send(null);	
-	return xmlHttp.responseText;
-}
-
-function getChatRoomMessages(roomName) {
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.open("GET", "messages?roomName="+roomName, false);
-	xmlHttp.send(null);	
-	return xmlHttp.responseText;
-}
-
-function sendMessage(roomName,msg) {
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName + "&msg=" + msg;
-	xmlHttp.open("POST", "createmessage", false);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);
-}
-
 function updateDraft(roomName,msg){
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName + "&msg=" + msg;
-	xmlHttp.open("POST", "updatedraft", false);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);
+	$.post("updatedraft",{roomName:roomName,msg:msg});
 }
 
 function loginToChatRoom(roomName){
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName;
-	xmlHttp.open("POST", "logintoroom", false);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);	
+	$.post("logintoroom",{roomName: roomName});
 }
 
 
@@ -138,89 +64,118 @@ function loginToChatRoom(roomName){
 /****************** VIEW HANDLING ***********************************/
 
 function click_createChatRoom(){
-	var roomName = getNewChatRoomName();
-	createChatRoom(roomName);
-	refreshChatRoomsList();
-	//document.forms['createNewChatRoom'].newChatRoomName.value = ""; ff
-	document.getElementById("createNewChatRoom").elements["newChatRoomName"].value = '';
-	openChatRoom(roomName);
+	$.post('createroom',{roomName: getNewChatRoomName()}, 
+			function(){
+				refreshChatRoomsList();
+				openChatRoom(getNewChatRoomName());
+				$("#newChatRoomName").val('');				
+	});
+	
+	
 }
 
 function click_sendMessage(){
-	sendMessage(getCurrentRoomName(),getNewMessage());
-	//sendMessage(document.forms['chatRoomForm'].roomName.value, //ff
-	//		document.forms['chatRoomForm'].newChatRoomMessage.value);
-	//document.forms['chatRoomForm'].newChatRoomMessage.value = "";
-	document.getElementById("chatRoomForm").elements["newChatRoomMessage"].value = '';
-	refreshChatRoomMessages();
-	refreshChatRoomUsers();
+	$.post("createmessage",{roomName: $('#roomName').val(), 
+		msg: $("#newChatRoomMessage").val()});
+	$("#newChatRoomMessage").val('');
+	$("#chatRoomMessages").append("<div class='loading'></div>");
+	
 }
 
 function kp_updateDraft(event){
 	if( event.charCode == 32 ){ //space bar key
-		//updateDraft(document.forms['chatRoomForm'].roomName.value,
-		//		document.forms['chatRoomForm'].newChatRoomMessage.value);
-		updateDraft(getCurrentRoomName(),getNewMessage());
-		refreshChatRoomUsers();
+		updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
 	}
 	return false;
 }
 
 function getCurrentRoomName(){
-	return document.getElementById("chatRoomForm").elements["roomName"].value;
-}
-
-function getNewMessage(){
-	return document.getElementById("chatRoomForm").elements["newChatRoomMessage"].value;
+	return $('#roomName').val();
 }
 
 function getNewChatRoomName(){
-	return document.getElementById("createNewChatRoom").elements["newChatRoomName"].value;
+	return clean($("#newChatRoomName").val());
 }
 
 function refreshChatRoomsList(){
-	document.getElementById("chatRooms").innerHTML = getChatRooms();
+	$("#chatRooms").load("chatrooms");
 }
 
 function refreshChatRoomUsers(){
 	loading(document.getElementById("users"));
-	document.getElementById("users").innerHTML = getChatRoomUsers(getCurrentRoomName());
+	$("#users").load("chatroomusers?roomName=" + getCurrentRoomName(), function(){
+		$("#users div[id]").each( 
+				function (idx, elem){
+					$.push.listenToGroup($(elem).children()[0].id, function(){ 
+						window.refreshUserDraft(elem.id); 
+					});		    		
+				}
+			);
+	});
+}
+
+function refreshUserDraft(userName){
+	$("#"+getCurrentRoomName()+"_"+userName+"_draft").load("messagedraft?roomName="+getCurrentRoomName()+"&userName="+userName,
+			function(){
+				$("#"+getCurrentRoomName()+"_"+userName+"_draft .typing").fadeTo(10000,0.001);
+			}
+	);
 }
 
 function refreshChatRoomsPanel(){
-	if( !document.getElementById("chatRooms"))
+	if( $("#chatRooms").size()==0)
 		loadChatRoomsPanel(document.getElementById("chatRoomsPanel"));
 	refreshChatRoomsList();
 }
 
 function refreshChatRoomMessages(){
-	document.getElementById("chatRoomMessages").innerHTML = 
-		getChatRoomMessages(getCurrentRoomName());
-	$("#chatRoomMessages").ready(function(){
-		$("#chatRoomMessages > div:last").ready(function(){
-			$("#chatRoomMessages > div:last").hide();
-			$("#chatRoomMessages > div:last").slideDown("slow");
-		});
+	$("#chatRoomMessages > div.loading").remove();
+	var lastDiv = $("#chatRoomMessages > div:last");
+	var lastMsgId = lastDiv.length > 0 ? lastDiv[0].id : 0;
+	$.get("messages?roomName="+getCurrentRoomName()+"&idx="+lastMsgId, 
+		function (data){
+			$("#chatRoomMessages").append(data);
+			//$("#chatRoomMessages > div:last").hide();
+			$("#chatRoomMessages").ready( function(){
+				//$("#chatRoomMessages > div:last").slideDown("slow");
+				$("#chatRoomMessages").animate({ scrollTop: $("#chatRoomMessages").attr("scrollHeight") }, 3000);
+			});		
 	});
-	
+}
 
+function logoutOfChatRoom(roomName){
+	if( roomName != null ){
+		$.post("logoutofroom",{roomName:roomName});
+	}	
 }
 
 function openChatRoom(roomName){
+	
+	if( getCurrentRoomName() != null ){
+		logoutOfChatRoom(getCurrentRoomName());
+	}
+	
 	loginToChatRoom(roomName);
 	
-	//register ICEpush listener on room name
-	ice.push.addGroupMember(roomName, window.pushId);
-	ice.push.register([window.pushId], window.refreshChatRoomUsersAndMessages);
+	$.push.listenToGroup(roomName+"_users",window.refreshChatRoomUsers);
+	$.push.listenToGroup(roomName+"_messages",window.refreshChatRoomMessages);
 	
-	document.getElementById("currentChatRoom").innerHTML = document.getElementById("chatRoomTemplate").innerHTML;
+	$("#currentChatRoom").html( $("#chatRoomTemplate").html() );
 	$("#chatRoom").ready(function(){
 		$("#chatRoom").fadeIn("slow");
 	});
-	document.getElementById("chatRoomForm").elements["roomName"].value = roomName;
-	document.getElementById("currentChatRoomName").innerHTML = roomName;
+	$("#roomName").val(roomName);
+	$("#currentChatRoomName").html(roomName);
 	refreshChatRoomUsers();
 	refreshChatRoomMessages();
+	
+	$("#newChatRoomMessage").bind("keyup", function(event){
+		if(event.keyCode == 13){ 
+			click_sendMessage();
+			event.preventDefault();
+		}
+		window.updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
+	});
 	
 }
 
@@ -230,29 +185,11 @@ function refreshChatRoomUsersAndMessages(){
 }
 
 function refreshChatPanel(){
-	if( ! document.getElementById("chatPanel"))
+	if( $("#chatPanel").size()==0)
 		loadChatPanel(document.getElementById("content"));
 	refreshChatRoomsPanel();
 }
 
-
-/****************** UTIL ***********************************/
-function getXmlHttpRequest() {
-	try {
-		return new XMLHttpRequest(); // Firefox, Opera 8.0+, Safari
-	} catch (e) {
-		try {
-			return new ActiveXObject("Msxml2.XMLHTTP"); // Internet Explorer
-		} catch (e) {
-			try {
-				return new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e) {
-				alert("Your browser is too old for AJAX!");
-				return null;
-			}
-		}
-	}
-}
 
 function loading(element){
 	if( element ){
@@ -263,35 +200,6 @@ function loading(element){
 	}	
 }
 
-function doGet(url,element){
-	loading(element);
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4) {
-			element.innerHTML = xmlHttp.responseText;
-		}
-	}
-	xmlHttp.open("GET", url, true);
-	xmlHttp.send(null);
+function clean(str){
+	return str.replace(' ','_');
 }
-
-function doGetAndEval(url,element){
-	loading(element);
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4) {
-			element.innerHTML = xmlHttp.responseText;
-			evaluateScripts(element);
-		}
-	}
-	xmlHttp.open("GET", url, true);
-	xmlHttp.send(null);
-}
-
-function evaluateScripts(element) {
-	var scripts = element.getElementsByTagName('script');
-	for ( var i = 0 ; i < scripts.length; i++ ){
-		eval(scripts[i].innerHTML);
-	} 
-}
-

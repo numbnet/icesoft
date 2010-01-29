@@ -106,6 +106,17 @@ function getChatRoomMessages(roomName) {
 	return xmlHttp.responseText;
 }
 
+function logoutOfChatRoom(roomName){
+	if( roomName != null ){
+		var xmlHttp = getXmlHttpRequest();
+		var params = "roomName=" + roomName;
+		xmlHttp.open("POST", "logoutofroom", false);
+		xmlHttp.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xmlHttp.send(params);		
+	}	
+}
+
 function sendMessage(roomName,msg) {
 	var xmlHttp = getXmlHttpRequest();
 	var params = "roomName=" + roomName + "&msg=" + msg;
@@ -199,11 +210,21 @@ function refreshChatRoomMessages(){
 }
 
 function openChatRoom(roomName){
+	
+	if( getCurrentRoomName() != null ){
+		logoutOfChatRoom(getCurrentRoomName());
+	}
+	
 	loginToChatRoom(roomName);
 	
 	//register ICEpush listener on room name
-	ice.push.addGroupMember(roomName, window.pushId);
-	ice.push.register([window.pushId], window.refreshChatRoomUsersAndMessages);
+	var usersPushId = ice.push.createPushId();
+	ice.push.addGroupMember(roomName+"_users", usersPushId);
+	ice.push.register([usersPushId], window.refreshChatRoomUsers);
+	
+	var messagesPushId = ice.push.createPushId();
+	ice.push.addGroupMember(roomName+"_messages", messagesPushId);
+	ice.push.register([messagesPushId], window.refreshChatRoomMessages);
 	
 	document.getElementById("currentChatRoom").innerHTML = document.getElementById("chatRoomTemplate").innerHTML;
 	document.getElementById("chatRoomForm").elements["roomName"].value = roomName;

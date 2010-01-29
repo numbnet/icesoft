@@ -6,17 +6,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
         <script type="text/javascript" src="code.icepush"></script>
-        <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
-        <script type="text/javascript" src="./js/icechat.js"></script>
+        <script type="text/javascript" src="./js/jquery-1.4.1.min.js"></script>
+        <script type="text/javascript" src="./js/jquery.icepush.js"></script>
+        <script type="text/javascript" src="./js/icechat.js"></script>           
     </head>
     <body>
-    
-    	<script type="text/javascript">
-    		window.pushId = ice.push.createPushId();
-    		ice.push.addGroupMember("icechat", window.pushId);
-    		ice.push.register([window.pushId], window.refreshChatRoomsList);
-       	</script>
-    
+    	
     	<div id="headerContainer" class="header_container">
     		<!-- script type="text/javascript">loadHeader(document.getElementById("headerContainer"));</script-->
     		<div class="header_content"><img width="109px" height="100px"
@@ -57,19 +52,21 @@
 									onkeypress="if(event.keyCode == 13){ click_createChatRoom();return false;}"/>
 								<input type="button" value="Create" style="margin-top:5px;"
 									onclick="click_createChatRoom();" />
+								<input type="button" value="Stop Listening to Rooms" style="margin-top:5px;"
+									onclick="$.push.stopListeningToGroup('rooms','chatrooms');" />
 							</div>
 						</form>
 					</div>
 				
 					<div id="currentChatRoom" class="currentChatRoom_pos">
-					</div>
+					</div>					
 				
 				</div>
 				
 				<script type="text/javascript">
 					loadChatLogin(document.getElementById("chatSessionPanel"));
-					//loadChatRoomsPanel(document.getElementById("chatRoomsPanel"));
 					refreshChatRoomsList();
+					$.push.loadUpdates("#chatRooms","rooms","chatrooms");
 				</script>
 			
 			</div>
@@ -94,11 +91,16 @@
 					<div class="clearer"></div>
 					<div class="addNewMessage">
 						New Message&nbsp;
-						<input type="text" id="newChatRoomMessage" style="width:40%;" onkeypress="if(event.keyCode == 13){ click_sendMessage();return false;}window.kp_updateDraft(event);"/>
-						<input type="button" onclick="click_sendMessage();"
+						<input type="text" id="newChatRoomMessage" style="width:40%;" />
+						<input type="button" onclick="click_sendMessage();return false;"
 							value="Send" />
 					</div>
 				</form>
+				<script type="text/javascript">
+					$('#chatRoomForm').submit(function() {
+					  return false;
+					});
+				</script>
 			</div>        
         </div>
     </body>

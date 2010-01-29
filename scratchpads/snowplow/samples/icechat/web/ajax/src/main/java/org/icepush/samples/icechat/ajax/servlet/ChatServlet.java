@@ -25,16 +25,19 @@ public class ChatServlet extends HttpServlet {
 	public static final String GET_CHAT_ROOMS = "/chatrooms";
 	public static final String GET_CHAT_ROOM_USERS = "/chatroomusers";
 	public static final String GET_MESSAGES = "/messages";
+	public static final String GET_MESSAGE_DRAFT = "/messagedraft";
 
 	public static final String POST_CREATE_CHAT_ROOM = "/createroom";
 	public static final String POST_CREATE_MESSAGE = "/createmessage";
 	public static final String POST_UPDATE_DRAFT = "/updatedraft";
 	public static final String POST_LOGIN_TO_ROOM = "/logintoroom";
+	public static final String POST_LOGOUT_OF_ROOM = "/logoutofroom";
 
 	public static final String ROOM_NAME = "roomName";
 	public static final String USER_NAME = "userName";
 	public static final String PASSWORD = "password";
 	public static final String MESSAGE = "msg";
+	public static final String INDEX = "idx";
 
 	private static Logger LOG = Logger.getLogger(ChatServlet.class.getName());
 	
@@ -59,13 +62,18 @@ public class ChatServlet extends HttpServlet {
 			resp.getWriter().print(getChatRooms());
 		} else if (GET_CHAT_ROOM_USERS.equals(url)) {
 			resp.getWriter().print(
-					getChatRoomUsers(getCurrentUser(req), req
-							.getParameter(ROOM_NAME)));
+					getChatRoomUsers(getCurrentUser(req), getRoomNameParam(req)));
 		}else if (GET_MESSAGES.equals(url)) {
 			resp.getWriter().print(
-					getChatRoomMessages(req
-							.getParameter(ROOM_NAME)));
+					getChatRoomMessages(getRoomNameParam(req), req.getParameter(INDEX)));
+		}else if (GET_MESSAGE_DRAFT.equals(url)) {
+			resp.getWriter().print(
+					getMessageDraft(getRoomNameParam(req),req.getParameter(USER_NAME)));
 		}
+	}
+	
+	private String getRoomNameParam(HttpServletRequest req){
+		return req.getParameter(ROOM_NAME);
 	}
 
 	@Override
@@ -85,6 +93,8 @@ public class ChatServlet extends HttpServlet {
 			updateMessageDraft(req,resp);
 		}else if( POST_LOGIN_TO_ROOM.equals(url)){
 			loginToRoom(req,resp);
+		}else if( POST_LOGOUT_OF_ROOM.equals(url)){
+			logoutOfRoom(req,resp);
 		}
 	}
 
@@ -115,30 +125,64 @@ public class ChatServlet extends HttpServlet {
 				Collection<UserChatSession> sessions = room.getUserChatSessions();
 				LOG.info("found " + sessions.size() + " users in chat room " + roomName);
 				for( UserChatSession s : sessions ){
-					buff.append("<div>");
-					buff.append(s.getUser().getDisplayName());
-					buff.append("&nbsp;");
-					if( s.getCurrentDraft() != null ){
-						buff.append("<span style='color:green;'>");
-						buff.append(s.getCurrentDraft());
-						buff.append("</span>");						
+					if( s.isLive() ){
+						buff.append("<div id='");
+						buff.append(s.getUser().getUserName());
+						buff.append("'>");
+						buff.append(s.getUser().getDisplayName());
+						buff.append("&nbsp;");
+						buff.append("<span id='");
+						buff.append(s.getRoom().getName()+"_"+s.getUser().getUserName());
+						buff.append("_draft' class='draft'>");
+						buff.append(getMessageDraft(s));
+						buff.append("</span>");		
+					    buff.append("</div>");
 					}
-					buff.append("</div>");
+					else{
+						buff.append("<div>");
+						buff.append(s.getUser().getDisplayName());
+						buff.append("&nbsp;left at " + DATE_FORMAT.format(s.getExited()));
+						buff.append("</div>");
+					}
 				}
 			}
 		}
 		return buff.toString();
 	}
-
-	private String getChatRoomMessages(String roomName) {
+	
+	private String getMessageDraft(UserChatSession s){
 		StringBuffer buff = new StringBuffer();
-		List<Message> messages = getChatService().getAllChatRoomMessages(roomName);
+		if( s.getCurrentDraft() != null ){
+			int draftLength = s.getCurrentDraft().length();
+			buff.append(draftLength > 20 ? "..."+s.getCurrentDraft().substring(draftLength-20) : s.getCurrentDraft());
+			buff.append("...");			
+		}
+		return buff.toString();
+	}
+
+	private String getChatRoomMessages(String roomName, String index) {
+		StringBuffer buff = new StringBuffer();
+		List<Message> messages = null;
+		if( index != null ){
+			try{
+				Integer iIndex = Integer.valueOf(index);
+				messages = getChatService().getChatRoomMessagesFromIndex(roomName, iIndex);
+			}
+			catch(NumberFormatException e){
+				messages = getChatService().getAllChatRoomMessages(roomName);
+			}
+		}
+		else{
+			messages = getChatService().getAllChatRoomMessages(roomName);
+		}
 		LOG.info("found "
 				+ (messages != null ? messages.size() + " messages" : " no messages")
 				+ " in chat room " + roomName);
 		if (messages != null) {
 			for (Message msg : messages) {
-				buff.append("<div>");
+				buff.append("<div id='");
+				buff.append(msg.getId());
+				buff.append("'>");
 				buff.append(DATE_FORMAT.format(msg.getCreated()));
 				buff.append("&nbsp;");
 				buff.append(msg.getUserChatSession().getUser().getDisplayName());
@@ -148,6 +192,23 @@ public class ChatServlet extends HttpServlet {
 			}
 		}
 		return buff.toString();
+	}
+	
+	private String getMessageDraft(String roomName, String userName){
+		String result = "";
+		ChatRoom room = getChatService().getChatRoom(roomName);
+		if( room != null ){
+			Collection<UserChatSession> sessions = room.getUserChatSessions();
+			for( UserChatSession s : sessions ){
+				if( s.isLive() && s.getUser().getUserName().equals(userName) && s.getCurrentDraft() != null ){
+					result = getMessageDraft(s);
+					if( s.getCurrentDraft() != null )
+						result += "<div class='typing'>&nbsp;&nbsp;&nbsp;</div>";
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	private void createNewChatRoom(HttpServletRequest req,
@@ -160,12 +221,12 @@ public class ChatServlet extends HttpServlet {
 			LOG.info("successfully created room " + roomName );
 			
 			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
-			pushContext.push("icechat");
+			pushContext.push("rooms");
 		} else {
 			LOG.warning("/createroom: user is null, ignoring");
 		}
 	}
-
+	
 	private void createNewChatMessage(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		String roomName = req.getParameter(ROOM_NAME);
@@ -177,7 +238,8 @@ public class ChatServlet extends HttpServlet {
 				LOG.info("sent room '" + roomName + "' message '" + msg + "'");
 				
 				PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
-				pushContext.push(roomName);
+				pushContext.push(roomName+"_messages");
+				pushContext.push(roomName+"_"+user.getUserName()+"_draft");
 			}
 			catch(UnauthorizedException e){
 				e.printStackTrace();
@@ -193,7 +255,9 @@ public class ChatServlet extends HttpServlet {
 			try{
 				String msg = req.getParameter(MESSAGE);
 				getChatService().updateCurrentDraft(msg, roomName, user.getUserName(), user.getPassword());
-				LOG.info("updated draft '" + msg + "'");
+				
+				PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
+				pushContext.push(roomName+"_"+user.getUserName()+"_draft");
 			}
 			catch(UnauthorizedException e){
 				e.printStackTrace();
@@ -207,6 +271,8 @@ public class ChatServlet extends HttpServlet {
 		User user = (User) req.getSession(true).getAttribute("user");
 		if (user != null) {
 			getChatService().loginToChatRoom(roomName, user.getUserName(), user.getPassword());
+			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
+			pushContext.push(roomName+"_users");
 		}
 	}
 
@@ -214,5 +280,16 @@ public class ChatServlet extends HttpServlet {
 	private User getCurrentUser(HttpServletRequest req) {
 		return (User) req.getSession(true).getAttribute("user");
 	}
-
+	
+	private void logoutOfRoom(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		String roomName = req.getParameter(ROOM_NAME);
+		User user = (User) req.getSession(true).getAttribute("user");
+		if (user != null) {
+			LOG.info("removing " + user.getUserName() + " from " + roomName);
+			getChatService().logoutOfChatRoom(roomName, user.getUserName(), user.getPassword());
+			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
+			pushContext.push(roomName+"_users");
+		}
+	}
 }
