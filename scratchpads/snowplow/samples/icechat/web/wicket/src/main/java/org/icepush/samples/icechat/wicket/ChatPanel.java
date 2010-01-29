@@ -5,6 +5,7 @@
 
 package org.icepush.samples.icechat.wicket;
 import javax.inject.Inject;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
 import org.icepush.samples.icechat.model.Message;
@@ -23,7 +25,7 @@ import org.icepush.samples.icechat.model.UserChatSession;
  *
  * @author bkroeger
  */
-public final class ChatPanel extends Panel {
+public final class ChatPanel extends PushPanel {
 
     private final ListView messagesListView;
     private final ListView usersListView;
@@ -39,6 +41,21 @@ public final class ChatPanel extends Panel {
     public ChatPanel(String id) {
         super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
+
+        this.setOutputMarkupId(true);
+        final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
+            protected void respond(final AjaxRequestTarget target) {
+                System.out.println("AbstractDefaultAJAXBehaviour RESPONDING TO BROWSER JAVASCRIPT CALL: " + this.getCallbackUrl());
+                usersListView.modelChanged();
+                messagesListView.modelChanged();
+                target.addComponent(this.getComponent());
+            }
+        };
+        add(behave);
+
+        //Label pushJavascript = new Label("pushJavascript", new Model("wicketAjaxGet('?wicket:interface=:1:chatPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')"));
+        //pushJavascript.setEscapeModelStrings(false);
+        //add(pushJavascript);
 
         final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);
@@ -70,6 +87,7 @@ public final class ChatPanel extends Panel {
                             chatManagerVC.sendNewMessage();
                             messagesListView.modelChanged();
                             target.addComponent(chatRoomForm);
+                            System.out.println("BEHAVE callbackURL: " + behave.getCallbackUrl());
 			}
 		});
 
