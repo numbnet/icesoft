@@ -65,9 +65,14 @@ public class View implements CommandQueue {
                     facesContext.dispose();
                 }
                 if (ImplementationUtil.isJSF2()) {
-                    Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
-                    Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
-                    facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
+                    try {
+                        Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
+                        Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
+                        facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
+                    } catch (Throwable t)  {
+                        //JSF 2.0 found but instantiation failed
+                        facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
+                    }
                 } else {
                     facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
                 }
