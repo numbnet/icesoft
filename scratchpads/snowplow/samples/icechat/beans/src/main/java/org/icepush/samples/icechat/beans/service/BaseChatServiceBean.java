@@ -37,8 +37,12 @@ public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 			if (user != null && user.getPassword().equals(password)) {
 				if (room.hasUserSession(userName)) {
 					for (UserChatSession ucs : user.getChatSessions()) {
-						if (ucs.getRoom().getName().equals(chatRoom))
+						if (ucs.getRoom().getName().equals(chatRoom)){
+							ucs.setExited(null);
+							ucs.setEntered(new Date());
+							ucs.setLive(true);
 							session = ucs;
+						}
 					}
 				} else {
 					session = new UserChatSession();
@@ -107,6 +111,7 @@ public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 				if (chatSession.getRoom().getName().equals(chatRoom)) {
 					Message msg = new Message();
 					msg.setChatRoom(chatSession.getRoom());
+					msg.setId(Long.valueOf(room.getMessages().size()+1));
 					msg.setCreated(new Date());
 					msg.setMessage(message);
 					msg.setUserChatSession(chatSession);

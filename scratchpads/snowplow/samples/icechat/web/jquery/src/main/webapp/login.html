@@ -2,14 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>ICEpush ICEchat (AJAX)</title>
+        <title>ICEpush ICEchat (jQuery)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
-        <!-- script type="text/javascript" src="code.icepush"></script-->
+        <script type="text/javascript" src="./js/jquery-1.4.1.min.js"></script>
         <script type="text/javascript" src="./js/icechat.js"></script>
+        <script type="text/javascript" src="./js/jquery.corner.js"/>        
     </head>
     <body>
-    
+    	<script type="text/javascript">
+        $( function(){
+            $("div.login").each( function(){
+                $(this).corner("round");
+            });
+        });
+        </script>
     	<div id="headerContainer" class="header_container">
     		<!-- script type="text/javascript">loadHeader(document.getElementById("headerContainer"));</script-->
     		<div class="header_content"><img width="109px" height="100px"

@@ -98,7 +98,7 @@ div.footer_content a {
 }
 
 div.login {
-	border: 15px solid #F2BD65;
+	border: 15px solid #005D9A;
 	width: 300px;
 	padding: 20px;
 	text-align: center;
@@ -124,15 +124,30 @@ div.footer_content a:hover {
 
 .chatSession {
 	border: 5px solid #B9D6E8;
-	height: 20px;
-	margin: 40px 0.5% 0.5%;
+	margin: 40px 0 1%;
 	padding: 10px;
 	text-align: right;
-	
 }
 
-.chatSession_pos {
-	width: 92%;
+#chatSessionPanel{
+	color:#0F65B8;	
+}
+
+#chatPanel{
+	margin: 0 1%;
+}
+
+.chatSession_pos, .mainPanel_pos{
+	overflow: auto;	
+}
+
+.currentChatRoom_pos{
+	margin: 0 0 0 0.5%;
+	width: 82%;	
+	overflow: auto;
+	display: block;
+	float: right;
+	height: 100%;
 }
 
 .chatRooms {
@@ -145,9 +160,7 @@ div.footer_content a:hover {
 
 .chatRooms_pos{
 	height: 100%;
-	margin: 0 0.5%;
-	min-height: 400px;
-	
+	min-height: 400px;	
 	position: relative;
 	width: 14%;
 	overflow: auto;
@@ -158,21 +171,14 @@ div.footer_content a:hover {
 	bottom: 5px;
 	line-height: 15pt;
 	text-align: right;
-	padding: 5px;
+	padding: 3px;
 	font-size: 10pt;
 }
 
-.chatRoomView {
+.chatRoomView, .chatRoom {
 	border: 5px solid #B9D6E8;
 	color: #0F65B8;
-	display: block;
-	float: left;
-	height: 100%;
-	margin: 0 0.5% 0 0;
 	min-height: 420px;
-	position: relative;
-	width: 76.7%;
-	overflow: auto;
 }
 
 .chatRoomHeader {
@@ -184,15 +190,12 @@ div.footer_content a:hover {
 	padding-top: 5px;
 }
 
-.chatRoomContainer {
-	
-}
 
 .chatRoomUsers {
 	background-color: #EFEFEF;
 	border: thin solid #B9D6E8;
 	float: left;
-	margin: 0 0.5%;
+	margin: 0 1%;
 	min-height: 300px;
 	padding: 1%;
 	width: 20%;
@@ -202,10 +205,15 @@ div.footer_content a:hover {
 	background-color: #EFEFEF;
 	border: thin solid #B9D6E8;
 	float: left;
-	margin: 0 0.5%;
-	min-height: 300px;
+	margin: 0 1% 0 0;
+	height: 300px;
 	padding: 1%;
-	width: 73%;
+	width: 72%;	
+}
+
+#chatRoomMessages{
+	overflow:auto;
+	height: 280px;
 }
 
 .addNewMessage {
@@ -213,6 +221,17 @@ div.footer_content a:hover {
 	margin: 10px;
 	text-align: right;
 	width: 100%;
+}
+
+.loading{
+	width: 30px;
+	height: 30px;
+	background: transparent url(./images/loading.gif) no-repeat scroll 0 0;	
+}
+
+.typing{
+	background: transparent url(./images/typing.gif) no-repeat scroll center right;	
+	display:inline;
 }
 
 .login input {
@@ -225,4 +244,19 @@ div.footer_content a:hover {
 	font-size: 12pt;
 	margin-bottom: 8px;
 	text-align: center;
+}
+
+.hidden{
+	display: none;
+}
+
+.draft{
+	color:green;
+	position:relative;
+	right:5px;
+	float:right;
+	overflow:hidden;
+	width:80%;
+	text-align:right;
+	white-space: nowrap;
 }
