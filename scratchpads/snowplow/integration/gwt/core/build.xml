@@ -12,6 +12,10 @@
 	<target name="compile" depends="init-compile">
 		<javac srcdir="${java.src.dir}" destdir="${build.dir}" debug="on" debuglevel="lines,vars,source" 
 			source="1.5" target="1.5">
+			<classpath>
+  				<fileset dir="lib/gwt" includes="**/*.jar"/>
+				<fileset dir="../../../core/build/dist" includes="*.jar"/>
+		</classpath>
 		</javac>
 	
 	</target>
