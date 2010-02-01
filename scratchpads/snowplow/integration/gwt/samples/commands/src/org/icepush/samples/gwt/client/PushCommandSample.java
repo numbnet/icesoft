@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class PushCommandSample implements EntryPoint {
+	
+  private MessagesPopup popup = new MessagesPopup();
   /**
    * The message displayed to the user when the server cannot be reached or
    * returns an error.
@@ -42,7 +44,7 @@ public class PushCommandSample implements EntryPoint {
 	  
 	ClientPushCommandContext context = ClientPushCommandContext.getInstance();
 	
-	context.registerExecuter(ParticipantEntryCommand.class, new ParticipantEntryCommandHandler());
+	context.registerExecuter(ParticipantEntryCommand.class, new ParticipantEntryCommandHandler(this.popup));
 	
     final Button sendButton = new Button("Send");
     final TextBox nameField = new TextBox();

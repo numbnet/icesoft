@@ -7,8 +7,14 @@ import com.google.gwt.user.client.Window;
 
 public class ParticipantEntryCommandHandler implements ICommandExecuter {
 
+	private MessagesPopup popup;
+	public ParticipantEntryCommandHandler(MessagesPopup popup){
+		this.popup = popup;
+	}
 	public void execute(ICommand command) {
-		Window.alert("recieved command: " + command.getClass().getName());
+		ParticipantEntryCommand castedCommand = (ParticipantEntryCommand) command;
+		this.popup.setName(castedCommand.getParticipantName());
+		this.popup.show();
 	}
 
 }

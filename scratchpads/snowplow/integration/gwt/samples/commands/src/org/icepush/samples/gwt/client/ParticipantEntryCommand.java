@@ -6,4 +6,15 @@ import org.icepush.integration.gwt.command.ICommand;
 
 public class ParticipantEntryCommand implements ICommand,Serializable{
 
+	private String participantName;
+
+	public String getParticipantName() {
+		return participantName;
+	}
+
+	public void setParticipantName(String participantName) {
+		this.participantName = participantName;
+	}
+	
+	
 }
