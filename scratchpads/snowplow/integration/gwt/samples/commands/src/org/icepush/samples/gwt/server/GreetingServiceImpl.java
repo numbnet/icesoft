@@ -18,6 +18,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     String userAgent = getThreadLocalRequest().getHeader("User-Agent");
     
     ParticipantEntryCommand command = new ParticipantEntryCommand();
+    command.setParticipantName(input);
     ServerPushCommandContext.getInstance(getServletContext()).pushCommand(command, getServletContext());
     
     return "Hello, " + input + "!<br><br>I am running " + serverInfo
