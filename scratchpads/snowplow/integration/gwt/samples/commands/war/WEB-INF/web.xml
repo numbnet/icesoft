@@ -4,7 +4,9 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
+    <listener >
+  	<listener-class>org.icepush.server.gwt.integration.PushCommandContextListener</listener-class>
+  </listener>
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
@@ -43,8 +45,6 @@
     <welcome-file>PushCommandSample.html</welcome-file>
   </welcome-file-list>
   
-  <listener >
-  	<listener-class>org.icepush.server.gwt.integration.PushCommandContextListener</listener-class>
-  </listener>
+
 
 </web-app>
