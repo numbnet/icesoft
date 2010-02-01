@@ -17,7 +17,8 @@
 				<div style="font-size: 20pt; color: #0F65B8; margin-top: 45px;float:left;">
 					<span style="font-weight: bold;">ICEpush</span> 
 					<span style="font-style: italic; font-family: Times New Roman"> with jQuery</span>
-					<div> Server Time: <span id="time"></span></div>
+					<div> Server Time: <span id="timeElem"></span></div>
+					<span class="code">$.push.listenToGroup("time", function(){ $("#timeElem").load('./time');});</span>
 				</div>
 				<div style="float:right;margin-top:45px;">
 					<img src="./img/jquery.gif" width="170px"/>
@@ -28,8 +29,8 @@
         <div class="body_container" id="content"> 
           	<div class="demoBox" >
 				<h3>Groups</h3>
-				<h4>$('#groups').loadPushUpdates("groups","groups");</h4>
-				<div id="groups">
+				<span class="code">$('#groupsElem').loadPushUpdates("groups","./groups");</span>
+				<div id="groupsElem">
 					<div class="loading"></div>
 				</div>
 				<form id="createNewChatRoom">
@@ -38,20 +39,20 @@
 						<br />
 						<label for="newGroupName">Name</label>&nbsp;
 						<input type="text" id="newGroupName" style="width: 90px;margin-top:5px;" 
-							onkeypress="if(event.keyCode == 13){ $.post('creategroup',{group:$('#newGroupName').val()});return false;}"/>
+							onkeypress="if(event.keyCode == 13){ $.post('./creategroup',{group:$('#newGroupName').val()});return false;}"/>
 						<input type="button" value="Create" style="margin-top:5px;"
-							onclick="$.post('creategroup',{group:$('#newGroupName').val()});" />
+							onclick="$.post('./creategroup',{group:$('#newGroupName').val()});" />
 						<input type="button" value="Stop Listening to Groups" style="margin-top:5px;"
 							onclick="$.push.stopListeningToGroup('groups');" />
 						<input type="button" value="Listen to Groups" style="margin-top:5px;"
-							onclick="$.push.listenToGroup('groups',function(){ $('#groups').load('groups');});" />
+							onclick="$.push.listenToGroup('groups',function(){ $('#groupsElem').load('./groups');});" />
 					</div>
 				</form>
 			</div>
 		
 			<div class="demoBox" >
 				<h3>Multiple Appended Groups</h3>
-				<h4>$('.appendedGroups').appendPushUpdates("groups","groups");</h4>
+				<span class="code">$('.appendedGroups').appendPushUpdates("groups","./groups");</span>
 				<div style="padding:5px;margin:10px;background-color:#FFF;" class='appendedGroups'>
 				
 				</div>
@@ -63,13 +64,11 @@
 		</div>
 		
 		<script type="text/javascript">
-			$('#groups').load('groups');
-			$('#groups').loadPushUpdates("groups","groups");
-			$('.appendedGroups').appendPushUpdates("groups","groups");
+			$('#groupsElem').load('groups');
+			$('#groupsElem').loadPushUpdates("groups","./groups");
+			$('div.appendedGroups').appendPushUpdates("groups","./groups");
 			$.push.listenToGroup("time", function(){ 
-				$("#time").load('time');//, function(){ 
-					//$("#time").hide().fadeIn(500);
-				//}); 
+				$("#timeElem").load('./time');
 			});
 		</script>
 			
