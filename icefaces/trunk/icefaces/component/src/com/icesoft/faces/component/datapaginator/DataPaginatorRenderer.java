@@ -139,6 +139,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             if (displayedRowsCount > max) {
                 displayedRowsCount = max;
             }
+            if (displayedRowsCount == 0) {
+                displayedRowsCount = scroller.getRowCount();
+            }
             requestMap.put(displayedRowsCountVar,
                            new Integer(displayedRowsCount));
         }
@@ -156,7 +159,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         if (lastRowIndexVar != null) {
             int lastRowIndex = scroller.getFirstRow() + scroller.getRows();
             int count = scroller.getRowCount();
-            if (lastRowIndex > count) {
+            if (lastRowIndex > count || lastRowIndex == 0) {
                 lastRowIndex = count;
             }
             requestMap.put(lastRowIndexVar, new Integer(lastRowIndex));
