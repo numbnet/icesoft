@@ -1,5 +1,8 @@
 package org.icepush.gwt.samples.client;
 
+import org.icepush.integration.gwt.GWTPushContext;
+import org.icepush.integration.gwt.PushEventListener;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,8 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.icesoft.icepush.integration.gwt.GWTPushContext;
-import com.icesoft.icepush.integration.gwt.PushEventListener;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
