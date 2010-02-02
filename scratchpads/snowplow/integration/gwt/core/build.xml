@@ -4,6 +4,7 @@
 		<delete dir="${build.dir}"/>
 		<delete dir="${dist.dir}"/>
 		<delete dir="${build.tests}"/>
+		<delete dir="reports"/>
 	</target>
 	
 	<target name="init-compile">

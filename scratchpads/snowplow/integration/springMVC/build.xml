@@ -18,7 +18,10 @@
 		<copy file="./samples/icechat/web/spring-region/dist/icechat-spring-region.war" todir="${bin.sample.dir}"></copy>
 	</target>
 	
-	
+	<!-- all integrations must also provide this target.  Again the directory will be the root of the snowplow project.-->
+	<target name="clean">
+		
+	</target>
 	
 	
 </project>

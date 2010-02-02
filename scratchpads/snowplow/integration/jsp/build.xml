@@ -31,5 +31,10 @@
 		<ant antfile="build.xml" dir="./integration/jsp/core" target="jar"/>
 	</target>
 	
-	
+	<target name="clean">
+		<ant antfile="build.xml" dir="./integration/common/notify" target="clean"/>
+		<ant antfile="build.xml" dir="./integration/jsp/core" target="clean"/>
+		<ant antfile="build.xml" dir="./integration/jsp/samples/region" target="clean"/>
+		<ant antfile="build.xml" dir="./integration/jsp/samples/register" target="clean"/>
+	</target>
 </project>

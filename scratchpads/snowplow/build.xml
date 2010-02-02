@@ -4,8 +4,7 @@
 	<property name="bin.dist.dir" value="dist"/>
 	<property name="bin.sample.dir" value="build/dist"/>
 	
-	<target name="jar-core">
-		<ant antfile="build.xml" dir="./core" target="clean"/>
+	<target name="jar-core" depends="clean-core">
 		<ant antfile="build.xml" dir="./core" target="jar"/>
 	</target>
 	
@@ -47,6 +46,11 @@
 		
 	</target>
 	
+	<target name="clean-with-path-offset">
+		<echo>Cleaning Inegration ${target.path.offset}</echo>
+		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="clean"/>
+	</target>
+	
 	<target name="zip-distribution">
 		<zip destfile="${bin.dist.dir}/icepush-${target.path.offset}.zip" basedir="${build.dir}"></zip>
 	</target>
@@ -64,6 +68,14 @@
 	</target>
 	
 	
+	<target name="clean-icechat">
+		<ant antfile="build.xml" dir="./samples/icechat" target="clean-all"/>
+	</target>
+		
+	<target name="clean-core">
+		<ant antfile="build.xml" dir="./core" target="clean"/>
+	</target>
+	
 	<target name="build-all" depends="init,jar-core">
 		<!-- build all the distributions -->
 		<antcall target="dist-gwt-bin"/>
@@ -73,5 +85,23 @@
 		
 		<!-- cleanup unnecessary leftover folders.-->
 		<antcall target="cleanup-after-build"/>
+	</target>
+	
+	<target name="clean-all" depends="pre-assemble-clean">
+		<delete dir="${bin.dist.dir}"/>
+		<antcall target="clean-core"/>
+		<antcall target="clean-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="jsp"/>
+		</antcall>
+		<antcall target="clean-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="gwt"/>
+		</antcall>
+		<antcall target="clean-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="springMVC"/>
+		</antcall>
+		<antcall target="clean-icechat"></antcall>
 	</target>
 </project>
