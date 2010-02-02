@@ -30,7 +30,7 @@
 	
 	<target name="clean">
 		<delete dir="${build.dir}" failonerror="false" />
-		<delete dir="${dist.dir}" failonerror="false" includes="**" />
+		<delete dir="${dist.dir}" failonerror="false"/>
 	</target>
 	
 	<target name="war" depends="clean">
@@ -63,7 +63,7 @@
 			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
 		</war>
 		
-		<copy file="${dist.dir}/${war.name}" todir="/home/philip/glassfish-v2.1/domains/domain1/autodeploy" preservelastmodified="true" verbose="true"/>
+		
     </target>
 	
 

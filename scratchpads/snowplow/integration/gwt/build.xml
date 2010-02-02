@@ -17,6 +17,11 @@
 		<ant antfile="build.xml" dir="./samples/icechat" target="gwt"/>
 		<copy file="./samples/icechat/web/gwt/dist/icechat-gwt.war" todir="${bin.sample.dir}"></copy>
 		
+		<ant antfile="build.xml" dir="./integration/gwt/samples/greeting" target="war"/>
+		<copy file="./integration/gwt/samples/greeting/greeting.war" todir="${bin.sample.dir}"/>
+		
+		<ant antfile="build.xml" dir="./integration/gwt/samples/commands" target="war"/>
+		<copy file="./integration/gwt/samples/commands/PushCommandSample.war" tofile="${bin.sample.dir}/commands.war"/>
 	</target>
 	
 	<target name="jar-gwt-core">

@@ -103,9 +103,7 @@
 		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${war.name}" 
 			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
 		</war>
-		
-		<copy file="${dist.dir}/${war.name}" todir="/home/philip/glassfish-v2.1/domains/domain1/autodeploy" preservelastmodified="true" verbose="true"/>
-    </target>
+		</target>
 	
 	<target name="compile" depends="clean">
 		<echo>Compiling AJAX...</echo>

@@ -19,6 +19,8 @@
 		</ant>
 		<copy file="./integration/jquery/samples/basic/dist/basic-jquery.war" todir="${build.dir}/dist"></copy>
 		
+		<ant antfile="build.xml" dir="./samples/icechat" target="jquery"/>
+		<copy file="./samples/icechat/web/ajax/dist/icechat-ajax.war" todir="${bin.sample.dir}"></copy>
 		
 		
 		
