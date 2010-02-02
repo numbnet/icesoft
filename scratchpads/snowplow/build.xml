@@ -28,6 +28,12 @@
 		</antcall>
 	</target>
 	
+	<target name="dist-jquery-bin" depends="">
+		<antcall target="build-with-path-offset">
+			<param name="target.path.offset" value="jquery"/>
+		</antcall>
+	</target>
+	
 	<target name="common-pre-assemble" depends="pre-assemble-clean">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.build.dir}"/>
@@ -81,7 +87,7 @@
 		<antcall target="dist-gwt-bin"/>
 		<antcall target="dist-jsp-bin"/>
 		<antcall target="dist-spring-bin"/>
-		
+		<antcall target="dist-jquery-bin"/>
 		
 		<!-- cleanup unnecessary leftover folders.-->
 		<antcall target="cleanup-after-build"/>
@@ -101,6 +107,10 @@
 		<antcall target="clean-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="springMVC"/>
+		</antcall>
+		<antcall target="clean-with-path-offset">
+			<!-- provide the path offset to the build file -->
+			<param name="target.path.offset" value="jquery"/>
 		</antcall>
 		<antcall target="clean-icechat"></antcall>
 	</target>

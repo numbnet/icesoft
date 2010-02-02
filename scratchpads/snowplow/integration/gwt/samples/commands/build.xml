@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="PushCommandSample" default="build" basedir=".">
   <!-- Configure path to GWT SDK -->
-  <property name="gwt.sdk" location="/tools/gwt-2.0.0" />
+  <property name="gwt.sdk" location="../../core/lib" />
 
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
@@ -15,6 +15,8 @@
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
     <!-- Add any additional server libs that need to be copied -->
+  	<copy todir="war/WEB-INF/lib" file="../../core/build/dist/icepush.jar"/>
+  	<copy todir="war/WEB-INF/lib" file="../core/dist/icepush-gwt.jar"/>
   </target>
 
   <target name="javac" depends="libs" description="Compile java source">
@@ -130,6 +132,7 @@ Test targets suppressed because -junit argument was not specified when running w
   <target name="clean" description="Cleans this project">
     <delete dir="war/WEB-INF/classes" failonerror="false" />
     <delete dir="war/pushcommandsample" failonerror="false" />
+  	<delete dir="war/WEB-INF/lib" failonerror="false" />
   </target>
 
 </project>
