@@ -52,6 +52,19 @@
 		<ant antfile="build.xml" target="war" dir="./web/spring-region"/>
 	</target>
 	
-	
+	<target name="clean-all">
+		<ant antfile="build.xml" target="clean" dir="./api"/>
+		<ant antfile="build.xml" target="clean" dir="./auth"/>
+		<ant antfile="build.xml" target="clean" dir="./beans"/>
+		<ant antfile="build.xml" target="clean" dir="./cdi"/>
+		<!--ant antfile="build.xml" target="clean" dir="./jee6/jaxrs"/ --><!-- doesn't seem to exist anymore -->
+		
+		<ant antfile="build.xml" target="clean" dir="./web/wicket"/>
+		<ant antfile="build.xml" target="clean" dir="./web/jsf2"/>
+		<ant antfile="build.xml" target="clean" dir="./web/gwt"/>
+		<ant antfile="build.xml" target="clean" dir="./web/jquery"/>
+		<ant antfile="build.xml" target="clean" dir="./web/spring"/>
+		<ant antfile="build.xml" target="clean" dir="./web/spring-region"/>
+	</target>
 
 </project>
