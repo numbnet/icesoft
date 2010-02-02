@@ -81,7 +81,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     private static final String PREVIOUS_FACET_NAME = "previous";
     private static final String FAST_FORWARD_FACET_NAME = "fastforward";
     private static final String FAST_REWIND_FACET_NAME = "fastrewind";
-
+    private int oldRow = -1;
+    private int pageIndex;
     // just for caching the associated uidata
     private transient UIData _UIData;
 
@@ -239,9 +240,13 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         UIData uiData = getUIData();
         int rows = uiData.getRows();
         int pageCount = getPageCount();
-        int pageIndex = 0;
+        int first = uiData.getFirst();
+        //respect if the dataTable.rows gets changed by some other component.
+        if (oldRow != -1 && oldRow != rows) {
+            first = rows * (pageIndex-1);
+        }
         if (rows > 0) {
-            pageIndex = uiData.getFirst() / rows + 1;
+            pageIndex =first / rows + 1;
             // if the page index > pageCount then some rows may have been removed
             // so we need to show the last page which may be a partial or full page
             // worth of data
@@ -255,7 +260,11 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                      + " has invalid rows attribute.");
             pageIndex = 0;
         }
-
+        //apply the calculated first for current page
+        if (oldRow != -1 && oldRow != rows) {
+            uiData.setFirst(first);
+        }
+        oldRow = rows;
         if (rows == 0) {
             pageIndex = 1;
         } else if (uiData.getFirst() % rows > 0) {
@@ -868,7 +877,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[23];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -890,6 +899,9 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[18] = renderedOnUserRole;
         values[19] = enabledOnUserRole;
         values[20] = disabled;
+        values[21] = new Integer(oldRow);   
+        values[22] = new Integer(pageIndex);          
+                
         return values;
     }
 
@@ -921,7 +933,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         renderedOnUserRole = (String)values[18];
         enabledOnUserRole = (String)values[19];
         disabled = (Boolean)values[20];
-
+        oldRow = ((Integer) values[21]).intValue();
+        pageIndex = ((Integer) values[22]).intValue();
     }
 
     /**
