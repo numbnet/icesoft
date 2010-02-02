@@ -23,7 +23,9 @@
 		</ant>
 		<copy file="./integration/jsp/samples/register/build/dist/icepush-jsp-register.war" todir="${build.dir}/dist"></copy>
 		
-		
+		<ant antfile="build.xml" dir="./integration/jsp/samples/push" target="war">
+		</ant>
+		<copy file="./integration/jsp/samples/push/build/dist/icepush-jsp-push.war" todir="${build.dir}/dist"></copy>
 	</target>
 
 	<target name="jar-jsp-core">
