@@ -49,6 +49,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+    	<delete dir="${dist.dir}"/>
     </target>
 
     <target name="pre.compile" description="prepare for compilation">
