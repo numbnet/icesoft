@@ -43,38 +43,38 @@
 		}
 	};
 	$.fn.loadPushUpdates = function(groupName, getURL){
-		return this.each(function(idx,elem){
-        	var pushId = ice.push.createPushId();
-        	if ($.push.groups[groupName] == null) {
-        		$.push.groups[groupName] = new Array();
-			}
-        	$.push.groups[groupName].push( [ getURL, pushId ])
-			$.push.pushIds[pushId] = [elem,getURL];
-			ice.push.addGroupMember(groupName, pushId);
-    		ice.push.register( [ pushId ], function(pushId) {    			
-    			$($.push.pushIds[pushId][0]).load($.push.pushIds[pushId][1], function(){
-    				$($.push.pushIds[pushId][0]).ready( function(){    					
-    					$($.push.pushIds[pushId][0]).hide().fadeIn(1500);
-    				});
-    			});    			
-    		});
-        });
+		var pushId = ice.push.createPushId();
+    	if ($.push.groups[groupName] == null) {
+    		$.push.groups[groupName] = new Array();
+		}
+    	$.push.groups[groupName].push( [ getURL, pushId ]);
+    	$.push.pushIds[pushId] = [this,getURL];
+    	ice.push.addGroupMember(groupName, pushId);
+		ice.push.register( [ pushId ], function(pushId) {    
+			$.get($.push.pushIds[pushId][1],function (data){
+				$($.push.pushIds[pushId][0]).each( function(idx,elem){
+					$(elem).html(data);
+				});
+			});
+		});
+    	return this;
     };    
     $.fn.appendPushUpdates = function(groupName, getURL){
-    	return this.each(function(idx,elem){
-        	var pushId = ice.push.createPushId();
-        	if ($.push.groups[groupName] == null) {
-        		$.push.groups[groupName] = new Array();
-			}
-        	$.push.groups[groupName].push( [ getURL, pushId ])
-        	$.push.pushIds[pushId] = [elem,getURL];
-			ice.push.addGroupMember(groupName, pushId);
-    		ice.push.register( [ pushId ], function(pushId) {    
-    			$.get($.push.pushIds[pushId][1],function (data){
-    				$($.push.pushIds[pushId][0]).append(data);
-    			});
-    		});
-        });
+    	var pushId = ice.push.createPushId();
+    	if ($.push.groups[groupName] == null) {
+    		$.push.groups[groupName] = new Array();
+		}
+    	$.push.groups[groupName].push( [ getURL, pushId ]);
+    	$.push.pushIds[pushId] = [this,getURL];
+    	ice.push.addGroupMember(groupName, pushId);
+		ice.push.register( [ pushId ], function(pushId) {    
+			$.get($.push.pushIds[pushId][1],function (data){
+				$($.push.pushIds[pushId][0]).each( function(idx,elem){
+					$(elem).append(data);
+				});
+			});
+		});
+    	return this;
     };    
 	return this;
 })(jQuery);

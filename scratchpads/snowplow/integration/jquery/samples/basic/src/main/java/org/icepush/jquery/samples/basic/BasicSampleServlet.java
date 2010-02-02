@@ -98,7 +98,7 @@ public class BasicSampleServlet extends HttpServlet{
 				 PushContext.getInstance(config.getServletContext()).push("time");
 			}
 			
-		}, 2000, 5000);
+		}, 2000, 1000);
 		
 	}
 
