@@ -19,13 +19,11 @@ public class SecurityFilter implements Filter {
 	
 	private static Logger LOG = Logger.getLogger(SecurityFilter.class.getName());
 	
-	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
@@ -43,7 +41,6 @@ public class SecurityFilter implements Filter {
 		}
 	}
 
-	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {		
 		this.filterConfig = filterConfig;
 		loginURL = filterConfig.getServletContext().getInitParameter(LOGIN_URL_KEY);
