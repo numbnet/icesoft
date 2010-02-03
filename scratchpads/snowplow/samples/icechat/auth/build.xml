@@ -23,7 +23,9 @@
     
     <target name="compile" depends="init-compile">
         <echo>Compiling Auth...</echo>
-        <javac srcdir="${java.dir}" destdir="${build.dir}"  debug="true" debuglevel="lines,vars,source">
+        <javac srcdir="${java.dir}" destdir="${build.dir}"
+        	source="1.5" target="1.5"
+        	debug="true" debuglevel="lines,vars,source">
             <classpath refid="compile.path"/>
         </javac>
     </target>
