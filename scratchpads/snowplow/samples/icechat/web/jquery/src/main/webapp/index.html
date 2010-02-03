@@ -2,11 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>ICEpush ICEchat (AJAX)</title>
+        <title>ICEpush ICEchat (jQuery)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
         <script type="text/javascript" src="code.icepush"></script>
-        <script type="text/javascript" src="./js/jquery-1.4.1.min.js"></script>
+        <script type="text/javascript" src="./js/jquery-1.4.1.js"></script>
+        <script type="text/javascript" src="./js/jquery.highlight-3.js"></script>
         <script type="text/javascript" src="./js/jquery.icepush.js"></script>
         <script type="text/javascript" src="./js/icechat.js"></script>           
     </head>
@@ -52,8 +53,6 @@
 									onkeypress="if(event.keyCode == 13){ click_createChatRoom();return false;}"/>
 								<input type="button" value="Create" style="margin-top:5px;"
 									onclick="click_createChatRoom();" />
-								<input type="button" value="Stop Listening to Rooms" style="margin-top:5px;"
-									onclick="$.push.stopListeningToGroup('rooms','chatrooms');" />
 							</div>
 						</form>
 					</div>
@@ -66,7 +65,7 @@
 				<script type="text/javascript">
 					loadChatLogin(document.getElementById("chatSessionPanel"));
 					refreshChatRoomsList();
-					$.push.loadUpdates("#chatRooms","rooms","chatrooms");
+					$("#chatRooms").loadPushUpdates("rooms","chatrooms");
 				</script>
 			
 			</div>
@@ -91,7 +90,8 @@
 					<div class="clearer"></div>
 					<div class="addNewMessage">
 						New Message&nbsp;
-						<input type="text" id="newChatRoomMessage" style="width:40%;" />
+						<input type="text" id="newChatRoomMessage" style="width:40%;"
+							onkeypress="if(event.keyCode == 13){ return false;}" />
 						<input type="button" onclick="click_sendMessage();return false;"
 							value="Send" />
 					</div>
