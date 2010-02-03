@@ -22,14 +22,11 @@
 
 package org.icefaces.util;
 
-import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
-
+import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.icefaces.render.DOMRenderKit;
 
 public class EnvUtils {
     private static Logger log = Logger.getLogger("org.icefaces.util.EnvUtils");
@@ -40,28 +37,28 @@ public class EnvUtils {
     static {
         try {
             PortletSessionClass = Class.forName("javax.portlet.PortletSession");
-        } catch (Throwable t)  {
+        } catch (Throwable t) {
             log.log(Level.FINE, "PortletSession class not available: ", t);
         }
     }
 
-    public static boolean instanceofPortletSession(Object session)  {
-        if (null != PortletSessionClass)  {
+    public static boolean instanceofPortletSession(Object session) {
+        if (null != PortletSessionClass) {
             return PortletSessionClass.isInstance(session);
         }
         return false;
     }
 
-    public static boolean isICEfacesView(FacesContext facesContext)  {
+    public static boolean isICEfacesView(FacesContext facesContext) {
         Map attributes = facesContext.getAttributes();
         Object icefacesRender = attributes.get(ICEFACES_RENDER);
         //may need a marker property to indicate when all ICEfaces
         //params have been lazily initialized
-        if (null == icefacesRender)  {
+        if (null == icefacesRender) {
             ExternalContext externalContext = facesContext.getExternalContext();
             Map initParams = externalContext.getInitParameterMap();
             String icefacesAuto = (String) initParams.get(ICEFACES_AUTO);
-            if ( (null == icefacesAuto) || ("true".equalsIgnoreCase(icefacesAuto)) )  {
+            if ((null == icefacesAuto) || ("true".equalsIgnoreCase(icefacesAuto))) {
                 //"true" or null is "true" as default
                 icefacesRender = Boolean.TRUE;
             } else {
@@ -75,5 +72,20 @@ public class EnvUtils {
 //            return true;
 //        }
 //        return false;
+    }
+
+    private static boolean icepushPresent;
+
+    static {
+        try {
+            Class.forName("org.icepush.PushContext");
+            icepushPresent = true;
+        } catch (ClassNotFoundException e) {
+            icepushPresent = false;
+        }
+    }
+
+    public static boolean isICEpushPresent() {
+        return icepushPresent;
     }
 }
