@@ -79,10 +79,12 @@ public class BridgeSetup extends ViewHandlerWrapper {
                     output.setValue("<script type=\"text/javascript\">window.ice.window = " + id + ";</script>");
                     root.addComponentResource(context, output, "body");
 
-                    output = new UIOutput();
-                    output.getAttributes().put("escape", "false");
-                    output.setValue("<script type=\"text/javascript\">ice.push.register(['" + id + "'], ice.retrieveUpdate);</script>");
-                    root.addComponentResource(context, output, "body");
+                    if (EnvUtils.isICEpushPresent()) {
+                        output = new UIOutput();
+                        output.getAttributes().put("escape", "false");
+                        output.setValue("<script type=\"text/javascript\">ice.push.register(['" + id + "'], ice.retrieveUpdate);</script>");
+                        root.addComponentResource(context, output, "body");
+                    }
                 } catch (Exception e) {
                     //could re-throw as a FacesException, but WindowScope failure should
                     //not be fatal to the application
