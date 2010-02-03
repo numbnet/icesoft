@@ -109,7 +109,8 @@
 		<echo>Compiling AJAX...</echo>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dir}/classes"/>
-		<javac srcdir="${java.dir}" destdir="${build.dir}/classes">
+		<javac srcdir="${java.dir}" destdir="${build.dir}/classes"
+			target="1.5" source="1.5">
 			<classpath refid="compile.path"/>
 		</javac>
 		<copy todir="${build.dir}/classes" preservelastmodified="true" verbose="true">

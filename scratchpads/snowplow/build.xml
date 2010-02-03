@@ -84,7 +84,7 @@
 	
 	<target name="build-all" depends="init,jar-core">
 		<!-- build all the distributions -->
-		<antcall target="dist-gwt-bin"/>
+		<!--antcall target="dist-gwt-bin"/-->
 		<antcall target="dist-jsp-bin"/>
 		<antcall target="dist-spring-bin"/>
 		<antcall target="dist-jquery-bin"/>
