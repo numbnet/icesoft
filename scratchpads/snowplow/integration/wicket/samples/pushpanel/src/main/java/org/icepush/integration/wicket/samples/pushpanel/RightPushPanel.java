@@ -48,9 +48,9 @@ public final class RightPushPanel extends Panel {
         add(behave);
 
         PushContext.getInstance(getWebRequest().getHttpServletRequest().getSession().getServletContext()).addGroupMember("RightPanel",pushRequestContext.getCurrentPushId());
-        Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('?wicket:interface=:0:rightPushPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')});};"));
-        pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);
+        //Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('?wicket:interface=:0:rightPushPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')});};"));
+        //pushJavascript.setEscapeModelStrings(false);
+        //add(pushJavascript);
 
         Form rightForm = new Form("rightForm");
         rightForm.setOutputMarkupId(true);

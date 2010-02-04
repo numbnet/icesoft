@@ -5,12 +5,13 @@ import java.util.List;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.icepush.PushContext;
@@ -49,9 +50,9 @@ public final class LeftPushPanel extends Panel {
         add(behave);
 
         PushContext.getInstance(getWebRequest().getHttpServletRequest().getSession().getServletContext()).addGroupMember("LeftPanel",pushRequestContext.getCurrentPushId());
-        Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('?wicket:interface=:0:leftPushPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')});};"));
-        pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);
+        //Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('?wicket:interface=:0:leftPushPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')});};"));
+        //pushJavascript.setEscapeModelStrings(false);
+        //add(pushJavascript);
 
         Form leftForm = new Form("leftForm");
         leftForm.setOutputMarkupId(true);
@@ -65,6 +66,15 @@ public final class LeftPushPanel extends Panel {
                 target.addComponent(this.getParent());
             }
         });
+
+        Button testButton = new Button("testButton"){
+            @Override
+            protected void onComponentTag(final ComponentTag tag){
+                    super.onComponentTag(tag);
+                    tag.put("onclick", "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('?wicket:interface=:0:leftPushPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')});");
+            }
+        };
+        leftForm.add(testButton);
 
         leftForm.add(new AjaxButton("leftClear") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
