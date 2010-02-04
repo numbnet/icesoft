@@ -25,7 +25,7 @@ import org.icepush.samples.icechat.model.UserChatSession;
  *
  * @author bkroeger
  */
-public final class ChatPanel extends PushPanel {
+public final class ChatPanel extends SnowPlow {
 
     private final ListView messagesListView;
     private final ListView usersListView;
@@ -42,6 +42,7 @@ public final class ChatPanel extends PushPanel {
         super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
 
+        // PUSH CALLBACK
         this.setOutputMarkupId(true);
         final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
             protected void respond(final AjaxRequestTarget target) {
@@ -87,6 +88,7 @@ public final class ChatPanel extends PushPanel {
                             chatManagerVC.sendNewMessage();
                             messagesListView.modelChanged();
                             target.addComponent(chatRoomForm);
+                            //REQUIRED TO GET APPROPRIATE URL IN CALLBACK METHOD
                             System.out.println("BEHAVE callbackURL: " + behave.getCallbackUrl());
 			}
 		});

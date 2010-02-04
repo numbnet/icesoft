@@ -21,32 +21,19 @@ import org.icepush.samples.icechat.IPushRequestContext;
  *
  * @author bkroeger
  */
-public class PushPanel extends Panel {
+public class SnowPlow extends Panel {
 
     IPushRequestContext pushRequestContext;
 
     @Inject
     ChatManagerViewControllerSessionBean chatManagerVC;
 
-//    final AbstractDefaultAjaxBehavior behave;
-
-    public PushPanel(String id) {
+    public SnowPlow(String id) {
         super (id);
-        System.out.println("PUSHPANEL CONSTRUCTOR");
-/*
-        this.setOutputMarkupId(true);
-        behave = new AbstractDefaultAjaxBehavior() {
-            protected void respond(final AjaxRequestTarget target) {
-                System.out.println("HERE IT IS!!!: " + this.getCallbackUrl());
-                renderComponent();
-            }
-        };
-        add(behave);
-*/
+
         // ICEpush code
         getPushRequestContext();
         chatManagerVC.setPushRequestContext(pushRequestContext);
-        System.out.println("PUSHID TO BROWSER: " + pushRequestContext.getCurrentPushId());
         Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){alert('Callback!');});};"));
         pushJavascript.setEscapeModelStrings(false);
         add(pushJavascript);
