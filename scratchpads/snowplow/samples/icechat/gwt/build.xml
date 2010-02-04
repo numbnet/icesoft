@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="IceChatModule" default="build" basedir=".">
+  <!-- Configure path to GWT SDK -->
+  <property name="gwt.sdk" location="lib/gwtSDK" />
+  <property name="tests.lib.dir" location="lib/tests"/>
+  <property name="build.tests" location="build-test"/>
+	<property file="local.properties"/>
+	<property file="../../build-common.properties"/>
+	<property name="reports.tests" value="reports/junit"/>
+
+  <path id="project.class.path">
+    <pathelement location="war/WEB-INF/classes"/>
+    <pathelement location="${gwt.sdk}/gwt-user.jar"/>
+    <!--pathelement location="../../service/api/dist/${icechat.service.api.jar.name}"/>
+    <pathelement location="../../model/dist/${icechat.model.jar.name}"/>
+    <pathelement location="../../beans/dist/${icechat.beans.jar.name}"/-->
+    
+    <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
+  	<!--fileset dir="war/WEB-INF/lib" includes="**/*.jar"/-->
+    <!--fileset dir="../../common_lib/gfv3" includes="*.jar"/-->
+    <!-- Add any additional non-server libs (such as JUnit) -->
+    
+    <pathelement location="../../../../core/build/dist/icepush.jar"/>
+  	<pathelement location="../../api/dist/icechat-api.jar"/>
+  	<pathelement location="../../beans/dist/icechat-beans.jar"/>
+  	<pathelement location="../../../../integration/gwt/core/dist/icepush-gwt.jar"/>
+  </path>
+  
+  <path id="project.test.class.path">
+  	<fileset dir="${tests.lib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <target name="libs" description="Copy libs to WEB-INF/lib">
+    <mkdir dir="war/WEB-INF/lib" />
+    <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
+    <!-- Add any additional server libs that need to be copied -->
+  </target>
+
+  <target name="javac" depends="libs" description="Compile java source">
+    <mkdir dir="war/WEB-INF/classes"/>
+    <javac srcdir="${java.dir}" includes="**" encoding="utf-8"
+        destdir="war/WEB-INF/classes"
+        source="1.5" target="1.5" nowarn="true"
+        debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path"/>
+    </javac>
+    <copy todir="war/WEB-INF/classes">
+      <fileset dir="${java.dir}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+      <classpath>
+        <pathelement location="${java.dir}"/>
+        <path refid="project.class.path"/>
+      	
+      </classpath>
+      <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+      <jvmarg value="-Xmx256M"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="org.icepush.samples.icechat.gwt.IceChatModule"/>
+    </java>
+  </target>
+
+  <target name="devmode" depends="javac,copy-classpath" description="Run development mode">
+  	<copy todir="war/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../lib">
+				<include name="icepush.jar"/>
+			</fileset>
+	</copy>
+  	<copy file="../../beans/dist/icechat-beans.jar" todir="war/WEB-INF/lib"/>
+  	<copy file="../../api/dist/icechat-api.jar" todir="war/WEB-INF/lib"/>
+	
+	<copy todir="war/common" preservelastmodified="false" verbose="true">
+			<fileset dir="../../common">
+				<include name="**/*"/>
+			</fileset>
+	</copy>
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
+      <classpath>
+        <pathelement location="${java.dir}"/>
+        <path refid="project.class.path"/>
+      </classpath>
+      <jvmarg value="-Xmx256M"/>
+      <jvmarg value="-ea"/>
+      <arg value="-startupUrl"/>
+      <arg value="IceChatModule.html"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="org.icepush.samples.icechat.gwt.IceChatModule"/>
+    </java>
+  </target>
+
+
+
+	 <target name="javac.tests" depends="javac" description="Compiles test code">
+	  	<mkdir dir="${build.tests}"/>
+	    <javac srcdir="test" destdir="${build.tests}" includes="**" encoding="utf-8"
+	      source="1.5" target="1.5" nowarn="true"
+	      debug="true" debuglevel="lines,vars,source">
+	      <classpath refid="project.test.class.path"/>
+	      <classpath refid="project.class.path"/>
+	    </javac>
+	    
+	  </target>
+	  
+
+
+  <!--target name="test.prod" depends="javac.tests" description="Run production mode tests">
+    <mkdir dir="reports/htmlunit.prod" />
+    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+      <jvmarg line="-Xmx256m" />
+      <sysproperty key="gwt.args" value="-prod -logLevel WARN -out www-test" />
+      <sysproperty key="java.awt.headless" value="true" />
+      <classpath>
+        <pathelement location="src" />
+        <pathelement location="test" />
+        <path refid="project.class.path" />
+        <pathelement location="path_to_the_junit_jar" />
+      </classpath>
+      <batchtest todir="reports/htmlunit.prod" >
+        <fileset dir="test" >
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" />
+      <formatter type="xml" />
+    </junit>
+  </target-->
+
+  <target name="test" description="Run development and production mode tests">
+    
+  </target>
+
+
+  <target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
+
+  <target name="build" depends="gwtc,copy-classpath" description="Build this project">
+  	<delete dir="${build.dir}"/>
+  	<mkdir dir="${build.dir}"/>
+  	<copy todir="${build.dir}">
+  		<fileset dir="war">
+			<include name="**"/>
+		</fileset>
+  	</copy>
+  	<!--copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../service/api/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../model/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../beans/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../../lib">
+				<include name="icepush.jar"/>
+			</fileset>
+		</copy-->
+		
+  </target>
+	
+	<target name="copy-classpath">
+		<copy file="../../beans/dist/icechat-beans.jar" todir="war/WEB-INF/lib"/>
+	  	<copy file="../../api/dist/icechat-api.jar" todir="war/WEB-INF/lib"/>
+		<copy file="../../../../integration/gwt/core/dist/icepush-gwt.jar" todir="war/WEB-INF/lib"/>
+	</target>
+  
+  <target name="build-server" depends="javac,copy-classpath" description="Build this project">
+  	<delete dir="${build.dir}"/>
+  	<mkdir dir="${build.dir}"/>
+  	<copy todir="${build.dir}">
+  		<fileset dir="war">
+			<include name="**"/>
+		</fileset>
+  	</copy>
+  	
+
+  	<!--copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../service/api/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../model/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../beans/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<fileset dir="../../../lib">
+				<include name="icepush.jar"/>
+			</fileset>
+		</copy-->
+		
+  </target>
+
+
+  <target name="war" depends="clean,build" description="Create a war file">
+  	<antcall target="test"/>
+  	<mkdir dir="${dist.dir}"/>
+    <zip destfile="${dist.dir}/${icechat.gwt.war.name}" basedir="${build.dir}"/>
+  </target>
+
+  <target name="clean" description="clean's this project">
+    <delete dir="war/WEB-INF/classes" failonerror="false" />
+    <delete dir="war/icechatmodule" failonerror="false" />
+  	<delete dir="war/WEB-INF/lib"/>
+  </target>
+  
+  <target name="server" depends="build-server" description="rebuild server component.">
+  	<mkdir dir="${dist.dir}"/>
+    <zip destfile="${dist.dir}/${icechat.gwt.war.name}" basedir="${build.dir}"/>
+  </target>
+
+</project>
