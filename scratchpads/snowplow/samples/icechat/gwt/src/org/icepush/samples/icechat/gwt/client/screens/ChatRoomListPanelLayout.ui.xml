@@ -1,0 +1,18 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+                <ui:style>
+                    .chatListLabel{
+                        color: #0F65B8;
+                        font-size: 14pt;
+                        font-weight: bold;
+                    }
+                </ui:style>
+    <gwt:HTMLPanel>
+
+        <div class="chatRooms">
+            <gwt:Label gwt:text="Available Chat Rooms" gwt:stylePrimaryName="{style.chatListLabel}"/>
+            <gwt:VerticalPanel ui:field="chatRoomList"/>
+            <gwt:Button gwt:text="Create Chat Room" ui:field="createChatRoomButton"/>
+        </div>
+    </gwt:HTMLPanel>
+</ui:UiBinder>
