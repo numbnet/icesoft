@@ -45,7 +45,7 @@ public final class PushPanel extends Panel {
         add(behave);
 
         // Form used to retrieve the callback url.  Not necessary once you have the url.
-        Form form = new Form("pushPanelForm");
+/*        Form form = new Form("pushPanelForm");
         // BUTTON OUTPUTS CALLBACK URL THAT SHOULD BE THE ARGUMENT OF YOUR WICKETAJAXGET CALL.
         form.add(new AjaxButton("callbackURLButton") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -56,6 +56,6 @@ public final class PushPanel extends Panel {
             }
         });
         add(form);
-    }
+*/    }
 
 }
