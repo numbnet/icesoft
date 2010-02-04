@@ -101,7 +101,11 @@ function AsyncConnection(logger, windowID, configuration) {
     }
 
     function registeredPushIds() {
-        return split(lookupCookieValue('ice.pushids'), ' ');
+        try {
+            return split(lookupCookieValue('ice.pushids'), ' ');
+        } catch (e) {
+            return [];
+        }
     }
 
     function connect() {
@@ -196,7 +200,10 @@ function AsyncConnection(logger, windowID, configuration) {
                 if (!hasOwner()) {
                     markAsOwned();
                     //start blocking connection since no other window has started it
-                    initializeConnection();
+                    //but only iif at least one pushId is registered
+                    if (notEmpty(registeredPushIds())) {
+                        initializeConnection();
+                    }
                 }
                 updateLease();
             }
