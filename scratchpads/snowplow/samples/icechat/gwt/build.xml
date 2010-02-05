@@ -116,7 +116,6 @@
 				<fileset refid="gwt-integration" />
 			</add.libs>
 		</build.war>
-		<copy file="${dist.dir}/${ant.project.name}.war" todir="/home/philip/glassfish-v2.1/domains/domain1/autodeploy" preservelastmodified="true" verbose="true"/>
 	</target>
 
 	<target name="clean" description="clean's this project">
