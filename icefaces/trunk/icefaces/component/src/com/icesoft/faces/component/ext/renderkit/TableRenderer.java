@@ -43,6 +43,7 @@ import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -655,6 +656,14 @@ public class TableRenderer
         int columnStyleIndex;
         int columnStylesMaxIndex = columnStyles.length - 1;
         resetGroupState(uiData);
+        Object selRow = uiData.getAttributes().get(RowSelector.SELECTED_ROW);
+        int selectedRow = -1;
+        if (selRow != null) {
+            try {
+                selectedRow = Integer.parseInt(selRow.toString());
+            } catch (NumberFormatException nfe) {}
+        }
+        uiData.getAttributes().put(RowSelector.SELECTED_ROW, "-1");        
         while (uiData.isRowAvailable()) {
             columnStyleIndex = 0;
             String selectedClass = null;
@@ -706,17 +715,24 @@ public class TableRenderer
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
+            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
             if (rowSelectorFound) {
+                //set focus on selected row
+                if (selectedRow > -1 && uiData.getRowIndex() == selectedRow) {
+                    JavascriptContext.addJavascriptCall(facesContext, "$('"+ id+ "').firstChild.firstChild.focus()");
+                }
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'; Ice.tblMsOvr(this);");
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'; Ice.tblMsOvr(this);");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
                         getPortletAlternateRowClass(selectedClass, rowIndex) + "'"); // ICE-2571
+                anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this);");
+                anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                
             }
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
@@ -736,6 +752,14 @@ public class TableRenderer
                     if (nextChild instanceof UIColumn) {
                         uiData.setColNumber(uiData.getColNumber()+1);                        
                         Element td = domContext.createElement(HTML.TD_ELEM);
+                        //add row focus handler for rowSelector
+                        if (uiData.getColNumber() == 0 && rowSelectorFound) {
+                            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
+                            anchor.setAttribute(HTML.HREF_ATTR, "#"); 
+                            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' />"));
+                            td.appendChild(anchor);                            
+                        }                        
                         String iceColumnStyle = null;
                         String iceColumnStyleClass = null;
                         //we want to perform this operation on ice:column only
