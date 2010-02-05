@@ -98,14 +98,14 @@ if (!window.ice.icepush) {
             }
         }
 
-        function enlistPushIDWithWindow(id) {
-            enlistPushIDsWithBrowser(id);
-            pushIdentifiers = concatenate(pushIdentifiers, id);
+        function enlistPushIDWithWindow(ids) {
+            enlistPushIDsWithBrowser(ids);
+            pushIdentifiers = concatenate(pushIdentifiers, ids);
         }
 
-        function delistPushIDWithWindow(id) {
-            delistPushIDWithBrowser(id);
-            pushIdentifiers = complement(pushIdentifiers, id);
+        function delistPushIDWithWindow(ids) {
+            delistPushIDWithBrowser(ids);
+            pushIdentifiers = complement(pushIdentifiers, ids);
         }
 
         function delistWindowPushIDs() {
@@ -125,13 +125,21 @@ if (!window.ice.icepush) {
         namespace.uriextension = '';
         namespace.push = {
             register: function(pushIds, callback) {
-                enlistPushIDWithWindow(pushIds);
-                namespace.onNotification(function(ids) {
-                    currentNotifications = asArray(intersect(ids, pushIds));
-                    if (notEmpty(currentNotifications)) {
-                        callback(currentNotifications);
-                    }
-                });
+                if ((typeof callback) == 'function') {
+                    enlistPushIDWithWindow(pushIds);
+                    namespace.onNotification(function(ids) {
+                        currentNotifications = asArray(intersect(ids, pushIds));
+                        if (notEmpty(currentNotifications)) {
+                            try {
+                                callback(currentNotifications);
+                            } catch (e) {
+                                error(namespace.logger, 'error thrown by push notification callback', e);
+                            }
+                        }
+                    });
+                } else {
+                    throw 'the callback is not a function';
+                }
             },
 
             deregister: delistPushIDWithWindow,
@@ -210,6 +218,7 @@ if (!window.ice.icepush) {
             register(commandDispatcher, 'parsererror', ParsingError);
 
             //todo: factor out cookie & monitor into a communication bus abstraction
+            //todo: move notifiedPushIDs out of the bridge to help removing deregistered pushIds from the list of notified pushIds
             //read/create cookie that contains the notified pushID
             var notifiedPushIDs = lookupCookie('ice.notified.pushids', function() {
                 return Cookie('ice.notified.pushids', '');
