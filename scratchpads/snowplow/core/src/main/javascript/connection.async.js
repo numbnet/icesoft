@@ -113,27 +113,34 @@ function AsyncConnection(logger, windowID, configuration) {
             debug(logger, "closing previous connection...");
             close(listener);
             debug(logger, "connect...");
-            listener = postAsynchronously(channel, receiveURI, function(q) {
-                each(registeredPushIds(), curry(addNameValue, q, 'ice.pushid'));
-            }, function(request) {
-                FormPost(request);
-                sendXWindowCookie(request);
-            }, $witch(function (condition) {
-                condition(OK, function(response) {
-                    var reconnect = getHeader(response, 'X-Connection') != 'close';
-                    var nonEmptyResponse = notEmpty(contentAsText(response));
 
-                    if (reconnect) {
-                        if (not(nonEmptyResponse)) warn(logger, 'empty response received');
-                    } else {
-                        info(logger, 'blocking connection stopped at server\'s request...');
-                    }
-                    if (nonEmptyResponse) receiveCallback(response);
-                    receiveXWindowCookie(response);
-                    if (reconnect) connect();
-                });
-                condition(ServerInternalError, retryOnServerError);
-            }));
+            var ids = registeredPushIds();
+            if (isEmpty(ids)) {
+                //mark blocking connection as not started, with current window as first candidate to re-initiate the connection 
+                offerCandidature();
+            } else {
+                listener = postAsynchronously(channel, receiveURI, function(q) {
+                    each(ids, curry(addNameValue, q, 'ice.pushid'));
+                }, function(request) {
+                    FormPost(request);
+                    sendXWindowCookie(request);
+                }, $witch(function (condition) {
+                    condition(OK, function(response) {
+                        var reconnect = getHeader(response, 'X-Connection') != 'close';
+                        var nonEmptyResponse = notEmpty(contentAsText(response));
+
+                        if (reconnect) {
+                            if (not(nonEmptyResponse)) warn(logger, 'empty response received');
+                        } else {
+                            info(logger, 'blocking connection stopped at server\'s request...');
+                        }
+                        if (nonEmptyResponse) receiveCallback(response);
+                        receiveXWindowCookie(response);
+                        if (reconnect) connect();
+                    });
+                    condition(ServerInternalError, retryOnServerError);
+                }));
+            }
         } catch (e) {
             error(logger, 'failed to re-initiate blocking connection', e);
         }
@@ -200,7 +207,7 @@ function AsyncConnection(logger, windowID, configuration) {
                 if (!hasOwner()) {
                     markAsOwned();
                     //start blocking connection since no other window has started it
-                    //but only iif at least one pushId is registered
+                    //but only when at least one pushId is registered
                     if (notEmpty(registeredPushIds())) {
                         initializeConnection();
                     }
