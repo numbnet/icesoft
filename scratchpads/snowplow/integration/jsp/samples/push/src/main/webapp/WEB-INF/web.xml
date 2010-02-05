@@ -28,9 +28,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>Basic ICEpush test</display-name>
+    <display-name>ICEpush JSP icep:push tag sample</display-name>
     <description>
-        Basic ICEpush test
+        ICEpush JSP icep:push tag sample
     </description>
     <servlet>
         <servlet-name>icepush</servlet-name>
@@ -46,5 +46,3 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 </web-app>
-
-

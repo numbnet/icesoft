@@ -1,7 +1,31 @@
+<%--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+--%>
+
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="icep" uri="/WEB-INF/icepush.tld"%>
+<%@taglib prefix="icep" uri="http://xmlns.icepush.org/icepush/integration/jsp/icepush.tld"%>
 
 <jsp:useBean id="members" class="org.icepush.integration.jsp.samples.push.Members" scope="application">
 </jsp:useBean>
@@ -9,14 +33,12 @@
 
 <html>
 <head>
-	<title>Testing ICEpush in JSP</title>
+	<title>Testing icep:push tag</title>
 	<script type="text/javascript" src="code.icepush"></script>
-	<script type="text/javascript" src="icepushUtil.js"></script>
-
 </head>
 <body>
-<h2>Testing icep:push</h2><br/><br/>
-<h3>Welcome ${members.nickname}.</h3><br/><br/>
+<h2>Testing icep:push</h2>
+<h3>Welcome ${members.nickname}.</h3><br/>
 
 <form method="post" action="in.jsp">
     <input type="hidden" name="nickname" value="${members.nickname}"/>

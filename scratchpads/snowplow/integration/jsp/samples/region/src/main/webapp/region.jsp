@@ -1,6 +1,30 @@
+<%--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+--%>
+
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@taglib prefix="icep" uri="/WEB-INF/icepush.tld"%>
+<%@taglib prefix="icep" uri="http://xmlns.icepush.org/icepush/integration/jsp/icepush.tld"%>
 
 <jsp:useBean id="windowNotifier" class="org.icepush.integration.jsp.samples.region.GroupNotificationCounter" scope="session">
 </jsp:useBean>
@@ -15,13 +39,11 @@
 <jsp:setProperty name="applicationNotifier" property="interval" value="7000"/>
 <html>
 <head>
-	<title>Testing ICEpush in JSP</title>
+	<title>Testing ICEpush JSP region tag</title>
 	<script type="text/javascript" src="code.icepush"></script>
-	<script type="text/javascript" src="icepushUtil.js"></script>
-
 </head>
 <body>
-	<h1>Testing ICEpush in JSP.</h1>
+	<h2>Testing icep:region tag.</h1><br/>
 	Window Region
 	<icep:region id="window-region" notifier="windowNotifier" page="/window.jsp"/>
 	<br/>

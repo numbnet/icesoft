@@ -31,7 +31,7 @@
     <property name="lib.dir" location="../../../lib"/>
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="web.dir" location="./src/main/webapp"/>
+    <property name="meta.dir" location="./src/main/resources/META-INF/"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
     <patternset id="lib.compile">
@@ -83,9 +83,10 @@
                                value="${company}"/>
                 </section>
             </manifest>
+	    <metainf dir="${meta.dir}"/>
+
             <fileset dir="${classes.dir}"/>
             <fileset dir="../../common/notify/build/classes/"/>
-            <fileset dir="${web.dir}"/>
         </jar>
     </target>
 </project>
