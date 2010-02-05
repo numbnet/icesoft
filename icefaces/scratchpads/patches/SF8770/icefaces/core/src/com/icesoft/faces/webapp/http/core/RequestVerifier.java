@@ -14,6 +14,7 @@ public class RequestVerifier implements Server {
     public RequestVerifier(String sessionID, Server server) {
         this.sessionID = sessionID;
         this.server = server;
+log.info(this + " instantiated for " + sessionID);
     }
 
     public void service(Request request) throws Exception {
@@ -25,6 +26,7 @@ public class RequestVerifier implements Server {
                 if (sessionID.equals(request.getParameter("ice.session"))) {
                     server.service(request);
                 } else {
+log.info(request.getParameter("ice.session") +" ice.session request parameter received by " + this + " but expiring connection because expecting " + sessionID);
                     log.debug("Missmatched 'ice.session' value. Session has expired.");
                     request.respondWith(SessionExpiredResponse.Handler);
                 }

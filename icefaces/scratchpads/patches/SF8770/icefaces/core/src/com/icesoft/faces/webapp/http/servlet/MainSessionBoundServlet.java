@@ -67,6 +67,7 @@ public class MainSessionBoundServlet implements Server {
 
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
         sessionID = idGenerator.newIdentifier();
+Log.info(this + " instantiated for " + sessionID);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
         final Server viewServlet;
