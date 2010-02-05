@@ -260,3 +260,6 @@ div.footer_content a:hover {
 	text-align:right;
 	white-space: nowrap;
 }
+.highlight { 
+	background-color: #f7f53d;
+}
