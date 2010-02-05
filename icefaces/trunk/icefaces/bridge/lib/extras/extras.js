@@ -403,7 +403,8 @@ Ice.simulateFocus = function(ele, anc) {
     anc.style.outlineStyle='none'; 
     anc.style.borderWidth='0px';
     anc.style.outlineWidth='0px'; 
-    anc.style.margin='0px';  
+    anc.style.margin='0px'; 
+    if (ele == null) return; 
     ele['_borderStyle'] = ele.style.borderStyle;     
     ele.style.borderStyle='dotted';
     ele['_borderWidth'] = ele.style.borderWidth;   
@@ -416,6 +417,7 @@ Ice.simulateBlur = function(ele, anc) {
     if(!document.all) {    
         anc.style.visibility='visible';
     } 
+    if (ele == null) return; 
     ele.style.borderStyle = ele['_borderStyle'];
     ele.style.borderWidth = ele['_borderWidth'];  
     ele.style.borderColor = ele['_borderColor'];   
@@ -444,6 +446,55 @@ Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
     }
     new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
 }
+
+Ice.tblRowFocus = function(anc) {
+    var parent = anc.parentNode.parentNode;
+    Ice.simulateFocus(null, anc);
+    parent.onmouseover.apply(parent, arguments);
+   // parent.up("table")["focusHoveredTr"] = parent;
+    if (anc["keydownRegistered"] == null) {
+        Element.observe(anc, "keydown", function(event) {
+            event = Event.extend(event);
+            var keyCode = event.keyCode;
+            switch(keyCode) {
+                case 0://Firefox
+                case 32://IE && Safari
+                    parent.onclick.apply(parent, arguments);
+                    Event.stop(event);
+                    return false;
+                case 38://up
+                    if (Element.previous(parent)) {
+                        Element.previous(parent).firstChild.firstChild.focus();
+                    }
+                    Event.stop(event);                    
+                    return false;
+                case 40://down
+                    if (Element.next(parent)) {
+                        Element.next(parent).firstChild.firstChild.focus();
+                    }
+                    Event.stop(event);                    
+                    return false;                       
+            }
+        });
+        anc["keydownRegistered"] = true;
+    }
+    
+};
+
+Ice.tblRowBlur = function(anc) {
+    var parent = anc.parentNode.parentNode;
+    Ice.simulateBlur(null, anc);
+    parent.onmouseout.apply(parent, arguments);  
+  //  parent.up("table")["hoveredTr"] = null;  
+}
+
+Ice.tblMsOvr = function(tr) {
+  //  var focusHoveredTr = tr.up("table")["focusHoveredTr"];
+   // if (focusHoveredTr && tr.id != focusHoveredTr.id) {
+    //    focusHoveredTr.onmouseout.apply(focusHoveredTr, arguments);
+   // }
+    
+} 
 
 Prototype.Browser.Safari4 = navigator.userAgent.indexOf('4.0.4 Safari') > -1;
 Prototype.Browser.Chrome = navigator.userAgent.indexOf('Chrome') > -1;
