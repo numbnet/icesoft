@@ -34,10 +34,16 @@
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="res.dir" location="./src/main/resources"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
+    
+    <property name="common.wicket.jars" location="../../core/lib" />
 
     <patternset id="locallib.jars">
         <include name="*.jar"/>
     </patternset>
+    
+    <patternset id="wicket.jars">
+        <include name="*.jar"/>
+    </patternset>   
 
     <patternset id="lib.compile">
         <include name="*.jar"/>
@@ -72,6 +78,9 @@
                     <patternset refid="locallib.jars"/>
                 </fileset>
                 <fileset dir="../../../../core/build/dist"/>
+                <fileset dir="${common.wicket.jars}">
+                    <patternset refid="wicket.jars"/>
+                </fileset>
             </classpath>
         </javac>
         
@@ -90,6 +99,7 @@
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="../../../../core/build/dist"/>
+            <lib dir="${common.wicket.jars}"/>
             <classes dir="${classes.dir}"/>
         </war>
     </target>
