@@ -81,6 +81,7 @@
                 <fileset dir="${common.wicket.jars}">
                     <patternset refid="wicket.jars"/>
                 </fileset>
+                <fileset dir="../../core/build/dist"/>
             </classpath>
         </javac>
         
@@ -99,6 +100,7 @@
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="../../../../core/build/dist"/>
+            <lib dir="../../core/build/dist"/>
             <lib dir="${common.wicket.jars}"/>
             <classes dir="${classes.dir}"/>
         </war>

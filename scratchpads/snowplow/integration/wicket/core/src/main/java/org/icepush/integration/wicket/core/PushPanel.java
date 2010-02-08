@@ -1,4 +1,4 @@
-package org.icepush.integration.wicket.samples.pushpanel;
+package org.icepush.integration.wicket.core;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;

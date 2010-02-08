@@ -1,4 +1,4 @@
-package org.icepush.integration.wicket.samples.pushpanel;
+package org.icepush.integration.wicket.core;
 
 import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
