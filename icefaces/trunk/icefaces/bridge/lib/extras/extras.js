@@ -496,5 +496,38 @@ Ice.tblMsOvr = function(tr) {
     
 } 
 
+
+Ice.DatPagKybrd = function(pId, event){
+     event = Event.extend(event);
+     var keyCode = event.keyCode;
+     var button = null;
+     switch(keyCode) {  
+        case 33: //page up
+            logger.info('PageUp');
+            button = "previous";
+        break;
+        case 34: //page down
+             button = "next";
+                    logger.info('pageDown');
+        break;
+	    case 35: //end
+	         button = "last";
+                   logger.info('end');
+        break;
+        case 36: //home 
+                     button = "first";
+                    logger.info('Home');
+        break;
+     }
+     
+     if (button == null) return;
+     var form = formOf(document.getElementById(pId));
+     var query = new Ice.Parameter.Query();
+     query.add(pId, button);
+     iceSubmitPartial(form, null, event, query);
+     Event.stop(event); 
+     
+}
+
 Prototype.Browser.Safari4 = navigator.userAgent.indexOf('4.0.4 Safari') > -1;
 Prototype.Browser.Chrome = navigator.userAgent.indexOf('Chrome') > -1;
