@@ -219,16 +219,18 @@ public class D2DViewHandler extends ViewHandler {
         if (delegateView(context)) {
             return delegate.restoreView(context, viewId);
         }
-        //MyFaces expects path to match current view
         ExternalContext externalContext = context.getExternalContext();
         if (externalContext instanceof ServletExternalContext) {
-            ServletExternalContext servletExternalContext =
-                    (ServletExternalContext) externalContext;
-            servletExternalContext.setRequestServletPath(viewId);
+            ServletExternalContext servletExternalContext = (ServletExternalContext) externalContext;
 
-            if (null != externalContext.getRequestPathInfo()) {
-                //it's not null, so must be valid to keep in synch for MyFaces
-                servletExternalContext.setRequestPathInfo(viewId);
+            //MyFaces expects path to match current view
+            if (ImplementationUtil.isMyFaces()) {
+                servletExternalContext.setRequestServletPath(viewId);
+
+                if (null != externalContext.getRequestPathInfo()) {
+                    //it's not null, so must be valid to keep in synch for MyFaces
+                    servletExternalContext.setRequestPathInfo(viewId);
+                }
             }
 
             if (SeamUtilities.isSeamEnvironment()) {
