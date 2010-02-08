@@ -10,15 +10,22 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.icepush.PushContext;
 
 /**
- * Example usage of the ICEpush integration.
- * This class extends the PushPanel class to implement a "RightPanel" push region.
+ * Example ICEpush integration.
+ * This class extends the PushPanel class to implement a push region with the
+ * same name as the component id.
  *
- * A click from the "rightButton" will push an update out to all members of the
- * "RightPanel" group.  The model update can be found in the pushCallback()
- * method.  In this case, it is simply a String stating the source of the push.
+ * STEPS TO IMPLEMENT PUSH FOR THIS PANEL:
+ * 1. Add push call(s) to your panel:
+ *    push();
+ * 2. Implement pushCallback(AjaxRequestTarget target) method to update your
+ *    model and render the appropriate components on callback.
+ *
+ * In this example, a click from "rightButton" will push an update out to all
+ * members of the "rightPushPanel" group.  The model update can be found in the
+ * pushCallback() method.  In this case, we simply add a String stating the
+ * source of the push.
  */
 public final class RightPushPanel extends PushPanel {
 
@@ -31,16 +38,13 @@ public final class RightPushPanel extends PushPanel {
         super (id);
         this.setOutputMarkupId(true);
 
-        // CREATE or ADD TO PUSH GROUP.  This group is named "RightPanel"
-        PushContext.getInstance(getWebRequest().getHttpServletRequest().getSession().getServletContext()).addGroupMember("RightPanel",pushRequestContext.getCurrentPushId());
-
         Form rightForm = new Form("rightForm");
         rightForm.setOutputMarkupId(true);
 
         rightForm.add(new AjaxButton("rightButton") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
-                // PUSH CALL for "RightPanel"
-                PushContext.getInstance(getWebRequest().getHttpServletRequest().getSession().getServletContext()).push("RightPanel");
+                // PUSH CALL
+                push();
                 isPushMine=true;
                 target.addComponent(this.getParent());
         }
