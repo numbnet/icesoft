@@ -7,6 +7,12 @@
   <name>@{artifactId}</name>
   <version>2.0-A2</version>
   <description />
+  <repositories>
+     <repository>
+        <id>snapshots</id>
+        <url>http://anonsvn.icefaces.org/repo/maven2/snapshots/</url>
+     </repository>
+  </repositories>
   <build>
     <finalName>${artifactId}</finalName>
     <sourceDirectory>${basedir}/src</sourceDirectory>
