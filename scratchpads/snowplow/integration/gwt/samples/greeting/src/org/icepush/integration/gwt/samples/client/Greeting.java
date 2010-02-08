@@ -1,4 +1,4 @@
-package org.icepush.gwt.samples.client;
+package org.icepush.integration.gwt.samples.client;
 
 import org.icepush.integration.gwt.GWTPushContext;
 import org.icepush.integration.gwt.PushEventListener;

@@ -1,7 +1,8 @@
-package org.icepush.gwt.samples.server;
+package org.icepush.integration.gwt.samples.server;
 
 import org.icepush.PushContext;
-import org.icepush.gwt.samples.client.GreetingService;
+import org.icepush.integration.gwt.samples.client.GreetingService;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
