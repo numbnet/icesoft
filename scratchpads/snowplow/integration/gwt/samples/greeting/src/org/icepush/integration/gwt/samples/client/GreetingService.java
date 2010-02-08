@@ -1,4 +1,4 @@
-package org.icepush.gwt.samples.client;
+package org.icepush.integration.gwt.samples.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

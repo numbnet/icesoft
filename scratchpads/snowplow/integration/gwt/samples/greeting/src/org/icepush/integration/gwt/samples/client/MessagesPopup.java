@@ -1,4 +1,4 @@
-package org.icepush.gwt.samples.client;
+package org.icepush.integration.gwt.samples.client;
 
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
