@@ -12,7 +12,7 @@ import org.icepush.PushContext;
  */
 public class WicketPushRequestContext implements Serializable{
 
-    protected String currentPushId;
+    private String currentPushId;
 
     public WicketPushRequestContext(WebRequest webRequest, WebResponse webResponse){
 
