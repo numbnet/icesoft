@@ -63,6 +63,7 @@ import org.w3c.dom.Element;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -275,7 +276,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
         Element table = (Element) domContext.getRootNode();
         DOMContext.removeChildren(table);
-
+        table.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
         Element tr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(tr);
 
@@ -376,7 +377,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
              DataPaginator.FACET_NEXT.equals(facetName) 
              ))
             ) {
-            link.setDisabled(true);
+            link.getAttributes().put(HTML.ONCLICK_ATTR, "return false;");
+            link.getAttributes().put(HTML.STYLE_ATTR, "cursor:default;");
+            link.getAttributes().put(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");            
         } else {
             link.setDisabled(false);
         }
