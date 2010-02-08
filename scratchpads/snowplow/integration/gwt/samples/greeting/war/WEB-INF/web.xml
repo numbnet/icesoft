@@ -8,7 +8,7 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>org.icepush.gwt.samples.server.GreetingServiceImpl</servlet-class>
+    <servlet-class>org.icepush.gwt.samples.basic.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

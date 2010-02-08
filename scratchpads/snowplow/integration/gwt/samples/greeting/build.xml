@@ -41,7 +41,7 @@
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
       <jvmarg value="-Xmx256M"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="org.icepush.gwt.samples.Greeting"/>
+      <arg value="org.icepush.gwt.samples.basic.Greeting"/>
     </java>
   </target>
 
@@ -55,7 +55,7 @@
       <arg value="-startupUrl"/>
       <arg value="Greeting.html"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="org.icepush.gwt.samples.Greeting"/>
+      <arg value="org.icepush.gwt.samples.basic.Greeting"/>
     </java>
   </target>
 

@@ -4,13 +4,13 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <listener >
-  	<listener-class>org.icepush.server.gwt.integration.PushCommandContextListener</listener-class>
+  <listener >
+  	<listener-class>org.icepush.gwt.server.PushCommandContextListener</listener-class>
   </listener>
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>org.icepush.samples.gwt.server.GreetingServiceImpl</servlet-class>
+    <servlet-class>org.icepush.gwt.samples.command.server.GreetingServiceImpl</servlet-class>
   </servlet>
 
   
@@ -24,7 +24,7 @@
     
     <servlet>
     	<servlet-name>icepushGWTCommand</servlet-name>
-    	<servlet-class>org.icepush.server.gwt.integration.PushCommandServiceImpl</servlet-class>
+    	<servlet-class>org.icepush.gwt.server.PushCommandServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
     	<servlet-name>icepushGWTCommand</servlet-name>
