@@ -5,17 +5,16 @@
 
 package org.icepush.samples.icechat.wicket;
 import javax.inject.Inject;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.icepush.samples.icechat.cdi.model.NewChatRoomMessageBean;
 import org.icepush.samples.icechat.model.Message;
@@ -25,7 +24,7 @@ import org.icepush.samples.icechat.model.UserChatSession;
  *
  * @author bkroeger
  */
-public final class ChatPanel extends SnowPlow {
+public final class ChatPanel extends PushPanel {
 
     private final ListView messagesListView;
     private final ListView usersListView;
@@ -41,22 +40,6 @@ public final class ChatPanel extends SnowPlow {
     public ChatPanel(String id) {
         super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
-
-        // PUSH CALLBACK
-        this.setOutputMarkupId(true);
-        final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
-            protected void respond(final AjaxRequestTarget target) {
-                System.out.println("AbstractDefaultAJAXBehaviour RESPONDING TO BROWSER JAVASCRIPT CALL: " + this.getCallbackUrl());
-                usersListView.modelChanged();
-                messagesListView.modelChanged();
-                target.addComponent(this.getComponent());
-            }
-        };
-        add(behave);
-
-        //Label pushJavascript = new Label("pushJavascript", new Model("wicketAjaxGet('?wicket:interface=:1:chatPanel::IActivePageBehaviorListener:0:-1&wicket:ignoreIfNotActive=true')"));
-        //pushJavascript.setEscapeModelStrings(false);
-        //add(pushJavascript);
 
         final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);
@@ -82,18 +65,33 @@ public final class ChatPanel extends SnowPlow {
 
         chatRoomForm.add(new TextField("messageInput",new PropertyModel(this,"messageInput")));
 	chatRoomForm.add(new AjaxButton("send") {
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
-                            composingMessage.setMessage(messageInput);
-                            chatManagerVC.setNewChatRoomMessageBean(composingMessage);
-                            chatManagerVC.sendNewMessage();
-                            messagesListView.modelChanged();
-                            target.addComponent(chatRoomForm);
-                            //REQUIRED TO GET APPROPRIATE URL IN CALLBACK METHOD
-                            System.out.println("BEHAVE callbackURL: " + behave.getCallbackUrl());
-			}
-		});
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                composingMessage.setMessage(messageInput);
+                chatManagerVC.setNewChatRoomMessageBean(composingMessage);
+                chatManagerVC.sendNewMessage();
+                messagesListView.modelChanged();
+                target.addComponent(chatRoomForm);
+            }
+        });
+
+        // Temporary Button used to register callback until PUSH-32 is resolved
+        Button testButton = new Button("testButton"){
+            @Override
+            protected void onComponentTag(final ComponentTag tag){
+                super.onComponentTag(tag);
+                System.out.println("TEsT BUTTON ONCLICK ATTRIBUTE: " + behave.getCallbackUrl());
+                tag.put("onclick", "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});");
+            }
+        };
+        chatRoomForm.add(testButton);
 
         add(chatRoomForm);
+    }
+
+    // PUSH CALLBACK
+    protected void pushCallback(AjaxRequestTarget target) {
+        usersListView.modelChanged();
+        messagesListView.modelChanged();
     }
 
     
