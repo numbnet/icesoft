@@ -1,10 +1,18 @@
 <project name="GWT Icepush Integration Bundle" default="jar">
+	
 	<property file="local.properties"/>
+	<property name="path.offset" value="../../.."/>
+	<property file="${path.offset}/build.properties"/>	
+	<import file="${path.offset}/build-common.xml"/>
+	
 	<target name="clean">
-		<delete dir="${build.dir}"/>
-		<delete dir="${dist.dir}"/>
-		<delete dir="${build.tests}"/>
-		<delete dir="reports"/>
+		<clean>
+			<add.filesets>
+				<fileset dir="${build.tests}"/>
+				<fileset dir="reports"/>
+				<fileset dir="test-build"/>
+			</add.filesets>
+		</clean>
 	</target>
 	
 	<target name="init-compile">
@@ -15,7 +23,7 @@
 			source="1.5" target="1.5">
 			<classpath>
   				<fileset dir="lib/gwt" includes="**/*.jar"/>
-				<fileset dir="../../../core/build/dist" includes="*.jar"/>
+				<fileset dir="../../../core/dist" includes="*.jar"/>
 		</classpath>
 		</javac>
 	

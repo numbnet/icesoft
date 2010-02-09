@@ -1,4 +1,4 @@
-<project default="bin-dist">
+<project name="ICEpush GWT integration" default="bin-dist">
 	
 	<!-- all integrations must provide this target
 	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
@@ -15,7 +15,7 @@
 	-->
 	<target name="bin-samples">
 		<ant antfile="build.xml" dir="./samples/icechat" target="gwt"/>
-		<copy file="./samples/icechat/web/gwt/dist/icechat-gwt.war" todir="${bin.sample.dir}"></copy>
+		<copy file="./samples/icechat/gwt/dist/icechat-gwt.war" todir="${bin.sample.dir}"></copy>
 		
 		<ant antfile="build.xml" dir="./integration/gwt/samples/greeting" target="war"/>
 		<copy file="./integration/gwt/samples/greeting/greeting.war" todir="${bin.sample.dir}"/>
@@ -29,8 +29,13 @@
 	</target>
 	
 	<target name="clean">
-		<ant antfile="build.xml" dir="./integration/gwt/core" target="clean"/>
-		<ant antfile="build.xml" dir="./integration/gwt/samples/greeting" target="clean"/>
-		<ant antfile="build.xml" dir="./integration/gwt/samples/commands" target="clean"/>
+		<ant dir="./core" target="clean"/>
+		<ant dir="./samples/greeting" target="clean"/>
+		<ant dir="./samples/commands" target="clean"/>
 	</target>
+	
+	<target name="package.src.bundle">
+		
+	</target>
+
 </project>
