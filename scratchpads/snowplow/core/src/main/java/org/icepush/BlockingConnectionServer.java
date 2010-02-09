@@ -180,9 +180,12 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
         public void writeTo(Writer writer) throws IOException {
             writer.write("<notified-pushids>");
-            for (String id : pushIDs) {
+            for (int i = 0; i < pushIDs.length; i++) {
+                String id = pushIDs[i];
+                if (i > 0) {
+                    writer.write(' ');
+                }
                 writer.write(id);
-                writer.write(' ');
             }
             writer.write("</notified-pushids>");
         }
