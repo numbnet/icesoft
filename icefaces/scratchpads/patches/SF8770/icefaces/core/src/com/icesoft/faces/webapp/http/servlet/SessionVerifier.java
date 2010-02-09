@@ -22,7 +22,7 @@ public class SessionVerifier implements PseudoServlet {
         if (request.isRequestedSessionIdValid()) {
             servlet.service(request, response);
         } else {
-log.info("SessionVerifier responding with session-expired for invalid JSESSIONID " + request.getRequestedSessionId());
+System.out.println("SessionVerifier responding with session-expired for invalid JSESSIONID " + request.getRequestedSessionId());
             SessionExpiredServlet.service(request, response);
         }
     }

@@ -19,19 +19,19 @@ log.info(this + " instantiated for " + sessionID);
 
     public void service(Request request) throws Exception {
         if ("GET".equalsIgnoreCase(request.getMethod())) {
-            log.info("'POST' request expected. Dropping connection...");
+System.out.println("'POST' request expected. Dropping connection...");
             request.respondWith(EmptyResponse.Handler);
         } else {
             if (request.containsParameter("ice.session")) {
                 if (sessionID.equals(request.getParameter("ice.session"))) {
                     server.service(request);
                 } else {
-log.info(request.getParameter("ice.session") +" ice.session request parameter received by " + this + " but expiring connection because expecting " + sessionID);
+System.out.println(request.getParameter("ice.session") +" ice.session request parameter received by " + this + " but expiring connection because expecting " + sessionID);
                     log.debug("Missmatched 'ice.session' value. Session has expired.");
                     request.respondWith(SessionExpiredResponse.Handler);
                 }
             } else {
-                log.info("Request missing 'ice.session' required parameter. Dropping connection...");
+System.out.println("Request missing 'ice.session' required parameter. Dropping connection...");
                 request.respondWith(EmptyResponse.Handler);
             }
         }

@@ -18,6 +18,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getCreationTime();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 0 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -26,6 +27,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getId();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 1 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -34,6 +36,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getLastAccessedTime();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 2 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -42,6 +45,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getServletContext();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 3 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -50,6 +54,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.setMaxInactiveInterval(i);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 4 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -58,6 +63,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getMaxInactiveInterval();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 5 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -66,6 +72,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getSessionContext();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 6 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -74,6 +81,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getAttribute(string);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 7 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -82,6 +90,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getValue(string);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 8 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -90,6 +99,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getAttributeNames();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 9 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -98,6 +108,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.getValueNames();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 10 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -106,6 +117,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.setAttribute(string, object);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 11 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -114,6 +126,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.putValue(string, object);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 12 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -122,6 +135,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.removeAttribute(string);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 13 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -130,6 +144,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.removeValue(string);
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 14 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -138,6 +153,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             session.invalidate();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 15 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -146,6 +162,7 @@ public class ProxyHttpSession implements HttpSession {
         try {
             return session.isNew();
         } catch (IllegalStateException e) {
+System.out.println("Servlet IllegalStateException 16 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }

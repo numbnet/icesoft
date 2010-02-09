@@ -49,7 +49,7 @@ public class ReceiveSendUpdates implements Server {
             View view = (View) views.get(viewNumber);
             if (view == null) {
                 //todo: revisit this -- maybe the session was not created yet
-log.info("expiring session " + request.getParameter("ice.session") + " because null view found for viewNumber " + viewNumber);
+System.out.println("expiring session " + request.getParameter("ice.session") + " because null view found for viewNumber " + viewNumber);
                 request.respondWith(SessionExpiredResponse.Handler);
             } else {
                 try {
@@ -70,7 +70,7 @@ log.info("expiring session " + request.getParameter("ice.session") + " because n
                     //exception thrown in the middle of JSF lifecycle
                     //respond immediately with session-expired message to avoid any new connections
                     //being initiated by the bridge.
-log.info("expiring session " + request.getParameter("ice.session") + " threw SessionExpired during render");
+System.out.println("expiring session " + request.getParameter("ice.session") + " threw SessionExpired during render");
                     request.respondWith(SessionExpiredResponse.Handler);
                 } finally {
                     view.release();
