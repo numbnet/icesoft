@@ -1,75 +1,36 @@
-<project name="icepush" default="jar">
-    <property file="build.properties"/>
-    <property name="java.dir" location="src/main/java"/>
-    <property name="lib.dir" location="../lib"/>
-    <property name="build.dir" location="./build"/>
-    <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
+<project name="icepush" default="jar" basedir=".">
 
-    <tstamp>
-        <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
-    </tstamp>
+	<property file="local.properties" />
+	<property name="path.offset" value=".." />
+	<property file="${path.offset}/build.properties" />
+	<import file="${path.offset}/build-common.xml" />
 
-    <patternset id="lib.compile">
-        <include name="*.jar"/>
-    </patternset>
+	<target name="build.bridge" description="collate JS code">
+		<ant antfile="build.javascript.xml" target="build" inheritall="no" dir=".">
+			<property name="no-compress" value="true" />
+		</ant>
+	</target>
 
-    <target name="clean" description="clean up">
-        <delete dir="${build.dir}"/>
-    </target>
+	<target name="compile" depends="pre.compile" description="compile classes">
+		<compile/>
+	</target>
 
-    <target name="pre.compile" description="pre-compilation tasks">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${build.dir}/dist"/>
-    </target>
-
-    <target name="build.bridge" description="collate JS code">
-        <ant antfile="build.javascript.xml" target="build" inheritall="no">
-            <property name="no-compress" value="true"/>
-        </ant>
-    </target>
-
-    <target name="compile" depends="pre.compile" description="compile classes">
-        <javac srcdir="${java.dir}"
-               destdir="${classes.dir}"
-               source="1.5"
-               target="1.5"
-               debug="true">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                </fileset>
-            </classpath>
-        </javac>
-    </target>
-
-    <target name="jar" depends="compile, build.bridge" description="fill the jar">
-        <property name="sources" location="${dist.dir}/src.zip"/>
-        <zip destfile="${sources}" compress="false">
-            <fileset dir=".">
-                <include name="src/**"/>
-                <include name="*.xml"/>
-                <include name="*.properties"/>
-            </fileset>
-        </zip>
-        <jar destfile="${dist.dir}/${ant.project.name}.jar">
-            <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
-                <section name="org.icefaces">
-                    <attribute name="Implementation-Title"
-                               value="${product}"/>
-                    <attribute name="Implementation-Version"
-                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
-                    <attribute name="Implementation-Vendor"
-                               value="${company}"/>
-                </section>
-            </manifest>
-            <file file="${sources}"/>
-            <fileset dir="${classes.dir}"/>
-            <fileset dir="${build.dir}/javascript"/>
-        </jar>
-        <delete file="${sources}"/>
-    </target>
+	<target name="jar" depends="compile, build.bridge" description="fill the jar">
+		<property name="sources" location="${dist.dir}/src.zip" />
+		<zip destfile="${sources}" compress="false">
+			<fileset dir=".">
+				<include name="src/**" />
+				<include name="*.xml" />
+				<include name="*.properties" />
+			</fileset>
+		</zip>
+		<build.jar>
+			<add.filesets>
+				<file file="${sources}" />
+				<fileset dir="${build.dir}/javascript" />
+			</add.filesets>
+		</build.jar>
+		<delete file="${sources}"/>
+	</target>
 </project>
 
