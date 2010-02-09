@@ -1,19 +1,12 @@
-<project default="bin-dist">
+<project name="jsp-integration-build" default="bin-dist">
 	
-	<!-- all integrations must provide this target
-	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-	 -->
 	<target name="bin-dist">
 		<echo>Building ICEpush JSP Binary Integration</echo>
 		
 		<antcall target="jar-jsp-core"/>
-		<copy file="./integration/jsp/core/build/dist/icepush-jsp.jar" todir="${dist.build.dir}"/>
+		<copy file="./integration/jsp/core/${dist.dir}/icepush-jsp.jar" todir="${dist.build.dir}"/>
 	</target>
 	
-	<!-- all integrations must provide this target
-		- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-		- target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
-	-->
 	<target name="bin-samples">
 		<ant antfile="build.xml" dir="./integration/jsp/samples/region" target="war">
 		</ant>
@@ -29,12 +22,10 @@
 	</target>
 
 	<target name="jar-jsp-core">
-		<ant antfile="build.xml" dir="./integration/common/notify" target="compile"/>
 		<ant antfile="build.xml" dir="./integration/jsp/core" target="jar"/>
 	</target>
 	
 	<target name="clean">
-		<ant antfile="build.xml" dir="./integration/common/notify" target="clean"/>
 		<ant antfile="build.xml" dir="./integration/jsp/core" target="clean"/>
 		<ant antfile="build.xml" dir="./integration/jsp/samples/region" target="clean"/>
 		<ant antfile="build.xml" dir="./integration/jsp/samples/register" target="clean"/>

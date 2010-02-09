@@ -22,46 +22,38 @@
  *
  */
 
-package org.icepush.jsp;
+package org.icepush.jsp.tags;
 
-import java.io.IOException;
-
+import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
 
-public class RegisterTag extends BaseTag {
+import org.icepush.PushContext;
 
-    private String callback;
+public class PushTag extends TagSupport {
+
+    protected String group;
 
     public int doStartTag() throws JspException {
-	int i = super.doStartTag();
 
-	try {
-	    //Get the writer object for output.
-	    JspWriter w = pageContext.getOut();
-
-	    //Write script to register;
-	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "']," + callback + ");");
-	    w.write("</script>");
-
-	} catch (IOException e) {
-	    e.printStackTrace();
+	final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
+	if (pc == null) {
+	    throw(new JspException("PushContext not available in PushTag.doStartTag()"));
 	}
-
-	release();
+	pc.push(group);
+	    
 	return SKIP_BODY;
     }
 
     public void release() {
-	super.release();
-	callback = null;
+	group = null;
     }
-
-    public String getCallback() {
-	return callback;
+    
+    public String getGroup() {
+	return group;
     }
-    public void setCallback(String cb) {
-	this.callback = cb;
-    }
+    public void setGroup(String grp) {
+	this.group = grp;
+    } 
 }

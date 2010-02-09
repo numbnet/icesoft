@@ -22,14 +22,13 @@
  *
  */
 
-package org.icepush.jsp;
+package org.icepush.jsp.tags;
 
-import javax.servlet.jsp.tagext.TagSupport;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.TagSupport;
 
 import org.icepush.PushContext;
+import org.icepush.jsp.timer.GroupIntervalTimer;
 
 public class PushPeriodicTag extends TagSupport {
 

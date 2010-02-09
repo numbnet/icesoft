@@ -22,75 +22,46 @@
  *
  */
 
-package org.icepush.jsp;
+package org.icepush.jsp.tags;
 
 import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.ServletException;
 
-import javax.servlet.http.HttpServletRequest;
+public class RegisterTag extends BaseTag {
 
-public class RegionTag extends BaseTag {
-
-    private String page;
-    private String id;
+    private String callback;
 
     public int doStartTag() throws JspException {
 	int i = super.doStartTag();
-	String id = getId();
+
 	try {
 	    //Get the writer object for output.
 	    JspWriter w = pageContext.getOut();
 
 	    //Write script to register;
-	    if (id == null) {
-		id = pushid;
-	    }
 	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "'], function(){");
-	    w.write("ice.push.get('" + ((HttpServletRequest)pageContext.getRequest()).getContextPath() + page + "', function(parameter) { parameter('group', '" + group + "');} , ");
-	    w.write("function(statusCode, responseText) {");
-	    w.write("var container = document.getElementById('" + id + "');");
-	    w.write("container.innerHTML = responseText;});});");
+	    w.write("ice.push.register(['" + pushid + "']," + callback + ");");
 	    w.write("</script>");
-
-	    //Write the div;
-	    w.write("<div id=\"" + id + "\">");
-	    w.flush();
-
-	    //Include the page;
-	    try {
-		String params = new String("?group=" + group);
-		pageContext.getServletContext().getRequestDispatcher(page+params).
-		    include(pageContext.getRequest(),pageContext.getResponse());
-	    } catch (IOException ioe) {
-		ioe.printStackTrace();
-	    } catch (ServletException se) {
-		se.printStackTrace();
-	    }
-
-	    //Close the div;
-	    w.write("</div>");
 
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+
 	release();
 	return SKIP_BODY;
     }
 
     public void release() {
 	super.release();
-	setId(null);
-	page = null;
+	callback = null;
     }
 
-    public String getPage() {
-	return page;
+    public String getCallback() {
+	return callback;
     }
-    public void setPage(String page) {
-	this.page = page;
+    public void setCallback(String cb) {
+	this.callback = cb;
     }
 }
