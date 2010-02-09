@@ -1,4 +1,4 @@
-package org.icepush.common.notify;
+package org.icepush.notify;
 
 
 public class GroupNotifier extends Notifier {
