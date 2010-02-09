@@ -15,7 +15,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -25,9 +25,9 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="icep" uri="http://xmlns.icepush.org/icepush/integration/jsp/icepush.tld"%>
+<%@taglib prefix="icep" uri="http://xmlns.icepush.org/icepush/jsp/icepush.tld"%>
 
-<jsp:useBean id="members" class="org.icepush.integration.jsp.samples.push.Members" scope="application">
+<jsp:useBean id="members" class="org.icepush.jsp.samples.push.Members" scope="application">
 </jsp:useBean>
 <jsp:setProperty name="members" property="*"/>
 

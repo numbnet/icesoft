@@ -15,47 +15,45 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
  *
  */
 
-package org.icepush.integration.jsp.samples.push;
+package org.icepush.jsp;
 
-import java.util.Vector;
-import java.util.List;
+import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 
-public class Members {
-    private Vector in;
-    private Vector out;
-    private String nickname;
+import org.icepush.PushContext;
 
-    public Members() {
-	in = new Vector();
-	out = new Vector();
-	nickname = null;
+public class PushTag extends TagSupport {
+
+    protected String group;
+
+    public int doStartTag() throws JspException {
+
+	final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
+	if (pc == null) {
+	    throw(new JspException("PushContext not available in PushTag.doStartTag()"));
+	}
+	pc.push(group);
+	    
+	return SKIP_BODY;
+    }
+
+    public void release() {
+	group = null;
     }
     
-    public String getNickname() {
-	return nickname;
+    public String getGroup() {
+	return group;
     }
-    public void setNickname(String nn) {
-	nickname = nn;
-	if (out.remove(nickname)) {
-	    in.add(nickname);
-	} else if (in.remove(nickname)) {
-	    out.add(nickname);
-	} else {
-	    in.add(nickname);
-	}
-    }
-
-    public List getIn() {
-	return (List)in;
-    }
-    public List getOut() {
-	return (List)out;
-    }
+    public void setGroup(String grp) {
+	this.group = grp;
+    } 
 }

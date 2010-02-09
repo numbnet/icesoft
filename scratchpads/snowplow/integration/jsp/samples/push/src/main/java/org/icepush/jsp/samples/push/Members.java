@@ -1,4 +1,4 @@
-<%--
+/*
  *
  * Version: MPL 1.1
  *
@@ -20,9 +20,42 @@
  * Contributor(s): _____________________.
  *
  *
---%>
+ */
 
-<jsp:useBean id="windowNotifier" class="org.icepush.jsp.samples.region.GroupNotificationCounter" scope="session">
-</jsp:useBean>
-<jsp:setProperty name="windowNotifier" property="group" value="${param.group}"/>
-${windowNotifier.counter}
+package org.icepush.jsp.samples.push;
+
+import java.util.Vector;
+import java.util.List;
+
+public class Members {
+    private Vector in;
+    private Vector out;
+    private String nickname;
+
+    public Members() {
+	in = new Vector();
+	out = new Vector();
+	nickname = null;
+    }
+    
+    public String getNickname() {
+	return nickname;
+    }
+    public void setNickname(String nn) {
+	nickname = nn;
+	if (out.remove(nickname)) {
+	    in.add(nickname);
+	} else if (in.remove(nickname)) {
+	    out.add(nickname);
+	} else {
+	    in.add(nickname);
+	}
+    }
+
+    public List getIn() {
+	return (List)in;
+    }
+    public List getOut() {
+	return (List)out;
+    }
+}

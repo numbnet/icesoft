@@ -16,7 +16,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -27,13 +27,13 @@
 <tlibversion>1.0</tlibversion>
 <jspversion>1.2</jspversion>
 <shortname>icep</shortname>
-<uri>http://xmlns.icepush.org/icepush/integration/jsp/icepush.tld</uri>
+<uri>http://xmlns.icepush.org/icepush/jsp/icepush.tld</uri>
 <display-name>JSP tag library for ICEpush</display-name>
 <description>ICEpush JSP Tag Library</description>
 <tag>
 	<name>push</name>
 	<display-name>ICEpush register</display-name>
-	<tagclass>org.icepush.integration.jsp.core.PushTag</tagclass>
+	<tagclass>org.icepush.jsp.core.PushTag</tagclass>
 	<description>Push notifications to a named group.</description>
 	<attribute>
 		<name>group</name>
@@ -45,7 +45,7 @@
 <tag>
 	<name>pushPeriodic</name>
 	<display-name>ICEpush pushPeriodic</display-name>
-	<tagclass>org.icepush.integration.jsp.core.PushPeriodicTag</tagclass>
+	<tagclass>org.icepush.jsp.PushPeriodicTag</tagclass>
 	<description>Push notifications to a named group on a regular interval.</description>
 	<attribute>
 		<name>group</name>
@@ -63,7 +63,7 @@
 <tag>
 	<name>region</name>
 	<display-name>ICEpush region</display-name>
-	<tagclass>org.icepush.integration.jsp.core.RegionTag</tagclass>
+	<tagclass>org.icepush.jsp.RegionTag</tagclass>
 	<description>Define a region (div) in the page where dynamic content is rendered when notifications occur.</description>
 	<attribute>
 		<name>id</name>
@@ -81,7 +81,7 @@
 		<name>notifier</name>
 		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
-		<description>Name of notifier bean associated with this region. Bean must extend org.icepush.integration.common.notify.Notifier, and be declared in the page.</description>
+		<description>Name of notifier bean associated with this region. Bean must extend org.icepush.notify.Notifier, and be declared in the page.</description>
 	</attribute>
 	<attribute>
 		<name>page</name>
@@ -93,7 +93,7 @@
 <tag>
 	<name>register</name>
 	<display-name>ICEpush register</display-name>
-	<tagclass>org.icepush.integration.jsp.core.RegisterTag</tagclass>
+	<tagclass>org.icepush.jsp.RegisterTag</tagclass>
 	<description>Register a JavaScript callback for ICEpush notifications.</description>
 	<attribute>
 		<name>callback</name>
@@ -111,7 +111,7 @@
 		<name>notifier</name>
 		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
-		<description>Name of notifier bean associated with this registration. Bean must extend org.icepush.integration.common.notify.Notifier, and be declared in the page.</description>
+		<description>Name of notifier bean associated with this registration. Bean must extend org.icepush..notify.Notifier, and be declared in the page.</description>
 	</attribute>
 </tag>
 </taglib>
