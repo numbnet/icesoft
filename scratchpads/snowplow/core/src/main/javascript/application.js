@@ -213,6 +213,12 @@ if (!window.ice.icepush) {
             register(commandDispatcher, 'noop', noop);
             register(commandDispatcher, 'parsererror', ParsingError);
 
+            function purgeUnusedPushIDs(ids) {
+                var registeredIDsCookie = lookupCookie('ice.pushids');
+                var registeredIDs = split(value(registeredIDsCookie), ' ');
+                return intersect(ids, registeredIDs);
+            }
+
             //todo: factor out cookie & monitor into a communication bus abstraction
             //todo: move notifiedPushIDs out of the bridge to help removing deregistered pushIds from the list of notified pushIds
             //read/create cookie that contains the notified pushID
@@ -226,9 +232,9 @@ if (!window.ice.icepush) {
                 if (text && !blank(text.data)) {
                     var ids = split(value(notifiedPushIDs), ' ');
                     info(logger, 'received notifications for: ' + ids);
-                    update(notifiedPushIDs, join(asSet(concatenate(ids, split(text.data, ' '))), ' '));
+                    update(notifiedPushIDs, join(purgeUnusedPushIDs(asSet(concatenate(ids, split(text.data, ' ')))), ' '));
                 } else {
-                    warn(logger, "No notification was returned.");
+                    warn(logger, "No notification was received.");
                 }
             });
 
@@ -240,7 +246,7 @@ if (!window.ice.icepush) {
                         broadcast(notificationListeners, [ ids ]);
                         info(logger, 'picked up notifications for: ' + ids);
                         //remove only the pushIDs contained by this page since notificationListeners can only contain listeners from the current page
-                        update(notifiedPushIDs, join(complement(ids, pushIdentifiers), ' '));
+                        update(notifiedPushIDs, join(purgeUnusedPushIDs(complement(ids, pushIdentifiers)), ' '));
                     }
                 } catch (e) {
                     warn(logger, 'failed to listen for updates', e);
