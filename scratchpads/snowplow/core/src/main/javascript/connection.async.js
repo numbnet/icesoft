@@ -108,22 +108,25 @@ function AsyncConnection(logger, windowID, configuration) {
         }
     }
 
+    var outboundPushIds = registeredPushIds();
+
     function connect() {
         try {
             debug(logger, "closing previous connection...");
             close(listener);
             debug(logger, "connect...");
 
-            var ids = registeredPushIds();
-            if (isEmpty(ids)) {
+            outboundPushIds = registeredPushIds();
+            if (isEmpty(outboundPushIds)) {
                 //mark blocking connection as not started, with current window as first candidate to re-initiate the connection 
                 offerCandidature();
             } else {
                 listener = postAsynchronously(channel, receiveURI, function(q) {
-                    each(ids, curry(addNameValue, q, 'ice.pushid'));
+                    each(outboundPushIds, curry(addNameValue, q, 'ice.pushid'));
                 }, function(request) {
                     FormPost(request);
                     sendXWindowCookie(request);
+                    setHeader(request, "Window", namespace.windowID);
                 }, $witch(function (condition) {
                     condition(OK, function(response) {
                         var reconnect = getHeader(response, 'X-Connection') != 'close';
@@ -197,7 +200,6 @@ function AsyncConnection(logger, windowID, configuration) {
         return endsWith(value(connectionCookie), ':acquired');
     }
 
-    var lastRegisteredPushIds = registeredPushIds();
     var blockingConnectionMonitor = run(Delay(function() {
         if (shouldEstablishBlockingConnection()) {
             offerCandidature();
@@ -221,13 +223,13 @@ function AsyncConnection(logger, windowID, configuration) {
         }
 
         if (isOwner()) {
-            var currentlyRegisterdPushIds = registeredPushIds();
-            if ((size(currentlyRegisterdPushIds) != size(lastRegisteredPushIds)) ||
-                notEmpty(complement(currentlyRegisterdPushIds, lastRegisteredPushIds))) {
+            var ids = registeredPushIds();
+            if ((size(ids) != size(outboundPushIds)) || notEmpty(complement(ids, outboundPushIds))) {
                 //reconnect to send the current list of pushIDs
+                //abort the previous blocking connection in case is still alive
+                abort(listener);
                 connect();
             }
-            lastRegisteredPushIds = currentlyRegisterdPushIds;
         }
     }, pollingPeriod));
 

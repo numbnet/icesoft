@@ -210,9 +210,12 @@ if (!window.ice.icepush) {
             var commandDispatcher = CommandDispatcher();
             var asyncConnection = AsyncConnection(logger, windowID, configuration.connection);
 
-            register(commandDispatcher, 'noop', noop);
+            register(commandDispatcher, 'noop', function() {
+                debug(logger, 'received noop');
+            });
             register(commandDispatcher, 'parsererror', ParsingError);
 
+            //purge discarded pushIDs from the notification list
             function purgeUnusedPushIDs(ids) {
                 var registeredIDsCookie = lookupCookie('ice.pushids');
                 var registeredIDs = split(value(registeredIDsCookie), ' ');
@@ -231,8 +234,9 @@ if (!window.ice.icepush) {
                 var text = message.firstChild;
                 if (text && !blank(text.data)) {
                     var ids = split(value(notifiedPushIDs), ' ');
-                    info(logger, 'received notifications for: ' + ids);
-                    update(notifiedPushIDs, join(purgeUnusedPushIDs(asSet(concatenate(ids, split(text.data, ' ')))), ' '));
+                    var receivedPushIDs = split(text.data, ' ');
+                    debug(logger, 'received notifications: ' + receivedPushIDs);
+                    update(notifiedPushIDs, join(purgeUnusedPushIDs(asSet(concatenate(ids, receivedPushIDs))), ' '));
                 } else {
                     warn(logger, "No notification was received.");
                 }
@@ -244,7 +248,7 @@ if (!window.ice.icepush) {
                     var ids = split(value(notifiedPushIDs), ' ');
                     if (notEmpty(ids)) {
                         broadcast(notificationListeners, [ ids ]);
-                        info(logger, 'picked up notifications for: ' + ids);
+                        debug(logger, 'picked up notifications for this window: ' + ids);
                         //remove only the pushIDs contained by this page since notificationListeners can only contain listeners from the current page
                         update(notifiedPushIDs, join(purgeUnusedPushIDs(complement(ids, pushIdentifiers)), ' '));
                     }
