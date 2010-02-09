@@ -1,40 +1,35 @@
 <project name="ICEpush" default="build-all">
-	<property name="build.dir" value="build"/>
-	<property name="dist.build.dir" value="build/lib"/>
-	<property name="bin.dist.dir" value="dist"/>
-	<property name="bin.sample.dir" value="build/dist"/>
-	<property file="build.properties"/>
 	
+	
+	<property file="build.properties"/>	
 	<import file="build-common.xml"/> 
 	
-	<target name="dist-gwt-bin" depends="">
+	<target name="jar-core">
+		<ant dir="./core"/>
+	</target>
+	
+	<target name="dist-gwt-bin" depends="jar-core">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="gwt"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-gwt-src">
-		<antcall target="package-source-with-path-offset">
-			<param name="target.path.offset" value="gwt"/>
-		</antcall>
-	</target>
-	
-	<target name="dist-jsp-bin" depends="">
+	<target name="dist-jsp-bin" depends="jar-core">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="jsp"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-spring-bin" depends="">
+	<target name="dist-spring-bin" depends="jar-core">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="springMVC"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-jquery-bin" depends="">
+	<target name="dist-jquery-bin"  depends="jar-core">
 		<antcall target="build-with-path-offset">
 			<param name="target.path.offset" value="jquery"/>
 		</antcall>
@@ -43,7 +38,6 @@
 	<target name="common-pre-assemble" depends="pre-assemble-clean">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.dir}"/>
-		<mkdir dir="${bin.sample.dir}"/>
 		<copy file="./core/dist/icepush.jar" todir="${dist.dir}"/>
 	</target>
 	
@@ -85,8 +79,7 @@
 	
 	<target name="clean-with-path-offset">
 		<echo>Cleaning Inegration ${target.path.offset}</echo>
-		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="clean"/>
-		<ant antfile="./samples/icechat/${target.path.offset}/build.xml" dir="." target="clean"/>
+		<ant target="clean" dir="./integration/${target.path.offset}"/>
 	</target>
 	
 	<target name="zip-distribution">
@@ -97,50 +90,32 @@
 		<delete dir="${build.dir}"/>
 	</target>
 	
-	<target name="init">
-		<mkdir dir="${bin.dist.dir}"/>
-	</target>
-	
-	<target name="cleanup-after-build" depends="pre-assemble-clean">
-		
-	</target>
-	
-	
-	<target name="clean-icechat">
-		<ant antfile="build.xml" dir="./samples/icechat" target="clean-all"/>
-	</target>
-	
-	<target name="build-all" depends="init,jar-core">
+	<target name="build-all">
 		<!-- build all the distributions -->
 		<antcall target="dist-gwt-bin"/>
 		<antcall target="dist-jsp-bin"/>
 		<antcall target="dist-spring-bin"/>
 		<antcall target="dist-jquery-bin"/>
-		
-		<!-- cleanup unnecessary leftover folders.-->
-		<antcall target="cleanup-after-build"/>
 	</target>
 	
 	<target name="clean-all" depends="pre-assemble-clean">
-		<delete dir="${bin.dist.dir}"/>
-		<antcall target="clean-core"/>
+		<delete dir="${dist.dir}"/>
+		<ant dir="./core" target="clean"/>
 		<antcall target="clean-with-path-offset">
-			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="jsp"/>
 		</antcall>
 		<antcall target="clean-with-path-offset">
-			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="gwt"/>
 		</antcall>
+		<ant target="clean" dir="./samples/icechat/gwt"/>
 		<antcall target="clean-with-path-offset">
-			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="springMVC"/>
 		</antcall>
+		<!--ant target="clean" dir="./samples/icechat/springMVC"/-->
 		<antcall target="clean-with-path-offset">
-			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="jquery"/>
 		</antcall>
-		<antcall target="clean-icechat"></antcall>
+		<!--ant target="clean" dir="./samples/icechat/jquery"/-->
 	</target>
 	
 </project>

@@ -13,25 +13,19 @@
 		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
 	</tstamp>
 
-	<target name="jar-core" depends="clean-core">
-		<ant antfile="build.xml" dir="./core" target="jar" inheritall="true" />
-		<copy todir="${dist.dir}" file="./core/${dist.dir}/icepush.jar" />
-	</target>
-
-	<target name="clean-core">
-		<clean base.dir="./core" />
-	</target>
-
 	<macrodef name="clean">
+		<element name="add.filesets" optional="true" />
 		<sequential>
-			<delete dir="${build.dir}" />
-			<delete dir="${dist.dir}" />
+			<delete failonerror="false">
+				<fileset dir="${build.dir}" />
+				<fileset dir="${dist.dir}" />
+				<add.filesets/>
+			</delete>
 		</sequential>
 	</macrodef>
 
 	<target name="clean">
-		<delete dir="${build.dir}" />
-		<delete dir="${dist.dir}" />
+		<clean/>
 	</target>
 
 	<target name="pre.compile" description="prepare for compilation" depends="clean">
