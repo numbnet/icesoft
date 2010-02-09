@@ -88,32 +88,28 @@ if (!window.ice.icepush) {
             }
         }
 
-        function delistPushIDWithBrowser(id) {
+        function delistPushIDsWithBrowser(ids) {
             if (existsCookie('ice.pushids')) {
                 var idsCookie = lookupCookie('ice.pushids');
                 var registeredIDs = split(value(idsCookie), ' ');
-                update(idsCookie, join(reject(registeredIDs, function(registeredID) {
-                    return registeredID == id;
-                }), ' '));
+                update(idsCookie, join(complement(registeredIDs, ids), ' '));
             }
         }
 
-        function enlistPushIDWithWindow(ids) {
+        function enlistPushIDsWithWindow(ids) {
             enlistPushIDsWithBrowser(ids);
             pushIdentifiers = concatenate(pushIdentifiers, ids);
         }
 
-        function delistPushIDWithWindow(ids) {
-            delistPushIDWithBrowser(ids);
+        function delistPushIDsWithWindow(ids) {
+            delistPushIDsWithBrowser(ids);
             pushIdentifiers = complement(pushIdentifiers, ids);
         }
 
-        function delistWindowPushIDs() {
-            each(pushIdentifiers, delistPushIDWithBrowser);
+        onBeforeUnload(window, function() {
+            delistPushIDsWithBrowser(pushIdentifiers);
             pushIdentifiers = [];
-        }
-
-        onBeforeUnload(window, delistWindowPushIDs);
+        });
 
         function throwServerError(response) {
             throw 'Server internal error: ' + contentAsText(response);
@@ -126,7 +122,7 @@ if (!window.ice.icepush) {
         namespace.push = {
             register: function(pushIds, callback) {
                 if ((typeof callback) == 'function') {
-                    enlistPushIDWithWindow(pushIds);
+                    enlistPushIDsWithWindow(pushIds);
                     namespace.onNotification(function(ids) {
                         currentNotifications = asArray(intersect(ids, pushIds));
                         if (notEmpty(currentNotifications)) {
@@ -142,7 +138,7 @@ if (!window.ice.icepush) {
                 }
             },
 
-            deregister: delistPushIDWithWindow,
+            deregister: delistPushIDsWithWindow,
 
             getCurrentNotifications: function() {
                 return currentNotifications;
@@ -229,6 +225,7 @@ if (!window.ice.icepush) {
                 var text = message.firstChild;
                 if (text && !blank(text.data)) {
                     var ids = split(value(notifiedPushIDs), ' ');
+                    info(logger, 'received notifications for: ' + ids);
                     update(notifiedPushIDs, join(asSet(concatenate(ids, split(text.data, ' '))), ' '));
                 } else {
                     warn(logger, "No notification was returned.");
@@ -241,6 +238,7 @@ if (!window.ice.icepush) {
                     var ids = split(value(notifiedPushIDs), ' ');
                     if (notEmpty(ids)) {
                         broadcast(notificationListeners, [ ids ]);
+                        info(logger, 'picked up notifications for: ' + ids);
                         //remove only the pushIDs contained by this page since notificationListeners can only contain listeners from the current page
                         update(notifiedPushIDs, join(complement(ids, pushIdentifiers), ' '));
                     }
