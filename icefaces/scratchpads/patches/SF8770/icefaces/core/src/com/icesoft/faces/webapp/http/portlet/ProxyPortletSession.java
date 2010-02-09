@@ -17,6 +17,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getAttribute(string);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException1 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -25,6 +26,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getAttribute(string, i);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException2 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -33,6 +35,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getAttributeNames();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException3 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -41,6 +44,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getAttributeNames();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException4 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -49,6 +53,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getCreationTime();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException5 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -57,6 +62,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getId();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException6 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -65,6 +71,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getLastAccessedTime();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException7 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -73,6 +80,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getMaxInactiveInterval();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException8 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -81,6 +89,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.invalidate();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException9 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -89,6 +98,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.isNew();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException10 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -97,6 +107,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.removeAttribute(string);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException11 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -105,6 +116,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.removeAttribute(string, i);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException12 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -113,6 +125,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.setAttribute(string, object);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException13 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -121,6 +134,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.setAttribute(string, object, i);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException14 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -129,6 +143,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             session.setMaxInactiveInterval(i);
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException15 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }
@@ -137,6 +152,7 @@ public class ProxyPortletSession implements PortletSession {
         try {
             return session.getPortletContext();
         } catch (IllegalStateException e) {
+System.out.println("IllegalStateException16 throwing SessionExpired " + session);
             throw new SessionExpiredException(e);
         }
     }

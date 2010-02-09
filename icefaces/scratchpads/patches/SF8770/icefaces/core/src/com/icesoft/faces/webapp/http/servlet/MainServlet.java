@@ -44,6 +44,7 @@ public class MainServlet extends HttpServlet {
     private MessageServiceClient messageServiceClient;
 
     public void init(ServletConfig servletConfig) throws ServletException {
+System.out.println("System.out Session Expiry logging active.");
         super.init(servletConfig);
         this.context = servletConfig.getServletContext();
         try {
