@@ -11,7 +11,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.icepush.samples.icechat.AbstractPushRequestContext;
@@ -21,23 +21,58 @@ import org.icepush.samples.icechat.IPushRequestContext;
  *
  * @author bkroeger
  */
-public class SnowPlow extends Panel {
+public abstract class PushPanel extends Panel {
 
     IPushRequestContext pushRequestContext;
 
     @Inject
     ChatManagerViewControllerSessionBean chatManagerVC;
 
-    public SnowPlow(String id) {
+    Label pushJavascript;
+    String javascriptString;
+
+    final AbstractDefaultAjaxBehavior behave;
+
+    public PushPanel(String id) {
         super (id);
+
+        // Push callback.  Called from wicketAjaxGet method.
+        behave = new AbstractDefaultAjaxBehavior() {
+            protected void respond(final AjaxRequestTarget target) {
+
+                pushCallback(target);
+
+                // Render the Panel
+                target.addComponent(this.getComponent());
+            }
+        };
+        add(behave);
 
         // ICEpush code
         getPushRequestContext();
         chatManagerVC.setPushRequestContext(pushRequestContext);
-        Label pushJavascript = new Label("pushJavascript", new Model("window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){alert('Callback!');});};"));
+/*        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});};";
+        pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
         pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);
+        add(pushJavascript);*/
     }
+
+/*    @Override
+    protected void onBeforeRender(){
+        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});};";
+        pushJavascript.modelChanged();
+        super.onBeforeRender();
+    }*/
+
+    public String getJavascriptString() {
+        return javascriptString;
+    }
+
+    public void setJavascriptString(String javascriptString) {
+        this.javascriptString = javascriptString;
+    }
+
+    abstract protected void pushCallback(AjaxRequestTarget target);
 
     class WicketPushRequestContextAdapter extends AbstractPushRequestContext{
             public WicketPushRequestContextAdapter(){
