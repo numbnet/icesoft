@@ -1,12 +1,11 @@
-<project default="build-all">
+<project name="ICEpush" default="build-all">
 	<property name="build.dir" value="build"/>
 	<property name="dist.build.dir" value="build/lib"/>
 	<property name="bin.dist.dir" value="dist"/>
 	<property name="bin.sample.dir" value="build/dist"/>
+	<property file="build.properties"/>
 	
-	<target name="jar-core" depends="clean-core">
-		<ant antfile="build.xml" dir="./core" target="jar"/>
-	</target>
+	<import file="build-common.xml"/> 
 	
 	<target name="dist-gwt-bin" depends="">
 		<antcall target="build-with-path-offset">
@@ -14,6 +13,13 @@
 			<param name="target.path.offset" value="gwt"/>
 		</antcall>
 	</target>
+	
+	<target name="dist-gwt-src">
+		<antcall target="package-source-with-path-offset">
+			<param name="target.path.offset" value="gwt"/>
+		</antcall>
+	</target>
+	
 	<target name="dist-jsp-bin" depends="">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
@@ -36,9 +42,9 @@
 	
 	<target name="common-pre-assemble" depends="pre-assemble-clean">
 		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${dist.build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${bin.sample.dir}"/>
-		<copy file="./core/build/dist/icepush.jar" todir="${dist.build.dir}"/>
+		<copy file="./core/dist/icepush.jar" todir="${dist.dir}"/>
 	</target>
 	
 	<target name="build-with-path-offset" depends="common-pre-assemble">
@@ -48,13 +54,39 @@
 			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
 		</copy>
 		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="bin-samples"/>
-		<antcall target="zip-distribution"/>
+		<antcall target="zip-distribution"/>		
+	</target>
+	
+	<target name="package-source-with-path-offset" depends="common-pre-assemble">
+		<echo>Building Integration with source: ${target.path.offset}</echo>
+		
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		
+		<mkdir dir="${build.dir}/integration"/>
+		<mkdir dir="${build.dir}/integration/${target.path.offset}"/>
+		<mkdir dir="${build.dir}/integration/${target.path.offset}/core"/>
+		<copy todir="${build.dir}/integration/${target.path.offset}/core">
+			<fileset dir="./integration/${target.path.offset}/core"/>
+		</copy>		
+		
+		<copy todir="${build.dir}">
+			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
+		</copy>
+		
+		<ant target="package.${target.path.offset}" dir="./samples/icechat"/>
+		<mkdir dir="${build.dir}/samples/icechat"/>
+		<copy todir="${build.dir}/samples/icechat">
+			<fileset dir="./samples/icechat/package"/>
+		</copy>
+		<antcall target="zip-distribution"/>	
 		
 	</target>
 	
 	<target name="clean-with-path-offset">
 		<echo>Cleaning Inegration ${target.path.offset}</echo>
 		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="clean"/>
+		<ant antfile="./samples/icechat/${target.path.offset}/build.xml" dir="." target="clean"/>
 	</target>
 	
 	<target name="zip-distribution">
@@ -76,10 +108,6 @@
 	
 	<target name="clean-icechat">
 		<ant antfile="build.xml" dir="./samples/icechat" target="clean-all"/>
-	</target>
-		
-	<target name="clean-core">
-		<ant antfile="build.xml" dir="./core" target="clean"/>
 	</target>
 	
 	<target name="build-all" depends="init,jar-core">
@@ -114,4 +142,5 @@
 		</antcall>
 		<antcall target="clean-icechat"></antcall>
 	</target>
+	
 </project>

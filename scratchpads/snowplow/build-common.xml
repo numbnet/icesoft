@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="ICEpush integration common builds" basedir=".">
 
-	<fileset id="dist.icepush.jar" file="${dist.dir}/icepush.jar"/>
-	
-	<property file="./build.properties"/>
-	
+	<fileset id="dist.icepush.jar" file="${dist.dir}/icepush.jar" />
+
+	<property file="./build.properties" />
+
 	<fileset id="icepush.dist" dir="${path.offset}/core/${dist.dir}">
 		<include name="icepush.jar" />
 	</fileset>
 	
+	<tstamp>
+		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
+	</tstamp>
+
 	<target name="jar-core" depends="clean-core">
-		<ant antfile="build.xml" dir="./core" target="jar" inheritall="true"/>
-		<copy todir="${dist.dir}" file="./core/${dist.dir}/icepush.jar"/>
+		<ant antfile="build.xml" dir="./core" target="jar" inheritall="true" />
+		<copy todir="${dist.dir}" file="./core/${dist.dir}/icepush.jar" />
 	</target>
-	
+
 	<target name="clean-core">
-		<clean base.dir="./core"/>
+		<clean base.dir="./core" />
 	</target>
-	
+
 	<macrodef name="clean">
-		<attribute name="base.dir"/>
 		<sequential>
-			<delete dir="@{base.dir}/${build.dir}"/>
-			<delete dir="@{base.dir}/${dist.dir}"/>
+			<delete dir="${build.dir}" />
+			<delete dir="${dist.dir}" />
 		</sequential>
 	</macrodef>
-	
-	 <target name="clean">
-        <delete dir="${build.dir}"/>
-    	<delete dir="${dist.dir}"/>
-    </target>
-	
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
 	<target name="pre.compile" description="prepare for compilation" depends="clean">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${dist.dir}"/>
-    </target>
-	
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+
 	<macrodef name="compile">
 		<attribute name="src.copy.excludes" default="**/*.java" />
 		<attribute name="failonerror" default="true" />
@@ -50,15 +53,16 @@
 
 		<sequential>
 			<echo>Compiling ${ant.project.name}...</echo>
-			<mkdir dir="${java.dir}"/>
+			<mkdir dir="${java.dir}" />
 			<mkdir dir="${build.dir}/classes" />
-			
+
 			<javac destdir="${build.dir}/classes" sourcepath="" source="@{compile.source}" target="@{compile.target}" debug="@{compile.debug}" failonerror="@{failonerror}">
 				<src location="${java.dir}" />
 				<include name="**/*.java" />
 				<exclude name="@{src.javac.excludes}" />
 				<classpath>
 					<fileset refid="icepush.dist" />
+					<fileset dir="${path.offset}/${lib.dir}" />
 					<add.classpath.elements />
 				</classpath>
 				<add.javac.elements />
@@ -70,7 +74,42 @@
 
 		</sequential>
 	</macrodef>
-	
+
+	<macrodef name="build.jar">
+		<attribute name="jar.file.name" default="${ant.project.name}.jar" />
+		<element name="add.excludes" optional="true" />
+		<element name="add.metainfs" optional="true" />
+		<element name="add.filesets" optional="true" />
+
+		<sequential>
+			<delete file="${dist.dir}/@{jar.file.name}" />
+			<mkdir dir="${dist.dir}" />			
+			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
+				<fileset dir="${classes.dir}">
+					<add.excludes />
+				</fileset>
+				<fileset dir="${java.dir}">
+					<include name="src/**" />
+					<include name="*.xml" />
+					<include name="*.properties" />
+				</fileset>
+				<add.filesets/>
+				<manifest>
+	                <attribute name="Built-By" value="${user.name}"/>
+	                <section name="org.icepush">
+	                    <attribute name="Implementation-Title"
+	                               value="${product}"/>
+	                    <attribute name="Implementation-Version"
+	                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+	                    <attribute name="Implementation-Vendor"
+	                               value="${company}"/>
+	                </section>
+	            </manifest>
+				<add.metainfs />
+			</jar>			
+		</sequential>
+	</macrodef>
+
 	<macrodef name="build.war">
 		<attribute name="war.file.name" default="${ant.project.name}.war" />
 		<attribute name="web.xml" default="${web.inf.dir}/web.xml" />
@@ -85,7 +124,7 @@
 				<fileset dir="${web.dir}">
 					<include name="**" />
 				</fileset>
-			</copy>			
+			</copy>
 			<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
 				<fileset refid="icepush.dist" />
 				<add.libs />
