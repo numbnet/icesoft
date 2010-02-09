@@ -24,16 +24,12 @@
 
 <project name="icepush-jsp" default="jar">
 
-    <property file="build.properties"/>
-
-    <property name="java.dir" location="./src/main/java"/>
-    <property name="web.dir" location="./src/main/webapp"/>
-    <property name="lib.dir" location="../../../lib"/>
-    <property name="build.dir" location="./build"/>
-    <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="meta.dir" location="./src/main/resources/META-INF/"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
-
+    <property file="local.properties"/>
+	<property name="path.offset" value="../../.."/>
+	<property file="${path.offset}/build.properties"/>
+	
+	<import file="${path.offset}/build-common.xml"/>
+    
     <patternset id="lib.compile">
         <include name="*.jar"/>
     </patternset>
@@ -41,16 +37,6 @@
     <patternset id="lib.deploy">
         <include name="icepush.jar"/>
     </patternset>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-
-    <target name="pre.compile" description="prepare for compilation">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${build.dir}/dist"/>
-    </target>
 
     <target name="compile" depends="pre.compile" description="compile jsp core source">
         <javac srcdir="${java.dir}"
@@ -60,12 +46,11 @@
                debug="true">
 
             <classpath>
-                <fileset dir="${lib.dir}">
+                <fileset dir="${path.offset}/${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
-                <fileset dir="../../../core/build/dist/"/>
-		<pathelement location="../../common/notify/build/classes"/>
-            </classpath>
+                <fileset dir="../../../core/${dist.dir}"/>
+		     </classpath>
         </javac>
 
     </target>
@@ -83,10 +68,8 @@
                                value="${company}"/>
                 </section>
             </manifest>
-	    <metainf dir="${meta.dir}"/>
-
+	    	<metainf dir="${meta.dir}"/>
             <fileset dir="${classes.dir}"/>
-            <fileset dir="../../common/notify/build/classes/"/>
         </jar>
     </target>
 </project>

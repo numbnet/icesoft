@@ -33,7 +33,7 @@
 <tag>
 	<name>push</name>
 	<display-name>ICEpush register</display-name>
-	<tagclass>org.icepush.jsp.core.PushTag</tagclass>
+	<tagclass>org.icepush.jsp.tags.PushTag</tagclass>
 	<description>Push notifications to a named group.</description>
 	<attribute>
 		<name>group</name>
@@ -45,7 +45,7 @@
 <tag>
 	<name>pushPeriodic</name>
 	<display-name>ICEpush pushPeriodic</display-name>
-	<tagclass>org.icepush.jsp.PushPeriodicTag</tagclass>
+	<tagclass>org.icepush.jsp.tags.PushPeriodicTag</tagclass>
 	<description>Push notifications to a named group on a regular interval.</description>
 	<attribute>
 		<name>group</name>
@@ -63,7 +63,7 @@
 <tag>
 	<name>region</name>
 	<display-name>ICEpush region</display-name>
-	<tagclass>org.icepush.jsp.RegionTag</tagclass>
+	<tagclass>org.icepush.jsp.tags.RegionTag</tagclass>
 	<description>Define a region (div) in the page where dynamic content is rendered when notifications occur.</description>
 	<attribute>
 		<name>id</name>
@@ -93,7 +93,7 @@
 <tag>
 	<name>register</name>
 	<display-name>ICEpush register</display-name>
-	<tagclass>org.icepush.jsp.RegisterTag</tagclass>
+	<tagclass>org.icepush.jsp.tags.RegisterTag</tagclass>
 	<description>Register a JavaScript callback for ICEpush notifications.</description>
 	<attribute>
 		<name>callback</name>

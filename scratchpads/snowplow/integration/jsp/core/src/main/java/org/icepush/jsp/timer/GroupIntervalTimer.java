@@ -22,7 +22,7 @@
  *
  */
 
-package org.icepush.jsp;
+package org.icepush.jsp.timer;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;

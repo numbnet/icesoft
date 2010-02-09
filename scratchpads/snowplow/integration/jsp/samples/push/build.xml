@@ -24,71 +24,30 @@
 
 <project name="icepush-jsp-push" default="war">
 
-    <property file="build.properties"/>
+    <property file="local.properties"/>
+	<property name="path.offset" value="../../../.."/>
+	<property file="${path.offset}/build.properties"/>
+	
+	<import file="${path.offset}/build-common.xml"/>
 
-    <property name="java.dir" location="./src/main/java"/>
-    <property name="web.dir" location="./src/main/webapp"/>
-    <property name="lib.dir" location="../../../../lib"/>
-    <property name="build.dir" location="./build"/>
-    <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="res.dir" location="./src/main/resources"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
+    <fileset id="icepush.jsp.dist" file="../../core/${dist.dir}/icepush-jsp.jar"/>
 
-    <patternset id="lib.compile">
-        <include name="*.jar"/>
-        <exclude name="el*.jar"/>
-        <exclude name="*grizzly*"/>
-        <exclude name="*jetty*"/>
-        <exclude name="*yui-compressor*"/>
-    </patternset>
-
-    <patternset id="lib.deploy">
-        <include name="icepush.jar"/>
-        <include name="icepush-jsp.jar"/>
-    </patternset>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    	<delete dir="${dist.dir}"/>
-    </target>
-
-    <target name="pre.compile" description="prepare for compilation">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${build.dir}/dist"/>
-    </target>
-
-    <target name="compile" depends="pre.compile" description="compile web application source">
-        <javac srcdir="${java.dir}"
-               destdir="${classes.dir}"
-               source="1.5"
-               target="1.5"
-               debug="true">
-
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                </fileset>
-                <fileset dir="../../../../core/build/dist"/>
-                <fileset dir="../../core/build/dist"/>
-            </classpath>
-        </javac>
+	<target name="compile" depends="pre.compile" description="compile web application source">
+        <compile>
+			<add.classpath.elements>
+				<fileset refid="icepush.jsp.dist"/>
+			</add.classpath.elements>
+		</compile>
 
     </target>
 
     <target name="war" depends="compile" description="generate .war file">
-        <war basedir="${web.dir}"
-             destfile="${dist.dir}/${ant.project.name}.war"
-             webxml="${web.dir}/WEB-INF/web.xml">
-            <lib dir="${lib.dir}">
-                <patternset refid="lib.deploy" />
-            </lib>
-            <lib dir="../../../../core/build/dist"/>
-            <lib dir="../../core/build/dist"/>
-            <classes dir="${classes.dir}"/>
-            <fileset dir="../../../../core/build/javascript">
-            </fileset>
-        </war>
+        <build.war>
+			<add.libs>
+				<fileset refid="icepush.jsp.dist" />
+			</add.libs>
+		</build.war>
     </target>
+	
 </project>
 
