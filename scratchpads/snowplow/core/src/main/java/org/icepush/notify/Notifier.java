@@ -1,4 +1,4 @@
-package org.icepush.common.notify;
+package org.icepush.notify;
 
 import org.icepush.PushContext;
 
