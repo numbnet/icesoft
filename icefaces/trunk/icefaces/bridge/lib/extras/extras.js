@@ -473,8 +473,35 @@ Ice.tblRowFocus = function(anc) {
                         Element.next(parent).firstChild.firstChild.focus();
                     }
                     Event.stop(event);                    
-                    return false;                       
-            }
+                    return false;
+                case 33: //page up 
+                case 34: //page down
+                case 35: //end
+                case 36: //home 
+                   var table = Element.up(parent, ".iceDatTbl");
+                   var paginator = null;
+                   if (table["paginator"] == null) {
+                       if (Prototype.Browser.IE) {
+                            var paginators = $(document.body).select(".iceDatPgr");
+                            for(i=0; i < paginators.length; i++) {
+                                if (paginators[i].name == table.id){
+                                    paginator = paginators[i];
+                                    table["paginator"] = paginator;
+                                    break;
+                                }
+                            }
+                        } else {
+                            var paginators = document.getElementsByName(table.id);
+                            if (paginators.length > 0) {
+                                paginator = paginators[0];
+                            }
+                        }
+                   }
+                   if (paginator) {
+                        Ice.DatPagKybrd(paginator.id, event);
+                   }
+                   return false;                    
+            }//select
         });
         anc["keydownRegistered"] = true;
     }
