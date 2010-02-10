@@ -1,41 +1,33 @@
 <project name="ICEpush GWT integration" default="bin-dist">
 	
-	<!-- all integrations must provide this target
-	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-	 -->
+	<property file="../../build.properties"/>
+	
+	<import file="../../build-common.xml"/>
+	
 	<target name="bin-dist">
 		<echo>Building ICEpush GWT Binary Integration</echo>
 		<antcall target="jar-gwt-core"/>
-		<copy file="./integration/gwt/core/dist/icepush-gwt.jar" todir="${dist.build.dir}"/>
+		<copy file="./core/${dist.dir}/icepush-gwt.jar" todir="${dist.dir}"/>
 	</target>
 	
-	<!-- all integrations must provide this target
-		- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-		- target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
-	-->
-	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./samples/icechat" target="gwt"/>
-		<copy file="./samples/icechat/gwt/dist/icechat-gwt.war" todir="${bin.sample.dir}"></copy>
-		
-		<ant antfile="build.xml" dir="./integration/gwt/samples/greeting" target="war"/>
-		<copy file="./integration/gwt/samples/greeting/greeting.war" todir="${bin.sample.dir}"/>
-		
-		<ant antfile="build.xml" dir="./integration/gwt/samples/commands" target="war"/>
-		<copy file="./integration/gwt/samples/commands/PushCommandSample.war" tofile="${bin.sample.dir}/commands.war"/>
+	<target name="bin-samples" depends="bin-dist">
+		<ant dir="./samples/greeting" target="war"/>
+		<ant dir="./samples/commands" target="war"/>
+		<copy todir="${dist.dir}">
+			<fileset dir="./samples/greeting" includes="**.war"/>
+			<fileset dir="./samples/commands" includes="**.war"/>
+		</copy>
 	</target>
 	
 	<target name="jar-gwt-core">
-		<ant antfile="build.xml" dir="./integration/gwt/core" target="jar"/>
+		<ant dir="./core" target="jar"/>
 	</target>
 	
 	<target name="clean">
+		<clean/>
 		<ant dir="./core" target="clean"/>
 		<ant dir="./samples/greeting" target="clean"/>
 		<ant dir="./samples/commands" target="clean"/>
-	</target>
-	
-	<target name="package.src.bundle">
-		
 	</target>
 
 </project>
