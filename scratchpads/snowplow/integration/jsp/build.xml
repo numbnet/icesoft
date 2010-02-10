@@ -1,34 +1,36 @@
 <project name="jsp-integration-build" default="bin-dist">
 	
+	<property file="../../build.properties"/>	
+	
 	<target name="bin-dist">
 		<echo>Building ICEpush JSP Binary Integration</echo>
 		
 		<antcall target="jar-jsp-core"/>
-		<copy file="./integration/jsp/core/${dist.dir}/icepush-jsp.jar" todir="${dist.build.dir}"/>
+		<copy file="./core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}"/>
 	</target>
 	
 	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./integration/jsp/samples/region" target="war">
+		<ant antfile="build.xml" dir="./samples/region" target="war">
 		</ant>
-		<copy file="./integration/jsp/samples/region/build/dist/icepush-jsp-region.war" todir="${build.dir}/dist"></copy>
+		<copy file="./samples/region/${dist.dir}/icepush-jsp-region.war" todir="${dist.dir}"></copy>
 		
-		<ant antfile="build.xml" dir="./integration/jsp/samples/register" target="war">
+		<ant antfile="build.xml" dir="./samples/register" target="war">
 		</ant>
-		<copy file="./integration/jsp/samples/register/build/dist/icepush-jsp-register.war" todir="${build.dir}/dist"></copy>
+		<copy file="./samples/register/${dist.dir}/icepush-jsp-register.war" todir="${dist.dir}"></copy>
 		
-		<ant antfile="build.xml" dir="./integration/jsp/samples/push" target="war">
+		<ant antfile="build.xml" dir="./samples/push" target="war">
 		</ant>
-		<copy file="./integration/jsp/samples/push/build/dist/icepush-jsp-push.war" todir="${build.dir}/dist"></copy>
+		<copy file="./samples/push/${dist.dir}/icepush-jsp-push.war" todir="${dist.dir}"></copy>
 	</target>
 
 	<target name="jar-jsp-core">
-		<ant antfile="build.xml" dir="./integration/jsp/core" target="jar"/>
+		<ant antfile="build.xml" dir="./core" target="jar"/>
 	</target>
 	
 	<target name="clean">
-		<ant antfile="build.xml" dir="./integration/jsp/core" target="clean"/>
-		<ant antfile="build.xml" dir="./integration/jsp/samples/region" target="clean"/>
-		<ant antfile="build.xml" dir="./integration/jsp/samples/register" target="clean"/>
-		<ant antfile="build.xml" dir="./integration/jsp/samples/push" target="clean"/>
+		<ant dir="./core" target="clean"/>
+		<ant antfile="build.xml" dir="./samples/region" target="clean"/>
+		<ant antfile="build.xml" dir="./samples/register" target="clean"/>
+		<ant antfile="build.xml" dir="./samples/push" target="clean"/>
 	</target>
 </project>
