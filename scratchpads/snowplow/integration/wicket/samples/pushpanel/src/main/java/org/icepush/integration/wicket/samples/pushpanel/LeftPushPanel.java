@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.icepush.integration.wicket.core.PushPanel;
 
 /**
  * Example ICEpush integration.
@@ -58,7 +59,7 @@ public final class LeftPushPanel extends PushPanel {
         });
 
         // Temporary Button used to register callback until PUSH-32 is resolved
-        testButton = new Button("testButton"){
+/*        testButton = new Button("testButton"){
             @Override
             protected void onComponentTag(final ComponentTag tag){
                 super.onComponentTag(tag);
@@ -67,7 +68,7 @@ public final class LeftPushPanel extends PushPanel {
             }
         };
         leftForm.add(testButton);
-
+*/
         // Button used to clear push source list
         leftForm.add(new AjaxButton("leftClear") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
