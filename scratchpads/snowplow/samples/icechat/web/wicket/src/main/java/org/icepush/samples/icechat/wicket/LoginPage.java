@@ -27,15 +27,16 @@ public final class LoginPage extends AppBasePage {
     @Inject
     @RemoveAmbiguity
     LoginController loginController;
+    CompoundPropertyModel compoundLoginController = new CompoundPropertyModel(loginController);
 
     CredentialsBean credentialsBean = new CredentialsBean();
 
-    CompoundPropertyModel compoundLoginController = new CompoundPropertyModel(loginController);
-
     public LoginPage() {
         super ();
+
         loginController.setChatService(chatService);
         loginController.setCredentialsBean(credentialsBean);
+
         final Form loginForm = new Form("login",compoundLoginController);
 
         loginForm.add(new RequiredTextField<String>("credentialsBean.userName"));
@@ -61,9 +62,11 @@ public final class LoginPage extends AppBasePage {
                     setResponsePage(new ChatPage());
                 }
         });
-        add(loginForm);
+
         loginForm.add(new FeedbackPanel("loginMessages")
                         .setOutputMarkupId(true));
+
+        add(loginForm);        
     }
 
 }
