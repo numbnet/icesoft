@@ -16,14 +16,14 @@
 	<macrodef name="clean">
 		<element name="add.filesets" optional="true" />
 		<sequential>
-			<delete failonerror="false">
+			<delete failonerror="false" verbose="true" includeEmptyDirs="true">
 				<fileset dir="${build.dir}" />
 				<fileset dir="${dist.dir}" />
 				<add.filesets/>
 			</delete>
 		</sequential>
 	</macrodef>
-
+	
 	<target name="clean">
 		<clean/>
 	</target>
@@ -137,6 +137,15 @@
 		</sequential>
 	</macrodef>
 
-
+	<target name="icepush.available">
+		<available file="${path.offset}/core/${dist.dir}/icepush.jar" property="icepush.available"/>
+		<fail message="The core icepush.jar has to be built before this target">
+			<condition>
+				<not>
+					<isset property="icepush.available" />
+				</not>
+			</condition>
+		</fail>
+	</target>
 
 </project>
