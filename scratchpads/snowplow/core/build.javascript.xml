@@ -43,7 +43,6 @@
 
     <target name="prepare" description="Collate bridge code">
         <tstamp/>
-        <echoproperties/>
         <mkdir dir="${build.dir}"/>
         <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
         <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
