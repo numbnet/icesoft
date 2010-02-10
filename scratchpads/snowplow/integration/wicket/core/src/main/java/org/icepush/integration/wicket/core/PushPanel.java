@@ -24,14 +24,19 @@ import org.icepush.PushContext;
  *    <servlet-mapping>
  *      <servlet-name>icepush</servlet-name>
  *      <url-pattern>*.icepush</url-pattern>
- *    </servlet-mapping>EXTEND THIS CLASS.
+ *    </servlet-mapping>
  *
  * TO CREATE A PUSHPANEL EXTEND THIS CLASS AND DO THE FOLLOWING:
  *
- * 1. Add push call(s) to your panel:
+ * 1. Add push javascript to your panel's html file:
+ *    <script wicket:id="pushJavascript" type="text/javascript">
+ *    </script>
+ *    WARNING: Do not nest this script in a component that is updated via AJAX
+ *             This will result in the script being executed multiple times.
+ * 1. Add push call(s) if necessary, to your java class:
  *    push();
- * 2. Implement the pushCallback(AjaxRequestTarget target) method to update your
- *    model and render the appropriate components on callback.
+ * 2. Implement the pushCallback(AjaxRequestTarget target) method in your java class
+ *    to update your model and render the appropriate components on callback.
  *
  */
 public abstract class PushPanel extends Panel {
@@ -57,8 +62,6 @@ public abstract class PushPanel extends Panel {
 
                 pushCallback(target);
 
-                // Render the Panel
-                target.addComponent(this.getComponent());
             }
         };
         add(behave);
@@ -71,8 +74,11 @@ public abstract class PushPanel extends Panel {
 
     @Override
     protected void onBeforeRender(){
-        javascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});";
-        pushJavascript.modelChanged();
+        String tempJavascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});";
+        if(!javascriptString.equals(tempJavascriptString)){
+            javascriptString = tempJavascriptString;
+            pushJavascript.modelChanged();
+        }
         super.onBeforeRender();
     }
 
