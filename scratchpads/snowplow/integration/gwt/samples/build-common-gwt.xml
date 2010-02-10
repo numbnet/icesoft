@@ -1,0 +1,18 @@
+<project name="jsp-integration-common-build">
+
+	<fileset id="icepush.gwt.dist" file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar"/>
+
+	<macrodef  name="icepush.gwt.available">
+		<sequential>
+			<available file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" property="icepush.gwt.available"/>
+			<fail message="The core icepush-gwt.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
+				<condition>
+					<not>
+						<isset property="icepush.gwt.available" />
+					</not>
+				</condition>
+			</fail>
+		</sequential>
+	</macrodef>
+	
+</project>
