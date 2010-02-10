@@ -113,6 +113,7 @@ public class JsfJspDigester extends Digester {
         if (loadedNamespaces.contains(namespaceURI)) {
             return;
         }
+System.out.println("namespace not found, scanning " + namespaceURI);
         try {
             TagToComponentMap tagMap = new TagToComponentMap();
             InputStream tldStream = JspPageToDocument.getTldInputStream(
