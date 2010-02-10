@@ -7,9 +7,7 @@ package org.icepush.samples.icechat.wicket;
 import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -37,12 +35,14 @@ public final class ChatPanel extends PushPanel {
     ChatManagerViewControllerSessionBean chatManagerVC;
     CompoundPropertyModel compoundChatManagerVC;
 
+    Form chatRoomForm;
+
     public ChatPanel(String id) {
         super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
         chatManagerVC.setPushRequestContext(pushRequestContext);
 
-        final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
+        chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);
         chatRoomForm.add(new Label("currentChatSessionHolder.session.room.name"));
 
@@ -70,21 +70,8 @@ public final class ChatPanel extends PushPanel {
                 composingMessage.setMessage(messageInput);
                 chatManagerVC.setNewChatRoomMessageBean(composingMessage);
                 chatManagerVC.sendNewMessage();
-                messagesListView.modelChanged();
-                target.addComponent(chatRoomForm);
             }
         });
-
-        // Temporary Button used to register callback until PUSH-32 is resolved
-        Button testButton = new Button("testButton"){
-            @Override
-            protected void onComponentTag(final ComponentTag tag){
-                super.onComponentTag(tag);
-                System.out.println("TEsT BUTTON ONCLICK ATTRIBUTE: " + behave.getCallbackUrl());
-                tag.put("onclick", "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});");
-            }
-        };
-        chatRoomForm.add(testButton);
 
         add(chatRoomForm);
     }
@@ -93,6 +80,7 @@ public final class ChatPanel extends PushPanel {
     protected void pushCallback(AjaxRequestTarget target) {
         usersListView.modelChanged();
         messagesListView.modelChanged();
+        target.addComponent(chatRoomForm);
     }
 
     
