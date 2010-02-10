@@ -49,7 +49,7 @@ public final class LoginPage extends AppBasePage {
                         } catch (LoginFailedException e) {
                                 this.warn(e.getMessage());
                         }
-                        setResponsePage(new ChatRoomsPage());
+                        setResponsePage(new ChatPage());
                 }
         });
         loginForm.add(new AjaxButton("registerButton") {
@@ -58,7 +58,7 @@ public final class LoginPage extends AppBasePage {
                     loginController.register(credentialsBean.getUserName(),
                                              credentialsBean.getNickName(),
                                              credentialsBean.getPassword());
-                    setResponsePage(new ChatRoomsPage());
+                    setResponsePage(new ChatPage());
                 }
         });
         add(loginForm);

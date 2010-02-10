@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:wicket>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>ChatRoomsPanel</title>
+    </head>
+    <body>
+        <wicket:panel>
+            <form wicket:id="chatRoomsForm">
+                <div>
+                    <span wicket:id="chatRooms">
+                        <input wicket:id="name" type="button" /><br/>
+                    </span>
+                </div>
+            </form>
+            <form wicket:id="createNewChatRoomForm">
+                <div class="createNewChatRoom">
+                    Create New Chat Room
+                    <br/>
+                    <label for="newChatRoomName">Name&nbsp;</label>
+                    <input wicket:id="name" style="width: 100px;margin-top:5px;"/>
+                    <input wicket:id="registerButton" style="margin-top:5px;" type="button" value="Create"/>
+                </div>
+            </form>
+        </wicket:panel>
+    </body>
+</html>

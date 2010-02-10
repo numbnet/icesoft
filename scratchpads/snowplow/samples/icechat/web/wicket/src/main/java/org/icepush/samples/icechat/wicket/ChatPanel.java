@@ -40,6 +40,7 @@ public final class ChatPanel extends PushPanel {
     public ChatPanel(String id) {
         super(id);
         compoundChatManagerVC = new CompoundPropertyModel(chatManagerVC);
+        chatManagerVC.setPushRequestContext(pushRequestContext);
 
         final Form chatRoomForm = new Form("chatRoomForm",compoundChatManagerVC);
         chatRoomForm.setOutputMarkupId(true);
