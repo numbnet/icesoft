@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -14,13 +12,18 @@ import org.icepush.integration.wicket.core.PushPanel;
 
 /**
  * Example ICEpush integration.
- * This class extends the PushPanel class to implement a push region with the
+ * This class extends the PushPanel class to to create a push group with the
  * same name as the component id.
  *
  * STEPS TO IMPLEMENT PUSH FOR THIS PANEL:
- * 1. Add push call(s) to your panel:
+ * 1. Add push javascript to the html page:
+ *    <script wicket:id="pushJavascript" type="text/javascript">
+ *    </script>
+ *    WARNING: Do not nest this script in a component that is updated via AJAX
+ *             This will result in the script being executed multiple times.
+ * 2. Add push call(s) to this panel:
  *    push();
- * 2. Implement pushCallback(AjaxRequestTarget target) method to update your
+ * 3. Implement pushCallback(AjaxRequestTarget target) method to update your
  *    model and render the appropriate components on callback.
  *
  * In this example, a click from "rightButton" will push an update out to all
@@ -29,6 +32,8 @@ import org.icepush.integration.wicket.core.PushPanel;
  * source of the push.
  */
 public final class RightPushPanel extends PushPanel {
+
+    Form rightForm;
 
     final ListView pushListView;
     private List pushList = new ArrayList();
@@ -39,7 +44,7 @@ public final class RightPushPanel extends PushPanel {
         super (id);
         this.setOutputMarkupId(true);
 
-        Form rightForm = new Form("rightForm");
+        rightForm = new Form("rightForm");
         rightForm.setOutputMarkupId(true);
 
         rightForm.add(new AjaxButton("rightButton") {
@@ -51,17 +56,6 @@ public final class RightPushPanel extends PushPanel {
         }
         });
 
-        // Temporary Button used to register callback until PUSH-32 is resolved
-/*        Button testButton = new Button("testButton"){
-            @Override
-            protected void onComponentTag(final ComponentTag tag){
-                super.onComponentTag(tag);
-                System.out.println("Right TEsT BUTTON ONCLICK ATTRIBUTE: " + behave.getCallbackUrl());
-                tag.put("onclick", "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});");
-            }
-        };
-        rightForm.add(testButton);
-*/
         // Button used to clear push source list
         rightForm.add(new AjaxButton("rightClear") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -90,6 +84,7 @@ public final class RightPushPanel extends PushPanel {
         }
         isPushMine=false;
         pushListView.modelChanged();
+        target.addComponent(rightForm);
     }
 
 }
