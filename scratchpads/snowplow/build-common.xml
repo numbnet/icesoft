@@ -5,7 +5,7 @@
 
 	<property file="./build.properties" />
 
-	<fileset id="icepush.dist" dir="${path.offset}/core/${dist.dir}">
+	<fileset id="icepush.dist" dir="${root.offset}/core/${dist.dir}">
 		<include name="icepush.jar" />
 	</fileset>
 	
@@ -16,7 +16,7 @@
 	<macrodef name="clean">
 		<element name="add.filesets" optional="true" />
 		<sequential>
-			<delete failonerror="false" verbose="true" includeEmptyDirs="true">
+			<delete failonerror="false" includeEmptyDirs="true">
 				<fileset dir="${build.dir}" />
 				<fileset dir="${dist.dir}" />
 				<add.filesets/>
@@ -25,6 +25,7 @@
 	</macrodef>
 	
 	<target name="clean">
+		<echo>Cleaning ${ant.project.name}...</echo>
 		<clean/>
 	</target>
 
@@ -56,7 +57,7 @@
 				<exclude name="@{src.javac.excludes}" />
 				<classpath>
 					<fileset refid="icepush.dist" />
-					<fileset dir="${path.offset}/${lib.dir}" />
+					<fileset dir="${root.offset}/${lib.dir}" />
 					<add.classpath.elements />
 				</classpath>
 				<add.javac.elements />
@@ -76,6 +77,7 @@
 		<element name="add.filesets" optional="true" />
 
 		<sequential>
+			<echo>Jarring ${ant.project.name}...</echo>
 			<delete file="${dist.dir}/@{jar.file.name}" />
 			<mkdir dir="${dist.dir}" />			
 			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
@@ -138,7 +140,7 @@
 	</macrodef>
 
 	<target name="icepush.available">
-		<available file="${path.offset}/core/${dist.dir}/icepush.jar" property="icepush.available"/>
+		<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.available"/>
 		<fail message="The core icepush.jar has to be built before this target">
 			<condition>
 				<not>
@@ -147,5 +149,10 @@
 			</condition>
 		</fail>
 	</target>
+	
+	<target name="jar-icepush-core">
+		<ant dir="./core"/>
+	</target>		
+		
 
 </project>
