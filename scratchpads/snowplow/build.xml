@@ -4,32 +4,28 @@
 	<property file="build.properties"/>	
 	<import file="build-common.xml"/> 
 	
-	<target name="jar-core">
-		<ant dir="./core"/>
-	</target>
-	
-	<target name="dist-gwt-bin" depends="jar-core">
+	<target name="dist-gwt-bin" depends="jar-icepush-core">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="gwt"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-jsp-bin" depends="jar-core">
+	<target name="dist-jsp-bin">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="jsp"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-spring-bin" depends="jar-core">
+	<target name="dist-spring-bin" depends="jar-icepush-core">
 		<antcall target="build-with-path-offset">
 			<!-- provide the path offset to the build file -->
 			<param name="target.path.offset" value="springMVC"/>
 		</antcall>
 	</target>
 	
-	<target name="dist-jquery-bin"  depends="jar-core">
+	<target name="dist-jquery-bin"  depends="jar-icepush-core">
 		<antcall target="build-with-path-offset">
 			<param name="target.path.offset" value="jquery"/>
 		</antcall>
@@ -43,11 +39,19 @@
 	
 	<target name="build-with-path-offset" depends="common-pre-assemble">
 		<echo>Building Integration: ${target.path.offset}</echo>
-		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="bin-dist"/>
+		<antcall target="jar-icepush-core"/>
+		<copy file="./core/${dist.dir}/icepush.jar" todir="${build.dir}"/>
+		<ant dir="./integration/${target.path.offset}" target="bin-dist"/>
+		<copy todir="${build.dir}">
+			<fileset dir="./integration/${target.path.offset}/dist" excludes="**.war"/>
+		</copy>
 		<copy todir="${build.dir}">
 			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
 		</copy>
-		<ant antfile="./integration/${target.path.offset}/build.xml" dir="." target="bin-samples"/>
+		<copy todir="${build.dir}/samples">
+			<fileset dir="./integration/${target.path.offset}/dist" includes="**.war"/>
+		</copy>
+		<ant dir="./integration/${target.path.offset}" target="bin-samples"/>
 		<antcall target="zip-distribution"/>		
 	</target>
 	
@@ -83,7 +87,7 @@
 	</target>
 	
 	<target name="zip-distribution">
-		<zip destfile="${bin.dist.dir}/icepush-${target.path.offset}.zip" basedir="${build.dir}"></zip>
+		<zip destfile="${dist.dir}/icepush-${target.path.offset}.zip" basedir="${build.dir}"></zip>
 	</target>
 	
 	<target name="pre-assemble-clean">
