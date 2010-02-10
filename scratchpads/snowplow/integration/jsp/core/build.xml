@@ -29,48 +29,17 @@
 	<property file="${path.offset}/build.properties"/>
 	
 	<import file="${path.offset}/build-common.xml"/>
+	
+	<target name="clean">
+		<clean/>
+	</target>
     
-    <patternset id="lib.compile">
-        <include name="*.jar"/>
-    </patternset>
-
-    <patternset id="lib.deploy">
-        <include name="icepush.jar"/>
-    </patternset>
-
     <target name="compile" depends="pre.compile" description="compile jsp core source">
-        <javac srcdir="${java.dir}"
-               destdir="${classes.dir}"
-               source="1.5"
-               target="1.5"
-               debug="true">
-
-            <classpath>
-                <fileset dir="${path.offset}/${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                </fileset>
-                <fileset dir="../../../core/${dist.dir}"/>
-		     </classpath>
-        </javac>
-
+    	<compile/>
     </target>
 
     <target name="jar" depends="compile" description="fill the jar">
-        <jar destfile="${dist.dir}/${ant.project.name}.jar">
-            <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
-                <section name="org.icefaces">
-                    <attribute name="Implementation-Title"
-                               value="${product}"/>
-                    <attribute name="Implementation-Version"
-                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
-                    <attribute name="Implementation-Vendor"
-                               value="${company}"/>
-                </section>
-            </manifest>
-	    	<metainf dir="${meta.dir}"/>
-            <fileset dir="${classes.dir}"/>
-        </jar>
+       <build.jar/>
     </target>
 </project>
 
