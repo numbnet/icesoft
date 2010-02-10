@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ICEpush integration builds" basedir="." default="package.all">
+	
+	<target name="package.all">
+		<antcall target="package.jsp" inheritall="false"/>
+	</target>
+
+	<target name="package.jsp">
+		<property name="target" value="jsp"/>
+		<antcall target="base.package"/>
+		<copy todir="./dist/${target}/samples">
+			<fileset dir="./integration/jsp/samples"/>
+		</copy>
+		<copy tofile="./dist/${target}/samples/build.properties" file="./etc/samples.build.properties"
+			overwrite="true"/>
+		<antcall target="zip.distribution"/>
+		<delete dir="./dist/${target}"/>
+	</target>
+	
+	
+	<target name="base.package">
+		<delete dir="./dist/${target}"/>
+		<mkdir dir="./dist/${target}"/>
+		<copy todir="./dist/${target}">
+			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/samples/**"/>			
+		</copy>
+		<mkdir dir="./dist/${target}/samples"/>	
+		<copy todir="./dist/${target}" file="./build-common.xml"/>
+		<copy file="build-${target}.xml" tofile="./dist/${target}/build.xml"/>
+		<copy file="build.properties" todir="./dist/${target}"/>
+	</target>
+	
+	<target name="zip.distribution">
+		<zip destfile="./dist/icepush-${target}.zip" basedir="./dist/${target}"></zip>
+	</target>
+
+</project>
