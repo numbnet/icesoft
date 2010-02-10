@@ -327,7 +327,7 @@ public class TldLocationsCache {
      */
     private void scanJar(JarURLConnection conn, boolean ignore)
             throws JasperException {
-
+System.out.println("scanJar " + conn);
         JarFile jarFile = null;
         String resourcePath = conn.getJarFileURL().toString();
         try {
