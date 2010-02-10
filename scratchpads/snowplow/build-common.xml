@@ -42,6 +42,7 @@
 		<attribute name="compile.target" default="1.5" />
 		<attribute name="compile.source" default="1.5" />
 		<attribute name="compile.debug" default="true" />
+		<attribute name="compile.debuglevel" default="lines,vars,source"/>
 
 		<element name="add.javac.elements" optional="true" />
 		<element name="add.classpath.elements" optional="true" />
@@ -51,7 +52,13 @@
 			<mkdir dir="${java.dir}" />
 			<mkdir dir="${build.dir}/classes" />
 
-			<javac destdir="${build.dir}/classes" sourcepath="" source="@{compile.source}" target="@{compile.target}" debug="@{compile.debug}" failonerror="@{failonerror}">
+			<javac destdir="${classes.dir}" sourcepath="" 
+				source="@{compile.source}" 
+				target="@{compile.target}" 
+				debug="@{compile.debug}" 
+				debuglevel="@{compile.debuglevel}"
+				failonerror="@{failonerror}">
+				
 				<src location="${java.dir}" />
 				<include name="**/*.java" />
 				<exclude name="@{src.javac.excludes}" />
@@ -61,6 +68,7 @@
 					<add.classpath.elements />
 				</classpath>
 				<add.javac.elements />
+				
 			</javac>
 
 			<copy todir="${build.dir}/classes" preservelastmodified="true">
@@ -137,16 +145,18 @@
 		</sequential>
 	</macrodef>
 
-	<target name="icepush.available">
+	<macrodef name="icepush.available">
+		<sequential>
 		<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.available"/>
-		<fail message="The core icepush.jar has to be built before this target">
+		<fail message="The core icepush.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
 			<condition>
 				<not>
 					<isset property="icepush.available" />
 				</not>
 			</condition>
 		</fail>
-	</target>
+		</sequential>
+	</macrodef>
 	
 	<target name="jar-icepush-core">
 		<ant dir="./core"/>

@@ -24,7 +24,7 @@
 		<delete dir="./dist/${target}"/>
 		<mkdir dir="./dist/${target}"/>
 		<copy todir="./dist/${target}">
-			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/samples/**"/>			
+			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/build.xml integration/${target}/samples/**"/>			
 		</copy>
 		<mkdir dir="./dist/${target}/samples"/>	
 		<copy todir="./dist/${target}" file="./build-common.xml"/>
