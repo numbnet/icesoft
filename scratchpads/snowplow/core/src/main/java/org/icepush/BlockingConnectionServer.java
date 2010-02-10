@@ -78,6 +78,9 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private List participatingPushIDs = Collections.emptyList();
     private Observable notifier;
 
+    private String lastWindow = "";
+    private String[] lastNotifications = new String[]{};
+
     public BlockingConnectionServer(Observable outboundNotifier, final Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
         this.notifier = outboundNotifier;
@@ -90,13 +93,24 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
             public void service(final Request request) throws Exception {
                 resetTimeout();
                 respondIfPendingRequest(CloseResponse);
+
+                //resend notifications if the window owning the blocking connection has changed
+                String currentWindow = request.getHeader("ice.push.window");
+                boolean resend = !lastWindow.equals(currentWindow);
+                lastWindow = currentWindow;
+
                 pendingRequest.put(request);
                 try {
                     participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
                     if (log.isLoggable(Level.FINEST)) {
                         log.finest("Participating pushIds: " + participatingPushIDs + ".");
                     }
-                    respondIfNotificationsAvailable();
+
+                    if (resend) {
+                        resendLastNotifications();
+                    } else {
+                        respondIfNotificationsAvailable();
+                    }
                     inboundNotifier.notifyObservers(new ArrayList(participatingPushIDs));
                 } catch (RuntimeException e) {
                     log.fine("Request does not contain pushIDs.");
@@ -113,15 +127,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     public void update(Observable observable, Object o) {
-        //stop sending notifications if pushID are not used anymore by the browser
-        //todo: verify if this kind of filtering is scalable enough
-        List pushIDs = new ArrayList(Arrays.asList((String[]) o));
-        pushIDs.retainAll(participatingPushIDs);
-        if (!pushIDs.isEmpty()) {
-            notifiedPushIDs.addAll(pushIDs);
-            resetTimeout();
-            respondIfNotificationsAvailable();
-        }
+        sendNotifications((String[]) o);
     }
 
     public void service(final Request request) throws Exception {
@@ -140,17 +146,33 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         }
     }
 
+    private void sendNotifications(String[] ids) {
+        //stop sending notifications if pushID are not used anymore by the browser
+        List pushIDs = new ArrayList(Arrays.asList(ids));
+        pushIDs.retainAll(participatingPushIDs);
+        if (!pushIDs.isEmpty()) {
+            notifiedPushIDs.addAll(pushIDs);
+            resetTimeout();
+            respondIfNotificationsAvailable();
+        }
+    }
+
+    private void resendLastNotifications() {
+        sendNotifications(lastNotifications);
+    }
+
     private synchronized void respondIfNotificationsAvailable() {
         if (!notifiedPushIDs.isEmpty()) {
-            final String[] ids = (String[]) notifiedPushIDs.toArray(new String[0]);
-            respondIfPendingRequest(new NotificationHandler(ids) {
+            //save notifications, maybe they will need to be resent when blocking connection switches to another window 
+            lastNotifications = (String[]) notifiedPushIDs.toArray(new String[0]);
+            respondIfPendingRequest(new NotificationHandler(lastNotifications) {
                 public void writeTo(Writer writer) throws IOException {
                     super.writeTo(writer);
 
                     if (log.isLoggable(Level.FINEST)) {
                         log.finest("Sending notifications for " + notifiedPushIDs + ".");
                     }
-                    notifiedPushIDs.removeAll(Arrays.asList(ids));
+                    notifiedPushIDs.removeAll(Arrays.asList(lastNotifications));
                 }
             });
         }
