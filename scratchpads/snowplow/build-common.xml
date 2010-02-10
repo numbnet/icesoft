@@ -73,7 +73,6 @@
 	<macrodef name="build.jar">
 		<attribute name="jar.file.name" default="${ant.project.name}.jar" />
 		<element name="add.excludes" optional="true" />
-		<element name="add.metainfs" optional="true" />
 		<element name="add.filesets" optional="true" />
 
 		<sequential>
@@ -101,7 +100,6 @@
 	                               value="${company}"/>
 	                </section>
 	            </manifest>
-				<add.metainfs />
 			</jar>			
 		</sequential>
 	</macrodef>
