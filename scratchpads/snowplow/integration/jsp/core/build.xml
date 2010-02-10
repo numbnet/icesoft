@@ -24,22 +24,23 @@
 
 <project name="icepush-jsp" default="jar">
 
-    <property file="local.properties"/>
-	<property name="path.offset" value="../../.."/>
-	<property file="${path.offset}/build.properties"/>
-	
-	<import file="${path.offset}/build-common.xml"/>
-	
-	<target name="clean">
-		<clean/>
-	</target>
-    
-    <target name="compile" depends="pre.compile" description="compile jsp core source">
-    	<compile/>
-    </target>
+	<property file="local.properties" />
+	<property name="path.offset" value="../../.." />
+	<property file="${path.offset}/build.properties" />
 
-    <target name="jar" depends="compile" description="fill the jar">
-       <build.jar/>
-    </target>
+	<import file="${path.offset}/build-common.xml" />
+
+	<target name="clean">
+		<clean />
+	</target>
+
+	<target name="compile" depends="pre.compile" description="compile jsp core source">
+		<antcall target="icepush.available"></antcall>
+		<compile />
+	</target>
+
+	<target name="jar" depends="compile" description="fill the jar">		
+		<build.jar />
+	</target>
 </project>
 
