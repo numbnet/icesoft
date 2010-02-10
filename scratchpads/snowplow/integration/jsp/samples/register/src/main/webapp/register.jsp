@@ -24,7 +24,7 @@
 
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@taglib prefix="icep" uri="http://xmlns.icepush.org/icepush/jsp/icepush.tld"%>
+<%@taglib prefix="icep" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 
 <jsp:useBean id="windowNotifier" class="org.icepush.notify.GroupNotifier" scope="session">
 </jsp:useBean>

@@ -27,7 +27,7 @@
 <tlibversion>1.0</tlibversion>
 <jspversion>1.2</jspversion>
 <shortname>icep</shortname>
-<uri>http://xmlns.icepush.org/icepush/jsp/icepush.tld</uri>
+<uri>http://www.icepush.org/icepush/jsp/icepush.tld</uri>
 <display-name>JSP tag library for ICEpush</display-name>
 <description>ICEpush JSP Tag Library</description>
 <tag>
