@@ -108,7 +108,7 @@ function AsyncConnection(logger, windowID, configuration) {
         }
     }
 
-    var outboundPushIds = registeredPushIds();
+    var lastSentPushIds = registeredPushIds();
 
     function connect() {
         try {
@@ -116,17 +116,17 @@ function AsyncConnection(logger, windowID, configuration) {
             close(listener);
             debug(logger, "connect...");
 
-            outboundPushIds = registeredPushIds();
-            if (isEmpty(outboundPushIds)) {
+            lastSentPushIds = registeredPushIds();
+            if (isEmpty(lastSentPushIds)) {
                 //mark blocking connection as not started, with current window as first candidate to re-initiate the connection 
                 offerCandidature();
             } else {
                 listener = postAsynchronously(channel, receiveURI, function(q) {
-                    each(outboundPushIds, curry(addNameValue, q, 'ice.pushid'));
+                    each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                 }, function(request) {
                     FormPost(request);
                     sendXWindowCookie(request);
-                    setHeader(request, "Window", namespace.windowID);
+                    setHeader(request, "ice.push.window", namespace.windowID);
                 }, $witch(function (condition) {
                     condition(OK, function(response) {
                         var reconnect = getHeader(response, 'X-Connection') != 'close';
@@ -224,7 +224,7 @@ function AsyncConnection(logger, windowID, configuration) {
 
         if (isOwner()) {
             var ids = registeredPushIds();
-            if ((size(ids) != size(outboundPushIds)) || notEmpty(complement(ids, outboundPushIds))) {
+            if ((size(ids) != size(lastSentPushIds)) || notEmpty(complement(ids, lastSentPushIds))) {
                 //reconnect to send the current list of pushIDs
                 //abort the previous blocking connection in case is still alive
                 abort(listener);
