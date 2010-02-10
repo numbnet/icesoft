@@ -10,15 +10,15 @@
 	</target>
 	
 	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./samples/region" target="war">
+		<ant dir="./samples/region" target="war">
 		</ant>
 		<copy file="./samples/region/${dist.dir}/icepush-jsp-region.war" todir="${dist.dir}"></copy>
 		
-		<ant antfile="build.xml" dir="./samples/register" target="war">
+		<ant dir="./samples/register" target="war">
 		</ant>
 		<copy file="./samples/register/${dist.dir}/icepush-jsp-register.war" todir="${dist.dir}"></copy>
 		
-		<ant antfile="build.xml" dir="./samples/push" target="war">
+		<ant dir="./samples/push" target="war">
 		</ant>
 		<copy file="./samples/push/${dist.dir}/icepush-jsp-push.war" todir="${dist.dir}"></copy>
 	</target>
@@ -28,6 +28,7 @@
 	</target>
 	
 	<target name="clean">
+		<clean/>
 		<ant dir="./core" target="clean"/>
 		<ant antfile="build.xml" dir="./samples/region" target="clean"/>
 		<ant antfile="build.xml" dir="./samples/register" target="clean"/>
