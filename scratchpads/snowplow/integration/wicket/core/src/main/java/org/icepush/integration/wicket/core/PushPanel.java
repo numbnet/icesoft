@@ -10,9 +10,24 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.icepush.PushContext;
 
 /**
- * TO ADD PUSH TO YOUR PANEL EXTEND THIS CLASS.
+ * TO ENABLE YOUR APPLICATION FOR PUSH:
  *
- * IN YOUR SUBCLASS DO THE FOLLOWING:
+ * 1. Add icepush.jar and icepush-wicket.jar to your application.
+ * 2. Nest the following in the head tag of your page:
+ *    <script type="text/javascript" src="code.icepush"></script>
+ * 3. Add the following entry to your web.xml:
+ *    <servlet>
+ *      <servlet-name>icepush</servlet-name>
+ *      <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+ *      <load-on-startup>1</load-on-startup>
+ *    </servlet>
+ *    <servlet-mapping>
+ *      <servlet-name>icepush</servlet-name>
+ *      <url-pattern>*.icepush</url-pattern>
+ *    </servlet-mapping>EXTEND THIS CLASS.
+ *
+ * TO CREATE A PUSHPANEL EXTEND THIS CLASS AND DO THE FOLLOWING:
+ *
  * 1. Add push call(s) to your panel:
  *    push();
  * 2. Implement the pushCallback(AjaxRequestTarget target) method to update your
@@ -25,7 +40,7 @@ public abstract class PushPanel extends Panel {
     WicketPushRequestContext pushRequestContext = new WicketPushRequestContext((WebRequest)getRequest(),(WebResponse)getResponse());
 
     Label pushJavascript;
-    String javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});};";
+    String javascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});";
 
     final AbstractDefaultAjaxBehavior behave;
 
@@ -49,17 +64,17 @@ public abstract class PushPanel extends Panel {
         add(behave);
 
         // Push Javascript
-/*        pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
+        pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
         pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);*/
+        add(pushJavascript);
     }
 
-/*    @Override
+    @Override
     protected void onBeforeRender(){
-        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});};";
+        javascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});";
         pushJavascript.modelChanged();
         super.onBeforeRender();
-    }*/
+    }
 
     public String getJavascriptString() {
         return javascriptString;
