@@ -38,26 +38,27 @@ public abstract class PushPanel extends Panel {
 
                 pushCallback(target);
 
-                // Render the Panel
-                target.addComponent(this.getComponent());
             }
         };
         add(behave);
 
         // ICEpush code
         getPushRequestContext();
-/*        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});};";
+        javascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});";
         pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
         pushJavascript.setEscapeModelStrings(false);
-        add(pushJavascript);*/
+        add(pushJavascript);
     }
 
-/*    @Override
+    @Override
     protected void onBeforeRender(){
-        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});};";
-        pushJavascript.modelChanged();
+        String tempJavascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('" + behave.getCallbackUrl() + "')});";
+        if(!javascriptString.equals(tempJavascriptString)){
+            javascriptString = tempJavascriptString;
+            pushJavascript.modelChanged();
+        }
         super.onBeforeRender();
-    }*/
+    }
 
     public String getJavascriptString() {
         return javascriptString;
