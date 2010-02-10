@@ -16,9 +16,6 @@ public class AppBasePage extends WebPage {
 
         @Inject
         ChatServiceApplicationBean chatService;
-
-	//@EJB
-        //private ChatServiceLocal chatService;
 	
 	IPushRequestContext pushRequestContext;
 

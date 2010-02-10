@@ -23,18 +23,6 @@
             </div>
         </div>
 
-<!--    Wicket Renders this out to the page with the appropriate PushId
-        <script type="text/javascript">
-            ice.push.register(['#{pushRequestContext.currentPushId}'],
-                function(){
-                    window.location.reload();
-                }
-            );
-        </script>
--->
-<!--        <script wicket:id="pushJavascript" type="text/javascript">
-        </script>-->
-
         <div class="body_container body_container_pos">
             <div class="chatSession chatSession_pos">
                 <form wicket:id="chatSession">
@@ -50,22 +38,7 @@
 
             <div class="chatRooms chatRooms_pos">
                 <h3>Chat Rooms</h3>
-                <form wicket:id="chatRoomsForm">
-                    <div>
-                        <span wicket:id="chatRooms">
-                            <input wicket:id="name" type="button" /><br/>
-                        </span>
-                    </div>
-                </form>
-                <form wicket:id="createNewChatRoomForm">
-                    <div class="createNewChatRoom">
-                        Create New Chat Room
-                        <br/>
-                        <label for="newChatRoomName">Name&nbsp;</label>
-                        <input wicket:id="name" style="width: 100px;margin-top:5px;"/>
-                        <input wicket:id="registerButton" style="margin-top:5px;" type="button" value="Create"/>
-                    </div>
-                </form>
+                <div wicket:id="chatRoomsPanel" class="chatRoomView"/>
             </div>
             <div wicket:id="chatPanel" class="chatRoomView"/>
         </div>

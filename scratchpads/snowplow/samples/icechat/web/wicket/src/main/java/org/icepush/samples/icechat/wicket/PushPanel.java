@@ -4,7 +4,6 @@
  */
 
 package org.icepush.samples.icechat.wicket;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -24,9 +23,6 @@ import org.icepush.samples.icechat.IPushRequestContext;
 public abstract class PushPanel extends Panel {
 
     IPushRequestContext pushRequestContext;
-
-    @Inject
-    ChatManagerViewControllerSessionBean chatManagerVC;
 
     Label pushJavascript;
     String javascriptString;
@@ -50,7 +46,6 @@ public abstract class PushPanel extends Panel {
 
         // ICEpush code
         getPushRequestContext();
-        chatManagerVC.setPushRequestContext(pushRequestContext);
 /*        javascriptString = "window.onload = function(){ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});};";
         pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
         pushJavascript.setEscapeModelStrings(false);
