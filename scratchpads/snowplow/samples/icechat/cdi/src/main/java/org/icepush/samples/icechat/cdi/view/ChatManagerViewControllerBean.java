@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.icepush.samples.icechat.IPushRequestContext;
+import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
 import org.icepush.samples.icechat.controller.ILoginController;
 import org.icepush.samples.icechat.controller.model.ICurrentChatSessionHolderBean;
 import org.icepush.samples.icechat.controller.model.INewChatRoomBean;
@@ -17,6 +18,7 @@ import org.icepush.samples.icechat.view.IChatManagerViewController;
 public class ChatManagerViewControllerBean extends
 		org.icepush.samples.icechat.beans.view.BaseChatManagerViewControllerBean
 		implements IChatManagerViewController {
+	
 	
 	@Inject
 	@Override

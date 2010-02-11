@@ -12,12 +12,16 @@
 			<add.libs>
 				<fileset refid="beans" />
 				<fileset refid="cdi"/>
+				<fileset dir="lib">
+					<include name="icepush.jar"/>
+					<include name="icefaces.jar"/>
+				</fileset>
 			</add.libs>
 		</build.war>
 	</target>
 
 	<target name="compile" depends="pre.compile">
-		<compile>
+		<compile compile.source="1.6" compile.target="1.6">
 			<add.classpath.elements>
 				<fileset refid="api"/>
 				<fileset refid="beans"/>
