@@ -29,7 +29,7 @@
 	</target>
 
 	<target name="gwt" depends="beans">
-		<ant antfile="build.xml" target="war" dir="./web/gwt"/>
+		<ant antfile="build.xml" target="war" dir="./gwt"/>
 	</target>
 	
 	<target name="gwt-devmode" depends="beans">
@@ -66,5 +66,56 @@
 		<ant antfile="build.xml" target="clean" dir="./web/spring"/>
 		<ant antfile="build.xml" target="clean" dir="./web/spring-region"/>
 	</target>
+	
+	<fileset id="src.api" dir="./api">
+		<include name="**" />
+	</fileset>
+	<fileset id="src.beans" dir="./beans">
+		<include name="**" />
+	</fileset>
+	<fileset id="src.auth" dir="./auth">
+		<include name="**" />
+	</fileset>
+	<fileset id="src.gwt" dir="./gwt">
+		<include name="**" />
+	</fileset>
+	
+	<path id="gwt.package.paths">
+		<fileset refid="src.api"/>
+		<fileset refid="src.beans"/>
+		<fileset refid="src.gwt"/>
+	</path>
+	
+	<macrodef name="package.src">
+		<element name="add.package.elements" optional="true" />
+		<attribute name="target"/>
+		<sequential>
+			<ant dir="./@{target}" target="clean"/>
+			<ant dir="./api" target="clean"/>
+			<ant dir="./auth" target="clean"/>
+			<ant dir="./beans" target="clean"/>
+			<ant dir="./cdi" target="clean"/>
+			<delete dir="./package"/>
+			<mkdir dir="./package"/>
+			<copy todir="./package/@{target}">
+				<fileset dir="@{target}"/>
+			</copy>
+			<add.package.elements/>			
+		</sequential>
+	</macrodef>
 
+	
+	<target name="package.gwt">
+		<package.src target="gwt">
+			<add.package.elements>
+				<copy todir="./package/api">
+					<fileset refid="src.api"/>
+				</copy>
+				<copy todir="./package/beans">
+					<fileset refid="src.beans"/>
+				</copy>
+			</add.package.elements>
+		</package.src>
+	</target>
+		
 </project>
