@@ -23,10 +23,10 @@
 	<fileset id="gwt-integration" file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" />
 
 	<!-- Configure path to GWT SDK -->
-	<property name="gwt.sdk" location="./gwt/lib/gwtSDK" />
-	<property name="tests.lib.dir" location="./gwt/lib/tests" />
-	<property name="build.tests" location="./gwt/build-test" />
-	<property name="reports.tests" value="./gwt/reports/junit" />
+	<property name="gwt.sdk" location="./lib/gwtSDK" />
+	<property name="tests.lib.dir" location="./lib/tests" />
+	<property name="build.tests" location="./build-test" />
+	<property name="reports.tests" value="./reports/junit" />
 
 	<path id="project.class.path">
 		<pathelement location="${build.dir}/webapp/WEB-INF/classes" />
@@ -49,7 +49,7 @@
 
 	<target name="javac" depends="libs" description="Compile java source">
 		<!--icepush.available/-->
-		<compile src.dir="./gwt/${java.dir}">
+		<compile>
 			<add.classpath.elements>
 				<path refid="project.class.path" />
 			</add.classpath.elements>
@@ -60,7 +60,7 @@
 		<icepush.gwt.available/>
 		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
 			<classpath>
-				<pathelement location="./gwt/${java.dir}" />
+				<pathelement location="${java.dir}" />
 				<path refid="project.class.path" />
 			</classpath>
 			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
@@ -123,7 +123,7 @@
 
 	<target name="war" depends="clean,gwtc" description="Create a war file">
 		<antcall target="test" />
-		<build.war web.dir="./gwt/${web.dir}">
+		<build.war web.dir="${web.dir}">
 			<add.libs>
 				<fileset refid="beans" />
 				<fileset refid="gwt-integration" />
