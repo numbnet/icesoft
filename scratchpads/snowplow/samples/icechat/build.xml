@@ -68,6 +68,7 @@
 		<ant target="clean" dir="./ajax"/>
 		<ant target="clean" dir="./gwt"/>
 		<ant target="clean" dir="./jquery"/>
+		<ant target="clean" dir="./icefaces"/>
 		<ant target="clean" dir="./prototype"/>
 		<ant target="clean" dir="./web/spring"/>
 		<ant target="clean" dir="./web/spring-region"/>
