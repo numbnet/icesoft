@@ -13,7 +13,7 @@ import org.icepush.samples.icechat.service.exception.ConfigurationException;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 
-public class BaseLoginControllerBean implements Serializable, ILoginController{
+public abstract class BaseLoginControllerBean implements Serializable, ILoginController{
 	
 	
 	protected IChatService chatService;
@@ -28,7 +28,7 @@ public class BaseLoginControllerBean implements Serializable, ILoginController{
 		this.credentialsBean = credentialsBean;
 	}
 
-	private IPushRequestContext pushRequestContext;
+	protected IPushRequestContext pushRequestContext;
 
 	private User currentUser;
 
@@ -50,10 +50,9 @@ public class BaseLoginControllerBean implements Serializable, ILoginController{
 	
 	public void login() throws LoginFailedException{
         login(credentialsBean.getUserName(), credentialsBean.getPassword());
-        PushContext pushContext = pushRequestContext.getPushContext();
-        pushContext.addGroupMember(PushConstants.CHAT_USERS.name(), 
+        addGroupMember(PushConstants.CHAT_USERS.name(), 
 				pushRequestContext.getCurrentPushId());
-        pushContext.push(PushConstants.CHAT_USERS.name());
+        push(PushConstants.CHAT_USERS.name());
     }
 	
 	public void login(String userName, String password) throws LoginFailedException{
@@ -79,6 +78,16 @@ public class BaseLoginControllerBean implements Serializable, ILoginController{
     
     public void logout(){
     	currentUser = null;
+    }
+    
+    public void addGroupMember(String name, String pushId){
+    	PushContext pushContext = pushRequestContext.getPushContext();
+    	pushContext.addGroupMember(name, pushId);
+    }
+    
+    public void push(String name){
+    	PushContext pushContext = pushRequestContext.getPushContext();
+    	pushContext.push(name);
     }
 
 }
