@@ -6,8 +6,7 @@
     <head>
         <title>Simple Dice Roller - ICEpush and Spring MVC</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
-        <script type="text/javascript" src="code.icepush"></script>
+       <script type="text/javascript" src="code.icepush"></script>
         <script type="text/javascript" src="icepushUtil.js"></script>
     </head>
     <body>

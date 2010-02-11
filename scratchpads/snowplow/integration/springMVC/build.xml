@@ -1,27 +1,32 @@
 <project default="bin-dist" name="icepush-spring build interface.">
-	
-	<!-- all integrations must provide this target
-	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-	 -->
+
+	<property file="../../build.properties" />
+
 	<target name="bin-dist">
-		<!-- nothing required here - no specific integration bundle. -->
+		<echo>Building ICEpush Spring MVC Binary Integration</echo>
+
+		<antcall target="jar-jsp-core" />
+		<copy file="../../integration/jsp/core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}" />
 	</target>
-	
-	<!-- all integrations must provide this target
-		- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-		- target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
-	-->
+
 	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./samples/icechat" target="spring"/>
-		<copy file="./samples/icechat/web/spring/dist/icechat-spring.war" todir="${bin.sample.dir}"></copy>
-		<ant antfile="build.xml" dir="./samples/icechat" target="spring-region"/> 
-		<copy file="./samples/icechat/web/spring-region/dist/icechat-spring-region.war" todir="${bin.sample.dir}"></copy>
+		<ant dir="./samples/dice" target="war">
+		</ant>
+		<copy file="./samples/dice/${dist.dir}/icepush-springmvc-dice.war" todir="${dist.dir}">
+		</copy>
+
 	</target>
-	
-	<!-- all integrations must also provide this target.  Again the directory will be the root of the snowplow project.-->
+
+	<target name="jar-jsp-core">
+		<ant antfile="build.xml" dir="../jsp/core" target="jar" />
+	</target>
+
 	<target name="clean">
-		
+		<clean />
+		<ant dir="./core" target="clean" />
+		<ant antfile="build.xml" dir="./samples/region" target="clean" />
+		<ant antfile="build.xml" dir="./samples/register" target="clean" />
+		<ant antfile="build.xml" dir="./samples/push" target="clean" />
 	</target>
-	
-	
+
 </project>

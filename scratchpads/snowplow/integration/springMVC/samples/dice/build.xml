@@ -22,80 +22,32 @@
  *
 -->
 
-<project name="spring-dice" default="war">
+<project name="icepush-springmvc-dice" default="war">
 
-    <property file="build.properties"/>
-
-    <property name="java.dir" location="./src/main/java"/>
-    <property name="web.dir" location="./src/main/webapp"/>
-    <property name="locallib.dir" location="./src/main/webapp/WEB-INF/lib"/>
-    <property name="lib.dir" location="../../../../lib"/>
-    <property name="build.dir" location="./build"/>
-    <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="res.dir" location="./src/main/resources"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
-
-    <patternset id="locallib.jars">
-        <include name="*.jar"/>
-    </patternset>
-
-    <patternset id="lib.compile">
-        <include name="*.jar"/>
-        <exclude name="el*.jar"/>
-        <exclude name="*grizzly*"/>
-        <exclude name="*jetty*"/>
-        <exclude name="*yui-compressor*"/>
-    </patternset>
-
-    <patternset id="lib.deploy">
-        <include name="icepush.jar"/>
-        <include name="icepush-jsp.jar"/>
-    </patternset>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-
-    <target name="pre.compile" description="prepare for compilation">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${build.dir}/classes"/>
-        <mkdir dir="${build.dir}/dist"/>
-    </target>
-
+    <property name="root.offset" value="../../../.."/>
+	<property file="${root.offset}/build.properties"/>	
+		
+	<import file="${root.offset}/build-common.xml"/>
+	
+	<fileset id="icepush.jsp.dist" file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
+	
     <target name="compile" depends="pre.compile" description="compile web application source">
-        <javac srcdir="${java.dir}"
-               destdir="${classes.dir}"
-               source="1.5"
-               target="1.5"
-               debug="true">
-
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <patternset refid="lib.compile"/>
-                </fileset>
-                <fileset dir="${locallib.dir}">
-                    <patternset refid="locallib.jars"/>
-                </fileset>
-                <fileset dir="../../../../core/build/dist"/>
-                <fileset dir="../../core/build/dist"/>
-            </classpath>
-        </javac>
+        <!--icepush.jsp.available/-->
+		<compile>
+			<add.classpath.elements>
+				<fileset refid="icepush.jsp.dist"/>
+				<fileset dir="${web.dir}/WEB-INF/lib"/>
+			</add.classpath.elements>
+		</compile>
 
     </target>
 
     <target name="war" depends="compile" description="generate .war file">
-        <war basedir="${web.dir}"
-             destfile="${dist.dir}/${ant.project.name}.war"
-             webxml="${web.dir}/WEB-INF/web.xml">
-            <lib dir="${lib.dir}">
-                <patternset refid="lib.deploy" />
-            </lib>
-            <lib dir="../../../../core/build/dist"/>
-            <lib dir="../../core/build/dist"/>
-            <classes dir="${classes.dir}"/>
-            <fileset dir="../../../../core/build/javascript">
-            </fileset>
-        </war>
+        <build.war>
+			<add.libs>
+				<fileset refid="icepush.jsp.dist" />
+			</add.libs>
+		</build.war>
     </target>
 </project>
 
