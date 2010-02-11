@@ -10,10 +10,9 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.icepush.samples.icechat.cdi.controller.LoginController;
 import org.icepush.samples.icechat.cdi.facade.ChatManagerFacadeBean;
 import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
-import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
+import org.icepush.samples.icechat.controller.ILoginController;
 
 /**
  *
@@ -23,8 +22,7 @@ public final class ChatPage extends AppBasePage {
 
     // Session Scoped Beans
     @Inject
-    @RemoveAmbiguity
-    LoginController loginController;
+    ILoginController loginController;
     CompoundPropertyModel compoundLoginController;
     
     @Inject
