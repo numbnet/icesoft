@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <head>
+        <title>Chat View (Wicket)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
+        <script type="text/javascript" src="code.icepush"></script>
+    </head>
+    <body>
+
+        <div class="header_container">
+            <div class="header_content">
+                <img width="109px" height="100px"
+                                  wicket:id="banner_hdr"
+                                  style="float:left"/>
+                <img width="100px" height="100px"
+                                  wicket:id="wicketLogo"
+                                  style="float:right"/>
+                <div style="font-size:20pt;color:#0F65B8;margin-top:45px;">
+                    <span style="font-weight:bold;">ICEpush</span>
+                    <span style="font-style:italic;font-family:Times New Roman"> with Wicket</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="body_container body_container_pos">
+            <div class="chatSession chatSession_pos">
+                <form wicket:id="chatSession">
+                    You are logged in as
+                    <span wicket:id="credentialsBean.userName">userName</span>
+                    <span wicket:id="credentialsBean.nickName">nickName</span>
+                    &nbsp;
+                    <input wicket:id="logout" type="button" value="Logout"/>
+                </form>
+            </div>
+
+            <div class="clearer"/>
+
+            <div class="chatRooms chatRooms_pos">
+                <h3>Chat Rooms</h3>
+                <div wicket:id="chatRoomsPanel"/>
+            </div>
+            <div wicket:id="chatPanel" class="chatRoomView"/>
+        </div>
+    </body>
+</html>

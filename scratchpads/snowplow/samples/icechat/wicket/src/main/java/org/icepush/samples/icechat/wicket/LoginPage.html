@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <head>
+        <title>ICEpush ICEchat (Wicket)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
+    </head>
+    <body>
+        
+        <div class="header_container">
+            <div class="header_content">
+                <img width="109px" height="100px"
+                                  wicket:id="banner_hdr"
+                                  style="float:left"/>
+                <img width="100px" height="100px"
+                                  wicket:id="wicketLogo"
+                                  style="float:right"/>
+                <div style="font-size:20pt;color:#0F65B8;margin-top:45px;">
+                    <span style="font-weight:bold;">ICEpush</span>
+                    <span style="font-style:italic;font-family:Times New Roman"> with Wicket</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="body_container">
+
+            <form wicket:id="login">
+                <div class="login">
+                <h2>ICEchat Login</h2>
+                <div style="text-align:right;">
+                    <label for="userName">User Name </label>
+                    <input wicket:id="credentialsBean.userName"/>
+                </div>
+                <div style="text-align:right;">
+                    <label for="nickName">Nick Name </label>
+                    <input wicket:id="credentialsBean.nickName"/>
+                </div>
+                <div style="text-align:right;">
+                    <label for="password">Password</label>
+                    <input type="password" wicket:id="credentialsBean.password"/>
+                </div>
+                <div style="text-align:right;margin-top:20px;">
+                    <input wicket:id="loginButton" type="button" value="Login"/>
+                    <input wicket:id="registerButton" type="button" value="Register"/>
+                </div>
+                <div id="loginMessages">
+                    <span wicket:id="loginMessages">feedbackmessages will be put here</span>
+                </div>
+                </div>
+            </form>
+
+        </div>
+    </body>
+</html>

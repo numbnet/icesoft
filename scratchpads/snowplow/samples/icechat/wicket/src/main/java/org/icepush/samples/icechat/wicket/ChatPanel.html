@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:wicket>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>ChatPanel</title>
+    </head>
+    <body>
+        <wicket:panel>
+            <script wicket:id="pushJavascript" type="text/javascript">
+            </script>
+            <form wicket:id="chatRoomForm">
+                <div class="chatRoomHeader">
+                    Chat Room <span wicket:id="currentChatSessionHolder.session.room.name">currentChatSessionHolder.session.room.name</span>
+                </div>
+                <div class="chatRoomContainer">
+                    <div class="chatRoomUsers">
+                        <div class="chatViewSubHeader">Who's Here?</div>
+                        <span wicket:id="currentChatSessionHolder.session.room.userChatSessions">
+                            <span wicket:id="userName">userChatSession.user.displayName</span><br/>
+                        </span>
+                    </div>
+                    <div class="chatRoomMessages">
+                        <div class="chatViewSubHeader">Messages</div>
+                        <span wicket:id="currentChatSessionHolder.session.room.messages">
+                            <span wicket:id="created">msg.created</span>
+                            &nbsp;<span wicket:id="userChatSession.user.displayName">msg.userChatSession.user.displayName</span> said
+                            &nbsp;'<span wicket:id="message">msg.message</span>'<br/>
+                        </span>
+                    </div>
+                </div>
+                <div class="clearer"/>
+                <div class="addNewMessage">
+                    New Message&nbsp;
+                    <input wicket:id="messageInput" style="width:40%;"/>
+                    <input wicket:id="send" type="button" value="Send"/>
+                </div>
+            </form>
+
+        </wicket:panel>
+    </body>
+</html>
