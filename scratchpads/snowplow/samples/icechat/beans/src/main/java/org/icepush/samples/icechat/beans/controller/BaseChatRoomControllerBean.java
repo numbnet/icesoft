@@ -11,7 +11,7 @@ import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
 import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
-public class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
+public abstract class BaseChatRoomControllerBean implements Serializable, IChatRoomController{
 	
 	private static final long serialVersionUID = 3046754615536057774L;
 
