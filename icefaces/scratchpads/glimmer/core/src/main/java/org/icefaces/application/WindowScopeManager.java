@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,9 +28,11 @@ public class WindowScopeManager {
     private long expirationPeriod;
     private Observable activatedWindowNotifier = new ReadyObservable();
     private Observable disactivatedWindowNotifier = new ReadyObservable();
+    private String seed;
 
     public WindowScopeManager(Configuration configuration) {
         expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 1000);
+        seed = Integer.toString(new Random().nextInt(1000), 36);
     }
 
     public ScopeMap lookupWindowScope() {
@@ -76,8 +79,8 @@ public class WindowScopeManager {
         }
     }
 
-    private static String generateID() {
-        return String.valueOf(System.currentTimeMillis());
+    private synchronized String generateID() {
+        return seed + Long.toString(System.currentTimeMillis(), 36);
     }
 
     public synchronized void disposeWindow(String id) {

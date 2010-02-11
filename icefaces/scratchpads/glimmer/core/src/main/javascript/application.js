@@ -59,6 +59,15 @@ if (!window.ice.icefaces) {
         //this is meant to be used by ICEpush JS code
         namespace.uriextension = '.jsf';
 
+        var sessionExpiryListeners = [];
+        namespace.onSessionExpiry = function(callback) {
+            append(sessionExpiryListeners, callback);
+        };
+
+        namespace.sessionExpired = function() {
+            broadcast(sessionExpiryListeners);
+        };
+
         var serverErrorListeners = [];
         namespace.onServerError = function(callback) {
             append(serverErrorListeners, callback);
