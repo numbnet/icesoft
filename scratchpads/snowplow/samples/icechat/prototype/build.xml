@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="icechat-prototype" default="war">
+<project name="icechat-prototype">
 	
-	<property file="../build-common.properties" />
+	<property name="root.offset" value="../../.."/>
+	<property file="${root.offset}/build.properties" />
 
+	<import file="${root.offset}/build-common.xml" />
 	<import file="../build-common.xml" />
 
 	<target name="war" depends="compile">
@@ -18,9 +20,7 @@
 					<exclude name="**/login.html"/>
 					<exclude name="**/icechat.js"/>
 				</fileset>
-				<fileset dir="../../../integration/prototype/core/src/main/javascript">
-					<include name="prototype.icepush.js"/>
-				</fileset>
+				<fileset dir="${root.offset}/integration/prototype/core/src/main"/>
 			</add.filesets>
 		</build.war>
 	</target>
