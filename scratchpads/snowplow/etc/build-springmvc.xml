@@ -1,0 +1,27 @@
+<project default="build.all" name="ICEpsuh Spring MVC Integration builds">
+
+	<property file="build.properties"/>
+	<import file="build-common.xml"/>
+	
+	<target name="bin-dist">
+		<echo>Building ICEpush Spring MVC Binary Integration</echo>	
+		
+		<antcall target="jar-icepush-core"/>
+		<copy file="./core/${dist.dir}/icepush.jar" todir="${dist.dir}"/>
+		
+	</target>
+	
+	<target name="bin-samples">
+		<ant dir="${samples.dir}/dice" target="war"/>
+		<copy file="${samples.dir}/dice/dist/icepush-jquery-dice.war" todir="${dist.dir}"/>
+		
+		<ant dir="${samples.dir}/icechat/springmvc" target="war">
+		</ant>
+		<copy file="${samples.dir}/icechat/springmvc/dist/icechat-springmvc.war" todir="${dist.dir}"/>
+	</target>
+
+	
+	<target name="build.all" depends="bin-dist,bin-samples"/>
+	
+	
+</project>

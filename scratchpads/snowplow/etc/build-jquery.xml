@@ -1,0 +1,27 @@
+<project default="build.all" name="ICEpsuh jQuery Integration builds">
+
+	<property file="build.properties"/>
+	<import file="build-common.xml"/>
+	
+	<target name="bin-dist">
+		<echo>Building ICEpush jQuery Binary Integration</echo>	
+		
+		<antcall target="jar-icepush-core"/>
+		<copy file="./core/${dist.dir}/icepush.jar" todir="${dist.dir}"/>
+		
+	</target>
+	
+	<target name="bin-samples">
+		<ant dir="${samples.dir}/basic" target="war"/>
+		<copy file="${samples.dir}/basic/icepush-jquery-basic.war" todir="${dist.dir}"/>
+		
+		<ant dir="${samples.dir}/icechat/jquery" target="war">
+		</ant>
+		<copy file="${samples.dir}/icechat/jquery/dist/icechat-jquery.war" todir="${dist.dir}"/>
+	</target>
+
+	
+	<target name="build.all" depends="bin-dist,bin-samples"/>
+	
+	
+</project>

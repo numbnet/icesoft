@@ -1,0 +1,36 @@
+<project default="build.all" name="ICEpsuh GWT Integration builds">
+
+	<property file="build.properties"/>
+	<import file="build-common.xml"/>
+	
+	<target name="bin-dist">
+		<echo>Building ICEpush GWT Binary Integration</echo>	
+		
+		<antcall target="jar-icepush-core"/>
+		<copy file="./core/${dist.dir}/icepush.jar" todir="${dist.dir}"/>
+		
+		<antcall target="jar-gwt-core"/>
+		<copy file="./integration/gwt/core/dist/icepush-gwt.jar" todir="${dist.dir}"/>
+		
+	</target>
+	
+	<target name="bin-samples">
+		<ant dir="${samples.dir}/commands" target="war"/>
+		<copy file="${samples.dir}/commands/icepush-gwt-commands.war" todir="${dist.dir}"/>
+		
+		<ant dir="${samples.dir}/greeting" target="war"/>
+		<copy file="${samples.dir}/greeting/icepush-gwt-greeting.war" todir="${dist.dir}"/>
+		
+		<ant dir="${samples.dir}/icechat/gwt" target="war">
+		</ant>
+		<copy file="${samples.dir}/icechat/gwt/dist/icechat-gwt.war" todir="${dist.dir}"/>
+	</target>
+
+	<target name="jar-gwt-core" depends="jar-icepush-core">
+		<ant antfile="build.xml" dir="./integration/gwt/core" target="jar"/>
+	</target>
+	
+	<target name="build.all" depends="bin-dist,bin-samples"/>
+	
+	
+</project>
