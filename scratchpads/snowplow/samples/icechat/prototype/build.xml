@@ -1,70 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="icechat-prototype" default="war">
 	
-	<property file="../../build-common.properties"/>
-	<property file="local.properties"/>
-	
-	<path id="compile.path">
-		<fileset dir="../../api/dist">
-			<include name="**/*.jar"/>
-		</fileset>
-		<fileset dir="../../lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../beans/dist">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../cdi/dist">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="./lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../cdi/lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-		<fileset dir="../../jee6/common_lib">
-			<include name="**/*.jar"/>
-		</fileset>	
-	</path>
-	
-	<target name="clean">
-		<delete dir="${build.dir}" failonerror="false" />
-		<delete dir="${dist.dir}" failonerror="false" includes="**" />
+	<property file="../build-common.properties" />
+
+	<import file="../common/build-common.xml" />
+
+	<target name="war" depends="compile">
+		<build.war>
+			<add.libs>
+				<fileset refid="beans" />
+				<fileset refid="auth" />
+			</add.libs>
+			<add.filesets>
+				<fileset dir="../ajax/build/webapp">
+					<include name="**/*"/>
+					<exclude name="**/index.html"/>
+					<exclude name="**/login.html"/>
+					<exclude name="**/icechat.js"/>
+				</fileset>
+				<fileset dir="../../../integration/prototype/core/src/main/javascript">
+					<include name="prototype.icepush.js"/>
+				</fileset>
+			</add.filesets>
+		</build.war>
+	</target>
+
+	<target name="compile" depends="clean">
+		<compile>
+			<add.classpath.elements>
+				<fileset refid="auth"/>
+			</add.classpath.elements>
+		</compile>
 	</target>
 	
-	<target name="war" depends="clean">
-        
-		<mkdir dir="${dist.dir}"/>
-		
-		<mkdir dir="${build.dir}/webapp"/>
-		<copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true">
-			<fileset dir="./src/main/webapp">	
-				<include name="**"/>
-			</fileset>
-		</copy>
-
-		<copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true" overwrite="true">
-			<fileset dir="../ajax/build/webapp">
-				<include name="**"/>
-				<exclude name="**/index.html"/>
-				<exclude name="**/login.html"/>
-				<exclude name="**/icechat.js"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/webapp/js" preservelastmodified="true" verbose="true" overwrite="true">
-			<fileset dir="../../../../integration/prototype/core/src/main/javascript">
-				<include name="prototype.icepush.js"/>
-			</fileset>
-		</copy>
-		
-		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${war.name}" 
-			webxml="${build.dir}/webapp/WEB-INF/web.xml">			
-		</war>
-		
-		<copy file="${dist.dir}/${war.name}" todir="/home/philip/glassfish-v2.1/domains/domain1/autodeploy" preservelastmodified="true" verbose="true"/>
-    </target>
-	
-
 </project>

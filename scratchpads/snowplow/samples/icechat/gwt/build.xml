@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="icechat-gwt" default="war" basedir=".">
+<project name="icechat-gwt" default="war" basedir="..">
 
-	<property file="../build-common.properties" />
-
+	<property file="../samples.properties" />
+	<property file="${root.offset}/build.properties" />
+	
+	<import file="../${root.offset}/build-common.xml"/>
 	<import file="../common/build-common.xml" />
+	
+	<macrodef  name="icepush.gwt.available">
+		<sequential>
+			<available file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" property="icepush.gwt.available"/>
+			<fail message="The core icepush-gwt.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
+				<condition>
+					<not>
+						<isset property="icepush.gwt.available" />
+					</not>
+				</condition>
+			</fail>
+		</sequential>
+	</macrodef>
 
-	<fileset id="gwt-integration" file="../../../integration/gwt/core/dist/icepush-gwt.jar" />
+	<fileset id="gwt-integration" file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" />
 
 	<!-- Configure path to GWT SDK -->
-	<property name="gwt.sdk" location="lib/gwtSDK" />
-	<property name="tests.lib.dir" location="lib/tests" />
-	<property name="build.tests" location="build-test" />
-	<property name="reports.tests" value="reports/junit" />
+	<property name="gwt.sdk" location="./gwt/lib/gwtSDK" />
+	<property name="tests.lib.dir" location="./gwt/lib/tests" />
+	<property name="build.tests" location="./gwt/build-test" />
+	<property name="reports.tests" value="./gwt/reports/junit" />
 
 	<path id="project.class.path">
 		<pathelement location="${build.dir}/webapp/WEB-INF/classes" />
 		<pathelement location="${build.dir}/classes" />
 		<pathelement location="${gwt.sdk}/gwt-user.jar" />
 		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
-		<fileset refid="icepush" />
 		<fileset refid="api" />
 		<fileset refid="beans" />
 		<fileset refid="gwt-integration" />
@@ -34,7 +48,8 @@
 	</target>
 
 	<target name="javac" depends="libs" description="Compile java source">
-		<compile>
+		<!--icepush.available/-->
+		<compile src.dir="./gwt/${java.dir}">
 			<add.classpath.elements>
 				<path refid="project.class.path" />
 			</add.classpath.elements>
@@ -42,9 +57,10 @@
 	</target>
 
 	<target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+		<icepush.gwt.available/>
 		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
 			<classpath>
-				<pathelement location="${java.dir}" />
+				<pathelement location="./gwt/${java.dir}" />
 				<path refid="project.class.path" />
 			</classpath>
 			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
@@ -62,7 +78,7 @@
 			<fileset refid="api"/>
 		</copy>
 		<copy todir="${build.dir}/webapp/common" preservelastmodified="false" verbose="true">
-			<fileset dir="../../common">
+			<fileset dir="../common">
 				<include name="**/*" />
 			</fileset>
 		</copy>
@@ -92,11 +108,8 @@
 	</target>
 
 	<target name="test" description="Run development and production mode tests">
-
 	</target>
 
-
-	<target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
 
 	<target name="build-server" depends="javac" description="Build this project">
 		<build.war>
@@ -110,7 +123,7 @@
 
 	<target name="war" depends="clean,gwtc" description="Create a war file">
 		<antcall target="test" />
-		<build.war>
+		<build.war web.dir="./gwt/${web.dir}">
 			<add.libs>
 				<fileset refid="beans" />
 				<fileset refid="gwt-integration" />

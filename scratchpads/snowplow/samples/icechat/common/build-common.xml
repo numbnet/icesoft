@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="icechat-common-build">
 	
-	<property name="common.resource.dir" value="../common"/>
+	<property name="common.resource.dir" value="./common"/>
 
-	<fileset id="api" dir="../api/dist">
+	<fileset id="api" dir="api/dist">
 		<include name="**/*.jar" />
 	</fileset>
-	<fileset id="beans" dir="../beans/dist">
+	<fileset id="beans" dir="beans/dist">
 		<include name="**/*.jar" />
 	</fileset>
-	<fileset id="auth" dir="../auth/dist">
+	<fileset id="auth" dir="auth/dist">
 		<include name="**/*.jar" />
 	</fileset>
-	<fileset id="icepush" dir="../../../core/build/dist">
-		<include name="icepush.jar" />
-	</fileset>
-
+	
 	<target name="clean">
 		<clean/>
 	</target>
@@ -31,48 +28,12 @@
 		</sequential>
 	</macrodef>
 
-	<macrodef name="compile">
-		<attribute name="src.copy.excludes" default="**/*.java" />
-		<attribute name="failonerror" default="true" />
-		<attribute name="src.javac.excludes" default="" />
-		<attribute name="compile.target" default="1.5" />
-		<attribute name="compile.source" default="1.5" />
-		<attribute name="compile.debug" default="true" />
-
-		<element name="add.javac.elements" optional="true" />
-		<element name="add.classpath.elements" optional="true" />
-
-		<sequential>
-			<echo>Compiling ${ant.project.name}...</echo>
-			<mkdir dir="${java.dir}"/>
-			<mkdir dir="${build.dir}/classes" />
-			
-			<javac destdir="${build.dir}/classes" sourcepath="" source="@{compile.source}" target="@{compile.target}" debug="@{compile.debug}" failonerror="@{failonerror}">
-				<src location="${java.dir}" />
-				<include name="**/*.java" />
-				<exclude name="@{src.javac.excludes}" />
-				<classpath>
-					<fileset dir="../../../lib">
-						<include name="servlet-api.jar" />
-					</fileset>
-					<fileset refid="icepush" />
-					<fileset refid="api" />
-					<fileset refid="beans" />
-					<add.classpath.elements />
-				</classpath>
-				<add.javac.elements />
-			</javac>
-
-			<copy todir="${build.dir}/classes" preservelastmodified="true">
-				<fileset dir="${java.dir}" excludes="@{src.copy.excludes}" />
-			</copy>
-
-		</sequential>
-	</macrodef>
 
 	<macrodef name="build.war">
 		<attribute name="war.file.name" default="${ant.project.name}.war" />
 		<attribute name="web.xml" default="${web.inf.dir}/web.xml" />
+		<attribute name="web.dir" default="${web.dir}"/>
+		
 		<element name="add.filesets" optional="true" />
 		<element name="add.libs" optional="true" />
 
@@ -81,7 +42,7 @@
 			<mkdir dir="${dist.dir}" />
 			<mkdir dir="${build.dir}/webapp" />
 			<copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true">
-				<fileset dir="${web.dir}">
+				<fileset dir="@{web.dir}">
 					<include name="**" />
 				</fileset>
 			</copy>
@@ -96,7 +57,7 @@
 				</fileset>
 			</copy>
 			<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-				<fileset refid="icepush" />
+				<fileset refid="icepush.dist" />
 				<fileset refid="api" />
 				<add.libs />
 			</copy>
