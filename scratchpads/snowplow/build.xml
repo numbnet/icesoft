@@ -108,10 +108,12 @@
 		<antcall target="clean-with-path-offset">
 			<param name="target.path.offset" value="jsp"/>
 		</antcall>
+		
 		<antcall target="clean-with-path-offset">
 			<param name="target.path.offset" value="gwt"/>
 		</antcall>
-		<ant target="clean" dir="./samples/icechat/gwt"/>
+		<ant antfile="gwt/build.xml" target="clean" dir="./samples/icechat"/>
+		
 		<antcall target="clean-with-path-offset">
 			<param name="target.path.offset" value="springMVC"/>
 		</antcall>

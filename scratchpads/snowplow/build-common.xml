@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="ICEpush integration common builds" basedir=".">
+<project name="ICEpush integration common builds">
 
 	<fileset id="dist.icepush.jar" file="${dist.dir}/icepush.jar" />
 
@@ -43,7 +43,8 @@
 		<attribute name="compile.source" default="1.5" />
 		<attribute name="compile.debug" default="true" />
 		<attribute name="compile.debuglevel" default="lines,vars,source"/>
-
+		<attribute name="src.dir" default="${java.dir}"/>
+		
 		<element name="add.javac.elements" optional="true" />
 		<element name="add.classpath.elements" optional="true" />
 
@@ -59,7 +60,7 @@
 				debuglevel="@{compile.debuglevel}"
 				failonerror="@{failonerror}">
 				
-				<src location="${java.dir}" />
+				<src location="@{src.dir}" />
 				<include name="**/*.java" />
 				<exclude name="@{src.javac.excludes}" />
 				<classpath>
@@ -146,15 +147,17 @@
 	</macrodef>
 
 	<macrodef name="icepush.available">
-		<sequential>
-		<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.available"/>
-		<fail message="The core icepush.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
-			<condition>
-				<not>
-					<isset property="icepush.available" />
-				</not>
-			</condition>
-		</fail>
+		<attribute name="extra.offset" default=""/>
+		<sequential>			
+			<available file="${extra.offset}${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.jar.present"/>
+			<echo message="looking for @{extra.offset}${root.offset}/core/${dist.dir}/icepush.jar"/>
+			<fail message="The core icepush.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
+				<condition>
+					<not>
+						<isset property="icepush.jar.present" />
+					</not>
+				</condition>
+			</fail>
 		</sequential>
 	</macrodef>
 	

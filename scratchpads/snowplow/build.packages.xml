@@ -1,39 +1,99 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="ICEpush integration builds" basedir="." default="package.all">
-	
-	<import file="build.xml"/>
-	
+<project name="ICEpush integration builds" default="package.all">
+
+	<import file="build.xml" />
+
 	<target name="package.all">
-		<antcall target="package.jsp" inheritall="false"/>
+		<antcall target="clean-all" />
+		<antcall target="package.jsp" />
+		<antcall target="package.gwt" />
+		<antcall target="package.jquery" />
+		<antcall target="package.prototype" />
+		<antcall target="package.springmvc" />
+		<antcall target="package.wicket" />
 	</target>
 
 	<target name="package.jsp">
-		<property name="target" value="jsp"/>
-		<antcall target="base.package"/>
+		<property name="target" value="jsp" />
+		<antcall target="base.package" />
 		<copy todir="./dist/${target}/samples">
-			<fileset dir="./integration/jsp/samples"/>
+			<fileset dir="./integration/jsp/samples" />
 		</copy>
-		<copy todir="./dist/${target}/samples" file="./etc/samples.properties"
-			overwrite="true"/>
-		<antcall target="zip.distribution"/>
-		<delete dir="./dist/${target}"/>
+		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
+		<antcall target="zip.distribution" />
+		<delete dir="./dist/${target}" />
 	</target>
-	
-	
-	<target name="base.package" depends="clean-all">
-		<delete dir="./dist/${target}"/>
-		<mkdir dir="./dist/${target}"/>
+
+	<target name="package.gwt">
+		<property name="target" value="gwt" />
+		<build.package/>
+	</target>
+
+	<target name="package.jquery">
+		<property name="target" value="jquery" />
+		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**"/>
+	</target>
+
+	<target name="package.prototype">
+		<property name="target" value="prototype" />
+		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**"/>
+	</target>
+
+	<target name="package.wicket">
+		<property name="target" value="wicket" />
+		<build.package icechat.extra.includes="icechat/cdi/**"/>
+	</target>
+
+	<target name="package.spring">
+		<property name="target" value="spring" />
+		<build.package/>
+	</target>
+
+	<macrodef name="build.package">
+		<attribute name="icechat.extra.includes" default="" />
+		<sequential>
+			<antcall target="base.package" />
+			<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />		
+			<bundle.icechat extra.includes="@{icechat.extra.includes}" />
+			<antcall target="zip.distribution" />
+			<delete dir="./dist/${target}" />
+		</sequential>
+	</macrodef>
+
+	<target name="base.package">
+		<delete dir="./dist/${target}" />
+		<mkdir dir="./dist/${target}" />
 		<copy todir="./dist/${target}">
-			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/build.xml integration/${target}/samples/**"/>			
+			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/build.xml integration/${target}/samples/**" />			
 		</copy>
-		<mkdir dir="./dist/${target}/samples"/>	
-		<copy todir="./dist/${target}" file="./build-common.xml"/>
-		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml"/>
-		<copy file="build.properties" todir="./dist/${target}"/>
+		<mkdir dir="./dist/${target}/samples" />	
+		<copy todir="./dist/${target}" file="./build-common.xml" />
+		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml" />
+		<copy file="build.properties" todir="./dist/${target}" />
+		<copy todir="./dist/${target}/samples">
+			<fileset dir="./integration/${target}/samples" />			
+		</copy>
+
 	</target>
 	
 	<target name="zip.distribution">
 		<zip destfile="./dist/icepush-${target}.zip" basedir="./dist/${target}"></zip>
 	</target>
+	
+	<macrodef name="bundle.icechat">
+		<attribute name="extra.includes" default="" />
+		<sequential>
+			<copy todir="./dist/${target}/samples">
+				<fileset dir="./samples" excludes="**/build/** **/dist/**" includes="icechat/api/** 
+						icechat/beans/**
+						icechat/common/**
+						icechat/${target}/**
+						icechat/lib/**
+						icechat/build-common.properties
+						@{extra.includes}"> 
+				</fileset>
+			</copy>
+		</sequential>
+	</macrodef>
 
 </project>
