@@ -39,12 +39,13 @@ import java.util.Observer;
 
 public class SessionBoundServer extends PathDispatcher {
     private static final String ICEFacesBridgeRequestPattern = "\\.icefaces\\.jsf$";
-    private static final String SessionExpiryGroupName = "session-expiry";
     public static final String SessionExpiryExtension = ":se";
     private PushContext pushContext;
+    private String groupName;
 
     public SessionBoundServer(final PushContext pushContext, final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
         this.pushContext = pushContext;
+        this.groupName = session.getId();
 
         final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
             public String mimeTypeFor(String path) {
@@ -52,7 +53,6 @@ public class SessionBoundServer extends PathDispatcher {
             }
         };
         final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
-        final String groupName = session.getId();
         windowScopeManager.onActivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -63,14 +63,14 @@ public class SessionBoundServer extends PathDispatcher {
 
                 String windowID = (String) o;
                 pushContext.addGroupMember(groupName, windowID);
-                pushContext.addGroupMember(SessionExpiryGroupName, generateSessionExpiryID(windowID));
+                pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
             }
         });
         windowScopeManager.onDisactivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
                 String windowID = (String) o;
                 pushContext.removeGroupMember(groupName, (String) o);
-                pushContext.removeGroupMember(SessionExpiryGroupName, generateSessionExpiryID(windowID));
+                pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
             }
         });
         final SessionRenderer sessionRenderer = new SessionRenderer() {
@@ -85,10 +85,10 @@ public class SessionBoundServer extends PathDispatcher {
     }
 
     public void shutdown() {
-        pushContext.push(SessionExpiryGroupName);
+        pushContext.push(inferSessionExpiryIdentifier(groupName));
     }
 
-    public static String generateSessionExpiryID(String windowID) {
+    public static String inferSessionExpiryIdentifier(String windowID) {
         return windowID + SessionExpiryExtension;
     }
 }

@@ -82,7 +82,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
                     if (EnvUtils.isICEpushPresent()) {
                         output = new UIOutput();
                         output.getAttributes().put("escape", "false");
-                        String sessionExpiryPushID = SessionBoundServer.generateSessionExpiryID(id);
+                        String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(id);
                         output.setValue("<script type=\"text/javascript\">" +
                                 "ice.push.register(['" + id + "'], ice.retrieveUpdate);" +
                                 "ice.push.register(['" + sessionExpiryPushID + "']," +
