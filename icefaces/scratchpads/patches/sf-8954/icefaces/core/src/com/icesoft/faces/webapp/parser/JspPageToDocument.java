@@ -605,7 +605,7 @@ public class JspPageToDocument {
         return new StringBufferInputStream(result);
     }
 
-    static String getInputAsString(Reader in) {
+    public static String getInputAsString(Reader in) {
         char[] buf = new char[1024];
         StringWriter out = new StringWriter();
 

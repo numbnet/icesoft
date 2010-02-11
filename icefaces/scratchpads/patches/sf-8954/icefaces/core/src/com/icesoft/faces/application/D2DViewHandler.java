@@ -60,6 +60,7 @@ import javax.faces.render.RenderKitFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -67,6 +68,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <B>D2DViewHandler</B> is the ICEfaces ViewHandler implementation
@@ -92,6 +94,8 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.actionURLSuffix";
     private final static String RELOAD_INTERVAL =
             "com.icesoft.faces.reloadInterval";
+    private final static String JSP_CACHE =
+            "com.icesoft.faces.jspcache";
 
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -107,6 +111,8 @@ public class D2DViewHandler extends ViewHandler {
     protected long reloadIntervalDefault = 10;
     private boolean parametersInitialized = false;
 
+    private boolean jspCache = false;
+    private HashMap viewInputMap = new HashMap();
     protected Parser parser;
     protected ViewHandler delegate;
 
@@ -406,26 +412,38 @@ public class D2DViewHandler extends ViewHandler {
 
         if (reloadView) {
             Reader viewInput = null;
-
-            try {
-                viewInput = new InputStreamReader(
-                        viewConnection.getInputStream(), CHAR_ENCODING);
-                if (viewId.endsWith(".jsp")) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("JspPageToDocument transforming JSP page " +
-                                String.valueOf(viewURL));
+            String cachedViewInput = null;
+            if (jspCache) {
+                cachedViewInput = (String) viewInputMap.get(viewId);
+            }
+            if (null == cachedViewInput)  {
+                try {
+                    viewInput = new InputStreamReader(
+                            viewConnection.getInputStream(), CHAR_ENCODING);
+                    if (viewId.endsWith(".jsp")) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("JspPageToDocument transforming JSP page " +
+                                    String.valueOf(viewURL));
+                        }
+                        viewInput = JspPageToDocument.transform(viewInput);
+                    } else if (viewId.endsWith(".jspx")) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("JspPageToDocument preprocessing JSP doc " +
+                                    String.valueOf(viewURL));
+                        }
+                        viewInput =
+                                JspPageToDocument.preprocessJspDocument(viewInput);
                     }
-                    viewInput = JspPageToDocument.transform(viewInput);
-                } else if (viewId.endsWith(".jspx")) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("JspPageToDocument preprocessing JSP doc " +
-                                String.valueOf(viewURL));
+                    if (jspCache)  {
+                        String viewInputString = JspPageToDocument.getInputAsString(viewInput);
+                        viewInputMap.put(viewId, viewInputString);
+                        viewInput = new StringReader(viewInputString);
                     }
-                    viewInput =
-                            JspPageToDocument.preprocessJspDocument(viewInput);
+                } catch (Throwable e) {
+                    throw new FacesException("Can't read stream for " + viewId, e);
                 }
-            } catch (Throwable e) {
-                throw new FacesException("Can't read stream for " + viewId, e);
+            } else {
+                viewInput = new StringReader(cachedViewInput);
             }
 
             // Parse the page;
@@ -859,6 +877,7 @@ public class D2DViewHandler extends ViewHandler {
 
         ExternalContext ec = context.getExternalContext();
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
+        jspCache = "true".equalsIgnoreCase(ec.getInitParameter(JSP_CACHE));
         String stateManagementServerSide = ec.getInitParameter(StateManager.STATE_SAVING_METHOD_PARAM_NAME);
 
         // #3980 This enables state saving to work in jsf1.1 environment with the default settings
