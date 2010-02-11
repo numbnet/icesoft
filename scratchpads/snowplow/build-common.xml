@@ -34,6 +34,14 @@
 		<mkdir dir="${build.dir}/classes" />
 		<mkdir dir="${dist.dir}" />
 	</target>
+	
+	<target name="compile" depends="pre.compile">
+		<compile/>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<build.jar/>	
+	</target>
 
 	<macrodef name="compile">
 		<attribute name="src.copy.excludes" default="**/*.java" />
