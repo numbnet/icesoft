@@ -27,6 +27,6 @@
 	</target>
 	
 	<target name="clean">
-		<ant antfile="build.xml" dir="./integration/jquery/samples/basic" target="clean"/>
+		<ant antfile="build.xml" dir="./samples/basic" target="clean"/>
 	</target>
 </project>
