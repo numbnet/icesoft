@@ -76,13 +76,18 @@ public class BridgeSetup extends ViewHandlerWrapper {
 
                     output = new UIOutput();
                     output.getAttributes().put("escape", "false");
-                    output.setValue("<script type=\"text/javascript\">window.ice.window = " + id + ";</script>");
+                    output.setValue("<script type=\"text/javascript\">window.ice.window = '" + id + "';</script>");
                     root.addComponentResource(context, output, "body");
 
                     if (EnvUtils.isICEpushPresent()) {
                         output = new UIOutput();
                         output.getAttributes().put("escape", "false");
-                        output.setValue("<script type=\"text/javascript\">ice.push.register(['" + id + "'], ice.retrieveUpdate);</script>");
+                        String sessionExpiryPushID = SessionBoundServer.generateSessionExpiryID(id);
+                        output.setValue("<script type=\"text/javascript\">" +
+                                "ice.push.register(['" + id + "'], ice.retrieveUpdate);" +
+                                "ice.push.register(['" + sessionExpiryPushID + "']," +
+                                "function(){ice.sessionExpired();ice.push.deregister(['" + id + "', '" + sessionExpiryPushID + "']);});" +
+                                "</script>");
                         root.addComponentResource(context, output, "body");
                     }
                 } catch (Exception e) {
