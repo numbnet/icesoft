@@ -12,6 +12,7 @@
 		<build.war>
 			<add.libs>
 				<fileset refid="cdi" />
+				<fileset refid="beans"/>
 			</add.libs>
 		</build.war>
 	</target>
