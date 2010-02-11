@@ -18,7 +18,7 @@
 	</target>
 
 	<target name="compile" depends="init-compile">
-		<icepush.available />
+		<!--icepush.available /-->
 		<compile>
 			<add.classpath.elements>
 				<fileset dir="lib/gwt" includes="**/*.jar" />
