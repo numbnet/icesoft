@@ -14,16 +14,20 @@
 			<add.libs>
 				<fileset refid="beans" />
 				<fileset refid="auth" />
+				<fileset refid="cdi"/>
 			</add.libs>
 		</build.war>
 	</target>
 
 	<target name="compile" depends="clean">
-		<compile>
+		<compile compile.source="1.6" compile.target="1.6">
 			<add.classpath.elements>
 				<fileset refid="auth"/>
 				<fileset refid="api"/>
 				<fileset refid="beans"/>
+				<fileset refid="cdi"/>
+				<fileset dir="lib"/>
+				<fileset dir="../cdi/lib"/>
 			</add.classpath.elements>
 		</compile>
 	</target>

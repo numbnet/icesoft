@@ -95,15 +95,30 @@
 		<sequential>
 			<echo>Jarring ${ant.project.name}...</echo>
 			<delete file="${dist.dir}/@{jar.file.name}" />
-			<mkdir dir="${dist.dir}" />			
-			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
+			<mkdir dir="${dist.dir}" />	
+			<mkdir dir="${build.dir}/jar"/>		
+			<copy todir="${build.dir}/jar">
 				<fileset dir="${classes.dir}">
+					<include name="**/*"/>
 					<add.excludes />
 				</fileset>
+			</copy>
+			<copy todir="${build.dir}/jar">
 				<fileset dir="${java.dir}">
 					<include name="src/**" />
 					<include name="*.xml" />
 					<include name="*.properties" />
+				</fileset>
+			</copy>
+			<copy todir="${build.dir}/jar/META-INF" failonerror="false" >
+				<fileset dir="${meta.dir}">
+	            	<include name="*.*"/>
+	            </fileset>
+			</copy>
+			
+			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
+				<fileset dir="${build.dir}/jar">
+					<include name="**/*"></include>
 				</fileset>
 				<add.filesets/>
 				<manifest>
