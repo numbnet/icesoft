@@ -24,6 +24,8 @@ public class BasicSampleServlet extends HttpServlet{
 	private static final String POST_CREATE_GROUP = "/creategroup";
 	
 	private static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
+	
+	private Timer timer;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -86,11 +88,10 @@ public class BasicSampleServlet extends HttpServlet{
 		return list;
 	}
 
-	@Override
 	public void init(final ServletConfig config) throws ServletException {
 		
 		super.init(config);
-		Timer timer = new Timer();
+		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask(){
 
 			@Override
@@ -100,6 +101,12 @@ public class BasicSampleServlet extends HttpServlet{
 			
 		}, 2000, 1000);
 		
+	}
+
+	public void destroy() {
+		super.destroy();
+		if( timer != null )
+			timer.cancel();
 	}
 
 }
