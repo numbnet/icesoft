@@ -32,12 +32,16 @@
 		<ant antfile="build.xml" target="war" dir="./gwt"/>
 	</target>
 	
+	<target name="icefaces2" depends="cdi-beans">
+		<ant antfile="build.xml" target="war" dir="./icefaces"/>
+	</target>
+
 	<target name="gwt-devmode" depends="beans">
 		<ant antfile="build.xml" target="devmode" dir="./web/gwt"/>
 	</target>
 
 	<target name="ajax" depends="auth,beans">
-		<ant antfile="build.xml" target="war" dir="./web/ajax"/>
+		<ant target="war" dir="ajax"/>
 	</target>	
 
 	<target name="jquery" depends="ajax">
@@ -53,18 +57,20 @@
 	</target>
 	
 	<target name="clean-all">
-		<ant antfile="build.xml" target="clean" dir="./api"/>
-		<ant antfile="build.xml" target="clean" dir="./auth"/>
-		<ant antfile="build.xml" target="clean" dir="./beans"/>
-		<ant antfile="build.xml" target="clean" dir="./cdi"/>
+		<ant target="clean" dir="./api"/>
+		<ant target="clean" dir="./auth"/>
+		<ant target="clean" dir="./beans"/>
+		<ant target="clean" dir="./cdi"/>
 		<!--ant antfile="build.xml" target="clean" dir="./jee6/jaxrs"/ --><!-- doesn't seem to exist anymore -->
 		
-		<ant antfile="build.xml" target="clean" dir="./web/wicket"/>
-		<ant antfile="build.xml" target="clean" dir="./web/jsf2"/>
-		<ant antfile="build.xml" target="clean" dir="./web/gwt"/>
-		<ant antfile="build.xml" target="clean" dir="./web/jquery"/>
-		<ant antfile="build.xml" target="clean" dir="./web/spring"/>
-		<ant antfile="build.xml" target="clean" dir="./web/spring-region"/>
+		<ant target="clean" dir="./web/wicket"/>
+		<ant target="clean" dir="./web/jsf2"/>
+		<ant target="clean" dir="./ajax"/>
+		<ant target="clean" dir="./gwt"/>
+		<ant target="clean" dir="./jquery"/>
+		<ant target="clean" dir="./prototype"/>
+		<ant target="clean" dir="./web/spring"/>
+		<ant target="clean" dir="./web/spring-region"/>
 	</target>
 	
 	<fileset id="src.api" dir="./api">

@@ -1,37 +1,16 @@
-<project name="icechat-api" default="jar">
-    
-    <property file="../build-common.properties"/>
-    
-    <path id="compile.path">
-        <fileset dir="../lib">
-            <include name="**/*.jar"/>
-        </fileset>
-    </path>
+<project name="icechat-api">
 
-    <target name="clean">
-        <echo>Cleaning API...</echo>
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
-    </target>
-    
-    <target name="init-compile" depends="clean">
-        <mkdir dir="${build.dir}"/>
-    </target>
-    
-    <target name="compile" depends="init-compile">
-        <echo>Compiling API...</echo>
-        <javac srcdir="${java.dir}" destdir="${build.dir}"  debug="true" debuglevel="lines,vars,source"
-        	source="1.5" target="1.5">
-            <classpath refid="compile.path"/>
-        </javac>
-    </target>
-    
-    <target name="jar" depends="compile">
-        <echo>Building API Jar...</echo>
-        <mkdir dir="${dist.dir}"/>
-        <jar basedir="${build.dir}" destfile="${dist.dir}/${icechat.api.jar.name}">
-            <!-- uncomment if we include a meta inf dir in the future-->
-            <!--metainf dir="${resources.dir}/META-INF"/-->
-        </jar>
-    </target>
+	<property name="root.offset" value="../../.." />
+	<property file="${root.offset}/build.properties" />
+
+	<import file="${root.offset}/build-common.xml" />
+	<import file="../build-common.xml" />
+
+	<target name="compile" depends="pre.compile">
+		<compile/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<build.jar/>
+	</target>
 </project>

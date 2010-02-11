@@ -1,41 +1,18 @@
-<project name="icechat-auth" default="jar">
+<project name="icechat-auth">
     
-    <property file="../build-common.properties"/>
-    
-    <path id="compile.path">
-        <fileset dir="../lib">
-            <include name="**/*.jar"/>
-        </fileset>
-        <fileset dir="../api/dist">
-            <include name="**/*.jar"/>
-        </fileset>
-    </path>
+	<property name="root.offset" value="../../.." />
+	<property file="${root.offset}/build.properties" />
 
-    <target name="clean">
-        <echo>Cleaning Auth...</echo>
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
-    </target>
+	<import file="${root.offset}/build-common.xml" />
+	<import file="../build-common.xml" />
+	
+	<target name="compile" depends="pre.compile">
+		<compile>
+			<add.classpath.elements>				
+				<fileset refid="api"/>
+			</add.classpath.elements>
+		</compile>
+	</target>
+
     
-    <target name="init-compile" depends="clean">
-        <mkdir dir="${build.dir}"/>
-    </target>
-    
-    <target name="compile" depends="init-compile">
-        <echo>Compiling Auth...</echo>
-        <javac srcdir="${java.dir}" destdir="${build.dir}"
-        	source="1.5" target="1.5"
-        	debug="true" debuglevel="lines,vars,source">
-            <classpath refid="compile.path"/>
-        </javac>
-    </target>
-    
-    <target name="jar" depends="compile">
-        <echo>Building Auth Jar...</echo>
-        <mkdir dir="${dist.dir}"/>
-        <jar basedir="${build.dir}" destfile="${dist.dir}/${icechat.auth.jar.name}">
-            <!-- uncomment if we include a meta inf dir in the future-->
-            <!--metainf dir="${resources.dir}/META-INF"/-->
-        </jar>
-    </target>
-</project>
+ </project>

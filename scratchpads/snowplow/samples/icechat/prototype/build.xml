@@ -3,7 +3,7 @@
 	
 	<property file="../build-common.properties" />
 
-	<import file="../common/build-common.xml" />
+	<import file="../build-common.xml" />
 
 	<target name="war" depends="compile">
 		<build.war>

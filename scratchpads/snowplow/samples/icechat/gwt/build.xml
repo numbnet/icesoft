@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="icechat-gwt" default="war" basedir="..">
+<project name="icechat-gwt" default="war">
 
-	<property file="../samples.properties" />
+	<property name="root.offset" value="../../.."/>
 	<property file="${root.offset}/build.properties" />
 	
-	<import file="../${root.offset}/build-common.xml"/>
-	<import file="../common/build-common.xml" />
+	<import file="${root.offset}/build-common.xml"/>
+	<import file="../build-common.xml" />
 	
 	<macrodef  name="icepush.gwt.available">
 		<sequential>
