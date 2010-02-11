@@ -29,7 +29,7 @@
 	</target>
 
 	<target name="gwt" depends="beans">
-		<ant antfile="build.xml" target="war" dir="./gwt"/>
+		<ant target="war" dir="./gwt"/>
 	</target>
 	
 	<target name="icefaces2" depends="cdi-beans">
@@ -61,10 +61,8 @@
 		<ant target="clean" dir="./auth"/>
 		<ant target="clean" dir="./beans"/>
 		<ant target="clean" dir="./cdi"/>
-		<!--ant antfile="build.xml" target="clean" dir="./jee6/jaxrs"/ --><!-- doesn't seem to exist anymore -->
-		
 		<ant target="clean" dir="./web/wicket"/>
-		<ant target="clean" dir="./web/jsf2"/>
+		<ant target="clean" dir="./jsf2"/>
 		<ant target="clean" dir="./ajax"/>
 		<ant target="clean" dir="./gwt"/>
 		<ant target="clean" dir="./jquery"/>
