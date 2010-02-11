@@ -13,9 +13,8 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.icepush.samples.icechat.cdi.controller.LoginController;
 import org.icepush.samples.icechat.cdi.model.CredentialsBean;
-import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
+import org.icepush.samples.icechat.controller.ILoginController;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 /**
@@ -25,8 +24,7 @@ import org.icepush.samples.icechat.service.exception.LoginFailedException;
 public final class LoginPage extends AppBasePage {
 
     @Inject
-    @RemoveAmbiguity
-    LoginController loginController;
+    ILoginController loginController;
     CompoundPropertyModel compoundLoginController = new CompoundPropertyModel(loginController);
 
     CredentialsBean credentialsBean = new CredentialsBean();
@@ -38,6 +36,8 @@ public final class LoginPage extends AppBasePage {
         loginController.setCredentialsBean(credentialsBean);
 
         final Form loginForm = new Form("login",compoundLoginController);
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("loginMessages");
+        feedbackPanel.setOutputMarkupId(true);
 
         loginForm.add(new RequiredTextField<String>("credentialsBean.userName"));
         loginForm.add(new TextField<String>("credentialsBean.nickName"));
@@ -47,10 +47,11 @@ public final class LoginPage extends AppBasePage {
                         try {
                             loginController.login(credentialsBean.getUserName(),
                                             credentialsBean.getPassword());
+                            setResponsePage(new ChatPage());
                         } catch (LoginFailedException e) {
-                                this.warn(e.getMessage());
+                            this.warn(e.getMessage());
+                            target.addComponent(feedbackPanel);
                         }
-                        setResponsePage(new ChatPage());
                 }
         });
         loginForm.add(new AjaxButton("registerButton") {
@@ -63,8 +64,7 @@ public final class LoginPage extends AppBasePage {
                 }
         });
 
-        loginForm.add(new FeedbackPanel("loginMessages")
-                        .setOutputMarkupId(true));
+        loginForm.add(feedbackPanel);
 
         add(loginForm);        
     }
