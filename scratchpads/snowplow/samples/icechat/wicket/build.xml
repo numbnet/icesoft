@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="icechat-wicket" default="war">
     
-	<property name="root.offset" value="../../../.."/>
+	<property name="root.offset" value="../../.."/>
 	<property file="${root.offset}/build.properties" />
 
 	<import file="${root.offset}/build-common.xml" />
-	<import file="../../build-common.xml" />
+	<import file="../build-common.xml" />
     
      
 	<target name="war" depends="compile">
@@ -19,6 +19,8 @@
 	<target name="compile" depends="clean">
 		<compile>
 			<add.classpath.elements>
+				<fileset refid="api"/>
+				<fileset refid="beans"/>
 				<fileset refid="cdi"/>
 				<fileset dir="${web.dir}/WEB-INF/lib"/>
 			</add.classpath.elements>

@@ -17,7 +17,7 @@
 	</target>
 
 	<target name="wicket" depends="cdi-beans">
-		<ant target="war" dir="./web/wicket" />
+		<ant target="war" dir="./wicket" />
 	</target>
 
 	<target name="jsf2" depends="cdi-beans">
