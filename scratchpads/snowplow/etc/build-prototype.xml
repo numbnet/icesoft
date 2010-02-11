@@ -1,4 +1,4 @@
-<project default="build.all" name="ICEpsuh Prototype Integration builds">
+<project default="build.all" name="ICEpush Prototype Integration builds">
 
 	<property file="build.properties"/>
 	<import file="build-common.xml"/>

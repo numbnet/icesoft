@@ -13,7 +13,7 @@
 	
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/dice" target="war"/>
-		<copy file="${samples.dir}/dice/dist/icepush-jquery-dice.war" todir="${dist.dir}"/>
+		<copy file="${samples.dir}/dice/dist/icepush-springmvc-dice.war" todir="${dist.dir}"/>
 		
 		<ant dir="${samples.dir}/icechat/springmvc" target="war">
 		</ant>
