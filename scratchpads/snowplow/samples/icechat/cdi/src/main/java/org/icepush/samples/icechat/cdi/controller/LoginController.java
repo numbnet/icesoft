@@ -15,7 +15,6 @@ import org.icepush.samples.icechat.cdi.qualifier.RemoveAmbiguity;
 
 @Named
 @SessionScoped
-@RemoveAmbiguity
 public class LoginController extends BaseLoginControllerBean implements Serializable{
 	
 	@Inject
