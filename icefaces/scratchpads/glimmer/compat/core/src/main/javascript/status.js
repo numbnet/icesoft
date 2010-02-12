@@ -281,7 +281,9 @@ var ComponentIndicators;
 
     DefaultIndicators = function(configuration, container) {
         var connectionLostRedirect = configuration.connectionLostRedirectURI ? RedirectIndicator(configuration.connectionLostRedirectURI) : null;
+        var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
         var messages = configuration.messages;
+        var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
         var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
         var busyIndicator = PointerIndicator(container);
         var overlay = object(function(method) {
@@ -320,6 +322,7 @@ var ComponentIndicators;
         indctrs = {
             blockUI: configuration.blockUI,
             busy: busyIndicator,
+            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
             connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
             serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
             connectionTrouble: NOOPIndicator
@@ -342,6 +345,7 @@ var ComponentIndicators;
                 busy: busy,
                 connectionTrouble: connectionTrouble,
                 connectionLost: MuxIndicator(connectionLost, indctrs.connectionLost),
+                sessionExpired: MuxIndicator(connectionLost, indctrs.sessionExpired),
                 serverError: MuxIndicator(connectionLost, indctrs.serverError)
             };
         } else {
@@ -349,6 +353,7 @@ var ComponentIndicators;
                 busy: busy,
                 connectionTrouble: connectionTrouble,
                 connectionLost: indctrs.connectionLostRedirect ? indctrs.connectionLostRedirect : connectionLost,
+                sessionExpired: indctrs.sessionExpiredRedirect ? indctrs.sessionExpiredRedirect : connectionLost,
                 serverError: connectionLost
             };
         }
@@ -369,6 +374,9 @@ var ComponentIndicators;
         });
         ice.onBlockingConnectionLost(function() {
             indctrs && on(indctrs.connectionLost);
+        });
+        ice.onSessionExpiry(function() {
+            indctrs && on(indctrs.sessionExpired);
         });
     });
 })();
