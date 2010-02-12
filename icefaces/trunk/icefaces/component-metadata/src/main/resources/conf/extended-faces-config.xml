@@ -197,6 +197,7 @@
   <!ENTITY ice-cust-panelBorder-props SYSTEM "ice_cust_properties/cust-panelBorder-props.xml">
   <!ENTITY ice-cust-datapaginator-props SYSTEM "ice_cust_properties/cust-datapaginator-props.xml">
   <!ENTITY ice-cust-inputFile-props SYSTEM "ice_cust_properties/cust-inputFile-props.xml">
+  <!ENTITY ice-cust-jseventlistener-props SYSTEM "ice_cust_properties/cust-jseventlistener-props.xml">
   <!ENTITY ice-cust-gmap-props SYSTEM "ice_cust_properties/cust-gmap-props.xml">
   <!ENTITY ice-cust-gMapLatLng-props SYSTEM "ice_cust_properties/cust-gMapLatLng-props.xml">
   <!ENTITY ice-cust-gMapLatLngs-props SYSTEM "ice_cust_properties/cust-gMapLatLngs-props.xml">
@@ -346,6 +347,9 @@
   
   <!ENTITY inputFile-component   SYSTEM "custom/inputFile-component.xml">
   <!ENTITY inputFile-renderer    SYSTEM "custom/inputFile-renderer.xml">
+
+  <!ENTITY jseventlistener-component   SYSTEM "custom/jseventlistener-component.xml">
+  <!ENTITY jseventlistener-renderer    SYSTEM "custom/jseventlistener-renderer.xml">
 
   <!ENTITY gmap-component   SYSTEM "custom/gmap-component.xml">
   <!ENTITY gmap-renderer    SYSTEM "custom/gmap-renderer.xml">
@@ -544,6 +548,7 @@
 	<!--  custom component -->
 	&selectinputdate-component;
 	&inputFile-component;
+	&jseventlistener-component;
 	&gmap-component;
     &gMapLatLng-component;
     &gMapLatLngs-component;
@@ -634,6 +639,7 @@
 		<!-- custom component -->
 		&selectinputdate-renderer;
 		&inputFile-renderer;
+		&jseventlistener-renderer;
 		&gmap-renderer;
         &gMapLatLng-renderer;
         &gMapLatLngs-renderer;
