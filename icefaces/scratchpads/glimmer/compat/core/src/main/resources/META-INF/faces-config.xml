@@ -5,7 +5,7 @@
               metadata-complete="false">
     <ordering>
         <before>
-            <name>ICEfaces core</name>
+            <name>ICEfacesCore</name>
         </before>
     </ordering>
 <!--
