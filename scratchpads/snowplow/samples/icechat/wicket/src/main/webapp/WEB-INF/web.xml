@@ -23,6 +23,10 @@
             <param-name>applicationClassName</param-name>
             <param-value>org.icepush.samples.icechat.wicket.ICEchatWicketApplication</param-value>
         </init-param>
+        <init-param>
+            <param-name>ignorePaths</param-name>
+            <param-value>*.icepush/</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
