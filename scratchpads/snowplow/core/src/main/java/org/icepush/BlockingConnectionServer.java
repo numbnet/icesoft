@@ -96,6 +96,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
                 //resend notifications if the window owning the blocking connection has changed
                 String currentWindow = request.getHeader("ice.push.window");
+                currentWindow = currentWindow == null ? "" : currentWindow;
                 boolean resend = !lastWindow.equals(currentWindow);
                 lastWindow = currentWindow;
 
