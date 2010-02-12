@@ -67,7 +67,7 @@
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
-                <fileset dir="../../core/build/dist"/>
+                <fileset dir="../../core/dist"/>
             </classpath>
         </javac>
 
@@ -83,9 +83,9 @@
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
-                <patternset refid="lib.deploy" />
+                <patternset refid="lib.deploy"/>
             </lib>
-            <lib dir="../../core/build/dist"/>
+            <lib dir="../../core/dist"/>
             <classes dir="${classes.dir}"/>
             <fileset dir="../../core/build/javascript">
             </fileset>
