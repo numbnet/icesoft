@@ -459,6 +459,17 @@ public class MenuBar extends UICommand implements NamingContainer {
 
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
-    } 
+    }
+
+    public String getJsCall(FacesContext context) {
+        String call = null;
+        if (isKeyboardNavigationEnabled()) {
+            call = "new Ice.MenuBarKeyNavigator('" +
+                    getClientId(context) + "', " +
+                    isDisplayOnClick() + ");";
+            JavascriptContext.addJavascriptCall(context, call);
+        }
+        return call;
+    }
 }
 

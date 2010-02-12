@@ -48,6 +48,7 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 public class MenuBarRenderer extends DomBasicRenderer {
@@ -123,6 +124,13 @@ public class MenuBarRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         super.encodeEnd(facesContext, uiComponent);
+        String call = ((MenuBar)uiComponent).getJsCall(facesContext);
+        if (call != null) {
+            ResponseWriter writer = facesContext.getResponseWriter();
+            writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
+            writer.write(call);
+            writer.endElement(HTML.SCRIPT_ELEM);
+        }
     }
 
 }
