@@ -51,6 +51,7 @@ public class Person  implements Serializable {
     protected String firstName;
     protected String phone;
     protected boolean selected;
+    private boolean edit;
 
     public Person() {
     }
@@ -91,5 +92,13 @@ public class Person  implements Serializable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 }
