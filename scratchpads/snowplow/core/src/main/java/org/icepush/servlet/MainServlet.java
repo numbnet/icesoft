@@ -2,6 +2,7 @@ package org.icepush.servlet;
 
 import org.icepush.CodeServer;
 import org.icepush.Configuration;
+import org.icepush.ConfigurationServer;
 import org.icepush.PushContext;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
@@ -30,6 +31,7 @@ public class MainServlet implements PseudoServlet {
 
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
+        pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(configuration)))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
                 return new BrowserBoundServlet(pushContext, outboundNotifier, inboundNotifier, timer, configuration);

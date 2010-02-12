@@ -40,7 +40,7 @@ var whenTrouble = operator();
 var shutdown = operator();
 var resetConnection = operator();
 
-function AsyncConnection(logger, windowID, configuration) {
+function AsyncConnection(logger, windowID, receiveURI) {
     var logger = childLogger(logger, 'async-connection');
     var channel = Client(false);
     var onReceiveListeners = [];
@@ -55,7 +55,6 @@ function AsyncConnection(logger, windowID, configuration) {
     var listening = object(function(method) {
         method(remove, noop);
     });
-    var receiveURI = 'listen.icepush' + namespace.uriextension;
 
     //clear connectionDownListeners to avoid bogus connection lost messages
     onBeforeUnload(window, function() {
@@ -114,13 +113,13 @@ function AsyncConnection(logger, windowID, configuration) {
         try {
             debug(logger, "closing previous connection...");
             close(listener);
-            debug(logger, "connect...");
 
             lastSentPushIds = registeredPushIds();
             if (isEmpty(lastSentPushIds)) {
                 //mark blocking connection as not started, with current window as first candidate to re-initiate the connection 
                 offerCandidature();
             } else {
+                debug(logger, "connect...");
                 listener = postAsynchronously(channel, receiveURI, function(q) {
                     each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                 }, function(request) {
@@ -149,7 +148,8 @@ function AsyncConnection(logger, windowID, configuration) {
         }
     }
 
-    //build callbacks only after this.connection function was defined
+    var configuration = namespace.push.configuration;
+    //build callbacks only after 'connection' function was defined
     var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
     //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore
