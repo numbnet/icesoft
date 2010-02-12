@@ -138,8 +138,8 @@ public class DOMResponseWriter extends ResponseWriter {
             return;
         }
         if (null == document) {
-            if (log.isLoggable(Level.INFO)) {
-                log.info(writer.getClass() + " raw write str " + str);
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest(writer.getClass() + " raw write str " + str);
             }
             writer.write(str);
             return;
