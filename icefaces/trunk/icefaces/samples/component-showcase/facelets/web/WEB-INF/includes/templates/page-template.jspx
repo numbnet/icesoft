@@ -57,6 +57,7 @@
         <link rel='stylesheet' type='text/css' href='./css/showcase_layout.css' />
         <link href="./css/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
         <link href="./css/images/favicon.ico" rel="icon" type="image/x-icon"></link>
+        <script src='js/eventListener.js' />        
     </head>
     <body>
 
