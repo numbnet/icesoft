@@ -26,6 +26,7 @@
 <!ENTITY ice-HtmlOutputText-renderer SYSTEM "ice/renderers/HtmlOutputText-renderer.xml">
 <!ENTITY ice-HtmlPanelGrid-renderer SYSTEM "ice/renderers/HtmlPanelGrid-renderer.xml">
 <!ENTITY ice-HtmlPanelGroup-renderer SYSTEM "ice/renderers/HtmlPanelGroup-renderer.xml">
+<!ENTITY ice-JSEventListener-renderer SYSTEM "ice/renderers/JSEventListener-renderer.xml">
 <!ENTITY ice-HtmlRadio-renderer SYSTEM "ice/renderers/HtmlRadio-renderer.xml">
 <!ENTITY ice-HtmlSelectBooleanCheckbox-renderer SYSTEM "ice/renderers/HtmlSelectBooleanCheckbox-renderer.xml">
 <!ENTITY ice-HtmlSelectManyCheckbox-renderer SYSTEM "ice/renderers/HtmlSelectManyCheckbox-renderer.xml">
@@ -101,6 +102,7 @@
 <!ENTITY ice-HtmlOutputText-component SYSTEM "ice/components/HtmlOutputText-component.xml">
 <!ENTITY ice-HtmlPanelGrid-component SYSTEM "ice/components/HtmlPanelGrid-component.xml">
 <!ENTITY ice-HtmlPanelGroup-component SYSTEM "ice/components/HtmlPanelGroup-component.xml">
+<!ENTITY ice-JSEventListener-component SYSTEM "ice/components/JSEventListener-component.xml">
 <!ENTITY ice-HtmlRadio-component SYSTEM "ice/components/HtmlRadio-component.xml">
 <!ENTITY ice-HtmlSelectBooleanCheckbox-component SYSTEM "ice/components/HtmlSelectBooleanCheckbox-component.xml">
 <!ENTITY ice-HtmlSelectManyCheckbox-component SYSTEM "ice/components/HtmlSelectManyCheckbox-component.xml">
@@ -183,6 +185,7 @@
     &ice-HtmlOutputText-component;
     &ice-HtmlPanelGrid-component;
     &ice-HtmlPanelGroup-component;
+    &ice-JSEventListener-component;
     &ice-HtmlRadio-component;
     &ice-HtmlSelectBooleanCheckbox-component;
     &ice-HtmlSelectManyCheckbox-component;
@@ -254,6 +257,7 @@
             &ice-HtmlOutputText-renderer;
             &ice-HtmlPanelGrid-renderer;
             &ice-HtmlPanelGroup-renderer;
+            &ice-JSEventListener-renderer;
             &ice-HtmlRadio-renderer;
             &ice-HtmlSelectBooleanCheckbox-renderer;
             &ice-HtmlSelectManyCheckbox-renderer;

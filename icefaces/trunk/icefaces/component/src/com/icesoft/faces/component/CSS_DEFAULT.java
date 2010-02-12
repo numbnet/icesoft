@@ -376,5 +376,6 @@ public class CSS_DEFAULT {
     public static final String PANEL_CONFIRMATION_BUTTONS = "Btns";
     
     public static final String DATAEXPORTER_DEFAULT_STYLE_CLASS = "iceDatExp";
+    public static final String JSEVENT_LISTENER_DEFAULT_STYLE_CLASS = "iceJEvt";
     
 }
