@@ -4937,6 +4937,15 @@ Ice.Menu = {
         if (element.id == rootID) return true;
         if (element == undefined || element == document) return false;
         return Ice.Menu.isInMenu(element.parentNode, rootID);
+    },
+
+    cancelEvent:function(event) {
+        if (window.event) {
+            event.cancelBubble = true;
+        } else if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+        return false;
     }
 }
 
