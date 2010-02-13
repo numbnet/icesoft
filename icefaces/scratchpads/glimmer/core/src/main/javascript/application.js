@@ -130,11 +130,11 @@ if (!window.ice.icefaces) {
         namespace.retrieveUpdate = function() {
             try {
                 var newForm = document.createElement('form');
-                newForm.action = window.location.pathname;
+                newForm.action = window.location.pathname + ';ice.session.donottouch';
                 //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
                 newForm.id = 'void';
                 debug(logger, 'picking updates for view ' + viewState);
-                jsf.ajax.request(newForm, null, {'ice.session.donottouch': true,  render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
+                jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
             } catch (e) {
                 warn(logger, 'failed to pick updates', e);
             }
