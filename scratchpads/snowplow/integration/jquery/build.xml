@@ -1,32 +1,25 @@
-<project default="bin-dist">
+<project name="icepush-jquery-integration" default="build.all">
 	
-	<!-- all integrations must provide this target
-	- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-	 -->
-	<target name="bin-dist">
+	<property file="../../build.properties"/>
+		
+	<import file="../../build-common.xml"/>
+	
+	<target name="build.all" depends="bin.dist,bin.samples"/>
+	
+	<target name="bin.dist" depends="pre.compile">
 		<echo>Building ICEpush JSP Binary Integration</echo>
-		
-		
-		<copy file="./integration/jquery/core/src/main/javascript/jquery.icepush.js" todir="${dist.build.dir}"/>
+		<copy file="./core/src/main/javascript/jquery.icepush.js" todir="${dist.dir}"/>
 	</target>
 	
-	<!-- all integrations must provide this target
-		- assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-		- target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
-	-->
-	<target name="bin-samples">
-		<ant antfile="build.xml" dir="./integration/jquery/samples/basic" target="war">
-		</ant>
-		<copy file="./integration/jquery/samples/basic/dist/basic-jquery.war" todir="${build.dir}/dist"></copy>
-		
-		<ant antfile="build.xml" dir="./samples/icechat" target="jquery"/>
-		<copy file="./samples/icechat/web/ajax/dist/icechat-ajax.war" todir="${bin.sample.dir}"></copy>
-		
-		
-		
+	<target name="bin.samples">
+		<ant dir="./samples" target="bin-samples"/>
+		<copy.dist.wars fromdir="./samples/${dist.dir}"/>
 	</target>
 	
 	<target name="clean">
-		<ant antfile="build.xml" dir="./samples/basic" target="clean"/>
+		<clean />
+		<ant dir="./samples" target="clean" />
 	</target>
+
+
 </project>

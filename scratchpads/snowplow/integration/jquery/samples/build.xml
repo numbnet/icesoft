@@ -1,0 +1,25 @@
+<project name="icepush-jquery-samples" default="bin-samples">
+	
+	<property file="../../../build.properties"/>
+	<import file="../../../build-common.xml"/>
+	<property name="icechat.dir" value="../../../samples/icechat"/>
+
+	<target name="bin-samples" depends="clean">
+		<echo>Building ICEpush jQuery integration samples</echo>
+
+		<ant dir="./basic" target="war"/>
+		<copy.dist.wars fromdir="./basic/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="jquery"/>
+		<copy.dist.wars fromdir="${icechat.dir}/jquery/${dist.dir}"/>
+
+	</target>
+	
+	<target name="clean">
+		<clean/>
+		<ant dir="./basic" target="clean"/>
+		<ant dir="${icechat.dir}/jquery" target="clean"/>
+	</target>
+
+	
+</project>
