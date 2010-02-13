@@ -1,37 +1,26 @@
-<project name="jsp-integration-build" default="bin-dist">
-	
-	<property file="../../build.properties"/>	
-	
-	<target name="bin-dist">
-		<echo>Building ICEpush JSP Binary Integration</echo>
-		
-		<antcall target="jar-jsp-core"/>
-		<copy file="./core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}"/>
-	</target>
-	
-	<target name="bin-samples">
-		<ant dir="./samples/region" target="war">
-		</ant>
-		<copy file="./samples/region/${dist.dir}/icepush-jsp-region.war" todir="${dist.dir}"></copy>
-		
-		<ant dir="./samples/register" target="war">
-		</ant>
-		<copy file="./samples/register/${dist.dir}/icepush-jsp-register.war" todir="${dist.dir}"></copy>
-		
-		<ant dir="./samples/push" target="war">
-		</ant>
-		<copy file="./samples/push/${dist.dir}/icepush-jsp-push.war" todir="${dist.dir}"></copy>
-	</target>
+<project name="icepush-jsp-integration" default="build.all">
 
-	<target name="jar-jsp-core">
-		<ant antfile="build.xml" dir="./core" target="jar"/>
-	</target>
-	
-	<target name="clean">
-		<clean/>
-		<ant dir="./core" target="clean"/>
-		<ant antfile="build.xml" dir="./samples/region" target="clean"/>
-		<ant antfile="build.xml" dir="./samples/register" target="clean"/>
-		<ant antfile="build.xml" dir="./samples/push" target="clean"/>
-	</target>
+	<property file="../../build.properties" />
+
+		<import file="../../build-common.xml" />
+
+		<target name="build.all" depends="bin.dist,bin.samples" />
+
+		<target name="bin.dist">
+			<echo>Building ICEpush JSP Binary Integration</echo>
+			<ant dir="./core" />
+			<copy file="./core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}" />
+		</target>
+
+		<target name="bin.samples">
+			<ant dir="./samples" target="bin-samples"/>
+			<copy.dist.wars fromdir="./samples/${dist.dir}"/>
+		</target>
+
+		<target name="clean">
+			<clean />
+			<ant dir="./core" target="clean" />
+			<ant dir="./samples" target="clean" />
+		</target>
+
 </project>
