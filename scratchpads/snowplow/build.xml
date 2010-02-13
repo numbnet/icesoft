@@ -1,127 +1,120 @@
+<!--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+-->
 <project name="ICEpush" default="build-all">
 	
 	
 	<property file="build.properties"/>	
 	<import file="build-common.xml"/> 
 	
-	<target name="dist-gwt-bin" depends="jar-icepush-core">
-		<antcall target="build-with-path-offset">
-			<!-- provide the path offset to the build file -->
-			<param name="target.path.offset" value="gwt"/>
-		</antcall>
-	</target>
-	
-	<target name="dist-jsp-bin">
-		<antcall target="build-with-path-offset">
-			<!-- provide the path offset to the build file -->
-			<param name="target.path.offset" value="jsp"/>
-		</antcall>
-	</target>
-	
-	<target name="dist-spring-bin" depends="jar-icepush-core">
-		<antcall target="build-with-path-offset">
-			<!-- provide the path offset to the build file -->
-			<param name="target.path.offset" value="springMVC"/>
-		</antcall>
-	</target>
-	
-	<target name="dist-jquery-bin"  depends="jar-icepush-core">
-		<antcall target="build-with-path-offset">
-			<param name="target.path.offset" value="jquery"/>
-		</antcall>
-	</target>
-	
-	<target name="common-pre-assemble" depends="pre-assemble-clean">
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${dist.dir}"/>
+	<target name="dist-icepush-bin">
+		<antcall target="jar-icepush-core"></antcall>
 		<copy file="./core/dist/icepush.jar" todir="${dist.dir}"/>
 	</target>
 	
-	<target name="build-with-path-offset" depends="common-pre-assemble">
-		<echo>Building Integration: ${target.path.offset}</echo>
-		<antcall target="jar-icepush-core"/>
-		<copy file="./core/${dist.dir}/icepush.jar" todir="${build.dir}"/>
-		<ant dir="./integration/${target.path.offset}" target="bin-dist"/>
-		<copy todir="${build.dir}">
-			<fileset dir="./integration/${target.path.offset}/dist" excludes="**.war"/>
-		</copy>
-		<copy todir="${build.dir}">
-			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
-		</copy>
-		<copy todir="${build.dir}/samples">
-			<fileset dir="./integration/${target.path.offset}/dist" includes="**.war"/>
-		</copy>
-		<ant dir="./integration/${target.path.offset}" target="bin-samples"/>
-		<antcall target="zip-distribution"/>		
+	<target name="dist-gwt-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="gwt"/>
 	</target>
 	
-	<target name="package-source-with-path-offset" depends="common-pre-assemble">
-		<echo>Building Integration with source: ${target.path.offset}</echo>
-		
-		<delete dir="${build.dir}"/>
-		<mkdir dir="${build.dir}"/>
-		
-		<mkdir dir="${build.dir}/integration"/>
-		<mkdir dir="${build.dir}/integration/${target.path.offset}"/>
-		<mkdir dir="${build.dir}/integration/${target.path.offset}/core"/>
-		<copy todir="${build.dir}/integration/${target.path.offset}/core">
-			<fileset dir="./integration/${target.path.offset}/core"/>
-		</copy>		
-		
-		<copy todir="${build.dir}">
-			<fileset dir="./integration/${target.path.offset}/" includes="samples/**"/>
-		</copy>
-		
-		<ant target="package.${target.path.offset}" dir="./samples/icechat"/>
-		<mkdir dir="${build.dir}/samples/icechat"/>
-		<copy todir="${build.dir}/samples/icechat">
-			<fileset dir="./samples/icechat/package"/>
-		</copy>
-		<antcall target="zip-distribution"/>	
-		
+	<target name="dist-jsp-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="jsp"/>
 	</target>
 	
-	<target name="clean-with-path-offset">
-		<echo>Cleaning Inegration ${target.path.offset}</echo>
-		<ant target="clean" dir="./integration/${target.path.offset}"/>
+	<target name="dist-springmvc-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="springMVC"/>
 	</target>
 	
-	<target name="zip-distribution">
-		<zip destfile="${dist.dir}/icepush-${target.path.offset}.zip" basedir="${build.dir}"></zip>
+	<target name="dist-jquery-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="jquery"/>
 	</target>
 	
-	<target name="pre-assemble-clean">
-		<delete dir="${build.dir}"/>
+	<target name="dist-prototype-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="prototype"/>
 	</target>
+	
+	<target name="dist-wicket-bin" depends="dist-icepush-bin">
+		<build.with.path.offset target="wicket"/>
+	</target>
+
+	<macrodef name="build.with.path.offset">
+		<attribute name="target"/>
+		<sequential>
+			<echo>Building Integration: @{target}</echo>
+			
+			<delete dir="${build.dir}" failonerror="false" includeEmptyDirs="true"></delete>
+			
+			<antcall target="jar-icepush-core"/>
+			<copy file="./core/${dist.dir}/icepush.jar" todir="${build.dir}"/>
+			
+			<ant dir="./integration/@{target}" target="build.all"/>
+			<copy todir="${build.dir}">
+				<fileset dir="./integration/@{target}/${dist.dir}" includes="**"/>
+			</copy>
+		
+			<zip destfile="${dist.dir}/icepush-@{target}.zip" basedir="${build.dir}"></zip>
+		
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="clean.with.path.offset">
+		<attribute name="target"/>
+		<sequential>
+			<echo>Cleaning Inegration ${target.path.offset}</echo>
+			<ant target="clean" dir="./integration/@{target}"/>
+		</sequential>
+	</macrodef>
 	
 	<target name="build-all">
 		<!-- build all the distributions -->
 		<antcall target="dist-gwt-bin"/>
 		<antcall target="dist-jsp-bin"/>
-		<antcall target="dist-spring-bin"/>
+		<antcall target="dist-springmvc-bin"/>
 		<antcall target="dist-jquery-bin"/>
+		<antcall target="dist-prototype-bin"/>
+		<antcall target="dist-wicket-bin"/>
 	</target>
 	
-	<target name="clean-all" depends="pre-assemble-clean">
-		<delete dir="${dist.dir}"/>
+	<target name="clean-all">
+		<clean/>
 		<ant dir="./core" target="clean"/>
-		<antcall target="clean-with-path-offset">
-			<param name="target.path.offset" value="jsp"/>
-		</antcall>
-		
-		<antcall target="clean-with-path-offset">
-			<param name="target.path.offset" value="gwt"/>
-		</antcall>
-		<ant antfile="gwt/build.xml" target="clean" dir="./samples/icechat"/>
-		
-		<antcall target="clean-with-path-offset">
-			<param name="target.path.offset" value="springMVC"/>
-		</antcall>
-		<!--ant target="clean" dir="./samples/icechat/springMVC"/-->
-		<antcall target="clean-with-path-offset">
-			<param name="target.path.offset" value="jquery"/>
-		</antcall>
-		<!--ant target="clean" dir="./samples/icechat/jquery"/-->
+		<!-- JSP -->
+		<clean.with.path.offset target="jsp"/>
+		<!-- GWT -->
+		<clean.with.path.offset target="gwt"/>
+		<ant target="clean" dir="./samples/icechat/gwt"/>
+		<!-- SPRINGMVC -->
+		<clean.with.path.offset target="springMVC"/>
+		<ant target="clean" dir="./samples/icechat/web/spring"/>
+		<ant target="clean" dir="./samples/icechat/web/spring-region"/>
+		<!-- JQUERY -->
+		<clean.with.path.offset target="jquery"/>
+		<ant target="clean" dir="./samples/icechat/jquery"/>
+		<!-- PROTOTYPE -->
+		<clean.with.path.offset target="prototype"/>
+		<ant target="clean" dir="./samples/icechat/prototype"/>	
+		<!-- WICKET -->
+		<clean.with.path.offset target="wicket"/>
+		<ant target="clean" dir="./samples/icechat/wicket"/>	
 	</target>
 	
 </project>
