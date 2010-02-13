@@ -30,21 +30,5 @@
 
 	<import file="${root.offset}/build-common.xml" />
 
-	<target name="clean">
-		<clean />
-	</target>
-
-	<target name="compile" depends="pre.compile" description="compile jsp core source">
-		<icepush.available/>
-		<compile />
-	</target>
-
-	<target name="jar" depends="compile" description="fill the jar">		
-		<build.jar>
-			<add.filesets>
-				<metainf dir="./src/main/resources/META-INF/"/>
-		</add.filesets>
-		</build.jar>
-	</target>
 </project>
 
