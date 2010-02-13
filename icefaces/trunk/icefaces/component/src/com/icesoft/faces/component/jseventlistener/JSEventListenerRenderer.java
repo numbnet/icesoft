@@ -40,10 +40,11 @@ public class JSEventListenerRenderer extends Renderer{
         writer.writeAttribute(HTML.ID_ATTR, clientId+"spt", HTML.ID_ATTR);
         String capture = ((JSEventListener)uiComponent).getCapture();
         String handler = ((JSEventListener)uiComponent).getHandler();
-        
+        if (handler != null)
+            handler = "'"+ handler  + "'";
         if (capture != null) {
             writer.write("Ice.registerEventListener('"+ clientId +"','" +
-            	capture	+"', '"+ handler+"');");
+            	capture	+"', "+ handler +");");
         }
         
         writer.endElement(HTML.SCRIPT_ELEM);

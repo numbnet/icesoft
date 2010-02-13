@@ -53,7 +53,7 @@ public class JSEventListener extends UICommand{
             return handler;
         }
         ValueBinding vb = getValueBinding("handler");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     } 
     
     /**

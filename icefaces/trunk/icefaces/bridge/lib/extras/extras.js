@@ -566,44 +566,29 @@ String.prototype.trim = function () {
 Ice.registerEventListener = function(ele, mask, handler) {
     if (mask == null || mask == '') return;
     events = mask.split(",");
-    handlers = handler.split(",");
     ele = $(ele);
-    ele["eventInfo"] = {};
-    eventInfo = ele["eventInfo"];
-    for (i=0; i<events.length; i++) {
-        tokens = events[i].trim().split(" ");
-        eventType = tokens[0].trim();
-        var handler = null;
-        if (handlers.length > i) {
-            handler = handlers[i]; 
-        }
-        ele.eventInfo[eventType] = {};
-        ele.eventInfo[eventType]["handler"] = handler;
-        ele.eventInfo[eventType]["metakeys"] = events[i];
-        Event.observe(ele, eventType, function(event) {
+    if (handler) {
+        try {
+          ele["jshandler"] = eval(handler.trim());
+        } catch (e) {logger.info(e);}
+    }
           
-           event = Event.extend(event);
-           var isShift = ele.eventInfo[event.type]["metakeys"].indexOf("shift") > 0;
-           var isAlt = ele.eventInfo[event.type]["metakeys"].indexOf("alt") > 0;
-           var isCtrl = ele.eventInfo[event.type]["metakeys"].indexOf("ctrl") > 0; 
-           if (isShift && !event.shiftKey) return;
-           if (isCtrl && !event.ctrlKey) return;           
-           if (isAlt && !event.altKey) return; 
-           var handler = ele.eventInfo[event.type]["handler"];
-           var doDefault= true;
-           if (handler!= null && handler != "noop") {
-             try {
-               handler  = eval(handler.trim());
-               var doDefault = handler(event);
-             } catch (e) { logger.info(e) }
-           }
-           if (!doDefault) return;
-           try {
-               var form = formOf(ele);
-               var query = new Ice.Parameter.Query();
-               query.add(ele.id, 'submitted'); 
-               iceSubmitPartial(form, null, event, query); 
-           } catch (e) {logger.info(e);}                       
+    for (i=0; i<events.length; i++) {
+        Event.observe(ele, events[i].trim(), function(event) {
+        event = Event.extend(event);
+        var proceed = true;
+        if (ele["jshandler"]) {
+            try {
+               proceed = ele["jshandler"](event);
+            } catch (e) { logger.info(e) }
+        }
+	    if (!proceed) return;
+	    try {
+	       var form = formOf(ele);
+	       var query = new Ice.Parameter.Query();
+	       query.add(ele.id, 'submitted'); 
+	       iceSubmitPartial(form, null, event, query); 
+	    } catch (e) {logger.info(e);}                       
         });
     }
 }
