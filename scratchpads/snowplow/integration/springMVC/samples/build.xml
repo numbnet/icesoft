@@ -1,0 +1,25 @@
+<project name="icepush-springmvc-integration-samples" default="bin-samples">
+	
+	<property file="../../../build.properties"/>
+	<import file="../../../build-common.xml"/>
+	<property name="icechat.dir" value="../../../samples/icechat"/>
+	
+	<target name="bin-samples">
+		<echo>Building ICEpush Spring MVC integration samples</echo>
+		<ant dir="./dice" target="war"/>
+		<copy.dist.wars fromdir="./dice/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="spring"/>
+		<copy.dist.wars fromdir="${icechat.dir}/web/spring/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="spring-region"/>
+		<copy.dist.wars fromdir="${icechat.dir}/web/spring-region/${dist.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<ant dir="./dice" target="clean"/>
+		<ant dir="${icechat.dir}/web/spring" target="clean"/>
+		<ant dir="${icechat.dir}/web/spring-region" target="clean"/>
+	</target>
+	
+</project>

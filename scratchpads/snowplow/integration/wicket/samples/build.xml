@@ -1,0 +1,23 @@
+<project name="icepush-wicket-integration-samples" default="bin-samples">
+	
+	<property file="../../../build.properties"/>
+	<import file="../../../build-common.xml"/>
+	<property name="icechat.dir" value="../../../samples/icechat"/>
+	
+	<target name="bin-samples" depends="clean">
+		<echo>Building ICEpush Wicket integration samples</echo>
+		<ant dir="./pushpanel" target="war"/>
+		<copy.dist.wars fromdir="./pushpanel/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="wicket"/>
+		<copy.dist.wars fromdir="${icechat.dir}/wicket/${dist.dir}"/>
+		
+	</target>
+	
+	<target name="clean">
+		<clean/>
+		<ant dir="./pushpanel" target="clean"/>
+		<ant dir="${icechat.dir}/wicket" target="clean"/>
+	</target>
+	
+</project>

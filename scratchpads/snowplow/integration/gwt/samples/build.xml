@@ -1,0 +1,31 @@
+<project name="icepush-gwt-samples" default="bin-samples">
+	
+	<property file="../../../build.properties"/>
+	<import file="../../../build-common.xml"/>
+	<property name="icechat.dir" value="../../../samples/icechat"/>
+
+	<fileset id="icepush.gwt.dist" file="../core/${dist.dir}/icepush-gwt.jar"/>
+
+	<target name="bin-samples" depends="clean">
+		<echo>Building ICEpush GWT integration samples</echo>
+
+		<ant dir="./commands" target="war"/>
+		<copy.dist.wars fromdir="./commands"/>
+
+		<ant dir="./greeting" target="war"/>
+		<copy.dist.wars fromdir="./greeting"/>
+		
+		<ant dir="${icechat.dir}" target="gwt"/>
+		<copy.dist.wars fromdir="${icechat.dir}/gwt/${dist.dir}"/>
+
+	</target>
+	
+	<target name="clean">
+		<clean/>
+		<ant dir="./commands" target="clean"/>
+		<ant dir="./greeting" target="clean"/>
+		<ant dir="${icechat.dir}/gwt" target="clean"/>
+	</target>
+
+	
+</project>

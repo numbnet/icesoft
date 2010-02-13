@@ -1,34 +1,27 @@
-<project default="bin-dist" name="icepush-wicket build interface.">
-    
-    <!-- all integrations must provide this target
-    - assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-     -->
-    <target name="bin-dist">
-        <echo>Building ICEpush Wicket Binary Integration</echo>
-        
-        <antcall target="jar-wicket-core"/>
-        <copy file="./integration/wicket/core/build/dist/icepush-wicket.jar" todir="${dist.build.dir}"/>
-    </target>
-    
-    <!-- all integrations must provide this target
-        - assume that the current directory is at the snowplow root.  Thus all paths are relative to the root of the snowplow project.
-        - target must build each of the samples and copy the resulting war file to ${bin.samples.dir}
-    -->
-    <target name="bin-samples">
-        <ant antfile="build.xml" dir="./samples/icechat" target="wicket"/>
-        <copy file="./samples/icechat/web/spring/dist/icechat-wicket.war" todir="${bin.sample.dir}"></copy>
-  
-        <ant antfile="build.xml" dir="./integration/wicket/samples/pushpanel" target="war"/>
-        <copy file="./integration/wicket/samples/pushpanel/build/dist/icepush-wicket-pushpanel.war" todir="${build.dir}/dist"></copy>
-    </target>
-    
-    <target name="jar-wicket-core">
-        <ant antfile="build.xml" dir="./integration/wicket/core" target="jar"/>
-    </target>
-    
-    <target name="clean">
-        <ant antfile="build.xml" dir="./integration/wicket/core" target="clean"/>
-        <ant antfile="build.xml" dir="./integration/wicket/samples/pushpanel" target="clean"/>
-    </target>
-    
+<project name="icepush-wicket-integration" default="build.all">
+
+	<property file="../../build.properties"/>
+	
+	<import file="../../build-common.xml"/>
+	
+	<target name="build.all" depends="bin.dist,bin.samples"/>
+
+	<target name="bin.dist">
+		<echo>Building ICEpush Wicket Binary Integration</echo>
+
+		<ant dir="./core"/>
+		<copy file="./core/${dist.dir}/icepush-wicket.jar" todir="${dist.dir}" />
+	</target>
+
+	<target name="bin.samples">
+		<ant dir="./samples" target="bin-samples"/>
+		<copy.dist.wars fromdir="./samples/${dist.dir}"/>
+	</target>
+
+	<target name="clean">
+		<clean />
+		<ant dir="./core" target="clean"/>
+		<ant dir="./samples" target="clean" />
+	</target>
+
 </project>
