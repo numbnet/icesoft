@@ -1,0 +1,22 @@
+<project name="icepush-prototype-integration-samples" default="bin-samples">
+	
+	<property file="../../../build.properties"/>
+	<import file="../../../build-common.xml"/>
+	<property name="icechat.dir" value="../../../samples/icechat"/>
+	
+	<target name="bin-samples">
+		<echo>Building ICEpush Prototype integration samples</echo>
+		<ant dir="./basic" target="war"/>
+		<copy.dist.wars fromdir="./basic/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="prototype"/>
+		<copy.dist.wars fromdir="${icechat.dir}/prototype/${dist.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<clean/>
+		<ant dir="./basic" target="clean"/>
+		<ant dir="${icechat.dir}/prototype" target="clean"/>
+	</target>
+	
+</project>

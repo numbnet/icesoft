@@ -18,7 +18,7 @@
 	</target>
 
 	<target name="compile" depends="init-compile">
-		<!--icepush.available /-->
+		<icepush.available />
 		<compile>
 			<add.classpath.elements>
 				<fileset dir="lib/gwt" includes="**/*.jar" />
@@ -33,10 +33,6 @@
 		</copy>
 	</target>
 
-	<target name="jar" depends="copy-source">
-		<build.jar />
-		<antcall target="test.dev" />
-	</target>
 
 	<target name="javac.tests" depends="compile" description="Compiles test code">
 		<mkdir dir="${build.tests}" />

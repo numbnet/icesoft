@@ -22,33 +22,23 @@
  *
 -->
 
-<project name="icepush-wicket-pushpanel" default="war">
+<project name="icepush-wicket" default="jar">
 
-	<property name="root.offset" value="../../../.." />
+	<property file="local.properties" />
+	<property name="root.offset" value="../../.." />
 	<property file="${root.offset}/build.properties" />
 
 	<import file="${root.offset}/build-common.xml" />
 
-	<fileset id="icepush.wicket.dist" file="${root.offset}/integration/wicket/core/${dist.dir}/icepush-wicket.jar" />
-	<fileset id="wicket.lib" dir="${root.offset}/integration/wicket/core/lib" />
-	
-	<target name="compile" depends="pre.compile" description="compile web application source">
+	<target name="compile" depends="pre.compile">
+		<icepush.available />
 		<compile>
 			<add.classpath.elements>
-				<fileset refid="icepush.wicket.dist" />
-				<fileset refid="wicket.lib" />
+				<fileset dir="lib" />
 			</add.classpath.elements>
 		</compile>
-
 	</target>
 
-	<target name="war" depends="compile" description="generate .war file">
-		<build.war>
-			<add.libs>
-				<fileset refid="icepush.wicket.dist" />
-				<fileset refid="wicket.lib" />
-			</add.libs>
-		</build.war>
-	</target>
+
 </project>
 

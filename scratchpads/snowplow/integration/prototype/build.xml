@@ -1,4 +1,4 @@
-<project name="ICEpush GWT integration" default="build.all">
+<project name="icepush-prototype-integration" default="build.all">
 	
 	<property file="../../build.properties"/>
 	
@@ -7,20 +7,18 @@
 	<target name="build.all" depends="bin.dist,bin.samples"/>
 	
 	<target name="bin.dist" depends="clean">
-		<echo>Building ICEpush GWT Binary Integration</echo>
-		<ant dir="./core" target="jar"/>
-		<copy file="./core/${dist.dir}/icepush-gwt.jar" todir="${dist.dir}"/>
+		<echo>Building ICEpush Prototype Binary Integration</echo>		
+		<copy file="./core/${js.dir}/prototype.icepush.js" todir="${dist.dir}"/>
 	</target>
 	
-	<target name="bin.samples" depends="bin.dist">
+	<target name="bin.samples" depends="clean">		
 		<ant dir="./samples" target="bin-samples"/>
 		<copy.dist.wars fromdir="./samples/${dist.dir}"/>
 	</target>
 	
 	<target name="clean">
 		<clean/>
-		<ant dir="./core" target="clean"/>
 		<ant dir="./samples" target="clean"/>
 	</target>
-
+	
 </project>
