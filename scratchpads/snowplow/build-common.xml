@@ -36,6 +36,7 @@
 	</target>
 	
 	<target name="compile" depends="pre.compile">
+		<icepush.available/>
 		<compile/>
 	</target>
 	
@@ -120,6 +121,7 @@
 				<fileset dir="${build.dir}/jar">
 					<include name="**/*"></include>
 				</fileset>
+				<fileset dir="${java.dir}" includes="**/*.java"/>
 				<add.filesets/>
 				<manifest>
 	                <attribute name="Built-By" value="${user.name}"/>
@@ -151,8 +153,9 @@
 					<include name="**" />
 				</fileset>
 			</copy>
+			<icepush.available/>
 			<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-				<fileset refid="icepush.dist" />
+				<fileset refid="icepush.dist"/>
 				<add.libs />
 			</copy>
 			<mkdir dir="${build.dir}/webapp/WEB-INF/classes" />
@@ -170,10 +173,9 @@
 	</macrodef>
 
 	<macrodef name="icepush.available">
-		<attribute name="extra.offset" default=""/>
 		<sequential>			
-			<available file="${extra.offset}${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.jar.present"/>
-			<echo message="looking for @{extra.offset}${root.offset}/core/${dist.dir}/icepush.jar"/>
+			<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.jar.present"/>
+			<echo message="checking for ${root.offset}/core/${dist.dir}/icepush.jar"/>
 			<fail message="The core icepush.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
 				<condition>
 					<not>
@@ -184,9 +186,50 @@
 		</sequential>
 	</macrodef>
 	
+	<macrodef  name="icepush.jsp.available">
+		<sequential>
+			<available file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar" property="icepush.jsp.available"/>
+			<fail message="The core icepush-jsp.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
+				<condition>
+					<not>
+						<isset property="icepush.jsp.available" />
+					</not>
+				</condition>
+			</fail>
+		</sequential>
+	</macrodef>
+	
+	<fileset id="icepush.jsp.dist" file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
+	
+	<macrodef  name="icepush.gwt.available">
+		<sequential>
+			<available file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" property="icepush.gwt.available"/>
+			<fail message="The core icepush-gwt.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
+				<condition>
+					<not>
+						<isset property="icepush.gwt.available" />
+					</not>
+				</condition>
+			</fail>
+		</sequential>
+	</macrodef>
+
 	<target name="jar-icepush-core">
 		<ant dir="./core"/>
 	</target>		
 		
+    <target name="war" depends="compile">
+        <build.war/>
+    </target>
+	
+	<macrodef name="copy.dist.wars">
+		<attribute name="todir" default="${dist.dir}"/>
+		<attribute name="fromdir"/>
+		<sequential>
+			<copy todir="@{todir}">
+				<fileset dir="@{fromdir}" includes="*.war"/>
+			</copy>
+		</sequential>
+	</macrodef>
 
 </project>
