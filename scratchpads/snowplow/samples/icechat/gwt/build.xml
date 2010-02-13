@@ -48,7 +48,7 @@
 	</target>
 
 	<target name="javac" depends="libs" description="Compile java source">
-		<!--icepush.available/-->
+		<icepush.available/>
 		<compile>
 			<add.classpath.elements>
 				<path refid="project.class.path" />
