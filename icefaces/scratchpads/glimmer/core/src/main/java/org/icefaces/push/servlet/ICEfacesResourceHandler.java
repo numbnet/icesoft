@@ -57,21 +57,21 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
         context.setAttribute(ICEfacesResourceHandler.class.getName(), this);
         try {
             dispatcher = new PushSessionDispatcher(context);
-        } catch (Throwable t)  {
+        } catch (Throwable t) {
             log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
         }
     }
 
-    private class PushSessionDispatcher extends SessionDispatcher  {
+    private class PushSessionDispatcher extends SessionDispatcher {
         PushContext pushContext;
         Configuration configuration;
 
-        PushSessionDispatcher(ServletContext context)  {
+        PushSessionDispatcher(ServletContext context) {
             super(context);
             pushContext = PushContext.getInstance(context);
             configuration = new ServletContextConfiguration("org.icefaces", context);
         }
-        
+
         protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
             return new SessionBoundServer(pushContext, session, sessionMonitor, configuration);
         }
@@ -117,8 +117,8 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
                 handler.isResourceRequest(facesContext) ||
                         ICEfacesBridgeRequestPattern.matcher(requestURI).find() ||
                         ICEfacesResourceRequestPattern.matcher(requestURI).find();
-        if (!resourceRequest && servletRequest.getParameter("ice.session.donottouch") == null) {
-            if (null != dispatcher)  {
+        if (!resourceRequest && !requestURI.endsWith("ice.session.donottouch")) {
+            if (null != dispatcher) {
                 dispatcher.touchSession((HttpSession) externalContext.getSession(false));
             }
         }
@@ -172,9 +172,9 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        SessionDispatcher shutdownDispatcher = 
-            ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher;
-        if (null != shutdownDispatcher)  {
+        SessionDispatcher shutdownDispatcher =
+                ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher;
+        if (null != shutdownDispatcher) {
             shutdownDispatcher.shutdown();
         }
     }
