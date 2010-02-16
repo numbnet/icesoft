@@ -41,7 +41,7 @@
 	</target>
 	
 	<target name="dist-springmvc-bin" depends="dist-icepush-bin">
-		<build.with.path.offset target="springMVC"/>
+		<build.with.path.offset target="spring"/>
 	</target>
 	
 	<target name="dist-jquery-bin" depends="dist-icepush-bin">
@@ -105,7 +105,6 @@
 		<!-- SPRINGMVC -->
 		<clean.with.path.offset target="springMVC"/>
 		<ant target="clean" dir="./samples/icechat/web/spring"/>
-		<ant target="clean" dir="./samples/icechat/web/spring-region"/>
 		<!-- JQUERY -->
 		<clean.with.path.offset target="jquery"/>
 		<ant target="clean" dir="./samples/icechat/jquery"/>

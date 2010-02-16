@@ -45,13 +45,13 @@
 	</target>
 
 	<target name="package.springmvc">
-		<property name="target" value="springMVC" />
+		<property name="target" value="spring" />
 		<antcall target="base.package" />
 		<copy todir="./dist/${target}/integration">
 			<fileset dir="./integration" includes="jsp/**"/>
 		</copy>
 		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />		
-		<bundle.icechat extra.includes="icechat/web/spring/** icechat/web/spring-region/**" />
+		<bundle.icechat extra.includes="icechat/web/spring/**" />
 		<antcall target="zip.distribution" />
 		<delete dir="./dist/${target}" />
 	</target>
