@@ -79,7 +79,7 @@
 	<macrodef name="clean.with.path.offset">
 		<attribute name="target"/>
 		<sequential>
-			<echo>Cleaning Inegration ${target.path.offset}</echo>
+			<echo>Cleaning Inegration @{target}</echo>
 			<ant target="clean" dir="./integration/@{target}"/>
 		</sequential>
 	</macrodef>
