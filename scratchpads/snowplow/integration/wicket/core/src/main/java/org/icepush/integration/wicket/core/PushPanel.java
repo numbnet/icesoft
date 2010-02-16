@@ -115,6 +115,14 @@ public abstract class PushPanel extends Panel {
         PushContext.getInstance(getWebRequest().getHttpServletRequest().getSession().getServletContext()).push(getId());
     }
 
+    /**
+     * Method called from this PushPanel's AbstractDefaultAjaxBehavior which is registered as a push callback.
+     *
+     * Implementations of this method will likely update the model and add component(s) to
+     * be updated via AJAX to the AjaxRequestTarget.
+     *
+     * @param target to specify which component(s) to update after pushCallback.
+     */
     abstract protected void pushCallback(AjaxRequestTarget target);
 
 }

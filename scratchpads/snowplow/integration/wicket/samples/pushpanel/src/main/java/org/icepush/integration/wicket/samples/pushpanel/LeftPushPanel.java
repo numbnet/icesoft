@@ -23,15 +23,12 @@ package org.icepush.integration.wicket.samples.pushpanel;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
 import org.icepush.integration.wicket.core.PushPanel;
 
 /**
@@ -63,7 +60,6 @@ public final class LeftPushPanel extends PushPanel {
     private List pushList = new ArrayList();
 
     boolean isPushMine = false;
-//    ContextImage image;
 
     public LeftPushPanel(String id) {
         super (id);
@@ -88,11 +84,7 @@ public final class LeftPushPanel extends PushPanel {
                 target.addComponent(this.getParent());
             }
         });
-/*
-        image = new ContextImage("leftDie","./images/dice-0.png");
-        image.setOutputMarkupId(true);
-        leftForm.add(image);
-*/
+
         // List containing the source of each push
         leftForm.add(pushListView = new ListView("pushListView", pushList){
             public void populateItem(final ListItem listItem){
@@ -105,8 +97,6 @@ public final class LeftPushPanel extends PushPanel {
 
     // PUSH CALLBACK
     protected void pushCallback(AjaxRequestTarget target) {
-        //image.add(new AttributeModifier("src", true, new Model(".././images/dice-1.png")));
-        //target.addComponent(image);
         if(isPushMine){
             pushList.add("My Push.");
         }else{
