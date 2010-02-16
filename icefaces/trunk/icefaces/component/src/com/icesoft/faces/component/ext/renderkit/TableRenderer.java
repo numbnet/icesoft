@@ -731,8 +731,6 @@ public class TableRenderer
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
                         getPortletAlternateRowClass(selectedClass, rowIndex) + "'"); // ICE-2571
-                anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this);");
-                anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                
             }
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
@@ -754,10 +752,16 @@ public class TableRenderer
                         Element td = domContext.createElement(HTML.TD_ELEM);
                         //add row focus handler for rowSelector
                         if (uiData.getColNumber() == 0 && rowSelectorFound) {
+                            boolean singleSelection = false;
+                            if(!rowSelector.isEnhancedMultiple() && !rowSelector.getMultiple().booleanValue()) {
+                                singleSelection = true;
+                            }
                             anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
                             anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' />"));
+                            anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
+                            anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   
                             td.appendChild(anchor);                            
                         }                        
                         String iceColumnStyle = null;

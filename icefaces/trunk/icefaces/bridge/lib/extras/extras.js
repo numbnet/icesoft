@@ -447,7 +447,7 @@ Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
     new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
 }
 
-Ice.tblRowFocus = function(anc) {
+Ice.tblRowFocus = function(anc, singleSelection) {
     var parent = anc.parentNode.parentNode;
     Ice.simulateFocus(null, anc);
     parent.onmouseover.apply(parent, arguments);
@@ -465,12 +465,19 @@ Ice.tblRowFocus = function(anc) {
                 case 38://up
                     if (Element.previous(parent)) {
                         Element.previous(parent).firstChild.firstChild.focus();
+                        if (singleSelection) {
+                            Element.previous(parent).onclick.apply(parent, arguments);
+                        }                        
                     }
+
                     Event.stop(event);                    
                     return false;
                 case 40://down
                     if (Element.next(parent)) {
                         Element.next(parent).firstChild.firstChild.focus();
+                        if (singleSelection) {
+                            Element.next(parent).onclick.apply(parent, arguments);
+                        }  
                     }
                     Event.stop(event);                    
                     return false;
