@@ -103,8 +103,8 @@
 		<clean.with.path.offset target="gwt"/>
 		<ant target="clean" dir="./samples/icechat/gwt"/>
 		<!-- SPRINGMVC -->
-		<clean.with.path.offset target="springMVC"/>
-		<ant target="clean" dir="./samples/icechat/web/spring"/>
+		<clean.with.path.offset target="spring"/>
+		<ant target="clean" dir="./samples/icechat/spring"/>
 		<!-- JQUERY -->
 		<clean.with.path.offset target="jquery"/>
 		<ant target="clean" dir="./samples/icechat/jquery"/>
