@@ -12,7 +12,6 @@
 		<build.war>
 			<add.libs>
 				<fileset refid="beans" />
-				<fileset refid="cdi" />
 				<fileset dir="${root.offset}/integration/spring/core/${dist.dir}"/>
 			</add.libs>
 		</build.war>
@@ -24,7 +23,6 @@
 			<add.classpath.elements>
 				<fileset refid="api" />
 				<fileset refid="beans" />
-				<fileset refid="cdi" />
 				<fileset dir="${web.dir}/WEB-INF/lib" />
 			</add.classpath.elements>
 		</compile>
