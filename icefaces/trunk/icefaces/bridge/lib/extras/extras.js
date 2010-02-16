@@ -558,6 +558,9 @@ Ice.DatPagKybrd = function(pId, event){
      var form = formOf(document.getElementById(pId));
      var query = new Ice.Parameter.Query();
      query.add(pId, button);
+     if (event.target.id.contains(pId)) {
+        query.add(pId+'kbd', 'true');    
+     } 
      iceSubmitPartial(form, null, event, query);
      Event.stop(event); 
      
