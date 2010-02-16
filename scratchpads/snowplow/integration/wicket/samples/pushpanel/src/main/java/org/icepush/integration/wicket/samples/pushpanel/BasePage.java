@@ -47,8 +47,6 @@ public class BasePage extends WebPage {
      */
     public BasePage(IModel model) {
         super(model);
-        final String packageName = getClass().getPackage().getName();
-        add(new HeaderPanel("mainNavigation", Strings.afterLast(packageName, '.')));
-        add(new StyleSheetReference("stylesheet", BasePage.class, "style.css"));
+        add(new HeaderPanel("headerPanel"));
     }
 }

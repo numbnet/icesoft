@@ -21,7 +21,7 @@
 
 package org.icepush.integration.wicket.samples.pushpanel;
 
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
@@ -35,13 +35,13 @@ public class HeaderPanel extends Panel {
     /**
      * Construct.
      * @param componentName name of the component
-     * @param exampleTitle title of the example
      */
 
-    public HeaderPanel(String componentName, String exampleTitle)
+    public HeaderPanel(String componentName)
     {
         super(componentName);
-        add(new Label("exampleTitle", exampleTitle));
+        add(new ContextImage("banner_hdr","./images/banner_hdr.jpg"));
+        add(new ContextImage("wicketLogo","./images/wicket.png"));
     }
 
 }

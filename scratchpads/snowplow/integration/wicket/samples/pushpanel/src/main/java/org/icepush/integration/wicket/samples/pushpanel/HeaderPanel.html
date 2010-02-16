@@ -22,13 +22,23 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:wicket="http://wicket.apache.org">
-    <head><title>Wicket Example</title></head>
+    <head><title>ICEpush with Wicket Example</title></head>
     <body>
         <wicket:panel>
-            <h1>Wicket Example</h1>
-            <p id="titleblock">
-                <b><font size="+1">Start of <span wicket:id="exampleTitle">Example Title Goes Here</span></font></b>
-            </p>
+            <div class="header_container">
+                <div class="header_content">
+                    <img width="109px" height="100px"
+                                      wicket:id="banner_hdr"
+                                      style="float:left"/>
+                    <img width="100px" height="100px"
+                                      wicket:id="wicketLogo"
+                                      style="float:right"/>
+                    <div style="font-size:20pt;color:#0F65B8;margin-top:45px;">
+                        <span style="font-weight:bold;">ICEpush</span>
+                        <span style="font-style:italic;font-family:Times New Roman"> with Wicket</span>
+                    </div>
+                </div>
+            </div>
         </wicket:panel>
     </body>
 </html>
