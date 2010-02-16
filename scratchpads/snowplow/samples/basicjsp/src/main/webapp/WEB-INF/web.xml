@@ -65,10 +65,6 @@
         <url-pattern>/pushnotifier/notify.html</url-pattern>
     </servlet-mapping>
 
-    <listener>
-        <listener-class>org.icepush.servlet.ServletEnvironmentListener</listener-class>
-    </listener>
-
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
