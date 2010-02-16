@@ -49,11 +49,7 @@
 	</target>
 
 	<target name="spring" depends="cdi-beans">
-		<ant target="war" dir="./web/spring" />
-	</target>
-
-	<target name="spring-region" depends="cdi-beans">
-		<ant target="war" dir="./web/spring-region" />
+		<ant target="war" dir="./spring" />
 	</target>
 
 	<target name="clean-all">
@@ -68,8 +64,7 @@
 		<ant target="clean" dir="./jquery" />
 		<ant target="clean" dir="./icefaces" />
 		<ant target="clean" dir="./prototype" />
-		<ant target="clean" dir="./web/spring" />
-		<ant target="clean" dir="./web/spring-region" />
+		<ant target="clean" dir="./spring" />
 	</target>
 
 	<fileset id="src.api" dir="./api">

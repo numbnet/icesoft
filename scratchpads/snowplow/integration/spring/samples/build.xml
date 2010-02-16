@@ -10,12 +10,12 @@
 		<copy.dist.wars fromdir="./dice/${dist.dir}"/>
 		
 		<ant dir="${icechat.dir}" target="spring"/>
-		<copy.dist.wars fromdir="${icechat.dir}/web/spring/${dist.dir}"/>
+		<copy.dist.wars fromdir="${icechat.dir}/spring/${dist.dir}"/>
 	</target>
 	
 	<target name="clean">
 		<ant dir="./dice" target="clean"/>
-		<ant dir="${icechat.dir}/web/spring" target="clean"/>
+		<ant dir="${icechat.dir}/spring" target="clean"/>
 	</target>
 	
 </project>
