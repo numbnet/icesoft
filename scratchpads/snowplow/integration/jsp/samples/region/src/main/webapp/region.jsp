@@ -43,7 +43,8 @@
 	<script type="text/javascript" src="code.icepush"></script>
 </head>
 <body>
-	<h2>Testing icep:region tag.</h1><br/>
+	<h2>Testing icep:region tag.</h2>
+	<br/>
 	Window Region
 	<icep:region id="window-region" notifier="windowNotifier" page="/window.jsp"/>
 	<br/>
