@@ -452,11 +452,12 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                     Integer.toString(idx), idx, formId);
             
             if (idx == pageIndex) {
+                String clientId = scroller.getClientId(facesContext);
                 cStyleClass = scroller.getPaginatorActiveColumnClass();
+                // set the focus on current page, if it was a keyboard
                 Map parameter = facesContext.getExternalContext().getRequestParameterMap();
-                if (parameter.containsKey(scroller.getClientId(facesContext))
-                        && parameter.containsKey("ice.event.captured") 
-                        && "null".equals(parameter.get("ice.event.captured"))) {
+                if (parameter.containsKey(clientId)
+                        && parameter.containsKey(clientId+"kbd")) {
                     JavascriptContext.applicationFocus(facesContext, link.getAttribute("id"));
                 }
 
