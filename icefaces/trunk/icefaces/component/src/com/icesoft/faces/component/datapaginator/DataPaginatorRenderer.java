@@ -66,6 +66,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -447,8 +448,17 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             domContext.setCursorParent(td);
             String cStyleClass;
 
+            Element link = getLink(facesContext, domContext, scroller,
+                    Integer.toString(idx), idx, formId);
+            
             if (idx == pageIndex) {
                 cStyleClass = scroller.getPaginatorActiveColumnClass();
+                Map parameter = facesContext.getExternalContext().getRequestParameterMap();
+                if (parameter.containsKey(scroller.getClientId(facesContext))
+                        && parameter.containsKey("ice.event.captured") 
+                        && "null".equals(parameter.get("ice.event.captured"))) {
+                    JavascriptContext.applicationFocus(facesContext, link.getAttribute("id"));
+                }
 
             } else {
                 cStyleClass = scroller.getPaginatorColumnClass();
@@ -458,8 +468,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                 td.setAttribute(HTML.CLASS_ATTR, cStyleClass);
             }
 
-            Element link = getLink(facesContext, domContext, scroller,
-                                   Integer.toString(idx), idx, formId);
+
             td.appendChild(link);
         }
     }
