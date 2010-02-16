@@ -98,7 +98,9 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         String requestURI = request.getRequestURI();
-        if (ICEfacesBridgeRequestPattern.matcher(requestURI).find() || ICEfacesResourceRequestPattern.matcher(requestURI).find()) {
+        boolean resourceRequest = ICEfacesBridgeRequestPattern.matcher(requestURI).find() || ICEfacesResourceRequestPattern.matcher(requestURI).find();
+
+        if (resourceRequest) {
             try {
                 service(request, response);
             } catch (ServletException e) {
@@ -121,6 +123,10 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
             if (null != dispatcher) {
                 dispatcher.touchSession((HttpSession) externalContext.getSession(false));
             }
+        }
+        if (!servletRequest.isRequestedSessionIdValid() && !resourceRequest && !handler.isResourceRequest(facesContext)) {
+            servletRequest.setAttribute(SessionExpiredException.class.getName(), SessionExpiredException.class);
+            return false;
         }
         return resourceRequest;
     }

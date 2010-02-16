@@ -34,25 +34,27 @@
 package org.icefaces.event;
 
 
-import javax.faces.context.ExternalContext;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 public class DetectNavigationPhaseListener implements PhaseListener {
-    public static String RESTORE_VIEW_ID = 
+    public static String RESTORE_VIEW_ID =
             DetectNavigationPhaseListener.class.getName() + "RESTORE_VIEW_ID";
-    public static String RENDER_VIEW_ID = 
+    public static String RENDER_VIEW_ID =
             DetectNavigationPhaseListener.class.getName() + "RENDER_VIEW_ID";
-    public static String NAVIGATED = 
+    public static String NAVIGATED =
             DetectNavigationPhaseListener.class.getName() + "NAVIGATED";
 
     public void afterPhase(PhaseEvent phaseEvent) {
         FacesContext facesContext = phaseEvent.getFacesContext();
         if (PhaseId.RESTORE_VIEW == phaseEvent.getPhaseId()) {
-            facesContext.getAttributes().put( RESTORE_VIEW_ID, 
-                    facesContext.getViewRoot().getViewId() );
+            UIViewRoot viewRoot = facesContext.getViewRoot();
+            if (viewRoot != null) {
+                facesContext.getAttributes().put(RESTORE_VIEW_ID, viewRoot.getViewId());
+            }
         }
     }
 
@@ -61,8 +63,8 @@ public class DetectNavigationPhaseListener implements PhaseListener {
         if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId()) {
             Object restoreViewId = facesContext.getAttributes()
                     .get(RESTORE_VIEW_ID);
-            if (!facesContext.getViewRoot().getViewId().equals(restoreViewId))  {
-                facesContext.getAttributes().put( NAVIGATED, Boolean.TRUE);
+            if (!facesContext.getViewRoot().getViewId().equals(restoreViewId)) {
+                facesContext.getAttributes().put(NAVIGATED, Boolean.TRUE);
             }
         }
     }

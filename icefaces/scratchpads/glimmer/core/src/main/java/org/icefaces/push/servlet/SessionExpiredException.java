@@ -23,6 +23,10 @@
 package org.icefaces.push.servlet;
 
 public class SessionExpiredException extends RuntimeException {
+    public SessionExpiredException(String message) {
+        super(message);
+    }
+
     public SessionExpiredException(Throwable e) {
         super(e);
     }

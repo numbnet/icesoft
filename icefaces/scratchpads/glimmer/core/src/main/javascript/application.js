@@ -65,6 +65,7 @@ if (!window.ice.icefaces) {
         };
 
         namespace.sessionExpired = function() {
+            namespace.retrieveUpdate = noop;
             broadcast(sessionExpiryListeners);
         };
 
@@ -180,6 +181,8 @@ if (!window.ice.icefaces) {
             var e = $event(ev);
             if (isEscKey(e)) cancelDefaultAction(e);
         });
+
+        //include status.js        
     })(window.ice);
 }
 
