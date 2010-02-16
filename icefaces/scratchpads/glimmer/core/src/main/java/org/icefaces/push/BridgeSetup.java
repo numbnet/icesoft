@@ -1,6 +1,7 @@
 package org.icefaces.push;
 
 import org.icefaces.application.WindowScopeManager;
+import org.icefaces.push.servlet.SessionExpiredException;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
@@ -33,6 +34,11 @@ public class BridgeSetup extends ViewHandlerWrapper {
     }
 
     public UIViewRoot createView(FacesContext context, String viewId) {
+        //todo: move the session expiry functionlity into its own view handler
+        if (context.getExternalContext().getRequestMap().containsKey(SessionExpiredException.class.getName())) {
+            throw new SessionExpiredException("User session has expired");
+        }
+
         try {
             WindowScopeManager.lookup(context).determineWindowID(context);
         } catch (Exception e) {

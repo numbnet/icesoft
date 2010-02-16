@@ -56,6 +56,7 @@
         <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
         <loadfile property="element.js" srcFile="${lib.dir}/element.js"/>
         <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
+        <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
@@ -70,6 +71,7 @@
                 <filter token="delay" value="${delay.js}"/>
                 <filter token="element" value="${element.js}"/>
                 <filter token="event" value="${event.js}"/>
+                <filter token="status" value="${status.js}"/>
                 <filter token="submit" value="${submit.js}"/>
             </filterset>
         </copy>
