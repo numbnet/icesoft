@@ -10,6 +10,7 @@
 		<echo>Building ICEpush Spring MVC Binary Integration</echo>
 
 		<ant dir="../../integration/jsp/core"/>
+                <ant dir="./core" />
 		<copy file="../../integration/jsp/core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}" />
 	</target>
 
