@@ -11,15 +11,11 @@
 		
 		<ant dir="${icechat.dir}" target="spring"/>
 		<copy.dist.wars fromdir="${icechat.dir}/web/spring/${dist.dir}"/>
-		
-		<ant dir="${icechat.dir}" target="spring-region"/>
-		<copy.dist.wars fromdir="${icechat.dir}/web/spring-region/${dist.dir}"/>
 	</target>
 	
 	<target name="clean">
 		<ant dir="./dice" target="clean"/>
 		<ant dir="${icechat.dir}/web/spring" target="clean"/>
-		<ant dir="${icechat.dir}/web/spring-region" target="clean"/>
 	</target>
 	
 </project>
