@@ -339,7 +339,9 @@ public class RowSelector extends UIPanel {
         boolean skipSelection = false;
 
          //install selected row on the dataTable, helps in sending focus request when row was selected.
-        dataTable.getAttributes().put(SELECTED_ROW, selectedRows);
+        if (selectedRows != null) {
+            dataTable.getAttributes().put(SELECTED_ROW, selectedRows);
+        }
         if (clickedRowIndex != null && clickCount != null) {
             if (clickedRowIndex.trim().length() != 0 && clickCount.trim().length() != 0) {
                 int rowIndex = dataTable.getRowIndex();
