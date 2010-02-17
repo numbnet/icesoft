@@ -38,13 +38,13 @@ public class JSEventListenerRenderer extends Renderer{
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"spt", HTML.ID_ATTR);
-        String capture = ((JSEventListener)uiComponent).getCapture();
+        String events = ((JSEventListener)uiComponent).getEvents();
         String handler = ((JSEventListener)uiComponent).getHandler();
         if (handler != null)
             handler = "'"+ handler  + "'";
-        if (capture != null) {
+        if (events != null) {
             writer.write("Ice.registerEventListener('"+ clientId +"','" +
-            	capture	+"', "+ handler +");");
+                    events	+"', "+ handler +");");
         }
         
         writer.endElement(HTML.SCRIPT_ELEM);

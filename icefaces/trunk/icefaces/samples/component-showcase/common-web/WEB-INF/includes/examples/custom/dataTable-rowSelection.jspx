@@ -77,7 +77,7 @@ a control on the data to hide/show the table columns.
     <!-- DataTable with RowSelector Component -->
     <ice:panelGroup styleClass="exampleBox " >
      <ice:jsEventListener 
-            capture="keyup" handler="dmlListener"
+            events="keyup" handler="dmlListener"
             actionListener="#{rowSelectController.jsListener}">                            
         <ice:dataTable id="employeeList"
                        var="employee"
