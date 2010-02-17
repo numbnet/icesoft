@@ -105,6 +105,7 @@ public class BasicResponseWriter extends ResponseWriter  {
         throw new UnsupportedOperationException("Implement writeText with escaping");
     }
     public void writeText(Object text, UIComponent component, String componentPropertyName) throws IOException  {
+        closeStartIfNecessary();
         writer.write(text.toString());
     }
     public void writeText(char[] chars, int offset, int length) throws IOException  {
