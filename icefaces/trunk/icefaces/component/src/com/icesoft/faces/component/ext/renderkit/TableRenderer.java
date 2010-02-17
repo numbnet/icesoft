@@ -546,6 +546,7 @@ public class TableRenderer
                 DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
         Element originalRoot = root;
+        String clientId = uiComponent.getClientId(facesContext);
         
         boolean scrollable = isScrollable(uiComponent); 
         if (scrollable) {
@@ -656,15 +657,7 @@ public class TableRenderer
         int columnStyleIndex;
         int columnStylesMaxIndex = columnStyles.length - 1;
         resetGroupState(uiData);
-        Object selRow = uiData.getAttributes().get(RowSelector.SELECTED_ROW);
-        int selectedRow = -1;
-        if (selRow != null) {
-            try {
-                selectedRow = Integer.parseInt(selRow.toString());
-            } catch (NumberFormatException nfe) {}
-        }
-        uiData.getAttributes().put(RowSelector.SELECTED_ROW, "-1");        
-        while (uiData.isRowAvailable()) {
+       while (uiData.isRowAvailable()) {
             columnStyleIndex = 0;
             String selectedClass = null;
             if (rowStylesMaxIndex >= 0) {
@@ -717,10 +710,6 @@ public class TableRenderer
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
             Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
             if (rowSelectorFound) {
-                //set focus on selected row
-                if (selectedRow > -1 && uiData.getRowIndex() == selectedRow) {
-                    JavascriptContext.addJavascriptCall(facesContext, "$('"+ id+ "').firstChild.firstChild.focus()");
-                }
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
                     tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'; Ice.tblMsOvr(this);");
@@ -756,6 +745,7 @@ public class TableRenderer
                             if(!rowSelector.isEnhancedMultiple() && !rowSelector.getMultiple().booleanValue()) {
                                 singleSelection = true;
                             }
+                            anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
                             anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
                             anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,

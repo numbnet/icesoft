@@ -77,7 +77,6 @@ public class RowSelector extends UIPanel {
     private Integer dblClickDelay;
     private Boolean preStyleOnSelection;
     private String renderedOnUserRole = null;
-    public static final String SELECTED_ROW = "_selectedRow";
     transient private List selectedRowsList = new ArrayList();
     
 
@@ -338,10 +337,6 @@ public class RowSelector extends UIPanel {
         RowSelector rowSelector = (RowSelector) this;
         boolean skipSelection = false;
 
-         //install selected row on the dataTable, helps in sending focus request when row was selected.
-        if (selectedRows != null) {
-            dataTable.getAttributes().put(SELECTED_ROW, selectedRows);
-        }
         if (clickedRowIndex != null && clickCount != null) {
             if (clickedRowIndex.trim().length() != 0 && clickCount.trim().length() != 0) {
                 int rowIndex = dataTable.getRowIndex();
