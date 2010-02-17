@@ -450,8 +450,8 @@ Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
 Ice.tblRowFocus = function(anc, singleSelection) {
     var parent = anc.parentNode.parentNode;
     Ice.simulateFocus(null, anc);
+    setFocus(anc.id);
     parent.onmouseover.apply(parent, arguments);
-   // parent.up("table")["focusHoveredTr"] = parent;
     if (anc["keydownRegistered"] == null) {
         Element.observe(anc, "keydown", function(event) {
             event = Event.extend(event);
@@ -519,7 +519,7 @@ Ice.tblRowBlur = function(anc) {
     var parent = anc.parentNode.parentNode;
     Ice.simulateBlur(null, anc);
     parent.onmouseout.apply(parent, arguments);  
-  //  parent.up("table")["hoveredTr"] = null;  
+    setFocus('');
 }
 
 Ice.tblMsOvr = function(tr) {
