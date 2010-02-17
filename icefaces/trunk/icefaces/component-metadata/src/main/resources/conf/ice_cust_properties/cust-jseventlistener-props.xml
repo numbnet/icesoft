@@ -37,7 +37,7 @@
     <description>
         List of "," separated events (e.g) capture="click, keydown, ...".
     </description>
-    <property-name>capture</property-name>
+    <property-name>events</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
@@ -50,18 +50,13 @@
 <property>
     <description>
      <![CDATA[
-        Its an optional attribute. Its a list of "," separated javascript function handlers 
+        Its an optional attribute. Its a function handlers 
         for the events defined in capture attribute(e.g) <br/>
         &lt;ice:jsEventListener capture="click" handler="myClickHandler"&gt;<br/><br/>
                 
 
-        &lt;ice:jsEventListener capture="click, keydown" handler="myClickHandler, myKeydownHandler"&gt;<br/>
+        &lt;ice:jsEventListener capture="click, keydown" handler="myHandler"&gt;<br/>
 
-        Let say if you want to capture two events and define a handler for one only , then use
-        the "noop" handler for the one you don't need. (e.g.) <br/>   
-        &lt;ice:jsEventListener capture="click, keydown" handler="noop, myKeydownHandler"&gt; <br/>
-        
-        You don't need to define the noop handler in the app, its already taken care of by the component.
          ]]>  
     </description>
     <property-name>handler</property-name>

@@ -11,7 +11,7 @@ public class JSEventListener extends UICommand{
     public static final String COMPONENT_TYPE =
         "com.icesoft.faces.JSEventListener";
     public static final String RENDERER_TYPE = "com.icesoft.faces.JSEventListenerRenderer";
-    private String capture;
+    private String events;
     private String handler;
     private String style;
     private String styleClass;
@@ -32,15 +32,15 @@ public class JSEventListener extends UICommand{
         return true;
     } 
     
-    public void setCapture(String capture) {
-        this.capture = capture;
+    public void setEvents(String events) {
+        this.events = events;
     }
     
-    public String getCapture() {
-        if (capture != null) {
-            return capture;
+    public String getEvents() {
+        if (events != null) {
+            return events;
         }
-        ValueBinding vb = getValueBinding("capture");
+        ValueBinding vb = getValueBinding("events");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
     
@@ -103,7 +103,7 @@ public class JSEventListener extends UICommand{
     public Object saveState(FacesContext context) {
         Object values[] = new Object[5];
         values[0] = super.saveState(context);
-        values[1] = capture;
+        values[1] = events;
         values[2] = handler;
         values[3] = style;
         values[4] = styleClass;        
@@ -113,7 +113,7 @@ public class JSEventListener extends UICommand{
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        capture = (String) values[1];
+        events = (String) values[1];
         handler = (String) values[2];
         style = (String) values[3];
         styleClass = (String) values[4];        
