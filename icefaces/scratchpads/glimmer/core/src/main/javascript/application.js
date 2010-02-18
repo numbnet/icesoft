@@ -128,17 +128,21 @@ if (!window.ice.icefaces) {
         onLoad(window, function() {
             viewState = document.getElementById('javax.faces.ViewState').value;
         });
-        namespace.retrieveUpdate = function() {
-            try {
-                var newForm = document.createElement('form');
-                newForm.action = window.location.pathname + ';ice.session.donottouch';
-                //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
-                newForm.id = 'void';
-                debug(logger, 'picking updates for view ' + viewState);
-                jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
-            } catch (e) {
-                warn(logger, 'failed to pick updates', e);
-            }
+        var viewIDs = [];
+        namespace.retrieveUpdate = function(viewID) {
+            append(viewIDs, viewID);
+            return function() {
+                try {
+                    var newForm = document.createElement('form');
+                    newForm.action = window.location.pathname + ';ice.session.donottouch';
+                    //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
+                    newForm.id = 'void';
+                    debug(logger, 'picking updates for view ' + viewState);
+                    jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
+                } catch (e) {
+                    warn(logger, 'failed to pick updates', e);
+                }
+            };
         };
 
         //redirect vanilla form submits
@@ -174,6 +178,7 @@ if (!window.ice.icefaces) {
         onBeforeUnload(window, function() {
             postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
                 addNameValue(query, 'ice.window', namespace.window);
+                each(viewIDs, curry(addNameValue, query, 'ice.view'));
             }, FormPost, noop);
         });
 

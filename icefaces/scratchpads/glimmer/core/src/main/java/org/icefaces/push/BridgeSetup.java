@@ -86,11 +86,12 @@ public class BridgeSetup extends ViewHandlerWrapper {
                     root.addComponentResource(context, output, "body");
 
                     if (EnvUtils.isICEpushPresent()) {
+                        String viewID = ViewNotificationManager.lookup(context).assignViewIdentifier();
                         output = new UIOutput();
                         output.getAttributes().put("escape", "false");
                         String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(id);
                         output.setValue("<script type=\"text/javascript\">" +
-                                "ice.push.register(['" + id + "'], ice.retrieveUpdate);" +
+                                "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
                                 "ice.push.register(['" + sessionExpiryPushID + "']," +
                                 "function(){ice.sessionExpired();ice.push.deregister(['" + id + "', '" + sessionExpiryPushID + "']);});" +
                                 "</script>");
