@@ -47,11 +47,14 @@ public class SessionBoundServer extends PathDispatcher {
         this.pushContext = pushContext;
         this.groupName = session.getId();
 
+        final ViewNotificationManager viewNotificationManager = new ViewNotificationManager(pushContext, session);
+
         final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
             public String mimeTypeFor(String path) {
                 return session.getServletContext().getMimeType(path);
             }
         };
+
         final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
         windowScopeManager.onActivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
@@ -62,25 +65,17 @@ public class SessionBoundServer extends PathDispatcher {
                 pushContext.createPushId(request, response);
 
                 String windowID = (String) o;
-                pushContext.addGroupMember(groupName, windowID);
                 pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
             }
         });
         windowScopeManager.onDisactivatedWindow(new Observer() {
             public void update(Observable observable, Object o) {
                 String windowID = (String) o;
-                pushContext.removeGroupMember(groupName, (String) o);
                 pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
             }
         });
-        final SessionRenderer sessionRenderer = new SessionRenderer() {
-            public void renderViews() {
-                pushContext.push(groupName);
-            }
-        };
-        session.setAttribute(SessionRenderer.class.getName(), sessionRenderer);
 
-        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager)));
+        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager, viewNotificationManager)));
         dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 
