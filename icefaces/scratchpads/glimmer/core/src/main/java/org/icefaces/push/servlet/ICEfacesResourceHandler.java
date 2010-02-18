@@ -124,7 +124,7 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
                 dispatcher.touchSession((HttpSession) externalContext.getSession(false));
             }
         }
-        if (!servletRequest.isRequestedSessionIdValid() && !resourceRequest && !handler.isResourceRequest(facesContext)) {
+        if (!servletRequest.isRequestedSessionIdValid() && facesContext.isPostback() && !resourceRequest && !handler.isResourceRequest(facesContext)) {
             servletRequest.setAttribute(SessionExpiredException.class.getName(), SessionExpiredException.class);
             return false;
         }
