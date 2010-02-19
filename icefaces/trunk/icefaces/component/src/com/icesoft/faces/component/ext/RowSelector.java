@@ -79,7 +79,7 @@ public class RowSelector extends UIPanel {
     private String renderedOnUserRole = null;
     transient private List selectedRowsList = new ArrayList();
     private Boolean keyboardNavigationEnabled;     
-
+    private Boolean singleRowAutoSelect;  
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
@@ -547,7 +547,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[20];
+        Object[] state = new Object[21];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -567,7 +567,8 @@ public class RowSelector extends UIPanel {
         state[16] = dblClickDelay;
         state[17] = preStyleOnSelection;
         state[18] = renderedOnUserRole;
-        state[19] = keyboardNavigationEnabled;        
+        state[19] = keyboardNavigationEnabled;    
+        state[20] = singleRowAutoSelect;          
         return state;
     }
 
@@ -596,7 +597,8 @@ public class RowSelector extends UIPanel {
         dblClickDelay = (Integer) state[16];
         preStyleOnSelection = (Boolean) state[17];
         renderedOnUserRole = (String) state[18];
-        keyboardNavigationEnabled = (Boolean) state[19];        
+        keyboardNavigationEnabled = (Boolean) state[19];      
+        singleRowAutoSelect = (Boolean) state[20];
     }
     
     private String styleClass;
@@ -705,5 +707,19 @@ public class RowSelector extends UIPanel {
 
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
-    }    
+    }  
+    
+    public boolean isSingleRowAutoSelect() {
+        if (singleRowAutoSelect != null) {
+            return singleRowAutoSelect.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("singleRowAutoSelect");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setSingleRowAutoSelect(boolean singleRowAutoSelect) {
+        this.singleRowAutoSelect = new Boolean(singleRowAutoSelect);
+    }     
 }
