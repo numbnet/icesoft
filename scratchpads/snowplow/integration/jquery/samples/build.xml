@@ -43,6 +43,9 @@
 		<clean/>
 		<ant dir="./basic" target="clean"/>
 		<ant dir="${icechat.dir}/jquery" target="clean"/>
+		<ant dir="${icechat.dir}/ajax" target="clean"/>
+		<ant dir="${icechat.dir}/api" target="clean"/>
+		<ant dir="${icechat.dir}/auth" target="clean"/>
 	</target>
 
 	
