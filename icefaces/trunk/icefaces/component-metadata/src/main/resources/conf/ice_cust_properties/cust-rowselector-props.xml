@@ -361,3 +361,15 @@
         <default-value>false</default-value>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[<p>When true selects rows automatically on arrow key events in single selection mode</p>]]>
+    </description>
+    <property-name>singleRowAutoSelect</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
