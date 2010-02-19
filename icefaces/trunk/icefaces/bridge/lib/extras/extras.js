@@ -155,6 +155,8 @@ Ice.PanelCollapsible = {
     }
 }
 
+var singleRowSelectionExecuter;
+var localEvent;
 Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
     var ctrlKyFld = document.getElementsByName(hdnFld+'ctrKy');
     var sftKyFld = document.getElementsByName(hdnFld+'sftKy');  
@@ -180,6 +182,8 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
             var targ;
             if (!event)
                 var event = window.event;
+            if (!event)
+                var event = localEvent;                
             if (event.target)
                 targ = event.target;
             else if (event.srcElement)
@@ -209,6 +213,8 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 }
             }
         }
+        if (!event)
+            var event = localEvent;         
         var evt = Event.extend(event);
         var row = evt.element();
         if (row.tagName.toLowerCase() != "tr") {
@@ -466,7 +472,14 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                     if (Element.previous(parent)) {
                         Element.previous(parent).firstChild.firstChild.focus();
                         if (singleSelection) {
-                            Element.previous(parent).onclick.apply(parent, arguments);
+                            localEvent = Object.clone(event); 
+                            window.clearTimeout (singleRowSelectionExecuter);
+                            singleRowSelectionExecuter = window.setTimeout(function() {
+                                try {
+                                    arguments[0] = localEvent;
+                                    Element.previous(parent).onclick.apply(parent, arguments);
+                                 } catch(ee) {}
+                            },400);
                         }                        
                     }
 
@@ -476,8 +489,15 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                     if (Element.next(parent)) {
                         Element.next(parent).firstChild.firstChild.focus();
                         if (singleSelection) {
-                            Element.next(parent).onclick.apply(parent, arguments);
-                        }  
+                            localEvent = Object.clone(event); 
+                            window.clearTimeout (singleRowSelectionExecuter);
+                            singleRowSelectionExecuter = window.setTimeout(function() {
+                                try {
+                                    arguments[0] = localEvent;                                
+                                    Element.next(parent).onclick.apply(parent, arguments);
+                                 } catch(ee) {}
+                            },400);
+                        }
                     }
                     Event.stop(event);                    
                     return false;
@@ -544,8 +564,8 @@ Ice.DatPagKybrd = function(pId, event){
              button = "next";
                     logger.info('pageDown');
         break;
-	    case 35: //end
-	         button = "last";
+        case 35: //end
+             button = "last";
                    logger.info('end');
         break;
         case 36: //home 
@@ -592,13 +612,13 @@ Ice.registerEventListener = function(ele, mask, handler) {
                proceed = ele["jshandler"](event);
             } catch (e) { logger.info(e) }
         }
-	    if (!proceed) return;
-	    try {
-	       var form = formOf(ele);
-	       var query = new Ice.Parameter.Query();
-	       query.add(ele.id, 'submitted'); 
-	       iceSubmitPartial(form, null, event, query); 
-	    } catch (e) {logger.info(e);}                       
+        if (!proceed) return;
+        try {
+           var form = formOf(ele);
+           var query = new Ice.Parameter.Query();
+           query.add(ele.id, 'submitted'); 
+           iceSubmitPartial(form, null, event, query); 
+        } catch (e) {logger.info(e);}                       
         });
     }
 }
