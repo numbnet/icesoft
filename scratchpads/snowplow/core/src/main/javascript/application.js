@@ -107,7 +107,7 @@ if (!window.ice.icepush) {
         }
 
         function calculateURI(uri) {
-            return (namespace.push.uriPrefix || '') + uri + (namespace.push.uriSuffix || '');
+            return (namespace.push.configuration.uriPrefix || '') + uri + (namespace.push.configuration.uriSuffix || '');
         }
 
         var currentNotifications = [];
