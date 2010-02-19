@@ -378,4 +378,6 @@ public class CSS_DEFAULT {
     public static final String DATAEXPORTER_DEFAULT_STYLE_CLASS = "iceDatExp";
     public static final String JSEVENT_LISTENER_DEFAULT_STYLE_CLASS = "iceJEvt";
     
+    public static final String FOCUS_HIDDEN_LINK_STYLE_CLASS = "iceHdnLnk";    
+    
 }

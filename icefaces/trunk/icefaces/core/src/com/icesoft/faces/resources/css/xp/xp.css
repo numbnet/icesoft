@@ -2928,3 +2928,17 @@ Disabled classes for the calendar controls
 .icePnlTbLblLnk img {
     border: 0;
 }
+
+/*
+----------- focus hidden link ----------
+*/
+
+.iceHdnLnk {
+    float:left;
+    border:none;
+    margin:0px;
+}
+
+.iceHdnLnk img{
+    border: 0;  
+}

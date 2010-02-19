@@ -196,7 +196,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 if( tname == 'input' ||
                     tname == 'select' ||
                     tname == 'option' ||
-                    tname == 'a' ||
+                    (tname == 'a' && 'iceHdnLnk' != targ.className) ||
                     tname == 'textarea')
                 {
                     return;

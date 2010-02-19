@@ -747,10 +747,10 @@ public class TableRenderer
                                 singleSelection = true;
                             }
                             anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
-                            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");             
+                            anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);             
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
                             anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
-                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' style='border:none;'/>"));
+                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "'/>"));
                             anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
                             anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   
                             td.appendChild(anchor);                            
