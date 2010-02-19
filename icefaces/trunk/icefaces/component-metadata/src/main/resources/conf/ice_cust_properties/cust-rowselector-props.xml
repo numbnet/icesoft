@@ -346,3 +346,18 @@
         <default-value>false</default-value>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[<p> Enables keyboard support. Default value is true. When true it 
+        enables "up" and "down" arrow keys to set the focus on rows, as it was hovered 
+        by the mouse. Once row has a focus then it can be selected/deselected by
+        hitting the "space" or "enter" key</p>]]>
+    </description>
+    <property-name>keyboardNavigationEnabled</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
