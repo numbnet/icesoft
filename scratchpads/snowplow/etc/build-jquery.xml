@@ -36,11 +36,14 @@
 	
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/basic" target="war"/>
-		<copy file="${samples.dir}/basic/icepush-jquery-basic.war" todir="${dist.dir}"/>
+		<copy file="${samples.dir}/basic/${dist.dir}/icepush-jquery-basic.war" todir="${dist.dir}"/>
 		
-		<ant dir="${samples.dir}/icechat/jquery" target="war">
-		</ant>
-		<copy file="${samples.dir}/icechat/jquery/dist/icechat-jquery.war" todir="${dist.dir}"/>
+		<ant dir="${samples.dir}/icechat/api" target="jar"/>
+		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
+		<ant dir="${samples.dir}/icechat/auth" target="jar"/>
+		<ant dir="${samples.dir}/icechat/ajax" target="war"/>
+		<ant dir="${samples.dir}/icechat/jquery" target="war"/>
+		<copy file="${samples.dir}/icechat/jquery/${dist.dir}/icechat-jquery.war" todir="${dist.dir}"/>
 	</target>
 
 	
