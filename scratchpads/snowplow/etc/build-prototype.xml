@@ -38,9 +38,12 @@
 		<ant dir="${samples.dir}/basic" target="war"/>
 		<copy file="${samples.dir}/basic/dist/icepush-prototype-basic.war" todir="${dist.dir}"/>
 		
-		<ant dir="${samples.dir}/icechat/prototype" target="war">
-		</ant>
-		<copy file="${samples.dir}/icechat/prototype/dist/icechat-prototype.war" todir="${dist.dir}"/>
+		<ant dir="${samples.dir}/icechat/api" target="jar"/>
+		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
+		<ant dir="${samples.dir}/icechat/auth" target="jar"/>
+		<ant dir="${samples.dir}/icechat/ajax" target="war"/>
+		<ant dir="${samples.dir}/icechat/prototype" target="war"/>
+		<copy file="${samples.dir}/icechat/prototype/${dist.dir}/icechat-prototype.war" todir="${dist.dir}"/>
 	</target>
 
 	

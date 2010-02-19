@@ -32,15 +32,19 @@
 		<antcall target="jar-icepush-core"/>
 		<copy file="./core/${dist.dir}/icepush.jar" todir="${dist.dir}"/>
 		
+		<ant dir="./integration/jsp/core" target="jar"/>
+		<copy file="./integration/jsp/core/${dist.dir}/icepush-jsp.jar" todir="${dist.dir}"/>
+		
 	</target>
 	
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/dice" target="war"/>
-		<copy file="${samples.dir}/dice/dist/icepush-springmvc-dice.war" todir="${dist.dir}"/>
+		<copy file="${samples.dir}/dice/dist/icepush-spring-dice.war" todir="${dist.dir}"/>
 		
-		<ant dir="${samples.dir}/icechat/springmvc" target="war">
-		</ant>
-		<copy file="${samples.dir}/icechat/springmvc/dist/icechat-springmvc.war" todir="${dist.dir}"/>
+		<ant dir="${samples.dir}/icechat/api" target="jar"/>
+		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
+		<ant dir="${samples.dir}/icechat/spring" target="war"/>
+		<copy file="${samples.dir}/icechat/spring/${dist.dir}/icechat-spring.war" todir="${dist.dir}"/>
 	</target>
 
 	
