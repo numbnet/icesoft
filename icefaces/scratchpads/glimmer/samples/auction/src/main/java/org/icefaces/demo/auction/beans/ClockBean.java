@@ -33,16 +33,18 @@
 
 package org.icefaces.demo.auction.beans;
 
+import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushRenderer;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class used to control the background clock of the entire auction monitor By
@@ -53,26 +55,24 @@ import javax.faces.bean.ApplicationScoped;
  */
 @ManagedBean(name = "ClockBean")
 @ApplicationScoped
-public class ClockBean  {
-
+public class ClockBean {
     private static Logger log = Logger.getLogger(ClockBean.class.getName());
-    
+    private static final String AUTO_LOAD = "ClockBean-Loaded";
     private int pollInterval = 1000;
     private String autoLoad = " ";
-
-    private static final String AUTO_LOAD = "ClockBean-Loaded";
-    
-    private Timer clockTimer = null;
-    private TimerTask renderTask = new TimerTask()  {
-        public void run() {
-            PushRenderer.render("auction");
-            if( log.isLoggable(Level.FINEST) ){
-                log.fine("render done for 'auction' using " + clockTimer);
-            }
-        }
-    };
+    private Timer clockTimer;
+    private TimerTask renderTask;
 
     public ClockBean() {
+        final PortableRenderer renderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+        renderTask = new TimerTask() {
+            public void run() {
+                renderer.render("auction");
+                if (log.isLoggable(Level.FINEST)) {
+                    log.fine("render done for 'auction' using " + clockTimer);
+                }
+            }
+        };
     }
 
     @PostConstruct
@@ -81,11 +81,11 @@ public class ClockBean  {
     }
 
     @PreDestroy
-    public void cleanup(){
-        if (null != clockTimer)  {
+    public void cleanup() {
+        if (null != clockTimer) {
             clockTimer.cancel();
         }
-        if( log.isLoggable(Level.FINEST) ){
+        if (log.isLoggable(Level.FINEST)) {
             log.finest("cleaning up " + clockTimer);
         }
     }
@@ -98,7 +98,7 @@ public class ClockBean  {
     }
 
     public void setPollInterval(int interval) {
-        if (null != clockTimer)  {
+        if (null != clockTimer) {
             clockTimer.cancel();
         }
         pollInterval = interval;

@@ -87,6 +87,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
 
                     if (EnvUtils.isICEpushPresent()) {
                         String viewID = ViewNotificationManager.lookup(context).assignViewIdentifier();
+                        rootAttributes.put(ViewNotificationManager.class.getName(), viewID);
                         output = new UIOutput();
                         output.getAttributes().put("escape", "false");
                         String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(id);

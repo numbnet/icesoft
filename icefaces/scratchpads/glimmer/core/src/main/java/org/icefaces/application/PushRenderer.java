@@ -22,27 +22,18 @@
 
 package org.icefaces.application;
 
-import org.icefaces.push.SessionRenderer;
-import org.icefaces.util.EnvUtils;
+import org.icefaces.push.ViewNotificationManager;
+import org.icepush.PushContext;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletSession;
-import javax.servlet.http.HttpSession;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
-
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PushRenderer {
     private static Logger log = Logger.getLogger(PushRenderer.class.getName());
 
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
-    private static Hashtable renderGroups = new Hashtable();
+    public static PushContext pushContext;
 
     /**
      * Add the current view to the specified group. Groups
@@ -52,7 +43,10 @@ public class PushRenderer {
      * @param groupName the name of the group to add the current view to
      */
     public static synchronized void addCurrentView(String groupName) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        FacesContext context = FacesContext.getCurrentInstance();
+        String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
+        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+        pushContext.addGroupMember(groupName, viewID);
     }
 
     /**
@@ -61,7 +55,10 @@ public class PushRenderer {
      * @param groupName the name of the group to remove the current view from
      */
     public static synchronized void removeCurrentView(String groupName) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        FacesContext context = FacesContext.getCurrentInstance();
+        String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
+        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+        pushContext.removeGroupMember(groupName, viewID);
     }
 
     /**
@@ -71,20 +68,10 @@ public class PushRenderer {
      *
      * @param groupName the name of the group to add the current session to
      */
-    public static synchronized void addCurrentSession(String groupName) {
-        Set group = (Set) renderGroups.get(groupName);
-        if (null == group) {
-            group = new CopyOnWriteArraySet();
-            renderGroups.put(groupName, group);
-        }
-        ExternalContext externalContext = FacesContext.getCurrentInstance()
-                .getExternalContext();
-        Object currentSession = externalContext.getSession(false);
-        if (log.isLoggable(Level.FINEST)) {
-            log.finest( "addCurrentSession " + currentSession + 
-                       " to group " + groupName );
-        }
-        group.add(new SessionHolder(currentSession));
+    public static synchronized void addCurrentSession(final String groupName) {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) externalContext.getSessionMap().get(ViewNotificationManager.class.getName());
+        viewNotificationManager.addCurrentViewsToGroup(groupName);
     }
 
     /**
@@ -93,7 +80,10 @@ public class PushRenderer {
      *
      * @param groupName the name of the group to remove the current view from
      */
-    public static synchronized void removeCurrentSession(String groupName) {
+    public static synchronized void removeCurrentSession(final String groupName) {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) externalContext.getSessionMap().get(ViewNotificationManager.class.getName());
+        viewNotificationManager.removeCurrentViewsFromGroup(groupName);
     }
 
     /**
@@ -108,96 +98,19 @@ public class PushRenderer {
      * @param groupName the name of the group of sessions to render.
      */
     public static void render(String groupName) {
-        if (null == renderGroups) {
-            return;
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context != null) {
+            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            pushContext.push(groupName);
         }
-        Set group = (Set) renderGroups.get(groupName);
-        if (null == group) {
-            return;
-        }
+    }
 
-//        PersistentFacesState suppressedView = PersistentFacesState.getInstance();
-
-        Iterator sessionHolders = group.iterator();
-        while (sessionHolders.hasNext()) {
-            SessionHolder sessionHolder = (SessionHolder) sessionHolders.next();
-            HttpSession session = (HttpSession) sessionHolder.getSession();
-            if ((null != session) && (isValid(session))) {
-                SessionRenderer sessionRenderer = (SessionRenderer) session.getAttribute(SessionRenderer.class.getName());
-                if (log.isLoggable(Level.FINEST)) {
-                    log.finest( "render " + sessionRenderer +
-                       " in group " + groupName );
-                }
-                if (null != sessionRenderer) {
-                    sessionRenderer.renderViews();
-                }
-            } else {
-                //remove any null or expired sessions
-                group.remove(sessionHolder);
-                removeGroupIfEmpty(groupName);
+    public static PortableRenderer getPortableRenderer(FacesContext context) {
+        final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+        return new PortableRenderer() {
+            public void render(String group) {
+                pushContext.push(group);
             }
-        }
-    }
-
-    static boolean isValid(HttpSession session) {
-        try {
-            Object test = session.getAttribute("isTheSessionValid?");
-            return true;
-        } catch (IllegalStateException e) {
-        }
-        return false;
-    }
-
-    //this method will not be called frequently enough to completely remove
-    //all empty groups.  We can either run this during notification of session
-    //shutdown or have a ReferenceQueue that we poll() in addCurrentSession()
-    //(if addCurrentSession() is never called, the leak is not significant)
-    static synchronized void removeGroupIfEmpty(String groupName) {
-        Set group = (Set) renderGroups.get(groupName);
-        if (null == group) {
-            return;
-        }
-        if (group.isEmpty()) {
-            if (log.isLoggable(Level.FINEST)) {
-                log.finest( "removing group " + groupName );
-            }
-            renderGroups.remove(groupName);
-        }
-    }
-
-}
-
-
-class SessionHolder {
-    WeakReference sessionReference = null;
-    String sessionId = null;
-
-    public SessionHolder(Object session) {
-        sessionReference = new WeakReference(session);
-        if (session instanceof HttpSession) {
-            sessionId = ((HttpSession) session).getId();
-        }
-        if (EnvUtils.instanceofPortletSession(session)) {
-            sessionId = ((PortletSession) session).getId();
-        }
-    }
-
-    public Object getSession() {
-        return sessionReference.get();
-    }
-
-    public String getId() {
-        return sessionId;
-    }
-
-    public boolean equals(Object o) {
-        if (o instanceof SessionHolder) {
-            return (sessionId.equals(((SessionHolder) o).getId()));
-        }
-        return false;
-    }
-
-    public int hashCode() {
-        return sessionId.hashCode();
+        };
     }
 }
