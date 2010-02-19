@@ -39,6 +39,9 @@
 		<clean/>
 		<ant dir="./pushpanel" target="clean"/>
 		<ant dir="${icechat.dir}/wicket" target="clean"/>
+		<ant dir="${icechat.dir}/beans" target="clean"/>
+		<ant dir="${icechat.dir}/api" target="clean"/>
+		<ant dir="${icechat.dir}/cdi" target="clean"/>
 	</target>
 	
 </project>
