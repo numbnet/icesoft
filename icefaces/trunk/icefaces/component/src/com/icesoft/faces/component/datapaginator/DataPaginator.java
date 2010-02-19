@@ -85,7 +85,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     private int pageIndex;
     // just for caching the associated uidata
     private transient UIData _UIData;
-
+    private Boolean keyboardNavigationEnabled;    
     private MethodBinding _actionListener;
     private Boolean disabled = null;
 
@@ -877,7 +877,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[23];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -900,7 +900,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[19] = enabledOnUserRole;
         values[20] = disabled;
         values[21] = new Integer(oldRow);   
-        values[22] = new Integer(pageIndex);          
+        values[22] = new Integer(pageIndex);  
+        values[23] = keyboardNavigationEnabled;
                 
         return values;
     }
@@ -935,6 +936,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         disabled = (Boolean)values[20];
         oldRow = ((Integer) values[21]).intValue();
         pageIndex = ((Integer) values[22]).intValue();
+        keyboardNavigationEnabled = (Boolean) values[23];
     }
 
     /**
@@ -1115,4 +1117,19 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         }
         return modelResultSet.booleanValue();
     }
+    
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }      
 }

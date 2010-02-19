@@ -263,3 +263,21 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[<p> Enables keyboard support. Default value is true. When true 
+        it enables the following keys: Home, End, PageUp and PageDown to navigate
+        to First, Last, Previous and Next page respectively.<br/>
+        <b>Note:</b> Shortcut keys would only be processed when focus is on one of a
+        paginator button or focus is on one of a row in the datatable when keyboardNavigationEnabled
+        is true on rowSelector as well.        
+        </p>]]>
+    </description>
+    <property-name>keyboardNavigationEnabled</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>

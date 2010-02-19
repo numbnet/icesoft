@@ -277,7 +277,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
         Element table = (Element) domContext.getRootNode();
         DOMContext.removeChildren(table);
-        table.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
+        if (scroller.isKeyboardNavigationEnabled()) {
+            table.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
+        }
         table.setAttribute(HTML.NAME_ATTR, scroller.getUIData().getClientId(facesContext));
         Element tr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(tr);
