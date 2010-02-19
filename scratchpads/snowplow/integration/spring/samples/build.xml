@@ -21,7 +21,7 @@
  *
  *
   -->
-<project name="icepush-springmvc-integration-samples" default="bin-samples">
+<project name="icepush-spring-integration-samples" default="bin-samples">
 	
 	<property file="../../../build.properties"/>
 	<import file="../../../build-common.xml"/>
@@ -39,6 +39,9 @@
 	<target name="clean">
 		<ant dir="./dice" target="clean"/>
 		<ant dir="${icechat.dir}/spring" target="clean"/>
+		<ant dir="${icechat.dir}/beans" target="clean"/>
+		<ant dir="${icechat.dir}/api" target="clean"/>
+		<ant dir="${icechat.dir}/cdi" target="clean"/>
 	</target>
 	
 </project>

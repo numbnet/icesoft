@@ -21,7 +21,7 @@
  *
  *
   -->
-<project name="icepush-springmvc-integration" default="build.all">
+<project name="icepush-spring-integration" default="build.all">
 
 	<property file="../../build.properties"/>
 	
