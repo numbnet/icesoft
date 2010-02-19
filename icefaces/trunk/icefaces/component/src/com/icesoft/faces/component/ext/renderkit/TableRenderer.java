@@ -712,10 +712,10 @@ public class TableRenderer
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'; Ice.tblMsOvr(this);");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"';");
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'; Ice.tblMsOvr(this);");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"';");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
@@ -740,7 +740,8 @@ public class TableRenderer
                         uiData.setColNumber(uiData.getColNumber()+1);                        
                         Element td = domContext.createElement(HTML.TD_ELEM);
                         //add row focus handler for rowSelector
-                        if (uiData.getColNumber() == 0 && rowSelectorFound) {
+                        if (uiData.getColNumber() == 0 && rowSelectorFound
+                                && rowSelector.isKeyboardNavigationEnabled()) {
                             boolean singleSelection = false;
                             if(!rowSelector.isEnhancedMultiple() && !rowSelector.getMultiple().booleanValue()) {
                                 singleSelection = true;

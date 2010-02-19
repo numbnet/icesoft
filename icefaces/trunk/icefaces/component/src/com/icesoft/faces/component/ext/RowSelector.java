@@ -78,7 +78,7 @@ public class RowSelector extends UIPanel {
     private Boolean preStyleOnSelection;
     private String renderedOnUserRole = null;
     transient private List selectedRowsList = new ArrayList();
-    
+    private Boolean keyboardNavigationEnabled;     
 
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
     public static final String COMPONENT_FAMILY =
@@ -547,7 +547,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[19];
+        Object[] state = new Object[20];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -567,6 +567,7 @@ public class RowSelector extends UIPanel {
         state[16] = dblClickDelay;
         state[17] = preStyleOnSelection;
         state[18] = renderedOnUserRole;
+        state[19] = keyboardNavigationEnabled;        
         return state;
     }
 
@@ -594,7 +595,8 @@ public class RowSelector extends UIPanel {
             restoreAttachedState(context, state[15]);
         dblClickDelay = (Integer) state[16];
         preStyleOnSelection = (Boolean) state[17];
-        renderedOnUserRole = (String) state[18]; 
+        renderedOnUserRole = (String) state[18];
+        keyboardNavigationEnabled = (Boolean) state[19];        
     }
     
     private String styleClass;
@@ -689,4 +691,19 @@ public class RowSelector extends UIPanel {
         }
         return super.isRendered();
     } 
+    
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }    
 }
