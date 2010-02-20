@@ -25,8 +25,8 @@ package org.icefaces.application;
 import org.icefaces.push.ViewNotificationManager;
 import org.icepush.PushContext;
 
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class PushRenderer {
@@ -44,6 +44,7 @@ public class PushRenderer {
      */
     public static synchronized void addCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
+        missingFacesContext(context);
         String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.addGroupMember(groupName, viewID);
@@ -56,6 +57,7 @@ public class PushRenderer {
      */
     public static synchronized void removeCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
+        missingFacesContext(context);
         String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.removeGroupMember(groupName, viewID);
@@ -69,8 +71,10 @@ public class PushRenderer {
      * @param groupName the name of the group to add the current session to
      */
     public static synchronized void addCurrentSession(final String groupName) {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) externalContext.getSessionMap().get(ViewNotificationManager.class.getName());
+        FacesContext context = FacesContext.getCurrentInstance();
+        missingFacesContext(context);
+        Map sessionMap = context.getExternalContext().getSessionMap();
+        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) sessionMap.get(ViewNotificationManager.class.getName());
         viewNotificationManager.addCurrentViewsToGroup(groupName);
     }
 
@@ -81,36 +85,41 @@ public class PushRenderer {
      * @param groupName the name of the group to remove the current view from
      */
     public static synchronized void removeCurrentSession(final String groupName) {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) externalContext.getSessionMap().get(ViewNotificationManager.class.getName());
+        FacesContext context = FacesContext.getCurrentInstance();
+        missingFacesContext(context);
+        Map sessionMap = context.getExternalContext().getSessionMap();
+        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) sessionMap.get(ViewNotificationManager.class.getName());
         viewNotificationManager.removeCurrentViewsFromGroup(groupName);
     }
 
     /**
      * Render the specified group of sessions by performing the JavaServer Faces
-     * execute and render lifecycle phases.  If a FacesContext is in the
-     * scope of the current thread scope, the current view will not be
-     * asynchronously rendered
-     * (it is already rendered as a result of the user event being
-     * processed).  For more fine-grained control
-     * use the RenderManager API.
+     * execute and render lifecycle phases.
+     * For more fine-grained control use the RenderManager API.
      *
      * @param groupName the name of the group of sessions to render.
      */
     public static void render(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (context != null) {
-            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-            pushContext.push(groupName);
-        }
+        missingFacesContext(context);
+        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+        pushContext.push(groupName);
     }
 
     public static PortableRenderer getPortableRenderer(FacesContext context) {
         final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         return new PortableRenderer() {
             public void render(String group) {
-                pushContext.push(group);
+                if (FacesContext.getCurrentInstance() == null) {
+                    pushContext.push(group);
+                }
             }
         };
+    }
+
+    private static void missingFacesContext(FacesContext context) {
+        if (context == null) {
+            throw new RuntimeException("FacesContext is not present for thread " + Thread.currentThread());
+        }
     }
 }
