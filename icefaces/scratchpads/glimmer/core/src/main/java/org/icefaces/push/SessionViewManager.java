@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class SessionViewManager implements SessionRenderer {
-    private int index;
     private final PushContext pushContext;
     private String groupName;
     private ArrayList viewIDs = new ArrayList();
@@ -17,14 +16,12 @@ public class SessionViewManager implements SessionRenderer {
 
     public SessionViewManager(PushContext pushContext, HttpSession session) {
         this.pushContext = pushContext;
-        this.index = 0;
         this.groupName = session.getId();
         session.setAttribute(SessionViewManager.class.getName(), this);
         session.setAttribute(SessionRenderer.class.getName(), this);
     }
 
-    public String assignViewIdentifier() {
-        String id = generateID();
+    public String addView(String id) {
         viewIDs.add(id);
         pushContext.addGroupMember(groupName, id);
 
@@ -35,7 +32,7 @@ public class SessionViewManager implements SessionRenderer {
         return id;
     }
 
-    public void disposeViewIdentifier(String id) {
+    public void removeView(String id) {
         viewIDs.remove(id);
         pushContext.removeGroupMember(groupName, id);
 
@@ -52,10 +49,6 @@ public class SessionViewManager implements SessionRenderer {
 
     public void renderViews() {
         pushContext.push(groupName);
-    }
-
-    private synchronized String generateID() {
-        return Integer.toString(++index, 36);
     }
 
     public void addCurrentViewsToGroup(String groupName) {

@@ -45,7 +45,7 @@ public class PushRenderer {
     public static synchronized void addCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = (String) context.getViewRoot().getAttributes().get(SessionViewManager.class.getName());
+        String viewID = context.getApplication().getStateManager().getViewState(context);
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.addGroupMember(groupName, viewID);
     }
@@ -58,7 +58,7 @@ public class PushRenderer {
     public static synchronized void removeCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = (String) context.getViewRoot().getAttributes().get(SessionViewManager.class.getName());
+        String viewID = context.getApplication().getStateManager().getViewState(context);
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.removeGroupMember(groupName, viewID);
     }
