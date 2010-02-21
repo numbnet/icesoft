@@ -20,7 +20,7 @@ public class DisposeWindowScope extends AbstractServer {
 
         String[] viewIDs = request.getParameterAsStrings("ice.view");
         for (int i = 0; i < viewIDs.length; i++) {
-            sessionViewManager.disposeViewIdentifier(viewIDs[i]);
+            sessionViewManager.removeView(viewIDs[i]);
         }
 
         request.respondWith(OKHandler.HANDLER);
