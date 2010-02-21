@@ -4,15 +4,15 @@ import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
 public class SessionViewManager implements SessionRenderer {
     private final PushContext pushContext;
     private String groupName;
-    private ArrayList viewIDs = new ArrayList();
-    private ArrayList groups = new ArrayList();
+    private HashSet viewIDs = new HashSet();
+    private HashSet groups = new HashSet();
 
     public SessionViewManager(PushContext pushContext, HttpSession session) {
         this.pushContext = pushContext;
