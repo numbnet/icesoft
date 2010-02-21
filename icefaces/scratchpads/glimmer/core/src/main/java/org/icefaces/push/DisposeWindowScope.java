@@ -7,11 +7,11 @@ import org.icefaces.push.http.standard.OKHandler;
 
 public class DisposeWindowScope extends AbstractServer {
     private final WindowScopeManager windowScopeManager;
-    private ViewNotificationManager viewNotificationManager;
+    private SessionViewManager sessionViewManager;
 
-    public DisposeWindowScope(WindowScopeManager windowScopeManager, ViewNotificationManager viewNotificationManager) {
+    public DisposeWindowScope(WindowScopeManager windowScopeManager, SessionViewManager sessionViewManager) {
         this.windowScopeManager = windowScopeManager;
-        this.viewNotificationManager = viewNotificationManager;
+        this.sessionViewManager = sessionViewManager;
     }
 
     public void service(Request request) throws Exception {
@@ -20,7 +20,7 @@ public class DisposeWindowScope extends AbstractServer {
 
         String[] viewIDs = request.getParameterAsStrings("ice.view");
         for (int i = 0; i < viewIDs.length; i++) {
-            viewNotificationManager.disposeViewIdentifier(viewIDs[i]);
+            sessionViewManager.disposeViewIdentifier(viewIDs[i]);
         }
 
         request.respondWith(OKHandler.HANDLER);

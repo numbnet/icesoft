@@ -22,7 +22,7 @@
 
 package org.icefaces.application;
 
-import org.icefaces.push.ViewNotificationManager;
+import org.icefaces.push.SessionViewManager;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
@@ -45,7 +45,7 @@ public class PushRenderer {
     public static synchronized void addCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
+        String viewID = (String) context.getViewRoot().getAttributes().get(SessionViewManager.class.getName());
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.addGroupMember(groupName, viewID);
     }
@@ -58,7 +58,7 @@ public class PushRenderer {
     public static synchronized void removeCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = (String) context.getViewRoot().getAttributes().get(ViewNotificationManager.class.getName());
+        String viewID = (String) context.getViewRoot().getAttributes().get(SessionViewManager.class.getName());
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.removeGroupMember(groupName, viewID);
     }
@@ -74,8 +74,8 @@ public class PushRenderer {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
         Map sessionMap = context.getExternalContext().getSessionMap();
-        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) sessionMap.get(ViewNotificationManager.class.getName());
-        viewNotificationManager.addCurrentViewsToGroup(groupName);
+        SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
+        sessionViewManager.addCurrentViewsToGroup(groupName);
     }
 
     /**
@@ -88,8 +88,8 @@ public class PushRenderer {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
         Map sessionMap = context.getExternalContext().getSessionMap();
-        ViewNotificationManager viewNotificationManager = (ViewNotificationManager) sessionMap.get(ViewNotificationManager.class.getName());
-        viewNotificationManager.removeCurrentViewsFromGroup(groupName);
+        SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
+        sessionViewManager.removeCurrentViewsFromGroup(groupName);
     }
 
     /**
