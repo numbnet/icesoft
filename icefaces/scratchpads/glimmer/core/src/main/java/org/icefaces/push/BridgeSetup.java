@@ -93,8 +93,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
                         String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(id);
                         output.setValue("<script type=\"text/javascript\">" +
                                 "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
-                                "ice.push.register(['" + sessionExpiryPushID + "']," +
-                                "function(){ice.sessionExpired();ice.push.deregister(['" + id + "', '" + sessionExpiryPushID + "']);});" +
+                                "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
                                 "</script>");
                         root.addComponentResource(context, output, "body");
                     }

@@ -64,8 +64,10 @@ if (!window.ice.icefaces) {
             append(sessionExpiryListeners, callback);
         };
 
-        namespace.sessionExpired = function() {
+        namespace.sessionExpired = function(sessionExpiredPushID) {
             namespace.retrieveUpdate = noop;
+            namespace.push.deregister(viewIDs);
+            namespace.push.deregister(sessionExpiredPushID);
             broadcast(sessionExpiryListeners);
         };
 
@@ -146,31 +148,44 @@ if (!window.ice.icefaces) {
         };
 
         //redirect vanilla form submits
-        onLoad(window, function() {
-            each(document.getElementsByTagName('form'), function(f) {
-                //hijack browser form submit, instead submit through an Ajax request
-                f.submit = function() {
-                    submit(null, f);
-                };
-                f.onsubmit = none;
-                each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
-                    f[name] = function(e) {
-                        var event = e || window.event;
-                        var element = event.target || event.srcElement;
-                        f.onsubmit = function() {
-                            submit(event, element);
-                            f.onsubmit = none;
-                            return false;
-                        };
+        function redirectFormSubmit(f) {
+            //hijack browser form submit, instead submit through an Ajax request
+            f.submit = function() {
+                submit(null, f);
+            };
+            f.onsubmit = none;
+            each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
+                f[name] = function(e) {
+                    var event = e || window.event;
+                    var element = event.target || event.srcElement;
+                    f.onsubmit = function() {
+                        submit(event, element);
+                        f.onsubmit = none;
+                        return false;
                     };
-                });
+                };
+            });
 
-                //propagate window ID -- this strategy works for POSTs sent by Mojarra
-                var i = document.createElement('input');
-                i.setAttribute('name', 'ice.window');
-                i.setAttribute('value', window.ice.window);
-                i.setAttribute('type', 'hidden');
-                f.appendChild(i);
+            //propagate window ID -- this strategy works for POSTs sent by Mojarra
+            var i = document.createElement('input');
+            i.setAttribute('name', 'ice.window');
+            i.setAttribute('value', window.ice.window);
+            i.setAttribute('type', 'hidden');
+            f.appendChild(i);
+        }
+
+        //redirect all vanilla form submits
+        onLoad(window, function() {
+            each(document.getElementsByTagName('form'), redirectFormSubmit);
+        });
+        //re-apply submit redirect for updated form elements 
+        namespace.onAfterUpdate(function(updateXML) {
+            each(updateXML.getElementsByTagName('update'), function(update) {
+                var id = update.getAttribute('id');
+                var element = document.getElementById(id);
+                if (toLowerCase(element.nodeName) == 'form') {
+                    redirectFormSubmit(element);
+                }
             });
         });
 
