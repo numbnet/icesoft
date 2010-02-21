@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ViewNotificationManager implements SessionRenderer {
+public class SessionViewManager implements SessionRenderer {
     private int index;
     private final PushContext pushContext;
     private String groupName;
     private ArrayList viewIDs = new ArrayList();
     private ArrayList groups = new ArrayList();
 
-    public ViewNotificationManager(PushContext pushContext, HttpSession session) {
+    public SessionViewManager(PushContext pushContext, HttpSession session) {
         this.pushContext = pushContext;
         this.index = 0;
         this.groupName = session.getId();
-        session.setAttribute(ViewNotificationManager.class.getName(), this);
+        session.setAttribute(SessionViewManager.class.getName(), this);
         session.setAttribute(SessionRenderer.class.getName(), this);
     }
 
@@ -45,9 +45,9 @@ public class ViewNotificationManager implements SessionRenderer {
         }
     }
 
-    public static ViewNotificationManager lookup(FacesContext context) {
+    public static SessionViewManager lookup(FacesContext context) {
         Map sessionMap = context.getExternalContext().getSessionMap();
-        return (ViewNotificationManager) sessionMap.get(ViewNotificationManager.class.getName());
+        return (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
     }
 
     public void renderViews() {
