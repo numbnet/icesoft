@@ -31,9 +31,7 @@ import java.util.logging.Logger;
 
 public class PushRenderer {
     private static Logger log = Logger.getLogger(PushRenderer.class.getName());
-
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
-    public static PushContext pushContext;
 
     /**
      * Add the current view to the specified group. Groups
