@@ -35,7 +35,7 @@
 &actionsource-props;
 <property>
     <description>
-        List of "," separated events (e.g) capture="click, keydown, ...".
+        List of "," separated events (e.g) events="click[, keydown, ...]".
     </description>
     <property-name>events</property-name>
     <property-class>java.lang.String</property-class>
@@ -50,13 +50,13 @@
 <property>
     <description>
      <![CDATA[
-        Its an optional attribute. Its a function handlers 
-        for the events defined in capture attribute(e.g) <br/>
-        &lt;ice:jsEventListener capture="click" handler="myClickHandler"&gt;<br/><br/>
-                
+        Its an optional attribute. Can be used to define a callback handlers 
+        for the events listed in "events" attribute(e.g.) <br/>
+        &lt;ice:jsEventListener events="click" handler="myClickHandler"&gt;<br/> 
+        .... <br/><br/>       
 
-        &lt;ice:jsEventListener capture="click, keydown" handler="myHandler"&gt;<br/>
-
+        &lt;ice:jsEventListener events="click, keydown" handler="myHandler"&gt;<br/>
+        ....
          ]]>  
     </description>
     <property-name>handler</property-name>
