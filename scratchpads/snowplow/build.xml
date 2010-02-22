@@ -12,10 +12,9 @@
  * License for the specific language governing rights and limitations under
  * the License.
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -40,7 +39,7 @@
 		<build.with.path.offset target="jsp"/>
 	</target>
 	
-	<target name="dist-springmvc-bin" depends="dist-icepush-bin">
+	<target name="dist-spring-bin" depends="dist-icepush-bin">
 		<build.with.path.offset target="spring"/>
 	</target>
 	
@@ -88,7 +87,7 @@
 		<!-- build all the distributions -->
 		<antcall target="dist-gwt-bin"/>
 		<antcall target="dist-jsp-bin"/>
-		<antcall target="dist-springmvc-bin"/>
+		<antcall target="dist-spring-bin"/>
 		<antcall target="dist-jquery-bin"/>
 		<antcall target="dist-prototype-bin"/>
 		<antcall target="dist-wicket-bin"/>
