@@ -139,7 +139,7 @@ if (!window.ice.icefaces) {
                     newForm.action = window.location.pathname + ';ice.session.donottouch';
                     //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
                     newForm.id = 'void';
-                    debug(logger, 'picking updates for view ' + viewState);
+                    debug(logger, 'picking updates for view ' + viewID);
                     jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
