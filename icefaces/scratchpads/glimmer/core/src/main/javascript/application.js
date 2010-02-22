@@ -57,7 +57,7 @@ if (!window.ice.icefaces) {
 
         //todo: find better solution for configuring ICEpush
         //this is meant to be used by ICEpush JS code
-        namespace.push.uriSuffix = '.jsf';
+        namespace.push.configuration.uriSuffix = '.jsf';
 
         var sessionExpiryListeners = [];
         namespace.onSessionExpiry = function(callback) {
