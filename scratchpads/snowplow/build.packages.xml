@@ -22,7 +22,7 @@
 -->
 <project name="ICEpush integration builds" default="package.all">
 
-	<import file="build.xml" />
+	<!--import file="build.xml" /-->
 
 	<target name="package.all">
 		<antcall target="clean-all" />
@@ -124,5 +124,48 @@
 			</copy>
 		</sequential>
 	</macrodef>
+	
+	<target name="clean-all">
+		<clean/>
+		<ant dir="./core" target="clean"/>
+		<!-- JSP -->
+		<clean.with.path.offset target="jsp"/>
+		<!-- GWT -->
+		<clean.with.path.offset target="gwt"/>
+		<ant target="clean" dir="./samples/icechat/gwt"/>
+		<!-- SPRINGMVC -->
+		<clean.with.path.offset target="spring"/>
+		<ant target="clean" dir="./samples/icechat/spring"/>
+		<!-- JQUERY -->
+		<clean.with.path.offset target="jquery"/>
+		<ant target="clean" dir="./samples/icechat/jquery"/>
+		<!-- PROTOTYPE -->
+		<clean.with.path.offset target="prototype"/>
+		<ant target="clean" dir="./samples/icechat/prototype"/>	
+		<!-- WICKET -->
+		<clean.with.path.offset target="wicket"/>
+		<ant target="clean" dir="./samples/icechat/wicket"/>	
+	</target>
+	
+	<macrodef name="clean">
+		<element name="add.filesets" optional="true" />
+		<sequential>
+			<delete failonerror="false" includeEmptyDirs="true">
+				<fileset dir="${build.dir}" />
+				<fileset dir="${dist.dir}" />
+				<add.filesets/>
+			</delete>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="clean.with.path.offset">
+		<attribute name="target"/>
+		<sequential>
+			<echo>Cleaning Inegration @{target}</echo>
+			<ant target="clean" dir="./integration/@{target}"/>
+		</sequential>
+	</macrodef>
+
+
 
 </project>
