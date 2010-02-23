@@ -48,6 +48,7 @@ public class FileInfo implements Cloneable, Serializable {
     public static final int INVALID_NAME_PATTERN = 6;
     public static final int UNSPECIFIED_NAME = 7;
     public static final int INVALID_CONTENT_TYPE = 8;
+    public static final int NULL_OUTPUT_STREAM = 9;
     
     private int status = DEFAULT;
     private long size = 0;
@@ -58,6 +59,7 @@ public class FileInfo implements Cloneable, Serializable {
     private Exception exception = null;
     private boolean preUpload = false;
     private boolean postUpload = false;
+    private boolean gettingOutputStream = false;
 
     public FileInfo() {
         super();
@@ -164,6 +166,20 @@ public class FileInfo implements Cloneable, Serializable {
     }
 
     /**
+     * In the scenario where the inputFile component writes the uploaded file 
+     * to a java.io.OutputStream, instead of to a java.io.File, it will first 
+     * do a JSF lifecycle in order to get the OutputStream, before commencing 
+     * the actual saving.
+     */
+    public boolean isGettingOutputStream() {
+        return gettingOutputStream;
+    }
+    
+    public void setGettingOutputStream(boolean getting) {
+        gettingOutputStream = getting;
+    }
+
+    /**
      * @return If the file was successfully uploaded
      */
     public boolean isSaved() {
@@ -195,6 +211,7 @@ public class FileInfo implements Cloneable, Serializable {
         fi.exception    = this.exception;
         fi.preUpload    = this.preUpload;
         fi.postUpload   = this.postUpload;
+        fi.gettingOutputStream = this.gettingOutputStream;
         return fi;
     }
     
@@ -211,6 +228,7 @@ public class FileInfo implements Cloneable, Serializable {
             ",\n  contentType=" + contentType +
             ",\n  size=" + size +
             ",\n  status=" + status +
+            ",\n  gettingOutputStream=" + gettingOutputStream +
             "\n}";        
     }
 
@@ -224,6 +242,7 @@ public class FileInfo implements Cloneable, Serializable {
         if (percent != fileInfo.percent) return false;
         if (postUpload != fileInfo.postUpload) return false;
         if (preUpload != fileInfo.preUpload) return false;
+        if (gettingOutputStream != fileInfo.gettingOutputStream) return false;
         if (size != fileInfo.size) return false;
         if (contentType != null ? !contentType.equals(fileInfo.contentType) : fileInfo.contentType != null)
             return false;
@@ -247,6 +266,7 @@ public class FileInfo implements Cloneable, Serializable {
         result = 31 * result + (exception != null ? exception.hashCode() : 0);
         result = 31 * result + (preUpload ? 1 : 0);
         result = 31 * result + (postUpload ? 1 : 0);
+        result = 31 * result + (gettingOutputStream ? 1 : 0);
         return result;
     }
 }
