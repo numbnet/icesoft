@@ -36,8 +36,7 @@ div.header_content {
 }
 
 .body_container {
-    float: left;
-    
+    float: left;    
     width: 100%;
 }
 
@@ -165,10 +164,10 @@ div.footer_content a:hover {
 .chatRooms_pos{
     height: 100%;
     min-height: 400px;  
-    _height: 400px;//ie6
     position: relative;
     width: 14%;
     overflow: auto;
+    _height: 400px;//ie6
 }
 
 .createNewChatRoom {
@@ -202,10 +201,10 @@ div.footer_content a:hover {
     border: thin solid #B9D6E8;
     float: left;
     margin: 0 1%;
-    _margin: 0 0.5%;//ie6
     min-height: 300px;
     padding: 1%;
     width: 20%;
+    _margin: 0 0.5%;//ie6
 }
 
 .chatRoomMessages {
