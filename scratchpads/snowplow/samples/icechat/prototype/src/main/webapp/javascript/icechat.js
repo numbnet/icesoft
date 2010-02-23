@@ -8,7 +8,10 @@ function login() {
 		parameters: {op: 'login', userName: $('userName').getValue(), 
 			nickName: $('nickName').getValue(), password: $('password').getValue()},
 		onSuccess: function(transport){
-			window.location.href = './index.html';
+			if( transport.responseText )
+				$("loginMessages").innerHTML = transport.responseText;
+			else
+				window.location.href = './index.html';
 		}
 	});
 }
@@ -18,7 +21,10 @@ function register() {
 		parameters: {op: 'register', userName: $('userName').getValue(), 
 			nickName: $('nickName').getValue(), password: $('password').getValue()},
 		onSuccess: function(transport){
-			window.location.href = './index.html';
+			if( transport.responseText )
+				$("loginMessages").innerHTML = transport.responseText;
+			else
+				window.location.href = './index.html';
 		}
 	});
 }
