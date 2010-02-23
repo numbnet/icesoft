@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.net.URLEncoder;
 
@@ -29,7 +30,7 @@ public class OutputResource extends UIComponentBase {
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.OutputResourceRenderer";
     private static Log log = LogFactory.getLog(OutputResource.class);
 	protected Resource resource;
-	protected transient RegisteredResource registeredResource;
+	private transient Map registeredResources = new HashMap();
 	private String mimeType;
 	private Date lastModified;
 	private String fileName;
@@ -84,12 +85,13 @@ public class OutputResource extends UIComponentBase {
 	    }
 	    if (currResource == null) return null;
 		final String fileName = getFileName();
-        if( registeredResource == null ){
-            registeredResource = new RegisteredResource(this, currResource, fileName);
+        if( getRegisteredResource() == null ){
+            RegisteredResource regResource = new RegisteredResource(this, currResource, fileName);
+            setRegisteredResource(this.getClientId(FacesContext.getCurrentInstance()), regResource);
 				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-				        registeredResource).getRawPath();
+				        regResource).getRawPath();
 		}
-        registeredResource.updateContents(this, currResource, fileName);
+        getRegisteredResource().updateContents(this, currResource, fileName);
 		return currResource;
 	}
 	
@@ -323,7 +325,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return path + "?"+ registeredResource.calculateDigest().hashCode();
+		return path + "?"+ getRegisteredResource().calculateDigest().hashCode();
 	}
 	
 	public boolean isShared(){
@@ -353,6 +355,14 @@ public class OutputResource extends UIComponentBase {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+    
+    protected RegisteredResource getRegisteredResource() {
+        return (RegisteredResource)registeredResources.get(this.getClientId(FacesContext.getCurrentInstance()));
+    }
+    
+    protected void setRegisteredResource(String clientId, RegisteredResource registeredResource) {
+        registeredResources.put(clientId, registeredResource);
     }
 }
 
