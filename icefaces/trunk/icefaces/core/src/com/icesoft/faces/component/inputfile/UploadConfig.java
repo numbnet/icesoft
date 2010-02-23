@@ -27,6 +27,7 @@ public class UploadConfig implements Serializable {
     private boolean progressRender;
     private boolean progressListener;
     private boolean failOnEmptyFile;
+    private boolean outputStream;
 
     /**
      * InputFile uses this for publishing its own property configuration
@@ -41,7 +42,8 @@ public class UploadConfig implements Serializable {
         Boolean uploadDirectoryAbsolute,
         boolean progressRender,
         boolean progressListener,
-        boolean failOnEmptyFile) {
+        boolean failOnEmptyFile,
+        boolean outputStream) {
         
         this.clientId = clientId;
         this.formClientId = formClientId;
@@ -53,6 +55,7 @@ public class UploadConfig implements Serializable {
         this.progressRender = progressRender;
         this.progressListener = progressListener;
         this.failOnEmptyFile = failOnEmptyFile;
+        this.outputStream = outputStream;
     }
 
     /**
@@ -75,6 +78,7 @@ public class UploadConfig implements Serializable {
         this.progressRender = false;
         this.progressListener = false;
         this.failOnEmptyFile = true;
+        this.outputStream = false;
         
         if (componentUploadConfig != null) {
             if (componentUploadConfig.formClientId != null) {
@@ -98,6 +102,7 @@ public class UploadConfig implements Serializable {
             this.progressRender = componentUploadConfig.progressRender;
             this.progressListener = componentUploadConfig.progressListener;
             this.failOnEmptyFile = componentUploadConfig.failOnEmptyFile;
+            this.outputStream = componentUploadConfig.outputStream;
         }
     }
     
@@ -141,6 +146,10 @@ public class UploadConfig implements Serializable {
         return failOnEmptyFile;
     }
     
+    public boolean isOutputStream() {
+        return outputStream;
+    }
+    
     public String toString() {
         return
             "UploadConfig: {" +
@@ -154,6 +163,7 @@ public class UploadConfig implements Serializable {
             ",\n  progressRender=" + progressRender +
             ",\n  progressListener=" + progressListener +
             ",\n  failOnEmptyFile=" + failOnEmptyFile +
+            ",\n  outputStream=" + outputStream +
             "\n}";        
     }
 }

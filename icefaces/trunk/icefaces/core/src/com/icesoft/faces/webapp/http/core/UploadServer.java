@@ -5,6 +5,7 @@ import com.icesoft.faces.component.inputfile.FileUploadInvalidNamePatternExcepti
 import com.icesoft.faces.component.inputfile.FileUploadUnspecifiedNameException;
 import com.icesoft.faces.component.inputfile.UploadConfig;
 import com.icesoft.faces.component.inputfile.UploadStateHolder;
+import com.icesoft.faces.component.inputfile.FileUploadNullOutputStreamException;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -118,6 +119,7 @@ public class UploadServer implements Server {
                                             item,
                                             fileInfo,
                                             uploadConfig,
+                                            progressCalculator,
                                             servletRequest.getSession().getServletContext(),
                                             servletRequest.getRequestedSessionId());
                                     UploadStateHolder stateHolder = progressCalculator.doLifecycle();
@@ -146,23 +148,27 @@ public class UploadServer implements Server {
                     FileItemStream stream,
                     FileInfo fileInfo,
                     UploadConfig uploadConfig,
+                    ProgressCalculator progressCalculator,
                     ServletContext servletContext,
                     String sessionId)
                     throws IOException {
-                // InputFile uploadDirectory attribute takes precedence,
-                //  but if it's not given, then default to the
-                //  com.icesoft.faces.uploadDirectory context-param
-                String folder = uploadConfig.getUploadDirectory();
-                // InputFile uploadDirectoryAbsolute attribute takes precedence,
-                //  but if it's not given, then default to the
-                //  com.icesoft.faces.uploadDirectoryAbsolute context-param
-                Boolean folderAbs = uploadConfig.getUploadDirectoryAbsolute();
-                if (!folderAbs.booleanValue()) {
-                    folder = servletContext.getRealPath(folder);
-                }
-                if (uploadConfig.getUniqueFolder().booleanValue()) {
-                    String FILE_SEPARATOR = System.getProperty("file.separator");
-                    folder = folder + FILE_SEPARATOR + sessionId;
+                String folder = null;
+                if (!uploadConfig.isOutputStream()) {
+                    // InputFile uploadDirectory attribute takes precedence,
+                    //  but if it's not given, then default to the
+                    //  com.icesoft.faces.uploadDirectory context-param
+                    folder = uploadConfig.getUploadDirectory();
+                    // InputFile uploadDirectoryAbsolute attribute takes precedence,
+                    //  but if it's not given, then default to the
+                    //  com.icesoft.faces.uploadDirectoryAbsolute context-param
+                    Boolean folderAbs = uploadConfig.getUploadDirectoryAbsolute();
+                    if (!folderAbs.booleanValue()) {
+                        folder = servletContext.getRealPath(folder);
+                    }
+                    if (uploadConfig.getUniqueFolder().booleanValue()) {
+                        String FILE_SEPARATOR = System.getProperty("file.separator");
+                        folder = folder + FILE_SEPARATOR + sessionId;
+                    }
                 }
 
                 String namePattern = uploadConfig.getFileNamePattern().trim();
@@ -191,13 +197,25 @@ public class UploadServer implements Server {
                         log.debug("Matches: " + (fileName != null && fileName.trim().matches(namePattern)));
                     }
                     if (fileName != null && fileName.trim().matches(namePattern)) {
-                        File folderFile = new File(folder);
-                        if (!folderFile.exists())
-                            folderFile.mkdirs();
-                        file = new File(folder, fileName);
-                        OutputStream output = new FileOutputStream(file);
-                        Streams.copy(stream.openStream(), output, true);
-                        long fileLength = file.length();
+                        OutputStream output = null;
+                        if (uploadConfig.isOutputStream()) {
+                            output = progressCalculator.doLifecycleToGetOutputStream();
+//System.out.println("UploadServer  output: " + output);
+                            if (output == null) {
+                                throw new FileUploadNullOutputStreamException();
+                            }
+                        }
+                        else {
+                            File folderFile = new File(folder);
+                            if (!folderFile.exists())
+                                folderFile.mkdirs();
+                            file = new File(folder, fileName);
+                            output = new FileOutputStream(file);
+                        }
+                        // Don't close when OutputStream, only when File
+                        long fileLength = Streams.copy(stream.openStream(),
+                            output, !uploadConfig.isOutputStream());
+//System.out.println("UploadServer  fileLength: " + fileLength);
                         if (uploadConfig.isFailOnEmptyFile()) {
                             if (fileLength == 0) {
                                 throw new FileUploadBase.FileUploadIOException(
@@ -246,6 +264,11 @@ public class UploadServer implements Server {
                 catch (FileUploadInvalidNamePatternException e) {
                     fileInfo.setException(e);
                     fileInfo.setStatus(FileInfo.INVALID_NAME_PATTERN);
+                    fileInfo.setPercent(0);
+                }
+                catch (FileUploadNullOutputStreamException e) {
+                    fileInfo.setException(e);
+                    fileInfo.setStatus(FileInfo.NULL_OUTPUT_STREAM);
                     fileInfo.setPercent(0);
                 }
                 catch (IOException e) { // Eg: If creating the saved file fails
@@ -416,6 +439,32 @@ public class UploadServer implements Server {
                 log.warn("Problem rendering view during file upload", e);
             }
             return stateHolder;
+        }
+        
+        public OutputStream doLifecycleToGetOutputStream() {
+            try {
+                if (log.isDebugEnabled())
+                    log.debug("UploadServer  doLifecycleToGetOutputStream :: " + uploadConfig.getClientId() + " in form '"+uploadConfig.getFormClientId()+"'" + " -> " + fileInfo);
+                // Pass a copy of the FileInfo into the InputFile Component,
+                // since it might be asynchronously passed in, and the file
+                // have completed uploading by the time it's used. On the 
+                // surface it might sound good to have the latest progress,
+                // but that can cause the SAVED actionListener to be called
+                // more than once, which can corrupt the applications's
+                // data model.
+                FileInfo fi = (FileInfo) fileInfo.clone();
+                fi.setGettingOutputStream(true);
+                UploadStateHolder stateHolder = new UploadStateHolder(uploadConfig, fi);
+                stateHolder.setAsyncLifecycle(false);
+                stateHolder.install();
+                state.setupAndExecuteAndRender();
+                state.setAllCurrentInstances();
+                return stateHolder.getOutputStream();
+            }
+            catch(Exception e) {
+                log.warn("Problem rendering view during file upload", e);
+            }
+            return null;
         }
     }
 }

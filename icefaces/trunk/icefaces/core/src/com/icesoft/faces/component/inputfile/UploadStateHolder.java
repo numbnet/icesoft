@@ -1,5 +1,7 @@
 package com.icesoft.faces.component.inputfile;
 
+import java.io.OutputStream;
+
 /**
  * The UploadServer can start a JSF lifecycle either in its own thread, or on 
  * another one. So there has to be a way of passing the state to the 
@@ -16,6 +18,7 @@ public class UploadStateHolder implements Runnable {
     private UploadConfig uploadConfig;
     private FileInfo fileInfo;
     private boolean asyncLifecycle;
+    private OutputStream outputStream;
     private String iframeContent;
     
     public UploadStateHolder(UploadConfig uploadConfig, FileInfo fileInfo) {
@@ -38,7 +41,15 @@ public class UploadStateHolder implements Runnable {
     public void setAsyncLifecycle(boolean asyncLifecycle) {
         this.asyncLifecycle = asyncLifecycle;
     }
-        
+    
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+    
+    public void setOutputStream(OutputStream os) {
+        outputStream = os;
+    }
+
     public String getIframeContent() {
         return iframeContent;
     }

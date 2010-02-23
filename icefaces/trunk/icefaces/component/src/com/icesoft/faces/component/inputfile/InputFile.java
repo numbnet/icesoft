@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -182,13 +183,18 @@ public class InputFile extends UICommand implements Serializable {
         String clientId,
         String iframeContent)
     {
-        // This is called every render, so we have to see if it's the render
-        // after the file upload has completed, and the listeners have fired.
-        // If not, don't set the iframeContent into the UploadStateHolder.
         Map parameterMap =
             facesContext.getExternalContext().getRequestParameterMap();
         UploadStateHolder uploadState =
             (UploadStateHolder) parameterMap.get(clientId);
+        if (uploadState != null && uploadState.getFileInfo().isGettingOutputStream()) {
+            OutputStream os = (OutputStream)
+                getValueBinding("outputStream").getValue(facesContext);
+            uploadState.setOutputStream(os);
+        }
+        // This is called every render, so we have to see if it's the render
+        // after the file upload has completed, and the listeners have fired.
+        // If not, don't set the iframeContent into the UploadStateHolder.
         if (uploadState != null && uploadState.getFileInfo().isFinished()) {
             uploadState.setIframeContent(iframeContent);
         }
@@ -803,6 +809,7 @@ public class InputFile extends UICommand implements Serializable {
         boolean progressRender = renderOnProgress();
         boolean progressListener = (getProgressListener() != null);
         boolean failOnEmptyFile = isFailOnEmptyFile();
+        boolean outputStream = (getValueBinding("outputStream") != null);
         UploadConfig uploadConfig = new UploadConfig(
             clientId,
             formClientId,
@@ -813,7 +820,8 @@ public class InputFile extends UICommand implements Serializable {
             uploadDirectoryAbsolute,
             progressRender,
             progressListener,
-            failOnEmptyFile);
+            failOnEmptyFile,
+            outputStream);
         return uploadConfig;
     }
 
