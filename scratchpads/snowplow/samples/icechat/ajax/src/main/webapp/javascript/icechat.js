@@ -25,7 +25,10 @@ function login() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.href = './index.html';
+			if( transport.responseText )
+				$("loginMessages").innerHTML = transport.responseText;
+			else
+				window.location.href = './index.html';
 		}
 	}
 	var loginForm = document.forms['login'];
@@ -46,7 +49,10 @@ function register() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.href = './index.html';
+			if( transport.responseText )
+				$("loginMessages").innerHTML = transport.responseText;
+			else
+				window.location.href = './index.html';
 		}
 	}
 	var form = document.forms['login'];
