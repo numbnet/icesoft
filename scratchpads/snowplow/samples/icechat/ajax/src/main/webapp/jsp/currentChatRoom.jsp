@@ -17,9 +17,9 @@
  *
  * Contributor(s): _____________________.
  *
- -->
+ --%>
  
- <%@page contentType="text/html"%>
+<%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>       
 <div class="chatRoomView">
 	<form id="chatRoomForm">

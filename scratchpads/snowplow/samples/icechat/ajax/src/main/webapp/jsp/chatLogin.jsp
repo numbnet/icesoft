@@ -17,9 +17,9 @@
  *
  * Contributor(s): _____________________.
  *
- -->
+ --%>
 
-<%@page contentType="text/html"--%>
+<%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>       
 <form id="chatSession">
 	You are logged in as
