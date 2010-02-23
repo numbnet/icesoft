@@ -57,7 +57,7 @@
 		<ant target="clean" dir="./auth" />
 		<ant target="clean" dir="./beans" />
 		<ant target="clean" dir="./cdi" />
-		<ant target="clean" dir="./web/wicket" />
+		<ant target="clean" dir="./wicket" />
 		<ant target="clean" dir="./jsf2" />
 		<ant target="clean" dir="./ajax" />
 		<ant target="clean" dir="./gwt" />
