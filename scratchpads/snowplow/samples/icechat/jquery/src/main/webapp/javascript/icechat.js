@@ -7,7 +7,7 @@ function login() {
 		userName:$("#userName").val(),
 		nickName:$("#nickName").val(),
 		password:$("#password").val()
-			},function(){ window.location.reload();});
+			},function(){ window.location.href = './index.html';});
 }
 function register() {
 	$.post("auth",{
@@ -15,7 +15,7 @@ function register() {
 		userName:$("#userName").val(),
 		nickName:$("#nickName").val(),
 		password:$("#password").val()
-			},function(){ window.location.reload(); });
+			},function(){ window.location.href = './index.html'; });
 }
 
 function logout() {
@@ -23,7 +23,7 @@ function logout() {
 		logoutOfChatRoom(getCurrentRoomName());
 	$.post("auth",{
 		op:"logout"
-	},function(){ window.location.reload(); });
+	},function(){window.location.href = './login.html'; });
 }
 
 

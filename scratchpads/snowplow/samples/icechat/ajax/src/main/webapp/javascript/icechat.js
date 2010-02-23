@@ -25,7 +25,7 @@ function login() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
+			window.location.href = './index.html';
 		}
 	}
 	var loginForm = document.forms['login'];
@@ -46,7 +46,7 @@ function register() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
+			window.location.href = './index.html';
 		}
 	}
 	var form = document.forms['login'];
@@ -61,7 +61,7 @@ function logout() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			window.location.reload();
+			window.location.href = './login.html';
 		}
 	}
 	var params = "op=logout";

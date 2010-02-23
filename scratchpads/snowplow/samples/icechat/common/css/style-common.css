@@ -138,7 +138,11 @@ div.footer_content a:hover {
 }
 
 .chatSession_pos, .mainPanel_pos{
-    overflow: auto; 
+    overflow: auto;    
+}
+
+.mainPanel_pos{
+	_height:430px; //ie6
 }
 
 .currentChatRoom_pos{

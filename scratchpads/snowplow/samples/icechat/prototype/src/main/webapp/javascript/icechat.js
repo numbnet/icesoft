@@ -8,7 +8,7 @@ function login() {
 		parameters: {op: 'login', userName: $('userName').getValue(), 
 			nickName: $('nickName').getValue(), password: $('password').getValue()},
 		onSuccess: function(transport){
-			window.location.reload();
+			window.location.href = './index.html';
 		}
 	});
 }
@@ -18,7 +18,7 @@ function register() {
 		parameters: {op: 'register', userName: $('userName').getValue(), 
 			nickName: $('nickName').getValue(), password: $('password').getValue()},
 		onSuccess: function(transport){
-			window.location.reload();
+			window.location.href = './index.html';
 		}
 	});
 }
@@ -30,7 +30,7 @@ function logout() {
 		method:'post',
 		parameters: {op:'logout'},
 		onSuccess: function(transport){
-			window.location.reload();
+			window.location.href = './login.html';
 		}
 	});
 }
