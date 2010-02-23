@@ -45,6 +45,7 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("{\n");
 
         generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
+        generatedComponentClass.append("\n\tpublic static final String OPTIMIZED_PACKAGE = \""+ component.optimizedPackage() + "\";");        
         String rendererType = null;
         if (!"".equals(component.rendererType())) {
             rendererType = "\""+ component.rendererType() + "\"";
@@ -134,7 +135,7 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(", ");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(");\n");
-                  generatedComponentClass.append("\t\t//handleAttribute(\"");
+                  generatedComponentClass.append("\t\thandleAttribute(\"");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append("\", ");
                   generatedComponentClass.append(field.getName());
@@ -340,12 +341,35 @@ public class ComponentClassGenerator {
         
     }
     
+    static void handleAttribute() {
+        generatedComponentClass.append("\t\tprivate void handleAttribute(String name, Object value) {\n");
+        generatedComponentClass.append("\t\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
+        generatedComponentClass.append("\t\t\tif (setAttributes == null) {\n");
+        generatedComponentClass.append("\t\t\t\tString cname = this.getClass().getName();\n");
+        generatedComponentClass.append("\t\t\t\tif (cname != null && cname.startsWith(OPTIMIZED_PACKAGE)) {\n");
+        generatedComponentClass.append("\t\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
+        generatedComponentClass.append("\t\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
+        generatedComponentClass.append("\t\t\t}\n\t\t}\n");
+        generatedComponentClass.append("\t\tif (setAttributes != null) {\n");
+        generatedComponentClass.append("\t\t\tif (value == null) {\n");
+        generatedComponentClass.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
+        generatedComponentClass.append("\t\t\t\tif (ve == null) {\n");
+        generatedComponentClass.append("\t\t\t\t\tsetAttributes.remove(name);\n");
+        generatedComponentClass.append("\t\t\t}\n");
+        generatedComponentClass.append("\t\t\t\t\t} else if (!setAttributes.contains(name)) {\n");
+        generatedComponentClass.append("\t\t\t\t\t\tsetAttributes.add(name);\n");
+        generatedComponentClass.append("\t\t\t}\n");
+        generatedComponentClass.append("\t\t}\n");
+        generatedComponentClass.append("\t}\n");       
+    }
+
     static void create() {
         Component component = (Component) Generator.currentClass.getAnnotation(Component.class);
         ComponentClassGenerator.startComponentClass(Generator.currentClass, component);
         ComponentClassGenerator.addProperties(Generator.fieldsForComponentClass);  
         ComponentClassGenerator.addFacet(Generator.currentClass, component);
         ComponentClassGenerator.addInternalFields();
+        ComponentClassGenerator.handleAttribute();        
         ComponentClassGenerator.endComponentClass();
     }
 }
