@@ -83,6 +83,15 @@ public class SecurityServlet extends HttpServlet {
 				
 				HttpSession session = req.getSession(true);
 				User user = null;
+				
+				
+				if( REGISTER.equals(op) ){					
+					LOG.info("registering " + userName);
+					user = getChatService().register(userName, nickName, password);
+					if( user == null ){
+						op = LOGIN;//try login if user name already exists
+					}
+				}
 				if( LOGIN.equals(op) ){
 					LOG.info("logging in " + userName);
 					try{
@@ -90,11 +99,8 @@ public class SecurityServlet extends HttpServlet {
 					}
 					catch(LoginFailedException lfe){
 						lfe.printStackTrace();
+						resp.getWriter().write("Login failed");
 					}
-				}
-				else{
-					LOG.info("registering " + userName);
-					user = getChatService().register(userName, nickName, password);
 				}
 				session.setAttribute(USER_KEY,user);
 				LOG.info("session: " + session.getId() + " user=" + user);
