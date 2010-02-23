@@ -7,7 +7,7 @@ function login() {
 		userName:$("#userName").val(),
 		nickName:$("#nickName").val(),
 		password:$("#password").val()
-			},function(){ window.location.href = './index.html';});
+			},function(data){ if(data)$("#loginMessages").html(data);else window.location.href = './index.html';});
 }
 function register() {
 	$.post("auth",{
@@ -15,7 +15,7 @@ function register() {
 		userName:$("#userName").val(),
 		nickName:$("#nickName").val(),
 		password:$("#password").val()
-			},function(){ window.location.href = './index.html'; });
+			},function(data){ if(data)$("#loginMessages").html(data);else window.location.href = './index.html'; });
 }
 
 function logout() {
