@@ -34,6 +34,7 @@
 
 &ice-att-userrole-rendered-props;
 &ice-att-userrole-enabled-props;
+&ice-att-style-props;
 &uicommand-novalue-props;
 
 <property>
