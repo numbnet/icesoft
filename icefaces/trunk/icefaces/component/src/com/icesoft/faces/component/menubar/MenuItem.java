@@ -78,6 +78,7 @@ public class MenuItem extends MenuItemBase {
     private String title;
     private String alt;
     private String onclick;
+    private String style;
 
     /**
      * String constant defining default menu icon img
@@ -480,11 +481,33 @@ public class MenuItem extends MenuItemBase {
         ValueBinding vb = getValueBinding("onclick");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    /**
+     * <p>Set the value of the <code>style</code> property.</p>
+     *
+     * @param style
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+    
+    /**
+     * <p>Return the value of the <code>style</code> property.</p>
+     *
+     * @return String style
+     */
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
     private transient Object states[];
     public Object saveState(FacesContext context){
         if(states == null){
-            states = new Object[14];
+            states = new Object[15];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, action);
@@ -500,6 +523,7 @@ public class MenuItem extends MenuItemBase {
         states[11] = target;
         states[12] = title;
         states[13] = saveAttachedState(context, value);
+        states[14] = style;
         return states;
     }
 
@@ -519,5 +543,6 @@ public class MenuItem extends MenuItemBase {
         target = (String) states[11];
         title = (String) states[12];
         value = restoreAttachedState(context, states[13]);
+        style = (String) states[14];
     }
 }
