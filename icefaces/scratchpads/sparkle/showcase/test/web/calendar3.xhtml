@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Calendar3</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/button/assets/skins/sam/button.css&amp;2.8.0r4/build/calendar/assets/skins/sam/calendar.css&amp;2.8.0r4/build/container/assets/skins/sam/container.css&amp;2.8.0r4/build/logger/assets/skins/sam/logger.css"/>
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-debug.js&amp;2.8.0r4/build/dom/dom-debug.js&amp;2.8.0r4/build/event/event-debug.js&amp;2.8.0r4/build/element/element-debug.js&amp;2.8.0r4/build/button/button-debug.js&amp;2.8.0r4/build/calendar/calendar-debug.js&amp;2.8.0r4/build/dragdrop/dragdrop-debug.js&amp;2.8.0r4/build/container/container-debug.js&amp;2.8.0r4/build/logger/logger-debug.js"></script>
+</h:head>
+<h:body class="yui-skin-sam">
+    <h:form/>
+    <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}">
+        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
+    </ann:selectInputDate3>
+    <h:outputText value="#{calendarBean.selectedDate}">
+        <f:convertDateTime pattern="yyyy-M-d h:m a z" timeZone="Hongkong"/>
+    </h:outputText><br/>
+    <h:messages/><br/>
+    <a href="index.html"> Goto Main page </a>
+</h:body>
+</html>
+
