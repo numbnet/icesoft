@@ -37,7 +37,7 @@ import org.icepush.PushContext;
 public class GroupIntervalTimer implements ServletContextListener {
 
 	private Timer timer;
-	private Map<String,TimerTask> timerTasks;
+	private Map<String, TimerTask> timerTasks;
 	private PushContext pushContext;
 
 	public GroupIntervalTimer() {
@@ -45,7 +45,7 @@ public class GroupIntervalTimer implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent e) {
 		timer = new Timer(true);
-		timerTasks = new Hashtable<String,TimerTask>();
+		timerTasks = new Hashtable<String, TimerTask>();
 		e.getServletContext().setAttribute("ICEpushJSPtimer", this);
 	}
 

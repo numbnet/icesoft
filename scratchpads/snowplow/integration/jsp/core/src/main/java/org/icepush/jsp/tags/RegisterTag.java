@@ -31,37 +31,38 @@ import javax.servlet.jsp.JspWriter;
 
 public class RegisterTag extends BaseTag {
 
-    private String callback;
+	private String callback;
 
-    public int doStartTag() throws JspException {
-	int i = super.doStartTag();
+	public int doStartTag() throws JspException {
+		int i = super.doStartTag();
 
-	try {
-	    //Get the writer object for output.
-	    JspWriter w = pageContext.getOut();
+		try {
+			// Get the writer object for output.
+			JspWriter w = pageContext.getOut();
 
-	    //Write script to register;
-	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "']," + callback + ");");
-	    w.write("</script>");
+			// Write script to register;
+			w.write("<script type=\"text/javascript\">");
+			w.write("ice.push.register(['" + pushid + "']," + callback + ");");
+			w.write("</script>");
 
-	} catch (IOException e) {
-	    e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		release();
+		return SKIP_BODY;
 	}
 
-	release();
-	return SKIP_BODY;
-    }
+	public void release() {
+		super.release();
+		callback = null;
+	}
 
-    public void release() {
-	super.release();
-	callback = null;
-    }
+	public String getCallback() {
+		return callback;
+	}
 
-    public String getCallback() {
-	return callback;
-    }
-    public void setCallback(String cb) {
-	this.callback = cb;
-    }
+	public void setCallback(String cb) {
+		this.callback = cb;
+	}
 }

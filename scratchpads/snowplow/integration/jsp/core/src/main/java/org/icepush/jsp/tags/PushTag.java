@@ -33,27 +33,30 @@ import org.icepush.PushContext;
 
 public class PushTag extends TagSupport {
 
-    protected String group;
+	protected String group;
 
-    public int doStartTag() throws JspException {
+	public int doStartTag() throws JspException {
 
-	final PushContext pc = PushContext.getInstance(pageContext.getServletContext());
-	if (pc == null) {
-	    throw(new JspException("PushContext not available in PushTag.doStartTag()"));
+		final PushContext pc = PushContext.getInstance(pageContext
+				.getServletContext());
+		if (pc == null) {
+			throw (new JspException(
+					"PushContext not available in PushTag.doStartTag()"));
+		}
+		pc.push(group);
+
+		return SKIP_BODY;
 	}
-	pc.push(group);
-	    
-	return SKIP_BODY;
-    }
 
-    public void release() {
-	group = null;
-    }
-    
-    public String getGroup() {
-	return group;
-    }
-    public void setGroup(String grp) {
-	this.group = grp;
-    } 
+	public void release() {
+		group = null;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String grp) {
+		this.group = grp;
+	}
 }

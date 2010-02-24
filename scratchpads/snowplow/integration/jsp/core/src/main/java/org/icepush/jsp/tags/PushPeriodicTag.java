@@ -43,7 +43,7 @@ public class PushPeriodicTag extends TagSupport {
 	if (timer == null) {
 	    throw(new JspException("GroupIntervalTimer must be configured as ServletContextListener."));
 	}
-	timer.setPushContext(PushContext.getInstance(pageContext.getServletContext()));
+		timer.setPushContext(PushContext.getInstance(pageContext.getServletContext()));
 	    
 	return SKIP_BODY;
     }
