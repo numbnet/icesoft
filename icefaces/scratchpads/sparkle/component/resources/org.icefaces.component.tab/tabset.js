@@ -64,17 +64,23 @@ Ice.component.tabset = {
             tbset = document.getElementById(clientId);
             currentTabIndex = clientId + '='+ tabview.getTabIndex(event.newValue);
             var isClientSide = Ice.component.getProperty(clientId, 'isClientSide');
-
+            var partialSubmit = Ice.component.getProperty(clientId, 'partialSubmit');
             if (isClientSide && isClientSide['new']){
                 //logger.info('Client side tab ');
             } else {
                 //logger.info('Server side tab '+ event);
                 try {
-                    ice.singleSubmit(event, tbset, function(parameter) {
-                        parameter('yti', currentTabIndex);
-                    }); 
+                    if (partialSubmit && partialSubmit["new"]) {
+	                    ice.singleSubmit(event, tbset, function(parameter) {
+	                        parameter('yti', currentTabIndex);
+	                    }); 
+                    } else {
+                        ice.submit(event, tbset, function(parameter) {
+                            parameter('yti', currentTabIndex);
+                        });                    
+                    }
                 } catch(e) {
-                    //logger.info(e);
+                    logger.info(e);
                 } 	             
 			}//end if    
 	   }//tabchange; 
