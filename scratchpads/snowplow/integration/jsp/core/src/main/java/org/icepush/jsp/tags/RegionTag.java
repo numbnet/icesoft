@@ -34,63 +34,69 @@ import javax.servlet.http.HttpServletRequest;
 
 public class RegionTag extends BaseTag {
 
-    private String page;
-    private String id;
+	private String page;
+	private String id;
 
-    public int doStartTag() throws JspException {
-	int i = super.doStartTag();
-	String id = getId();
-	try {
-	    //Get the writer object for output.
-	    JspWriter w = pageContext.getOut();
+	public int doStartTag() throws JspException {
+		int i = super.doStartTag();
+		String id = getId();
+		try {
+			// Get the writer object for output.
+			JspWriter w = pageContext.getOut();
 
-	    //Write script to register;
-	    if (id == null) {
-		id = pushid;
-	    }
-	    w.write("<script type=\"text/javascript\">");
-	    w.write("ice.push.register(['" + pushid + "'], function(){");
-	    w.write("ice.push.get('" + ((HttpServletRequest)pageContext.getRequest()).getContextPath() + page + "', function(parameter) { parameter('group', '" + group + "');} , ");
-	    w.write("function(statusCode, responseText) {");
-	    w.write("var container = document.getElementById('" + id + "');");
-	    w.write("container.innerHTML = responseText;});});");
-	    w.write("</script>");
+			// Write script to register;
+			if (id == null) {
+				id = pushid;
+			}
+			w.write("<script type=\"text/javascript\">");
+			w.write("ice.push.register(['" + pushid + "'], function(){\n");
+			w.write("ice.push.get('"
+					+ ((HttpServletRequest) pageContext.getRequest())
+							.getContextPath() + page
+					+ "', function(parameter) { \n parameter('group', '" + group
+					+ "');} , ");
+			w.write("function(statusCode, responseText) {\n");
+			w.write("var container = document.getElementById('" + id + "');\n");
+			w.write("container.innerHTML = responseText;\n});});");
+			w.write("</script>");
 
-	    //Write the div;
-	    w.write("<div id=\"" + id + "\">");
-	    w.flush();
+			// Write the div;
+			w.write("<div id=\"" + id + "\">");
+			w.flush();
 
-	    //Include the page;
-	    try {
-		String params = new String("?group=" + group);
-		pageContext.getServletContext().getRequestDispatcher(page+params).
-		    include(pageContext.getRequest(),pageContext.getResponse());
-	    } catch (IOException ioe) {
-		ioe.printStackTrace();
-	    } catch (ServletException se) {
-		se.printStackTrace();
-	    }
+			// Include the page;
+			try {
+				String params = new String("?group=" + group);
+				pageContext.getServletContext().getRequestDispatcher(
+						page + params).include(pageContext.getRequest(),
+						pageContext.getResponse());
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			} catch (ServletException se) {
+				se.printStackTrace();
+			}
 
-	    //Close the div;
-	    w.write("</div>");
+			// Close the div;
+			w.write("</div>");
 
-	} catch (IOException e) {
-	    e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		release();
+		return SKIP_BODY;
 	}
-	release();
-	return SKIP_BODY;
-    }
 
-    public void release() {
-	super.release();
-	setId(null);
-	page = null;
-    }
+	public void release() {
+		super.release();
+		setId(null);
+		page = null;
+	}
 
-    public String getPage() {
-	return page;
-    }
-    public void setPage(String page) {
-	this.page = page;
-    }
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
 }
