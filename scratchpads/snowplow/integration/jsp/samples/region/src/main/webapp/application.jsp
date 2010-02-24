@@ -25,4 +25,9 @@
 <jsp:useBean id="applicationNotifier" class="org.icepush.jsp.samples.region.GroupNotificationCounter" scope="application">
 </jsp:useBean>
 <jsp:setProperty name="applicationNotifier" property="group" value="${param.group}"/>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");//HTTP 1.1
+	response.setHeader("Pragma", "no-cache");//HTTP 1.0
+	response.setHeader("Expires", "0");//prevents proxy caching
+%>
 ${applicationNotifier.counter}

@@ -21,6 +21,11 @@
  *
  *
 --%>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");//HTTP 1.1
+	response.setHeader("Pragma", "no-cache");//HTTP 1.0
+	response.setHeader("Expires", "0");//prevents proxy caching
+%>
 
 <jsp:useBean id="windowNotifier" class="org.icepush.jsp.samples.region.GroupNotificationCounter" scope="session">
 </jsp:useBean>
