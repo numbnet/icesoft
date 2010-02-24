@@ -87,7 +87,8 @@ public class TabSetRenderer extends Renderer{
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
        // System.out.println("CLIENT SIDE "+ tabSet.isClientSide());
-        boolean isClientSide = false; // tabSet.isClientSide();
+        boolean isClientSide = tabSet.isClientSide();
+        boolean partialSubmit = tabSet.isPartialSubmit();        
         int tabIndex = tabSet.getTabIndex();
         String onupdate = tabSet.getOnupdate();
         
@@ -95,7 +96,7 @@ public class TabSetRenderer extends Renderer{
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
         ", 'onupdate':"+ onupdate +        
-        ", 'partialSubmit':true});";
+        ", 'partialSubmit':"+ partialSubmit +"});";
         
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -171,7 +172,7 @@ public class TabSetRenderer extends Renderer{
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         
-        boolean isClientSide = false; //((TabSet)tabSet).isClientSide();
+        boolean isClientSide = ((TabSet)tabSet).isClientSide();
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
@@ -249,7 +250,6 @@ public class TabSetRenderer extends Renderer{
                     countOfRowsDisplayed++;
                 }
                 uiList.setRowIndex(-1);
-
             }
         }
     }

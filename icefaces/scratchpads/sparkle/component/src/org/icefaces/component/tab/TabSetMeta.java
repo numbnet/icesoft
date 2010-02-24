@@ -34,10 +34,10 @@ public class TabSetMeta {
     @Field
     protected String oldOrientation; 
     
-    @Property    
+    @Property(defaultValue="false")    
     private Boolean clientSide; 
    
-    @Property    
+    @Property(defaultValue="false") 
     private Boolean partialSubmit;
     
     @Property    
