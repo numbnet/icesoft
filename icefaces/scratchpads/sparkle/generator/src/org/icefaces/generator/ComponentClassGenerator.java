@@ -47,7 +47,7 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
         generatedComponentClass.append("\n\tpublic static final String OPTIMIZED_PACKAGE = \""+ component.optimizedPackage() + "\";");        
         String rendererType = null;
-        if (!"".equals(component.rendererType())) {
+        if (!"null".equals(component.rendererType())) {
             rendererType = "\""+ component.rendererType() + "\"";
         }
         
@@ -170,7 +170,7 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
                   generatedComponentClass.append(field.getName());
                   String defaultValue = prop.defaultValue();
-                  if (!"".equals(defaultValue)) {
+                  if (!"null".equals(defaultValue)) {
                       generatedComponentClass.append(", ");
                       if (field.getType().getName().endsWith("String") &&
                               prop.defaultValueIsStringLiteral()) {
@@ -268,7 +268,7 @@ public class ComponentClassGenerator {
             generatedComponentClass.append(field.getName());
             String defaultValue = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValue();
             boolean defaultValueIsStringLiteral = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValueIsStringLiteral();            
-            if (!"".equals(defaultValue)) {
+            if (!"null".equals(defaultValue)) {
                 generatedComponentClass.append(" = ");
                 if (field.getType().getName().endsWith("String") &&
                                            defaultValueIsStringLiteral) {
