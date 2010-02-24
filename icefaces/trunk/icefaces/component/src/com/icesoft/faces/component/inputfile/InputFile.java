@@ -188,8 +188,10 @@ public class InputFile extends UICommand implements Serializable {
         UploadStateHolder uploadState =
             (UploadStateHolder) parameterMap.get(clientId);
         if (uploadState != null && uploadState.getFileInfo().isGettingOutputStream()) {
-            OutputStream os = (OutputStream)
-                getValueBinding("outputStream").getValue(facesContext);
+            OutputStream os = null;
+            ValueBinding vb = getValueBinding("outputStream");
+            if (vb != null)
+                os = (OutputStream) vb.getValue(facesContext); 
             uploadState.setOutputStream(os);
         }
         // This is called every render, so we have to see if it's the render
@@ -1138,5 +1140,15 @@ public class InputFile extends UICommand implements Serializable {
         ValueBinding vb = getValueBinding("autoUpload");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext())).booleanValue() : false;
     }
-    
+
+    /**
+     * @return The java.io.OutputStream from the bean
+     */
+    public OutputStream getOutputStream() {
+        OutputStream os = null;
+        ValueBinding vb = getValueBinding("outputStream");
+        if (vb != null)
+            os = (OutputStream) vb.getValue(FacesContext.getCurrentInstance()); 
+        return os;
+    }
 }
