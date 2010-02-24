@@ -18,5 +18,11 @@ public class SelectInputDate3Meta {
 
     @Property
     private Date selectedDate;
+    @Property(defaultValue="")
+    private String minDate;
+    @Property(defaultValue="")
+    private String maxDate;
+    @Property(defaultValue="")
+    private String disabledDates;
 
 }

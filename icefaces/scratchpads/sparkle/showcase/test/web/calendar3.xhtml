@@ -11,7 +11,8 @@
 </h:head>
 <h:body class="yui-skin-sam">
     <h:form/>
-    <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}">
+    <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}" minDate="2/8/2010" maxDate="2/23/2010"
+                          disabledDates="2/10/2010,2/16/2010-2/18/2010">
         <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
     </ann:selectInputDate3>
     <h:outputText value="#{calendarBean.selectedDate}">
