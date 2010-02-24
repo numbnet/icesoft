@@ -80,10 +80,11 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
 YAHOO.namespace("icefaces.calendar.calendars");
 
 YAHOO.icefaces.calendar.init = function(params) {
-    var Element = YAHOO.util.Element;
-    var Event = YAHOO.util.Event;
-    var Dom = YAHOO.util.Dom;
-    var KeyListener = YAHOO.util.KeyListener;
+    var Element = YAHOO.util.Element,
+        Event = YAHOO.util.Event,
+        Dom = YAHOO.util.Dom,
+        KeyListener = YAHOO.util.KeyListener,
+        Calendar = YAHOO.widget.Calendar;
 
     var rootDivId = params.divId;
     var rootDiv = new Element(rootDivId);
@@ -156,7 +157,7 @@ YAHOO.icefaces.calendar.init = function(params) {
 //    dialog.appendToBody(docFrag);
     dialog.render(rootDiv);
 
-    var calendar = new YAHOO.widget.Calendar(rootDivId + "_cal", {
+    var calendar = new Calendar(rootDivId + "_cal", {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
@@ -169,6 +170,15 @@ YAHOO.icefaces.calendar.init = function(params) {
     calendar.cfg.addProperty("amPmStr", {value:params.amPmStr});
     calendar.cfg.addProperty("amStr", {value:params.amStr});
     calendar.cfg.addProperty("pmStr", {value:params.pmStr});
+    if (params.minDate) {
+        calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MINDATE.key, params.minDate);
+    }
+    if (params.maxDate) {
+        calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MAXDATE.key, params.maxDate);
+    }
+    if (params.disabledDates) {
+        calendar.addRenderer(params.disabledDates, calendar.renderBodyCellRestricted);
+    }
     calendar.render();
 
     var buttonClick = function() {
