@@ -187,6 +187,7 @@ var RequestProxy = function(nativeRequestResponse) {
         method(abort, function(self) {
             nativeRequestResponse.onreadystatechange = noop;
             nativeRequestResponse.abort();
+            method(abort, noop);
         });
     });
 };

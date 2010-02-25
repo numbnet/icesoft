@@ -152,11 +152,16 @@ function AsyncConnection(logger, windowID, receiveURI) {
 
     //monitor if the blocking connection needs to be started
     var pollingPeriod = 1000;
+    var contextPath = namespace.push.configuration.contextPath;
+
     var leaseCookie = lookupCookie('ice.connection.lease', function() {
         return Cookie('ice.connection.lease', asString((new Date).getTime()));
     });
     var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
         return Cookie('ice.connection.running', '');
+    });
+    var contextPathCookie = lookupCookie('ice.connection.contextpath', function() {
+        return Cookie('ice.connection.contextpath', contextPath);
     });
 
     function updateLease() {
@@ -181,6 +186,7 @@ function AsyncConnection(logger, windowID, receiveURI) {
 
     function markAsOwned() {
         update(connectionCookie, windowID + ':acquired');
+        update(contextPathCookie, contextPath);
     }
 
     function isOwner() {
@@ -191,6 +197,15 @@ function AsyncConnection(logger, windowID, receiveURI) {
         return endsWith(value(connectionCookie), ':acquired');
     }
 
+    function nonMatchingContextPath() {
+        return value(contextPathCookie) != contextPath;
+    }
+
+    //force candidancy so that last opened window belonging to a different servlet context will own the blocking connection
+    if (nonMatchingContextPath()) {
+        offerCandidature();
+        info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath + '"  web-context...');
+    }
     var blockingConnectionMonitor = run(Delay(function() {
         if (shouldEstablishBlockingConnection()) {
             offerCandidature();
@@ -221,6 +236,9 @@ function AsyncConnection(logger, windowID, receiveURI) {
                 abort(listener);
                 connect();
             }
+        } else {
+            //ensure that only one blocking connection exists
+            abort(listener);
         }
     }, pollingPeriod));
 

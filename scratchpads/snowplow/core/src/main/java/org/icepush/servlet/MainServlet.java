@@ -52,7 +52,7 @@ public class MainServlet implements PseudoServlet {
         final PushContext pushContext = new PushContext(outboundNotifier, inboundNotifier, configuration, context);
 
         PathDispatcher pathDispatcher = new PathDispatcher();
-        pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
+        pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer(context)))));
         pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(configuration)))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
