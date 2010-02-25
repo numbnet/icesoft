@@ -36,13 +36,7 @@
 
 	<target name="package.jsp">
 		<property name="target" value="jsp" />
-		<antcall target="base.package" />
-		<copy todir="./dist/${target}/samples">
-			<fileset dir="./integration/jsp/samples" />
-		</copy>
-		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
-		<antcall target="zip.distribution" />
-		<delete dir="./dist/${target}" />
+		<build.package/>
 	</target>
 
 	<target name="package.gwt">
