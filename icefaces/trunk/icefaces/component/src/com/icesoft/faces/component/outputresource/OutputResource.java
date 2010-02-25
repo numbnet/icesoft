@@ -1,3 +1,5 @@
+
+
 package com.icesoft.faces.component.outputresource;
 
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class OutputResource extends UIComponentBase {
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.OutputResourceRenderer";
     private static Log log = LogFactory.getLog(OutputResource.class);
 	protected Resource resource;
-	private transient Map registeredResources = new HashMap();
+	private Map registeredResources = new HashMap();
 	private String mimeType;
 	private Date lastModified;
 	private String fileName;
@@ -42,7 +44,6 @@ public class OutputResource extends UIComponentBase {
 	private String renderedOnUserRole;
 	private Boolean attachment;
 	private transient int lastResourceHashCode;	
-	transient String path;
 	private Boolean shared;
     private String target;
 
@@ -87,10 +88,7 @@ public class OutputResource extends UIComponentBase {
 		final String fileName = getFileName();
         if( getRegisteredResource() == null ){
             RegisteredResource regResource = new RegisteredResource(this, currResource, fileName);
-            setRegisteredResource(this.getClientId(FacesContext.getCurrentInstance()), regResource);
-				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-				        regResource).getRawPath();
-		}
+     	}
         getRegisteredResource().updateContents(this, currResource, fileName);
 		return currResource;
 	}
@@ -274,7 +272,7 @@ public class OutputResource extends UIComponentBase {
 	 * </p>
 	 */
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[14];
+		Object values[] = new Object[15];
 		values[0] = super.saveState(context);
 		values[1] = resource;
 		values[2] = mimeType;
@@ -289,6 +287,7 @@ public class OutputResource extends UIComponentBase {
 		values[11] = attachment;
 		values[12] = shared;
 		values[13] = target;
+		values[14] = registeredResources;
 		return ((Object) (values));
 	}
 
@@ -314,6 +313,7 @@ public class OutputResource extends UIComponentBase {
 		attachment = (Boolean) values[11];
 		shared = (Boolean)values[12];
         target = (String) values[13];
+        registeredResources = (Map) values[14];        
     }
 
 	public boolean getAttachment() {
@@ -325,7 +325,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return path + "?"+ getRegisteredResource().calculateDigest().hashCode();
+		return getRegisteredResource().getPath();
 	}
 	
 	public boolean isShared(){
@@ -375,10 +375,14 @@ class RegisteredResource implements Resource {
     private boolean isAttachment;
     private boolean isShared;
     private String userAgent;
+    private String path;
 
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
         updateContents(outputResource, resource, fileName);
         Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
+        outputResource.setRegisteredResource(outputResource.getClientId(FacesContext.getCurrentInstance()), this);
+        path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
+                this).getRawPath();
         userAgent = (String) headerMap.get("user-agent");
     }
 
@@ -404,7 +408,9 @@ class RegisteredResource implements Resource {
         isShared = outputResource.isShared();
     }
     
-    
+    public String getPath() {
+        return path + "?"+ calculateDigest().hashCode();
+    }
     public void withOptions(Options options) {
         ResourceOptions resourceOptions = new ResourceOptions();
         try {
