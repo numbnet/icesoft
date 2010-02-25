@@ -461,6 +461,7 @@
 		<editor-class>
 			&valueBindingEditor;
 		</editor-class>
+        <read-only>true</read-only>
 	</property-extension>
 </property>
     
