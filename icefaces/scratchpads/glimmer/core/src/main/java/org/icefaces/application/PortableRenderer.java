@@ -1,5 +1,8 @@
 package org.icefaces.application;
 
+/**
+ * PortableRenderer can trigger asynchronous renderings in the context of the application.
+ */
 public interface PortableRenderer {
 
     /**
