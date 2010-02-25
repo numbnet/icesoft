@@ -39,6 +39,9 @@
 		
 		<ant dir="./register" target="war"/>
 		<copy.dist.wars fromdir="./register/${dist.dir}"/>
+		
+		<ant dir="${icechat.dir}" target="jsp"/>
+		<copy.dist.wars fromdir="${icechat.dir}/jsp/${dist.dir}"/>
 				
 	</target>
 	
