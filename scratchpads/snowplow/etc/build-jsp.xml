@@ -46,6 +46,9 @@
 		<ant antfile="build.xml" dir="${samples.dir}/push" target="war">
 		</ant>
 		<copy file="${samples.dir}/push/dist/icepush-jsp-push.war" todir="${dist.dir}"></copy>
+		
+		<ant dir="${samples.dir}/icechat/jsp" target="war"/>
+		<copy file="${samples.dir}/icechat/jsp/${dist.dir}/icechat-jsp.war" todir="${dist.dir}"/>
 	</target>
 
 	<target name="jar-jsp-core" depends="jar-icepush-core">
