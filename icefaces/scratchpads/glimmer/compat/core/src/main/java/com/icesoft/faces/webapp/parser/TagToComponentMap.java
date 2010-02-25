@@ -215,7 +215,7 @@ public class TagToComponentMap implements Serializable {
                         "<facelet-taglib xmlns=\"http://java.sun.com/xml/ns/javaee\"\n" + 
                         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
                         "xsi:schemaLocation=\"http://java.sun.com/xml/ns/javaee " +
-                        "http://java.sun.com/xml/ns/javaee/web-facelettaglibary_2_0.xsd\"\n" +
+                        "http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd\"\n" +
                         "version=\"2.0\">\n";
 
                 String trailer =
