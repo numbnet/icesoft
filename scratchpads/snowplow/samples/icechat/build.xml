@@ -44,7 +44,11 @@
 	</target>
 
 	<target name="jsf2" depends="cdi-beans">
-		<ant target="war" dir="./web/jsf2" />
+		<ant target="war" dir="./jsf2" />
+	</target>
+
+	<target name="jsp" depends="auth,beans">
+		<ant target="war" dir="./jsp" />
 	</target>
 
 	<target name="gwt" depends="beans">
@@ -56,7 +60,7 @@
 	</target>
 
 	<target name="gwt-devmode" depends="beans">
-		<ant target="devmode" dir="./web/gwt" />
+		<ant target="devmode" dir="./gwt" />
 	</target>
 
 	<target name="ajax" depends="auth,beans">
@@ -88,6 +92,7 @@
 		<ant target="clean" dir="./icefaces" />
 		<ant target="clean" dir="./prototype" />
 		<ant target="clean" dir="./spring" />
+		<ant target="clean" dir="./jsp"/>
 	</target>
 
 	<fileset id="src.api" dir="./api">
