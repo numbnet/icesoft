@@ -66,9 +66,9 @@ public class RegionTag extends BaseTag {
 
 			// Include the page;
 			try {
-				String params = new String("?group=" + group);
+				String params = new String("group=" + group);
 				pageContext.getServletContext().getRequestDispatcher(
-						page + params).include(pageContext.getRequest(),
+						page + ( page.indexOf("?") > -1 ? "&" : "?" ) + params).include(pageContext.getRequest(),
 						pageContext.getResponse());
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
