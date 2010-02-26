@@ -640,6 +640,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return resourceDispatcher.registerResource(resource, linkerHandler);
     }
 
+    public void deregisterResource(Resource resource) {
+        resourceDispatcher.deregisterResource(resource);
+    }
+
+    public boolean isRegistered(Resource resource) {
+        return resourceDispatcher.isRegistered(resource);
+    }
+
     //adapting deprecated methods to current API
 
     public URI registerResource(final String mimeType, final Resource resource) {

@@ -9,7 +9,7 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
-import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.common.standard.ModifiablePathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.util.encoding.Base64;
 import org.apache.commons.logging.Log;
@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ResourceDispatcher implements Server {
     private static final Log log = LogFactory.getLog(ResourceDispatcher.class);
@@ -29,11 +30,12 @@ public class ResourceDispatcher implements Server {
             //do nothing!
         }
     };
-    private PathDispatcherServer dispatcher = new PathDispatcherServer();
+    private ModifiablePathDispatcherServer dispatcher = new ModifiablePathDispatcherServer();
     private Server compressResource;
     private MimeTypeMatcher mimeTypeMatcher;
     private String prefix;
     private ArrayList registered = new ArrayList();
+    private HashMap resourceToServerMapping = new HashMap();
     private SessionDispatcher.Monitor monitor;
 
     public ResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor, Configuration configuration) {
@@ -85,7 +87,9 @@ public class ResourceDispatcher implements Server {
         final String name = prefix + encode(resource) + "/";
         if (!registered.contains(name)) {
             registered.add(name);
-            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", new ResourceServer(resource));
+            ResourceServer resourceServer = new ResourceServer(resource);
+            resourceToServerMapping.put(resource, resourceServer);
+            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", resourceServer);
             if (handler != NOOPHandler) {
                 handler.linkWith(new RelativeResourceLinker(name));
             }
@@ -94,9 +98,22 @@ public class ResourceDispatcher implements Server {
         return URI.create(name + uriFilename);
     }
 
+    public boolean isRegistered(Resource resource) {
+        return resourceToServerMapping.containsKey(resource);
+    }
+
+    public void deregisterResource(Resource resource) {
+        Server server = (Server) resourceToServerMapping.get(resource);
+        if (server != null) {
+            dispatcher.stopDispatchFor(server);
+            resourceToServerMapping.remove(resource);
+        }
+    }
+
     public void shutdown() {
         compressResource.shutdown();
         registered.clear();
+        resourceToServerMapping.clear();
     }
 
     private class ResourceServer implements Server, ResponseHandler {
@@ -184,6 +201,7 @@ public class ResourceDispatcher implements Server {
             public void setAsAttachement() {
                 attachement = true;
             }
+
             // ICE-4342
             // Encoded filename in Content-Disposition header; to be used in save file dialog;
             // See http://greenbytes.de/tech/tc2231/
@@ -221,7 +239,9 @@ public class ResourceDispatcher implements Server {
 
         public void registerRelativeResource(String path, Resource relativeResource) {
             String pathExpression = (name + path).replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
-            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(relativeResource));
+            ResourceServer resourceServer = new ResourceServer(relativeResource);
+            resourceToServerMapping.put(relativeResource, resourceServer);
+            dispatcher.dispatchOn(".*" + pathExpression + "$", resourceServer);
         }
     }
 

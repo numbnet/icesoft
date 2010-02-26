@@ -160,4 +160,19 @@ public interface ResourceRegistry {
      * @return the URI of the resource
      */
     URI registerResourceWithRelativePath(Resource resource, ResourceLinker.Handler linkerHandler);
+
+    /**
+     * Deregister the resource.
+     *
+     * @param resource the registered resource
+     */
+    void deregisterResource(Resource resource);
+
+    /**
+     * Test if resource was registred.
+     *
+     * @param resource tested resourced
+     * @return true if resource was registered previously
+     */
+    boolean isRegistered(Resource resource);
 }

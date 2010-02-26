@@ -10,23 +10,31 @@ import java.util.ListIterator;
 import java.util.regex.Pattern;
 
 public class PathDispatcherServer implements Server {
-    private List matchers = new ArrayList();
-    private List servers = new ArrayList();
+    protected List matchers = new ArrayList();
+    protected List servers = new ArrayList();
 
     public void service(Request request) throws Exception {
         String path = request.getURI().getPath();
+        Server server = findServer(path);
+
+        if (server == null) {
+            request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+        } else {
+            server.service(request);
+        }
+    }
+
+    protected Server findServer(String path) {
         ListIterator i = new ArrayList(matchers).listIterator();
         while (i.hasNext()) {
             int index = i.nextIndex();
             Pattern pattern = (Pattern) i.next();
             if (pattern.matcher(path).find()) {
-                Server server = (Server) servers.get(index);
-                server.service(request);
-                return;
+                return (Server) servers.get(index);
             }
         }
 
-        request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+        return null;
     }
 
     public void dispatchOn(String pathExpression, final Server toServer) {
