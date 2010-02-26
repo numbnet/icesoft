@@ -80,6 +80,8 @@ Droppables.isAffected = function(point, element, drop) {
 
 Droppables.ORIGINAL_add = Droppables.add;
 Droppables.add = function(ele, options) {
+    if (ele['droppableInstalled']) return;
+    ele['droppableInstalled']=true;
     var monitors = Ice.StateMon.monitors;
     for (i = 0; i < monitors.length; i++) {
         monitor = monitors[i];
