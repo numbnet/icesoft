@@ -124,18 +124,20 @@ public class GroupRenderer
                 DnDCache.getInstance(facesContext, true).put(
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
-                String dropCall = null;
+                StringBuffer dropCall = new StringBuffer();
                 String call = addJavascriptCalls(uiComponent, dndType, null, facesContext, dropCall);
                 
                 String clientId = uiComponent.getClientId(facesContext);
                 Element script = domContext.createElement(HTML.SCRIPT_ELEM);
                 script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId+"script"));
-                script.appendChild(domContext.createTextNode(call));
+                script.appendChild(domContext.createTextNode(dropCall.toString()));
                 rootSpan.appendChild(script);
                 Map rendererJavascriptDraggable =new HashMap();
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
                             "Draggable.removeMe(this.id);");
-                rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call);
+                rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call );
+                rendererJavascriptDraggable.put(HTML.ONMOUSEOVER_ATTR, dropCall.toString());                
+                
                 LocalEffectEncoder.encode(
                         facesContext, uiComponent, PASSTHRU_JS_EVENTS, 
                                     rendererJavascriptDraggable, rootSpan, null);                
@@ -184,7 +186,7 @@ public class GroupRenderer
     protected String addJavascriptCalls(UIComponent uiComponent, String dndType,
                                         String handleId,
                                         FacesContext facesContext,
-                                        String dropCall) {
+                                        StringBuffer dropCall) {
         String calls = "";
 
         boolean dragListener =
@@ -214,17 +216,17 @@ public class GroupRenderer
                                           facesContext);
 
         } else if ("drop".equalsIgnoreCase(dndType)) {
-            dropCall = DragDrop.addDroptarget(
+            dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
-                    dropMask, hoverClass);
+                    dropMask, hoverClass));
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
 
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
                                           handleId, dragOptions, dragMask,
                                           facesContext);
-            dropCall = DragDrop.addDroptarget(
+            dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
-                    dropMask, hoverClass);
+                    dropMask, hoverClass));
         } else {
             throw new IllegalArgumentException("Value [" + dndType +
                                                "] is not valid for dndType. Please use drag or drop");

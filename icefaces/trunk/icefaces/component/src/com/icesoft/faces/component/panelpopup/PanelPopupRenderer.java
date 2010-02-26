@@ -255,7 +255,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 		// Rebroadcast Javascript to survive refresh
 		if (dndType != null) {
             JavascriptContext.addJavascriptCall(facesContext, "Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
-           String dropCall = null;
+           StringBuffer dropCall = new StringBuffer();
             String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
 					facesContext, dropCall);
 			JavascriptContext.addJavascriptCall(facesContext, call);
