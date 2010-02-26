@@ -1,5 +1,3 @@
-
-
 package com.icesoft.faces.component.outputresource;
 
 import java.io.IOException;
@@ -10,10 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.net.URLEncoder;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +31,7 @@ public class OutputResource extends UIComponentBase {
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.OutputResourceRenderer";
     private static Log log = LogFactory.getLog(OutputResource.class);
 	protected Resource resource;
-	private Map registeredResources = new HashMap();
+	protected transient RegisteredResource registeredResource;
 	private String mimeType;
 	private Date lastModified;
 	private String fileName;
@@ -44,11 +43,13 @@ public class OutputResource extends UIComponentBase {
 	private String renderedOnUserRole;
 	private Boolean attachment;
 	private transient int lastResourceHashCode;	
+	transient String path;
 	private Boolean shared;
     private String target;
-
+    private Boolean UIDataChild = null;
 	public static final String TYPE_IMAGE = "image";
 	public static final String TYPE_BUTTON = "button";
+	private transient Map  resources;
 
 	/*
 	 * (non-Javadoc)
@@ -86,10 +87,29 @@ public class OutputResource extends UIComponentBase {
 	    }
 	    if (currResource == null) return null;
 		final String fileName = getFileName();
-        if( getRegisteredResource() == null ){
-            RegisteredResource regResource = new RegisteredResource(this, currResource, fileName);
-     	}
-        getRegisteredResource().updateContents(this, currResource, fileName);
+		if (!isUIDataChild()) {
+            if( registeredResource == null ){
+                registeredResource = new RegisteredResource(this, currResource, fileName);
+    				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
+    				        registeredResource).getRawPath();
+
+    		}
+            registeredResource.updateContents(this, currResource, fileName);
+		} else {
+		    if (resources == null) {
+		        resources = new HashMap();
+		    }
+	        if (!resources.containsKey(currResource)) {
+		          registeredResource = new RegisteredResource(this, currResource, fileName);
+                path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(registeredResource).getRawPath();
+                registeredResource.setPath(path);
+		    } else {
+		        registeredResource = (RegisteredResource)resources.get(currResource);
+		        path = registeredResource.getPath();
+		        registeredResource.updateContents(this, currResource, fileName);
+		    }
+		}
+		
 		return currResource;
 	}
 	
@@ -287,7 +307,7 @@ public class OutputResource extends UIComponentBase {
 		values[11] = attachment;
 		values[12] = shared;
 		values[13] = target;
-		values[14] = registeredResources;
+		values[14] = UIDataChild;
 		return ((Object) (values));
 	}
 
@@ -313,7 +333,7 @@ public class OutputResource extends UIComponentBase {
 		attachment = (Boolean) values[11];
 		shared = (Boolean)values[12];
         target = (String) values[13];
-        registeredResources = (Map) values[14];        
+        UIDataChild = (Boolean) values[14];        
     }
 
 	public boolean getAttachment() {
@@ -325,7 +345,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return getRegisteredResource().getPath();
+		return  path + "?"+ registeredResource.calculateDigest().hashCode(); 
 	}
 	
 	public boolean isShared(){
@@ -357,13 +377,20 @@ public class OutputResource extends UIComponentBase {
         this.target = target;
     }
     
-    protected RegisteredResource getRegisteredResource() {
-        return (RegisteredResource)registeredResources.get(this.getClientId(FacesContext.getCurrentInstance()));
-    }
-    
-    protected void setRegisteredResource(String clientId, RegisteredResource registeredResource) {
-        registeredResources.put(clientId, registeredResource);
-    }
+    private boolean isUIDataChild() {
+        if (UIDataChild == null) {
+            UIDataChild = Boolean.FALSE;
+            UIComponent parent = this.getParent();
+            while(parent != null) {
+                if (parent instanceof UIData) {
+                    UIDataChild = Boolean.TRUE;
+                    break;
+                }
+                parent = parent.getParent();
+            }
+        }
+        return UIDataChild.booleanValue();
+    }    
 }
 
 class RegisteredResource implements Resource {
@@ -376,18 +403,15 @@ class RegisteredResource implements Resource {
     private boolean isShared;
     private String userAgent;
     private String path;
-
+    
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
         updateContents(outputResource, resource, fileName);
         Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
-        outputResource.setRegisteredResource(outputResource.getClientId(FacesContext.getCurrentInstance()), this);
-        path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-                this).getRawPath();
         userAgent = (String) headerMap.get("user-agent");
     }
 
     public String calculateDigest() {
-        return resource.calculateDigest() + (isShared ? "" : String.valueOf(this.hashCode()));
+        return resource.calculateDigest() + (isShared ? "" : String.valueOf(resource.hashCode()));
     }
 
     public Date lastModified() {
@@ -396,6 +420,14 @@ class RegisteredResource implements Resource {
 
     public InputStream open() throws IOException {
         return resource.open();
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path= path;
     }
 
     void updateContents(OutputResource outputResource, Resource resource, String fileName) {
@@ -408,9 +440,6 @@ class RegisteredResource implements Resource {
         isShared = outputResource.isShared();
     }
     
-    public String getPath() {
-        return path + "?"+ calculateDigest().hashCode();
-    }
     public void withOptions(Options options) {
         ResourceOptions resourceOptions = new ResourceOptions();
         try {
