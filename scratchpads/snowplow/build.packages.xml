@@ -34,38 +34,66 @@
 		<antcall target="package.wicket" />
 	</target>
 
+	<target name="package.basic">
+		<property name="target" value="basic" />
+		<delete dir="./dist/${target}" />
+		<mkdir dir="./dist/${target}" />
+		<copy todir="./dist/${target}">
+			<fileset dir="." includes="core/** lib/**" />
+		</copy>
+		<mkdir dir="./dist/${target}/samples" />
+		<copy todir="./dist/${target}" file="./build-common.xml" />
+		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml" />
+		<copy file="build.properties" todir="./dist/${target}" />
+		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
+		<copy todir="./dist/${target}/samples">
+			<fileset dir="./samples" excludes="**/build/** **/dist/**" includes="icechat/api/** 
+					icechat/beans/**
+					icechat/common/**
+					icechat/ajax/**
+					icechat/lib/**
+					icechat/auth/**
+					icechat/build-common.properties
+					icechat/build-common.xml
+					basic/**">
+			</fileset>
+		</copy>
+		<antcall target="zip.distribution" />
+		<delete dir="./dist/${target}" />
+	</target>
+
 	<target name="package.jsp">
 		<property name="target" value="jsp" />
-		<build.package/>
+		<build.package />
 	</target>
 
 	<target name="package.gwt">
 		<property name="target" value="gwt" />
-		<build.package/>
+		<build.package />
 	</target>
 
 	<target name="package.jquery">
 		<property name="target" value="jquery" />
-		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**"/>
+		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**" />
 	</target>
 
 	<target name="package.prototype">
 		<property name="target" value="prototype" />
-		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**"/>
+		<build.package icechat.extra.includes="icechat/auth/** icechat/ajax/**" />
 	</target>
 
 	<target name="package.wicket">
 		<property name="target" value="wicket" />
-		<build.package icechat.extra.includes="icechat/cdi/**"/>
+		<build.package icechat.extra.includes="icechat/cdi/**" />
 	</target>
 
 	<target name="package.spring">
 		<property name="target" value="spring" />
 		<antcall target="base.package" />
 		<copy todir="./dist/${target}/integration">
-			<fileset dir="./integration" includes="jsp/**"/>
+			<fileset dir="./integration" includes="jsp/**" />
 		</copy>
-		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />		
+		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
 		<bundle.icechat extra.includes="icechat/web/spring/**" />
 		<antcall target="zip.distribution" />
 		<delete dir="./dist/${target}" />
@@ -75,7 +103,7 @@
 		<attribute name="icechat.extra.includes" default="" />
 		<sequential>
 			<antcall target="base.package" />
-			<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />		
+			<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
 			<bundle.icechat extra.includes="@{icechat.extra.includes}" />
 			<antcall target="zip.distribution" />
 			<delete dir="./dist/${target}" />
@@ -86,22 +114,23 @@
 		<delete dir="./dist/${target}" />
 		<mkdir dir="./dist/${target}" />
 		<copy todir="./dist/${target}">
-			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/build.xml integration/${target}/samples/**" />			
+			<fileset dir="." includes="core/** lib/** integration/${target}/**" excludes="integration/${target}/build.xml integration/${target}/samples/**" />
 		</copy>
-		<mkdir dir="./dist/${target}/samples" />	
+		<mkdir dir="./dist/${target}/samples" />
 		<copy todir="./dist/${target}" file="./build-common.xml" />
 		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml" />
 		<copy file="build.properties" todir="./dist/${target}" />
 		<copy todir="./dist/${target}/samples">
-			<fileset dir="./integration/${target}/samples" excludes="build.xml"/>			
+			<fileset dir="./integration/${target}/samples" excludes="build.xml" />
 		</copy>
 
 	</target>
-	
+
 	<target name="zip.distribution">
-		<zip destfile="./dist/icepush-${target}.zip" basedir="./dist/${target}"></zip>
+		<zip destfile="./dist/icepush-${target}.zip" basedir="./dist/${target}">
+		</zip>
 	</target>
-	
+
 	<macrodef name="bundle.icechat">
 		<attribute name="extra.includes" default="" />
 		<sequential>
@@ -113,50 +142,50 @@
 						icechat/lib/**
 						icechat/build-common.properties
 						icechat/build-common.xml
-						@{extra.includes}"> 
+						@{extra.includes}">
 				</fileset>
 			</copy>
 		</sequential>
 	</macrodef>
-	
+
 	<target name="clean-all">
-		<clean/>
-		<ant dir="./core" target="clean"/>
+		<clean />
+		<ant dir="./core" target="clean" />
 		<!-- JSP -->
-		<clean.with.path.offset target="jsp"/>
+		<clean.with.path.offset target="jsp" />
 		<!-- GWT -->
-		<clean.with.path.offset target="gwt"/>
-		<ant target="clean" dir="./samples/icechat/gwt"/>
+		<clean.with.path.offset target="gwt" />
+		<ant target="clean" dir="./samples/icechat/gwt" />
 		<!-- SPRINGMVC -->
-		<clean.with.path.offset target="spring"/>
-		<ant target="clean" dir="./samples/icechat/spring"/>
+		<clean.with.path.offset target="spring" />
+		<ant target="clean" dir="./samples/icechat/spring" />
 		<!-- JQUERY -->
-		<clean.with.path.offset target="jquery"/>
-		<ant target="clean" dir="./samples/icechat/jquery"/>
+		<clean.with.path.offset target="jquery" />
+		<ant target="clean" dir="./samples/icechat/jquery" />
 		<!-- PROTOTYPE -->
-		<clean.with.path.offset target="prototype"/>
-		<ant target="clean" dir="./samples/icechat/prototype"/>	
+		<clean.with.path.offset target="prototype" />
+		<ant target="clean" dir="./samples/icechat/prototype" />
 		<!-- WICKET -->
-		<clean.with.path.offset target="wicket"/>
-		<ant target="clean" dir="./samples/icechat/wicket"/>	
+		<clean.with.path.offset target="wicket" />
+		<ant target="clean" dir="./samples/icechat/wicket" />
 	</target>
-	
+
 	<macrodef name="clean">
 		<element name="add.filesets" optional="true" />
 		<sequential>
 			<delete failonerror="false" includeEmptyDirs="true">
 				<fileset dir="${build.dir}" />
 				<fileset dir="${dist.dir}" />
-				<add.filesets/>
+				<add.filesets />
 			</delete>
 		</sequential>
 	</macrodef>
 
 	<macrodef name="clean.with.path.offset">
-		<attribute name="target"/>
+		<attribute name="target" />
 		<sequential>
 			<echo>Cleaning Inegration @{target}</echo>
-			<ant target="clean" dir="./integration/@{target}"/>
+			<ant target="clean" dir="./integration/@{target}" />
 		</sequential>
 	</macrodef>
 

@@ -98,6 +98,9 @@
 		<ant dir="./core" target="clean"/>
 		<!-- JSP -->
 		<clean.with.path.offset target="jsp"/>
+		
+		<ant target="clean" dir="./samples/basic"/>
+		
 		<!-- GWT -->
 		<clean.with.path.offset target="gwt"/>
 		<ant target="clean" dir="./samples/icechat/gwt"/>
