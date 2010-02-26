@@ -124,8 +124,14 @@ public class GroupRenderer
                 DnDCache.getInstance(facesContext, true).put(
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
-                String call = addJavascriptCalls(uiComponent, dndType, null, facesContext);
+                String dropCall = null;
+                String call = addJavascriptCalls(uiComponent, dndType, null, facesContext, dropCall);
                 
+                String clientId = uiComponent.getClientId(facesContext);
+                Element script = domContext.createElement(HTML.SCRIPT_ELEM);
+                script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId+"script"));
+                script.appendChild(domContext.createTextNode(call));
+                rootSpan.appendChild(script);
                 Map rendererJavascriptDraggable =new HashMap();
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
                             "Draggable.removeMe(this.id);");
@@ -177,7 +183,8 @@ public class GroupRenderer
 
     protected String addJavascriptCalls(UIComponent uiComponent, String dndType,
                                         String handleId,
-                                        FacesContext facesContext) {
+                                        FacesContext facesContext,
+                                        String dropCall) {
         String calls = "";
 
         boolean dragListener =
@@ -207,7 +214,7 @@ public class GroupRenderer
                                           facesContext);
 
         } else if ("drop".equalsIgnoreCase(dndType)) {
-            DragDrop.addDroptarget(
+            dropCall = DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
                     dropMask, hoverClass);
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
@@ -215,7 +222,7 @@ public class GroupRenderer
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
                                           handleId, dragOptions, dragMask,
                                           facesContext);
-            DragDrop.addDroptarget(
+            dropCall = DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
                     dropMask, hoverClass);
         } else {
