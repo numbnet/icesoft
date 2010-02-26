@@ -53,8 +53,8 @@ public class PageNotifier extends HttpServlet {
         w.write("</head><body>");
 
         w.write("<script type=\"text/javascript\">");
-        w.write("ice.push.register(['" + idA + "', '" + idB + "'], function(pushIds) { ice.info(ice.logger, ice.push.getCurrentNotifications()); });");
-        w.write("</script>");
+        w.write("ice.push.register(['" + idA + "', '" + idB + "'], function(pushIds) { ice.info(ice.logger, ice.push.getCurrentNotifications());document.getElementById('notifications').innerHTML = ice.push.getCurrentNotifications(); });");
+        w.write("</script><h2>Basic ICEpush Test</h2><div>Current Push Notifications: <span id='notifications'></span></div>");
         w.write("</body></html>");
         response.setContentType("text/html");
 
