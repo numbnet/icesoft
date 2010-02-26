@@ -150,7 +150,7 @@ public class DragDrop {
         }
 
         String call = "Droppables.add('" + id + "'" + ea.toString();
-        JavascriptContext.addJavascriptCall(facesContext, call);
+        // JavascriptContext.addJavascriptCall(facesContext, call);
         return call;
     }
 }

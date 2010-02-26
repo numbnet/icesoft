@@ -255,8 +255,9 @@ public class PanelPopupRenderer extends GroupRenderer {
 		// Rebroadcast Javascript to survive refresh
 		if (dndType != null) {
             JavascriptContext.addJavascriptCall(facesContext, "Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
+           String dropCall = null;
             String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
-					facesContext);
+					facesContext, dropCall);
 			JavascriptContext.addJavascriptCall(facesContext, call);
 	        if (panelPopup.isClientOnly()) {
 	            //the "submit" method in the dragdrop_custom.js would check for this
