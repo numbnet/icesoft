@@ -3146,4 +3146,5 @@ Disabled classes for the calendar controls
 
 .iceHdnLnk img{
     border: 0;	
+    width:0px;
 }	
