@@ -22,32 +22,12 @@ import javax.faces.event.ValueChangeEvent;
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
 public class TabSet extends TabSetBase {
-    private Integer tabIndex;
     private String orientation;
  
     public TabSet() {
         loadDependency(FacesContext.getCurrentInstance());        
     }
 
-    public void setTabIndex(int tabindex) {
-        this.tabIndex = new Integer(tabindex);
-        //TODO need to be changed in the processUpdate. However this property is not 
-        //involved in any validator or convertor so it will not harm 
-        ValueBinding vb = getValueBinding("tabIndex");
-        if (vb != null) {
-            vb.setValue(getFacesContext(), this.tabIndex);
-            this.tabIndex = null;
-        }        
-    }
-
-    public int getTabIndex() {
-        if (tabIndex != null) {
-            return tabIndex.intValue();
-        }
-        ValueBinding vb = getValueBinding("tabIndex");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 0;
-    }
-    
     public void setOrientation(String orientation) {
         this.orientation = orientation;
         //TODO need to be changed in the processUpdate. However this property is not 
@@ -81,7 +61,8 @@ public class TabSet extends TabSetBase {
         super.broadcast(event);
         if (event != null) {
             ValueChangeEvent e = (ValueChangeEvent)event;
-            setTabIndex(((Integer)e.getNewValue()).intValue());
+            System.out.println("Broad Cast changing tabindex .......");
+            //setTabIndex(((Integer)e.getNewValue()).intValue());
             MethodExpression method = getTabChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
@@ -151,7 +132,6 @@ public class TabSet extends TabSetBase {
         }
 
         values[0] = super.saveState(context);
-        values[1] = tabIndex;
         return (values);
 
     }
@@ -168,6 +148,5 @@ public class TabSet extends TabSetBase {
         }
         values = (Object[]) state;
         super.restoreState(context, values[0]);
-        tabIndex = (Integer) values[1];
     }
 }

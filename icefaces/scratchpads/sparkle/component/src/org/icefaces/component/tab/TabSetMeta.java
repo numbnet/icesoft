@@ -29,16 +29,21 @@ import org.icefaces.component.annotation.Property;
 )
 public class TabSetMeta {
     @Field(defaultValue="Integer.MIN_VALUE")
-    protected int oldTabIndex;
+    private int oldTabIndex;
     
     @Field
-    protected String oldOrientation; 
+    private String oldOrientation; 
+    
+
+    @Property(defaultValue="0")
+    private int tabIndex;
+    
     
     @Property(defaultValue="false")    
-    private Boolean clientSide; 
+    private boolean clientSide; 
    
     @Property(defaultValue="false") 
-    private Boolean partialSubmit;
+    private boolean partialSubmit;
     
     @Property    
     private String onupdate;
@@ -46,7 +51,7 @@ public class TabSetMeta {
     @Property
     private String styleClass;
     
-    @Property    
+    @Property (defaultValue="") 
     private String style;
     
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
