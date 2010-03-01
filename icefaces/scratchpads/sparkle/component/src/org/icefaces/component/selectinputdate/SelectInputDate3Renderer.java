@@ -57,61 +57,34 @@ public class SelectInputDate3Renderer extends Renderer {
 
         formatter.applyPattern(converter.getPattern());
         StringBuffer stringBuffer = new StringBuffer();
-        FieldPosition fieldPosition = new FieldPosition(DateFormat.Field.HOUR0);
-        formatter.format(date, stringBuffer, fieldPosition);
-        int beginIndex = fieldPosition.getBeginIndex();
-        int endIndex = fieldPosition.getEndIndex();
+        DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
+                DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.HOUR_OF_DAY1};
+        String[] hourFieldNames = {"HOUR0", "HOUR1", "HOUR_OF_DAY0", "HOUR_OF_DAY1"};
+        FieldPosition fieldPosition;
+        int beginIndex;
+        int endIndex;
         String hourField = "";
         int savedBeginIndex = Integer.MAX_VALUE, savedEndIndex = Integer.MAX_VALUE;
-        if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
-            hourField = "HOUR0";
-            savedBeginIndex = beginIndex;
-            savedEndIndex = endIndex;
-        }
-        stringBuffer.setLength(0);
-        fieldPosition = new FieldPosition(DateFormat.Field.HOUR1);
-        formatter.format(date, stringBuffer, fieldPosition);
-        beginIndex = fieldPosition.getBeginIndex();
-        endIndex = fieldPosition.getEndIndex();
-        if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
-            hourField = "HOUR1";
-            savedBeginIndex = beginIndex;
-            savedEndIndex = endIndex;
-        }
-        stringBuffer.setLength(0);
-        fieldPosition = new FieldPosition(DateFormat.Field.HOUR_OF_DAY0);
-        formatter.format(date, stringBuffer, fieldPosition);
-        beginIndex = fieldPosition.getBeginIndex();
-        endIndex = fieldPosition.getEndIndex();
-        if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
-            hourField = "HOUR_OF_DAY0";
-            savedBeginIndex = beginIndex;
-            savedEndIndex = endIndex;
-        }
-        stringBuffer.setLength(0);
-        fieldPosition = new FieldPosition(DateFormat.Field.HOUR_OF_DAY1);
-        formatter.format(date, stringBuffer, fieldPosition);
-        beginIndex = fieldPosition.getBeginIndex();
-        endIndex = fieldPosition.getEndIndex();
-        if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
-            hourField = "HOUR_OF_DAY1";
-            savedBeginIndex = beginIndex;
-            savedEndIndex = endIndex;
+        for (int i = 0; i < hourFields.length; i++) {
+            stringBuffer.setLength(0);
+            fieldPosition = new FieldPosition(hourFields[i]);
+            formatter.format(date, stringBuffer, fieldPosition);
+            beginIndex = fieldPosition.getBeginIndex();
+            endIndex = fieldPosition.getEndIndex();
+            if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
+                hourField = hourFieldNames[i];
+                savedBeginIndex = beginIndex;
+                savedEndIndex = endIndex;
+            }
         }
         String selectedHour = "";
         if (!hourField.equals("")) {
             selectedHour = stringBuffer.substring(savedBeginIndex, savedEndIndex);
         }
-
-//        stringBuffer.setLength(0);
-//        fieldPosition = new FieldPosition(DateFormat.Field.MINUTE);
-//        formatter.format(date, stringBuffer, fieldPosition);
-//        String selectedMinute = stringBuffer.substring(fieldPosition.getBeginIndex(), fieldPosition.getEndIndex());
         String selectedMinute = String.valueOf(date.getMinutes());
 
         formatter.applyPattern("a");
         String amPmStr = formatter.format(date);
-
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
 
         String minDate = selectInputDate.getMinDate();
