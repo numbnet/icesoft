@@ -157,7 +157,7 @@ Ice.PanelCollapsible = {
 
 var singleRowSelectionExecuter;
 var localEvent;
-Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames, row) {
     var ctrlKyFld = document.getElementsByName(hdnFld+'ctrKy');
     var sftKyFld = document.getElementsByName(hdnFld+'sftKy');  
     if (ctrlKyFld.length > 0) {
@@ -213,21 +213,34 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 }
             }
         }
-        if (!event)
-            var event = localEvent;         
-        var evt = Event.extend(event);
-        var row = evt.element();
-        if (row.tagName.toLowerCase() != "tr") {
-            row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
-        }
-        if (row) {
-            // If preStyleOnSelection=false, then toggleClassNames=='', so we
-            // should leave the row styling alone
-            if(toggleClassNames) {
-                row.className = toggleClassNames;
-                row.onmouseover = Prototype.emptyFunction;
-                row.onmouseout = Prototype.emptyFunction;
+        //mouse clicked on the row, here we would like to set the focus id to the 
+        //hidden focus link on this tr.
+        
+        //first look if its already installed
+        var focusElement = row["iceHdnLnk"];
+        //not installed yet
+        if (!focusElement) {
+            //look in the dom
+            var anchors = row.getElementsByTagName("a");
+            if (anchors.length > 0 && 
+                anchors[0].className == 'iceHdnLnk') {
+               //found 
+               focusElement = anchors[0];
+               //install on the row, so next time dom lookup will not be required.
+               row["iceHdnLnk"] = focusElement;
             }
+        }
+        //if focusElement has found, its mean keyboard navigation is enabled set the focus id.
+        if (focusElement) {
+            setFocus(focusElement.id);
+        }
+        
+        // If preStyleOnSelection=false, then toggleClassNames=='', so we
+        // should leave the row styling alone
+        if(toggleClassNames) {
+            row.className = toggleClassNames;
+            row.onmouseover = Prototype.emptyFunction;
+            row.onmouseout = Prototype.emptyFunction;
         }
         var fld = document.forms[formId][hdnFld];
         fld.value = rowid;
@@ -235,7 +248,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         iceSubmitPartial(null, fld, nothingEvent);
         setFocus('');
     } catch(e) {
-        console.log("Error in rowSelector[" + e + "]");
+        logger.info("Error in rowSelector[" + e + "]");
     }
 }
 

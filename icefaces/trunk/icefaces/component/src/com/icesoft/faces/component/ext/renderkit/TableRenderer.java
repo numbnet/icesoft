@@ -679,7 +679,7 @@ public class TableRenderer
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
+                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "', this);");
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
