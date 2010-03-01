@@ -14,11 +14,11 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
 
 package org.icepush.notify;
 
@@ -27,18 +27,19 @@ public class GroupNotifier extends Notifier {
     private String group;
 
     public GroupNotifier() {
-	super();
-	group=null;
+        super();
+        group = null;
     }
-    
+
     public String getGroup() {
-	return group;
+        return group;
     }
+
     public void setGroup(String grp) {
-       group = grp;
+        group = grp;
     }
 
     public void push() {
-	getPushContext().push(group);
+        getPushContext().push(group);
     }
 }
