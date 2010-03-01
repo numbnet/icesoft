@@ -1,5 +1,4 @@
 <!--
- *
  * Version: MPL 1.1
  *
  * "The contents of this file are subject to the Mozilla Public License
@@ -15,7 +14,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -23,38 +22,38 @@
   -->
 <project name="icepush" default="jar" basedir=".">
 
-	<property file="local.properties" />
-	<property name="root.offset" value=".." />
-	<property file="${root.offset}/build.properties" />
-	<import file="${root.offset}/build-common.xml" />
+    <property file="local.properties"/>
+    <property name="root.offset" value=".."/>
+    <property file="${root.offset}/build.properties"/>
+    <import file="${root.offset}/build-common.xml"/>
 
-	<target name="build.bridge" description="collate JS code">
-		<echo>Building ICEpush bridge</echo>
-		<ant antfile="build.javascript.xml" target="build" inheritall="no" dir=".">
-			<property name="no-compress" value="true" />
-		</ant>
-	</target>
+    <target name="build.bridge" description="collate JS code">
+        <echo>Building ICEpush bridge</echo>
+        <ant antfile="build.javascript.xml" target="build" inheritall="no" dir=".">
+            <property name="no-compress" value="true"/>
+        </ant>
+    </target>
 
-	<target name="compile" depends="pre.compile" description="compile classes">
-		<compile/>
-	</target>
+    <target name="compile" depends="pre.compile" description="compile classes">
+        <compile/>
+    </target>
 
-	<target name="jar" depends="compile, build.bridge" description="fill the jar">
-		<property name="sources" location="${dist.dir}/src.zip" />
-		<zip destfile="${sources}" compress="false">
-			<fileset dir=".">
-				<include name="src/**" />
-				<include name="*.xml" />
-				<include name="*.properties" />
-			</fileset>
-		</zip>
-		<build.jar>
-			<add.filesets>
-				<file file="${sources}" />
-				<fileset dir="${build.dir}/javascript" />
-			</add.filesets>
-		</build.jar>
-		<delete file="${sources}"/>
-	</target>
+    <target name="jar" depends="compile, build.bridge" description="fill the jar">
+        <property name="sources" location="${dist.dir}/src.zip"/>
+        <zip destfile="${sources}" compress="false">
+            <fileset dir=".">
+                <include name="src/**"/>
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+            </fileset>
+        </zip>
+        <build.jar>
+            <add.filesets>
+                <file file="${sources}"/>
+                <fileset dir="${build.dir}/javascript"/>
+            </add.filesets>
+        </build.jar>
+        <delete file="${sources}"/>
+    </target>
 </project>
 

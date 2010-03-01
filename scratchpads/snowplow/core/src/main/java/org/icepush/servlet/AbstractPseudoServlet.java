@@ -14,21 +14,14 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
 
 package org.icepush.servlet;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mircea
- * Date: Nov 11, 2009
- * Time: 4:11:43 PM
- * To change this template use File | Settings | File Templates.
- */
 public abstract class AbstractPseudoServlet implements PseudoServlet {
     public void shutdown() {
     }
