@@ -123,11 +123,7 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(field.getName().substring(1));
   
                   generatedComponentClass.append("(");
-                  if (isBoolean) {
-                      generatedComponentClass.append("boolean");  
-                  } else {
-                      generatedComponentClass.append(field.getType().getName());
-                  }
+                  generatedComponentClass.append(field.getType().getName());
                   generatedComponentClass.append(" ");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
@@ -166,7 +162,12 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(field.getName().substring(1));
                   generatedComponentClass.append("() {\n");
                   generatedComponentClass.append("\t\t return (");
-                  generatedComponentClass.append(field.getType().getName());
+                  if (Generator.WrapperTypes.containsKey(field.getType().getName())) {
+                      generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
+                  } else {
+                      generatedComponentClass.append(field.getType().getName());
+                 }
+                  
                   generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
                   generatedComponentClass.append(field.getName());
                   String defaultValue = prop.defaultValue();
