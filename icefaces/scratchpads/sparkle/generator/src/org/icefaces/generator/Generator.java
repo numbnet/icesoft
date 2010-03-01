@@ -39,14 +39,14 @@ public class Generator {
     public final static String namespace = "http://www.icesoft.com/icefaces/component/annotated";
     static {
         components = FileWriter.getAnnotatedCompsList();
-        WrapperTypes.put("boolean", "java.lang.Boolean");
-        WrapperTypes.put("byte", "java.lang.Byte");
-        WrapperTypes.put("char", "java.lang.Character");
-        WrapperTypes.put("double", "java.lang.Double");
-        WrapperTypes.put("float", "java.lang.Float");
-        WrapperTypes.put("int", "java.lang.Integer");
-        WrapperTypes.put("long", "java.lang.Long");
-        WrapperTypes.put("short", "java.lang.Short");
+        WrapperTypes.put("java.lang.Boolean", "boolean");
+        WrapperTypes.put("java.lang.Byte", "byte");
+        WrapperTypes.put("java.lang.Character", "char");
+        WrapperTypes.put("java.lang.Double", "double");
+        WrapperTypes.put("java.lang.Float", "float");
+        WrapperTypes.put("java.lang.Integer", "int");
+        WrapperTypes.put("java.lang.Long", "long");
+        WrapperTypes.put("java.lang.Short", "short");
         
     }
     
