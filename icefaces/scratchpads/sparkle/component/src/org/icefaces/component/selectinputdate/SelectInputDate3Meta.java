@@ -30,5 +30,9 @@ public class SelectInputDate3Meta {
     private String highlightValue;
     @Property(defaultValue="")
     private String highlightClass;
+    @Property(defaultValue="false")
+    private Boolean renderInputField;
+    @Property(defaultValue="false")
+    private Boolean renderAsPopup;
 
 }

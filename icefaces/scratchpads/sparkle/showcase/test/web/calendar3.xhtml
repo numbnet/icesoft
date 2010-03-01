@@ -25,15 +25,26 @@
     <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}" minDate="2/8/2010" maxDate="2/23/2010"
                           disabledDates="2/10/2010,2/16/2010-2/18/2010">
 -->
-    <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}"
+    <ann:selectInputDate3 id="calendar3_1" value="#{calendarBean.selectedDate}"
                           highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
         <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
     </ann:selectInputDate3>
+    <div style="clear:left;"/>
+    <ann:selectInputDate3 id="calendar3_2" value="#{calendarBean.selectedDate}" renderAsPopup="true"
+                          highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
+        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
+    </ann:selectInputDate3>
+    <ann:selectInputDate3 id="calendar3_3" value="#{calendarBean.selectedDate}" renderAsPopup="true" renderInputField="true"
+                          highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
+        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
+    </ann:selectInputDate3>
+<!--
     <h:outputText value="#{calendarBean.selectedDate}">
         <f:convertDateTime pattern="yyyy-M-d h:m a z" timeZone="Hongkong"/>
     </h:outputText><br/>
     <h:messages/><br/>
     <a href="index.html"> Goto Main page </a>
+-->
 </h:body>
 </html>
 

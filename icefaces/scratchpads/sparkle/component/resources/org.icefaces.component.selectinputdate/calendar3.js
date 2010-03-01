@@ -112,11 +112,24 @@ YAHOO.icefaces.calendar.init = function(params) {
         Calendar = YAHOO.widget.Calendar;
 
     var rootDivId = params.divId;
+    if (!params.renderAsPopup) {
+        var calendar = new Calendar(rootDivId, {
+            pagedate:params.pageDate,
+            selected:params.selectedDate,
+            hide_blank_weeks:true,
+            navigator:true
+        });
+        configCal(calendar, params);
+        calendar.render();
+        return;
+    }
     var rootDiv = new Element(rootDivId);
     var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, size:"30"});
     var buttonEl = new Element(document.createElement("button"), {type:"button"});
     var imageEl = new Element(document.createElement("img"), {src:"images/cal_button.gif"});
-    inputEl.appendTo(rootDiv);
+    if (params.renderInputField) {
+        inputEl.appendTo(rootDiv);
+    }
     buttonEl.appendTo(rootDiv);
     imageEl.appendTo(buttonEl);
 
@@ -150,12 +163,12 @@ YAHOO.icefaces.calendar.init = function(params) {
     };
     var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
         visible:false,
-        context:[inputEl, "tl", "bl"],
+        context:[params.renderInputField ? inputEl : buttonEl, "tl", "bl"],
         buttons:[{text:"OK", handler:okClick}, {text:"Cancel", isDefault:true, handler:cancelClick}],
-        draggable:true,
+        draggable:false,
         close:true
     });
-    dialog.setHeader("Date of Independence");
+    //    dialog.setHeader("Date of Independence");
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
     var hrSelEl = new Element(document.createElement("select"));
     var optionEl;
@@ -182,40 +195,43 @@ YAHOO.icefaces.calendar.init = function(params) {
 //    dialog.appendToBody(docFrag);
     dialog.render(rootDiv);
 
-    var calendar = new Calendar(rootDivId + "_cal", {
+    calendar = new Calendar(rootDivId + "_cal", {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
         hide_blank_weeks:true,
         navigator:true
     });
-    calendar.cfg.addProperty("selectedHour", {value:params.selectedHour});
-    calendar.cfg.addProperty("selectedMinute", {value:params.selectedMinute});
-    calendar.cfg.addProperty("hourField", {value:params.hourField});
-    calendar.cfg.addProperty("amPmStr", {value:params.amPmStr});
-    calendar.cfg.addProperty("amStr", {value:params.amStr});
-    calendar.cfg.addProperty("pmStr", {value:params.pmStr});
-    if (params.minDate) {
-        calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MINDATE.key, params.minDate);
-    }
-    if (params.maxDate) {
-        calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MAXDATE.key, params.maxDate);
-    }
-    if (params.disabledDates) {
-        calendar.addRenderer(params.disabledDates, calendar.renderBodyCellRestricted);
-    }
-    var highlightUnit = params.highlightUnit.split(":");
-    var highlightValue = params.highlightValue.split(":");
-    for (i = 0; i < highlightValue.length; i++) {
-        highlightValue[i] = highlightValue[i].split(",");
-        for (var j = 0; j < highlightValue[i].length; j++) {
-            highlightValue[i][j] = parseInt(highlightValue[i][j], 10);
+    configCal(calendar, params);
+    function configCal(calendar, params) {
+        calendar.cfg.addProperty("selectedHour", {value:params.selectedHour});
+        calendar.cfg.addProperty("selectedMinute", {value:params.selectedMinute});
+        calendar.cfg.addProperty("hourField", {value:params.hourField});
+        calendar.cfg.addProperty("amPmStr", {value:params.amPmStr});
+        calendar.cfg.addProperty("amStr", {value:params.amStr});
+        calendar.cfg.addProperty("pmStr", {value:params.pmStr});
+        if (params.minDate) {
+            calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MINDATE.key, params.minDate);
         }
+        if (params.maxDate) {
+            calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MAXDATE.key, params.maxDate);
+        }
+        if (params.disabledDates) {
+            calendar.addRenderer(params.disabledDates, calendar.renderBodyCellRestricted);
+        }
+        var highlightUnit = params.highlightUnit.split(":");
+        var highlightValue = params.highlightValue.split(":");
+        for (i = 0; i < highlightValue.length; i++) {
+            highlightValue[i] = highlightValue[i].split(",");
+            for (var j = 0; j < highlightValue[i].length; j++) {
+                highlightValue[i][j] = parseInt(highlightValue[i][j], 10);
+            }
+        }
+        var highlightClass = params.highlightClass.split(":");
+        calendar.cfg.addProperty("highlightUnit", {value:highlightUnit});
+        calendar.cfg.addProperty("highlightValue", {value:highlightValue});
+        calendar.cfg.addProperty("highlightClass", {value:highlightClass});
     }
-    var highlightClass = params.highlightClass.split(":");
-    calendar.cfg.addProperty("highlightUnit", {value:highlightUnit});
-    calendar.cfg.addProperty("highlightValue", {value:highlightValue});
-    calendar.cfg.addProperty("highlightClass", {value:highlightClass});
     calendar.render();
 
     var buttonClick = function() {

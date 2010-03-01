@@ -120,13 +120,16 @@ public class SelectInputDate3Renderer extends Renderer {
         String highlightUnit = selectInputDate.getHighlightUnit();
         String highlightValue = selectInputDate.getHighlightValue();
         String highlightClass = selectInputDate.getHighlightClass();
+        boolean renderAsPopup = selectInputDate.isRenderAsPopup();
+        boolean renderInputField = selectInputDate.isRenderInputField();
 
         String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
                 "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
                 "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] + "',minDate:'" + minDate +
                 "',maxDate:'" + maxDate + "',disabledDates:'" + disabledDates + "',highlightUnit:'" + highlightUnit +
-                "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass + "'}";
+                "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass +
+                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField + "}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
