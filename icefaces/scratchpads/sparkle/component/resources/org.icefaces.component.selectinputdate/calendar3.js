@@ -77,6 +77,31 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
     return html;
 };
 
+YAHOO.widget.Calendar.prototype.renderCellDefault = function(workingDate, cell) {
+    var Dom = YAHOO.util.Dom;
+    var highlightUnit = this.cfg.getProperty("highlightUnit");
+    var highlightValue = this.cfg.getProperty("highlightValue");
+    var highlightClass = this.cfg.getProperty("highlightClass");
+    var minLen = Math.min(highlightUnit.length, highlightValue.length, highlightClass.length);
+    for (var i = 0; i < minLen; i++) {
+        for (var j = 0; j < highlightValue[i].length; j++) {
+            if (highlightUnit[i] == "YEAR" && workingDate.getFullYear() == highlightValue[i][j]) {
+                Dom.addClass(cell, highlightClass[i]);
+                break;
+            }
+            if (highlightUnit[i] == "MONTH" && workingDate.getMonth() + 1 == highlightValue[i][j]) {
+                Dom.addClass(cell, highlightClass[i]);
+                break;
+            }
+            if (highlightUnit[i] == "DAY_OF_WEEK" && workingDate.getDay() + 1 == highlightValue[i][j]) {
+                Dom.addClass(cell, highlightClass[i]);
+                break;
+            }
+        }
+    }
+    cell.innerHTML = '<a href="#" class="' + this.Style.CSS_CELL_SELECTOR + '">' + this.buildDayLabel(workingDate) + "</a>";
+};
+
 YAHOO.namespace("icefaces.calendar.calendars");
 
 YAHOO.icefaces.calendar.init = function(params) {
@@ -134,7 +159,7 @@ YAHOO.icefaces.calendar.init = function(params) {
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
     var hrSelEl = new Element(document.createElement("select"));
     var optionEl;
-    for (i = 0; i < 24; i++) {
+    for (var i = 0; i < 24; i++) {
         optionEl = new Element(document.createElement("option"), {value:i});
         if (i == params.selectedHour) optionEl.set("selected", "selected", true);
         optionEl.appendChild(document.createTextNode(i));
@@ -161,7 +186,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
-        HIDE_BLANK_WEEKS:true,
+        hide_blank_weeks:true,
         navigator:true
     });
     calendar.cfg.addProperty("selectedHour", {value:params.selectedHour});
@@ -179,6 +204,18 @@ YAHOO.icefaces.calendar.init = function(params) {
     if (params.disabledDates) {
         calendar.addRenderer(params.disabledDates, calendar.renderBodyCellRestricted);
     }
+    var highlightUnit = params.highlightUnit.split(":");
+    var highlightValue = params.highlightValue.split(":");
+    for (i = 0; i < highlightValue.length; i++) {
+        highlightValue[i] = highlightValue[i].split(",");
+        for (var j = 0; j < highlightValue[i].length; j++) {
+            highlightValue[i][j] = parseInt(highlightValue[i][j], 10);
+        }
+    }
+    var highlightClass = params.highlightClass.split(":");
+    calendar.cfg.addProperty("highlightUnit", {value:highlightUnit});
+    calendar.cfg.addProperty("highlightValue", {value:highlightValue});
+    calendar.cfg.addProperty("highlightClass", {value:highlightClass});
     calendar.render();
 
     var buttonClick = function() {

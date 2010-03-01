@@ -24,5 +24,11 @@ public class SelectInputDate3Meta {
     private String maxDate;
     @Property(defaultValue="")
     private String disabledDates;
+    @Property(defaultValue="")
+    private String highlightUnit;
+    @Property(defaultValue="")
+    private String highlightValue;
+    @Property(defaultValue="")
+    private String highlightClass;
 
 }
