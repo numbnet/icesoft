@@ -11,6 +11,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
 
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class JSEventListenerRenderer extends Renderer{
@@ -36,20 +37,14 @@ public class JSEventListenerRenderer extends Renderer{
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"spt", HTML.ID_ATTR);
         String events = ((JSEventListener)uiComponent).getEvents();
         String handler = ((JSEventListener)uiComponent).getHandler();
         if (handler != null)
             handler = "'"+ handler  + "'";
         if (events != null) {
-            writer.write("Ice.registerEventListener('"+ clientId +"','" +
+                    JavascriptContext.addJavascriptCall(facesContext, "Ice.registerEventListener('"+ clientId +"','" +
                     events	+"', "+ handler +");");
         }
-        
-        writer.endElement(HTML.SCRIPT_ELEM);
-        
-
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

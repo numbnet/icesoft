@@ -595,8 +595,10 @@ String.prototype.trim = function () {
 
 Ice.registerEventListener = function(ele, mask, handler) {
     if (mask == null || mask == '') return;
-    events = mask.split(",");
     ele = $(ele);
+    if (ele["listenerInstalled"]) return;
+    ele["listenerInstalled"] = true;
+    events = mask.split(",");
     if (handler) {
         try {
           ele["jshandler"] = eval(handler.trim());
