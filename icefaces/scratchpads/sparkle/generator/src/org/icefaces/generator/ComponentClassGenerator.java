@@ -114,7 +114,7 @@ public class ComponentClassGenerator {
                   Property prop = (Property)field.getAnnotation(Property.class);
                  
                   boolean isBoolean = field.getType().getName().endsWith("boolean")||
-                  field.getType().getName().endsWith("java.lang.Boolean");
+                  field.getType().getName().endsWith("Boolean");
                                     
                   //set
                   addJavaDoc(field.getName(), true, prop.javadocSet());
@@ -123,7 +123,12 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(field.getName().substring(1));
   
                   generatedComponentClass.append("(");
-                  generatedComponentClass.append(field.getType().getName());
+                  if (Generator.WrapperTypes.containsKey(field.getType().getName().trim())) {
+                      System.out.println("TYPE FOUNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+                      generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
+                  } else {System.out.println("TYPE NOOOOOOOOOOOOOOOOOOOOOOOOOOT");
+                      generatedComponentClass.append(field.getType().getName());
+                  }
                   generatedComponentClass.append(" ");
                   generatedComponentClass.append(field.getName());
                   generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
@@ -162,11 +167,7 @@ public class ComponentClassGenerator {
                   generatedComponentClass.append(field.getName().substring(1));
                   generatedComponentClass.append("() {\n");
                   generatedComponentClass.append("\t\t return (");
-                  if (Generator.WrapperTypes.containsKey(field.getType().getName())) {
-                      generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
-                  } else {
-                      generatedComponentClass.append(field.getType().getName());
-                 }
+                  generatedComponentClass.append(field.getType().getName());
                   
                   generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
                   generatedComponentClass.append(field.getName());
@@ -329,11 +330,7 @@ public class ComponentClassGenerator {
             generatedComponentClass.append(field.getName());
             generatedComponentClass.append(" = ");
             generatedComponentClass.append("(");
-            if (Generator.WrapperTypes.containsKey(field.getType().getName())) {
-                generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
-            } else {
-                generatedComponentClass.append(field.getType().getName());
-            }
+            generatedComponentClass.append(field.getType().getName());
             generatedComponentClass.append(") values["); 
             generatedComponentClass.append(i++);
             generatedComponentClass.append("];\n");

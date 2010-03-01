@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Field {
     boolean isTransient() default false;
-    String defaultValue() default "";
+    String defaultValue() default "null";
     String javadoc() default ""; 
     boolean defaultValueIsStringLiteral() default true;
 }
