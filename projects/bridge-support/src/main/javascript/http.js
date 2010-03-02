@@ -71,7 +71,7 @@ var Query = function() {
 
         method(appendToURI, function(self, uri) {
             if (not(isEmpty(parameters))) {
-                return uri + '?' + asURIEncodedString(self);
+                return uri + (contains(uri, '?') ? '&' : '?') + asURIEncodedString(self);
             } else {
                 return uri;
             }
