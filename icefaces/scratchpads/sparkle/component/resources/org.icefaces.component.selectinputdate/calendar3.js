@@ -78,22 +78,33 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
 };
 
 YAHOO.widget.Calendar.prototype.renderCellDefault = function(workingDate, cell) {
-    var Dom = YAHOO.util.Dom;
+    var Dom = YAHOO.util.Dom,
+        DateMath = YAHOO.widget.DateMath;
     var highlightUnit = this.cfg.getProperty("highlightUnit");
     var highlightValue = this.cfg.getProperty("highlightValue");
     var highlightClass = this.cfg.getProperty("highlightClass");
     var minLen = Math.min(highlightUnit.length, highlightValue.length, highlightClass.length);
+    var value;
     for (var i = 0; i < minLen; i++) {
+        if (highlightUnit[i] == "YEAR") {
+            value = workingDate.getFullYear();
+        } else if (highlightUnit[i] == "MONTH") {
+            value = workingDate.getMonth() + 1;
+        } else if (highlightUnit[i] == "WEEK_OF_YEAR") {
+            value = DateMath.getWeekNumber(workingDate, 0, 1);
+        } else if (highlightUnit[i] == "WEEK_OF_MONTH") {
+            // ???
+        } else if (highlightUnit[i] == "DATE") {
+            value = workingDate.getDate();
+        } else if (highlightUnit[i] == "DAY_OF_YEAR") {
+            value = DateMath.getDayOffset(workingDate, workingDate.getFullYear()) + 1;
+        } else if (highlightUnit[i] == "DAY_OF_WEEK ") {
+            value = workingDate.getDay() + 1;
+        } else if (highlightUnit[i] == "DAY_OF_WEEK_IN_MONTH") {
+            value = Math.floor((workingDate.getDate() - 1) / 7) + 1;
+        }
         for (var j = 0; j < highlightValue[i].length; j++) {
-            if (highlightUnit[i] == "YEAR" && workingDate.getFullYear() == highlightValue[i][j]) {
-                Dom.addClass(cell, highlightClass[i]);
-                break;
-            }
-            if (highlightUnit[i] == "MONTH" && workingDate.getMonth() + 1 == highlightValue[i][j]) {
-                Dom.addClass(cell, highlightClass[i]);
-                break;
-            }
-            if (highlightUnit[i] == "DAY_OF_WEEK" && workingDate.getDay() + 1 == highlightValue[i][j]) {
+            if (highlightValue[i][j] == value) {
                 Dom.addClass(cell, highlightClass[i]);
                 break;
             }
