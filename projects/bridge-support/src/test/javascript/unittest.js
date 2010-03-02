@@ -119,7 +119,7 @@ function InPageRunner(suiteName, tests) {
                 time.appendChild(document.createTextNode(elapsedTime));
                 styleNormalCell(time);
             } catch (e) {
-                if (e != interruptTest) throw e;
+                if (e != interruptTest) alert(e.message);
             } finally {
                 cursor = previousCursor;
             }
