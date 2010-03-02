@@ -1,0 +1,44 @@
+.ice-skin-rime .yui-calendar td.calcell.selected a {
+    background-color: #FAA620;
+    color: #FFFFFF;
+}
+
+.ice-skin-rime .yui-calendar td.calcell a {
+    color: #000000;
+}
+
+.ice-skin-rime .yui-calendar a.calnav, .ice-skin-rime .yui-calendar .calweekdaycell,
+    .ice-skin-rime .yui-calendar tfoot td, .ice-skin-rime .yui-calendar tfoot select {
+    color: #666666;
+}
+
+.ice-skin-rime .yui-calendar .calnavleft {
+    background: transparent url(images/cal_arrow_left.gif.jsf?ln=org.icefaces.component.selectinputdate);
+    width: 18px;
+    height: 18px;
+}
+
+.ice-skin-rime .yui-calendar .calnavright {
+    background: transparent url(images/cal_arrow_right.gif.jsf?ln=org.icefaces.component.selectinputdate);
+    width: 18px;
+    height: 18px;
+}
+
+.ice-skin-rime .yui-calendar tfoot select {
+    font-weight: bold;
+    background-color: #F5F5F5;
+}
+
+.ice-skin-rime .yui-calendar tfoot tr {
+    height: 2em;
+}
+
+.ice-skin-rime .yui-calendar th.calweekdaycell {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    font-weight: normal;
+}
+
+.ice-skin-rime .yui-calcontainer {
+    background-color: #F5F5F5;
+}
