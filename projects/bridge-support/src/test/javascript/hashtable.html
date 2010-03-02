@@ -28,8 +28,8 @@
 
             test('check access efficiency', function() {
                 var table = new Hashtable();
-                for (var i = 0; i < 50000; i++) table.putAt(i, i);
-                for (var i = 0; i < 50000; i++) checkEqual(table.at(i), i, "index " + i + " failed to match");
+                for (var i = 0; i < 10000; i++) putAt(table, i, i);
+                for (var i = 0; i < 10000; i++) checkEqual(at(table, i), i, "index " + i + " failed to match");
             });
         });
     </script>
