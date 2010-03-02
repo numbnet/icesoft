@@ -19,6 +19,21 @@ var Hashtable;
         return hash;
     }
 
+    var removeInArray = Array.prototype.splice ? function(array, index) {
+        array.splice(index, 1);
+    } : function(array, index) {
+        if (index == array.length - 1) {
+            array.length = index;
+        } else {
+            var rightSlice = array.slice(index + 1);
+            array.length = index;
+            for (var i = 0, l = rightSlice.length; i < l; ++i) {
+                array[index + i] = rightSlice[i];
+            }
+        }
+    };
+
+
     Hashtable = function(hashFunction, equalFunction) {
         var h = hashFunction || jenkinsOneAtATimeHash;
         var eq = equalFunction || equal;
@@ -75,7 +90,7 @@ var Hashtable;
                     for (var i = 0, l = bucket.length; i < l; i++) {
                         var entry = bucket[i];
                         if (eq(entry.key, k)) {
-                            bucket.splice(i, 1);
+                            removeInArray(bucket, i);
                             return entry.value;
                         }
                     }
