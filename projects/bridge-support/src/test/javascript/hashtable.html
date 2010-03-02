@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="../../main/javascript/oo.js"></script>
+    <script type="text/javascript" src="../../main/javascript/functional.js"></script>
+    <script type="text/javascript" src="../../main/javascript/collection.js"></script>
+    <script type="text/javascript" src="../../main/javascript/list.js"></script>
+    <script type="text/javascript" src="../../main/javascript/hashtable.js"></script>
+    <script type="text/javascript" src="unittest.js"></script>
+    <script type="text/javascript">
+        window.onload = InPageRunner('Hashtable test suite', function(test) {
+            //            test('check in/out', function() {
+            //                var table = Hashtable();
+            //
+            //                putAt(table, 'a', 1);
+            //                putAt(table, 'b', 2);
+            //                putAt(table, 'c', 3);
+            //
+            //                checkEqual(at(table, 'a'), 1);
+            //                checkEqual(at(table, 'b'), 2);
+            //                checkEqual(at(table, 'c'), 3);
+            //
+            //                putAt(table, 'b', null);
+            //                checkFalse(at(table, 'b'));
+            //            });
+
+            test('check access efficiency', function() {
+                var table = new Hashtable();
+                for (var i = 0; i < 50000; i++) table.putAt(i, i);
+                for (var i = 0; i < 50000; i++) checkEqual(table.at(i), i, "index " + i + " failed to match");
+            });
+        });
+    </script>
+</head>
+<body/>
+</html>
