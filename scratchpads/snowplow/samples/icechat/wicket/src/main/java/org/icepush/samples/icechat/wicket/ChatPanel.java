@@ -86,6 +86,7 @@ public final class ChatPanel extends PushPanel {
                 composingMessage.setMessage(messageInput);
                 chatManagerVC.setNewChatRoomMessageBean(composingMessage);
                 chatManagerVC.sendNewMessage();
+                messageInput = "";
             }
         });
 
