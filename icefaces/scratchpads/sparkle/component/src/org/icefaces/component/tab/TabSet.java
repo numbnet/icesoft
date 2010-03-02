@@ -2,7 +2,10 @@ package org.icefaces.component.tab;
 
 import java.io.IOException;
 
+import javax.el.ELException;
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
@@ -15,6 +18,8 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
+import org.icefaces.component.annotation.Field;
+
 @ResourceDependencies({
     @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
@@ -22,30 +27,10 @@ import javax.faces.event.ValueChangeEvent;
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
 public class TabSet extends TabSetBase {
-    private String orientation;
- 
+    
     public TabSet() {
         loadDependency(FacesContext.getCurrentInstance());        
     }
-
-    public void setOrientation(String orientation) {
-        this.orientation = orientation;
-        //TODO need to be changed in the processUpdate. However this property is not 
-        //involved in any validator or convertor so it will not harm 
-        ValueBinding vb = getValueBinding("orientation");
-        if (vb != null) {
-            vb.setValue(getFacesContext(), this.orientation);
-            this.orientation = null;
-        }        
-    }
-
-    public String getOrientation() {
-        if (orientation != null) {
-            return orientation;
-        }
-        ValueBinding vb = getValueBinding("orientation");
-        return vb != null ? ((String) vb.getValue(getFacesContext())) : "top";
-    }    
 
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
@@ -55,7 +40,84 @@ public class TabSet extends TabSetBase {
         super.encodeEnd(context);
 
     }
+    
+    public void processDecodes(FacesContext context) {
 
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        // Skip processing if our rendered flag is false
+        if (!isRendered()) {
+            return;
+        }
+
+        super.processDecodes(context);
+
+        if (isImmediate()) {
+
+        }
+        System.out.println("processDecodes " + isValidationFailed());
+    }
+    
+    
+    public void processUpdates(FacesContext context) {
+
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        // Skip processing if our rendered flag is false
+        if (!isRendered()) {
+            return;
+        }
+
+        super.processUpdates(context);
+        if (!isValidationFailed()) {
+            ValueExpression ve = getValueExpression("value");
+            if (ve != null) {
+                Throwable caught = null;
+                FacesMessage message = null;
+                try {
+                    ve.setValue(context.getELContext(), getTabIndex());
+                   setTabIndex(Integer.MIN_VALUE);
+                   System.out.println("Setting to MINVALUE "+ submittedTabIndex);
+                } catch (ELException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+        System.out.println("processUpdates "+ isValidationFailed());        
+    }
+    
+    public void processValidators(FacesContext context) {
+
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        // Skip processing if our rendered flag is false
+        if (!isRendered()) {
+            return;
+        }
+
+        super.processValidators(context);
+        if (!isValidationFailed()) {
+            if (submittedTabIndex == null) return;
+            setTabIndex(submittedTabIndex);
+            System.out.println("Setting tab index to "+ submittedTabIndex);
+            submittedTabIndex = null;
+        }
+        System.out.println("processValidators "+ isValidationFailed());           
+    }
+
+    private boolean isValidationFailed() {
+        if (getFacesContext().isValidationFailed() 
+                || getFacesContext().getMessageList().size() > 0)
+        return true;
+        return false;
+    }
+    
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
         super.broadcast(event);
@@ -68,6 +130,11 @@ public class TabSet extends TabSetBase {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
             }
         }
+    }
+    
+    public void setTabIndex(int tabindex) {
+        System.out.println("Setting tab Index  = "+ tabindex);
+        super.setTabIndex(tabindex);
     }
     
     public void queueEvent(FacesEvent event) {

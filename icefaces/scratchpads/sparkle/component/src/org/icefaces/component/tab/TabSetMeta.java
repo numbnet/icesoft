@@ -23,27 +23,31 @@ import org.icefaces.component.annotation.Property;
     rendererClass ="org.icefaces.component.tab.TabSetRenderer",
     componentType = "org.icesoft.faces.TabSet",
     rendererType = "org.icesoft.faces.TabSetRenderer",
-    extendsClass = "javax.faces.component.UICommand",
+    extendsClass = "javax.faces.component.UIComponentBase",
     generatedClass = "org.icefaces.component.tab.TabSetBase",
     componentFamily="com.icesoft.faces.TabSet"    
 )
 public class TabSetMeta {
-    @Field(defaultValue="Integer.MIN_VALUE")
-    private int oldTabIndex;
+    @Field
+    protected Integer submittedTabIndex;
     
     @Field
     private String oldOrientation; 
     
-
-    @Property(defaultValue="0")
-    private int tabIndex;
+    @Property(defaultValue="false")    
+    private Boolean immediate; 
     
+    @Property(defaultValue="0")
+    private Integer tabIndex;
+    
+    @Property(defaultValue="top")   
+    private String orientation;
     
     @Property(defaultValue="false")    
-    private boolean clientSide; 
+    private Boolean clientSide; 
    
     @Property(defaultValue="false") 
-    private boolean partialSubmit;
+    private Boolean partialSubmit;
     
     @Property    
     private String onupdate;
