@@ -297,7 +297,7 @@ Ice.clickEvent = Class.create({
         var countField = document.forms[this.formId][this.hdnClkCount];
         countField.value = numClicks;
         if (this.toggleOnClick) {
-            Ice.tableRowClicked(this.event,this.useEvent,this.rowid,this.formId,this.hdnFld,this.toggleClassNames);
+            Ice.tableRowClicked(this.event,this.useEvent,this.rowid,this.formId,this.hdnFld,this.toggleClassNames, this.elem);
         } else {
             var nothingEvent = new Object();
             iceSubmitPartial(null, rowField, nothingEvent);
