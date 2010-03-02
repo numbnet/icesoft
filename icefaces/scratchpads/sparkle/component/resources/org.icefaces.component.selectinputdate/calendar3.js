@@ -179,7 +179,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         draggable:false,
         close:true
     });
-    //    dialog.setHeader("Date of Independence");
+    dialog.setHeader("&nbsp;");
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
     var hrSelEl = new Element(document.createElement("select"));
     var optionEl;
