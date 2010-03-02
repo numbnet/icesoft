@@ -28,7 +28,8 @@ public class TabSetRenderer extends Renderer{
             if (clientId.equals(info[0])) {
                 try {
                     Integer tabIndex = new Integer(info[1]);
-                    if (tabSet.getTabIndex() != tabIndex.intValue()) { 
+                    if (tabSet.getTabIndex()!= tabIndex.intValue()) { 
+                        tabSet.submittedTabIndex = tabIndex;
                         uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
                                        new Integer(tabSet.getTabIndex()), tabIndex));
                     }
@@ -90,6 +91,7 @@ public class TabSetRenderer extends Renderer{
         boolean isClientSide = tabSet.isClientSide();
         boolean partialSubmit = tabSet.isPartialSubmit();        
         int tabIndex = tabSet.getTabIndex();
+        System.out.println("TAB INDEX "+ tabIndex);
         String onupdate = tabSet.getOnupdate();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
@@ -116,11 +118,6 @@ public class TabSetRenderer extends Renderer{
             if (tabSet.oldOrientation != orientation) {
                 
             }  
-            
-            if (tabSet.oldTabIndex != Integer.MIN_VALUE && tabSet.oldTabIndex != tabIndex) {
-        //        JavascriptContext.addJavascriptCall(facesContext, execute);
-            }
-            tabSet.oldTabIndex = tabIndex;
         }
 
         

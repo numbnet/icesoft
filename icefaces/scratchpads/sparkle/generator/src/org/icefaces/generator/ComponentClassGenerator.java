@@ -124,9 +124,8 @@ public class ComponentClassGenerator {
   
                   generatedComponentClass.append("(");
                   if (Generator.WrapperTypes.containsKey(field.getType().getName().trim())) {
-                      System.out.println("TYPE FOUNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
                       generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
-                  } else {System.out.println("TYPE NOOOOOOOOOOOOOOOOOOOOOOOOOOT");
+                  } else {
                       generatedComponentClass.append(field.getType().getName());
                   }
                   generatedComponentClass.append(" ");

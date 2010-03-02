@@ -91,8 +91,9 @@ Ice.component = {
     },
     
     updateProperties:function(_id, props, lib, client) {
+        logger.info('updateProperties:function');
        client = client || false;
-       logger.info('updateProperties:function');
+   
        var ele = this.getElement(_id);
        if (!ele['ICE']) {
        logger.info('updateProperties:function NO ICEEEEEE');
@@ -129,7 +130,9 @@ Ice.component = {
        if (ele['ICE'] && ele['ICE']['props']) {
           return ele['ICE']['props'][prop];
        }
-       return null;    
+       var call = this.getElement(_id+'call');
+       eval(call.innerHTML);
+       return ele['ICE']['props'][prop];;    
     },
     
     getUtilForm:function() {

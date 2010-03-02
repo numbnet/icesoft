@@ -22,8 +22,13 @@ Ice.component.tabset = {
                //logger.info('2.3 tabset initialize');     
             }       
         }
-       
- 
+
+         ice.onAfterUpdate(function() {
+            tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
+            var t = Ice.component.getProperty(clientId, 'tabIdx');
+            tabview.setTabIndex(t['new']);     
+            logger.info('On After Update'+ t['new'] + ' : ' +  t['old']);
+        });
        
        //add hover effect 
        var hover = Ice.component.tabset.hover; //temp var should be accessed from the component
