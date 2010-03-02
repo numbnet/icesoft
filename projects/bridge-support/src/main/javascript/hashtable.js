@@ -1,5 +1,7 @@
 var at = operator();
 var putAt = operator();
+var removeAt = operator();
+
 var Hashtable;
 
 (function() {
@@ -62,6 +64,23 @@ var Hashtable;
                         }
                     ];
                     buckets[index] = bucket;
+                    return null;
+                }
+            });
+
+            method(removeAt, function(self, k) {
+                var index = h(k);
+                var bucket = buckets[index];
+                if (bucket) {
+                    for (var i = 0, l = bucket.length; i < l; i++) {
+                        var entry = bucket[i];
+                        if (eq(entry.key, k)) {
+                            bucket.splice(i, 1);
+                            return entry.value;
+                        }
+                    }
+                    return null;
+                } else {
                     return null;
                 }
             });
