@@ -98,7 +98,7 @@ YAHOO.widget.Calendar.prototype.renderCellDefault = function(workingDate, cell) 
             value = workingDate.getDate();
         } else if (highlightUnit[i] == "DAY_OF_YEAR") {
             value = DateMath.getDayOffset(workingDate, workingDate.getFullYear()) + 1;
-        } else if (highlightUnit[i] == "DAY_OF_WEEK ") {
+        } else if (highlightUnit[i] == "DAY_OF_WEEK") {
             value = workingDate.getDay() + 1;
         } else if (highlightUnit[i] == "DAY_OF_WEEK_IN_MONTH") {
             value = Math.floor((workingDate.getDate() - 1) / 7) + 1;
