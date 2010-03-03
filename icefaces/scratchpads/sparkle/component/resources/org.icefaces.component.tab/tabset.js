@@ -23,11 +23,14 @@ Ice.component.tabset = {
             }       
         }
 
-         ice.onAfterUpdate(function() {
+         ice.onAfterUpdate(function() {return; logger.info('onafterupdate');
             tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
-            var t = Ice.component.getProperty(clientId, 'tabIdx');
-            tabview.setTabIndex(t['new']);     
-            logger.info('On After Update'+ t['new'] + ' : ' +  t['old']);
+            var i = Ice.component.getProperty(clientId, 'tabIdx');
+            var ci = tabview.get('activeIndex');
+            var si = i['new'];
+            if (ci != si){//Validation failed so reset the tab index with the server tabindex
+          //      tabview.set('activeIndex', si);
+            }     
         });
        
        //add hover effect 
