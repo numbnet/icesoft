@@ -22,19 +22,40 @@
 
 package org.icepush.servlet;
 
+import java.io.IOException;
+import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.icepush.DefaultConfiguration;
+import org.icepush.PushGroupManagerFactory;
 
 public class ICEpushServlet extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(MainServlet.class.getName());
+
     private PseudoServlet mainServlet;
 
-    public void init(ServletConfig servletConfig) throws ServletException {
+    public void init(final ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        mainServlet = new MainServlet(servletConfig.getServletContext());
+        ServletContext servletContext = servletConfig.getServletContext();
+        Observable outboundNotifier = new ReadyObservable();
+        Observable inboundNotifier = new ReadyObservable();
+        DefaultConfiguration configuration = new DefaultConfiguration(new ServletContextConfiguration("org.icepush", servletContext));
+        mainServlet =
+            new MainServlet(
+                servletConfig.getServletContext(),
+                configuration,
+                outboundNotifier,
+                inboundNotifier,
+                PushGroupManagerFactory.
+                    newPushGroupManager(outboundNotifier, inboundNotifier, configuration, servletContext));
     }
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
