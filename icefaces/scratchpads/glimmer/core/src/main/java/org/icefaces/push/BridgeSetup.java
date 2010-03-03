@@ -66,10 +66,12 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 String invalidateHTTPCache = "?a" + hashCode();
 
                 //replace with icepush.js resource in icepush.jar
-                output = new UIOutput();
-                output.getAttributes().put("escape", "false");
-                output.setValue("<script src='code.icepush.jsf" + invalidateHTTPCache + "'  type='text/javascript'></script>");
-                root.addComponentResource(context, output, "head");
+                if (EnvUtils.isICEpushPresent()) {
+                    output = new UIOutput();
+                    output.getAttributes().put("escape", "false");
+                    output.setValue("<script src='code.icepush.jsf" + invalidateHTTPCache + "'  type='text/javascript'></script>");
+                    root.addComponentResource(context, output, "head");
+                }
 
                 String path = application.getResourceHandler().createResource("bridge.js").getRequestPath();
                 output = new UIOutput();
