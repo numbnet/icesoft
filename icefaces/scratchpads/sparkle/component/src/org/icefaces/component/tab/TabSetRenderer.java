@@ -89,7 +89,7 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
        // System.out.println("CLIENT SIDE "+ tabSet.isClientSide());
         boolean isClientSide = tabSet.isClientSide();
-        boolean partialSubmit = tabSet.isPartialSubmit();        
+        boolean singleSubmit = tabSet.isSingleSubmit();        
         int tabIndex = tabSet.getTabIndex();
         String onupdate = tabSet.getOnupdate();
         
@@ -97,7 +97,7 @@ public class TabSetRenderer extends Renderer{
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
         ", 'onupdate':"+ onupdate +        
-        ", 'partialSubmit':"+ partialSubmit +"});";
+        ", 'singleSubmit':"+ singleSubmit +"});";
         
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
