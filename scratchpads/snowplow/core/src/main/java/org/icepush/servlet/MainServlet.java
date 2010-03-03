@@ -26,6 +26,7 @@ import org.icepush.CodeServer;
 import org.icepush.Configuration;
 import org.icepush.ConfigurationServer;
 import org.icepush.PushContext;
+import org.icepush.PushGroupManager;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
 
@@ -39,18 +40,15 @@ import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainServlet implements PseudoServlet {
+public class MainServlet
+implements PseudoServlet {
     private static Logger log = Logger.getLogger(MainServlet.class.getName());
     private PseudoServlet dispatcher;
     private Timer timer;
 
-    public MainServlet(final ServletContext context) {
+    public MainServlet(final ServletContext context, final Configuration configuration, final Observable outboundNotifier, final Observable inboundNotifier, final PushGroupManager pushGroupManager) {
         timer = new Timer(true);
-        final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
-        final Observable outboundNotifier = new ReadyObservable();
-        final Observable inboundNotifier = new ReadyObservable();
-        final PushContext pushContext = new PushContext(outboundNotifier, inboundNotifier, configuration, context);
-
+        final PushContext pushContext = new PushContext(context, pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer(context)))));
         pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(configuration)))));
@@ -93,13 +91,5 @@ public class MainServlet implements PseudoServlet {
     public void shutdown() {
         dispatcher.shutdown();
         timer.cancel();
-    }
-
-    private static class ReadyObservable extends Observable {
-        public synchronized void notifyObservers(Object o) {
-            setChanged();
-            super.notifyObservers(o);
-            clearChanged();
-        }
     }
 }
