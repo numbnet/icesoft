@@ -31,6 +31,11 @@
   		<param-name>facelets.REFRESH_PERIOD</param-name>
   		<param-value>1</param-value>
   	</context-param>
+
+	<context-param>
+        <param-name>com.icesoft.faces.uploadDirectory</param-name>
+        <param-value>upload</param-value>
+    </context-param>
 	
 	<!-- Enables Spring Security -->
 	 <filter>
@@ -57,7 +62,7 @@
 		
     <servlet>
         <servlet-name>SpringWebFlowInstantiationServlet</servlet-name>
-        <servlet-class>com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet</servlet-class> 
+        <servlet-class>com.icesoft.faces.env.SpringWebFlowInstantiationServlet</servlet-class>
                 <init-param>
                         <param-name>contextConfigLocation</param-name>
                         <param-value>/WEB-INF/config/web-application-config.xml</param-value>
@@ -121,7 +126,7 @@
 
     <context-param>
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
     </context-param>
 
     <context-param>
@@ -139,10 +144,6 @@
         <param-value>true</param-value>
     </context-param>
 
-    <context-param>
-        <param-name>com.icesoft.faces.uploadDirectory</param-name>
-        <param-value>upload</param-value>
-    </context-param>
 
     <context-param>
         <param-name>com.icesoft.faces.doJSFStateManagement</param-name>
@@ -157,6 +158,10 @@
 			com.sun.faces.application.WebappLifecycleListener
 		</listener-class>
 	</listener>
+
+    <listener>
+        <listener-class>org.springframework.webflow.samples.booking.InputFileSessionCleaner</listener-class>
+    </listener>
 
     <!-- file upload Servlet -->
     <servlet>
@@ -197,6 +202,12 @@
         <servlet-name>Blocking Servlet</servlet-name>
         <url-pattern>/block/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+         <servlet-name>uploadServlet</servlet-name>
+         <url-pattern>/uploadHtml</url-pattern>
+    </servlet-mapping>
+
 
     <session-config>
       <session-timeout>30</session-timeout>
