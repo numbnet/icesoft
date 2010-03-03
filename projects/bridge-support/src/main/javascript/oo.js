@@ -20,6 +20,33 @@
  *
  */
 
+function isArray(a) {
+    return a && !!a.push;
+}
+
+function isString(s) {
+    return typeof s == 'string';
+}
+
+function isNumber(s) {
+    return typeof s == 'number';
+}
+
+function isIndexed(s) {
+    return !!s.length;
+}
+
+function isObject(o) {
+    return o.instanceTag == o;
+}
+
+var uid = (function() {
+    var id = 0;
+    return function() {
+        return id++;
+    };
+})();
+
 function operationNotSupported() {
     throw 'operation not supported';
 }
@@ -41,10 +68,40 @@ function operator(defaultOperation) {
     };
 }
 
+var asString = operator(String);
+var asNumber = operator(Number);
+var hash = operator(function(o) {
+    var s = o.toString();
+    var h = 0;
+    for (var i = 0, l = s.length; i < l; i++) {
+        var c = parseInt(s[i], 36);
+        if (!isNaN(c)) {
+            h = c + (h << 6) + (h << 16) - h;
+        }
+    }
+    return s;
+});
+var equal = operator(function(a, b) {
+    return a == b;
+});
+
 function object(definition) {
     var operators = [];
     var methods = [];
     var unknown = null;
+    var id = uid();
+    operators.push(hash);
+    methods.push(function(self) {
+        return id;
+    });
+    operators.push(equal);
+    methods.push(function(self, other) {
+        return self == other;
+    });
+    operators.push(asString);
+    methods.push(function(self) {
+        return 'Object:' + id.toString(16);
+    });
     definition(function(operator, method) {
         //replace method in case there was a previous one registered for the same operator
         var size = operators.length;

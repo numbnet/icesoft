@@ -20,25 +20,6 @@
  *
  */
 
-function isArray(a) {
-    return a && !!a.push;
-}
-
-function isString(s) {
-    return typeof s == 'string';
-}
-
-function isIndexed(s) {
-    return !!s.length;
-}
-
-//todo: move to a more generic library file
-var asString = operator(String);
-var asNumber = operator(Number);
-var equal = operator(function(a, b) {
-    return a == b;
-});
-
 var indexOf = operator($witch(function(condition) {
     condition(isString, function(items, item) {
         return items.indexOf(item);
