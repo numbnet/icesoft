@@ -91,7 +91,6 @@ public class TabSetRenderer extends Renderer{
         boolean isClientSide = tabSet.isClientSide();
         boolean partialSubmit = tabSet.isPartialSubmit();        
         int tabIndex = tabSet.getTabIndex();
-        System.out.println("TAB INDEX "+ tabIndex);
         String onupdate = tabSet.getOnupdate();
         
         String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex

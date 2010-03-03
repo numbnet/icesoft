@@ -42,7 +42,7 @@ public class TabSet extends TabSetBase {
     }
     
     public void processDecodes(FacesContext context) {
-
+        System.out.println("processDecodes " + isValidationFailed());
         if (context == null) {
             throw new NullPointerException();
         }
@@ -54,44 +54,11 @@ public class TabSet extends TabSetBase {
 
         super.processDecodes(context);
 
-        if (isImmediate()) {
-
-        }
-        System.out.println("processDecodes " + isValidationFailed());
     }
     
-    
-    public void processUpdates(FacesContext context) {
-
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        // Skip processing if our rendered flag is false
-        if (!isRendered()) {
-            return;
-        }
-
-        super.processUpdates(context);
-        if (!isValidationFailed()) {
-            ValueExpression ve = getValueExpression("value");
-            if (ve != null) {
-                Throwable caught = null;
-                FacesMessage message = null;
-                try {
-                    ve.setValue(context.getELContext(), getTabIndex());
-                   setTabIndex(Integer.MIN_VALUE);
-                   System.out.println("Setting to MINVALUE "+ submittedTabIndex);
-                } catch (ELException e) {
-                    System.out.println(e);
-                }
-            }
-        }
-        System.out.println("processUpdates "+ isValidationFailed());        
-    }
     
     public void processValidators(FacesContext context) {
-
+        System.out.println("processValidators "+ isValidationFailed());  
         if (context == null) {
             throw new NullPointerException();
         }
@@ -102,29 +69,39 @@ public class TabSet extends TabSetBase {
         }
 
         super.processValidators(context);
-        if (!isValidationFailed()) {
-            if (submittedTabIndex == null) return;
-            setTabIndex(submittedTabIndex);
-            System.out.println("Setting tab index to "+ submittedTabIndex);
-            submittedTabIndex = null;
-        }
-        System.out.println("processValidators "+ isValidationFailed());           
+         
     }
 
     private boolean isValidationFailed() {
-        if (getFacesContext().isValidationFailed() 
-                || getFacesContext().getMessageList().size() > 0)
+       if (getFacesContext().getMessages().hasNext() ||
+                getFacesContext().isValidationFailed() 
+                )
         return true;
         return false;
     }
     
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
+        System.out.println("1. >>>>>>>>>>>>>> Broadcast" + event.getPhaseId());
         super.broadcast(event);
         if (event != null) {
+            System.out.println("2. >>>>>>>>>>>>>> event found");
+            ValueExpression ve = getValueExpression("tabIndex");
+            getFacesContext().renderResponse();
+            System.out.println("3. >>>>>>>>>>>>>> render response");
+            if (ve != null) {
+                Throwable caught = null;
+                FacesMessage message = null;
+                try {
+                    ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
+                  System.out.println("Setting to MINVALUE "+ ((ValueChangeEvent)event).getNewValue());
+                } catch (ELException ee) {
+                    System.out.println(ee);
+                }
+            } else {
+                setTabIndex((Integer)((ValueChangeEvent)event).getNewValue());
+            }
             ValueChangeEvent e = (ValueChangeEvent)event;
-            System.out.println("Broad Cast changing tabindex .......");
-            //setTabIndex(((Integer)e.getNewValue()).intValue());
             MethodExpression method = getTabChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
@@ -138,11 +115,13 @@ public class TabSet extends TabSetBase {
     }
     
     public void queueEvent(FacesEvent event) {
-        if (isImmediate()) {
-            event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-        }
-        else {
-            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+        if (event.getComponent() instanceof TabSet) {
+            if (isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
         }
         super.queueEvent(event);
     }  
