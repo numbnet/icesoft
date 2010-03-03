@@ -132,6 +132,7 @@
 					<include name="*.properties" />
 				</fileset>
 			</copy>
+			
 			<copy todir="${build.dir}/jar/META-INF" failonerror="false" >
 				<fileset dir="${meta.dir}">
 	            	<include name="*.*"/>
@@ -249,6 +250,18 @@
 		<sequential>
 			<copy todir="@{todir}">
 				<fileset dir="@{fromdir}" includes="*.war"/>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	<!-- use this macro to merge the core classes into an integration classes dir. -->
+	<macrodef name="mergeCoreWithIntegration">
+		<attribute name="integration.classes" default="${classes.dir}"/>
+		<sequential>
+			<copy todir="@{integration.classes}" preservelastmodified="true" verbose="true">
+				<fileset dir="../core/${classes.dir}">
+					<include name="**" />
+				</fileset>
 			</copy>
 		</sequential>
 	</macrodef>

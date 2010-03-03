@@ -5,39 +5,31 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>ICEpush ICEchat (JSF 2.0)</title>
+        <title>ICEpush ICEchat (ICEFaces 2.0)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
-        <script type="text/javascript" src="code.icepush"></script>
+       
     </h:head>
     <h:body>
-    	<h:form>
-    		<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
-    		<script type="text/javascript">
-    			ice.push.register(['#{pushRequestContext.currentPushId}'],
-    				function(){
-    					jsf.ajax.request(this,event, {render:'chatPanel'};return false;
-    				});
-    		</script>
-    	</h:form>
+    	
     	    
-    	<div class="header_container">
-            <div class="header_content">
+    	<div class="header_container" id="headerContainer">
+            <div class="header_content" id="headerContent">
                 <h:graphicImage width="109px" height="100px"
                                   value="./img/banner_hdr.jpg"
                                   style="float:left"/>
                 <div style="font-size:20pt;color:#0F65B8;margin-top:45px;">
                     <span style="font-weight:bold;">ICEpush</span>
-                    <span style="font-style:italic;font-family:Times New Roman"> with JSF 2.0</span>
+                    <span style="font-style:italic;font-family:Times New Roman"> with ICEfaces 2.0</span>
                 </div>
             </div>
         </div>
         
-        <div class="body_container body_container_pos">
+        <div class="body_container body_container_pos" id="bodyContainer">
             
 	        <h:panelGroup id="chatPanel" rendered="#{not empty loginController.currentUser}">
 	        
-	        	<div class="chatSession chatSession_pos">
+	        	<div class="chatSession chatSession_pos" id="chatSession">
 	        		<h:form id="chatSession">
 		                You are logged in as #{loginController.currentUser.userName}
 		                <h:outputText rendered="#{not empty loginController.currentUser.nickName}"
@@ -46,17 +38,19 @@
 		            </h:form>
 	        	</div>
 	        	
-	        	<div class="clearer"/>
+	        	<div class="clearer" id="clearer"/>
 	        	
-	        	<div class="chatRooms chatRooms_pos">
+	        	<div class="chatRooms chatRooms_pos" id="chatRoomPanel">
 	        		<h3>Chat Rooms</h3>
                 	<h:form id="chatRooms">
+                		<div id="chatRoomList">
 		            	<ui:repeat value="#{chatManagerFacadeBean.chatRooms}" var="room">
 	                		<div>
 	                			<h:commandLink value="#{room.name}" 
 		                			actionListener="#{chatManagerVC.openChatSession(room.name)}"/>
 	                		</div>
 	                	</ui:repeat>
+	                	</div>
                 	</h:form>
                 	<h:form id="createNewChatRoom">
 		                <div class="createNewChatRoom">
@@ -72,18 +66,19 @@
 	        	</div>
 	        	
 	        	<h:panelGroup rendered="#{not empty currentChatSessionHolderBean.session}">
-		        	<div class="chatRoomView">
+		        	<div class="chatRoomView" id="chatRoomViewPanel">
 		        		<h:form id="chatRoomView">
 			                <div class="chatRoomHeader">Chat Room '#{currentChatSessionHolderBean.session.room.name}'</div>
-			                <div class="chatRoomContainer">
-			                	<div class="chatRoomUsers">
+			                <div class="chatRoomContainer" id="chatRoomContainerPanel">
+			                	<div class="chatRoomUsers" id="chatRoomUsers">
 			                		<div class="chatViewSubHeader">Who's Here?</div>
 		                			<ui:repeat value="#{currentChatSessionHolderBean.session.room.userChatSessions}" var="chatSession">
 				                		<div>#{chatSession.user.displayName}</div>
 				                	</ui:repeat>
 			                	</div>
-			                	<div class="chatRoomMessages">
+			                	<div class="chatRoomMessages" id="chatRoomMessagesPanel">
 			                		<div class="chatViewSubHeader">Messages</div>
+			                		<div id="chatRoomMessagesList">
 		                			<ui:repeat value="#{currentChatSessionHolderBean.session.room.messages}" var="msg">
 				                		<div>
 				                			<h:outputText value="#{msg.created}">
@@ -93,6 +88,7 @@
 											&nbsp;'#{msg.message}'					                			
 				                		</div>
 				                	</ui:repeat>
+				                	</div>
 			                	</div>
 			                </div>
 			                <div class="clearer"/>

@@ -33,7 +33,7 @@
   <!-- Other module inherits                                      -->
 
   <inherits name="com.google.gwt.uibinder.UiBinder"/>
-  <inherits name="org.icepush.integration.ICEpush"/>
+  <inherits name="org.icepush.gwt.ICEpush"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='org.icepush.samples.icechat.gwt.client.IceChatModule'/>
