@@ -22,16 +22,6 @@ Ice.component.tabset = {
                //logger.info('2.3 tabset initialize');     
             }       
         }
-
-         ice.onAfterUpdate(function() {return; logger.info('onafterupdate');
-            tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
-            var i = Ice.component.getProperty(clientId, 'tabIdx');
-            var ci = tabview.get('activeIndex');
-            var si = i['new'];
-            if (ci != si){//Validation failed so reset the tab index with the server tabindex
-          //      tabview.set('activeIndex', si);
-            }     
-        });
        
        //add hover effect 
        var hover = Ice.component.tabset.hover; //temp var should be accessed from the component
@@ -67,25 +57,35 @@ Ice.component.tabset = {
        var tabChange=function(event) {
             //logger.info('on tab change ');
             var o = Ice.component.getProperty(clientId, 'orientation');
-            var t = Ice.component.getProperty(clientId, 'tabIdx');
             event.target = document.getElementById(clientId);
             tbset = document.getElementById(clientId);
-            currentTabIndex = clientId + '='+ tabview.getTabIndex(event.newValue);
+            currentIndex = tabview.getTabIndex(event.newValue);
+            tabIndexInfo = clientId + '='+ currentIndex;
             var isClientSide = Ice.component.getProperty(clientId, 'isClientSide');
             var partialSubmit = Ice.component.getProperty(clientId, 'partialSubmit');
+            var params = function(parameter) {
+                            parameter('yti', tabIndexInfo);
+                            parameter('onevent', function(data) { 
+                                if (data.status == 'success') {
+                                        var i = Ice.component.getProperty(clientId, 'tabIdx');
+                                        var si = i['new'];
+                                        if (currentIndex != si){//Validation failed so reset the tab index with the server tabindex
+                                            tabview.removeListener('activeTabChange'); 
+                                            tabview.set('activeIndex', si);
+                                            tabview.addListener('activeTabChange', tabChange);                                          
+                                        }                                    
+                                }
+                            });
+                        };
             if (isClientSide && isClientSide['new']){
                 //logger.info('Client side tab ');
             } else {
                 //logger.info('Server side tab '+ event);
                 try {
                     if (partialSubmit && partialSubmit["new"]) {
-	                    ice.singleSubmit(event, tbset, function(parameter) {
-	                        parameter('yti', currentTabIndex);
-	                    }); 
+	                    ice.singleSubmit(event, tbset, params); 
                     } else {
-                        ice.submit(event, tbset, function(parameter) {
-                            parameter('yti', currentTabIndex);
-                        });                    
+                        ice.submit(event, tbset, params);                    
                     }
                 } catch(e) {
                     logger.info(e);
