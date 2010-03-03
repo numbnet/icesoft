@@ -47,7 +47,7 @@ public class TabSetMeta {
     private Boolean clientSide; 
    
     @Property(defaultValue="false") 
-    private Boolean partialSubmit;
+    private Boolean singleSubmit;
     
     @Property    
     private String onupdate;

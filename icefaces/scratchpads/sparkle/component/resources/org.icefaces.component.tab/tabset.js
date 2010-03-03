@@ -62,7 +62,7 @@ Ice.component.tabset = {
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
             var isClientSide = Ice.component.getProperty(clientId, 'isClientSide');
-            var partialSubmit = Ice.component.getProperty(clientId, 'partialSubmit');
+            var singleSubmit = Ice.component.getProperty(clientId, 'singleSubmit');
             var params = function(parameter) {
                             parameter('yti', tabIndexInfo);
                             parameter('onevent', function(data) { 
@@ -82,7 +82,7 @@ Ice.component.tabset = {
             } else {
                 //logger.info('Server side tab '+ event);
                 try {
-                    if (partialSubmit && partialSubmit["new"]) {
+                    if (singleSubmit && singleSubmit["new"]) {
 	                    ice.singleSubmit(event, tbset, params); 
                     } else {
                         ice.submit(event, tbset, params);                    
@@ -98,47 +98,11 @@ Ice.component.tabset = {
    },
    
    updateProperties:function(_id, props) {
-         //logger.info('Updateing properties orientation ');
-	     //update properties first
 	     var tabview = Ice.component.updateProperties(_id, props, this);
-	     //logger.info('Updateing tabview tabview ');
    },
-   
-    getHdnFld: function(form) {  //logger.info('getInxFld called: '+ form); 
-        var fn = "yti";
-        var yti;
-        if (form) {
-		yti = YAHOO.util.Dom.getElementBy(function(ele) {
-		    if (ele.id == fn) return true;
-		}, 'input', form);
-		if(!yti) {
-		        //logger.info('Form was fouond but filed not found adding to form');
-			yti = this.createHiddenField(fn);
-			form.appendChild(yti);
-		}
-        } else {//now add to body
-            yti = document.getElementById(fn);
-			if(!yti) {
-			    //logger.info('Form was not fouond and filed not found adding to body');
-				yti = this.createHiddenField(fn);
-				document.body.appendChild(yti);
-			}        
-        }
-        return yti;
-    },  
-    
-    createHiddenField:function(name) {
-	   yti = document.createElement('input');
-	   yti.setAttribute('id',  name);
-	   yti.setAttribute('name', name);           
-	   yti.setAttribute('type', 'hidden');
-	   return yti;
-    },
     
     execute: function(_id) {
        var ele = document.getElementById(_id+'call');
-       //logger.info('execute ele '+ ele);
-       //logger.info('execute ele '+ ele.innerHTML);
        eval(ele.innerHTML);
     }   
 };
