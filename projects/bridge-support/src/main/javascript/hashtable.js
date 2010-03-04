@@ -2,7 +2,8 @@ var at = operator();
 var putAt = operator();
 var removeAt = operator();
 
-var Hashtable;
+var HashTable;
+var HashSet;
 
 (function() {
     var removeInArray = Array.prototype.splice ? function(array, index) {
@@ -19,80 +20,135 @@ var Hashtable;
         }
     };
 
+    function atPrimitive(buckets, k, notFoundThunk) {
+        var index = hash(k);
+        var bucket = buckets[index];
+        if (bucket) {
+            for (var i = 0, l = bucket.length; i < l; i++) {
+                var entry = bucket[i];
+                if (equal(entry.key, k)) {
+                    return entry.value;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
 
-    Hashtable = function() {
+    function putAtPrimitive(buckets, k, v) {
+        var index = hash(k);
+        var bucket = buckets[index];
+        if (bucket) {
+            for (var i = 0, l = bucket.length; i < l; i++) {
+                var entry = bucket[i];
+                if (equal(entry.key, k)) {
+                    var oldValue = entry.value;
+                    entry.value = v;
+                    return oldValue;
+                }
+            }
+            bucket.push({ key:k, value: v });
+            return null;
+        } else {
+            bucket = [
+                {
+                    key:k,
+                    value: v
+                }
+            ];
+            buckets[index] = bucket;
+            return null;
+        }
+    }
+
+    function removeAtPrimitive(buckets, k) {
+        var index = hash(k);
+        var bucket = buckets[index];
+        if (bucket) {
+            for (var i = 0, l = bucket.length; i < l; i++) {
+                var entry = bucket[i];
+                if (equal(entry.key, k)) {
+                    removeInArray(bucket, i);
+                    if (bucket.length == 0) {
+                        removeInArray(buckets, index);
+                    }
+                    return entry.value;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    function injectPrimitive(buckets, initialValue, iterator) {
+        var tally = initialValue;
+        for (var i = 0, lbs = buckets.length; i < lbs; i++) {
+            var bucket = buckets[i];
+            if (bucket) {
+                for (var j = 0, lb = bucket.length; j < lb; j++) {
+                    var entry = bucket[j];
+                    if (entry) {
+                        tally = iterator(tally, entry.key, entry.value);
+                    }
+                }
+            }
+        }
+
+        return tally;
+    }
+
+    HashTable = function() {
         var buckets = [];
 
         return object(function(method) {
             method(at, function(self, k, notFoundThunk) {
-                var index = hash(k);
-                var bucket = buckets[index];
-                if (bucket) {
-                    for (var i = 0, l = bucket.length; i < l; i++) {
-                        var entry = bucket[i];
-                        if (equal(entry.key, k)) {
-                            return entry.value;
-                        }
-                    }
-                    return null;
-                } else {
-                    return null;
-                }
+                return atPrimitive(buckets, k, notFoundThunk);
             });
 
             method(putAt, function putAt(self, k, v) {
-                var index = hash(k);
-                var bucket = buckets[index];
-                if (bucket) {
-                    for (var i = 0, l = bucket.length; i < l; i++) {
-                        var entry = bucket[i];
-                        if (equal(entry.key, k)) {
-                            var oldValue = entry.value;
-                            entry.value = v;
-                            return oldValue;
-                        }
-                    }
-                    bucket.push({ key:k, value: v });
-                    return null;
-                } else {
-                    bucket = [
-                        {
-                            key:k,
-                            value: v
-                        }
-                    ];
-                    buckets[index] = bucket;
-                    return null;
-                }
+                return putAtPrimitive(buckets, k, v);
             });
 
             method(removeAt, function(self, k) {
-                var index = hash(k);
-                var bucket = buckets[index];
-                if (bucket) {
-                    for (var i = 0, l = bucket.length; i < l; i++) {
-                        var entry = bucket[i];
-                        if (equal(entry.key, k)) {
-                            removeInArray(bucket, i);
-                            return entry.value;
-                        }
-                    }
-                    return null;
-                } else {
-                    return null;
-                }
+                return removeAtPrimitive(buckets, k);
             });
 
             method(each, function(iterator) {
-                for (var i = 0, lbs = buckets.length; i < lbs; i++) {
-                    var bucket = buckets[i];
-                    for (var j = 0, lb = bucket.length; j < lb; i++) {
-                        var entry = bucket[j];
-                        if (entry) {
-                            iterator(entry.key, entry.value);
-                        }
+                injectPrimitive(buckets, null, function(tally, k, v) {
+                    iterator(k, v);
+                });
+            });
+        });
+    };
+
+    HashSet = function() {
+        var buckets = [];
+        var present = new Object;
+        return object(function(method) {
+            method(append, function(self, k) {
+                putAtPrimitive(buckets, k, present);
+            });
+
+            method(each, function(self, iterator) {
+                injectPrimitive(buckets, null, function(t, k, v) {
+                    iterator(k);
+                });
+            });
+
+            method(contains, function(self, k) {
+                return !!atPrimitive(buckets, k);
+            });
+
+            method(complement, function(self, other) {
+                var result = [];
+                return injectPrimitive(buckets, result, function(tally, k, v) {
+                    if (!contains(other, k)) {
+                        result.push(k);
                     }
-                }
+                    return tally;
+                });
             });
         });
     };

@@ -6,13 +6,12 @@
     <script type="text/javascript" src="../../main/javascript/oo.js"></script>
     <script type="text/javascript" src="../../main/javascript/functional.js"></script>
     <script type="text/javascript" src="../../main/javascript/collection.js"></script>
-    <script type="text/javascript" src="../../main/javascript/list.js"></script>
     <script type="text/javascript" src="../../main/javascript/hashtable.js"></script>
     <script type="text/javascript" src="unittest.js"></script>
     <script type="text/javascript">
         window.onload = InPageRunner('Hashtable test suite', function(test) {
             test('check put/lookup', function() {
-                var table = Hashtable();
+                var table = HashTable();
 
                 putAt(table, 'a', 1);
                 putAt(table, 'b', 2);
@@ -27,7 +26,7 @@
             });
 
             test('check iteration', function() {
-                var table = Hashtable();
+                var table = HashTable();
 
                 putAt(table, 'a', 1);
                 putAt(table, 'b', 2);
@@ -45,7 +44,7 @@
             });
 
             test('check remove', function() {
-                var table = Hashtable();
+                var table = HashTable();
 
                 putAt(table, 'a', 1);
                 putAt(table, 'b', 2);
@@ -58,9 +57,18 @@
             });
 
             test('check access efficiency', function() {
-                var table = new Hashtable();
+                var table = new HashTable();
                 for (var i = 0; i < 10000; i++) putAt(table, i, i);
                 for (var i = 0; i < 10000; i++) checkEqual(at(table, i), i, "index " + i + " failed to match");
+            });
+
+            test('check set complement', function() {
+                var setA = new HashSet();
+                for (var i = 0; i < 10000; i++) append(setA, i);
+                var setB = new HashSet();
+                for (var i = 5000; i < 15000; i++) append(setB, i);
+
+                complement(setA, setB);
             });
         });
     </script>
