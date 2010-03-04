@@ -99,6 +99,8 @@ var HashSet;
         return tally;
     }
 
+    var thebuckets = operator();
+
     HashTable = function() {
         var buckets = [];
 
@@ -143,12 +145,26 @@ var HashSet;
 
             method(complement, function(self, other) {
                 var result = [];
+                var c;
+                try {
+                    var otherBuckets = thebuckets(other);
+                    c = function(items, k) {
+                        return !!atPrimitive(otherBuckets, k);
+                    };
+                } catch (e) {
+                    c = contains;
+                }
+
                 return injectPrimitive(buckets, result, function(tally, k, v) {
-                    if (!contains(other, k)) {
+                    if (!c(other, k)) {
                         result.push(k);
                     }
                     return tally;
                 });
+            });
+
+            method(thebuckets, function(self) {
+                return buckets;
             });
         });
     };
