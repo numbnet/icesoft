@@ -200,13 +200,13 @@ var reject = function(items, rejector) {
     });
 };
 
-var intersect = function(items, other) {
+var intersect = operator(function(items, other) {
     return select(items, curry(contains, other));
-};
+});
 
-var complement = function(items, other) {
+var complement = operator(function(items, other) {
     return reject(items, curry(contains, other));
-};
+});
 
 var broadcast = function(items, args) {
     args = args || [];
