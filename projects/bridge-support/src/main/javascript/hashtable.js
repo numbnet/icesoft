@@ -24,7 +24,7 @@ var Hashtable;
         var buckets = [];
 
         return object(function(method) {
-            method(at, function at(self, k, notFoundThunk) {
+            method(at, function(self, k, notFoundThunk) {
                 var index = hash(k);
                 var bucket = buckets[index];
                 if (bucket) {
@@ -80,6 +80,18 @@ var Hashtable;
                     return null;
                 } else {
                     return null;
+                }
+            });
+
+            method(each, function(iterator) {
+                for (var i = 0, lbs = buckets.length; i < lbs; i++) {
+                    var bucket = buckets[i];
+                    for (var j = 0, lb = bucket.length; j < lb; i++) {
+                        var entry = bucket[j];
+                        if (entry) {
+                            iterator(entry.key, entry.value);
+                        }
+                    }
                 }
             });
         });
