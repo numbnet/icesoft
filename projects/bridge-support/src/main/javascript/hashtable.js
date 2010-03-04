@@ -99,7 +99,7 @@ var HashSet;
         return tally;
     }
 
-    var thebuckets = operator();
+    var internalBuckets = operator();
 
     HashTable = function() {
         var buckets = [];
@@ -147,9 +147,9 @@ var HashSet;
                 var result = [];
                 var c;
                 try {
-                    var otherBuckets = thebuckets(other);
+                    var othersInternalBuckets = internalBuckets(other);
                     c = function(items, k) {
-                        return !!atPrimitive(otherBuckets, k);
+                        return !!atPrimitive(othersInternalBuckets, k);
                     };
                 } catch (e) {
                     c = contains;
@@ -163,7 +163,7 @@ var HashSet;
                 });
             });
 
-            method(thebuckets, function(self) {
+            method(internalBuckets, function(self) {
                 return buckets;
             });
         });
