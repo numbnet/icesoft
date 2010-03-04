@@ -34,13 +34,14 @@
 
 <renderer>
 	<description>
-		<![CDATA[<p>The inputFile component renders an file input HTML element. Users specify a file to upload
+		<![CDATA[<p>The inputFile component can be used to provide a user-specified file upload capability.<br>
+		    The inputFile component renders an file input HTML element. Users specify a file to upload
             either by entering the path to a file directly, or by  clicking the  <b> Browse </b>  button
             to open a file-system navigation dialog window.  Clicking the  <b> Upload </b>  button uploads
             the specified file to the server.<br>
-            The inputFile component can be used to provide a user-specified file upload capability.<br>
-            Note: The inputFile component must render itself inside a form with its encode type set to 
-            "multipart/form-data". This limitation prevents using the inputFile component inside another form. <br>
+            Note: Newer browsers now make the field, where users previously could type in the file path,
+            be read-only, to prevent users from entering invalid file paths. Clicking into that field can 
+            summon the file selection dialog, just as clicking on the  <b>Browse</b>  button would.<br>
             Note: The web.xml parameter com.icesoft.faces.uploadDirectoryAbsolute when set to true will use 
             the value of the com.icesoft.faces.uploadDirectory parameter as an absolute directory.<br>
             Note: If the styleClass, buttonClass or the inputTextClass need to be set, then the css file

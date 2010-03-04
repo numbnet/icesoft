@@ -42,6 +42,7 @@ import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,7 +77,7 @@ import java.util.Map;
  */
 public abstract class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
     private static final InheritableThreadLocal localInstance = new InheritableThreadLocal();
 
     private final ClassLoader renderableClassLoader;
@@ -191,6 +192,18 @@ public abstract class PersistentFacesState implements Serializable {
     }
 
     /**
+     * @param setup    Runnable to run, in the proper thread context, before
+     *                 doing the JSF lifecycle
+     * @param warnSync Whether warn if in synchronous mode
+     */
+    public void renderLater(Runnable setup, boolean warnSync) {
+        if (warnSync) {
+            warnIfSynchronous();
+        }
+        executorService.execute(new RenderRunner(setup));
+    }
+
+    /**
      * Execute  the view associated with this <code>PersistentFacesState</code>.
      * This is typically followed immediatly by a call to
      * {@link PersistentFacesState#render}.
@@ -205,6 +218,7 @@ public abstract class PersistentFacesState implements Serializable {
      */
     public void execute() throws RenderingException {
         failIfDisposed();
+
         try {
             acquireLifecycleLock();
             installThreadLocals();
@@ -342,6 +356,7 @@ public abstract class PersistentFacesState implements Serializable {
 
     private class RenderRunner implements Runnable {
         private final long delay;
+        private Runnable setup;
 
         public RenderRunner() {
             delay = 0;
@@ -352,12 +367,24 @@ public abstract class PersistentFacesState implements Serializable {
         }
 
         /**
+         * @param setup Runnable to run, in the proper thread context, before
+         *              doing the JSF lifecycle
+         */
+        public RenderRunner(Runnable setup) {
+            delay = 0;
+            this.setup = setup;
+        }
+
+        /**
          * <p>Not for application use. Entry point for {@link
          * PersistentFacesState#renderLater}.</p>
          */
         public void run() {
             try {
                 Thread.sleep(delay);
+                if (setup != null) {
+                    setup.run();
+                }
                 setupAndExecuteAndRender();
             } catch (RenderingException e) {
                 log.debug("renderLater failed ", e);
@@ -366,6 +393,20 @@ public abstract class PersistentFacesState implements Serializable {
             } catch (IllegalStateException e) {
                 log.debug("renderLater failed ", e);
             }
+        }
+    }
+
+    private static class DaemonThreadFactory implements ThreadFactory {
+        private ThreadFactory defaultThreadFactory;
+
+        private DaemonThreadFactory() {
+            defaultThreadFactory = Executors.defaultThreadFactory();
+        }
+
+        public Thread newThread(Runnable runnable) {
+            Thread thread = defaultThreadFactory.newThread(runnable);
+            thread.setDaemon(true);
+            return thread;
         }
     }
 

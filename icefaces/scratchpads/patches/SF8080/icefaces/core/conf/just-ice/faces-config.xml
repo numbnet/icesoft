@@ -18,6 +18,7 @@
 
    <lifecycle>
       <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
+      <phase-listener>com.icesoft.faces.component.inputfile.FileUploadPhaseListener</phase-listener>
    </lifecycle>
     
     <render-kit>
