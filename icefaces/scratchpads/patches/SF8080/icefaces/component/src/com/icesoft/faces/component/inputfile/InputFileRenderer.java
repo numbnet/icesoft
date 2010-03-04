@@ -36,9 +36,7 @@ package com.icesoft.faces.component.inputfile;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.StringResource;
-import com.icesoft.faces.context.Resource.Options;
 import com.icesoft.faces.utils.MessageUtils;
-import org.apache.commons.fileupload.FileUploadBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,7 +47,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class InputFileRenderer extends Renderer {
+    private static final Log log = LogFactory.getLog(InputFileRenderer.class);
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         String id = component.getClientId(context);
@@ -66,6 +68,10 @@ public class InputFileRenderer extends Renderer {
                 options.setMimeType("text/html");
             }
         }).toString();
+        
+        UploadConfig uploadConfig =
+            c.storeContentAndConfig(
+                facesContext, id, iframeContent);
         
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
@@ -100,7 +106,9 @@ public class InputFileRenderer extends Renderer {
             writer.writeAttribute("id", id, null);
             writer.writeText(
                 "var register = function() {" +
-                        "var frame = document.getElementById('" + frameName + "').contentWindow;" +
+                        "var frameElem = document.getElementById('" + frameName + "');" +
+                        "if(!frameElem) { return; }" +
+                        "var frame = frameElem.contentWindow;" +
                         "var submit = function() { " +
                             "if(arguments.length == 1 && arguments[0] == 1) { " +
                                 ( postUpload
@@ -111,7 +119,7 @@ public class InputFileRenderer extends Renderer {
                                 ( preUpload
                                   ? ("Ice.InputFileIdPreUpload = '" + id + "'; Ice.InputFileIdPostUpload = null;")
                                   : "return;" ) +
-                            " } try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
+                            " } try { if(document.getElementById('"+id+"')) { '" + id + "'.asExtendedElement().form().submit(); } } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
                         //trigger form submit when the upload starts
                         "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
                         //trigger form submit when the upload ends and re-register handlers
@@ -122,26 +130,41 @@ public class InputFileRenderer extends Renderer {
             writer.endElement("script");
         }
 
-        Throwable uploadException = c.getUploadException();
-        if (uploadException != null) {
-            try {
-                throw uploadException;
-            } catch (FileUploadBase.FileSizeLimitExceededException e) {
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
-            } catch (FileUploadBase.UnknownSizeException e) {
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
-            } catch (FileUploadBase.InvalidContentTypeException e) {
-                String fileName = c.getFileInfo().getFileName();
+        FileInfo fileInfo = c.getFileInfo();
+        if (log.isDebugEnabled())
+            log.debug("InputFileRenderer  fileInfo: " + fileInfo);
+        if (fileInfo.isFailed()) {
+            String fileName = fileInfo.getFileName();
                 if (fileName == null) {
-                    File file = c.getFile();
+                //TODO What condition was getFile() useful but getFileName() not, in the old approach?
+                File file = fileInfo.getFile();
                     if (file != null)
                         fileName = file.getName();
                 }
                 if (fileName == null)
                     fileName = "";
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
-            } catch (Throwable t) {
-                //ignore
+            
+            int status = fileInfo.getStatus();
+            if (status == FileInfo.INVALID) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
+            }
+            else if (status == FileInfo.SIZE_LIMIT_EXCEEDED) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
+            }
+            else if (status == FileInfo.UNKNOWN_SIZE) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
+            }
+            else if (status == FileInfo.INVALID_NAME_PATTERN) {
+                String fileNamePattern = uploadConfig.getFileNamePattern();
+                if (fileNamePattern == null)
+                    fileNamePattern = "";
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, fileNamePattern}));
+            }
+            else if (status == FileInfo.UNSPECIFIED_NAME) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.UNSPECIFIED_NAME_MESSAGE_ID));
+            }
+            else if (status == FileInfo.INVALID_CONTENT_TYPE) {
+                context.addMessage(id, MessageUtils.getMessage(context, InputFile.INVALID_CONTENT_TYPE_MESSAGE_ID));
             }
         }
     }
@@ -159,6 +182,7 @@ public class InputFileRenderer extends Renderer {
         String postUpload = (String) parameter.get("ice.inputFile.postUpload");
         if (preUpload != null && preUpload.length() > 0) {
             if (preUpload.equals(clientId)) {
+                inputFile.reset();
                 inputFile.setPreUpload(true);
                 inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
             }

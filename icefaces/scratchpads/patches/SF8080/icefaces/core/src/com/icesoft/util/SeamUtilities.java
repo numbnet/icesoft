@@ -66,9 +66,14 @@ public class SeamUtilities {
 
     private static int springLoaded = 0;
 
+    private static String SPRING_SECURITY_CONTEXT_HOLDER =
+            "org.springframework.security.context.SecurityContextHolder";
+    private static int springSecurityLoaded = 0;
+
     static {
         loadSeamEnvironment();
         loadSpringEnvironment();
+        loadSpringSecurityEnvironment();
     }
     
     /**
@@ -471,6 +476,26 @@ public class SeamUtilities {
     }
 
     /**
+     * Perform any needed Spring Security initialization.
+     */
+    private static void loadSpringSecurityEnvironment() {
+        Class springSecurityContextHolderClass = null;
+        try {
+            springSecurityContextHolderClass = Class.forName(SPRING_SECURITY_CONTEXT_HOLDER);
+        } catch(Throwable t) {
+            if(log.isDebugEnabled()) {
+                log.debug("Spring Security not detected: " + t);
+            }
+        }
+        if(null != springSecurityContextHolderClass) {
+            springSecurityLoaded = 1;
+            if(log.isDebugEnabled()) {
+                log.debug("Spring Security detected: " + springSecurityContextHolderClass);
+            }
+        }        
+    }
+
+    /**
      * Utility method to determine if Spring WebFlow is active.
      *
      * @return true if Spring WebFlow is enabled
@@ -495,6 +520,29 @@ public class SeamUtilities {
      */
     public static boolean isSpring2Environment() {
         return (springLoaded == 2);
+    }
+
+    public static boolean isSpringSecurityEnvironment() {
+        if(springSecurityLoaded == 0) {
+            return false;
+        }
+
+        //classes are available, now look for an actual initialized security context
+        Object authentication = null;
+
+        try {
+            final Class springSecurityContextHolderClass = Class.forName(SPRING_SECURITY_CONTEXT_HOLDER);
+            final Method getContext = springSecurityContextHolderClass.getMethod("getContext", new Class[0]);
+            final Object securityContext = getContext.invoke(null, new Object[0]);	
+ 
+            final Method getAuthentication = securityContext.getClass().getMethod("getAuthentication", new Class[0]);
+            authentication = getAuthentication.invoke(securityContext, new Object[0]);
+        } catch(Throwable t) {
+            if(log.isDebugEnabled()) {
+                log.debug("Found Spring Security, but unable to retrieve authentication from context: " + t);
+            }
+        }
+        return authentication != null;
     }
 
     /**

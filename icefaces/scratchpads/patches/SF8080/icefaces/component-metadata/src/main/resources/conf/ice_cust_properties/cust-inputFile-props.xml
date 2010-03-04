@@ -42,7 +42,6 @@
 &pass-thru-onchange-props;
 &pass-thru-tabindex-props;
 
-&actionsource-props;
 <property>
     <description>
         <![CDATA[
@@ -310,14 +309,23 @@
         would implement <b>com.icesoft.faces.async.render.Renderable</b>, and use the 
         <b>com.icesoft.faces.async.render.RenderManager</b> in conjunction with the 
         <b>com.icesoft.faces.async.render.OnDemandRenderer</b>, to do a server push, 
-        to update the view in the browser with the current progress.</p>
-        <p>But now, you can just set <b>progressRender="true"</b>, and the server 
+        to update the view in the browser with the current progress. It could also invoke 
+        either <b>PersistentFacesState.render()</b> or <b>PersistentFacesState.renderLater()</b>,
+        to accomplish the same thing.</p>
+        <p>As of ICEfaces 1.7.1, you can just set <b>progressRender="true"</b>, and the server 
         push will happen for you, without setting up all that glue code in the bean. 
         You still have to set your <b>outputProgress</b> component's progress percent 
         in the bean via the <b>progressListener</b>, and you have to enabled asynchronous 
         mode, by setting the <b>com.icesoft.faces.synchronousUpdate</b> context parameter 
         to false.</p>
-        <p>Note: The default value is false.</p>
+        <p>As of ICEfaces 1.8 DR#2, the RenderManager method is completely outdated, 
+        since now the inputFile requires a full JSF lifecycle for each progress event,
+        meaning that now it automatically renders itself. Neither is it necessary to set 
+        <b>progressRender="true"</b>, since it is true by default. It's possible to 
+        set <b>progressRender="false"</b>, to disable the lifecycles, but that will also 
+        disable the <b>progressListener</b> and <b>actionListener</b> MethodBindings and 
+        the <b>file</b> settable ValueBinding, since these all happen within JSF lifecycles.</p>
+        <p>Note: The default value is true.</p>
 		]]>
     </description>
     <property-name>progressRender</property-name>
@@ -360,3 +368,79 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+            This attribute is true by default. It makes the inputFile component 
+            throw an exception if the file size is 0. Setting it to false lets 
+            files be uploaded with 0 size, without the component throwing any exception. 
+            In that case, the application can handle 0 sized file using the actionListener.
+        ]]>
+    </description>
+    <property-name>failOnEmptyFile</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+     </property-extension>
+</property>
+
+<property>
+	<description>
+        <![CDATA[
+		MethodBinding representing the application action to invoke when
+		this component is activated by the user. The expression must
+		evaluate to a either a String or a public method that takes no
+		parameters, and returns a String (the logical outcome) which is
+		passed to the NavigationHandler for this application.<br/>
+		Note: Long processing, for more than a few seconds, should be done
+		from a worker thread, spawned by your action method. Otherwise the
+		browser will timeout, and the inputFile component will disappear.
+		]]>
+	</description>
+	
+	<property-name>action</property-name>
+   <property-class>javax.faces.el.MethodBinding</property-class>
+
+	<property-extension>
+		<category>EVENTS</category>	
+	</property-extension>
+</property>
+
+<property>
+	<description>
+        <![CDATA[
+		MethodBinding representing an action listener method that will be 
+		notified when this component is activated by the user. The expression 
+		must evaluate to a public method that takes an ActionEvent parameter, 
+		with a return type of void.<br/> 
+		Note: Long processing, for more than a few seconds, should be done
+		from a worker thread, spawned by your action method. Otherwise the
+		browser will timeout, and the inputFile component will disappear.
+		]]>
+	</description>	
+	<property-name>actionListener</property-name>
+    <property-class>javax.faces.el.MethodBinding</property-class>	
+	<property-extension>
+		<category>ADVANCED</category>
+		<editor-class>
+			&methodBindingEditor;
+		</editor-class>
+	</property-extension>
+</property>
+
+<property>
+    <description>
+        <![CDATA[
+            This attribute is false by default. It makes the inputFile component 
+            to automatically upload the file on selection.
+        ]]>
+    </description>
+    <property-name>autoUpload</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+     </property-extension>
+</property>
+
+

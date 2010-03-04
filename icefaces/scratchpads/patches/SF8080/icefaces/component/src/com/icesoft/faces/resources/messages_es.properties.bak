@@ -36,8 +36,6 @@ com.icesoft.faces.component.inputfile.INVALID_FILE                 = ''{0}'' no 
 com.icesoft.faces.component.inputfile.INVALID_NAME_PATTERN         = El nombre de fichero ''{0}'' no concuerda con el modelo de nombre de fichero ''{1}''
 com.icesoft.faces.component.inputfile.SIZE_LIMIT_EXCEEDED          = se ha rechazado el requerimiento porque su tama\u00F1o excede el rango permitido
 com.icesoft.faces.component.inputfile.UNKNOWN_SIZE                 = se ha rechazado el requerimiento porque se desconoce su tama\u00F1o
-com.icesoft.faces.component.inputfile.UNSPECIFIED_NAME             = se ha rechazado el requerimiento porque el nombre de fichero no se dio
-com.icesoft.faces.component.inputfile.INVALID_CONTENT_TYPE         = se ha rechazado el requerimiento porque no era en el formato adecuado
 
 com.icesoft.faces.component.paneltabset.PanelTabSet.selectedIndex  = {0}: Problema al cambiar de pesta\u00F1a
 
