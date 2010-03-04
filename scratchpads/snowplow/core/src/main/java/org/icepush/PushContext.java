@@ -51,7 +51,9 @@ public class PushContext {
                     request.getAttribute(BrowserIDCookieName);
             if (null == currentBrowserID) {
                 browserID = generateBrowserID();
-                response.addCookie(new Cookie(BrowserIDCookieName, browserID));
+                Cookie cookie = new Cookie(BrowserIDCookieName, browserID);
+                cookie.setPath("/");
+                response.addCookie(cookie);
                 request.setAttribute(BrowserIDCookieName, browserID);
             } else {
                 browserID = currentBrowserID;
