@@ -237,7 +237,7 @@ public class PanelTooltip extends PanelPopup{
             ) {
 
         String tooltipId = ((HtmlPanelGroup)target).getPanelTooltip();
-        String contextValue = String.valueOf(((HtmlPanelGroup)target).getContextValue());
+        Object contextValue = ((HtmlPanelGroup)target).getContextValue();
         UIComponent tooltipComponent = D2DViewHandler.findComponent(tooltipId, target);
         String tooltipClientId = tooltipComponent.getClientId(facesContext);
         String[] entries = tooltipinfo.split(";");
