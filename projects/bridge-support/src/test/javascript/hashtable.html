@@ -11,20 +11,38 @@
     <script type="text/javascript" src="unittest.js"></script>
     <script type="text/javascript">
         window.onload = InPageRunner('Hashtable test suite', function(test) {
-            //            test('check in/out', function() {
-            //                var table = Hashtable();
-            //
-            //                putAt(table, 'a', 1);
-            //                putAt(table, 'b', 2);
-            //                putAt(table, 'c', 3);
-            //
-            //                checkEqual(at(table, 'a'), 1);
-            //                checkEqual(at(table, 'b'), 2);
-            //                checkEqual(at(table, 'c'), 3);
-            //
-            //                putAt(table, 'b', null);
-            //                checkFalse(at(table, 'b'));
-            //            });
+            test('check put/lookup', function() {
+                var table = Hashtable();
+
+                putAt(table, 'a', 1);
+                putAt(table, 'b', 2);
+                putAt(table, 'c', 3);
+
+                checkEqual(at(table, 'a'), 1);
+                checkEqual(at(table, 'b'), 2);
+                checkEqual(at(table, 'c'), 3);
+
+                putAt(table, 'b', null);
+                checkFalse(at(table, 'b'));
+            });
+
+            test('check iteration', function() {
+                var table = Hashtable();
+
+                putAt(table, 'a', 1);
+                putAt(table, 'b', 2);
+                putAt(table, 'c', 3);
+
+                var keys = ['a', 'b', 'c'];
+                var values = [1, 2, 3];
+                var index = 0;
+
+                each(table, function(k, v) {
+                    checkEqual(k, keys[index]);
+                    checkEqual(v, values[index]);
+                    ++index;
+                });
+            });
 
             test('check access efficiency', function() {
                 var table = new Hashtable();
