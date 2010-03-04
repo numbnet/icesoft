@@ -44,6 +44,19 @@
                 });
             });
 
+            test('check remove', function() {
+                var table = Hashtable();
+
+                putAt(table, 'a', 1);
+                putAt(table, 'b', 2);
+
+                removeAt(table, 'a');
+                removeAt(table, 'b');
+
+                checkFalse(at(table, 'a'));
+                checkFalse(at(table, 'b'));
+            });
+
             test('check access efficiency', function() {
                 var table = new Hashtable();
                 for (var i = 0; i < 10000; i++) putAt(table, i, i);
