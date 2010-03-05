@@ -170,6 +170,13 @@ var HashSet;
                 });
             });
 
+            method(asString, function(self) {
+                return 'HashSet[' + join(injectPrimitive(buckets, [], function(tally, k, v) {
+                    tally.push(k);
+                    return tally;
+                }), ',') + ']';
+            });
+
             method(internalBuckets, function(self) {
                 return buckets;
             });
