@@ -71,7 +71,15 @@ function operator(defaultOperation) {
 var asString = operator(String);
 var asNumber = operator(Number);
 var hash = operator(function(o) {
-    var s = o.toString();
+    var s;
+    if (isString(o)) {
+        s = o;
+    } else if (isNumber(o)) {
+        return Math.abs(Math.round(o));
+    } else {
+        s = o.toString();
+    }
+
     var h = 0;
     for (var i = 0, l = s.length; i < l; i++) {
         var c = parseInt(s[i], 36);

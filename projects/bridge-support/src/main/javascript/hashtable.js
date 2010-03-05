@@ -20,8 +20,8 @@ var HashSet;
         }
     };
 
-    function atPrimitive(buckets, k, notFoundThunk) {
-        var index = hash(k);
+    function atPrimitive(buckets, bucketCount, k, notFoundThunk) {
+        var index = hash(k) % bucketCount;
         var bucket = buckets[index];
         if (bucket) {
             for (var i = 0, l = bucket.length; i < l; i++) {
@@ -36,8 +36,8 @@ var HashSet;
         }
     }
 
-    function putAtPrimitive(buckets, k, v) {
-        var index = hash(k);
+    function putAtPrimitive(buckets, bucketCount, k, v) {
+        var index = hash(k) % bucketCount;
         var bucket = buckets[index];
         if (bucket) {
             for (var i = 0, l = bucket.length; i < l; i++) {
@@ -62,8 +62,8 @@ var HashSet;
         }
     }
 
-    function removeAtPrimitive(buckets, k) {
-        var index = hash(k);
+    function removeAtPrimitive(buckets, bucketCount, k) {
+        var index = hash(k) % bucketCount;
         var bucket = buckets[index];
         if (bucket) {
             for (var i = 0, l = bucket.length; i < l; i++) {
@@ -100,21 +100,23 @@ var HashSet;
     }
 
     var internalBuckets = operator();
+    var internalBucketCount = operator();
 
     HashTable = function() {
         var buckets = [];
+        var bucketCount = 5000;
 
         return object(function(method) {
             method(at, function(self, k, notFoundThunk) {
-                return atPrimitive(buckets, k, notFoundThunk);
+                return atPrimitive(buckets, bucketCount, k, notFoundThunk);
             });
 
             method(putAt, function putAt(self, k, v) {
-                return putAtPrimitive(buckets, k, v);
+                return putAtPrimitive(buckets, bucketCount, k, v);
             });
 
             method(removeAt, function(self, k) {
-                return removeAtPrimitive(buckets, k);
+                return removeAtPrimitive(buckets, bucketCount, k);
             });
 
             method(each, function(iterator) {
@@ -127,17 +129,18 @@ var HashSet;
 
     HashSet = function(list) {
         var buckets = [];
+        var bucketCount = 5000;
         var present = new Object;
 
         if (list) {
             each(list, function(k) {
-                putAtPrimitive(buckets, k, present);
+                putAtPrimitive(buckets, bucketCount, k, present);
             });
         }
 
         return object(function(method) {
             method(append, function(self, k) {
-                putAtPrimitive(buckets, k, present);
+                putAtPrimitive(buckets, bucketCount, k, present);
             });
 
             method(each, function(self, iterator) {
@@ -147,7 +150,7 @@ var HashSet;
             });
 
             method(contains, function(self, k) {
-                return !!atPrimitive(buckets, k);
+                return !!atPrimitive(buckets, bucketCount, k);
             });
 
             method(complement, function(self, other) {
@@ -155,8 +158,9 @@ var HashSet;
                 var c;
                 try {
                     var othersInternalBuckets = internalBuckets(other);
+                    var othersInternalBucketCount = internalBucketCount(other);
                     c = function(items, k) {
-                        return !!atPrimitive(othersInternalBuckets, k);
+                        return !!atPrimitive(othersInternalBuckets, othersInternalBucketCount, k);
                     };
                 } catch (e) {
                     c = contains;
@@ -179,6 +183,10 @@ var HashSet;
 
             method(internalBuckets, function(self) {
                 return buckets;
+            });
+
+            method(internalBucketCount, function(self) {
+                return bucketCount;
             });
         });
     };
