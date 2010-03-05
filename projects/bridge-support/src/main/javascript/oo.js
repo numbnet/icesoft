@@ -79,7 +79,7 @@ var hash = operator(function(o) {
             h = c + (h << 6) + (h << 16) - h;
         }
     }
-    return h;
+    return Math.abs(h);
 });
 var equal = operator(function(a, b) {
     return a == b;
