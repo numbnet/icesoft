@@ -87,8 +87,11 @@ public class TabSet extends TabSetBase {
         if (event != null) {
             System.out.println("2. >>>>>>>>>>>>>> event found");
             ValueExpression ve = getValueExpression("tabIndex");
-            getFacesContext().renderResponse();
-            System.out.println("3. >>>>>>>>>>>>>> render response");
+            if(isCancelOnInvalid()) {
+                getFacesContext().renderResponse();
+                System.out.println("3. >>>>>>>>>>>>>> render response");
+            }
+
             if (ve != null) {
                 Throwable caught = null;
                 FacesMessage message = null;
@@ -116,7 +119,7 @@ public class TabSet extends TabSetBase {
     
     public void queueEvent(FacesEvent event) {
         if (event.getComponent() instanceof TabSet) {
-            if (isImmediate()) {
+            if (isImmediate() || !isCancelOnInvalid()) {
                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else {
