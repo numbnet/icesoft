@@ -49,6 +49,9 @@ public class TabSetMeta {
     @Property(defaultValue="false") 
     private Boolean singleSubmit;
     
+    @Property(defaultValue="true") 
+    private Boolean cancelOnInvalid;    
+    
     @Property    
     private String onupdate;
     
