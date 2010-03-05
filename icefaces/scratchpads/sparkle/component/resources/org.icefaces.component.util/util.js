@@ -22,3 +22,9 @@ Ice.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 }
+
+Ice.printArguments = function() {
+    logger.info('-= Printing arguments =-');
+    for(var i=0; i<arguments.length; i++) 
+       logger.info(arguments[i]);
+}
