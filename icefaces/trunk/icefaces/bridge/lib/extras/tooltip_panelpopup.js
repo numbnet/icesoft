@@ -67,7 +67,8 @@ ToolTipPanelPopup = Class.create({
           this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
       } else {
           this.showPopup.bind(this)();
-          Event.extend(event).stop();
+          //ICE-5406 : outputLink does not work inside a panelTooltip with displayOn="click"
+          //Event.extend(event).stop();
       }
   },
 
