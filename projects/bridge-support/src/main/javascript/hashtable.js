@@ -125,9 +125,16 @@ var HashSet;
         });
     };
 
-    HashSet = function() {
+    HashSet = function(list) {
         var buckets = [];
         var present = new Object;
+
+        if (list) {
+            each(list, function(k) {
+                putAtPrimitive(buckets, k, present);
+            });
+        }
+
         return object(function(method) {
             method(append, function(self, k) {
                 putAtPrimitive(buckets, k, present);
