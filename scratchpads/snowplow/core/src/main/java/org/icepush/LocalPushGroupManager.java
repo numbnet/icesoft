@@ -44,8 +44,6 @@ implements PushGroupManager {
 
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
 
-    private Set registeredPushIDs = new VetoedSet();
-
     private final long groupTimeout;
     private final Observable outboundNotifier;
 
@@ -86,37 +84,23 @@ implements PushGroupManager {
         } else {
             groupMap.put(groupName, new Group(groupName, pushId));
         }
-        registeredPushIDs.add(pushId);
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.log(Level.FINEST, "Added pushId '" + pushId + "' to group '" + groupName + "'.");
         }
     }
 
-    public void push(final String targetName) {
-        if (groupMap.containsKey(targetName)) {
-            // targetName is a groupName
+    public void push(final String groupName) {
+        if (groupMap.containsKey(groupName)) {
             if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.log(Level.FINEST, "Push notification triggered for '" + targetName + "' group.");
+                LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
             }
-            outboundNotifier.notifyObservers(groupMap.get(targetName).getPushIDs());
-        } else {
-            // targetName is a pushId
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.log(Level.FINEST, "Push notification triggered for '" + targetName + "' pushId.");
-            }
-            if (registeredPushIDs.contains(targetName)) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "'" + targetName + "' pushId does not belong to a group.");
-                }
-            }
-            outboundNotifier.notifyObservers(new String[] {targetName});
+            outboundNotifier.notifyObservers(groupMap.get(groupName).getPushIDs());
         }
     }
 
     public void removeMember(final String groupName, final String pushId) {
         if (groupMap.containsKey(groupName)) {
             groupMap.get(groupName).removePushID(pushId);
-            registeredPushIDs.remove(pushId);
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.log(Level.FINEST, "Removed pushId '" + pushId + "' from group '" + groupName + "'.");
             }
@@ -152,17 +136,12 @@ implements PushGroupManager {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.log(Level.FINEST, "'" + name + "' push group expired.");
                 }
-                remove();
+                groupMap.remove(name);
             }
         }
 
         private String[] getPushIDs() {
             return pushIdList.toArray(new String[pushIdList.size()]);
-        }
-
-        private void remove() {
-            groupMap.remove(name);
-            registeredPushIDs.removeAll(pushIdList);
         }
 
         private void removePushID(final String pushId) {
@@ -172,7 +151,7 @@ implements PushGroupManager {
                     LOGGER.log(
                         Level.FINEST, "Disposed '" + name + "' push group since it no longer contains any pushIds.");
                 }
-                remove();
+                groupMap.remove(name);
             }
         }
 

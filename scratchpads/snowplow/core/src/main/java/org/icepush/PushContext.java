@@ -67,8 +67,8 @@ public class PushContext {
         return id;
     }
 
-    public void push(final String targetName) {
-        pushGroupManager.push(targetName);
+    public void push(final String groupName) {
+        pushGroupManager.push(groupName);
     }
 
     public void addGroupMember(final String groupName, final String pushId) {

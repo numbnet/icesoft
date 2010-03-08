@@ -25,7 +25,7 @@ package org.icepush;
 public interface PushGroupManager {
     void addMember(String groupName, String pushId);
 
-    void push(String targetName);
+    void push(String groupName);
 
     void removeMember(String groupName, String pushId);
 
