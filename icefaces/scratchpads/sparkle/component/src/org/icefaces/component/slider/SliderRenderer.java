@@ -1,10 +1,12 @@
 package org.icefaces.component.slider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
 import org.icefaces.component.utils.HTML;
@@ -12,6 +14,25 @@ import org.icefaces.component.utils.HTML;
 
 public class SliderRenderer extends Renderer{
 
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        if (requestParameterMap.containsKey("ice.event.captured")) {
+            Slider slider = (Slider)uiComponent;
+            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+            String clientId = uiComponent.getClientId();
+            if (clientId.equals(source)) {
+                try {
+                    int value = slider.getValue();
+                    int submittedValue = Integer.parseInt((String.valueOf(requestParameterMap.get(clientId+"_value"))));
+                    if (value != submittedValue) { 
+                        uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
+                                       new Integer(value), new Integer(submittedValue)));
+                    }
+                } catch (Exception e) {}
+            }
+        }
+    }
+    
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
@@ -45,7 +66,13 @@ public class SliderRenderer extends Renderer{
         call.append("', ");
         call.append("railSize:'");
         call.append(slider.getRailSize());
-        call.append("'},{});");
+        call.append("'},{");
+        call.append("submitOn:'");
+        call.append(slider.getSubmitOn());
+        call.append("', ");
+        call.append("singleSubmit:");
+        call.append(slider.isSingleSubmit());
+        call.append("},{});");
         System.out.println(call);        
         writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);  
