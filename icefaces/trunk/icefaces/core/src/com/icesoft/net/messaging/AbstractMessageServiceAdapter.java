@@ -47,10 +47,11 @@ implements MessageServiceAdapter {
     protected static final String MESSAGING_PROPERTIES =
         "com.icesoft.net.messaging.properties";
 
+    protected final Map topicPublisherMap = new HashMap();
+    protected final Map topicSubscriberMap = new HashMap();
+
     protected MessageServiceClient messageServiceClient;
     protected MessageServiceConfiguration messageServiceConfiguration;
-    protected Map topicPublisherMap = new HashMap();
-    protected Map topicSubscriberMap = new HashMap();
 
     protected AbstractMessageServiceAdapter(final ServletContext servletContext)
     throws IllegalArgumentException {

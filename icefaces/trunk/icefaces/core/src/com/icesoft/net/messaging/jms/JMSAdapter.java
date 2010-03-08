@@ -38,9 +38,7 @@ import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceException;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.io.IOException;
@@ -112,22 +110,20 @@ implements MessageServiceAdapter {
         if (messageHandler != null &&
             topicName != null && topicName.trim().length() != 0) {
 
-            if (topicSubscriberMap.containsKey(topicName)) {
-//                synchronized (topicSubscriberMap) {
-//                    if (topicSubscriberMap.containsKey(topicName)) {
-                        ((JMSSubscriberConnection)
-                            topicSubscriberMap.get(topicName)).
-                                addMessageHandler(messageHandler);
-//                    }
-//                }
+            synchronized (topicSubscriberMap) {
+                if (topicSubscriberMap.containsKey(topicName)) {
+                    ((JMSSubscriberConnection)
+                        topicSubscriberMap.get(topicName)).
+                            addMessageHandler(messageHandler);
+                }
             }
         }
     }
 
     public void close()
     throws MessageServiceException {
-//        synchronized (topicPublisherMap) {
-//            synchronized (topicPublisherMap) {
+        synchronized (topicPublisherMap) {
+            synchronized (topicSubscriberMap) {
                 if (!topicPublisherMap.isEmpty()) {
                     Iterator _jmsPublisherConnections =
                         topicPublisherMap.values().iterator();
@@ -166,8 +162,8 @@ implements MessageServiceAdapter {
                         initialContext = null;
                     }
                 }
-//            }
-//        }
+            }
+        }
     }
 
     public JMSProviderConfiguration getJMSProviderConfiguration() {
@@ -179,7 +175,7 @@ implements MessageServiceAdapter {
         if (message != null &&
             topicName != null && topicName.trim().length() != 0) {
 
-//            synchronized (topicPublisherMap) {
+            synchronized (topicPublisherMap) {
                 if (topicConnectionFactory == null) {
                     try {
                         initialize();
@@ -224,7 +220,7 @@ implements MessageServiceAdapter {
                 } catch (JMSException exception) {
                     throw new MessageServiceException(exception);
                 }
-//            }
+            }
         }
     }
 
@@ -234,71 +230,65 @@ implements MessageServiceAdapter {
         if (messageHandler != null &&
             topicName != null && topicName.trim().length() != 0) {
 
-            if (topicSubscriberMap.containsKey(topicName)) {
-//                synchronized (topicSubscriberMap) {
-//                    if (topicSubscriberMap.containsKey(topicName)) {
-                        ((JMSSubscriberConnection)
-                            topicSubscriberMap.get(topicName)).
-                                removeMessageHandler(messageHandler);
-//                    }
-//                }
+            synchronized (topicSubscriberMap) {
+                if (topicSubscriberMap.containsKey(topicName)) {
+                    ((JMSSubscriberConnection)
+                        topicSubscriberMap.get(topicName)).
+                            removeMessageHandler(messageHandler);
+                }
             }
         }
     }
 
     public void start()
     throws MessageServiceException {
-        if (!topicSubscriberMap.isEmpty()) {
-//            synchronized (topicSubscriberMap) {
-//                if (!topicSubscriberMap.isEmpty()) {
-                    Iterator _jmsSubscriberConnections =
-                        topicSubscriberMap.values().iterator();
-                    MessageServiceException _messageServiceException = null;
-                    while (_jmsSubscriberConnections.hasNext()) {
-                        try {
-                            // throws JMSException.
-                            ((JMSSubscriberConnection)
-                                _jmsSubscriberConnections.next()).start();
-                        } catch (JMSException exception) {
-                            if (_messageServiceException == null) {
-                                _messageServiceException =
-                                    new MessageServiceException(exception);
-                            }
+        synchronized (topicSubscriberMap) {
+            if (!topicSubscriberMap.isEmpty()) {
+                Iterator _jmsSubscriberConnections =
+                    topicSubscriberMap.values().iterator();
+                MessageServiceException _messageServiceException = null;
+                while (_jmsSubscriberConnections.hasNext()) {
+                    try {
+                        // throws JMSException.
+                        ((JMSSubscriberConnection)
+                            _jmsSubscriberConnections.next()).start();
+                    } catch (JMSException exception) {
+                        if (_messageServiceException == null) {
+                            _messageServiceException =
+                                new MessageServiceException(exception);
                         }
                     }
-                    if (_messageServiceException != null) {
-                        throw _messageServiceException;
-                    }
-//                }
-//            }
+                }
+                if (_messageServiceException != null) {
+                    throw _messageServiceException;
+                }
+            }
         }
     }
 
     public void stop()
     throws MessageServiceException {
-        if (!topicSubscriberMap.isEmpty()) {
-//            synchronized (topicSubscriberMap) {
-//                if (!topicSubscriberMap.isEmpty()) {
-                    Iterator _jmsSubscriberConnections =
-                        topicSubscriberMap.values().iterator();
-                    MessageServiceException _messageServiceException = null;
-                    while (_jmsSubscriberConnections.hasNext()) {
-                        try {
-                            // throws JMSException.
-                            ((JMSSubscriberConnection)
-                                _jmsSubscriberConnections.next()).stop();
-                        } catch (JMSException exception) {
-                            if (_messageServiceException == null) {
-                                _messageServiceException =
-                                    new MessageServiceException(exception);
-                            }
+        synchronized (topicSubscriberMap) {
+            if (!topicSubscriberMap.isEmpty()) {
+                Iterator _jmsSubscriberConnections =
+                    topicSubscriberMap.values().iterator();
+                MessageServiceException _messageServiceException = null;
+                while (_jmsSubscriberConnections.hasNext()) {
+                    try {
+                        // throws JMSException.
+                        ((JMSSubscriberConnection)
+                            _jmsSubscriberConnections.next()).stop();
+                    } catch (JMSException exception) {
+                        if (_messageServiceException == null) {
+                            _messageServiceException =
+                                new MessageServiceException(exception);
                         }
                     }
-                    if (_messageServiceException != null) {
-                        throw _messageServiceException;
-                    }
-//                }
-//            }
+                }
+                if (_messageServiceException != null) {
+                    throw _messageServiceException;
+                }
+            }
         }
     }
 
@@ -307,7 +297,7 @@ implements MessageServiceAdapter {
         final boolean noLocal)
     throws MessageServiceException {
         if (topicName != null && topicName.trim().length() != 0) {
-//            synchronized (topicSubscriberMap) {
+            synchronized (topicSubscriberMap) {
                 if (topicConnectionFactory == null) {
                     try {
                         initialize();
@@ -350,74 +340,45 @@ implements MessageServiceAdapter {
                 } catch (JMSException exception) {
                     throw new MessageServiceException(exception);
                 }
-//            }
+            }
         }
     }
 
     public void unsubscribe(final String topicName)
     throws MessageServiceException {
         if (topicName != null && topicName.trim().length() != 0) {
-            if (topicSubscriberMap.containsKey(topicName)) {
-//                synchronized (topicSubscriberMap) {
-//                    if (topicSubscriberMap.containsKey(topicName)) {
-                        JMSSubscriberConnection _jmsSubscriberConnection =
-                            (JMSSubscriberConnection)
-                                topicSubscriberMap.remove(topicName);
-                        MessageServiceException _messageServiceException = null;
-                        try {
-                            _jmsSubscriberConnection.stop();
-                        } catch (JMSException exception) {
-                            // do nothing.
-                        }
-                        try {
-                            _jmsSubscriberConnection.unsubscribe();
-                        } catch (JMSException exception) {
-                            _messageServiceException =
-                                new MessageServiceException(exception);
-                        }
-                        try {
-                            _jmsSubscriberConnection.close();
-                        } catch (JMSException exception) {
-                            // do nothing.
-                        }
-                        if (_messageServiceException != null) {
-                            throw _messageServiceException;
-                        }
-//                    }
-//                }
+            synchronized (topicSubscriberMap) {
+                if (topicSubscriberMap.containsKey(topicName)) {
+                    JMSSubscriberConnection _jmsSubscriberConnection =
+                        (JMSSubscriberConnection)
+                            topicSubscriberMap.remove(topicName);
+                    MessageServiceException _messageServiceException = null;
+                    try {
+                        _jmsSubscriberConnection.stop();
+                    } catch (JMSException exception) {
+                        // do nothing.
+                    }
+                    try {
+                        _jmsSubscriberConnection.unsubscribe();
+                    } catch (JMSException exception) {
+                        _messageServiceException =
+                            new MessageServiceException(exception);
+                    }
+                    try {
+                        _jmsSubscriberConnection.close();
+                    } catch (JMSException exception) {
+                        // do nothing.
+                    }
+                    if (_messageServiceException != null) {
+                        throw _messageServiceException;
+                    }
+                }
             }
         }
     }
 
     TopicConnectionFactory getTopicConnectionFactory() {
         return topicConnectionFactory;
-    }
-
-    private JMSProviderConfiguration[] getJMSProviderConfigurations(
-        final String[] properties) {
-
-        List _jmsProviderConfigurationSet = new ArrayList();
-        for (int i = 0; i < properties.length; i++) {
-            try {
-                _jmsProviderConfigurationSet.add(
-                    new JMSProviderConfigurationProperties(
-                        getClass().
-                            getResourceAsStream(properties[i])));
-            } catch (IOException exception) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(
-                        "An error occurred " +
-                            "while reading properties: " + properties[i],
-                        exception);
-                }
-            }
-        }
-        return
-            (JMSProviderConfiguration[])
-                _jmsProviderConfigurationSet.toArray(
-                    new JMSProviderConfiguration[
-                        _jmsProviderConfigurationSet.size()
-                    ]);
     }
 
     private void initialize()
@@ -506,7 +467,7 @@ implements MessageServiceAdapter {
         }
     }
 
-    private Topic lookUpTopic(final String topicName)
+    private synchronized Topic lookUpTopic(final String topicName)
     throws NamingException {
         String _topicNamePrefix =
             jmsProviderConfigurations[index].getTopicNamePrefix();
