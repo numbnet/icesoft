@@ -1,5 +1,7 @@
 package org.icefaces.component.slider;
 
+import javax.el.MethodExpression;
+
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
@@ -34,5 +36,12 @@ public class SliderMeta {
     @Property (defaultValue="200px")
     private String railSize;
     
-
+    @Property (defaultValue="slideEnd")
+    private String submitOn;   
+    
+    @Property(defaultValue="false") 
+    private Boolean singleSubmit;
+    
+    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+    private MethodExpression valueChangeListener;
 }

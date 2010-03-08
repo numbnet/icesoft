@@ -89,19 +89,19 @@ ice.yui = {
              modules+= module + ',';
         return modules.substring(0, modules.length-1);     
     },
-    updateProperties:function(clientId, varName, props, events, lib) {
+    updateProperties:function(clientId, varName, yuiProps, jsfProps, events, lib) {
         this.getInstance(clientId, varName, lib, function(slider) {
-            for (prop in props) {
+            for (prop in yuiProps) {
                 var propValue = slider.get(prop);
-                if (propValue != props[prop]) {
-                  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + props[prop]); 
-                  slider.set(prop, props[prop]);        
+                if (propValue != yuiProps[prop]) {
+                  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + yuiProps[prop]); 
+                  slider.set(prop, yuiProps[prop]);        
                 }
             }
-        });
+        },yuiProps, jsfProps);
         
     },
-    getInstance:function(clientId, varName, lib, callback) {
+    getInstance:function(clientId, varName, lib, callback, yuiProps, jsfProps) {
         var component = document.getElementById(clientId);
         //could be either new component, or part of the DOM diff
         if (!component['YUIHolder']) {
@@ -110,7 +110,7 @@ ice.yui = {
                 logger.info('getInstance callback executed');
                 component['YUIHolder'].setComponent(YUIJS);
                 callback(component['YUIHolder'].getComponent());
-            });
+            },yuiProps, jsfProps);
         } else {
             callback(component['YUIHolder'].getComponent());
         }

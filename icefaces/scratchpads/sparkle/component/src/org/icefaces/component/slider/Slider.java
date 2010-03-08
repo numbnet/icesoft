@@ -2,11 +2,18 @@ package org.icefaces.component.slider;
 
 import java.io.IOException;
 
+import javax.el.ELException;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.ValueChangeEvent;
 
 @ResourceDependencies({
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
@@ -34,4 +41,30 @@ public class Slider extends SliderBase{
             }
         }, "head");        
     }
+    
+    
+    public void broadcast(FacesEvent event)
+    throws AbortProcessingException {
+        super.broadcast(event);
+        if (event != null) {
+            ValueExpression ve = getValueExpression("value");
+            if (ve != null) {
+                Throwable caught = null;
+                FacesMessage message = null;
+                try {
+                    ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
+                } catch (ELException ee) {
+                    System.out.println(ee);
+                }
+            } else {
+                setValue((Integer)((ValueChangeEvent)event).getNewValue());
+            }
+
+            MethodExpression method = getValueChangeListener();
+            if (method != null) {
+                method.invoke(getFacesContext().getELContext(), new Object[]{event});
+            }
+        }
+    }
+    
 }
