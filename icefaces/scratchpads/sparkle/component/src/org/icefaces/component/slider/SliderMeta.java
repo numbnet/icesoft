@@ -42,6 +42,15 @@ public class SliderMeta {
     @Property(defaultValue="false") 
     private Boolean singleSubmit;
     
+    @Property
+    private String style;
+    
+    @Property
+    private String styleClass;  
+
+    @Property
+    private String thumbImage;  
+    
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
 }

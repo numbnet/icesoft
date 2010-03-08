@@ -7,7 +7,8 @@ function formOf(element) {
 
     throw 'Cannot find enclosing form.';
 }
-
+if (!window['Ice'])
+var Ice = {};
 Ice.isEventSourceInputElement = function(event) {
     var elem = Ice.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
