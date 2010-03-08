@@ -169,7 +169,7 @@ ToolTipPanelPopup = Class.create({
   },
 
   updateCordinate: function(event) {
-    if (Event.element(event) != this.src && !event.element().descendantOf(this.src)) return;
+    if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
       if (!this.isTooltipVisible() || !this.moveWithMouse) return;
