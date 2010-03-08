@@ -37,11 +37,13 @@ public class SliderRenderer extends Renderer{
     throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();        
-        Slider slider = (Slider) uiComponent;
-        
+        Slider slider = (Slider)uiComponent;
+        String styleClass = slider.getStyleClass();
+        if (styleClass == null)
+            styleClass = "";
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);      
-        writer.writeAttribute(HTML.CLASS_ATTR, "class"+ slider.getVarName(), HTML.CLASS_ATTR);             
+        writer.writeAttribute(HTML.CLASS_ATTR, "class"+ slider.getVarName() + " " + styleClass, HTML.CLASS_ATTR);             
         writer.endElement(HTML.DIV_ELEM);  
         
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
@@ -67,6 +69,11 @@ public class SliderRenderer extends Renderer{
         call.append("railSize:'");
         call.append(slider.getRailSize());
         call.append("'},{");
+        if (slider.getThumbImage()!= null) {
+            call.append("thumbImage:'");
+            call.append(slider.getThumbImage());
+            call.append("', ");
+        }
         call.append("submitOn:'");
         call.append(slider.getSubmitOn());
         call.append("', ");
