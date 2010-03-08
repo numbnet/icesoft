@@ -30,6 +30,10 @@
  * this file under either the MPL or the LGPL License."
  *
  */
+String.prototype.trim = function () {
+    return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+ 
 logger = {
    info: function(msg) {
 	   if (window["console"]) {
@@ -87,7 +91,13 @@ ice.yui = {
     },
     updateProperties:function(clientId, varName, props, events, lib) {
         this.getInstance(clientId, varName, lib, function(slider) {
-          logger.info('updateProperties callback'+ slider);  
+            for (prop in props) {
+                var propValue = slider.get(prop);
+                if (propValue != props[prop]) {
+                  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + props[prop]); 
+                  slider.set(prop, props[prop]);        
+                }
+            }
         });
         
     },
