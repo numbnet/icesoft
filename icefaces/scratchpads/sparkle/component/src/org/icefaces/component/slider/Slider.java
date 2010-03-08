@@ -9,8 +9,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 @ResourceDependencies({
-    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="slider.js",library="org.icefaces.component.slider")    
 })
 public class Slider extends SliderBase{

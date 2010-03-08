@@ -19,19 +19,19 @@ public class SliderMeta {
         defaultValueIsStringLiteral=false)
     private String varName;
 
-    @Property
-    private Integer axis;
+    @Property (defaultValue="x")
+    private String axis;
     
-    @Property
+    @Property (defaultValue="0")
     private Integer min;
     
-    @Property
+    @Property (defaultValue="100")
     private Integer max;
     
-    @Property
+    @Property (defaultValue="0")
     private Integer value;    
     
-    @Property
+    @Property (defaultValue="200px")
     private String railSize;
     
 

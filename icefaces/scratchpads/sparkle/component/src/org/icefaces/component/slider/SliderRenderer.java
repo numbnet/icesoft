@@ -24,8 +24,30 @@ public class SliderRenderer extends Renderer{
         writer.endElement(HTML.DIV_ELEM);  
         
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-        writer.write("ice.yui.slider.updateProperties('"+ clientId +"', '"+ slider.getVarName() +"', {}, {});");
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR); 
+        StringBuilder call= new StringBuilder();
+        call.append("ice.yui.slider.updateProperties('");
+        call.append(clientId);
+        call.append("', '");
+        call.append(slider.getVarName());
+        call.append("', {");
+        call.append("min:");
+        call.append(slider.getMin());
+        call.append(", ");
+        call.append("max:");
+        call.append(slider.getMax());
+        call.append(", ");
+        call.append("value:");
+        call.append(slider.getValue());
+        call.append(", ");
+        call.append("axis:'");
+        call.append(slider.getAxis());
+        call.append("', ");
+        call.append("railSize:'");
+        call.append(slider.getRailSize());
+        call.append("'},{});");
+        System.out.println(call);        
+        writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);  
                 
     }
