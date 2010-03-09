@@ -12,7 +12,10 @@
 		<build.war>
 			<add.libs>
 				<fileset refid="beans" />
-			</add.libs>
+                <fileset id="jsppush" dir="${root.offset}/integration/jsp/core/dist">
+                    <include name="icepush-jsp.jar"/>
+                </fileset>
+            </add.libs>
 		</build.war>
 	</target>
 
