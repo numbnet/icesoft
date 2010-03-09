@@ -1,5 +1,6 @@
 package org.icefaces.push;
 
+import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.servlet.SessionExpiredException;
 import org.icefaces.util.EnvUtils;
@@ -20,12 +21,15 @@ public class BridgeSetup extends ViewHandlerWrapper {
     private static Logger log = Logger.getLogger("org.icefaces.util.DOMUtil");
     private static final String Marker = BridgeSetup.class.getName();
     private ViewHandler handler;
+    private Configuration configuration;
 
     public BridgeSetup() {
         super();
+        this.configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
     }
 
     public BridgeSetup(ViewHandler handler) {
+        this();
         this.handler = handler;
     }
 
@@ -84,7 +88,12 @@ public class BridgeSetup extends ViewHandlerWrapper {
 
                     output = new UIOutput();
                     output.getAttributes().put("escape", "false");
-                    output.setValue("<script type=\"text/javascript\">window.ice.window = '" + id + "';</script>");
+                    output.setValue("<script type=\"text/javascript\">" +
+                            "ice.configuration = {" +
+                            "deltaSubmit: " + configuration.getAttributeAsBoolean("deltaSubmit", false) +
+                            "};" +
+                            "window.ice.window = '" + id + "';" +
+                            "</script>");
                     root.addComponentResource(context, output, "body");
 
                     if (EnvUtils.isICEpushPresent()) {

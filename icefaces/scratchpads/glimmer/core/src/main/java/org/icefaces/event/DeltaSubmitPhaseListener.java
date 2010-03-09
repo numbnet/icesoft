@@ -1,0 +1,189 @@
+package org.icefaces.event;
+
+import org.icefaces.application.ExternalContextConfiguration;
+import org.icefaces.push.Configuration;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Logger;
+
+public class DeltaSubmitPhaseListener implements PhaseListener {
+    private static final String PreviousParameters = "previous-parameters";
+    private static Logger log = Logger.getLogger("org.icefaces.event");
+    private Configuration configuration;
+
+    public DeltaSubmitPhaseListener() {
+        this.configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
+
+    }
+
+    public void beforePhase(PhaseEvent event) {
+        FacesContext facesContext = event.getFacesContext();
+        if (configuration.getAttributeAsBoolean("deltaSubmit", false)) {
+            reconstructParametersFromDeltaSubmit(facesContext);
+        }
+    }
+
+    public void afterPhase(PhaseEvent event) {
+    }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.APPLY_REQUEST_VALUES;
+    }
+
+    private void reconstructParametersFromDeltaSubmit(FacesContext facesContext) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        Map submittedParameters = externalContext.getRequestParameterValuesMap();
+
+        String formClientID = ((String[]) submittedParameters.get("ice.deltasubmit.form"))[0];
+        UIComponent formComponent = viewRoot.findComponent(formClientID);
+
+        Map formAttributes = formComponent.getAttributes();
+        Map previousParameters = (Map) formAttributes.get(PreviousParameters);
+        if (previousParameters == null) {
+            //todo: use a public constant to lookup old DOM document
+            Document oldDOM = (Document) viewRoot.getAttributes().get("org.icefaces.old-dom");
+            previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
+        }
+        final Map parameterValuesMap = new HashMap();
+
+        Iterator i = submittedParameters.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry entry = (Map.Entry) i.next();
+            String patchKey = (String) entry.getKey();
+            String[] values = (String[]) entry.getValue();
+
+            if (patchKey.startsWith("patch+")) {
+                String key = patchKey.substring(6);
+                String[] previousValues = (String[]) parameterValuesMap.get(key);
+                if (previousValues == null) {
+                    parameterValuesMap.put(key, values);
+                } else {
+                    ArrayList allValues = new ArrayList();
+                    allValues.addAll(Arrays.asList(previousValues));
+                    allValues.addAll(Arrays.asList(values));
+                    parameterValuesMap.put(key, allValues.toArray(new String[0]));
+                }
+            } else if (patchKey.startsWith("patch-")) {
+                String key = patchKey.substring(6);
+                String[] previousValues = (String[]) parameterValuesMap.get(key);
+                if (previousValues == null) {
+                    log.warning("Missing previous parameters: " + key);
+                } else {
+                    ArrayList allValues = new ArrayList();
+                    allValues.addAll(Arrays.asList(previousValues));
+                    allValues.removeAll(Arrays.asList(values));
+                    parameterValuesMap.put(key, allValues.toArray(new String[0]));
+                }
+            } else {
+                //overwrite parameters
+                parameterValuesMap.put(patchKey, values);
+            }
+        }
+
+        formAttributes.put(PreviousParameters, parameterValuesMap);
+
+        //todo: proxy the request in Portlet env. as well
+        HttpServletRequest originalRequest = (HttpServletRequest) externalContext.getRequest();
+        externalContext.setRequest(new HttpServletRequestWrapper(originalRequest) {
+            public String getParameter(String s) {
+                String[] values = (String[]) parameterValuesMap.get(s);
+                return values == null ? null : values[0];
+            }
+
+            public String[] getParameterValues(String s) {
+                return (String[]) parameterValuesMap.get(s);
+            }
+
+            public Enumeration<String> getParameterNames() {
+                return Collections.enumeration(parameterValuesMap.keySet());
+            }
+
+            public Map getParameterMap() {
+                return Collections.unmodifiableMap(parameterValuesMap);
+            }
+        });
+    }
+
+    private Map calculateParametersFromDOM(ExternalContext externalContext, Document doc) {
+        Map multiParameters = new HashMap();
+        Map parameters = externalContext.getRequestParameterMap();
+
+        NodeList forms = doc.getElementsByTagName("form");
+        for (int i = 0; i < forms.getLength(); i++) {
+            Element form = (Element) forms.item(i);
+            String formID = form.getAttribute("id");
+            if (parameters.containsKey(formID)) {
+                NodeList inputs = form.getElementsByTagName("input");
+                for (int j = 0; j < inputs.getLength(); j++) {
+                    Element input = (Element) inputs.item(j);
+                    //submitting type elements are present in the form only if they triggered the submission
+                    //ignore radio/checkbox buttons
+                    String type = input.getAttribute("type");
+                    if ("image".equalsIgnoreCase(type) || "button".equalsIgnoreCase(type) || "submit".equalsIgnoreCase(type) || "reset".equalsIgnoreCase(type)) {
+                        continue;
+                    }
+
+                    String name = input.getAttribute("name");
+                    if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+                        if (input.hasAttribute("checked")) {
+                            String value = input.getAttribute("value");
+                            value = "".equals(value) ? "on" : value;
+                            multiParameters.put(name, new String[]{value});
+                        }
+                    }
+                }
+                NodeList textareas = form.getElementsByTagName("textarea");
+                for (int j = 0; j < textareas.getLength(); j++) {
+                    Element txtarea = (Element) textareas.item(j);
+                    String name = txtarea.getAttribute("name");
+                    if (!parameters.containsKey(name)) {
+                        Node child = txtarea.getFirstChild();
+                        String value = child == null ? "" : child.getNodeValue();
+                        multiParameters.put(name, new String[]{value});
+                    }
+                }
+                NodeList selects = form.getElementsByTagName("select");
+                for (int j = 0; j < selects.getLength(); j++) {
+                    Element select = (Element) selects.item(j);
+                    String name = select.getAttribute("name");
+                    if (!parameters.containsKey(name)) {
+                        NodeList options = select.getElementsByTagName("option");
+                        ArrayList selectedOptions = new ArrayList();
+                        for (int k = 0; k < options.getLength(); k++) {
+                            Element option = (Element) options.item(k);
+                            if ("selected".equalsIgnoreCase(option.getAttribute("selected"))) {
+                                selectedOptions.add(option.getAttribute("value"));
+                            }
+                        }
+                        if (!selectedOptions.isEmpty()) {
+                            multiParameters.put(name, selectedOptions.toArray(new String[0]));
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        return multiParameters;
+    }
+}

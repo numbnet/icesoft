@@ -48,6 +48,7 @@
         <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
         <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
         <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
+        <loadfile property="hashtable.js" srcFile="${lib.dir}/hashtable.js"/>
         <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
         <loadfile property="http.js" srcFile="${lib.dir}/http.js"/>
@@ -63,6 +64,7 @@
                 <filter token="functional" value="${functional.js}"/>
                 <filter token="oo" value="${oo.js}"/>
                 <filter token="collection" value="${collection.js}"/>
+                <filter token="hashtable" value="${hashtable.js}"/>
                 <filter token="string" value="${string.js}"/>
                 <filter token="window" value="${window.js}"/>
                 <filter token="http" value="${http.js}"/>
