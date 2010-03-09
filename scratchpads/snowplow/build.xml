@@ -98,6 +98,7 @@
 		<ant dir="./core" target="clean"/>
 		<!-- JSP -->
 		<clean.with.path.offset target="jsp"/>
+		<ant target="clean" dir="./samples/icechat/jsp"/>
 		
 		<ant target="clean" dir="./samples/basic"/>
 		
@@ -116,6 +117,7 @@
 		<!-- WICKET -->
 		<clean.with.path.offset target="wicket"/>
 		<ant target="clean" dir="./samples/icechat/wicket"/>	
+		
 	</target>
 	
 </project>
