@@ -518,12 +518,29 @@ public class TableRenderer
                     }                    
                 }
                 th.setAttribute("class",styleClass);
-                String width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
+                String width = null;
+                Element cursorParent = th;
+                if (htmlDataTable.isResizable()) {
+                    Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
+                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
+                    th.appendChild(columnHeaderDiv);
+                    width = htmlDataTable.getNextResizableTblColumnWidth();
+                    if (width != null) {
+                        width = "width:"+ width +";";
+                        columnHeaderDiv.setAttribute(HTML.STYLE_ATTR, width);
+                    }
+                    cursorParent = columnHeaderDiv;                    
+                }
+                
+   
+                if (width == null) {
+                    width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
+                }
                 if (width != null) {
                     th.setAttribute("style", width);
                 }
                 //th.setAttribute("colgroup", "col");
-                domContext.setCursorParent(th);
+                domContext.setCursorParent(cursorParent);
                 encodeParentAndChildren(facesContext, headerFacet);
                 domContext.setCursorParent(oldParent);
             }
