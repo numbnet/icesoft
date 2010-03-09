@@ -41,6 +41,7 @@ if (!window.ice.icefaces) {
         //include functional.js
         //include oo.js
         //include collection.js
+        //include hashtable.js
         //include string.js
         //include window.js
         namespace.onLoad = curry(onLoad, window);
@@ -165,6 +166,8 @@ if (!window.ice.icefaces) {
                     };
                 };
             });
+
+            f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
 
             //propagate window ID -- this strategy works for POSTs sent by Mojarra
             var i = document.createElement('input');
