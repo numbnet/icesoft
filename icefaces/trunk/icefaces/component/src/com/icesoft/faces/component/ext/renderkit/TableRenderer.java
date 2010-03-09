@@ -533,6 +533,20 @@ public class TableRenderer
             rowIndex++;
             columnIndex++;
             nextColumn.setRowIndex(rowIndex);
+
+            if (htmlDataTable.isResizable() && nextColumn.getRowCount() > rowIndex) {
+                Element handlerTd = domContext.createElement(element);
+                handlerTd.setAttribute("valign", "top");
+                handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
+                handlerTd.setAttribute(HTML.ONMOUSEOVER_ATTR, "ResizableUtil.adjustHeight(this)");
+                Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
+                resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
+                resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
+                resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
+                resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
+                handlerTd.appendChild(resizeHandler);
+                tr.appendChild(handlerTd);
+            }
         }
         nextColumn.setRowIndex(-1);
         return columnIndex;
@@ -851,13 +865,16 @@ public class TableRenderer
                         encodeParentAndChildren(facesContext, nextChild);
                         domContext.setCursorParent(oldCursorParent);
                     } else if (nextChild instanceof UIColumns) {
+                        if (isResizable == null) { 
+                            isResizable = Boolean.valueOf(uiData.isResizable());
+                        }
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
                                       columnStyleIndex,
                                       hiddenInputNode, hiddenClickedRowField, 
                                       hiddenClickCountField,
-                                      columnWidths);
+                                      columnWidths, isResizable.booleanValue());
                         nextChild.encodeEnd(facesContext);
                        
                     }
@@ -884,7 +901,8 @@ public class TableRenderer
                                int columnStyleIndex, 
                                Element rowSelectorHiddenField,
                                Element clickEventRowField, Element clickEventCountField,
-                               String[] columnWidths) throws IOException {
+                               String[] columnWidths,
+                               boolean isResizable) throws IOException {
         UIColumns uiList = (UIColumns) columns;
         HtmlDataTable table = ((HtmlDataTable) uiList.getParent());
         int rowIndex = uiList.getFirst();
@@ -932,6 +950,18 @@ public class TableRenderer
             rowIndex++;
             countOfRowsDisplayed++;
             uiList.setRowIndex(rowIndex);
+            
+
+            if (isResizable && uiList.getRowCount() > rowIndex) {
+                Element eTd = domContext.createElement(HTML.TD_ELEM);
+                eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
+                Element img = domContext.createElement(HTML.IMG_ELEM);
+                img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
+                        FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
+                eTd.appendChild(img);
+                tr.appendChild(eTd);
+            }            
+            
         }
 
         uiList.setRowIndex(-1);
