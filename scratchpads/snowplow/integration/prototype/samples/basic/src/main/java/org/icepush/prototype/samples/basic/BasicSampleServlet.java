@@ -120,7 +120,18 @@ public class BasicSampleServlet extends HttpServlet{
 
 			@Override
 			public void run() {
-				 PushContext.getInstance(config.getServletContext()).push("time");
+				if( config != null ){
+					PushContext pushContext = PushContext.getInstance(config.getServletContext());
+					if( pushContext != null ){
+						pushContext.push("time");
+					}
+					else{
+						System.err.println("Can't run ICEpush timer taks, PushContext is null");
+					}
+				}
+				else{
+					System.err.println("Cannot run ICEpush timer task, ServletConfig is null");
+				}
 			}
 			
 		}, 2000, 1000);
