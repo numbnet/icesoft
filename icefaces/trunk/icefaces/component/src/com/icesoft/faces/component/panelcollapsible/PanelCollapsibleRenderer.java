@@ -76,7 +76,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                       panelCollapsible.isExpanded()+"'; " +
                               "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
             Element div = domContext.createElement(HTML.DIV_ELEM);
-            div.setAttribute(HTML.STYLE_ATTR, "padding:1px;background-image:none;width:100%;");
+            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
             header.appendChild(div);
             //this anchor should be known by the component only, so we are defining style to the component level
             Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
