@@ -64,11 +64,10 @@ public class BaseTag extends TagSupport {
 		}
 
 		// Set group if there is one;
-		if (group != null) {
-			pc.addGroupMember(group, pushid);
-		} else {
-			group = pushid;
+		if (group == null) {
+			group = pushid;		
 		}
+		pc.addGroupMember(group, pushid);
 		if (notifierBean != null) {
 			try {
 				// Set group in notifier;
