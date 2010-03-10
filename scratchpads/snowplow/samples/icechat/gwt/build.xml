@@ -43,7 +43,7 @@
 	<fileset id="gwt-integration" file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" />
 
 	<!-- Configure path to GWT SDK -->
-	<property name="gwt.sdk" location="./lib/gwtSDK" />
+	<property name="gwt.sdk" location="${root.offset}/integration/gwt/core/lib/gwt" />
 	<property name="tests.lib.dir" location="./lib/tests" />
 	<property name="build.tests" location="./build-test" />
 	<property name="reports.tests" value="./reports/junit" />
@@ -93,7 +93,7 @@
 
 	<target name="devmode" depends="javac" description="Run development mode">
 		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
-			<fileset refid="icepush"/>
+			<fileset refid="icepush.dist"/>
 			<fileset refid="beans"/>
 			<fileset refid="api"/>
 		</copy>
