@@ -37,6 +37,7 @@
 			<add.classpath.elements>
 				<fileset refid="icepush.jsp.dist"/>
 				<fileset dir="${web.dir}/WEB-INF/lib"/>
+				<fileset dir="${root.offset}/integration/spring/lib"/>
 			</add.classpath.elements>
 		</compile>
 
@@ -46,6 +47,7 @@
         <build.war>
 			<add.libs>
 				<fileset refid="icepush.jsp.dist" />
+				<fileset dir="${root.offset}/integration/spring/lib"/>
 			</add.libs>
 		</build.war>
     </target>
