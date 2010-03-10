@@ -44,7 +44,8 @@
 
 	<!-- Configure path to GWT SDK -->
 	<property name="gwt.sdk" location="${root.offset}/integration/gwt/core/lib/gwt" />
-	<property name="tests.lib.dir" location="./lib/tests" />
+	<property name="junit.lib.dir" location="${root.offset}/integration/gwt/core/lib/junit" />
+	<property name="jmock.lib.dir" location="${root.offset}/integration/gwt/core/lib/jmock" />
 	<property name="build.tests" location="./build-test" />
 	<property name="reports.tests" value="./reports/junit" />
 
@@ -59,7 +60,8 @@
 	</path>
 
 	<path id="project.test.class.path">
-		<fileset dir="${tests.lib.dir}" includes="**/*.jar" />
+		<fileset dir="${junit.lib.dir}" includes="**/*.jar" />
+		<fileset dir="${jmock.lib.dir}" includes="**/*.jar" />
 	</path>
 
 	<target name="libs" description="Copy libs to WEB-INF/lib">
@@ -127,10 +129,6 @@
 
 	</target>
 
-	<target name="test" description="Run development and production mode tests">
-	</target>
-
-
 	<target name="build-server" depends="javac" description="Build this project">
 		<build.war>
 			<add.libs>
@@ -142,7 +140,6 @@
 
 
 	<target name="war" depends="clean,gwtc" description="Create a war file">
-		<antcall target="test" />
 		<build.war web.dir="${web.dir}">
 			<add.libs>
 				<fileset refid="beans" />
