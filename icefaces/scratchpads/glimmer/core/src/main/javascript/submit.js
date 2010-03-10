@@ -73,20 +73,26 @@ var submit;
             var removedParameters = complement(previousParameters, currentParameters);
             form.previousParameters = currentParameters;
 
-            each(addedParameters, function(p) {
-                var parameter = p.split('=');
+            function splitStringParameter(f) {
+                return function(p) {
+                    var parameter = p.split('=');
+                    f(decodeURIComponent(parameter[0]), decodeURIComponent(parameter[1]));
+                };
+            }
+
+            function createHiddenInputInSingleSubmitForm(name, value) {
                 var input = singleSubmitForm.appendChild(document.createElement('input'));
                 input.type = 'hidden';
-                input.name = addPrefix + decodeURIComponent(parameter[0]);
-                input.value = parameter[1];
-            });
-            each(removedParameters, function(p) {
-                var parameter = p.split('=');
-                var input = singleSubmitForm.appendChild(document.createElement('input'));
-                input.type = 'hidden';
-                input.name = removePrefix + decodeURIComponent(parameter[0]);
-                input.value = parameter[1];
-            });
+                input.name = name;
+                input.value = value;
+            }
+
+            each(addedParameters, splitStringParameter(function(name, value) {
+                createHiddenInputInSingleSubmitForm(addPrefix + name, value);
+            }));
+            each(removedParameters, splitStringParameter(function(name, value) {
+                createHiddenInputInSingleSubmitForm(removePrefix + name, value);
+            }));
 
             options[form.id] = form.id;
             options['javax.faces.ViewState'] = viewState;
