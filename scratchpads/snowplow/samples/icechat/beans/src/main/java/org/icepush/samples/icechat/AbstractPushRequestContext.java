@@ -32,7 +32,7 @@ public abstract class AbstractPushRequestContext implements Serializable,
 		IPushRequestContext {
 
 	protected String currentPushId;
-	private PushContext pushContext;
+	private transient PushContext pushContext;
 
 	public String getCurrentPushId() {
 		return currentPushId;
