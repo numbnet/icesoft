@@ -15,6 +15,7 @@
                 <fileset id="jsppush" dir="${root.offset}/integration/jsp/core/dist">
                     <include name="icepush-jsp.jar"/>
                 </fileset>
+				<fileset file="../lib/jstl.jar"/>
             </add.libs>
 		</build.war>
 	</target>
