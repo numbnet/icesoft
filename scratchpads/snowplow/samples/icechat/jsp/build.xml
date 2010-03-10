@@ -37,6 +37,7 @@
 				<fileset refid="beans" />
 				<fileset refid="auth" />
 				<fileset file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
+				<fileset file="../lib/jstl.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
