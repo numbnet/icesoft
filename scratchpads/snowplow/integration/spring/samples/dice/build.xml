@@ -48,6 +48,7 @@
 			<add.libs>
 				<fileset refid="icepush.jsp.dist" />
 				<fileset dir="${root.offset}/integration/spring/lib"/>
+				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
 			</add.libs>
 		</build.war>
     </target>
