@@ -34,6 +34,7 @@
 				<fileset refid="beans" />
 				<fileset refid="cdi" />
 				<fileset dir="${root.offset}/integration/wicket/core/${dist.dir}"/>
+				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
 			</add.libs>
 		</build.war>
 	</target>
@@ -46,6 +47,7 @@
 				<fileset refid="beans" />
 				<fileset refid="cdi" />
 				<fileset dir="${web.dir}/WEB-INF/lib" />
+				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
 			</add.classpath.elements>
 		</compile>
 	</target>
