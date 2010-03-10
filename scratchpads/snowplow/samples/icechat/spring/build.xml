@@ -15,7 +15,7 @@
                 <fileset id="jsppush" dir="${root.offset}/integration/jsp/core/dist">
                     <include name="icepush-jsp.jar"/>
                 </fileset>
-				<fileset file="../lib/jstl.jar"/>
+				<fileset dir="${root.offset}/integration/spring/lib"/>
             </add.libs>
 		</build.war>
 	</target>
@@ -27,6 +27,7 @@
 				<fileset refid="api" />
 				<fileset refid="beans" />
 				<fileset dir="${web.dir}/WEB-INF/lib" />
+				<fileset dir="${root.offset}/integration/spring/lib"/>
 			</add.classpath.elements>
 		</compile>
 	</target>
