@@ -36,6 +36,7 @@
 				<fileset dir="${root.offset}/integration/wicket/core/${dist.dir}"/>
 				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
 				<fileset file="../cdi/lib/weld-wicket.jar"/>
+				<fileset file="../cdi/lib/weld-servlet.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
@@ -50,6 +51,7 @@
 				<fileset dir="${web.dir}/WEB-INF/lib" />
 				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
 				<fileset file="../cdi/lib/weld-wicket.jar"/>
+				<fileset file="../cdi/lib/weld-servlet.jar"/>
 			</add.classpath.elements>
 		</compile>
 	</target>
