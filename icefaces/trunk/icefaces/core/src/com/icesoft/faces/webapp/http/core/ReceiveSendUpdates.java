@@ -67,13 +67,7 @@ public class ReceiveSendUpdates implements Server {
             } else {
                 View view = (View) views.get(viewNumber);
                 if (view == null) {
-                    try {
-                        Integer.parseInt(viewNumber);
-                        request.respondWith(new ReloadResponse(viewNumber));
-                    } catch (NumberFormatException e)  {
-                        LOG.warn("Malformed viewNumber " + viewNumber);
-                        request.respondWith(SessionExpiredResponse.Handler);
-                    }
+                    request.respondWith(new ReloadResponse(viewNumber));
                 } else {
                     try {
                         view.processPostback(request);
