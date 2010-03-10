@@ -305,7 +305,50 @@ public class DOMResponseWriter extends ResponseWriter {
         script.appendChild(document.createTextNode(calls));
         
         String contextPath = handler.getResourceURL(context, "/");
+        /* 1
         String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
+        */
+        /* 2
+        String confAsyncServerContext = configuration.getAttribute(
+            "asyncServerContext",
+            !isAsyncHttpServiceAvailable() ?
+                contextPath.replaceAll("/", "") :
+                "async-http-server");
+        
+        String confBlockingRequestHandlerContext = configuration.getAttribute("blockingRequestHandlerContext", confAsyncServerContext);
+        String ahsContextPath = URI.create("/").resolve(confBlockingRequestHandlerContext + "/").toString();
+         */
+        String confBlockingRequestHandlerContext = configuration.getAttribute("blockingRequestHandlerContext", null);
+        if (confBlockingRequestHandlerContext == null) {
+            String confAsyncServerContext = configuration.getAttribute("asyncServerContext", null);
+            if (confAsyncServerContext == null) {
+                if (!isAsyncHttpServiceAvailable()) {
+                    /*
+                    confAsyncServerContext = contextPath.replaceAll("/", "");
+                    */
+                    //ICE-3784
+                    //Only need to strip leading and trailing slashes. Removing all slashes
+                    //will cause problems with contexts that actually contain slashes e.g /myapp/mysubapp.
+                    String normalizedPath = contextPath;
+                    if( normalizedPath.length() > 0 ){
+                        if(normalizedPath.charAt(0) == '/'){
+                            normalizedPath = normalizedPath.substring(1);
+                        }
+                        if( normalizedPath.length() > 0 ){
+                            if(normalizedPath.charAt(normalizedPath.length() -1 ) == '/'){
+                                normalizedPath = normalizedPath.substring(0,normalizedPath.length()-1);
+                            }
+                        }
+                    }
+                    confAsyncServerContext = normalizedPath;
+                }
+                else {
+                    confAsyncServerContext = "async-http-server";
+                }
+            }
+            confBlockingRequestHandlerContext = confAsyncServerContext;
+        }
+        String ahsContextPath = URI.create("/").resolve(confBlockingRequestHandlerContext + "/").toString();
         String connectionLostRedirectURI;
         try {
             connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
