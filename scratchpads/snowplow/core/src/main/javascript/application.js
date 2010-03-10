@@ -148,9 +148,9 @@ if (!window.ice.icepush) {
                 return id;
             },
 
-            notify: function(ids) {
+            notify: function(id) {
                 postAsynchronously(apiChannel, calculateURI('notify.icepush'), function(q) {
-                    each(ids, curry(addNameValue, q, 'id'));
+                    addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
                     condition(ServerInternalError, throwServerError);
                 }));
