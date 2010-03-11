@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 public class DeltaSubmitPhaseListener implements PhaseListener {
     private static final String PreviousParameters = "previous-parameters";
+    private static final String[] StringArray = new String[0];
     private static Logger log = Logger.getLogger("org.icefaces.event");
     private Configuration configuration;
 
@@ -64,7 +65,8 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             Document oldDOM = (Document) viewRoot.getAttributes().get("org.icefaces.old-dom");
             previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
         }
-        final Map parameterValuesMap = new HashMap();
+        final Map parameterValuesMap = new HashMap(previousParameters);
+        final ArrayList directParameters = new ArrayList();
 
         Iterator i = submittedParameters.entrySet().iterator();
         while (i.hasNext()) {
@@ -81,7 +83,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     ArrayList allValues = new ArrayList();
                     allValues.addAll(Arrays.asList(previousValues));
                     allValues.addAll(Arrays.asList(values));
-                    parameterValuesMap.put(key, allValues.toArray(new String[0]));
+                    parameterValuesMap.put(key, allValues.toArray(StringArray));
                 }
             } else if (patchKey.startsWith("patch-")) {
                 String key = patchKey.substring(6);
@@ -92,15 +94,23 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     ArrayList allValues = new ArrayList();
                     allValues.addAll(Arrays.asList(previousValues));
                     allValues.removeAll(Arrays.asList(values));
-                    parameterValuesMap.put(key, allValues.toArray(new String[0]));
+                    parameterValuesMap.put(key, allValues.toArray(StringArray));
                 }
             } else {
                 //overwrite parameters
                 parameterValuesMap.put(patchKey, values);
+                directParameters.add(patchKey);
             }
         }
 
-        formAttributes.put(PreviousParameters, parameterValuesMap);
+        //remove parameters that don't participate in the parameter diffing
+        Map newPreviousParameters = new HashMap(parameterValuesMap);
+        Iterator directParameterIterator = directParameters.iterator();
+        while (directParameterIterator.hasNext()) {
+            newPreviousParameters.remove(directParameterIterator.next());
+        }
+
+        formAttributes.put(PreviousParameters, newPreviousParameters);
 
         //todo: proxy the request in Portlet env. as well
         HttpServletRequest originalRequest = (HttpServletRequest) externalContext.getRequest();
@@ -176,7 +186,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                             }
                         }
                         if (!selectedOptions.isEmpty()) {
-                            multiParameters.put(name, selectedOptions.toArray(new String[0]));
+                            multiParameters.put(name, selectedOptions.toArray(StringArray));
                         }
                     }
                 }
