@@ -138,10 +138,12 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 } else {
                     // This shouldn't be the case. Typically it is a symptom that
                     // There is something else wrong so log it as a warning.
+                    String viewState = facesContext.getExternalContext()
+                        .getRequestParameterMap().get("javax.faces.ViewState");
                     if (oldDOM == null) {
-                        log.warning("Old DOM is null during domDiff calculation");
+                        log.warning("Old DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
                     } else {
-                        log.warning("New DOM is null during domDiff calculation");
+                        log.warning("New DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
                     }
                 }
 
