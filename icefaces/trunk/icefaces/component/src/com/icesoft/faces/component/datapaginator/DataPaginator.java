@@ -183,10 +183,12 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                     pageindex = 1;
                 }
                 uiData.setFirst(uiData.getRows() * (pageindex - 1));
-                //page links are not a UICommand. They are just elements, so
-                //by now the pageindex has been changed, now this component
-                //itself needs to call the renderResponse. 
-                getFacesContext().renderResponse();
+                if (isImmediate()) {
+                    //page links are not a UICommand. They are just elements, so
+                    //by now the pageindex has been changed, now this component
+                    //itself needs to call the renderResponse. 
+                    getFacesContext().renderResponse();
+                }
             }
             broadcastToActionListener(scrollerEvent);            
         }
@@ -245,6 +247,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         if (oldRow != -1 && oldRow != rows) {
             first = rows * (pageIndex-1);
         }
+        int tempPageIndex = pageIndex;
         if (rows > 0) {
             pageIndex =first / rows + 1;
             // if the page index > pageCount then some rows may have been removed
@@ -259,6 +262,11 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                      uiData.getClientId(FacesContext.getCurrentInstance())
                      + " has invalid rows attribute.");
             pageIndex = 0;
+        }
+        
+        //the first was not in range, so recalculate
+        if (tempPageIndex != pageIndex) {
+            first = (rows * pageIndex)-rows;
         }
         //apply the calculated first for current page
         if (oldRow != -1 && oldRow != rows) {
@@ -1132,4 +1140,12 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
     }      
+    
+    public void decode(FacesContext context) {
+        //each cycle can have new component
+        UIData uiData = findUIData();
+        setUIData(uiData);
+        uiData.getAttributes().put(DataPaginator.class.getName(), this);
+        super.decode(context);
+    }
 }

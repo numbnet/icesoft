@@ -220,7 +220,6 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             //Reset the dataTable model before setting variables
             scroller.getUIData().setValue(null);
             scroller.getUIData().setRowIndex(-1);
-            ((UISeries) scroller.getUIData()).ensureFirstRowInRange(); // ICE-2783
             setVariables(facesContext, scroller);
         }
     }
