@@ -25,8 +25,8 @@ function login() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			if( transport.responseText )
-				$("loginMessages").innerHTML = transport.responseText;
+			if( xmlHttp.responseText )
+				$("loginMessages").innerHTML = xmlHttp.responseText;
 			else
 				window.location.href = './index.html';
 		}
@@ -49,8 +49,8 @@ function register() {
 	var xmlHttp = getXmlHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			if( transport.responseText )
-				$("loginMessages").innerHTML = transport.responseText;
+			if( xmlHttp.responseText )
+				$("loginMessages").innerHTML = xmlHttp.responseText;
 			else
 				window.location.href = './index.html';
 		}
