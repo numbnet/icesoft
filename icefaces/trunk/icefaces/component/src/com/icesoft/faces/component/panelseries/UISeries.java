@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.datapaginator.DataPaginator;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.component.util.CustomComponentUtils;
@@ -296,9 +297,11 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!keepSaved(context)) {
             savedChildren = new HashMap();
         }
+        synchWithPaginator();
         super.encodeBegin(context);
     }
 
+    
 
     public void processDecodes(FacesContext context) {
         if (context == null) {
@@ -708,6 +711,11 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         return super.isRendered();
     } 
     
+    protected void synchWithPaginator() {
+        if (!this.getAttributes().containsKey(DataPaginator.class.getName())) return;
+        DataPaginator paginator = (DataPaginator)this.getAttributes().get(DataPaginator.class.getName());
+        paginator.getPageIndex();
+    }
 }
 
 class ChildState implements Serializable {
