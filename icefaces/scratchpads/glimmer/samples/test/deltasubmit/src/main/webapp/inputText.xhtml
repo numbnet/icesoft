@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
+<f:view  contentType="text/html"/>
+<h:head>
+    <title>Request scoped counter</title>
+    <h:outputScript name="jsf.js" library="javax.faces"/>
+</h:head>
+<h:body>
+        <h:form>
+            <h:commandButton type="submit" value="Apply"/>
+             <h:dataTable var="item" value="#{InputBean.items}">
+                 <h:column>
+                     <h:inputText id="in" value="#{item.value}"/>
+                 </h:column>
+                 <h:column>
+                     <h:outputText id="out" value="#{item.value}"/>                     
+                 </h:column>
+            </h:dataTable>
+        </h:form>
+</h:body>
+</html>
+

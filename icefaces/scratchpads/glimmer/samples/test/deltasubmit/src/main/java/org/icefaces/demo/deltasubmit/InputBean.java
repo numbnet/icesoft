@@ -1,0 +1,63 @@
+package org.icefaces.demo.deltasubmit;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+import java.util.Arrays;
+
+@ManagedBean(name = "InputBean")
+@SessionScoped
+public class InputBean {
+    private SingleValueEntry[] items = new SingleValueEntry[4];
+    private MultiValueEntry[] mitems = new MultiValueEntry[4];
+
+    public InputBean() {
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new SingleValueEntry();
+        }
+        for (int i = 0; i < mitems.length; i++) {
+            mitems[i] = new MultiValueEntry();
+        }
+    }
+
+    public SingleValueEntry[] getItems() {
+        return items;
+    }
+
+    public MultiValueEntry[] getMultiItems() {
+        return mitems;
+    }
+
+    public static class SingleValueEntry {
+        private String value = "A";
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public static class MultiValueEntry {
+        private String[] value = new String[0];
+
+        public void setValue(String[] value) {
+            this.value = value;
+        }
+
+        public String[] getValue() {
+            return value;
+        }
+
+        public String getText() {
+            StringBuffer sb = new StringBuffer();
+            for (int i=0; i < value.length; i++) {
+                if (i != 0) sb.append(", ");
+                  sb.append(value[i]);
+              }
+              return sb.toString();
+        }
+    }
+}

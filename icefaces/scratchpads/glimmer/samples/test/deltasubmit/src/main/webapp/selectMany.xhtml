@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
+<f:view  contentType="text/html"/>
+<h:head>
+    <title>Request scoped counter</title>
+    <h:outputScript name="jsf.js" library="javax.faces"/>
+</h:head>
+<h:body>
+        <h:form>
+            <span>toggle common attributes: </span>
+            <h:commandButton type="submit" value="Apply"/>
+             <h:dataTable var="item" value="#{InputBean.multiItems}" style="border: 1px solid gray;">
+                 <h:column>
+                     <h:selectManyCheckbox id="in" value="#{item.value}">
+                         <f:selectItem itemValue="A"/>
+                         <f:selectItem itemValue="B"/>
+                         <f:selectItem itemValue="C"/>
+                     </h:selectManyCheckbox>
+                 </h:column>
+                 <h:column>
+                     <h:outputText id="out" value=">> #{item.text}"/>
+                 </h:column>
+            </h:dataTable>
+        </h:form>
+</h:body>
+</html>
+
