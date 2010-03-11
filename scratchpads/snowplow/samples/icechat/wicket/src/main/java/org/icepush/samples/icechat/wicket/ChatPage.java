@@ -17,9 +17,10 @@
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
 
 package org.icepush.samples.icechat.wicket;
+
 import javax.inject.Inject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -31,54 +32,53 @@ import org.icepush.samples.icechat.cdi.model.CurrentChatSessionHolderBean;
 import org.icepush.samples.icechat.controller.ILoginController;
 
 /**
- *
+ * 
  * @author bkroeger
  */
 public final class ChatPage extends AppBasePage {
 
-    // Session Scoped Beans
-    @Inject
-    ILoginController loginController;
-    CompoundPropertyModel compoundLoginController;
-    
-    @Inject
-    ChatManagerFacadeBean chatManagerFacadeBean;
-    CompoundPropertyModel compoundChatManagerFacadeBean;
-    
-    @Inject
-    ChatManagerViewControllerSessionBean chatManagerVC;
+	// Session Scoped Beans
+	@Inject
+	ILoginController loginController;
+	CompoundPropertyModel compoundLoginController;
 
-    CurrentChatSessionHolderBean currentChatSessionHolderBean = new CurrentChatSessionHolderBean();
+	@Inject
+	ChatManagerFacadeBean chatManagerFacadeBean;
+	CompoundPropertyModel compoundChatManagerFacadeBean;
 
+	@Inject
+	ChatManagerViewControllerSessionBean chatManagerVC;
 
-    public ChatPage() {
-        super ();
-        // Initialize Model
-        chatManagerVC.setChatService(chatService);
-        chatManagerVC.setLoginController(loginController);
-        chatManagerVC.setCurrentChatSessionHolder(currentChatSessionHolderBean);
-        chatManagerFacadeBean.setChatService(chatService);
+	CurrentChatSessionHolderBean currentChatSessionHolderBean = new CurrentChatSessionHolderBean();
 
-        compoundLoginController = new CompoundPropertyModel(loginController);
-        compoundChatManagerFacadeBean = new CompoundPropertyModel(chatManagerFacadeBean);
+	public ChatPage() {
+		super();
+		// Initialize Model
+		chatManagerVC.setChatService(chatService);
+		chatManagerVC.setLoginController(loginController);
+		chatManagerVC.setCurrentChatSessionHolder(currentChatSessionHolderBean);
+		chatManagerFacadeBean.setChatService(chatService);
 
-        // Add Components to page
-        Form chatSession = new Form("chatSession",compoundLoginController);
-        chatSession.add(new Label("credentialsBean.userName"));
-        chatSession.add(new Label("credentialsBean.nickName"));
-	chatSession.add(new AjaxButton("logout") {
+		compoundLoginController = new CompoundPropertyModel(loginController);
+		compoundChatManagerFacadeBean = new CompoundPropertyModel(
+				chatManagerFacadeBean);
+
+		// Add Components to page
+		Form chatSession = new Form("chatSession", compoundLoginController);
+		chatSession.add(new Label("credentialsBean.userName"));
+		chatSession.add(new Label("credentialsBean.nickName"));
+		chatSession.add(new AjaxButton("logout") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-                            loginController.logout();
-                            setResponsePage(LoginPage.class);
+				loginController.logout();
+				setResponsePage(LoginPage.class);
 			}
 		});
-        add(chatSession);
+		add(chatSession);
 
-        add(new ChatRoomsPanel("chatRoomsPanel",compoundChatManagerFacadeBean));
-        
-        add(new ChatPanel("chatPanel"));
+		add(new ChatRoomsPanel("chatRoomsPanel", compoundChatManagerFacadeBean));
 
-    }
+		add(new ChatPanel("chatPanel"));
+
+	}
 
 }
-

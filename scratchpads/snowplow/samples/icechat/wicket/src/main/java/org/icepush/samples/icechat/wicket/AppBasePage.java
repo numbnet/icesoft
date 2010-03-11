@@ -17,7 +17,7 @@
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
 
 package org.icepush.samples.icechat.wicket;
 
@@ -29,13 +29,12 @@ import org.icepush.samples.icechat.cdi.service.ChatServiceApplicationBean;
 
 public class AppBasePage extends WebPage {
 
-        @Inject
-        ChatServiceApplicationBean chatService;
+	@Inject
+	ChatServiceApplicationBean chatService;
 
 	public AppBasePage() {
 		super();
-                add(new ContextImage("banner_hdr","./img/banner_hdr.jpg"));
-                add(new ContextImage("wicketLogo","./img/logos/wicket.png"));
+		add(new ContextImage("headerImage", "./img/ICEpush-Wicket.png"));
+		add(new ContextImage("wicketLogo", "./img/logos/wicket.png"));
 	}
 }
-
