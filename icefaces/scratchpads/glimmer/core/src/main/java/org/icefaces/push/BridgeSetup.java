@@ -84,24 +84,29 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 root.addComponentResource(context, output, "head");
 
                 try {
-                    String id = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+                    String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+                    String viewID = context.getApplication().getStateManager().getViewState(context);
 
                     output = new UIOutput();
+                    String clientID = output.getClientId();
                     output.getAttributes().put("escape", "false");
-                    output.setValue("<script type=\"text/javascript\">" +
+                    output.setValue("<script id='" + clientID + "' type=\"text/javascript\">" +
+                            //define bridge configuration
                             "ice.configuration = {" +
                             "deltaSubmit: " + configuration.getAttributeAsBoolean("deltaSubmit", false) +
                             "};" +
-                            "window.ice.window = '" + id + "';" +
+                            //bridge needs the window ID
+                            "window.ice.window = '" + windowID + "';" +
+                            //save view state for single submit when form is missing
+                            "document.getElementById('" + clientID + "').parentNode.javax_faces_ViewState='" + viewID + "';" +
                             "</script>");
                     root.addComponentResource(context, output, "body");
 
                     if (EnvUtils.isICEpushPresent()) {
-                        String viewID = context.getApplication().getStateManager().getViewState(context);
                         SessionViewManager.lookup(context).addView(viewID);
                         output = new UIOutput();
                         output.getAttributes().put("escape", "false");
-                        String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(id);
+                        String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
                         output.setValue("<script type=\"text/javascript\">" +
                                 "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
                                 "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
@@ -111,7 +116,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 } catch (Exception e) {
                     //could re-throw as a FacesException, but WindowScope failure should
                     //not be fatal to the application
-                    e.printStackTrace();
+                    log.warning(e.getMessage());
                 }
             }
         }

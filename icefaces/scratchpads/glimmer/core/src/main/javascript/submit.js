@@ -34,12 +34,10 @@ var submit;
 
     //set these variables only once
     var singleSubmitForm;
-    var viewState;
     onLoad(window, function() {
         singleSubmitForm = document.createElement('form');
         singleSubmitForm.action = window.location.pathname;
         singleSubmitForm.id = 'void';
-        viewState = document.getElementById('javax.faces.ViewState').value;
     });
 
     singleSubmit = function (event, element, additionalParameters) {
@@ -48,6 +46,11 @@ var submit;
 
         try {
             event = event || null;
+            //locate view state
+            var viewState = detect(parents(element), function(e) {
+                return e.javax_faces_ViewState;
+            }).javax_faces_ViewState;
+
             var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewState};
             serializeEventToOptions(event, element, options);
             serializeAdditionalParameters(additionalParameters, options);
