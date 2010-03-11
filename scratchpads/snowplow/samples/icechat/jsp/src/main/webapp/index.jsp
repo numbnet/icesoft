@@ -135,16 +135,12 @@
     <body>
     	
     	<div id="headerContainer" class="header_container">
-    		<div class="header_content"><img width="109px" height="100px"
-				src="./img/banner_hdr.jpg" style="float: left" />
-				<div style="font-size: 20pt; color: #0F65B8; margin-top: 45px;float:left;">
-					<span style="font-weight: bold;">ICEpush</span> 
-					<span style="font-style: italic; font-family: Times New Roman"> with JSP</span>
+     		<div class="header_content">
+				<div style="font-size: 20pt; color: #0F65B8; margin-top: 15px;">
+					<img src="./img/ICEpush-JSP.png" title="ICEpush with JSP"/>
+					<img src="./img/java-duke-logo.png" width="82px" style="float:right;margin-top:10px;margin-right:25px;"/>
 				</div>
-				<div style="float:right;margin-top:20px;">
-					<img src="./img/java-duke-logo.png" width="105px"/>
-				</div>   		
-			</div> 
+			</div> 		
     	</div>
         
         <div class="body_container body_container_pos" id="content"> 

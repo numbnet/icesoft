@@ -22,7 +22,7 @@
  *
  *
 -->
-<project name="icechat-jsp">
+<project name="icechat-jsp" default="war">
 	
 	<property name="root.offset" value="../../.."/>
 	<property file="${root.offset}/build.properties" />
@@ -37,7 +37,7 @@
 				<fileset refid="beans" />
 				<fileset refid="auth" />
 				<fileset file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
-				<fileset file="../lib/jstl.jar"/>
+				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
