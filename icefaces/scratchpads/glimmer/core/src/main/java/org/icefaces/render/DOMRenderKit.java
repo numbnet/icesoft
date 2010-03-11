@@ -37,8 +37,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseStream;
 import javax.faces.render.ClientBehaviorRenderer;
+import javax.faces.event.PostAddToViewEvent;
 
 import org.icefaces.context.DOMResponseWriter;
+import org.icefaces.event.MainEventListener;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.application.ProductInfo;
 
@@ -46,6 +48,7 @@ public class DOMRenderKit extends RenderKit {
 
     private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
 
+    MainEventListener mainEventListener = new MainEventListener();
     RenderKit delegate;
 
     //Announce ICEfaces 2.0

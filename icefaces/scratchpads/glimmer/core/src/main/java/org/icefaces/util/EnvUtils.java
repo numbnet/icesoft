@@ -29,10 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EnvUtils {
-    private static Logger log = Logger.getLogger("org.icefaces.util.EnvUtils");
+    private static Logger log = Logger.getLogger(EnvUtils.class.getName());
     private static Class PortletSessionClass;
+    //internal flags
+    public static String ICEFACES_CONFIG_LOADED = "org.icefaces.config.loaded";
     public static String ICEFACES_RENDER = "org.icefaces.render";
-    public static String ICEFACES_AUTO = "org.icefaces.render.auto";
 
     static {
         try {
@@ -52,26 +53,17 @@ public class EnvUtils {
     public static boolean isICEfacesView(FacesContext facesContext) {
         Map attributes = facesContext.getAttributes();
         Object icefacesRender = attributes.get(ICEFACES_RENDER);
-        //may need a marker property to indicate when all ICEfaces
-        //params have been lazily initialized
         if (null == icefacesRender) {
-            ExternalContext externalContext = facesContext.getExternalContext();
-            Map initParams = externalContext.getInitParameterMap();
-            String icefacesAuto = (String) initParams.get(ICEFACES_AUTO);
-            if ((null == icefacesAuto) || ("true".equalsIgnoreCase(icefacesAuto))) {
-                //"true" or null is "true" as default
-                icefacesRender = Boolean.TRUE;
-            } else {
-                icefacesRender = Boolean.FALSE;
-            }
+            icefacesRender = new Boolean(
+                    EnvConfig.getEnvConfig(facesContext).getAutoRender());
             attributes.put(ICEFACES_RENDER, icefacesRender);
         }
         //using .equals on Boolean to obtain boolean robustly
         return (Boolean.TRUE.equals(icefacesRender));
-//        if (facesContext.getRenderKit() instanceof DOMRenderKit)  {
-//            return true;
-//        }
-//        return false;
+    }
+
+    public static boolean isAutoId(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).getAutoId();
     }
 
     private static boolean icepushPresent;
