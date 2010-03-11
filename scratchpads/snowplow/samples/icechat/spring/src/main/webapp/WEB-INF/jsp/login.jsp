@@ -12,14 +12,11 @@
 
         <div class="header_container">
             <div class="header_content">
-                <img width="109px" height="100px"
-                     src="./img/banner_hdr.jpg"
-                     style="float: left;"/>
-                <div style="font-size: 20pt; color: #0F65B8; margin-top: 45px;">
-                    <span style="font-weight: bold;">ICEpush</span>
-                    <span style="font-style: italic; font-family: 'Times New Roman', 'Arial', 'serif';"> with Spring MVC</span>
-                </div>
-            </div>
+				<div style="font-size: 20pt; color: #0F65B8; margin-top: 15px;">
+					<img src="./img/ICEpush-Spring.png" title="ICEpush with Spring MVC"/>
+					<img src="./img/Spring.png" style="float:right;margin-top:4px;margin-right:17px;" width="140px"/>
+				</div>
+			</div> 		
         </div>
 
         <div class="body_container">
