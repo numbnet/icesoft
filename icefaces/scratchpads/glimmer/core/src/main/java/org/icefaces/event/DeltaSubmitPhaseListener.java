@@ -51,6 +51,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
     }
 
     private void reconstructParametersFromDeltaSubmit(FacesContext facesContext) {
+        if (!facesContext.isPostback()) return;
         UIViewRoot viewRoot = facesContext.getViewRoot();
         ExternalContext externalContext = facesContext.getExternalContext();
         Map submittedParameters = externalContext.getRequestParameterValuesMap();
@@ -159,6 +160,16 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                             String value = input.getAttribute("value");
                             value = "".equals(value) ? "on" : value;
                             multiParameters.put(name, new String[]{value});
+                        }
+                    } else {
+                        String value = input.getAttribute("value");
+                        String[] values = (String[]) multiParameters.get(name);
+                        if (values == null) {
+                            multiParameters.put(name, new String[]{value});
+                        } else {
+                            ArrayList list = new ArrayList(Arrays.asList(values));
+                            list.add(value);
+                            multiParameters.put(name, list.toArray(StringArray));
                         }
                     }
                 }
