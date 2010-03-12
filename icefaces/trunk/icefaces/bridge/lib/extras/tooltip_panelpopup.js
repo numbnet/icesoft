@@ -34,6 +34,8 @@
  
 ToolTipPanelPopup = Class.create({
   initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
+    //tooltip is not rendered 
+    if (!$(tooltipCompId)) return;
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true");
