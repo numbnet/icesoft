@@ -90,10 +90,36 @@ Ice.DnD.StyleReader = {
 
 Ice.modal = Class.create();
 Ice.modal = {
-    running:false,
+    running:{},
+    isRunning:function(target) {
+        return (this.running[target]!= null);
+    },
+    
+    //caller Ice.modal.start()
+    setRunning:function(target) {
+        //register modal popup
+        this.running[target] = target;
+        this.disableTabindex(target);        
+    },
+    
+    //caller Ice.modal.stop()
+    stopRunning:function(target) {
+        //de-register modal popup
+        delete this.running[target];
+        //if there are more than one modal popups then this will enable the focus on
+        //last opened modal popup and if there is no modal popup left then it will
+        //enable the focus on the document.  
+        this.restoreTabindex(this.getRunning());
+    },
+    
+    //returns last modal popup on the stack, null if there isn't any    
+    getRunning:function() {
+        var modal = null;
+        for (m in this.running)
+           modal = m;
+        return modal;
+    },
     target:null,
-    ids: [],
-    tabindexValues: [],
     zIndexCount: 25000,
     start:function(target, iframeUrl,trigger, manualPosition) {
         var modal = document.getElementById(target);
@@ -168,11 +194,8 @@ Ice.modal = {
 
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 2;
         Ice.modal.target = modal;
-        Ice.modal.ids.push(target);
-        if (!Ice.modal.running) {
-            Ice.modal.disableTabindex();
-        }
-        Ice.modal.running = true;
+        //register modal popup
+        Ice.modal.setRunning(target);
         modal.style.visibility = 'visible';
         if (trigger) {
             Ice.modal.trigger = trigger; 
@@ -181,64 +204,67 @@ Ice.modal = {
         }
     },
     stop:function(target) {
-        if (Ice.modal.ids.last() == target) {
+        if (Ice.modal.getRunning() == target) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
-                logger.debug('removed modal iframe for : ' + target);
             }
-            Ice.modal.ids.pop();
+            //de-register modal popup
+            Ice.modal.stopRunning(target);
             Ice.modal.zIndexCount -= 3;
-            Ice.modal.running = false;
             if (Ice.modal.trigger) {
                 Ice.Focus.setFocus(Ice.modal.trigger);
                 Ice.modal.trigger = '';
             }
-            Ice.modal.restoreTabindex();
+ 
         }
     },
-    disableTabindex: function() {
+    enableDisableTabindex: function(target, enable) {
+        var targetElement = null;
+        if (target) {
+              targetElement = $(target);
+        } else {
+              targetElement = document;
+        }        
         var focusables = {};
-        focusables.a = document.getElementsByTagName('a');
-        focusables.area = document.getElementsByTagName('area');
-        focusables.button = document.getElementsByTagName('button');
-        focusables.input = document.getElementsByTagName('input');
-        focusables.object = document.getElementsByTagName('object');
-        focusables.select = document.getElementsByTagName('select');
-        focusables.textarea = document.getElementsByTagName('textarea');
+        focusables.a = targetElement.getElementsByTagName('a');
+        focusables.area = targetElement.getElementsByTagName('area');
+        focusables.button = targetElement.getElementsByTagName('button');
+        focusables.input = targetElement.getElementsByTagName('input');
+        focusables.object = targetElement.getElementsByTagName('object');
+        focusables.select = targetElement.getElementsByTagName('select');
+        focusables.textarea = targetElement.getElementsByTagName('textarea');
         
-        var tabindexValues = [];
         for (listName in focusables) {
             var list = focusables[listName]
             for (var j = 0; j < list.length; j++) {
                 var ele = list[j];
-                if (!Ice.modal.containedInId(ele,Ice.modal.ids.last())) {
-                    var obj = {};
-                    obj.element = ele;
-                    obj.tabIndex = ele.tabIndex ? ele.tabIndex : '';
-                    ele.tabIndex = '-1';
-                    tabindexValues.push(obj);
+                if (enable) {//restore
+                   //restore index only if it was saved
+                   if (ele['oldtabIndex']!= null) {
+                      ele.tabIndex = ele['oldtabIndex'];
+                   }
+                } else {//disable
+                  //save index only if it was not saved already
+                  if (!ele['oldtabIndex']) {
+                        ele['oldtabIndex'] = ele.tabIndex ? ele.tabIndex:'';
+                  }
+                  ele.tabIndex = '-1';     
                 }
             }
-        }
-        Ice.modal.tabindexValues = tabindexValues;
+        }    
     },
-    restoreTabindex: function() {
-        Ice.modal.tabindexValues.each(function(obj) {
-            obj.element.tabIndex = obj.tabIndex;
-        });
-        Ice.modal.tabindexValues = [];
-    }, 
-    containedInId:function(node, id) {
-        if (node.id == id) {
-            return true;
-        }
-        var parent = node.parentNode;
-        if (parent) {
-            return Ice.modal.containedInId(parent, id);
-        }
-        return false;
+    disableTabindex: function(target, restore) {     
+        //restore all is necessary to support more than one modal
+        this.restoreTabindex();   
+        //disable all
+        this.enableDisableTabindex(null, false); 
+        //restore current modal, so it elements can have focus
+        this.restoreTabindex(target);      
+    },    
+    restoreTabindex: function(target) {  
+        this.enableDisableTabindex(target, true);
     }
 };
 
