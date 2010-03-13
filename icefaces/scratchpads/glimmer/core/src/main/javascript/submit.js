@@ -2,17 +2,7 @@ var singleSubmit;
 var submit;
 (function() {
     function formOf(element) {
-        if (element.form) {
-            return element.form;
-        } else {
-            var parent = element.parentNode;
-            while (parent) {
-                if (parent.tagName && parent.tagName.toLowerCase() == 'form') return parent;
-                parent = parent.parentNode;
-            }
-
-            throw 'Cannot find enclosing form.';
-        }
+        return element.form ? element.form : enclosingForm(element);
     }
 
     function serializeEventToOptions(event, element, options) {
@@ -78,16 +68,17 @@ var submit;
 
             function splitStringParameter(f) {
                 return function(p) {
-                    var parameter = p.split('=');
+                    var parameter = split(p, '=');
                     f(decodeURIComponent(parameter[0]), decodeURIComponent(parameter[1]));
                 };
             }
 
             function createHiddenInputInSingleSubmitForm(name, value) {
-                var input = singleSubmitForm.appendChild(document.createElement('input'));
+                var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = name;
                 input.value = value;
+                singleSubmitForm.appendChild(input);
             }
 
             each(addedParameters, splitStringParameter(function(name, value) {
