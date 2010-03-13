@@ -30,8 +30,10 @@ var HashSet;
                     return entry.value;
                 }
             }
+            if (notFoundThunk) notFoundThunk();
             return null;
         } else {
+            if (notFoundThunk) notFoundThunk();
             return null;
         }
     }
@@ -111,7 +113,7 @@ var HashSet;
                 return atPrimitive(buckets, bucketCount, k, notFoundThunk);
             });
 
-            method(putAt, function putAt(self, k, v) {
+            method(putAt, function(self, k, v) {
                 return putAtPrimitive(buckets, bucketCount, k, v);
             });
 
