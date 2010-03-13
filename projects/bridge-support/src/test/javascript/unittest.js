@@ -76,11 +76,12 @@ function InPageRunner(suiteName, tests) {
         var cursor = document.body;
         cursor.appendChild(document.createElement('h3')).appendChild(document.createTextNode(suiteName));
         cursor = cursor.appendChild(document.createElement('table'));
+        cursor.style.borderCollapse = 'collapse';
+        cursor = cursor.appendChild(document.createElement('tbody'));
         var titles = cursor.appendChild(document.createElement('tr'));
         styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Test Case'));
         styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Result'));
         styleHeaderCell(titles.appendChild(document.createElement('td'))).appendChild(document.createTextNode('Time (ms)'));
-        cursor.style.borderCollapse = 'collapse';
 
         document.title = suiteName;
 
@@ -119,7 +120,7 @@ function InPageRunner(suiteName, tests) {
                 time.appendChild(document.createTextNode(elapsedTime));
                 styleNormalCell(time);
             } catch (e) {
-                if (e != interruptTest) alert(e.message);
+                if (e != interruptTest) alert(e + ' ' + e.message);
             } finally {
                 cursor = previousCursor;
             }
