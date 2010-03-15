@@ -731,7 +731,7 @@ public class SelectInputDateRenderer
             table.appendChild(tfoot);
         }
         // purge child components as they have been encoded no need to keep them around
-//        selectInputDate.getChildren().removeAll(selectInputDate.getChildren());
+        selectInputDate.getChildren().clear();
 
         // steps to the position where the next sibling should be rendered
         domContext.stepOver();
