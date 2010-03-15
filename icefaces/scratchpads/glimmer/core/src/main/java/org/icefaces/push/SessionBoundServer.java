@@ -36,51 +36,60 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SessionBoundServer extends PathDispatcher {
+    private static Logger log = Logger.getLogger(SessionBoundServer.class.getName());
     private static final String ICEFacesBridgeRequestPattern = "\\.icefaces\\.jsf$";
     public static final String SessionExpiryExtension = ":se";
     private PushContext pushContext;
     private String groupName;
 
-    public SessionBoundServer(final PushContext pushContext, final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
-        this.pushContext = pushContext;
+    public SessionBoundServer(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
         this.groupName = session.getId();
-
-        final SessionViewManager sessionViewManager = new SessionViewManager(pushContext, session);
 
         final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
             public String mimeTypeFor(String path) {
                 return session.getServletContext().getMimeType(path);
             }
         };
-
         final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
-        windowScopeManager.onActivatedWindow(new Observer() {
-            public void update(Observable observable, Object o) {
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-                HttpServletRequest request = (HttpServletRequest) context.getRequest();
-                HttpServletResponse response = (HttpServletResponse) context.getResponse();
-                //this call will set the browser ID cookie 
-                pushContext.createPushId(request, response);
 
-                String windowID = (String) o;
-                pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
-            }
-        });
-        windowScopeManager.onDisactivatedWindow(new Observer() {
-            public void update(Observable observable, Object o) {
-                String windowID = (String) o;
-                pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
-            }
-        });
+        SessionViewManager sessionViewManager = null;
+        try {
+            this.pushContext = PushContext.getInstance(session.getServletContext());
+            windowScopeManager.onActivatedWindow(new Observer() {
+                public void update(Observable observable, Object o) {
+                    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                    HttpServletRequest request = (HttpServletRequest) context.getRequest();
+                    HttpServletResponse response = (HttpServletResponse) context.getResponse();
+                    //this call will set the browser ID cookie
+                    pushContext.createPushId(request, response);
+
+                    String windowID = (String) o;
+                    pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
+                }
+            });
+            windowScopeManager.onDisactivatedWindow(new Observer() {
+                public void update(Observable observable, Object o) {
+                    String windowID = (String) o;
+                    pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
+                }
+            });
+            sessionViewManager = new SessionViewManager(pushContext, session);
+        } catch (Throwable t) {
+            log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
+        }
 
         dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager, sessionViewManager)));
         dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 
     public void shutdown() {
-        pushContext.push(inferSessionExpiryIdentifier(groupName));
+        if (pushContext != null) {
+            pushContext.push(inferSessionExpiryIdentifier(groupName));
+        }
     }
 
     public static String inferSessionExpiryIdentifier(String windowID) {

@@ -25,7 +25,6 @@ package org.icefaces.push.servlet;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
 import org.icefaces.push.SessionBoundServer;
-import org.icepush.PushContext;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -53,28 +52,14 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
 
     public ICEfacesResourceHandler(ResourceHandler handler) {
         this.handler = handler;
-        ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        final ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         context.setAttribute(ICEfacesResourceHandler.class.getName(), this);
-        try {
-            dispatcher = new PushSessionDispatcher(context);
-        } catch (Throwable t) {
-            log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
-        }
-    }
-
-    private class PushSessionDispatcher extends SessionDispatcher {
-        PushContext pushContext;
-        Configuration configuration;
-
-        PushSessionDispatcher(ServletContext context) {
-            super(context);
-            pushContext = PushContext.getInstance(context);
-            configuration = new ServletContextConfiguration("org.icefaces", context);
-        }
-
-        protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-            return new SessionBoundServer(pushContext, session, sessionMonitor, configuration);
-        }
+        final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
+        dispatcher = new SessionDispatcher(context) {
+            protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
+                return new SessionBoundServer(session, sessionMonitor, configuration);
+            }
+        };
     }
 
     public Resource createResource(String s) {
@@ -136,9 +121,6 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        if (null == dispatcher) {
-            return;
-        }
         try {
             currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
