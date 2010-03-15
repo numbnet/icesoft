@@ -51,12 +51,16 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
     }
 
     private void reconstructParametersFromDeltaSubmit(FacesContext facesContext) {
-        if (!facesContext.isPostback()) return;
         UIViewRoot viewRoot = facesContext.getViewRoot();
         ExternalContext externalContext = facesContext.getExternalContext();
         Map submittedParameters = externalContext.getRequestParameterValuesMap();
 
-        String formClientID = ((String[]) submittedParameters.get("ice.deltasubmit.form"))[0];
+        String[] deltaSubmitFormValues = (String[]) submittedParameters.get("ice.deltasubmit.form");
+        if (deltaSubmitFormValues == null) {
+            //this is not a delta form submission
+            return;
+        }
+        String formClientID = deltaSubmitFormValues[0];
         UIComponent formComponent = viewRoot.findComponent(formClientID);
 
         Map formAttributes = formComponent.getAttributes();

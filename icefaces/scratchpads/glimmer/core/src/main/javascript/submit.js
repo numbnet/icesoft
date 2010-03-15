@@ -81,16 +81,19 @@ var submit;
                 singleSubmitForm.appendChild(input);
             }
 
+            createHiddenInputInSingleSubmitForm('ice.deltasubmit.form', form.id);
+            createHiddenInputInSingleSubmitForm(form.id, form.id);
             each(addedParameters, splitStringParameter(function(name, value) {
                 createHiddenInputInSingleSubmitForm(addPrefix + name, value);
             }));
             each(removedParameters, splitStringParameter(function(name, value) {
                 createHiddenInputInSingleSubmitForm(removePrefix + name, value);
             }));
-
-            options[form.id] = form.id;
-            options['javax.faces.ViewState'] = viewState;
-            options['ice.deltasubmit.form'] = form.id;
+            each(form.elements, function(e) {
+                if (e.name && e.name == 'javax.faces.ViewState') {
+                    createHiddenInputInSingleSubmitForm(e.name, e.value);
+                }
+            });
 
             var clonedElement = element.cloneNode(true);
             singleSubmitForm.appendChild(clonedElement);
