@@ -49,7 +49,6 @@ import org.springframework.webflow.executor.FlowExecutor;
  *
  * Helper class used when launching or resuming Spring Web Flows
  *
- * @author Peter Bodskov
  */
 public class FlowExecutorUtil {
 	private FlowExecutor flowExecutor;

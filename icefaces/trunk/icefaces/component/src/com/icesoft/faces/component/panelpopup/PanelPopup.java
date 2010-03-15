@@ -56,7 +56,6 @@ import org.w3c.dom.Element;
  * the ICEfaces extended HTMLPanelGroup. <p/> By default the component is
  * rendered by the "com.icesoft.faces.PanelPopup" renderer type.
  * 
- * @author Greg McCleary
  * @version beta 1.0
  */
 public class PanelPopup extends HtmlPanelGroup {
