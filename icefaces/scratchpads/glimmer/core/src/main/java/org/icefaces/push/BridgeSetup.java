@@ -116,7 +116,7 @@ public class BridgeSetup extends ViewHandlerWrapper {
                 } catch (Exception e) {
                     //could re-throw as a FacesException, but WindowScope failure should
                     //not be fatal to the application
-                    log.warning(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
