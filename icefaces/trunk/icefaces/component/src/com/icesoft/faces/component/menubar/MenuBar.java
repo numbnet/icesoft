@@ -75,8 +75,6 @@ import java.util.Iterator;
  * By default the MenuBar is rendered by the "com.icesoft.faces.View" renderer
  * type.
  *
- * @author Chris Brown
- * @author gmccleary
  * @version 1.1
  */
 public class MenuBar extends UICommand implements NamingContainer {

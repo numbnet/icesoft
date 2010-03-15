@@ -56,7 +56,6 @@ import org.apache.commons.logging.LogFactory;
  * state.  This coalescing of render calls makes it safer and more efficient for
  * the application developer to add rendering into their application.
  *
- * @author ICEsoft Technologies, Inc.
  * @see RenderManager
  */
 public class RenderHub {

@@ -45,7 +45,6 @@ import org.apache.commons.logging.LogFactory;
  * typically indicate that the queue capacity or thread pool size needs to be
  * adjusted.
  *
- * @author ICEsoft Technologies, Inc.
  */
 class RejectionHandler implements RejectedExecutionHandler {
 

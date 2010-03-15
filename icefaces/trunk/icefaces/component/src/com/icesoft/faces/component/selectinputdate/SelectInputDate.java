@@ -62,7 +62,6 @@ import java.text.SimpleDateFormat;
  * By default the component is rendered by the "com.icesoft.faces.Calendar"
  * renderer type.
  *
- * @author Greg McCleary
  * @version 1.1
  */
 public class SelectInputDate

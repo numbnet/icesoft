@@ -45,7 +45,6 @@ import java.util.Locale;
  * This is a stubbed out version of the HttpServletResponse class.  Only the
  * mimimum number of members required by the parser are implemented.
  *
- * @author Adnan Durrani
  */
 public class StubHttpServletResponse implements HttpServletResponse {
 

@@ -48,7 +48,6 @@ import java.util.Hashtable;
  * associated with the tag.  The map is used by the parser to establish a
  * ruleset for the digester to use when parsing a JSFX page.
  *
- * @author Steve Maryka
  */
 public class TagToComponentMap implements Serializable {
 

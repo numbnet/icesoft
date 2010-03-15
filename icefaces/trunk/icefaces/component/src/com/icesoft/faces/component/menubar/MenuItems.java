@@ -50,8 +50,6 @@ import java.util.List;
  * By default this component is rendered by the "com.icesoft.faces.View"
  * renderer type.
  *
- * @author Chris Brown
- * @author gmccleary
  * @version 1.1
  */
 public class MenuItems extends MenuItemBase {

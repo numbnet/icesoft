@@ -52,7 +52,6 @@ import javax.portlet.PortletSession;
  * Renderable} so that it can be used on the {@link RenderHub}s rendering
  * queue.
  *
- * @author ICEsoft Technologies, Inc.
  */
 class RunnableRender implements Runnable {
 

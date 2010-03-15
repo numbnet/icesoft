@@ -58,7 +58,6 @@ import com.icesoft.util.pooling.ClientIdPool;
 /**
  * TreeRenderer is an ICEfaces D2D renderer for the Tree component.
  *
- * @author gmccleary
  * @version 1.1
  */
 public class TreeRenderer extends DomBasicRenderer {

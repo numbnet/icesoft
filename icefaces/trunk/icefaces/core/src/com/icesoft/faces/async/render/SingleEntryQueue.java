@@ -58,7 +58,6 @@ import org.apache.commons.logging.LogFactory;
  * take care of all changes to the underlying DOM.  This is how the render calls
  * for a given Renderable are efficiently coalesced.
  *
- * @author ICEsoft Technologies, Inc.
  */
 class SingleEntryQueue extends LinkedBlockingQueue {
 

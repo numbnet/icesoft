@@ -39,7 +39,6 @@ import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
  * The Rendering API uses it's own ThreadFactory so that we can set the name,
  * daemon status, and context class loader.
  *
- * @author ICEsoft Technologies, Inc.
  */
 class RenderThreadFactory implements ThreadFactory {
 

@@ -41,7 +41,6 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
  * PersistentFacesState} of a managed bean to the rest of the classes in the
  * Rendering API.
  *
- * @author ICEsoft Technologies, Inc.
  */
 public interface Renderable {
 

@@ -46,7 +46,6 @@ import java.util.List;
  * fires, it wires everything up so that we can traverse the tree of tags
  * later.
  *
- * @author Steve Maryka
  */
 public class TagWire {
     private Tag tag;

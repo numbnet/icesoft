@@ -52,7 +52,6 @@ import java.util.Hashtable;
  * used in the parser to mimick the JSP lifecycle in order to produce the JSF
  * component tree.
  *
- * @author Steve Maryka
  */
 public class ComponentRuleSet extends RuleSetBase {
 

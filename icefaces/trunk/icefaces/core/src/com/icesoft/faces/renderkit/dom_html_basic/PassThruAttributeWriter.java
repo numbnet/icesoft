@@ -52,7 +52,6 @@ import java.util.Map;
  * This class is used by ReponseWriter based renderers to render html
  * pass thru attributes.
  *
- * @author gmccleary
  */
 public class PassThruAttributeWriter {
     

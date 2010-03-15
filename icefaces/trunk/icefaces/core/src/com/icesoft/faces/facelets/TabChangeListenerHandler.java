@@ -48,7 +48,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
- * @author Mark Collette
  * @since 1.1
  */
 public class TabChangeListenerHandler extends TagHandler {
