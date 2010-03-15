@@ -71,7 +71,6 @@ import java.util.ArrayList;
  * component tree for the page.  The parser relies on the apache Digester, and a
  * set of rules created in the ComponentRuleSet class.
  *
- * @author Steve Maryka
  */
 public class Parser {
     private static final Log log = LogFactory.getLog(Parser.class);

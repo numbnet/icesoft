@@ -42,10 +42,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
-/**
- *
- * @author fye
- */
 public class InternalConfig {
     
     

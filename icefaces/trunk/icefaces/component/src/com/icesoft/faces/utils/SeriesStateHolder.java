@@ -43,7 +43,6 @@ import javax.faces.context.FacesContext;
  *  container. This interface is used by our UISeries to manage non-UIData
  *  state that any component might require, without having to save everything.
  * 
- * @author Mark Collette
  */
 public interface SeriesStateHolder {
     public Object saveSeriesState(FacesContext facesContext);

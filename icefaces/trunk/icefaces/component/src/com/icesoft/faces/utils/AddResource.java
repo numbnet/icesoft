@@ -49,7 +49,6 @@ import java.util.List;
  * This utility class uses DOM methods to render javascript and css resources to
  * the page.
  *
- * @author gmccleary
  */
 public final class AddResource {
 

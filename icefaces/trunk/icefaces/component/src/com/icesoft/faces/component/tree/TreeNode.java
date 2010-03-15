@@ -58,7 +58,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * By default this component is rendered by the "com.icesoft.faces.View"
  * renderer type.
  *
- * @author Chris Brown
  * @version beta 1.0
  */
 public class TreeNode extends UIComponentBase implements NamingContainer {

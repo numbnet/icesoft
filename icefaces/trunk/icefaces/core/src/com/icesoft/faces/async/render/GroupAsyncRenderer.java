@@ -65,7 +65,6 @@ import java.util.Set;
  * are advised to use the {@link RenderManager} to create and use named render
  * groups.
  *
- * @author ICEsoft Technologies, Inc.
  * @see RenderManager, OnDemandRenderer, IntervalRenderer, DelayRenderer
  */
 public class GroupAsyncRenderer

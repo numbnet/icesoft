@@ -58,7 +58,6 @@ import com.icesoft.faces.util.CoreUtils;
  * 
  * Most of the methods here are loose adaptations of UIInput's equivalents. 
  *  
- * @author mcollette
  */
 public class UpdatableProperty implements Serializable {
     private static final Log log = LogFactory.getLog(UpdatableProperty.class);

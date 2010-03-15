@@ -47,7 +47,6 @@ import java.util.Vector;
  * A customized Digester that gives us access to the body text of the containing
  * tags.
  *
- * @author Steve Maryka
  */
 public class JsfJspDigester extends Digester {
 

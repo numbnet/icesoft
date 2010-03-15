@@ -66,7 +66,6 @@ import javax.faces.el.ValueBinding;;
  *    shown vertically
  * 3. menuPopup's default style class is iceMnuPop, instead of menuBar's iceMnuBar
  *
- * @author Mark Collette
  */
 public class MenuPopup extends MenuBar {
 

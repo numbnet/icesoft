@@ -50,7 +50,6 @@ import org.apache.commons.logging.LogFactory;
  * directly but it is recommended to use the RenderManager to create and managed
  * named render groups.
  *
- * @author ICEsoft Technologies, Inc.
  * @see RenderManager, GroupAsyncRenderer
  */
 public class IntervalRenderer extends OnDemandRenderer implements Runnable {

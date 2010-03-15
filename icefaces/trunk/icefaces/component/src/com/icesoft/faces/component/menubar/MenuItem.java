@@ -60,8 +60,6 @@ import com.icesoft.util.pooling.CSSNamePool;
  * By default the MenuItem is rendered by the "com.icesoft.faces.View" renderer
  * type.
  *
- * @author Chris Brown
- * @author gmccleary
  * @version 1.1
  */
 public class MenuItem extends MenuItemBase {

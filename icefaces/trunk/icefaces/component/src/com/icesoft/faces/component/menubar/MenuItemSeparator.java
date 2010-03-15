@@ -48,8 +48,6 @@ import javax.faces.context.FacesContext;
  * By default the MenuItemSeparator is rendered by the "com.icesoft.faces.View"
  * renderer type.
  *
- * @author Chris Brown
- * @version beta 1.0
  */
 public class MenuItemSeparator extends MenuItemBase {
 

@@ -38,7 +38,6 @@ package com.icesoft.faces.webapp.parser;
  * TagToComponentMap object.  This object is created by the digester to hold
  * relevant values.
  *
- * @author Steve Maryka
  */
 public class TagToTagClassElement {
     /* An obect that we can use to digest <tag> entries in a tld */
