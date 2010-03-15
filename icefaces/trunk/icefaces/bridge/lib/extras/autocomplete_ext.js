@@ -79,16 +79,31 @@ Autocompleter.Base.prototype = {
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
                               function(element, update) {
+                                  // Based on code from MSDN
+                                  var ieEngine = null;
+                                  if (window.navigator.appName == "Microsoft Internet Explorer") {
+                                      if (document.documentMode) {
+                                          ieEngine = document.documentMode;
+                                      } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                                          ieEngine = 7;
+                                      } else {
+                                          ieEngine = 5;
+                                      }
+                                  }
                                   if (!update.style.position || update.style.position == 'absolute') {
                                       update.style.position = 'absolute';
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
                                       update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
                                           offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                                      if (Prototype.Browser.IE && navigator.userAgent.indexOf("MSIE 8") > -1) {
+                                      if (ieEngine == 7 || ieEngine == 8) {
                                           var savedPos = element.style.position;
                                           element.style.position = "relative";
                                           update.style.left = element.offsetLeft + "px";
-                                          update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                          if (ieEngine == 7) {
+                                              update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                          } else if (ieEngine == 8) {
+                                              update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
+                                          }
                                           element.style.position = savedPos;
                                       }
                                   }
