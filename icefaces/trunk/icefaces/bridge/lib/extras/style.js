@@ -279,13 +279,13 @@ Ice.autoCentre = {
         var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
         var div = document.getElementById(id);
         if (div) {
+            Element.setStyle(div, {position:'absolute'});
             var x = Math.round((Element.getWidth(document.body) - Element.getWidth(div)) / 2 + scrollX);
             if (x < 0) x = 0;
             var y = Math.round(((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - Element.getHeight(div)) / 2 + scrollY);
             if (y < 0) y = 0;
             x = x + "px";
             y = y + "px";
-            Element.setStyle(div, {position:'absolute'});
             Element.setStyle(div, {left: x});
             Element.setStyle(div, {top:y});
         }
