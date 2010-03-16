@@ -48,6 +48,8 @@ ToolTipPanelPopup = Class.create({
     this.ctxValue = ctxValue
     this.iFrameUrl = iFrameUrl;
     this.moveWithMouse = moveWithMouse;
+    this.displayOn = displayOn;
+    this.event = event;
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -103,7 +105,11 @@ ToolTipPanelPopup = Class.create({
         ToolTipPanelPopupUtil.adjustPosition(tooltip);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
-    this.addToVisibleList();    
+    this.addToVisibleList(); 
+    //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler    
+    if (this.event && this.displayOn == 'altclick') {
+        Event.extend(this.event).stop();
+    }
   },
 
   hidePopupOnMouseOut: function(event) {
