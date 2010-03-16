@@ -110,8 +110,9 @@ public class OutputMessageRenderer extends DomBasicRenderer {
         int numberOfParameters = uiParameterChildren.size();
         if (numberOfParameters > 0) {
             Object[] parameters = uiParameterChildren.toArray();
-            uiComponentValue =
-                    MessageFormat.format(uiComponentValue, parameters);
+            MessageFormat mf = new MessageFormat(uiComponentValue,
+                    facesContext.getViewRoot().getLocale());
+            uiComponentValue = mf.format(parameters); 
         }
 
         // escape
