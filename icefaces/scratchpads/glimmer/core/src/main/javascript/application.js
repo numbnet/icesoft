@@ -186,8 +186,12 @@ if (!window.ice.icefaces) {
             each(updateXML.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
                 var element = document.getElementById(id);
-                if (element && toLowerCase(element.nodeName) == 'form') {
-                    redirectFormSubmit(element);
+                if (element) {
+                    if (toLowerCase(element.nodeName) == 'form') {
+                        redirectFormSubmit(element);
+                    } else {
+                        each(element.getElementsByTagName('form'), redirectFormSubmit);
+                    }
                 }
             });
         });
