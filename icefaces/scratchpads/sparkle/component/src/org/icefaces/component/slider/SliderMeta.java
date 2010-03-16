@@ -49,7 +49,12 @@ public class SliderMeta {
     private String styleClass;  
 
     @Property
-    private String thumbImage;  
+    private String thumbImage; 
+
+    @Property (defaultValue="500")
+    private Integer sliderInterval; 
+
+    
     
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
