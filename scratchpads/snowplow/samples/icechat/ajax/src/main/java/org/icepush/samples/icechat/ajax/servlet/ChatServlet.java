@@ -290,8 +290,8 @@ public class ChatServlet extends HttpServlet {
 			HttpServletResponse resp) throws ServletException, IOException {
 		String roomName = req.getParameter(ROOM_NAME);
 		User user = (User) req.getSession(true).getAttribute("user");
-		if (user != null) {
-			getChatService().loginToChatRoom(roomName, user.getUserName(), user.getPassword());
+		if (user != null &&  ! getChatService().getChatRoom(roomName).isUserInRoom(user) ) {
+			getChatService().loginToChatRoom(roomName, user);
 			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
 			pushContext.push(roomName+"_users");
 		}
