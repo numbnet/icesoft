@@ -11,6 +11,9 @@ public class Bean {
     private int value2;
     private int value3;
     private int value4;
+    private int value5;
+    private int value6;
+    private int value7;        
     private String valueChangeString = "Event: ";
     
     public int getValue1() {
@@ -46,6 +49,24 @@ public class Bean {
     }
     public void setValueChangeString(String valueChangeString) {
         this.valueChangeString = valueChangeString;
+    }
+    public int getValue5() {
+        return value5;
+    }
+    public void setValue5(int value5) {
+        this.value5 = value5;
+    }
+    public int getValue6() {
+        return value6;
+    }
+    public void setValue6(int value6) {
+        this.value6 = value6;
+    }
+    public int getValue7() {
+        return value7;
+    }
+    public void setValue7(int value7) {
+        this.value7 = value7;
     }
     
 }
