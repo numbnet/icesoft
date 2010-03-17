@@ -34,7 +34,7 @@ public abstract class AbstractPushRequestContext implements Serializable{
 	private static final long serialVersionUID = -6769963604096352169L;
 	
 	private String currentPushId;
-	private PushContext pushContext;
+	private transient PushContext pushContext;
 	
 	public String getCurrentPushId() {
 		return currentPushId;
