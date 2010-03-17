@@ -36,10 +36,6 @@ import org.icepush.samples.icechat.service.IChatService;
 import org.icepush.samples.icechat.service.exception.LoginFailedException;
 import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
-/**
- * @TODO This class does not look threadsafe....
- * 
- */
 public abstract class BaseChatServiceBean extends RevisedBaseChatServiceBean
 		implements Serializable, IChatService {
 

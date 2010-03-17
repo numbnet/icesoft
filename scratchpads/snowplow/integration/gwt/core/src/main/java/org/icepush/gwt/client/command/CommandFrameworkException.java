@@ -27,7 +27,6 @@ import java.io.Serializable;
 
 /**
  * a generic exception class to throw when the framework encounters and error.
- * @author Patrick Wilson
  *
  */
 public class CommandFrameworkException extends RuntimeException implements Serializable{

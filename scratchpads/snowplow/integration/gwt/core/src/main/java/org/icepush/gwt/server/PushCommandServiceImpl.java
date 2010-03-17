@@ -36,7 +36,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * this is the GWT remote procedure servlet for the command API.  Modification of this class is not necessary to use the API.
- * @author Patrick Wilson
  *
  */
 public class PushCommandServiceImpl extends RemoteServiceServlet implements PushCommandService {

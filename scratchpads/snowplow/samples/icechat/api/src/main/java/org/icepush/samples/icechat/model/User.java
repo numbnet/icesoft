@@ -28,7 +28,6 @@ import java.util.Date;
 
 /**
  *
- * @author pbreau
  */
 public class User implements Serializable{
 

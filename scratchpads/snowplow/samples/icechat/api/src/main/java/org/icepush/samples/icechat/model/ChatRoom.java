@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  *
- * @author pbreau
  */
 public class ChatRoom implements Serializable{
 

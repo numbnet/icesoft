@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.Date;
 /**
  *
- * @author pbreau
  */
 public class UserChatSession implements Serializable{
 
