@@ -35,7 +35,6 @@ import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 /**
  *
- * @author bkroeger
  */
 public final class LoginPage extends AppBasePage {
 

@@ -34,7 +34,6 @@ import org.icepush.samples.icechat.IPushRequestContext;
 
 /**
  *
- * @author bkroeger
  */
 public abstract class PushPanel extends Panel {
 

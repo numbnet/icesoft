@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  *
- * @author bkroeger
  * @version
  */
 
