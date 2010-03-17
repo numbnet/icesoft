@@ -33,7 +33,6 @@ import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 /**
  *
- * @author pbreau
  */
 public interface IChatService {
 

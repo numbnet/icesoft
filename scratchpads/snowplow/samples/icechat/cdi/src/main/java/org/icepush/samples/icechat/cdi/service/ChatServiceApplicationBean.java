@@ -31,7 +31,6 @@ import org.icepush.samples.icechat.service.IChatService;
 
 /**
  *
- * @author pbreau
  */
 @Named(value="chatService")
 @ApplicationScoped

@@ -105,7 +105,6 @@ public class ClientPushCommandContext {
 	
 	/** 
 	 * this class is the push event listener that is used to invoke the proper command executer.
-	 * @author Patrick Wilson
 	 *
 	 */
 	public class CommandPushListener extends PushEventListener implements AsyncCallback<List<ICommand>>{

@@ -31,7 +31,6 @@ import org.icepush.PushContext;
 
 /**
  * The listener that initializes the ICEpush Command Queue framework.
- * @author Patrick Wilson
  *
  */
 public class PushCommandContextListener implements ServletContextListener{
