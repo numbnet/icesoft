@@ -79,6 +79,9 @@ public class SliderRenderer extends Renderer{
         call.append("', ");
         call.append("singleSubmit:");
         call.append(slider.isSingleSubmit());
+        call.append(", ");        
+        call.append("slideInterval:");
+        call.append(slider.getSlideInterval());        
         call.append("},{});");
         System.out.println(call);        
         writer.write(call.toString());
