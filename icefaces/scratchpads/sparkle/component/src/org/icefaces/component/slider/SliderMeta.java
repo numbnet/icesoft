@@ -52,7 +52,7 @@ public class SliderMeta {
     private String thumbImage; 
 
     @Property (defaultValue="500")
-    private Integer sliderInterval; 
+    private Integer slideInterval; 
 
     
     

@@ -37,11 +37,19 @@ ice.yui.slider = {
                 //name of the event that will invoke submit
                 var submitOn = jsfProps.submitOn;
 
-                if (submitOn == 'sliderInterval') {
+                if (submitOn == 'slideInterval') {
                     //this event is not known by YUI3 slider, this represents "thumbDrag" event
                     //now set the submitOn with "thumbDrag"
                     submitOn = 'thumbDrag';
-                    
+
+                    var slideInterval = jsfProps.slideInterval;   
+                    //check range         
+                    if (slideInterval < 100)
+                        slideInterval = 100;
+                    else if (slideInterval > 1000) {
+                        slideInterval = 1000;
+                    }    
+                    logger.info('sliderInterval '+ slideInterval);
                     //create a slider timeout handler
                     var sliderTimeoutHandler = null;
                     
@@ -58,7 +66,7 @@ ice.yui.slider = {
                             //cleanup
                             clearTimeout(sliderTimeoutHandler);
                             sliderTimeoutHandler = null;
-                        }, 500);
+                        },  slideInterval);
                     }
                 } 
                 obj.after(submitOn, submitHandler);
