@@ -54,7 +54,7 @@ ice.yui.slider = {
                     var sliderTimeoutHandler = null;
                     
                     //get the reference of submitHandler
-                    originalSubmitHandler = submitHandler;
+                    var originalSubmitHandler = submitHandler;
                     
                     //create a timeout based submitHandler
                     submitHandler = function(event) {
