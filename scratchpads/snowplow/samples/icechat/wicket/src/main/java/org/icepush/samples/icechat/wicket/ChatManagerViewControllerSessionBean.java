@@ -28,7 +28,6 @@ import org.icepush.samples.icechat.controller.model.ICurrentChatSessionHolderBea
 
 /**
  *
- * @author bkroeger
  */
 @Named
 @SessionScoped

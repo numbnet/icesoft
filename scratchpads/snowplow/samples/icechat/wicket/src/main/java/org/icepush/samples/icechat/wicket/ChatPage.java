@@ -33,7 +33,6 @@ import org.icepush.samples.icechat.controller.ILoginController;
 
 /**
  * 
- * @author bkroeger
  */
 public final class ChatPage extends AppBasePage {
 

@@ -28,7 +28,6 @@ import org.apache.wicket.util.string.Strings;
 
 /**
  *
- * @author bkroeger
  * @version
  */
 

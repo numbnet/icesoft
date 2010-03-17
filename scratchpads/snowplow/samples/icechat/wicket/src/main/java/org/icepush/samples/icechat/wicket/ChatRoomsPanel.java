@@ -37,7 +37,6 @@ import org.icepush.samples.icechat.model.ChatRoom;
 
 /**
  *
- * @author bkroeger
  */
 public final class ChatRoomsPanel extends Panel{
 

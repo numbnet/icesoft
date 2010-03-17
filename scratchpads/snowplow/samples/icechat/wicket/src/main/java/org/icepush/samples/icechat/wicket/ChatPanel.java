@@ -36,7 +36,6 @@ import org.icepush.samples.icechat.model.UserChatSession;
 
 /**
  *
- * @author bkroeger
  */
 public final class ChatPanel extends PushPanel {
 
