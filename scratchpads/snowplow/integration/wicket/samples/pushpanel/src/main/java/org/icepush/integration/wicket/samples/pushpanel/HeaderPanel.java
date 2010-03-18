@@ -39,7 +39,7 @@ public class HeaderPanel extends Panel {
     public HeaderPanel(String componentName)
     {
         super(componentName);
-        add(new ContextImage("banner_hdr","./images/banner_hdr.jpg"));
+        add(new ContextImage("headerImage","./images/banner_hdr.jpg"));
         add(new ContextImage("wicketLogo","./images/wicket.png"));
     }
 
