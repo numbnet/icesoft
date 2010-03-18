@@ -22,6 +22,8 @@
 
 package org.icepush;
 
+import javax.servlet.ServletContext;
+
 import org.icepush.http.Request;
 import org.icepush.http.Response;
 import org.icepush.http.ResponseHandler;
@@ -30,9 +32,15 @@ import org.icepush.http.Server;
 public class ConfigurationServer implements Server, ResponseHandler {
     private String configCode;
 
-    public ConfigurationServer(Configuration configuration) {
-        String uriPrefix = configuration.getAttribute("uriPrefix", "");
-        String uriSuffix = configuration.getAttribute("uriSuffix", "");
+    public ConfigurationServer(final ServletContext servletContext) {
+        String uriPrefix = (String)servletContext.getAttribute("uriPrefix");
+        if (uriPrefix == null) {
+            uriPrefix = "";
+        }
+        String uriSuffix = (String)servletContext.getAttribute("uriSuffix");
+        if (uriSuffix == null) {
+            uriSuffix = "";
+        }
         configCode =
                 "ice.push.configuration.uriSuffix='" + uriSuffix + "';" +
                         "ice.push.configuration.uriPrefix='" + uriPrefix + "';";

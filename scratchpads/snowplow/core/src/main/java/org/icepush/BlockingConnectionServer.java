@@ -22,13 +22,6 @@
 
 package org.icepush;
 
-import org.icepush.http.Request;
-import org.icepush.http.Response;
-import org.icepush.http.ResponseHandler;
-import org.icepush.http.Server;
-import org.icepush.http.standard.FixedXMLContentHandler;
-import org.icepush.http.standard.ResponseHandlerServer;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -44,6 +37,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.icepush.http.Request;
+import org.icepush.http.Response;
+import org.icepush.http.ResponseHandler;
+import org.icepush.http.Server;
+import org.icepush.http.standard.FixedXMLContentHandler;
+import org.icepush.http.standard.ResponseHandlerServer;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
@@ -76,17 +76,17 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private Server activeServer;
     private ConcurrentLinkedQueue notifiedPushIDs = new ConcurrentLinkedQueue();
     private List participatingPushIDs = Collections.emptyList();
-    private Observable notifier;
+    private PushGroupManager pushGroupManager;
 
     private String lastWindow = "";
     private String[] lastNotifications = new String[]{};
 
-    public BlockingConnectionServer(Observable outboundNotifier, final Observable inboundNotifier, final Timer monitorRunner, Configuration configuration) {
+    public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
-        this.notifier = outboundNotifier;
+        this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
-        outboundNotifier.addObserver(this);
+        this.pushGroupManager.addObserver(this);
 
         //define blocking server
         activeServer = new Server() {
@@ -112,7 +112,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                     } else {
                         respondIfNotificationsAvailable();
                     }
-                    inboundNotifier.notifyObservers(new ArrayList(participatingPushIDs));
+                    pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
                 } catch (RuntimeException e) {
                     log.fine("Request does not contain pushIDs.");
                     respondIfPendingRequest(NoopHandler);
@@ -137,7 +137,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     public void shutdown() {
         cancel();
-        notifier.deleteObserver(this);
+        pushGroupManager.deleteObserver(this);
         activeServer.shutdown();
     }
 

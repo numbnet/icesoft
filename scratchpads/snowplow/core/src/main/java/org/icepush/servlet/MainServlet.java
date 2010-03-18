@@ -22,23 +22,24 @@
 
 package org.icepush.servlet;
 
-import org.icepush.CodeServer;
-import org.icepush.Configuration;
-import org.icepush.ConfigurationServer;
-import org.icepush.PushContext;
-import org.icepush.PushGroupManager;
-import org.icepush.http.standard.CacheControlledServer;
-import org.icepush.http.standard.CompressingServer;
+import java.net.SocketException;
+import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.SocketException;
-import java.util.Observable;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icepush.CodeServer;
+import org.icepush.Configuration;
+import org.icepush.ConfigurationServer;
+import org.icepush.PushContext;
+import org.icepush.PushGroupManager;
+import org.icepush.PushGroupManagerFactory;
+import org.icepush.http.standard.CacheControlledServer;
+import org.icepush.http.standard.CompressingServer;
 
 public class MainServlet
 implements PseudoServlet {
@@ -46,15 +47,17 @@ implements PseudoServlet {
     private PseudoServlet dispatcher;
     private Timer timer;
 
-    public MainServlet(final ServletContext context, final Configuration configuration, final Observable outboundNotifier, final Observable inboundNotifier, final PushGroupManager pushGroupManager) {
+    public MainServlet(final ServletContext context) {
         timer = new Timer(true);
+        final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
+        final PushGroupManager pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
         final PushContext pushContext = new PushContext(context, pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer(context)))));
-        pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(configuration)))));
+        pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(context)))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(pushContext, outboundNotifier, inboundNotifier, timer, configuration);
+                return new BrowserBoundServlet(pushContext, pushGroupManager, timer, configuration);
             }
         });
 
