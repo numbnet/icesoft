@@ -22,32 +22,34 @@
 
 package org.icepush.servlet;
 
-import java.net.SocketException;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.icepush.CodeServer;
 import org.icepush.Configuration;
 import org.icepush.ConfigurationServer;
+import org.icepush.ProductInfo;
 import org.icepush.PushContext;
 import org.icepush.PushGroupManager;
 import org.icepush.PushGroupManagerFactory;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.SocketException;
+import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MainServlet
-implements PseudoServlet {
+        implements PseudoServlet {
     private static Logger log = Logger.getLogger(MainServlet.class.getName());
     private PseudoServlet dispatcher;
     private Timer timer;
 
     public MainServlet(final ServletContext context) {
+        log.info(new ProductInfo().toString());
+
         timer = new Timer(true);
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
         final PushGroupManager pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
