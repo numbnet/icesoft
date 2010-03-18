@@ -22,8 +22,17 @@
 
 package org.icepush;
 
+import java.util.List;
+import java.util.Observer;
+
 public interface PushGroupManager {
     void addMember(String groupName, String pushId);
+
+    void addObserver(Observer observer);
+
+    void deleteObserver(Observer observer);
+
+    void notifyObservers(List pushIdList);
 
     void push(String groupName);
 

@@ -36,6 +36,9 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 
+import org.icepush.servlet.ReadyObservable;
+import org.icepush.servlet.ServletContextConfiguration;
+
 public class LocalPushGroupManager
 implements PushGroupManager {
     private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
@@ -43,15 +46,13 @@ implements PushGroupManager {
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
 
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
+    private final Observable inboundNotifier = new ReadyObservable();
+    private final Observable outboundNotifier = new ReadyObservable();
 
     private final long groupTimeout;
-    private final Observable outboundNotifier;
 
-    public LocalPushGroupManager(
-        final Observable outboundNotifier, final Observable inboundNotifier, final DefaultConfiguration configuration,
-        final ServletContext servletContext) {
-
-        this.outboundNotifier = outboundNotifier;
+    public LocalPushGroupManager(final ServletContext servletContext) {
+        Configuration configuration = new ServletContextConfiguration("org.icepush", servletContext);
         this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
         inboundNotifier.addObserver(
             new Observer() {
@@ -87,6 +88,18 @@ implements PushGroupManager {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.log(Level.FINEST, "Added pushId '" + pushId + "' to group '" + groupName + "'.");
         }
+    }
+
+    public void addObserver(final Observer observer) {
+        outboundNotifier.addObserver(observer);
+    }
+
+    public void deleteObserver(final Observer observer) {
+        outboundNotifier.deleteObserver(observer);
+    }
+
+    public void notifyObservers(final List pushIdList) {
+        inboundNotifier.notifyObservers(pushIdList);
     }
 
     public void push(final String groupName) {
