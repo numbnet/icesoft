@@ -37,7 +37,7 @@
     <target name="product.info" description="update product information">
         <sequential>
             <tempfile property="svninfo.log"/>
-            <exec executable="svn" output="${svninfo.log}" failonerror="no">
+            <exec executable="svn" failonerror="no">
                 <arg line="info"/>
             </exec>
             <loadfile property="revision" srcFile="${svninfo.log}" failonerror="no">
@@ -52,7 +52,7 @@
             <delete file="${svninfo.log}"/>
 
             <buildnumber/>
-            <echo message="${revision}"/>
+
             <copy file="conf/${product.info}"
                   tofile="${java.dir}/${product.info}"
                   overwrite="true">
