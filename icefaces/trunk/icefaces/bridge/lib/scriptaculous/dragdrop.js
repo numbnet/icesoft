@@ -188,6 +188,10 @@ var Draggables = {
 
     updateDrag: function(event) {
         if (!this.activeDraggable) return;
+        if (Prototype.Browser.IE && !(event.button % 2)) {
+            this.endDrag(event);
+            return;
+        }
         var pointer = [Event.pointerX(event), Event.pointerY(event)];
     // Mozilla-based browsers fire successive mousemove events with
         // the same coordinates, prevent needless redrawing (moz bug?)
@@ -550,6 +554,28 @@ var Draggable = Class.create({
         if ((!this.options.constraint) || (this.options.constraint == 'vertical'))
             style.top = p[1] + "px";
 
+        var vpDims = document.viewport.getDimensions();
+        var dims = this.element.getDimensions();
+        var vpOffset = this.element.viewportOffset();
+        var posOffset = this.element.positionedOffset();
+        var diff = vpOffset.left + dims.width - (vpDims.width - 10);
+        if (diff > 0) {
+            style.left = (posOffset.left - diff) + "px";
+        }
+        diff = vpOffset.top + dims.height - (vpDims.height - 10);
+        if (diff > 0) {
+            style.top = (posOffset.top - diff) + "px";
+        }
+        vpOffset = this.element.viewportOffset();
+        posOffset = this.element.positionedOffset();
+        diff = 10 - vpOffset.left;
+        if (diff > 0) {
+            style.left = (posOffset.left + diff) + "px";
+        }
+        diff = 10 - vpOffset.top;
+        if (diff > 0) {
+            style.top = (posOffset.top + diff) + "px";
+        }
         if (style.visibility == "hidden") style.visibility = ""; // fix gecko rendering
     },
 
