@@ -26,6 +26,7 @@
 
 	<target name="package.all">
 		<antcall target="clean-all" />
+		<antcall target="package.basic" />
 		<antcall target="package.jsp" />
 		<antcall target="package.gwt" />
 		<antcall target="package.jquery" />
@@ -44,6 +45,8 @@
 		<mkdir dir="./dist/${target}/samples" />
 		<copy todir="./dist/${target}" file="./build-common.xml" />
 		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml" />
+		<copy file="./etc/ReadMe-${target}.html" tofile="./dist/${target}/ReadMe.html" />
+		<copy file="./etc/ICEpush.png" todir="./dist/${target}/"/>
 		<copy file="build.properties" todir="./dist/${target}" />
 		<copy todir="./dist/${target}/samples" file="./etc/samples.properties" overwrite="true" />
 		<copy todir="./dist/${target}/samples">
@@ -119,6 +122,8 @@
 		<mkdir dir="./dist/${target}/samples" />
 		<copy todir="./dist/${target}" file="./build-common.xml" />
 		<copy file="./etc/build-${target}.xml" tofile="./dist/${target}/build.xml" />
+		<copy file="./etc/ReadMe-${target}.html" tofile="./dist/${target}/ReadMe.html" />
+		<copy file="./etc/ICEpush.png" todir="./dist/${target}/"/>				
 		<copy file="build.properties" todir="./dist/${target}" />
 		<copy todir="./dist/${target}/samples">
 			<fileset dir="./integration/${target}/samples" excludes="build.xml" />
