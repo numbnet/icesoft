@@ -1,4 +1,4 @@
-/* garpinc 180dr2modified
+/*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
@@ -14,7 +14,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -28,7 +28,6 @@
  * the notice and other provisions required by the LGPL License. If you do
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
- *
  */
 
 package com.icesoft.faces.component.outputchart;
