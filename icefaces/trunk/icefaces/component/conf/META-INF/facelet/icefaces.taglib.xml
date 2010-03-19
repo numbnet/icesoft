@@ -340,6 +340,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>jsEventListener</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.JSEventListener</component-type>
+			<renderer-type>com.icesoft.faces.JSEventListenerRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>loadBundle</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.LoadBundle</component-type>
