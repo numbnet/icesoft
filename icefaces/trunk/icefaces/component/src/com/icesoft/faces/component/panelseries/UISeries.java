@@ -441,7 +441,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     private boolean maximumSeverityAtLeastError(FacesContext facesContext) {
         FacesMessage.Severity maximumSeverity = facesContext.getMaximumSeverity();
         return ( (maximumSeverity != null) &&
-                 (FacesMessage.SEVERITY_ERROR.compareTo(maximumSeverity) >= 0) );
+                 (FacesMessage.SEVERITY_ERROR.compareTo(maximumSeverity) <= 0) );
     }
     
     private boolean isNestedWithinUIData() {
