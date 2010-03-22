@@ -41,26 +41,7 @@ function login() {
 
 function getLoginFormParams(){
 	var loginForm = document.forms['login'];
-	return  "userName=" + loginForm.elements['userName'].value + "&nickName="
-			+ loginForm.elements['nickName'].value + "&password=" + loginForm.elements['password'].value;
-}
-
-function register() {
-	var xmlHttp = getXmlHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			if( xmlHttp.responseText )
-				$("loginMessages").innerHTML = xmlHttp.responseText;
-			else
-				window.location.href = './index.html';
-		}
-	}
-	var form = document.forms['login'];
-	var params = "op=register&" + getLoginFormParams();
-	xmlHttp.open("POST", "auth", true);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);	
+	return  "userName=" + loginForm.elements['userName'].value;
 }
 
 function logout() {

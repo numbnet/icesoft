@@ -32,17 +32,13 @@ import javax.servlet.http.HttpSession;
 
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.service.IChatService;
-import org.icepush.samples.icechat.service.exception.LoginFailedException;
 
 public class SecurityServlet extends HttpServlet {
 	
 	public static final String OP = "op";
 	public static final String USER_NAME = "userName";
-	public static final String PASSWORD = "password";
-	public static final String NICKNAME = "nickName";
 	public static final String LOGIN = "login";
 	public static final String LOGOUT = "logout";
-	public static final String REGISTER = "register";
 	static final String USER_KEY = "user";
 	private String homePageURL;
 	private static final String HOME_PAGE_URL_KEY = "homePageURL";
@@ -64,43 +60,28 @@ public class SecurityServlet extends HttpServlet {
 			User user = (User)req.getSession().getAttribute(USER_KEY);
 			if( user != null ){
 				req.setAttribute(USER_KEY, null);				
-				LOG.info(user.getUserName() + " logged out ");
+				LOG.info(user.getName() + " logged out ");
 			}
 			req.getSession().invalidate();
 			return;
 		}
-		else if( ( LOGIN.equals(op) || REGISTER.equals(op) ) && req.getAttribute(USER_KEY) != null ){
+		else if( LOGIN.equals(op) && req.getAttribute(USER_KEY) != null ){
 			dispatch(homePageURL,req,resp);
 			return;
 		}
-		else if( LOGIN.equals(op) || REGISTER.equals(op)){
+		else if( LOGIN.equals(op)){
 			
 			String userName = req.getParameter(USER_NAME);
-			String password = req.getParameter(PASSWORD);
-			String nickName = req.getParameter(NICKNAME);
 			
-			if( userName != null && password != null ){				
+			if( userName != null ){				
 				
 				HttpSession session = req.getSession(true);
 				User user = null;
 				
 				
-				if( REGISTER.equals(op) ){					
-					LOG.info("registering " + userName);
-					user = getChatService().register(userName, nickName, password);
-					if( user == null ){
-						op = LOGIN;//try login if user name already exists
-					}
-				}
 				if( LOGIN.equals(op) ){
 					LOG.info("logging in " + userName);
-					try{
-						user = getChatService().login(userName, password);
-					}
-					catch(LoginFailedException lfe){
-						lfe.printStackTrace();
-						resp.getWriter().write("Login failed");
-					}
+					user = getChatService().login(userName);
 				}
 				session.setAttribute(USER_KEY,user);
 				LOG.info("session: " + session.getId() + " user=" + user);

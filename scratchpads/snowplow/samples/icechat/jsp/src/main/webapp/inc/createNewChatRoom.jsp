@@ -36,7 +36,7 @@
 <jsp:setProperty name="newRoom" property="name" value="<%=request.getParameter("roomName")%>"/>
 <%
 if (user != null) {
-	chatService.createNewChatRoom( request.getParameter("roomName"), user);	
+	chatService.createNewChatRoom( request.getParameter("roomName"));	
 	PushContext pushContext = PushContext.getInstance( getServletContext() );
 	pushContext.push("rooms");
 } 

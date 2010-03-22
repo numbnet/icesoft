@@ -82,7 +82,8 @@
 					<include name="**" />
 				</fileset>
 			</copy>
-			<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+			<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true"
+				overwrite="false">
 				<fileset refid="icepush.dist" />
 				<fileset refid="api" />
 				<add.libs />

@@ -30,7 +30,6 @@
 		<compile>
 			<add.classpath.elements>				
 				<fileset refid="api"/>
-				<fileset refid="beans"/>
 				<fileset dir="lib"/>
 			</add.classpath.elements>
 		</compile>

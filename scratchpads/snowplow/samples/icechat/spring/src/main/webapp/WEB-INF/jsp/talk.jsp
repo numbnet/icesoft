@@ -30,7 +30,7 @@
 	           <div id="chatPanel">
 				
 					<div class="chatSession chatSession_pos" id="chatSessionPanel">
-						<c:out value="You are logged in as ${loginController.currentUser.userName} (${loginController.currentUser.nickName})"/>
+						<c:out value="You are logged in as ${loginController.currentUser.name}"/>
 						<a href="logout.htm">Logout</a>
 					</div>
 					

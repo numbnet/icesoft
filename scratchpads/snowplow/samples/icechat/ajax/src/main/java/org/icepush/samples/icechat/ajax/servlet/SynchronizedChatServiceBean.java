@@ -29,19 +29,16 @@ import org.icepush.samples.icechat.model.ChatRoom;
 import org.icepush.samples.icechat.model.Message;
 import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.model.UserChatSession;
-import org.icepush.samples.icechat.service.exception.LoginFailedException;
 import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 public class SynchronizedChatServiceBean extends BaseChatServiceBean {
 
-	public synchronized void createNewChatRoom(String name,
-			String userName, String password) {
-		super.createNewChatRoom(name, userName, password);
+	public synchronized void createNewChatRoom(String name) {
+		super.createNewChatRoom(name);
 	}
 
-	public synchronized void createNewUser(String userName, String nickName,
-			String password) {
-		super.createNewUser(userName, nickName, password);
+	public synchronized void createNewUser(String userName) {
+		super.createNewUser(userName);
 	}
 
 	public synchronized  List<Message> getAllChatRoomMessages(String chatRoom) {
@@ -61,39 +58,25 @@ public class SynchronizedChatServiceBean extends BaseChatServiceBean {
 		return super.getOnlineUsers();
 	}
 
-	public synchronized User login(String userName, String password)
-			throws LoginFailedException {
-		return super.login(userName, password);
+	public synchronized User login(String userName){
+		return super.login(userName);
 	}
 
-	public synchronized UserChatSession loginToChatRoom(String chatRoom,
-			String userName, String password) {
-		return super.loginToChatRoom(chatRoom, userName, password);
+	public synchronized UserChatSession loginToChatRoom(String chatRoom, User user) {
+		return super.loginToChatRoom(chatRoom, user);
 	}
 
-	public synchronized void logoutOfChatRoom(String chatRoom, String userName,
-			String password) {
-		super.logoutOfChatRoom(chatRoom, userName, password);
+	public synchronized void logoutOfChatRoom(String chatRoom, User user) {
+		super.logoutOfChatRoom(chatRoom, user);
 	}
 
-	public synchronized User register(String userName, String nickName,
-			String password) {
-		return super.register(userName, nickName, password);
+	public synchronized void sendNewMessage(String chatRoom, User user, String message) 
+	throws UnauthorizedException{
+		super.sendNewMessage(chatRoom, user, message);
 	}
 
-	public synchronized void sendNewMessage(String chatRoom, String userName,
-			String password, String message) throws UnauthorizedException{
-		super.sendNewMessage(chatRoom, userName, password, message);
-	}
-
-	public synchronized void setUserAvatar(String userName, String password,
-			byte[] avatar) {
-		super.setUserAvatar(userName, password, avatar);
-	}
-
-	public synchronized List<User> getChatRoomUsers(String chatRoomName, String userName,
-			String password) {
-		return super.getChatRoomUsers(chatRoomName, userName, password);
+	public synchronized List<User> getChatRoomUsers(String chatRoomName) {
+		return super.getChatRoomUsers(chatRoomName);
 	}
 	
 

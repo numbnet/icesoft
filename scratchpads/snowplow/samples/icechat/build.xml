@@ -21,7 +21,7 @@
  *
  *
   -->
-<project default="jsf2" name="icechat">
+<project default="ajax" name="icechat">
 
 	<target name="api">
 		<ant target="jar" dir="./api" />
@@ -31,11 +31,7 @@
 		<ant target="jar" dir="./auth" />
 	</target>
 
-	<target name="beans" depends="api">
-		<ant target="jar" dir="./beans" />
-	</target>
-
-	<target name="cdi-beans" depends="beans">
+	<target name="cdi-beans" depends="api">
 		<ant target="jar" dir="./cdi" />
 	</target>
 
@@ -43,27 +39,23 @@
 		<ant target="war" dir="./wicket" />
 	</target>
 
-	<target name="jsf2" depends="cdi-beans">
-		<ant target="war" dir="./jsf2" />
-	</target>
-
-	<target name="jsp" depends="auth,beans">
+	<target name="jsp" depends="auth">
 		<ant target="war" dir="./jsp" />
 	</target>
 
-	<target name="gwt" depends="beans">
+	<target name="gwt" depends="api">
 		<ant target="war" dir="./gwt" />
 	</target>
 
-	<target name="icefaces2" depends="cdi-beans">
+	<target name="icefaces2" depends="api">
 		<ant target="war" dir="./icefaces" />
 	</target>
 
-	<target name="gwt-devmode" depends="beans">
+	<target name="gwt-devmode" depends="api">
 		<ant target="devmode" dir="./gwt" />
 	</target>
 
-	<target name="ajax" depends="auth,beans">
+	<target name="ajax" depends="auth">
 		<ant target="war" dir="ajax" />
 	</target>
 
@@ -82,10 +74,8 @@
 	<target name="clean-all">
 		<ant target="clean" dir="./api" />
 		<ant target="clean" dir="./auth" />
-		<ant target="clean" dir="./beans" />
 		<ant target="clean" dir="./cdi" />
 		<ant target="clean" dir="./wicket" />
-		<ant target="clean" dir="./jsf2" />
 		<ant target="clean" dir="./ajax" />
 		<ant target="clean" dir="./gwt" />
 		<ant target="clean" dir="./jquery" />
@@ -96,9 +86,6 @@
 	</target>
 
 	<fileset id="src.api" dir="./api">
-		<include name="**" />
-	</fileset>
-	<fileset id="src.beans" dir="./beans">
 		<include name="**" />
 	</fileset>
 	<fileset id="src.auth" dir="./auth">

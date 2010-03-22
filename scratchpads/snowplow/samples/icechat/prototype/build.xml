@@ -33,7 +33,6 @@
 	<target name="war" depends="compile">
 		<build.war>
 			<add.libs>
-				<fileset refid="beans" />
 				<fileset refid="auth" />
 			</add.libs>
 			<add.filesets>

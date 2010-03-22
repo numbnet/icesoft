@@ -34,7 +34,6 @@
 		<icepush.jsp.available/>
 		<build.war>
 			<add.libs>
-				<fileset refid="beans" />
 				<fileset refid="auth" />
 				<fileset file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
 				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
@@ -47,7 +46,6 @@
 			<add.classpath.elements>
 				<fileset refid="api"/>
 				<fileset refid="auth"/>
-				<fileset refid="beans"/>
 			</add.classpath.elements>
 		</compile>
 	</target>

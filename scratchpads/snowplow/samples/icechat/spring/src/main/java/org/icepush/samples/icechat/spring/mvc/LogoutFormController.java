@@ -43,8 +43,8 @@ public class LogoutFormController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (baseLoginController != null) {
-            if (baseLoginController.getCredentialsBean() != null) {
-                ((LoginFormData) baseLoginController.getCredentialsBean()).clear();
+            if (baseLoginController.getCurrentUser() != null) {
+                baseLoginController.setCurrentUser(null);
             }
 
             // Request a logout

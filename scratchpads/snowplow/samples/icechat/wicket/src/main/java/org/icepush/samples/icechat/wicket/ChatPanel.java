@@ -64,7 +64,7 @@ public final class ChatPanel extends PushPanel {
         chatRoomForm.add(usersListView = new ListView("currentChatSessionHolder.session.room.userChatSessions"){
             public void populateItem(final ListItem listItem){
                 final UserChatSession userChatSession = (UserChatSession)listItem.getModelObject();
-                listItem.add(new Label("userName",userChatSession.getUser().getDisplayName()));
+                listItem.add(new Label("userName",userChatSession.getUser().getName()));
 
             }
         });
@@ -73,7 +73,7 @@ public final class ChatPanel extends PushPanel {
             public void populateItem(final ListItem listItem){
                 final Message message = (Message)listItem.getModelObject();
                 listItem.add(new Label("created",message.getCreated().toString()));
-                listItem.add(new Label("userChatSession.user.displayName",message.getUserChatSession().getUser().getDisplayName()));
+                listItem.add(new Label("userChatSession.user.name",message.getUserChatSession().getUser().getName()));
                 listItem.add(new Label("message",message.getMessage()));
 
             }

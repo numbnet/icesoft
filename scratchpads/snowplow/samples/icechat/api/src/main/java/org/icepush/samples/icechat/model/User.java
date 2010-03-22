@@ -31,19 +31,14 @@ import java.util.Date;
  */
 public class User implements Serializable{
 
-    private String userName;
+    private String name;
 
-    private String nickName;
-
-    private String password;
-    
     private Collection<UserChatSession> chatSessions = new ArrayList<UserChatSession>();
 
     private String sessionToken;
     private Date lastTouch = new Date();
     
-    private byte[] avatar;
-
+    
     public User(){
         chatSessions = new ArrayList<UserChatSession>();
     }
@@ -51,29 +46,15 @@ public class User implements Serializable{
     /**
      * @return the userName
      */
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
     /**
      * @param userName the userName to set
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * @return the nickName
-     */
-    public String getNickName() {
-        return nickName;
-    }
-
-    /**
-     * @param nickName the nickName to set
-     */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -97,40 +78,8 @@ public class User implements Serializable{
         this.setChatRooms(chatRooms);
     }
 
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the avatar
-     */
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    /**
-     * @param avatar the avatar to set
-     */
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-    
-    public String getDisplayName(){
-    	return nickName != null ? nickName : userName;
-    }
-
     public String toString(){
-    	return nickName != null ? nickName + " (" + userName + ")" : userName;
+    	return name;
     }
 
     

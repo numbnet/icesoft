@@ -15,7 +15,6 @@
     </bean>    
 
     <bean id="loginController" class="org.icepush.samples.icechat.spring.impl.BaseLoginController" scope="session">
-        <property name="credentialsBean" ref="loginFormData"/>
         <property name="chatService" ref="chatService"/>
     </bean>
 

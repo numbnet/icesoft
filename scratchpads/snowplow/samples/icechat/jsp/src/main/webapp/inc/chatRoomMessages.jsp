@@ -38,7 +38,7 @@
 		for (Message msg : messages) {
 %>
 	<div id='<%=msg.getId()%>'><%=new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(msg.getCreated())%>
-	&nbsp;<%=msg.getUserChatSession().getUser().getDisplayName()%>
+	&nbsp;<%=msg.getUserChatSession().getUser().getName()%>
 	&nbsp;Said:&nbsp;<span style='color:gray;'><%=msg.getMessage()%></span>
 	</div>
 <%

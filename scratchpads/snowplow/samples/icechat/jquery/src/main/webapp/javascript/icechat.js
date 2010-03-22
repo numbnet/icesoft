@@ -22,22 +22,9 @@
 /****************** SECURITY AND AUTHORIZATION ***********************************/
 
 function login() {
-	$.post("auth",{
-		op:"login",
-		userName:$("#userName").val(),
-		nickName:$("#nickName").val(),
-		password:$("#password").val()
-			},function(data){ if(data)$("#loginMessages").html(data);else window.location.href = './index.html';});
+	$.post("auth",{op:"login", userName:$("#userName").val()},
+			function(data){ if(data)$("#loginMessages").html(data);else window.location.href = './index.html';});
 }
-function register() {
-	$.post("auth",{
-		op:"register",
-		userName:$("#userName").val(),
-		nickName:$("#nickName").val(),
-		password:$("#password").val()
-			},function(data){ if(data)$("#loginMessages").html(data);else window.location.href = './index.html'; });
-}
-
 function logout() {
 	if( getCurrentRoomName() != null )
 		logoutOfChatRoom(getCurrentRoomName());

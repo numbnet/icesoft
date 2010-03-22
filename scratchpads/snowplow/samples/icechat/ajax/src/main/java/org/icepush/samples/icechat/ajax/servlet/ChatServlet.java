@@ -56,7 +56,6 @@ public class ChatServlet extends HttpServlet {
 
 	public static final String ROOM_NAME = "roomName";
 	public static final String USER_NAME = "userName";
-	public static final String PASSWORD = "password";
 	public static final String MESSAGE = "msg";
 	public static final String INDEX = "idx";
 
@@ -148,12 +147,12 @@ public class ChatServlet extends HttpServlet {
 				for( UserChatSession s : sessions ){
 					if( s.isLive() ){
 						buff.append("<div id='");
-						buff.append(s.getUser().getUserName());
+						buff.append(s.getUser().getName());
 						buff.append("'>");
-						buff.append(s.getUser().getDisplayName());
+						buff.append(s.getUser().getName());
 						buff.append("&nbsp;");
 						buff.append("<span id='");
-						buff.append(s.getRoom().getName()+"_"+s.getUser().getUserName());
+						buff.append(s.getRoom().getName()+"_"+s.getUser().getName());
 						buff.append("_draft' class='draft'>");
 						buff.append(getMessageDraft(s));
 						buff.append("</span>");		
@@ -161,7 +160,7 @@ public class ChatServlet extends HttpServlet {
 					}
 					else{
 						buff.append("<div>");
-						buff.append(s.getUser().getDisplayName());
+						buff.append(s.getUser().getName());
 						buff.append("&nbsp;left at " + DATE_FORMAT.format(s.getExited()));
 						buff.append("</div>");
 					}
@@ -206,7 +205,7 @@ public class ChatServlet extends HttpServlet {
 				buff.append("'>");
 				buff.append(DATE_FORMAT.format(msg.getCreated()));
 				buff.append("&nbsp;");
-				buff.append(msg.getUserChatSession().getUser().getDisplayName());
+				buff.append(msg.getUserChatSession().getUser().getName());
 				buff.append("&nbsp;Said:&nbsp;<span style='color:gray;'>");
 				buff.append(msg.getMessage());
 				buff.append("</span></div>");
@@ -221,7 +220,7 @@ public class ChatServlet extends HttpServlet {
 		if( room != null ){
 			Collection<UserChatSession> sessions = room.getUserChatSessions();
 			for( UserChatSession s : sessions ){
-				if( s.isLive() && s.getUser().getUserName().equals(userName) && s.getCurrentDraft() != null ){
+				if( s.isLive() && s.getUser().getName().equals(userName) && s.getCurrentDraft() != null ){
 					result = getMessageDraft(s);
 					if( s.getCurrentDraft() != null )
 						result += "<div class='typing'>&nbsp;&nbsp;&nbsp;</div>";
@@ -237,8 +236,7 @@ public class ChatServlet extends HttpServlet {
 		User user = (User) req.getSession(true).getAttribute("user");
 		if (user != null) {
 			String roomName = req.getParameter(ROOM_NAME);
-			getChatService().createNewChatRoom(
-					roomName, user.getUserName(), user.getPassword());
+			getChatService().createNewChatRoom(roomName);
 			LOG.info("successfully created room " + roomName );
 			
 			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
@@ -255,12 +253,12 @@ public class ChatServlet extends HttpServlet {
 		if (user != null) {
 			try{
 				String msg = req.getParameter(MESSAGE);
-				getChatService().sendNewMessage(roomName, user.getUserName(), user.getPassword(), msg);
+				getChatService().sendNewMessage(roomName, user, msg);
 				LOG.info("sent room '" + roomName + "' message '" + msg + "'");
 				
 				PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
 				pushContext.push(roomName+"_messages");
-				pushContext.push(roomName+"_"+user.getUserName()+"_draft");
+				pushContext.push(roomName+"_"+user.getName()+"_draft");
 			}
 			catch(UnauthorizedException e){
 				e.printStackTrace();
@@ -273,16 +271,11 @@ public class ChatServlet extends HttpServlet {
 		String roomName = req.getParameter(ROOM_NAME);
 		User user = (User) req.getSession(true).getAttribute("user");
 		if (user != null) {
-			try{
-				String msg = req.getParameter(MESSAGE);
-				getChatService().updateCurrentDraft(msg, roomName, user.getUserName(), user.getPassword());
-				
-				PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
-				pushContext.push(roomName+"_"+user.getUserName()+"_draft");
-			}
-			catch(UnauthorizedException e){
-				e.printStackTrace();
-			}
+			String msg = req.getParameter(MESSAGE);
+			getChatService().updateCurrentDraft(msg, roomName, user);			
+			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
+			pushContext.push(roomName+"_"+user.getName()+"_draft");
+			
 		}
 	}
 	
@@ -307,8 +300,8 @@ public class ChatServlet extends HttpServlet {
 		String roomName = req.getParameter(ROOM_NAME);
 		User user = (User) req.getSession(true).getAttribute("user");
 		if (user != null) {
-			LOG.info("removing " + user.getUserName() + " from " + roomName);
-			getChatService().logoutOfChatRoom(roomName, user.getUserName(), user.getPassword());
+			LOG.info("removing " + user.getName() + " from " + roomName);
+			getChatService().logoutOfChatRoom(roomName, user);
 			PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
 			pushContext.push(roomName+"_users");
 		}

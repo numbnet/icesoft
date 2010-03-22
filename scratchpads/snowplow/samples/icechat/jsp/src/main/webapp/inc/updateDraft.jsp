@@ -39,6 +39,6 @@ if (user != null && session.getAttribute("currentChatRoom") != null) {
 	chatService.updateCurrentDraft(msg, room.getName(), user);
 	
 	PushContext pushContext = PushContext.getInstance(getServletContext());
-	pushContext.push(room.getName()+"_"+user.getUserName()+"_draft");	
+	pushContext.push(room.getName()+"_"+user.getName()+"_draft");	
 }
 %>

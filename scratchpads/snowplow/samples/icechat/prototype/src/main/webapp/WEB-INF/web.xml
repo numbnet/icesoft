@@ -61,16 +61,6 @@
     </servlet-mapping>
     
 	<servlet>
-        <servlet-name>resourceServlet</servlet-name>
-        <servlet-class>org.icepush.samples.icechat.ajax.servlet.ResourceServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>resourceServlet</servlet-name>
-        <url-pattern>/resource</url-pattern>
-    </servlet-mapping>
-
-	<servlet>
         <servlet-name>chatServlet</servlet-name>
         <servlet-class>org.icepush.samples.icechat.ajax.servlet.ChatServlet</servlet-class>
         <load-on-startup>1</load-on-startup>

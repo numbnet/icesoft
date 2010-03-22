@@ -58,8 +58,7 @@ public class LoginFormController extends SimpleFormController {
 
                     baseLoginController.setPushRequestContext(pushRequestManager.getPushRequestContext());
                 }
-
-                baseLoginController.register();
+                baseLoginController.setUserName(loginFormData.getUserName());
                 baseLoginController.login();
 
                 return new ModelAndView(new RedirectView(getSuccessView()));
