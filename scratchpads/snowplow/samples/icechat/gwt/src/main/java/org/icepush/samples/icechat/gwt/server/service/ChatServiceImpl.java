@@ -62,7 +62,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 				.getServletContext());
-		chatService.createNewChatRoom(name, currentUser);
+		chatService.createNewChatRoom(name);
 				
 		UserChatSession session = chatService.loginToChatRoom(name, currentUser);
 		//    	
@@ -131,7 +131,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		List<Credentials> userNames = new ArrayList<Credentials>(users.size());
 		for(User u: users){
 			Credentials cred = new Credentials();
-			cred.setUserName(u.getUserName());
+			cred.setUserName(u.getName());
 			cred.setSessionToken(u.getSessionToken());
 			
 			userNames.add(cred);
@@ -187,7 +187,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		
 		ChatMessageBuilder messageBuilder = new ChatMessageBuilder();
 		for(Message m: messages){
-			result.add(messageBuilder.createChatMessage(m.getMessage(), m.getUserChatSession().getUser().getUserName()));
+			result.add(messageBuilder.createChatMessage(m.getMessage(), m.getUserChatSession().getUser().getName()));
 		}
 
 		
@@ -210,8 +210,8 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		
 		List<User> allUsers = chatService.getChatRoomParticipants(handle.getName());
 		for(User user: allUsers){
-			if(this.draftMessages.get(user.getUserName()) == null){
-				this.draftMessages.put(user.getUserName(), new LinkedBlockingQueue<ChatRoomDraft>());
+			if(this.draftMessages.get(user.getName()) == null){
+				this.draftMessages.put(user.getName(), new LinkedBlockingQueue<ChatRoomDraft>());
 			} 
 			ChatRoomDraft userDraft = new ChatRoomDraft();
 			userDraft.setText(newText);

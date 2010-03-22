@@ -44,14 +44,12 @@ public class GWTPushContext {
 	 * register a new listener to the specified list of render groups.
 	 */
 	public void addPushEventListener(PushEventListener listener,
-			List<String> groupNames, String pushId) {
+			String group, String pushId) {
 
 		listener.setPushId(pushId);
-		for (String group : groupNames) {
-			icePushClient.addGroupMember(group, pushId);
-		}
-
-		listener.setGroups(groupNames.toArray(new String[] {}));
+		icePushClient.addGroupMember(group, pushId);
+		
+		listener.setGroup(group);
 
 		icePushClient.register(pushId, listener);
 
@@ -61,14 +59,12 @@ public class GWTPushContext {
 	 * register a new listener to the specified list of render groups.
 	 */
 	public void addPushEventListener(PushEventListener listener,
-			String[] groupNames) {
+			String group) {
 
 		String id = icePushClient.createPushId();
 		listener.setPushId(id);
-		for (String group : groupNames) {
-			icePushClient.addGroupMember(group, id);
-		}
-		listener.setGroups(groupNames);
+		icePushClient.addGroupMember(group, id);
+		listener.setGroup(group);
 
 		icePushClient.register(id, listener);
 
@@ -81,10 +77,8 @@ public class GWTPushContext {
 		icePushClient.unregisterUserCallbacks(listener);
 		icePushClient.deregister(listener.getPushId());
 
-		for (String group : listener.getGroups()) {
-			icePushClient.removeGroupMember(group, listener.getPushId());
-		}
-
+		icePushClient.removeGroupMember(listener.getGroup(), listener.getPushId());
+		
 	}
 
 	/**

@@ -75,7 +75,7 @@ public class ChatRoomListPanel extends Composite {
 
         //fetch latest list of chat rooms from the server.
         this.refreshChatList();
-        GWTPushContext.getInstance().addPushEventListener(chatListChangedListener, new String[]{"chatRoomIndex"});
+        GWTPushContext.getInstance().addPushEventListener(chatListChangedListener, "chatRoomIndex");
 
 
     }

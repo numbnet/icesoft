@@ -25,7 +25,7 @@ package org.icepush.samples.icechat.gwt.client;
 public abstract class PushEventListener{
 
     private String pushId;
-    private String[] groups;
+    private String group;
 
     public abstract void onPushEvent();
 
@@ -37,12 +37,12 @@ public abstract class PushEventListener{
         this.pushId = id;
     }
 
-    protected String[] getGroups() {
-        return groups;
+    protected String getGroup() {
+        return group;
     }
 
-    protected void setGroups(String[] groups) {
-        this.groups = groups;
+    protected void setGroup(String group) {
+        this.group = group;
     }
 
 

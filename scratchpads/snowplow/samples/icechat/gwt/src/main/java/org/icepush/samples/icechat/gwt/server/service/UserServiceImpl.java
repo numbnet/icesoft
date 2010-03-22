@@ -37,10 +37,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this.getServletContext());
 		
 		Credentials result = new Credentials();
-		User user = chatService.register(name);
+		User user = chatService.login(name);
 		
 		result.setSessionToken(user.getSessionToken());
-		result.setUserName(user.getUserName());
+		result.setUserName(user.getName());
 		return result;
 	}
 

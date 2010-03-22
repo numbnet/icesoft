@@ -59,7 +59,6 @@ public class GWTPushContextTests{
 			
 			//then should add the push id to each of the two groups.
 			one(mockNativeLibrary).addGroupMember("group1", "FAKEPUSHID");
-			one(mockNativeLibrary).addGroupMember("group2", "FAKEPUSHID");
 			
 			//then should attempt to register the listener as a callback for this push id.
 			one(mockNativeLibrary).register("FAKEPUSHID", listener);
@@ -70,8 +69,7 @@ public class GWTPushContextTests{
 		
 		
 
-		String[] groupNames = new String[]{"group1","group2"};
-		underTest.addPushEventListener(listener,groupNames);
+		underTest.addPushEventListener(listener,"group1");
 		context.assertIsSatisfied();
 		
 		}catch(Throwable e){
@@ -99,7 +97,6 @@ public class GWTPushContextTests{
 				
 				//then should add the push id to each of the two groups.
 				one(mockNativeLibrary).addGroupMember("group1", "FAKEPUSHID");
-				one(mockNativeLibrary).addGroupMember("group2", "FAKEPUSHID");
 				
 				//then should attempt to register the listener as a callback for this push id.
 				one(mockNativeLibrary).register("FAKEPUSHID", listener);
@@ -114,15 +111,13 @@ public class GWTPushContextTests{
 				
 				//then the groupmemberships need to be removed.
 				one(mockNativeLibrary).removeGroupMember("group1", "FAKEPUSHID");
-				one(mockNativeLibrary).removeGroupMember("group2", "FAKEPUSHID");
 				
 			}});
 			GWTPushContext underTest = new GWTPushContext(mockNativeLibrary);
 			
 			
 
-			String[] groupNames = new String[]{"group1","group2"};
-			underTest.addPushEventListener(listener,groupNames);
+			underTest.addPushEventListener(listener,"group1");
 			underTest.removePushEventListener(listener);
 			context.assertIsSatisfied();
 			
