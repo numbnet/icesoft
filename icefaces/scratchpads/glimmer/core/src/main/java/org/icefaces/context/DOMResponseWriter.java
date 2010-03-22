@@ -420,7 +420,11 @@ public class DOMResponseWriter extends ResponseWriter {
             if (log.isLoggable(Level.FINEST)) {
                 log.finest("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
-            return ((Element) cursor).setAttributeNode(node);
+            Node result = ((Element) cursor).setAttributeNode(node);
+            if ("id".equals(node.getName()))  {
+                ((Element) cursor).setIdAttributeNode(node, true);
+            }
+            return result;
         } catch (DOMException e) {
             String message = "failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
             log.log(Level.SEVERE, message, e);
