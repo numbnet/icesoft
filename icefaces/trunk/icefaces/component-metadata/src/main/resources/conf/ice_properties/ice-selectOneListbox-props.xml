@@ -33,6 +33,7 @@
   
 &uiselectone-props;
 &select-common-props;
+&ice-att-partialSubmitDelay-props;
 <property>
     <description>
         <![CDATA[

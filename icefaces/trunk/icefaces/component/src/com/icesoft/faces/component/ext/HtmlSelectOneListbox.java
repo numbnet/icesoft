@@ -67,6 +67,7 @@ public class HtmlSelectOneListbox
     private String renderedOnUserRole = null;
     private Effect effect;
     private Boolean visible = null;
+    private Integer partialSubmitDelay;
 
     private CurrentStyle currentStyle;
           private Effect onclickeffect;
@@ -127,6 +128,23 @@ public class HtmlSelectOneListbox
         Boolean boolVal =
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() : DEFAULT_VISIBLE;
+    }
+    
+    public void setPartialSubmitDelay(int partialSubmitDelay) {
+        this.partialSubmitDelay = new Integer(partialSubmitDelay);
+    }
+    
+    public int getPartialSubmitDelay() {
+        if (this.partialSubmitDelay != null) {
+            return this.partialSubmitDelay.intValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmitDelay");
+        if (vb != null) {
+            Integer val = (Integer) vb.getValue(getFacesContext());
+            if (val != null)
+                return val.intValue();
+        }
+        return 300;
     }
 
     /**
@@ -532,7 +550,7 @@ public class HtmlSelectOneListbox
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -553,6 +571,7 @@ public class HtmlSelectOneListbox
         values[17] = autocomplete;
         values[18] = currentStyle;
         values[19] = visible;
+        values[20] = partialSubmitDelay;
         return ((Object) (values));
         
     }
@@ -583,6 +602,7 @@ public class HtmlSelectOneListbox
         autocomplete = (String) values[17];
         currentStyle = (CurrentStyle) values[18];
         visible = (Boolean) values[19];
+        partialSubmitDelay = (Integer) values[20];
     }
 }
 

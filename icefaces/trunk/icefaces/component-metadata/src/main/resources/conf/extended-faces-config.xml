@@ -144,6 +144,7 @@
   <!ENTITY ice-att-autoComplete-props SYSTEM "ice_properties/ice-att-autoComplete-props.xml">
   <!ENTITY ice-att-partialsubmit-props SYSTEM "ice_properties/ice-att-partialsubmit-props.xml">
   <!ENTITY ice-att-partialsubmit-true-props SYSTEM "ice_properties/ice-att-partialsubmit-true-props.xml">
+  <!ENTITY ice-att-partialSubmitDelay-props SYSTEM "ice_properties/ice-att-partialSubmitDelay-props.xml">
   <!ENTITY ice-att-userrole-enabled-props SYSTEM "ice_properties/ice-att-userrole-enabled-props.xml">
   <!ENTITY ice-att-userrole-rendered-props SYSTEM "ice_properties/ice-att-userrole-rendered-props.xml">
   <!ENTITY ice-att-visible-props SYSTEM "ice_properties/ice-att-visible-props.xml">
