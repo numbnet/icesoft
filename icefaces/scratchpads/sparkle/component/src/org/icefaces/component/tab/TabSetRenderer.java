@@ -55,17 +55,34 @@ public class TabSetRenderer extends Renderer{
     throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(HTML.UL_ELEM, uiComponent);
-            writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
-            renderTab(facesContext, uiComponent, true);
-        writer.endElement(HTML.UL_ELEM);
+        TabSet tabSet = (TabSet) uiComponent;   
+        boolean isBottom = "bottom".equals(tabSet.getOrientation());
         
+        if (isBottom) {
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
+                writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
+                renderTab(facesContext, uiComponent, false);
+            writer.endElement(HTML.DIV_ELEM); 
         
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
-            writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
-            renderTab(facesContext, uiComponent, false);
-        writer.endElement(HTML.DIV_ELEM);        
+            writer.startElement(HTML.UL_ELEM, uiComponent);
+                writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
+                renderTab(facesContext, uiComponent, true);
+            writer.endElement(HTML.UL_ELEM);
+                
+        } else {
+            writer.startElement(HTML.UL_ELEM, uiComponent);
+                writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
+                renderTab(facesContext, uiComponent, true);
+            writer.endElement(HTML.UL_ELEM);
+            
+            
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
+                writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
+                renderTab(facesContext, uiComponent, false);
+            writer.endElement(HTML.DIV_ELEM);
+        }
     }  
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -102,7 +119,7 @@ public class TabSetRenderer extends Renderer{
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
-        writer.writeAttribute(HTML.STYLE_ATTR, "visibility:hidden", HTML.STYLE_ATTR);         
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none", HTML.STYLE_ATTR);         
         writer.write(javascriptCall);
         writer.endElement(HTML.DIV_ELEM);
      
