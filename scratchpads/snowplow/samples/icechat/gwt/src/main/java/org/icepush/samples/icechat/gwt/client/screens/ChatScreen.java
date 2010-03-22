@@ -196,7 +196,7 @@ public class ChatScreen extends Composite {
             }
         };
 
-        GWTPushContext.getInstance().addPushEventListener(this.currentMessagesPushListener, new String[]{handle.getName().replaceAll(" ", "_")});
+        GWTPushContext.getInstance().addPushEventListener(this.currentMessagesPushListener, handle.getName().replaceAll(" ", "_"));
 
 
         this.currentParticipantsPushListener = new PushEventListener() {
@@ -207,7 +207,7 @@ public class ChatScreen extends Composite {
             }
         };
 
-        GWTPushContext.getInstance().addPushEventListener(this.currentParticipantsPushListener, new String[]{handle.getName() + "-participants"});
+        GWTPushContext.getInstance().addPushEventListener(this.currentParticipantsPushListener, handle.getName() + "-participants");
 
         this.currentDraftListener = new PushEventListener() {
 			
@@ -218,7 +218,7 @@ public class ChatScreen extends Composite {
 			}
 		};
 		
-		GWTPushContext.getInstance().addPushEventListener(this.currentDraftListener, new String[]{handle.getName() + "-draft"});
+		GWTPushContext.getInstance().addPushEventListener(this.currentDraftListener, handle.getName() + "-draft");
 		
 		/*TODO remove this hack.  This is required as a workaround to PUSH-22*/
 		

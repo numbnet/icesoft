@@ -24,6 +24,7 @@ package org.icepush.samples.icechat.gwt.server.service.beans;
 import javax.servlet.ServletContext;
 
 import org.icepush.samples.icechat.beans.controller.BaseLoginControllerBean;
+import org.icepush.samples.icechat.model.User;
 
 public class LoginControllerBean extends BaseLoginControllerBean{
 
@@ -41,4 +42,12 @@ public class LoginControllerBean extends BaseLoginControllerBean{
 		
 		return (LoginControllerBean)context.getAttribute(LoginControllerBean.class.getName());
 	}
+
+	@Override
+	public User getUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
