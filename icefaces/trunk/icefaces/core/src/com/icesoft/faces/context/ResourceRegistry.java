@@ -37,7 +37,10 @@ import java.net.URI;
 /**
  * I am a resource registry meant to be used by the component renderers to load
  * Javascript code, CSS rules, and also register any kind of resource the
- * component renderer needs (such as images, movies, flash...).
+ * component renderer needs (such as images, movies, flash...). The resources are bound to the user session
+ * that registered them, once the session expired/invalidated the resources are discarded automatically.
+ * For an application wide resource data each user session will have to register a resource referencing back to
+ * this data.
  */
 public interface ResourceRegistry {
 
