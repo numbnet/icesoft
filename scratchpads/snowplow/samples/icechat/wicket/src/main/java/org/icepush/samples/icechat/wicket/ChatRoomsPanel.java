@@ -76,6 +76,8 @@ public final class ChatRoomsPanel extends Panel{
                             chatManagerVC.createNewChatRoom();
                             chatRoomsListView.modelChanged();
                             target.addComponent(chatRooms);
+                            chatManagerVC.openChatSession(newChatRoomBean.getName());
+                            setResponsePage(getPage());
 			}
 		});
         add(createNewChatRoom);
