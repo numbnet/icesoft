@@ -49,7 +49,6 @@
 		<ant dir="./greeting" target="clean"/>
 		<ant dir="${icechat.dir}/gwt" target="clean"/>
 		<ant dir="${icechat.dir}/api" target="clean"/>
-		<ant dir="${icechat.dir}/beans" target="clean"/>
 	</target>
 
 	

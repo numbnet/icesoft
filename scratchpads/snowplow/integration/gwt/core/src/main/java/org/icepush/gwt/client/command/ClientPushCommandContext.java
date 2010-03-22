@@ -68,7 +68,7 @@ public class ClientPushCommandContext {
 	public void registerExecuter(Class<? extends ICommand> commandClass, ICommandExecuter handler){
 		GWTPushContext context = GWTPushContext.getInstance();
 		
-		context.addPushEventListener(listener, new String[]{commandClass.getName()});
+		context.addPushEventListener(listener, commandClass.getName());
 		listener.addCommandExecutor(commandClass, handler);
 		
 		service.registerForCommand(key, commandClass.getName(),defaultVoidCallback);
