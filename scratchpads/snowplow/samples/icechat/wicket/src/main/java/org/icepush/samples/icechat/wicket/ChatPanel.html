@@ -38,14 +38,14 @@
                 <div class="chatRoomUsers">
                     <div class="chatViewSubHeader">Who's Here?</div>
                     <span wicket:id="currentChatSessionHolder.session.room.userChatSessions">
-                        <span wicket:id="userName">userChatSession.user.displayName</span><br/>
+                        <span wicket:id="userName">userChatSession.user.name</span><br/>
                     </span>
                 </div>
                 <div class="chatRoomMessages">
                     <div class="chatViewSubHeader">Messages</div>
                     <span wicket:id="currentChatSessionHolder.session.room.messages">
                         <span wicket:id="created">msg.created</span>
-                        &nbsp;<span wicket:id="userChatSession.user.displayName">msg.userChatSession.user.displayName</span> said
+                        &nbsp;<span wicket:id="userChatSession.user.name">msg.userChatSession.user.name</span> said
                         &nbsp;'<span wicket:id="message">msg.message</span>'<br/>
                     </span>
                 </div>

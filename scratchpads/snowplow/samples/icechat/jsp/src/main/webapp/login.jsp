@@ -71,28 +71,9 @@
 
         function getLoginFormParams(){
         	var loginForm = document.forms['login'];
-        	return  "userName=" + loginForm.elements['userName'].value + "&nickName="
-        			+ loginForm.elements['nickName'].value + "&password=" + loginForm.elements['password'].value;
+        	return  "userName=" + loginForm.elements['userName'].value;
         }
 
-        function register() {
-        	var xmlHttp = getXmlHttpRequest();
-        	xmlHttp.onreadystatechange = function() {
-        		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        			if( xmlHttp.responseText )
-        				$("loginMessages").innerHTML = xmlHttp.responseText;
-        			else
-        				window.location.href = './index.jsp';
-        		}
-        	}
-        	var form = document.forms['login'];
-        	var params = "op=register&" + getLoginFormParams();
-        	xmlHttp.open("POST", "auth", true);
-        	xmlHttp.setRequestHeader("Content-type",
-        			"application/x-www-form-urlencoded");
-        	xmlHttp.send(params);	
-        }
-               
         </script>
     </head>
     <body>
@@ -112,20 +93,11 @@
 		            <form id="login">
 		                <h2>ICEchat Login</h2>
 		                <div style="text-align:right;">
-		                    <label for="userName">User Name </label>
+		                    <label for="userName">Name </label>
 		                    <input type="text" id="userName"/>
-		                </div>
-		                <div style="text-align:right;">
-		                    <label for="nickName">Nick Name </label>
-		                    <input type="text" id="nickName"/>
-		                </div>
-		                <div style="text-align:right;">
-		                    <label for="password">Password </label>
-		                    <input type="password" id="password"/>
 		                </div>
 		                <div style="text-align:right;margin-top:20px;">
 		                    <input type="button" id="login" value="Login" onclick="window.login();"/>
-		                    <input type="button" id="register" value="Register" onclick="window.register();"/>
 		                </div>
 		                <div id="loginMessagesPanel">
 		                	<span id="loginMessages"></span>

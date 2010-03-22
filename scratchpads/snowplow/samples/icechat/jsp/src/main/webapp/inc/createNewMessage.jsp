@@ -40,6 +40,6 @@ if (user != null) {
 	
 	PushContext pushContext = PushContext.getInstance(getServletContext());
 	pushContext.push(roomName+"_messages");
-	pushContext.push(roomName+"_"+user.getUserName()+"_draft");
+	pushContext.push(roomName+"_"+user.getName()+"_draft");
 }
 %>

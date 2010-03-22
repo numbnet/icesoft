@@ -106,7 +106,7 @@ public class ChatFormController extends AbstractFormController {
             chatFormData.getNewChatRoom().setName("Default");
         }
 
-        logger.info("Create Room '" + chatFormData.getNewChatRoom().getName() + "' by " + loginController.getCurrentUser().getUserName());
+        logger.info("Create Room '" + chatFormData.getNewChatRoom().getName() + "' by " + loginController.getCurrentUser().getName());
 
         chatFormData.getChatManagerViewController().setNewChatRoomBean(chatFormData.getNewChatRoom());
         chatFormData.getChatManagerViewController().createNewChatRoom();
@@ -118,7 +118,7 @@ public class ChatFormController extends AbstractFormController {
 
     private void joinRoom(String name) {
         if (name != null) {
-            logger.info("Join Room '" + name + "' by " + loginController.getCurrentUser().getUserName());
+            logger.info("Join Room '" + name + "' by " + loginController.getCurrentUser().getName());
 
             chatFormData.getChatManagerViewController().openChatSession(name);
         }

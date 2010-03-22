@@ -45,12 +45,6 @@ public class LoginFormValidator implements Validator {
             if (!isValidString(form.getUserName())) {
                 errors.rejectValue("userName", "error.no-username", null, "Value required.");
             }
-            if (!isValidString(form.getNickName())) {
-                errors.rejectValue("nickName", "error.no-nickname", null, "Value required.");
-            }
-            if (!isValidString(form.getPassword())) {
-                errors.rejectValue("password", "error.no-password", null, "Value required.");
-            }
         }
     }
 

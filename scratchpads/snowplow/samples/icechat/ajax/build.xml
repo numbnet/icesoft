@@ -31,7 +31,6 @@
 	<target name="war" depends="compile">
 		<build.war>
 			<add.libs>
-				<fileset refid="beans" />
 				<fileset refid="auth" />
 			</add.libs>
 		</build.war>
@@ -42,7 +41,6 @@
 			<add.classpath.elements>
 				<fileset refid="auth"/>
 				<fileset refid="api"/>
-				<fileset refid="beans"/>
 			</add.classpath.elements>
 		</compile>
 	</target>

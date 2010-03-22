@@ -29,7 +29,7 @@ import javax.inject.Named;
 
 import org.icepush.samples.icechat.IPushRequestContext;
 import org.icepush.samples.icechat.beans.controller.BaseLoginControllerBean;
-import org.icepush.samples.icechat.controller.model.ICredentialsBean;
+import org.icepush.samples.icechat.model.User;
 import org.icepush.samples.icechat.service.IChatService;
 
 
@@ -41,12 +41,6 @@ public class LoginController extends BaseLoginControllerBean implements Serializ
 	@Override
 	public void setChatService(IChatService chatService){
 		super.setChatService(chatService);
-	}
-	
-	@Inject
-	@Override
-	public void setCredentialsBean(ICredentialsBean credentialsBean){
-		super.setCredentialsBean(credentialsBean);
 	}
 	
 	@Inject

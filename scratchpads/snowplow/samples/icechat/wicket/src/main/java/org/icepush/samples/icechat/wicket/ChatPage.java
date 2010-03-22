@@ -64,8 +64,7 @@ public final class ChatPage extends AppBasePage {
 
 		// Add Components to page
 		Form chatSession = new Form("chatSession", compoundLoginController);
-		chatSession.add(new Label("credentialsBean.userName"));
-		chatSession.add(new Label("credentialsBean.nickName"));
+		chatSession.add(new Label("userName"));
 		chatSession.add(new AjaxButton("logout") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
 				loginController.logout();

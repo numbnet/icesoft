@@ -126,7 +126,7 @@ public class UserChatSession implements Serializable{
     }
     
     public String toString(){
-    	return "UserChatSession[ user=" + user.getUserName() + ", room=" + room.getName() + ", entered=" + entered + "]";
+    	return "UserChatSession[ user=" + user.getName() + ", room=" + room.getName() + ", entered=" + entered + "]";
     }
 
 }

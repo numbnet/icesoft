@@ -40,7 +40,6 @@
 		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true"
 			overwrite="false">
 			<fileset refid="api" />
-			<fileset refid="beans" />
 			<fileset dir="lib">
 				<include name="icefaces.jar"/>
 			</fileset>
@@ -61,7 +60,6 @@
 		<compile compile.source="1.6" compile.target="1.6">
 			<add.classpath.elements>
 				<fileset refid="api"/>
-				<fileset refid="beans"/>
 				<fileset dir="lib"/>	
 			</add.classpath.elements>
 		</compile>

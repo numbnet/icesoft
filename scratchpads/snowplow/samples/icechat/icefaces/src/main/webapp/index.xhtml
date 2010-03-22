@@ -48,10 +48,8 @@
 	            <h:panelGroup rendered="#{not empty loginController.currentUser}">
 					<div id="chatPanel">
 					<div class="chatSession chatSession_pos" id="chatSessionPanel">
-				     You are logged in as #{loginController.currentUser.userName}
-			        <h:outputText
-					rendered="#{not empty loginController.currentUser.nickName}"
-					value="(#{loginController.currentUser.nickName})" />&amp;nbsp;
+				     You are logged in as #{loginController.currentUser.name}
+			        &amp;nbsp;
 			                <h:commandButton value="Logout"
 					actionListener="#{loginController.logout}" />
 					</div>
@@ -95,7 +93,7 @@
 										<div id="users">
 											<ui:repeat value="#{chatManagerVC.session.room.userChatSessions}"
 												var="chatSession">
-												<div>#{chatSession.user.displayName}</div>
+												<div>#{chatSession.user.name}</div>
 											</ui:repeat>
 										</div>
 									</div>
@@ -107,7 +105,7 @@
 													<h:outputText value="#{msg.created}">
 														<f:convertDateTime type="both" dateStyle="short" timeStyle="short" />
 													</h:outputText> 
-													&amp;nbsp;#{msg.userChatSession.user.displayName} said&amp;nbsp;'#{msg.message}'
+													&amp;nbsp;#{msg.userChatSession.user.name} said&amp;nbsp;'#{msg.message}'
 												</div>
 											</ui:repeat>
 										</div>
@@ -131,20 +129,13 @@
 					<div class="login">
 						<h2>ICEchat Login</h2>
 						<div style="text-align: right;"><h:outputLabel
-							value="User Name " for="userName" /> <h:inputText id="userName"
-							value="#{loginController.credentialsBean.userName}" required="true" />
+							value="Name " for="userName" /> <h:inputText id="userName"
+							value="#{loginController.userName}" required="true" />
 						</div>
-						<div style="text-align: right;"><h:outputLabel
-							value="Nick Name " for="nickName" /> <h:inputText id="nickName"
-							value="#{loginController.credentialsBean.nickName}" /></div>
-						<div style="text-align: right;"><h:outputLabel
-							value="Password " for="password" /> <h:inputSecret id="password"
-							value="#{loginController.credentialsBean.password}" required="true" />
+						<div style="text-align: right; margin-top: 20px;">
+							<h:commandButton id="login" value="Login" 
+							actionListener="#{loginController.login}" />
 						</div>
-						<div style="text-align: right; margin-top: 20px;"><h:commandButton
-							id="login" value="Login" actionListener="#{loginController.login}" />
-						<h:commandButton id="register" value="Register"
-							actionListener="#{loginController.register}" /></div>
 						<div id="loginMessages"><h:messages globalOnly="true" /></div>
 			
 					</div>

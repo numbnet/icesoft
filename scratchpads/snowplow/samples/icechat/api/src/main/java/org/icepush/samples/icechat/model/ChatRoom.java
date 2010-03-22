@@ -106,9 +106,9 @@ public class ChatRoom implements Serializable{
     }
     
     @Deprecated
-    public boolean hasUserSession(String userName){
+    public boolean hasUserSession(String name){
     	for( UserChatSession userSession : userChatSessions ){
-    		if( userSession.getUser().getUserName().equals(userName))
+    		if( userSession.getUser().getName().equals(name))
     			return true;
     	}
     	return false;

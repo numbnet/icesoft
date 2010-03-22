@@ -25,8 +25,7 @@
 function login() {
 	new Ajax.Request('auth', { 
 		method:'post',
-		parameters: {op: 'login', userName: $('userName').getValue(), 
-			nickName: $('nickName').getValue(), password: $('password').getValue()},
+		parameters: {op: 'login', userName: $('userName').getValue()},
 		onSuccess: function(transport){
 			if( transport.responseText )
 				$("loginMessages").innerHTML = transport.responseText;
@@ -35,20 +34,6 @@ function login() {
 		}
 	});
 }
-function register() {
-	new Ajax.Request('auth', { 
-		method:'post',
-		parameters: {op: 'register', userName: $('userName').getValue(), 
-			nickName: $('nickName').getValue(), password: $('password').getValue()},
-		onSuccess: function(transport){
-			if( transport.responseText )
-				$("loginMessages").innerHTML = transport.responseText;
-			else
-				window.location.href = './index.html';
-		}
-	});
-}
-
 function logout() {
 	if( getCurrentRoomName() != null )
 		logoutOfChatRoom(getCurrentRoomName());

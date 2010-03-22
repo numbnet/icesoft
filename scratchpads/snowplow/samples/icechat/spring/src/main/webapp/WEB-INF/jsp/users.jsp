@@ -4,7 +4,7 @@
 <table>
 <c:forEach var="chatSession" items="${chat.currentChatSessionHolder.session.room.userChatSessions}">
     <tr><td>
-    <c:out value="${chatSession.user.displayName}"/>
+    <c:out value="${chatSession.user.name}"/>
     </td></tr>
 </c:forEach>
 </table>
