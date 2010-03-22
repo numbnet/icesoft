@@ -149,8 +149,8 @@ public class ComponentClassGenerator {
                   addJavaDoc(field.getName(), false, prop.javadocGet());
 
                   generatedComponentClass.append("\tpublic ");
-                  if (isBoolean) {
-                      generatedComponentClass.append("boolean");  
+                  if (Generator.WrapperTypes.containsKey(field.getType().getName().trim())) {
+                      generatedComponentClass.append(Generator.WrapperTypes.get(field.getType().getName()));
                   } else {
                       generatedComponentClass.append(field.getType().getName());
                   }
