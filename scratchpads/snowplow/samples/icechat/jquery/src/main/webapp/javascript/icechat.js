@@ -171,32 +171,33 @@ function logoutOfChatRoom(roomName){
 
 function openChatRoom(roomName){
 	
-	if( getCurrentRoomName() != null ){
-		logoutOfChatRoom(getCurrentRoomName());
-	}
-	
-	loginToChatRoom(roomName);
-	
-	$.push.listenToGroup(roomName+"_users",window.refreshChatRoomUsers);
-	$.push.listenToGroup(roomName+"_messages",window.refreshChatRoomMessages);
-	
-	$("#currentChatRoom").html( $("#chatRoomTemplate").html() );
-	$("#chatRoom").ready(function(){
-		$("#chatRoom").fadeIn("slow");
-	});
-	$("#roomName").val(roomName);
-	$("#currentChatRoomName").html(roomName);
-	refreshChatRoomUsers();
-	refreshChatRoomMessages();
-	
-	$("#newChatRoomMessage").bind("keyup", function(event){
-		if(event.keyCode == 13){ 
-			click_sendMessage();
-			event.preventDefault();
+	if( getCurrentRoomName() != roomName ){
+		if( getCurrentRoomName() != null ){
+			logoutOfChatRoom(getCurrentRoomName());
 		}
-		window.updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
-	});
-	
+		
+		loginToChatRoom(roomName);
+		
+		$.push.listenToGroup(roomName+"_users",window.refreshChatRoomUsers);
+		$.push.listenToGroup(roomName+"_messages",window.refreshChatRoomMessages);
+		
+		$("#currentChatRoom").html( $("#chatRoomTemplate").html() );
+		$("#chatRoom").ready(function(){
+			$("#chatRoom").fadeIn("slow");
+		});
+		$("#roomName").val(roomName);
+		$("#currentChatRoomName").html(roomName);
+		refreshChatRoomUsers();
+		refreshChatRoomMessages();
+		
+		$("#newChatRoomMessage").bind("keyup", function(event){
+			if(event.keyCode == 13){ 
+				click_sendMessage();
+				event.preventDefault();
+			}
+			window.updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
+		});
+	}	
 }
 
 function refreshChatRoomUsersAndMessages(){
