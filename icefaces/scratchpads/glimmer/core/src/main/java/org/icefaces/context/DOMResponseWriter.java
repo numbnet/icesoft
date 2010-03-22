@@ -49,6 +49,7 @@ public class DOMResponseWriter extends ResponseWriter {
     private Document document;
     private Node cursor;
     private List<Node> stateNodes = new ArrayList<Node>();
+    private boolean suppressNextNode = false;
 
     public DOMResponseWriter(Writer writer) {
         this(DOMUtils.getNewDocument(), writer);
@@ -234,6 +235,12 @@ public class DOMResponseWriter extends ResponseWriter {
      */
     public void startElement(String name, UIComponent component) throws IOException {
 
+        if (suppressNextNode)  {
+            //this node has already been created and is just a placeholder
+            //in the tree
+            suppressNextNode = false;
+            return;
+        }
         //TODO:  Does this ever happen - ie does startDocument not get called for some reason?
         if (null == document) {
             document = DOMUtils.getNewDocument();
@@ -441,6 +448,35 @@ public class DOMResponseWriter extends ResponseWriter {
             log.finest("moving cursor to " + DOMUtils.toDebugString(node));
         }
         cursor = node;
+    }
+
+    /**
+     * <p>Prepare for rendering into subtrees.</p>
+     */
+    public void startSubtreeRendering()  {
+        //start with a deep clone of the old DOM
+        //this is inefficient: an improvement would be to
+        //keep track of new fragments and perform the diff
+        //against only those fragments
+        document = (Document) (getOldDocument().cloneNode(true));
+    }
+    
+    /**
+     * <p>Seek to the subtree specified by the id parameter.</p>
+     * @param id DOM id of component subtree
+     */
+    public void seekSubtree(String id)  {
+        //seek to position in document
+        cursor = document.getElementById(id);
+        if (null == cursor)  {
+            log.severe("Unable to see to component DOM subtree " + id);
+        }
+        Node newSubtree = document.createElement(cursor.getNodeName());
+        Node cursorParent = cursor.getParentNode();
+        //remove subtree for fresh rendering operation
+        cursorParent.replaceChild(newSubtree, cursor);
+        cursor = newSubtree;
+        suppressNextNode = true;
     }
 
     public Document getDocument() {

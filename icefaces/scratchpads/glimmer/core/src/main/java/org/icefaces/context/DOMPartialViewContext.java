@@ -36,21 +36,28 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.EnumSet;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.icefaces.event.DetectNavigationPhaseListener;
 
 public class DOMPartialViewContext extends PartialViewContextWrapper {
 
-    private static Logger log = Logger.getLogger("org.icefaces.context");
+    private static Logger log = Logger.getLogger(DOMPartialViewContext.class.getName());
 
     private PartialViewContext wrapped;
     protected FacesContext facesContext;
@@ -102,7 +109,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         boolean didNavigate = Boolean.TRUE.equals( 
                 facesContext.getAttributes()
                 .get(DetectNavigationPhaseListener.NAVIGATED) );
-        if (isRenderAll() && (phaseId == PhaseId.RENDER_RESPONSE)) {
+        if (phaseId == PhaseId.RENDER_RESPONSE) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
                 //TODO: understand why the original writer must be restored
@@ -117,13 +124,23 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 exContext.addResponseHeader("Cache-Control", "no-cache");
 
                 Document oldDOM = writer.getOldDocument();
-                applyBrowserChanges(exContext.getRequestParameterValuesMap(), oldDOM);
+                applyBrowserChanges(exContext.getRequestParameterValuesMap(), oldDOM);                
+                
                 UIViewRoot viewRoot = facesContext.getViewRoot();
                 writer.startDocument();
-                Iterator<UIComponent> itr = viewRoot.getChildren().iterator();
-                while (itr.hasNext()) {
-                    UIComponent kid = itr.next();
-                    kid.encodeAll(facesContext);
+                if (isRenderAll())  {
+                    Iterator<UIComponent> itr = viewRoot.getChildren().iterator();
+                    while (itr.hasNext()) {
+                        UIComponent kid = itr.next();
+                        kid.encodeAll(facesContext);
+                    }
+                }  else {
+                    writer.startSubtreeRendering();
+                    Collection <String> renderIds = getRenderIds();
+                    if (renderIds == null || renderIds.isEmpty()) {
+                    } else {
+                        renderSubtrees(viewRoot, renderIds);
+                    }
                 }
 //                Document document = writer.getDocument();
                 writer.endDocument();
@@ -134,6 +151,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 partialWriter.startDocument();
                 Node[] diffs = new Node[0];
                 if (oldDOM != null && newDOM != null) {
+                    //the diff can also be made subtree-aware
                     diffs = DOMUtils.domDiff(oldDOM, newDOM);
                 } else {
                     // This shouldn't be the case. Typically it is a symptom that
@@ -193,6 +211,15 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
+    }
+
+    private void renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds)  {
+        EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+        VisitContext visitContext =
+            VisitContext.createVisitContext(facesContext, renderIds, hints);
+        DOMPartialRenderCallback renderCallback =
+            new DOMPartialRenderCallback(facesContext);
+        viewRoot.visitTree(visitContext, renderCallback);
     }
 
     private void applyBrowserChanges(Map parameters, Document document) {
@@ -317,5 +344,30 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     protected DOMResponseWriter createDOMResponseWriter(Writer outputWriter) {
         return new DOMResponseWriter(outputWriter);
+    }
+}
+
+class DOMPartialRenderCallback implements VisitCallback {
+    private static Logger log = Logger.getLogger(DOMPartialRenderCallback.class.getName());
+    private FacesContext facesContext;
+
+    public DOMPartialRenderCallback(FacesContext facesContext)  {
+        this.facesContext = facesContext;
+    }
+    
+    public VisitResult visit(VisitContext visitContext, UIComponent component) {
+        String clientId = component.getClientId(facesContext);
+        ((DOMResponseWriter) facesContext.getResponseWriter())
+                .seekSubtree(clientId);
+        try {
+            component.encodeAll(facesContext);
+        } catch (Exception e)  {
+            if (log.isLoggable(Level.SEVERE))  {
+                log.severe("Subtree rendering failed for " + component.getClass() 
+                        + " " + clientId + e.toString());
+            }
+        }
+        //Return REJECT to skip subtree visiting
+        return VisitResult.REJECT;
     }
 }
