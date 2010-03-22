@@ -15,7 +15,7 @@ public @interface Component {
   String rendererClass()default EMPTY;
   String componentClass();
   String generatedClass()default EMPTY;
-  String rendererType();
+  String rendererType()default EMPTY;
   String componentType();
   String componentFamily() default EMPTY;
   String optimizedPackage() default "org.icefaces.component.";
@@ -24,5 +24,4 @@ public @interface Component {
   String javadoc() default "";
   String tlddoc() default "";  
   String[] includeProperties() default {};
-  String[] excludeProperties() default {};
 }
