@@ -149,6 +149,8 @@ function refreshChatRoomMessages(){
 			var msgsDiv = $("chatRoomMessages");
 			msgsDiv.insert({bottom: req.responseText});
 			msgsDiv.scrollTop = msgsDiv.scrollHeight;
+			var lastDiv = $("chatRoomMessages").childElements().last();
+			var lastMsgId = lastDiv ? lastDiv.id : 0;
 			if( msgsDiv.childElements().length > lastMsgId ){
 				Sound.play('./media/blip.wav');
 				msgsDiv.childElements().last().highlight();

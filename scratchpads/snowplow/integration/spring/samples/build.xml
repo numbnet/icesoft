@@ -40,7 +40,6 @@
 		<clean/>
 		<ant dir="./dice" target="clean"/>
 		<ant dir="${icechat.dir}/spring" target="clean"/>
-		<ant dir="${icechat.dir}/beans" target="clean"/>
 		<ant dir="${icechat.dir}/api" target="clean"/>
 		<ant dir="${icechat.dir}/cdi" target="clean"/>
 	</target>

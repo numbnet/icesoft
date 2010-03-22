@@ -77,7 +77,7 @@ public class Greeting implements EntryPoint {
 		public void onPushEvent() {
 			Greeting.this.messages.show();
 		}
-	}, new String[]{"new-user"});
+	}, "new-user");
 	  
     final Button sendButton = new Button("Send");
     final TextBox nameField = new TextBox();

@@ -29,9 +29,6 @@
 	<fileset id="api" dir="${root.offset}/samples/icechat/api/dist">
 		<include name="**/*.jar" />
 	</fileset>
-	<fileset id="beans" dir="${root.offset}/samples/icechat/beans/dist">
-		<include name="**/*.jar" />
-	</fileset>
 	<fileset id="auth" dir="${root.offset}/samples/icechat/auth/dist">
 		<include name="**/*.jar" />
 	</fileset>
