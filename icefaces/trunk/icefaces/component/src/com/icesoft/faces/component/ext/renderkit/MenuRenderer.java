@@ -36,6 +36,7 @@ import com.icesoft.faces.component.IceExtended;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlSelectManyMenu;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Set;
@@ -54,8 +55,17 @@ public class MenuRenderer
                                  UIComponent uiComponent, Element root,
                                  String currentValue, Set excludes) {
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute(getEventType(uiComponent),"setFocus('');" +
-                              this.ICESUBMITPARTIAL);
+            if (uiComponent instanceof HtmlSelectManyMenu) {
+                Number partialSubmitDelay = (Number)
+                        uiComponent.getAttributes().get("partialSubmitDelay");
+                root.setAttribute(getEventType(uiComponent),
+                        "setFocus('');Ice.selectChange(form,this,event,"+
+                        partialSubmitDelay+");");
+            }
+            else {
+                root.setAttribute(getEventType(uiComponent), "setFocus('');" +
+                        ICESUBMITPARTIAL);
+            }
             excludes.add(getEventType(uiComponent));
         }
     }
