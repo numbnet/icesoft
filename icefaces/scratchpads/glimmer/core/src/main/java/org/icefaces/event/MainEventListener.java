@@ -76,6 +76,10 @@ public class MainEventListener implements SystemEventListener  {
     }
 
     public boolean shouldModifyId(Object source)  {
+        //Existing ice: components already output ids
+        if (source.getClass().getName().startsWith("com.icesoft"))  {
+            return false;
+        }
         boolean classCheck = (  (
             (source instanceof UIOutput) || 
             (source instanceof HtmlDataTable) || 
