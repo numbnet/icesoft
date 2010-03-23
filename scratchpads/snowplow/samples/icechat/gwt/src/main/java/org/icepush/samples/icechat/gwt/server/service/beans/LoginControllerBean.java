@@ -43,11 +43,5 @@ public class LoginControllerBean extends BaseLoginControllerBean{
 		return (LoginControllerBean)context.getAttribute(LoginControllerBean.class.getName());
 	}
 
-	@Override
-	public User getUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 }
