@@ -65,9 +65,7 @@ public abstract class BaseChatServiceBean implements IChatService{
 		Set<User> onlineUsers = new HashSet<User>();
 		for (User user : users.values()) {
 			for (UserChatSession chatSession : user.getChatSessions()) {
-				if (chatSession.isLive()) {
-					onlineUsers.add(user);
-				}
+				onlineUsers.add(user);
 			}
 		}
 
@@ -159,18 +157,8 @@ public abstract class BaseChatServiceBean implements IChatService{
 		UserChatSession session = null;
 		if (room != null) {
 			if (user != null) {
-				if (room.isUserInRoom(user)) {
-					for (UserChatSession ucs : user.getChatSessions()) {
-						if (ucs.getRoom().getName().equals(chatRoom)){
-							ucs.setExited(null);
-							ucs.setEntered(new Date());
-							ucs.setLive(true);
-							session = ucs;
-						}
-					}
-				} else {
+				if(!room.isUserInRoom(user)) {
 					session = new UserChatSession();
-					session.setLive(true);
 					session.setRoom(room);
 					session.setUser(user);
 					room.getUserChatSessions().add(session);
@@ -193,8 +181,8 @@ public abstract class BaseChatServiceBean implements IChatService{
 			if (user != null) {
 				for (UserChatSession chatSession : user.getChatSessions()) {
 					if (chatSession.getRoom().getName().equals(chatRoom)) {
-						chatSession.setExited(new Date());
-						chatSession.setLive(false);
+						user.getChatSessions().remove(chatSession);
+						chatSession = null;
 					}
 				}
 			}else{

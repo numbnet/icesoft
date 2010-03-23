@@ -55,7 +55,7 @@ public abstract class BaseChatRoomControllerBean implements Serializable, IChatR
         chatService.createNewChatRoom(chatRoomName);
 		PushContext pushContext = this.getPushRequestContext().getPushContext();
         pushContext.addGroupMember(chatRoomName,pushRequestContext.getCurrentPushId());
-        pushContext.push(chatRoomName);
+        pushContext.push("CHAT_ROOMS");
 	}
 	
 	public UserChatSession openChatSession(String chatRoomName, User user){
