@@ -201,7 +201,7 @@
 									New Message&nbsp;
 									<input type="text" id="newChatRoomMessage" style="width:40%;"
 										onkeyup="window.updateDraft();"
-										onkeypress="if(event.keyCode == 13){ click_sendMessage(); }"/>
+										onkeypress="if(event.keyCode == 13){ click_sendMessage(); return false;}"/>
 									<input type="button" onclick="click_sendMessage();return false;"
 										value="Send" />
 								</div>
