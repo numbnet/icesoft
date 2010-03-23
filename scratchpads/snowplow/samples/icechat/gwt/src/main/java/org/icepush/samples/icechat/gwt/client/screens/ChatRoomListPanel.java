@@ -135,10 +135,11 @@ public class ChatRoomListPanel extends Composite {
             public void onSuccess(List<ChatRoomHandle> result) {
                 ChatRoomListPanel.this.chatRoomList.clear();
                 for (ChatRoomHandle handle : result) {
-                    Anchor link = new Anchor(handle.getName());
-                    link.addClickHandler(new LoadChatRoomHandler(handle));
+                    Button btn = new Button(handle.getName());
+                    btn.addClickHandler(new LoadChatRoomHandler(handle));
+                    btn.setSize("100%", "18pt");
 
-                    ChatRoomListPanel.this.chatRoomList.add(link);
+                    ChatRoomListPanel.this.chatRoomList.add(btn);
                 }
             }
         };

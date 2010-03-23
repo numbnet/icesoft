@@ -178,6 +178,7 @@ public class ChatScreen extends Composite {
         
 
         //first stop listening to push events for the old chat room.
+        /*
         if(this.currentMessagesPushListener != null)
             GWTPushContext.getInstance().removePushEventListener(this.currentMessagesPushListener);
 
@@ -186,7 +187,7 @@ public class ChatScreen extends Composite {
 
         if(this.currentDraftListener != null){
         	GWTPushContext.getInstance().removePushEventListener(this.currentDraftListener);
-        }
+        }*/
         
         this.currentMessagesPushListener = new PushEventListener() {
 
