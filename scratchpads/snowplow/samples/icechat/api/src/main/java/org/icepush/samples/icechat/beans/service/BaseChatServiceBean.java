@@ -193,12 +193,37 @@ public abstract class BaseChatServiceBean implements IChatService{
 		}
 		
 	}
+	
+	private boolean userNameUnused(String name){
+		boolean result = true;
+		for( User existingUser : users.values() ){
+			if( existingUser.getName().equals(name)){
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
 
 
 	public User login(String name) {
 		
+		String selectedName = null;
+		if( userNameUnused(name)){
+			selectedName = name;
+		}
+		else{
+			String adjustedName = null;
+			int counter = 0;
+			do{
+				adjustedName = name + ++counter;
+			}
+			while( !userNameUnused(adjustedName));
+			selectedName = adjustedName;
+		}
+		
 		User user = new User();
-		user.setName(name);
+		user.setName(selectedName);
 		user.setSessionToken(UUID.randomUUID().toString());
 		users.put(user.getSessionToken(), user);
 		return user;
