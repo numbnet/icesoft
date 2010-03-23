@@ -71,6 +71,7 @@ public class ChatManagerViewControllerBean{
 	
 	public void createNewChatRoom(){
 		createNewChatRoom(newChatRoomName);
+		openChatSession(newChatRoomName);
 	}
 	
 	public String getNewChatRoomName() {
@@ -91,7 +92,7 @@ public class ChatManagerViewControllerBean{
 				sendNewMessage(session.getRoom().getName(), 
 						newChatRoomMessage,
 						loginController.getCurrentUser());
-				newChatRoomMessage = null;
+				newChatRoomMessage = "";
 			}
 			catch(UnauthorizedException e){
 				e.printStackTrace();
