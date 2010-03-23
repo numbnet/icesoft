@@ -9,51 +9,14 @@
 
 	<target name="war" depends="compile">
 		
-		<!-- OVERRIDE build.war UNTIL ICEFACES2 USES CURRENT VERSION OF ICEPUSH -->
-		<!--build.war>
+		<build.war>
 			<add.libs>
-				<fileset refid="beans" />
 				<fileset dir="lib">
 					<include name="icefaces.jar"/>
 				</fileset>
 			</add.libs>
-		</build.war-->
+		</build.war>		
 		
-		<echo>Building war ${ant.project.name}.war...</echo>
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${build.dir}/webapp" />
-		<copy todir="${build.dir}/webapp" preservelastmodified="true" verbose="true">
-			<fileset dir="${web.dir}">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy todir="${build.dir}/webapp/css" preservelastmodified="true" verbose="true">
-			<fileset dir="${common.resource.dir}/css">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy todir="${build.dir}/webapp/img" preservelastmodified="true" verbose="true">
-			<fileset dir="${common.resource.dir}/img">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true"
-			overwrite="false">
-			<fileset refid="api" />
-			<fileset dir="lib">
-				<include name="icefaces.jar"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${build.dir}/webapp/WEB-INF/classes" />
-		<copy todir="${build.dir}/webapp/WEB-INF/classes" preservelastmodified="true" verbose="true">
-			<fileset dir="${build.dir}/classes">
-				<include name="**" />
-			</fileset>
-		</copy>
-
-		<war basedir="${build.dir}/webapp" destfile="${dist.dir}/${ant.project.name}.war" webxml="${build.dir}/webapp/WEB-INF/web.xml">
-			
-		</war>
 	</target>
 
 	<target name="compile" depends="pre.compile">
