@@ -23,9 +23,8 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	
-  
-    <servlet>
+
+  <servlet>
     <servlet-name>userService</servlet-name>
     <servlet-class>org.icepush.samples.icechat.gwt.server.service.UserServiceImpl</servlet-class>
   </servlet>
@@ -35,32 +34,31 @@
     <url-pattern>/icechatmodule/user</url-pattern>
   </servlet-mapping>
 
-  
-  <servlet-mapping>
-    <servlet-name>chatService</servlet-name>
-    <url-pattern>/icechatmodule/chat</url-pattern>
-  </servlet-mapping>
-  
   <servlet>
     <servlet-name>chatService</servlet-name>
     <servlet-class>org.icepush.samples.icechat.gwt.server.service.ChatServiceImpl</servlet-class>
   </servlet>
-  
- 
-  
+
+  <servlet-mapping>
+    <servlet-name>chatService</servlet-name>
+    <url-pattern>/icechatmodule/chat</url-pattern>
+  </servlet-mapping>
+
+  <!--icepush servlet-->
+  <servlet>
+    <servlet-name>icepush</servlet-name>
+    <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>icepush</servlet-name>
+    <url-pattern>*.icepush</url-pattern>
+  </servlet-mapping>
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>IceChatModule.html</welcome-file>
   </welcome-file-list>
 
-	<!--icepush servlet-->
-	<servlet>
-        <servlet-name>icepush</servlet-name>
-        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>icepush</servlet-name>
-        <url-pattern>*.icepush</url-pattern>
-    </servlet-mapping>
 </web-app>
