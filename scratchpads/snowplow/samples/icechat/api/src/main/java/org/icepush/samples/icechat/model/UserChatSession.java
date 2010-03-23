@@ -35,12 +35,6 @@ public class UserChatSession implements Serializable{
 
     private ChatRoom room;
 
-    private Date entered;
-
-    private Date exited;
-
-    private boolean live;
-    
     private String currentDraft;
 
     public String getCurrentDraft() {
@@ -51,11 +45,7 @@ public class UserChatSession implements Serializable{
 		this.currentDraft = currentDraft;
 	}
 
-	public UserChatSession(){
-        entered = new Date();
-    }
-
-    /**
+	/**
      * @return the user
      */
     public User getUser() {
@@ -83,50 +73,8 @@ public class UserChatSession implements Serializable{
         this.room = room;
     }
 
-    /**
-     * @return the entered
-     */
-    public Date getEntered() {
-        return entered;
-    }
-
-    /**
-     * @param entered the entered to set
-     */
-    public void setEntered(Date entered) {
-        this.entered = entered;
-    }
-
-    /**
-     * @return the exited
-     */
-    public Date getExited() {
-        return exited;
-    }
-
-    /**
-     * @param exited the exited to set
-     */
-    public void setExited(Date exited) {
-        this.exited = exited;
-    }
-
-    /**
-     * @return the live
-     */
-    public boolean isLive() {
-        return live;
-    }
-
-    /**
-     * @param live the live to set
-     */
-    public void setLive(boolean live) {
-        this.live = live;
-    }
-    
     public String toString(){
-    	return "UserChatSession[ user=" + user.getName() + ", room=" + room.getName() + ", entered=" + entered + "]";
+    	return "UserChatSession[ user=" + user.getName() + ", room=" + room.getName() + "]";
     }
 
 }
