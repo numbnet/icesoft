@@ -33,6 +33,7 @@
 package com.icesoft.faces.component.panelpopup;
 
 import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
+import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.paneltooltip.PanelTooltip;
@@ -152,6 +153,9 @@ public class PanelPopupRenderer extends GroupRenderer {
 				Element targetID = createHiddenField(domContext, facesContext,
 						uiComponent, DROP);
 				rootDiv.appendChild(targetID);
+                UIComponent form = findForm(uiComponent);
+                String formId = form.getClientId(facesContext);
+                FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId+HIDDEN_FILED));
 			}
 			// Write Modal Javascript so that on refresh it will still be modal.
 			String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);

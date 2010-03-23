@@ -38,7 +38,6 @@ import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import com.icesoft.faces.component.panelpopup.PanelPopup;
 import com.icesoft.faces.component.util.DelimitedProperties;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
@@ -270,20 +269,30 @@ public class GroupRenderer
             log.trace("GroupRenderer:decode");
         }
         MenuPopupHelper.decodeMenuContext(context, component);
-        if (component instanceof PanelPopup) {
-            String dndType = getDndType(component);
-            if ("dragdrop".equals(dndType) || "DRAG".equals(dndType)) {
-                PanelPopup panel = (PanelPopup) component;
-                if (panel.getAutoPosition() != null || panel.isAutoCentre()) {
-                    panel.setDragged(true);
-                }
-            }
-        }
         if (component instanceof HtmlPanelGroup) {
             HtmlPanelGroup panel = (HtmlPanelGroup) component;
             String dndType = getDndType(component);
 
             if (panel.getDraggable() != null || panel.getDropTarget() != null) {
+/*
+                Map paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
+                Iterator it = paramValuesMap.entrySet().iterator();
+                Map.Entry entry;
+                String key;
+                String[] values;
+                while (it.hasNext()) {
+                    entry = (Map.Entry) it.next();
+                    key = (String) entry.getKey();
+                    values = (String[]) entry.getValue();
+                    System.out.print(key);
+                    System.out.print(" = ");
+                    for (int i = 0; i < values.length; i++) {
+                        System.out.print(values[i]);
+                        System.out.print(", ");
+                    }
+                    System.out.println();
+                }
+*/
          
                 Map requestMap = context.getExternalContext().getRequestParameterMap();
                 
@@ -329,11 +338,6 @@ public class GroupRenderer
                 }
 
 
-                if (panel.getDragListener() == null &&
-                    panel.getDropListener() == null) {
-
-                    return;
-                }
                 int type = 0;
                 try {
                     type = Integer.parseInt(status);
@@ -344,7 +348,13 @@ public class GroupRenderer
                         return;
                     }
                 }
-
+                if (type > 0 && type < 4) {
+                    panel.getAttributes().put("dragged", Boolean.TRUE);
+                }
+                if (panel.getDragListener() == null &&
+                    panel.getDropListener() == null) {
+                    return;
+                }
 
                 MethodBinding listener = panel.getDragListener();
                 if (listener != null) {

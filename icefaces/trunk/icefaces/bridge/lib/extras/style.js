@@ -176,7 +176,7 @@ Ice.modal = {
                     }
                     modalWidth = parseInt(modalWidth) / 2;
                     modalHeight = parseInt(modalHeight) / 2;
-                    if (!manualPosition) {
+                    if (!manualPosition && !Ice.autoCentre.ids.include(target)) {
                         modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
                         modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
                     }
