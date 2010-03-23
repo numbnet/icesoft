@@ -32,7 +32,9 @@
         <div class="chatRooms">
             <gwt:Label gwt:text="Available Chat Rooms" gwt:stylePrimaryName="{style.chatListLabel}"/>
             <gwt:VerticalPanel ui:field="chatRoomList"/>
-            <gwt:Button gwt:text="Create Chat Room" ui:field="createChatRoomButton"/>
+            <div style="margin-top: 8px;">
+           	 <gwt:Button gwt:text="Create Chat Room" ui:field="createChatRoomButton"/>
+           	</div>
         </div>
     </gwt:HTMLPanel>
 </ui:UiBinder>
