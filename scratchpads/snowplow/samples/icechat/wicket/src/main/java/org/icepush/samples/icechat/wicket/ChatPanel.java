@@ -21,6 +21,7 @@
 
 package org.icepush.samples.icechat.wicket;
 import javax.inject.Inject;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -80,7 +81,7 @@ public final class ChatPanel extends PushPanel {
         });
 
         chatRoomForm.add(new TextField("messageInput",new PropertyModel(this,"messageInput")));
-	chatRoomForm.add(new AjaxButton("send") {
+        chatRoomForm.add(new AjaxButton("send") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 composingMessage.setMessage(messageInput);
                 chatManagerVC.setNewChatRoomMessageBean(composingMessage);

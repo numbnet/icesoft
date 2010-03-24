@@ -73,7 +73,7 @@ public final class ChatPage extends AppBasePage {
 		});
 		add(chatSession);
 
-		add(new ChatRoomsPanel("chatRoomsPanel", compoundChatManagerFacadeBean));
+		add(new ChatRoomsPanel("CHAT_ROOMS", compoundChatManagerFacadeBean));
 
 		add(new ChatPanel("chatPanel"));
 
