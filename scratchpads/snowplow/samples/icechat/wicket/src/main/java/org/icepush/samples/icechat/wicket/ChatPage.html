@@ -43,22 +43,34 @@
 			</div> 		
         </div>
 
-        <div class="body_container body_container_pos">
-            <div class="chatSession chatSession_pos">
-                <form wicket:id="chatSession">
-                    You are logged in as
-                    <span wicket:id="userName">userName</span>
-                    <input wicket:id="logout" type="button" value="Logout"/>
-                </form>
+        <div class="body_container body_container_pos" style="min-width:640px">
+	        <div id="chatPanel">
+	            <div class="chatSession chatSession_pos">
+	                <form wicket:id="chatSession">
+	                    You are logged in as
+	                    <span wicket:id="userName">userName</span>
+	                    <input wicket:id="logout" type="button" value="Logout"/>
+	                </form>
+	            </div>
+	
+	            <div class="clearer"/>
+	            
+	            <table style="width:100%">
+					<tr>
+						<td style="width:15%">
+						 <div class="chatRooms chatRooms_pos" style="width:80%">
+			                <h3>Chat Rooms</h3>
+			                <div wicket:id="CHAT_ROOMS"/>
+			            </div>
+			            </td>
+			            <td style="width:75%">
+			            <div wicket:id="chatPanel" class="chatRoomView currentChatRoom_pos" style="width:100%"/>
+			            </td>
+					</tr>
+	           
+	            
+	            </table>
             </div>
-
-            <div class="clearer"/>
-
-            <div class="chatRooms chatRooms_pos">
-                <h3>Chat Rooms</h3>
-                <div wicket:id="CHAT_ROOMS"/>
-            </div>
-            <div wicket:id="chatPanel" class="chatRoomView currentChatRoom_pos"/>
         </div>
     </body>
 </html>
