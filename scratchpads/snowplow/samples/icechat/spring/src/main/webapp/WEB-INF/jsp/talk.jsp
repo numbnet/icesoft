@@ -78,32 +78,30 @@
 						<c:if test="${!empty chat.currentChatSessionHolder.session}">
 							<div id="currentChatRoom" class="currentChatRoom_pos">
 								<div class="chatRoom" id="chatRoom">
-									<form id="chatRoomForm">
-										<div class="chatRoomHeader">
-											<c:out value="Chat Room '${chat.currentChatSessionHolder.session.room.name}'"/>
+									<div class="chatRoomHeader">
+										<c:out value="Chat Room '${chat.currentChatSessionHolder.session.room.name}'"/>
+									</div>
+									<div class="chatRoomContainer">
+										<div class="chatRoomUsers">
+											<icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/users.htm"/>
 										</div>
-										<div class="chatRoomContainer">
-											<div class="chatRoomUsers">
-												<icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/users.htm"/>
-											</div>
-											<div class="chatRoomMessages">
-												<div id="chatRoomMessages">
-													<icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/messages.htm"/>
-												</div>
+										<div class="chatRoomMessages">
+											<div id="chatRoomMessages">
+												<icep:region group="${chat.currentChatSessionHolder.session.room.name}" page="/messages.htm"/>
 											</div>
 										</div>
-										<div class="clearer"></div>
-										<div class="addNewMessage">
-											 <form:form method="post" commandName="chat">
-					                            <fmt:message key="newMessage"/>
-					                            
-					                            <form:input id="messageInput" path="newMessage.message" maxlength="1024"
-					                                        style="width: 60%;"/>
-					                            
-					                            <input type="submit" name="submit.sendMessage" value="Send"/>
-					                        </form:form>
-										</div>
-									</form>
+									</div>
+									<div class="clearer"></div>
+									<div class="addNewMessage">
+										 <form:form method="post" commandName="chat">
+				                            <fmt:message key="newMessage"/>
+				                            
+				                            <form:input id="messageInput" path="newMessage.message" maxlength="1024"
+				                                        style="width: 60%;"/>
+				                            
+				                            <input type="submit" name="submit.sendMessage" value="Send"/>
+				                        </form:form>
+									</div>
 								</div>        
 							</div>		
 						</c:if>			
