@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Date;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
@@ -207,8 +208,13 @@ public class PortletExternalContext extends BridgeExternalContext {
             inactiveIncrement = ((Long) inactiveIncObj).longValue();
         }
 
+        // #5533 Dont do anything if the maxInactiveInterval == -1
+        if (inactiveIncrement < 0) {
+            return;
+        }
+
         long lastAccessed = session.getLastAccessedTime();
-        session.setMaxInactiveInterval((int) (((System.currentTimeMillis() - lastAccessed) + inactiveIncrement) / 1000));
+        session.setMaxInactiveInterval( (int) (((System.currentTimeMillis() - lastAccessed) + inactiveIncrement) / 1000) );
         if (Log.isTraceEnabled()) {
             Log.trace("max inactive interval adjust to " + session.getMaxInactiveInterval());
         }
