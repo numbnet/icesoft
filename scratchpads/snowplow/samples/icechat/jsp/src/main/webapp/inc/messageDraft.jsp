@@ -35,8 +35,8 @@
 <jsp:useBean id="user" class="org.icepush.samples.icechat.model.User" scope="session"/>
 <c:if test="${not empty user and not empty sessionScope['currentChatRoom']}">
 	<c:forEach var="chatSession" items="${sessionScope['currentChatRoom'].userChatSessions}">
-		<c:if test="${chatSession.user.userName eq param['user'] and chatSession.live}">
-			<span id="${chatSession.room.name}_${chatSession.user.userName}_draft" class='draft'>
+		<c:if test="${chatSession.user.name eq param['user']}">
+			<span id="${chatSession.room.name}_${chatSession.user.name}_draft" class='draft'>
 				${chatSession.currentDraft}
 			</span>
 		</c:if>

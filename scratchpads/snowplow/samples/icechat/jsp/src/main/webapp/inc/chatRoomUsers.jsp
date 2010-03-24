@@ -39,14 +39,12 @@
 <div id="users">
 	<c:if test="${not empty user and not empty sessionScope['currentChatRoom']}">
 		<c:forEach var="chatSession" items="${sessionScope['currentChatRoom'].userChatSessions}">
-			<c:if test="${chatSession.live}">
-				<div id="${chatSession.user.name}">
-					${chatSession.user.name}&nbsp; 
-					<icep:region page="/inc/messageDraft.jsp?user=${chatSession.user.name}" 
-						group="${chatSession.room.name}_${chatSession.user.name}_draft">
-					</icep:region>
-				</div>
-			</c:if>
+			<div id="${chatSession.user.name}">
+				${chatSession.user.name}&nbsp; 
+				<icep:region page="/inc/messageDraft.jsp?user=${chatSession.user.name}" 
+					group="${chatSession.room.name}_${chatSession.user.name}_draft">
+				</icep:region>
+			</div>
 		</c:forEach>
 	</c:if>
 </div>

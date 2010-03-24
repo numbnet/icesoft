@@ -35,7 +35,9 @@
 <%
 	List<Message> messages = chatService.getAllChatRoomMessages(((ChatRoom)session.getAttribute("currentChatRoom")).getName());
 	if (messages != null) {
-		for (Message msg : messages) {
+		List<Message> sortedMessages = new ArrayList<Message>(messages);
+		Collections.reverse(sortedMessages);		
+		for (Message msg : sortedMessages) {
 %>
 	<div id='<%=msg.getId()%>'><%=new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z").format(msg.getCreated())%>
 	&nbsp;<%=msg.getUserChatSession().getUser().getName()%>

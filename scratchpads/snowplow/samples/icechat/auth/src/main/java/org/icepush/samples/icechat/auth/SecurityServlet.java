@@ -30,7 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.icepush.PushContext;
 import org.icepush.samples.icechat.model.User;
+import org.icepush.samples.icechat.model.UserChatSession;
 import org.icepush.samples.icechat.service.IChatService;
 
 public class SecurityServlet extends HttpServlet {
@@ -59,6 +61,12 @@ public class SecurityServlet extends HttpServlet {
 		if( LOGOUT.equals(op)){
 			User user = (User)req.getSession().getAttribute(USER_KEY);
 			if( user != null ){
+				for( UserChatSession session : user.getChatSessions() ){
+					session.getRoom().getUserChatSessions().remove(session);					
+					PushContext pushContext = PushContext.getInstance(req.getSession().getServletContext());
+					pushContext.push(session.getRoom().getName()+"_users");
+					session = null;
+				}
 				req.setAttribute(USER_KEY, null);				
 				LOG.info(user.getName() + " logged out ");
 			}
