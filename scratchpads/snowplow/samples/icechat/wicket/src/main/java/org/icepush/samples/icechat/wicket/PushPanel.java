@@ -63,6 +63,7 @@ public abstract class PushPanel extends Panel {
         pushJavascript = new Label("pushJavascript", new PropertyModel(this,"javascriptString"));
         pushJavascript.setEscapeModelStrings(false);
         add(pushJavascript);
+        pushRequestContext.getPushContext().addGroupMember("CHAT_ROOMS", pushRequestContext.getCurrentPushId());
     }
 
     @Override

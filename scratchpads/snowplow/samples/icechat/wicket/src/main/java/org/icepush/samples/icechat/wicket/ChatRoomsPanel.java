@@ -22,13 +22,13 @@
 package org.icepush.samples.icechat.wicket;
 
 import javax.inject.Inject;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -38,7 +38,7 @@ import org.icepush.samples.icechat.model.ChatRoom;
 /**
  *
  */
-public final class ChatRoomsPanel extends Panel{
+public final class ChatRoomsPanel extends PushPanel{
 
     @Inject
     ChatManagerViewControllerSessionBean chatManagerVC;
@@ -47,11 +47,12 @@ public final class ChatRoomsPanel extends Panel{
     CompoundPropertyModel compoundNewChatRoomBean = new CompoundPropertyModel(newChatRoomBean);
 
     final ListView chatRoomsListView;
+    Form chatRooms;
 
-    public ChatRoomsPanel(String id,IModel compoundChatManagerFacadeBean) {
+    public ChatRoomsPanel(String id, IModel compoundChatManagerFacadeBean) {
         super (id);
-
-        final Form chatRooms = new Form("chatRoomsForm",compoundChatManagerFacadeBean);
+        chatManagerVC.setPushRequestContext(pushRequestContext);
+        chatRooms = new Form("chatRoomsForm",compoundChatManagerFacadeBean);
         chatRooms.setOutputMarkupId(true);
         chatRooms.add(chatRoomsListView = new ListView("chatRooms"){
             public void populateItem(final ListItem listItem){
@@ -70,7 +71,7 @@ public final class ChatRoomsPanel extends Panel{
 
         Form createNewChatRoom = new Form("createNewChatRoomForm",compoundNewChatRoomBean);
         createNewChatRoom.add(new RequiredTextField<String>("name"));
-	createNewChatRoom.add(new AjaxButton("registerButton") {
+        createNewChatRoom.add(new AjaxButton("registerButton") {
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
                             chatManagerVC.setNewChatRoomBean(newChatRoomBean);
                             chatManagerVC.createNewChatRoom();
@@ -82,5 +83,10 @@ public final class ChatRoomsPanel extends Panel{
 		});
         add(createNewChatRoom);
     }
+
+	protected void pushCallback(AjaxRequestTarget target) {
+		chatRoomsListView.modelChanged();
+        target.addComponent(chatRooms);		
+	}
 
 }
