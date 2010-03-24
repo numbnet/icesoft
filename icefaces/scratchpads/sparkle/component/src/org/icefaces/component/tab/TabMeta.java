@@ -14,8 +14,7 @@ import org.icefaces.component.annotation.Property;
         componentType = "com.icesoft.faces.Tab",
         extendsClass = "javax.faces.component.UICommand", 
         generatedClass = "org.icefaces.component.tab.TabBase",
-        componentFamily="com.icesoft.faces.TabSet",
-        includeProperties={"rendered", "id"}
+        componentFamily="com.icesoft.faces.TabSet"
         )
 public class TabMeta {
     @Property   
@@ -26,6 +25,11 @@ public class TabMeta {
     private Boolean cacheData;
     @Property   
     private Boolean disabled;    
+    @Property(inherit=true)   
+    private String id;    
+    @Property(inherit=true)   
+    private Boolean rendered;    
+
     
     @Facets
     class FacetsMeta{

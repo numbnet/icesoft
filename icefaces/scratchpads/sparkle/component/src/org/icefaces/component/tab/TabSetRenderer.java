@@ -147,6 +147,11 @@ public class TabSetRenderer extends Renderer{
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
+        writer.startElement(HTML.ANCHOR_ELEM, tab);
+        writer.writeAttribute(HTML.ONFOCUS_ATTR, "Ice.simulateFocus(YAHOO.util.Dom.getNextSibling(this), this);", HTML.STYLE_ATTR); 
+        writer.writeAttribute(HTML.ONBLUR_ATTR, "Ice.simulateBlur(YAHOO.util.Dom.getNextSibling(this), this);", HTML.STYLE_ATTR); 
+        writer.endElement(HTML.ANCHOR_ELEM);               
+               
         UIComponent labelFacet = ((Tab)tab).getLabelFacet();
         if (((TabSet)tabSet).getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
@@ -162,9 +167,6 @@ public class TabSetRenderer extends Renderer{
                 Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
             else
                 writer.write(String.valueOf(tab.getAttributes().get("label")));
-            writer.startElement(HTML.ANCHOR_ELEM, tab);
-            writer.writeAttribute(HTML.STYLE_ATTR, "visibility:hidden", HTML.STYLE_ATTR); 
-            writer.endElement(HTML.ANCHOR_ELEM);               
             writer.endElement("em");
             writer.endElement(HTML.DIV_ELEM);        
 //        } else {
