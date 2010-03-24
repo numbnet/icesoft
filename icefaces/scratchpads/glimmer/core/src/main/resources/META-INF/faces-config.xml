@@ -44,5 +44,13 @@
         <resource-handler>org.icefaces.push.servlet.ICEfacesResourceHandler</resource-handler>
         <view-handler>org.icefaces.push.BridgeSetup</view-handler>
         <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
+        <system-event-listener>
+            <system-event-listener-class>
+                org.icefaces.event.RedirectSubmit
+            </system-event-listener-class>
+            <system-event-class>
+                javax.faces.event.PostAddToViewEvent
+            </system-event-class>
+        </system-event-listener>
     </application>
 </faces-config>
