@@ -116,6 +116,7 @@ public class ChatServlet extends HttpServlet {
 		}else if( POST_LOGOUT_OF_ROOM.equals(url)){
 			logoutOfRoom(req,resp);
 		}
+		resp.setStatus(200);
 	}
 
 	public IChatService getChatService() {
@@ -145,25 +146,15 @@ public class ChatServlet extends HttpServlet {
 				Collection<UserChatSession> sessions = room.getUserChatSessions();
 				LOG.info("found " + sessions.size() + " users in chat room " + roomName);
 				for( UserChatSession s : sessions ){
-					if( s.isLive() ){
-						buff.append("<div id='");
-						buff.append(s.getUser().getName());
-						buff.append("'>");
-						buff.append(s.getUser().getName());
-						buff.append("&nbsp;");
-						buff.append("<span id='");
-						buff.append(s.getRoom().getName()+"_"+s.getUser().getName());
-						buff.append("_draft' class='draft'>");
-						buff.append(getMessageDraft(s));
-						buff.append("</span>");		
-					    buff.append("</div>");
-					}
-					else{
-						buff.append("<div>");
-						buff.append(s.getUser().getName());
-						buff.append("&nbsp;left at " + DATE_FORMAT.format(s.getExited()));
-						buff.append("</div>");
-					}
+					buff.append("<div id='");
+					buff.append(s.getUser().getName());
+					buff.append("'>");
+					buff.append(s.getUser().getName());
+					buff.append("&nbsp;<span id='");
+					buff.append(s.getRoom().getName()+"_"+s.getUser().getName());
+					buff.append("_draft' class='draft'>");
+					buff.append(getMessageDraft(s));
+					buff.append("</span></div>");						
 				}
 			}
 		}
@@ -220,7 +211,7 @@ public class ChatServlet extends HttpServlet {
 		if( room != null ){
 			Collection<UserChatSession> sessions = room.getUserChatSessions();
 			for( UserChatSession s : sessions ){
-				if( s.isLive() && s.getUser().getName().equals(userName) && s.getCurrentDraft() != null ){
+				if( s.getUser().getName().equals(userName) && s.getCurrentDraft() != null ){
 					result = getMessageDraft(s);
 					if( s.getCurrentDraft() != null )
 						result += "<div class='typing'>&nbsp;&nbsp;&nbsp;</div>";

@@ -54,7 +54,7 @@
         function login() {
         	var xmlHttp = getXmlHttpRequest();
         	xmlHttp.onreadystatechange = function() {
-        		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        		if (xmlHttp.readyState == 4 ) {
         			if( xmlHttp.responseText )
         				$("loginMessages").innerHTML = xmlHttp.responseText;
         			else
@@ -94,7 +94,7 @@
 		                <h2>ICEchat Login</h2>
 		                <div style="text-align:right;">
 		                    <label for="userName">Name </label>
-		                    <input type="text" id="userName"/>
+		                    <input type="text" id="userName" onkeypress="if(event.keyCode == 13){ window.login();}"/>
 		                </div>
 		                <div style="text-align:right;margin-top:20px;">
 		                    <input type="button" id="login" value="Login" onclick="window.login();"/>
