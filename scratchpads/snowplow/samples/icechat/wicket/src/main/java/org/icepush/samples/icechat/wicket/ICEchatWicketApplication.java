@@ -31,6 +31,9 @@ public class ICEchatWicketApplication  extends WeldApplication{
 	public Class<? extends Page> getHomePage()
 	{
 		return LoginPage.class;
+		
 	}
+	
+	
 
 }

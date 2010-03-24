@@ -17,7 +17,7 @@
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
 
 package org.icepush.samples.icechat.wicket;
 
@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -38,55 +39,67 @@ import org.icepush.samples.icechat.model.ChatRoom;
 /**
  *
  */
-public final class ChatRoomsPanel extends PushPanel{
+public final class ChatRoomsPanel extends PushPanel {
 
-    @Inject
-    ChatManagerViewControllerSessionBean chatManagerVC;
-    
-    NewChatRoomBean newChatRoomBean = new NewChatRoomBean();
-    CompoundPropertyModel compoundNewChatRoomBean = new CompoundPropertyModel(newChatRoomBean);
+	@Inject
+	ChatManagerViewControllerSessionBean chatManagerVC;
 
-    final ListView chatRoomsListView;
-    Form chatRooms;
+	NewChatRoomBean newChatRoomBean = new NewChatRoomBean();
+	CompoundPropertyModel compoundNewChatRoomBean = new CompoundPropertyModel(
+			newChatRoomBean);
 
-    public ChatRoomsPanel(String id, IModel compoundChatManagerFacadeBean) {
-        super (id);
-        chatManagerVC.setPushRequestContext(pushRequestContext);
-        chatRooms = new Form("chatRoomsForm",compoundChatManagerFacadeBean);
-        chatRooms.setOutputMarkupId(true);
-        chatRooms.add(chatRoomsListView = new ListView("chatRooms"){
-            public void populateItem(final ListItem listItem){
-                final ChatRoom chatRoom = (ChatRoom)listItem.getModelObject();
-                listItem.add(new AjaxButton("name",new Model(chatRoom.getName())) {
-                    protected void onSubmit(AjaxRequestTarget target, Form form) {
-                        chatManagerVC.openChatSession(chatRoom.getName());
-                        setResponsePage(getPage());
-                    }
-	        });
+	final ListView chatRoomsListView;
+	Form chatRooms;
 
-            }
-        });
+	public ChatRoomsPanel(String id, IModel compoundChatManagerFacadeBean) {
+		super(id);
+		chatManagerVC.setPushRequestContext(pushRequestContext);
+		chatRooms = new Form("chatRoomsForm", compoundChatManagerFacadeBean);
+		chatRooms.setOutputMarkupId(true);
+		chatRooms.add(chatRoomsListView = new ListView("chatRooms") {
+			public void populateItem(final ListItem listItem) {
+				final ChatRoom chatRoom = (ChatRoom) listItem.getModelObject();
+				listItem.add(new AjaxButton("name", new Model(chatRoom
+						.getName())) {
+					protected void onSubmit(AjaxRequestTarget target, Form form) {
+						chatManagerVC.openChatSession(chatRoom.getName());
+						setResponsePage(getPage());
+					}
+				});
 
-        add(chatRooms);
-
-        Form createNewChatRoom = new Form("createNewChatRoomForm",compoundNewChatRoomBean);
-        createNewChatRoom.add(new RequiredTextField<String>("name"));
-        createNewChatRoom.add(new AjaxButton("registerButton") {
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
-                            chatManagerVC.setNewChatRoomBean(newChatRoomBean);
-                            chatManagerVC.createNewChatRoom();
-                            chatRoomsListView.modelChanged();
-                            target.addComponent(chatRooms);
-                            chatManagerVC.openChatSession(newChatRoomBean.getName());
-                            setResponsePage(getPage());
 			}
 		});
-        add(createNewChatRoom);
-    }
+
+		add(chatRooms);
+
+		Form createNewChatRoom = new Form("createNewChatRoomForm",
+				compoundNewChatRoomBean);
+		final AjaxButton createNewRoomBtn = new AjaxButton("registerButton") {
+			protected void onSubmit(AjaxRequestTarget target, Form form) {
+				chatManagerVC.setNewChatRoomBean(newChatRoomBean);
+				chatManagerVC.createNewChatRoom();
+				chatRoomsListView.modelChanged();
+				target.addComponent(chatRooms);
+				chatManagerVC.openChatSession(newChatRoomBean.getName());
+				setResponsePage(getPage());
+			}
+		};
+		createNewChatRoom.add(new RequiredTextField<String>("name") {
+			protected void onComponentTag(ComponentTag tag) {
+				super.onComponentTag(tag);
+				tag.put("onkeypress",
+						"if (event.keyCode == 13) { document.getElementById('"
+								+ createNewRoomBtn.getMarkupId()
+								+ "').click(); return false;}");
+			}
+		});
+		createNewChatRoom.add(createNewRoomBtn);
+		add(createNewChatRoom);
+	}
 
 	protected void pushCallback(AjaxRequestTarget target) {
 		chatRoomsListView.modelChanged();
-        target.addComponent(chatRooms);		
+		target.addComponent(chatRooms);
 	}
 
 }
