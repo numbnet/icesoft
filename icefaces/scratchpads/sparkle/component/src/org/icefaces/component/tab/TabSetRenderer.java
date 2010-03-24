@@ -60,6 +60,7 @@ public class TabSetRenderer extends Renderer{
         
         if (isBottom) {
             writer.startElement(HTML.DIV_ELEM, uiComponent);
+                writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
                 renderTab(facesContext, uiComponent, false);
@@ -147,17 +148,14 @@ public class TabSetRenderer extends Renderer{
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
-        writer.startElement(HTML.ANCHOR_ELEM, tab);
-        writer.writeAttribute(HTML.ONFOCUS_ATTR, "Ice.simulateFocus(YAHOO.util.Dom.getNextSibling(this), this);", HTML.STYLE_ATTR); 
-        writer.writeAttribute(HTML.ONBLUR_ATTR, "Ice.simulateBlur(YAHOO.util.Dom.getNextSibling(this), this);", HTML.STYLE_ATTR); 
-        writer.endElement(HTML.ANCHOR_ELEM);               
-               
+
         UIComponent labelFacet = ((Tab)tab).getLabelFacet();
         if (((TabSet)tabSet).getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
 //        if (labelFacet!= null) {
             writer.startElement(HTML.DIV_ELEM, tab);  
+            writer.writeAttribute(HTML.TABINDEX_ATTR, ((TabSet)tabSet).getTabIndex(), HTML.TABINDEX_ATTR);
             writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
@@ -178,7 +176,14 @@ public class TabSetRenderer extends Renderer{
 //            writer.endElement("em");
 //            writer.endElement(HTML.ANCHOR_ELEM);        
 //        }
-        writer.endElement(HTML.LI_ELEM);
+        
+            writer.startElement(HTML.ANCHOR_ELEM, tab);
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", HTML.STYLE_ATTR); 
+            writer.endElement(HTML.ANCHOR_ELEM);               
+                   
+
+            
+            writer.endElement(HTML.LI_ELEM);
     }    
     private void renderTabBody(FacesContext facesContext, 
             UIComponent tabSet, UIComponent tab, int index) throws IOException {
