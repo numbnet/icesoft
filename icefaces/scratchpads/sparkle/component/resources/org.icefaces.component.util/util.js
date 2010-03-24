@@ -29,3 +29,31 @@ Ice.printArguments = function() {
     for(var i=0; i<arguments.length; i++) 
        logger.info(arguments[i]);
 }
+
+Ice.simulateFocus = function(ele, anc) {
+    if(!document.all) {
+        anc.style.visibility='hidden';
+    } 
+    anc.style.borderStyle='none';
+    anc.style.outlineStyle='none'; 
+    anc.style.borderWidth='0px';
+    anc.style.outlineWidth='0px'; 
+    anc.style.margin='0px'; 
+    if (ele == null) return; 
+    ele['_borderStyle'] = ele.style.borderStyle;     
+    ele.style.borderStyle='dotted';
+    ele['_borderWidth'] = ele.style.borderWidth;   
+    ele.style.borderWidth='1px 1px 1px 1px';
+    ele['_borderColor'] = ele.style.borderColor;   
+    ele.style.borderColor = 'black';    
+}
+
+Ice.simulateBlur = function(ele, anc) {
+    if(!document.all) {    
+        anc.style.visibility='visible';
+    } 
+    if (ele == null) return; 
+    ele.style.borderStyle = ele['_borderStyle'];
+    ele.style.borderWidth = ele['_borderWidth'];  
+    ele.style.borderColor = ele['_borderColor'];   
+}
