@@ -63,6 +63,7 @@ div.header_content {
 
 .body_container_pos{
     margin-top: -80px;
+    min-width:640px;
 }
 
 /* centers in parent as long as parent is larger then child*/
@@ -167,7 +168,7 @@ div.footer_content a:hover {
 
 .currentChatRoom_pos{
     margin: 0 0 0 0.5%;
-    width: 82%; 
+    width: 80%; 
     overflow: auto;
     display: block;
     float: right;
@@ -189,6 +190,7 @@ div.footer_content a:hover {
     width: 14%;
     overflow: auto;
     _height: 400px;//ie6
+    min-width:150px;
 }
 
 .createNewChatRoom {
