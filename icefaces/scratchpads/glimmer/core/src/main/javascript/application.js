@@ -149,7 +149,7 @@ if (!window.ice.icefaces) {
         };
 
         //redirect vanilla form submits
-        function redirectFormSubmit(f) {
+        function captureSubmit(f) {
             //hijack browser form submit, instead submit through an Ajax request
             f.submit = function() {
                 submit(null, f);
@@ -177,20 +177,27 @@ if (!window.ice.icefaces) {
             f.appendChild(i);
         }
 
-        //redirect all vanilla form submits
-        onLoad(window, function() {
-            each(document.getElementsByTagName('form'), redirectFormSubmit);
-        });
-        //re-apply submit redirect for updated form elements 
+        var hijackedForms = [];
+
+        namespace.redirectSubmit = function(formID) {
+            append(hijackedForms, formID);
+            onLoad(window, function() {
+                captureSubmit(document.getElementById(formID));
+            });
+        };
+
+        //re-apply submit redirect for updated form elements
         namespace.onAfterUpdate(function(updateXML) {
             each(updateXML.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
                 var element = document.getElementById(id);
                 if (element) {
                     if (toLowerCase(element.nodeName) == 'form') {
-                        redirectFormSubmit(element);
+                        if (contains(hijackedForms, id)) captureSubmit(element);
                     } else {
-                        each(element.getElementsByTagName('form'), redirectFormSubmit);
+                        each(element.getElementsByTagName('form'), function(element) {
+                            if (contains(hijackedForms, element.id)) captureSubmit(element);
+                        });
                     }
                 }
             });
