@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -48,13 +49,19 @@ public final class LoginPage extends AppBasePage {
         final FeedbackPanel feedbackPanel = new FeedbackPanel("loginMessages");
         feedbackPanel.setOutputMarkupId(true);
 
-        loginForm.add(new RequiredTextField<String>("userName"));
-        loginForm.add(new AjaxButton("loginButton") {
-                protected void onSubmit(AjaxRequestTarget target, Form form) {
-                        loginController.login(loginController.getUserName());
-                        setResponsePage(new ChatPage());
-                }
+        final AjaxButton loginButton = new AjaxButton("loginButton") {
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                loginController.login(loginController.getUserName());
+                setResponsePage(new ChatPage());
+            };
+        };
+        loginForm.add(new RequiredTextField<String>("userName"){
+        	protected void onComponentTag(ComponentTag tag){
+                    super.onComponentTag(tag);                   
+                    tag.put("onkeypress", "if (event.keyCode == 13) { document.getElementById('" + loginButton.getMarkupId() + "').click(); return false;}");
+              } 
         });
+        loginForm.add(loginButton);
 
         loginForm.add(feedbackPanel);
 

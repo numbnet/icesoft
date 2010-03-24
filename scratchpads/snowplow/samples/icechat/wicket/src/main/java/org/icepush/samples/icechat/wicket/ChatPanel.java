@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -79,16 +80,24 @@ public final class ChatPanel extends PushPanel {
 
             }
         });
-
-        chatRoomForm.add(new TextField("messageInput",new PropertyModel(this,"messageInput")));
-        chatRoomForm.add(new AjaxButton("send") {
+        final AjaxButton sendBtn = new AjaxButton("send") {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 composingMessage.setMessage(messageInput);
                 chatManagerVC.setNewChatRoomMessageBean(composingMessage);
                 chatManagerVC.sendNewMessage();
                 messageInput = "";
             }
+        };
+        chatRoomForm.add(new TextField("messageInput",new PropertyModel(this,"messageInput")){
+        	protected void onComponentTag(ComponentTag tag) {
+				super.onComponentTag(tag);
+				tag.put("onkeypress",
+						"if (event.keyCode == 13) { document.getElementById('"
+								+ sendBtn.getMarkupId()
+								+ "').click(); return false;}");
+			}
         });
+        chatRoomForm.add(sendBtn);
 
         add(chatRoomForm);
     }
