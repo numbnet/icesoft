@@ -94,6 +94,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
         } catch (Throwable t) {
             Log.debug("Spring Security not detected.");
         }
+        try {
+            SpringAuthenticationClass = Class.forName("org.springframework.security.core.Authentication");
+            AuthenticationClass = SpringAuthenticationClass;
+            Log.debug("Spring Security 3 detected.");
+        } catch (Throwable t) {
+            Log.debug("Spring Security 3 not detected.");
+        }
     }
 
     protected static final RequestAttributes NOOPRequestAttributes = new RequestAttributes() {
