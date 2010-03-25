@@ -35,18 +35,18 @@
     <!--property name="ant.project.name" value="chat"/-->
     <property name="war.file.name" value="location"/>
      
-    <import file="../../etc/build-common.xml"/>
+    <import file="c:\icefacesHead/icefacesNewDev/samples/etc/build-common.xml"/>
 
     <property file="${build.common.basedir}/portlet.properties"/>
     
     <target name="build.war" depends="portlet.compile">
         <build.war web.xml="conf/${general.xml}"/>
     </target>
-    <!--
-    <target name="build.portlet.war">
-        <build.portlet.war web.xml="conf/${general.xml}"/>
+   
+    <target name="build.portlet" depends="portlet.compile">
+        <build.portlet.war web.xml="${theOne.xml}"/>
     </target>
-    -->
+
     <target name="build.portlet.jboss4.2.portal.war" description="build portlet application for JBoss4.2 portal">
 
         <antcall target="build.portlet" >
@@ -65,9 +65,7 @@
             <param name="serverjsf" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet" depends="portlet.compile">
-        <build.portlet.war web.xml="${chat.xml}"/>
-    </target>
+
     <target name="build.portlet.liferay.tomcat6.war" description="build a portlet application for Liferay Tomcat6.x">
 
         <antcall target="build.portlet">
@@ -76,6 +74,7 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
+
     <target name="build.portlet.liferay.tomcat5.war" description="build a portlet application for Liferay Tomcat5.x">
         <!--
         <property name="portlet" value="true"/>
@@ -96,6 +95,14 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>    
+
+    <target name="build.portlet.websphere6.1.portal.war" description="build portlet application for Websphere6.1.0.1 portal">
+        <antcall target="build.portlet" >
+            <param name="chat.xml" value="./conf/${general.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
 
 	<!--
     <target name="tomcat6.0" description="a redirect call to build.portlet.jboss4.2.portal.war">
