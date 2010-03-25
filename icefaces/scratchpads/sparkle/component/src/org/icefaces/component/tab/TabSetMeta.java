@@ -52,6 +52,9 @@ public class TabSetMeta {
     @Property(defaultValue="true") 
     private Boolean cancelOnInvalid;    
     
+    @Property(defaultValue="false") 
+    private Boolean aria;
+    
     @Property    
     private String onupdate;
     

@@ -92,9 +92,82 @@ Ice.component.tabset = {
                 } 	             
 			}//end if    
 	   }//tabchange; 
-	   tabview.addListener('activeTabChange', tabChange);       
-	   //logger.info('4. tabset initialize');       
-	   return tabview;
+	   
+       //Check for aria support
+       var aria = Ice.component.getProperty(clientId, 'aria');
+
+       //add aria + keyboard support
+       if (aria && aria["new"]) {
+           var Dom = YAHOO.util.Dom;
+           var Event = YAHOO.util.Event;
+           var goNext = function(target) {
+               var nextLi = Dom.getNextSibling(target);
+               if (nextLi == null) {
+                   goFirst(target);
+               } else {
+                   Dom.getFirstChild(nextLi).focus();
+               }
+           };
+       
+           var goPrevious= function(target) {
+               var previousLi = Dom.getPreviousSibling(target);
+               if (previousLi == null) {
+                  goLast(target);
+               } else {
+                  Dom.getFirstChild(previousLi).focus();
+               }
+           };
+           
+           var goLast= function(target) {
+               var lastLi = Dom.getLastChild(target.parentNode);  
+               Dom.getFirstChild(lastLi).focus(); 
+           };
+           
+           var goFirst= function(target) {
+               var firstLi = Dom.getFirstChild(target.parentNode);
+               Dom.getFirstChild(firstLi).focus();                             
+           };
+           	       
+           var onKeyDown = function(event) {
+                var target = Event.getTarget(event).parentNode;
+                var charCode = Event.getCharCode(event);
+                switch (charCode) {
+                   case 37://Left
+                   case 38://Up
+                     goPrevious(target);
+                     break;
+                     
+                   case 39://Right
+                   case 40://Down
+                     goNext(target);
+                     break;                     
+                    
+                   case 36: //HOME
+                     goFirst(target);
+                     break;                   
+                     
+                   case 35: //End  
+                     goLast(target);
+                     break;    
+                }
+           }
+
+           var onKeyPress = function(event, index) {
+                var target = Event.getTarget(event).parentNode;
+                var isEnter = Event.getCharCode(event) == 13;
+                if (isEnter) {
+                   tabview.set('activeIndex', index);
+                }
+           }
+           
+           var tabs = tabview.get('tabs');
+           for (i=0; i<tabs.length; i++) {
+               tabs[i].on('keydown', onKeyDown);
+               tabs[i].on('keypress', onKeyPress, i); 
+           }
+       }
+       tabview.addListener('activeTabChange', tabChange);       
+       return tabview;
    },
    
    updateProperties:function(_id, props) {
