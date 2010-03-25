@@ -13,6 +13,7 @@ import javax.faces.render.Renderer;
 import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.util.EnvUtils;
 
 public class TabSetRenderer extends Renderer{
     private static String YUI_TABSET_INDEX = "yti";
@@ -123,8 +124,7 @@ public class TabSetRenderer extends Renderer{
         ", 'isClientSide':"+ isClientSide +
         ", 'onupdate':"+ onupdate +        
         ", 'singleSubmit':"+ singleSubmit +
-        ", 'aria':"+ tabSet.isAria()+"});";
-        
+        ", 'aria':"+ EnvUtils.isAriaEnabled(facesContext) +"});";
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
