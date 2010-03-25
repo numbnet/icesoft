@@ -35,7 +35,7 @@
     <!--property name="ant.project.name" value="chat"/-->
     <property name="war.file.name" value="chat"/>
      
-    <import file="../../etc/build-common.xml"/>
+    <import file="c:/icefacesHead/icefacesNewDev/samples/etc/build-common.xml"/>
 
     <property file="${build.common.basedir}/portlet.properties"/>
     
@@ -96,6 +96,14 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>    
+
+    <target name="build.portlet.websphere6.1.portal.war" description="build portlet application for Websphere6.1.0.1 portal">
+        <antcall target="build.portlet" >
+            <param name="chat.xml" value="./conf/${general.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
 
 	<!--
     <target name="tomcat6.0" description="a redirect call to build.portlet.jboss4.2.portal.war">
