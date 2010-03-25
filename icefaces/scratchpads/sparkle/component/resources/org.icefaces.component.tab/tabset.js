@@ -2,6 +2,7 @@ Ice.component.tabset = {
     hover:false,
     initialize:function(clientId) {
        //logger.info('1. tabset initialize');
+       var Dom = YAHOO.util.Dom;
        var tabview = new YAHOO.widget.TabView(clientId);  
        var o = Ice.component.getProperty(clientId, 'orientation');
        if(o) {
@@ -73,7 +74,14 @@ Ice.component.tabset = {
                                             tabview.removeListener('activeTabChange'); 
                                             tabview.set('activeIndex', si);
                                             tabview.addListener('activeTabChange', tabChange);                                          
-                                        }                                    
+                                        }
+                                        var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
+
+                                        //set the focus back to the selected tab
+                                        if (LIs.length > si) {
+                                            Dom.getFirstChild(LIs[si]).focus();
+                                        }        
+                                                                         
                                 }
                             });
                         };
@@ -99,7 +107,6 @@ Ice.component.tabset = {
        var Event = YAHOO.util.Event;
        //add aria + keyboard support
        if (aria && aria["new"]) {
-           var Dom = YAHOO.util.Dom;
            var goNext = function(target) {
                var nextLi = Dom.getNextSibling(target);
                if (nextLi == null) {
