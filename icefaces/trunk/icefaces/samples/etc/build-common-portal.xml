@@ -102,6 +102,7 @@
             <param name="conf.xml" value="./conf/${general.xml}"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+            <param name="el-api" value=""/>
         </antcall>
     </target>
     

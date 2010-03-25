@@ -104,8 +104,10 @@
         <include name="grizzly-compat.jar" if="glassfish" />
     </patternset>
     
-    <patternset id="additional.icefaces.lib.jars.to.include">
-        <include name="just-ice.jar" if="just-ice" />
+    <patternset id="additional.icefaces.lib.jars.to.include"
+                includes="just-ice.jar el-api.jar">
+        <exclude name="just-ice.jar" unless="just-ice" />
+        <exclude name="el-api.jar"   unless="el-api" />
     </patternset>
     
     <patternset id="additional.compile.lib.jars"/>
@@ -251,9 +253,9 @@
             <copy todir="@{portlet.web.content.dir}/WEB-INF/lib" preservelastmodified="true">
                 <fileset dir="${icefaces.lib.dir}">
                     <patternset refid="common.icefaces.lib.jars.to.include"/>
+                </fileset>
+                <fileset dir="${icefaces.lib.dir}">
                     <patternset refid="additional.icefaces.lib.jars.to.include"/>
-                    <!--patternset refid="portlet.deploy.jars"/-->
-                    <!--patternset refid="portlet.optional.jars"/-->
                 </fileset>
                 <fileset dir="${icefaces.lib.dir}">
                     <patternset refid="jsf.deploy.jars" />
