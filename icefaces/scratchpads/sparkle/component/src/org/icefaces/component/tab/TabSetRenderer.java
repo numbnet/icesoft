@@ -115,7 +115,8 @@ public class TabSetRenderer extends Renderer{
         +", 'orientation': '"+ orientation +"'" +
         ", 'isClientSide':"+ isClientSide +
         ", 'onupdate':"+ onupdate +        
-        ", 'singleSubmit':"+ singleSubmit +"});";
+        ", 'singleSubmit':"+ singleSubmit +
+        ", 'aria':"+ tabSet.isAria()+"});";
         
 
         writer.startElement(HTML.DIV_ELEM, uiComponent);
