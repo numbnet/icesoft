@@ -26,5 +26,18 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        
+        <attribute>
+            <description>
+                A value of "true" indicates that ARIA support applied to the current view.
+                "true" is the default value. ARIA can be enabled application level by setting
+                following context parameter "org.icefaces.aria.enabled" to true in web.xml
+                If ARIA is enabled application level, this attribute can disable ARIA for 
+                current view.                
+            </description>
+            <name>ariaEnabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>        
     </tag>
 </facelet-taglib>

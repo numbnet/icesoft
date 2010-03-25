@@ -34,6 +34,7 @@ public class EnvUtils {
     //internal flags
     public static String ICEFACES_CONFIG_LOADED = "org.icefaces.config.loaded";
     public static String ICEFACES_RENDER = "org.icefaces.render";
+    public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
 
     static {
         try {
@@ -66,6 +67,15 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).getAutoId();
     }
 
+    public static boolean isAriaEnabled(FacesContext facesContext) {
+        Map attributes = facesContext.getAttributes();
+        Object ariaEnabled = attributes.get(ARIA_ENABLED);
+        if (null == ariaEnabled) {
+            return EnvConfig.getEnvConfig(facesContext).isAriaEnabled();
+        } 
+        return (Boolean.TRUE.equals(ariaEnabled));
+    }
+    
     private static boolean icepushPresent;
 
     static {

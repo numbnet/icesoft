@@ -24,6 +24,9 @@ package org.icefaces.util;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
+import org.icefaces.util.EnvUtils;
+
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +39,8 @@ public class EnvConfig {
     private boolean autoRenderFlag;
     public static String ICEFACES_AUTOID = "org.icefaces.autoid";
     private boolean autoIdFlag;
-
+    private boolean ariaEnabledFlag;
+    
     public EnvConfig(Map initMap)  {
         init(initMap);
     }
@@ -55,6 +59,10 @@ public class EnvConfig {
     public void init(Map initMap)  {
         autoRenderFlag = decodeBoolean(initMap, ICEFACES_AUTO, true);
         autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true);
+        Object ariaEnabled = initMap.get(EnvUtils.ARIA_ENABLED);
+        if (null != ariaEnabled && "true".equalsIgnoreCase(ariaEnabled.toString())) {
+            ariaEnabledFlag = true;
+        }
     }
 
     boolean decodeBoolean(Map map, String name, boolean defaultValue)  {
@@ -102,5 +110,14 @@ public class EnvConfig {
      */
     public boolean getAutoRender() {
         return autoRenderFlag;
+    }
+
+    /**
+     * Return the init param for org.icefaces.aria.enabled.
+     *
+     * @return true if ARIA is enabled at application level
+     */
+    public boolean isAriaEnabled() {
+        return ariaEnabledFlag;
     }
 }

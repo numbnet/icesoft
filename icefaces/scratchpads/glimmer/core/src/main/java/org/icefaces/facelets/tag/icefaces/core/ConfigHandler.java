@@ -47,18 +47,33 @@ import java.io.IOException;
 
 import org.icefaces.util.EnvUtils;
 
+
 public class ConfigHandler extends TagHandler {
     private final TagAttribute render;
-
+    private final TagAttribute ariaEnabled;
     public ConfigHandler(TagConfig config) {
         super(config);
         this.render = this.getAttribute("render");
+        this.ariaEnabled = this.getAttribute("ariaEnabled");        
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
         FacesContext facesContext = ctx.getFacesContext();
         Map attributes = facesContext.getAttributes();
+        //default value
+        String renderValue = "true"; 
+        if (render != null) {
+            renderValue = render.getValue();
+        }
         attributes.put( EnvUtils.ICEFACES_RENDER, 
-            new Boolean("true".equalsIgnoreCase(render.getValue())) );
+            new Boolean("true".equalsIgnoreCase(renderValue)) );
+        
+        //default value
+        String ariaEnabledValue = "true"; 
+        if (ariaEnabled != null) {
+            ariaEnabledValue = ariaEnabled.getValue();
+        }
+        attributes.put( EnvUtils.ARIA_ENABLED, 
+                new Boolean("true".equalsIgnoreCase(ariaEnabledValue)) );        
     }
 }
