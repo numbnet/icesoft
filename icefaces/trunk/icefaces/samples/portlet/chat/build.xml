@@ -35,7 +35,7 @@
     <!--property name="ant.project.name" value="chat"/-->
     <property name="war.file.name" value="chat"/>
      
-    <import file="c:/icefacesHead/icefacesNewDev/samples/etc/build-common.xml"/>
+    <import file="../../etc/build-common.xml"/>
 
     <property file="${build.common.basedir}/portlet.properties"/>
     
