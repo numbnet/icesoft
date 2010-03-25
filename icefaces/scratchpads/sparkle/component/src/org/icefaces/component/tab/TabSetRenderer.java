@@ -10,6 +10,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 
@@ -68,12 +69,18 @@ public class TabSetRenderer extends Renderer{
         
             writer.startElement(HTML.UL_ELEM, uiComponent);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
+                if (tabSet.isAria()) {
+                    writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
+                }
                 renderTab(facesContext, uiComponent, true);
             writer.endElement(HTML.UL_ELEM);
                 
         } else {
             writer.startElement(HTML.UL_ELEM, uiComponent);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
+                if (tabSet.isAria()) {
+                    writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
+                }                
                 renderTab(facesContext, uiComponent, true);
             writer.endElement(HTML.UL_ELEM);
             
@@ -145,18 +152,24 @@ public class TabSetRenderer extends Renderer{
     }    
 
     
-    private void renderTabNav(FacesContext facesContext, UIComponent tabSet, UIComponent tab, int index) throws IOException {
+    private void renderTabNav(FacesContext facesContext, TabSet tabSet, UIComponent tab, int index) throws IOException {
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
+        if (tabSet.isAria()) {
+            writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.PRESENTATION_ROLE, ARIA.ROLE_ATTR);  
+        }
 
         UIComponent labelFacet = ((Tab)tab).getLabelFacet();
-        if (((TabSet)tabSet).getTabIndex() == index) {
+        if (tabSet.getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
 //        if (labelFacet!= null) {
             writer.startElement(HTML.DIV_ELEM, tab);  
-            writer.writeAttribute(HTML.TABINDEX_ATTR, ((TabSet)tabSet).getTabIndex(), HTML.TABINDEX_ATTR);
+            if (tabSet.isAria()) {
+                writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
+            }
+            writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
             writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
             writer.startElement("em", tab);
             writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
@@ -187,17 +200,20 @@ public class TabSetRenderer extends Renderer{
             writer.endElement(HTML.LI_ELEM);
     }    
     private void renderTabBody(FacesContext facesContext, 
-            UIComponent tabSet, UIComponent tab, int index) throws IOException {
+            TabSet tabSet, UIComponent tab, int index) throws IOException {
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        
-        boolean isClientSide = ((TabSet)tabSet).isClientSide();
+        writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
+        if (tabSet.isAria()) {
+            writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABPANEL_ROLE, ARIA.ROLE_ATTR);  
+        }        
+        boolean isClientSide = tabSet.isClientSide();
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
-            if (((TabSet)tabSet).getTabIndex() == index) {
+            if (tabSet.getTabIndex() == index) {
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);

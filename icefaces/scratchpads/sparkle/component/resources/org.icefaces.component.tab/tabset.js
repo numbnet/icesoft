@@ -95,11 +95,11 @@ Ice.component.tabset = {
 	   
        //Check for aria support
        var aria = Ice.component.getProperty(clientId, 'aria');
-
+       var onKeyDown = null;
+       var Event = YAHOO.util.Event;
        //add aria + keyboard support
        if (aria && aria["new"]) {
            var Dom = YAHOO.util.Dom;
-           var Event = YAHOO.util.Event;
            var goNext = function(target) {
                var nextLi = Dom.getNextSibling(target);
                if (nextLi == null) {
@@ -128,7 +128,7 @@ Ice.component.tabset = {
                Dom.getFirstChild(firstLi).focus();                             
            };
            	       
-           var onKeyDown = function(event) {
+           onKeyDown = function(event) {
                 var target = Event.getTarget(event).parentNode;
                 var charCode = Event.getCharCode(event);
                 switch (charCode) {
@@ -151,20 +151,22 @@ Ice.component.tabset = {
                      break;    
                 }
            }
-
-           var onKeyPress = function(event, index) {
-                var target = Event.getTarget(event).parentNode;
-                var isEnter = Event.getCharCode(event) == 13;
-                if (isEnter) {
-                   tabview.set('activeIndex', index);
-                }
+       }
+       var onKeyPress = function(event, index) {
+            var target = Event.getTarget(event).parentNode;
+            var isEnter = Event.getCharCode(event) == 13;
+            if (isEnter) {
+               tabview.set('activeIndex', index);
+            }
+       }
+       
+       var tabs = tabview.get('tabs');
+       for (i=0; i<tabs.length; i++) {
+           if (onKeyDown){//do it for aria only
+              tabs[i].on('keydown', onKeyDown);
            }
-           
-           var tabs = tabview.get('tabs');
-           for (i=0; i<tabs.length; i++) {
-               tabs[i].on('keydown', onKeyDown);
-               tabs[i].on('keypress', onKeyPress, i); 
-           }
+           //support enter key regardless of keyboard or aria support 
+           tabs[i].on('keypress', onKeyPress, i); 
        }
        tabview.addListener('activeTabChange', tabChange);       
        return tabview;
