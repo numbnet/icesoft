@@ -45,6 +45,7 @@
     <patternset id="additional.icefaces.lib.jars.to.include">
         <include name="krysalis-jCharts-1.0.0-alpha-1.jar"/>
         <include name="just-ice.jar" if="just-ice" />
+        <include name="el-api.jar" if="el-api" />
     </patternset>
     
     <patternset id="additional.compile.lib.jars">
@@ -161,6 +162,15 @@
         </antcall>        
     </target>
     
+    <target name="websphere6.1.portal" description="build a portlet application for Websphere6.1 portal">
+        <antcall target="build.portlet.war" >
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+            <param name="el-api" value=""/>
+        </antcall>
+    </target>
+
     <!--
     <target name="build.facelet.ear" description="facelets version for Seam" depends="build.facelet.war">
         <copy todir="conf" preservelastmodified="true">
