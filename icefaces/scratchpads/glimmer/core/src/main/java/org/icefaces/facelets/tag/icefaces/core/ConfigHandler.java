@@ -68,14 +68,11 @@ public class ConfigHandler extends TagHandler {
         attributes.put( EnvUtils.ICEFACES_RENDER, 
             new Boolean("true".equalsIgnoreCase(renderValue)) );
         
-        //default value
-        String ariaEnabledValue = new String(); 
+        //set it only if defined, so if its not defined, let the application level 
+        //context param to take it over
         if (ariaEnabled != null) {
-            ariaEnabledValue = ariaEnabled.getValue();
-        }
-        if("true".equalsIgnoreCase(ariaEnabledValue)) {
             attributes.put( EnvUtils.ARIA_ENABLED, 
-                    new Boolean(ariaEnabledValue) );        
+                    new Boolean(ariaEnabled.getValue()) );
         }
     }
 }
