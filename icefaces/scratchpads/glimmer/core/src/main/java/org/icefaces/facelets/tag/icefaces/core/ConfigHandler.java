@@ -69,11 +69,13 @@ public class ConfigHandler extends TagHandler {
             new Boolean("true".equalsIgnoreCase(renderValue)) );
         
         //default value
-        String ariaEnabledValue = "true"; 
+        String ariaEnabledValue = new String(); 
         if (ariaEnabled != null) {
             ariaEnabledValue = ariaEnabled.getValue();
         }
-        attributes.put( EnvUtils.ARIA_ENABLED, 
-                new Boolean("true".equalsIgnoreCase(ariaEnabledValue)) );        
+        if("true".equalsIgnoreCase(ariaEnabledValue)) {
+            attributes.put( EnvUtils.ARIA_ENABLED, 
+                    new Boolean(ariaEnabledValue) );        
+        }
     }
 }
