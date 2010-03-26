@@ -164,7 +164,7 @@ public class DOMUtils {
                     writer.write(" ");
                     writer.write(current.getNodeName());
                     writer.write("=\"");
-                    writer.write(escapeAnsi(current.getNodeValue()));
+                    writer.write(escapeAttribute(current.getNodeValue()));
                     writer.write("\"");
                 }
 
@@ -454,6 +454,40 @@ public class DOMUtils {
         return true; //default
     }
 
+    /**
+     * Escape Java String and discard illegal characters as suitable for a
+     * double quoted "" XML attribute value
+     *
+     * @param text
+     * @return escaped XML attribute value
+     */
+    public static String escapeAttribute(String text) {
+        if (null == text) {
+            return "";
+        }
+        char[] chars = text.toCharArray();
+        StringBuilder buffer = new StringBuilder(chars.length);
+        for (int index = 0; index < chars.length; index++) {
+            char ch = chars[index];
+            if (ch <= 31) {
+                if (ch == '\t' || ch == '\n' || ch == '\r') {
+                    buffer.append(ch);
+                }
+                //skip any other control character
+            } else if (ch == '<') {
+                buffer.append("&lt;");
+            } else if (ch == '&') {
+                buffer.append("&amp;");
+            } else if (ch == '"') {
+                buffer.append("&quot;");
+            } else {
+                buffer.append(ch);
+            }
+        }
+
+        return buffer.toString();
+    }
+
     public static String escapeAnsi(String text) {
         if (null == text) {
             return "";
@@ -469,7 +503,7 @@ public class DOMUtils {
                 }
                 //skip any other control character
             } else if (ch == 127) {
-                //skip 'escape' character
+                //skip 'delete' character
             } else if (ch == '>') {
                 buffer.append("&gt;");
             } else if (ch == '<') {
