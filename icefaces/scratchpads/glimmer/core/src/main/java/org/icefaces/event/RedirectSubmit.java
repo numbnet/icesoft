@@ -34,7 +34,6 @@
 package org.icefaces.event;
 
 import javax.faces.component.UIOutput;
-import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -48,12 +47,11 @@ public class RedirectSubmit implements SystemEventListener {
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         FacesContext context = FacesContext.getCurrentInstance();
-        UIViewRoot root = context.getViewRoot();
         UIOutput out = new UIOutput();
         out.setTransient(true);
         out.getAttributes().put("escape", "false");
-        out.setValue("<script type='text/javascript'>ice.redirectSubmit('" + form.getClientId(context) + "');</script>");
-        root.addComponentResource(context, out, "body");
+        out.setValue("<script type='text/javascript'>ice.captureSubmit('" + form.getClientId(context) + "');</script>");
+        form.getChildren().add(out);
     }
 
     public boolean isListenerForSource(Object source) {
