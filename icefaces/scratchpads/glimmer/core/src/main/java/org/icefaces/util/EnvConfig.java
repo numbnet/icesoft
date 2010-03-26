@@ -59,10 +59,7 @@ public class EnvConfig {
     public void init(Map initMap)  {
         autoRenderFlag = decodeBoolean(initMap, ICEFACES_AUTO, true);
         autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true);
-        Object ariaEnabled = initMap.get(EnvUtils.ARIA_ENABLED);
-        if (null != ariaEnabled && "true".equalsIgnoreCase(ariaEnabled.toString())) {
-            ariaEnabledFlag = true;
-        }
+        ariaEnabledFlag = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true);
     }
 
     boolean decodeBoolean(Map map, String name, boolean defaultValue)  {
