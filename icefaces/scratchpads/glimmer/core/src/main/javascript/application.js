@@ -148,8 +148,8 @@ if (!window.ice.icefaces) {
             };
         };
 
-        //redirect vanilla form submits
-        function captureSubmit(f) {
+        namespace.captureSubmit = function(id) {
+            var f = document.getElementById(id);
             //hijack browser form submit, instead submit through an Ajax request
             f.submit = function() {
                 submit(null, f);
@@ -167,41 +167,17 @@ if (!window.ice.icefaces) {
                 };
             });
 
-            f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
-
             //propagate window ID -- this strategy works for POSTs sent by Mojarra
             var i = document.createElement('input');
             i.setAttribute('name', 'ice.window');
             i.setAttribute('value', window.ice.window);
             i.setAttribute('type', 'hidden');
             f.appendChild(i);
-        }
 
-        var hijackedForms = [];
-
-        namespace.redirectSubmit = function(formID) {
-            append(hijackedForms, formID);
-            onLoad(window, function() {
-                captureSubmit(document.getElementById(formID));
-            });
+            if (namespace.configuration.deltaSubmit) {
+                f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
+            }
         };
-
-        //re-apply submit redirect for updated form elements
-        namespace.onAfterUpdate(function(updateXML) {
-            each(updateXML.getElementsByTagName('update'), function(update) {
-                var id = update.getAttribute('id');
-                var element = document.getElementById(id);
-                if (element) {
-                    if (toLowerCase(element.nodeName) == 'form') {
-                        if (contains(hijackedForms, id)) captureSubmit(element);
-                    } else {
-                        each(element.getElementsByTagName('form'), function(element) {
-                            if (contains(hijackedForms, element.id)) captureSubmit(element);
-                        });
-                    }
-                }
-            });
-        });
 
         var client = Client(true);
         onBeforeUnload(window, function() {
