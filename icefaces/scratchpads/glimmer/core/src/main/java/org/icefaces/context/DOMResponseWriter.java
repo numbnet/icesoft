@@ -469,7 +469,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //seek to position in document
         cursor = document.getElementById(id);
         if (null == cursor)  {
-            log.severe("Unable to see to component DOM subtree " + id);
+            log.severe("Unable to seek to component DOM subtree " + id);
         }
         Node newSubtree = document.createElement(cursor.getNodeName());
         Node cursorParent = cursor.getParentNode();
