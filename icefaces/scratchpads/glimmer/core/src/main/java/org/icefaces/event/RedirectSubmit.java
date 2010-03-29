@@ -49,6 +49,7 @@ public class RedirectSubmit implements SystemEventListener {
         FacesContext context = FacesContext.getCurrentInstance();
         UIOutput out = new UIOutput();
         out.setTransient(true);
+        out.setId(form.createUniqueId(context, form.getId()));
         out.getAttributes().put("escape", "false");
         out.setValue("<script type='text/javascript'>ice.captureSubmit('" + form.getClientId(context) + "');</script>");
         form.getChildren().add(out);
