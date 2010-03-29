@@ -174,9 +174,11 @@ if (!window.ice.icefaces) {
             i.setAttribute('type', 'hidden');
             f.appendChild(i);
 
-            if (namespace.configuration.deltaSubmit) {
-                f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
-            }
+            onLoad(window, function() {
+                if (namespace.configuration.deltaSubmit) {
+                    f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
+                }
+            });
         };
 
         var client = Client(true);
