@@ -22,7 +22,6 @@
 
 package org.icefaces.util;
 
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,6 +30,7 @@ import java.util.logging.Logger;
 public class EnvUtils {
     private static Logger log = Logger.getLogger(EnvUtils.class.getName());
     private static Class PortletSessionClass;
+    private static Class PortletRequestClass;
     //internal flags
     public static String ICEFACES_CONFIG_LOADED = "org.icefaces.config.loaded";
     public static String ICEFACES_RENDER = "org.icefaces.render";
@@ -39,16 +39,18 @@ public class EnvUtils {
     static {
         try {
             PortletSessionClass = Class.forName("javax.portlet.PortletSession");
+            PortletRequestClass = Class.forName("javax.portlet.PortletRequest");
         } catch (Throwable t) {
-            log.log(Level.FINE, "PortletSession class not available: ", t);
+            log.log(Level.FINE, "Portlet classes not available: ", t);
         }
     }
 
     public static boolean instanceofPortletSession(Object session) {
-        if (null != PortletSessionClass) {
-            return PortletSessionClass.isInstance(session);
-        }
-        return false;
+        return PortletSessionClass == null ? false : PortletSessionClass.isInstance(session);
+    }
+
+    public static boolean instanceofPortletRequest(Object request) {
+        return PortletRequestClass == null ? false : PortletRequestClass.isInstance(request);
     }
 
     public static boolean isICEfacesView(FacesContext facesContext) {
@@ -72,10 +74,10 @@ public class EnvUtils {
         Object ariaEnabled = attributes.get(ARIA_ENABLED);
         if (null == ariaEnabled) {
             return EnvConfig.getEnvConfig(facesContext).isAriaEnabled();
-        } 
+        }
         return (Boolean.TRUE.equals(ariaEnabled));
     }
-    
+
     private static boolean icepushPresent;
 
     static {

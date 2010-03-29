@@ -2,6 +2,7 @@ package org.icefaces.event;
 
 import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.push.Configuration;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.portlet.ActionRequest;
+import javax.portlet.filter.ActionRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.ArrayList;
@@ -117,26 +120,12 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
 
         formAttributes.put(PreviousParameters, newPreviousParameters);
 
-        //todo: proxy the request in Portlet env. as well
-        HttpServletRequest originalRequest = (HttpServletRequest) externalContext.getRequest();
-        externalContext.setRequest(new HttpServletRequestWrapper(originalRequest) {
-            public String getParameter(String s) {
-                String[] values = (String[]) parameterValuesMap.get(s);
-                return values == null ? null : values[0];
-            }
-
-            public String[] getParameterValues(String s) {
-                return (String[]) parameterValuesMap.get(s);
-            }
-
-            public Enumeration<String> getParameterNames() {
-                return Collections.enumeration(parameterValuesMap.keySet());
-            }
-
-            public Map getParameterMap() {
-                return Collections.unmodifiableMap(parameterValuesMap);
-            }
-        });
+        Object request = externalContext.getRequest();
+        if (EnvUtils.instanceofPortletRequest(request)) {
+            externalContext.setRequest(new DeltaActionPortletRequest((ActionRequest) request, parameterValuesMap));
+        } else {
+            externalContext.setRequest(new DeltaHttpServletRequest((HttpServletRequest) request, parameterValuesMap));
+        }
     }
 
     private Map calculateParametersFromDOM(ExternalContext externalContext, Document doc) {
@@ -210,5 +199,57 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         }
 
         return multiParameters;
+    }
+
+    private static class DeltaHttpServletRequest extends HttpServletRequestWrapper {
+        private final Map parameterValuesMap;
+
+        public DeltaHttpServletRequest(HttpServletRequest originalRequest, Map parameterValuesMap) {
+            super(originalRequest);
+            this.parameterValuesMap = parameterValuesMap;
+        }
+
+        public String getParameter(String s) {
+            String[] values = (String[]) parameterValuesMap.get(s);
+            return values == null ? null : values[0];
+        }
+
+        public String[] getParameterValues(String s) {
+            return (String[]) parameterValuesMap.get(s);
+        }
+
+        public Enumeration<String> getParameterNames() {
+            return Collections.enumeration(parameterValuesMap.keySet());
+        }
+
+        public Map getParameterMap() {
+            return Collections.unmodifiableMap(parameterValuesMap);
+        }
+    }
+
+    private static class DeltaActionPortletRequest extends ActionRequestWrapper {
+        private final Map parameterValuesMap;
+
+        public DeltaActionPortletRequest(ActionRequest originalRequest, Map parameterValuesMap) {
+            super(originalRequest);
+            this.parameterValuesMap = parameterValuesMap;
+        }
+
+        public String getParameter(String s) {
+            String[] values = (String[]) parameterValuesMap.get(s);
+            return values == null ? null : values[0];
+        }
+
+        public String[] getParameterValues(String s) {
+            return (String[]) parameterValuesMap.get(s);
+        }
+
+        public Enumeration<String> getParameterNames() {
+            return Collections.enumeration(parameterValuesMap.keySet());
+        }
+
+        public Map getParameterMap() {
+            return Collections.unmodifiableMap(parameterValuesMap);
+        }
     }
 }
