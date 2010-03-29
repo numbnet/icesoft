@@ -45,7 +45,6 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("{\n");
 
         generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
-        generatedComponentClass.append("\n\tpublic static final String OPTIMIZED_PACKAGE = \""+ component.optimizedPackage() + "\";");        
         String rendererType = null;
         if (!"null".equals(component.rendererType())) {
             rendererType = "\""+ component.rendererType() + "\"";
@@ -343,7 +342,7 @@ public class ComponentClassGenerator {
         generatedComponentClass.append("\t\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
         generatedComponentClass.append("\t\t\tif (setAttributes == null) {\n");
         generatedComponentClass.append("\t\t\t\tString cname = this.getClass().getName();\n");
-        generatedComponentClass.append("\t\t\t\tif (cname != null && cname.startsWith(OPTIMIZED_PACKAGE)) {\n");
+        generatedComponentClass.append("\t\t\t\tif (cname != null) {\n");
         generatedComponentClass.append("\t\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
         generatedComponentClass.append("\t\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
         generatedComponentClass.append("\t\t\t}\n\t\t}\n");
