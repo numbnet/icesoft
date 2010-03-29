@@ -18,7 +18,6 @@ public @interface Component {
   String rendererType()default EMPTY;
   String componentType();
   String componentFamily() default EMPTY;
-  String optimizedPackage() default "org.icefaces.component.";
   String baseTagClass() default "javax.faces.webapp.UIComponentELTag";
   String handlerClass() default "com.icesoft.faces.component.facelets.IceComponentHandler";
   String javadoc() default "";
