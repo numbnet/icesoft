@@ -18,31 +18,38 @@
     </style>
 </h:head>
 <h:body class="ice-skin-rime yui-skin-sam">
-    <h:form/>
-<!--
-    <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}" minDate="2/8/2010" maxDate="2/23/2010"
-                          disabledDates="2/10/2010,2/16/2010-2/18/2010">
--->
-    <ann:selectInputDate3 id="calendar3_1" value="#{calendarBean.selectedDate}"
-                          highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
-        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
-    </ann:selectInputDate3>
-    <div style="clear:left;"/>
-    <ann:selectInputDate3 id="calendar3_2" value="#{calendarBean.selectedDate}" renderAsPopup="true"
-                          highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
-        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
-    </ann:selectInputDate3>
-    <ann:selectInputDate3 id="calendar3_3" value="#{calendarBean.selectedDate}" renderAsPopup="true" renderInputField="true"
-                          highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8" highlightClass="weekend:august">
-        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a z" timeZone="America/New_York"/>
-    </ann:selectInputDate3>
-<!--
-    <h:outputText value="#{calendarBean.selectedDate}">
-        <f:convertDateTime pattern="yyyy-M-d h:m a z" timeZone="Hongkong"/>
-    </h:outputText><br/>
-    <h:messages/><br/>
-    <a href="index.html"> Goto Main page </a>
--->
+    <h:panelGroup id="calDiv1">
+        <h:form>
+            <h:panelGroup id="calDiv2">
+                <h:outputText value="renderAsPopup"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderAsPopup}"
+                                         onchange="ice.submit(event, this);"/>
+                <h:outputText value="renderInputField" rendered="#{calendarBean.renderAsPopup}"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderInputField}"
+                                         rendered="#{calendarBean.renderAsPopup}"
+                                         onchange="ice.submit(event, this);"/>
+                <br/>
+                <h:outputText value="singleSubmit"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
+                <br/>
+                <h:outputText value="output: "/>
+                <h:outputText value="#{calendarBean.selectedDate}">
+                    <f:convertDateTime pattern="yyyy-M-d h:m a"/>
+                </h:outputText>
+                <br/>
+                <ann:selectInputDate3 id="calendar3" value="#{calendarBean.selectedDate}"
+                                      renderAsPopup="#{calendarBean.renderAsPopup}"
+                                      singleSubmit="#{calendarBean.singleSubmit}"
+                                      renderInputField="#{calendarBean.renderInputField}"
+                                      highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8"
+                                      highlightClass="weekend:august">
+                    <f:convertDateTime pattern="MM/dd/yyyy hh:mm a"/>
+                </ann:selectInputDate3>
+                <div style="height:350px"/>
+                <a href="index.html">Goto Main page</a>
+            </h:panelGroup>
+        </h:form>
+    </h:panelGroup>
 </h:body>
 </html>
 
