@@ -131,6 +131,18 @@ if (!window.ice.icefaces) {
         onLoad(window, function() {
             viewState = document.getElementById('javax.faces.ViewState').value;
         });
+
+        //propagate window ID -- this strategy works for POSTs sent by Mojarra
+        onLoad(window, function() {
+            each(document.getElementsByTagName('form'), function(f) {
+                var i = document.createElement('input');
+                i.setAttribute('name', 'ice.window');
+                i.setAttribute('value', window.ice.window);
+                i.setAttribute('type', 'hidden');
+                f.appendChild(i);
+            });
+        });
+
         var viewIDs = [];
         namespace.retrieveUpdate = function(viewID) {
             append(viewIDs, viewID);
@@ -173,17 +185,6 @@ if (!window.ice.icefaces) {
                 }
             });
         };
-
-        //propagate window ID -- this strategy works for POSTs sent by Mojarra
-        onLoad(window, function() {
-            each(document.getElementsByTagName('form'), function(f) {
-                var i = document.createElement('input');
-                i.setAttribute('name', 'ice.window');
-                i.setAttribute('value', window.ice.window);
-                i.setAttribute('type', 'hidden');
-                f.appendChild(i);
-            });
-        });
 
         var client = Client(true);
         onBeforeUnload(window, function() {
