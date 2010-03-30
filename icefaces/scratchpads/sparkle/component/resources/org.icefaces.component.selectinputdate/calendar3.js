@@ -7,12 +7,13 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
     var amPmStr = this.cfg.getProperty("amPmStr");
     var amStr = this.cfg.getProperty("amStr");
     var pmStr = this.cfg.getProperty("pmStr");
+    var renderAsPopup = this.cfg.getProperty("renderAsPopup");
     var selHrId = this.containerId + "_selHr";
     var selMinId = this.containerId + "_selMin";
     var selAmPmId = this.containerId + "_selAmPm";
     var Event = YAHOO.util.Event;
     var Dom = YAHOO.util.Dom;
-    var cal =this;
+    var calendar = this;
 
     var doSelChange = function (evt, selId) {
         var selValue =  Dom.get(selId).value;
@@ -24,9 +25,12 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
         } else if (selId == selAmPmId) {
             result = this.cfg.setProperty("amPmStr", selValue, true);
         }
+        if (!renderAsPopup) {
+            YAHOO.icefaces.calendar.timeSelectHandler(this, evt);
+        }
     };
     var selAvailable = function (selId) {
-        Event.addListener(selId, "change", doSelChange, selId, cal);
+        Event.addListener(selId, "change", doSelChange, selId, calendar);
     };
 
     var j = parseInt(hourField[hourField.length - 1], 10);
@@ -115,15 +119,66 @@ YAHOO.widget.Calendar.prototype.renderCellDefault = function(workingDate, cell) 
 
 YAHOO.namespace("icefaces.calendar.calendars");
 
+YAHOO.icefaces.calendar.getTime = function(calendar) {
+    var hr = 0, min = 0;
+    var hourField = calendar.cfg.getProperty("hourField");
+    if (hourField) {
+        hr = parseInt(calendar.cfg.getProperty("selectedHour"), 10);
+        min = parseInt(calendar.cfg.getProperty("selectedMinute"), 10);
+        if (hourField == "HOUR_OF_DAY1" && hr == 24 || hourField == "HOUR1" && hr == 12) {
+            hr = 0;
+        }
+        if (hourField.match(/^HOUR[01]$/) && calendar.cfg.getProperty("amPmStr") == calendar.cfg.getProperty("pmStr")) {
+            hr += 12;
+        }
+    }
+    return {hr:hr, min:min};
+};
+YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
+    var Dom = YAHOO.util.Dom;
+    var rootDivId = this.rootDivId, calValueEl = this.calValueEl;
+    var date = calendar.getSelectedDates()[0];
+    var time = this.getTime(calendar);
+    var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
+    calValueEl.set("value", dateStr, true);
+    if (this.params.singleSubmit) {
+        ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+            p(calValueEl.get("name"), calValueEl.get("value"));
+        });
+    }
+};
 YAHOO.icefaces.calendar.init = function(params) {
+    this.params = params;
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener,
         Calendar = YAHOO.widget.Calendar;
 
-    var rootDivId = params.divId;
+    var rootDivId = params.divId; this.rootDivId = rootDivId;
+    var rootDiv = new Element(rootDivId);
+    var calValueId = rootDivId + "_value";
+    var calValueHtmlEl = Dom.get(calValueId);
+    var calValueEl;
+    if (calValueHtmlEl) {
+        calValueEl = new Element(calValueHtmlEl);
+    } else {
+        calValueEl = new Element(document.createElement("input"), {type:"hidden", id:calValueId, name:calValueId});
+    }
+    calValueEl.set("value", params.dateStr, true);
+    this.calValueEl = calValueEl;
+    Dom.insertBefore(calValueEl, rootDiv);
     if (!params.renderAsPopup) {
+        function dateSelectHandler(type, args, calendar) {
+            var time = YAHOO.icefaces.calendar.getTime(calendar);
+            var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
+            calValueEl.set("value", dateStr, true);
+            if (params.singleSubmit) {
+                ice.singleSubmit(null, Dom.get(rootDivId), function(p) {
+                    p(calValueEl.get("name"), calValueEl.get("value"));
+                });
+            }
+        }
         var calendar = new Calendar(rootDivId, {
             pagedate:params.pageDate,
             selected:params.selectedDate,
@@ -131,15 +186,25 @@ YAHOO.icefaces.calendar.init = function(params) {
             navigator:true
         });
         configCal(calendar, params);
+        calendar.selectEvent.subscribe(dateSelectHandler, calendar, true);
         calendar.render();
         return;
     }
-    var rootDiv = new Element(rootDivId);
-    var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, size:"30"});
+    var inputId = rootDivId + "_input";
+    var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, size:"30", id:inputId, name:inputId});
     var buttonEl = new Element(document.createElement("button"), {type:"button"});
     var imageEl = new Element(document.createElement("img"), {src:"images/cal_button.gif"});
+    var inputChange = function(evt) {
+        calValueEl.setAttributes({value:this.get("value")}, true);
+        if (params.singleSubmit) {
+            ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+                p(calValueEl.get("name"), calValueEl.get("value"));
+            });
+        }
+    };
     if (params.renderInputField) {
         inputEl.appendTo(rootDiv);
+        inputEl.addListener("change", inputChange);
     }
     buttonEl.appendTo(rootDiv);
     imageEl.appendTo(buttonEl);
@@ -150,26 +215,18 @@ YAHOO.icefaces.calendar.init = function(params) {
     var okClick = function(evt, dialog) {
         this.hide();
         if (calendar.getSelectedDates().length > 0) {
-            var selDate = calendar.getSelectedDates()[0];
-            var hr = 0, min = 0;
-            var hourField = calendar.cfg.getProperty("hourField");
-            if (hourField) {
-                hr = parseInt(calendar.cfg.getProperty("selectedHour"), 10);
-                min = parseInt(calendar.cfg.getProperty("selectedMinute"), 10);
-                if (hourField == "HOUR_OF_DAY1" && hr == 24 || hourField == "HOUR1" && hr == 12) {
-                    hr = 0;
-                }
-                if (hourField.match(/^HOUR[01]$/) && calendar.cfg.getProperty("amPmStr") == calendar.cfg.getProperty("pmStr")) {
-                    hr += 12;
-                }
+            var date = calendar.getSelectedDates()[0];
+            var time = YAHOO.icefaces.calendar.getTime(calendar);
+            var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
+            calValueEl.setAttributes({value:dateStr}, true);
+            if (params.singleSubmit || params.renderInputField) {
+                ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+                    p(calValueEl.get("name"), calValueEl.get("value"));
+                    if (!params.singleSubmit && params.renderInputField) {
+                        p("formatSubmit", "");
+                    }
+                });
             }
-            var dateStr = selDate.getFullYear() + "-" + (selDate.getMonth() + 1) + "-" + selDate.getDate() + " " + hr + ":" + min;
-//            var dateStr = selDate.getFullYear() + "-" + (selDate.getMonth() + 1) + "-" + selDate.getDate() +
-//                    " " + hrSelEl.get("value") + ":" + minSelEl.get("value");
-//            inputEl.setAttributes({value:dateStr}, true);
-            ice.submit(evt, Dom.get(calendar.id), function(p) {
-                p(rootDivId, dateStr);
-            });
         }
     };
     var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
@@ -221,6 +278,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         calendar.cfg.addProperty("amPmStr", {value:params.amPmStr});
         calendar.cfg.addProperty("amStr", {value:params.amStr});
         calendar.cfg.addProperty("pmStr", {value:params.pmStr});
+        calendar.cfg.addProperty("renderAsPopup", {value:params.renderAsPopup});
         if (params.minDate) {
             calendar.cfg.setProperty(Calendar.DEFAULT_CONFIG.MINDATE.key, params.minDate);
         }
@@ -249,12 +307,19 @@ YAHOO.icefaces.calendar.init = function(params) {
         dialog.show();
     };
     var inputEnter = function(evType, fireArgs, subscribeObj) {
+        console.log("******* inputEnter *******");
 //        for (var i = 0; i < arguments.length; i++) {
 //            alert(arguments[i]);
 //        }
-        var dateStr = this.value;
+        inputEl.removeListener("change", inputChange);
+        calValueEl.setAttributes({value:this.value}, true);
+/*
         ice.submit(fireArgs[1], this, function(p) {
-            p(rootDivId, dateStr);
+            p(calValueEl.get("name"), calValueEl.get("value"));
+        });
+*/
+        inputEl.addListener("blur", function() {
+            this.addListener("change", inputChange);
         });
     };
     var inputKL = new KeyListener(inputEl.get("element"), {keys:KeyListener.KEY.ENTER},

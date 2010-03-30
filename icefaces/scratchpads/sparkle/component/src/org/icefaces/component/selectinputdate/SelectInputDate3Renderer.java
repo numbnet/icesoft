@@ -20,12 +20,11 @@ public class SelectInputDate3Renderer extends Renderer {
 
     {
         formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.CANADA);
-        formatter.setLenient(false);
+//        formatter.setLenient(false);
     }
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("\nSelectInputDate3Renderer.encodeBegin");
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
@@ -35,15 +34,25 @@ public class SelectInputDate3Renderer extends Renderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("SelectInputDate3Renderer.encodeEnd");
+        System.out.println("\nSelectInputDate3Renderer.encodeEnd");
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate3 selectInputDate = (SelectInputDate3) component;
         String clientId = component.getClientId(context);
         writer.endElement(HTML.DIV_ELEM);
 
-        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
-        Date date = (Date) selectInputDate.getValue();
+//        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
+        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
+        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+        Date date;
+        System.out.println("paramMap.get(\"formatSubmit\") = " + paramMap.get("formatSubmit"));
+//        if (paramMap.get("formatSubmit") == null) {
+        System.out.println("selectInputDate.isFormatSubmit() = " + selectInputDate.isFormatSubmit());
+        if (selectInputDate.isFormatSubmit()) {
+            date = (Date) converter.getAsObject(context, component, (String) selectInputDate.getSubmittedValue());
+        } else {
+            date = (Date) selectInputDate.getValue();
+        }
         if (date == null) {
             Calendar calendar = Calendar.getInstance(converter.getTimeZone(), converter.getLocale());
             date = calendar.getTime();
@@ -95,6 +104,7 @@ public class SelectInputDate3Renderer extends Renderer {
         String highlightClass = selectInputDate.getHighlightClass();
         boolean renderAsPopup = selectInputDate.isRenderAsPopup();
         boolean renderInputField = selectInputDate.isRenderInputField();
+        boolean singleSubmit = selectInputDate.isSingleSubmit();
 
         String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
@@ -102,7 +112,8 @@ public class SelectInputDate3Renderer extends Renderer {
                 "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] + "',minDate:'" + minDate +
                 "',maxDate:'" + maxDate + "',disabledDates:'" + disabledDates + "',highlightUnit:'" + highlightUnit +
                 "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass +
-                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField + "}";
+                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
+                ",singleSubmit:" + singleSubmit + "}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
@@ -115,7 +126,7 @@ public class SelectInputDate3Renderer extends Renderer {
         super.decode(context, component);
         SelectInputDate3 selectInputDate = (SelectInputDate3) component;
         String clientId = component.getClientId(context);
-//        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Map<String, String[]> paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
         String key;
         String[] values;
@@ -130,7 +141,7 @@ public class SelectInputDate3Renderer extends Renderer {
             }
             System.out.println();
         }
-        String dateString = paramValuesMap.get(clientId)[0];
+        String dateString = paramMap.get(clientId + "_value");
         DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
         formatter.setTimeZone(converter.getTimeZone());
 //        formatter.setTimeZone(TimeZone.getDefault());
@@ -138,9 +149,17 @@ public class SelectInputDate3Renderer extends Renderer {
         try {
             dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         selectInputDate.setSubmittedValue(dateString);
+        System.out.println("paramMap.get(\"formatSubmit\") = " + paramMap.get("formatSubmit"));
+        if (paramMap.get("formatSubmit") == null) {
+            selectInputDate.setFormatSubmit(false);
+        } else {
+            selectInputDate.setFormatSubmit(true);
+            context.renderResponse();
+        }
+        System.out.println("selectInputDate.isFormatSubmit() = " + selectInputDate.isFormatSubmit());
     }
 
     @Override
@@ -149,6 +168,6 @@ public class SelectInputDate3Renderer extends Renderer {
         System.out.println("submittedValue = " + submittedValue);
         super.getConvertedValue(context, component, submittedValue);
         SelectInputDate3 selectInputDate = (SelectInputDate3) component;
-        return selectInputDate.getConverter().getAsObject(context, component, (String) submittedValue);
+        return selectInputDate.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
     }
 }

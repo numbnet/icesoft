@@ -34,5 +34,7 @@ public class SelectInputDate3Meta {
     private Boolean renderInputField;
     @Property(defaultValue="false")
     private Boolean renderAsPopup;
+    @Property(defaultValue="false")
+    private Boolean singleSubmit;
 
 }
