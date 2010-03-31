@@ -84,6 +84,10 @@ public class RowSelector extends UIPanel {
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
     public static final int DEFAULT_DBLCLICK_DELAY = 200;
+    
+    //to deselect multiple rows with paginator we need to keep track of whole
+    //selection.
+    private List currentSelection = new ArrayList();
 
     public RowSelector(){
        JavascriptContext
@@ -112,10 +116,13 @@ public class RowSelector extends UIPanel {
         } else {
             this.value = value;
         }
-       // updateCurrentSelection(value);
+        //the value can be changed by decode as well as application code, so this
+        //is the single point to keep selection state in synch
+        try {
+            updateCurrentSelection(value);
+          //this catch satisfy JUNIT test, where its not a JSF environment
+        } catch (Exception e){e.printStackTrace();}
     }
-    
-    private List currentSelection = new ArrayList();
     
     private void updateCurrentSelection(Boolean value) {
         HtmlDataTable dataTable = getParentDataTable(this);
@@ -418,7 +425,9 @@ public class RowSelector extends UIPanel {
                 if (isEnhancedMultiple()) {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
+                        //fix for ICE-5571)
                         if ((!isCtrlKey && !isShiftKey)) {
+                            //before selecting any row, first deselect all rows across the page if any
                             Integer[] selection = new Integer[currentSelection.size()];
                             currentSelection.toArray(selection);
                             for (int i=0; i<selection.length; i++) {
