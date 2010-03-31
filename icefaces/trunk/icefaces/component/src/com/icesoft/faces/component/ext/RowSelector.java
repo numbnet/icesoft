@@ -428,7 +428,11 @@ public class RowSelector extends UIPanel {
             } else {
                 if (isEnhancedMultiple()) {
                     if (!isCtrlKey && !isShiftKey) {
-                        rowSelector.setValue(Boolean.FALSE);
+                        if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
+                            dataTable.setRowIndex(oldRow.intValue());
+                            setValue(Boolean.FALSE);
+                            dataTable.setRowIndex(rowIndex);
+                        }
                         return;
                     }
                     if (isShiftKey) {
