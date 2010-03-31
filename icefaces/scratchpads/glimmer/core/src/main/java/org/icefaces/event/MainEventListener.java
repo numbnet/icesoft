@@ -59,6 +59,10 @@ public class MainEventListener implements SystemEventListener  {
     }
 
     public void processEvent(SystemEvent event)  {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isICEfacesView(facesContext)) {
+            return;
+        }
         UIComponent component = ((PostAddToViewEvent)event).getComponent();
         String id = component.getId();
         if (null == id)  {
