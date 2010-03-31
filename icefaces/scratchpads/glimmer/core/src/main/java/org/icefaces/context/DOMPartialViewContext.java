@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.EnumSet;
 import java.util.logging.Logger;
@@ -127,43 +128,45 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 applyBrowserChanges(exContext.getRequestParameterValuesMap(), oldDOM);                
                 
                 UIViewRoot viewRoot = facesContext.getViewRoot();
+                Node[] diffs = new Node[0];
+                Document newDOM = null;
                 writer.startDocument();
+
                 if (isRenderAll())  {
                     Iterator<UIComponent> itr = viewRoot.getChildren().iterator();
                     while (itr.hasNext()) {
                         UIComponent kid = itr.next();
                         kid.encodeAll(facesContext);
                     }
+                    writer.endDocument();
+                    //the valid old document from the current pass is the new document
+                    newDOM = writer.getOldDocument();
+
+                    if (oldDOM != null && newDOM != null) {
+                        //the diff can also be made subtree-aware
+                        diffs = DOMUtils.domDiff(oldDOM, newDOM);
+                    } else {
+                        // This shouldn't be the case. Typically it is a symptom that
+                        // There is something else wrong so log it as a warning.
+                        String viewState = facesContext.getExternalContext()
+                            .getRequestParameterMap().get("javax.faces.ViewState");
+                        if (oldDOM == null) {
+                            log.warning("Old DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
+                        } else {
+                            log.warning("New DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
+                        }
+                    }
                 }  else {
                     writer.startSubtreeRendering();
                     Collection <String> renderIds = getRenderIds();
                     if (renderIds == null || renderIds.isEmpty()) {
                     } else {
-                        renderSubtrees(viewRoot, renderIds);
+                        diffs = renderSubtrees(viewRoot, renderIds);
                     }
+                    writer.endDocument();
+                    newDOM = writer.getOldDocument();
                 }
-//                Document document = writer.getDocument();
-                writer.endDocument();
 
-                //the valid old document from the current pass is the new document
-                Document newDOM = writer.getOldDocument();
-
-                partialWriter.startDocument();
-                Node[] diffs = new Node[0];
-                if (oldDOM != null && newDOM != null) {
-                    //the diff can also be made subtree-aware
-                    diffs = DOMUtils.domDiff(oldDOM, newDOM);
-                } else {
-                    // This shouldn't be the case. Typically it is a symptom that
-                    // There is something else wrong so log it as a warning.
-                    String viewState = facesContext.getExternalContext()
-                        .getRequestParameterMap().get("javax.faces.ViewState");
-                    if (oldDOM == null) {
-                        log.warning("Old DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
-                    } else {
-                        log.warning("New DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
-                    }
-                }
 
                 //reload page in case "html" or "head" element is updated
                 boolean reload = false;
@@ -175,6 +178,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                         break;
                     }
                 }
+
+                partialWriter.startDocument();
 
                 if (reload) {
                     partialWriter.startEval();
@@ -198,6 +203,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 }
 
                 partialWriter.endDocument();
+
             } catch (IOException ex) {
                 ex.printStackTrace();
                 //should put back the original ResponseWriter
@@ -213,13 +219,16 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private void renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds)  {
+    private Node[] renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds)  {
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
         VisitContext visitContext =
             VisitContext.createVisitContext(facesContext, renderIds, hints);
         DOMPartialRenderCallback renderCallback =
             new DOMPartialRenderCallback(facesContext);
         viewRoot.visitTree(visitContext, renderCallback);
+        //if subtree diffs fail, consider throwing an exception to trigger
+        //a full page diff.  This may depend on development vs production
+        return renderCallback.getDiffs();
     }
 
     private void applyBrowserChanges(Map parameters, Document document) {
@@ -350,18 +359,32 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 class DOMPartialRenderCallback implements VisitCallback {
     private static Logger log = Logger.getLogger(DOMPartialRenderCallback.class.getName());
     private FacesContext facesContext;
+    //keep track of all diffs
+    private ArrayList<Node> diffs;
+    private boolean exception;
+
 
     public DOMPartialRenderCallback(FacesContext facesContext)  {
         this.facesContext = facesContext;
+        this.diffs = new ArrayList<Node>();
+        this.exception = false;
     }
     
     public VisitResult visit(VisitContext visitContext, UIComponent component) {
         String clientId = component.getClientId(facesContext);
-        ((DOMResponseWriter) facesContext.getResponseWriter())
-                .seekSubtree(clientId);
+        DOMResponseWriter domWriter = (DOMResponseWriter) 
+                facesContext.getResponseWriter();
+        Node oldSubtree = domWriter.seekSubtree(clientId);
         try {
             component.encodeAll(facesContext);
+            Node newSubtree = domWriter.getDocument().getElementById(clientId);
+            //these should be non-overlapping by application design
+            diffs.addAll(Arrays.asList(DOMUtils.nodeDiff(oldSubtree, newSubtree)));
         } catch (Exception e)  {
+            //if errors occur in any of the subtrees, we likely should perform
+            //a full diff, because a given subtree could be completely incompatible,
+            //making the subtree diff invalid.  This is not yet implemented.
+            exception = true;
             if (log.isLoggable(Level.SEVERE))  {
                 log.severe("Subtree rendering failed for " + component.getClass() 
                         + " " + clientId + e.toString());
@@ -369,5 +392,13 @@ class DOMPartialRenderCallback implements VisitCallback {
         }
         //Return REJECT to skip subtree visiting
         return VisitResult.REJECT;
+    }
+    
+    public Node[] getDiffs()  {
+        return (Node[]) diffs.toArray(new Node[0]);
+    }
+    
+    public boolean didFail()  {
+        return exception;
     }
 }

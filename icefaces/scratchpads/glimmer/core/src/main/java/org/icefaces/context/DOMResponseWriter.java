@@ -454,20 +454,22 @@ public class DOMResponseWriter extends ResponseWriter {
      * <p>Prepare for rendering into subtrees.</p>
      */
     public void startSubtreeRendering()  {
-        //start with a deep clone of the old DOM
-        //this is inefficient: an improvement would be to
-        //keep track of new fragments and perform the diff
-        //against only those fragments
-        document = (Document) (getOldDocument().cloneNode(true));
+        //subtree rendering will replace specified
+        //subtrees in the old DOM
+        document = getOldDocument();
     }
-    
+
     /**
-     * <p>Seek to the subtree specified by the id parameter.</p>
+     * <p>Seek to the subtree specified by the id parameter and clear it
+     * to prepare for new rendered output.</p>
      * @param id DOM id of component subtree
+     * @return old DOM subtree
      */
-    public void seekSubtree(String id)  {
+    public Node seekSubtree(String id)  {
+        Node oldSubtree = null;
         //seek to position in document
         cursor = document.getElementById(id);
+        oldSubtree = cursor;
         if (null == cursor)  {
             log.severe("Unable to seek to component DOM subtree " + id);
         }
@@ -477,6 +479,7 @@ public class DOMResponseWriter extends ResponseWriter {
         cursorParent.replaceChild(newSubtree, cursor);
         cursor = newSubtree;
         suppressNextNode = true;
+        return oldSubtree;
     }
 
     public Document getDocument() {

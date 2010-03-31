@@ -38,5 +38,9 @@ public class Basic {
     public void toggle(ActionEvent ae) {
         visible = !visible;
     }
+    
+    public String getTime()  {
+        return Long.toString(System.currentTimeMillis());
+    }
 
 }
