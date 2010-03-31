@@ -50,6 +50,7 @@ import javax.faces.FacesException;
 import javax.faces.application.NavigationHandler;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +112,20 @@ public class RowSelector extends UIPanel {
         } else {
             this.value = value;
         }
+        updateCurrentSelection(value);
     }
-
+    
+    private List currentSelection = new ArrayList();
+    
+    private void updateCurrentSelection(Boolean value) {
+        HtmlDataTable dataTable = getParentDataTable(this);
+        int rowindex = dataTable.getRowIndex();
+        if (value.booleanValue()) {
+            currentSelection.add(new Integer(rowindex));
+        } else {
+            currentSelection.remove(new Integer(rowindex));
+        }
+    }
     public Integer  getClickedRow() {
         ValueBinding vb = getValueBinding("clickedRow");
         if (vb != null) {
@@ -405,6 +418,15 @@ public class RowSelector extends UIPanel {
                 if (isEnhancedMultiple()) {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
+                        if ((!isCtrlKey && !isShiftKey)) {
+                            Integer[] selection = new Integer[currentSelection.size()];
+                            currentSelection.toArray(selection);
+                            for (int i=0; i<selection.length; i++) {
+                                dataTable.setRowIndex((selection[i]).intValue());
+                                setValue(Boolean.FALSE);
+                            }
+                            dataTable.setRowIndex(rowIndex);
+                        }
                         _queueEvent(rowSelector, rowIndex, b, clickActionEvent);
                         return;
                     }
@@ -428,11 +450,7 @@ public class RowSelector extends UIPanel {
             } else {
                 if (isEnhancedMultiple()) {
                     if (!isCtrlKey && !isShiftKey) {
-                        if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
-                            dataTable.setRowIndex(oldRow.intValue());
-                            setValue(Boolean.FALSE);
-                            dataTable.setRowIndex(rowIndex);
-                        }
+                        setValue(Boolean.FALSE);
                         return;
                     }
                     if (isShiftKey) {
