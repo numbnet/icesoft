@@ -112,7 +112,7 @@ public class RowSelector extends UIPanel {
         } else {
             this.value = value;
         }
-        updateCurrentSelection(value);
+       // updateCurrentSelection(value);
     }
     
     private List currentSelection = new ArrayList();
