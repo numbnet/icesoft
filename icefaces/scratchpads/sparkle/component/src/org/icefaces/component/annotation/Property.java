@@ -11,10 +11,7 @@ public @interface Property {
     final String Null = "null";
     boolean isMethodExpression() default false;
     String methodExpressionArgument() default Null;
-    boolean isTransient() default false;
     String defaultValue() default Null;
-    String name() default Null;
-    String type() default Null;
     String tlddoc() default Null;
     String javadocGet() default Null;    
     String javadocSet() default Null;
