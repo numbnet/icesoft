@@ -2,6 +2,7 @@ package org.icefaces.generator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -258,16 +259,22 @@ public class ComponentClassGenerator {
     
     static void addInternalFields() {
         
+        Map<String, Field> nonTransientProperties = new HashMap<String, Field>();
         //write properties
         Iterator<Field> fields = Generator.internalFieldsForComponentClass.values().iterator();
         while (fields.hasNext()) {
             Field field = fields.next();
+            org.icefaces.component.annotation.Field fieldAnnotation = (org.icefaces.component.annotation.Field)field.getAnnotation(org.icefaces.component.annotation.Field.class);
+           
             generatedComponentClass.append("\tprotected ");
             generatedComponentClass.append(field.getType().getName());
             generatedComponentClass.append(" ");            
             generatedComponentClass.append(field.getName());
-            String defaultValue = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValue();
-            boolean defaultValueIsStringLiteral = field.getAnnotation(org.icefaces.component.annotation.Field.class).defaultValueIsStringLiteral();            
+            String defaultValue = fieldAnnotation.defaultValue();
+            boolean defaultValueIsStringLiteral = fieldAnnotation.defaultValueIsStringLiteral();            
+            if (!fieldAnnotation.isTransient()) {
+                nonTransientProperties.put(field.getName(), field);
+            }
             if (!"null".equals(defaultValue)) {
                 generatedComponentClass.append(" = ");
                 if (field.getType().getName().endsWith("String") &&
@@ -283,8 +290,9 @@ public class ComponentClassGenerator {
          
         }
         
+        
         //write saveState
-        fields = Generator.internalFieldsForComponentClass.values().iterator();
+        fields = nonTransientProperties.values().iterator();
         generatedComponentClass.append("\n\tprivate Object[] values;\n");
         generatedComponentClass.append("\n\tpublic Object saveState(FacesContext context) {\n");
         generatedComponentClass.append("\t\tif (context == null) {\n");
@@ -311,7 +319,7 @@ public class ComponentClassGenerator {
         
 
         //writer restoreState
-        fields = Generator.internalFieldsForComponentClass.values().iterator();
+        fields = nonTransientProperties.values().iterator();
         generatedComponentClass.append("\n\tpublic void restoreState(FacesContext context, Object state) {\n");
         generatedComponentClass.append("\t\tif (context == null) {\n");
         generatedComponentClass.append("\t\t\tthrow new NullPointerException();\n\t\t}");
