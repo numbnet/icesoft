@@ -568,7 +568,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[21];
+        Object[] state = new Object[22];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -589,7 +589,8 @@ public class RowSelector extends UIPanel {
         state[17] = preStyleOnSelection;
         state[18] = renderedOnUserRole;
         state[19] = keyboardNavigationEnabled;    
-        state[20] = singleRowAutoSelect;          
+        state[20] = singleRowAutoSelect;    
+        state[21] = currentSelection;
         return state;
     }
 
@@ -620,6 +621,7 @@ public class RowSelector extends UIPanel {
         renderedOnUserRole = (String) state[18];
         keyboardNavigationEnabled = (Boolean) state[19];      
         singleRowAutoSelect = (Boolean) state[20];
+        currentSelection = (List)state[21]; 
     }
     
     private String styleClass;
