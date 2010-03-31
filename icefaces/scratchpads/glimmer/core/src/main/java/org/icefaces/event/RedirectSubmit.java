@@ -41,12 +41,17 @@ import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
+import org.icefaces.util.EnvUtils;
+
 public class RedirectSubmit implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isICEfacesView(context)) {
+            return;
+        }
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        FacesContext context = FacesContext.getCurrentInstance();
         UIOutput out = new UIOutput();
         out.setTransient(true);
         out.setId(form.createUniqueId(context, form.getId()));
