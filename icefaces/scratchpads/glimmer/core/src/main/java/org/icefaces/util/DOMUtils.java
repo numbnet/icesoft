@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -279,9 +280,24 @@ public class DOMUtils {
      *         empty array if no nodes are different
      */
     public static Node[] domDiff(Document oldDOM, Document newDOM) {
-        List<Node> nodeDiffs = new Vector<Node>();
-        compareNodes(nodeDiffs, oldDOM.getDocumentElement(),
-                newDOM.getDocumentElement());
+        return nodeDiff( oldDOM.getDocumentElement(), newDOM.getDocumentElement());
+    }
+
+    /**
+     * Determine the set of top-level nodes in newNode subtree that are different from
+     * the corresponding nodes in oldNode. If the subtrees are identical, this
+     * method will return an empty array. This method should not be called if one
+     * of the subtrees is null.
+     *
+     * @param oldNode original DOM subtree
+     * @param newDOM changed DOM subtree
+     * @return array of top-level nodes in newNode subtree that differ from
+     *         oldNode subtree, an empty array if no nodes are different
+     */
+    public static Node[] nodeDiff(Node oldNode, Node newNode) {
+        List<Node> nodeDiffs = new ArrayList<Node>();
+        compareNodes(nodeDiffs, oldNode,
+                newNode);
 
         Node[] prunedDiff = null;
         try {
@@ -289,9 +305,9 @@ public class DOMUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return (prunedDiff == null) ? new Node[0] : prunedDiff;
     }
-
 
     /**
      * Nodes are equivalent if they have the same names, attributes, and
