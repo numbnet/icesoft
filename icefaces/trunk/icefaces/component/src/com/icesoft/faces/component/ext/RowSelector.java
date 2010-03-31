@@ -38,6 +38,7 @@ import com.icesoft.faces.component.ext.renderkit.TableRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -426,16 +427,29 @@ public class RowSelector extends UIPanel {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
                         //fix for ICE-5571)
-                        if ((!isCtrlKey && !isShiftKey)) {
+                        if (!isCtrlKey && !isShiftKey) {
                             //before selecting any row, first deselect all rows across the page if any
-                            Integer[] selection = new Integer[currentSelection.size()];
-                            currentSelection.toArray(selection);
-                            for (int i=0; i<selection.length; i++) {
-                                dataTable.setRowIndex((selection[i]).intValue());
-                                setValue(Boolean.FALSE);
-                            }
-                            dataTable.setRowIndex(rowIndex);
+                            deselectPreviousSelection(dataTable, rowIndex);
+                        } else if (isShiftKey) {
+                              if(!isCtrlKey) {
+                                  deselectPreviousSelection(dataTable, rowIndex);  
+                              }
+                              int oldIndex = oldRow.intValue();
+                              int currentIndex = rowIndex;
+                              if (oldIndex > rowIndex ) {//backward selection
+                                  for  (;oldIndex >=  currentIndex; currentIndex++) {
+                                      dataTable.setRowIndex(currentIndex);
+                                      setValue(Boolean.TRUE);
+                                  }  
+                              } else if (oldIndex  < rowIndex) {//forward selection
+                                  for  (;oldIndex < currentIndex ; oldIndex++) {
+                                      dataTable.setRowIndex(oldIndex);
+                                      setValue(Boolean.TRUE);
+                                  }                                  
+                              }
+                              dataTable.setRowIndex(rowIndex);
                         }
+                        
                         _queueEvent(rowSelector, rowIndex, b, clickActionEvent);
                         return;
                     }
@@ -456,41 +470,23 @@ public class RowSelector extends UIPanel {
                         }
                     }
                 }
-            } else {
-                if (isEnhancedMultiple()) {
-                    if (!isCtrlKey && !isShiftKey) {
-                        setValue(Boolean.FALSE);
-                        return;
-                    }
-                    if (isShiftKey) {
-                      if (oldRow.intValue() < row) {
-                            if ((rowIndex >= oldRow.intValue() && rowIndex <= row )){
-                                rowSelector.setValue(Boolean.TRUE);
-                                selectedRowsList.add(new Integer(rowIndex));
-                            } else {
-                                if (!isCtrlKey)
-                                    rowSelector.setValue(Boolean.FALSE);
-                            }
-
-                      } else if (oldRow.intValue() >= row){
-                            if (rowIndex <= oldRow.intValue() && rowIndex >= row ) {
-                                rowSelector.setValue(Boolean.TRUE);
-                                selectedRowsList.add(new Integer(rowIndex));                                
-                            } else {
-                                if (!isCtrlKey)
-                                    rowSelector.setValue(Boolean.FALSE);                               
-                            }
-                      }
-                      return;
-                    }                    
-                }
-            }
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-     private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
+    private void deselectPreviousSelection(UIData uiData, int rowindex) {
+        Integer[] selection = new Integer[currentSelection.size()];
+        currentSelection.toArray(selection);
+        for (int i=0; i<selection.length; i++) {
+            uiData.setRowIndex((selection[i]).intValue());
+            setValue(Boolean.FALSE);
+        }
+        uiData.setRowIndex(rowindex);
+    }
+    
+    private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
         UIComponent parentComp = uiComponenent.getParent();
         if (parentComp == null) {
             throw new RuntimeException(
