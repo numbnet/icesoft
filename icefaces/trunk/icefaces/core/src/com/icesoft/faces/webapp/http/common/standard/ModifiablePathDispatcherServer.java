@@ -34,19 +34,51 @@ package com.icesoft.faces.webapp.http.common.standard;
 
 import com.icesoft.faces.webapp.http.common.Server;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 public class ModifiablePathDispatcherServer extends PathDispatcherServer {
+    protected List constantPaths = new ArrayList();
 
     protected synchronized Server findServer(String path) {
         return super.findServer(path);
     }
 
     public synchronized void dispatchOn(String pathExpression, Server toServer) {
+        dispatchOn(pathExpression, pathExpression, toServer);
+    }
+    
+    public synchronized void dispatchOn(
+            String constantPath, String pathExpression, Server toServer) {
         super.dispatchOn(pathExpression, toServer);
+        constantPaths.add(constantPath);
+    }
+
+    /**
+     * For the given constantPath, if the pre-existing corresponding
+     * pathExpression is different from the given pathExpression, then
+     * update to using the newly given pathExpression and server.
+     * @return If updated to using new pathExpression and toServer
+     */
+    public synchronized boolean updateDispatch(String constantPath, String pathExpression, Server toServer) {
+        for (int index = 0; index < constantPaths.size(); index++) {
+            if (constantPaths.get(index).equals(constantPath)) {
+                Pattern pattern = (Pattern) matchers.get(index);
+                if (!pattern.matcher(pathExpression).find()) {
+                    servers.set(index, toServer);
+                    matchers.set(index, Pattern.compile(pathExpression));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public synchronized void stopDispatchFor(Server toServer) {
         int position = servers.indexOf(toServer);
         servers.remove(position);
         matchers.remove(position);
+        constantPaths.remove(position);
     }
 }

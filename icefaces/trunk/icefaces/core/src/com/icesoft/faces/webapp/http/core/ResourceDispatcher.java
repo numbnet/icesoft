@@ -117,13 +117,23 @@ public class ResourceDispatcher implements Server {
             }
         }
         final String name = prefix + encode(resource) + "/";
+        final String pathExpression = ".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$";
         if (!registered.contains(name)) {
             registered.add(name);
             ResourceServer resourceServer = new ResourceServer(resource);
             resourceToServerMapping.put(resource, resourceServer);
-            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", resourceServer);
+            dispatcher.dispatchOn(name, pathExpression, resourceServer);
             if (handler != NOOPHandler) {
                 handler.linkWith(new RelativeResourceLinker(name));
+            }
+        }
+        else {
+            // If pathExpression changed for name, then use new server and pathExpression
+            ResourceServer resourceServer = new ResourceServer(resource);
+            boolean changed = dispatcher.updateDispatch(
+                name, pathExpression, resourceServer);
+            if (changed) {
+                resourceToServerMapping.put(resource, resourceServer);
             }
         }
 
@@ -140,6 +150,8 @@ public class ResourceDispatcher implements Server {
             dispatcher.stopDispatchFor(server);
             resourceToServerMapping.remove(resource);
         }
+        final String name = prefix + encode(resource) + "/";
+        registered.remove(name);
     }
 
     public void shutdown() {
