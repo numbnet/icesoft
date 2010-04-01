@@ -5,6 +5,12 @@ var submit;
         return element.form ? element.form : enclosingForm(element);
     }
 
+    function viewStateOf(element) {
+        return detect(parents(element), function(e) {
+            return e.javax_faces_ViewState;
+        }).javax_faces_ViewState;
+    }
+
     function serializeEventToOptions(event, element, options) {
         var collectingQuery = object(function(method) {
             method(addNameValue, function(self, name, value) {
@@ -36,12 +42,7 @@ var submit;
 
         try {
             event = event || null;
-            //locate view state
-            var viewState = detect(parents(element), function(e) {
-                return e.javax_faces_ViewState;
-            }).javax_faces_ViewState;
-
-            var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewState};
+            var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewStateOf(element)};
             serializeEventToOptions(event, element, options);
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
@@ -54,12 +55,16 @@ var submit;
     var removePrefix = 'patch-';
     submit = function (event, element, additionalParameters) {
         event = event || null;
+
+        //write the view state used by ICEfaces
+        var form = formOf(element);
+        form['javax.faces.ViewState'].value = viewStateOf(element);
+
         var options = {execute: '@all', render: '@all', 'ice.window': namespace.window};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
         if (namespace.configuration.deltaSubmit) {
-            var form = formOf(element);
             var previousParameters = form.previousParameters || HashSet();
             var currentParameters = HashSet(jsf.getViewState(form).split('&'));
             var addedParameters = complement(currentParameters, previousParameters);

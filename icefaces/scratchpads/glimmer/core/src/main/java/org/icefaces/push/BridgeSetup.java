@@ -13,7 +13,6 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,71 +52,71 @@ public class BridgeSetup extends ViewHandlerWrapper {
 
     public void renderView(FacesContext context, UIViewRoot root) throws IOException, FacesException {
         if (EnvUtils.isICEfacesView(context)) {
-            Map rootAttributes = root.getAttributes();
-            //modify UIViewRoot only once
-            if (!rootAttributes.containsKey(Marker)) {
-                rootAttributes.put(Marker, BridgeSetup.class);
 
-                UIOutput output;
+            UIOutput jsfCode = new UIOutput();
+            jsfCode.setTransient(true);
+            jsfCode.setRendererType("javax.faces.resource.Script");
+            jsfCode.getAttributes().put("name", "jsf.js");
+            jsfCode.getAttributes().put("library", "javax.faces");
+            root.addComponentResource(context, jsfCode, "head");
 
-                output = new UIOutput();
-                output.setRendererType("javax.faces.resource.Script");
-                output.getAttributes().put("name", "jsf.js");
-                output.getAttributes().put("library", "javax.faces");
-                root.addComponentResource(context, output, "head");
+            String invalidateHTTPCache = "?a" + hashCode();
 
-                Application application = context.getApplication();
-                String invalidateHTTPCache = "?a" + hashCode();
+            //replace with icepush.js resource in icepush.jar
+            if (EnvUtils.isICEpushPresent()) {
+                UIOutput icepushCode = new UIOutput();
+                icepushCode.setTransient(true);
+                icepushCode.getAttributes().put("escape", "false");
+                icepushCode.setValue("<script src='code.icepush.jsf" + invalidateHTTPCache + "'  type='text/javascript'></script>");
+                root.addComponentResource(context, icepushCode, "head");
+            }
 
-                //replace with icepush.js resource in icepush.jar
+            Application application = context.getApplication();
+
+            String path = application.getResourceHandler().createResource("bridge.js").getRequestPath();
+            UIOutput icefacesCode = new UIOutput();
+            icefacesCode.setTransient(true);
+            icefacesCode.getAttributes().put("escape", "false");
+            icefacesCode.setValue("<script src='" + path + invalidateHTTPCache + "'  type='text/javascript'></script>");
+            root.addComponentResource(context, icefacesCode, "head");
+
+            try {
+                String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+                String viewID = application.getStateManager().getViewState(context);
+
+                UIOutput icefacesSetup = new UIOutput();
+                icefacesSetup.setId("icefaces_bridge_config");
+                icefacesSetup.setTransient(true);
+                String clientID = icefacesSetup.getClientId();
+                icefacesSetup.getAttributes().put("escape", "false");
+                icefacesSetup.setValue("<script id='" + clientID + "' type=\"text/javascript\">" +
+                        //define bridge configuration
+                        "ice.configuration = {" +
+                        "deltaSubmit: " + configuration.getAttributeAsBoolean("deltaSubmit", false) +
+                        "};" +
+                        //bridge needs the window ID
+                        "window.ice.window = '" + windowID + "';" +
+                        //save view state for single submit when form is missing
+                        "document.getElementById('" + clientID + "').parentNode.javax_faces_ViewState='" + viewID + "';" +
+                        "</script>");
+                root.addComponentResource(context, icefacesSetup, "body");
+
                 if (EnvUtils.isICEpushPresent()) {
-                    output = new UIOutput();
-                    output.getAttributes().put("escape", "false");
-                    output.setValue("<script src='code.icepush.jsf" + invalidateHTTPCache + "'  type='text/javascript'></script>");
-                    root.addComponentResource(context, output, "head");
-                }
-
-                String path = application.getResourceHandler().createResource("bridge.js").getRequestPath();
-                output = new UIOutput();
-                output.getAttributes().put("escape", "false");
-                output.setValue("<script src='" + path + invalidateHTTPCache + "'  type='text/javascript'></script>");
-                root.addComponentResource(context, output, "head");
-
-                try {
-                    String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
-                    String viewID = context.getApplication().getStateManager().getViewState(context);
-
-                    output = new UIOutput();
-                    String clientID = output.getClientId();
-                    output.getAttributes().put("escape", "false");
-                    output.setValue("<script id='" + clientID + "' type=\"text/javascript\">" +
-                            //define bridge configuration
-                            "ice.configuration = {" +
-                            "deltaSubmit: " + configuration.getAttributeAsBoolean("deltaSubmit", false) +
-                            "};" +
-                            //bridge needs the window ID
-                            "window.ice.window = '" + windowID + "';" +
-                            //save view state for single submit when form is missing
-                            "document.getElementById('" + clientID + "').parentNode.javax_faces_ViewState='" + viewID + "';" +
+                    SessionViewManager.lookup(context).addView(viewID);
+                    UIOutput icepushSetup = new UIOutput();
+                    icepushSetup.setTransient(true);
+                    icepushSetup.getAttributes().put("escape", "false");
+                    String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
+                    icepushSetup.setValue("<script type=\"text/javascript\">" +
+                            "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
+                            "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
                             "</script>");
-                    root.addComponentResource(context, output, "body");
-
-                    if (EnvUtils.isICEpushPresent()) {
-                        SessionViewManager.lookup(context).addView(viewID);
-                        output = new UIOutput();
-                        output.getAttributes().put("escape", "false");
-                        String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
-                        output.setValue("<script type=\"text/javascript\">" +
-                                "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
-                                "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
-                                "</script>");
-                        root.addComponentResource(context, output, "body");
-                    }
-                } catch (Exception e) {
-                    //could re-throw as a FacesException, but WindowScope failure should
-                    //not be fatal to the application
-                    e.printStackTrace();
+                    root.addComponentResource(context, icepushSetup, "body");
                 }
+            } catch (Exception e) {
+                //could re-throw as a FacesException, but WindowScope failure should
+                //not be fatal to the application
+                e.printStackTrace();
             }
         }
 

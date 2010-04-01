@@ -127,11 +127,6 @@ if (!window.ice.icefaces) {
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
 
-        var viewState;
-        onLoad(window, function() {
-            viewState = document.getElementById('javax.faces.ViewState').value;
-        });
-
         //propagate window ID -- this strategy works for POSTs sent by Mojarra
         onLoad(window, function() {
             each(document.getElementsByTagName('form'), function(f) {
@@ -153,7 +148,7 @@ if (!window.ice.icefaces) {
                     //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
                     newForm.id = 'void';
                     debug(logger, 'picking updates for view ' + viewID);
-                    jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewState, 'ice.window': namespace.window});
+                    jsf.ajax.request(newForm, null, {render: '@all', 'javax.faces.ViewState': viewID, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
                 }
