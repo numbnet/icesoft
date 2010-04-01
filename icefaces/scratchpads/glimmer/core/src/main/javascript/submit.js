@@ -56,11 +56,14 @@ var submit;
     submit = function (event, element, additionalParameters) {
         event = event || null;
 
-        //write the view state used by ICEfaces
+        //do not use view state included in the form
         var form = formOf(element);
-        form['javax.faces.ViewState'].value = viewStateOf(element);
+        var viewStateHiddenInput = form['javax.faces.ViewState'];
+        if (viewStateHiddenInput) {
+            viewStateHiddenInput.parentNode.removeChild(viewStateHiddenInput);
+        }
 
-        var options = {execute: '@all', render: '@all', 'ice.window': namespace.window};
+        var options = {execute: '@all', render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewStateOf(element)};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
