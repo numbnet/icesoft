@@ -58,10 +58,12 @@ var submit;
 
         //do not use view state included in the form
         var form = formOf(element);
-        var viewStateHiddenInput = form['javax.faces.ViewState'];
-        if (viewStateHiddenInput) {
-            viewStateHiddenInput.parentNode.removeChild(viewStateHiddenInput);
-        }
+        //more than one hidden input might hold the view state key
+        each(form.getElementsByTagName('input'), function(e) {
+            if (e && e.name == 'javax.faces.ViewState') {
+                e.parentNode.removeChild(e);
+            }
+        });
 
         var options = {execute: '@all', render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewStateOf(element)};
         serializeEventToOptions(event, element, options);
