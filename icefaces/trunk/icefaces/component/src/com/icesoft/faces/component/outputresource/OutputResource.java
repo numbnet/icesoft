@@ -121,25 +121,28 @@ public class OutputResource extends UIComponentBase {
 		final String fileName = getFileName();
 		if (!isUIDataChild()) {
             if( registeredResource == null ){
-                registeredResource = new RegisteredResource(this, currResource, fileName);
-    				path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(
-    				        registeredResource).getRawPath();
-
+                registeredResource = new RegisteredResource(this, currResource,
+                    fileName);
     		}
+            else {
             registeredResource.updateContents(this, currResource, fileName);
+            }
+            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).
+                registerResource(registeredResource).getRawPath();
+            registeredResource.setPath(path);
 		} else {
 		    if (resources == null) {
 		        resources = new HashMap();
 		    }
 	        if (!resources.containsKey(currResource)) {
 		          registeredResource = new RegisteredResource(this, currResource, fileName);
-                path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(registeredResource).getRawPath();
-                registeredResource.setPath(path);
+                resources.put(currResource, registeredResource);
 		    } else {
 		        registeredResource = (RegisteredResource)resources.get(currResource);
-		        path = registeredResource.getPath();
 		        registeredResource.updateContents(this, currResource, fileName);
 		    }
+            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(registeredResource).getRawPath();
+            registeredResource.setPath(path);
 		}
 		
 		return currResource;
@@ -377,7 +380,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return  path + "?"+ registeredResource.calculateDigest().hashCode(); 
+		return  path; 
 	}
 	
 	public boolean isShared(){
