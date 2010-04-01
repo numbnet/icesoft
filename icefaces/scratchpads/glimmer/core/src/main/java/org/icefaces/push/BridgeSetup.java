@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 public class BridgeSetup extends ViewHandlerWrapper {
     private static Logger log = Logger.getLogger("org.icefaces.util.DOMUtil");
-    private static final String Marker = BridgeSetup.class.getName();
     private ViewHandler handler;
     private Configuration configuration;
 
