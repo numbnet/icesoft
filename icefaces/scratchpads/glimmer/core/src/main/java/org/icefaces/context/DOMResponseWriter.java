@@ -283,6 +283,9 @@ public class DOMResponseWriter extends ResponseWriter {
      *                               <code>null</code>
      */
     public void writeAttribute(String name, Object value, String property) throws IOException {
+        if (null == value) {
+            return;
+        }
         //TODO: As per the javadoc, is there any escaping we should be aware of here?
         Attr attribute = document.createAttribute(name.trim());
         attribute.setValue(String.valueOf(value));
