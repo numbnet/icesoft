@@ -24,9 +24,6 @@ public class DateTimeRenderer extends Renderer{
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
-        //super.encodeEnd() helps dealing with faces messages in ajax environment, 
-        //as well as take care of any effect related change if applies.
-        super.encodeEnd(facesContext, uiComponent);  
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.DIV_ELEM);
     }
