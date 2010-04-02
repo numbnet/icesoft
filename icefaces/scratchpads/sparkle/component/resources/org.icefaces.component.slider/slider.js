@@ -1,5 +1,5 @@
 ice.yui.slider = {
-   register:function(clientId, varName, callback, yuiProps, jsfProps) {
+   register:function(clientId, varName, bindYUI, yuiProps, jsfProps) {
         var obj = null;
         ice.yui.loadModule('slider');
         ice.yui.use(function(Y){
@@ -71,7 +71,7 @@ ice.yui.slider = {
                 } 
                 obj.after(submitOn, submitHandler);
                 
-                callback(obj);
+                bindYUI(obj);
             });
    },
    
