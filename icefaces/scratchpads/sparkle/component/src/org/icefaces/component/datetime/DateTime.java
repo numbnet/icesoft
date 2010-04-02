@@ -6,12 +6,12 @@ import java.util.Date;
 public class DateTime extends DateTimeBase{
 
     public Object getValue() {
-      Date date = new Date();
+      Date currentTime = new Date(System.currentTimeMillis());
       Object format = this.getAttributes().get("format");
-      String value = date.toString();
+      String value = currentTime.toString();
       if (format != null) {
           SimpleDateFormat dFormat = new SimpleDateFormat(format.toString());
-          value = dFormat.format(date);
+          value = dFormat.format(currentTime);
       }
       return value;
     }
