@@ -21,6 +21,7 @@ public class MultiViewServer implements Server {
     private ResourceDispatcher resourceDispatcher;
     private String blockingRequestHandlerContext;
     private Authorization authorization;
+    private boolean ignoreRvn = false;
 
     public MultiViewServer(final HttpSession session, final String sessionID, final SessionDispatcher.Monitor sessionMonitor, final Map views, final ViewQueue asynchronouslyUpdatedViews, final Configuration configuration, final ResourceDispatcher resourceDispatcher, final String blockingRequestHandlerContext, final Authorization authorization) {
         this.session = session;
@@ -32,13 +33,14 @@ public class MultiViewServer implements Server {
         this.resourceDispatcher = resourceDispatcher;
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.authorization = authorization;
+        this.ignoreRvn = configuration.getAttributeAsBoolean("ignoreRvn", false);
     }
 
     public void service(Request request) throws Exception {
         //extract viewNumber if this request is from a redirect
         final View view;
         synchronized (views) {
-            if (request.containsParameter("rvn")) {
+            if ((!ignoreRvn) && request.containsParameter("rvn")) {
                 final String viewIdentifier = request.getParameter("rvn");
                 if (isInteger(viewIdentifier) && views.containsKey(viewIdentifier)) {
                     view = (View) views.get(viewIdentifier);
