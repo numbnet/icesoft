@@ -40,6 +40,8 @@ import javax.faces.context.FacesContext;
 
 import java.util.Map;
 
+import com.icesoft.util.SeamUtilities;
+
 /**
  * This class refactored for ICE-5212. The SwfLifecycleExector class wasn't threadsafe
  * so don't cache a single copy. 
@@ -56,8 +58,12 @@ public abstract class LifecycleExecutor {
             Map appMap = context.getExternalContext().getApplicationMap();
             if (!appMap.containsKey(JSF_EXEC))  {
                 try {
-                    LifecycleExecutor executor = new SwfLifecycleExecutor();
-                    return executor;
+                    //ICE-5586: It's possible for Spring Web Flow to be loadable from the
+                    //classpath but not configured to be used.
+                    if(SeamUtilities.springWebFlowConfigured()){
+                        LifecycleExecutor executor = new SwfLifecycleExecutor();
+                        return executor;
+                    }
                 } catch (Throwable t)  {
                     //ClassNotFound Exception or Error variant, fall back to 
                     //standard JSF
