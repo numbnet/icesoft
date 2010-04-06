@@ -22,6 +22,7 @@
 
 package org.icefaces.application;
 
+import org.icefaces.event.BridgeSetup;
 import org.icefaces.push.SessionViewManager;
 import org.icepush.PushContext;
 
@@ -43,7 +44,8 @@ public class PushRenderer {
     public static synchronized void addCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = context.getApplication().getStateManager().getViewState(context);
+        String viewID = lookupViewState(context);
+        LazyPushManager.lookup(context).enablePushForView(viewID);
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.addGroupMember(groupName, viewID);
     }
@@ -56,7 +58,8 @@ public class PushRenderer {
     public static synchronized void removeCurrentView(String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
-        String viewID = context.getApplication().getStateManager().getViewState(context);
+        String viewID = lookupViewState(context);
+        LazyPushManager.lookup(context).disablePushForView(viewID);
         PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
         pushContext.removeGroupMember(groupName, viewID);
     }
@@ -72,6 +75,7 @@ public class PushRenderer {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
         Map sessionMap = context.getExternalContext().getSessionMap();
+        LazyPushManager.lookup(context).enablePushForSessionViews();
         SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
         sessionViewManager.addCurrentViewsToGroup(groupName);
     }
@@ -85,6 +89,7 @@ public class PushRenderer {
     public static synchronized void removeCurrentSession(final String groupName) {
         FacesContext context = FacesContext.getCurrentInstance();
         missingFacesContext(context);
+        LazyPushManager.lookup(context).disablePushForSessionViews();
         Map sessionMap = context.getExternalContext().getSessionMap();
         SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
         sessionViewManager.removeCurrentViewsFromGroup(groupName);
@@ -120,6 +125,11 @@ public class PushRenderer {
                 }
             }
         };
+    }
+
+    private static String lookupViewState(FacesContext context) {
+        Map requestMap = context.getExternalContext().getRequestMap();
+        return (String) requestMap.get(BridgeSetup.ViewState);
     }
 
     private static void missingFacesContext(FacesContext context) {
