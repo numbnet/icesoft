@@ -5,6 +5,7 @@ import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.SessionViewManager;
+import org.icefaces.push.servlet.SessionExpiredException;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Application;
@@ -37,6 +38,10 @@ public class BridgeSetup implements PhaseListener {
         PhaseId phaseId = event.getPhaseId();
 
         if (PhaseId.RESTORE_VIEW == phaseId) {
+            if (context.getExternalContext().getRequestMap().containsKey(SessionExpiredException.class.getName())) {
+                throw new SessionExpiredException("User session has expired");
+            }
+
             try {
                 WindowScopeManager.lookup(context).determineWindowID(context);
             } catch (Exception e) {
