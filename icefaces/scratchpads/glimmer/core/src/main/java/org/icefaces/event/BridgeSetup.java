@@ -1,6 +1,7 @@
 package org.icefaces.event;
 
 import org.icefaces.application.ExternalContextConfiguration;
+import org.icefaces.application.LazyPushManager;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.SessionBoundServer;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BridgeSetup implements PhaseListener {
+    public static String ViewState = BridgeSetup.class.getName() + "::ViewState";
     private static Logger log = Logger.getLogger(BridgeSetup.class.getName());
     private Configuration configuration;
 
@@ -34,7 +36,7 @@ public class BridgeSetup implements PhaseListener {
     }
 
     public void beforePhase(PhaseEvent event) {
-        FacesContext context = event.getFacesContext();
+        final FacesContext context = event.getFacesContext();
         PhaseId phaseId = event.getPhaseId();
 
         if (PhaseId.RESTORE_VIEW == phaseId) {
@@ -80,8 +82,10 @@ public class BridgeSetup implements PhaseListener {
                 root.addComponentResource(context, icefacesCode, "head");
 
                 try {
-                    String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
-                    String viewID = application.getStateManager().getViewState(context);
+                    final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+                    final String viewID = application.getStateManager().getViewState(context);
+                    //save the calculated view state key so that other framework parts will use the same key
+                    context.getExternalContext().getRequestMap().put(ViewState, viewID);
 
                     UIOutput icefacesSetup = new UIOutput();
                     icefacesSetup.setId("icefaces_bridge_config");
@@ -102,14 +106,19 @@ public class BridgeSetup implements PhaseListener {
 
                     if (EnvUtils.isICEpushPresent()) {
                         SessionViewManager.lookup(context).addView(viewID);
-                        UIOutput icepushSetup = new UIOutput();
+                        final String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
+                        UIOutput icepushSetup = new UIOutput() {
+                            public Object getValue() {
+                                //determine lazily if ICEpush should be wired up 
+                                return LazyPushManager.lookup(context).enablePush(viewID) ?
+                                        "<script type=\"text/javascript\">" +
+                                                "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
+                                                "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
+                                                "</script>" : "";
+                            }
+                        };
                         icepushSetup.setTransient(true);
                         icepushSetup.getAttributes().put("escape", "false");
-                        String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
-                        icepushSetup.setValue("<script type=\"text/javascript\">" +
-                                "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
-                                "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
-                                "</script>");
                         root.addComponentResource(context, icepushSetup, "body");
                     }
                 } catch (Exception e) {
