@@ -51,14 +51,12 @@ import javax.persistence.Transient;
 @Entity
 @Name("persona")
 public class Person implements Serializable{
-//	   public static final String LAST_NAME_COLUMN = "lastName";
-//	    public static final String FIRST_NAME_COLUMN = "firstName";
-//	    public static final String PHONE_COLUMN = "phone";
 
 	    protected Long id; 
 	    protected String lastName;
 	    protected String firstName;
-	    protected String phone;
+		protected String phone;
+	    protected transient boolean edit=false;
 
 	    protected transient boolean selected = false;
 
@@ -75,7 +73,6 @@ public class Person implements Serializable{
 	    }
 
 	    public Person(String firstName, String lastName, String phone) {
-	    	System.out.println("firstName="+firstName+" lastName="+lastName+" phone="+phone);
 	        this.firstName = firstName;
 	        this.lastName = lastName;
 	        this.phone = phone;
@@ -113,4 +110,11 @@ public class Person implements Serializable{
 	    public void setSelected(boolean selected) {
 	        this.selected = selected;
 	    }
+	    @Transient
+	    public boolean isEdit() {
+			return edit;
+		}
+		public void setEdit(boolean edit) {
+			this.edit = edit;
+		}
 }
