@@ -52,14 +52,22 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
 
     public ICEfacesResourceHandler(ResourceHandler handler) {
         this.handler = handler;
-        final ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        context.setAttribute(ICEfacesResourceHandler.class.getName(), this);
-        final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
-        dispatcher = new SessionDispatcher(context) {
-            protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-                return new SessionBoundServer(session, sessionMonitor, configuration);
-            }
-        };
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().getApplicationMap().put(
+            ICEfacesResourceHandler.class.getName(), this);
+        try {
+            final ServletContext context = (ServletContext) 
+                    facesContext.getExternalContext().getContext();
+            final Configuration configuration = 
+                    new ServletContextConfiguration("org.icefaces", context);
+            dispatcher = new SessionDispatcher(context) {
+                protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
+                    return new SessionBoundServer(session, sessionMonitor, configuration);
+                }
+            };
+        } catch (Throwable t)  {
+            log.log(Level.INFO, "HttpSession Handling not available: " + t);
+        }
     }
 
     public Resource createResource(String s) {
@@ -79,6 +87,10 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
+        if (null == dispatcher)  {
+            handler.handleResourceRequest(facesContext);
+            return;
+        }
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
