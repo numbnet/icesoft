@@ -20,7 +20,9 @@ public class Employee implements Serializable {
     private String departmentName;
     private String subDepartmentName;
     private transient boolean selected = false;
-    //need empty constructor for Entity
+    protected transient boolean edit=false;
+
+	//need empty constructor for Entity
     public Employee(){
     	
     }
@@ -81,4 +83,11 @@ public class Employee implements Serializable {
     public boolean isSelected(){
     	return this.selected;
     }
+    @Transient
+    public boolean isEdit() {
+		return edit;
+	}
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
 }
