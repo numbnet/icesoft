@@ -38,19 +38,20 @@
     <lifecycle>
         <phase-listener>org.icefaces.event.DetectNavigationPhaseListener</phase-listener>
         <phase-listener>org.icefaces.event.DeltaSubmitPhaseListener</phase-listener>
-        <phase-listener>org.icefaces.event.BridgeSetup</phase-listener>
+        <phase-listener>org.icefaces.event.WindowScopeSetup</phase-listener>
     </lifecycle>
     <application>
         <resource-handler>org.icefaces.push.servlet.ICEpushResourceHandler</resource-handler>
         <resource-handler>org.icefaces.push.servlet.ICEfacesResourceHandler</resource-handler>
         <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
         <system-event-listener>
-            <system-event-listener-class>
-                org.icefaces.event.RedirectSubmit
+            <system-event-listener-class>org.icefaces.event.RedirectSubmit</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.icefaces.event.BridgeSetup
             </system-event-listener-class>
-            <system-event-class>
-                javax.faces.event.PostAddToViewEvent
-            </system-event-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
     </application>
 </faces-config>
