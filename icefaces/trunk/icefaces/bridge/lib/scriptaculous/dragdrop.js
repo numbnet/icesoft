@@ -150,10 +150,14 @@ var Draggables = {
             this.eventMouseUp = this.endDrag.bindAsEventListener(this);
             this.eventMouseMove = this.updateDrag.bindAsEventListener(this);
             this.eventKeypress = this.keyPress.bindAsEventListener(this);
+            this.eventMouseout = this.mouseOut.bindAsEventListener(this);
 
             Event.observe(document, "mouseup", this.eventMouseUp);
             Event.observe(document, "mousemove", this.eventMouseMove);
             Event.observe(document, "keypress", this.eventKeypress);
+            if (Prototype.Browser.IE && draggable.element.hasClassName("icePnlPop")) {
+                Event.observe(document, "mouseout", this.eventMouseout);
+            }
         }
         this.drags.push(draggable);
     },
@@ -166,6 +170,9 @@ var Draggables = {
             Event.stopObserving(document, "mouseup", this.eventMouseUp);
             Event.stopObserving(document, "mousemove", this.eventMouseMove);
             Event.stopObserving(document, "keypress", this.eventKeypress);
+            if (Prototype.Browser.IE && draggable.element.hasClassName("icePnlPop")) {
+                Event.stopObserving(document, "mouseout", this.eventMouseout);
+            }
         }
     },
 
@@ -211,6 +218,11 @@ var Draggables = {
     keyPress: function(event) {
         if (this.activeDraggable)
             this.activeDraggable.keyPress(event);
+    },
+
+    mouseOut: function(event) {
+        if (this.activeDraggable)
+            this.activeDraggable.mouseOut(event);
     },
 
     addObserver: function(observer) {
@@ -496,6 +508,12 @@ var Draggable = Class.create({
 
     keyPress: function(event) {
         if (event.keyCode != Event.KEY_ESC) return;
+        this.finishDrag(event, false);
+        Event.stop(event);
+    },
+
+    mouseOut: function(event) {
+        if (event.toElement) return;
         this.finishDrag(event, false);
         Event.stop(event);
     },
