@@ -129,7 +129,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     private void sessionShutdown(HttpSession session) {
         PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
-        servlet.shutdown();
+        if(servlet != null ){
+            servlet.shutdown();
+        } else {
+            if (log.isLoggable(Level.FINE)) {
+                log.fine("no PseudoServlet for " + session.getId() );
+            }
+        }
     }
 
     private void sessionDestroy(HttpSession session) {
