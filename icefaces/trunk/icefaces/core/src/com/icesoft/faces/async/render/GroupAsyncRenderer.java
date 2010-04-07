@@ -36,7 +36,6 @@ import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.util.StaticTimerUtility;
@@ -158,7 +157,7 @@ implements AsyncRenderer {
             return false;
         }
 
-        return contains( getSessionID(facesContext.getExternalContext().getSession(false)) );
+        return group.contains( getSessionID(facesContext.getExternalContext().getSession(false)) );
     }
 
     private static String getSessionID(Object session){
@@ -219,8 +218,18 @@ implements AsyncRenderer {
     }
 
     /**
+     * Removes a sessionID, via a String, from
+     * this group.
+     *
+     * @param id  the session id to remove
+     */
+    public void remove(final String id) {
+        group.remove(id);
+    }
+
+    /**
      * <p>
-     *   Removes the current session, via a <code>WeakReference</code>, from
+     *   Removes the current session, via its session id, from
      *   this <code>GroupAsyncRenderer</code>.
      * </p>
      */
@@ -247,8 +256,8 @@ implements AsyncRenderer {
     }
 
     /**
-     * Request a render pass on all the Renderables in the group.  Render calls
-     * that generate exceptions are passed back to the Renderable.renderException
+     * Request a render pass on all the Renderables and session ids in the group.  Render calls
+     * that generate exceptions are passed back to the Renderable.renderException if applicable.
      *
      * @throws IllegalStateException If a reference to a {@link RenderHub} has
      *                               not yet been set.
@@ -289,10 +298,19 @@ implements AsyncRenderer {
              *     synchronization is needed while traversing the iterator.  The
              *     iterator does NOT support the remove method."
              */
-            WeakReference reference = (WeakReference)i.next();
-            Object object = reference.get();
-            if (object == null) {
-                group.remove(reference);
+            Object nextObject = i.next();
+            Object object;
+            if (nextObject instanceof WeakReference)  {
+                WeakReference reference = (WeakReference)nextObject;
+                object = reference.get();
+            } else {
+                object = nextObject;
+            }
+            if (LOG.isTraceEnabled()) {
+                LOG.trace(name + " rendering group member " + object);
+            }
+            if ((object == null) && (nextObject instanceof WeakReference)) {
+                group.remove(nextObject);
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof String) {
@@ -348,6 +366,24 @@ implements AsyncRenderer {
             }
         }
     }
+    private void add(String id) {
+        // todo: remove synchronized block as CopyOnWriteArraySet is used?
+        System.out.println("GroupAsyncRenderer.add: session id " + id);
+        synchronized (group) {
+            if (!group.contains(id)) {
+                if (group.add(id)) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " added " + id);
+                    }
+                } else {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(name + " already contains " + id);
+                    }
+                }
+            }
+        }
+    }
+
 
     private boolean contains(final Object object) {
         for (Iterator i = group.iterator(); i.hasNext(); ) {
