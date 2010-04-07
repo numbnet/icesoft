@@ -110,6 +110,13 @@
         </antcall>
     </target>
 
+    <target name="war.ice"
+            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
+        <antcall target="war.basic">
+            <param name="ice"  value="true"/>
+        </antcall>
+    </target>
+
     <target name="war.ice.push"
             description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
         <antcall target="war.basic">
