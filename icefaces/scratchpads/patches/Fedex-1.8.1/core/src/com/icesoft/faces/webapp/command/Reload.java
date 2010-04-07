@@ -7,6 +7,7 @@ public class Reload extends AbstractCommand {
     private String viewIdentifier;
 
     public Reload(String viewIdentifier) {
+(new Exception()).printStackTrace();
         this.viewIdentifier = viewIdentifier;
     }
 
