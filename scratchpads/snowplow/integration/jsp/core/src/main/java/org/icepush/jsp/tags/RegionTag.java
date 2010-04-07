@@ -36,6 +36,7 @@ public class RegionTag extends BaseTag {
 
 	private String page;
 	private String id;
+	private boolean evalJS = true;
 
 	public int doStartTag() throws JspException {
 		int i = super.doStartTag();
@@ -57,7 +58,11 @@ public class RegionTag extends BaseTag {
 					+ "');} , ");
 			w.write("function(statusCode, responseText) {\n");
 			w.write("var container = document.getElementById('" + id + "');\n");
-			w.write("container.innerHTML = responseText;\n});});");
+			w.write("container.innerHTML = responseText;");
+			if( evalJS ){
+				w.write("ice.push.searchAndEvaluateScripts(container);");
+			}			
+			w.write("});});");
 			w.write("</script>");
 
 			// Write the div;
@@ -90,6 +95,7 @@ public class RegionTag extends BaseTag {
 		super.release();
 		setId(null);
 		page = null;
+		evalJS = true;
 	}
 
 	public String getPage() {
@@ -98,5 +104,13 @@ public class RegionTag extends BaseTag {
 
 	public void setPage(String page) {
 		this.page = page;
+	}
+	
+	public void setEvalJS(boolean eval){
+		this.evalJS = eval;
+	}
+	
+	public boolean getEvalJS(){
+		return evalJS;
 	}
 }
