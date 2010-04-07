@@ -309,7 +309,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isRendered()) {
             return;
         }
-        restoreRequiredAttribute(context);
         dataModel = null;
         if (null == savedChildren || !keepSaved(context)) {
             savedChildren = new HashMap();
@@ -656,29 +655,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         }
         return true;
     }
-    
-    private void restoreRequiredAttribute(FacesContext context) {    
-        Iterator it = savedChildren.keySet().iterator();
-        while (it!= null && it.hasNext()) {
-            String clientId = String.valueOf(it.next());
-            String localRequired = clientId + "$ice-req$";
-            if (!savedChildren.containsKey(clientId)
-                    || !(savedChildren.get(clientId) instanceof ChildState)) continue;
-            ChildState state = (ChildState)savedChildren.get(clientId);
-            if (state != null && !state.isValid()) {
-                UIComponent component = D2DViewHandler.findComponent(clientId,  
-                                        context.getViewRoot());
-                if (component != null && component instanceof UIInput &&
-                        component.getAttributes().get(localRequired)!= null ) {
-                    boolean required = ((Boolean)component.getAttributes()
-                                    .get(localRequired)).booleanValue();
-                    if (required) {
-                               ((UIInput)component).setRequired(true);
-                    }           
-               }
-            }
-        }
-    } 
 
     public void ensureFirstRowInRange() {
         int numRowsTotal = getRowCount(); // could be -1
