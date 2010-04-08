@@ -62,7 +62,8 @@
 		            	<h2>ICEchat Login</h2>
 		                <div style="text-align:right;">
 		                    <label for="userName">Name </label>
-		                    <input type="text" id="userName"/>
+		                    <input type="text" id="userName"
+		                    	onkeypress="if(event.keyCode == 13){ window.login();return false;}"/>
 		                </div>
 		                <div style="text-align:right;margin-top:20px;">
 		                    <input type="button" id="loginBtn" value="Login" onclick="window.login();"/>

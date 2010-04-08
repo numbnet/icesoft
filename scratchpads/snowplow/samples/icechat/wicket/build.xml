@@ -48,6 +48,7 @@
 				<fileset refid="cdi" />
 				<fileset dir="${web.dir}/WEB-INF/lib" />
 				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
+				<fileset file="${root.offset}/integration/wicket/core/dist/icepush-wicket.jar"/>
 				<fileset file="../cdi/lib/weld-wicket.jar"/>
 				<fileset file="../cdi/lib/weld-servlet.jar"/>
 			</add.classpath.elements>

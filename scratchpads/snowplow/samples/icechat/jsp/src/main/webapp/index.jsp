@@ -191,7 +191,8 @@
 									<div class="chatRoomMessages">
 										<div class="chatViewSubHeader">Messages</div>
 										<div>
-										<icep:region group="${sessionScope['currentChatRoom'].name}_messages" page="/inc/chatRoomMessages.jsp">
+										<icep:region group="${sessionScope['currentChatRoom'].name}_messages" page="/inc/chatRoomMessages.jsp"
+											evalJS="false">
 										</icep:region>
 										</div>
 									</div>

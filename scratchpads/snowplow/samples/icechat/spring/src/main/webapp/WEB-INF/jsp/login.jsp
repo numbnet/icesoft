@@ -20,7 +20,7 @@
         </div>
 
         <div class="body_container">
-            <form:form method="post" commandName="login">
+            <form:form method="post" commandName="login" modelAttribute="loginFormData" action="login">
             <div class="login">
                 <h2>ICEchat Login</h2>
                 <div style="text-align: right;">

@@ -33,8 +33,8 @@ import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 public class SynchronizedChatServiceBean extends BaseChatServiceBean {
 
-	public synchronized void createNewChatRoom(String name) {
-		super.createNewChatRoom(name);
+	public synchronized ChatRoom createNewChatRoom(String name) {
+		return super.createNewChatRoom(name);
 	}
 
 	public synchronized void createNewUser(String userName) {
@@ -70,8 +70,7 @@ public class SynchronizedChatServiceBean extends BaseChatServiceBean {
 		super.logoutOfChatRoom(chatRoom, user);
 	}
 
-	public synchronized void sendNewMessage(String chatRoom, User user, String message)
-	throws UnauthorizedException{
+	public synchronized void sendNewMessage(String chatRoom, User user, String message){
 		super.sendNewMessage(chatRoom, user, message);
 	}
 

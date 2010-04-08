@@ -34,20 +34,6 @@
 		<param-name>homePageURL</param-name>
 		<param-value>/index.html</param-value>
 	</context-param>
-	<context-param>
-		<param-name>ROOT_RESOURCE_DIR</param-name>
-		<param-value>inc</param-value>
-	</context-param>
-	
-	<!-- servlet>
-		<servlet-name>Jersey Web Application</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.icepush.samples.icechat.jaxrs</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet-->
 	
 	<servlet>
         <servlet-name>authServlet</servlet-name>
@@ -113,11 +99,6 @@
             index.html
         </welcome-file>
 	</welcome-file-list>
-
-	<!-- servlet-mapping>
-		<servlet-name>Jersey Web Application</servlet-name>
-		<url-pattern>/app/*</url-pattern>
-	</servlet-mapping-->
 
 	
 </web-app>

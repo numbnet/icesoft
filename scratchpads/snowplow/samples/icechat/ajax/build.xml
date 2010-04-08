@@ -20,7 +20,7 @@
  *
  -->
 
-<project name="icechat-ajax">
+<project name="icechat-ajax" default="war">
 
 	<property name="root.offset" value="../../.."/>
 	<property file="${root.offset}/build.properties" />

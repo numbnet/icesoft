@@ -149,30 +149,25 @@ public class ChatServiceImpl extends RemoteServiceServlet implements
 		ChatServiceBean chatService = ChatServiceBean.getInstance(this
 			.getServletContext());
 		
-		try{
-			chatService.sendNewMessage(handle.getName(), currentUser, message);
+		chatService.sendNewMessage(handle.getName(), currentUser, message);
 
-			List<User> allUsers = chatService.getChatRoomParticipants(handle.getName());
-			for(User user: allUsers){
-				if(this.draftMessages.get(user.getSessionToken()) == null){
-					this.draftMessages.put(user.getSessionToken(), new LinkedBlockingQueue<ChatRoomDraft>());
-				} 
-				ChatRoomDraft userDraft = new ChatRoomDraft();
-				userDraft.setText("");
-				userDraft.setUserSessionToken(sessionToken);
-				this.draftMessages.get(user.getSessionToken()).add(userDraft);
-			}
-			
-			PushContext.getInstance(this.getServletContext())
-					.push(handle.getName().replaceAll(" ", "_"));
-			
-			PushContext.getInstance(this.getServletContext()).push(
-					handle.getName().replaceAll(" ", "_")+"-draft");
-			
+		List<User> allUsers = chatService.getChatRoomParticipants(handle.getName());
+		for(User user: allUsers){
+			if(this.draftMessages.get(user.getSessionToken()) == null){
+				this.draftMessages.put(user.getSessionToken(), new LinkedBlockingQueue<ChatRoomDraft>());
+			} 
+			ChatRoomDraft userDraft = new ChatRoomDraft();
+			userDraft.setText("");
+			userDraft.setUserSessionToken(sessionToken);
+			this.draftMessages.get(user.getSessionToken()).add(userDraft);
 		}
-		catch(UnauthorizedException e){
-			e.printStackTrace();
-		}
+		
+		PushContext.getInstance(this.getServletContext())
+				.push(handle.getName().replaceAll(" ", "_"));
+		
+		PushContext.getInstance(this.getServletContext()).push(
+				handle.getName().replaceAll(" ", "_")+"-draft");
+			
 		
 	}
 
