@@ -89,6 +89,12 @@
 		<rtexprvalue>true</rtexprvalue>
 		<description>The page containing the content to be rendered into the region.</description>
 	</attribute>
+	<attribute>
+		<name>evalJS</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+		<description>Specifies whether scripts in the fetched content will be evaluated.</description>
+	</attribute>
 </tag>
 <tag>
 	<name>register</name>
