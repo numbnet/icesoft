@@ -63,7 +63,7 @@
 							<div id="chatRooms">
 								<ui:repeat value="#{chatService.chatRooms}" var="room">
 									<div>
-										<h:commandLink value="#{room.name}"
+										<h:commandButton value="#{room.name}" style="width:100%;"
 											actionListener="#{chatManagerVC.openChatSession(room.name)}" />
 									</div>
 								</ui:repeat>
