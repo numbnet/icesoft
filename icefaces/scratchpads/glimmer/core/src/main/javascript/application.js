@@ -155,6 +155,19 @@ if (!window.ice.icefaces) {
             };
         };
 
+        namespace.captureEnterKey = function(id) {
+            var f = document.getElementById(id);
+            f.onkeypress = function(ev) {
+                var e = $event(ev, f);
+                if (keyCode(e) == 13) {
+                    submit(ev || window.event, triggeredBy(e));
+                    return false;
+                } else {
+                    return true;
+                }
+            };
+        };
+
         namespace.captureSubmit = function(id) {
             var f = document.getElementById(id);
             //hijack browser form submit, instead submit through an Ajax request
