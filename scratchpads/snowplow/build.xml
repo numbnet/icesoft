@@ -91,6 +91,11 @@
 		<antcall target="dist-jquery-bin"/>
 		<antcall target="dist-prototype-bin"/>
 		<antcall target="dist-wicket-bin"/>
+		
+		<!-- items not in contained distribution -->
+		<ant target="war" dir="./samples/icechat/icefaces"/>
+		<ant target="war" dir="./samples/icechat/ajax"/>
+		
 	</target>
 	
 	<target name="clean-all">
@@ -117,6 +122,9 @@
 		<!-- WICKET -->
 		<clean.with.path.offset target="wicket"/>
 		<ant target="clean" dir="./samples/icechat/wicket"/>	
+		<!-- ICEFACES -->
+		<ant target="clean" dir="./samples/icechat/icefaces"/>
+		
 		
 	</target>
 	
