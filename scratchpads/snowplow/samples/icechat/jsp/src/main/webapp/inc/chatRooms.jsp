@@ -35,7 +35,7 @@
 <div id="chatRooms">
 	<c:if test="${not empty chatService.chatRooms}">
 		<c:forEach var="room" items="${chatService.chatRooms}">
-			<div><a href="javascript:loginToChatRoom('${room.name}');window.location.reload();">${room.name}</a></div>
+			<div><button onclick="loginToChatRoom('${room.name}');window.location.reload();" style="width:100%;">${room.name}</button></div>
 		</c:forEach>
 	</c:if>
 	<c:if test="${empty chatService.chatRooms}">
