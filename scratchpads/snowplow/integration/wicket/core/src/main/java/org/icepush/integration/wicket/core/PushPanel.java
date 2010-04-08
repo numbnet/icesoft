@@ -63,7 +63,7 @@ import org.icepush.PushContext;
 public abstract class PushPanel extends Panel {
 
     // Initialize PushContext (Creates PushId)
-    WicketPushRequestContext pushRequestContext = new WicketPushRequestContext((WebRequest)getRequest(),(WebResponse)getResponse());
+    protected WicketPushRequestContext pushRequestContext = new WicketPushRequestContext((WebRequest)getRequest(),(WebResponse)getResponse());
 
     Label pushJavascript;
     String javascriptString = "ice.push.register(['" + pushRequestContext.getCurrentPushId() + "'],function(){wicketAjaxGet('')});";

@@ -39,16 +39,6 @@
 		<param-value>inc</param-value>
 	</context-param>
 	
-	<!-- servlet>
-		<servlet-name>Jersey Web Application</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.icepush.samples.icechat.jaxrs</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet-->
-	
 	<servlet>
         <servlet-name>authServlet</servlet-name>
         <servlet-class>org.icepush.samples.icechat.auth.SecurityServlet</servlet-class>
@@ -114,10 +104,4 @@
         </welcome-file>
 	</welcome-file-list>
 
-	<!-- servlet-mapping>
-		<servlet-name>Jersey Web Application</servlet-name>
-		<url-pattern>/app/*</url-pattern>
-	</servlet-mapping-->
-
-	
 </web-app>

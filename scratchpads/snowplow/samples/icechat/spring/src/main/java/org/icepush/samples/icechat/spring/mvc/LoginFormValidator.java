@@ -21,24 +21,17 @@
 
 package org.icepush.samples.icechat.spring.mvc;
 
-import org.springframework.validation.Validator;
-import org.springframework.validation.Errors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.validation.Errors;
 
-public class LoginFormValidator implements Validator {
+public class LoginFormValidator{
     
     protected final Log logger = LogFactory.getLog(getClass());
 
-    public boolean supports(Class clazz) {
-        return LoginFormData.class.equals(clazz);
-    }
-
-    public void validate(Object obj, Errors errors) {
-        LoginFormData form = (LoginFormData)obj;
-
-        if (form == null) {
+    public void validate(LoginFormData form, Errors errors) {
+        
+    	if (form == null) {
             errors.rejectValue("userName", "error.not-specified", null, "Values required.");
         }
         else {

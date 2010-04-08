@@ -21,56 +21,76 @@
 
 package org.icepush.samples.icechat.spring.mvc;
 
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.validation.BindException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.icepush.samples.icechat.spring.impl.BaseLoginController;
-import org.icepush.samples.icechat.spring.impl.BasePushRequestContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icepush.samples.icechat.controller.ILoginController;
+import org.icepush.samples.icechat.spring.impl.BasePushRequestContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
-public class LoginFormController extends SimpleFormController {
+@Controller
+@Scope("session")
+public class LoginFormController{
 
     protected final Log logger = LogFactory.getLog(getClass());
 
     private PushRequestManager pushRequestManager;
     private LoginFormData loginFormData;
-    private BaseLoginController baseLoginController;
+    private ILoginController loginController;
 
-    public LoginFormController() {
-        super();
+    @Autowired
+    public LoginFormController(PushRequestManager pushRequestManager, LoginFormData loginFormData,
+    		ILoginController loginController) {
+        this.pushRequestManager = pushRequestManager;
+        this.loginFormData = loginFormData;
+        this.loginController = loginController;
     }
 
-    public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                                 Object command, BindException errors)
+    public ModelAndView onSubmit(@ModelAttribute("loginFormData") LoginFormData loginFormData, BindingResult result, SessionStatus status,
+    		HttpServletRequest request, HttpServletResponse response)
                                  throws Exception {
-        if ((errors != null) && (errors.getErrorCount() == 0)) {
+    	
+    	new LoginFormValidator().validate(loginFormData, result);
+    	
+        if (!result.hasErrors()) {
             try{
-                if (baseLoginController.getPushRequestContext() == null) {
+                if (loginController.getPushRequestContext() == null) {
                     pushRequestManager.setPushRequestContext(new BasePushRequestContext(request, response));
 
-                    baseLoginController.setPushRequestContext(pushRequestManager.getPushRequestContext());
+                    loginController.setPushRequestContext(pushRequestManager.getPushRequestContext());
                 }
-                baseLoginController.setUserName(loginFormData.getUserName());
-                baseLoginController.login();
-
-                return new ModelAndView(new RedirectView(getSuccessView()));
+                loginController.setUserName(loginFormData.getUserName());
+                loginController.login();
+                status.setComplete();
+                return new ModelAndView(new RedirectView("/chat/rooms"));
             }catch (Exception failedLogin) {
                 logger.error("Failed to attempt to log a user in", failedLogin);
             }
         }
 
-        return new ModelAndView(new RedirectView("login.htm"));
+        return new ModelAndView(new RedirectView("/chat/login"));
     }
+    
+   public String setupForm(Model model) {
+		model.addAttribute("loginFormData", loginFormData);
+		return "login";
+	}
 
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+    
+     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         return loginFormData;
     }
 
@@ -78,23 +98,11 @@ public class LoginFormController extends SimpleFormController {
         return pushRequestManager;
     }
 
-    public void setPushRequestManager(PushRequestManager pushRequestManager) {
-        this.pushRequestManager = pushRequestManager;
-    }
-
     public LoginFormData getLoginFormData() {
         return loginFormData;
     }
 
-    public void setLoginFormData(LoginFormData loginFormData) {
-        this.loginFormData = loginFormData;
-    }
-
-    public BaseLoginController getBaseLoginController() {
-        return baseLoginController;
-    }
-
-    public void setBaseLoginController(BaseLoginController baseLoginController) {
-        this.baseLoginController = baseLoginController;
+    public ILoginController geLoginController() {
+        return loginController;
     }
 }
