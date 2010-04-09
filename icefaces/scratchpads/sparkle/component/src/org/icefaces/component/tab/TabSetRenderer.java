@@ -70,7 +70,7 @@ public class TabSetRenderer extends Renderer{
         
             writer.startElement(HTML.UL_ELEM, uiComponent);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
-                if (tabSet.isAria()) {
+                if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }
                 renderTab(facesContext, uiComponent, true);
@@ -79,7 +79,7 @@ public class TabSetRenderer extends Renderer{
         } else {
             writer.startElement(HTML.UL_ELEM, uiComponent);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
-                if (tabSet.isAria()) {
+                if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
                 renderTab(facesContext, uiComponent, true);
@@ -156,7 +156,7 @@ public class TabSetRenderer extends Renderer{
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
-        if (tabSet.isAria()) {
+        if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.PRESENTATION_ROLE, ARIA.ROLE_ATTR);  
         }
 
@@ -166,7 +166,7 @@ public class TabSetRenderer extends Renderer{
         }
 //        if (labelFacet!= null) {
             writer.startElement(HTML.DIV_ELEM, tab);  
-            if (tabSet.isAria()) {
+            if (EnvUtils.isAriaEnabled(facesContext)) {
                 writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
             }
             writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
@@ -206,7 +206,7 @@ public class TabSetRenderer extends Renderer{
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
-        if (tabSet.isAria()) {
+        if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABPANEL_ROLE, ARIA.ROLE_ATTR);  
         }        
         boolean isClientSide = tabSet.isClientSide();
