@@ -87,11 +87,11 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
-        if (null == dispatcher)  {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
             handler.handleResourceRequest(facesContext);
             return;
         }
-        ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         String requestURI = request.getRequestURI();
@@ -110,6 +110,9 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
 
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            return handler.isResourceRequest(facesContext);
+        }
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
         String requestURI = servletRequest.getRequestURI();
         boolean resourceRequest =

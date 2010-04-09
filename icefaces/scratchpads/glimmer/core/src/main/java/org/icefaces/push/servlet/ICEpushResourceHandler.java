@@ -55,6 +55,10 @@ public class ICEpushResourceHandler extends ResourceHandler {
             return;
         }
         ExternalContext externalContext = facesContext.getExternalContext();
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            handler.handleResourceRequest(facesContext);
+            return;
+        }
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         String requestURI = request.getRequestURI();
@@ -71,6 +75,9 @@ public class ICEpushResourceHandler extends ResourceHandler {
 
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            return handler.isResourceRequest(facesContext);
+        }
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
         String requestURI = servletRequest.getRequestURI();
         return handler.isResourceRequest(facesContext) || ICEpushRequestPattern.matcher(requestURI).find();
