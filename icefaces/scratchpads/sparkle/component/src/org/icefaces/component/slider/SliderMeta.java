@@ -54,7 +54,8 @@ public class SliderMeta {
     @Property (defaultValue="500")
     private Integer slideInterval; 
 
-    
+    @Property (defaultValue="0")
+    private Integer tabindex;  
     
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;

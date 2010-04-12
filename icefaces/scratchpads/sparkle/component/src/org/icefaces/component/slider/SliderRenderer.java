@@ -9,7 +9,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
+import org.icefaces.util.EnvUtils;
 
 
 public class SliderRenderer extends Renderer{
@@ -81,7 +83,13 @@ public class SliderRenderer extends Renderer{
         call.append(slider.isSingleSubmit());
         call.append(", ");        
         call.append("slideInterval:");
-        call.append(slider.getSlideInterval());        
+        call.append(slider.getSlideInterval());       
+        call.append(", ");        
+        call.append("aria:");
+        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+        call.append(", ");        
+        call.append("tabindex:");
+        call.append(slider.getTabindex());   
         call.append("},{});");
         System.out.println(call);        
         writer.write(call.toString());

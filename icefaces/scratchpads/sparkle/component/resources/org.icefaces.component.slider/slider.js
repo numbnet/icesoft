@@ -24,6 +24,9 @@ ice.yui.slider = {
                 submitHandler = function(event) {
                     var singleSubmit = jsfProps.singleSubmit;
                     var sliderValue = obj.get('value');
+                    if (jsfProps.aria) {
+                        document.getElementById(clientId).firstChild.setAttribute("aria-valuenow", sliderValue);
+                    } 
                     var params = function(parameter) {
                         parameter(clientId+'_value', sliderValue);
                     };
@@ -71,6 +74,51 @@ ice.yui.slider = {
                 } 
                 obj.after(submitOn, submitHandler);
                 
+                //add aria support
+                if (jsfProps.aria) {
+                    //add roles and attributes to the YUI widget
+                    var root = document.getElementById(clientId);
+                    root.firstChild.setAttribute("role", "slider");
+                    root.firstChild.setAttribute("aria-valuemin", yuiProps.min);
+                    root.firstChild.setAttribute("aria-valuemax", yuiProps.max);
+                    root.firstChild.setAttribute("aria-valuenow",yuiProps.value );
+                    root.firstChild.setAttribute("tabindex",jsfProps.tabindex);
+                    var step = 5;
+                    //listen for keydown event, to react on left, right, home and end key 
+                    Y.on("keydown", function(event) {
+                        //get the current value of the slider
+                        var valuebefor = valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
+                          
+                        var isLeft = event.keyCode == 37;
+                        var isRight = event.keyCode == 39;
+                        var isHome = event.keyCode == 36;
+                        var isEnd = event.keyCode == 35;
+
+                        if (isLeft) {
+                           if ((valuenow - step) >= yuiProps.min) {
+                              valuenow -= step;
+                           }
+                        } else if (isRight) {
+                           if (yuiProps.max >= valuenow + step) {
+                              valuenow += step;
+                           }
+                        } else if (isHome) {
+                           valuenow = yuiProps.min;
+                        } else if (isEnd) {
+                           valuenow = yuiProps.max;		
+                        }
+
+                        //if value change?
+                        if (valuebefor != valuenow)  { 
+                            //update slider value on client                       
+                            obj.set('value', valuenow);
+                            //notify server
+                            obj.fire(submitOn, submitHandler);
+                            //cancel event
+                            event.halt();
+                        }
+                    }, root);
+                }
                 bindYUI(obj);
             });
    },
