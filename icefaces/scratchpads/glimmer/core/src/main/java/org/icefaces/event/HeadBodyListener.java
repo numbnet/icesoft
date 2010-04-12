@@ -42,6 +42,10 @@ public class HeadBodyListener implements SystemEventListener {
             log.log(Level.FINER, "post add to view for : " + comp + ", " + rendererType);
         }
 
+        if( rendererType == null ){
+            return;
+        }
+
         if (!viewMap.containsKey(EnvUtils.HEAD_DETECTED)) {
             if (rendererType.equals("javax.faces.Head")) {
                 viewMap.put(EnvUtils.HEAD_DETECTED, EnvUtils.HEAD_DETECTED);
