@@ -42,11 +42,6 @@ public class HeadBodyListener implements SystemEventListener {
             log.log(Level.FINER, "post add to view for : " + comp + ", " + rendererType);
         }
 
-        if(viewMap.containsKey(DETECTION_DONE)){
-            //If detection has already been done on this view, no need to keep doing it.
-            return;
-        }
-
         if (!viewMap.containsKey(EnvUtils.HEAD_DETECTED)) {
             if (rendererType.equals("javax.faces.Head")) {
                 viewMap.put(EnvUtils.HEAD_DETECTED, EnvUtils.HEAD_DETECTED);
@@ -64,8 +59,6 @@ public class HeadBodyListener implements SystemEventListener {
                 }
             }
         }
-
-        viewMap.put(DETECTION_DONE, DETECTION_DONE);
 
     }
 
