@@ -97,11 +97,11 @@ ice.yui.slider = {
                         var isHome = event.keyCode == 36;
                         var isEnd = event.keyCode == 35;
 
-                        if (isLeft || isUp) {
+                        if (isLeft || isDown) {
                            if ((valuenow - step) >= yuiProps.min) {
                               valuenow -= step;
                            }
-                        } else if (isRight || isDown) {
+                        } else if (isRight || isUp) {
                            if (yuiProps.max >= valuenow + step) {
                               valuenow += step;
                            }
