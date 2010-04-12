@@ -23,6 +23,7 @@
 package org.icefaces.util;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIViewRoot;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,10 @@ public class EnvUtils {
     public static String ICEFACES_CONFIG_LOADED = "org.icefaces.config.loaded";
     public static String ICEFACES_RENDER = "org.icefaces.render";
     public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
+
+    public static final String HEAD_DETECTED = "org.icefaces.headDetected";
+    public static final String BODY_DETECTED = "org.icefaces.bodyDetected";
+
 
     static {
         try {
@@ -54,6 +59,22 @@ public class EnvUtils {
     }
 
     public static boolean isICEfacesView(FacesContext facesContext) {
+
+        //ICE-5613: ICEfaces must have h:head and h:body tags to render resources into
+        //Without these components, ICEfaces is disabled.  The component
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        if (!viewMap.containsKey(HEAD_DETECTED) || !viewMap.containsKey(BODY_DETECTED) ) {
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING, "ICEfaces disabled for view " + viewRoot.getViewId() +
+                        "\n  h:head tag available: " + viewMap.containsKey(HEAD_DETECTED) +
+                        "\n  h:body tag available: " + viewMap.containsKey(BODY_DETECTED));
+            }
+            return false;
+        }
+
+        //If the h:head and h:body components are available, then we can check to see if
+        //the view is configured to use ICEfaces (default is to enable ICEfaces).
         Map attributes = facesContext.getAttributes();
         Object icefacesRender = attributes.get(ICEFACES_RENDER);
         if (null == icefacesRender) {
