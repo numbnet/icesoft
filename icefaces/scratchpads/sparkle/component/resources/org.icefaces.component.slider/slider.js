@@ -90,15 +90,17 @@ ice.yui.slider = {
                         var valuebefor = valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
                           
                         var isLeft = event.keyCode == 37;
+                        var isUp = event.keyCode == 38;
                         var isRight = event.keyCode == 39;
+                        var isDown = event.keyCode == 40;                        
                         var isHome = event.keyCode == 36;
                         var isEnd = event.keyCode == 35;
 
-                        if (isLeft) {
+                        if (isLeft || isUp) {
                            if ((valuenow - step) >= yuiProps.min) {
                               valuenow -= step;
                            }
-                        } else if (isRight) {
+                        } else if (isRight || isDown) {
                            if (yuiProps.max >= valuenow + step) {
                               valuenow += step;
                            }
