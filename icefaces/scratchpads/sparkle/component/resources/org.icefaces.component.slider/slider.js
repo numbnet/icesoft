@@ -1,5 +1,5 @@
 ice.yui.slider = {
-   register:function(clientId, bindYUI, yuiProps, jsfProps) {
+   initialize:function(clientId, yuiProps, jsfProps, bindYUI) {
         var obj = null;
         var root = document.getElementById(clientId);
         ice.yui.loadModule('slider');
