@@ -81,18 +81,18 @@ ice.yui = {
         return modules.substring(0, modules.length-1);     
     },
     updateProperties:function(clientId, yuiProps, jsfProps, events, lib) {
-        this.getInstance(clientId, lib, function(slider) {
+        this.getInstance(clientId, function(yuiComp) {
             for (prop in yuiProps) {
-                var propValue = slider.get(prop);
+                var propValue = yuiComp.get(prop);
                 if (propValue != yuiProps[prop]) {
                   logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + yuiProps[prop]); 
-                  slider.set(prop, yuiProps[prop]);        
+                  yuiComp.set(prop, yuiProps[prop]);        
                 }
             }
-        },yuiProps, jsfProps);
+        }, lib, yuiProps, jsfProps);
         
     },
-    getInstance:function(clientId, lib, callback, yuiProps, jsfProps) {
+    getInstance:function(clientId, callback, lib, yuiProps, jsfProps) {
         var component = document.getElementById(clientId);
         //could be either new component, or part of the DOM diff
         if (!component['YUIHolder']) {
