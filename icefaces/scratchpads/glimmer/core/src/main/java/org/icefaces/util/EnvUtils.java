@@ -65,8 +65,8 @@ public class EnvUtils {
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
         if (!viewMap.containsKey(HEAD_DETECTED) || !viewMap.containsKey(BODY_DETECTED) ) {
-            if (log.isLoggable(Level.WARNING)) {
-                log.log(Level.WARNING, "ICEfaces disabled for view " + viewRoot.getViewId() +
+            if (log.isLoggable(Level.FINE)) {
+                log.log(Level.FINE, "ICEfaces disabled for view " + viewRoot.getViewId() +
                         "\n  h:head tag available: " + viewMap.containsKey(HEAD_DETECTED) +
                         "\n  h:body tag available: " + viewMap.containsKey(BODY_DETECTED));
             }
