@@ -89,8 +89,8 @@ ice.yui = {
              modules+= module + ',';
         return modules.substring(0, modules.length-1);     
     },
-    updateProperties:function(clientId, varName, yuiProps, jsfProps, events, lib) {
-        this.getInstance(clientId, varName, lib, function(slider) {
+    updateProperties:function(clientId, yuiProps, jsfProps, events, lib) {
+        this.getInstance(clientId, lib, function(slider) {
             for (prop in yuiProps) {
                 var propValue = slider.get(prop);
                 if (propValue != yuiProps[prop]) {
@@ -101,12 +101,12 @@ ice.yui = {
         },yuiProps, jsfProps);
         
     },
-    getInstance:function(clientId, varName, lib, callback, yuiProps, jsfProps) {
+    getInstance:function(clientId, lib, callback, yuiProps, jsfProps) {
         var component = document.getElementById(clientId);
         //could be either new component, or part of the DOM diff
         if (!component['YUIHolder']) {
             component['YUIHolder'] = new YUIHolder();
-            lib.register(clientId, varName, function(YUIJS) {
+            lib.register(clientId, function(YUIJS) {
                 logger.info('getInstance callback executed');
                 component['YUIHolder'].setComponent(YUIJS);
                 callback(component['YUIHolder'].getComponent());
