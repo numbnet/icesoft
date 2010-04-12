@@ -9,7 +9,10 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
 public class SessionRenderer extends PushRenderer {
-    private static PortableRenderer portableRenderer;
+    private static PortableRenderer portableRenderer = new PortableRenderer() {
+        public void render(String group) {
+        }
+    };
 
     public static void render(String groupName) {
         if (FacesContext.getCurrentInstance() == null) {
