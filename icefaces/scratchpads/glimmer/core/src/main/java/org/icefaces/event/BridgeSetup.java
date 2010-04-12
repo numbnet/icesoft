@@ -16,6 +16,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class BridgeSetup implements SystemEventListener {
     public static String ViewState = BridgeSetup.class.getName() + "::ViewState";
@@ -33,7 +34,14 @@ public class BridgeSetup implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
 
-        if (EnvUtils.isICEfacesView(context)) {
+        if (!EnvUtils.isICEfacesView(context)) {
+            if (log.isLoggable(Level.INFO)) {
+                log.log(Level.INFO, "ICEfaces disabled for view " + context.getViewRoot().getViewId() +
+                " (h:head and h:body tags must be used)");
+            }
+            return;
+        }
+
             UIViewRoot root = context.getViewRoot();
 
             root.addComponentResource(context, new JavascriptResourceOutput(
@@ -100,7 +108,6 @@ public class BridgeSetup implements SystemEventListener {
                 //not be fatal to the application
                 e.printStackTrace();
             }
-        }
     }
     
     public static class JavascriptResourceOutput extends UIOutput {
