@@ -52,16 +52,7 @@ YUIHolder.prototype = {
    
    getComponent:function() {
       return this.component;
-   },
-   
-   setProperties:function(properties) {
-      //check for any update, if changed then update on component  
-      this.properties = properties;
-   },
-   
-   setEvents:function(component) {
-      this.component = component;
-   }   
+   }  
 };
 
 ice = {};
@@ -114,10 +105,5 @@ ice.yui = {
         } else {
             callback(component['YUIHolder'].getComponent());
         }
-    },
-    
-    getYUIHolder:function(clientId) {
-        var component = document.getElementById(clientId);
-        return(component['YUIHolder']);
     }
 };
