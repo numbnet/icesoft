@@ -97,11 +97,11 @@ ice.yui = {
         //could be either new component, or part of the DOM diff
         if (!component['YUIHolder']) {
             component['YUIHolder'] = new YUIHolder();
-            lib.register(clientId, function(YUIJS) {
-                logger.info('getInstance callback executed');
+            lib.initialize(clientId, yuiProps, jsfProps, function(YUIJS) {
+                logger.info('getInstance callback executed..');
                 component['YUIHolder'].setComponent(YUIJS);
                 callback(component['YUIHolder'].getComponent());
-            },yuiProps, jsfProps);
+            });
         } else {
             callback(component['YUIHolder'].getComponent());
         }
