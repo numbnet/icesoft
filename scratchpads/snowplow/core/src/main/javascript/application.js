@@ -107,7 +107,7 @@ if (!window.ice.icepush) {
         function calculateURI(uri) {
             return (namespace.push.configuration.uriPrefix || '') + uri + (namespace.push.configuration.uriSuffix || '');
         }
-        
+
 
         var currentNotifications = [];
         var apiChannel = Client(true);
@@ -198,34 +198,20 @@ if (!window.ice.icepush) {
             },
 
             searchAndEvaluateScripts: function(element) {
-            	var scripts = element.getElementsByTagName('script');
-            	for( s in scripts ){
-            		this.evaluateScript(scripts[s]);
-            	}
+                each(element.getElementsByTagName('script'), function(script) {
+                    var newScript = document.createElement('script');
+                    newScript.setAttribute('type', 'text/javascript');
+
+                    if (script.src) {
+                        newScript.src = script.src;
+                    } else {
+                        newScript.text = script.text;
+                    }
+
+                    element.appendChild(newScript);
+                });
             },
 
-            evaluateScript: function(script) {
-                var uri = script.src;
-                if (uri) {
-                    this.client.getSynchronously(uri, '', function(request) {
-                        try {
-                            if (window.execScript) window.execScript(request.content()); //ie
-                    		else top.eval(request.content()); //others
-                        } catch (e) {
-                        	warn(logger, 'Failed to evaluate script located at: ' + uri, e);
-                        }
-                    }.bind(this));
-                } else {
-                    var code = script.innerHTML;
-                    try {
-                    	if (window.execScript) window.execScript(code); //ie
-                		else top.eval(code); //others
-                    } catch (e) {
-                    	warn(logger, 'Failed to evaluate script: \n' + code, e);
-                    }
-                }
-            },
-            
             configuration: {
                 uriSuffix: '',
                 uriPrefix: ''
