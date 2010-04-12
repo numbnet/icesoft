@@ -4,16 +4,9 @@ ice.yui.slider = {
         var root = document.getElementById(clientId);
         ice.yui.loadModule('slider');
         ice.yui.use(function(Y){
-                var _thumbImage;
-                if (jsfProps['thumbImage']) {
-                    _thumbImage = jsfProps['thumbImage'];
-                } else {
-                    _thumbImage= 'http://yui.yahooapis.com/3.0.0/build/slider/assets/skins/sam/thumb-classic-x.png';                
-                }
-              
                 obj = new Y.Slider({
                     axis: yuiProps.axis,
-                    thumbImage:_thumbImage 
+                    thumbImage: jsfProps.thumbImage 
                 }).render(root);
                 logger.info('Object created '+ obj);
                 
