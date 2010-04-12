@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
@@ -15,6 +14,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ValueChangeEvent;
 
+//dependency order matters
+//TODO make it so resources can be coalesce and served as whole 
 @ResourceDependencies({
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
@@ -30,6 +31,9 @@ public class Slider extends SliderBase{
         super.encodeBegin(context);
     }
 
+    //YUI3 loads modules dynamically, but to load YUI bootstrap the following 
+    //file has to be loaded at least
+    //TODO get stable version of YUI3 and served from the JAR instead of referencing to live server
     private void loadDependency(FacesContext context) {
         context.getViewRoot().addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
@@ -46,7 +50,14 @@ public class Slider extends SliderBase{
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
         super.broadcast(event);
+
+        //event was fired by me
         if (event != null) {
+            
+            //To keep it simple slider uses the broadcast to update value, so it doesn't
+            //have to keep submitted value
+            
+            //1. update the value
             ValueExpression ve = getValueExpression("value");
             if (ve != null) {
                 try {
@@ -57,7 +68,7 @@ public class Slider extends SliderBase{
             } else {
                 setValue((Integer)((ValueChangeEvent)event).getNewValue());
             }
-
+            //invoke a valuechange listener if any
             MethodExpression method = getValueChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
