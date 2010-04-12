@@ -1,6 +1,7 @@
 ice.yui.slider = {
-   register:function(clientId, varName, bindYUI, yuiProps, jsfProps) {
+   register:function(clientId, bindYUI, yuiProps, jsfProps) {
         var obj = null;
+        var root = document.getElementById(clientId);
         ice.yui.loadModule('slider');
         ice.yui.use(function(Y){
                 var _thumbImage;
@@ -13,7 +14,7 @@ ice.yui.slider = {
                 obj = new Y.Slider({
                     axis: yuiProps.axis,
                     thumbImage:_thumbImage 
-                }).render('.class'+ varName);
+                }).render(root);
                 logger.info('Object created '+ obj);
                 
                 var sliderElement = document.getElementById(clientId);
@@ -77,7 +78,7 @@ ice.yui.slider = {
                 //add aria support
                 if (jsfProps.aria) {
                     //add roles and attributes to the YUI widget
-                    var root = document.getElementById(clientId);
+                    root = document.getElementById(clientId);
                     root.firstChild.setAttribute("role", "slider");
                     root.firstChild.setAttribute("aria-valuemin", yuiProps.min);
                     root.firstChild.setAttribute("aria-valuemax", yuiProps.max);
@@ -125,12 +126,12 @@ ice.yui.slider = {
             });
    },
    
-   updateProperties:function(clientId, varName, yuiProps, jsfProps, events) {
-	     ice.yui.updateProperties(clientId, varName, yuiProps, jsfProps, events, this);
+   updateProperties:function(clientId, yuiProps, jsfProps, events) {
+	     ice.yui.updateProperties(clientId, yuiProps, jsfProps, events, this);
    },
    
-   getInstance:function(clientId, callback, varName) {
-        ice.yui.getInstance(clientId, varName, this, callback);
+   getInstance:function(clientId, callback) {
+        ice.yui.getInstance(clientId, this, callback);
    }
 };
 

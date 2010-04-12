@@ -40,12 +40,12 @@ public class SliderRenderer extends Renderer{
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();        
         Slider slider = (Slider)uiComponent;
-        String styleClass = slider.getStyleClass();
-        if (styleClass == null)
-            styleClass = "";
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);      
-        writer.writeAttribute(HTML.CLASS_ATTR, "class"+ clientId.hashCode() + " " + styleClass, HTML.CLASS_ATTR);             
+        String styleClass = slider.getStyleClass();
+        if (styleClass == null) {
+            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
+        }
         writer.endElement(HTML.DIV_ELEM);  
         
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
@@ -53,8 +53,6 @@ public class SliderRenderer extends Renderer{
         StringBuilder call= new StringBuilder();
         call.append("ice.yui.slider.updateProperties('");
         call.append(clientId);
-        call.append("', '");
-        call.append(clientId.hashCode());
         call.append("', {");
         call.append("min:");
         call.append(slider.getMin());
