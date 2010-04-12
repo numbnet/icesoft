@@ -49,12 +49,10 @@ public class Slider extends SliderBase{
         if (event != null) {
             ValueExpression ve = getValueExpression("value");
             if (ve != null) {
-                Throwable caught = null;
-                FacesMessage message = null;
                 try {
                     ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
                 } catch (ELException ee) {
-                    System.out.println(ee);
+                    ee.printStackTrace();
                 }
             } else {
                 setValue((Integer)((ValueChangeEvent)event).getNewValue());
