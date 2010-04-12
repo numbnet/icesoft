@@ -35,12 +35,9 @@ public class BridgeSetup implements SystemEventListener {
 
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
-            UIOutput jsfCode = new UIOutput();
-            jsfCode.setTransient(true);
-            jsfCode.setRendererType("javax.faces.resource.Script");
-            jsfCode.getAttributes().put("name", "jsf.js");
-            jsfCode.getAttributes().put("library", "javax.faces");
-            root.addComponentResource(context, jsfCode, "head");
+
+            root.addComponentResource(context, new JavascriptResourceOutput(
+                    "jsf.js", "javax.faces"), "head");
 
             String invalidateHTTPCache = "?a" + hashCode();
 
@@ -55,12 +52,8 @@ public class BridgeSetup implements SystemEventListener {
 
             Application application = context.getApplication();
 
-            String path = application.getResourceHandler().createResource("bridge.js").getRequestPath();
-            UIOutput icefacesCode = new UIOutput();
-            icefacesCode.setTransient(true);
-            icefacesCode.getAttributes().put("escape", "false");
-            icefacesCode.setValue("<script src='" + path + invalidateHTTPCache + "'  type='text/javascript'></script>");
-            root.addComponentResource(context, icefacesCode, "head");
+            root.addComponentResource(context, new JavascriptResourceOutput(
+                    "bridge.js" + invalidateHTTPCache), "head");
 
             try {
                 final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
@@ -107,6 +100,21 @@ public class BridgeSetup implements SystemEventListener {
                 //not be fatal to the application
                 e.printStackTrace();
             }
+        }
+    }
+    
+    public static class JavascriptResourceOutput extends UIOutput {
+        public JavascriptResourceOutput(String path, String library) {
+            setRendererType("javax.faces.resource.Script");
+            getAttributes().put("name", path);
+            if (null != library) {
+                getAttributes().put("library", library);
+            }
+            setTransient(true);
+        }
+
+        public JavascriptResourceOutput(String path) {
+            this(path, null);
         }
     }
 }
