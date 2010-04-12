@@ -17,10 +17,6 @@ import org.icefaces.component.annotation.Property;
     )
 public class SliderMeta {
     
-    @Property (defaultValue="String.valueOf(getClientId().hashCode())", 
-        defaultValueIsStringLiteral=false)
-    private String varName;
-
     @Property (defaultValue="x")
     private String axis;
     

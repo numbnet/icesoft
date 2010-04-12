@@ -45,7 +45,7 @@ public class SliderRenderer extends Renderer{
             styleClass = "";
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);      
-        writer.writeAttribute(HTML.CLASS_ATTR, "class"+ slider.getVarName() + " " + styleClass, HTML.CLASS_ATTR);             
+        writer.writeAttribute(HTML.CLASS_ATTR, "class"+ clientId.hashCode() + " " + styleClass, HTML.CLASS_ATTR);             
         writer.endElement(HTML.DIV_ELEM);  
         
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
@@ -54,7 +54,7 @@ public class SliderRenderer extends Renderer{
         call.append("ice.yui.slider.updateProperties('");
         call.append(clientId);
         call.append("', '");
-        call.append(slider.getVarName());
+        call.append(clientId.hashCode());
         call.append("', {");
         call.append("min:");
         call.append(slider.getMin());
