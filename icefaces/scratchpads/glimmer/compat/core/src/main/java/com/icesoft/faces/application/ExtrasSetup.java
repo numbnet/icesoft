@@ -9,14 +9,14 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
 import java.util.ListResourceBundle;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class ExtrasSetup implements PhaseListener {
+public class ExtrasSetup implements SystemEventListener {
     private static final ResourceBundle defaultBridgeMessages = new ListResourceBundle() {
         protected Object[][] getContents() {
             return new Object[][]{
@@ -34,12 +34,13 @@ public class ExtrasSetup implements PhaseListener {
         this.configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
     }
 
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+    public boolean isListenerForSource(Object source) {
+        return true;
     }
 
-    public void beforePhase(PhaseEvent event) {
-        FacesContext context = event.getFacesContext();
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
         if (EnvUtils.isICEfacesView(context)) {
             UIViewRoot root = context.getViewRoot();
 
@@ -92,9 +93,6 @@ public class ExtrasSetup implements PhaseListener {
                     "</script>");
             root.addComponentResource(context, output, "body");
         }
-    }
-
-    public void afterPhase(PhaseEvent event) {
     }
 
     public static class JavascriptResourceOutput extends UIOutput {
