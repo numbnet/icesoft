@@ -131,7 +131,7 @@ ice.yui.slider = {
    },
    
    getInstance:function(clientId, callback) {
-        ice.yui.getInstance(clientId, this, callback);
+        ice.yui.getInstance(clientId, callback, this );
    }
 };
 
