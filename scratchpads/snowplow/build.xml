@@ -93,7 +93,7 @@
 		<antcall target="dist-wicket-bin"/>
 		
 		<!-- items not in contained distribution -->
-		<ant target="war" dir="./samples/icechat/icefaces"/>
+		<!--ant target="war" dir="./samples/icechat/icefaces"/-->
 		<ant target="war" dir="./samples/icechat/ajax"/>
 		
 	</target>
