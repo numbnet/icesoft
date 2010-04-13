@@ -93,7 +93,7 @@ public class FormRenderer extends DomBasicRenderer {
             root.setAttribute("id", formClientId);
             root.setAttribute("method", "post");
             ExternalContext externalContext = facesContext.getExternalContext();
-            root.setAttribute("action", externalContext.getRequestContextPath() + externalContext.getRequestServletPath());
+            root.setAttribute("action", getAction(facesContext));
 
             String styleClass =
                     (String) uiComponent.getAttributes().get("styleClass");
@@ -128,6 +128,23 @@ public class FormRenderer extends DomBasicRenderer {
             viewState.setAttribute("name", "javax.faces.ViewState");
             viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
             root.appendChild(viewState);
+            
+            //JSF 2.0 portlet hidden field
+            String viewId = facesContext.getViewRoot().getViewId();
+            String actionURL = facesContext.getApplication().getViewHandler()
+                    .getActionURL(facesContext, viewId);
+            String encodedActionURL = externalContext.encodeActionURL(actionURL);
+            String encodedPartialActionURL = externalContext.encodePartialActionURL(actionURL);
+            if (encodedPartialActionURL != null) {
+                if (!encodedPartialActionURL.equals(encodedActionURL)) {
+                    Element encodedURLField = domContext.createElement("input");
+                    encodedURLField.setAttribute("type", "hidden");
+                    encodedURLField.setAttribute("name", "javax.faces.encodedURL");
+                    encodedURLField.setAttribute("value", encodedPartialActionURL);
+                    root.appendChild(encodedURLField);
+                }
+            }
+
         }
 
         // This has to occur outside the isInitialized test, as it has to happen
@@ -383,4 +400,12 @@ public class FormRenderer extends DomBasicRenderer {
         }
         validateNestingForm(parent);
     }
+    
+    private static String getAction(FacesContext facesContext) {
+        String viewId = facesContext.getViewRoot().getViewId();
+        String actionURL = facesContext.getApplication().getViewHandler().
+                getActionURL(facesContext, viewId);
+        return (facesContext.getExternalContext().encodeActionURL(actionURL));
+    }
+
 }
