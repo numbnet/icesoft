@@ -19,15 +19,15 @@ public class Checkbox extends CheckboxBase {
         loadDependency(FacesContext.getCurrentInstance());     
     }
 
-	// write out the code to load the required yui libraries
+	// load required yui libraries
     private void loadDependency(FacesContext context) {
         context.getViewRoot().addComponentResource(context, new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 ResponseWriter writer = context.getResponseWriter();
-				writeCssExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css");
+				writeCssExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/element/element-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js");       
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.7.0/build/button/button-min.js");       
             }
         }, "head");        
     }
