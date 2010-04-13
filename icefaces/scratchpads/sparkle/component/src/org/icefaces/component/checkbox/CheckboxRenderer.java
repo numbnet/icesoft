@@ -21,15 +21,8 @@ public class CheckboxRenderer extends Renderer {
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = uiComponent.getClientId();
             if (clientId.equals(source)) {
-                try {
-                    Boolean value = (Boolean) checkbox.getValue();
-                    Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_value"))));
-                    if (value.booleanValue() != submittedValue.booleanValue()) {
-						checkbox.setSubmittedValue(submittedValue);
-                        uiComponent.queueEvent(new ValueChangeEvent (uiComponent, value, submittedValue));
-                    }
-                } catch (Exception e) {
-				}
+				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_value"))));
+				checkbox.setSubmittedValue(submittedValue);
             }
         }
     }
@@ -40,20 +33,21 @@ public class CheckboxRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         Checkbox checkbox = (Checkbox) uiComponent;
 
-		// generate markup according to YUI button checkbox example
 		// root element
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
+		//writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
 		
 		// first child
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
+		//writer.startElement(HTML.SPAN_ELEM, uiComponent);
+		//writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 		
 		// button element
-		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		//writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+		//writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+		//writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -61,9 +55,10 @@ public class CheckboxRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
-        writer.endElement(HTML.BUTTON_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);
+        //writer.endElement(HTML.BUTTON_ELEM);
+		//writer.endElement(HTML.SPAN_ELEM);
+		//writer.endElement(HTML.SPAN_ELEM);
+		writer.endElement(HTML.INPUT_ELEM);
 		
 		// js call
         String javascriptCall = "Ice.component.checkbox.updateProperties('"+ clientId + "', {type: 'checkbox',"
