@@ -42,7 +42,6 @@ public class TabSet extends TabSetBase {
     }
     
     public void processDecodes(FacesContext context) {
-        System.out.println("processDecodes " + isValidationFailed());
         if (context == null) {
             throw new NullPointerException();
         }
@@ -58,7 +57,6 @@ public class TabSet extends TabSetBase {
     
     
     public void processValidators(FacesContext context) {
-        System.out.println("processValidators "+ isValidationFailed());  
         if (context == null) {
             throw new NullPointerException();
         }

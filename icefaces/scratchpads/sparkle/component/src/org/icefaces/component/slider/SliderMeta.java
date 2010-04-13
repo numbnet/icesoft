@@ -38,7 +38,7 @@ public class SliderMeta {
     private String railSize;
     
     @Property (defaultValue="slideEnd",
-            tlddoc="The 3 valid values are slideStart, slideEnd and slideInterval, " +
+            tlddoc="The 3 valid values are slideStart, slideEnd and slideInterval. " +
             		"default value is slideEnd",
             javadocGet="returns value of submitOn. Its not a pass throug because sliderInterval is a custom event " +
             		"which internally uses \"thumbDrag\"")
