@@ -407,7 +407,7 @@ public class SelectInputDateRenderer
                         OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                     FormRenderer.addHiddenField(
                         facesContext,
-                        parentForm.getClientId(facesContext)+ ":_idcl");
+                        parentForm.getClientId(facesContext)+ ":j_idcl");
                     PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributesWithoutTabindex);
                     domContext.stepOver();
                     return ;
