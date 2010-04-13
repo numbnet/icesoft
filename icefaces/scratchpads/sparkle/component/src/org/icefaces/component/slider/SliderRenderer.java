@@ -66,6 +66,10 @@ public class SliderRenderer extends Renderer{
         if (styleClass == null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         }
+        String style = slider.getStyle();
+        if (style == null) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
         writer.endElement(HTML.DIV_ELEM);  
         
         //make a call to YUI3 helper API to update 
