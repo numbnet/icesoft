@@ -33,8 +33,8 @@ public class SliderMeta {
             tlddoc="The value of slider, default is 0. Pass through to YUI component")
     private Integer value;    
     
-    @Property (defaultValue="200px",
-            tlddoc="The railSize of slider, default is 200px. Pass through to YUI component")
+    @Property (defaultValue="150px",
+            tlddoc="The railSize of slider, default is 150px. Pass through to YUI component")
     private String railSize;
     
     @Property (defaultValue="slideEnd",
