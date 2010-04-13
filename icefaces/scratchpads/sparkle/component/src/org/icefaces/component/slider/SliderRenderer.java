@@ -63,11 +63,11 @@ public class SliderRenderer extends Renderer{
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);      
         String styleClass = slider.getStyleClass();
-        if (styleClass == null) {
+        if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         }
         String style = slider.getStyle();
-        if (style == null) {
+        if (style != null) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
         writer.endElement(HTML.DIV_ELEM);  
