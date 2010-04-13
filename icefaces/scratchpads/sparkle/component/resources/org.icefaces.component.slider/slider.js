@@ -2,15 +2,16 @@ ice.yui.slider = {
    initialize:function(clientId, yuiProps, jsfProps, bindYUI) {
         var obj = null;
         var root = document.getElementById(clientId);
+        //load slider module
         ice.yui.loadModule('slider');
+        
+        //set a callback to create slider component 
         ice.yui.use(function(Y){
                 obj = new Y.Slider({
+                    //following two properties has to be set initlization time
                     axis: yuiProps.axis,
                     thumbImage: jsfProps.thumbImage 
                 }).render(root);
-                logger.info('Object created '+ obj);
-                
-                var sliderElement = document.getElementById(clientId);
                 
                 var submitHandler = null;
 
@@ -25,9 +26,9 @@ ice.yui.slider = {
                         parameter(clientId+'_value', sliderValue);
                     };
                     if (singleSubmit) {
-                        ice.singleSubmit(event, sliderElement, params); 
+                        ice.singleSubmit(event, root, params); 
                     } else {
-                        ice.submit(event, sliderElement, params);                    
+                        ice.submit(event, root, params);                    
                     }                    
                 };
                                 
