@@ -4,6 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
    
+   <!--
     <servlet>
 		<servlet-name>default</servlet-name>
 		<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
@@ -17,9 +18,6 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<!--
-	 - Map static resources to the default servlet
-	-->
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.css</url-pattern>
@@ -27,6 +25,7 @@
 		<url-pattern>*.png</url-pattern>
 		<url-pattern>*.gif</url-pattern>
 	</servlet-mapping>
+	-->
     
     
     
