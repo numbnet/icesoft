@@ -7,24 +7,30 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.util.logging.Logger;
 
 public class SessionRenderer extends PushRenderer {
-    private static PortableRenderer portableRenderer = new PortableRenderer() {
-        public void render(String group) {
-        }
-    };
+    private static Logger log = Logger.getLogger(SessionRenderer.class.getName());
+    //avoid referencing PortableRenderer class in static context so that application still works when ICEpush not present
+    private static Object portableRenderer;
 
     public static void render(String groupName) {
-        if (FacesContext.getCurrentInstance() == null) {
-            portableRenderer.render(groupName);
-        } else {
-            PushRenderer.render(groupName);
+        if (portableRenderer != null) {
+            if (FacesContext.getCurrentInstance() == null) {
+                ((PortableRenderer) portableRenderer).render(groupName);
+            } else {
+                PushRenderer.render(groupName);
+            }
         }
     }
 
     public static class StartupListener implements SystemEventListener {
         public void processEvent(SystemEvent event) throws AbortProcessingException {
-            portableRenderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+            try {
+                portableRenderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+            } catch (NoClassDefFoundError e) {
+                log.info("ICEpush library missing. Cannot enable push functionality.");
+            }
         }
 
         public boolean isListenerForSource(Object source) {
