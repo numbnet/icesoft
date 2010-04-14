@@ -197,6 +197,7 @@ if (!window.ice.icepush) {
                 }));
             },
 
+            //todo: move this utility function into the JSP integration project
             searchAndEvaluateScripts: function(element) {
                 each(element.getElementsByTagName('script'), function(script) {
                     var newScript = document.createElement('script');
