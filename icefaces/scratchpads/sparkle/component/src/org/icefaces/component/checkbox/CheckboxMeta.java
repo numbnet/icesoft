@@ -23,6 +23,9 @@ public class CheckboxMeta {
 
     @Property (inherit=true, useTemplate=true)
     private String id;
+	
+	@Property
+    private String image;
     
     @Property (inherit=true, useTemplate=true)
     private Boolean rendered;
