@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.tab.TabSet;
