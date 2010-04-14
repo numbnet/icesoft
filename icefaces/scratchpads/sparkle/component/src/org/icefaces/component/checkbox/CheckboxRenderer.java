@@ -34,20 +34,32 @@ public class CheckboxRenderer extends Renderer {
         Checkbox checkbox = (Checkbox) uiComponent;
 
 		// root element
-        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        //writer.startElement(HTML.INPUT_ELEM, uiComponent);
+		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-		writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
-		//writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
+		//writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		//writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
 		
 		// first child
-		//writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		//writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
+		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 		
 		// button element
-		//writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-		//writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		//writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		
+		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
+		if (checkbox.getImage() != null) {
+			writer.startElement(HTML.SPAN_ELEM, uiComponent);
+			writer.write(checkbox.getLabel());
+			writer.endElement(HTML.SPAN_ELEM);
+			
+			writer.startElement(HTML.IMG_ELEM, uiComponent);
+			writer.writeAttribute(HTML.SRC_ATTR, checkbox.getImage(), null);
+			writer.endElement(HTML.IMG_ELEM);
+		}
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -55,14 +67,17 @@ public class CheckboxRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
-        //writer.endElement(HTML.BUTTON_ELEM);
-		//writer.endElement(HTML.SPAN_ELEM);
-		//writer.endElement(HTML.SPAN_ELEM);
-		writer.endElement(HTML.INPUT_ELEM);
+        writer.endElement(HTML.BUTTON_ELEM);
+		writer.endElement(HTML.SPAN_ELEM);
+		writer.endElement(HTML.SPAN_ELEM);
+		//writer.endElement(HTML.INPUT_ELEM);
 		
 		// js call
-        String javascriptCall = "Ice.component.checkbox.updateProperties('"+ clientId + "', {type: 'checkbox',"
-			+ "label: '" + checkbox.getLabel() + "', checked: " + checkbox.getValue() + "});";
+        String javascriptCall = "Ice.component.checkbox.updateProperties('"+ clientId + "', {type: 'checkbox'";
+		if (checkbox.getImage() == null) {
+			javascriptCall += ", label: '" + checkbox.getLabel() + "'";
+		}
+		javascriptCall += ", checked: " + checkbox.getValue() + "});";
 
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
