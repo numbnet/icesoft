@@ -32,6 +32,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 
+import org.icepush.samples.icechat.gwt.client.UserSession;
+
 /**
  *
  * @author icesoft
@@ -55,7 +57,8 @@ public class CredentialsPanel extends Composite{
 
     @UiHandler(value={"logoutButton"})
     public void logout(ClickEvent ev){
-        Window.alert("Logging out...");
+        UserSession.logout();
+        Window.Location.assign(".");
         
     }
     @UiTemplate(value="CredentialsPanelLayout.ui.xml")
