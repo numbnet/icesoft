@@ -58,7 +58,7 @@ public class CredentialsPanel extends Composite{
     @UiHandler(value={"logoutButton"})
     public void logout(ClickEvent ev){
         UserSession.logout();
-        Window.Location.assign(".");
+        Window.Location.assign("/icechat-gwt");
         
     }
     @UiTemplate(value="CredentialsPanelLayout.ui.xml")
