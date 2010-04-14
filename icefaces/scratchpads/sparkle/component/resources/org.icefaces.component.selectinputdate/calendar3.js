@@ -153,6 +153,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener,
+        Selector = YAHOO.util.Selector,
         Calendar = YAHOO.widget.Calendar;
 
     var rootDivId = params.divId; this.rootDivId = rootDivId;
@@ -168,6 +169,170 @@ YAHOO.icefaces.calendar.init = function(params) {
     calValueEl.set("value", params.dateStr, true);
     this.calValueEl = calValueEl;
     Dom.insertBefore(calValueEl, rootDiv);
+    var aria = function() {
+        var fnTrue = function() {
+            return true;
+        };
+        Dom.setAttribute(this.id, "role", "grid");
+        var tbody = Dom.getElementBy(fnTrue, "tbody", this.id);
+        var weeks = Dom.getElementsBy(fnTrue, "tr", tbody);
+        for (var i = 0; i < weeks.length; i++) {
+            weeks[i].setAttribute("aria-label", "week " + (i + 1));
+            //            Dom.setAttribute(weeks[i], "aria-label", "week " + (i + 1));
+        }
+        var mthYr = Dom.getElementsByClassName("calnav", null, this.id)[0];
+        mthYr.setAttribute("role", "heading");
+        mthYr.setAttribute("aria-label", mthYr.text);
+        mthYr.setAttribute("aria-live", "assertive");
+        mthYr.setAttribute("aria-atomic", "true");
+        Dom.getElementsByClassName("calweekdaycell", null, this.id, function(el) {
+            el.setAttribute("role", "columnheader");
+        });
+        Dom.getElementsByClassName("calcell", null, this.id, function(el) {
+            el.setAttribute("role", "gridcell");
+        });
+        Dom.getElementsByClassName("selected", null, tbody, function(el) {
+            el.setAttribute("aria-selected", "true");
+        });
+        Dom.batch(this.oDomContainer.getElementsByTagName("a"), function(el) {
+            Dom.setAttribute(el, "tabindex", "-1");
+        });
+        Dom.setAttribute(this.oDomContainer.getElementsByTagName("a")[0], "tabindex", "0");
+
+        var keys = KeyListener.KEY;
+        var kl1Handler = function(evType, fireArgs, subscribeObj) {
+            var charCode = fireArgs[0], evt = fireArgs[1];
+            var target = Event.getTarget(evt), newTarget;
+            var i;
+            switch (charCode) {
+                case keys.SPACE:
+                    if (Selector.test(target, ".selectable .selector")) {
+                        this.doSelectCell(evt, this);
+                    }
+                    break;
+                case keys.LEFT:
+                    if (Dom.hasClass(target, this.Style.CSS_NAV_LEFT)) {
+                        for (i = this.cells.length - 1; i >= 0; i--) {
+                            if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                break;
+                            }
+                        }
+                    } else if (Dom.hasClass(target, this.Style.CSS_NAV)) {
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_LEFT, "a", this.id)[0];
+                    } else if (Dom.hasClass(target, this.Style.CSS_NAV_RIGHT)) {
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
+                    } else if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
+                        i = this.getIndexFromId(target.parentNode.id) - 1;
+                        if (i < 0) {
+                            this.doPreviousMonthNav(evt, this);
+                        } else {
+                            for (; i >= 0; i--) {
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                    newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                    break;
+                                }
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
+                                    this.doPreviousMonthNav(evt, this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case keys.RIGHT:
+                    if (Dom.hasClass(target, this.Style.CSS_NAV_LEFT)) {
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
+                    } else if (Dom.hasClass(target, this.Style.CSS_NAV)) {
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_RIGHT, "a", this.id)[0];
+                    } else if (Dom.hasClass(target, this.Style.CSS_NAV_RIGHT)) {
+                        for (i = 0; i < this.cells.length; i++) {
+                            if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                break;
+                            }
+                        }
+                    } else if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
+                        i = this.getIndexFromId(target.parentNode.id) + 1;
+                        if (i >= this.cells.length) {
+                            this.doNextMonthNav(evt, this);
+                        } else {
+                            for (; i < this.cells.length; i++) {
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                    newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                    break;
+                                }
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
+                                    this.doNextMonthNav(evt, this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case keys.UP:
+                    if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
+                        i = this.getIndexFromId(target.parentNode.id) - 7;
+                        if (i < 0) {
+                            this.doPreviousMonthNav(evt, this);
+                        } else {
+                            for (; i >= 0; i -= 7) {
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                    newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                    break;
+                                }
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
+                                    this.doPreviousMonthNav(evt, this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case keys.DOWN:
+                    if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
+                        i = this.getIndexFromId(target.parentNode.id) + 7;
+                        if (i >= this.cells.length) {
+                            this.doNextMonthNav(evt, this);
+                        } else {
+                            for (; i < this.cells.length; i += 7) {
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
+                                    newTarget = this.cells[i].getElementsByTagName("a")[0];
+                                    break;
+                                }
+                                if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
+                                    this.doNextMonthNav(evt, this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case keys.PAGE_UP:
+                    this.doPreviousMonthNav(evt, this);
+                    break;
+                case keys.PAGE_DOWN:
+                    this.doNextMonthNav(evt, this);
+                    break;
+                case keys.HOME:
+                    newTarget = Dom.getElementsByClassName(this.Style.CSS_CELL_SELECTOR, "a", this.id)[0];
+                    break;
+                case keys.END:
+                    newTarget = Dom.getElementsByClassName(this.Style.CSS_CELL_SELECTOR, "a", this.id).pop();
+                    break;
+            }
+            if (newTarget) {
+                newTarget.focus();
+                Dom.setAttribute(target, "tabindex", "-1");
+                Dom.setAttribute(newTarget, "tabindex", "0");
+            }
+            Event.stopEvent(evt);
+        };
+        var kl1 = new KeyListener(this.oDomContainer,
+        {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.PAGE_UP,keys.PAGE_DOWN,keys.HOME,keys.END]},
+        {fn:kl1Handler, correctScope:this});
+        kl1.enable();
+    };
     if (!params.renderAsPopup) {
         function dateSelectHandler(type, args, calendar) {
             var time = YAHOO.icefaces.calendar.getTime(calendar);
@@ -187,6 +352,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         });
         configCal(calendar, params);
         calendar.selectEvent.subscribe(dateSelectHandler, calendar, true);
+        calendar.renderEvent.subscribe(aria, null, calendar);
         calendar.render();
         return;
     }
@@ -307,7 +473,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         dialog.show();
     };
     var inputEnter = function(evType, fireArgs, subscribeObj) {
-        console.log("******* inputEnter *******");
+//        alert(this);
 //        for (var i = 0; i < arguments.length; i++) {
 //            alert(arguments[i]);
 //        }
