@@ -35,7 +35,7 @@
     
     	<script type="text/javascript">
     		var pushId = ice.push.createPushId();
-    		ice.push.addGroupMember("rooms", ice.push.createPushId());
+    		ice.push.addGroupMember("rooms", pushId);
     		ice.push.register([pushId], window.refreshChatRoomsList);
        	</script>
     
