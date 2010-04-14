@@ -243,7 +243,7 @@ public class ChatController extends BaseChatRoomControllerBean{
 		return new ModelAndView(new RedirectView("./login"));
 	}
 
-    @RequestMapping(value={"/img/*", "/css/*"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/img/*", "/css/*", "/javascript/*"}, method = RequestMethod.GET)
     public void resource(HttpSession session, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String requestURI = request.getRequestURI();
