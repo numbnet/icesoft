@@ -14,7 +14,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ValueChangeEvent;
 
-//dependency order matters
+import org.icefaces.component.tab.TabSet;
+
+//Does JSF respect order?
 //TODO make it so resources can be coalesce and served as whole 
 @ResourceDependencies({
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
@@ -76,4 +78,13 @@ public class Slider extends SliderBase{
         }
     }
     
+    public void queueEvent(FacesEvent event) {
+        if (isImmediate()) {
+            event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+        }
+        else {
+            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+        }
+        super.queueEvent(event);
+    }  
 }

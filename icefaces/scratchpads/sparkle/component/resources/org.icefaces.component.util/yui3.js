@@ -52,6 +52,14 @@ YUIHolder.prototype = {
    
    getComponent:function() {
       return this.component;
+   },
+   
+   setYUIProps:function(props) {
+      this.yuiPorps = props;
+   },
+   
+   getYUIProps:function() {
+      return this.yuiPorps;
    }  
 };
 
@@ -97,13 +105,23 @@ ice.yui = {
         //could be either new component, or part of the DOM diff
         if (!component['YUIHolder']) {
             component['YUIHolder'] = new YUIHolder();
+            component['YUIHolder'].setYUIProps(yuiProps);
             lib.initialize(clientId, yuiProps, jsfProps, function(YUIJS) {
                 logger.info('getInstance callback executed..');
                 component['YUIHolder'].setComponent(YUIJS);
                 callback(component['YUIHolder'].getComponent());
             });
         } else {
+            component['YUIHolder'].setYUIProps(yuiProps);
             callback(component['YUIHolder'].getComponent());
         }
+    },
+    
+    getYUIHolder: function(clientId) {
+        var component = document.getElementById(clientId);
+        if (component)
+            return component['YUIHolder'];
+        else
+            return null;
     }
 };

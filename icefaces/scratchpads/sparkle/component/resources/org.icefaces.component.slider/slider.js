@@ -1,22 +1,30 @@
 ice.yui.slider = {
    initialize:function(clientId, yuiProps, jsfProps, bindYUI) {
-        var obj = null;
-        var root = document.getElementById(clientId);
-        //load slider module
-        ice.yui.loadModule('slider');
         
+        //get the slider html element
+        var root = document.getElementById(clientId);
+        
+        //for short cut and to make it more like OO
+        var super = ice.yui;
+        
+        //load slider module
+        super.loadModule('slider');
+        
+        //represents JS Slider object
+        var obj = null; 
+               
         //set a callback to create slider component 
-        ice.yui.use(function(Y){
+        super.use(function(Y){
+        
+                //initilize a YUI slider here
                 obj = new Y.Slider({
-                    //following two properties has to be set when initializing the componennt
+                    //following two properties has to be set when initializing componnent
                     axis: yuiProps.axis,
                     thumbImage: jsfProps.thumbImage 
                 }).render(root);
                 
-                var submitHandler = null;
-
                 //create a generic submit handler
-                submitHandler = function(event) {
+                var submitHandler = function(event) {
                     //get the value of singleSubmit property
                     var singleSubmit = jsfProps.singleSubmit;
                     
@@ -30,7 +38,23 @@ ice.yui.slider = {
                     
                     //slider doesn't use a hidden field, so create a param
                     var params = function(parameter) {
+                        //param tha represents value of slider
                         parameter(clientId+'_value', sliderValue);
+                        
+                        //callback to revertback the slider value in case if current slider value
+                        //doesn't match with last known server value. It could be due to 
+                        //the validation error.
+                        parameter('onevent', function(data) { 
+                                //we want to execute after DOM Update was compeleted.                                
+                                if (data.status == 'success') {
+                                    //last known value
+                                    var lastKnownValue = super.getYUIHolder(clientId).getYUIProps(yuiProps).value;   
+                                    if (lastKnownValue != sliderValue) {
+                                         obj.set('value', lastKnownValue);  
+                                    }
+                                }
+                         });
+                                           
                     };
                     
                     if (singleSubmit) {

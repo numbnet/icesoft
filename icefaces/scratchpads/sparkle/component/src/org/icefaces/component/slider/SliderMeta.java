@@ -64,6 +64,10 @@ public class SliderMeta {
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private Integer tabindex;  
     
+    @Property(defaultValue="false")
+    private Boolean immediate;
+    
+    
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
 }
