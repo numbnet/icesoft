@@ -90,6 +90,8 @@ public class BridgeSetup implements SystemEventListener {
             //make sure there's always a form so that ice.singleSubmit and ice.retrieveUpdate can do their job
             UIForm retrieveUpdateSetup = new UIForm();
             retrieveUpdateSetup.setTransient(true);
+            //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
+            //the corresponding view state key (javax.faces.ViewState) 
             retrieveUpdateSetup.setId(viewID);
             root.addComponentResource(context, retrieveUpdateSetup, "body");
 
