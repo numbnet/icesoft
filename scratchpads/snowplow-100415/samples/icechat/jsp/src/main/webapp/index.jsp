@@ -41,6 +41,7 @@
 		<meta http-equiv="Expires" content="-1">
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
         <script type="text/javascript" src="code.icepush"></script>
+        <script type="text/javascript" src="configuration.icepush"></script>
         <script type="text/javascript">
         function getXmlHttpRequest() {
         	try {
