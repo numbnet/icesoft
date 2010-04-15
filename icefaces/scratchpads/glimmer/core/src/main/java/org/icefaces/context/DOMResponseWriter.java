@@ -38,7 +38,7 @@ import javax.faces.context.PartialViewContext;
 
 public class DOMResponseWriter extends ResponseWriter {
 
-    private static Logger log = Logger.getLogger("org.icefaces.context");
+    private static Logger log = Logger.getLogger("org.icefaces.context.DOMResponseWriter");
 
     private static final String OLD_DOM = "org.icefaces.old-dom";
     private static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
