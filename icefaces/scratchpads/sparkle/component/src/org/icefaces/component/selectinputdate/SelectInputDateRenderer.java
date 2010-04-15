@@ -16,13 +16,6 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 
 public class SelectInputDateRenderer extends Renderer {
-    private SimpleDateFormat formatter;
-
-    {
-        formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.CANADA);
-//        formatter.setLenient(false);
-    }
-
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
@@ -41,8 +34,10 @@ public class SelectInputDateRenderer extends Renderer {
         String clientId = component.getClientId(context);
         writer.endElement(HTML.DIV_ELEM);
 
-//        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
         DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
+        TimeZone tz = selectInputDate.resolveTimeZone(context);
+        Locale currentLocale = selectInputDate.resolveLocale(context);
+        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Date date;
         System.out.println("paramMap.get(\"formatSubmit\") = " + paramMap.get("formatSubmit"));
@@ -54,11 +49,11 @@ public class SelectInputDateRenderer extends Renderer {
             date = (Date) selectInputDate.getValue();
         }
         if (date == null) {
-            Calendar calendar = Calendar.getInstance(converter.getTimeZone(), converter.getLocale());
+            Calendar calendar = Calendar.getInstance(tz, currentLocale);
             date = calendar.getTime();
         }
         String dateStr = converter.getAsString(context, selectInputDate, date);
-        formatter.setTimeZone(converter.getTimeZone());
+        formatter.setTimeZone(tz);
         formatter.applyPattern("MM/yyyy");
         String pageDate = formatter.format(date);
         formatter.applyPattern("MM/dd/yyyy");
@@ -142,9 +137,10 @@ public class SelectInputDateRenderer extends Renderer {
             System.out.println();
         }
         String dateString = paramMap.get(clientId + "_value");
-        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
-        formatter.setTimeZone(converter.getTimeZone());
-//        formatter.setTimeZone(TimeZone.getDefault());
+        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
+        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                DateFormat.SHORT, selectInputDate.resolveLocale(context));
+        formatter.setTimeZone(selectInputDate.resolveTimeZone(context));
         formatter.applyPattern("yyyy-M-d H:m");
         try {
             dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));

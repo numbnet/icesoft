@@ -5,6 +5,8 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
+import java.util.TimeZone;
+import java.util.Locale;
 
 @ResourceDependencies({
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate"),
@@ -39,6 +41,21 @@ public class SelectInputDate extends SelectInputDateBase {
             }
         }
         return converter;
+    }
+    
+    // Copied from 1.8.2
+    public TimeZone resolveTimeZone(FacesContext context) {
+        DateTimeConverter converter = resolveDateTimeConverter(context);
+        TimeZone tz = converter.getTimeZone();
+        if (tz == null) { // DateTimeConverter should already do this
+            tz = TimeZone.getTimeZone("GMT");
+        }
+        return tz;
+    }
+
+    // Copied from 1.8.2
+    public Locale resolveLocale(FacesContext context) {
+        return context.getViewRoot().getLocale();
     }
 
     public boolean isFormatSubmit() {
