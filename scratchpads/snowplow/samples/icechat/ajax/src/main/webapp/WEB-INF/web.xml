@@ -50,20 +50,42 @@
         <load-on-startup>1</load-on-startup>
         
     </servlet>
+
     <servlet-mapping>
         <servlet-name>chatServlet</servlet-name>
-        
         <url-pattern>/createroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/createmessage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/updatedraft</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/logintoroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/logoutofroom</url-pattern>
-        
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/chatroomusers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/chatrooms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/messages</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/messagedraft</url-pattern>
-        
     </servlet-mapping>
  
 	
@@ -85,6 +107,9 @@
     <filter-mapping>
     	<filter-name>authFilter</filter-name>
     	<url-pattern>/index.html</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+    	<filter-name>authFilter</filter-name>
     	<url-pattern>*.jsp</url-pattern>
     </filter-mapping>
     
