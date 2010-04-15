@@ -5,10 +5,10 @@ var submit;
         return element.form ? element.form : enclosingForm(element);
     }
 
-    function viewStateOf(element) {
+    function viewIDOf(element) {
         return detect(parents(element), function(e) {
-            return e.javax_faces_ViewState;
-        }).javax_faces_ViewState;
+            return e.viewID;
+        }).viewID;
     }
 
     function serializeEventToOptions(event, element, options) {
@@ -28,27 +28,17 @@ var submit;
         }
     }
 
-    //set these variables only once
-    var singleSubmitForm;
-    onLoad(window, function() {
-        singleSubmitForm = document.createElement('form');
-        singleSubmitForm.action = window.location.pathname;
-        singleSubmitForm.id = 'void';
-    });
-
     singleSubmit = function (event, element, additionalParameters) {
+        var viewID = viewIDOf(element);
         var clonedElement = element.cloneNode(true);
-        singleSubmitForm.appendChild(clonedElement);
+        var form = document.getElementById(viewID).cloneNode(true);
+        form.appendChild(clonedElement);
 
-        try {
-            event = event || null;
-            var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewStateOf(element)};
-            serializeEventToOptions(event, element, options);
-            serializeAdditionalParameters(additionalParameters, options);
-            jsf.ajax.request(clonedElement, event, options);
-        } finally {
-            singleSubmitForm.removeChild(clonedElement);
-        }
+        event = event || null;
+        var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
+        serializeEventToOptions(event, element, options);
+        serializeAdditionalParameters(additionalParameters, options);
+        jsf.ajax.request(clonedElement, event, options);
     };
 
     var addPrefix = 'patch+';
@@ -56,20 +46,13 @@ var submit;
     submit = function (event, element, additionalParameters) {
         event = event || null;
 
-        //do not use view state included in the form
-        var form = formOf(element);
-        //more than one hidden input might hold the view state key
-        each(form.getElementsByTagName('input'), function(e) {
-            if (e && e.name == 'javax.faces.ViewState') {
-                e.parentNode.removeChild(e);
-            }
-        });
-
-        var options = {execute: '@all', render: '@all', 'ice.window': namespace.window, 'javax.faces.ViewState': viewStateOf(element)};
+        var viewID = viewIDOf(element);
+        var options = {execute: '@all', render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
         if (namespace.configuration.deltaSubmit) {
+            var form = formOf(element);
             var previousParameters = form.previousParameters || HashSet();
             var currentParameters = HashSet(jsf.getViewState(form).split('&'));
             var addedParameters = complement(currentParameters, previousParameters);
@@ -83,32 +66,28 @@ var submit;
                 };
             }
 
-            function createHiddenInputInSingleSubmitForm(name, value) {
+            var deltaSubmitForm = document.getElementById(viewID).cloneNode(true);
+
+            function createHiddenInputInDeltaSubmitForm(name, value) {
                 var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = name;
                 input.value = value;
-                singleSubmitForm.appendChild(input);
+                deltaSubmitForm.appendChild(input);
             }
 
-            createHiddenInputInSingleSubmitForm('ice.deltasubmit.form', form.id);
-            createHiddenInputInSingleSubmitForm(form.id, form.id);
+            createHiddenInputInDeltaSubmitForm('ice.deltasubmit.form', form.id);
+            createHiddenInputInDeltaSubmitForm(form.id, form.id);
             each(addedParameters, splitStringParameter(function(name, value) {
-                createHiddenInputInSingleSubmitForm(addPrefix + name, value);
+                createHiddenInputInDeltaSubmitForm(addPrefix + name, value);
             }));
             each(removedParameters, splitStringParameter(function(name, value) {
-                createHiddenInputInSingleSubmitForm(removePrefix + name, value);
+                createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
             }));
-            each(form.elements, function(e) {
-                if (e.name && e.name == 'javax.faces.ViewState') {
-                    createHiddenInputInSingleSubmitForm(e.name, e.value);
-                }
-            });
 
             var clonedElement = element.cloneNode(true);
-            singleSubmitForm.appendChild(clonedElement);
+            deltaSubmitForm.appendChild(clonedElement);
             jsf.ajax.request(clonedElement, event, options);
-            singleSubmitForm.innerHTML = '';
         } else {
             jsf.ajax.request(element, event, options);
         }
