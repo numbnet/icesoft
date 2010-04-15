@@ -7,15 +7,24 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.DateTimeConverter;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.Map;
+import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.text.DateFormat;
+import java.text.FieldPosition;
 
 public class SelectInputDateRenderer extends Renderer {
+    private SimpleDateFormat formatter;
+
+    {
+        formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.CANADA);
+//        formatter.setLenient(false);
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("\nSelectInputDateRenderer.encodeBegin");
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
@@ -32,23 +41,82 @@ public class SelectInputDateRenderer extends Renderer {
         String clientId = component.getClientId(context);
         writer.endElement(HTML.DIV_ELEM);
 
-        Date value = (Date) selectInputDate.getValue();
-//        Date value = selectInputDate.getSelectedDate();
-        Calendar timeKeeper = Calendar.getInstance();
-        timeKeeper.setTime(value == null ? new Date() : value);
-        String pageDate = (timeKeeper.get(Calendar.MONTH) + 1) + "/" + timeKeeper.get(Calendar.YEAR);
-        String selectedDate = (timeKeeper.get(Calendar.MONTH) + 1) + "/" + timeKeeper.get(Calendar.DAY_OF_MONTH) + "/" + timeKeeper.get(Calendar.YEAR);
-        int selectedHour = timeKeeper.get(Calendar.HOUR_OF_DAY);
-        int selectedMinute = timeKeeper.get(Calendar.MINUTE);
-        System.out.println("pageDate = " + pageDate);
-        System.out.println("selectedDate = " + selectedDate);
-        System.out.println("selectedHour = " + selectedHour);
-        System.out.println("selectedMinute = " + selectedMinute);
+//        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
+        DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
+        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+        Date date;
+        System.out.println("paramMap.get(\"formatSubmit\") = " + paramMap.get("formatSubmit"));
+//        if (paramMap.get("formatSubmit") == null) {
+        System.out.println("selectInputDate.isFormatSubmit() = " + selectInputDate.isFormatSubmit());
+        if (selectInputDate.isFormatSubmit()) {
+            date = (Date) converter.getAsObject(context, component, (String) selectInputDate.getSubmittedValue());
+        } else {
+            date = (Date) selectInputDate.getValue();
+        }
+        if (date == null) {
+            Calendar calendar = Calendar.getInstance(converter.getTimeZone(), converter.getLocale());
+            date = calendar.getTime();
+        }
+        String dateStr = converter.getAsString(context, selectInputDate, date);
+        formatter.setTimeZone(converter.getTimeZone());
+        formatter.applyPattern("MM/yyyy");
+        String pageDate = formatter.format(date);
+        formatter.applyPattern("MM/dd/yyyy");
+        String selectedDate = formatter.format(date);
+
+        formatter.applyPattern(converter.getPattern());
+        StringBuffer stringBuffer = new StringBuffer();
+        DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
+                DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.HOUR_OF_DAY1};
+        String[] hourFieldNames = {"HOUR0", "HOUR1", "HOUR_OF_DAY0", "HOUR_OF_DAY1"};
+        FieldPosition fieldPosition;
+        int beginIndex;
+        int endIndex;
+        String hourField = "";
+        int savedBeginIndex = Integer.MAX_VALUE, savedEndIndex = Integer.MAX_VALUE;
+        for (int i = 0; i < hourFields.length; i++) {
+            stringBuffer.setLength(0);
+            fieldPosition = new FieldPosition(hourFields[i]);
+            formatter.format(date, stringBuffer, fieldPosition);
+            beginIndex = fieldPosition.getBeginIndex();
+            endIndex = fieldPosition.getEndIndex();
+            if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
+                hourField = hourFieldNames[i];
+                savedBeginIndex = beginIndex;
+                savedEndIndex = endIndex;
+            }
+        }
+        String selectedHour = "";
+        if (!hourField.equals("")) {
+            selectedHour = stringBuffer.substring(savedBeginIndex, savedEndIndex);
+        }
+        String selectedMinute = String.valueOf(date.getMinutes());
+
+        formatter.applyPattern("a");
+        String amPmStr = formatter.format(date);
+        String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
+
+        String minDate = selectInputDate.getMinDate();
+        String maxDate = selectInputDate.getMaxDate();
+        String disabledDates = selectInputDate.getDisabledDates();
+        String highlightUnit = selectInputDate.getHighlightUnit();
+        String highlightValue = selectInputDate.getHighlightValue();
+        String highlightClass = selectInputDate.getHighlightClass();
+        boolean renderAsPopup = selectInputDate.isRenderAsPopup();
+        boolean renderInputField = selectInputDate.isRenderInputField();
+        boolean singleSubmit = selectInputDate.isSingleSubmit();
+
+        String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
+                "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
+                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
+                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] + "',minDate:'" + minDate +
+                "',maxDate:'" + maxDate + "',disabledDates:'" + disabledDates + "',highlightUnit:'" + highlightUnit +
+                "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass +
+                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
+                ",singleSubmit:" + singleSubmit + "}";
+        System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.write("Calendar.init('" + clientId + "','" + pageDate + "','" + selectedDate + "'," + selectedHour + "," + selectedMinute + ");");
-//        writer.writeAttribute(HTML.ID_ATTR, clientId + "_js", null);
-//        writer.writeText("Calendar.init('" + clientId + "','" + pageDate + "','" + selectedDate + "'," + selectedHour + "," + selectedMinute + ");", null);
-//        writer.writeText("YAHOO.example.calendar.init();", null);
+        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
@@ -73,14 +141,33 @@ public class SelectInputDateRenderer extends Renderer {
             }
             System.out.println();
         }
-        selectInputDate.setSubmittedValue(paramValuesMap.get(clientId)[0]);
-//        selectInputDate.setSubmittedValue("10/23/1988 21:34");
+        String dateString = paramMap.get(clientId + "_value");
+        DateTimeConverter converter = (DateTimeConverter) selectInputDate.getConverter();
+        formatter.setTimeZone(converter.getTimeZone());
+//        formatter.setTimeZone(TimeZone.getDefault());
+        formatter.applyPattern("yyyy-M-d H:m");
+        try {
+            dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));
+        } catch (ParseException e) {
+//            e.printStackTrace();
+        }
+        selectInputDate.setSubmittedValue(dateString);
+        System.out.println("paramMap.get(\"formatSubmit\") = " + paramMap.get("formatSubmit"));
+        if (paramMap.get("formatSubmit") == null) {
+            selectInputDate.setFormatSubmit(false);
+        } else {
+            selectInputDate.setFormatSubmit(true);
+            context.renderResponse();
+        }
+        System.out.println("selectInputDate.isFormatSubmit() = " + selectInputDate.isFormatSubmit());
     }
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        System.out.println("\nSelectInputDateRenderer.getConvertedValue");
+        System.out.println("submittedValue = " + submittedValue);
         super.getConvertedValue(context, component, submittedValue);
         SelectInputDate selectInputDate = (SelectInputDate) component;
-        return selectInputDate.getConverter().getAsObject(context, component, (String) submittedValue);
+        return selectInputDate.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
     }
 }

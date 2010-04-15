@@ -1,36 +1,57 @@
-<!--
-
- DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-
--->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
-<!--<f:view renderKitId="xHTML_BASIC" contentType="text/html"/>-->
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <title>Calendar</title>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css"/>
-    <h:outputScript name="jsf.js" library="javax.faces"/>
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"/>
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js"/>
-    <script src="js/calendar.js"/>
+    <title>Calendar4</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/button/assets/skins/sam/button.css&amp;2.8.0r4/build/calendar/assets/skins/sam/calendar.css&amp;2.8.0r4/build/container/assets/skins/sam/container.css&amp;2.8.0r4/build/logger/assets/skins/sam/logger.css"/>
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-debug.js&amp;2.8.0r4/build/dom/dom-debug.js&amp;2.8.0r4/build/event/event-debug.js&amp;2.8.0r4/build/element/element-debug.js&amp;2.8.0r4/build/button/button-debug.js&amp;2.8.0r4/build/calendar/calendar-debug.js&amp;2.8.0r4/build/dragdrop/dragdrop-debug.js&amp;2.8.0r4/build/container/container-debug.js&amp;2.8.0r4/build/logger/logger-debug.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/selector/selector-min.js"/>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/event-delegate/event-delegate-min.js"/>
+    <style>
+        .august {
+            font-weight: bold;
+        }
+        .weekend a {
+            background-color: #E9E9E9;
+        }
+    </style>
 </h:head>
-<h:body>
-    <h:form id="form1" prependId="false">
-        <h:panelGroup styleClass="yui-skin-sam">
-            <button id="show1up" type="button">Show Calendar</button>
-            <ann:selectInputDate value="#{calendar.selectedDate}">
-                <f:convertDateTime pattern="MM/dd/yyyy HH:mm" timeZone="Canada/Mountain"/>
-            </ann:selectInputDate>
-            <h:outputText value="#{calendar.selectedDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd HH:mm z" timeZone="Canada/Mountain"/>
-            </h:outputText>
-        </h:panelGroup>
-    </h:form>
-    <a href="index.html"> Goto Main page </a>
+<h:body class="ice-skin-rime yui-skin-sam">
+    <h:panelGroup id="calDiv1">
+        <h:form>
+            <h:panelGroup id="calDiv2">
+                <h:outputText value="renderAsPopup"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderAsPopup}"
+                                         onchange="ice.submit(event, this);"/>
+                <h:outputText value="renderInputField" rendered="#{calendarBean.renderAsPopup}"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderInputField}"
+                                         rendered="#{calendarBean.renderAsPopup}"
+                                         onchange="ice.submit(event, this);"/>
+                <br/>
+                <h:outputText value="singleSubmit"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
+                <br/>
+                <h:outputText value="output: "/>
+                <h:outputText value="#{calendarBean.selectedDate}">
+                    <f:convertDateTime pattern="yyyy-M-d h:m a"/>
+                </h:outputText>
+                <br/>
+                <ann:selectInputDate id="calendar4" value="#{calendarBean.selectedDate}"
+                                      renderAsPopup="#{calendarBean.renderAsPopup}"
+                                      singleSubmit="#{calendarBean.singleSubmit}"
+                                      renderInputField="#{calendarBean.renderInputField}"
+                                      highlightUnit="DAY_OF_WEEK:MONTH" highlightValue="1,7:8"
+                                      highlightClass="weekend:august">
+                    <f:convertDateTime pattern="MM/dd/yyyy hh:mm a"/>
+                </ann:selectInputDate>
+                <div style="height:350px"/>
+                <a href="index.html">Goto Main page</a>
+            </h:panelGroup>
+        </h:form>
+    </h:panelGroup>
 </h:body>
 </html>
 
