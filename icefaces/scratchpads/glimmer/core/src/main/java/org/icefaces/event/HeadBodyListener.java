@@ -21,9 +21,7 @@ import java.util.logging.Logger;
  */
 public class HeadBodyListener implements SystemEventListener {
 
-    private static Logger log = Logger.getLogger("org.icefaces.event");
-
-    public static final String DETECTION_DONE = "org.icefaces.detectionDone";
+    private static Logger log = Logger.getLogger("org.icefaces.event.HeadBodyListener");
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
 
