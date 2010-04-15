@@ -31,6 +31,8 @@
 	<target name="war" depends="compile">
 		<build.war>
 			<add.libs>
+			    <fileset file="../lib/eps.jar"/>
+			    <fileset file="../lib/backport-util-concurrent.jar"/>
 				<fileset refid="auth" />
 			</add.libs>
 		</build.war>

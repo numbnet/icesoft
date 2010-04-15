@@ -132,6 +132,8 @@
 		<build.war>
 			<add.libs>
 				<fileset refid="gwt-integration" />
+                <fileset file="../lib/eps.jar"/>
+                <fileset file="../lib/backport-util-concurrent.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
@@ -141,6 +143,8 @@
 		<build.war web.dir="${web.dir}">
 			<add.libs>
 				<fileset refid="gwt-integration" />
+                <fileset file="../lib/eps.jar"/>
+                <fileset file="../lib/backport-util-concurrent.jar"/>
 			</add.libs>
 		</build.war>
 	</target>

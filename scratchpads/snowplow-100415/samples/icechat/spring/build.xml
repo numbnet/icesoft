@@ -16,6 +16,8 @@
                 </fileset>
 				<fileset dir="${root.offset}/integration/spring/lib"/>
 				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
+				                <fileset file="../lib/eps.jar"/>
+				                                <fileset file="../lib/backport-util-concurrent.jar"/>
             </add.libs>
 		</build.war>
 	</target>
