@@ -35,6 +35,11 @@
 		<param-value>/index.jsp</param-value>
 	</context-param>
 	
+    <context-param>
+        <param-name>com.icesoft.net.messaging.properties</param-name>
+        <param-value>jboss-messaging.properties</param-value>
+    </context-param>
+
 	<servlet>
         <servlet-name>authServlet</servlet-name>
         <servlet-class>org.icepush.samples.icechat.auth.SecurityServlet</servlet-class>

@@ -24,6 +24,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+	
+    <context-param>
+        <param-name>com.icesoft.net.messaging.properties</param-name>
+        <param-value>jboss-messaging.properties</param-value>
+    </context-param>
+
   <servlet>
     <servlet-name>userService</servlet-name>
     <servlet-class>org.icepush.samples.icechat.gwt.server.service.UserServiceImpl</servlet-class>
