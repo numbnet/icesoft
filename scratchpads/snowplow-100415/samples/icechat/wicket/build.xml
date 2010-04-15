@@ -36,6 +36,8 @@
 				<fileset dir="${root.offset}/integration/wicket/core/lib"/>
 				<fileset file="../cdi/lib/weld-wicket.jar"/>
 				<fileset file="../cdi/lib/weld-servlet.jar"/>
+				                <fileset file="../lib/eps.jar"/>
+				                                <fileset file="../lib/backport-util-concurrent.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
