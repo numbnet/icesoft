@@ -82,7 +82,7 @@ public class BridgeSetup implements SystemEventListener {
                     "};" +
                     //bridge needs the window ID
                     "window.ice.window = '" + windowID + "';" +
-                    //save view state for single submit when form is missing
+                    //associate viewID with its corresponding DOM fragment
                     "document.getElementById('" + clientID + "').parentNode.viewID='" + viewID + "';" +
                     "</script>");
             root.addComponentResource(context, icefacesSetup, "body");
@@ -102,10 +102,8 @@ public class BridgeSetup implements SystemEventListener {
                     public Object getValue() {
                         //determine lazily if ICEpush should be wired up
                         return LazyPushManager.lookup(context).enablePush(viewID) ?
-                                "<script type=\"text/javascript\">" +
-                                        "ice.push.register(['" + viewID + "'], ice.retrieveUpdate('" + viewID + "'));" +
-                                        "ice.push.register(['" + sessionExpiryPushID + "'], ice.sessionExpired);" +
-                                        "</script>" : "";
+                                "<script type=\"text/javascript\">ice.setupPush('" +
+                                        viewID + "', '" + sessionExpiryPushID + "');</script>" : "";
                     }
                 };
                 icepushSetup.setTransient(true);
