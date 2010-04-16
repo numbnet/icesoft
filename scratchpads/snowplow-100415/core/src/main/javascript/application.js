@@ -158,7 +158,7 @@ if (!window.ice.icepush) {
             },
 
             addGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, calculateURI('add-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, 'add-group-member.icepush', function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -167,7 +167,7 @@ if (!window.ice.icepush) {
             },
 
             removeGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, calculateURI('remove-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, 'remove-group-member.icepush', function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
