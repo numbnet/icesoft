@@ -139,7 +139,6 @@ if (!window.ice.icefaces) {
                 try {
                     var newForm = document.getElementById(viewID).cloneNode(true);
                     newForm.action = newForm.action + ';ice.session.donottouch';
-                    //jsf.ajax.request will try to use the ID of the element and fail in IE, so we provide a fake one
                     debug(logger, 'picking updates for view ' + viewID);
                     jsf.ajax.request(newForm, null, {render: '@all', 'ice.view': viewID});
                 } catch (e) {
