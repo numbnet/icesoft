@@ -31,7 +31,6 @@ public class TabSetRenderer extends Renderer{
                 try {
                     Integer tabIndex = new Integer(info[1]);
                     if (tabSet.getTabIndex()!= tabIndex.intValue()) { 
-                        tabSet.submittedTabIndex = tabIndex;
                         uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
                                        new Integer(tabSet.getTabIndex()), tabIndex));
                     }
@@ -49,10 +48,6 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
     }
     
-    
-    
-    
-
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
@@ -113,7 +108,6 @@ public class TabSetRenderer extends Renderer{
             styleClass+= " yui-navset-bottom";
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
-       // System.out.println("CLIENT SIDE "+ tabSet.isClientSide());
         boolean isClientSide = tabSet.isClientSide();
         boolean singleSubmit = tabSet.isSingleSubmit();        
         int tabIndex = tabSet.getTabIndex();
@@ -140,14 +134,7 @@ public class TabSetRenderer extends Renderer{
             writer.endElement(HTML.SCRIPT_ELEM);
         } else {
             writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, execute, HTML.ONMOUSEOVER_ATTR); 
-            if (tabSet.oldOrientation != orientation) {
-                
-            }  
         }
-
-        
-        
-        
         writer.endElement(HTML.DIV_ELEM);  
     }    
 
@@ -164,40 +151,34 @@ public class TabSetRenderer extends Renderer{
         if (tabSet.getTabIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
-//        if (labelFacet!= null) {
-            writer.startElement(HTML.DIV_ELEM, tab);  
-            if (EnvUtils.isAriaEnabled(facesContext)) {
-                writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
-            }
-            writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
-            writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
-            writer.startElement("em", tab);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
-            
-            if (labelFacet!= null)
-                Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
-            else
-                writer.write(String.valueOf(tab.getAttributes().get("label")));
-            writer.endElement("em");
-            writer.endElement(HTML.DIV_ELEM);        
-//        } else {
-//            writer.startElement(HTML.ANCHOR_ELEM, tab);        
-//            writer.writeAttribute(HTML.HREF_ATTR, "#"+ clientId, HTML.CLASS_ATTR);
-//            writer.startElement("em", tab);
-//            writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.CLASS_ATTR);  
-//            writer.write(String.valueOf(tab.getAttributes().get("label")));
-//            writer.endElement("em");
-//            writer.endElement(HTML.ANCHOR_ELEM);        
-//        }
+        writer.startElement(HTML.DIV_ELEM, tab);  
+        if (EnvUtils.isAriaEnabled(facesContext)) {
+            writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
+        }
+        String execute = "Ice.component.tabset.execute('"+ tabSet.getClientId()+"');this.setAttribute('onfocus', '')";
+        if (!tabSet.isClientSide()) {
+            writer.writeAttribute(HTML.ONFOCUS_ATTR, execute , HTML.ONFOCUS_ATTR);                
+        }
+        writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
+        writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
+        writer.startElement("em", tab);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
         
-            writer.startElement(HTML.ANCHOR_ELEM, tab);
-            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", HTML.STYLE_ATTR); 
-            writer.endElement(HTML.ANCHOR_ELEM);               
-                   
+        if (labelFacet!= null)
+            Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
+        else
+            writer.write(String.valueOf(tab.getAttributes().get("label")));
+        writer.endElement("em");
+        writer.endElement(HTML.DIV_ELEM);        
+   
+        writer.startElement(HTML.ANCHOR_ELEM, tab);
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", HTML.STYLE_ATTR); 
+        writer.endElement(HTML.ANCHOR_ELEM);               
+               
 
-            
-            writer.endElement(HTML.LI_ELEM);
+        
+        writer.endElement(HTML.LI_ELEM);
     }    
     private void renderTabBody(FacesContext facesContext, 
             TabSet tabSet, UIComponent tab, int index) throws IOException {
@@ -220,20 +201,6 @@ public class TabSetRenderer extends Renderer{
                 writer.write("&nbsp;");
             }
         }
- //       if (((TabSet)tabSet).getTabIndex() != index) {
- //           writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);  
- //       }
-        /*
-        if (((TabSet)tabSet).isDynamic()){
-            if (((TabSet)tabSet).getTabIndex() == index) {
-                CustomComponentUtils.renderChild(facesContext, tab);
-            } else {
-                writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR); 
-            }
-        } else {
- 
-        }
-        */
         writer.endElement(HTML.DIV_ELEM);
     }
     
