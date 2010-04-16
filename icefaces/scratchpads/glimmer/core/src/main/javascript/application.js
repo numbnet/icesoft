@@ -148,8 +148,6 @@ if (!window.ice.icefaces) {
             };
         }
 
-        ;
-
         function sessionExpired(sessionExpiredPushID) {
             namespace.retrieveUpdate = noop;
             namespace.push.deregister(viewIDs);
