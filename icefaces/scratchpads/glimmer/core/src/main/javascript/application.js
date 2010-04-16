@@ -65,13 +65,6 @@ if (!window.ice.icefaces) {
             append(sessionExpiryListeners, callback);
         };
 
-        namespace.sessionExpired = function(sessionExpiredPushID) {
-            namespace.retrieveUpdate = noop;
-            namespace.push.deregister(viewIDs);
-            namespace.push.deregister(sessionExpiredPushID);
-            broadcast(sessionExpiryListeners);
-        };
-
         var serverErrorListeners = [];
         namespace.onServerError = function(callback) {
             append(serverErrorListeners, callback);
@@ -139,7 +132,8 @@ if (!window.ice.icefaces) {
         });
 
         var viewIDs = [];
-        namespace.retrieveUpdate = function(viewID) {
+
+        function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
             return function() {
                 try {
@@ -152,6 +146,20 @@ if (!window.ice.icefaces) {
                     warn(logger, 'failed to pick updates', e);
                 }
             };
+        }
+
+        ;
+
+        function sessionExpired(sessionExpiredPushID) {
+            namespace.retrieveUpdate = noop;
+            namespace.push.deregister(viewIDs);
+            namespace.push.deregister(sessionExpiredPushID);
+            broadcast(sessionExpiryListeners);
+        }
+
+        namespace.setupPush = function(viewID, sessionExpiryPushID) {
+            ice.push.register([viewID], retrieveUpdate(viewID));
+            ice.push.register([sessionExpiryPushID], sessionExpired);
         };
 
         namespace.captureEnterKey = function(id) {
