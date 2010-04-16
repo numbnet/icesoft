@@ -28,11 +28,6 @@ import org.icefaces.component.annotation.Property;
     componentFamily="com.icesoft.faces.TabSet"    
 )
 public class TabSetMeta {
-    @Field
-    protected Integer submittedTabIndex;
-    
-    @Field
-    private String oldOrientation; 
     
     @Property(defaultValue="false")    
     private Boolean immediate; 

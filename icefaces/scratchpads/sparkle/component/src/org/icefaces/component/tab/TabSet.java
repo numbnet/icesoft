@@ -32,62 +32,13 @@ public class TabSet extends TabSetBase {
         loadDependency(FacesContext.getCurrentInstance());        
     }
 
-    public void encodeBegin(FacesContext context) throws IOException {
-        super.encodeBegin(context);
-    }
-    
-    public void encodeEnd(FacesContext context) throws IOException {
-        super.encodeEnd(context);
-
-    }
-    
-    public void processDecodes(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        // Skip processing if our rendered flag is false
-        if (!isRendered()) {
-            return;
-        }
-
-        super.processDecodes(context);
-
-    }
-    
-    
-    public void processValidators(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        // Skip processing if our rendered flag is false
-        if (!isRendered()) {
-            return;
-        }
-
-        super.processValidators(context);
-         
-    }
-
-    private boolean isValidationFailed() {
-       if (getFacesContext().getMessages().hasNext() ||
-                getFacesContext().isValidationFailed() 
-                )
-        return true;
-        return false;
-    }
-    
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
-        System.out.println("1. >>>>>>>>>>>>>> Broadcast" + event.getPhaseId());
         super.broadcast(event);
         if (event != null) {
-            System.out.println("2. >>>>>>>>>>>>>> event found");
             ValueExpression ve = getValueExpression("tabIndex");
             if(isCancelOnInvalid()) {
                 getFacesContext().renderResponse();
-                System.out.println("3. >>>>>>>>>>>>>> render response");
             }
 
             if (ve != null) {
@@ -95,9 +46,8 @@ public class TabSet extends TabSetBase {
                 FacesMessage message = null;
                 try {
                     ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
-                  System.out.println("Setting to MINVALUE "+ ((ValueChangeEvent)event).getNewValue());
                 } catch (ELException ee) {
-                    System.out.println(ee);
+                    ee.printStackTrace();
                 }
             } else {
                 setTabIndex((Integer)((ValueChangeEvent)event).getNewValue());
@@ -111,7 +61,6 @@ public class TabSet extends TabSetBase {
     }
     
     public void setTabIndex(int tabindex) {
-        System.out.println("Setting tab Index  = "+ tabindex);
         super.setTabIndex(tabindex);
     }
     
@@ -165,35 +114,5 @@ public class TabSet extends TabSetBase {
                 "background-repeat: no-repeat;"+
                 "}");
         writer.endElement("style");        
-    }
-    
-    private Object[] values;
-
-    public Object saveState(FacesContext context) {
-
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (values == null) {
-            values = new Object[2];
-        }
-
-        values[0] = super.saveState(context);
-        return (values);
-
-    }
-
-
-    public void restoreState(FacesContext context, Object state) {
-
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        if (state == null) {
-            return;
-        }
-        values = (Object[]) state;
-        super.restoreState(context, values[0]);
     }
 }
