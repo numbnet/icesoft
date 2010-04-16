@@ -161,6 +161,7 @@ YAHOO.icefaces.calendar.init = function(params) {
     var calValueId = rootDivId + "_value";
     var calValueHtmlEl = Dom.get(calValueId);
     var calValueEl;
+    rootDiv.addClass("ice-calcontainer");
     if (calValueHtmlEl) {
         calValueEl = new Element(calValueHtmlEl);
     } else {
