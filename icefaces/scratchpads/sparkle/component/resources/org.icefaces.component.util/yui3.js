@@ -30,41 +30,8 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-String.prototype.trim = function () {
-    return this.replace(/^\s*/, "").replace(/\s*$/, "");
-}
- 
-logger = {
-   info: function(msg) {
-	   if (window["console"]) {
-	   	    window["console"].info (msg);
-	   }else {
-	        //alert(msg);
-	   }
-   }
-};
 
-var YUIHolder = function() {};
-YUIHolder.prototype = {
-   setComponent:function(component) {
-      this.component = component;
-   },
-   
-   getComponent:function() {
-      return this.component;
-   },
-   
-   setYUIProps:function(props) {
-      this.yuiPorps = props;
-   },
-   
-   getYUIProps:function() {
-      return this.yuiPorps;
-   }  
-};
-
-ice = {};
-ice.yui = {
+ice.yui3 = {
     y : null,
     modules: {},
     use :function(callback) {
@@ -87,41 +54,8 @@ ice.yui = {
         for (module in this.modules)
              modules+= module + ',';
         return modules.substring(0, modules.length-1);     
-    },
-    updateProperties:function(clientId, yuiProps, jsfProps, events, lib) {
-        this.getInstance(clientId, function(yuiComp) {
-            for (prop in yuiProps) {
-                var propValue = yuiComp.get(prop);
-                if (propValue != yuiProps[prop]) {
-                  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + yuiProps[prop]); 
-                  yuiComp.set(prop, yuiProps[prop]);        
-                }
-            }
-        }, lib, yuiProps, jsfProps);
-        
-    },
-    getInstance:function(clientId, callback, lib, yuiProps, jsfProps) {
-        var component = document.getElementById(clientId);
-        //could be either new component, or part of the DOM diff
-        if (!component['YUIHolder']) {
-            component['YUIHolder'] = new YUIHolder();
-            component['YUIHolder'].setYUIProps(yuiProps);
-            lib.initialize(clientId, yuiProps, jsfProps, function(YUIJS) {
-                logger.info('getInstance callback executed..');
-                component['YUIHolder'].setComponent(YUIJS);
-                callback(component['YUIHolder'].getComponent());
-            });
-        } else {
-            component['YUIHolder'].setYUIProps(yuiProps);
-            callback(component['YUIHolder'].getComponent());
-        }
-    },
-    
-    getYUIHolder: function(clientId) {
-        var component = document.getElementById(clientId);
-        if (component)
-            return component['YUIHolder'];
-        else
-            return null;
     }
 };
+for (props in ice.component) {
+    ice.yui3[props] = ice.component[props];
+}

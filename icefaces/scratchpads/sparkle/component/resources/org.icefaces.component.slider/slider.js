@@ -1,11 +1,11 @@
-ice.yui.slider = {
+ice.yui3.slider = {
    initialize:function(clientId, yuiProps, jsfProps, bindYUI) {
         
         //get the slider html element
         var root = document.getElementById(clientId);
         
         //for short cut and to make it more like OO
-        var super = ice.yui;
+        var super = ice.yui3;
         
         //load slider module
         super.loadModule('slider');
@@ -48,7 +48,7 @@ ice.yui.slider = {
                                 //we want to execute after DOM Update was compeleted.                                
                                 if (data.status == 'success') {
                                     //last known value
-                                    var lastKnownValue = super.getYUIHolder(clientId).getYUIProps(yuiProps).value;   
+                                    var lastKnownValue = super.getJSContext(clientId).getJSProps(yuiProps).value;   
                                     if (lastKnownValue != sliderValue) {
                                          obj.set('value', lastKnownValue);  
                                     }
@@ -168,14 +168,14 @@ ice.yui.slider = {
             });
    },
    
-   //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
+   //delegate call to ice.yui3.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, yuiProps, jsfProps, events) {
-       ice.yui.updateProperties(clientId, yuiProps, jsfProps, events, this);
+       ice.yui3.updateProperties(clientId, yuiProps, jsfProps, events, this);
    },
  
-   //delegate call to ice.yui.getInstance(..) with the reference of this lib 
+   //delegate call to ice.yui3.getInstance(..) with the reference of this lib 
    getInstance:function(clientId, callback) {
-       ice.yui.getInstance(clientId, callback, this);
+       ice.yui3.getInstance(clientId, callback, this);
    }
 };
 

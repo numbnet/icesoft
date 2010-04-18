@@ -76,7 +76,7 @@ public class SliderRenderer extends Renderer{
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR); 
         StringBuilder call= new StringBuilder();
-        call.append("ice.yui.slider.updateProperties('");
+        call.append("ice.yui3.slider.updateProperties('");
         call.append(clientId);
         call.append("', ");
         //pass through YUI slider properties 
