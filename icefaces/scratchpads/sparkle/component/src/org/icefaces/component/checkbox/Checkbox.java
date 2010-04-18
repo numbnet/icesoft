@@ -9,8 +9,8 @@ import javax.faces.component.UIOutput;
 import java.io.IOException;
 
 @ResourceDependencies({
-    @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
     @ResourceDependency(name="checkbox.js",library="org.icefaces.component.checkbox")    
 })
 public class Checkbox extends CheckboxBase {

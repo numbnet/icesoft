@@ -1,16 +1,14 @@
-Ice.component.checkbox = {
-	initialize:function(clientId) {
+ice.component.checkbox = {
+    initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 		var Dom = YAHOO.util.Dom;
-		var button = new YAHOO.widget.Button(clientId, {type: 'checkbox'});
+		var button = new YAHOO.widget.Button(clientId, {type: jsProps.type});
 
-		var label = Ice.component.getProperty(clientId, 'label');
-		if(label) {
-			button.set('label', label['new']);
+		if(jsProps.label) {
+			button.set('label', jsProps.label);
 		}
 
-		var checked = Ice.component.getProperty(clientId, 'checked');
-		if(checked) {
-			button.set('checked', checked['new']);
+		if(jsProps.checked) {
+			button.set('checked', jsProps.checked);
 		}
 	   
 		var onCheckedChange = function (e) { 
@@ -28,13 +26,16 @@ Ice.component.checkbox = {
 
 		logger.info('checkbox initialized');
 
-		return button;
+		bindYUI(button);
 	},
-	updateProperties:function(_id, props) {
-		var button = Ice.component.updateProperties(_id, props, this);
-	},
-	execute: function(_id) {
-		var ele = document.getElementById(_id+'call');
-		eval(ele.innerHTML);
-	}
+	
+   //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
+   updateProperties:function(clientId, jsProps, jsfProps, events) {
+       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+   },
+ 
+   //delegate call to ice.yui.getInstance(..) with the reference of this lib 
+   getInstance:function(clientId, callback) {
+       ice.component.getInstance(clientId, callback, this);
+   }  
 };
