@@ -10,6 +10,7 @@ import javax.faces.render.Renderer;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.util.EnvUtils;
 
 
 public class CheckboxRenderer extends Renderer {
@@ -73,22 +74,27 @@ public class CheckboxRenderer extends Renderer {
 		//writer.endElement(HTML.INPUT_ELEM);
 		
 		// js call
-        String javascriptCall = "Ice.component.checkbox.updateProperties('"+ clientId + "', {type: 'checkbox'";
-		if (checkbox.getImage() == null) {
-			javascriptCall += ", label: '" + checkbox.getLabel() + "'";
-		}
-		javascriptCall += ", checked: " + checkbox.getValue() + "});";
+        StringBuilder call= new StringBuilder();
+        call.append("ice.component.checkbox.updateProperties('");
+        call.append(clientId);
+        call.append("', ");
+        //pass through YUI slider properties 
+        call.append("{");
+        call.append("type:'checkbox'");
+        if (checkbox.getImage() == null) {
+            call.append(", label:'");  
+            call.append(checkbox.getLabel());
+            call.append("'");
+        }
+        call.append(", checked:'");  
+        call.append(checkbox.getValue());
+        call.append("'},");
+        //pass JSF component specific properties that would help in slider configuration 
+        call.append("{});");
 
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
-        writer.writeAttribute(HTML.STYLE_ATTR, "display:none", HTML.STYLE_ATTR);         
-        writer.write(javascriptCall);
-        writer.endElement(HTML.SPAN_ELEM);
-     
-        String execute = "Ice.component.checkbox.execute('" + clientId + "');";
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-        writer.write(execute);
+        writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 }
