@@ -112,28 +112,42 @@ public class TabSetRenderer extends Renderer{
         boolean singleSubmit = tabSet.isSingleSubmit();        
         int tabIndex = tabSet.getTabIndex();
         String onupdate = tabSet.getOnupdate();
+        StringBuilder call= new StringBuilder();
+        call.append("ice.component.tabset.updateProperties('");
+        call.append(clientId);
+        call.append("', ");
+        //pass through YUI slider properties 
+        call.append("{");
+        call.append("orientation:'");
+        call.append(orientation);
+        call.append("'},");
+        //pass JSF component specific properties that would help in slider configuration 
+        call.append("{");
+        call.append("isSingleSubmit:");
+        call.append(singleSubmit);
+        call.append(", ");        
+        call.append("isClientSide:");
+        call.append(isClientSide);       
+        call.append(", ");        
+        call.append("aria:");
+        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+        call.append(", hover:");
+        call.append(false);         
+        call.append("});");
         
-        String javascriptCall = "Ice.component.tabset.updateProperties('"+ clientId+"', {'tabIdx': "+ tabIndex
-        +", 'orientation': '"+ orientation +"'" +
-        ", 'isClientSide':"+ isClientSide +
-        ", 'onupdate':"+ onupdate +        
-        ", 'singleSubmit':"+ singleSubmit +
-        ", 'aria':"+ EnvUtils.isAriaEnabled(facesContext) +"});";
-
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none", HTML.STYLE_ATTR);         
-        writer.write(javascriptCall);
+        writer.write(call.toString());
         writer.endElement(HTML.DIV_ELEM);
      
-        String execute = "Ice.component.tabset.execute('"+ clientId+"');";
         if (isClientSide) {
             writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-            writer.write(execute);
+            writer.write(call.toString());
             writer.endElement(HTML.SCRIPT_ELEM);
         } else {
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, execute, HTML.ONMOUSEOVER_ATTR); 
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR); 
         }
         writer.endElement(HTML.DIV_ELEM);  
     }    
@@ -155,10 +169,7 @@ public class TabSetRenderer extends Renderer{
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
         }
-        String execute = "Ice.component.tabset.execute('"+ tabSet.getClientId()+"');this.setAttribute('onfocus', '')";
-        if (!tabSet.isClientSide()) {
-            writer.writeAttribute(HTML.ONFOCUS_ATTR, execute , HTML.ONFOCUS_ATTR);                
-        }
+    
         writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
         writer.startElement("em", tab);

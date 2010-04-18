@@ -11,18 +11,14 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.el.MethodBinding;
-import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.component.annotation.Field;
-
 @ResourceDependencies({
-    @ResourceDependency(name="yui.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
