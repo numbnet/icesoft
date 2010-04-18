@@ -32,31 +32,32 @@ public class TabSetMeta {
     @Property(defaultValue="false")    
     private Boolean immediate; 
     
-    @Property(defaultValue="0")
+    @Property(defaultValue="0", tlddoc="index of the tabset")
     private Integer tabIndex;
     
-    @Property(defaultValue="top")   
+    @Property(defaultValue="top", tlddoc="valid values are bottom, top, left and right")   
     private String orientation;
     
-    @Property(defaultValue="false")    
+    @Property(defaultValue="false", tlddoc="default value is false, if true, all tabs and its contents will be render on client as well as tab change will happen on clinet. There will be no communication with server")       
     private Boolean clientSide; 
    
-    @Property(defaultValue="false") 
+    @Property(defaultValue="false", tlddoc="default value is false, so in the case full submit will be use, where all component will be executed and rendered if true, then only this component will be executed and entire view will get rendered")
     private Boolean singleSubmit;
     
     @Property(defaultValue="true") 
     private Boolean cancelOnInvalid;    
     
-    @Property    
+    @Property (tlddoc="Allows to register client side callback that will be executed on every render cycle")   
     private String onupdate;
     
-    @Property
+    @Property (tlddoc="style class will be rendered on a root element of this component")
     private String styleClass;
     
-    @Property (defaultValue="") 
+    @Property (tlddoc="style will be rendered on a root element of this component") 
     private String style;
     
-    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+            tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
     
     
