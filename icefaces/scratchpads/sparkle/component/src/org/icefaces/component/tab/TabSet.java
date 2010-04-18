@@ -42,8 +42,6 @@ public class TabSet extends TabSetBase {
             }
 
             if (ve != null) {
-                Throwable caught = null;
-                FacesMessage message = null;
                 try {
                     ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
                 } catch (ELException ee) {
@@ -58,10 +56,6 @@ public class TabSet extends TabSetBase {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
             }
         }
-    }
-    
-    public void setTabIndex(int tabindex) {
-        super.setTabIndex(tabindex);
     }
     
     public void queueEvent(FacesEvent event) {
