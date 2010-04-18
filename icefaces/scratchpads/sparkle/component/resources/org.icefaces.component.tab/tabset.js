@@ -1,32 +1,24 @@
-Ice.component.tabset = {
-    hover:false,
-    initialize:function(clientId) {
+ice.component.tabset = {
+    initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
        var Dom = YAHOO.util.Dom;
        var tabview = new YAHOO.widget.TabView(clientId);  
-       var o = Ice.component.getProperty(clientId, 'orientation');
-       if(o) {
-          //logger.info('ori  new -------'+  o['new'] + ' : pre '+  o['previous'] + ' : source '+ o['modifiedByClient']);
-          tabview.set('orientation', o['new']);
-       }
+       tabview.set('orientation', jsProps.orientation);
        var thiz = this;
-       //logger.info('2. tabset initialize');
+       /*
         if (!Ice.component.registeredComponents[clientId]) {
-         //logger.info('2.1 tabset initialize');
             var onupdate = Ice.component.getProperty(clientId, 'onupdate');
             if (onupdate["new"] != null) {
-          	    //logger.info('2.2 tabset initialize');	
                 ice.onAfterUpdate(function() {
-                	tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
+                    tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
                     onupdate["new"](clientId, tabview );
                 });
-               //logger.info('2.3 tabset initialize');     
             }       
         }
+        */
        
        //add hover effect 
-       var hover = Ice.component.tabset.hover; //temp var should be accessed from the component
-       if (hover) {
+       if (jsfProps.hover) {
            hoverEffect = function(event, attributes) {  
                target = Ice.eventTarget(event);
                target = target.parentNode;
@@ -56,18 +48,15 @@ Ice.component.tabset = {
                
        //logger.info('3. tabset initialize');
        var tabChange=function(event) {
-            //logger.info('on tab change ');
-            var o = Ice.component.getProperty(clientId, 'orientation');
             event.target = document.getElementById(clientId);
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
-            var isClientSide = Ice.component.getProperty(clientId, 'isClientSide');
-            var singleSubmit = Ice.component.getProperty(clientId, 'singleSubmit');
             var params = function(parameter) {
                             parameter('yti', tabIndexInfo);
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {
+                                      /*
                                         var i = Ice.component.getProperty(clientId, 'tabIdx');
                                         var si = i['new'];
                                         if (currentIndex != si){//Validation failed so reset the tab index with the server tabindex
@@ -81,32 +70,33 @@ Ice.component.tabset = {
                                         if (LIs.length > si) {
                                             Dom.getFirstChild(LIs[si]).focus();
                                         }        
-                                                                         
+                                        */                                 
                                 }
                             });
                         };
-            if (isClientSide && isClientSide['new']){
+            if (jsfProps.isClientSide){
+                //TODO what should go here?
                 //logger.info('Client side tab ');
             } else {
                 //logger.info('Server side tab '+ event);
                 try {
-                    if (singleSubmit && singleSubmit["new"]) {
-	                    ice.singleSubmit(event, tbset, params); 
+                    if (jsfProps.isSingleSubmit) {
+                        ice.singleSubmit(event, tbset, params); 
                     } else {
                         ice.submit(event, tbset, params);                    
                     }
                 } catch(e) {
                     logger.info(e);
-                } 	             
-			}//end if    
-	   }//tabchange; 
-	   
+                }                
+            }//end if    
+       }//tabchange; 
+       
        //Check for aria support
-       var aria = Ice.component.getProperty(clientId, 'aria');
+
        var onKeyDown = null;
        var Event = YAHOO.util.Event;
        //add aria + keyboard support
-       if (aria && aria["new"]) {
+       if (jsfProps.aria) {
            var goNext = function(target) {
                var nextLi = Dom.getNextSibling(target);
                if (nextLi == null) {
@@ -134,7 +124,7 @@ Ice.component.tabset = {
                var firstLi = Dom.getFirstChild(target.parentNode);
                Dom.getFirstChild(firstLi).focus();                             
            };
-           	       
+                   
            onKeyDown = function(event) {
                 var target = Event.getTarget(event).parentNode;
                 var charCode = Event.getCharCode(event);
@@ -176,16 +166,17 @@ Ice.component.tabset = {
            tabs[i].on('keypress', onKeyPress, i); 
        }
        tabview.addListener('activeTabChange', tabChange);       
-       return tabview;
+       bindYUI(tabview);
    },
    
-   updateProperties:function(_id, props) {
-	     var tabview = Ice.component.updateProperties(_id, props, this);
+   //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
+   updateProperties:function(clientId, jsProps, jsfProps, events) {
+       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
-    
-    execute: function(_id) {
-       var ele = document.getElementById(_id+'call');
-       eval(ele.innerHTML);
-    }   
+ 
+   //delegate call to ice.yui.getInstance(..) with the reference of this lib 
+   getInstance:function(clientId, callback) {
+       ice.component.getInstance(clientId, callback, this);
+   }   
 };
 
