@@ -40,9 +40,8 @@
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/dice" target="war"/>
 		<copy file="${samples.dir}/dice/dist/icepush-spring-dice.war" todir="${dist.dir}"/>
-		
 		<ant dir="${samples.dir}/icechat/api" target="jar"/>
-		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
+                <ant dir="${samples.dir}/icechat/auth" target="jar" />
 		<ant dir="${samples.dir}/icechat/spring" target="war"/>
 		<copy file="${samples.dir}/icechat/spring/${dist.dir}/icechat-spring.war" todir="${dist.dir}"/>
 	</target>
