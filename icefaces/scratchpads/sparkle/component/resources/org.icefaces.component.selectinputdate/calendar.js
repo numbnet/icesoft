@@ -383,29 +383,6 @@ YAHOO.icefaces.calendar.init = function(params) {
     });
     dialog.setHeader("&nbsp;");
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
-    var hrSelEl = new Element(document.createElement("select"));
-    var optionEl;
-    for (var i = 0; i < 24; i++) {
-        optionEl = new Element(document.createElement("option"), {value:i});
-        if (i == params.selectedHour) optionEl.set("selected", "selected", true);
-        optionEl.appendChild(document.createTextNode(i));
-        optionEl.appendTo(hrSelEl);
-    }
-//    dialog.appendToBody(hrSelEl.get("element"));
-//    dialog.appendToBody(document.createTextNode(":"));
-    var minSelEl = new Element(document.createElement("select"));
-    for (i = 0; i < 60; i++) {
-        optionEl = new Element(document.createElement("option"), {value:i});
-        if (i == params.selectedMinute) optionEl.set("selected", "selected", true);
-        optionEl.appendChild(document.createTextNode(i));
-        optionEl.appendTo(minSelEl);
-    }
-//    dialog.appendToBody(minSelEl.get("element"));
-    var docFrag = document.createDocumentFragment();
-    docFrag.appendChild(hrSelEl.get("element"));
-    docFrag.appendChild(document.createTextNode(" : "));
-    docFrag.appendChild(minSelEl.get("element"));
-//    dialog.appendToBody(docFrag);
     dialog.render(rootDiv);
 
     calendar = new Calendar(rootDivId + "_cal", {
