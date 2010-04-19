@@ -15,8 +15,6 @@ import java.util.Locale;
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate")
 })
 public class SelectInputDate extends SelectInputDateBase {
-    private boolean formatSubmit = false;
-
     // Copied from 1.8.2
     /**
      * To properly function, selectInputDate needs to use the same timezone
@@ -58,13 +56,5 @@ public class SelectInputDate extends SelectInputDateBase {
     // Copied from 1.8.2
     public Locale resolveLocale(FacesContext context) {
         return context.getViewRoot().getLocale();
-    }
-
-    public boolean isFormatSubmit() {
-        return formatSubmit;
-    }
-
-    public void setFormatSubmit(boolean formatSubmit) {
-        this.formatSubmit = formatSubmit;
     }
 }

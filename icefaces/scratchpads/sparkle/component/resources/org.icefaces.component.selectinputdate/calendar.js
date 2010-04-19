@@ -368,7 +368,7 @@ YAHOO.icefaces.calendar.init = function(params) {
                 ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                     if (!params.singleSubmit && params.renderInputField) {
-                        p("formatSubmit", "");
+                        p("formatSubmit", "formatSubmit");
                     }
                 });
             }
