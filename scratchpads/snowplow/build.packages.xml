@@ -141,6 +141,7 @@
 		<sequential>
 			<copy todir="./dist/${target}/samples">
 				<fileset dir="./samples" excludes="**/build/** **/dist/**" includes="icechat/api/** 
+						icechat/auth/**
 						icechat/beans/**
 						icechat/common/**
 						icechat/${target}/**
