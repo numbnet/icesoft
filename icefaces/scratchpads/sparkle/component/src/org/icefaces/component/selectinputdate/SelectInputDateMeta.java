@@ -18,18 +18,6 @@ public class SelectInputDateMeta {
 
     @Property
     private Date selectedDate;
-    @Property(defaultValue="")
-    private String minDate;
-    @Property(defaultValue="")
-    private String maxDate;
-    @Property(defaultValue="")
-    private String disabledDates;
-    @Property(defaultValue="")
-    private String highlightUnit;
-    @Property(defaultValue="")
-    private String highlightValue;
-    @Property(defaultValue="")
-    private String highlightClass;
     @Property(defaultValue="false")
     private Boolean renderInputField;
     @Property(defaultValue="false")

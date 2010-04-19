@@ -92,12 +92,6 @@ public class SelectInputDateRenderer extends Renderer {
         String amPmStr = formatter.format(date);
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
 
-        String minDate = selectInputDate.getMinDate();
-        String maxDate = selectInputDate.getMaxDate();
-        String disabledDates = selectInputDate.getDisabledDates();
-        String highlightUnit = selectInputDate.getHighlightUnit();
-        String highlightValue = selectInputDate.getHighlightValue();
-        String highlightClass = selectInputDate.getHighlightClass();
         boolean renderAsPopup = selectInputDate.isRenderAsPopup();
         boolean renderInputField = selectInputDate.isRenderInputField();
         boolean singleSubmit = selectInputDate.isSingleSubmit();
@@ -106,9 +100,7 @@ public class SelectInputDateRenderer extends Renderer {
         String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
                 "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
-                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] + "',minDate:'" + minDate +
-                "',maxDate:'" + maxDate + "',disabledDates:'" + disabledDates + "',highlightUnit:'" + highlightUnit +
-                "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass +
+                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
         System.out.println("params = " + params);
