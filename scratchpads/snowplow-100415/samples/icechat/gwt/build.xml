@@ -154,7 +154,6 @@
 			<add.build.elements>
 				<fileset dir="${web.dir}/WEB-INF/classes" />
 				<fileset dir="${web.dir}/icechatmodule" />
-				<fileset dir="${web.dir}/WEB-INF/lib" />
 			</add.build.elements>
 		</clean>
 	</target>
