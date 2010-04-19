@@ -1,6 +1,7 @@
 package org.icefaces.component.selectinputdate;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -100,6 +101,7 @@ public class SelectInputDateRenderer extends Renderer {
         boolean renderAsPopup = selectInputDate.isRenderAsPopup();
         boolean renderInputField = selectInputDate.isRenderInputField();
         boolean singleSubmit = selectInputDate.isSingleSubmit();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
         String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
@@ -108,7 +110,7 @@ public class SelectInputDateRenderer extends Renderer {
                 "',maxDate:'" + maxDate + "',disabledDates:'" + disabledDates + "',highlightUnit:'" + highlightUnit +
                 "',highlightValue:'" + highlightValue + "',highlightClass:'" + highlightClass +
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
-                ",singleSubmit:" + singleSubmit + "}";
+                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
