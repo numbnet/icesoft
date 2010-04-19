@@ -37,9 +37,10 @@
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/pushpanel" target="war"/>
 		<copy file="${samples.dir}/pushpanl/dist/icepush-wicket-pushpanel.war" todir="${dist.dir}"/>
-		
+
+                <ant dir="${samples.dir}/icechat/pushpanel" target="jar" />
+                <ant dir="${samples.dir}/icechat/auth" target="jar" />
 		<ant dir="${samples.dir}/icechat/api" target="jar"/>
-		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
 		<ant dir="${samples.dir}/icechat/cdi" target="jar"/>
 		<ant dir="${samples.dir}/icechat/wicket" target="war"/>
 		<copy file="${samples.dir}/icechat/wicket/${dist.dir}/icechat-wicket.war" todir="${dist.dir}"/>

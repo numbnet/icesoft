@@ -39,7 +39,6 @@
 		<copy file="${samples.dir}/basic/${dist.dir}/icepush-jquery-basic.war" todir="${dist.dir}"/>
 		
 		<ant dir="${samples.dir}/icechat/api" target="jar"/>
-		<ant dir="${samples.dir}/icechat/beans" target="jar"/>
 		<ant dir="${samples.dir}/icechat/auth" target="jar"/>
 		<ant dir="${samples.dir}/icechat/ajax" target="war"/>
 		<ant dir="${samples.dir}/icechat/jquery" target="war"/>
