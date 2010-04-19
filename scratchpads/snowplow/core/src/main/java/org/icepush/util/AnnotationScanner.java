@@ -178,28 +178,31 @@ public class AnnotationScanner {
     private List<JarFile> getWebArchives() {
         List<JarFile> _webArchiveList = new ArrayList<JarFile>();
         Set<String> _resourcePaths = servletContext.getResourcePaths(WEB_INF_LIB_PREFIX);
-        for (String _resourcePath : _resourcePaths) {
-            if (!_resourcePath.endsWith(JAR_EXTENSION)) {
-                if (LOGGER.isLoggable(Level.FINEST)) {
-                    LOGGER.log(Level.FINEST, "Skip non-jar: [" + _resourcePath + "]");
+        if (_resourcePaths != null) {
+            for (String _resourcePath : _resourcePaths) {
+                if (!_resourcePath.endsWith(JAR_EXTENSION)) {
+                    if (LOGGER.isLoggable(Level.FINEST)) {
+                        LOGGER.log(Level.FINEST, "Skip non-jar: [" + _resourcePath + "]");
+                    }
+                    continue;
                 }
-                continue;
-            }
-            try {
-                // throws MalformedURLException, IOException.
-                JarFile _jarFile =
-                    ((JarURLConnection)
-                        new URL(JAR_SCHEME + servletContext.getResource(_resourcePath).toString() + JAR_SCHEME_POSTFIX).
-                            openConnection()
-                    ).getJarFile();
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "Add jar: [" + _resourcePath + "]");
-                }
-                _webArchiveList.add(_jarFile);
-            } catch (IOException exception) {
-                // todo: Is this the right thing to do here?
-                if (LOGGER.isLoggable(Level.FINEST)) {
-                    LOGGER.log(Level.FINEST, "Skip due to I/O error: [" + _resourcePath + "]");
+                try {
+                    // throws MalformedURLException, IOException.
+                    JarFile _jarFile =
+                        ((JarURLConnection)
+                            new URL(
+                                JAR_SCHEME + servletContext.getResource(_resourcePath).toString() + JAR_SCHEME_POSTFIX).
+                                    openConnection()
+                        ).getJarFile();
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "Add jar: [" + _resourcePath + "]");
+                    }
+                    _webArchiveList.add(_jarFile);
+                } catch (IOException exception) {
+                    // todo: Is this the right thing to do here?
+                    if (LOGGER.isLoggable(Level.FINEST)) {
+                        LOGGER.log(Level.FINEST, "Skip due to I/O error: [" + _resourcePath + "]");
+                    }
                 }
             }
         }
