@@ -61,7 +61,7 @@
         messageElementStyle.fontWeight = 'bold';
 
         var descriptionElement = messageElement.appendChild(document.createElement('div'));
-        descriptionElement.appendChild(document.createTextNode(description));
+        descriptionElement.innerHTML = description;
         var descriptionElementStyle = descriptionElement.style;
         descriptionElementStyle.fontSize = '11px';
         descriptionElementStyle.marginTop = '7px';
@@ -76,7 +76,7 @@
         onResize(window, resize);
     }
 
-    var backgroundOverlay = function() {
+    function BackgroundOverlay() {
         var container = window.document.body;
         var overlay = container.ownerDocument.createElement('iframe');
         overlay.setAttribute('src', 'about:blank');
@@ -104,17 +104,33 @@
                      };
         resize();
         onResize(window, resize);
-    };
+    }
+
+    function extractTagContent(tag, html) {
+        var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
+        var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
+        var tagWithContent = html.substring(start.index, end.index + end[0].length);
+        return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
+    }
 
     if (!namespace.configuration || !namespace.configuration.disableDefaultIndicators) {
         onLoad(window, function() {
-            namespace.onServerError(function(code, txtContent, xmlContent) {
-                var message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
-                var ex = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
-                PopupIndicator(message, ex, backgroundOverlay);
+            namespace.onServerError(function(code, html, xmlContent) {
+                //test if server error message is formatted in XML
+                var message;
+                var description;
+                if (xmlContent) {
+                    message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
+                    description = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+                } else {
+                    message = extractTagContent('title', html);
+                    description = extractTagContent('body', html);
+                }
+                PopupIndicator(message, description, BackgroundOverlay);
             });
+
             namespace.onSessionExpiry(function() {
-                PopupIndicator("User session expired", "Reload the page to start another user session", backgroundOverlay);
+                PopupIndicator("User session expired", "Reload the page to start another user session", BackgroundOverlay);
             });
         });
     }
