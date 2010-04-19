@@ -24,7 +24,7 @@
 
 <project name="icepush-wicket-pushpanel" default="war">
 
-	<property name="root.offset" value="../../../.." />
+	<property file="../samples.properties" />
 	<property file="${root.offset}/build.properties" />
 
 	<import file="${root.offset}/build-common.xml" />
