@@ -136,13 +136,16 @@ if (!window.ice.icefaces) {
         function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
             return function() {
+                var form = document.getElementById(viewID);
+                var url = form.action;
                 try {
-                    var newForm = document.getElementById(viewID).cloneNode(true);
-                    newForm.action = newForm.action + ';ice.session.donottouch';
+                    form.action = form.action + ';ice.session.donottouch';
                     debug(logger, 'picking updates for view ' + viewID);
-                    jsf.ajax.request(newForm, null, {render: '@all', 'ice.view': viewID});
+                    jsf.ajax.request(form, null, {render: '@all', 'ice.view': viewID});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
+                } finally {
+                    form.action = url;
                 }
             };
         }
