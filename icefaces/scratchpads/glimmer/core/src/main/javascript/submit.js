@@ -31,14 +31,18 @@ var submit;
     singleSubmit = function (event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var clonedElement = element.cloneNode(true);
-        var form = document.getElementById(viewID).cloneNode(true);
-        form.appendChild(clonedElement);
+        var form = document.getElementById(viewID);
+        try {
+            form.appendChild(clonedElement);
 
-        event = event || null;
-        var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
-        serializeEventToOptions(event, element, options);
-        serializeAdditionalParameters(additionalParameters, options);
-        jsf.ajax.request(clonedElement, event, options);
+            event = event || null;
+            var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
+            serializeEventToOptions(event, element, options);
+            serializeAdditionalParameters(additionalParameters, options);
+            jsf.ajax.request(clonedElement, event, options);
+        } finally {
+            form.removeChild(clonedElement);
+        }
     };
 
     var addPrefix = 'patch+';
@@ -58,7 +62,6 @@ var submit;
             var addedParameters = complement(currentParameters, previousParameters);
             var removedParameters = complement(previousParameters, currentParameters);
             form.previousParameters = currentParameters;
-
             function splitStringParameter(f) {
                 return function(p) {
                     var parameter = split(p, '=');
@@ -66,7 +69,9 @@ var submit;
                 };
             }
 
-            var deltaSubmitForm = document.getElementById(viewID).cloneNode(true);
+            var deltaSubmitForm = document.getElementById(viewID);
+            var clonedElement = element.cloneNode(true);
+            var appendedElements = [];
 
             function createHiddenInputInDeltaSubmitForm(name, value) {
                 var input = document.createElement('input');
@@ -74,20 +79,27 @@ var submit;
                 input.name = name;
                 input.value = value;
                 deltaSubmitForm.appendChild(input);
+                append(appendedElements, input);
             }
 
-            createHiddenInputInDeltaSubmitForm('ice.deltasubmit.form', form.id);
-            createHiddenInputInDeltaSubmitForm(form.id, form.id);
-            each(addedParameters, splitStringParameter(function(name, value) {
-                createHiddenInputInDeltaSubmitForm(addPrefix + name, value);
-            }));
-            each(removedParameters, splitStringParameter(function(name, value) {
-                createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
-            }));
+            try {
+                createHiddenInputInDeltaSubmitForm('ice.deltasubmit.form', form.id);
+                createHiddenInputInDeltaSubmitForm(form.id, form.id);
+                each(addedParameters, splitStringParameter(function(name, value) {
+                    createHiddenInputInDeltaSubmitForm(addPrefix + name, value);
+                }));
+                each(removedParameters, splitStringParameter(function(name, value) {
+                    createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
+                }));
 
-            var clonedElement = element.cloneNode(true);
-            deltaSubmitForm.appendChild(clonedElement);
-            jsf.ajax.request(clonedElement, event, options);
+                deltaSubmitForm.appendChild(clonedElement);
+                jsf.ajax.request(clonedElement, event, options);
+            } finally {
+                each(appendedElements, function(element) {
+                    deltaSubmitForm.removeChild(element);
+                });
+                deltaSubmitForm.removeChild(clonedElement);
+            }
         } else {
             jsf.ajax.request(element, event, options);
         }
