@@ -498,3 +498,8 @@ p#clear {
     background: transparent;
     border-color: #008000;
 }
+
+.ice-skin-rime .yui-calendar td.calcell.calcellhover, .ice-skin-rime .yui-calendar td.calcell.calcellhover a {
+    background-color: #FFFFFF;
+    color: #000000;
+}
