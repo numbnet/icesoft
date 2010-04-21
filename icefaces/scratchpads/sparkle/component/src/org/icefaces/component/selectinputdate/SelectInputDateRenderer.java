@@ -94,15 +94,33 @@ public class SelectInputDateRenderer extends Renderer {
         boolean singleSubmit = selectInputDate.isSingleSubmit();
         boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
 
+/*
         String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
                 "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
                 "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
+*/
+        String params = "'" + clientId + "',{dateStr:'" + dateStr + "',pageDate:'" + pageDate +
+                "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
+                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
+                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
+                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
+                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
+/*
+        String params = "'" + clientId + "',{pageDate:'" + pageDate +
+                "',selectedDate:'" + selectedDate + "'},{dateStr:'" + dateStr + "',selectedHour:'" + selectedHour +
+                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
+                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
+                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
+                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
+*/
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
+//        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
+        writer.write("YAHOO.icefaces.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
