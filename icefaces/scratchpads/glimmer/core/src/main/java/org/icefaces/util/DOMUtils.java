@@ -48,11 +48,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DOMUtils {
+
+    private final static Pattern START_COMMENT = Pattern.compile("\\<\\!");
+    private final static Pattern END_CDATA = Pattern.compile("\\]\\]\\>");
+
 
     private static Logger log = Logger.getLogger("org.icefaces.util.DOMUtil");
 
@@ -211,7 +216,8 @@ public class DOMUtils {
                 break;
 
             case Node.TEXT_NODE:
-                writer.write(node.getNodeValue());
+                String val = node.getNodeValue();
+                writer.write(escapeCDataCharacters( val ));
                 break;
         }
     }
@@ -290,7 +296,7 @@ public class DOMUtils {
      * of the subtrees is null.
      *
      * @param oldNode original DOM subtree
-     * @param newDOM changed DOM subtree
+     * @param newNode changed DOM subtree
      * @return array of top-level nodes in newNode subtree that differ from
      *         oldNode subtree, an empty array if no nodes are different
      */
@@ -492,6 +498,8 @@ public class DOMUtils {
                 //skip any other control character
             } else if (ch == '<') {
                 buffer.append("&lt;");
+            } else if (ch == '>') {
+                buffer.append("&gt;");
             } else if (ch == '&') {
                 buffer.append("&amp;");
             } else if (ch == '"') {
@@ -502,6 +510,24 @@ public class DOMUtils {
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Look for XML tokens in a text value. If found,
+     * replace with escaped values
+     *
+     * @param text text to test
+     * @return escaped String
+     */
+    public static String escapeCDataCharacters(String text) {
+        if (null == text) {
+            return "";
+        }
+        Matcher m = END_CDATA.matcher(text);
+        text = m.replaceAll ( "]]&gt;");
+
+        m = START_COMMENT.matcher(text);
+        return m.replaceAll ("&lt;!");
     }
 
     public static String escapeAnsi(String text) {
