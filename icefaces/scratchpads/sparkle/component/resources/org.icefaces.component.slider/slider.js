@@ -48,7 +48,7 @@ ice.yui3.slider = {
                                 //we want to execute after DOM Update was compeleted.                                
                                 if (data.status == 'success') {
                                     //last known value
-                                    var lastKnownValue = super.getJSContext(clientId).getJSProps(yuiProps).value;   
+                                    var lastKnownValue = super.getJSContext(clientId).getJSProps().value;   
                                     if (lastKnownValue != sliderValue) {
                                          obj.set('value', lastKnownValue);  
                                     }

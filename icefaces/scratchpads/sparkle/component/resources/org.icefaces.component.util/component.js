@@ -44,7 +44,8 @@ logger = {
    }
 };
 
-var JSContext = function() {};
+var JSContext = function(clientId) {this.clientId = clientId};
+JSContext.list = {};
 JSContext.prototype = {
    setComponent:function(component) {
       this.component = component;
@@ -60,7 +61,18 @@ JSContext.prototype = {
    
    getJSProps:function() {
       return this.jsPorps;
-   }  
+   },
+   setJSFProps:function(props) {
+      this.jsfProps = props;
+   },
+   
+   getJSFProps:function() {
+      return this.jsfProps;
+   },
+   
+   isAttached:function() {
+    return document.getElementById(this.clientId)['JSContext'];
+   } 
 };
 
 ice.component = {
@@ -79,24 +91,39 @@ ice.component = {
     getInstance:function(clientId, callback, lib, jsProps, jsfProps) {
         var component = document.getElementById(clientId);
         //could be either new component, or part of the DOM diff
-        if (!component['JSContext']) {
-            component['JSContext'] = new JSContext();
-            component['JSContext'].setJSProps(jsProps);
+        var context = this.getJSContext(clientId);
+        if (!context || (context && !context.isAttached())) {
+            context = this.createContext(clientId);
+            context.setJSProps(jsProps);
+            context.setJSFProps(jsfProps);            
             lib.initialize(clientId, jsProps, jsfProps, function(YUIJS) {
                 logger.info('getInstance callback executed..');
-                component['JSContext'].setComponent(YUIJS);
-                callback(component['JSContext'].getComponent());
+                context.setComponent(YUIJS);
+                callback(context.getComponent());
             });
         } else {
-            component['JSContext'].setJSProps(jsProps);
-            callback(component['JSContext'].getComponent());
+            context = this.getJSContext(clientId);
+            context.setJSProps(jsProps);
+            context.setJSFProps(jsfProps);
+            callback(context.getComponent());
         }
     },
     
     getJSContext: function(clientId) {
         var component = document.getElementById(clientId);
-        if (component)
-            return component['JSContext'];
+        if (component) {
+            if(component['JSContext'])
+                return component['JSContext'];
+            else 
+                return JSContext[clientId];
+        }
         return null;
+    },
+    
+    createContext:function(clientId) {
+        var component = document.getElementById(clientId);
+        component['JSContext'] = new JSContext(clientId);
+        JSContext[clientId] = component['JSContext'];
+        return component['JSContext'];
     }
 };

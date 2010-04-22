@@ -2,6 +2,7 @@ ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
        var Dom = YAHOO.util.Dom;
+       var super = ice.component;
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
@@ -56,21 +57,22 @@ ice.component.tabset = {
                             parameter('yti', tabIndexInfo);
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {
-                                      /*
-                                        var i = Ice.component.getProperty(clientId, 'tabIdx');
-                                        var si = i['new'];
-                                        if (currentIndex != si){//Validation failed so reset the tab index with the server tabindex
-                                            tabview.removeListener('activeTabChange'); 
-                                            tabview.set('activeIndex', si);
-                                            tabview.addListener('activeTabChange', tabChange);                                          
-                                        }
-                                        var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
+                                        var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
+	                                    if (lastKnownSelectedIndex != currentIndex) {
+	                                            tabview.removeListener('activeTabChange'); 
+	                                            tabview.set('activeIndex', lastKnownSelectedIndex);
+	                                            tabview.addListener('activeTabChange', tabChange); 
+	                                            currentIndex = lastKnownSelectedIndex; 
+	                                    }
+                                   
+                                   /*
+                                       var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
 
                                         //set the focus back to the selected tab
-                                        if (LIs.length > si) {
-                                            Dom.getFirstChild(LIs[si]).focus();
+                                        if (LIs.length > currentIndex) {
+                                            Dom.getFirstChild(LIs[currentIndex]).focus();
                                         }        
-                                        */                                 
+                                     */                                    
                                 }
                             });
                         };
