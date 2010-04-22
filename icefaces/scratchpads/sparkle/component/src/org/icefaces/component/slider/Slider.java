@@ -21,6 +21,7 @@ import org.icefaces.component.tab.TabSet;
 //TODO make it so resources can be coalesce and served as whole 
 @ResourceDependencies({
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="slider.js",library="org.icefaces.component.slider")    
 })
