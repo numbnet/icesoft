@@ -32,7 +32,7 @@ public class TabSet extends TabSetBase {
     throws AbortProcessingException {
         super.broadcast(event);
         if (event != null) {
-            ValueExpression ve = getValueExpression("tabIndex");
+            ValueExpression ve = getValueExpression("index");
             if(isCancelOnInvalid()) {
                 getFacesContext().renderResponse();
             }
@@ -44,7 +44,7 @@ public class TabSet extends TabSetBase {
                     ee.printStackTrace();
                 }
             } else {
-                setTabIndex((Integer)((ValueChangeEvent)event).getNewValue());
+                setSelectedIndex((Integer)((ValueChangeEvent)event).getNewValue());
             }
             ValueChangeEvent e = (ValueChangeEvent)event;
             MethodExpression method = getTabChangeListener();

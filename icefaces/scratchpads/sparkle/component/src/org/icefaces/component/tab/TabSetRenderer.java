@@ -29,10 +29,10 @@ public class TabSetRenderer extends Renderer{
             TabSet tabSet = (TabSet) uiComponent;
             if (clientId.equals(info[0])) {
                 try {
-                    Integer tabIndex = new Integer(info[1]);
-                    if (tabSet.getTabIndex()!= tabIndex.intValue()) { 
+                    Integer index = new Integer(info[1]);
+                    if (tabSet.getSelectedIndex()!= index.intValue()) { 
                         uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
-                                       new Integer(tabSet.getTabIndex()), tabIndex));
+                                       new Integer(tabSet.getSelectedIndex()), index));
                     }
                 } catch (Exception e) {}
             }
@@ -57,7 +57,7 @@ public class TabSetRenderer extends Renderer{
         
         if (isBottom) {
             writer.startElement(HTML.DIV_ELEM, uiComponent);
-                writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
+                writer.writeAttribute(HTML.TABINDEX_ATTR, 0, HTML.TABINDEX_ATTR);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
                 renderTab(facesContext, uiComponent, false);
@@ -110,7 +110,7 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         boolean isClientSide = tabSet.isClientSide();
         boolean singleSubmit = tabSet.isSingleSubmit();        
-        int tabIndex = tabSet.getTabIndex();
+        int selectedIndex = tabSet.getSelectedIndex();
         String onupdate = tabSet.getOnupdate();
         StringBuilder call= new StringBuilder();
         call.append("ice.component.tabset.updateProperties('");
@@ -132,7 +132,9 @@ public class TabSetRenderer extends Renderer{
         call.append("aria:");
         call.append(EnvUtils.isAriaEnabled(facesContext)); 
         call.append(", hover:");
-        call.append(false);         
+        call.append(false);  
+        call.append(", selectedIndex:");
+        call.append(selectedIndex);         
         call.append("});");
         
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -162,7 +164,7 @@ public class TabSetRenderer extends Renderer{
         }
 
         UIComponent labelFacet = ((Tab)tab).getLabelFacet();
-        if (tabSet.getTabIndex() == index) {
+        if (tabSet.getSelectedIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
         writer.startElement(HTML.DIV_ELEM, tab);  
@@ -197,7 +199,7 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.DIV_ELEM, tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.writeAttribute(HTML.TABINDEX_ATTR, tabSet.getTabIndex(), HTML.TABINDEX_ATTR);
+        writer.writeAttribute(HTML.TABINDEX_ATTR, 0, HTML.TABINDEX_ATTR);
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABPANEL_ROLE, ARIA.ROLE_ATTR);  
         }        
@@ -205,7 +207,7 @@ public class TabSetRenderer extends Renderer{
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
-            if (tabSet.getTabIndex() == index) {
+            if (tabSet.getSelectedIndex() == index) {
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);

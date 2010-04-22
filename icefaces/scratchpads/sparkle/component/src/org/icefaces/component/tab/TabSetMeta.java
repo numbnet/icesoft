@@ -33,7 +33,7 @@ public class TabSetMeta {
     private Boolean immediate; 
     
     @Property(defaultValue="0", tlddoc="index of the tabset")
-    private Integer tabIndex;
+    private Integer selectedIndex;
     
     @Property(defaultValue="top", tlddoc="valid values are bottom, top, left and right")   
     private String orientation;
