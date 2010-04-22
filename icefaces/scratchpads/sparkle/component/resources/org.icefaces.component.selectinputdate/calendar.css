@@ -481,17 +481,20 @@ p#clear {
     font-size: 11px;
 }
 
-.ice-skin-rime .ice-calcontainer .yui-push-button.default {
-    background: #FAA620;
+.ice-skin-rime .ice-calcontainer .yui-button.yui-button-focus button {
+    background-color: #FAA620;
+    color: #FFFFFF;
 }
 
-.ice-skin-rime .ice-calcontainer .yui-button {
-    margin: 0.25em 0.25em 0 0;
+.ice-skin-rime .ice-calcontainer .yui-button button {
+    margin: 0.25em 0 0 0.25em;
 }
 
 .ice-skin-rime .ice-calcontainer .yui-button button {
     font-size: 11px;
     min-height: 0;
+    background-image: none;
+    color: #000000;
 }
 
 .ice-skin-rime .ice-calcontainer .yui-button-hover {
@@ -502,4 +505,36 @@ p#clear {
 .ice-skin-rime .yui-calendar td.calcell.calcellhover, .ice-skin-rime .yui-calendar td.calcell.calcellhover a {
     background-color: #FFFFFF;
     color: #000000;
+}
+
+.ice-skin-rime .ice-calcontainer .text-input {
+    width: 188px;
+    float: left;
+}
+
+.ice-skin-rime .ice-calcontainer .toggle-popup {
+    width: 18px;
+    height: 18px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.ice-skin-rime .ice-calcontainer .toggle-popup.open-popup {
+    background-image: url(images/cal_button.gif.jsf?ln=org.icefaces.component.selectinputdate);
+}
+
+.ice-skin-rime .ice-calcontainer .toggle-popup.close-popup {
+    background-image: url(images/cal_off.gif.jsf?ln=org.icefaces.component.selectinputdate);
+}
+
+.ice-skin-rime .yui-panel-container {
+    padding: 0;
+}
+
+.ice-skin-rime .yui-dialog .ft span.default button {
+    color: #000000;
+}
+
+.ice-skin-rime .yui-dialog .ft span.default.yui-button-focus button {
+    color: #ffffff;
 }
