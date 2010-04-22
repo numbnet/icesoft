@@ -356,9 +356,8 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         return;
     }
     var inputId = rootDivId + "_input";
-    var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, size:"30", id:inputId, name:inputId});
-    var buttonEl = new Element(document.createElement("button"), {type:"button"});
-    var imageEl = new Element(document.createElement("img"), {src:"images/cal_button.gif"});
+    var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, className:"text-input", id:inputId, name:inputId});
+    var toggleBtnEl = new Element(document.createElement("div"), {className:"toggle-popup open-popup"});
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
@@ -371,14 +370,15 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         inputEl.appendTo(rootDiv);
         inputEl.addListener("change", inputChange);
     }
-    buttonEl.appendTo(rootDiv);
-    imageEl.appendTo(buttonEl);
+    toggleBtnEl.appendTo(rootDiv);
 
     var cancelClick = function() {
         this.hide();
+        toggleBtnEl.replaceClass("close-popup", "open-popup");
     };
     var okClick = function(evt, dialog) {
         this.hide();
+        toggleBtnEl.replaceClass("close-popup", "open-popup");
         if (calendar.getSelectedDates().length > 0) {
             var date = calendar.getSelectedDates()[0];
             var time = YAHOO.icefaces.calendar.getTime(calendar);
@@ -396,12 +396,13 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
     };
     var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
         visible:false,
-        context:[params.renderInputField ? inputEl : buttonEl, "tl", "bl"],
+        context:[params.renderInputField ? inputEl : toggleBtnEl, "tl", "bl"],
         buttons:[{text:"OK", handler:okClick}, {text:"Cancel", isDefault:true, handler:cancelClick}],
         draggable:false,
-        close:true
+        close:false,
+        underlay:"none",
+        constraintoviewport:true
     });
-    dialog.setHeader("&nbsp;");
     dialog.setBody("<div id='" + rootDivId + "_cal'/>");
     dialog.render(rootDiv);
 
@@ -419,13 +420,19 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
     component['JSContext'] = new JSContext();
     component['JSContext'].setComponent(calendar);
 
-    var buttonClick = function() {
-        dialog.show();
+    var toggleClick = function() {
+        if (this.hasClass("open-popup")) {
+            dialog.show();
+            this.replaceClass("open-popup", "close-popup");
+        } else {
+            dialog.hide();
+            this.replaceClass("close-popup", "open-popup");
+        }
     };
     var inputEnter = function(evType, fireArgs, subscribeObj) {
-//        alert(this);
+//        console.log(this);
 //        for (var i = 0; i < arguments.length; i++) {
-//            alert(arguments[i]);
+//            console.log(arguments[i]);
 //        }
         inputEl.removeListener("change", inputChange);
         calValueEl.setAttributes({value:this.value}, true);
@@ -444,12 +451,13 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         Event.addListener(document, "click", function(e) {
             var el = Event.getTarget(e);
             var dialogEl = dialog.element;
-            var showBtn = buttonEl.get("element");
+            var showBtn = toggleBtnEl.get("element");
             if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
                 dialog.hide();
+                toggleBtnEl.replaceClass("close-popup", "open-popup");
             }
         });
-        buttonEl.addListener("click", buttonClick);
+        toggleBtnEl.addListener("click", toggleClick);
         inputKL.enable();
     };
 
@@ -458,7 +466,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
 YAHOO.icefaces.calendar.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
     var lang = YAHOO.lang;
     var params = lang.merge({divId:clientId}, jsProps);
-    console.log(lang.dump(params));
+//    console.log(lang.dump(params));
     this.init(params, bindYUI);
 };
 YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps, events) {
@@ -471,7 +479,7 @@ YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps,
         prevJSProps = jsContext.getJSProps();
         render = false;
         for (var prop in jsProps) {
-            console.log(prop);
+//            console.log(prop);
             if (!lang.hasOwnProperty(jsProps, prop)) continue;
             if (jsProps[prop] == prevJSProps[prop]) continue;
             render = true;

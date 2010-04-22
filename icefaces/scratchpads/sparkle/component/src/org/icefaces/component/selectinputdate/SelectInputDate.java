@@ -9,12 +9,11 @@ import java.util.TimeZone;
 import java.util.Locale;
 
 @ResourceDependencies({
-        @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-        @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
-        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate"),
+        @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
         @ResourceDependency(name = "calendar.css", library = "org.icefaces.component.selectinputdate"),
-        @ResourceDependency(name = "button.css", library = "org.icefaces.component.selectinputdate"),
-        @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate")
+        @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
+        @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
+        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
 })
 public class SelectInputDate extends SelectInputDateBase {
     // Copied from 1.8.2
