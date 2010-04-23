@@ -33,7 +33,7 @@ YAHOO.widget.Calendar.prototype.renderFooter = function(html) {
         Event.addListener(selId, "change", doSelChange, selId, calendar);
     };
 
-    var j = parseInt(hourField[hourField.length - 1], 10);
+    var j = parseInt(hourField.charAt(hourField.length - 1), 10);
     var k = hourField.match(/^HOUR_OF_DAY[01]$/) ? j + 23 : j + 11;
     var i, temp;
     html[html.length] = "<tfoot><tr><td align='center' colspan='7'>";

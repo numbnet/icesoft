@@ -16,26 +16,29 @@
         <h:form>
             <h:panelGroup id="calDiv2">
                 <h:outputText value="renderAsPopup"/>
-                <h:selectBooleanCheckbox value="#{calendarBean.renderAsPopup}"
-                                         onchange="ice.submit(event, this);"/>
-                <h:outputText value="renderInputField" rendered="#{calendarBean.renderAsPopup}"/>
-                <h:selectBooleanCheckbox value="#{calendarBean.renderInputField}"
-                                         rendered="#{calendarBean.renderAsPopup}"
-                                         onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderAsPopup}" onchange="ice.submit(event, this);"/>
+                <h:outputText value="renderInputField (popup only)"/>
+                <h:selectBooleanCheckbox value="#{calendarBean.renderInputField}" onchange="ice.submit(event, this);"/>
                 <br/>
                 <h:outputText value="singleSubmit"/>
                 <h:selectBooleanCheckbox value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
+                <h:outputText value="pattern"/>
+                <h:selectOneMenu value="#{calendarBean.pattern}" onchange="ice.submit(event, this);">
+                    <f:selectItem itemLabel="MM/dd/yyyy" itemValue="MM/dd/yyyy"/>
+                    <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
+                    <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
+                </h:selectOneMenu>
                 <br/>
                 <h:outputText value="output: "/>
                 <h:outputText value="#{calendarBean.selectedDate}">
-                    <f:convertDateTime pattern="yyyy-M-d h:m a" timeZone="Canada/Mountain"/>
+                    <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
                 </h:outputText>
                 <br/>
                 <ann:selectInputDate id="calendar4" value="#{calendarBean.selectedDate}"
                                       renderAsPopup="#{calendarBean.renderAsPopup}"
-                                      singleSubmit="#{calendarBean.singleSubmit}"
-                                      renderInputField="#{calendarBean.renderInputField}">
-                    <f:convertDateTime pattern="MM/dd/yyyy hh:mm a" timeZone="Canada/Mountain"/>
+                                      renderInputField="#{calendarBean.renderInputField}"
+                                      singleSubmit="#{calendarBean.singleSubmit}">
+                    <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
                 </ann:selectInputDate>
                 <div style="height:350px"/>
                 <a href="index.html">Goto Main page</a>
