@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlSelectManyMenu;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Set;
@@ -55,7 +56,10 @@ public class MenuRenderer
                                  UIComponent uiComponent, Element root,
                                  String currentValue, Set excludes) {
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            if (uiComponent instanceof HtmlSelectManyMenu) {
+            boolean isSelectMenu =
+                    (uiComponent instanceof HtmlSelectOneMenu) ||
+                    (uiComponent instanceof HtmlSelectManyMenu);
+            if (isSelectMenu) {
                 Number partialSubmitDelay = (Number)
                         uiComponent.getAttributes().get("partialSubmitDelay");
                 root.setAttribute(getEventType(uiComponent),
