@@ -57,7 +57,7 @@ public class EnterKeySubmit implements SystemEventListener {
         out.setId(form.createUniqueId(context, form.getId()) + "_captureEnterKey");
         out.getAttributes().put("escape", "false");
         out.setValue("<script type='text/javascript'>ice.captureEnterKey('" + form.getClientId(context) + "');</script>");
-        form.getChildren().add(out);
+        form.getChildren().add(0,out);
     }
 
     public boolean isListenerForSource(Object source) {
