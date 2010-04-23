@@ -416,6 +416,11 @@ public class DOMResponseWriter extends ResponseWriter {
             if (log.isLoggable(Level.FINEST)) {
                 log.finest("appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
+
+            if( cursor == null ){
+                cursor = document.getDocumentElement();
+            }
+
             return cursor.appendChild(node);
 
         } catch (DOMException e) {
@@ -459,7 +464,13 @@ public class DOMResponseWriter extends ResponseWriter {
     public void startSubtreeRendering()  {
         //subtree rendering will replace specified
         //subtrees in the old DOM
-        document = getOldDocument();
+        Document oldDoc =  getOldDocument();
+        if( oldDoc != null ){
+            document = oldDoc;
+        } else {
+            refreshDocument();
+        }
+
     }
 
     /**
@@ -472,10 +483,15 @@ public class DOMResponseWriter extends ResponseWriter {
         Node oldSubtree = null;
         //seek to position in document
         cursor = document.getElementById(id);
-        oldSubtree = cursor;
         if (null == cursor)  {
-            log.severe("Unable to seek to component DOM subtree " + id);
+            //If the cursor is null, it means we couldn't find the subtree
+            //in the current document.  We may have navigated during the lifecycle.
+            if (log.isLoggable(Level.FINE)) {
+                log.log(Level.FINE, "unable to seek to component DOM subtree " + id);
+            }
+            return null;
         }
+        oldSubtree = cursor;
         Node newSubtree = document.createElement(cursor.getNodeName());
         Node cursorParent = cursor.getParentNode();
         //remove subtree for fresh rendering operation
@@ -499,6 +515,17 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void setCursorParent(Node cursorParent) {
         this.cursor = cursorParent;
+    }
+
+    //If postback navigation occurs (navigating back to the same
+    //page with the same view ID) in the middle of partial rendering,
+    //it may be necessary to refresh the document for the DOMResponseWriter
+    //so that the subtrees can actually be rendered.
+    private void refreshDocument(){
+        document = DOMUtils.getNewDocument();
+        Element root = document.createElement("html");
+        document.appendChild(root);
+        cursor = document.getDocumentElement();
     }
 
 }
