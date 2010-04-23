@@ -4,7 +4,7 @@ Ice.selectChange = function(form, elem, event, partialSubmitDelay) {
     }
     if (elem.timeout) {
         clearTimeout(elem.timeout);
-        elem.timeout = null;
+        elem.removeAttribute('timeout');
     }
     else {
         var currentTime = new Date();
@@ -19,9 +19,10 @@ Ice.selectChange = function(form, elem, event, partialSubmitDelay) {
     }
     
     elem.timeout = setTimeout(function() {
-        elem.timeout = null;
+        elem.removeAttribute('timeout');
         var currentTime = new Date();
         elem.lastTime = currentTime.getTime();
-        iceSubmitPartial(form, elem, event);
+        // In IE 8, can't use event in timeout
+        iceSubmitPartial(form, elem, null);
     }, partialSubmitDelay);
 };
