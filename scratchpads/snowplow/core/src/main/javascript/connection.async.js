@@ -127,7 +127,10 @@ function AsyncConnection(logger, windowID, receiveURI) {
                         }
                         if (nonEmptyResponse) receiveCallback(response);
                         receiveXWindowCookie(response);
-                        if (reconnect) connect();
+                        if (reconnect) {
+                            resetTimeoutBomb();
+                            connect();
+                        }
                     });
                     condition(ServerInternalError, retryOnServerError);
                 }));
@@ -141,8 +144,29 @@ function AsyncConnection(logger, windowID, receiveURI) {
     //build callbacks only after 'connection' function was defined
     var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
 
-    //todo: implement client based timout alert for server side hearbeat to help detect when server does not respond anymore
-    var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
+    var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 50000;
+    var timeoutBomb = object(function(method) {
+        method(stop, noop);
+    });
+
+    function resetTimeoutBomb() {
+        stop(timeoutBomb);
+        timeoutBomb = runOnce(Delay(function() {
+            warn(logger, 'failed to connect, first retry...');
+            connect();
+
+            timeoutBomb = runOnce(Delay(function() {
+                warn(logger, 'failed to connect, second try...');
+                connect();
+
+                timeoutBomb = runOnce(Delay(function() {
+                    broadcast(connectionDownListeners);
+                }, heartbeatTimeout / 4));
+            }, heartbeatTimeout / 2));
+        }, heartbeatTimeout));
+    }
+
+    ;
 
     function initializeConnection() {
         connect();

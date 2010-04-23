@@ -22,28 +22,33 @@
 
 package org.icepush;
 
-import javax.servlet.ServletContext;
-
 import org.icepush.http.Request;
 import org.icepush.http.Response;
 import org.icepush.http.ResponseHandler;
 import org.icepush.http.Server;
+import org.icepush.servlet.ServletContextConfiguration;
+
+import javax.servlet.ServletContext;
 
 public class ConfigurationServer implements Server, ResponseHandler {
     private String configCode;
 
     public ConfigurationServer(final ServletContext servletContext) {
-        String uriPrefix = (String)servletContext.getAttribute("uriPrefix");
+        String uriPrefix = (String) servletContext.getAttribute("uriPrefix");
         if (uriPrefix == null) {
             uriPrefix = "";
         }
-        String uriSuffix = (String)servletContext.getAttribute("uriSuffix");
+        String uriSuffix = (String) servletContext.getAttribute("uriSuffix");
         if (uriSuffix == null) {
             uriSuffix = "";
         }
+        Configuration configuration = new ServletContextConfiguration("org.icefaces", servletContext);
+        long heartbeatTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
         configCode =
                 "ice.push.configuration.uriSuffix='" + uriSuffix + "';" +
-                        "ice.push.configuration.uriPrefix='" + uriPrefix + "';";
+                        "ice.push.configuration.uriPrefix='" + uriPrefix + "';" +
+                        "ice.push.configuration.heartbeat={timeout:" + heartbeatTimeout + "};";
+
     }
 
     public void service(Request request) throws Exception {
