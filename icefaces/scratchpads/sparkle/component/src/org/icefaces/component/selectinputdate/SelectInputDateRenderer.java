@@ -57,7 +57,8 @@ public class SelectInputDateRenderer extends Renderer {
         formatter.applyPattern("MM/dd/yyyy");
         String selectedDate = formatter.format(date);
 
-        formatter.applyPattern(converter.getPattern());
+        System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
+        formatter.applyPattern(SelectInputDate.getDateTimeConverterPattern(converter));
         StringBuffer stringBuffer = new StringBuffer();
         DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
                 DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.HOUR_OF_DAY1};
