@@ -183,7 +183,6 @@ div.footer_content a:hover {
 }
 
 .chatRooms_pos{
-    height: 100%;
     min-height: 400px;  
     position: relative;
     width: 14%;
