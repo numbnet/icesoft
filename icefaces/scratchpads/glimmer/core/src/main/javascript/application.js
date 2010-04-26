@@ -167,7 +167,7 @@ if (!window.ice.icefaces) {
             f.onkeypress = function(ev) {
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
-                if (keyCode(e) == 13 && toLowerCase(element.nodeName) != 'textarea') {
+                if (isEnterKey(e) && toLowerCase(element.nodeName) != 'textarea') {
                     submit(ev || window.event, element);
                     return false;
                 } else {
