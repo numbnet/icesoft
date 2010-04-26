@@ -153,10 +153,12 @@ function AsyncConnection(logger, windowID, receiveURI) {
         stop(timeoutBomb);
         timeoutBomb = runOnce(Delay(function() {
             warn(logger, 'failed to connect, first retry...');
+            broadcast(connectionTroubleListeners);
             connect();
 
             timeoutBomb = runOnce(Delay(function() {
                 warn(logger, 'failed to connect, second try...');
+                broadcast(connectionTroubleListeners);
                 connect();
 
                 timeoutBomb = runOnce(Delay(function() {
@@ -165,8 +167,6 @@ function AsyncConnection(logger, windowID, receiveURI) {
             }, heartbeatTimeout / 2));
         }, heartbeatTimeout));
     }
-
-    ;
 
     function initializeConnection() {
         connect();
