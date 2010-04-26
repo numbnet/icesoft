@@ -33,7 +33,8 @@
 	
 	<target name="bin-samples">
 		<ant dir="${samples.dir}/icechat/grails" target="war"/>
-		<copy file="${samples.dir}/icechat/wicket/${dist.dir}/icechat-grails.war" todir="${dist.dir}"/>
+                <copy file="${samples.dir}/icechat/grails/target/icechat-grails.war" todir="${dist.dir}"/>
+
 	</target>
 
 	
