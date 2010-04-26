@@ -153,6 +153,9 @@ public class SelectInputDateRenderer extends Renderer {
         formatter.setTimeZone(selectInputDate.resolveTimeZone(context));
         formatter.applyPattern("yyyy-M-d H:m");
         try {
+            System.out.println("formatter.toPattern() = " + formatter.toPattern());
+            System.out.println("formatter.toLocalizedPattern() = " + formatter.toLocalizedPattern());
+            System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
             dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));
         } catch (ParseException e) {
 //            e.printStackTrace();
