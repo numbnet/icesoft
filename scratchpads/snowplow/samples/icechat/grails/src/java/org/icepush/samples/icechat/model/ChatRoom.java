@@ -125,7 +125,7 @@ public class ChatRoom implements Serializable{
     
     @Override
     public String toString(){
-    	return "<div><a href=\"javascript:openChatRoom('" + this.name + "');\">" + this.name + "</a></div>";
+    	return "<span><a href=\"javascript:openChatRoom('" + this.name + "');\">" + this.name + "</a></span>";
     }
 
 
