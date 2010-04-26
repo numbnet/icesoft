@@ -210,9 +210,11 @@ public class DOMUtils {
                 writer.write("</");
                 writer.write(name);
                 writer.write(">");
-                if (allowAddingWhitespace && addTrailingNewline) {
-                    writer.write("\n");
-                }
+                //ICE-5625: Adding a newline causes issues with some Mojarra tests but can also
+                //          affect general layout and value display.
+                // if (allowAddingWhitespace && addTrailingNewline) {
+                //     writer.write("\n");
+                // }
                 break;
 
             case Node.TEXT_NODE:
