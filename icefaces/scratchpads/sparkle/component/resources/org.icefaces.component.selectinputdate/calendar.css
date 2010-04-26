@@ -430,13 +430,13 @@ p#clear {
 
 /* rime */
 
+.ice-skin-rime .yui-calendar td.calcell a {
+    color: #000000;
+}
+
 .ice-skin-rime .yui-calendar td.calcell.selected a {
     background-color: #FAA620;
     color: #FFFFFF;
-}
-
-.ice-skin-rime .yui-calendar td.calcell a {
-    color: #000000;
 }
 
 .ice-skin-rime .yui-calendar a.calnav, .ice-skin-rime .yui-calendar .calweekdaycell,
@@ -537,4 +537,22 @@ p#clear {
 
 .ice-skin-rime .yui-dialog .ft span.default.yui-button-focus button {
     color: #ffffff;
+}
+
+.ice-skin-rime .yui-calendar {
+    border-collapse: separate;
+}
+
+.ice-skin-rime .yui-calendar th.calweekdaycell, .ice-skin-rime .yui-calendar td.calcell {
+    border-style: none;
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+}
+
+.ice-skin-rime .yui-calendar th.calweekdaycellright, .ice-skin-rime .yui-calendar td.calcellright {
+    border-right: 1px solid #CCCCCC;
+}
+
+.ice-skin-rime .yui-calendar td.calcellbottom {
+    border-bottom: 1px solid #CCCCCC;
 }
