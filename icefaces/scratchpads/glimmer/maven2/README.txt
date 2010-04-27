@@ -1,4 +1,4 @@
-ICEfaces-2.0 Maven2 Support
+ICEfaces-3.0 Maven2 Support
 
 
 The following utilities are provided:
@@ -7,6 +7,10 @@ The following utilities are provided:
 2) ant target "get-maven" will copy off the internet (make sure you have internet access)  the required jar to run maven from ant, to icefaces/lib
 3) ant target "install" will install icefaces-push and icefaces jar and poms to your local repository.  
 4) to install the compat jars, use the compat/maven2/build.xml target install.
+
+This really isn't necessary if you can use the snapshot repository at
+http://server.ice:8888/svn/ossrepo/maven2/snapshots
+Once the release has been made, it will take a day or so for the proper entries to be accessed.
 
 
 NOTE: The instructions above assume that you have previously installed maven2.
