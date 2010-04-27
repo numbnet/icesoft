@@ -1,4 +1,4 @@
-<project name="icefaces" default="lib" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="icefaces" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <property file="../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>
@@ -14,7 +14,7 @@
 
 
  
-    <target name="install">
+    <target name="install" depends="get-maven">
       <artifact:localRepository id="local.repository" path="${local.repository}" layout="default" />
       <artifact:pom id="icepushPom" file="icepush.pom"> 
      	 <localRepository refid="local.repository"/>
