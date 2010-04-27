@@ -24,8 +24,21 @@
 
 <project name="icepush-grails-integration" default="build.all">
 
-    <target name="build.all" >
+    <property environment="ENV" />
+    
+    <target name="build.all" depends="bin.samples" >
         <mkdir dir="dist" />
+    </target>
+
+    <target name="bin.samples" depends="check.grails" if="ENV.GRAILS_HOME">
+        <ant dir="./samples" target="bin-samples"/>
+        <copy.dist.wars fromdir="./samples/${dist.dir}"/>
+    </target>
+
+    <target name="check.grails" unless="ENV.GRAILS_HOME">
+        <echo >
+            GRAILS_HOME not set, skipping Grails builds: ${ENV.GRAILS_HOME}.
+        </echo>
     </target>
 
 </project>
