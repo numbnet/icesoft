@@ -22,7 +22,7 @@
  *
 -->
 
-<project name="icefaces-compat" default="all" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="icefaces-compat" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	
     <property file="../../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>

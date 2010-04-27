@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-comps-compat</artifactId>
-  <version>2.0-A2</version>
+  <version>2.0-A3</version>
   <packaging>jar</packaging>
   <name>ICEfaces Compatibility Components</name>
   <url>http://www.icefaces.org</url> 
