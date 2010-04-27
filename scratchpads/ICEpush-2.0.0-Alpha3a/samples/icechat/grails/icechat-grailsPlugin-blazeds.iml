@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="GrailsWeb">
+      <configuration>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../grails-blazeds/web-app" relative="/" />
+        </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="Grails" name="Grails" removed="false">
+          <file>file://$MODULE_DIR$/../grails-blazeds/web-app/WEB-INF/applicationContext.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="$SHOW_CHANGES$">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../grails-blazeds">
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/grails-app/utils" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/grails-app/controllers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/grails-app/domain" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/grails-app/taglib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/test/unit" isTestSource="$SHOW_CHANGES$" />
+      <sourceFolder url="file://$MODULE_DIR$/../grails-blazeds/test/integration" isTestSource="$SHOW_CHANGES$" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="grails-1.2.2" level="application" />
+    <orderEntry type="module" module-name="icechat-grailsPlugins" />
+    <orderEntry type="module-library" exported="">
+      <library name="Grails User Library">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../grails-blazeds/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../grails-blazeds/lib" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

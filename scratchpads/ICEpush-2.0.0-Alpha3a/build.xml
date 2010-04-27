@@ -55,6 +55,10 @@
 		<build.with.path.offset target="wicket"/>
 	</target>
 
+        <target name="dist-grails-bin" depends="dist-icepush-bin">
+                <build.with.path.offset target="grails"/>
+        </target>
+
 	<macrodef name="build.with.path.offset">
 		<attribute name="target"/>
 		<sequential>
@@ -91,6 +95,7 @@
 		<antcall target="dist-jquery-bin"/>
 		<antcall target="dist-prototype-bin"/>
 		<antcall target="dist-wicket-bin"/>
+		<antcall target="dist-grails-bin"/>
 		
 		<!-- items not in contained distribution -->
 		<!--ant target="war" dir="./samples/icechat/icefaces"/-->
