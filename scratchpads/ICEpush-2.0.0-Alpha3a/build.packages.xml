@@ -33,6 +33,7 @@
 		<antcall target="package.prototype" />
 		<antcall target="package.spring" />
 		<antcall target="package.wicket" />
+		<antcall target="package.grails" />
 	</target>
 
 	<target name="package.basic">
@@ -100,6 +101,11 @@
 		<bundle.icechat extra.includes="icechat/web/spring/**" />
 		<antcall target="zip.distribution" />
 		<delete dir="./dist/${target}" />
+	</target>
+
+	<target name="package.grails">
+		<property name="target" value="grails" />
+		<build.package />
 	</target>
 
 	<macrodef name="build.package">
