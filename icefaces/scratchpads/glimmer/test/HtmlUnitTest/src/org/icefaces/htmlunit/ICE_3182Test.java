@@ -13,7 +13,6 @@ import com.gargoylesoftware.htmlunit.html.DomChangeEvent;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 
@@ -29,23 +28,21 @@ import java.util.regex.Matcher;
  */
 public class ICE_3182Test extends TestCase {
 
-    static final Pattern end_cdata = Pattern.compile("Output: (.+)");
-
+    static final Pattern output_pattern = Pattern.compile("Output: (.+) ");
 
     /**
      *  Check that the input text fields with the canned cdata termination
-     * characters render properly during the first render. 
+     * characters render properly during the first render.
+     * @throws Exception test exception
      */
     @Test
     public void testCdataPageLoad() throws Exception {
 
         final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
-        HtmlPage page = webClient.getPage("http://localhost:9090/ICE-3182/");
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
         webClient.setAjaxController(new MyAjaxController());
 
         // check to see if the pre-rendered input fields have the correct values
-
-
         String val = getHtmlInputValue(page, "form1:inOne");
         Assert.assertEquals( "]]>" , val);
 
@@ -58,12 +55,13 @@ public class ICE_3182Test extends TestCase {
      * Post some cdata terminating characters into the input text field and
      * verify that they show up in the echoing text field, and i suppose in the
      * input text field itself. 
+     * @throws Exception test exception
      */
     @Test
     public void testPostbackResponse() throws Exception {
 
         final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
-        HtmlPage page = webClient.getPage("http://localhost:9090/ICE-3182/");
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
         webClient.setAjaxController(new MyAjaxController());
 
         // check to see if the pre-rendered input fields have the correct values
@@ -80,7 +78,7 @@ public class ICE_3182Test extends TestCase {
         // ui:include section which will cause the entire form to be updated. 
         HtmlPage page2 = clickElement(page, "form1:sendButton", webClient);
 
-        Matcher m = end_cdata.matcher( page2.asText() );
+        Matcher m = output_pattern.matcher( page2.asText() );
 
         if (m.find()) {
             String value = m.group();
@@ -95,13 +93,16 @@ public class ICE_3182Test extends TestCase {
 
 
     /**
-     * Regression test for bug ICE-3192
+     * Check to see that the input Text fields still have the correct
+     * value when the entire form is rendered. We trigger that by
+     * causing the application to include a bit more markup in the page
+     * @throws Exception test exception
      */
     @Test
     public void testFormRenderResponse() throws Exception {
 
         final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
-        HtmlPage page = webClient.getPage("http://localhost:9090/ICE-3182/");
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
         webClient.setAjaxController(new MyAjaxController());
 
         // check to see if the pre-rendered input fields have the correct values
@@ -119,7 +120,7 @@ public class ICE_3182Test extends TestCase {
         HtmlPage page2 = clickElement(page, "form1:childAdder", webClient);
 
 
-        Matcher m = end_cdata.matcher( page2.asText() );
+        Matcher m = output_pattern.matcher( page2.asText() );
 
         if (m.find()) {
             String value = m.group();
@@ -138,6 +139,154 @@ public class ICE_3182Test extends TestCase {
     }
 
 
+    /**
+     * Post some cdata terminating characters into the input text field and
+     * verify that they show up in the echoing text field, and i suppose in the
+     * input text field itself.
+     * @throws Exception test exception 
+     */
+    @Test
+    public void testXMLCommentPostback() throws Exception {
+
+        final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
+        webClient.setAjaxController(new MyAjaxController());
+
+        // check to see if the pre-rendered input fields have the correct values
+
+        String val = getHtmlInputValue(page, "form1:inOne");
+        Assert.assertEquals( "]]>" , val);
+
+        val = getHtmlInputValue(page, "form1:inTwo");
+        Assert.assertEquals( "]]>", val);
+
+        setInputTextValue(page, "form1:in1", "aaa<!--bbb");
+
+        // Simple postback
+        HtmlPage page2 = clickElement(page, "form1:sendButton", webClient);
+
+        Matcher m = output_pattern.matcher( page2.asText() );
+
+        if (m.find()) {
+            String value = m.group();
+            if (value.indexOf("aaa<!--bbb") == -1 ) {
+                Assert.fail("Failed to find expected output");
+            }
+        } else {
+            Assert.fail("Failed to find expected output");
+        }
+
+        setInputTextValue(page, "form1:in1", "aaa<! --bbb");
+        HtmlPage page3 = clickElement(page, "form1:childAdder", webClient);
+
+        m = output_pattern.matcher( page3.asText() );
+
+        if (m.find()) {
+            String value = m.group();
+            if (value.indexOf("aaa<! --bbb") == -1 ) {
+                Assert.fail("Failed to find expected output");
+            }
+        } else {
+            Assert.fail("Failed to find expected output");
+        }
+
+
+    }
+
+
+     /**
+     * Post some cdata terminating characters into the input text field and
+     * verify that they show up in the echoing text field, and i suppose in the
+     * input text field itself.
+     * @throws Exception test exception
+     */
+    @Test
+    public void testXMLCommentFull() throws Exception {
+
+        final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
+        webClient.setAjaxController(new MyAjaxController());
+
+        // check to see if the pre-rendered input fields have the correct values
+
+        String val = getHtmlInputValue(page, "form1:inOne");
+        Assert.assertEquals( "]]>" , val);
+
+        val = getHtmlInputValue(page, "form1:inTwo");
+        Assert.assertEquals( "]]>", val);
+
+        setInputTextValue(page, "form1:in1", "aaa<!--bbb");
+
+        // This is a simple event to toggle the path of a ui:include tag on the page
+        HtmlPage page2 = clickElement(page, "form1:childAdder", webClient);
+
+        // make sure new bit has arrived
+        HtmlTextInput hti = (HtmlTextInput) page2.getElementById("form1:autogen");
+        Assert.assertNotNull( hti );
+
+        Matcher m = output_pattern.matcher( page2.asText() );
+
+        if (m.find()) {
+            String value = m.group();
+            if (value.indexOf("aaa<!--bbb") == -1 ) {
+                Assert.fail("Failed to find expected output");
+            }
+        } else {
+            Assert.fail("Failed to find expected output");
+        }
+    }
+
+    /**
+     * Post some cdata terminating characters into the input text field and
+     * verify that they show up in the echoing text field, and i suppose in the
+     * input text field itself.
+     * @throws Exception test exception
+     */
+    @Test
+    public void testAdHocXMLStuff() throws Exception {
+
+        final WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
+        HtmlPage page = webClient.getPage("http://localhost:8080/ICE-3182/");
+        webClient.setAjaxController(new MyAjaxController());
+
+        // check to see if the pre-rendered input fields have the correct values
+
+        String val = getHtmlInputValue(page, "form1:inOne");
+        Assert.assertEquals( "]]>" , val);
+
+        val = getHtmlInputValue(page, "form1:inTwo");
+        Assert.assertEquals( "]]>", val);
+
+        page = checkValueInField(webClient, page,  "<![CDATA[" );
+        page = checkValueInField(webClient, page,  "<html xmlns=\"http://www.w3.org/1999/xhtml\"" );
+        page = checkValueInField(webClient, page,  "<script type=\"text/javascript\" " );
+        page = checkValueInField(webClient, page,  "<!-- abc --> " );
+        page = checkValueInField(webClient, page,  "]]> ]]> ]]>" );
+        page = checkValueInField(webClient, page,  "<!-- <![CDATA[]]> ]]> ]]> <script" );
+    }
+
+    /**
+     * 
+     */
+    private HtmlPage checkValueInField(WebClient webClient, HtmlPage page, String checkVal)
+            throws IOException {
+
+        setInputTextValue(page, "form1:in1", checkVal);
+
+        // Simple postback
+        HtmlPage page2 = clickElement(page, "form1:sendButton", webClient);
+        Matcher m = output_pattern.matcher( page2.asText() );
+
+        if (m.find()) {
+            String value = m.group();
+            if (value.indexOf(checkVal) == -1 ) {
+                Assert.fail("Failed to find expected output");
+            }
+        } else {
+            Assert.fail("Failed to find expected output --- Output follows: ");
+        }
+        return page2;
+    }
 
 
     public static junit.framework.Test suite() {
