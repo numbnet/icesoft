@@ -508,7 +508,7 @@ p#clear {
 }
 
 .ice-skin-rime .ice-calcontainer .text-input {
-    width: 188px;
+    width: 166px;
     float: left;
 }
 
@@ -539,20 +539,30 @@ p#clear {
     color: #ffffff;
 }
 
-.ice-skin-rime .yui-calendar {
-    border-collapse: separate;
+/* Clear calendar's float, using dialog inbuilt form element */
+.ice-skin-rime .ice-calcontainer .yui-panel .bd form {
+    clear: left;
 }
 
-.ice-skin-rime .yui-calendar th.calweekdaycell, .ice-skin-rime .yui-calendar td.calcell {
-    border-style: none;
-    border-top: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
+/* Have calendar squeeze upto bd bounding box */
+.ice-skin-rime .ice-calcontainer .yui-panel .bd {
+    padding: 0;
 }
 
-.ice-skin-rime .yui-calendar th.calweekdaycellright, .ice-skin-rime .yui-calendar td.calcellright {
-    border-right: 1px solid #CCCCCC;
+/* Center buttons in the footer */
+.ice-skin-rime .ice-calcontainer .yui-panel .ft .button-group {
+    text-align: center;
 }
 
-.ice-skin-rime .yui-calendar td.calcellbottom {
-    border-bottom: 1px solid #CCCCCC;
+/* Prevent border-collapse:collapse from bleeding through in IE6, IE7 */
+.ice-skin-rime .ice-calcontainer .yui-dialog.yui-overlay-hidden table {
+    *display: none;
+}
+
+.ice-skin-rime .ice-calcontainer .yui-dialog .yui-calcontainer {
+    border: none;
+}
+
+.ice-skin-rime .yui-panel .bd, .ice-skin-rime .yui-panel .ft {
+    background-color: #F5F5F5;
 }
