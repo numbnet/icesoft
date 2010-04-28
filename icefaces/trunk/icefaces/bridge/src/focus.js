@@ -42,10 +42,10 @@ function setFocus(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
 
-    This.setFocus = (function(id) {
+    var focusOn = (function(id) {
         if (id && isValidID(id)) {
             try {
-               var e = document.getElementById(id);
+                var e = document.getElementById(id);
                 if (e) {
                     setFocus(id);
                     if (e.focus) {
@@ -58,13 +58,57 @@ function setFocus(id) {
                     logger.info('Cannot set focus, no element for id [' + id + ']');
                 }
             } catch(e) {
-               logger.info('Cannot set focus ', e);
+                logger.info('Cannot set focus ', e);
             }
         } else {
             logger.debug('Focus interupted. Not Set on [' + id + ']');
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }).delayFor(100);
+
+    This.setFocus = focusOn;
+
+    var activeElement;
+    var isIE = /MSIE/.test(navigator.userAgent);
+
+    //initialize activeElement if IE
+    window.onLoad(function() {
+        if (isIE) activeElement = document.activeElement;
+    });
+
+    //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
+    //to avoid bogus 'blur' events in IE the window.onblur behavior is simulated with the help of document.onfocusout
+    //event handler
+    window.onBlur = isIE ? function(callback) {
+        registerElementListener(document, 'onfocusout', function() {
+            if (activeElement == document.activeElement) {
+                callback();
+            } else {
+                activeElement = document.activeElement;
+            }
+        });
+    } : function(callback) {
+        registerElementListener(window, 'onblur', callback);
+    };
+
+    window.onFocus = function(callback) {
+        registerElementListener(window, 'onfocus', callback);
+    };
+
+    //on window blur the ID of the focused element is just saved, not applied
+    window.onBlur(function() {
+        This.setFocus = function(id) {
+            currentFocus = id;
+            logger.debug('save pending focus for ' + id);
+        };
+    });
+
+    //on window focus the saved ID is applied and Ice.Focus.setFocus function is re-enabled
+    window.onFocus(function() {
+        This.setFocus = focusOn;
+        logger.debug('apply saved focus for ' + currentFocus);
+        focusOn(currentFocus);
+    });
 
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
