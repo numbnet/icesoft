@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.PartialViewContext;
 
+
 public class DOMResponseWriter extends ResponseWriter {
 
     private static Logger log = Logger.getLogger("org.icefaces.context.DOMResponseWriter");
@@ -51,6 +52,18 @@ public class DOMResponseWriter extends ResponseWriter {
     private List<Node> stateNodes = new ArrayList<Node>();
     private boolean suppressNextNode = false;
 
+
+    // flag to indicate we shouldn't escape 
+    private boolean dontEscape;
+
+    // flag to indicate that we're writing a 'script' or 'style' element
+    private boolean isScript;
+
+    // flag to indicate that we're writing a 'style' element
+    private boolean isStyle;
+
+
+    
     public DOMResponseWriter(Writer writer) {
         this(DOMUtils.getNewDocument(), writer);
     }
@@ -359,11 +372,18 @@ public class DOMResponseWriter extends ResponseWriter {
      *                              is <code>null</code>
      */
     public void writeText(Object text, String property) throws IOException {
-        //TODO: Escaping?  Null checks and exceptions?
+
+        if (text == null) {
+            throw new NullPointerException("WriteText method cannot write null text");
+        }
         String textString = String.valueOf(text);
         if (textString.length() == 0) {
             return;
         }
+
+        if (!dontEscape) {
+            textString = DOMUtils.escapeAnsi(textString);
+        } 
         appendToCursor(textString);
     }
 
@@ -383,7 +403,7 @@ public class DOMResponseWriter extends ResponseWriter {
      *                                   is <code>null</code>
      */
     public void writeText(char[] text, int off, int len) throws IOException {
-        //TODO: Escaping?  Null checks?
+        // escaping done in writeText(object, String) method
         if (len == 0) {
             return;
         }
@@ -528,4 +548,20 @@ public class DOMResponseWriter extends ResponseWriter {
         cursor = document.getDocumentElement();
     }
 
+
+     private boolean isScriptOrStyle(String name) {
+        if ("script".equalsIgnoreCase(name)) {
+            isScript = true;
+            dontEscape = true;
+        } else if ("style".equalsIgnoreCase(name)) {
+            isStyle = true;
+            dontEscape = true;
+        } else {
+            isScript = false;
+            isStyle = false;
+            dontEscape = false;
+        }
+
+        return (isScript || isStyle);
+    }
 }
