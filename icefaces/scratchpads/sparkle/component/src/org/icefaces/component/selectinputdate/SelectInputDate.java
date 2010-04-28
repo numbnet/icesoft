@@ -5,10 +5,13 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.component.UIOutput;
 import java.util.TimeZone;
 import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.io.IOException;
 
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
@@ -18,6 +21,10 @@ import java.text.SimpleDateFormat;
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
 })
 public class SelectInputDate extends SelectInputDateBase {
+    public SelectInputDate() {
+        loadDependency(FacesContext.getCurrentInstance());        
+    }
+    
     // Copied from 1.8.2
     /**
      * To properly function, selectInputDate needs to use the same timezone
@@ -105,5 +112,26 @@ public class SelectInputDate extends SelectInputDateBase {
         else if ("long".equals(name))   return DateFormat.LONG;
         else if ("full".equals(name))   return DateFormat.FULL;
         else                            return DateFormat.DEFAULT;
+    }
+    
+    private void loadDependency(FacesContext context) {
+        context.getViewRoot().addComponentResource(context, new UIOutput() {
+            public void encodeBegin(FacesContext context) throws IOException {
+                ResponseWriter writer = context.getResponseWriter();
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/selector/selector-min.js");
+            }
+        }, "head");        
+    }
+    
+    private void writeJavascriptExternFile(ResponseWriter writer, String url) throws IOException {
+        writer.startElement("script", this);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("src", url, null);
+        writer.endElement("script");
     }
 }
