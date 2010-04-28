@@ -13,11 +13,13 @@ import java.util.logging.Logger;
 public class ScriptWriter extends UIOutput {
 
     private HtmlForm form;
+    private String javascriptMethod;
 
     private static final Logger Log = Logger.getLogger(ScriptWriter.class.getName());
 
-    public ScriptWriter(HtmlForm form) {
-        this.form = form; 
+    public ScriptWriter(String javascriptMethod, HtmlForm form) {
+        this.form = form;
+        this.javascriptMethod = javascriptMethod; 
     }
 
     @Override
@@ -26,7 +28,7 @@ public class ScriptWriter extends UIOutput {
         try {
             writer.startElement("script", form);
             writer.writeAttribute("type", "text/javascript", "type");
-            writer.write("ice.captureEnterKey('" + form.getClientId(context) + "')");
+            writer.write(javascriptMethod + "('" + form.getClientId(context) + "')");
             writer.endElement("script");
         } catch (IOException ioe) {
             Log.severe("Exception encoding script tag: " +  ioe);

@@ -56,10 +56,8 @@ public class RedirectSubmit implements SystemEventListener {
         }
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-
-        ScriptWriter scriptWriter = new ScriptWriter(form); 
+        ScriptWriter scriptWriter = new ScriptWriter("ice.captureSubmit", form); 
         scriptWriter.setTransient(true);
-        scriptWriter.setId( form.createUniqueId(context, form.getId()) + "_redirectSubmit");
         form.getChildren().add(0, scriptWriter);
     }
 
