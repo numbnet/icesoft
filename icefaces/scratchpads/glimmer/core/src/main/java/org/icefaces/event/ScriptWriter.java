@@ -26,7 +26,7 @@ public class ScriptWriter extends UIOutput {
         try {
             writer.startElement("script", form);
             writer.writeAttribute("type", "text/javascript", "type");
-            writer.writeText("ice.captureEnterKey('" + form.getClientId(context) + "'", null);
+            writer.write("ice.captureEnterKey('" + form.getClientId(context) + "')");
             writer.endElement("script");
         } catch (IOException ioe) {
             Log.severe("Exception encoding script tag: " +  ioe);
