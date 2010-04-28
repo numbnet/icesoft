@@ -135,17 +135,9 @@ YAHOO.icefaces.calendar.configCal = function (calendar, params) {
     calendar.cfg.addProperty("amStr", {value:params.amStr});
     calendar.cfg.addProperty("pmStr", {value:params.pmStr});
     calendar.cfg.addProperty("renderAsPopup", {value:params.renderAsPopup});
-    calendar.renderEvent.subscribe(this.moreRender, null, calendar);
     if (params.ariaEnabled) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
-};
-YAHOO.icefaces.calendar.moreRender = function () {
-    var Dom = YAHOO.util.Dom,
-            Selector = YAHOO.util.Selector;
-    //    Dom.addClass(Selector.query(".calweekdayrow th:last-child", null, true), "calweekdaycellright");
-    var weekdayrow = Dom.getElementsByClassName("calweekdayrow", "tr", this.id)[0];
-    Dom.addClass(Dom.getLastChild(weekdayrow), "calweekdaycellright");
 };
 YAHOO.icefaces.calendar.aria = function() {
     var Event = YAHOO.util.Event,
