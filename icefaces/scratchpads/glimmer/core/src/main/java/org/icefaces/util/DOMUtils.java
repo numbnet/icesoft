@@ -55,10 +55,6 @@ import java.util.logging.Logger;
 
 public class DOMUtils {
 
-    private final static Pattern START_COMMENT = Pattern.compile("\\<\\!");
-    private final static Pattern END_CDATA = Pattern.compile("\\]\\]\\>");
-
-
     private static Logger log = Logger.getLogger("org.icefaces.util.DOMUtil");
 
     private static HashSet<String> TAGS_THAT_CAN_CLOSE_SHORT = new HashSet<String>(
@@ -70,7 +66,7 @@ public class DOMUtils {
 
     //TODO: look at replacing with a lighter, more targetted DOM implementation
     private static DocumentBuilder DOCUMENT_BUILDER;
-    private static boolean isDOMChecking = true;
+    private static boolean isDOMChecking = true;                          
 
     static {
         try {
@@ -218,8 +214,7 @@ public class DOMUtils {
                 break;
 
             case Node.TEXT_NODE:
-                String val = node.getNodeValue();
-                writer.write(escapeCDataCharacters( val ));
+                writer.write(  node.getNodeValue() );
                 break;
         }
     }
@@ -512,24 +507,6 @@ public class DOMUtils {
         }
 
         return buffer.toString();
-    }
-
-    /**
-     * Look for XML tokens in a text value. If found,
-     * replace with escaped values
-     *
-     * @param text text to test
-     * @return escaped String
-     */
-    public static String escapeCDataCharacters(String text) {
-        if (null == text) {
-            return "";
-        }
-        Matcher m = END_CDATA.matcher(text);
-        text = m.replaceAll ( "]]&gt;");
-
-        m = START_COMMENT.matcher(text);
-        return m.replaceAll ("&lt;!");
     }
 
     public static String escapeAnsi(String text) {
