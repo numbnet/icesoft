@@ -31,15 +31,15 @@ public class AjaxEcho {
         this.str = "";
     }
 
-     public void addChild() {
-
-        FacesContext fc = FacesContext.getCurrentInstance();
-         Map m = fc.getExternalContext().getRequestParameterMap();
-         m.put("javax.faces.partial.render", "@all");
+    /**
+     * Just a faux method to get post working. 
+     */
+    public void sendIt() {
     }
 
     public void toggleInclude() {
 
+         ResponseWriter wr = FacesContext.getCurrentInstance().getResponseWriter();
         if (filepath == null) {
             filepath = "snippet.xhtml";
         } else {
