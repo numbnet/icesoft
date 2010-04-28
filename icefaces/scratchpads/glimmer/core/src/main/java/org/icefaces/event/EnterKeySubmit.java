@@ -36,12 +36,15 @@ package org.icefaces.event;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIOutput;
+import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.io.IOException;
 
 public class EnterKeySubmit implements SystemEventListener {
 
@@ -51,16 +54,30 @@ public class EnterKeySubmit implements SystemEventListener {
             return;
         }
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
-        HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        UIOutput out = new UIOutput();
-        out.setTransient(true);
-        out.setId(form.createUniqueId(context, form.getId()) + "_captureEnterKey");
-        out.getAttributes().put("escape", "false");
-        out.setValue("<script type='text/javascript'>ice.captureEnterKey('" + form.getClientId(context) + "');</script>");
-        form.getChildren().add(0,out);
+        final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+
+        UIOutput scriptWriter = new UIOutput() {
+            public void encodeBegin(FacesContext context, UIComponent comp) {
+                ResponseWriter writer = context.getResponseWriter();
+                try {
+                    writer.startElement("script", form);
+                    writer.writeAttribute("type", "text/javascript", "type");
+                    writer.writeText("ice.captureEnterKey('" + form.getClientId(context) + "'", null);
+                    writer.endElement("script");
+                } catch (IOException ioe) {
+
+                } 
+            }
+        };
+
+        scriptWriter.setTransient(true);
+        scriptWriter.setId( form.createUniqueId(context, form.getId()) + "_captureEnterKey");
+        form.getChildren().add(0, scriptWriter);
+
     }
 
     public boolean isListenerForSource(Object source) {
+        boolean ret =  (source instanceof HtmlForm);
         return source instanceof HtmlForm;
     }
 }
