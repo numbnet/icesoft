@@ -51,8 +51,8 @@ if (!window.ice.icefaces) {
         //include element.js
         //include http.js
         //include submit.js
-        namespace.singleSubmit = singleSubmit;
-        namespace.ss = singleSubmit;
+        namespace.se = singleSubmitExecuteThis;
+        namespace.ser = singleSubmitExecuteThisRenderThis;
         namespace.submit = submit;
         namespace.s = submit;
 
@@ -94,6 +94,16 @@ if (!window.ice.icefaces) {
         namespace.onAfterUpdate = function(callback) {
             append(afterUpdateListeners, callback);
         };
+
+        function configurationOf(element) {
+            return detect(parents(element), function(e) {
+                return e.configuration;
+            }).configuration;
+        }
+
+        function deltaSubmit(element) {
+            return configurationOf(element).deltaSubmit;
+        }
 
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
@@ -196,7 +206,7 @@ if (!window.ice.icefaces) {
             });
 
             onLoad(window, function() {
-                if (namespace.configuration.deltaSubmit) {
+                if (deltaSubmit(f)) {
                     f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
                 }
             });

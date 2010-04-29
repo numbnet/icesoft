@@ -22,11 +22,14 @@ import java.util.logging.Logger;
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
     private final static Logger log = Logger.getLogger(BridgeSetup.class.getName());
-    private final Configuration configuration;
     private int seed = 0;
+    private boolean standardFormSerialization;
+    private boolean deltaSubmit;
 
     public BridgeSetup() {
-        configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
+        Configuration configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
+        deltaSubmit = configuration.getAttributeAsBoolean("deltaSubmit", false);
+        standardFormSerialization = configuration.getAttributeAsBoolean("standardFormSerialization", false);
     }
 
     public boolean isListenerForSource(Object source) {
@@ -77,13 +80,14 @@ public class BridgeSetup implements SystemEventListener {
             icefacesSetup.getAttributes().put("escape", "false");
             icefacesSetup.setValue("<script id='" + clientID + "' type=\"text/javascript\">" +
                     //define bridge configuration
-                    "ice.configuration = {" +
-                    "deltaSubmit: " + configuration.getAttributeAsBoolean("deltaSubmit", false) +
+                    "document.getElementById('" + clientID + "').parentNode.configuration = {" +
+                    "deltaSubmit: " + deltaSubmit + "," +
+                    //associate viewID with its corresponding DOM fragment
+                    "viewID: '" + viewID + "'," +
+                    "standardFormSerialization: " + standardFormSerialization +
                     "};" +
                     //bridge needs the window ID
                     "window.ice.window = '" + windowID + "';" +
-                    //associate viewID with its corresponding DOM fragment
-                    "document.getElementById('" + clientID + "').parentNode.viewID='" + viewID + "';" +
                     "</script>");
             root.addComponentResource(context, icefacesSetup, "body");
 
