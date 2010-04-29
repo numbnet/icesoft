@@ -1,4 +1,5 @@
-var singleSubmit;
+var singleSubmitExecuteThis;
+var singleSubmitExecuteThisRenderThis;
 var submit;
 (function() {
     function formOf(element) {
@@ -6,9 +7,11 @@ var submit;
     }
 
     function viewIDOf(element) {
-        return detect(parents(element), function(e) {
-            return e.viewID;
-        }).viewID;
+        return configurationOf(element).viewID;
+    }
+
+    function standardFormSerialization(element) {
+        return configurationOf(element).standardFormSerialization;
     }
 
     function serializeEventToOptions(event, element, options) {
@@ -28,7 +31,7 @@ var submit;
         }
     }
 
-    singleSubmit = function (event, element, additionalParameters) {
+    function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var clonedElement = element.cloneNode(true);
         var form = document.getElementById(viewID);
@@ -36,26 +39,43 @@ var submit;
             form.appendChild(clonedElement);
 
             event = event || null;
-            var options = {execute: clonedElement.id, render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
+            var options = {execute: execute, render: render, 'ice.window': namespace.window, 'ice.view': viewID};
             serializeEventToOptions(event, element, options);
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
         } finally {
             form.removeChild(clonedElement);
         }
+    }
+
+    singleSubmitExecuteThis = function(event, element, additionalParameters) {
+        if (standardFormSerialization(element)) {
+            return fullSubmit('@this', '@all', event, element, additionalParameters);
+        } else {
+            return singleSubmit('@this', '@all', event, element, additionalParameters);
+        }
+    };
+
+    singleSubmitExecuteThisRenderThis = function(event, element, additionalParameters) {
+        if (standardFormSerialization(element)) {
+            return fullSubmit('@this', '@this', event, element, additionalParameters);
+        } else {
+            return singleSubmit('@this', '@this', event, element, additionalParameters);
+        }
     };
 
     var addPrefix = 'patch+';
     var removePrefix = 'patch-';
-    submit = function (event, element, additionalParameters) {
+
+    function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
         var viewID = viewIDOf(element);
-        var options = {execute: '@all', render: '@all', 'ice.window': namespace.window, 'ice.view': viewID};
+        var options = {execute: execute, render: render, 'ice.window': namespace.window, 'ice.view': viewID};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
-        if (namespace.configuration.deltaSubmit) {
+        if (deltaSubmit(element)) {
             var form = formOf(element);
             var previousParameters = form.previousParameters || HashSet();
             var currentParameters = HashSet(jsf.getViewState(form).split('&'));
@@ -103,5 +123,9 @@ var submit;
         } else {
             jsf.ajax.request(element, event, options);
         }
+    }
+
+    submit = function(event, element, additionalParameters) {
+        return fullSubmit('@all', '@all', event, element, additionalParameters);
     };
 })();
