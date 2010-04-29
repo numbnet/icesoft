@@ -40,6 +40,7 @@ import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 
@@ -74,5 +75,9 @@ public class ConfigHandler extends TagHandler {
             attributes.put( EnvUtils.ARIA_ENABLED, 
                     new Boolean(ariaEnabled.getValue()) );
         }
+        //TODO: remove when JSF 2.0 Partial State Saving fixed
+        //touched in the head
+        facesContext.getViewRoot().addComponentResource( facesContext, 
+                new UIOutput(), "head" );
     }
 }
