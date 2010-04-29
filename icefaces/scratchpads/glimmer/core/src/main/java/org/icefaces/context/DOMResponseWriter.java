@@ -254,6 +254,7 @@ public class DOMResponseWriter extends ResponseWriter {
             suppressNextNode = false;
             return;
         }
+        isScriptOrStyle( name ); 
         //TODO:  Does this ever happen - ie does startDocument not get called for some reason?
         if (null == document) {
             document = DOMUtils.getNewDocument();
