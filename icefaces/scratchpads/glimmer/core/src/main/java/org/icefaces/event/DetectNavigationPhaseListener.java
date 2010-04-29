@@ -39,38 +39,42 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class DetectNavigationPhaseListener implements PhaseListener {
-    public static String RESTORE_VIEW_ID =
-            DetectNavigationPhaseListener.class.getName() + "RESTORE_VIEW_ID";
-    public static String RENDER_VIEW_ID =
-            DetectNavigationPhaseListener.class.getName() + "RENDER_VIEW_ID";
-    public static String NAVIGATED =
-            DetectNavigationPhaseListener.class.getName() + "NAVIGATED";
 
-    public void afterPhase(PhaseEvent phaseEvent) {
-        FacesContext facesContext = phaseEvent.getFacesContext();
-        if (PhaseId.RESTORE_VIEW == phaseEvent.getPhaseId()) {
-            UIViewRoot viewRoot = facesContext.getViewRoot();
-            if (viewRoot != null) {
-                facesContext.getAttributes().put(RESTORE_VIEW_ID, viewRoot.getViewId());
-            }
+    private static Logger log = Logger.getLogger("org.icefaces.event.DetectNavigationPhaseListener");
+
+    public static String NAVIGATION_MARK = "org.icefaces.navigationMark";
+
+    public void beforePhase(PhaseEvent phaseEvent) {
+        FacesContext fc = phaseEvent.getFacesContext();
+        UIViewRoot root = fc.getViewRoot();
+        if( root == null ){
+            return;
+        }
+
+        Object mark = root.getViewMap().get(NAVIGATION_MARK);
+        if( mark == null ){
+            root.getViewMap().put(NAVIGATION_MARK,NAVIGATION_MARK);
         }
     }
 
-    public void beforePhase(PhaseEvent phaseEvent) {
-        FacesContext facesContext = phaseEvent.getFacesContext();
-        if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId()) {
-            Object restoreViewId = facesContext.getAttributes()
-                    .get(RESTORE_VIEW_ID);
-            if (!facesContext.getViewRoot().getViewId().equals(restoreViewId)) {
-                facesContext.getAttributes().put(NAVIGATED, Boolean.TRUE);
-            }
+    public void afterPhase(PhaseEvent phaseEvent) {
+        FacesContext fc = phaseEvent.getFacesContext();
+        UIViewRoot root = fc.getViewRoot();
+        if( root == null ){
+            return;
+        }
+
+        Object mark = root.getViewMap().get(NAVIGATION_MARK);
+        if( mark == null ){
         }
     }
 
     public PhaseId getPhaseId() {
-        return PhaseId.ANY_PHASE;
+        return PhaseId.INVOKE_APPLICATION;
     }
 
 }

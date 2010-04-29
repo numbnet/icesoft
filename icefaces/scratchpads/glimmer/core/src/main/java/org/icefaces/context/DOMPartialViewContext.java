@@ -107,9 +107,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             return;
         }
 
-        boolean didNavigate = Boolean.TRUE.equals( 
-                facesContext.getAttributes()
-                .get(DetectNavigationPhaseListener.NAVIGATED) );
         if (phaseId == PhaseId.RENDER_RESPONSE) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
@@ -185,7 +182,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.startEval();
                     partialWriter.write("window.location.reload();");
                     partialWriter.endEval();
-                } else if (didNavigate) {
+                } else if (didNavigate()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
                     DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
                     partialWriter.endUpdate();
@@ -217,6 +214,20 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
+    }
+
+    private boolean didNavigate(){
+        UIViewRoot root = facesContext.getViewRoot();
+        if( root == null ){
+            return false;
+        }
+        if(!root.getViewMap().containsKey(DetectNavigationPhaseListener.NAVIGATION_MARK)){
+            //If the navigation mark is missing, then a new view root was created
+            //during INVOKE_APPLICATION phase indicating that navigation took place.
+            return true;
+        }
+
+        return false;
     }
 
     private Node[] renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds)  {
