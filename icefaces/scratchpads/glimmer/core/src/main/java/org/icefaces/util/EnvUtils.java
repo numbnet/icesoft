@@ -75,12 +75,11 @@ public class EnvUtils {
 
         //If the h:head and h:body components are available, then we can check to see if
         //the view is configured to use ICEfaces (default is to enable ICEfaces).
-        Map attributes = facesContext.getAttributes();
-        Object icefacesRender = attributes.get(ICEFACES_RENDER);
+        Object icefacesRender = viewMap.get(ICEFACES_RENDER);
         if (null == icefacesRender) {
             icefacesRender = new Boolean(
                     EnvConfig.getEnvConfig(facesContext).getAutoRender());
-            attributes.put(ICEFACES_RENDER, icefacesRender);
+            viewMap.put(ICEFACES_RENDER, icefacesRender);
         }
         //using .equals on Boolean to obtain boolean robustly
         return (Boolean.TRUE.equals(icefacesRender));
@@ -91,8 +90,9 @@ public class EnvUtils {
     }
 
     public static boolean isAriaEnabled(FacesContext facesContext) {
-        Map attributes = facesContext.getAttributes();
-        Object ariaEnabled = attributes.get(ARIA_ENABLED);
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        Object ariaEnabled = viewMap.get(ARIA_ENABLED);
         if (null == ariaEnabled) {
             return EnvConfig.getEnvConfig(facesContext).isAriaEnabled();
         }
