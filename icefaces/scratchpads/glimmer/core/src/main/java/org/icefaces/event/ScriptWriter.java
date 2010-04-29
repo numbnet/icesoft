@@ -12,14 +12,25 @@ import java.util.logging.Logger;
  */
 public class ScriptWriter extends UIOutput {
 
+    private String javascriptContents;
+    private String id;
     private HtmlForm form;
-    private String javascriptMethod;
 
     private static final Logger Log = Logger.getLogger(ScriptWriter.class.getName());
 
-    public ScriptWriter(String javascriptMethod, HtmlForm form) {
+    /**
+     * Write an adhoc snippet of un-escaped javascript. It is apparently unnecessary for
+     * javascript elements to have id's, but if one is passed, it's used. A side effect
+     * of having an id is to cause the script tag to be enclosed in a <span> tag
+     * that itself has an id.
+     *
+     * @param javascriptContents The intended contents intended for between the <script></script> tags
+     * @param optionalId An id for the script element.
+     */
+    public ScriptWriter(HtmlForm form, String javascriptContents, String optionalId) {
         this.form = form;
-        this.javascriptMethod = javascriptMethod; 
+        this.javascriptContents = javascriptContents;
+        this.id = optionalId; 
     }
 
     @Override
@@ -28,8 +39,11 @@ public class ScriptWriter extends UIOutput {
         try {
             writer.startElement("script", form);
             writer.writeAttribute("type", "text/javascript", "type");
-            writer.write(javascriptMethod + "('" + form.getClientId(context) + "')");
+            writer.write(javascriptContents);
             writer.endElement("script");
+            if (id != null) {
+                this.setId( id);
+            } 
         } catch (IOException ioe) {
             Log.severe("Exception encoding script tag: " +  ioe);
         }
