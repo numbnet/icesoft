@@ -40,9 +40,9 @@ import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 
 import java.io.IOException;
 
@@ -52,6 +52,7 @@ import org.icefaces.util.EnvUtils;
 public class ConfigHandler extends TagHandler {
     private final TagAttribute render;
     private final TagAttribute ariaEnabled;
+
     public ConfigHandler(TagConfig config) {
         super(config);
         this.render = this.getAttribute("render");
@@ -59,25 +60,24 @@ public class ConfigHandler extends TagHandler {
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        FacesContext facesContext = ctx.getFacesContext();
-        Map attributes = facesContext.getAttributes();
-        //default value
-        String renderValue = "true"; 
+        FacesContext fc = ctx.getFacesContext();
+        UIViewRoot root = fc.getViewRoot();
+        Map viewMap = root.getViewMap();
+
+        String renderValue = "true";
         if (render != null) {
             renderValue = render.getValue();
         }
-        attributes.put( EnvUtils.ICEFACES_RENDER, 
-            new Boolean("true".equalsIgnoreCase(renderValue)) );
-        
-        //set it only if defined, so if its not defined, let the application level 
-        //context param to take it over
+        viewMap.put(EnvUtils.ICEFACES_RENDER,
+                new Boolean("true".equalsIgnoreCase(renderValue)));
+
         if (ariaEnabled != null) {
-            attributes.put( EnvUtils.ARIA_ENABLED, 
+            viewMap.put( EnvUtils.ARIA_ENABLED,
                     new Boolean(ariaEnabled.getValue()) );
         }
+
         //TODO: remove when JSF 2.0 Partial State Saving fixed
         //touched in the head
-        facesContext.getViewRoot().addComponentResource( facesContext, 
-                new UIOutput(), "head" );
+        root.addComponentResource( fc,  new UIOutput(), "head" );
     }
 }
