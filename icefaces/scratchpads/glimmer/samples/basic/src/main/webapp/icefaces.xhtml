@@ -34,7 +34,15 @@
         <h:commandButton id="reload" value="reload"/>
         <br/>
         <h:commandButton action="/icefaces.jsf" value="ICEfaces Page" />
-        &nbsp;&nbsp;
+        <br/>
+        <h:commandButton action="/icefaces.jsf" value="ICEfaces Page (ajax - all)">
+            <f:ajax execute="@all" render="@all"/>
+        </h:commandButton>
+        <br/>
+        <h:commandButton action="/icefaces.jsf" value="ICEfaces Page (ajax - form)">
+            <f:ajax execute="@this" render="form1"/>
+        </h:commandButton>
+        <br/>
         <h:commandButton action="/nonicefaces.jsf" value="Stock JSF Page" />
         <br/>
         <h:outputLink value="icefaces.jsf">ICEfaces Page</h:outputLink>
