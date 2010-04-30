@@ -76,8 +76,10 @@ public class ConfigHandler extends TagHandler {
                     new Boolean(ariaEnabled.getValue()) );
         }
 
-        //TODO: remove when JSF 2.0 Partial State Saving fixed
-        //touched in the head
+        //TODO: ICE-5675 remove when JSF 2.0 Partial State Saving fixed
+        //Touch the head and the body to ensure the state
+        //saving strategy is chosen correctly.
         root.addComponentResource( fc,  new UIOutput(), "head" );
+        root.addComponentResource( fc,  new UIOutput(), "body" );
     }
 }
