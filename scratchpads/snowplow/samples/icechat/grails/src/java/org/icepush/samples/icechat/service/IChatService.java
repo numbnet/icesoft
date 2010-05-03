@@ -41,6 +41,8 @@ public interface IChatService {
 
     public UserChatSession loginToChatRoom(String chatRoom, User user);
     
+    public UserChatSession loginToChatRoom(long id, User user);
+    
     public ChatRoom getChatRoom(String roomName);
 
     public void logoutOfChatRoom(String chatRoom, User user);
@@ -49,10 +51,13 @@ public interface IChatService {
 
     public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index);
 
-    public void createNewChatRoom(String name);
+    public ChatRoom createNewChatRoom(String name);
     
-    public void sendNewMessage(String chatRoom, User user, String message)
-    	throws UnauthorizedException;
+    public ChatRoom createNewChatRoomWithId(String name);
+    
+    public void sendNewMessage(String chatRoom, User user, String message);
+    
+    public void sendNewMessage(long roomId, User user, String message);
 
     public void createNewUser(String username);
     
@@ -65,4 +70,6 @@ public interface IChatService {
     public UserChatSession getUserChatSession(String roomName, User user);
     
     public User getSessionUser(String sessionToken);
+    
+    public void deleteUser(User user);
 }

@@ -73,15 +73,11 @@ public abstract class BaseChatManagerViewControllerBean extends BaseChatRoomCont
 	
 	public void sendNewMessage(){
 		if( currentChatSessionHolder.getSession() != null ){
-			try{
-				sendNewMessage(currentChatSessionHolder.getSession().getRoom().getName(), 
+			sendNewMessage(currentChatSessionHolder.getSession().getRoom().getName(), 
 						newChatRoomMessageBean.getMessage(),
 						loginController.getCurrentUser());
-				newChatRoomMessageBean.setMessage(null);
-			}
-			catch(UnauthorizedException e){
-				e.printStackTrace();
-			}
+			newChatRoomMessageBean.setMessage(null);
+			
 		}
 		
 	}
