@@ -41,9 +41,9 @@ public abstract class BaseLoginControllerBean implements Serializable, ILoginCon
 
 	protected String userName;
 	
-	protected IChatService chatService;
+	protected transient IChatService chatService;
 	
-	protected IPushRequestContext pushRequestContext;
+	protected transient IPushRequestContext pushRequestContext;
 
 	private User currentUser;
 
