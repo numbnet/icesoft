@@ -42,14 +42,29 @@ public class ChatRoom implements Serializable{
     private Date created;
 
     private List<Message> messages = new ArrayList<Message>();
+    
+    private long id;
 
     public ChatRoom(){
         created = new Date();
         userChatSessions = new ArrayList<UserChatSession>();
         messages = new ArrayList<Message>();
     }
+    
+    public ChatRoom(long id){
+    	super();
+    	this.id = id;        
+    }
 
-    /**
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
      * @return the name
      */
     public String getName() {
@@ -125,7 +140,7 @@ public class ChatRoom implements Serializable{
     
     @Override
     public String toString(){
-    	return "<span><a href=\"javascript:openChatRoom('" + this.name + "');\">" + this.name + "</a></span>";
+    	return "<div><button onclick=\"openChatRoom('" + this.name + "');\" style=\"width:100%;\">" + this.name + "</button></div>";
     }
 
 

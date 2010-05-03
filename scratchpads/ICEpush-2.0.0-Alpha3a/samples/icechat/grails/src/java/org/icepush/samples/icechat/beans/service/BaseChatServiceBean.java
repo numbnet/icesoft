@@ -82,8 +82,10 @@ public abstract class BaseChatServiceBean implements IChatService{
 			return null;
 		}
 	}
-
 	
+	public UserChatSession loginToChatRoom(long id, User user){
+		return loginToChatRoom(Long.toString(id),user);
+	}	
 	
 	public List<Message> getChatRoomMessagesFromIndex(String chatRoom, int index) {
 		
@@ -104,18 +106,35 @@ public abstract class BaseChatServiceBean implements IChatService{
 	}
 	
 	
-	public void createNewChatRoom(String chatRoomName) {
+	public ChatRoom createNewChatRoom(String chatRoomName) {
+		ChatRoom newRoom = null;
 		if (chatRooms.get(chatRoomName) == null) {
-			ChatRoom newRoom = new ChatRoom();
+			newRoom = new ChatRoom();
 			newRoom.setName(chatRoomName);
 			newRoom.setCreated(new Date());
+			newRoom.setId(chatRooms.size());
 			chatRooms.put(chatRoomName, newRoom);
 		} else {
 			LOG.warning("not creating chat room name=" + chatRoomName
 					+ " already exists");
-		}		
+		}	
+		return newRoom;
 	}
-
+	
+	public ChatRoom createNewChatRoomWithId(String chatRoomName) {
+		ChatRoom newRoom = null;
+		if (chatRooms.get(chatRoomName) == null) {
+			newRoom = new ChatRoom();
+			newRoom.setName(chatRoomName);
+			newRoom.setCreated(new Date());
+			newRoom.setId(chatRooms.size());
+			chatRooms.put(Long.toString(newRoom.getId()), newRoom);
+		} else {
+			LOG.warning("not creating chat room name=" + chatRoomName
+					+ " already exists");
+		}	
+		return newRoom;
+	}
 	
 	public void createNewUser(String name) {
 		User user = new User();
@@ -164,6 +183,14 @@ public abstract class BaseChatServiceBean implements IChatService{
 					room.getUserChatSessions().add(session);
 					user.getChatSessions().add(session);
 				}
+				else{
+					for( UserChatSession existingSession : user.getChatSessions() ){
+						if( existingSession.getRoom() == room ){
+							session = existingSession;
+							break;
+						}						
+					}
+				}
 			}else{
 				LOG.warning("error joining chatroom: user can't be null");
 			}
@@ -179,15 +206,15 @@ public abstract class BaseChatServiceBean implements IChatService{
 		if (room != null) {
 			
 			if (user != null) {
-                List<UserChatSession> toRemove = new ArrayList();
-				for (UserChatSession chatSession : user.getChatSessions()) {
-					if (chatSession.getRoom().getName().equals(chatRoom)) {
-                        toRemove.add(chatSession);
+				Iterator<UserChatSession> sessionIter = user.getChatSessions().iterator();
+				while (sessionIter.hasNext()) {
+					UserChatSession chatSession = sessionIter.next();
+					if (chatSession.getRoom().getName().equals(chatRoom) || chatRoom.equals(Long.toString(chatSession.getRoom().getId()))) {
+						chatSession.getRoom().getUserChatSessions().remove(chatSession);
+						sessionIter.remove();					
+						chatSession = null;
 					}
 				}
-                for(UserChatSession chatSession : toRemove){
-                   user.getChatSessions().remove(chatSession);
-                }
 			}else{
 				LOG.warning("error leaving chatroom: user can't be null");
 			}
@@ -226,6 +253,7 @@ public abstract class BaseChatServiceBean implements IChatService{
 		}
 		
 		User user = new User();
+		user.setId(users.size());
 		user.setName(selectedName);
 		user.setSessionToken(UUID.randomUUID().toString());
 		users.put(user.getSessionToken(), user);
@@ -234,24 +262,22 @@ public abstract class BaseChatServiceBean implements IChatService{
 	}
 
 
-	public void sendNewMessage(String chatRoom, User user, String message)
-			throws UnauthorizedException {
+	public void sendNewMessage(String chatRoom, User user, String message){
 		ChatRoom room = getChatRoom(chatRoom);
 		if (room != null) {
 			if (!room.isUserInRoom(user))
-				throw new UnauthorizedException("user '" + user.getSessionToken()
-						+ "' not in room '" + chatRoom + "', ignoring message");
-			for (UserChatSession chatSession : user.getChatSessions()) {
-				if (chatSession.getRoom().getName().equals(chatRoom)) {
-					Message msg = new Message();
-					msg.setId(Long.valueOf(chatSession.getRoom().getMessages().size()+1));
-					msg.setChatRoom(chatSession.getRoom());
-					msg.setCreated(new Date());
-					msg.setMessage(message);
-					msg.setUserChatSession(chatSession);
-					chatSession.getRoom().getMessages().add(msg);
-					chatSession.setCurrentDraft(null);
-				}
+				return;			
+			UserChatSession chatSession = user.getChatSessionByRoom(room);
+			if( chatSession != null ){
+				Message msg = new Message();
+				msg.setId(Long.valueOf(room.getMessages().size()+1));
+				msg.setChatRoom(room);
+				msg.setCreated(new Date());
+				msg.setMessage(message);
+				msg.setUserChatSession(chatSession);
+				chatSession.getRoom().getMessages().add(msg);
+				chatSession.setCurrentDraft(null);
+			
 			}
 		} else {
 			LOG.warning("chat room '" + chatRoom
@@ -259,18 +285,29 @@ public abstract class BaseChatServiceBean implements IChatService{
 		}
 		
 	}
+	
+	public void sendNewMessage(long roomId, User user, String message){
+		sendNewMessage(Long.toString(roomId),user,message);
+	}
 
 
 	public void updateCurrentDraft(String draft, String roomName, User user) {
-		UserChatSession session = getUserChatSession(roomName, user);
+		UserChatSession session = user.getChatSessionByRoom(getChatRoom(roomName));
 		if (session != null) {
 			session.setCurrentDraft(draft);
-		}
-		
+		}		
 	}
 
 	public User getSessionUser(String sessionToken){
 		return users.get(sessionToken);
+	}
+	
+	public void deleteUser(User user){
+		List<UserChatSession> sessions = new ArrayList<UserChatSession>(user.getChatSessions());
+		for( UserChatSession session : sessions ){
+    		logoutOfChatRoom(Long.toString(session.getRoom().getId()), user);
+    	}
+		this.users.remove(user.getSessionToken());
 	}
 
 }

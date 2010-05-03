@@ -171,7 +171,7 @@
         <div class="chatRoom" id="chatRoom">
           <form id="chatRoomForm">
             <div class="chatRoomHeader">
-              Chat Room '${session['currentChatRoom']}'
+              Chat Room '${session['currentChatRoom'].name}'
             </div>
             <div class="chatRoomContainer">
               <div class="chatRoomUsers">
