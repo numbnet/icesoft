@@ -484,9 +484,7 @@ YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps,
             if (jsProps[prop] == prevJSProps[prop]) continue;
             render = true;
             if (!(prop == "pageDate" || prop == "selectedDate")) {
-                if (calendar) {
-                    calendar.destroy();
-                }
+                calendar.destroy();
                 document.getElementById(clientId)['JSContext'] = null;
                 document.getElementById(clientId).innerHTML = "";
                 break;
