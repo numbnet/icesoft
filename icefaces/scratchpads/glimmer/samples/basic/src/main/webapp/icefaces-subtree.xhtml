@@ -61,15 +61,15 @@
         <h:outputText value="Reload entire page: "/>
         <h:commandButton id="reload" value="reload"/>
         <br/>
-        <h:commandButton action="/icefaces.jsf" value="ICEfaces Page" />
+        <h:commandButton id="btn2" action="/icefaces.jsf" value="ICEfaces Page" />
         &nbsp;&nbsp;
-        <h:commandButton action="/nonicefaces.jsf" value="Stock JSF Page" />
+        <h:commandButton id="btn3" action="/nonicefaces.jsf" value="Stock JSF Page" />
         <br/>
-        <h:outputLink value="icefaces.jsf">ICEfaces Page</h:outputLink>
+        <h:outputLink id="lnk1" value="icefaces.jsf">ICEfaces Page</h:outputLink>
         &nbsp;&nbsp;
-        <h:outputLink value="nonicefaces.jsf">Stock JSF Page</h:outputLink>
+        <h:outputLink id="lnk2" value="nonicefaces.jsf">Stock JSF Page</h:outputLink>
         <br/>
-        <h:outputText value="#{basic.time}"/>
+        <h:outputText id="time" value="#{basic.time}"/>
         <br/>
         <h:messages/>
     </h:form>
