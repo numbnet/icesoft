@@ -359,7 +359,7 @@ public class TestResourceImpl extends ServletFacesTestCase {
     }
 
 
-    public void beginUserAgentNeedsUpdate2(WebRequest req) {
+  /*  public void beginUserAgentNeedsUpdate2(WebRequest req) {
         long
                 curTime = System.currentTimeMillis(),
                 threeHoursAgo = curTime - 10800000L;
@@ -373,7 +373,7 @@ public class TestResourceImpl extends ServletFacesTestCase {
         Date headerValue = new Date(curTime);
 
         req.addHeader("If-Modified-Since", format.format(headerValue));
-    }
+    } */
 
     public void testUserAgentNeedsUpdate2() throws Exception {
 

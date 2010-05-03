@@ -488,7 +488,7 @@ System.out.println("before handler creates resource of jsf.js");
     // Validate a 304 is returned when a request contains the If-Modified-Since
     // request header and the resource hasn't changed on the server side.
     //
-    public void beginHandleResourceRequest3(WebRequest req) {
+ /*   public void beginHandleResourceRequest3(WebRequest req) {
         req.setURL("localhost:8080", "/test", "/javax.faces.resource/duke-nv.gif.faces", null, null);
         long 
                 curTime = System.currentTimeMillis(),
@@ -504,7 +504,7 @@ System.out.println("before handler creates resource of jsf.js");
         
         req.addParameter("ln", "nvLibrary");
         req.addHeader("If-Modified-Since", format.format(headerValue));
-    }
+    } */
 
 
     public void testHandleResourceRequest3() throws Exception {
