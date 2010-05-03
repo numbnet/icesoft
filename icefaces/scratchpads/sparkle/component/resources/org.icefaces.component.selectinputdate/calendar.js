@@ -122,7 +122,7 @@ YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
     var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
     calValueEl.set("value", dateStr, true);
     if (this.params.singleSubmit) {
-        ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+        ice.ser(evt, Dom.get(rootDivId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
         });
     }
@@ -335,7 +335,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
-                ice.singleSubmit(null, Dom.get(rootDivId), function(p) {
+                ice.ser(null, Dom.get(rootDivId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                 });
             }
@@ -361,7 +361,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
-            ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+            ice.ser(evt, Dom.get(rootDivId), function(p) {
                 p(calValueEl.get("name"), calValueEl.get("value"));
             });
         }
@@ -385,7 +385,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
             var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
             calValueEl.setAttributes({value:dateStr}, true);
             if (params.singleSubmit || params.renderInputField) {
-                ice.singleSubmit(evt, Dom.get(rootDivId), function(p) {
+                ice.ser(evt, Dom.get(rootDivId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                     if (!params.singleSubmit && params.renderInputField) {
                         p("formatSubmit", "formatSubmit");
@@ -484,7 +484,9 @@ YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps,
             if (jsProps[prop] == prevJSProps[prop]) continue;
             render = true;
             if (!(prop == "pageDate" || prop == "selectedDate")) {
-                calendar.destroy();
+                if (calendar) {
+                    calendar.destroy();
+                }
                 document.getElementById(clientId)['JSContext'] = null;
                 document.getElementById(clientId).innerHTML = "";
                 break;
