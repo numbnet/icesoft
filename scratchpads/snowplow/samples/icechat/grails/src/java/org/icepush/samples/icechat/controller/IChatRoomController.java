@@ -38,5 +38,6 @@ public interface IChatRoomController {
 	public void sendNewMessage(String chatRoomName, String newMessage, User user) throws UnauthorizedException;
 
 	public void setChatService(IChatService chatService);
+	public IChatService getChatService();
 
 }

@@ -37,7 +37,7 @@ public abstract class BaseChatRoomControllerBean implements Serializable, IChatR
 	
 	private static final long serialVersionUID = 3046754615536057774L;
 
-	private IChatService chatService;
+	protected IChatService chatService;
 	
 	protected IPushRequestContext pushRequestContext;
 	
@@ -71,8 +71,7 @@ public abstract class BaseChatRoomControllerBean implements Serializable, IChatR
 		return session;
 	}
 	
-	public void sendNewMessage(String chatRoomName, String newMessage, User user)
-		throws UnauthorizedException{
+	public void sendNewMessage(String chatRoomName, String newMessage, User user){
 		chatService.sendNewMessage(chatRoomName, user, newMessage);
 		PushContext pushContext = this.getPushRequestContext().getPushContext();
         pushContext.push(chatRoomName);
@@ -81,5 +80,10 @@ public abstract class BaseChatRoomControllerBean implements Serializable, IChatR
 	public void setChatService(IChatService chatService){
             this.chatService = chatService;
 	}
+	
+	public IChatService getChatService(){
+        return chatService;
+}
+
 
 }

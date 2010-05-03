@@ -37,9 +37,18 @@ public class User implements Serializable{
 
     private String sessionToken;
     private Date lastTouch = new Date();
+    private long id;
     
     
-    public User(){
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public User(){
         chatSessions = new ArrayList<UserChatSession>();
     }
 
@@ -98,6 +107,13 @@ public class User implements Serializable{
 	public Date getLastTouch() {
 		return lastTouch;
 	}
-    
+	
+	public UserChatSession getChatSessionByRoom(ChatRoom room){
+		for( UserChatSession session : chatSessions ){
+			if( session.getRoom() == room)
+				return session;
+		}
+		return null;
+	}
     
 }

@@ -33,7 +33,7 @@ import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 public class ChatService extends BaseChatServiceBean {
 
-	public synchronized void createNewChatRoom(String name) {
+	public synchronized ChatRoom createNewChatRoom(String name) {
 		super.createNewChatRoom(name);
 	}
 
