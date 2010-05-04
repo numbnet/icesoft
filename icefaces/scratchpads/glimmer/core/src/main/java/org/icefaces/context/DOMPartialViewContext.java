@@ -184,6 +184,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.endEval();
                 } else if (didNavigate()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
+                    writeXMLPreamble(outputWriter);
                     DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
                     partialWriter.endUpdate();
                     renderState();
@@ -213,6 +214,20 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             }
         } else {
             super.processPartial(phaseId);
+        }
+    }
+
+    private void writeXMLPreamble(Writer writer) throws IOException {
+        //Add the xml and DOCTYPE preambles if they were originally there
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIViewRoot root = fc.getViewRoot();
+        Object val = root.getAttributes().get(DOMResponseWriter.XML_MARKER);
+        if( val != null ){
+            writer.write(val.toString());
+        }
+        val = root.getAttributes().get(DOMResponseWriter.DOCTYPE_MARKER);
+        if( val != null ){
+            writer.write(val.toString());
         }
     }
 
