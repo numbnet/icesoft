@@ -220,6 +220,12 @@ if (!window.ice.icefaces) {
             }, FormPost, noop);
         });
 
+        //re-write DOM to persist current markup before navigating to a different page
+        onBeforeUnload(window, function() {
+            document.write("<html>" + document.documentElement.innerHTML + "</html>");
+            document.close();
+        });
+
         onKeyPress(document, function(ev) {
             var e = $event(ev);
             if (isEscKey(e)) cancelDefaultAction(e);
