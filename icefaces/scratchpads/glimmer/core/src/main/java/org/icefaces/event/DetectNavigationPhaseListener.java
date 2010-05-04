@@ -39,42 +39,35 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class DetectNavigationPhaseListener implements PhaseListener {
-
-    private static Logger log = Logger.getLogger("org.icefaces.event.DetectNavigationPhaseListener");
 
     public static String NAVIGATION_MARK = "org.icefaces.navigationMark";
 
     public void beforePhase(PhaseEvent phaseEvent) {
-        FacesContext fc = phaseEvent.getFacesContext();
-        UIViewRoot root = fc.getViewRoot();
-        if( root == null ){
-            return;
-        }
-
-        Object mark = root.getViewMap().get(NAVIGATION_MARK);
-        if( mark == null ){
-            root.getViewMap().put(NAVIGATION_MARK,NAVIGATION_MARK);
-        }
     }
 
     public void afterPhase(PhaseEvent phaseEvent) {
+
+        // ICE-5671:  after the view is restored, add a marker to the view map
+        // so that if navigation occurs during the lifecycle, the marker will
+        // not be there when checking during the render phase.  This is important
+        // during partial response, postback style navigation where the view id
+        // doesn't change.
         FacesContext fc = phaseEvent.getFacesContext();
         UIViewRoot root = fc.getViewRoot();
-        if( root == null ){
+        if (root == null) {
             return;
         }
 
         Object mark = root.getViewMap().get(NAVIGATION_MARK);
-        if( mark == null ){
+        if (mark == null) {
+            root.getViewMap().put(NAVIGATION_MARK, NAVIGATION_MARK);
         }
     }
 
     public PhaseId getPhaseId() {
-        return PhaseId.INVOKE_APPLICATION;
+        return PhaseId.RESTORE_VIEW;
     }
 
 }
