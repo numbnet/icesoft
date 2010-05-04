@@ -26,6 +26,7 @@ import org.icefaces.util.DOMUtils;
 import org.w3c.dom.*;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -43,8 +44,8 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private static final String OLD_DOM = "org.icefaces.old-dom";
     private static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
-    private static final String XML_MARKER = "<?xml";
-    private static final String DOCTYPE_MARKER = "<!DOCTYPE";
+    protected static final String XML_MARKER = "<?xml";
+    protected static final String DOCTYPE_MARKER = "<!DOCTYPE";
 
     private Writer writer;
     private Document document;
@@ -120,11 +121,21 @@ public class DOMResponseWriter extends ResponseWriter {
 
             //Write out the <?xml or <!DOCTYPE preamble as text rather than
             //trying to handle them as DOM nodes, but only if it's not an
-            //Ajax request.  In that case we ignore them.
+            //Ajax request.  If it's an Ajax request, then we need to store
+            //them as view attributes and rewrite them out on partial responses
+            //that are postbacks.
             if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
                 PartialViewContext pvc = FacesContext.getCurrentInstance().getPartialViewContext();
                 if( pvc == null || !pvc.isAjaxRequest() ){
                     writer.write(data);
+                } else {
+                    if(data.startsWith(XML_MARKER)){
+                        storeViewAttribute(XML_MARKER,data);
+                    }
+
+                    if(data.startsWith(DOCTYPE_MARKER)){
+                        storeViewAttribute(DOCTYPE_MARKER,data);
+                    }
                 }
                 return;
             }
@@ -135,6 +146,12 @@ public class DOMResponseWriter extends ResponseWriter {
                 log.log(Level.INFO, "cannot write " + new String(cbuf, off, len), e);
             }
         }
+    }
+
+    private void storeViewAttribute(String key, Object value){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIViewRoot root = fc.getViewRoot();
+        root.getAttributes().put(key, value);
     }
 
     public void write(String str) throws IOException {
