@@ -59,9 +59,6 @@ import com.sun.faces.cactus.ServletFacesTestCase;
 import com.sun.faces.cactus.TestingUtil;
 import com.sun.faces.util.Util;
 import com.sun.faces.util.RequestStateManager;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
 import javax.faces.context.FacesContext;
 import org.apache.cactus.WebRequest;
 
@@ -69,12 +66,6 @@ import org.apache.cactus.WebRequest;
  * Test class for com.sun.faces.application.resource.ResourceImpl
  */
 public class TestResourceImpl extends ServletFacesTestCase {
-
-    /* HTTP Date format required by the HTTP/1.1 RFC */
-    private static final String RFC1123_DATE_PATTERN =
-          "EEE, dd MMM yyyy HH:mm:ss zzz";
-
-    private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
 
     public TestResourceImpl() {
         super("TestResourceImpl");
@@ -227,7 +218,7 @@ public class TestResourceImpl extends ServletFacesTestCase {
                 viC = new VersionInfo("1.0", null);
         this.verifyEqualsContractPositive(viA, viB, viC);
 
-        ResourceHelper helper = new ClasspathResourceHelper();
+        ResourceHelper helper = ClasspathResourceHelper.getInstance();
         FacesContext context = this.getFacesContext();
 
         LibraryInfo
@@ -336,44 +327,13 @@ public class TestResourceImpl extends ServletFacesTestCase {
         // set the creation date of the ResourceHandler back in time so that
         // if the header was present it would return true - the lack of the header
         // should result in true being returned in this case
-        /*ICEfaces ResourceHandler does not support attribute creationTime so comment these 
-        test out */
-        Date date = new Date();
-        date.setYear(1980);
-//        long origTime = (Long) TestingUtil.invokePrivateMethod("getCreationTime",
-//                                                               null,
-//                                                               null,
-//                                                               ResourceHandlerImpl.class,
-//                                                               handler);
-//        TestingUtil.invokePrivateMethod("setCreationTime",
-//                                        new Class[] { Long.TYPE },
-//                                        new Object[] { date.getTime() },
-//                                        ResourceHandlerImpl.class,
-//                                        handler);
-//        assertTrue(resource.userAgentNeedsUpdate(getFacesContext()));
-//        TestingUtil.invokePrivateMethod("setCreationTime",
-//                                        new Class[] { Long.TYPE },
-//                                        new Object[] { origTime },
-//                                        ResourceHandlerImpl.class,
-//                                        handler);
+//   handler);
     }
 
 
-  /*  public void beginUserAgentNeedsUpdate2(WebRequest req) {
-        long
-                curTime = System.currentTimeMillis(),
-                threeHoursAgo = curTime - 10800000L;
-        facesService.setModificationTime("resources/duke-nv.gif",
-                threeHoursAgo);
-        facesService.setModificationTime("resources/nvLibrary/duke-nv.gif",
-                threeHoursAgo);
-        SimpleDateFormat format =
-                new SimpleDateFormat(RFC1123_DATE_PATTERN, Locale.US);
-        format.setTimeZone(GMT);
-        Date headerValue = new Date(curTime);
-
-        req.addHeader("If-Modified-Since", format.format(headerValue));
-    } */
+    public void beginUserAgentNeedsUpdate2(WebRequest req) {
+        req.addHeader("If-Modified-Since", "Sat, 29 Oct 1994 19:43:31 GMT");
+    }
 
     public void testUserAgentNeedsUpdate2() throws Exception {
 
