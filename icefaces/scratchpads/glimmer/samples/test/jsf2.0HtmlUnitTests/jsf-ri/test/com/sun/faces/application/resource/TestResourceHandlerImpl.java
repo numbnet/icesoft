@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2010 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -55,11 +55,7 @@ import com.sun.faces.cactus.ServletFacesTestCase;
 import com.sun.faces.config.WebConfiguration;
 import com.sun.faces.util.Util;
 import com.sun.faces.application.ApplicationAssociate;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import javax.faces.application.Application;
+import com.sun.faces.application.resource.ResourceManager;
 import org.apache.cactus.WebRequest;
 import org.apache.cactus.WebResponse;
 
@@ -67,13 +63,6 @@ import org.apache.cactus.WebResponse;
  * Tests com.sun.faces.application.resource.ResourceHandlerImpl
  */
 public class TestResourceHandlerImpl extends ServletFacesTestCase {
-
-    /* HTTP Date format required by the HTTP/1.1 RFC */
-    private static final String RFC1123_DATE_PATTERN =
-          "EEE, dd MMM yyyy HH:mm:ss zzz";
-
-    private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-
 
      public TestResourceHandlerImpl() {
         super("TestResourceHandlerImpl");
@@ -101,12 +90,11 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
 
 
     public void testAjaxIsAvailable() {
-System.out.println("in testAjaxIsAvailable");
+
         ResourceHandler handler = getFacesContext().getApplication().getResourceHandler();
-System.out.println("handler = "+handler);
         assertTrue(handler != null);
-  //      assertTrue(handler instanceof ResourceHandlerImpl);
-System.out.println("before handler creates resource of jsf.js");
+        assertTrue(handler instanceof ResourceHandler);
+
         assertNotNull(handler.createResource("jsf.js", "javax.faces"));
     }
 
@@ -136,8 +124,7 @@ System.out.println("before handler creates resource of jsf.js");
 
         ResourceHandler handler = getFacesContext().getApplication().getResourceHandler();
         assertTrue(handler != null);
-        System.out.println("*******testCreateResource handler="+handler);
- //       assertTrue(handler instanceof ResourceHandlerImpl);
+        assertTrue(handler instanceof ResourceHandler);
 
         Resource resource = handler.createResource("duke-nv.gif");
         assertTrue(resource != null);
@@ -357,16 +344,8 @@ System.out.println("before handler creates resource of jsf.js");
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
 
-	try {
-	    handler.handleResourceRequest(getFacesContext());
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
-
+        handler.handleResourceRequest(getFacesContext());
     }
 
     public void endUserSpecifiedResourceExclude1(WebResponse res) {
@@ -382,16 +361,8 @@ System.out.println("before handler creates resource of jsf.js");
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
 
-	try {
-	    assertTrue(handler.isResourceRequest(getFacesContext()));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
-
+        assertTrue(handler.isResourceRequest(getFacesContext()));
     }
 
     public void endUserSpecifiedResourceExclude2(WebResponse res) {
@@ -408,16 +379,8 @@ System.out.println("before handler creates resource of jsf.js");
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
 
-	try {
-	    assertTrue(handler.isResourceRequest(getFacesContext()));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
-
+        assertTrue(handler.isResourceRequest(getFacesContext()));
     }
 
     public void endUserSpecifiedResourceExclude3(WebResponse res) {
@@ -488,23 +451,11 @@ System.out.println("before handler creates resource of jsf.js");
     // Validate a 304 is returned when a request contains the If-Modified-Since
     // request header and the resource hasn't changed on the server side.
     //
- /*   public void beginHandleResourceRequest3(WebRequest req) {
+    public void beginHandleResourceRequest3(WebRequest req) {
         req.setURL("localhost:8080", "/test", "/javax.faces.resource/duke-nv.gif.faces", null, null);
-        long 
-                curTime = System.currentTimeMillis(),
-                threeHoursAgo = curTime - 10800000L;
-        facesService.setModificationTime("resources/duke-nv.gif", 
-                threeHoursAgo);
-        facesService.setModificationTime("resources/nvLibrary/duke-nv.gif",
-                threeHoursAgo);
-        SimpleDateFormat format =
-                new SimpleDateFormat(RFC1123_DATE_PATTERN, Locale.US);
-        format.setTimeZone(GMT);
-        Date headerValue = new Date(curTime);
-        
         req.addParameter("ln", "nvLibrary");
-        req.addHeader("If-Modified-Since", format.format(headerValue));
-    } */
+        req.addHeader("If-Modified-Since", "Sat, 29 Oct 1994 19:43:31 GMT");
+    }
 
 
     public void testHandleResourceRequest3() throws Exception {
@@ -576,29 +527,21 @@ System.out.println("before handler creates resource of jsf.js");
         WebConfiguration config = WebConfiguration.getInstance();
         config.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.CompressableMimeTypes, "image/gif");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        app.setResourceHandler(handler);
-
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(response.containsHeader("content-encoding"));
-        } finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(response.containsHeader("content-encoding"));
 
     }
 
@@ -617,11 +560,8 @@ System.out.println("before handler creates resource of jsf.js");
         WebConfiguration config = WebConfiguration.getInstance();
         config.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.CompressableMimeTypes, "image/gif");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext()
               .getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
@@ -630,17 +570,14 @@ System.out.println("before handler creates resource of jsf.js");
               .getResource("META-INF/resources/nvLibrary-jar/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        try {
-            assertTrue(Arrays.equals(control, test));
-            assertTrue(response.containsHeader("content-length"));
-            assertTrue(response.containsHeader("last-modified"));
-            assertTrue(response.containsHeader("expires"));
-            assertTrue(response.containsHeader("etag"));
-            assertTrue(response.containsHeader("content-type"));
-            assertTrue(response.containsHeader("content-encoding"));
-        } finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(response.containsHeader("content-encoding"));
+
     }
 
     //==========================================================================
@@ -658,26 +595,19 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"));
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-	try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(!response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(!response.containsHeader("content-encoding"));
 
     }
 
@@ -698,9 +628,6 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext()
               .getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
@@ -709,17 +636,13 @@ System.out.println("before handler creates resource of jsf.js");
               .getExternalContext().getResource("/resources/nvLibrary/duke-nv.gif"));
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-	try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(!response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(!response.containsHeader("content-encoding"));
 
     }
 
@@ -740,28 +663,20 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), false);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-	try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(!response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(!response.containsHeader("content-encoding"));
 
-	    
     }
 
 
@@ -783,27 +698,19 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), false);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-	try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(!response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
-
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(!response.containsHeader("content-encoding"));
 
     }
 
@@ -826,26 +733,19 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-	try {
-	    assertTrue(Arrays.equals(control, test));
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(Arrays.equals(control, test));
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(response.containsHeader("content-encoding"));
 
     }
 
@@ -866,9 +766,6 @@ System.out.println("before handler creates resource of jsf.js");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
-        Application app = getFacesContext().getApplication();
-        ResourceHandler oldResourceHandler = app.getResourceHandler();
-        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
@@ -876,16 +773,12 @@ System.out.println("before handler creates resource of jsf.js");
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
         assertTrue(Arrays.equals(control, test));
-	try {
-	    assertTrue(response.containsHeader("content-length"));
-	    assertTrue(response.containsHeader("last-modified"));
-	    assertTrue(response.containsHeader("expires"));
-	    assertTrue(response.containsHeader("etag"));
-	    assertTrue(response.containsHeader("content-type"));
-	    assertTrue(!response.containsHeader("content-encoding"));
-	} finally {
-            app.setResourceHandler(oldResourceHandler);
-        }
+        assertTrue(response.containsHeader("content-length"));
+        assertTrue(response.containsHeader("last-modified"));
+        assertTrue(response.containsHeader("expires"));
+        assertTrue(response.containsHeader("etag"));
+        assertTrue(response.containsHeader("content-type"));
+        assertTrue(!response.containsHeader("content-encoding"));
 
     }
 
