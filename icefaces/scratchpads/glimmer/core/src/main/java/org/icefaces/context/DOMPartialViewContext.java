@@ -164,25 +164,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     newDOM = writer.getOldDocument();
                 }
 
-
-                //reload page in case "html" or "head" element is updated
-                boolean reload = false;
-                for (int i = 0; i < diffs.length; i++) {
-                    Element element = (Element) diffs[i];
-                    String tag = element.getTagName();
-                    if ("html".equals(tag) || "head".equals(tag)) {
-                        reload = true;
-                        break;
-                    }
-                }
-
                 partialWriter.startDocument();
 
-                if (reload) {
-                    partialWriter.startEval();
-                    partialWriter.write("window.location.reload();");
-                    partialWriter.endEval();
-                } else if (shouldUpdateFullPage()) {
+                if (shouldUpdateFullPage()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
                     writeXMLPreamble(outputWriter);
                     DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
@@ -237,7 +221,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
         //A postback indicates that the view root may have changed (which may not be the proper
         //behaviour) but that we don't want a full page update - just the minimum diff.
-        if(facesContext.isPostback() ){
+        if (facesContext.isPostback()) {
             return false;
         }
 
