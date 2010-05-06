@@ -182,7 +182,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.startEval();
                     partialWriter.write("window.location.reload();");
                     partialWriter.endEval();
-                } else if (didNavigate()) {
+                } else if (shouldUpdateFullPage()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
                     writeXMLPreamble(outputWriter);
                     DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
@@ -231,7 +231,16 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private boolean didNavigate() {
+    //If this Ajax request is not a postback and we've detected that navigation has taken place during
+    //the lifecycle, then we should send back an update for the full page.
+    private boolean shouldUpdateFullPage() {
+
+        //A postback indicates that the view root may have changed (which may not be the proper
+        //behaviour) but that we don't want a full page update - just the minimum diff.
+        if(facesContext.isPostback() ){
+            return false;
+        }
+
         UIViewRoot root = facesContext.getViewRoot();
         if (root == null) {
             return false;
