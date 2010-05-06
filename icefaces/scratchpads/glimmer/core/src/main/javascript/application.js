@@ -105,6 +105,19 @@ if (!window.ice.icefaces) {
             return configurationOf(element).deltaSubmit;
         }
 
+        function viewIDOf(element) {
+            return configurationOf(element).viewID;
+        }
+
+        function appendHiddenInputElement(form, name, value) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('name', name);
+            hiddenInput.setAttribute('value', value);
+            hiddenInput.setAttribute('type', 'hidden');
+            form.appendChild(hiddenInput);
+            return hiddenInput;
+        }
+
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
             switch (e.status) {
@@ -129,17 +142,6 @@ if (!window.ice.icefaces) {
 
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
-
-        //propagate window ID -- this strategy works for POSTs sent by Mojarra
-        onLoad(window, function() {
-            each(document.getElementsByTagName('form'), function(f) {
-                var i = document.createElement('input');
-                i.setAttribute('name', 'ice.window');
-                i.setAttribute('value', window.ice.window);
-                i.setAttribute('type', 'hidden');
-                f.appendChild(i);
-            });
-        });
 
         var viewIDs = [];
 
@@ -209,6 +211,10 @@ if (!window.ice.icefaces) {
                 if (deltaSubmit(f)) {
                     f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
                 }
+
+                //propagate window and view IDs -- this strategy works for POSTs sent by Mojarra
+                appendHiddenInputElement(f, 'ice.window', window.ice.window);
+                appendHiddenInputElement(f, 'ice.view', viewIDOf(f));
             });
         };
 

@@ -6,10 +6,6 @@ var submit;
         return element.form ? element.form : enclosingForm(element);
     }
 
-    function viewIDOf(element) {
-        return configurationOf(element).viewID;
-    }
-
     function standardFormSerialization(element) {
         return configurationOf(element).standardFormSerialization;
     }
@@ -70,8 +66,7 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
-        var viewID = viewIDOf(element);
-        var options = {execute: execute, render: render, 'ice.window': namespace.window, 'ice.view': viewID};
+        var options = {execute: execute, render: render};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
@@ -89,17 +84,13 @@ var submit;
                 };
             }
 
+            var viewID = viewIDOf(element);
             var deltaSubmitForm = document.getElementById(viewID);
             var clonedElement = element.cloneNode(true);
             var appendedElements = [];
 
             function createHiddenInputInDeltaSubmitForm(name, value) {
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                deltaSubmitForm.appendChild(input);
-                append(appendedElements, input);
+                append(appendedElements, appendHiddenInputElement(deltaSubmitForm, name, value));
             }
 
             try {
