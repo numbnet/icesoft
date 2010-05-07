@@ -94,7 +94,11 @@ public class TextareaRenderer extends BaseInputRenderer {
 
         String currentValue = getValue(facesContext, uiComponent);
         if (currentValue != null && currentValue.length() > 0) {
-            writer.write(DOMUtils.escapeAnsi(currentValue));
+            if (DOMUtils.escapeIsRequired(uiComponent)) {
+                writer.writeText(currentValue, null);
+            } else {
+                writer.write(DOMUtils.escapeAnsi(currentValue));
+            } 
         }
 
         writer.endElement(HTML.TEXTAREA_ELEM);
