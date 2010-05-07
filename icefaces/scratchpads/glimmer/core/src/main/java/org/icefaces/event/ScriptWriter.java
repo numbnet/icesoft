@@ -4,7 +4,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import java.util.logging.Logger;
 
 /**
@@ -27,15 +26,10 @@ public class ScriptWriter extends UIOutput {
      * @param javascriptContents The intended contents intended for between the <script></script> tags
      * @param optionalId An id for the script element.
      */
-    public ScriptWriter(UIComponent parent, String javascriptContents, String optionalId) {
+    public ScriptWriter(UIComponent parent, final String javascriptContents, String optionalId) {
         this.parent = parent; 
-        this.javascriptContents = javascriptContents;
-        // prevent the rendering of id's on these scripts
-        setRendererType("javax.faces.resource.Script");
         this.setTransient(true);
-        // Script Renderer expects a name attribute and renders a warning
-        // without them
-        getAttributes().put("name", "noname");
+        this.javascriptContents = javascriptContents;
         if (optionalId != null) {
             this.setId(parent.getId() + optionalId);
         }
@@ -48,6 +42,15 @@ public class ScriptWriter extends UIOutput {
             writer.startElement("script", parent);
             writer.writeAttribute("type", "text/javascript", "type");
             writer.write(javascriptContents);
+        } catch (Exception ioe) {
+            Log.severe("Exception encoding script tag: " +  ioe);
+        }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) {
+        ResponseWriter writer = context.getResponseWriter();
+        try {
             writer.endElement("script");
         } catch (Exception ioe) {
             Log.severe("Exception encoding script tag: " +  ioe);
