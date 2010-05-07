@@ -15,24 +15,24 @@
 </h:head>
 <h:body class="ice-skin-rime">
     <h:panelGroup id="calDiv1">
-        <h:form>
+        <h:form id="calForm">
             <h:panelGroup id="calDiv2">
                 <h:outputText value="renderAsPopup"/>
-                <h:selectBooleanCheckbox value="#{calendarBean.renderAsPopup}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onchange="ice.submit(event, this);"/>
                 <h:outputText value="renderInputField (popup only)"/>
-                <h:selectBooleanCheckbox value="#{calendarBean.renderInputField}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}" onchange="ice.submit(event, this);"/>
                 <br/>
                 <h:outputText value="singleSubmit"/>
-                <h:selectBooleanCheckbox value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
                 <h:outputText value="pattern"/>
-                <h:selectOneMenu value="#{calendarBean.pattern}" onchange="ice.submit(event, this);">
+                <h:selectOneMenu id="pattern" value="#{calendarBean.pattern}" onchange="ice.submit(event, this);">
                     <f:selectItem itemLabel="MM/dd/yyyy" itemValue="MM/dd/yyyy"/>
                     <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
                     <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
                 </h:selectOneMenu>
                 <br/>
                 <h:outputText value="output: "/>
-                <h:outputText value="#{calendarBean.selectedDate}">
+                <h:outputText id="output" value="#{calendarBean.selectedDate}">
                     <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
                 </h:outputText>
                 <br/>

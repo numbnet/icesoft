@@ -86,7 +86,13 @@ YAHOO.widget.Calendar.prototype.get = function(key) {
     } else if (key == "selectedDate") {
         key = "selected";
     }
-    this.cfg.getProperty(key);
+    var value = this.cfg.getProperty(key);
+    if (key == "pagedate") {
+        value = YAHOO.util.Date.format(value, {format:"%m/%Y"}, "en-US");
+    } else if (key == "selected") {
+        value = YAHOO.util.Date.format(new Date(value[0][0], value[0][1] - 1, value[0][2]), {format:"%x"}, "en-US");
+    }
+    return value;
 };
 YAHOO.widget.Calendar.prototype.set = function(key, value) {
     if (key == "pageDate") {
@@ -122,7 +128,7 @@ YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
     var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
     calValueEl.set("value", dateStr, true);
     if (this.params.singleSubmit) {
-        ice.ser(evt, Dom.get(rootDivId), function(p) {
+        ice.se(evt, Dom.get(rootDivId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
         });
     }
@@ -138,6 +144,7 @@ YAHOO.icefaces.calendar.configCal = function (calendar, params) {
     if (params.ariaEnabled) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
+    this.yuiComponent = calendar;
 };
 YAHOO.icefaces.calendar.aria = function() {
     var Event = YAHOO.util.Event,
@@ -307,7 +314,7 @@ YAHOO.icefaces.calendar.aria = function() {
     {fn:kl1Handler, correctScope:this});
     kl1.enable();
 };
-YAHOO.icefaces.calendar.init = function(params, bindYUI) {
+YAHOO.icefaces.calendar.init = function(params) {
     this.params = params;
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
@@ -316,6 +323,8 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         Calendar = YAHOO.widget.Calendar;
 
     var rootDivId = params.divId; this.rootDivId = rootDivId;
+    Dom.setAttribute(rootDivId, "className", "");
+    Dom.get(rootDivId).innerHTML = "";
     var rootDiv = new Element(rootDivId);
     var calValueId = rootDivId + "_value";
     var calValueHtmlEl = Dom.get(calValueId);
@@ -335,7 +344,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
-                ice.ser(null, Dom.get(rootDivId), function(p) {
+                ice.se(null, Dom.get(rootDivId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                 });
             }
@@ -348,11 +357,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         });
         this.configCal(calendar, params);
         calendar.selectEvent.subscribe(dateSelectHandler, calendar, true);
-//        calendar.render();
-//        bindYUI(calendar);
-        var component = document.getElementById(rootDivId);
-        component['JSContext'] = new JSContext();
-        component['JSContext'].setComponent(calendar);
+        calendar.render();
         return;
     }
     var inputId = rootDivId + "_input";
@@ -361,7 +366,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
-            ice.ser(evt, Dom.get(rootDivId), function(p) {
+            ice.se(evt, Dom.get(rootDivId), function(p) {
                 p(calValueEl.get("name"), calValueEl.get("value"));
             });
         }
@@ -385,7 +390,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
             var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
             calValueEl.setAttributes({value:dateStr}, true);
             if (params.singleSubmit || params.renderInputField) {
-                ice.ser(evt, Dom.get(rootDivId), function(p) {
+                ice.se(evt, Dom.get(rootDivId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                     if (!params.singleSubmit && params.renderInputField) {
                         p("formatSubmit", "formatSubmit");
@@ -414,11 +419,7 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
         navigator:true
     });
     this.configCal(calendar, params);
-//    calendar.render();
-//    bindYUI(calendar);
-    component = document.getElementById(rootDivId);
-    component['JSContext'] = new JSContext();
-    component['JSContext'].setComponent(calendar);
+    calendar.render();
 
     var toggleClick = function() {
         if (this.hasClass("open-popup")) {
@@ -465,38 +466,28 @@ YAHOO.icefaces.calendar.init = function(params, bindYUI) {
 };
 YAHOO.icefaces.calendar.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
     var lang = YAHOO.lang;
-    var params = lang.merge({divId:clientId}, jsProps);
+    var params = lang.merge({divId:clientId}, jsProps, jsfProps);
 //    console.log(lang.dump(params));
-    this.init(params, bindYUI);
+    this.init(params);
+    bindYUI(this.yuiComponent);
 };
 YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps, events) {
     var lang = YAHOO.lang;
-    var render = true;
-    var jsContext = ice.component.getJSContext(clientId);
-    var calendar, prevJSProps;
-    if (jsContext) {
-        calendar = jsContext.getComponent();
-        prevJSProps = jsContext.getJSProps();
-        render = false;
-        for (var prop in jsProps) {
+    var context = ice.component.getJSContext(clientId);
+    if (context && context.isAttached()) {
+        var prevProps = lang.merge(context.getJSProps(), context.getJSFProps());
+        var currProps = lang.merge(jsProps, jsfProps);
+        for (var prop in currProps) {
 //            console.log(prop);
-            if (!lang.hasOwnProperty(jsProps, prop)) continue;
-            if (jsProps[prop] == prevJSProps[prop]) continue;
-            render = true;
-            if (!(prop == "pageDate" || prop == "selectedDate")) {
-                calendar.destroy();
-                document.getElementById(clientId)['JSContext'] = null;
-                document.getElementById(clientId).innerHTML = "";
-                break;
-            }
+            if (!lang.hasOwnProperty(currProps, prop)) continue;
+            if (currProps[prop] == prevProps[prop]) continue;
+            context.getComponent().destroy();
+            document.getElementById(clientId)['JSContext'] = null;
+            JSContext[clientId] = null;
+            break;
         }
     }
     ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
-    jsContext = ice.component.getJSContext(clientId);
-    jsContext.setJSProps(jsProps);
-    if (render) {
-        jsContext.getComponent().render();
-    }
 };
 YAHOO.icefaces.calendar.getInstance = function(clientId, callback) {
     ice.component.getInstance(clientId, callback, this);

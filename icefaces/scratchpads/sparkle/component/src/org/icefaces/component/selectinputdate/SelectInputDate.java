@@ -124,6 +124,7 @@ public class SelectInputDate extends SelectInputDateBase {
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js");
                 writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/selector/selector-min.js");
+                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource.js");
             }
         }, "head");        
     }
