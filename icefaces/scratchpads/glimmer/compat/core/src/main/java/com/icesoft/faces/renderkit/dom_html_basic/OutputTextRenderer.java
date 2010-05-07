@@ -61,9 +61,10 @@ public class OutputTextRenderer extends BaseRenderer{
             facesContext, uiComponent, rawValue);
         boolean valueTextRequiresEscape = DOMUtils.escapeIsRequired(uiComponent);
         if (valueTextRequiresEscape) {
-            convertedValue = DOMUtils.escapeAnsi(convertedValue);
-        } 
-        writer.write(convertedValue);
+            writer.writeText( convertedValue, null);
+        } else {
+            writer.write(convertedValue);
+        }
         if (!requiresSpan(uiComponent)) return;
         writer.endElement(HTML.SPAN_ELEM);
     }
