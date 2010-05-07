@@ -58,8 +58,7 @@ public class RedirectSubmit implements SystemEventListener {
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         ScriptWriter scriptWriter = new ScriptWriter(form,
                                                      "ice.captureSubmit(\'" + form.getClientId(context) + "\')",
-                                                     form.getClientId(context) + "_captureRedirect");
-        scriptWriter.setTransient(true);
+                                                     "_captureSubmit");
         form.getChildren().add(0, scriptWriter);
     }
 

@@ -55,12 +55,10 @@ public class EnterKeySubmit implements SystemEventListener {
         }
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        ScriptWriter scriptWriter = new ScriptWriter(form,
-                                                     "ice.captureEnterKey(\'" + form.getClientId(context) + "\')",
-                                                     form.getClientId(context)+ "_captureEnter"); 
-        scriptWriter.setTransient(true);
+       ScriptWriter scriptWriter = new ScriptWriter(form,
+                                                     "ice.captureSubmit(\'" + form.getClientId(context) + "\')",
+                                                     "_captureEnter");
         form.getChildren().add(0, scriptWriter);
-
     }
 
     public boolean isListenerForSource(Object source) {
