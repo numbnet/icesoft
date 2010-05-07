@@ -1,0 +1,502 @@
+/**
+ * NOTE:
+ * If this file defines a completely new skin, then uncomment the core styles
+ * below. If this file simply aims at overriding certain aspects of another
+ * existing skin, then leave the core styles below comented out.
+ */
+
+/* ----- BEGIN CORE STYLING ----- */
+
+/*
+
+.yui-calcontainer
+{
+	_overflow: hidden;
+	float: left;
+	position: relative;
+}
+.yui-calcontainer iframe
+{
+	border: none;
+	height: 100%;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 0;
+}
+.yui-calcontainer iframe.fixedsize
+{
+	height: 50em;
+	left: -1px;
+	top: -1px;
+	width: 50em;
+}
+.yui-calcontainer.multi .groupcal
+{
+	float: left;
+	position: relative;
+	z-index: 1;
+}
+.yui-calcontainer .title
+{
+	position: relative;
+	z-index: 1;
+}
+.yui-calcontainer .close-icon
+{
+	overflow: hidden;
+	position: absolute;
+	text-indent: -10000em;
+	z-index: 1;
+}
+.yui-calendar
+{
+	position: relative;
+}
+.yui-calendar .calnavleft
+{
+	overflow: hidden;
+	position: absolute;
+	text-indent: -10000em;
+	z-index: 1;
+}
+.yui-calendar .calnavright
+{
+	overflow: hidden;
+	position: absolute;
+	text-indent: -10000em;
+	z-index: 1;
+}
+.yui-calendar .calheader
+{
+	position: relative;
+	text-align: center;
+	width: 100%;
+}
+.yui-calcontainer .yui-cal-nav-mask
+{
+	_height: 0;
+	_width: 0;
+	display: none;
+	height: 100%;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+.yui-calcontainer .yui-cal-nav
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	z-index: 3;
+}
+.yui-calcontainer .yui-cal-nav .yui-cal-nav-btn
+{
+	display: inline-block;
+	display: -moz-inline-box;
+}
+.yui-calcontainer .yui-cal-nav .yui-cal-nav-btn button
+{
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	display: block;
+	display: inline-block;
+	overflow: visible;
+}
+.yui-calendar .calbody a:hover
+{
+	background: inherit;
+}
+p#clear
+{
+	clear: left;
+	padding-top: 10px;
+}
+
+*/
+
+/* ----- END CORE STYLING ----- */
+
+
+
+/**
+ * NOTE:
+ * Certain aspects of the YUI SAM skin are overriden by the ICE RIME skin below,
+ * including the left and right arrow images.
+ */
+
+/* ----- BEGIN YUI SAM SKIN STYLING ----- */
+
+/* -- Calendar bounding box -- */
+.yui-skin-sam .yui-calcontainer
+{
+
+}
+
+/* -- Calendargroup bounding box -- */
+.yui-skin-sam .yui-calcontainer.multi
+{
+
+}
+
+/* -- Bounding box for each calendar group page -- */
+.yui-skin-sam .yui-calcontainer.multi .groupcal
+{
+
+}
+
+/* -- Title bar -- */
+.yui-skin-sam .yui-calcontainer .title
+{
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.yui-skin-sam .yui-calcontainer.multi .title
+{
+
+}
+
+.yui-skin-sam .yui-calcontainer.withtitle
+{
+
+}
+
+/* -- Close button -- */
+.yui-skin-sam .yui-calcontainer .calclose
+{
+	background-image: url(close-button.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
+}
+
+/* -- Calendar table -- */
+.yui-skin-sam .yui-calendar
+{
+
+}
+
+/* -- Navbar bounding box -- */
+.yui-skin-sam .yui-calendar .calhead
+{
+
+}
+
+/* -- Navbar text container -- */
+.yui-skin-sam .yui-calendar .calheader
+{
+
+}
+
+.yui-skin-sam .yui-calendar .calheader img
+{
+
+}
+
+/* -- Navbar left arrow -- */
+.yui-skin-sam .yui-calendar .calnavleft
+{
+	background-image: url(left-arrow.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
+}
+
+/* -- Navbar right arrow -- */
+.yui-skin-sam .yui-calendar .calnavright
+{
+	background-image: url(right-arrow.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
+}
+
+/* -- Weekday header row -- */
+.yui-skin-sam .yui-calendar .calweekdayrow
+{
+
+}
+
+.yui-skin-sam .yui-calendar .calweekdayrow th
+{
+
+}
+
+/* -- Weekday header cells -- */
+.yui-skin-sam .yui-calendar .calweekdaycell
+{
+
+}
+
+/* -- Calendar footer -- */
+.yui-skin-sam .yui-calendar .calfoot
+{
+
+}
+
+/* -- Week numbers (row headers and footers) -- */
+.yui-skin-sam .yui-calendar .calrowhead,.yui-skin-sam .yui-calendar .calrowfoot
+{
+
+}
+
+.yui-skin-sam .yui-calendar .calrowhead
+{
+
+}
+
+.yui-skin-sam .yui-calendar .calrowfoot
+{
+
+}
+
+/* -- Normal cells -- */
+.yui-skin-sam .yui-calendar td.calcell
+{
+
+}
+
+/* -- Link inside normal cells -- */
+.yui-skin-sam .yui-calendar td.calcell a
+{
+
+}
+
+/* -- Today's date -- */
+.yui-skin-sam .yui-calendar td.calcell.today
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.today a
+{
+
+}
+
+/* -- OOM dates -- */
+.yui-skin-sam .yui-calendar td.calcell.oom
+{
+
+}
+
+/* -- Selected date -- */
+.yui-skin-sam .yui-calendar td.calcell.selected
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.selected a
+{
+
+}
+
+/* -- Hover date -- */
+.yui-skin-sam .yui-calendar td.calcell.calcellhover
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.calcellhover a
+{
+
+}
+
+/* -- Default OOB dates -- */
+.yui-skin-sam .yui-calendar td.calcell.previous
+{
+
+}
+
+/* -- Custom renderers -- */
+.yui-skin-sam .yui-calendar td.calcell.restricted
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight1
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight2
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight3
+{
+
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight4
+{
+
+}
+
+/* -- Month/year label -- */
+.yui-skin-sam .yui-calendar a.calnav
+{
+
+}
+
+.yui-skin-sam .yui-calendar a.calnav:hover
+{
+	/* TODO: although the same image is used as the background image in the SAM skin, 
+	   their purposes are different. There should be another image called 
+	   background-hover.png or something, even if it's exactly the same as the
+	   background.png image. */
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+/* -- Navigator mask -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-mask
+{
+
+}
+
+/* -- Navigator bounding box -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav
+{
+
+}
+
+.yui-skin-sam .yui-calcontainer.withtitle .yui-cal-nav
+{
+
+}
+
+.yui-skin-sam .yui-calcontainer.multi .yui-cal-nav
+{
+
+}
+
+/* -- Navigator year/month/button/error bounding blocks -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-y,.yui-skin-sam .yui-calcontainer .yui-cal-nav-m,.yui-skin-sam .yui-calcontainer .yui-cal-nav-b
+{
+
+}
+
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-b
+{
+
+}
+
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-e
+{
+
+}
+
+/* -- Navigator labels -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav label
+{
+
+}
+
+/* -- Navigator month control -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-mc
+{
+
+}
+
+/* -- Navigator month control, validation error -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-y input.yui-invalid
+{
+
+}
+
+/* -- Navigator year control -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav-yc
+{
+
+}
+
+/* -- Navigator button wrapper -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn
+{
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+/* -- Button -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn button
+{
+
+}
+
+/* -- Default buttons -- */
+.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default
+{
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default button
+{
+
+}
+
+/* ----- END YUI SAM SKIN STYLING ----- */
+
+
+
+/**
+ * NOTE:
+ * The following styles override certain aspects of the YUI SAM skin, including
+ * the left and right arrow images.
+ */
+
+/* ----- BEGIN ICE RIME SKIN STYLING ----- */
+
+.ice-skin-rime .yui-calendar td.calcell.selected a
+{
+
+}
+
+.ice-skin-rime .yui-calendar td.calcell a
+{
+
+}
+
+.ice-skin-rime .yui-calendar a.calnav, .ice-skin-rime .yui-calendar .calweekdaycell,
+    .ice-skin-rime .yui-calendar tfoot td, .ice-skin-rime .yui-calendar tfoot select
+{
+
+}
+
+.ice-skin-rime .yui-calendar .calnavleft
+{
+	background-image: url(ice-left-arrow.png); /** sprite-ref: sprite-x; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui-calendar .calnavright
+{
+	background-image: url(ice-right-arrow.png); /** sprite-ref: sprite-x; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui-calendar tfoot select
+{
+
+}
+
+.ice-skin-rime .yui-calendar tfoot tr
+{
+
+}
+
+.ice-skin-rime .yui-calendar th.calweekdaycell
+{
+
+}
+
+.ice-skin-rime .yui-calcontainer
+{
+
+}
+
+/* ----- END ICE RIME SKIN STYLING ----- */
