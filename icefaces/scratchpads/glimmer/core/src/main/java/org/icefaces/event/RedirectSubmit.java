@@ -33,19 +33,14 @@
 
 package org.icefaces.event;
 
-import javax.faces.component.UIOutput;
-import javax.faces.component.UIComponent;
+import org.icefaces.util.EnvUtils;
+
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-
-import org.icefaces.util.EnvUtils;
-
-import java.io.IOException;
 
 public class RedirectSubmit implements SystemEventListener {
 
