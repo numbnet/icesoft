@@ -3,7 +3,6 @@ package org.icepush.client;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,8 +24,8 @@ public class HttpClient {
             }
         };
     private final CookieHandler cookieHandler;
-    private final Map<URI, ScheduledFuture> pendingRequestMap = new HashMap<URI, ScheduledFuture>();
-    private final Map<URI, HttpConnection> connectionMap = new HashMap<URI, HttpConnection>();
+    private final Map<HttpRequest, ScheduledFuture> pendingRequestMap = new HashMap<HttpRequest, ScheduledFuture>();
+    private final Map<HttpRequest, HttpConnection> connectionMap = new HashMap<HttpRequest, HttpConnection>();
     private final ScheduledExecutorService scheduledExecutorService;
     {
         ThreadFactory _threadFactory = new ThreadFactory();
@@ -41,17 +40,17 @@ public class HttpClient {
 
     public HttpClient(final CookieHandler cookieHandler) {
         this.cookieHandler = cookieHandler;
+        System.setProperty("http.maxConnections", "2");
     }
 
     public void cancel(final HttpRequest request) {
-        URI _requestURI = request.getRequestURI();
         synchronized (pendingRequestMap) {
             synchronized (connectionMap) {
-                if (pendingRequestMap.containsKey(_requestURI)) {
+                if (pendingRequestMap.containsKey(request)) {
                     LOGGER.log(Level.INFO, "[Jack] Closing previous connection.");
-                    pendingRequestMap.remove(_requestURI).cancel(true);
-                    if (connectionMap.containsKey(_requestURI)) {
-                        HttpConnection _connection = connectionMap.remove(_requestURI);
+                    pendingRequestMap.remove(request).cancel(true);
+                    if (connectionMap.containsKey(request)) {
+                        HttpConnection _connection = connectionMap.remove(request);
                         _connection.close();
                         connectionPool.invalidateObject(_connection);
                     }
@@ -61,18 +60,17 @@ public class HttpClient {
     }
 
     public void send(final HttpRequest request) {
-        final URI _requestURI = request.getRequestURI();
         synchronized (pendingRequestMap) {
             synchronized (connectionMap) {
                 pendingRequestMap.put(
-                    _requestURI,
+                    request,
                     scheduledExecutorService.schedule(
                         new Runnable() {
                             public void run() {
                                 HttpConnection _connection;
                                 synchronized (connectionMap) {
                                     _connection = connectionPool.borrowObject();
-                                    connectionMap.put(_requestURI, _connection);
+                                    connectionMap.put(request, _connection);
                                 }
                                 try {
                                     request.onResponse((HttpResponse)_connection.send(request));
@@ -95,7 +93,7 @@ public class HttpClient {
                                     }
                                 } finally {
                                     synchronized (connectionMap) {
-                                        connectionMap.remove(_requestURI);
+                                        connectionMap.remove(request);
                                         connectionPool.returnObject(_connection);
                                     }
                                 }
