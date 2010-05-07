@@ -36,28 +36,24 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
               version="2.0"
               metadata-complete="false">
-
-    <factory>
-        <partial-view-context-factory>com.icesoft.faces.context.CompatDOMPartialViewContextFactory
-        </partial-view-context-factory>
-    </factory>
-
     <render-kit>
         <render-kit-class>com.icesoft.faces.component.CompatDOMRenderKit</render-kit-class>
     </render-kit>
 
     <application>
         <locale-config>
-           <default-locale>en</default-locale>
+            <default-locale>en</default-locale>
             <supported-locale>en</supported-locale>
             <supported-locale>es</supported-locale>
         </locale-config>
-         <message-bundle>org.icefaces.application.showcase.view.resources.messages</message-bundle>
+        <message-bundle>org.icefaces.application.showcase.view.resources.messages</message-bundle>
     </application>
-    
-   <!-- commandSortHeader bean -->
+
+    <!-- commandSortHeader bean -->
     <lifecycle>
-        <phase-listener>org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader.SortHeaderModel</phase-listener>
+        <phase-listener>
+            org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader.SortHeaderModel
+        </phase-listener>
     </lifecycle>
- 
+
 </faces-config>
