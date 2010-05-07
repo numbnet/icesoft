@@ -35,16 +35,12 @@ package org.icefaces.event;
 
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.component.UIOutput;
-import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.io.IOException;
 
 public class EnterKeySubmit implements SystemEventListener {
 
@@ -56,8 +52,8 @@ public class EnterKeySubmit implements SystemEventListener {
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
        ScriptWriter scriptWriter = new ScriptWriter(form,
-                                                     "ice.captureSubmit(\'" + form.getClientId(context) + "\')",
-                                                     "_captureEnter");
+                                                    "ice.captureEnterKey(\'" + form.getClientId(context) + "\')",
+                                                    "_captureEnter");
         form.getChildren().add(0, scriptWriter);
     }
 
