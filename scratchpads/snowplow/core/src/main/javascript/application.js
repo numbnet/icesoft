@@ -66,20 +66,21 @@ if (!window.ice.icepush) {
         namespace.logger = Logger([ 'icepush' ], handler);
         namespace.info = info;
         var pushIdentifiers = [];
+        var PushIDs = 'ice.pushids';
 
         function enlistPushIDsWithBrowser(ids) {
             try {
-                var idsCookie = lookupCookie('ice.pushids');
+                var idsCookie = lookupCookie(PushIDs);
                 var registeredIDs = split(value(idsCookie), ' ');
                 update(idsCookie, join(concatenate(registeredIDs, ids), ' '));
             } catch (e) {
-                Cookie('ice.pushids', join(ids, ' '));
+                Cookie(PushIDs, join(ids, ' '));
             }
         }
 
         function delistPushIDsWithBrowser(ids) {
-            if (existsCookie('ice.pushids')) {
-                var idsCookie = lookupCookie('ice.pushids');
+            if (existsCookie(PushIDs)) {
+                var idsCookie = lookupCookie(PushIDs);
                 var registeredIDs = split(value(idsCookie), ' ');
                 update(idsCookie, join(complement(registeredIDs, ids), ' '));
             }
@@ -232,7 +233,7 @@ if (!window.ice.icepush) {
 
             //purge discarded pushIDs from the notification list
             function purgeUnusedPushIDs(ids) {
-                var registeredIDsCookie = lookupCookie('ice.pushids');
+                var registeredIDsCookie = lookupCookie(PushIDs);
                 var registeredIDs = split(value(registeredIDsCookie), ' ');
                 return intersect(ids, registeredIDs);
             }

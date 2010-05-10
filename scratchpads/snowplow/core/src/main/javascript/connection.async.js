@@ -31,6 +31,12 @@ var resetConnection = operator();
 var AsyncConnection;
 
 (function() {
+    var PushIDs = 'ice.pushids';
+    var ConnectionRunning = 'ice.connection.running';
+    var ConnectionLease = 'ice.connection.lease';
+    var ConnectionContextPath = 'ice.connection.contextpath';
+    var AcquiredMarker = ':acquired';
+
     //build up retry actions
     function timedRetryAbort(retryAction, abortAction, timeouts) {
         var index = 0;
@@ -47,7 +53,7 @@ var AsyncConnection;
 
     function registeredPushIds() {
         try {
-            return split(lookupCookieValue('ice.pushids'), ' ');
+            return split(lookupCookieValue(PushIDs), ' ');
         } catch (e) {
             return [];
         }
@@ -90,7 +96,7 @@ var AsyncConnection;
         //this strategy is mainly employed to fix the window.onunload issue
         //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
         try {
-            listening = lookupCookie('ice.connection.running');
+            listening = lookupCookie(ConnectionRunning);
             remove(listening);
         } catch (e) {
             //do nothing
@@ -108,13 +114,13 @@ var AsyncConnection;
                     //mark blocking connection as not started, with current window as first candidate to re-initiate the connection
                     offerCandidature();
                 } else {
-                    debug(logger, "connect...");
+                    debug(logger, 'connect...');
                     listener = postAsynchronously(channel, receiveURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                     }, function(request) {
                         FormPost(request);
                         sendXWindowCookie(request);
-                        setHeader(request, "ice.push.window", namespace.windowID);
+                        setHeader(request, 'ice.push.window', namespace.windowID);
                     }, $witch(function (condition) {
                         condition(OK, function(response) {
                             var reconnect = getHeader(response, 'X-Connection') != 'close';
@@ -178,14 +184,14 @@ var AsyncConnection;
         var pollingPeriod = 1000;
         var contextPath = namespace.push.configuration.contextPath;
 
-        var leaseCookie = lookupCookie('ice.connection.lease', function() {
-            return Cookie('ice.connection.lease', asString((new Date).getTime()));
+        var leaseCookie = lookupCookie(ConnectionLease, function() {
+            return Cookie(ConnectionLease, asString((new Date).getTime()));
         });
-        var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
-            return Cookie('ice.connection.running', '');
+        var connectionCookie = listening = lookupCookie(ConnectionRunning, function() {
+            return Cookie(ConnectionRunning, '');
         });
-        var contextPathCookie = lookupCookie('ice.connection.contextpath', function() {
-            return Cookie('ice.connection.contextpath', contextPath);
+        var contextPathCookie = lookupCookie(ConnectionContextPath, function() {
+            return Cookie(ConnectionContextPath, contextPath);
         });
 
         function updateLease() {
@@ -197,7 +203,7 @@ var AsyncConnection;
         }
 
         function shouldEstablishBlockingConnection() {
-            return !existsCookie('ice.connection.running') || isEmpty(lookupCookieValue('ice.connection.running'));
+            return !existsCookie(ConnectionRunning) || isEmpty(lookupCookieValue(ConnectionRunning));
         }
 
         function offerCandidature() {
@@ -209,16 +215,16 @@ var AsyncConnection;
         }
 
         function markAsOwned() {
-            update(connectionCookie, windowID + ':acquired');
+            update(connectionCookie, windowID + AcquiredMarker);
             update(contextPathCookie, contextPath);
         }
 
         function isOwner() {
-            return value(connectionCookie) == (windowID + ':acquired');
+            return value(connectionCookie) == (windowID + AcquiredMarker);
         }
 
         function hasOwner() {
-            return endsWith(value(connectionCookie), ':acquired');
+            return endsWith(value(connectionCookie), AcquiredMarker);
         }
 
         function nonMatchingContextPath() {
