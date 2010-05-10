@@ -7,11 +7,12 @@
         <title>Updates</title>
     </h:head>
     <h:body>
+
         <h:form id="countForm" prependId="false">
 
             <h2>Updates</h2>
 
-            <h3> <h:outputText id="theCounter" value="Count: #{ajaxBean.count}"/></h3>
+            <h3> <h:outputText id="counters" value="View counter: #{ajaxBean.viewCount}  Session counter: #{ajaxBean.sessionCount}"/></h3>
 
             <h:panelGrid columns="5">
                 <h:outputText value=""/>
@@ -67,7 +68,7 @@
                 <h:commandButton value="F"
                                  actionListener="#{ajaxBean.countActionListener}"
                                  id="buttonF">
-                    <f:ajax execute="@all" render="@all"/>
+                    <f:ajax execute="buttonF" render="@all"/>
                 </h:commandButton>
                 <h:outputText value="actionListener"/>
                 <h:outputText value="yes"/>
@@ -87,7 +88,7 @@
                 <h:commandButton value="H"
                                  actionListener="#{ajaxBean.countActionListener}"
                                  id="buttonH">
-                    <f:ajax execute="@all" render="@all"/>
+                    <f:ajax execute="buttonH" render="countForm"/>
                 </h:commandButton>
                 <h:outputText value="actionListener"/>
                 <h:outputText value="yes"/>
@@ -115,22 +116,22 @@
                 <h:commandButton value="K"
                                  action="#{ajaxBean.countAction}"
                                  id="buttonK">
-                    <f:ajax execute="buttonK" render="theCounter"/>
+                    <f:ajax execute="buttonK" render="counters"/>
                 </h:commandButton>
                 <h:outputText value="action"/>
                 <h:outputText value="yes"/>
                 <h:outputText value="buttonK"/>
-                <h:outputText value="theCounter"/>
+                <h:outputText value="counters"/>
 
                 <h:commandButton value="L"
                                  actionListener="#{ajaxBean.countActionListener}"
                                  id="buttonL">
-                    <f:ajax execute="buttonL" render="theCounter"/>
+                    <f:ajax execute="buttonL" render="counters"/>
                 </h:commandButton>
                 <h:outputText value="actionListener"/>
                 <h:outputText value="yes"/>
                 <h:outputText value="buttonL"/>
-                <h:outputText value="theCounter"/>
+                <h:outputText value="counters"/>
 
             </h:panelGrid>
 
