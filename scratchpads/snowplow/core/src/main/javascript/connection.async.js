@@ -177,6 +177,7 @@ var AsyncConnection;
         }
 
         function initializeConnection() {
+            info(logger, 'initialize connection within window ' + namespace.windowID);
             connect();
         }
 
