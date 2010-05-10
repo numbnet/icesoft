@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
-        @ResourceDependency(name = "calendar.css", library = "org.icefaces.component.selectinputdate"),
+        @ResourceDependency(name = "out/rime/calendar/calendar.css", library = "org.icefaces.component.sprites"),
         @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
