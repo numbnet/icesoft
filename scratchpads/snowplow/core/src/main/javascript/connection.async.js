@@ -28,52 +28,9 @@ var whenDown = operator();
 var whenTrouble = operator();
 var shutdown = operator();
 var resetConnection = operator();
+var AsyncConnection;
 
-function AsyncConnection(logger, windowID, receiveURI) {
-    var logger = childLogger(logger, 'async-connection');
-    var channel = Client(false);
-    var onReceiveListeners = [];
-    var onServerErrorListeners = [];
-    var connectionDownListeners = [];
-    var connectionTroubleListeners = [];
-
-    var listener = object(function(method) {
-        method(close, noop);
-        method(abort, noop);
-    });
-    var listening = object(function(method) {
-        method(remove, noop);
-    });
-
-    //clear connectionDownListeners to avoid bogus connection lost messages
-    onBeforeUnload(window, function() {
-        connectionDownListeners = [];
-    });
-
-    var serverErrorCallback = broadcaster(onServerErrorListeners);
-    var receiveCallback = broadcaster(onReceiveListeners);
-    var sendXWindowCookie = noop;
-    var receiveXWindowCookie = function (response) {
-        var xWindowCookie = getHeader(response, "X-Set-Window-Cookie");
-        if (xWindowCookie) {
-            sendXWindowCookie = function(request) {
-                setHeader(request, "X-Window-Cookie", xWindowCookie);
-            };
-        }
-    };
-
-    //remove the blocking connection marker so that everytime a new
-    //bridge instance is created the blocking connection will
-    //be re-established
-    //this strategy is mainly employed to fix the window.onunload issue
-    //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
-    try {
-        listening = lookupCookie('ice.connection.running');
-        remove(listening);
-    } catch (e) {
-        //do nothing
-    }
-
+(function() {
     //build up retry actions
     function timedRetryAbort(retryAction, abortAction, timeouts) {
         var index = 0;
@@ -96,207 +53,254 @@ function AsyncConnection(logger, windowID, receiveURI) {
         }
     }
 
-    var lastSentPushIds = registeredPushIds();
+    AsyncConnection = function(logger, windowID, receiveURI) {
+        var logger = childLogger(logger, 'async-connection');
+        var channel = Client(false);
+        var onReceiveListeners = [];
+        var onServerErrorListeners = [];
+        var connectionDownListeners = [];
+        var connectionTroubleListeners = [];
 
-    function connect() {
-        try {
-            debug(logger, "closing previous connection...");
-            close(listener);
+        var listener = object(function(method) {
+            method(close, noop);
+            method(abort, noop);
+        });
+        var listening = object(function(method) {
+            method(remove, noop);
+        });
 
-            lastSentPushIds = registeredPushIds();
-            if (isEmpty(lastSentPushIds)) {
-                //mark blocking connection as not started, with current window as first candidate to re-initiate the connection 
-                offerCandidature();
-            } else {
-                debug(logger, "connect...");
-                listener = postAsynchronously(channel, receiveURI, function(q) {
-                    each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
-                }, function(request) {
-                    FormPost(request);
-                    sendXWindowCookie(request);
-                    setHeader(request, "ice.push.window", namespace.windowID);
-                }, $witch(function (condition) {
-                    condition(OK, function(response) {
-                        var reconnect = getHeader(response, 'X-Connection') != 'close';
-                        var nonEmptyResponse = notEmpty(contentAsText(response));
+        //clear connectionDownListeners to avoid bogus connection lost messages
+        onBeforeUnload(window, function() {
+            connectionDownListeners = [];
+        });
 
-                        if (reconnect) {
-                            if (not(nonEmptyResponse)) warn(logger, 'empty response received');
-                        } else {
-                            info(logger, 'blocking connection stopped at server\'s request...');
-                        }
-                        if (nonEmptyResponse) receiveCallback(response);
-                        receiveXWindowCookie(response);
-                        if (reconnect) {
-                            resetTimeoutBomb();
-                            connect();
-                        }
-                    });
-                    condition(ServerInternalError, retryOnServerError);
-                }));
+        var sendXWindowCookie = noop;
+        var receiveXWindowCookie = function (response) {
+            var xWindowCookie = getHeader(response, "X-Set-Window-Cookie");
+            if (xWindowCookie) {
+                sendXWindowCookie = function(request) {
+                    setHeader(request, "X-Window-Cookie", xWindowCookie);
+                };
             }
+        };
+
+        //remove the blocking connection marker so that everytime a new
+        //bridge instance is created the blocking connection will
+        //be re-established
+        //this strategy is mainly employed to fix the window.onunload issue
+        //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
+        try {
+            listening = lookupCookie('ice.connection.running');
+            remove(listening);
         } catch (e) {
-            error(logger, 'failed to re-initiate blocking connection', e);
+            //do nothing
         }
-    }
 
-    var configuration = namespace.push.configuration;
-    //build callbacks only after 'connection' function was defined
-    var retryOnServerError = timedRetryAbort(connect, serverErrorCallback, configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
+        var lastSentPushIds = registeredPushIds();
 
-    var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 50000;
-    var timeoutBomb = object(function(method) {
-        method(stop, noop);
-    });
+        function connect() {
+            try {
+                debug(logger, "closing previous connection...");
+                close(listener);
 
-    function resetTimeoutBomb() {
-        stop(timeoutBomb);
-        timeoutBomb = runOnce(Delay(function() {
-            warn(logger, 'failed to connect, first retry...');
-            broadcast(connectionTroubleListeners);
-            connect();
+                lastSentPushIds = registeredPushIds();
+                if (isEmpty(lastSentPushIds)) {
+                    //mark blocking connection as not started, with current window as first candidate to re-initiate the connection
+                    offerCandidature();
+                } else {
+                    debug(logger, "connect...");
+                    listener = postAsynchronously(channel, receiveURI, function(q) {
+                        each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
+                    }, function(request) {
+                        FormPost(request);
+                        sendXWindowCookie(request);
+                        setHeader(request, "ice.push.window", namespace.windowID);
+                    }, $witch(function (condition) {
+                        condition(OK, function(response) {
+                            var reconnect = getHeader(response, 'X-Connection') != 'close';
+                            var nonEmptyResponse = notEmpty(contentAsText(response));
 
+                            if (reconnect) {
+                                if (not(nonEmptyResponse)) warn(logger, 'empty response received');
+                            } else {
+                                info(logger, 'blocking connection stopped at server\'s request...');
+                            }
+                            if (nonEmptyResponse) {
+                                broadcast(onReceiveListeners, [response]);
+                            }
+                            receiveXWindowCookie(response);
+                            if (reconnect) {
+                                resetTimeoutBomb();
+                                connect();
+                            }
+                        });
+                        condition(ServerInternalError, retryOnServerError);
+                    }));
+                }
+            } catch (e) {
+                error(logger, 'failed to re-initiate blocking connection', e);
+            }
+        }
+
+        var configuration = namespace.push.configuration;
+        //build callbacks only after 'connection' function was defined
+        var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
+
+        var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 50000;
+        var timeoutBomb = object(function(method) {
+            method(stop, noop);
+        });
+
+        function resetTimeoutBomb() {
+            stop(timeoutBomb);
             timeoutBomb = runOnce(Delay(function() {
-                warn(logger, 'failed to connect, second try...');
+                warn(logger, 'failed to connect, first retry...');
                 broadcast(connectionTroubleListeners);
                 connect();
 
                 timeoutBomb = runOnce(Delay(function() {
-                    broadcast(connectionDownListeners);
-                }, heartbeatTimeout / 4));
-            }, heartbeatTimeout / 2));
-        }, heartbeatTimeout));
-    }
+                    warn(logger, 'failed to connect, second try...');
+                    broadcast(connectionTroubleListeners);
+                    connect();
 
-    function initializeConnection() {
-        connect();
-    }
+                    timeoutBomb = runOnce(Delay(function() {
+                        broadcast(connectionDownListeners);
+                    }, heartbeatTimeout / 4));
+                }, heartbeatTimeout / 2));
+            }, heartbeatTimeout));
+        }
 
-    //monitor if the blocking connection needs to be started
-    var pollingPeriod = 1000;
-    var contextPath = namespace.push.configuration.contextPath;
+        function initializeConnection() {
+            connect();
+        }
 
-    var leaseCookie = lookupCookie('ice.connection.lease', function() {
-        return Cookie('ice.connection.lease', asString((new Date).getTime()));
-    });
-    var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
-        return Cookie('ice.connection.running', '');
-    });
-    var contextPathCookie = lookupCookie('ice.connection.contextpath', function() {
-        return Cookie('ice.connection.contextpath', contextPath);
-    });
+        //monitor if the blocking connection needs to be started
+        var pollingPeriod = 1000;
+        var contextPath = namespace.push.configuration.contextPath;
 
-    function updateLease() {
-        update(leaseCookie, (new Date).getTime() + pollingPeriod * 2);
-    }
+        var leaseCookie = lookupCookie('ice.connection.lease', function() {
+            return Cookie('ice.connection.lease', asString((new Date).getTime()));
+        });
+        var connectionCookie = listening = lookupCookie('ice.connection.running', function() {
+            return Cookie('ice.connection.running', '');
+        });
+        var contextPathCookie = lookupCookie('ice.connection.contextpath', function() {
+            return Cookie('ice.connection.contextpath', contextPath);
+        });
 
-    function isLeaseExpired() {
-        return asNumber(value(leaseCookie)) < (new Date).getTime();
-    }
+        function updateLease() {
+            update(leaseCookie, (new Date).getTime() + pollingPeriod * 2);
+        }
 
-    function shouldEstablishBlockingConnection() {
-        return !existsCookie('ice.connection.running') || isEmpty(lookupCookieValue('ice.connection.running'));
-    }
+        function isLeaseExpired() {
+            return asNumber(value(leaseCookie)) < (new Date).getTime();
+        }
 
-    function offerCandidature() {
-        update(connectionCookie, windowID);
-    }
+        function shouldEstablishBlockingConnection() {
+            return !existsCookie('ice.connection.running') || isEmpty(lookupCookieValue('ice.connection.running'));
+        }
 
-    function isWinningCandidate() {
-        return startsWith(value(connectionCookie), windowID);
-    }
+        function offerCandidature() {
+            update(connectionCookie, windowID);
+        }
 
-    function markAsOwned() {
-        update(connectionCookie, windowID + ':acquired');
-        update(contextPathCookie, contextPath);
-    }
+        function isWinningCandidate() {
+            return startsWith(value(connectionCookie), windowID);
+        }
 
-    function isOwner() {
-        return value(connectionCookie) == (windowID + ':acquired');
-    }
+        function markAsOwned() {
+            update(connectionCookie, windowID + ':acquired');
+            update(contextPathCookie, contextPath);
+        }
 
-    function hasOwner() {
-        return endsWith(value(connectionCookie), ':acquired');
-    }
+        function isOwner() {
+            return value(connectionCookie) == (windowID + ':acquired');
+        }
 
-    function nonMatchingContextPath() {
-        return value(contextPathCookie) != contextPath;
-    }
+        function hasOwner() {
+            return endsWith(value(connectionCookie), ':acquired');
+        }
 
-    //force candidancy so that last opened window belonging to a different servlet context will own the blocking connection
-    if (nonMatchingContextPath()) {
-        offerCandidature();
-        info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath + '"  web-context...');
-    }
-    var blockingConnectionMonitor = run(Delay(function() {
-        if (shouldEstablishBlockingConnection()) {
+        function nonMatchingContextPath() {
+            return value(contextPathCookie) != contextPath;
+        }
+
+        //force candidancy so that last opened window belonging to a different servlet context will own the blocking connection
+        if (nonMatchingContextPath()) {
             offerCandidature();
-            info(logger, 'blocking connection not initialized...candidate for its creation');
-        } else {
-            if (isWinningCandidate()) {
-                if (!hasOwner()) {
-                    markAsOwned();
-                    //start blocking connection since no other window has started it
-                    //but only when at least one pushId is registered
-                    if (notEmpty(registeredPushIds())) {
-                        initializeConnection();
-                    }
-                }
-                updateLease();
-            }
-            if (hasOwner() && isLeaseExpired()) {
+            info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath + '"  web-context...');
+        }
+        var blockingConnectionMonitor = run(Delay(function() {
+            if (shouldEstablishBlockingConnection()) {
                 offerCandidature();
-                info(logger, 'blocking connection lease expired...candidate for its creation');
+                info(logger, 'blocking connection not initialized...candidate for its creation');
+            } else {
+                if (isWinningCandidate()) {
+                    if (!hasOwner()) {
+                        markAsOwned();
+                        //start blocking connection since no other window has started it
+                        //but only when at least one pushId is registered
+                        if (notEmpty(registeredPushIds())) {
+                            initializeConnection();
+                        }
+                    }
+                    updateLease();
+                }
+                if (hasOwner() && isLeaseExpired()) {
+                    offerCandidature();
+                    info(logger, 'blocking connection lease expired...candidate for its creation');
+                }
             }
-        }
 
-        if (isOwner()) {
-            var ids = registeredPushIds();
-            if ((size(ids) != size(lastSentPushIds)) || notEmpty(complement(ids, lastSentPushIds))) {
-                //reconnect to send the current list of pushIDs
-                //abort the previous blocking connection in case is still alive
+            if (isOwner()) {
+                var ids = registeredPushIds();
+                if ((size(ids) != size(lastSentPushIds)) || notEmpty(complement(ids, lastSentPushIds))) {
+                    //reconnect to send the current list of pushIDs
+                    //abort the previous blocking connection in case is still alive
+                    abort(listener);
+                    connect();
+                }
+            } else {
+                //ensure that only one blocking connection exists
                 abort(listener);
-                connect();
             }
-        } else {
-            //ensure that only one blocking connection exists
-            abort(listener);
-        }
-    }, pollingPeriod));
+        }, pollingPeriod));
 
-    info(logger, 'asynchronous mode');
+        info(logger, 'connection monitoring started within window ' + namespace.windowID);
 
-    return object(function(method) {
-        method(onReceive, function(self, callback) {
-            append(onReceiveListeners, callback);
+        return object(function(method) {
+            method(onReceive, function(self, callback) {
+                append(onReceiveListeners, callback);
+            });
+
+            method(onServerError, function(self, callback) {
+                append(onServerErrorListeners, callback);
+            });
+
+            method(whenDown, function(self, callback) {
+                append(connectionDownListeners, callback);
+            });
+
+            method(whenTrouble, function(self, callback) {
+                append(connectionTroubleListeners, callback);
+            });
+
+            method(shutdown, function(self) {
+                try {
+                    //shutdown once
+                    method(shutdown, noop);
+                    connect = noop;
+                } catch (e) {
+                    error(logger, 'error during shutdown', e);
+                    //ignore, we really need to shutdown
+                } finally {
+                    onReceiveListeners = connectionDownListeners = onServerErrorListeners = [];
+                    abort(listener);
+                    stop(blockingConnectionMonitor);
+                    remove(listening);
+                }
+            });
         });
+    };
+})();
 
-        method(onServerError, function(self, callback) {
-            append(onServerErrorListeners, callback);
-        });
-
-        method(whenDown, function(self, callback) {
-            append(connectionDownListeners, callback);
-        });
-
-        method(whenTrouble, function(self, callback) {
-            append(connectionTroubleListeners, callback);
-        });
-
-        method(shutdown, function(self) {
-            try {
-                //shutdown once
-                method(shutdown, noop);
-                connect = noop;
-            } catch (e) {
-                error(logger, 'error during shutdown', e);
-                //ignore, we really need to shutdown
-            } finally {
-                onReceiveListeners = connectionDownListeners = onServerErrorListeners = [];
-                abort(listener);
-                stop(blockingConnectionMonitor);
-                remove(listening);
-            }
-        });
-    });
-}
