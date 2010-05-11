@@ -87,5 +87,15 @@ public abstract class ObjectPool<O> {
         }
     }
 
+    public void shutdown() {
+        lock.lock();
+        try {
+            outList.clear();
+            inList.clear();
+        } finally {
+            lock.unlock();
+        }
+    }
+    
     protected abstract O newObject();
 }

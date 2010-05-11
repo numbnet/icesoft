@@ -16,6 +16,10 @@ extends java.net.CookieHandler {
 
     private final Map<URI, List<Cookie>> cookieMap = new HashMap<URI, List<Cookie>>();
 
+    public void clear() {
+        cookieMap.clear();
+    }
+
     public Map<String, List<String>> get(final URI requestURI, final Map<String, List<String>> requestHeaders)
     throws IOException {
         Map<String, List<String>> _cookieMap = new HashMap<String, List<String>>();
