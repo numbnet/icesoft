@@ -1,10 +1,7 @@
 package org.icepush;
 
-import java.io.InputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,14 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.icepush.client.AddGroupMemberRequest;
-import org.icepush.client.CookieHandler;
 import org.icepush.client.CreatePushIdRequest;
 import org.icepush.client.HttpClient;
 import org.icepush.client.HttpResponse;
+import org.icepush.client.InitialRequest;
 import org.icepush.client.ListenRequest;
 import org.icepush.client.NotifyRequest;
 import org.icepush.client.PushClientException;
 import org.icepush.client.RemoveGroupMemberRequest;
+import org.icepush.client.HttpRequest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -32,17 +30,22 @@ public class PushClient {
     private static final Logger LOGGER = Logger.getLogger(PushClient.class.getName());
 
     private final HttpClient client = new HttpClient();
-
-    private final CookieHandler cookieHandler = new CookieHandler();
     private final Map<String, List<Runnable>> pushIdCallbackMap = new HashMap<String, List<Runnable>>();
-    
-    private final String contextURI;
 
     private final ReentrantLock listenRequestLock = new ReentrantLock();
     private ListenRequest listenRequest;
 
-    public PushClient(final String contextURI) {
+    private final String contextURI;
+
+    /**
+     *
+     * @param      contextURI
+     * @throws     PushClientException
+     */
+    public PushClient(final String contextURI)
+    throws PushClientException {
         this.contextURI = contextURI;
+        // throws PushClientException
         initialize();
     }
 
@@ -60,14 +63,12 @@ public class PushClient {
      */
     public void addGroupMember(final String groupName, final String pushId)
     throws PushClientException {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] addGroupMember(groupName: '" + groupName + "', pushId: '" + pushId + "')");
         try {
-            client.sendNow(new AddGroupMemberRequest(groupName, pushId, contextURI));
+            // throws URISyntaxException, MalformedURLException, IOException
+            sendNow(new AddGroupMemberRequest(groupName, pushId, contextURI));
         } catch (URISyntaxException exception) {
-            throw new PushClientException(exception);
-        } catch (MalformedURLException exception) {
-            throw new PushClientException(exception);
-        } catch (IOException exception) {
             throw new PushClientException(exception);
         }
     }
@@ -80,14 +81,15 @@ public class PushClient {
      */
     public String createPushId()
     throws PushClientException {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] createPushId()");
         try {
-            return ((HttpResponse)client.sendNow(new CreatePushIdRequest(contextURI))).getEntityBodyAsString();
+            // throws URISyntaxException
+            CreatePushIdRequest _request = new CreatePushIdRequest(contextURI);
+            // throws MalformedURLException, IOException
+            sendNow(_request);
+            return _request.getResponse().getEntityBodyAsString();
         } catch (URISyntaxException exception) {
-            throw new PushClientException(exception);
-        } catch (MalformedURLException exception) {
-            throw new PushClientException(exception);
-        } catch (IOException exception) {
             throw new PushClientException(exception);
         }
     }
@@ -97,6 +99,7 @@ public class PushClient {
      * @param      pushId
      */
     public void deregister(final String pushId) {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] deregister(pushId: '" + pushId + "')");
         synchronized (pushIdCallbackMap) {
             pushIdCallbackMap.remove(pushId);
@@ -109,6 +112,7 @@ public class PushClient {
             try {
                 if (listenRequest != null) {
                     client.cancel(listenRequest);
+                    listenRequest = null;
                 }
                 if (pushIdCallbackMap.keySet().size() > 0) {
                     listen();
@@ -128,14 +132,12 @@ public class PushClient {
      */
     public void notify(final String groupName)
     throws PushClientException {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] notify(groupName: '" + groupName + "')");
         try {
-            client.sendNow(new NotifyRequest(groupName, contextURI));
+            // throws URISyntaxException, MalformedURLException, IOException
+            sendNow(new NotifyRequest(groupName, contextURI));
         } catch (URISyntaxException exception) {
-            throw new PushClientException(exception);
-        } catch (MalformedURLException exception) {
-            throw new PushClientException(exception);
-        } catch (IOException exception) {
             throw new PushClientException(exception);
         }
     }
@@ -146,6 +148,7 @@ public class PushClient {
      * @param      callback
      */
     public void register(final String pushId, final Runnable callback) {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] register(pushId: '" + pushId + "', callback: '" + callback + "')");
         synchronized (pushIdCallbackMap) {
             if (pushIdCallbackMap.containsKey(pushId)) {
@@ -162,6 +165,7 @@ public class PushClient {
                 try {
                     if (listenRequest != null) {
                         client.cancel(listenRequest);
+                        listenRequest = null;
                     }
                     listen();
                 } finally {
@@ -185,41 +189,50 @@ public class PushClient {
      */
     public void removeGroupMember(final String groupName, final String pushId)
     throws PushClientException {
+        // todo: Remove this logging.
         LOGGER.log(Level.INFO, "[Jack] removeGroupMember(groupName: '" + groupName + "', pushId: '" + pushId + "')");
         try {
-            client.sendNow(new RemoveGroupMemberRequest(groupName, pushId, contextURI));
+            // throws URISyntaxException, MalformedURLException, IOException
+            sendNow(new RemoveGroupMemberRequest(groupName, pushId, contextURI));
         } catch (URISyntaxException exception) {
-            throw new PushClientException(exception);
-        } catch (MalformedURLException exception) {
-            throw new PushClientException(exception);
-        } catch (IOException exception) {
             throw new PushClientException(exception);
         }
     }
 
-    private void initialize() {
-        URI _requestURI = null;
+    public void shutdown() {
+        listenRequestLock.lock();
         try {
-            // throws URISyntaxException
-            _requestURI = new URI(contextURI + "/in.jsp").normalize();
-            HttpURLConnection _connection = (HttpURLConnection)_requestURI.toURL().openConnection();
-            InputStream _in = _connection.getInputStream();
-            cookieHandler.put(_connection.getURL().toURI(), _connection.getHeaderFields());
-            while (_in.read() != -1) {}
-            // throws IOException
-            _in.close();
-        } catch (MalformedURLException exception) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Malformed Request-URI: '" + _requestURI + "'", exception);
+            if (listenRequest != null) {
+                client.cancel(listenRequest);
+                listenRequest = null;
             }
-        } catch (IOException exception) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "An I/O error occurred!", exception);
+            client.shutdown();
+        } finally {
+            listenRequestLock.unlock();
+        }
+    }
+
+    private void cancelListenRequest() {
+        if (listenRequest != null) {
+            listenRequestLock.lock();
+            try {
+                if (listenRequest != null) {
+                    client.cancel(listenRequest);
+                    listenRequest = null;
+                }
+            } finally {
+                listenRequestLock.unlock();
             }
+        }
+    }
+
+    private void initialize()
+    throws PushClientException {
+        try {
+            // throws URISyntaxException, MalformedURLException, IOException
+            sendNow(new InitialRequest(contextURI));
         } catch (URISyntaxException exception) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "URI Syntax Request-URI: '" + _requestURI + "'", exception);
-            }
+            throw new PushClientException(exception);
         }
     }
 
@@ -230,9 +243,11 @@ public class PushClient {
             try {
                 if (listenRequest != null) {
                     client.cancel(listenRequest);
+                    listenRequest = null;
                 }
                 try {
                     listenRequest =
+                        // throws URISyntaxException
                         new ListenRequest(_pushIdSet, contextURI) {
                             public void onResponse(final HttpResponse response) {
                                 super.onResponse(response);
@@ -274,6 +289,9 @@ public class PushClient {
                                             }
                                         }
                                     }
+                                    if (LOGGER.isLoggable(Level.INFO)) {
+                                        LOGGER.log(Level.INFO, "Initiating listen.icepush...");
+                                    }
                                     listen();
                                 }
                             }
@@ -290,6 +308,18 @@ public class PushClient {
             } finally {
                 listenRequestLock.unlock();
             }
+        }
+    }
+
+    private void sendNow(final HttpRequest request)
+    throws PushClientException {
+        try {
+            // throws MalformedURLException, IOException
+            client.sendNow(request);
+        } catch (MalformedURLException exception) {
+            throw new PushClientException(exception);
+        } catch (IOException exception) {
+            throw new PushClientException(exception);
         }
     }
 }
