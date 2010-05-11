@@ -22,7 +22,6 @@
 
 package org.icefaces.context;
 
-import org.icefaces.event.DetectNavigationPhaseListener;
 import org.icefaces.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Document;
@@ -166,7 +165,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 partialWriter.startDocument();
 
-                if (shouldUpdateFullPage()) {
+                if ((null == oldDOM) && isRenderAll()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
                     writeXMLPreamble(outputWriter);
                     DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
@@ -214,30 +213,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             writer.write(val.toString());
         }
     }
-
-    //If this Ajax request is not a postback and we've detected that navigation has taken place during
-    //the lifecycle, then we should send back an update for the full page.
-    private boolean shouldUpdateFullPage() {
-
-        //A postback indicates that the view root may have changed (which may not be the proper
-        //behaviour) but that we don't want a full page update - just the minimum diff.
-        if (facesContext.isPostback()) {
-            return false;
-        }
-
-        UIViewRoot root = facesContext.getViewRoot();
-        if (root == null) {
-            return false;
-        }
-        if (!root.getViewMap().containsKey(DetectNavigationPhaseListener.NAVIGATION_MARK)) {
-            //If the navigation mark is missing, then a new view root was created
-            //during INVOKE_APPLICATION phase indicating that navigation took place.
-            return true;
-        }
-
-        return false;
-    }
-
 
     private static String getUpdateId(Element element) {
         if ("head".equalsIgnoreCase(element.getTagName())) {
