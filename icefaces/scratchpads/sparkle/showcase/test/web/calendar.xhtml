@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
 <h:head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title>Calendar4</title>
 <!--
@@ -18,14 +19,14 @@
         <h:form id="calForm">
             <h:panelGroup id="calDiv2">
                 <h:outputText value="renderAsPopup"/>
-                <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onchange="ice.se(event, this);"/>
                 <h:outputText value="renderInputField (popup only)"/>
-                <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}" onchange="ice.se(event, this);"/>
                 <br/>
                 <h:outputText value="singleSubmit"/>
-                <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}" onchange="ice.submit(event, this);"/>
+                <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}" onchange="ice.se(event, this);"/>
                 <h:outputText value="pattern"/>
-                <h:selectOneMenu id="pattern" value="#{calendarBean.pattern}" onchange="ice.submit(event, this);">
+                <h:selectOneMenu id="pattern" value="#{calendarBean.pattern}" onchange="ice.se(event, this);">
                     <f:selectItem itemLabel="MM/dd/yyyy" itemValue="MM/dd/yyyy"/>
                     <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
                     <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
