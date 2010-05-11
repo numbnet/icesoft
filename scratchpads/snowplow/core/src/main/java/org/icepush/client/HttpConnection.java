@@ -30,7 +30,7 @@ public class HttpConnection {
         }
     }
 
-    public synchronized Object send(final HttpRequest request)
+    public synchronized void send(final HttpRequest request)
     throws IOException, MalformedURLException {
         // todo: Remove this logging.
         if (LOGGER.isLoggable(Level.INFO)) {
@@ -81,7 +81,6 @@ public class HttpConnection {
                         "HTTP Request:\r\n\r\n" + request + "\r\n\r\n" +
                         "HTTP Response:\r\n\r\n" + request.getResponse() + "\r\n");
                 }
-                return request.getResponse();
             } catch (RuntimeException exception) {
                 LOGGER.log(Level.SEVERE, "", exception);
                 throw exception;
