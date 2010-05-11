@@ -446,14 +446,12 @@ p#clear {
 
 .ice-skin-rime .yui-calendar .calnavleft {
     background-image: url(cal_arrow_left.gif); /** sprite-ref: rime-sprite-x; */
-    background-image: url(../sprite-x.png.jsf?ln=org.icefaces.component.sprites);
     width: 18px;
     height: 18px;
 }
 
 .ice-skin-rime .yui-calendar .calnavright {
     background-image: url(cal_arrow_right.gif); /** sprite-ref: rime-sprite-x; */
-    background-image: url(../sprite-x.png.jsf?ln=org.icefaces.component.sprites);
     width: 18px;
     height: 18px;
 }
@@ -523,12 +521,10 @@ p#clear {
 
 .ice-skin-rime .ice-calcontainer .toggle-popup.open-popup {
     background-image: url(cal_button.gif); /** sprite-ref: rime-sprite-x; */
-    background-image: url(../sprite-x.png.jsf?ln=org.icefaces.component.sprites);
 }
 
 .ice-skin-rime .ice-calcontainer .toggle-popup.close-popup {
     background-image: url(cal_off.gif); /** sprite-ref: rime-sprite-x; */
-    background-image: url(../sprite-x.png.jsf?ln=org.icefaces.component.sprites);
 }
 
 .ice-skin-rime .yui-panel-container {
