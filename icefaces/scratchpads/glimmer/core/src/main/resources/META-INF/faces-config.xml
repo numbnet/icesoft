@@ -36,7 +36,6 @@
         <render-kit-class>org.icefaces.render.DOMRenderKit</render-kit-class>
     </render-kit>
     <lifecycle>
-        <phase-listener>org.icefaces.event.DetectNavigationPhaseListener</phase-listener>
         <phase-listener>org.icefaces.event.DeltaSubmitPhaseListener</phase-listener>
         <phase-listener>org.icefaces.event.WindowScopeSetup</phase-listener>
     </lifecycle>
