@@ -139,18 +139,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     newDOM = writer.getOldDocument();
 
                     if (oldDOM != null && newDOM != null) {
-                        //the diff can also be made subtree-aware
                         diffs = domDiff(oldDOM, newDOM);
-                    } else {
-                        // This shouldn't be the case. Typically it is a symptom that
-                        // There is something else wrong so log it as a warning.
-                        String viewState = facesContext.getExternalContext()
-                                .getRequestParameterMap().get("javax.faces.ViewState");
-                        if (oldDOM == null) {
-                            log.warning("Old DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
-                        } else {
-                            log.warning("New DOM is null during domDiff calculation for javax.faces.ViewState " + viewState);
-                        }
                     }
                 } else {
                     writer.startSubtreeRendering();
