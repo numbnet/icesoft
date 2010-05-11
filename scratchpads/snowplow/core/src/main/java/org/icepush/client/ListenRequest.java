@@ -29,7 +29,10 @@ extends HttpRequest {
         // todo: Remove this logging.
         LOGGER.log(
             Level.INFO,
-            "[Jack] ListenRequest(pushIdSet: '" + pushIdSet + "')");
+            "[Jack] " +
+                "ListenRequest(" +
+                    "pushIdSet: '" + pushIdSet + "', " +
+                    "contextURI: '" + contextURI + "')");
     }
 
     private static String toForm(final Set<String> pushIdSet) {

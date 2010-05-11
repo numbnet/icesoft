@@ -5,21 +5,21 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CreatePushIdRequest
+public class InitialRequest
 extends HttpRequest {
-    private static final Logger LOGGER = Logger.getLogger(CreatePushIdRequest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InitialRequest.class.getName());
 
-    public CreatePushIdRequest(final String contextURI)
+    public InitialRequest(final String contextURI)
     throws URISyntaxException {
         super(
             Method.GET,                                                                                        // Method
             // throws URISyntaxException
-            new URI(contextURI + "/create-push-id.icepush").normalize());                                 // Request-URI
+            new URI(contextURI + "/in.jsp").normalize());                                                 // Request-URI
         // todo: Remove this logging.
         LOGGER.log(
             Level.INFO,
             "[Jack] " +
-                "CreatePushIdRequest(" +
+                "InitialRequest(" +
                     "contextURI: '" + contextURI + "')");
     }
 }

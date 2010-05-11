@@ -28,7 +28,10 @@ extends HttpRequest {
         // todo: Remove this logging.
         LOGGER.log(
             Level.INFO,
-            "[Jack] NotifyRequest(groupName: '" + groupName + "')");
+            "[Jack] " +
+                "NotifyRequest(" +
+                    "groupName: '" + groupName + "', " +
+                    "contextURI: '" + contextURI + "')");
     }
 
     private static String toForm(final String groupName) {
