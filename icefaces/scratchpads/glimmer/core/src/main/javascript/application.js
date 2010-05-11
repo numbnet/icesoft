@@ -211,10 +211,6 @@ if (!window.ice.icefaces) {
                 if (deltaSubmit(f)) {
                     f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
                 }
-
-                //propagate window and view IDs -- this strategy works for POSTs sent by Mojarra
-                appendHiddenInputElement(f, 'ice.window', window.ice.window);
-                appendHiddenInputElement(f, 'ice.view', viewIDOf(f));
             });
         };
 
