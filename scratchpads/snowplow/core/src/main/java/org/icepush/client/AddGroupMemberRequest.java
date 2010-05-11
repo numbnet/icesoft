@@ -28,7 +28,11 @@ extends HttpRequest {
         // todo: Remove this logging.
         LOGGER.log(
             Level.INFO,
-            "[Jack] AddGroupMemberRequest(groupName: '" + groupName + "', pushId: '" + pushId + "')");
+            "[Jack] " +
+                "AddGroupMemberRequest(" +
+                    "groupName: '" + groupName + "', " +
+                    "pushId: '" + pushId + "', " +
+                    "contextURI: '" + contextURI + "')");
     }
 
     private static String toForm(final String groupName, final String pushId) {
