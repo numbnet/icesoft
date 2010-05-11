@@ -54,8 +54,8 @@ public class BrowserBoundServlet extends PathDispatcher {
 
     private class NotifyPushID extends AbstractPseudoServlet {
         public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-            String id = request.getParameter("id");
-            pushContext.push(id);
+            String group = request.getParameter("group");
+            pushContext.push(group);
             response.setContentType("text/plain");
             response.setContentLength(0);
         }
