@@ -60,6 +60,9 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.writeAttribute("value", context.getExternalContext().getRequestMap().get(BridgeSetup.ViewState), null);
                 writer.endElement("input");
             }
+
+            public void encodeEnd(FacesContext context) throws IOException {
+            }
         };
         output.setTransient(true);
         output.setId(form.getId() + "_windowviewid");
