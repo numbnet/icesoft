@@ -36,12 +36,12 @@
         </subant>
     </target>
 
-    <target name="clean">
-        <delete file="lib/icefaces-compat.jar"/>
-        <delete file="lib/icefaces-comps-compat.jar"/>
+    <target name="clean" depends="allclean">
     </target>
 
     <target name="allclean">
+        <delete file="lib/icefaces-compat.jar"/>
+        <delete file="lib/icefaces-comps-compat.jar"/>
         <subant target="clean">
             <fileset dir="." includes="*/build.xml">
                 <exclude name="**/maven2/build.xml"/>
