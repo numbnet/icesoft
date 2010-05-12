@@ -1,9 +1,3 @@
-package com.icesoft.faces.context;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.PartialViewContextFactory;
-
 /*
  * Version: MPL 1.1
  *
@@ -20,11 +14,17 @@ import javax.faces.context.PartialViewContextFactory;
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
-*/
+ */
+
+package com.icesoft.faces.context;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
+import javax.faces.context.PartialViewContextFactory;
 
 public class CompatDOMPartialViewContextFactory extends PartialViewContextFactory {
     PartialViewContextFactory delegate;
