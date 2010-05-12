@@ -29,7 +29,8 @@ var formOf;
         each(aForm.elements, function(formElement) {
             if (formElement.type == 'hidden' && formElement.id == '' &&
                 formElement.name != 'javax.faces.ViewState' &&
-                formElement.name != 'ice.window') {
+                formElement.name != 'ice.window' &&
+                formElement.name != 'ice.view') {
                 formElement.value = '';
             }
         });
