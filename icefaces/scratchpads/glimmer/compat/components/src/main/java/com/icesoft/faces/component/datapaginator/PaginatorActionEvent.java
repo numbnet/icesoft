@@ -1,8 +1,3 @@
-/* This is borrowed Apache code, with only package name changes.
- * It does not and SHOULD NOT carry any ICEsoft copyright notice.
- */
-
-
 /* Original Copyright
  * Copyright 2004 The Apache Software Foundation.
  * 
