@@ -42,9 +42,14 @@ public class DisposeWindowScope extends AbstractServer {
         windowScopeManager.disposeWindow(windowID);
 
         if (EnvUtils.isICEpushPresent()) {
-            String[] viewIDs = request.getParameterAsStrings("ice.view");
-            for (int i = 0; i < viewIDs.length; i++) {
-                sessionViewManager.removeView(viewIDs[i]);
+            try {
+                String[] viewIDs = request.getParameterAsStrings("ice.view");
+                for (int i = 0; i < viewIDs.length; i++) {
+                    sessionViewManager.removeView(viewIDs[i]);
+                }
+            } catch (RuntimeException e) {
+                //missing ice.view parameters means that none of the views within the page
+                //was registered with PushRenderer before page unload
             }
         }
 
