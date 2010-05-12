@@ -1,0 +1,106 @@
+<!DOCTYPE html
+      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://icefaces.org/core"
+>
+<h:head>
+    <title>Navigation Techniques - Page 1</title>
+</h:head>
+<h:body>
+
+    <h:outputText id="theWriter" value="Response writer: #{nav.responseWriter}"/><br/>
+
+    <h2>Forms WITHOUT f:ajax</h2>
+    <p>[A] Navigate using action=/page01 (which is this page)</p>
+    <h:form id="navForm1">
+        <h:inputText id="navInput" value="#{nav.navData1a}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="/page01">
+        </h:commandButton>
+    </h:form>
+    
+    <p>[B] Navigate using action=nav.gotoPage01 (which is this page)</p>
+    <h:form id="navForm2">
+        <h:inputText id="navInput" value="#{nav.navData1b}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="#{nav.gotoPage01}">
+        </h:commandButton>
+    </h:form>
+    
+    <p>[C] Navigate using action=/page02 (a different page)</p>
+    <h:form id="navForm3">
+        <h:inputText id="navInput" value="#{nav.navData2a}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="/page02">
+        </h:commandButton>
+    </h:form>
+    
+    <p>[D] Navigate using action=nav.gotoPage02 (a different page)</p>
+    <h:form id="navForm4">
+        <h:inputText id="navInput" value="#{nav.navData2b}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="#{nav.gotoPage02}">
+        </h:commandButton>
+    </h:form>
+    
+    
+    <h2>Forms WITH f:ajax</h2>
+    
+    <p>[E] Navigate using action=/page01 (which is this page)</p>
+    <h:form id="navForm5">
+        <h:inputText id="navInput" value="#{nav.navData1a}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="/page01">
+            <f:ajax render="navInput"/>
+        </h:commandButton>
+    </h:form>
+    
+    <p>[F] Navigate using action=nav.gotoPage01 (which is this page)</p>
+    <h:form id="navForm6">
+        <h:inputText id="navInput" value="#{nav.navData1b}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="#{nav.gotoPage01}">
+            <f:ajax render="navInput"/>
+        </h:commandButton>
+    </h:form>
+    
+    <p>[G] Navigate using action=/page02 (a different page)</p>
+    <h:form id="navForm7">
+        <h:inputText id="navInput" value="#{nav.navData2a}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="/page02">
+            <f:ajax render="navInput"/>
+        </h:commandButton>
+    </h:form>
+    
+    <p>[H] Navigate using action=nav.gotoPage02 (a different page)</p>
+    <h:form id="navForm8">
+        <h:inputText id="navInput" value="#{nav.navData2b}"/><br/>
+        <h:commandButton id="navButton" 
+                         type="submit" 
+                         value="Go"
+                         action="#{nav.gotoPage02}">
+            <f:ajax render="navInput"/>
+        </h:commandButton>
+    </h:form>
+    
+</h:body>
+</html>
