@@ -15,7 +15,8 @@ public class CalendarBean {
     private boolean singleSubmit;
     private String pattern = "MMM/dd/yyyy hh:mm a";
 
-    public CalendarBean() throws ParseException {
+//    public CalendarBean() throws ParseException {
+    public CalendarBean() {
 //        selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
     }
 
