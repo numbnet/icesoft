@@ -24,6 +24,7 @@ package org.icefaces.application;
 
 import org.icefaces.event.BridgeSetup;
 import org.icefaces.push.SessionViewManager;
+import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
@@ -42,12 +43,16 @@ public class PushRenderer {
      * @param groupName the name of the group to add the current view to
      */
     public static synchronized void addCurrentView(String groupName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        missingFacesContext(context);
-        String viewID = lookupViewState(context);
-        LazyPushManager.lookup(context).enablePushForView(viewID);
-        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-        pushContext.addGroupMember(groupName, viewID);
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            String viewID = lookupViewState(context);
+            LazyPushManager.lookup(context).enablePushForView(viewID);
+            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            pushContext.addGroupMember(groupName, viewID);
+        } else {
+            missingICEpush();
+        }
     }
 
     /**
@@ -56,12 +61,16 @@ public class PushRenderer {
      * @param groupName the name of the group to remove the current view from
      */
     public static synchronized void removeCurrentView(String groupName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        missingFacesContext(context);
-        String viewID = lookupViewState(context);
-        LazyPushManager.lookup(context).disablePushForView(viewID);
-        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-        pushContext.removeGroupMember(groupName, viewID);
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            String viewID = lookupViewState(context);
+            LazyPushManager.lookup(context).disablePushForView(viewID);
+            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            pushContext.removeGroupMember(groupName, viewID);
+        } else {
+            missingICEpush();
+        }
     }
 
     /**
@@ -72,12 +81,16 @@ public class PushRenderer {
      * @param groupName the name of the group to add the current session to
      */
     public static synchronized void addCurrentSession(final String groupName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        missingFacesContext(context);
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        LazyPushManager.lookup(context).enablePushForSessionViews();
-        SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
-        sessionViewManager.addCurrentViewsToGroup(groupName);
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            Map sessionMap = context.getExternalContext().getSessionMap();
+            LazyPushManager.lookup(context).enablePushForSessionViews();
+            SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
+            sessionViewManager.addCurrentViewsToGroup(groupName);
+        } else {
+            missingICEpush();
+        }
     }
 
     /**
@@ -87,12 +100,16 @@ public class PushRenderer {
      * @param groupName the name of the group to remove the current view from
      */
     public static synchronized void removeCurrentSession(final String groupName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        missingFacesContext(context);
-        LazyPushManager.lookup(context).disablePushForSessionViews();
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
-        sessionViewManager.removeCurrentViewsFromGroup(groupName);
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            LazyPushManager.lookup(context).disablePushForSessionViews();
+            Map sessionMap = context.getExternalContext().getSessionMap();
+            SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
+            sessionViewManager.removeCurrentViewsFromGroup(groupName);
+        } else {
+            missingICEpush();
+        }
     }
 
     /**
@@ -103,10 +120,14 @@ public class PushRenderer {
      * @param groupName the name of the group of sessions to render.
      */
     public static void render(String groupName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        missingFacesContext(context);
-        PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-        pushContext.push(groupName);
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            pushContext.push(groupName);
+        } else {
+            missingICEpush();
+        }
     }
 
     /**
@@ -117,14 +138,24 @@ public class PushRenderer {
      * @return application wide PortableRenderer instance
      */
     public static PortableRenderer getPortableRenderer(FacesContext context) {
-        final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-        return new PortableRenderer() {
-            public void render(String group) {
-                if (FacesContext.getCurrentInstance() == null) {
-                    pushContext.push(group);
+        if (EnvUtils.isICEpushPresent()) {
+            final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            return new PortableRenderer() {
+                public void render(String group) {
+                    if (FacesContext.getCurrentInstance() == null) {
+                        pushContext.push(group);
+                    }
                 }
-            }
-        };
+            };
+        } else {
+            missingICEpush();
+
+            return new PortableRenderer() {
+                public void render(String group) {
+                    missingICEpush();
+                }
+            };
+        }
     }
 
     private static String lookupViewState(FacesContext context) {
@@ -136,5 +167,9 @@ public class PushRenderer {
         if (context == null) {
             throw new RuntimeException("FacesContext is not present for thread " + Thread.currentThread());
         }
+    }
+
+    private static void missingICEpush() {
+        log.warning("Push functionality not available.");
     }
 }
