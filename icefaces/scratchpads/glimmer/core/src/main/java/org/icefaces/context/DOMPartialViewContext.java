@@ -281,7 +281,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     private void applyBrowserChanges(Map parameters, Document document) {
         if (null == document) {
-            log.warning("DOM is null during applyBrowserChanges");
+            //partial rendering should be valid in this case
+            //since complete partial subtrees will be produced by the diff
             return;
         }
         NodeList inputElements = document.getElementsByTagName("input");
