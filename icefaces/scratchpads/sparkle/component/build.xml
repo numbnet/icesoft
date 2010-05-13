@@ -14,28 +14,52 @@
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
         <pathelement path="../component/src"/>
+        <pathelement path="../generator/build"/>
+        <pathelement path="../component/build/meta"/>
 
   </path>
     
 
-  <target name="compile" 
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate" 
         description="compile the source " >
-    <echo message=".."/>        
-    <mkdir dir="${exploded}"/>
-    <mkdir dir="${build}/generated"/>
     
-    <ant inheritAll="false" antfile="../generator/build.xml" target="init"/>
-    <javac srcdir="${src}" destdir="${build}/exploded" debug="true">
+    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true">
+        <classpath refid="compile.run.classpath"/>
+    </javac>
+      
+    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
 
-    <javac srcdir="${build}/generated" destdir="${exploded}" debug="true">
+    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true">
         <classpath refid="compile.run.classpath"/>
     </javac> 
     
     <copy todir="${exploded}/META-INF/resources">
 	    <fileset dir="${resources}"/>
     </copy>    
+  </target>
+    
+  <target name="prepare">
+    <mkdir dir="${build}/meta"/>
+    <mkdir dir="${exploded}"/>
+    <mkdir dir="${build}/generated"/>
+    <mkdir dir="${build}/generated/base"/>
+    <mkdir dir="${build}/generated/support"/>
+  </target>
+
+  <target name="generator-dist">
+    <ant inheritAll="false" antfile="../generator/build.xml" target="dist"/>
+  </target>
+    
+  <target  name="compile-meta">
+    <javac srcdir="${src}" destdir="${build}/meta" debug="true" includes="**/*Meta.java">
+        <classpath refid="compile.run.classpath"/>
+    </javac>   
+  </target>
+    
+  <target name="generate" >
+    <ant inheritAll="false" antfile="../generator/build.xml" target="generate"/>
   </target>
 
   <target name="dist" depends="sprites,compile" 

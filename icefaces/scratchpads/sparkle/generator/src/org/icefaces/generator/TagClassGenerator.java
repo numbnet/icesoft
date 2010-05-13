@@ -73,7 +73,7 @@ public class TagClassGenerator {
         String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + "Tag.java";
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
-        FileWriter.write(fileName, path, generatedTagClass);        
+        FileWriter.write("support", path, fileName, generatedTagClass);        
     }
     
     static void addProperties(Class clazz, Component component) {

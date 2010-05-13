@@ -32,13 +32,13 @@ import org.w3c.dom.Document;
 import org.icefaces.component.annotation.Component;
 
 public class FileWriter {
-    public static void write(String fileName, String path, StringBuilder contents) {
+    public static void write(String base, String path, String fileName, StringBuilder contents) {
         Writer writer = null;
         try
         {
-            String workingDir = URLDecoder.decode(getWorkingFolder()+ "../generated/");
+            String workingDir = URLDecoder.decode(
+                getWorkingFolder() + "../../component/build/generated/" + base + "/");
             File folder = new File(workingDir+ path);
-            System.out.println(folder + path+ fileName);
             if (!folder.exists()) {
                 folder.mkdirs();
             }
@@ -89,7 +89,8 @@ public class FileWriter {
         try {
             // Prepare the DOM document for writing
             Source source = new DOMSource(doc);
-            File folder = new File(URLDecoder.decode(getWorkingFolder()+"META-INF/"));
+            File folder = new File(URLDecoder.decode(getWorkingFolder()+
+                "../../component/build/exploded/META-INF/"));
             
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -137,7 +138,7 @@ public class FileWriter {
     }    
     
     public static List<Class> getAnnotatedCompsList() {
-        File file = new File(URLDecoder.decode(FileWriter.getWorkingFolder()+"../../../generator/build"));
+        File file = new File(URLDecoder.decode(FileWriter.getWorkingFolder()+"../../component/build/meta"));
 
         URLClassLoader clazzLoader = null;
         try {
@@ -147,21 +148,21 @@ public class FileWriter {
             e.printStackTrace();
         }    
         List<Class> componentsList = new ArrayList<Class>();
-        processRequest(file, componentsList, clazzLoader);
+        processRequest(file, file.getPath(), componentsList, clazzLoader);
        return componentsList; 
     }
     
-    public static void processRequest(File file, List<Class> componentsList, URLClassLoader loader) {
+    public static void processRequest(File file, String pathPrefix, List<Class> componentsList, URLClassLoader loader) {
         
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {
                 String path = files[i].getPath();
-                if (path.endsWith("class")) {
+                if (path.endsWith(".class")) {
                     System.out.println("1. separatorChar "+ files[i].separatorChar);
-                    System.out.println("2. separatorChar "+ path); 
+                    System.out.println("2. separatorChar "+ path);
+                    path = path.substring(pathPrefix.length()+1, path.indexOf(".class"));
                     path = path.replace(files[i].separatorChar, '.');
-                    path = path.substring(path.indexOf("org.icefaces"), path.indexOf(".class"));
                     System.out.println("3.separatorChar "+ path);                    
         
                      try {                    
@@ -177,7 +178,7 @@ public class FileWriter {
                 }
                
                 if (files[i].isDirectory()) {
-                    processRequest(files[i], componentsList, loader);
+                    processRequest(files[i], pathPrefix, componentsList, loader);
                 }
             }
         }

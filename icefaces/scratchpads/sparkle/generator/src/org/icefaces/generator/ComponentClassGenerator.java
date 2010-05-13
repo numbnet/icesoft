@@ -75,7 +75,7 @@ public class ComponentClassGenerator {
         System.out.println("____package "+ pack);        
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
         System.out.println("____path "+ path);         
-        FileWriter.write(fileName, path, generatedComponentClass);        
+        FileWriter.write("base", path, fileName, generatedComponentClass);        
         System.out.println("____________________________Creating component class ends_________________________");
     }
 
