@@ -53,7 +53,4 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
         }
     }
 
-    protected DOMResponseWriter createDOMResponseWriter(Writer outputWriter) {
-        return new CompatDOMResponseWriter(outputWriter);
-    }
 }
