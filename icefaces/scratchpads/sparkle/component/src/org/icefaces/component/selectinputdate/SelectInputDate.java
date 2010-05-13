@@ -16,14 +16,18 @@ import java.io.IOException;
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
         @ResourceDependency(name = "out/rime/calendar/calendar.css", library = "org.icefaces.component.sprites"),
+        @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "calendar/calendar-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "container/container-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
         @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
 })
 public class SelectInputDate extends SelectInputDateBase {
-    public SelectInputDate() {
-        loadDependency(FacesContext.getCurrentInstance());        
-    }
     
     // Copied from 1.8.2
     /**
@@ -112,27 +116,5 @@ public class SelectInputDate extends SelectInputDateBase {
         else if ("long".equals(name))   return DateFormat.LONG;
         else if ("full".equals(name))   return DateFormat.FULL;
         else                            return DateFormat.DEFAULT;
-    }
-    
-    private void loadDependency(FacesContext context) {
-        context.getViewRoot().addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/selector/selector-min.js");
-                writeJavascriptExternFile(writer, "http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource.js");
-            }
-        }, "head");        
-    }
-    
-    private void writeJavascriptExternFile(ResponseWriter writer, String url) throws IOException {
-        writer.startElement("script", this);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.writeAttribute("src", url, null);
-        writer.endElement("script");
     }
 }
