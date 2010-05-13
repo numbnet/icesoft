@@ -78,5 +78,18 @@ public class FacesConfigBuilder extends XMLBuilder{
         this.addComponentInfo(clazz, component);
         this.addRendererInfo(clazz, component);
     }
+    
+    /*
+    public void write() {
+        //<application>
+        //  <system-event-listener>
+        //    <system-event-listener-class>org.icefaces.event.FormSubmit</system-event-listener-class>
+        //    <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+        //  </system-event-listener>
+        //</application>
+        Element faces_config = (Element) getDocument().getElementsByTagName("faces-config").item(0);
 
+        super.write();
+    }
+    */
 }

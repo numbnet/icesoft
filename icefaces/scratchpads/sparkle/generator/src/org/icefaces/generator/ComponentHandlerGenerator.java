@@ -59,7 +59,7 @@ public class ComponentHandlerGenerator {
         System.out.println("_________________________________________________________________________");
         System.out.println("File name "+ fileName);
         System.out.println("path  "+ path);        
-        FileWriter.write(fileName, path, generatedComponentHandlerClass);        
+        FileWriter.write("support", path, fileName, generatedComponentHandlerClass);        
     }
 
     static void addRules(List<Field> fields) {
