@@ -3,8 +3,9 @@ YAHOO.namespace("icefaces.calendar");
 (function(){
 
 var YuiCalendar = YAHOO.widget.Calendar;
-var IceCalendar = function(container, config) {
+var IceCalendar = function(container, config, params) {
     IceCalendar.superclass.constructor.call(this, container, config);
+    this.params = params;
 };
 var renderFooter = function(html) {
     var hourField = this.cfg.getProperty("hourField");
@@ -130,12 +131,12 @@ YAHOO.icefaces.calendar.getTime = function(calendar) {
 };
 YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
     var Dom = YAHOO.util.Dom;
-    var rootDivId = calendar.containerId, calValueEl = this[rootDivId].calValueEl;
+    var rootDivId = calendar.params.divId, calValueEl = this[rootDivId].calValueEl;
     var date = calendar.getSelectedDates()[0];
     var time = this.getTime(calendar);
     var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
     calValueEl.set("value", dateStr, true);
-    if (this[rootDivId].params.singleSubmit) {
+    if (calendar.params.singleSubmit) {
         ice.se(evt, Dom.get(rootDivId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
         });
@@ -152,7 +153,7 @@ YAHOO.icefaces.calendar.configCal = function (calendar, params) {
     if (params.ariaEnabled) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
-    this[calendar.containerId].yuiComponent = calendar;
+    this[params.divId].yuiComponent = calendar;
 };
 YAHOO.icefaces.calendar.aria = function() {
     var Event = YAHOO.util.Event,
@@ -323,14 +324,12 @@ YAHOO.icefaces.calendar.aria = function() {
     kl1.enable();
 };
 YAHOO.icefaces.calendar.init = function(params) {
-    this[params.divId].params = params;
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
-        KeyListener = YAHOO.util.KeyListener,
-        Calendar = YAHOO.widget.Calendar;
+        KeyListener = YAHOO.util.KeyListener;
 
-    var rootDivId = params.divId; this[rootDivId].rootDivId = rootDivId;
+    var rootDivId = params.divId;
     Dom.setAttribute(rootDivId, "className", "");
     Dom.get(rootDivId).innerHTML = "";
     var rootDiv = new Element(rootDivId);
@@ -362,7 +361,7 @@ YAHOO.icefaces.calendar.init = function(params) {
             selected:params.selectedDate,
             hide_blank_weeks:true,
             navigator:true
-        });
+        }, params);
         this.configCal(calendar, params);
         calendar.selectEvent.subscribe(dateSelectHandler, calendar, true);
         calendar.render();
@@ -425,7 +424,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         iframe:false,
         hide_blank_weeks:true,
         navigator:true
-    });
+    }, params);
     this.configCal(calendar, params);
     calendar.render();
 
