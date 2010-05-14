@@ -22,7 +22,6 @@
 
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.component.CompatDOMResponseWriter;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.context.DOMPartialViewContext;
 import org.icefaces.context.DOMResponseWriter;
