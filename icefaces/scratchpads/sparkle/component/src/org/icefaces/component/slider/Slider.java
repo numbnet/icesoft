@@ -44,7 +44,7 @@ public class Slider extends SliderBase{
                 ResponseWriter writer = context.getResponseWriter();
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", "http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js", null);
+                writer.writeAttribute("src", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", null);
                 writer.endElement("script");              
             }
         }, "head");        

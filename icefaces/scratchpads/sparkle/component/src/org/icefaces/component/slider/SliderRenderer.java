@@ -93,14 +93,17 @@ public class SliderRenderer extends Renderer{
         call.append("axis:'");
         call.append(slider.getAxis());
         call.append("', ");
-        call.append("railSize:'");
-        call.append(slider.getRailSize());
+        call.append("length:'");
+        call.append(slider.getLength());
+        call.append("', ");
+        call.append("clickableRail:'");
+        call.append(slider.isClickableRail());		
         call.append("'},");
         //pass JSF component specific properties that would help in slider configuration 
         call.append("{");
-        if (slider.getThumbImage()!= null) {
-            call.append("thumbImage:'");
-            call.append(slider.getThumbImage());
+        if (slider.getThumbUrl()!= null) {
+            call.append("thumbUrl:'");
+            call.append(slider.getThumbUrl());
             call.append("', ");
         }
         call.append("submitOn:'");
