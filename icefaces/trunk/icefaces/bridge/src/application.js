@@ -193,23 +193,35 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 });
             });
             commandDispatcher.register('updates', function(element) {
+                var numUpdate = 0;
+                var got_bridge_optimizedJSListenerCleanup = false;
+                var bridge_optimizedJSListenerCleanup = null;
                 $enumerate(element.getElementsByTagName('update')).each(function(updateElement) {
                     try {
                         var address = updateElement.getAttribute('address');
                         var update = new Ice.ElementModel.Update(updateElement);
-                        address.asExtendedElement().updateDOM(update);
+                        var extElem = address.asExtendedElement();
+                        if (!got_bridge_optimizedJSListenerCleanup) {
+                            bridge_optimizedJSListenerCleanup =
+                                extElem.findBridge().optimizedJSListenerCleanup;
+                            got_bridge_optimizedJSListenerCleanup = true;
+                        }
+                        extElem.updateDOM(update, bridge_optimizedJSListenerCleanup);
                         logger.debug('applied update : ' + update.asString());
                         var updatedElement = address.asElement();
                         Ice.Focus.captureFocusIn(updatedElement);
                         scriptLoader.searchAndEvaluateScripts(updatedElement);
-                        if (Ice.StateMon) {
-                            Ice.StateMon.checkAll();
-                            Ice.StateMon.rebuild();
-                        }
+                        numUpdate++;
                     } catch (e) {
                         logger.error('failed to insert element: ' + update.asString(), e);
                     }
                 });
+                if (numUpdate > 0) {
+                        if (Ice.StateMon) {
+                            Ice.StateMon.checkAll();
+                            Ice.StateMon.rebuild();
+                        }
+                    }
             });
             commandDispatcher.register('session-expired', function() {
                 try {

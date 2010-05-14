@@ -123,20 +123,20 @@
             throw 'Cannot find enclosing form.';
         },
 
-        updateDOM: function(update) {
-            this.replaceHtml(update.asHTML());
+        updateDOM: function(update, optimizedJSListenerCleanup) {
+            this.replaceHtml(update.asHTML(), optimizedJSListenerCleanup);
         },
 
-        replaceHtml: function(html) {
+        replaceHtml: function(html, optimizedJSListenerCleanup) {
             this.withTemporaryContainer(function(container) {
                 container.innerHTML = html;
                 var newElement = container.firstChild;
-                this.disconnectEventListeners();
+                this.disconnectEventListeners(optimizedJSListenerCleanup);
                 this.replaceHostElementWith(newElement);
             });
         },
 
-        disconnectEventListeners: function() {
+        disconnectEventListeners: function(optimizedJSListenerCleanup) {
             //shutdown bridge if this is the container it is attached to!
             if (this.element.bridge) {
                 this.element.bridge.dispose();
@@ -144,7 +144,7 @@
 
             var elements = this.element.getElementsByTagName('*');
             var length = elements.length;
-            if (this.findBridge().optimizedJSListenerCleanup) {
+            if (optimizedJSListenerCleanup) {
                 for (var i = 0; i < length; i++) {
                     var element = elements[i];
                     element.onkeypress = null;
@@ -519,8 +519,8 @@
             this.redirectSubmit();
         },
 
-        updateDOM: function(update) {
-            this.disconnectEventListeners();
+        updateDOM: function(update, optimizedJSListenerCleanup) {
+            this.disconnectEventListeners(optimizedJSListenerCleanup);
             this.element.innerHTML = update.content();
             var remove = function(name) {
                 this.element[name] = null;
@@ -557,8 +557,8 @@
 
 
     This.BodyElement = This.Element.subclass({
-        replaceHtml: function(html) {
-            this.disconnectEventListeners();
+        replaceHtml: function(html, optimizedJSListenerCleanup) {
+            this.disconnectEventListeners(optimizedJSListenerCleanup);
             //strip <noscript> tag to fix Safari bug
             // #3131 If this is a response from an error code, there may not be a <noscript> tag.
             var start = new RegExp('\<noscript\>', 'g').exec(html);
@@ -572,7 +572,7 @@
     });
 
     This.ScriptElement = This.Element.subclass({
-        updateDOM: function(update) {
+        updateDOM: function(update, optimizedJSListenerCleanup) {
             //if script element is updated its code will be evaluate in IE (thus evaluating it twice)
             //evaluate code in the 'window' context
             var scriptCode = update.content();
@@ -586,7 +586,7 @@
     });
 
     This.TitleElement = This.Element.subclass({
-        updateDOM: function(update) {
+        updateDOM: function(update, optimizedJSListenerCleanup) {
             this.element.ownerDocument.title = update.content();
         }
     });
@@ -609,14 +609,14 @@
     });
 
     This.TableCellElement = This.Element.subclass({
-        replaceHtml: function(html) {
+        replaceHtml: function(html, optimizedJSListenerCleanup) {
             this.withTemporaryContainer(function(container) {
                 container.innerHTML = '<TABLE>' + html + '</TABLE>';
                 var newElement = container.firstChild;
                 while ((null != newElement) && (this.element.id != newElement.id)) {
                     newElement = newElement.firstChild;
                 }
-                this.disconnectEventListeners();
+                this.disconnectEventListeners(optimizedJSListenerCleanup);
                 this.replaceHostElementWith(newElement);
             });
         }
