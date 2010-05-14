@@ -53,8 +53,11 @@ ice.component.tabset = {
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
+            var targetElement = thiz.getTabIndexField(tbset);
+            if(targetElement) {
+            	targetElement.value = tabIndexInfo;
+            }
             var params = function(parameter) {
-                            parameter('yti', tabIndexInfo);
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
@@ -83,9 +86,9 @@ ice.component.tabset = {
                 //logger.info('Server side tab '+ event);
                 try {
                     if (jsfProps.isSingleSubmit) {
-                        ice.singleSubmit(event, tbset, params); 
+                        ice.singleSubmit(event, targetElement, params); 
                     } else {
-                        ice.submit(event, tbset, params);                    
+                        ice.submit(event, targetElement, params);                    
                     }
                 } catch(e) {
                     logger.info(e);
@@ -169,6 +172,50 @@ ice.component.tabset = {
        }
        tabview.addListener('activeTabChange', tabChange);       
        bindYUI(tabview);
+   },
+   
+   //this function is responsible to provide an element that keeps tab index
+   //only one field will be used per form element.
+   getTabIndexField:function(tabset) {
+	   var _form = null;
+	   try {
+		   //see if the tabset is enclosed inside a form
+	       _form = formOf(tabset);
+	   } catch(e) {
+		   //seems like tabset is not enclosed inside a form, now look for tabsetcontroller component 
+		   if (!_form) {
+			   var tsc = document.getElementById(tabset.id + '_tsc');
+			   if(tsc) {
+				   try {
+					   _form = formOf(tsc);
+				   } catch(e) {
+					   logger.info('ERROR: The tabSetController must be enclosed inside a Form element');
+				   }
+			   } else {
+				   logger.info('ERROR: If tabset is not inside a form, then you must use tabsetController component');
+			   }
+		   }
+	   }
+	   //form element has been resolved by now
+	   if (_form) {
+		   var f = document.getElementById(_form.id + 'yti');
+		   //if tabindex holder is not exist already, then create it lazily.
+		   if (!f) {
+			   f = this.createHiddenField(_form, _form.id + 'yti');
+		   }
+	       return f 
+	   } else {
+		   return null;   
+	   }
+   },
+   
+   createHiddenField:function(parent, id) {
+	   var field = document.createElement('input'); 
+	   field.setAttribute('type', 'hidden');
+	   field.setAttribute('id', id);
+	   field.setAttribute('name', 'yti');
+	   parent.appendChild(field);
+	   return field;
    },
    
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
