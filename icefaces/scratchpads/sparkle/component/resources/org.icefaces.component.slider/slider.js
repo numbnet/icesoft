@@ -20,7 +20,7 @@ ice.yui3.slider = {
                 obj = new Y.Slider({
                     //following two properties has to be set when initializing componnent
                     axis: yuiProps.axis,
-                    thumbImage: jsfProps.thumbImage 
+                    thumbUrl: jsfProps.thumbUrl
                 }).render(root);
                 
                 //create a generic submit handler
@@ -74,7 +74,7 @@ ice.yui3.slider = {
                 if (submitOn == 'slideInterval') {
 
                     //now set the submitOn with origional value "thumbDrag"
-                    submitOn = 'thumbDrag';
+                    submitOn = 'slideEnd';
 
                     //get the slideInterval time 
                     var slideInterval = jsfProps.slideInterval;   

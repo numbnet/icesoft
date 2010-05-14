@@ -34,14 +34,14 @@ public class SliderMeta {
     private Integer value;    
     
     @Property (defaultValue="150px",
-            tlddoc="The railSize of slider, default is 150px. Pass through to YUI component")
-    private String railSize;
+            tlddoc="The length of slider, default is 150px. Pass through to YUI component")
+    private String length;
     
     @Property (defaultValue="slideEnd",
             tlddoc="The 3 valid values are slideStart, slideEnd and slideInterval. " +
             		"default value is slideEnd",
             javadocGet="returns value of submitOn. Its not a pass throug because sliderInterval is a custom event " +
-            		"which internally uses \"thumbDrag\"")
+            		"which internally uses \"slideEnd\"")
     private String submitOn;   
     
     @Property (defaultValue="500",
@@ -58,14 +58,17 @@ public class SliderMeta {
     @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
     private String styleClass;  
 
-    @Property(defaultValue="http://yui.yahooapis.com/3.0.0/build/slider/assets/skins/sam/thumb-classic-x.png")
-    private String thumbImage; 
+    @Property(defaultValue="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-x.png")
+    private String thumbUrl; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private Integer tabindex;  
     
     @Property(defaultValue="false")
     private Boolean immediate;
+	
+    @Property(defaultValue="true")
+    private Boolean clickableRail;
     
     
     @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
