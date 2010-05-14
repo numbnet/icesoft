@@ -17,25 +17,14 @@
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body>
-    <style>
-    .yui-nav .disabled em{
-      color:gray;
-    }
-    
-    .hSlider .yui-slider-thumb-image{
-
-    }
-    
-   .hSlider .yui-slider-rail{
-      background: url("images/slider/rail.png") no-repeat 0 0;
-      height: 217px;
-      width: 17px;
-      padding: 0 7px;
-   }
-   
-   
-    </style>
-    <h:panelGroup styleClass=" yui-skin-sam">
+		<style type="text/css">
+		.yui3-skin-sam .yui3-slider-y .yui3-slider-rail,
+		.yui3-skin-sam .yui3-slider-y .yui3-slider-rail-cap-left,
+		.yui3-skin-sam .yui3-slider-y .yui3-slider-rail-cap-right {
+			background-image: url(http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/capsule-dark/rail-y.png);
+		}
+		</style>
+    <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
       <h2> Demo has a TabchangeListener </h2>
                    
             
@@ -47,7 +36,7 @@
             <h:panelGroup id="slider1">
                 <h:outputText id="out1" value="#{sliderBean.valueChangeString}"/>             
             </h:panelGroup>
-            <ann:slider id="s1" railSize="300px" value="#{sliderBean.value1}" valueChangeListener="#{sliderBean.sliderChanged}" />
+            <ann:slider id="s1" length="300px" value="#{sliderBean.value1}" valueChangeListener="#{sliderBean.sliderChanged}" />
             </ann:tab>       
             <ann:tab  id="tab2" label="Tab 2">
                 <h:outputText id="txt2" value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
@@ -60,7 +49,7 @@
         <h:panelGroup id="slider2">
            <h:outputText id="out2" value="Slider 2 value = #{sliderBean.value2}"/> 
            </h:panelGroup>
-         <ann:slider id="s2" railSize="150px" value="#{sliderBean.value2}"/>
+         <ann:slider id="s2" length="150px" value="#{sliderBean.value2}"/>
       </h:form>   
 
        <h:panelGrid id="pgrid" columns="4">  
@@ -68,14 +57,14 @@
            <h:panelGroup id="slider3">
            <h:outputText id="out3" value="Slider 3 value = #{sliderBean.value3}"/> 
            </h:panelGroup>
-           <ann:slider id="s3" railSize="117px" axis="y" value="#{sliderBean.value3}"/>
+           <ann:slider id="s3" length="117px" axis="y" thumbUrl="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-y.png" value="#{sliderBean.value3}"/>
       </h:panelGroup> 
       <h:outputText value="..................."/>
       <h:panelGroup>           
            <h:panelGroup id="slider4">
            <h:outputText id="out4" value="Slider 4 value = #{sliderBean.value4}"/> 
            </h:panelGroup>
-           <ann:slider id="s4" axis="y" railSize="117px" thumbImage="images/slider/thumb.png" styleClass="hSlider" value="#{sliderBean.value4}"/>
+           <ann:slider id="s4" axis="y" length="117px" thumbUrl="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-y.png" styleClass="hSlider" value="#{sliderBean.value4}"/>
          </h:panelGroup>
 
            <h:form id="frm2">
