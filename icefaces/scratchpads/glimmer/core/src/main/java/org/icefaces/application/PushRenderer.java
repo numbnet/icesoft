@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 public class PushRenderer {
     private static Logger log = Logger.getLogger(PushRenderer.class.getName());
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
+    private static final String MissingICEpushMessage = "ICEpush library missing. Push notification disabled.";
 
     /**
      * Add the current view to the specified group. Groups
@@ -51,7 +52,7 @@ public class PushRenderer {
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             pushContext.addGroupMember(groupName, viewID);
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
         }
     }
 
@@ -69,7 +70,7 @@ public class PushRenderer {
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             pushContext.removeGroupMember(groupName, viewID);
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
         }
     }
 
@@ -89,7 +90,7 @@ public class PushRenderer {
             SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
             sessionViewManager.addCurrentViewsToGroup(groupName);
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
         }
     }
 
@@ -108,7 +109,7 @@ public class PushRenderer {
             SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
             sessionViewManager.removeCurrentViewsFromGroup(groupName);
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
         }
     }
 
@@ -126,7 +127,7 @@ public class PushRenderer {
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             pushContext.push(groupName);
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
         }
     }
 
@@ -148,11 +149,11 @@ public class PushRenderer {
                 }
             };
         } else {
-            missingICEpush();
+            log.warning(MissingICEpushMessage);
 
             return new PortableRenderer() {
                 public void render(String group) {
-                    missingICEpush();
+                    log.warning(MissingICEpushMessage);
                 }
             };
         }
@@ -167,9 +168,5 @@ public class PushRenderer {
         if (context == null) {
             throw new RuntimeException("FacesContext is not present for thread " + Thread.currentThread());
         }
-    }
-
-    private static void missingICEpush() {
-        log.warning("Push functionality not available.");
     }
 }
