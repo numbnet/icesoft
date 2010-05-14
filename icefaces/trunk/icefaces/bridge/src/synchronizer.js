@@ -38,8 +38,11 @@
         var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
         var tag = container.tagName;
         var c = $element(container);
-        c.disconnectEventListeners();
-        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
+        var bridge_optimizedJSListenerCleanup =
+            c.findBridge().optimizedJSListenerCleanup;
+        c.disconnectEventListeners(bridge_optimizedJSListenerCleanup);
+        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''),
+            bridge_optimizedJSListenerCleanup);
     };
 
     This.Synchronizer = Object.subclass({

@@ -50,17 +50,7 @@ Ice.StateMon = {
         for (i = 0; i < size; i++) {
             monitor = this.monitors[i];
             try {
-                if (monitor.changeDetected()) {
-                    this.logger.debug('Monitor [' + monitor.id + '] has been replaced');
-                    monitor.rebuildMe = true;
-                } else {
-                    this.logger.debug('Monitor [' + monitor.id + '] has not been replaced');
-                    monitor.rebuildMe = false;
-                }
-                if (!this.elementExists(monitor.id)) {
-                    this.logger.debug('Monitor [' + monitor.id + '] no longer exists in dom');
-                    monitor.destroyMe = true;
-                }
+                this.detectChangedAndRemoved(monitor);
             } catch(ee) {
                 this.logger.error("Error checking monitor [" + monitor.id + "] Msg [" + ee + "]");
             }
@@ -159,12 +149,26 @@ Ice.StateMon = {
         return true;
     },
 
-    elementReplaced:function(ele) {
+    detectChangedAndRemoved:function(monitor) {
+        var elem = $(monitor.id);
+        if (monitor.changeDetected(elem)) {
+            this.logger.debug('Monitor [' + monitor.id + '] has been replaced');
+            monitor.rebuildMe = true;
+        } else {
+            this.logger.debug('Monitor [' + monitor.id + '] has not been replaced');
+            monitor.rebuildMe = false;
+        }
+        if (!elem) {
+            this.logger.debug('Monitor [' + monitor.id + '] no longer exists in dom');
+            monitor.destroyMe = true;
+        }
+    },
+
+    elementReplaced:function(ele, currentEle) {
         if (ele && !ele.id) {
             // If element does not have an ID then it wont require initialization
             return false;
         }
-        var currentEle = $(ele.id);
         if (!currentEle) {
             this.logger.debug('Element not found id[' + ele.id + '] element[' + ele + '] type [' + ele.nodeName + ']');
         }
@@ -197,8 +201,8 @@ Ice.MonitorBase.prototype = {
     initialize:function() {
     },
 
-    changeDetected:function() {
-        return Ice.StateMon.elementReplaced(this.htmlElement);
+    changeDetected:function(newElem) {
+        return Ice.StateMon.elementReplaced(this.htmlElement, newElem);
     },
 
     removeMe:false
@@ -223,7 +227,7 @@ Ice.SortableMonitor.prototype = Object.extend(new Ice.MonitorBase(), {
         Sortable.create(this.id, this.createOptions);
     },
 
-    changeDetected:function() {
+    changeDetected:function(newElem) {
         return true;
     }
 });
@@ -265,7 +269,7 @@ Ice.DroppableMonitor.prototype = Object.extend(new Ice.MonitorBase, {
     },
 
     destroy:function() {
-        Droppables.remove(this.htmlElement);
+        Droppables.removeOptimised(this.id, this.htmlElement);
     },
 
     rebuild:function() {
