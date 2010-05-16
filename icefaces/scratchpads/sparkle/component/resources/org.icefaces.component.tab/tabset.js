@@ -86,7 +86,13 @@ ice.component.tabset = {
                 //logger.info('Server side tab '+ event);
                 try {
                     if (jsfProps.isSingleSubmit) {
-                        ice.singleSubmit(event, targetElement, params); 
+                    	//backup id
+                    	var elementId = targetElement.id;
+                    	//replace id with the id of tabset component, so the "execute" property can be set to tabset id
+                    	targetElement.id = clientId;
+                    	ice.se(event, targetElement, params);
+                    	//restore id
+                    	targetElement.id = elementId;
                     } else {
                         ice.submit(event, targetElement, params);                    
                     }
