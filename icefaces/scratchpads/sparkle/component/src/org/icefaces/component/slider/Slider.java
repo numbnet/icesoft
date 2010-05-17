@@ -23,33 +23,14 @@ import org.icefaces.component.tab.TabSet;
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider")    
+    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider"),
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1")
 })
 public class Slider extends SliderBase{
-    
-    public Slider() {
-        loadDependency(FacesContext.getCurrentInstance());     
-    }
     
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
     }
-
-    //YUI3 loads modules dynamically, but to load YUI bootstrap the following 
-    //file has to be loaded at least
-    //TODO get stable version of YUI3 and served from the JAR instead of referencing to live server
-    private void loadDependency(FacesContext context) {
-        context.getViewRoot().addComponentResource(context, new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                writer.startElement("script", this);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", null);
-                writer.endElement("script");              
-            }
-        }, "head");        
-    }
-    
     
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
