@@ -14,93 +14,139 @@
 
     <h:outputText id="theWriter" value="Response writer: #{nav.responseWriter}"/><br/>
 
-    <h2>Forms WITHOUT f:ajax</h2>
-    <p>[A] Navigate using action=/page01 (which is this page)</p>
-    <h:form id="navForm1">
-        <h:inputText id="navInput" value="#{nav.navData1a}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="/page01">
-        </h:commandButton>
-    </h:form>
-    
-    <p>[B] Navigate using action=nav.gotoPage01 (which is this page)</p>
-    <h:form id="navForm2">
-        <h:inputText id="navInput" value="#{nav.navData1b}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="#{nav.gotoPage01}">
-        </h:commandButton>
-    </h:form>
-    
-    <p>[C] Navigate using action=/page02 (a different page)</p>
-    <h:form id="navForm3">
-        <h:inputText id="navInput" value="#{nav.navData2a}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="/page02">
-        </h:commandButton>
-    </h:form>
-    
-    <p>[D] Navigate using action=nav.gotoPage02 (a different page)</p>
-    <h:form id="navForm4">
-        <h:inputText id="navInput" value="#{nav.navData2b}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="#{nav.gotoPage02}">
-        </h:commandButton>
-    </h:form>
-    
-    
-    <h2>Forms WITH f:ajax</h2>
-    
-    <p>[E] Navigate using action=/page01 (which is this page)</p>
-    <h:form id="navForm5">
-        <h:inputText id="navInput" value="#{nav.navData1a}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="/page01">
-            <f:ajax render="navInput"/>
-        </h:commandButton>
-    </h:form>
-    
-    <p>[F] Navigate using action=nav.gotoPage01 (which is this page)</p>
-    <h:form id="navForm6">
-        <h:inputText id="navInput" value="#{nav.navData1b}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="#{nav.gotoPage01}">
-            <f:ajax render="navInput"/>
-        </h:commandButton>
-    </h:form>
-    
-    <p>[G] Navigate using action=/page02 (a different page)</p>
-    <h:form id="navForm7">
-        <h:inputText id="navInput" value="#{nav.navData2a}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="/page02">
-            <f:ajax render="navInput"/>
-        </h:commandButton>
-    </h:form>
-    
-    <p>[H] Navigate using action=nav.gotoPage02 (a different page)</p>
-    <h:form id="navForm8">
-        <h:inputText id="navInput" value="#{nav.navData2b}"/><br/>
-        <h:commandButton id="navButton" 
-                         type="submit" 
-                         value="Go"
-                         action="#{nav.gotoPage02}">
-            <f:ajax render="navInput"/>
-        </h:commandButton>
-    </h:form>
+    <h2>Buttons that navigate back to the same page</h2>
+
+    <h:panelGrid columns="4">
+        <h:outputText value=""/>
+        <h:outputText value="Forms WITHOUT f:ajax"/>
+        <h:outputText value="Forms WITH f:ajax @all"/>
+        <h:outputText value="Forms WITH f:ajax @form"/>
+
+        <p>Navigate using action=/page01</p>
+        <h:form id="navFormA1">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A1 - Page 1"
+                             action="/page01">
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormA2">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A2 - Page 1"
+                             action="/page01">
+                <f:ajax render="@all"/>
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormA3">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A3 - Page 1"
+                             action="/page01">
+                <f:ajax render="@form"/>
+            </h:commandButton>
+        </h:form>
+
+
+        <p>Navigate using action=nav.gotoPage01</p>
+        <h:form id="navFormA4">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A4 - Page 1"
+                             action="#{nav.gotoPage01}">
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormA5">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A5 - Page 1"
+                             action="#{nav.gotoPage01}">
+                <f:ajax render="@all"/>
+            </h:commandButton>
+        </h:form>
+
+
+        <h:form id="navFormA6">
+            <h:inputText value="#{nav.navData1a}"/><br/>
+            <h:commandButton type="submit"
+                             value="A6 - Page 1"
+                             action="#{nav.gotoPage01}">
+                <f:ajax render="@form"/>
+            </h:commandButton>
+        </h:form>
+
+
+
+    </h:panelGrid>
+
+    <h2>Buttons that navigate to a different page</h2>
+
+    <h:panelGrid columns="4">
+        <h:outputText value=""/>
+        <h:outputText value="Forms WITHOUT f:ajax"/>
+        <h:outputText value="Forms WITH f:ajax @all"/>
+        <h:outputText value="Forms WITH f:ajax @form"/>
+
+        <p>Navigate using action=/page02</p>
+        <h:form id="navFormB1">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B1 - Page 2"
+                             action="/page02">
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormB2">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B2 - Page 2"
+                             action="/page02">
+                <f:ajax render="@all"/>
+            </h:commandButton>
+        </h:form>
+
+
+        <h:form id="navFormB3">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B3 - Page 2"
+                             action="/page02">
+                <f:ajax render="@form"/>
+            </h:commandButton>
+        </h:form>
+
+        <p>Navigate using action=nav.gotoPage02</p>
+        <h:form id="navFormB4">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B4 - Page 2"
+                             action="#{nav.gotoPage02}">
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormB5">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B5 - Page 2"
+                             action="#{nav.gotoPage02}">
+                <f:ajax render="@all"/>
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="navFormB6">
+            <h:inputText value="#{nav.navData2a}"/><br/>
+            <h:commandButton type="submit"
+                             value="B6 - Page 2"
+                             action="#{nav.gotoPage02}">
+                <f:ajax render="@form"/>
+            </h:commandButton>
+        </h:form>
+
+
+    </h:panelGrid>
     
 </h:body>
 </html>
