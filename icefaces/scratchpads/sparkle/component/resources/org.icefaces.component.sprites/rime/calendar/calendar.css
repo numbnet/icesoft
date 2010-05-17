@@ -521,7 +521,9 @@ p#clear {
 }
 
 .ice-skin-rime .ice-calcontainer .text-input {
-    width: 166px;
+    width: 160px;
+    margin-top: 0;
+    margin-right: 5px;
     float: left;
 }
 
@@ -578,4 +580,12 @@ p#clear {
 
 .ice-skin-rime .yui-panel .bd, .ice-skin-rime .yui-panel .ft {
     background-color: #F5F5F5;
+}
+
+.ice-skin-rime .yui-calendar .calnavleft, .ice-skin-rime .yui-calendar .calnavright {
+    top: -4px;
+}
+
+.ice-skin-rime .yui-calendar tfoot tr {
+    height: 30px;
 }
