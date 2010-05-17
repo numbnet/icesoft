@@ -51,10 +51,18 @@ var submit;
 
     function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
-        var clonedElement = element.cloneNode(true);
         var form = document.getElementById(viewID);
+        var toRemove;
         try {
-            form.appendChild(clonedElement);
+            var clonedElement;
+            if (/MSIE/.test(navigator.userAgent)) {
+                toRemove = form.appendChild(document.createElement('div'));
+                toRemove.innerHTML = element.outerHTML;
+                clonedElement = toRemove.firstChild;
+            } else {
+                toRemove = form.appendChild(element.cloneNode(true));
+                clonedElement = toRemove;
+            }
 
             event = event || null;
             var options = {execute: execute, render: render, 'ice.window': namespace.window, 'ice.view': viewID};
@@ -62,7 +70,7 @@ var submit;
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
         } finally {
-            form.removeChild(clonedElement);
+            form.removeChild(toRemove);
         }
     }
 
