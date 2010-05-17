@@ -507,6 +507,19 @@ p#clear {
     color: #000000;
 }
 
+.ice-skin-rime .yui-calendar td.calcell.calcellhover.selected a {
+    background-color: #FAA620;
+    color: #FFFFFF;
+}
+
+.ice-skin-rime .yui-calendar td.calcell.today.calcellhover {
+    background-color: #000;
+}
+
+.ice-skin-rime .yui-calendar td.calcell.today.selected {
+    background-color: #000;
+}
+
 .ice-skin-rime .ice-calcontainer .text-input {
     width: 166px;
     float: left;
