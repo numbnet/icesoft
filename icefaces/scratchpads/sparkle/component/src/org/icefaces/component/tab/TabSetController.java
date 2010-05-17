@@ -16,6 +16,7 @@ public class TabSetController extends TabSetControllerBase{
     	String id = getFor() + "_tsc";
     	writer.startElement(HTML.INPUT_ELEM, this); 	
     	writer.writeAttribute(HTML.ID_ATTR, id, HTML.ID_ATTR);
+    	writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);    	
     	writer.endElement(HTML.INPUT_ELEM);
     }
 }
