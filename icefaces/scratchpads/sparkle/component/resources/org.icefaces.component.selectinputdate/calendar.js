@@ -53,7 +53,7 @@ var renderFooter = function(html) {
             temp += " selected='selected'";
         }
         temp += ">";
-        html[html.length] = temp + i + "</option>";
+        html[html.length] = temp + (i < 10 ? 0 : "") + i + "</option>";
     }
     html[html.length] = "</select>";
     Event.onAvailable(selHrId, selAvailable, selHrId);
@@ -65,7 +65,7 @@ var renderFooter = function(html) {
             temp += " selected='selected'";
         }
         temp += ">";
-        html[html.length] = temp + i + "</option>";
+        html[html.length] = temp + (i < 10 ? 0 : "") + i + "</option>";
     }
     html[html.length] = "</select>";
     Event.onAvailable(selMinId, selAvailable, selMinId);

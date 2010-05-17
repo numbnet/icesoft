@@ -29,6 +29,7 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         System.out.println("\nSelectInputDateRenderer.encodeEnd");
+//        printParams(context);
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate selectInputDate = (SelectInputDate) component;
@@ -119,7 +120,7 @@ public class SelectInputDateRenderer extends Renderer {
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);
 //        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
         writer.write("YAHOO.icefaces.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
@@ -128,24 +129,11 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         System.out.println("\nSelectInputDateRenderer.decode");
+//        printParams(context);
         super.decode(context, component);
         SelectInputDate selectInputDate = (SelectInputDate) component;
         String clientId = component.getClientId(context);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
-        Map<String, String[]> paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
-        String key;
-        String[] values;
-        for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
-            key = entry.getKey();
-            values = entry.getValue();
-            System.out.print(key);
-            System.out.print(" = ");
-            for (String value : values) {
-                System.out.print(value);
-                System.out.print(", ");
-            }
-            System.out.println();
-        }
         String dateString = paramMap.get(clientId + "_value");
         DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
@@ -173,5 +161,22 @@ public class SelectInputDateRenderer extends Renderer {
         super.getConvertedValue(context, component, submittedValue);
         SelectInputDate selectInputDate = (SelectInputDate) component;
         return selectInputDate.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
+    }
+
+    private void printParams(FacesContext context) {
+        Map<String, String[]> paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
+        String key;
+        String[] values;
+        for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
+            key = entry.getKey();
+            values = entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (String value : values) {
+                System.out.print(value);
+                System.out.print(", ");
+            }
+            System.out.println();
+        }
     }
 }
