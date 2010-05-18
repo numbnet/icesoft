@@ -38,16 +38,14 @@ import java.io.IOException;
 public class WindowAndViewIDSetup implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
+        final FacesContext context = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(context)) {
             return;
         }
 
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        UIOutput output = new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-
+        UIOutput output = new UIOutputWriter() {
+            public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
@@ -59,9 +57,6 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.writeAttribute("name", "ice.view", null);
                 writer.writeAttribute("value", context.getExternalContext().getRequestMap().get(BridgeSetup.ViewState), null);
                 writer.endElement("input");
-            }
-
-            public void encodeEnd(FacesContext context) throws IOException {
             }
         };
         output.setTransient(true);

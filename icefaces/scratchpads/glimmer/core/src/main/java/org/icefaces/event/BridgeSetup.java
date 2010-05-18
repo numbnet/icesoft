@@ -81,7 +81,7 @@ public class BridgeSetup implements SystemEventListener {
         //replace with icepush.js resource in icepush.jar
         if (EnvUtils.isICEpushPresent()) {
             UIOutput icepushCode = new UIOutputWriter() {
-                public void encode(ResponseWriter writer) throws IOException {
+                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.writeAttribute("src", "code.icepush.jsf" + invalidateHTTPCache, null);
@@ -103,8 +103,8 @@ public class BridgeSetup implements SystemEventListener {
             externalContext.getRequestMap().put(ViewState, viewID);
 
             UIOutput icefacesSetup = new UIOutputWriter() {
-                public void encode(ResponseWriter writer) throws IOException {
-                    String clientID = getClientId();
+                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    String clientID = getClientId(context);
                     writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);
                     writer.startElement("script", this);
@@ -146,7 +146,7 @@ public class BridgeSetup implements SystemEventListener {
                 SessionViewManager.lookup(context).addView(viewID);
                 final String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
-                    public void encode(ResponseWriter writer) throws IOException {
+                    public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                         //need a span to make sure JSF bridge evaluates included script properly
                         writer.startElement("span", this);
                         writer.writeAttribute("id", this.getClientId(context), null);

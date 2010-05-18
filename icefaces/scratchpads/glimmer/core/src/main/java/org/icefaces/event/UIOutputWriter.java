@@ -29,11 +29,11 @@ import java.io.IOException;
 
 public abstract class UIOutputWriter extends UIOutput {
     public void encodeBegin(FacesContext context) throws IOException {
-        encode(context.getResponseWriter());
+        encode(context.getResponseWriter(), context);
     }
 
     public void encodeEnd(FacesContext context) throws IOException {
     }
 
-    public abstract void encode(ResponseWriter writer) throws IOException;
+    public abstract void encode(ResponseWriter writer, FacesContext context) throws IOException;
 }
