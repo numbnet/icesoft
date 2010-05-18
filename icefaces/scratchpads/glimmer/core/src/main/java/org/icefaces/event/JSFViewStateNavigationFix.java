@@ -54,11 +54,11 @@ public class JSFViewStateNavigationFix implements SystemEventListener {
             }
         };
         output.setTransient(true);
+        output.setId(form.getId()+"_viewstate");
         form.getChildren().add(0, output);
     }
 
     public boolean isListenerForSource(Object source) {
-        return false;
-//        return source instanceof HtmlForm;
+        return source instanceof HtmlForm;
     }
 }
