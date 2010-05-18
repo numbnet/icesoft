@@ -105,8 +105,9 @@ public class BridgeSetup implements SystemEventListener {
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer) throws IOException {
                     String clientID = getClientId();
-                    writer.startElement("script", this);
+                    writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);
+                    writer.startElement("script", this);
                     //define bridge configuration
                     writer.write("document.getElementById('");
                     writer.write(clientID);
@@ -126,6 +127,7 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write(windowID);
                     writer.write("';");
                     writer.endElement("script");
+                    writer.endElement("span");
                 }
             };
             icefacesSetup.setTransient(true);
