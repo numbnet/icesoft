@@ -11,6 +11,10 @@ public class FaceletTagLibBuilder extends XMLBuilder{
     public FaceletTagLibBuilder() {
         super("icefaces.taglib.xml");
         Element root = getDocument().createElement("facelet-taglib");
+        root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
+        root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
+        root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd");
+        root.setAttribute("version",            "2.0");
         getDocument().appendChild(root);
         addNode(root, "namespace", Generator.namespace);
     }

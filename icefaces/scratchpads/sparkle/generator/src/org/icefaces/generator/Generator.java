@@ -36,6 +36,7 @@ public class Generator {
     static Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
     static Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     static Map<String,String> WrapperTypes= new HashMap<String, String>();
+    public final static String shortName = "ann";
     public final static String namespace = "http://www.icesoft.com/icefaces/component/annotated";
     static {
         components = FileWriter.getAnnotatedCompsList();

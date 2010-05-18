@@ -21,8 +21,6 @@ public abstract class XMLBuilder {
     Properties properties = new Properties();
     public XMLBuilder(String fileName) {
         this.fileName = fileName;
-        properties.put(OutputKeys.DOCTYPE_PUBLIC, "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN");
-        properties.put(OutputKeys.DOCTYPE_SYSTEM, "http://java.sun.com/dtd/web-facesconfig_1_1.dtd");
         properties.put(OutputKeys.INDENT, "yes");          
         try {
             document = factory.newDocumentBuilder().newDocument();
