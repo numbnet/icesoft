@@ -23,11 +23,16 @@
 package org.icefaces.context;
 
 import org.icefaces.util.DOMUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -35,14 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.PartialViewContext;
 
 
 public class DOMResponseWriter extends ResponseWriter {
 
     private static Logger log = Logger.getLogger("org.icefaces.context.DOMResponseWriter");
 
-    private static final String OLD_DOM = "org.icefaces.old-dom";
+    public static final String OLD_DOM = "org.icefaces.old-dom";
     private static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     protected static final String XML_MARKER = "<?xml";
     protected static final String DOCTYPE_MARKER = "<!DOCTYPE";
@@ -64,7 +68,6 @@ public class DOMResponseWriter extends ResponseWriter {
     private boolean isStyle;
 
 
-    
     public DOMResponseWriter(Writer writer) {
         this(DOMUtils.getNewDocument(), writer);
     }
@@ -115,7 +118,7 @@ public class DOMResponseWriter extends ResponseWriter {
             writer.write(cbuf, off, len);
             return;
         }
-        
+
         try {
             String data = new String(cbuf, off, len);
 
@@ -126,15 +129,15 @@ public class DOMResponseWriter extends ResponseWriter {
             //that are postbacks.
             if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
                 PartialViewContext pvc = FacesContext.getCurrentInstance().getPartialViewContext();
-                if( pvc == null || !pvc.isAjaxRequest() ){
+                if (pvc == null || !pvc.isAjaxRequest()) {
                     writer.write(data);
                 } else {
-                    if(data.startsWith(XML_MARKER)){
-                        storeViewAttribute(XML_MARKER,data);
+                    if (data.startsWith(XML_MARKER)) {
+                        storeViewAttribute(XML_MARKER, data);
                     }
 
-                    if(data.startsWith(DOCTYPE_MARKER)){
-                        storeViewAttribute(DOCTYPE_MARKER,data);
+                    if (data.startsWith(DOCTYPE_MARKER)) {
+                        storeViewAttribute(DOCTYPE_MARKER, data);
                     }
                 }
                 return;
@@ -148,7 +151,7 @@ public class DOMResponseWriter extends ResponseWriter {
         }
     }
 
-    private void storeViewAttribute(String key, Object value){
+    private void storeViewAttribute(String key, Object value) {
         FacesContext fc = FacesContext.getCurrentInstance();
         UIViewRoot root = fc.getViewRoot();
         root.getAttributes().put(key, value);
@@ -265,13 +268,13 @@ public class DOMResponseWriter extends ResponseWriter {
      */
     public void startElement(String name, UIComponent component) throws IOException {
 
-        if (suppressNextNode)  {
+        if (suppressNextNode) {
             //this node has already been created and is just a placeholder
             //in the tree
             suppressNextNode = false;
             return;
         }
-        isScriptOrStyle( name ); 
+        isScriptOrStyle(name);
         //TODO:  Does this ever happen - ie does startDocument not get called for some reason?
         if (null == document) {
             document = DOMUtils.getNewDocument();
@@ -401,7 +404,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         if (!dontEscape) {
             textString = DOMUtils.escapeAnsi(textString);
-        } 
+        }
         appendToCursor(textString);
     }
 
@@ -455,7 +458,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 log.finest("appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
 
-            if( cursor == null ){
+            if (cursor == null) {
                 cursor = document.getDocumentElement();
             }
 
@@ -474,7 +477,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 log.finest("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
             }
             Node result = ((Element) cursor).setAttributeNode(node);
-            if ("id".equals(node.getName()))  {
+            if ("id".equals(node.getName())) {
                 ((Element) cursor).setIdAttributeNode(node, true);
             }
             return result;
@@ -499,11 +502,11 @@ public class DOMResponseWriter extends ResponseWriter {
     /**
      * <p>Prepare for rendering into subtrees.</p>
      */
-    public void startSubtreeRendering()  {
+    public void startSubtreeRendering() {
         //subtree rendering will replace specified
         //subtrees in the old DOM
-        Document oldDoc =  getOldDocument();
-        if( oldDoc != null ){
+        Document oldDoc = getOldDocument();
+        if (oldDoc != null) {
             document = oldDoc;
         } else {
             refreshDocument();
@@ -514,14 +517,15 @@ public class DOMResponseWriter extends ResponseWriter {
     /**
      * <p>Seek to the subtree specified by the id parameter and clear it
      * to prepare for new rendered output.</p>
+     *
      * @param id DOM id of component subtree
      * @return old DOM subtree
      */
-    public Node seekSubtree(String id)  {
+    public Node seekSubtree(String id) {
         Node oldSubtree = null;
         //seek to position in document
         cursor = document.getElementById(id);
-        if (null == cursor)  {
+        if (null == cursor) {
             //If the cursor is null, it means we couldn't find the subtree
             //in the current document.  We may have navigated during the lifecycle.
             if (log.isLoggable(Level.FINE)) {
@@ -559,7 +563,7 @@ public class DOMResponseWriter extends ResponseWriter {
     //page with the same view ID) in the middle of partial rendering,
     //it may be necessary to refresh the document for the DOMResponseWriter
     //so that the subtrees can actually be rendered.
-    private void refreshDocument(){
+    private void refreshDocument() {
         document = DOMUtils.getNewDocument();
         Element root = document.createElement("html");
         document.appendChild(root);
@@ -567,7 +571,7 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
 
-     private boolean isScriptOrStyle(String name) {
+    private boolean isScriptOrStyle(String name) {
         if ("script".equalsIgnoreCase(name)) {
             isScript = true;
             dontEscape = true;
