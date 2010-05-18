@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.generator.Generator;
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;
@@ -14,11 +15,15 @@ public class TLDBuilder extends XMLBuilder{
     public TLDBuilder() {
         super("components.tld");
         Element root = getDocument().createElement("taglib");
+        root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
+        root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
+        root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
+        root.setAttribute("version",            "2.1");
         getDocument().appendChild(root);
-        addNode(root, "tlib-version", "1.7");
-        addNode(root, "jsp-version", "1.2");
-        addNode(root, "short-name", "ann");
-        addNode(root, "uri", "http://www.icesoft.com/icefaces/component/annotated");
+        addNode(root, "tlib-version", "2.1");
+        //addNode(root, "jsp-version", "1.2");
+        addNode(root, "short-name", Generator.shortName);
+        addNode(root, "uri", Generator.namespace);
         addNode(root, "display-name", "ICEfaces Component Suite");         
     }
 

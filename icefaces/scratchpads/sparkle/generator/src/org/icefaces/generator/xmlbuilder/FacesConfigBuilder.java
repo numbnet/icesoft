@@ -11,6 +11,11 @@ public class FacesConfigBuilder extends XMLBuilder{
     public FacesConfigBuilder() {
         super("faces-config.xml");
         Element root = getDocument().createElement("faces-config");
+        root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
+        root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
+        root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd");
+        root.setAttribute("version",            "2.0");
+        root.setAttribute("metadata-complete",  "false");
         Element render_kit = getDocument().createElement("render-kit");
         getDocument().appendChild(root);
         root.appendChild(render_kit);        
