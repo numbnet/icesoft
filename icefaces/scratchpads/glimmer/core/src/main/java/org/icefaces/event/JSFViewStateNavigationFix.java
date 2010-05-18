@@ -37,10 +37,9 @@ public class JSFViewStateNavigationFix implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        UIOutput output = new UIOutput() {
-            public void encodeBegin(FacesContext context) throws IOException {
-                ResponseWriter writer = context.getResponseWriter();
-                //JSF misses to render ViewState hidden input element when the entire document is updated due to forward navigation 
+        UIOutput output = new UIOutputWriter() {
+            public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                //JSF misses to render ViewState hidden input element when the entire document is updated due to forward navigation
                 if (context.isPostback() && !context.getViewRoot().getAttributes().containsKey(DOMResponseWriter.OLD_DOM)) {
                     writer.startElement("input", this);
                     writer.writeAttribute("type", "hidden", null);
@@ -49,12 +48,9 @@ public class JSFViewStateNavigationFix implements SystemEventListener {
                     writer.endElement("input");
                 }
             }
-
-            public void encodeEnd(FacesContext context) throws IOException {
-            }
         };
         output.setTransient(true);
-        output.setId(form.getId()+"_viewstate");
+        output.setId(form.getId() + "_viewstate");
         form.getChildren().add(0, output);
     }
 
