@@ -58,6 +58,7 @@ public class JSFViewStateNavigationFix implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return source instanceof HtmlForm;
+        return false;
+//        return source instanceof HtmlForm;
     }
 }
