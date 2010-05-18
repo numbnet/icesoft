@@ -70,11 +70,11 @@ ice.yui3.slider = {
                 var submitOn = jsfProps.submitOn;
 
                 //as "slideInterval" is not known by the YUI slider, and its 
-                //created by us, which internally uses "thumbDrag" event of slider.
+                //created by us, which internally uses "thumbMove" event of slider.
                 if (submitOn == 'slideInterval') {
 
-                    //now set the submitOn with origional value "thumbDrag"
-                    submitOn = 'slideEnd';
+                    //now set the submitOn with origional value "thumbMove"
+                    submitOn = 'thumbMove';
 
                     //get the slideInterval time 
                     var slideInterval = jsfProps.slideInterval;   
