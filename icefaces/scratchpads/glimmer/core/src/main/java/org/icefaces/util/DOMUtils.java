@@ -63,6 +63,7 @@ public class DOMUtils {
     private static HashSet<String> TAGS_THAT_ALLOW_NEWLINE = new HashSet<String>(
             Arrays.asList("img", "input", "td"));
 
+    private static Pattern CDATA_END = Pattern.compile("]]>");
 
     //TODO: look at replacing with a lighter, more targetted DOM implementation
     private static DocumentBuilder DOCUMENT_BUILDER;
@@ -131,14 +132,18 @@ public class DOMUtils {
         }
     }
 
+    public static void printNodeCDATA(Node node, Writer writer) throws IOException {
+        printNode(node, writer, 0, true, false, true);
+    }
+
     public static void printNode(Node node, Writer writer) throws IOException {
-        printNode(node, writer, 0, true, false);
+        printNode(node, writer, 0, true, false, false);
     }
 
     private static void printNode(
             Node node, Writer writer,
             int depth, boolean allowAddingWhitespace,
-            boolean addTrailingNewline) throws IOException {
+            boolean addTrailingNewline, boolean isInCdata) throws IOException {
 
         switch (node.getNodeType()) {
 
@@ -149,7 +154,7 @@ public class DOMUtils {
                 if (nodes != null) {
                     for (int i = 0; i < nodes.getLength(); i++) {
                         printNode(nodes.item(i), writer, depth + 1,
-                                allowAddingWhitespace, false);
+                                allowAddingWhitespace, false, isInCdata);
                     }
                 }
                 break;
@@ -199,7 +204,7 @@ public class DOMUtils {
                         }
                         printNode(children.item(i), writer, depth + 1,
                                 allowAddingWhitespace,
-                                childAddTrailingNewline);
+                                childAddTrailingNewline, isInCdata);
                     }
                 }
 
@@ -214,7 +219,14 @@ public class DOMUtils {
                 break;
 
             case Node.TEXT_NODE:
-                writer.write(  node.getNodeValue() );
+                if (!isInCdata) {
+                    writer.write(  node.getNodeValue() );
+                } else {
+                    String value = node.getNodeValue();
+                    String escaped = CDATA_END.matcher(value)
+                            .replaceAll("]]>]]&gt;<![CDATA[");
+                    writer.write(escaped);
+                }
                 break;
         }
     }

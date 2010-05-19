@@ -157,7 +157,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 if ((null == oldDOM) && isRenderAll()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
                     writeXMLPreamble(outputWriter);
-                    DOMUtils.printNode(newDOM.getDocumentElement(), outputWriter);
+                    DOMUtils.printNodeCDATA(newDOM.getDocumentElement(), outputWriter);
                     partialWriter.endUpdate();
                     renderState();
                     renderExtensions();
@@ -165,7 +165,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     for (int i = 0; i < diffs.length; i++) {
                         Element element = (Element) diffs[i];
                         partialWriter.startUpdate(getUpdateId(element));
-                        DOMUtils.printNode(element, outputWriter);
+                        DOMUtils.printNodeCDATA(element, outputWriter);
                         partialWriter.endUpdate();
                     }
                     renderState();
