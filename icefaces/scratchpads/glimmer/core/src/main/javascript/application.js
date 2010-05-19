@@ -198,16 +198,16 @@ if (!window.ice.icefaces) {
         });
 
         //re-write DOM to persist current markup before navigating to a different page
-        //        var documentChanged = false;
-        //        namespace.onAfterUpdate(function() {
-        //            documentChanged = true;
-        //        });
-        //        onBeforeUnload(window, function() {
-        //            if (documentChanged) {
-        //                document.write("<html>" + document.documentElement.innerHTML + "</html>");
-        //                document.close();
-        //            }
-        //        });
+        var documentChanged = false;
+        namespace.onAfterUpdate(function() {
+            documentChanged = true;
+        });
+        onBeforeUnload(window, function() {
+            if (documentChanged) {
+                document.write("<html>" + document.documentElement.innerHTML + "</html>");
+                document.close();
+            }
+        });
 
         onKeyPress(document, function(ev) {
             var e = $event(ev);
