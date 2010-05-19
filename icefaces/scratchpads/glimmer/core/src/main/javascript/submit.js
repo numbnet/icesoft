@@ -49,6 +49,27 @@ var submit;
         }
     }
 
+    var submitSendListeners = [];
+    namespace.onSubmitSend = function(callback) {
+        append(submitSendListeners, callback);
+    };
+
+    var submitResponseListeners = [];
+    namespace.onSubmitResponse = function(callback) {
+        append(submitResponseListeners, callback);
+    };
+
+    function requestCallback(e) {
+        switch (e.status) {
+            case 'begin':
+                broadcast(submitSendListeners);
+                break;
+            case 'complete':
+                broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+                break;
+        }
+    }
+
     function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
@@ -65,7 +86,7 @@ var submit;
             }
 
             event = event || null;
-            var options = {execute: execute, render: render, 'ice.window': namespace.window, 'ice.view': viewID};
+            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
             serializeEventToOptions(event, element, options);
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
@@ -96,7 +117,7 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
-        var options = {execute: execute, render: render};
+        var options = {execute: execute, render: render, onevent: requestCallback};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
