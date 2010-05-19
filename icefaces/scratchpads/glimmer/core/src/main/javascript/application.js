@@ -64,16 +64,6 @@ if (!window.ice.icefaces) {
             append(viewDisposedListeners, callback);
         };
 
-        var submitSendListeners = [];
-        namespace.onSubmitSend = function(callback) {
-            append(submitSendListeners, callback);
-        };
-
-        var submitResponseListeners = [];
-        namespace.onSubmitResponse = function(callback) {
-            append(submitResponseListeners, callback);
-        };
-
         var beforeUpdateListeners = [];
         namespace.onBeforeUpdate = function(callback) {
             append(beforeUpdateListeners, callback);
@@ -110,11 +100,7 @@ if (!window.ice.icefaces) {
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
             switch (e.status) {
-                case 'begin':
-                    broadcast(submitSendListeners);
-                    break;
                 case 'complete':
-                    broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
                     broadcast(beforeUpdateListeners, [ e.responseXML ]);
                     break;
                 case 'success':
