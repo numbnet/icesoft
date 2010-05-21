@@ -62,6 +62,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     private PartialViewContext wrapped;
     protected FacesContext facesContext;
     private PartialResponseWriter partialWriter;
+    private Boolean isAjaxRequest;
 
     public DOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
         this.wrapped = partialViewContext;
@@ -76,6 +77,17 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     @Override
     public void setPartialRequest(boolean isPartialRequest) {
         wrapped.setPartialRequest(isPartialRequest);
+    }
+    
+    @Override
+    public boolean isAjaxRequest() {
+        if (isAjaxRequest != null)
+            return isAjaxRequest;
+        return wrapped.isAjaxRequest();
+    }
+    
+    public void setAjaxRequest(boolean isAjaxRequest) {
+        this.isAjaxRequest = isAjaxRequest; 
     }
 
     @Override
