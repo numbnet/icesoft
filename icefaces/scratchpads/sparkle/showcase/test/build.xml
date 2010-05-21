@@ -33,6 +33,7 @@
                 <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
                 <include name="icepush.jar"/>
+                <include name="commons-fileupload.jar"/>
             </lib>
 <!--
             <lib dir="../../../glimmer/compat/lib">
