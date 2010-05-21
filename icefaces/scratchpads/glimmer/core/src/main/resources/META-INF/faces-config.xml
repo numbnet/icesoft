@@ -48,11 +48,7 @@
         <resource-handler>org.icefaces.push.servlet.ICEfacesResourceHandler</resource-handler>
         <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.event.RedirectSubmit</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-        </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.icefaces.event.EnterKeySubmit</system-event-listener-class>
+            <system-event-listener-class>org.icefaces.event.FormSubmit</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
