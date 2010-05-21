@@ -36,6 +36,13 @@ public class FormScriptWriter extends UIOutput {
         this.javascriptMessageFormat = javascriptMessageFormat;
         this.disablingAttribute = disablingAttribute;
         this.id = id;
+        // Always give the component an id, even if the markup doesn't get one
+        if (id != null) {
+            setId(id);
+        }
+        else {
+            setId(FacesContext.getCurrentInstance().getViewRoot().createUniqueId());
+        }
         setTransient(true);
     }
 
