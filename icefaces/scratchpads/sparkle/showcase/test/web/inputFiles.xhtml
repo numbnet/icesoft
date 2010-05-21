@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
+<f:view>
+<h:head>
+    <title>Input Files</title>
+</h:head>
+<h:body styleClass="yui-skin-sam">
+    <h:form id="justRegular">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form that only has regular input components, and no inputFiles component" />
+            <h:inputText id="text" value="#{fileBean.regularText}"/>
+    	    <h:outputText id="textUpper" value="#{fileBean.regularTextUppercase}" />
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.regular}"/>
+        </h:panelGrid>
+    </h:form>
+    <h:form id="alsoFiles">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form with inputFiles component" />
+            <h:inputText id="text" value="#{fileBean.mixedText}"/>
+    	    <h:outputText id="textUpper" value="#{fileBean.mixedTextUppercase}" />
+    	    <ann:inputFiles />
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+</h:body>
+</f:view>
+</html>
