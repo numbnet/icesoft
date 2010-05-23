@@ -22,6 +22,7 @@
 package org.icefaces.event;
 
 import org.icefaces.context.DOMResponseWriter;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIOutput;
 import javax.faces.component.html.HtmlForm;
@@ -37,6 +38,9 @@ public class JSFViewStateNavigationFix implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+        if (!EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
+            return;
+        }
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 //JSF misses to render ViewState hidden input element when the entire document is updated due to forward navigation
