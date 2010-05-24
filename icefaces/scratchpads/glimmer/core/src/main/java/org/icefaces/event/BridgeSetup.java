@@ -96,11 +96,7 @@ public class BridgeSetup implements SystemEventListener {
 
         try {
             final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
-            final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
-            //keep viewID sticky until page is unloaded
-            final String viewID = viewIDParameter == null ? generateViewID() : viewIDParameter;
-            //save the calculated view state key so that other parts of the framework will use the same key
-            externalContext.getRequestMap().put(ViewState, viewID);
+            final String viewID = assignViewID(externalContext);
 
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -169,22 +165,30 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
+    private String assignViewID(ExternalContext externalContext) {
+        final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
+        //keep viewID sticky until page is unloaded
+        final String viewID = viewIDParameter == null ? generateViewID() : viewIDParameter;
+        //save the calculated view state key so that other parts of the framework will use the same key
+        externalContext.getRequestMap().put(ViewState, viewID);
+        return viewID;
+    }
+
     private String generateViewID() {
         return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
     }
 
     public static class JavascriptResourceOutput extends UIOutput {
+
         public JavascriptResourceOutput(String path, String library) {
-            setRendererType("javax.faces.resource.Script");
-            getAttributes().put("name", path);
-            if (null != library) {
-                getAttributes().put("library", library);
-            }
-            setTransient(true);
+            this(path);
+            getAttributes().put("library", library);
         }
 
         public JavascriptResourceOutput(String path) {
-            this(path, null);
+            setRendererType("javax.faces.resource.Script");
+            getAttributes().put("name", path);
+            setTransient(true);
         }
     }
 }

@@ -22,14 +22,17 @@
 
 package com.icesoft.faces.component;
 
-import javax.faces.context.FacesContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.event.UIOutputWriter;
+import org.icefaces.util.EnvUtils;
+
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-
-import org.icefaces.util.EnvUtils;
-import com.icesoft.faces.context.effects.JavascriptContext;
+import java.io.IOException;
 
 public class JavaScriptContextSetup implements SystemEventListener {
 
@@ -40,30 +43,28 @@ public class JavaScriptContextSetup implements SystemEventListener {
         return true;
     }
 
-    public void processEvent(SystemEvent event)  {
-        final FacesContext facesContext = FacesContext.getCurrentInstance();
-        
+    public void processEvent(SystemEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(facesContext)) {
             return;
         }
 
-        UIViewRoot root = facesContext.getViewRoot();
-        UIOutput jsContextOutput = new UIOutput() {
-            public Object getValue() {
-                String scriptPre = "<div id=\"dynamic-code\" style=\"visibility: hidden; display: none;\">" +
-                        "<script type=\"text/javascript\">";
-                String scriptPost = "</script></div>";
-                String scriptContents = "";
-                if (!facesContext.getPartialViewContext().isPartialRequest()) {
-                    scriptContents = JavascriptContext.getJavascriptCalls(facesContext);
+        UIOutput jsContextOutput = new UIOutputWriter() {
+            public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                writer.startElement("span", this);
+                writer.writeAttribute("id", "dynamic-code", null);
+                if (!context.getPartialViewContext().isPartialRequest()) {
+                    writer.startElement("script", this);
+                    writer.writeAttribute("type", "text/javascript", null);
+                    writer.write(JavascriptContext.getJavascriptCalls(context));
+                    writer.endElement("script");
                 }
-                return scriptPre + scriptContents + scriptPost;
+                writer.endElement("span");
             }
         };
-        jsContextOutput.setTransient(true);
-        jsContextOutput.getAttributes().put("escape", "false");
-        
-        root.addComponentResource(facesContext, jsContextOutput, "body");
 
+        UIViewRoot root = facesContext.getViewRoot();
+        jsContextOutput.setTransient(true);
+        root.addComponentResource(facesContext, jsContextOutput, "body");
     }
 }

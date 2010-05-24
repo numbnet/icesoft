@@ -23,6 +23,7 @@
 package com.icesoft.faces.application;
 
 import org.icefaces.application.ExternalContextConfiguration;
+import org.icefaces.event.UIOutputWriter;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.ConfigurationException;
 import org.icefaces.util.EnvUtils;
@@ -31,10 +32,12 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import java.util.ListResourceBundle;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.io.IOException;
+import java.util.ListResourceBundle;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -50,10 +53,10 @@ public class ExtrasSetup implements SystemEventListener {
             };
         }
     };
-    private Configuration configuration;
+    private final Configuration configuration;
 
     public ExtrasSetup() {
-        this.configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
+        configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
     }
 
     public boolean isListenerForSource(Object source) {
@@ -69,50 +72,72 @@ public class ExtrasSetup implements SystemEventListener {
             root.addComponentResource(context, new JavascriptResourceOutput("compat.js"), "head");
             root.addComponentResource(context, new JavascriptResourceOutput("icefaces-compat.js"), "head");
 
-            ResourceBundle localizedBundle = defaultBridgeMessages;
-            try {
-                localizedBundle = ResourceBundle.getBundle("bridge-messages", context.getViewRoot().getLocale());
-            } catch (MissingResourceException e) {
-                localizedBundle = defaultBridgeMessages;
-            }
+            UIOutput output = new UIOutputWriter() {
+                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    ResourceBundle localizedBundle = defaultBridgeMessages;
+                    try {
+                        localizedBundle = ResourceBundle.getBundle("bridge-messages", context.getViewRoot().getLocale());
+                    } catch (MissingResourceException e) {
+                        localizedBundle = defaultBridgeMessages;
+                    }
 
-            ViewHandler handler = context.getApplication().getViewHandler();
+                    ViewHandler handler = context.getApplication().getViewHandler();
 
-            String connectionLostRedirectURI;
-            try {
-                String uri = configuration.getAttribute("connectionLostRedirectURI");
-                connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
-            } catch (ConfigurationException e) {
-                connectionLostRedirectURI = "null";
-            }
+                    String connectionLostRedirectURI;
+                    try {
+                        String uri = configuration.getAttribute("connectionLostRedirectURI");
+                        connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    } catch (ConfigurationException e) {
+                        connectionLostRedirectURI = "null";
+                    }
 
-            String sessionExpiredRedirectURI;
-            try {
-                String uri = configuration.getAttribute("sessionExpiredRedirectURI");
-                sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
-            } catch (ConfigurationException e) {
-                sessionExpiredRedirectURI = "null";
-            }
+                    String sessionExpiredRedirectURI;
+                    try {
+                        String uri = configuration.getAttribute("sessionExpiredRedirectURI");
+                        sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    } catch (ConfigurationException e) {
+                        sessionExpiredRedirectURI = "null";
+                    }
 
-            String contextPath = handler.getResourceURL(context, "/");
-            String blockUI = configuration.getAttribute("blockUIOnSubmit", "false");
-            UIOutput output = new UIOutput();
+                    final String contextPath = handler.getResourceURL(context, "/");
+                    final String blockUI = configuration.getAttribute("blockUIOnSubmit", "false");
+
+                    writer.startElement("script", this);
+                    writer.writeAttribute("type", "text/javascript", null);
+                    writer.write("ice.DefaultIndicators({");
+                    writer.write("blockUI: ");
+                    writer.write(blockUI);
+                    writer.write(",");
+                    writer.write("connectionLostRedirectURI: ");
+                    writer.write(connectionLostRedirectURI);
+                    writer.write(",");
+                    writer.write("sessionExpiredRedirectURI: ");
+                    writer.write(sessionExpiredRedirectURI);
+                    writer.write(",");
+                    writer.write("connection: { context: '");
+                    writer.write(contextPath);
+                    writer.write("'},");
+                    writer.write("messages: {");
+                    writer.write("sessionExpired: '");
+                    writer.write(localizedBundle.getString("session-expired"));
+                    writer.write("',");
+                    writer.write("connectionLost: '");
+                    writer.write(localizedBundle.getString("connection-lost"));
+                    writer.write("',");
+                    writer.write("serverError: '");
+                    writer.write(localizedBundle.getString("server-error"));
+                    writer.write("',");
+                    writer.write("description: '");
+                    writer.write(localizedBundle.getString("description"));
+                    writer.write("',");
+                    writer.write("buttonText: '");
+                    writer.write(localizedBundle.getString("button-text"));
+                    writer.write("'");
+                    writer.write("}}, document.body);");
+                    writer.endElement("script");
+                }
+            };
             output.setTransient(true);
-            output.getAttributes().put("escape", "false");
-            output.setValue("<script type=\"text/javascript\">" +
-                    "ice.DefaultIndicators({" +
-                    "blockUI: " + blockUI + "," +
-                    "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
-                    "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
-                    "connection: { context: '" + contextPath + "'}," +
-                    "messages: {" +
-                    "sessionExpired: '" + localizedBundle.getString("session-expired") + "'," +
-                    "connectionLost: '" + localizedBundle.getString("connection-lost") + "'," +
-                    "serverError: '" + localizedBundle.getString("server-error") + "'," +
-                    "description: '" + localizedBundle.getString("description") + "'," +
-                    "buttonText: '" + localizedBundle.getString("button-text") + "'" +
-                    "}}, document.body);" +
-                    "</script>");
             root.addComponentResource(context, output, "body");
         }
     }
