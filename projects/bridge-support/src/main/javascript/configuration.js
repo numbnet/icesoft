@@ -9,7 +9,7 @@ function Configuration(lookupElement) {
         function lookupAttribute(name) {
             var a = lookupElement().getAttribute(name);
             if (a) {
-                return a.nodeValue;
+                return a;
             } else {
                 throw 'unknown attribute: ' + name;
             }
