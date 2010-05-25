@@ -76,17 +76,17 @@ function Configuration(lookupElement) {
         });
 
         method(valueAsStrings, function(self, name, defaultValues) {
-            var values = lookupAttribute(name);
+            var values = lookupValues(name);
             return isEmpty(values) && defaultValue ? defaultValues : values;
         });
 
         method(valueAsNumbers, function(self, name, defaultValues) {
-            var values = lookupAttribute(name);
+            var values = lookupValues(name);
             return isEmpty(values) && defaultValue ? defaultValues : collect(values, Number);
         });
 
         method(valueAsStrings, function(self, name, defaultValues) {
-            var values = lookupAttribute(name);
+            var values = lookupValues(name);
             return isEmpty(values) && defaultValue ? defaultValues : collect(values, asBoolean);
         });
     });
