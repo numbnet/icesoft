@@ -36,6 +36,16 @@
                 checkEqual(attributeAsString(config, 'x', 'ABC'), 'ABC');
             });
 
+            test('check values reading', function() {
+                var d = parseXML('<root><a>aaa</a><a>bbb</a></root>');
+                var config = Configuration(function() {
+                    return d.firstChild;
+                });
+                var values = valueAsStrings(config, 'a');
+                checkEqual(values[0], 'aaa');
+                checkEqual(values[1], 'bbb');
+            });
+
             test('check sub-configuration reading', function() {
                 var d = parseXML('<root s="aaa"><a n="1.4"/><b b="false"/></root>');
                 var config = Configuration(function() {
