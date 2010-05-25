@@ -1,10 +1,17 @@
 var attributeAsString = operator();
 var attributeAsBoolean = operator();
 var attributeAsNumber = operator();
+var valueAsStrings = operator();
+var valueAsBooleans = operator();
+var valueAsNumbers = operator();
 var attributeNames = operator();
 var childConfiguration = operator();
 
 function Configuration(lookupElement) {
+    function asBoolean(s) {
+        return 'true' == toLowerCase(s);
+    }
+
     return object(function(method) {
         function lookupAttribute(name) {
             var a = lookupElement().getAttribute(name);
@@ -13,6 +20,12 @@ function Configuration(lookupElement) {
             } else {
                 throw 'unknown attribute: ' + name;
             }
+        }
+
+        function lookupValues(name) {
+            return collect(lookupElement().getElementsByTagName(name), function(e) {
+                return e.nodeValue;
+            });
         }
 
         method(attributeAsString, function(self, name, defaultValue) {
@@ -41,7 +54,7 @@ function Configuration(lookupElement) {
 
         method(attributeAsBoolean, function(self, name, defaultValue) {
             try {
-                return 'true' == toLowerCase(lookupAttribute(name));
+                return asBoolean(lookupAttribute(name));
             } catch (e) {
                 if (defaultValue) {
                     return defaultValue;
@@ -60,6 +73,21 @@ function Configuration(lookupElement) {
                     return lookupElement().getElementsByTagName(name)[0];
                 });
             }
+        });
+
+        method(valueAsStrings, function(self, name, defaultValues) {
+            var values = lookupAttribute(name);
+            return isEmpty(values) && defaultValue ? defaultValues : values;
+        });
+
+        method(valueAsNumbers, function(self, name, defaultValues) {
+            var values = lookupAttribute(name);
+            return isEmpty(values) && defaultValue ? defaultValues : collect(values, Number);
+        });
+
+        method(valueAsStrings, function(self, name, defaultValues) {
+            var values = lookupAttribute(name);
+            return isEmpty(values) && defaultValue ? defaultValues : collect(values, asBoolean);
         });
     });
 }
