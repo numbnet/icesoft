@@ -23,8 +23,9 @@ function Configuration(lookupElement) {
         }
 
         function lookupValues(name) {
-            return collect(lookupElement().getElementsByTagName(name), function(e) {
-                return e.nodeValue;
+            return collect(asArray(lookupElement().getElementsByTagName(name)), function(e) {
+                var valueNode = e.firstChild;
+                return valueNode ? valueNode.nodeValue : '';
             });
         }
 
@@ -85,7 +86,7 @@ function Configuration(lookupElement) {
             return isEmpty(values) && defaultValue ? defaultValues : collect(values, Number);
         });
 
-        method(valueAsStrings, function(self, name, defaultValues) {
+        method(valueAsBooleans, function(self, name, defaultValues) {
             var values = lookupValues(name);
             return isEmpty(values) && defaultValue ? defaultValues : collect(values, asBoolean);
         });
