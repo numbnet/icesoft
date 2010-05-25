@@ -83,6 +83,9 @@
             <exclude name="icefaces-comps.jar"/>
             <exclude name="jsf-api-1.2.jar"/>
         </fileset>
+        <fileset dir="${lib.dir}/liferay">
+            <include name="*.jar"/>
+        </fileset>
     </path>
 
     <macrodef name="build.jar">
