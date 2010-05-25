@@ -6,6 +6,7 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViews;
 
 import javax.faces.FactoryFinder;
 import javax.faces.lifecycle.Lifecycle;
@@ -25,8 +26,16 @@ public class MultiViewServer implements Server {
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private ResourceDispatcher resourceDispatcher;
+    private AssociatedPageViews associatedPageViews;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public MultiViewServer(final HttpSession session,
+                           final String sessionID,
+                           final SessionDispatcher.Monitor sessionMonitor,
+                           final Map views,
+                           final ViewQueue asynchronouslyUpdatedViews,
+                           final Configuration configuration,
+                           final ResourceDispatcher resourceDispatcher,
+                           final AssociatedPageViews associatedPageViews) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -34,6 +43,7 @@ public class MultiViewServer implements Server {
         this.asynchronouslyUpdatedViews = asynchronouslyUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
+        this.associatedPageViews = associatedPageViews;
     }
 
     public void service(Request request) throws Exception {
@@ -60,6 +70,7 @@ public class MultiViewServer implements Server {
         try {
             sessionMonitor.touchSession();
             view.servePage(request);
+            associatedPageViews.add(view);
         } finally {
             view.release();
         }

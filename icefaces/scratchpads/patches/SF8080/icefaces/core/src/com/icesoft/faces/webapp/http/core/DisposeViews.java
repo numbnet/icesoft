@@ -4,6 +4,7 @@ import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViews;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,10 +14,12 @@ public class DisposeViews implements Server {
     private static final Log Log = LogFactory.getLog(DisposeViews.class);
     private String sessionID;
     private Map views;
+    private AssociatedPageViews associatedPageViews;
 
-    public DisposeViews(String sessionID, Map views) {
+    public DisposeViews(String sessionID, Map views, AssociatedPageViews associatedPageViews) {
         this.sessionID = sessionID;
         this.views = views;
+        this.associatedPageViews = associatedPageViews;
     }
 
     public void service(Request request) throws Exception {
@@ -27,6 +30,7 @@ public class DisposeViews implements Server {
                 // Jira 1616 Logout throws NPE.
                 if (view != null) {
                     view.dispose();
+                    associatedPageViews.disposeAssociatedViews(views, view);
                 }
             }
 

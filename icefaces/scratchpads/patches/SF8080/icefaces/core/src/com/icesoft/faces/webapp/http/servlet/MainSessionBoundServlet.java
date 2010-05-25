@@ -23,6 +23,8 @@ import com.icesoft.faces.webapp.http.core.SendUpdates;
 import com.icesoft.faces.webapp.http.core.SingleViewServer;
 import com.icesoft.faces.webapp.http.core.UploadServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViews;
+import com.icesoft.faces.webapp.http.portlet.page.AssociatedPageViewsImpl;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
@@ -73,9 +75,17 @@ public class MainSessionBoundServlet implements Server {
         final Server disposeViews;
         final MessageHandler handler;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
+            final AssociatedPageViews associatedPageViews = AssociatedPageViewsImpl.getImplementation(configuration);
+            viewServlet = new MultiViewServer(session,
+                    sessionID,
+                    sessionMonitor,
+                    views,
+                    allUpdatedViews,
+                    configuration,
+                    resourceDispatcher,
+                    associatedPageViews);
             if (messageService == null) {
-                disposeViews = new DisposeViews(sessionID, views);
+                disposeViews = new DisposeViews(sessionID, views, associatedPageViews);
                 handler = null;
             } else {
                 disposeViews = OKServer;

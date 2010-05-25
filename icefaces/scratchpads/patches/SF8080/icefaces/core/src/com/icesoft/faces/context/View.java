@@ -227,6 +227,10 @@ public class View implements CommandQueue {
         return persistentFacesState;
     }
 
+    public String getViewIdentifier() {
+        return viewIdentifier;
+    }
+
     public void dispose() {
         dispose.run();
     }
