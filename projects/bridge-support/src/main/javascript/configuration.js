@@ -1,0 +1,65 @@
+var attributeAsString = operator();
+var attributeAsBoolean = operator();
+var attributeAsNumber = operator();
+var attributeNames = operator();
+var childConfiguration = operator();
+
+function Configuration(lookupElement) {
+    return object(function(method) {
+        function lookupAttribute(name) {
+            var a = lookupElement().getAttribute(name);
+            if (a) {
+                return a.nodeValue;
+            } else {
+                throw 'unknown attribute: ' + name;
+            }
+        }
+
+        method(attributeAsString, function(self, name, defaultValue) {
+            try {
+                return lookupAttribute(name);
+            } catch (e) {
+                if (defaultValue) {
+                    return defaultValue;
+                } else {
+                    throw e;
+                }
+            }
+        });
+
+        method(attributeAsNumber, function(self, name, defaultValue) {
+            try {
+                return Number(lookupAttribute(name));
+            } catch (e) {
+                if (defaultValue) {
+                    return defaultValue;
+                } else {
+                    throw e;
+                }
+            }
+        });
+
+        method(attributeAsBoolean, function(self, name, defaultValue) {
+            try {
+                return 'true' == toLowerCase(lookupAttribute(name));
+            } catch (e) {
+                if (defaultValue) {
+                    return defaultValue;
+                } else {
+                    throw e;
+                }
+            }
+        });
+
+        method(childConfiguration, function(self, name) {
+            var elements = lookupElement().getElementsByTagName(name);
+            if (isEmpty(elements)) {
+                throw 'unknown configuration: ' + name;
+            } else {
+                return Configuration(function() {
+                    return lookupElement().getElementsByTagName(name)[0];
+                });
+            }
+        });
+    });
+}
