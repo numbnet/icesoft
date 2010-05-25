@@ -70,8 +70,8 @@ public class MultiViewServer implements Server {
         try {
             sessionMonitor.touchSession();
             view.servePage(request);
-            associatedPageViews.add(view);
         } finally {
+            associatedPageViews.add(view);
             view.release();
         }
     }
