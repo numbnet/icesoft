@@ -77,9 +77,9 @@ public class Generator {
         //clean the attribute list up, for next available component 
         cleanup();
         
-        System.out.println(ComponentClassGenerator.generatedComponentClass.toString());
-        System.out.println();
-        System.out.println(TagClassGenerator.generatedTagClass.toString());            
+//        System.out.println(ComponentClassGenerator.generatedComponentClass.toString());
+//        System.out.println();
+//        System.out.println(TagClassGenerator.generatedTagClass.toString());            
 
     }
     
@@ -263,7 +263,7 @@ public class Generator {
                     Field field = fields[f];
                     if (field.isAnnotationPresent(Facet.class)) {
                         fieldsForFacet.put(field.getName(), field);
-                        System.out.println("Facet property"+ fields[f].getName());
+//                        System.out.println("Facet property"+ fields[f].getName());
                     }
 
                 }

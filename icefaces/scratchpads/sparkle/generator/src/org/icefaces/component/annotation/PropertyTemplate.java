@@ -127,19 +127,20 @@ public class PropertyTemplate {
     public final static String ACTION_EXPRESSION = "actionExpression";
     public final static String METHOD_BINDING_ACTION_LISTENER = "methodBindingActionListener";    
     public final static String IMMEDIATE = "immediate";      
-    @Property(tlddoc="MethodBinding representing the application action to " +
-    		"invoke when this component is activated by the user. The expression " +
-    		"must evaluate to a either a String or a public method that takes no " +
-    		"parameters, and returns a String (the logical outcome) which is " +
-    		"passed to the NavigationHandler for this application.")
-    protected MethodExpression actionExpression;
+    @Property(tlddoc="MethodExpression representing the application action to invoke when" +
+    		" this component is activated by the user. The expression must evaluate to a " +
+    		"public method that takes no parameters, and returns an Object (the toString()" +
+    		" of which is called to derive the logical outcome) which is passed to the " +
+    		"NavigationHandler for this application.")
+    protected MethodExpression action;
     
     
-    @Property(tlddoc="MethodBinding representing an action listener method that " +
-    		"will be notified when this component is activated by the user. The " +
-    		"expression must evaluate to a public method that takes an ActionEvent " +
-    		"parameter, with a return type of void.")
-    protected MethodExpression methodBindingActionListener;
+    @Property(tlddoc="MethodExpression representing an action listener method that will" +
+    		" be notified when this component is activated by the user. The expression" +
+    		" must evaluate to a public method that takes an ActionEvent parameter," +
+    		" with a return type of void, or to a public method that takes no arguments" +
+    		" with a return type of void.")
+    protected MethodExpression actionListener;
     
     
     @Property(tlddoc="Flag indicating that this component's value must be " +
