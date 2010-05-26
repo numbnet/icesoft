@@ -27,7 +27,7 @@
         window.onload = InPageRunner('Configuration test suite', function(test) {
             test('check attribute reading', function() {
                 var d = parseXML('<root s="aaa" n="1.3" b="true"/>');
-                var config = Configuration(function() {
+                var config = XMLDynamicConfiguration(function() {
                     return d.firstChild;
                 });
                 checkEqual(attributeAsString(config, 's'), 'aaa');
@@ -38,7 +38,7 @@
 
             test('check values reading', function() {
                 var d = parseXML('<root><a>aaa</a><a>bbb</a></root>');
-                var config = Configuration(function() {
+                var config = XMLDynamicConfiguration(function() {
                     return d.firstChild;
                 });
                 var values = valueAsStrings(config, 'a');
@@ -48,7 +48,7 @@
 
             test('check sub-configuration reading', function() {
                 var d = parseXML('<root s="aaa"><a n="1.4"/><b b="false"/></root>');
-                var config = Configuration(function() {
+                var config = XMLDynamicConfiguration(function() {
                     return d.firstChild;
                 });
                 var configA = childConfiguration(config, 'a');
@@ -59,7 +59,7 @@
 
             test('check dynamic re-configuration', function() {
                 var d = parseXML('<root s="aaa"><a n="1.4"/></root>');
-                var config = Configuration(function() {
+                var config = XMLDynamicConfiguration(function() {
                     return d.firstChild;
                 });
                 checkEqual(attributeAsString(config, 's'), 'aaa');
