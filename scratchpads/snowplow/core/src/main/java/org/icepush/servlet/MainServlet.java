@@ -24,7 +24,6 @@ package org.icepush.servlet;
 
 import org.icepush.CodeServer;
 import org.icepush.Configuration;
-import org.icepush.ConfigurationServer;
 import org.icepush.ProductInfo;
 import org.icepush.PushContext;
 import org.icepush.PushGroupManager;
@@ -56,10 +55,9 @@ public class MainServlet
         final PushContext pushContext = new PushContext(context, pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer(context)))));
-        pathDispatcher.dispatchOn(".*configuration\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new ConfigurationServer(context)))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(pushContext, pushGroupManager, timer, configuration);
+                return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration);
             }
         });
 

@@ -23,43 +23,60 @@
 package org.icepush;
 
 import org.icepush.http.Request;
-import org.icepush.http.Response;
-import org.icepush.http.ResponseHandler;
 import org.icepush.http.Server;
+import org.icepush.http.standard.FixedXMLContentHandler;
 import org.icepush.servlet.ServletContextConfiguration;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.logging.Logger;
 
-public class ConfigurationServer implements Server, ResponseHandler {
-    private String configCode;
+public class ConfigurationServer extends FixedXMLContentHandler implements Server {
+    private static final Logger log = Logger.getLogger(ConfigurationServer.class.getName());
+    private static final int defaultServerErrorRetries = 3;
+    private static final int defaultBlockingConnectionTimeout = 10000;
+    private static final String defaultFileExtension = "";
 
-    public ConfigurationServer(final ServletContext servletContext) {
-        String uriPrefix = (String) servletContext.getAttribute("uriPrefix");
-        if (uriPrefix == null) {
-            uriPrefix = "";
-        }
-        String uriSuffix = (String) servletContext.getAttribute("uriSuffix");
-        if (uriSuffix == null) {
-            uriSuffix = "";
-        }
-        Configuration configuration = new ServletContextConfiguration("org.icefaces", servletContext);
-        long heartbeatTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
-        configCode =
-                "ice.push.configuration.uriSuffix='" + uriSuffix + "';" +
-                        "ice.push.configuration.uriPrefix='" + uriPrefix + "';" +
-                        "ice.push.configuration.heartbeat={timeout:" + heartbeatTimeout + "};";
+    private Server blockingConnectionServer;
+    private String configurationMessage;
+
+    public ConfigurationServer(final ServletContext servletContext, final Server server) {
+        blockingConnectionServer = server;
+        Configuration configuration = new ServletContextConfiguration("org.icefaces.bridge", servletContext);
+        String contextPath = configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath"));
+
+        long blockingConnectionTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", defaultBlockingConnectionTimeout);
+        int serverErrorRetries = configuration.getAttributeAsInteger("serverErrorRetryTimeouts", defaultServerErrorRetries);
+        String fileExtension = configuration.getAttribute("fileExtension", defaultFileExtension);
+        configurationMessage =
+                "<configuration" +
+                        (blockingConnectionTimeout != defaultBlockingConnectionTimeout ?
+                                " heartbeatTimeout=\"" + blockingConnectionTimeout + "\"" : "") +
+                        (serverErrorRetries != defaultServerErrorRetries ?
+                                " serverErrorRetryTimeouts=\"" + serverErrorRetries + "\"" : "") +
+                        (!fileExtension.equals(defaultFileExtension) ?
+                                " fileExtension=\"" + fileExtension + "\"" : "") +
+                        (contextPath != null ?
+                                " contextPath=\"" + contextPath + "\"" : "") +
+                        "/>";
 
     }
 
     public void service(Request request) throws Exception {
-        request.respondWith(this);
+        if (!request.containsParameter("ice.sendConfiguration") || configurationMessage.length() == "<configuration/>".length()) {
+            blockingConnectionServer.service(request);
+            log.fine("Re-configured bridge.");
+        } else {
+            request.respondWith(this);
+        }
     }
 
-    public void respond(Response response) throws Exception {
-        response.setHeader("Content-Type", "text/javascript");
-        response.writeBody().write(configCode.getBytes("UTF-8"));
+    public void writeTo(Writer writer) throws IOException {
+        writer.write(configurationMessage);
     }
 
     public void shutdown() {
+        blockingConnectionServer.shutdown();
     }
 }

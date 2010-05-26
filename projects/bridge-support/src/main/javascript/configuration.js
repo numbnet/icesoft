@@ -7,7 +7,7 @@ var valueAsNumbers = operator();
 var attributeNames = operator();
 var childConfiguration = operator();
 
-function Configuration(lookupElement) {
+function XMLDynamicConfiguration(lookupElement) {
     function asBoolean(s) {
         return 'true' == toLowerCase(s);
     }
@@ -33,7 +33,7 @@ function Configuration(lookupElement) {
             try {
                 return lookupAttribute(name);
             } catch (e) {
-                if (defaultValue) {
+                if (isString(defaultValue)) {
                     return defaultValue;
                 } else {
                     throw e;
@@ -45,7 +45,7 @@ function Configuration(lookupElement) {
             try {
                 return Number(lookupAttribute(name));
             } catch (e) {
-                if (defaultValue) {
+                if (isNumber(defaultValue)) {
                     return defaultValue;
                 } else {
                     throw e;
@@ -57,7 +57,7 @@ function Configuration(lookupElement) {
             try {
                 return asBoolean(lookupAttribute(name));
             } catch (e) {
-                if (defaultValue) {
+                if (isBoolean(defaultValue)) {
                     return defaultValue;
                 } else {
                     throw e;
@@ -70,7 +70,7 @@ function Configuration(lookupElement) {
             if (isEmpty(elements)) {
                 throw 'unknown configuration: ' + name;
             } else {
-                return Configuration(function() {
+                return XMLDynamicConfiguration(function() {
                     return lookupElement().getElementsByTagName(name)[0];
                 });
             }

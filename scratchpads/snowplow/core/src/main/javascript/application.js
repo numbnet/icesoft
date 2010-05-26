@@ -38,6 +38,7 @@ if (!window.ice.icepush) {
         //include element.js
         //include event.js
         //include http.js
+        //include configuration.js
         //include command.js
         //include connection.async.js
 
@@ -105,10 +106,9 @@ if (!window.ice.icepush) {
             throw 'Server internal error: ' + contentAsText(response);
         }
 
-        function calculateURI(uri) {
-            return (namespace.push.configuration.uriPrefix || '') + uri + (namespace.push.configuration.uriSuffix || '');
+        function appendSuffix(uri, suffix) {
+            return uri + (suffix || namespace.push.configuration.uriSuffix || '');
         }
-
 
         var currentNotifications = [];
         var apiChannel = Client(true);
@@ -141,7 +141,7 @@ if (!window.ice.icepush) {
 
             createPushId: function() {
                 var id;
-                postSynchronously(apiChannel, calculateURI('create-push-id.icepush'), noop, FormPost, $witch(function (condition) {
+                postSynchronously(apiChannel, appendSuffix('create-push-id.icepush'), noop, FormPost, $witch(function (condition) {
                     condition(OK, function(response) {
                         id = contentAsText(response);
                     });
@@ -151,7 +151,7 @@ if (!window.ice.icepush) {
             },
 
             notify: function(group) {
-                postAsynchronously(apiChannel, calculateURI('notify.icepush'), function(q) {
+                postAsynchronously(apiChannel, appendSuffix('notify.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                 }, FormPost, $witch(function(condition) {
                     condition(ServerInternalError, throwServerError);
@@ -159,7 +159,7 @@ if (!window.ice.icepush) {
             },
 
             addGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, calculateURI('add-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, appendSuffix('add-group-member.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -168,7 +168,7 @@ if (!window.ice.icepush) {
             },
 
             removeGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, calculateURI('remove-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, appendSuffix('remove-group-member.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -220,16 +220,21 @@ if (!window.ice.icepush) {
             }
         };
 
-        function Bridge(configuration) {
-            var windowID = configuration.window;
+        function Bridge() {
+            var windowID = namespace.windowID;
             var logger = childLogger(namespace.logger, windowID);
-            var commandDispatcher = CommandDispatcher();
-            var asyncConnection = AsyncConnection(logger, windowID, calculateURI('listen.icepush'));
-
-            register(commandDispatcher, 'noop', function() {
-                debug(logger, 'received noop');
+            var configurationElement = document.documentElement;//documentElement is used as a noop config. element
+            var configuration = XMLDynamicConfiguration(function() {
+                return configurationElement;
             });
+            var commandDispatcher = CommandDispatcher();
+            var asyncConnection = AsyncConnection(logger, windowID, configuration);
+
+            register(commandDispatcher, 'noop', NoopCommand);
             register(commandDispatcher, 'parsererror', ParsingError);
+            register(commandDispatcher, 'configuration', function(message) {
+                configurationElement = message;
+            });
 
             //purge discarded pushIDs from the notification list
             function purgeUnusedPushIDs(ids) {
@@ -319,9 +324,7 @@ if (!window.ice.icepush) {
             info(logger, 'bridge loaded!');
         }
 
-        onLoad(window, function() {
-            Bridge({window: namespace.windowID, connection: {}});
-        });
+        onLoad(window, Bridge);
 
         onKeyPress(document, function(ev) {
             var e = $event(ev);
