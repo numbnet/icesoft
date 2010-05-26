@@ -13,7 +13,7 @@ public class JBossAssociatedPageViews extends AssociatedPageViewsImpl {
             String pageName = parent.getName();
             return pageName;
         } catch (Exception e) {
-            if (log.isErrorEnabled()) {
+            if (log.isWarnEnabled()) {
                 log.warn("could not get page id", e);
             }
         }

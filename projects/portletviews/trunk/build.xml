@@ -42,6 +42,7 @@
     <property name="lib.dir" location="./lib"/>
 
     <property name="jboss.lib.dir" location="${lib.dir}/jboss"/>
+    <property name="liferay.lib.dir" location="${lib.dir}/liferay"/>
 
     <property name="icefaces.root.dir" location="../../../icefaces/trunk/icefaces" />
     <property name="icefaces.lib.dir" location="${icefaces.root.dir}/lib" />
@@ -62,6 +63,7 @@
             <classpath>
                 <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
                 <fileset dir="${jboss.lib.dir}" includes="*.jar"/>
+                <fileset dir="${liferay.lib.dir}" includes="*.jar"/>
             </classpath>
         </javac>
     </target>
