@@ -159,11 +159,11 @@ public class FileWriter {
             for (int i = 0; i < files.length; i++) {
                 String path = files[i].getPath();
                 if (path.endsWith(".class")) {
-                    System.out.println("1. separatorChar "+ files[i].separatorChar);
-                    System.out.println("2. separatorChar "+ path);
+//                    System.out.println("1. separatorChar "+ files[i].separatorChar);
+//                    System.out.println("2. separatorChar "+ path);
                     path = path.substring(pathPrefix.length()+1, path.indexOf(".class"));
                     path = path.replace(files[i].separatorChar, '.');
-                    System.out.println("3.separatorChar "+ path);                    
+//                    System.out.println("3.separatorChar "+ path);                    
         
                      try {                    
                         Class c = loader.loadClass(path);
