@@ -25,6 +25,7 @@ public class DisposeViews implements Server {
     public void service(Request request) throws Exception {
         if (request.containsParameter(sessionID)) {
             String[] viewIdentifiers = request.getParameterAsStrings(sessionID);
+            System.out.println("DisposeViews.service: looking to dispose views " + viewIdentifiers);
             for (int i = 0; i < viewIdentifiers.length; i++) {
                 View view = (View) views.remove(viewIdentifiers[i]);
                 // Jira 1616 Logout throws NPE.
@@ -35,6 +36,7 @@ public class DisposeViews implements Server {
             }
 
         } else {
+            System.out.println("DisposeViews.service: request does not contain session id " + sessionID);
             //this usually happens with Seam filters in synchronous mode
             Log.warn("Request belonging to a different session. Most probably servlet filters mangled the request.");
         }
