@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 
 /**
  * This is the default implementation of the AssociatedPageViews interface.  It has logic for handling
@@ -61,12 +62,13 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
         bidi.put(pageId, view);
     }
 
-    public void disposeAssociatedViews(View view) {
+    public void disposeAssociatedViews(Map views, View view) {
         Set associatedViews = bidi.getAssociatedViews(view);
-        Iterator views = associatedViews.iterator();
-        while (views.hasNext()) {
-            View v = (View) views.next();
+        Iterator relatedView = associatedViews.iterator();
+        while (relatedView.hasNext()) {
+            View v = (View) relatedView.next();
             v.dispose();
+            views.remove(v.getViewIdentifier());
             if (log.isDebugEnabled()) {
                 log.debug("disposed " + v.toString());
             }

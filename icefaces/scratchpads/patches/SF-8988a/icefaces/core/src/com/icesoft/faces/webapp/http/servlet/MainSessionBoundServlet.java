@@ -103,7 +103,7 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
                                     if (sessionID.equals(sessionIdentifier)) {
                                         View view = (View) views.remove(viewIdentifier);
                                         if (view != null) {
-                                            associatedPageViews.disposeAssociatedViews(view);
+                                            associatedPageViews.disposeAssociatedViews(views,view);
                                             view.dispose();
                                         }
                                     }

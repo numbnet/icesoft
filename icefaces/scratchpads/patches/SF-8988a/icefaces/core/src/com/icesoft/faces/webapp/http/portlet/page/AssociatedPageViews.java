@@ -2,6 +2,8 @@ package com.icesoft.faces.webapp.http.portlet.page;
 
 import com.icesoft.faces.context.View;
 
+import java.util.Map;
+
 /**
  * In a portlet environment, there can be multiple views on a single page.  It's generally desirable that, when
  * one view is disposed due to navigation or closing a window/tab that all the associated views of that portal
@@ -69,6 +71,6 @@ public interface AssociatedPageViews {
      *
      * @param view The view to dispose.
      */
-    public void disposeAssociatedViews(View view);
+    public void disposeAssociatedViews(Map views, View view);
 
 }
