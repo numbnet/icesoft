@@ -66,6 +66,7 @@ public class MultiViewServer implements Server {
             sessionMonitor.touchSession();
             view.servePage(request);
         } finally {
+            associatedPageViews.add(view);
             view.release();
         }
     }
@@ -73,7 +74,6 @@ public class MultiViewServer implements Server {
     private View createView() throws Exception {
         String viewNumber = String.valueOf(++viewCount);
         View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, blockingRequestHandlerContext, authorization);
-        associatedPageViews.add(view);
         views.put(viewNumber, view);
         return view;
     }
