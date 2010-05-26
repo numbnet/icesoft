@@ -29,7 +29,7 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         System.out.println("\nSelectInputDateRenderer.encodeEnd");
-//        printParams(context);
+        printParams(context);
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate selectInputDate = (SelectInputDate) component;
@@ -120,8 +120,10 @@ public class SelectInputDateRenderer extends Renderer {
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
         System.out.println("params = " + params);
         writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 //        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
+//        writer.write("alert('renderAsPopup = " + renderAsPopup + "');");
         writer.write("YAHOO.icefaces.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
     }
@@ -129,7 +131,7 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         System.out.println("\nSelectInputDateRenderer.decode");
-//        printParams(context);
+        printParams(context);
         super.decode(context, component);
         SelectInputDate selectInputDate = (SelectInputDate) component;
         String clientId = component.getClientId(context);

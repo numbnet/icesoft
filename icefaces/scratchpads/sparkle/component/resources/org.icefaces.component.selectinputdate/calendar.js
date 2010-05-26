@@ -2,6 +2,15 @@ YAHOO.namespace("icefaces.calendar");
 
 (function(){
 
+YAHOO.util.Event.onDOMReady(function() {
+    var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
+    calLogReader.setTitle("Calendar Logger");
+    calLogReader.hideSource("global");
+    calLogReader.hideSource("LogReader");
+});
+var logger = new YAHOO.widget.LogWriter("Calendar 4");
+//YAHOO.icefaces.calendar.logger = new YAHOO.widget.LogWriter("Calendar 4");
+
 var YuiCalendar = YAHOO.widget.Calendar;
 var IceCalendar = function(container, config, params) {
     IceCalendar.superclass.constructor.call(this, container, config);
@@ -480,6 +489,10 @@ YAHOO.icefaces.calendar.initialize = function(clientId, jsProps, jsfProps, bindY
     bindYUI(this[clientId].yuiComponent);
 };
 YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps, events) {
+//    YAHOO.log("In updateProperties()", "info", "calendar.js");
+//    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
+    logger.log("In updateProperties()");
+    logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
     var lang = YAHOO.lang;
     var context = ice.component.getJSContext(clientId);
     if (context && context.isAttached()) {
