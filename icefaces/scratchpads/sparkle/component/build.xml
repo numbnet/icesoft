@@ -78,18 +78,30 @@
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
 	
-	<delete dir="./resources/org.icefaces.component.sprites/out"/>
+	
+	<!-- delete generated sprites -->
+    <condition property="delete.sprites">
+      <not>
+	    <available file="cache.properties" />
+      </not>
+    </condition>
+	
+	<antcall target="sprites-clean" />
 
   </target>
   
-  <target name="sprites" description="Performs CSS sprite processing">
+  <target name="sprites-clean" if="delete.sprites">
+	<delete dir="./resources/org.icefaces.component.sprites/out"/>
+  </target>
+  
+<target name="sprites-check" description="Check whether sprites need to be rebuilt">
     <available file="${smartsprites.basedir}/build.properties" property="smartsprites.properties.available" />
     <fail unless="smartsprites.properties.available">
 
 Please provide SmartSprite parameters in a 'build.properties' file.
 
     </fail>
-
+	
     <property file="${smartsprites.basedir}/build.properties" />
     <taskdef resource="smartsprites.xml">
       <classpath>
@@ -98,6 +110,18 @@ Please provide SmartSprite parameters in a 'build.properties' file.
         </fileset>
       </classpath>
     </taskdef>
+	
+    <fileset id="sprite-files" dir="${root.dir.path}">
+        <modified/>
+    </fileset>
+	
+    <pathconvert property="sprites.modified.files" 
+                 refid="sprite-files" 
+                 setonempty="false"/>
+	
+</target>
+  
+  <target name="sprites" description="Performs CSS sprite processing" depends="sprites-check" if="sprites.modified.files">
 
     <smartsprites rootdir="${root.dir.path}"
                   documentrootdir="${document.root.dir.path}"
@@ -107,5 +131,11 @@ Please provide SmartSprite parameters in a 'build.properties' file.
                   loglevel="${log.level}"
                   spritepngdepth="${sprite.png.depth}"
                   spritepngie6="${sprite.png.ie6}" />
+  </target>
+  
+  <!-- delete sprite source files last modified info to force sprite generation -->
+  <target name="sprites-reset">
+    <delete file="cache.properties" />
+    <delete dir="./resources/org.icefaces.component.sprites/out" />
   </target>
 </project>
