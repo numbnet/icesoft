@@ -32,6 +32,10 @@ function isNumber(s) {
     return typeof s == 'number';
 }
 
+function isBoolean(s) {
+    return typeof s == 'boolean';
+}
+
 function isIndexed(s) {
     return !!s.length;
 }

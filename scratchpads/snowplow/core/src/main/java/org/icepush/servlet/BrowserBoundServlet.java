@@ -22,23 +22,27 @@
 
 package org.icepush.servlet;
 
-import java.util.Timer;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.icepush.BlockingConnectionServer;
 import org.icepush.Configuration;
+import org.icepush.ConfigurationServer;
 import org.icepush.PushContext;
 import org.icepush.PushGroupManager;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Timer;
 
 public class BrowserBoundServlet extends PathDispatcher {
     private PushContext pushContext;
 
-    public BrowserBoundServlet(PushContext pushContext, final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration) {
+    public BrowserBoundServlet(PushContext pushContext, ServletContext context, final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration) {
         this.pushContext = pushContext;
 
-        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(new BlockingConnectionServer(pushGroupManager, monitorRunner, configuration), configuration));
+        dispatchOn(".*listen\\.icepush",
+                new EnvironmentAdaptingServlet(
+                        new ConfigurationServer(context,
+                                new BlockingConnectionServer(pushGroupManager, monitorRunner, configuration)), configuration));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID());
         dispatchOn(".*notify\\.icepush", new NotifyPushID());
         dispatchOn(".*add-group-member\\.icepush", new AddGroupMember());

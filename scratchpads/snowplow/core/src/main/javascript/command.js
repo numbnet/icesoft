@@ -46,6 +46,10 @@ function CommandDispatcher() {
     });
 }
 
+function NoopCommand() {
+    debug(namspace.logger, 'received noop');
+}
+
 function ParsingError(message) {
     logger.error('Parsing error');
     var errorNode = message.firstChild;

@@ -59,7 +59,7 @@ var AsyncConnection;
         }
     }
 
-    AsyncConnection = function(logger, windowID, receiveURI) {
+    AsyncConnection = function(logger, windowID, configuration) {
         var logger = childLogger(logger, 'async-connection');
         var channel = Client(false);
         var onReceiveListeners = [];
@@ -103,11 +103,26 @@ var AsyncConnection;
         }
 
         var lastSentPushIds = registeredPushIds();
+        //configuration->contextPath prevails if provided
+        function contextPath() {
+            return attributeAsString(configuration, 'contextPath', namespace.push.configuration.uriPrefix || '.');
+        }
+
+        //configuration->fileExtension prevails if provided
+        function fileExtension() {
+            return attributeAsString(configuration, 'fileExtension', namespace.push.configuration.uriSuffix);
+        }
+
+        function askForConfiguration(query) {
+            addNameValue(query, 'ice.sendConfiguration', '');
+            askForConfiguration = noop;
+        }
 
         function connect() {
             try {
                 debug(logger, "closing previous connection...");
                 close(listener);
+                update(contextPathCookie, contextPath());
 
                 lastSentPushIds = registeredPushIds();
                 if (isEmpty(lastSentPushIds)) {
@@ -115,8 +130,9 @@ var AsyncConnection;
                     offerCandidature();
                 } else {
                     debug(logger, 'connect...');
-                    listener = postAsynchronously(channel, receiveURI, function(q) {
+                    listener = postAsynchronously(channel, contextPath() + '/listen.icepush' + fileExtension(), function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
+                        askForConfiguration(q);
                     }, function(request) {
                         FormPost(request);
                         sendXWindowCookie(request);
@@ -148,11 +164,10 @@ var AsyncConnection;
             }
         }
 
-        var configuration = namespace.push.configuration;
         //build callbacks only after 'connection' function was defined
-        var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), configuration.serverErrorRetryTimeouts || [1000, 2000, 4000]);
-
-        var heartbeatTimeout = configuration.heartbeat && configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 50000;
+        var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
+        var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
+        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000);
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });
@@ -183,7 +198,6 @@ var AsyncConnection;
 
         //monitor if the blocking connection needs to be started
         var pollingPeriod = 1000;
-        var contextPath = namespace.push.configuration.contextPath;
 
         var leaseCookie = lookupCookie(ConnectionLease, function() {
             return Cookie(ConnectionLease, asString((new Date).getTime()));
@@ -192,7 +206,7 @@ var AsyncConnection;
             return Cookie(ConnectionRunning, '');
         });
         var contextPathCookie = lookupCookie(ConnectionContextPath, function() {
-            return Cookie(ConnectionContextPath, contextPath);
+            return Cookie(ConnectionContextPath, contextPath());
         });
 
         function updateLease() {
@@ -217,7 +231,6 @@ var AsyncConnection;
 
         function markAsOwned() {
             update(connectionCookie, windowID + AcquiredMarker);
-            update(contextPathCookie, contextPath);
         }
 
         function isOwner() {
@@ -229,13 +242,13 @@ var AsyncConnection;
         }
 
         function nonMatchingContextPath() {
-            return value(contextPathCookie) != contextPath;
+            return value(contextPathCookie) != contextPath();
         }
 
         //force candidancy so that last opened window belonging to a different servlet context will own the blocking connection
         if (nonMatchingContextPath()) {
             offerCandidature();
-            info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath + '"  web-context...');
+            info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath() + '"  web-context...');
         }
         var blockingConnectionMonitor = run(Delay(function() {
             if (shouldEstablishBlockingConnection()) {

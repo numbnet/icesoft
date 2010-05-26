@@ -45,6 +45,7 @@
         <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
         <loadfile property="element.js" srcFile="${lib.dir}/element.js"/>
         <loadfile property="event.js" srcFile="${lib.dir}/event.js"/>
+        <loadfile property="configuration.js" srcFile="${lib.dir}/configuration.js"/>
         <loadfile property="command.js" srcFile="${src.dir}/command.js"/>
         <loadfile property="connection.async.js" srcFile="${src.dir}/connection.async.js"/>
         <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
@@ -60,6 +61,7 @@
                 <filter token="delay" value="${delay.js}"/>
                 <filter token="element" value="${element.js}"/>
                 <filter token="event" value="${event.js}"/>
+                <filter token="configuration" value="${configuration.js}"/>
                 <filter token="command" value="${command.js}"/>
                 <filter token="connection.async" value="${connection.async.js}"/>
             </filterset>
