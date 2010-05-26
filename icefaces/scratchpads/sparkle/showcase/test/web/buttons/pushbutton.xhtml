@@ -1,0 +1,83 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated" >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>PushButton</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body class="yui-skin-sam">
+  <style>
+   /* Push Button example*/ 
+   .yui-button#pushbutton2 button, 
+	.yui-button#pushbutton5 button,  
+	.yui-button#pushbutton8 button { 
+	 
+	    background: url(../button/assets/add.gif) center center no-repeat; 
+	    text-indent: -4em; 
+	    overflow: hidden; 
+	    padding: 0 .75em; 
+	    width: 2em; 
+	    *margin-left: 4em;   /* IE only */ 
+	    *padding: 0 1.75em;  /* IE only */ 
+	 
+	} 
+	 
+	.yui-button#pushbutton3 button, 
+	.yui-button#pushbutton6 button,  
+	.yui-button#pushbutton9 button { 
+	 
+	    padding-left: 2em; 
+	    background: url(../button/assets/add.gif) 10% 50% no-repeat; 
+	 
+	} 
+    </style>         
+<h:panelGroup class="yui-button yui-push-button" >
+         <h2>PushButton Demo</h2>    
+	
+	<h:outputText value="click the button trigger the display of the image." />
+    <h:outputText value="click again so image disappears"/>
+	<br/>
+	<h:form id="push1Form">
+	<h:panelGroup id="push1">
+	<ann:pushbutton id="pushId" label="#{button.label}" 
+	       actionListener="#{button.actionListenerMethod}"  />
+	</h:panelGroup>
+	</h:form>
+	<br />
+	<h:form id="push2form">
+	<h:panelGroup id="push2">
+	       <ann:pushbutton id="pushId2" label="Action" image="../images/image1.gif"
+	            action="#{button.methodAction}"  />
+	</h:panelGroup>
+	</h:form>
+		<br />
+	<h:form id="regularButtonForm">
+
+	<h:panelGroup id="hcommandButton">
+	    <h:commandButton id="regular" value="HtmlCommandButton" actionListener="#{button.actionListenerMethod}"/>
+	</h:panelGroup>
+
+   </h:form>  
+   
+   <h:form id="output">
+   	<h:panelGroup id="image">
+	   <h:graphicImage value="../images/employee.gif" label="output"
+	   rendered="#{button.rendered}" />
+	</h:panelGroup>
+   </h:form> 
+  </h:panelGroup>
+
+   <a href="../index.html"> Goto Main page </a>   
+   <a href="../buttons.xhtml"> Goto Buttons page </a>  
+</h:body>
+</html>
+
