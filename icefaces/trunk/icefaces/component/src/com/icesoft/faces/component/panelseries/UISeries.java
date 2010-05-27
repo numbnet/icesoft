@@ -688,8 +688,11 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     
     protected void synchWithPaginator() {
         if (!this.getAttributes().containsKey(DataPaginator.class.getName())) return;
-        DataPaginator paginator = (DataPaginator)this.getAttributes().get(DataPaginator.class.getName());
-        paginator.getPageIndex();
+        String dataPaginatorClientId = (String) this.getAttributes().get(DataPaginator.class.getName()); 
+        DataPaginator paginator = (DataPaginator) D2DViewHandler.findComponent(":" + dataPaginatorClientId, FacesContext.getCurrentInstance().getViewRoot());
+        if (paginator != null) {
+            paginator.getPageIndex();
+        }
     }
 }
 
