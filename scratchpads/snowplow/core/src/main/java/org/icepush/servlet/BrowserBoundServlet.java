@@ -42,7 +42,7 @@ public class BrowserBoundServlet extends PathDispatcher {
         dispatchOn(".*listen\\.icepush",
                 new EnvironmentAdaptingServlet(
                         new ConfigurationServer(context, configuration,
-                                new BlockingConnectionServer(pushGroupManager, monitorRunner, configuration)), configuration));
+                                new BlockingConnectionServer(pushGroupManager, monitorRunner, configuration, context)), configuration));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID());
         dispatchOn(".*notify\\.icepush", new NotifyPushID());
         dispatchOn(".*add-group-member\\.icepush", new AddGroupMember());
