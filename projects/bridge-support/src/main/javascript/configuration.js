@@ -12,23 +12,23 @@ function XMLDynamicConfiguration(lookupElement) {
         return 'true' == toLowerCase(s);
     }
 
+    function lookupAttribute(name) {
+        var a = lookupElement().getAttribute(name);
+        if (a) {
+            return a;
+        } else {
+            throw 'unknown attribute: ' + name;
+        }
+    }
+
+    function lookupValues(name) {
+        return collect(asArray(lookupElement().getElementsByTagName(name)), function(e) {
+            var valueNode = e.firstChild;
+            return valueNode ? valueNode.nodeValue : '';
+        });
+    }
+
     return object(function(method) {
-        function lookupAttribute(name) {
-            var a = lookupElement().getAttribute(name);
-            if (a) {
-                return a;
-            } else {
-                throw 'unknown attribute: ' + name;
-            }
-        }
-
-        function lookupValues(name) {
-            return collect(asArray(lookupElement().getElementsByTagName(name)), function(e) {
-                var valueNode = e.firstChild;
-                return valueNode ? valueNode.nodeValue : '';
-            });
-        }
-
         method(attributeAsString, function(self, name, defaultValue) {
             try {
                 return lookupAttribute(name);
