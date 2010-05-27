@@ -125,5 +125,26 @@ ice.component = {
         component['JSContext'] = new JSContext(clientId);
         JSContext[clientId] = component['JSContext'];
         return component['JSContext'];
-    }
+    },
+    
+    clientState: {
+    	set: function(clientId, state) {
+    	   this.getStateHolder()[clientId]=state;
+    	},
+    	
+    	get: function(clientId) {
+    		return this.getStateHolder()[clientId];
+    	},
+    	
+    	has: function(clientId) {
+     	   return (this.getStateHolder()[clientId] != null);
+     	},
+     	
+     	getStateHolder: function () {
+     		if (!window.document['sparkle_clientState']) {
+     			window.document['sparkle_clientState'] = {};
+     		}
+     		return window.document['sparkle_clientState'];
+     	}
+   }
 };
