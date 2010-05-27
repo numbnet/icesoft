@@ -167,7 +167,7 @@ var AsyncConnection;
         //build callbacks only after 'connection' function was defined
         var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
         var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
-        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000);
+        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 300;//allow 300ms of delay possibly introduced by network
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });

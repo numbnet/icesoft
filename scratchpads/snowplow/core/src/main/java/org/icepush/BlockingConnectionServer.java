@@ -22,6 +22,13 @@
 
 package org.icepush;
 
+import org.icepush.http.Request;
+import org.icepush.http.Response;
+import org.icepush.http.ResponseHandler;
+import org.icepush.http.Server;
+import org.icepush.http.standard.FixedXMLContentHandler;
+import org.icepush.http.standard.ResponseHandlerServer;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -37,13 +44,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.icepush.http.Request;
-import org.icepush.http.Response;
-import org.icepush.http.ResponseHandler;
-import org.icepush.http.Server;
-import org.icepush.http.standard.FixedXMLContentHandler;
-import org.icepush.http.standard.ResponseHandlerServer;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
@@ -82,7 +82,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private String[] lastNotifications = new String[]{};
 
     public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration) {
-        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 50000);
+        this.timeoutInterval = configuration.getAttributeAsLong("heartbeatTimeout", 50000);
         this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);

@@ -25,7 +25,6 @@ package org.icepush;
 import org.icepush.http.Request;
 import org.icepush.http.Server;
 import org.icepush.http.standard.FixedXMLContentHandler;
-import org.icepush.servlet.ServletContextConfiguration;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -41,11 +40,9 @@ public class ConfigurationServer extends FixedXMLContentHandler implements Serve
     private Server blockingConnectionServer;
     private String configurationMessage;
 
-    public ConfigurationServer(final ServletContext servletContext, final Server server) {
+    public ConfigurationServer(final ServletContext servletContext, Configuration configuration, final Server server) {
         blockingConnectionServer = server;
-        Configuration configuration = new ServletContextConfiguration("org.icefaces.bridge", servletContext);
         String contextPath = configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath"));
-
         long blockingConnectionTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", defaultBlockingConnectionTimeout);
         int serverErrorRetries = configuration.getAttributeAsInteger("serverErrorRetryTimeouts", defaultServerErrorRetries);
         String fileExtension = configuration.getAttribute("fileExtension", defaultFileExtension);
