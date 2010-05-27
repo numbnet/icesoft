@@ -6,6 +6,12 @@ ice.component.tabset = {
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
+       
+       //if tabset is client side, lets find out if the state is already stored.
+       if (jsfProps.isClientSide && ice.component.clientState.has(clientId)){
+    	   tabview.set('activeIndex', ice.component.clientState.get(clientId));    	   
+       }
+       
        /*
         if (!Ice.component.registeredComponents[clientId]) {
             var onupdate = Ice.component.getProperty(clientId, 'onupdate');
@@ -53,10 +59,6 @@ ice.component.tabset = {
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
-            var targetElement = thiz.getTabIndexField(tbset);
-            if(targetElement) {
-            	targetElement.value = tabIndexInfo;
-            }
             var params = function(parameter) {
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {
@@ -80,9 +82,13 @@ ice.component.tabset = {
                             });
                         };
             if (jsfProps.isClientSide){
-                //TODO what should go here?
+            	ice.component.clientState.set(clientId, currentIndex);
                 //logger.info('Client side tab ');
             } else {
+                var targetElement = thiz.getTabIndexField(tbset);
+                if(targetElement) {
+                	targetElement.value = tabIndexInfo;
+                }            	
                 //logger.info('Server side tab '+ event);
                 try {
                     if (jsfProps.isSingleSubmit) {

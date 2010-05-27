@@ -50,8 +50,25 @@ public class Bean {
     private boolean closeButton;
     private int labelFacetIndex=0;
     private boolean closeTabValue;
+    private boolean renderPanel = true;
+    private int counter = 0;
     
-    private boolean formRendered = true;
+    public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	public boolean isRenderPanel() {
+		return renderPanel;
+	}
+
+	public void setRenderPanel(boolean renderPanel) {
+		this.renderPanel = renderPanel;
+	}
+	private boolean formRendered = true;
     public Bean() {
         Movie m1 = new Movie();
         m1.setTitle("The Shawshank Redemption (1994)");
@@ -437,6 +454,14 @@ public class Bean {
 
     public void setCloseTabValue(boolean closeTabValue) {
         this.closeTabValue = closeTabValue;
+    }
+    
+    public void toggleRenderPanel(ActionEvent event) {
+    	renderPanel = !renderPanel;    	
+    }
+    
+    public void incrementCounter(ActionEvent event) {
+    	counter++;    	
     }
    
 }
