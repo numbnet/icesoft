@@ -47,7 +47,7 @@ function CommandDispatcher() {
 }
 
 function NoopCommand() {
-    debug(namspace.logger, 'received noop');
+    debug(namespace.logger, 'received noop');
 }
 
 function ParsingError(message) {
