@@ -1144,7 +1144,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         //each cycle can have new component
         UIData uiData = findUIData();
         setUIData(uiData);
-        uiData.getAttributes().put(DataPaginator.class.getName(), this);
+        uiData.getAttributes().put(DataPaginator.class.getName(), getClientId(context));
         super.decode(context);
     }
 }
