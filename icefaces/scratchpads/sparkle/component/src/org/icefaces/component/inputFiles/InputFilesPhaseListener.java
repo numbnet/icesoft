@@ -126,6 +126,7 @@ public class InputFilesPhaseListener implements PhaseListener {
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
             if (pvc instanceof DOMPartialViewContext)
                 ((DOMPartialViewContext) pvc).setAjaxRequest(true);
+            pvc.setPartialRequest(true);
             // Apparently not necessary, as long as we don't call
             // FacesContext.isPostback() before this point
             //phaseEvent.getFacesContext().getAttributes().remove(
@@ -146,6 +147,7 @@ public class InputFilesPhaseListener implements PhaseListener {
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
             if (pvc instanceof DOMPartialViewContext)
                 ((DOMPartialViewContext) pvc).setAjaxRequest(true);
+            pvc.setPartialRequest(true);
 //            System.out.println("InputFilesPhaseListener.beforePhase()  partialViewContext.isAjaxRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest());
             
 //            System.out.println("InputFilesPhaseListener.beforePhase()  old    : " + request);
