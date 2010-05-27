@@ -29,6 +29,7 @@ import org.icepush.http.Server;
 import org.icepush.http.standard.FixedXMLContentHandler;
 import org.icepush.http.standard.ResponseHandlerServer;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private String lastWindow = "";
     private String[] lastNotifications = new String[]{};
 
-    public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration) {
+    public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, final Configuration configuration, final ServletContext context) {
         this.timeoutInterval = configuration.getAttributeAsLong("heartbeatTimeout", 50000);
         this.pushGroupManager = pushGroupManager;
         //add monitor
@@ -122,7 +123,12 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
             public void shutdown() {
                 //avoid creating new blocking connections after shutdown
                 activeServer = AfterShutdown;
-                respondIfPendingRequest(CloseResponse);
+                //assume that clustering is used when context path is defined
+                String contextPath = configuration.getAttribute("contextPath", (String) context.getAttribute("contextPath"));
+                //avoid shutting down the bridge during fail-over
+                if (contextPath == null) {
+                    respondIfPendingRequest(CloseResponse);
+                }
             }
         };
     }
