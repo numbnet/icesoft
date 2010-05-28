@@ -260,10 +260,6 @@ public class LobbyBean extends SortBean {
 		return ValidatorUtil.isValidString(selectedCardBack);
 	}
 	
-	public void refreshGameList(ActionEvent event) {
-		cacheGameList();
-	}
-
 	private void cacheGameList() {
 		int gameCount = userSession.getGameManager().getGameList().size();
 		localGameList = new ArrayList<GameInstanceWrapper>(gameCount);

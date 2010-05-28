@@ -15,21 +15,8 @@
 	                   columnClasses="nameCol,passCol,sizeCol,cardCol,playerCol"
 	                   rowClasses="lightRow,darkRow">
 	            <f:facet name="header">
-	                <table cellspacing="0" cellpadding="0" width="100%">
-	                    <tr>
-	                        <td width="99%" align="center">
-	                        <ice:outputText value="Join Game"
-	                                        style="font-weight: bold; font-size: 12px;"/>
-	                        </td>
-	                        <td width="1%" align="right">
-	                        <ice:commandButton image="./css/images/refresh.png"
-	                                           styleClass="imageButton"
-	                                           style="float: right;"
-	                                           alt="Manual Refresh" title="Manual Refresh"
-	                                           actionListener="#{lobbyBean.refreshGameList}"/>
-	                    </td>
-	                </tr>
-	            </table>
+                    <ice:outputText value="Join Game"
+                                    style="font-weight: bold; font-size: 12px;"/>
 	            </f:facet>
 	                   
 	        <ice:column rendered="#{gameManager.hasGameList}">
