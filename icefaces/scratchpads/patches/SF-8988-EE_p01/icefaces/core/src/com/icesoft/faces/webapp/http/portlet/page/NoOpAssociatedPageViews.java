@@ -34,6 +34,8 @@ package com.icesoft.faces.webapp.http.portlet.page;
 
 import com.icesoft.faces.context.View;
 
+import java.util.Map;
+
 /**
  * The noop version of AssociatedViews has empty implementations of the
  * methods.  It is used in environments where associated views are not
@@ -49,6 +51,6 @@ public class NoOpAssociatedPageViews implements AssociatedPageViews {
     public void add(View view) {
     }
 
-    public void disposeAssociatedViews(View view) {
+    public void disposeAssociatedViews(Map views, View view) {
     }
 }
