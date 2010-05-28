@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12736014775621" configfile="/memorygame/web/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="lobby.xhtml" id="pf12740484709530" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf12740484709531" path="/lobby.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="board.iface" id="pf12740484709532" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12740484709531" path="/board.iface"/>
-  <nodes xsi:type="pageflow:PFPage" name="board.xhtml" id="pf12740484709533" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12740484709534" path="/board.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="lobby.iface" id="pf12740484709535" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12740484709534" path="/lobby.iface"/>
-  <links id="pf12740484709531" target="pf12740484709532" source="pf12740484709530" outcome="board" redirect="true"/>
-  <links id="pf12740484709534" target="pf12740484709535" source="pf12740484709533" outcome="lobby" redirect="true"/>
-</pageflow:Pageflow>
