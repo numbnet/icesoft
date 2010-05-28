@@ -1,4 +1,4 @@
-package com.personal.memory.bean.sort;
+package com.icefaces.project.memory.bean.sort;
 
 public abstract class SortBean {
     protected String sortColumnName;

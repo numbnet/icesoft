@@ -1,13 +1,13 @@
-package com.personal.memory.validator;
+package com.icefaces.project.memory.validator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import com.personal.memory.game.GameManager;
-import com.personal.memory.util.FacesUtil;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.game.GameManager;
+import com.icefaces.project.memory.util.FacesUtil;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 /**
  * Validator used to check if a game name is unique or not

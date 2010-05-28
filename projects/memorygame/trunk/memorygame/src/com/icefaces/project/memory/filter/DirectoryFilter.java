@@ -1,4 +1,4 @@
-package com.personal.memory.filter;
+package com.icefaces.project.memory.filter;
 
 import java.io.File;
 import java.io.FileFilter;

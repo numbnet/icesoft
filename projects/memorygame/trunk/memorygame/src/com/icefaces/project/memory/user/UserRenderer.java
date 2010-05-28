@@ -1,7 +1,7 @@
-package com.personal.memory.user;
+package com.icefaces.project.memory.user;
 
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.personal.memory.game.GameManager;
+import com.icefaces.project.memory.game.GameManager;
 
 public class UserRenderer {
 	private boolean inLobby = false;

@@ -1,4 +1,4 @@
-package com.personal.memory.bean.color;
+package com.icefaces.project.memory.bean.color;
 
 public class UIColor {
 	private String displayName;

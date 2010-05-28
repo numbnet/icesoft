@@ -1,4 +1,4 @@
-package com.personal.memory.util;
+package com.icefaces.project.memory.util;
 
 import java.io.File;
 import java.util.List;

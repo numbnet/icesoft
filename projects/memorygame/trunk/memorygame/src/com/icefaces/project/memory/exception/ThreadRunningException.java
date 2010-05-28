@@ -1,4 +1,4 @@
-package com.personal.memory.exception;
+package com.icefaces.project.memory.exception;
 
 /**
  * Exception thrown when a method is accessed, but currently has a running thread

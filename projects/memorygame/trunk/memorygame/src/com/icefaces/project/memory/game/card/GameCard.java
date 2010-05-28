@@ -1,4 +1,4 @@
-package com.personal.memory.game.card;
+package com.icefaces.project.memory.game.card;
 
 import com.icesoft.faces.context.effects.Appear;
 import com.icesoft.faces.context.effects.Effect;

@@ -1,14 +1,14 @@
-package com.personal.memory.bean;
+package com.icefaces.project.memory.bean;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.personal.memory.exception.FailedJoinException;
-import com.personal.memory.game.GameInstance;
-import com.personal.memory.user.UserSession;
-import com.personal.memory.util.FacesUtil;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.exception.FailedJoinException;
+import com.icefaces.project.memory.game.GameInstance;
+import com.icefaces.project.memory.user.UserSession;
+import com.icefaces.project.memory.util.FacesUtil;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 public class RedirectBean {
 	public static final String BASE_URL_PARAM = "invite.url.base";

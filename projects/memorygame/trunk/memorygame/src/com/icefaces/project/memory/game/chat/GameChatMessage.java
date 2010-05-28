@@ -1,4 +1,4 @@
-package com.personal.memory.game.chat;
+package com.icefaces.project.memory.game.chat;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,13 +1,13 @@
-package com.personal.memory.game;
+package com.icefaces.project.memory.game;
 
 import java.util.List;
 import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.personal.memory.exception.FailedJoinException;
-import com.personal.memory.game.card.GameCardSetManager;
-import com.personal.memory.user.UserModel;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.exception.FailedJoinException;
+import com.icefaces.project.memory.game.card.GameCardSetManager;
+import com.icefaces.project.memory.user.UserModel;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 public class GameManager {
 	public static final int DEFAULT_SIZE = 4;

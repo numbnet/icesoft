@@ -1,18 +1,18 @@
-package com.personal.memory.game;
+package com.icefaces.project.memory.game;
 
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.List;
 
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.personal.memory.comparator.UserByScoreComparator;
-import com.personal.memory.exception.ThreadRunningException;
-import com.personal.memory.game.card.GameCard;
-import com.personal.memory.game.card.GameCardSet;
-import com.personal.memory.game.chat.GameChat;
-import com.personal.memory.user.UserModel;
-import com.personal.memory.user.UserSession;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.comparator.UserByScoreComparator;
+import com.icefaces.project.memory.exception.ThreadRunningException;
+import com.icefaces.project.memory.game.card.GameCard;
+import com.icefaces.project.memory.game.card.GameCardSet;
+import com.icefaces.project.memory.game.chat.GameChat;
+import com.icefaces.project.memory.user.UserModel;
+import com.icefaces.project.memory.user.UserSession;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 

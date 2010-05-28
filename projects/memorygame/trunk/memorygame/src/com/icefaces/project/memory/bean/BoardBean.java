@@ -1,11 +1,11 @@
-package com.personal.memory.bean;
+package com.icefaces.project.memory.bean;
 
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.context.effects.Shake;
-import com.personal.memory.game.card.GameCard;
-import com.personal.memory.user.UserSession;
-import com.personal.memory.util.FacesUtil;
+import com.icefaces.project.memory.game.card.GameCard;
+import com.icefaces.project.memory.user.UserSession;
+import com.icefaces.project.memory.util.FacesUtil;
 
 public class BoardBean {
 	public static final String DEFAULT_LAYOUT = "vertical";

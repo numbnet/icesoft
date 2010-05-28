@@ -1,4 +1,4 @@
-package com.personal.memory.game.chat;
+package com.icefaces.project.memory.game.chat;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.personal.memory.bean.color.ColorBean;
+import com.icefaces.project.memory.bean.color.ColorBean;
 
 public class GameChat {
 	public static final String SYSTEM_NAME = "System";
