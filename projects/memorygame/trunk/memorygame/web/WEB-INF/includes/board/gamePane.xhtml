@@ -66,5 +66,10 @@
 	          <ui:include src="/WEB-INF/includes/popups/invitePopup.xhtml"/>
 	       </ice:form>
 		</c:if>
+        <c:if test="#{boardBean.helpPopup}">
+           <ice:form>
+              <ui:include src="/WEB-INF/includes/popups/helpPopup.xhtml"/>
+           </ice:form>
+        </c:if>        
 	</ice:panelGroup>
 </ui:composition>

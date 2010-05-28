@@ -71,26 +71,45 @@
 	color: #0000FF;
 }
 
-.invitePopup {
+.invitePopup,
+.helpPopup {
     background-color: #DDDDDD;
     border: 5px outset #666666;
     font-size: 12px;
     padding: 0;
     margin: 0;
+}
+
+.invitePopup {
     z-index: 1005;
 }
 
-.invitePopup .icePnlPopHdr {
+.helpPopup {
+    z-index: 1010;
+}
+
+.invitePopup .icePnlPopHdr,
+.helpPopup .icePnlPopHdr {
 	font-size: 14px;
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 	background-color: #BCBCBC;
 	border-bottom: 1px solid #666666;
 	padding: 5px;
 }
 
-.invitePopup .icePnlPopBody {
+.invitePopup .icePnlPopBody,
+.helpPopup .icePnlPopBody {
 	padding: 5px;
+}
+
+.helpTable {
+    width: 100%;
+    text-align: left;
+}
+
+.helpTable .iceOutTxt {
+    font-size: 12px;
 }
 
 .scoreTurnCol {

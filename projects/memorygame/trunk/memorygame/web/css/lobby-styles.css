@@ -29,6 +29,19 @@
 	text-align: center;
 }
 
+.bulletCol {
+    width: 1%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    vertical-align: top;
+}
+
+.instructCol {
+    width: 99%;
+    text-align: left;
+}
+
 .previewPopup {
     background-color: #DDDDDD;
     border: 5px outset #666666;
@@ -41,7 +54,7 @@
 .previewPopup .icePnlPopHdr {
 	font-size: 14px;
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 	background-color: #BCBCBC;
 	border-bottom: 1px solid #666666;
 	padding: 5px;
