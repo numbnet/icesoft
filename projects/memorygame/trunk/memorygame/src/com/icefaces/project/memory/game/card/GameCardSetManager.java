@@ -15,6 +15,13 @@ import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
+/**
+ * Class used to manage the various GameCardSets
+ * This includes generating GameCardSet objects from the filesystem images we have available
+ * This class will also use a Timer to check the filesystem image directory for changes
+ *  and reload the available card sets when necessary. So a folder with new card set images
+ *  can be added to the filesystem directory and will be available to the lobby without a restart
+ */
 public class GameCardSetManager {
 	private static final long CONTENT_CHECK_RATE = 5 * 60 * 1000l;
 	public static final String BASE_PATH_FRONT = "./css/images/cardset-front";
@@ -38,6 +45,15 @@ public class GameCardSetManager {
 		scheduleCheckSetChanges();		
 	}
 	
+	/**
+	 * Method to generate all available card sets, including the back images
+	 * We'll determine where our webapp is deployed to, and work from there
+	 * Any valid folders in the BASE_PATH_FRONT directory will be converted
+	 *  into GameCardSet objects, named the same as the directory, and with one card
+	 *  for every image in that folder
+	 * A similar approach is used for the back images, except any image at all in
+	 *  BASE_PATH_BACK will be added as a choosable back image
+	 */
 	@SuppressWarnings("unchecked")
 	private void initAvailableSets() {
 		try{
@@ -92,12 +108,17 @@ public class GameCardSetManager {
 		availableSets = new Vector<GameCardSet>(0);
 	}
 	
+	/**
+	 * Method to take a valid card set directory on the filesystem and
+	 *  generate a GameCardSet object from the contents
+	 */
 	private GameCardSet initCardSet(File setDir) {
 		String setName = setDir.getName();
 		File[] cardImages = setDir.listFiles(new CardImageFilter());
 		
 		GameCardSet toReturn = new GameCardSet(setName, cardImages.length);
 		
+		// Add a GameCard for each image in the directory
 		for (int i = 0; i < cardImages.length; i++) {
 			toReturn.addCard(new GameCard(i, cardImages[i].getName(),
 										  wrapFrontImagePath(setName, cardImages[i].getName()),
@@ -107,6 +128,11 @@ public class GameCardSetManager {
 		return toReturn;
 	}
 	
+	/**
+	 * Method to schedule the checking and possible reloading of card sets and back images
+	 * This check looks at the modification date to see if it has changed from the stored
+	 *  value, in which case initAvailableSets will be called again
+	 */
 	private void scheduleCheckSetChanges() {
         // Schedule a task to check for card set directory changes every 5 minutes
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -120,6 +146,9 @@ public class GameCardSetManager {
         }, CONTENT_CHECK_RATE, CONTENT_CHECK_RATE);
 	}
 	
+	/**
+	 * Determine whether the card set folders have been modified
+	 */
 	private boolean checkSetChanges() {
 		// Ensure we have a valid set directory
 		if (ValidatorUtil.isValidDirectory(setDir)) {

@@ -49,6 +49,14 @@ public class UserSession extends UserModel implements DisposableBean {
 		return currentGame != null;
 	}
 	
+	/**
+	 * Method called when the bean is about to be destroyed
+	 * This would normally happen when a user closes their browser and we want to do something
+	 *  when their session times out
+	 * In this case we'll try to make them leave their current game, so that we don't have
+	 *  a bunch of idle users populating games and confusing people
+	 */
+	@Override
 	public void dispose() {
 		if ((gameManager != null) &&
 		    (currentGame != null) &&
