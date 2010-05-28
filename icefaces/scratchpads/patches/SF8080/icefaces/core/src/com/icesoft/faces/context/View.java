@@ -106,7 +106,7 @@ public class View implements CommandQueue {
             }
         };
         Log.debug("Created " + this);
-        System.out.println("View.View: created " + this);
+        //System.out.println("View.View: created " + this);
     }
 
     public void updateOnXMLHttpRequest(Request request) throws Exception {
@@ -132,7 +132,7 @@ public class View implements CommandQueue {
     }
 
     private void updateOnPageRequest(final Request request) throws Exception {
-        System.out.println("View.updateOnPageRequest: " + this + " -> " + request.getURI() );
+        //System.out.println("View.updateOnPageRequest: " + this + " -> " + request.getURI() );
         String path = request.getURI().getPath();
         boolean reloded = path.equals(lastPath);
         lastPath = path;
