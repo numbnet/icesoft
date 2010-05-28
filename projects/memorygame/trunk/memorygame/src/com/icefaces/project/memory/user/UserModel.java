@@ -1,4 +1,4 @@
-package com.personal.memory.user;
+package com.icefaces.project.memory.user;
 
 public class UserModel {
 	protected String name = "User " + System.currentTimeMillis();

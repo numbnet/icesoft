@@ -1,11 +1,11 @@
-package com.personal.memory.game;
+package com.icefaces.project.memory.game;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.personal.memory.game.card.GameCard;
-import com.personal.memory.game.card.GameCardSet;
+import com.icefaces.project.memory.game.card.GameCard;
+import com.icefaces.project.memory.game.card.GameCardSet;
 
 public class GameBoard {
 	private Random randomizer;

@@ -1,6 +1,5 @@
-package com.personal.memory.util;
+package com.icefaces.project.memory.util;
 
-import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;

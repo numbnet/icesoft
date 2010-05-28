@@ -1,8 +1,8 @@
-package com.personal.memory.comparator;
+package com.icefaces.project.memory.comparator;
 
 import java.util.Comparator;
 
-import com.personal.memory.user.UserModel;
+import com.icefaces.project.memory.user.UserModel;
 
 /**
  * Comparator used to sort a list of users by their score value.

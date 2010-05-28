@@ -1,11 +1,11 @@
-package com.personal.memory.bean;
+package com.icefaces.project.memory.bean;
 
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.context.effects.Highlight;
-import com.personal.memory.game.chat.GameChat;
-import com.personal.memory.game.chat.GameChatMessage;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.game.chat.GameChat;
+import com.icefaces.project.memory.game.chat.GameChatMessage;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 public class ChatBean {
 	private GameChat chatRoom;

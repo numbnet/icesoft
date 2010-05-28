@@ -1,9 +1,9 @@
-package com.personal.memory.game.card;
+package com.icefaces.project.memory.game.card;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 /*
  * 2x2 = 2 cards

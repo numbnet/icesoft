@@ -1,8 +1,8 @@
-package com.personal.memory.user;
+package com.icefaces.project.memory.user;
 
 import com.icesoft.faces.context.DisposableBean;
-import com.personal.memory.game.GameInstance;
-import com.personal.memory.game.GameManager;
+import com.icefaces.project.memory.game.GameInstance;
+import com.icefaces.project.memory.game.GameManager;
 
 public class UserSession extends UserModel implements DisposableBean {
 	private GameManager gameManager;

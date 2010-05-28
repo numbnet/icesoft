@@ -1,4 +1,4 @@
-package com.personal.memory.game;
+package com.icefaces.project.memory.game;
 
 
 /**

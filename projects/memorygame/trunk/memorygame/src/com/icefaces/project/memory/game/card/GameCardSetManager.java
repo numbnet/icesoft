@@ -1,4 +1,4 @@
-package com.personal.memory.game.card;
+package com.icefaces.project.memory.game.card;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,10 +8,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import com.personal.memory.filter.CardImageFilter;
-import com.personal.memory.filter.DirectoryFilter;
-import com.personal.memory.util.FacesUtil;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.filter.CardImageFilter;
+import com.icefaces.project.memory.filter.DirectoryFilter;
+import com.icefaces.project.memory.util.FacesUtil;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 

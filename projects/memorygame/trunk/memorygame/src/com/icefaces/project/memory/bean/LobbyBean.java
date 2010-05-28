@@ -1,4 +1,4 @@
-package com.personal.memory.bean;
+package com.icefaces.project.memory.bean;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,14 +9,14 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.ext.RowSelectorEvent;
-import com.personal.memory.bean.sort.SortBean;
-import com.personal.memory.exception.FailedJoinException;
-import com.personal.memory.game.GameInstance;
-import com.personal.memory.game.GameInstanceWrapper;
-import com.personal.memory.game.card.GameCardSet;
-import com.personal.memory.user.UserSession;
-import com.personal.memory.util.FacesUtil;
-import com.personal.memory.util.ValidatorUtil;
+import com.icefaces.project.memory.bean.sort.SortBean;
+import com.icefaces.project.memory.exception.FailedJoinException;
+import com.icefaces.project.memory.game.GameInstance;
+import com.icefaces.project.memory.game.GameInstanceWrapper;
+import com.icefaces.project.memory.game.card.GameCardSet;
+import com.icefaces.project.memory.user.UserSession;
+import com.icefaces.project.memory.util.FacesUtil;
+import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 

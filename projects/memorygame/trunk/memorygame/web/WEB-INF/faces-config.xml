@@ -5,24 +5,27 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
     version="1.2">
 	<application>
+        <locale-config>            
+            <default-locale>en</default-locale>
+        </locale-config>
 		<message-bundle>val-override</message-bundle>
 		<view-handler>com.icesoft.faces.facelets.D2DFaceletViewHandler</view-handler>
 	</application>
 	
     <converter>
       <converter-id>GridSizeFormatter</converter-id>
-      <converter-class>com.personal.memory.converter.GridSizeFormatter</converter-class> 
+      <converter-class>com.icefaces.project.memory.converter.GridSizeFormatter</converter-class> 
     </converter>
     
     <validator>
 	  <validator-id>UniqueGameNameValidator</validator-id>
-	  <validator-class>com.personal.memory.validator.UniqueGameNameValidator</validator-class>
+	  <validator-class>com.icefaces.project.memory.validator.UniqueGameNameValidator</validator-class>
 	</validator>
 	
 	<!-- Bean Declarations -->
 	<managed-bean>
 		<managed-bean-name>lobbyBean</managed-bean-name>
-		<managed-bean-class>com.personal.memory.bean.LobbyBean</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.bean.LobbyBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>userSession</property-name>
@@ -32,7 +35,7 @@
 	
 	<managed-bean>
 		<managed-bean-name>boardBean</managed-bean-name>
-		<managed-bean-class>com.personal.memory.bean.BoardBean</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.bean.BoardBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>userSession</property-name>
@@ -42,7 +45,7 @@
 	
 	<managed-bean>
 		<managed-bean-name>chatBean</managed-bean-name>
-		<managed-bean-class>com.personal.memory.bean.ChatBean</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.bean.ChatBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>sender</property-name>
@@ -56,7 +59,7 @@
     
 	<managed-bean>
 		<managed-bean-name>userSession</managed-bean-name>
-		<managed-bean-class>com.personal.memory.user.UserSession</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.user.UserSession</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>gameManager</property-name>
@@ -66,7 +69,7 @@
 	
 	<managed-bean>
 		<managed-bean-name>redirectBean</managed-bean-name>
-		<managed-bean-class>com.personal.memory.bean.RedirectBean</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.bean.RedirectBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>userSession</property-name>
@@ -76,13 +79,13 @@
 	
     <managed-bean>
         <managed-bean-name>colorBean</managed-bean-name>
-        <managed-bean-class>com.personal.memory.bean.color.ColorBean</managed-bean-class>
+        <managed-bean-class>com.icefaces.project.memory.bean.color.ColorBean</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>	
 
 	<managed-bean>
 		<managed-bean-name>gameManager</managed-bean-name>
-		<managed-bean-class>com.personal.memory.game.GameManager</managed-bean-class>
+		<managed-bean-class>com.icefaces.project.memory.game.GameManager</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 	
