@@ -5,7 +5,7 @@
     <ice:panelPopup visible="#{boardBean.helpPopup}"
                     autoCentre="true" resizable="false"
                     draggable="false" modal="true"
-                    styleClass="invitePopup">
+                    styleClass="helpPopup">
         <f:facet name="header">
             <ice:outputText value="Instructions"/>
         </f:facet>
@@ -28,6 +28,9 @@
                     
                     <ice:outputLabel for="failInfo" value="&amp;bull;"/>
                     <ice:outputText id="failInfo" value="If the cards do not match your turn is over and the next person in the round-robin rotation performs their turn."/>
+                    
+                    <ice:outputLabel for="tipInfo" value="&amp;bull;"/>
+                    <ice:outputText id="tipInfo" value="Try to remember where each image was on the board, to ensure a match on future turns. This can be more difficult with larger board sizes."/>
                     
                     <ice:outputLabel for="chatInfo" value="&amp;bull;"/>
                     <ice:outputText id="chatInfo" value="You can chat with other players by entering a message in the input field marked with '&amp;gt;' and pressing Send." escape="false"/>
