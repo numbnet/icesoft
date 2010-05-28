@@ -92,7 +92,7 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
     public void add(View view) {
         String pageId = getPageId();
         bidi.put(pageId, view);
-        System.out.println("AssociatedPageViewsImpl.add: added " + view.toString());
+        //System.out.println("AssociatedPageViewsImpl.add: added " + view.toString());
     }
 
     public void disposeAssociatedViews(Map views, View view) {
@@ -105,7 +105,7 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
             if (log.isDebugEnabled()) {
                 log.debug("disposed " + v.toString());
             }
-            System.out.println("AssociatedPageViewsImpl.disposeAssociatedViews: disposed " + v.toString());
+            //System.out.println("AssociatedPageViewsImpl.disposeAssociatedViews: disposed " + v.toString());
         }
         bidi.clear();
     }
