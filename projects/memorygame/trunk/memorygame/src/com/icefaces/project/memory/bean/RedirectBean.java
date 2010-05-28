@@ -10,6 +10,13 @@ import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.FacesUtil;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
+/**
+ * Bean used to check whether a specific game should be joined based
+ *  on the redirection parameters
+ * This allows users in a game to send a url invite to friends so
+ *  the friends can instantly join their exact game without having
+ *  to go through the lobby
+ */
 public class RedirectBean {
 	public static final String BASE_URL_PARAM = "invite.url.base";
 	public static final String GAME_NAME_PARAM = "game";
@@ -51,6 +58,11 @@ public class RedirectBean {
 		return FacesUtil.getURLParameter(USER_NAME_PARAM);
 	}
 
+	/**
+	 * Method to check whether we need to redirect to a game
+	 * Basically we'll check the url parameters for validity, then join
+	 *  the user into an existing game if possible, otherwise they go to the lobby  
+	 */
 	private boolean checkForRedirect() {
 		String gameName = getGameNameParam();
 		String gamePass = getGamePassParam();
@@ -74,6 +86,11 @@ public class RedirectBean {
 		return false;
 	}
 	
+	/**
+	 * Method to join an existing game directly, without entering the lobby
+	 * This requires a bit of work to skip over some steps that would have been done
+	 *  via the lobby, like setting a name and switching renderers, etc.
+	 */
 	private boolean joinGame(String gameName, String gamePass, String userName) throws FailedJoinException {
 		if ((userSession == null) || (userSession.getGameManager() == null)) {
 			return false;
@@ -81,6 +98,7 @@ public class RedirectBean {
 		
 		List<GameInstance> gameList = userSession.getGameManager().getGameList();
 		
+		// Try to find a game that matches the one we're trying to join
 		for (GameInstance loopGame : gameList) {
 			if (gameName.equalsIgnoreCase(loopGame.getName())) {
 				if (ValidatorUtil.isValidString(userName)) {
@@ -100,6 +118,9 @@ public class RedirectBean {
 		return false;
 	}
 	
+	/**
+	 * Method to generate the parameterized url that is sent to friends to join a game directly
+	 */
 	public static String generateInviteURL(String gameName, String gamePass, String userName) {
 		String toReturn = FacesUtil.getContextParameter(BASE_URL_PARAM) + REDIRECT_URI +
    		 				  "?" + GAME_NAME_PARAM + "=" + gameName +
@@ -112,6 +133,9 @@ public class RedirectBean {
 		return toReturn;
 	}
 	
+	/**
+	 * Method to force a url redirect by modifying the header to have a META-REFRESH tag
+	 */
     public static void forceLoadURI(String url) {
     	HttpServletResponse response = FacesUtil.getCurrentResponse();
     	

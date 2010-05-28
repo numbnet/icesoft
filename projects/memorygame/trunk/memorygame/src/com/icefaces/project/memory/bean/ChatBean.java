@@ -7,6 +7,9 @@ import com.icefaces.project.memory.game.chat.GameChat;
 import com.icefaces.project.memory.game.chat.GameChatMessage;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
+/**
+ * Page bean for the functionality of chatting, both sending and displaying messages
+ */
 public class ChatBean {
 	private GameChat chatRoom;
 	private String sender;

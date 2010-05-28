@@ -20,6 +20,10 @@ import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
+/**
+ * Page bean for the functionality in lobby.xhtml
+ * We'll store all the backing information for the various dropdowns, manage a few render flags, etc.
+ */
 public class LobbyBean extends SortBean {
 	private static final String RANDOM_CARD_VALUE = "RANDOMIZE";
 	
@@ -80,6 +84,9 @@ public class LobbyBean extends SortBean {
 		this.localGameList = localGameList;
 	}
 	
+	/**
+	 * Method to get a list of card sets and convert them into UI friendly SelectItems
+	 */
 	public SelectItem[] getAvailableSetsAsItems() {
 		if (availableSetsAsItems == null) {
 			List<GameCardSet> allSets = userSession.getGameManager().getCardSetManager().getAvailableSets();
@@ -94,7 +101,7 @@ public class LobbyBean extends SortBean {
 					availableSetsAsItems[i] =
 						new SelectItem(currentSet.getName(),
 									   currentSet.getName() + " (" +
-									    currentSet.getCardCount() + ")");
+									   currentSet.getCardCount() + ")");
 				}
 			}
 		}
@@ -106,6 +113,9 @@ public class LobbyBean extends SortBean {
 		this.availableSetsAsItems = availableSetsAsItems;
 	}
 	
+	/**
+	 * Method to get a list of card back images and conver them into UI friendly SelectItems
+	 */
 	public SelectItem[] getAvailableBackImagesAsItems() {
 		if (availableBackImagesAsItems == null) {
 			List<String> backImages = userSession.getGameManager().getCardSetManager().getAvailableBackImages();
@@ -140,6 +150,7 @@ public class LobbyBean extends SortBean {
 	}
 
 	public void setSelectedCardSet(String selectedCardSet) {
+		// Check whether we should attempt to randomize the selected card set, otherwise just set it
 		if (RANDOM_CARD_VALUE.equals(selectedCardSet)) {
 			this.selectedCardSet =
 				getAvailableSetsAsItems()[randomizer.nextInt(availableSetsAsItems.length)].getValue().toString(); 
@@ -154,6 +165,7 @@ public class LobbyBean extends SortBean {
 	}
 
 	public void setSelectedCardBack(String selectedCardBack) {
+		// Check whether we should attempt to randomize the selected card back, otherwise just set it
 		if (RANDOM_CARD_VALUE.equals(selectedCardBack)) {
 			this.selectedCardBack =
 				getAvailableBackImagesAsItems()[randomizer.nextInt(availableBackImagesAsItems.length)].getValue().toString(); 
@@ -207,6 +219,10 @@ public class LobbyBean extends SortBean {
 		return RANDOM_CARD_VALUE;
 	}
 	
+	/**
+	 * Method called when a game is clicked / selected to join
+	 * We'll want to display a password prompt as needed
+	 */
 	public void gameSelectionListener(RowSelectorEvent rse) {
 		GameInstanceWrapper selectedGame = localGameList.get(rse.getRow());
 		
@@ -219,6 +235,7 @@ public class LobbyBean extends SortBean {
 	}
 	
 	public void openCardPreview(ActionEvent event) {
+		// Get the actual card set object based on the selected name
 		cardPreview =
 			userSession.getGameManager().getCardSetManager().getCardSetByName(selectedCardSet);
 		
@@ -257,6 +274,11 @@ public class LobbyBean extends SortBean {
 		}
 	}
 	
+	/**
+	 * Method called to join a selected game
+	 * First we'll deteremine what game was selected to join, then drop our user into it
+	 *  and redirect from the lobby to the actual game page
+	 */
 	public String joinGame() {
 		try{
 			for (GameInstanceWrapper loopGame : localGameList) {
@@ -278,12 +300,15 @@ public class LobbyBean extends SortBean {
 		return null;
 	}
 	
+	/**
+	 * Method called to create a new game from the various parameters we've input so far
+	 */
 	public String createGame() {
-		// Translate the selected card set into a useful object
 		if (!ValidatorUtil.isValidString(selectedCardSet)) {
 			return null;
 		}
 		
+		// Translate the selected card set into a useful object
 		GameCardSet cardSet =
 			userSession.getGameManager().getCardSetManager().createCardSet(selectedCardSet,
 																		   selectedCardBack);
@@ -303,6 +328,10 @@ public class LobbyBean extends SortBean {
 		return redirectToGame();
 	}
 	
+	/**
+	 * Method to perform some functionality before redirecting to the game page itself
+	 * We'll want to do some minor cleanup of the lobby and then switch renderers 
+	 */
 	public String redirectToGame() {
 		if (userSession.getCurrentGame() != null) {
 			setPasswordPromptRendered(false);

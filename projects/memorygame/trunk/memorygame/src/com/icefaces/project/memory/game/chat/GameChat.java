@@ -8,6 +8,11 @@ import java.util.Vector;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.icefaces.project.memory.bean.color.ColorBean;
 
+/**
+ * Game class to manage chat
+ * The main purpose is to store a list of GameChatMessages which can be
+ *  accessed by players in the game
+ */
 public class GameChat {
 	public static final String SYSTEM_NAME = "System";
 	public static final String DEFAULT_COLOR = ColorBean.DEFAULT_COLOR_HEX;

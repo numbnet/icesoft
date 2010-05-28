@@ -7,6 +7,10 @@ import java.util.Random;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.game.card.GameCardSet;
 
+/**
+ * Game class to handle the board
+ * We'll store all clickable GameCards, the size, and how many matches we have so far
+ */
 public class GameBoard {
 	private Random randomizer;
 	private int matchCount = 0; // When this is >= half the cells, game is over
@@ -49,6 +53,10 @@ public class GameBoard {
 		this.data = data;
 	}
 	
+	/**
+	 * Method to generate the board based on our current card set
+	 * We'll basically get a valid GameCard for every slot in our board grid
+	 */
 	public void generateData() {
 		int numberOfCells = getCellCount();
 		int halfLifeCells = getHalfCellCount();

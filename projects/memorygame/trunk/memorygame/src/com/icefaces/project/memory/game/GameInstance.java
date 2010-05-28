@@ -16,11 +16,17 @@ import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
+/**
+ * Primary game class representing an actual game
+ * This has all the attributes set when the game was created, like the name, max players, etc.
+ * We'll also track who is currently in the game, and maintain references to our supporting
+ *  classes like chat and board management
+ */
 public class GameInstance {
 	protected String name;
 	protected String password;
 	protected List<UserModel> users;
-	protected List<UserModel> usersByScore;
+	protected List<UserModel> usersByScore; // list of players sorted by highest score
 	protected int maxUsers = GameManager.DEFAULT_MAX_USERS;
 	protected long reflipDelay = GameManager.DEFAULT_REFLIP_DELAY;
 	protected boolean isStarted = false;
@@ -263,7 +269,14 @@ public class GameInstance {
 		}
 	}
 	
+	/**
+	 * Method called when someone has won the game
+	 * We'll display the winning screen as necessary, before resetting the game
+	 *  to a new round
+	 */
 	private void someoneWon() {
+		// Grab the highest scoring user
+		// This can cause some issue for ties, since whoever scored last becomes the winner
 		UserModel winningUser = getUsersByScore().get(0);
 		
 		String message = winningUser.getName() + " won the game with a score of " +
@@ -275,6 +288,7 @@ public class GameInstance {
 		restartGame();
 		setIsStarted(false);
 		
+		// Start a new thread from the existing pool to close the winning screen begin the game
 		turns.getThreadPool().execute(new Runnable() {
 			public void run() {
 				try {

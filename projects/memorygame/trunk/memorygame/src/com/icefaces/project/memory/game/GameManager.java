@@ -9,6 +9,10 @@ import com.icefaces.project.memory.game.card.GameCardSetManager;
 import com.icefaces.project.memory.user.UserModel;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
+/**
+ * Game class that maintains a list of all available GameInstances
+ * This also handles the management of card sets by delegating it to a GameCardSetManager
+ */
 public class GameManager {
 	public static final int DEFAULT_SIZE = 4;
 	public static final int DEFAULT_MAX_USERS = 2;

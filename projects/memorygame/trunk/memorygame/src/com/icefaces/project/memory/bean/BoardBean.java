@@ -7,6 +7,10 @@ import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.FacesUtil;
 
+/**
+ * Page bean for the functionality in board.xhtml
+ * This will control a few popups, the shake effect, the current layout, etc.
+ */
 public class BoardBean {
 	public static final String DEFAULT_LAYOUT = "vertical";
 	
@@ -58,6 +62,7 @@ public class BoardBean {
 	}
 	
 	public Shake getShakeEffect() {
+		// If we're supposed to be shaking then prep the effect to be fired
 		if (userSession.getIsShaking()) {
 			shakeEffect.setFired(false);
 			userSession.setIsShaking(false);
@@ -70,6 +75,10 @@ public class BoardBean {
 		this.shakeEffect = shakeEffect;
 	}
 
+	/**
+	 * Method called when a user wishes to leave the game
+	 * We'll reset some renderers, drop from the game itself, and rejoin the lobby
+	 */
 	public String leaveGame() {
 		userSession.getGameManager().leaveGame(userSession, userSession.getCurrentGame());
 		
@@ -81,6 +90,9 @@ public class BoardBean {
 		return "lobby";
 	}
 	
+	/**
+	 * Method called when a user wishes to shake the window
+	 */
 	public void shakeWindow(ActionEvent event) {
 		userSession.getCurrentGame().requestShake(userSession.getName());
 	}
@@ -112,6 +124,11 @@ public class BoardBean {
 		return cachedInviteLink;
 	}
 	
+	/**
+	 * Method called when a user clicks a card to flip it
+	 * We'll basically get what card was clicked based on the f:attribute, and then pass this
+	 *  on to the user session to handle for us 
+	 */
 	public void flipCard(ActionEvent event) {
 		// Flip the clicked card
 		GameCard clickedCard = (GameCard)FacesUtil.getFAttribute(event, "clickedCard");

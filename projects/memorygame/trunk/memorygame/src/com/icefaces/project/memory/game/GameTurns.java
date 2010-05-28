@@ -11,6 +11,9 @@ import com.icefaces.project.memory.exception.ThreadRunningException;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserModel;
 
+/**
+ * Game class to handle the flipping of cards, determing of scoring, turn tracking, etc. 
+ */
 public class GameTurns {
 	private Random randomizer;
 	private String gameName;
@@ -20,7 +23,7 @@ public class GameTurns {
 	private List<GameCard> listOfMoves = new ArrayList<GameCard>(GameManager.DEFAULT_MAX_FLIP);
 	private int flipCount = 0;
 	
-	private ExecutorService threadPool;
+	private ExecutorService threadPool; // delicious thread pools
 	private boolean flipThreadRunning = false;
 	
 	public GameTurns(String gameName, long reflipDelay, List<UserModel> users) {
@@ -59,11 +62,17 @@ public class GameTurns {
 		this.threadPool = threadPool;
 	}
 
+	/**
+	 * Method to determine who the next user should be
+	 * If there is no clear next user, we'll randomize it
+	 */
 	public void nextTurnUser() {
 		if (currentTurnUser != null) {
 			int newUserIndex = -1;
 			UserModel loopUser = null;
 			
+			// Try to find the index of our current user, since we'll be
+			//  using a round-robin to go to the next person
 			for (int i = 0; i < users.size(); i++) {
 				loopUser = users.get(i);
 				
@@ -74,6 +83,7 @@ public class GameTurns {
 				}
 			}
 			
+			// Set the current user based on the decided index
 			if (newUserIndex != -1) {
 				if (newUserIndex >= users.size()) {
 					newUserIndex = 0;
@@ -109,6 +119,10 @@ public class GameTurns {
 		flipCount = 0;
 	}
 	
+	/**
+	 * Method called when a card is flipped
+	 * This will check whether we have a match, and whether we need to reflip cards, etc. 
+	 */
 	public UserModel handleTurn(GameCard toFlip) throws ThreadRunningException {
 		if (flipThreadRunning) {
 			throw new ThreadRunningException("Ignoring actions while waiting for cards to reflip.");
@@ -119,6 +133,7 @@ public class GameTurns {
 		flipCount++;
 		toFlip.flip();
 		
+		// If we have performed enough flips it's time to check scoring
 		if (flipCount >= GameManager.DEFAULT_MAX_FLIP) {
 			final int matchType = checkForMatch();
 			
@@ -131,6 +146,8 @@ public class GameTurns {
 				return currentTurnUser;
 			}
 			else {
+				// Execute a thread that will reflip unmatching cards after a delay
+				// This allows all users to see the failed match before the cards are reflipped
 				threadPool.execute(new Runnable() {
 					public void run() {
 						flipThreadRunning = true;

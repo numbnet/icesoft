@@ -1,6 +1,5 @@
 package com.icefaces.project.memory.game;
 
-
 /**
  * Class that wraps a Game model with UI specific variables, like row selected.
  */
