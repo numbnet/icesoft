@@ -1,0 +1,110 @@
+<!--
+ ~ Version: MPL 1.1
+ ~
+ ~ "The contents of this file are subject to the Mozilla Public License
+ ~ Version 1.1 (the "License"); you may not use this file except in
+ ~ compliance with the License. You may obtain a copy of the License at
+ ~ http://www.mozilla.org/MPL/
+ ~
+ ~ Software distributed under the License is distributed on an "AS IS"
+ ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ ~ License for the specific language governing rights and limitations under
+ ~ the License.
+ ~
+ ~ The Original Code is ICEfaces 1.5 open source software code, released
+ ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ ~ 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ ~
+ ~ Contributor(s): _____________________.
+ ~
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		        xmlns:f="http://java.sun.com/jsf/core"
+		        xmlns:c="http://java.sun.com/jstl/core"
+		        xmlns:ui="http://java.sun.com/jsf/facelets"
+		        xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:form>
+	    <ice:menuBar displayOnClick="true"
+                     orientation="Horizontal">
+	    <ice:menuItem value="Game Menu">
+	        <ice:menuItem icon="./css/images/menu/shake.png"
+	                      value="Shake Screen"
+	                      actionListener="#{boardBean.shakeWindow}"/>                                                         
+	        <ice:menuItem icon="./css/images/menu/font-color.png"
+	                      value="Chat Font Color">
+                <c:forEach items="#{colorBean.fontColors}" var="color">
+                    <ice:menuItem value="#{color.displayName}"
+                                  icon="./css/images/menu/color-#{color.imageName}.png">
+                        <f:setPropertyActionListener
+                            target="#{chatBean.fontColor}" value="#{color.htmlHex}"/>
+                    </ice:menuItem>
+                </c:forEach>
+	        </ice:menuItem>
+	        <ice:menuItem icon="./css/images/menu/table-size.png"
+	                      value="Chat Table Size">
+	            <ice:menuItem icon="./css/images/menu/table-size-3.png"
+	                          value="3 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="3"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/table-size-5.png"
+	                          value="5 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="5"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/table-size-7.png"
+	                          value="7 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="7"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/table-size-10.png"
+	                          value="10 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="10"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/table-size-15.png"
+	                          value="15 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="15"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/table-size-20.png"
+	                          value="20 Rows">
+	                <f:setPropertyActionListener target="#{chatBean.tableRows}" value="20"/>
+	            </ice:menuItem>
+	        </ice:menuItem>
+	        <ice:menuItem icon="./css/images/menu/page-layout.png"
+	                      value="Page Layout">
+	            <ice:menuItem icon="./css/images/menu/layout-horizontal.png"
+	                          value="Horizontal (Even)">
+	            <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/layout-horizontal-board.png"
+	                          value="Horizontal (Board)">
+	                <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal-board"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/layout-horizontal-chat.png"
+	                          value="Horizontal (Chat)">
+	                <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal-chat"/>
+	            </ice:menuItem>
+	        <ice:menuItem icon="./css/images/menu/layout-vertical.png"
+	                      value="Vertical (Even)">
+	            <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/layout-vertical-board.png"
+	                          value="Vertical (Board)">
+	                <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical-board"/>
+	            </ice:menuItem>
+	            <ice:menuItem icon="./css/images/menu/layout-vertical-chat.png"
+	                          value="Vertical (Chat)">
+	                <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical-chat"/>
+	            </ice:menuItem>
+	        </ice:menuItem>
+	        <ice:menuItem icon="./css/images/menu/link-invite.png"
+	                      value="Link to Invite"
+	                      actionListener="#{boardBean.openInvite}"/>
+            <ice:menuItem icon="./css/images/menu/help.png"
+                          value="Instructions"
+                          actionListener="#{boardBean.openHelp}"/>
+	        <ice:menuItem icon="./css/images/menu/leave-game.png"
+	                      value="Leave the Game"
+	                      action="#{boardBean.leaveGame}"/>
+	    </ice:menuItem>
+	    </ice:menuBar>
+	</ice:form>
+</ui:composition>
