@@ -4,6 +4,66 @@ Mojarra Test Notes
 Running the tests
 -----------------
 
+Under the dir mods there are two files:
+
+icefaces.xml
+common-addition.xml
+
+The icefaces.xml file is a new file and contains some custom properties and such.  You should simply copy it under:
+
+[mojarra-source-root]/common/ant 
+
+The only modification is to set the icefaces.root property.  For example:
+
+    <!--
+        Adjust this property to match the location of the ICEfaces 2 root in the repository
+    -->
+    <property name="icefaces.root"
+              location="/Users/deryk/Repo/svn/ossrepo/icefaces/scratchpads/glimmer"/>
+
+
+The common-addition file indicates two modifications that need to be made to: 
+
+[mojarra-source-root]/common/ant/common.xml 
+
+The common.xml file already exists in the mojarra bundle so you need to modify is slightly based on the content of mods/common-addition.xml.  I've modified one of the macro definitions a bit so that the icefaces.jar is included with the test web application.
+
+[deryk] mojarra > svn diff
+Index: common/ant/common.xml
+===================================================================
+--- common/ant/common.xml    (revision 8298)
++++ common/ant/common.xml    (working copy)
+@@ -38,6 +38,7 @@
+      
+ <project name="JSF Common" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+ 
++    <import file="${jsf.build.home}/common/ant/icefaces.xml"/>
+     <import file="${jsf.build.home}/common/ant/${container.name}/container.xml"/>
+     <import file="${jsf.build.home}/common/ant/dependencies.xml"/>
+     <import file="${jsf.build.home}/common/ant/maven.xml"/>
+@@ -306,6 +307,19 @@
+                             prefix="WEB-INF"/>
+                 <archive-elements/>
+             </jar>
++           
++            <!-- Custom ICEfaces addition -->
++             <for list="${icefaces.jars}"
++                 param="jar">
++                <sequential>
++                    <echo message="JAR: @{jar}"/>
++                    <jar destfile="@{basedir}/@{archive-name}.war"
++                         update="true">
++                        <zipfileset file="@{jar}" prefix="WEB-INF/lib"/>
++                    </jar>
++                </sequential>
++            </for>
++
+             <if>
+                 <equals arg1="${build.standalone}" arg2="true"/>
+                 <then>
+
+When all this is done, I ran 'ant test' from the mojarra root directory.  You'll need to tell Mojarra where Glassfish v3 is sitting so that it can automatically deploy the test .war files.
+
 
 Current Result Status
 ---------------------
