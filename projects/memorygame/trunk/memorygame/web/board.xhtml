@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	    xmlns:f="http://java.sun.com/jsf/core"
+	    xmlns:c="http://java.sun.com/jstl/core"
+	    xmlns:ui="http://java.sun.com/jsf/facelets"
+	    xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <html>
+    <head>
+        <title>Board - #{userSession.currentGame.name} - Memory Game</title>
+        
+        <ice:outputStyle href="./css/all-styles.css"/>
+        <ice:outputStyle href="./css/board-styles.css"/>
+        <ice:outputStyle href="./css/override-styles.css"/>
+    </head>
+    <body>
+    	<c:if test="#{userSession.isInGame}">
+	   		<ice:panelGroup id="oc" style="overallContainer">
+	    		<ice:panelGroup id="l" styleClass="leftPane-#{boardBean.layout}"
+	    		                effect="#{boardBean.shakeEffect}">
+	    		    <ui:include src="/WEB-INF/includes/board/gamePane.xhtml"/>
+				</ice:panelGroup>
+				
+	    		<ice:panelGroup styleClass="rightPane-#{boardBean.layout}">
+				    <ui:include src="/WEB-INF/includes/board/chatPane.xhtml"/>
+	    		</ice:panelGroup>
+	   		</ice:panelGroup>
+    	</c:if>
+    	
+    	<c:if test="#{!userSession.isInGame}">
+    		<center>
+    		    <br/>
+	    		<span class="returnToLobby">
+	    		You need to create or join a game before visiting this page.
+	    		<br/><br/>
+	    		Return to the&amp;nbsp;<a href="./lobby.iface">lobby</a> to do this.
+	    		</span>
+    		</center>
+    	</c:if>
+    </body>
+    </html>
+</f:view>
