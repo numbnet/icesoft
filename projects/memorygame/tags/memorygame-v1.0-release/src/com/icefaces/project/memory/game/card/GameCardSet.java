@@ -115,7 +115,6 @@ public class GameCardSet implements Comparable<GameCardSet> {
 		}
 	}
 	
-	@Override
 	public int compareTo(GameCardSet cardSet) {
 		if ((cardSet != null) && (ValidatorUtil.isValidString(name))) {
 			return name.compareTo(cardSet.getName());

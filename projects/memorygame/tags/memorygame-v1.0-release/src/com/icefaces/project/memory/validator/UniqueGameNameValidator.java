@@ -13,7 +13,6 @@ import com.icefaces.project.memory.util.ValidatorUtil;
  * Validator used to check if a game name is unique or not
  */
 public class UniqueGameNameValidator implements Validator {
-	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		// Try to grab the current gameManager from the context
 		Object baseBean = FacesUtil.getManagedBean("gameManager");
