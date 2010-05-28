@@ -9,7 +9,8 @@ version: 2.6.0
     border-width: 1px 0;
     border-style: solid;
     border-color: #808080;
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 0;
+ 	background-image: url(background.png); /** sprite-ref: sprite-basic; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
     margin: auto .25em;
     
 }
@@ -67,13 +68,13 @@ version: 2.6.0
 
 .yui-skin-sam .yui-menu-button button {
 
-    background-image: url(menu-button-arrow.png);
+    background-image: url(menu-button-arrow.png); /** sprite: sprite; */
 
 }
 
 .yui-skin-sam .yui-split-button button {
 
-    background-image: url(split-button-arrow.png);
+    background-image: url(split-button-arrow.png); /** sprite: sprite; */
 
 }
 
@@ -103,7 +104,7 @@ version: 2.6.0
 
 .yui-skin-sam .yui-split-button-focus button {
 
-    background-image: url(split-button-arrow-focus.png);
+    background-image: url(split-button-arrow-focus.png); /** sprite: sprite; */
 
 }
 
@@ -132,7 +133,7 @@ version: 2.6.0
 
 .yui-skin-sam .yui-split-button-hover button {
 
-    background-image: url(split-button-arrow-hover.png);
+    background-image: url(split-button-arrow-hover.png); /** sprite: sprite; */
 
 }
 
@@ -174,7 +175,7 @@ version: 2.6.0
 
 .yui-skin-sam .yui-split-button-activeoption button {
 
-    background-image: url(split-button-arrow-active.png);
+    background-image: url(split-button-arrow-active.png); /** sprite: sprite; */
 
 }
 
@@ -229,12 +230,12 @@ version: 2.6.0
 
 .yui-skin-sam .yui-menu-button-disabled button {
 
-    background-image: url(menu-button-arrow-disabled.png);
+    background-image: url(menu-button-arrow-disabled.png); /** sprite: sprite; */
     
 }
 
 .yui-skin-sam .yui-split-button-disabled button {
 
-    background-image: url(split-button-arrow-disabled.png);
+    background-image: url(split-button-arrow-disabled.png); /** sprite: sprite; */
     
 }
