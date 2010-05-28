@@ -42,7 +42,7 @@ with more data than can be displayed in a single page.
 
         <ice:selectOneRadio id="paginatorLayout"
                             partialSubmit="true"
-                            valueChangeListener="#{dataScrollingModel.dataModelChangeListener}"
+                            valueChangeListener="#{dataScrollingController.dataModelChangeListener}"
                             value="#{dataScrollingModel.selectedDataScrollMode}">
             <f:selectItem id="paging"
                           itemLabel="#{msgs['page.scolling.paging']}"
@@ -63,7 +63,7 @@ with more data than can be displayed in a single page.
         <ice:panelGroup style="float:left;">
             <ice:dataPaginator id="dataScroll_2"
                        for="data"
-                       binding="#{dataScrollingModel.dataPaginatorBinding}"
+                       binding="#{dataScrollingController.dataPaginatorBinding}"
                        rendered="#{dataScrollingModel.selectedDataScrollModes[dataScrollingModel.selectedDataScrollMode].pagingEnabled}"
                        rowsCountVar="rowsCount"
                        displayedRowsCountVar="displayedRowsCountVar"

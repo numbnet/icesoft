@@ -24,17 +24,8 @@ package org.icefaces.application.showcase.view.bean.examples.component.dataPagin
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
-
-// since jsf2.0 component binding does not work with View scope, look up the binding in the
-//component tree with this
-import com.icesoft.util.CoreComponentUtils;
-
-import com.icesoft.faces.component.datapaginator.DataPaginator;
 
 /**
  * <p>The DataScrollingModel class is used to show how a dataTable data
@@ -66,10 +57,6 @@ public class DataScrollingModel extends DataTableBase {
     private String selectedDataScrollMode;
     private static HashMap selectedDataScrollModes;
 
-    // Used in this example to reset the paginator when moving between
-    // scrolling views, not needed in normal application development. 
-    private DataPaginator dataPaginatorBinding;
-
     /**
      * Creates a new instance where the efault scrolling is none.
      */
@@ -92,15 +79,6 @@ public class DataScrollingModel extends DataTableBase {
                 new DataScrollMode(9, false, true));
     }
 
-    public void dataModelChangeListener(ValueChangeEvent event){
-        String oldPagingValue = (String)event.getOldValue();
-
-        if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
-                dataPaginatorBinding != null){
-            dataPaginatorBinding.gotoFirstPage();
-        }
-    }
-
     public String getSelectedDataScrollMode() {
         return selectedDataScrollMode;
     }
@@ -119,22 +97,6 @@ public class DataScrollingModel extends DataTableBase {
     protected void init() {
         // build employee list form employee service.
         employees = employeeService.getEmployees(50);
-    }
-
-    public DataPaginator getDataPaginatorBinding() {
-        return dataPaginatorBinding;
-    }
-
-    public void setDataPaginatorBinding(DataPaginator dataPaginatorBinding) {
-        this.dataPaginatorBinding = dataPaginatorBinding;
-        if (this.dataPaginatorBinding==null){
-        	//component binding not working properly yet in jsf2.0.1.fcs in View scope so look it up
-            //in component tree
-        	FacesContext facesContext = FacesContext.getCurrentInstance();
-        	String id=this.dataPaginatorBinding.getClientId(facesContext);
-        	this.dataPaginatorBinding = (DataPaginator)CoreComponentUtils.findComponent(id,facesContext.getViewRoot());
-        }
-        
     }
 
     /**
