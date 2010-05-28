@@ -12,6 +12,7 @@ public class BoardBean {
 	
 	private UserSession userSession;
 	private boolean invitePopup = false;
+	private boolean helpPopup = false;
 	private String layout = DEFAULT_LAYOUT;
 	private Shake shakeEffect = new Shake();
 	private String cachedInviteLink = null;
@@ -40,6 +41,14 @@ public class BoardBean {
 		this.invitePopup = invitePopup;
 	}
 	
+	public boolean isHelpPopup() {
+		return helpPopup;
+	}
+
+	public void setHelpPopup(boolean helpPopup) {
+		this.helpPopup = helpPopup;
+	}
+
 	public String getLayout() {
 		return layout;
 	}
@@ -83,6 +92,14 @@ public class BoardBean {
 	public void closeInvite(ActionEvent event) {
 		setInvitePopup(false);
 	}
+	
+	public void openHelp(ActionEvent event) {
+		setHelpPopup(true);
+	}
+	
+	public void closeHelp(ActionEvent event) {
+		setHelpPopup(false);
+	}	
 	
 	public String getInviteLink() {
 		if (cachedInviteLink == null) {

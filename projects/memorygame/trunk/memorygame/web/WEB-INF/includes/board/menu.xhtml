@@ -4,8 +4,8 @@
 		        xmlns:ui="http://java.sun.com/jsf/facelets"
 		        xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:form>
-	    <ice:menuBar displayOnClick="true" keyboardNavigationEnabled="true"
-	                 orientation="Horizontal">
+	    <ice:menuBar displayOnClick="true"
+                     orientation="Horizontal">
 	    <ice:menuItem value="Game Menu">
 	        <ice:menuItem icon="./css/images/menu/shake.png"
 	                      value="Shake Screen"
@@ -77,6 +77,9 @@
 	        <ice:menuItem icon="./css/images/menu/link-invite.png"
 	                      value="Link to Invite"
 	                      actionListener="#{boardBean.openInvite}"/>
+            <ice:menuItem icon="./css/images/menu/help.png"
+                          value="Instructions"
+                          actionListener="#{boardBean.openHelp}"/>
 	        <ice:menuItem icon="./css/images/menu/leave-game.png"
 	                      value="Leave the Game"
 	                      action="#{boardBean.leaveGame}"/>

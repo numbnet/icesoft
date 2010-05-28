@@ -6,7 +6,7 @@
 	<table cellspacing="1" cellpadding="0" border="0"
 	       style="width: 99.5%; height: 100%;">
 	<tr style="height: 10%;">
-	    <td width="100%" align="center" valign="middle" class="rightCell">
+	    <td width="100%" align="left" valign="middle" class="rightCell">
 	        <table cellspacing="0" cellpadding="2" class="rightTable">
 	            <tr>
 	                <td width="95%" align="center" valign="top">
@@ -61,7 +61,8 @@
 	                <f:facet name="header">
 	                    Name
 	                </f:facet>
-	                <ice:outputText value="#{user.name}"/>
+	                <ice:outputText value="#{user.name}"
+                                    style="font-weight: #{user.isTurn ? 'bold' : 'normal'};"/>
 	            </ice:column>
 	            <ice:column>
 	                <f:facet name="header">
