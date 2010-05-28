@@ -28,7 +28,14 @@
 	    xmlns:ice="http://www.icesoft.com/icefaces/component">
     <html>
     <head>
-        <title>Board - #{userSession.currentGame.name} - Memory Game</title>
+        <title>
+            <c:if test="#{userSession.currentGame.isStarted}">
+                Board - #{userSession.currentGame.name} - Memory Game
+            </c:if>
+            <c:if test="#{!userSession.currentGame.isStarted}">
+                Board - Need #{userSession.currentGame.emptySpace} Player - #{userSession.currentGame.name} - Memory Game
+            </c:if>
+        </title>
         
         <ice:outputStyle href="./css/all-styles.css"/>
         <ice:outputStyle href="./css/board-styles.css"/>
