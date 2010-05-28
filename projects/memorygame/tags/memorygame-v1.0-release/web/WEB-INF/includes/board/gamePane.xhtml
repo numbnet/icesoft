@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<c:if test="#{userSession.currentGame.isStarted}">
+	<ice:form id="bf">
+	    <center>
+	        <ice:panelGroup style="padding-top: 10px;">
+	        <ice:panelSeries id="b"
+	                         value="#{userSession.currentGame.board.data}"
+	                         var="card"
+	                         rows="#{userSession.currentGame.board.cellCount}"
+	                         cellspacing="0" cellpadding="0"
+	                         styleClass="gb"
+	                         style="width: #{userSession.currentGame.board.pixelWidth}px; height: #{userSession.currentGame.board.pixelHeight}px;">
+	            <ice:commandButton id="c"
+	                               actionListener="#{boardBean.flipCard}"
+	                               image="#{card.image}"
+	                               styleClass="ci"
+	                               style="width: #{card.pixelWidth}; height: #{card.pixelHeight};"
+	                               disabled="#{!userSession.isTurn}"
+	                               effect="#{card.flipEffect}">
+	                <f:attribute name="clickedCard" value="#{card}"/>
+	            </ice:commandButton>
+	        </ice:panelSeries>
+	        </ice:panelGroup>
+	    </center>
+	    </ice:form>
+	</c:if>
+	
+	<c:if test="#{!userSession.currentGame.isStarted}">
+	    <center>
+	    <br/>
+	    <ice:panelGrid columns="3"
+	                   cellpadding="2" cellspacing="2"
+	                   rendered="#{userSession.currentGame.hasWinner}"
+	                   style="text-align: center;">
+	        <ice:graphicImage url="./css/images/fireworks.gif"
+	                          alt="Fireworks"
+	                          style="width: 100px; height: 100px; border: 0;"/>
+	        <ice:outputText value="#{userSession.currentGame.winnerMessage}"
+	                        styleClass="winnerMessage"/>
+	        <ice:graphicImage url="./css/images/fireworks.gif"
+	                          alt="Fireworks"
+	                          style="width: 100px; height: 100px; border: 0;"/>
+	    </ice:panelGrid>
+	    <ice:panelGroup rendered="#{!userSession.currentGame.hasWinner}">
+	        <ice:outputText value="The game has not started yet."
+	                        styleClass="notStartedNotice"/>
+	        <br/>
+	        <br/>
+	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} player."
+	                        styleClass="notStartedNotice"
+	                        rendered="#{userSession.currentGame.emptySpace le 1}"/>
+	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} players."
+	                        styleClass="notStartedNotice"
+	                        rendered="#{userSession.currentGame.emptySpace gt 1}"/>
+	    </ice:panelGroup>
+	    </center>
+	</c:if>
+	
+    <ice:panelGroup>
+		<c:if test="#{boardBean.invitePopup}">
+	       <ice:form>
+	          <ui:include src="/WEB-INF/includes/popups/invitePopup.xhtml"/>
+	       </ice:form>
+		</c:if>
+        <c:if test="#{boardBean.helpPopup}">
+           <ice:form>
+              <ui:include src="/WEB-INF/includes/popups/helpPopup.xhtml"/>
+           </ice:form>
+        </c:if>        
+    </ice:panelGroup>
+</ui:composition>

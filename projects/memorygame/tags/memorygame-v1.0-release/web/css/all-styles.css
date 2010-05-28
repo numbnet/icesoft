@@ -1,0 +1,102 @@
+html, body, .overallContainer {
+	width: 100%;
+	height: 90%;
+	padding: 0;
+	margin: 0;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+	font-style: normal;
+	color: #004400;
+}
+
+.errorMessage, .globalErrorMessage {
+    font-size: 12px;
+    color: #EE1111;
+}
+
+a {
+    text-decoration: none;
+    color: #337733;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #66AA66;
+}
+
+input, textarea, select, .halfButton, .fullButton {
+    font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+	font-style: italic;
+	padding: 2px;
+	margin: 0;
+    background-color: #DDFFDD;
+    color: #004400;
+}
+
+input, textarea {
+	border: 2px inset #99DD99;
+}
+
+.imageButton, .imageButton-dis {
+	border: 0;
+	background: transparent;
+	width: 16px;
+	height: 16px;
+}
+
+.halfButton, .fullButton, .button {
+    background-color: #008822;
+    color: #EEFFEE;
+	border: 2px outset #44CC66;
+}
+
+.halfButton {
+	width: 50%;
+}
+
+.fullButton {
+	width: 100%;
+}
+
+.button {
+	width: 150px;
+}
+
+.genericTable {
+	width: 100%;
+	font-size: 12px;
+	background-color: #DDFFDD;
+	border: 1px solid #99DD99;
+}
+
+.genericTableHdr {
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #BBEEBB;
+	border: 1px dashed #99DD99;
+	padding: 2px;
+}
+
+.labelCol {
+	width: 20%;
+	text-align: right;
+}
+
+.valueCol {
+	width: 45%;
+	text-align: left;
+}
+
+.errorCol {
+	width: 35%;
+	text-align: left;
+}
+
+.lightRow {
+	background-color: #EEFFEE;
+}
+
+.darkRow {
+	background-color: #CCEECC;
+}
