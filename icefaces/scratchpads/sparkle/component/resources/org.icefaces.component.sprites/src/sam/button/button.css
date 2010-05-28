@@ -26,12 +26,11 @@ version: 2.6.0
 .yui-button a{
 	text-decoration:none;}
 
-/** sprite: mysprite; sprite-image: url("background.png"); sprite-layout: vertical */
 .yui-skin-sam .yui-button{
 	border-width:1px 0;
 	border-style:solid;
 	border-color:#808080;
-	background: url(background.png); /** sprite-ref: sprite-b; sprite-alignment: repeat; */
+	background-image: url(background.png); /** sprite-ref: sprite-b; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 	margin:auto .25em;}
 	
