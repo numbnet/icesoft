@@ -14,7 +14,6 @@ import com.icefaces.project.memory.user.UserModel;
 public class GameTurns {
 	private Random randomizer;
 	private String gameName;
-	private int maxFlipCount;
 	private long reflipDelay;
 	private List<UserModel> users;
 	private UserModel currentTurnUser;
@@ -24,10 +23,8 @@ public class GameTurns {
 	private ExecutorService threadPool;
 	private boolean flipThreadRunning = false;
 	
-	public GameTurns(String gameName, int maxFlipCount, long reflipDelay,
-					 List<UserModel> users) {
+	public GameTurns(String gameName, long reflipDelay, List<UserModel> users) {
 		this.gameName = gameName;
-		this.maxFlipCount = maxFlipCount;
 		this.reflipDelay = reflipDelay;
 		this.users = users;
 		
@@ -122,21 +119,11 @@ public class GameTurns {
 		flipCount++;
 		toFlip.flip();
 		
-		if (flipCount >= maxFlipCount) {
-			final int matchType = checkForMatch(maxFlipCount > GameManager.DEFAULT_MAX_FLIP);
+		if (flipCount >= GameManager.DEFAULT_MAX_FLIP) {
+			final int matchType = checkForMatch();
 			
 			// Determine whether we have a match
 			if (matchType != -1) {
-				// If we have more flips than the default, we need to handle our match differently
-				// Basically we need to reflip cards that weren't part of the match
-				if (maxFlipCount > GameManager.DEFAULT_MAX_FLIP) {
-					for (GameCard loopCard : listOfMoves) {
-						if (loopCard.getIndexType() != matchType) {
-							loopCard.unflip();
-						}
-					}
-				}
-				
 				// Reset our move list and flip count after a turn is done
 				resetTrackingVariables();
 				
@@ -176,30 +163,15 @@ public class GameTurns {
 		return null;
 	}
 	
-	private int checkForMatch(boolean checkMultiple) {
+	private int checkForMatch() {
 		int currentIndexType = -1;
 		
-		if (!checkMultiple) {
-			for (GameCard loopCard : listOfMoves) {
-				if ((currentIndexType != -1) &&
-				    (currentIndexType == loopCard.getIndexType())) {
-					return currentIndexType;
-				}
-				currentIndexType = loopCard.getIndexType();
+		for (GameCard loopCard : listOfMoves) {
+			if ((currentIndexType != -1) &&
+			    (currentIndexType == loopCard.getIndexType())) {
+				return currentIndexType;
 			}
-		}
-		else {
-			for (GameCard loopCard : listOfMoves) {
-				currentIndexType = loopCard.getIndexType();
-				
-				for (GameCard innerLoopCard : listOfMoves) {
-					if (innerLoopCard != loopCard) {
-						if (innerLoopCard.getIndexType() == currentIndexType) {
-							return currentIndexType;
-						}
-					}
-				}
-			}
+			currentIndexType = loopCard.getIndexType();
 		}
 		
 		return -1;

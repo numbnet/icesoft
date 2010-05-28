@@ -22,7 +22,6 @@ public class GameInstance {
 	protected List<UserModel> users;
 	protected List<UserModel> usersByScore;
 	protected int maxUsers = GameManager.DEFAULT_MAX_USERS;
-	protected int maxFlipCount = GameManager.DEFAULT_MAX_FLIP;
 	protected long reflipDelay = GameManager.DEFAULT_REFLIP_DELAY;
 	protected boolean isStarted = false;
 	private String winnerMessage;
@@ -35,7 +34,6 @@ public class GameInstance {
 			 new GameCardSet(null, 0),
 			 new ArrayList<UserModel>(0),
 			 GameManager.DEFAULT_MAX_USERS,
-			 GameManager.DEFAULT_MAX_FLIP,
 			 GameManager.DEFAULT_REFLIP_DELAY,
 			 false);
 	}
@@ -47,27 +45,24 @@ public class GameInstance {
 		     clone.getBoard().getCardSet(),
 		     clone.getUsers(),
 		     clone.getMaxUsers(),
-		     clone.getMaxFlipCount(),
 		     clone.getReflipDelay(),
 		     clone.getIsStarted());
 	}
 	
 	public GameInstance(String name, String password, int size,
 			GameCardSet cardSet, List<UserModel> users,
-			int maxUsers, int maxFlipCount, long reflipDelay,
-			boolean isStarted) {
+			int maxUsers, long reflipDelay, boolean isStarted) {
 		this.name = name;
 		this.password = password;
 		this.users = users;
 		this.maxUsers = maxUsers;
-		this.maxFlipCount = maxFlipCount;
 		this.reflipDelay = reflipDelay;
 		this.isStarted = isStarted;
 		
 		board = new GameBoard(size, cardSet);
 		chat = new GameChat(this.name);
 		turns = new GameTurns(this.name,
-							  this.maxFlipCount, this.reflipDelay,
+							  this.reflipDelay,
 							  this.users);
 	}
 
@@ -94,12 +89,6 @@ public class GameInstance {
 	}
 	public void setMaxUsers(int maxUsers) {
 		this.maxUsers = maxUsers;
-	}
-	public int getMaxFlipCount() {
-		return maxFlipCount;
-	}
-	public void setMaxFlipCount(int maxFlipCount) {
-		this.maxFlipCount = maxFlipCount;
 	}
 	public long getReflipDelay() {
 		return reflipDelay;

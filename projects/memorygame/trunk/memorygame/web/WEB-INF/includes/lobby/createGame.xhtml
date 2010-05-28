@@ -122,23 +122,6 @@
 		                     styleClass="advancedOptionsBar"/>
 		    <ice:outputText value=""/>
 		    
-            <!--
-		    <ice:outputLabel for="gameFlips" value="Moves per Turn:"
-		                     rendered="#{lobbyBean.advancedOptionsRendered}"/>
-		    <ice:selectOneMenu id="gameFlips"
-		                       value="#{lobbyBean.createdGame.maxFlipCount}"
-		                       partialSubmit="true" required="true"
-		                       style="width: 150px;"
-		                       rendered="#{lobbyBean.advancedOptionsRendered}">
-		        <f:selectItem itemValue="2"/>
-		        <f:selectItem itemValue="3"/>
-		        <f:selectItem itemValue="4"/>
-		        <f:selectItem itemValue="5"/>
-		    </ice:selectOneMenu>
-		    <ice:message errorClass="errorMessage" for="gameFlips"
-		                 rendered="#{lobbyBean.advancedOptionsRendered}"/>
-            -->
-		    
 		    <ice:outputLabel for="gameTimeout" value="Reflip Delay:"
 		                     rendered="#{lobbyBean.advancedOptionsRendered}"/>
 		    <ice:inputText id="gameTimeout"
