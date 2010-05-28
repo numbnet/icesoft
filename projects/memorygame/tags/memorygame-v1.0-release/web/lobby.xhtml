@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	    xmlns:f="http://java.sun.com/jsf/core"
+	    xmlns:c="http://java.sun.com/jstl/core"
+	    xmlns:ui="http://java.sun.com/jsf/facelets"
+	    xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <html>
+    <head>
+        <title>Lobby - Memory Game</title>
+        
+        <ice:outputStyle href="./css/all-styles.css"/>
+        <ice:outputStyle href="./css/lobby-styles.css"/>
+        <ice:outputStyle href="./css/override-styles.css"/>
+    </head>
+    <body>
+    	<ice:form>
+    		<center>
+	    		<ice:messages errorClass="globalErrorMessage" layout="list"
+	    				      globalOnly="true" showSummary="true" showDetail="false"/>
+	    	</center>
+	    	
+	   		<ice:outputText value="#{userSession.renderer.lobbyCall}"
+	   					    style="display: none;"/>
+	   					    
+			<c:if test="#{lobbyBean.previewPopupRendered}">
+			    <ice:panelGroup>
+			        <ui:include src="/WEB-INF/includes/popups/previewPopup.xhtml"/>
+			    </ice:panelGroup>
+			</c:if>
+	    </ice:form>
+   
+        <center>
+            <ice:panelGroup styleClass="lobbyBox">
+               <ui:include src="/WEB-INF/includes/lobby/instructions.xhtml"/>
+            </ice:panelGroup>
+        
+	   		<ice:panelGroup styleClass="lobbyBox">
+	   		   <ui:include src="/WEB-INF/includes/lobby/personalize.xhtml"/>
+			</ice:panelGroup>
+        
+	   		<ice:panelGroup styleClass="lobbyBox">
+   		       <ui:include src="/WEB-INF/includes/lobby/joinGame.xhtml"/>
+	 	    </ice:panelGroup>
+    	
+    		<ice:panelGroup styleClass="lobbyBox">
+    		    <ui:include src="/WEB-INF/includes/lobby/createGame.xhtml"/>
+	        </ice:panelGroup>
+        </center>
+    </body>
+    </html>
+</f:view>
