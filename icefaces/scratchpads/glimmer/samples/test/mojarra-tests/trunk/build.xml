@@ -13,6 +13,10 @@
             <fileset dir="jsf-ri/test" includes="**/*.java"/>
         </copy>
 
+        <copy todir="${ri.test}">
+            <fileset dir="." includes="build-tests.xml"/>
+        </copy>
+
     </target>
 
 </project>
