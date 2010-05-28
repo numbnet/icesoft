@@ -25,12 +25,13 @@ version: 2.6.0
 	
 .yui-button a{
 	text-decoration:none;}
-	
+
+/** sprite: mysprite; sprite-image: url("background.png"); sprite-layout: vertical */
 .yui-skin-sam .yui-button{
 	border-width:1px 0;
 	border-style:solid;
 	border-color:#808080;
-	background: url(background.png); /** sprite: sprite-samButton; sprite-alignment: repeat; */
+	background: url(background.png); /** sprite-ref: sprite-b; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 	margin:auto .25em;}
 	
@@ -66,11 +67,11 @@ version: 2.6.0
 	background-repeat:no-repeat;}
 	
 .yui-skin-sam .yui-menu-button button{
-	background-image:url(menu-button-arrow.png); /** sprite: sprite-x; sprite-image: url("menu-button-arrow.png");  */
+	background-image:url(menu-button-arrow.png); /** sprite-ref: sprite-x; sprite-image: url("menu-button-arrow.png");  */
 	}
 	
 .yui-skin-sam .yui-split-button button{
-	background-image:url(split-button-arrow.png);  /** sprite: sprite-x;  */
+	background-image:url(split-button-arrow.png);  /** sprite-ref: sprite-x; sprite-image: url("split-button-arrow.png");  */
 	}
 	
 .yui-skin-sam .yui-button-focus{
@@ -84,7 +85,7 @@ version: 2.6.0
 	color:#000;}
 	
 .yui-skin-sam .yui-split-button-focus button{
-	background-image:url(split-button-arrow-focus.png);  /** sprite: sprite-x;  */
+	background-image:url(split-button-arrow-focus.png);  /** sprite-ref: sprite-x;  */
 	}
 	
 .yui-skin-sam .yui-button-hover{
@@ -98,7 +99,7 @@ version: 2.6.0
 	color:#000;}
 	
 .yui-skin-sam .yui-split-button-hover button{
-	background-image:url(split-button-arrow-hover.png);  /** sprite: sprite-x;  */
+	background-image:url(split-button-arrow-hover.png);  /** sprite-ref: sprite-x;  */
 	}
 	
 .yui-skin-sam .yui-button-active{
@@ -119,7 +120,7 @@ version: 2.6.0
 	border-color:#808080;}
 	
 .yui-skin-sam .yui-split-button-activeoption button{
-	background-image:url(split-button-arrow-active.png);  /** sprite: sprite-x;  */
+	background-image:url(split-button-arrow-active.png);  /** sprite-ref: sprite-x;  */
 	}
 	
 .yui-skin-sam .yui-radio-button-checked,.yui-skin-sam .yui-checkbox-button-checked{
@@ -145,10 +146,10 @@ version: 2.6.0
 	cursor:default;}
 	
 .yui-skin-sam .yui-menu-button-disabled button{
-	background-image:url(menu-button-arrow-disabled.png);  /** sprite: sprite-x;  */
+	background-image:url(menu-button-arrow-disabled.png);  /** sprite-ref: sprite-x;  */
 	}
 	
 .yui-skin-sam .yui-split-button-disabled button{
-	background-image:url(split-button-arrow-disabled.png);  /** sprite: sprite-x;  */
+	background-image:url(split-button-arrow-disabled.png);  /** sprite-ref: sprite-x;  */
 }
 
