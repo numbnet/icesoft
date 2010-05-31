@@ -29,7 +29,7 @@
   	    This should start with 'http://' and end with '/'.
 	</description>
     <param-name>invite.url.base</param-name>
-    <param-value>http://memory.us.to/</param-value>
+    <param-value>http://memorygame.icefaces.org/</param-value>
   </context-param>
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
