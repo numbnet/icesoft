@@ -46,6 +46,9 @@
 	            </ice:commandButton>
 	        </ice:panelSeries>
 	        </ice:panelGroup>
+            <ice:outputText value="It is your turn #{userSession.name}!"
+                            styleClass="turnNotifier"
+                            rendered="#{userSession.isTurn}"/>
 	    </center>
 	    </ice:form>
 	</c:if>
@@ -84,6 +87,7 @@
             <br/>
             <ice:outputText value="Click below to start a single player game."
                             styleClass="notStartedNoticeSmall"/>
+            <br/>
             <br/>
             <ice:form>
                 <ice:commandButton value="Play Against the Computer"

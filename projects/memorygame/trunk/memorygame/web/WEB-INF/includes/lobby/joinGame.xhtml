@@ -79,11 +79,11 @@
 	        <ice:column rendered="#{gameManager.hasGameList}">
 	            <f:facet name="header">
 	                <ice:commandSortHeader columnName="cardSet">
-	                    Card Set
+	                    Card Images
 	                </ice:commandSortHeader>
 	            </f:facet>
 	            <ice:outputText value="#{game.wrapped.board.cardSet.name}"
-	                            title="Card Back Image of '#{game.wrapped.board.cardSet.backImage}'"/>
+	                            title="Card theme of '#{game.wrapped.board.cardSet.backImage}'"/>
 	        </ice:column>
 	        <ice:column rendered="#{gameManager.hasGameList}">
 	            <f:facet name="header">
