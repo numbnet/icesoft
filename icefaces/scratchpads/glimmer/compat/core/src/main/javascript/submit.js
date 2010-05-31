@@ -26,17 +26,22 @@ var formOf;
 
 (function() {
     function resetHiddenFieldsFor(aForm) {
-        each(aForm.elements, function(formElement) {
-            if (formElement.type == 'hidden' && formElement.id == '' &&
-                formElement.name != 'javax.faces.ViewState' &&
-                formElement.name != 'ice.window' &&
-                formElement.name != 'ice.view') {
-                formElement.value = '';
-            }
-        });
+        try {
+            each(aForm.elements, function(formElement) {
+                if (formElement.type == 'hidden' && formElement.id == '' &&
+                    formElement.name != 'javax.faces.ViewState' &&
+                    formElement.name != 'ice.window' &&
+                    formElement.name != 'ice.view') {
+                    formElement.value = '';
+                }
+            });
+        } catch (e) {
+
+        }
     }
 
     iceSubmitPartial = function(form, component, evt) {
+        form = form || formOf(component);
         ice.submit(evt, component || form, function(parameter) {
             if (Ice.Menu != null && Ice.Menu.menuContext != null) {
                 parameter('ice.menuContext', Ice.Menu.menuContext);
@@ -50,6 +55,7 @@ var formOf;
     };
 
     iceSubmit = function(form, component, evt) {
+        form = form || formOf(component);
         var code;
         if (evt.keyCode) code = evt.keyCode;
         else if (evt.which) code = evt.which;
