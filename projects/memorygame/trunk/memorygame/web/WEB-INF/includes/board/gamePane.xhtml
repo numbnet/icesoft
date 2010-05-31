@@ -77,6 +77,19 @@
 	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} players."
 	                        styleClass="notStartedNotice"
 	                        rendered="#{userSession.currentGame.emptySpace gt 1}"/>
+            <br/>
+            <br/>
+            <ice:outputText value="Tired of waiting for a human opponent?"
+                            styleClass="notStartedNoticeSmall"/>
+            <br/>
+            <ice:outputText value="Click below to start a single player game."
+                            styleClass="notStartedNoticeSmall"/>
+            <br/>
+            <ice:form>
+                <ice:commandButton value="Play Against the Computer"
+                                   actionListener="#{boardBean.requestComputerJoin}"
+                                   styleClass="halfButton" style="width: 25%;"/>
+            </ice:form>
 	    </ice:panelGroup>
 	    </center>
 	</c:if>

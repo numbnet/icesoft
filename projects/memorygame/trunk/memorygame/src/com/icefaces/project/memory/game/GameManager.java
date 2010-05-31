@@ -28,6 +28,7 @@ import com.icesoft.faces.async.render.SessionRenderer;
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.card.GameCardSetManager;
 import com.icefaces.project.memory.user.UserModel;
+import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
 /**
@@ -39,6 +40,8 @@ public class GameManager {
 	public static final int DEFAULT_MAX_USERS = 2;
 	public static final int DEFAULT_MAX_FLIP = 2;
 	public static final long DEFAULT_REFLIP_DELAY = 1200l;
+	public static final long BOT_MOVE_DELAY = 400l;
+	public static final long BOT_THINK_DELAY = DEFAULT_REFLIP_DELAY;
 	
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
 	
@@ -142,6 +145,26 @@ public class GameManager {
 		else {
 			throw new FailedJoinException("Game '" + game.getName() + "' already has a user with your name.");
 		}
+	}
+	
+	public boolean addComputerToGame(GameInstance game) {
+		if (game.getHasSpace()) {
+			UserModel computer = null;
+			while (!game.getIsFull()) {
+				computer = UserSession.generateComputerSession(this, game);
+				game.addUser(computer);
+			}
+			
+			// Start the game now that we are full of computer players
+			game.startGame();
+			
+			// Render everyone in the lobby so they see the change
+			renderLobby();
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void leaveGame(UserModel user, GameInstance game) {

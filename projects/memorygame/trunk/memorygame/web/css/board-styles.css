@@ -5,44 +5,28 @@
 	margin: 0;
 }
 
-.leftPane-vertical, .leftPane-vertical-board, .leftPane-vertical-chat {
+.leftPane-vertical {
 	width: 65%;
 	height: 100%;
 	float: left;
 }
 
-.rightPane-vertical, .rightPane-vertical-board, .rightPane-vertical-chat {
+.rightPane-vertical {
 	width: 35%;
 	height: 100%;
 	float: left;
 }
 
-.leftPane-vertical-board, .rightPane-vertical-chat {
-	width: 90%;
-}
-
-.leftPane-vertical-chat, .rightPane-vertical-board {
-	width: 10%;
-}
-
-.leftPane-horizontal, .leftPane-horizontal-board, .leftPane-horizontal-chat {
+.leftPane-horizontal {
 	width: 100%;
 	height: 65%;
 	float: left;
 }
 
-.rightPane-horizontal, .rightPane-horizontal-board, .rightPane-horizontal-chat {
+.rightPane-horizontal {
 	width: 100%;
 	height: 35%;
 	float: right;
-}
-
-.leftPane-horizontal-board, .rightPane-horizontal-chat {
-	height: 90%;
-}
-
-.leftPane-horizontal-chat, .rightPane-horizontal-board {
-	height: 10%;
 }
 
 .rightTable, .cm {
@@ -61,10 +45,15 @@
 	width: 50%;
 }
 
-.notStartedNotice, .returnToLobby, .winnerMessage {
+.notStartedNotice, .notStartedNoticeSmall,
+.returnToLobby, .winnerMessage {
 	color: #F78208;
 	font-weight: bold;
 	font-size: 20px;
+}
+
+.notStartedNoticeSmall {
+    font-size: 16px;
 }
 
 .winnerMessage {

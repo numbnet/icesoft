@@ -88,7 +88,7 @@ public class GameInstance {
 		
 		board = new GameBoard(size, cardSet);
 		chat = new GameChat(this.name);
-		turns = new GameTurns(this.name,
+		turns = new GameTurns(this,
 							  this.reflipDelay,
 							  this.users);
 	}
@@ -266,7 +266,14 @@ public class GameInstance {
 		renderGame();
 	}
 	
-	public void performTurn(GameCard toFlip) {
+	/**
+	 * Method called to perform a turn
+	 * Basically we'll try to flip the passed card, and if we have a match
+	 *  the proper score will be incremented
+	 *  
+	 * @return true if the turn resulted in a score
+	 */
+	public boolean performTurn(GameCard toFlip) {
 		try{
 			UserModel matcher = turns.handleTurn(toFlip);
 			
@@ -280,13 +287,74 @@ public class GameInstance {
 				if (board.isGameDone()) {
 					someoneWon();
 				}
+				
+				renderGame();
+				
+				return true;
 			}
 			
 			renderGame();
-		}catch (ThreadRunningException ignoreAction) {
+		}catch (ThreadRunningException ignored) {
 			// If we get this exception it means the user was trying to
 			//  click around while we waited to reflip our cards
 			// So basically ignore them
+		}
+		
+		return false;
+	}
+	
+	public void performComputerTurn() {
+		// Only bother to act if the game is actually running
+		if (isStarted) {
+			turns.getThreadPool().execute(new Runnable() {
+				public void run() {
+					// First we'll want to sleep for a bit, to give the illusion of being human
+					try {
+						Thread.sleep(GameManager.BOT_THINK_DELAY);
+					}catch (InterruptedException ignored) { }				
+					
+					// Then we'll want to make sure the cards have reflipped and we
+					//  are in a game state that is ready to accept new moves
+					// We'll check the thread status 5 times, and break and continue
+					//  with the turn as soon as the thread is done
+					for (int i = 0; i < 5; i++) {
+						if (turns.getThreadRunning()) {
+							try {
+								Thread.sleep(reflipDelay/2);
+							}catch (InterruptedException ignored) { }
+						}
+						else {
+							break;
+						}
+					}
+					
+					boolean scored = false;
+					GameCard toFlip = null;
+					// Perform the computer moves
+					// The cards to flip are chosen totally at random, so the computer
+					//  is not exactly that smart
+					for (int i = 0; i < GameManager.DEFAULT_MAX_FLIP; i++) {
+						// Determine what to flip, then flip it and track whether we had a match
+						toFlip = board.getRandomUnflippedCard();
+						if (toFlip != null) {
+							scored = performTurn(toFlip);
+						}
+						else {
+							scored = false;
+						}
+						
+						// Delay a bit between each move
+						try {
+							Thread.sleep(GameManager.BOT_MOVE_DELAY);
+						}catch (InterruptedException ignored) { }
+					}
+					
+					// If we scored a point we need to act again, so restart our computer turn
+					if ((scored) && (isStarted)) {
+						performComputerTurn();
+					}
+				}
+			});
 		}
 	}
 	

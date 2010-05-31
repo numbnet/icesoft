@@ -102,6 +102,10 @@ public class GameChat {
 		addMessage(new GameChatMessage(SYSTEM_NAME, name + " shook the game."), false);
 	}
 	
+	public void addFirstTurnMessage(String name) {
+		addMessage(new GameChatMessage(SYSTEM_NAME, name + " has the first turn."), false);
+	}
+	
 	public void addWinnerMessage(String message) {
 		addMessage(new GameChatMessage(SYSTEM_NAME, message), false);
 	}

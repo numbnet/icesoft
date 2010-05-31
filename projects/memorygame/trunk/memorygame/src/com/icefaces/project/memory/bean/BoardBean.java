@@ -111,6 +111,10 @@ public class BoardBean {
 		return "lobby";
 	}
 	
+	public void requestComputerJoin(ActionEvent event) {
+		userSession.getGameManager().addComputerToGame(userSession.getCurrentGame());
+	}
+	
 	/**
 	 * Method called when a user wishes to shake the window
 	 */

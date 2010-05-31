@@ -29,12 +29,14 @@
     <html>
     <head>
         <title>
-            <c:if test="#{userSession.currentGame.isStarted}">
-                Board - #{userSession.currentGame.name} - Memory Game
+            Board
+            <c:if test="#{userSession.isInGame}">
+                <c:if test="#{!userSession.currentGame.isStarted}">
+                    - Need #{userSession.currentGame.emptySpace} Player
+                </c:if>
+                - #{userSession.currentGame.name}
             </c:if>
-            <c:if test="#{!userSession.currentGame.isStarted}">
-                Board - Need #{userSession.currentGame.emptySpace} Player - #{userSession.currentGame.name} - Memory Game
-            </c:if>
+            - Memory Game
         </title>
         
         <ice:outputStyle href="./css/all-styles.css"/>
