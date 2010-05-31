@@ -82,7 +82,6 @@
     	<groupId>org.icefaces</groupId>
     	<artifactId>icefaces-comps-compat</artifactId>
     	<version>${version}</version>
-    	<scope>compile</scope>
     	<exclusions>
     	   <exclusion>
     	      <groupId>javax.servlet</groupId>
@@ -138,7 +137,7 @@
     <profile>
        <id>tomcat6</id>
        <activation>
-          <activeByDefault>false</activeByDefault>
+          <activeByDefault>true</activeByDefault>
        </activation>
        <dependencies>
           <dependency>
@@ -156,7 +155,7 @@
     <profile>
        <id>glassfish3</id>
       <activation>
-          <activeByDefault>true</activeByDefault>
+          <activeByDefault>false</activeByDefault>
        </activation>       
        <dependencies>
           <dependency>
