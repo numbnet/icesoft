@@ -145,6 +145,10 @@
 	                <c:if test="#{!gameManager.hasGameList}">
 	                    No existing games were found. Be the first to create one!
 	                </c:if>
+                    
+                    <ice:messages errorClass="globalErrorMessage" layout="table"
+                                  globalOnly="true" showSummary="true" showDetail="false"/>                    
+                    
 	                </center>
 	            </ice:panelGroup>
 	        </f:facet>
