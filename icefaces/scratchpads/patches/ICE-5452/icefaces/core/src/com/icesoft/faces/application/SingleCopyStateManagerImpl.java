@@ -47,6 +47,7 @@ import javax.faces.FacesException;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.application.state.Util;
+import com.icesoft.faces.renderkit.ViewNumberRenderer;
 
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -84,6 +85,8 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
     protected boolean pureDelegation;
     protected Method v2DelegateSaveViewMethod;
+
+    private String SINGLE_STRATEGY = SingleCopyStateManagerImpl.class.getName();
 
 
     /**
@@ -134,7 +137,9 @@ public class SingleCopyStateManagerImpl extends StateManager {
         try {
             v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
         } catch (Exception e) {
-            log.error("Exception finding JSF1.2 saveView method on delegate", e); 
+            if (log.isDebugEnabled()) {
+                log.debug("Exception finding JSF1.2 saveView method on delegate", e);
+            }
         }
         parametersInitialized = true;
     }
@@ -151,8 +156,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
                                   String renderKitId) {
         initializeParameters( context );
 
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            return delegate.restoreView(context, viewId, renderKitId);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                return delegate.restoreView(context, viewId, renderKitId);
+            }
         }
 
         UIViewRoot viewRoot;
@@ -166,16 +173,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
             sessionMap.put( View.ICEFACES_STATE_MAPS, viewMap );
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
-        if (log.isDebugEnabled()) {
-            log.debug("RestoreView called for View: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-        }
+        String viewNumber = getViewNumber(context);
         
         stateArray = (Object[]) viewMap.get(viewNumber);
         if (stateArray == null) {
-            log.error("Session Available, but View State does not exist for viewId:"
-                      + viewId);
             return null;
         }
 
@@ -191,16 +192,18 @@ public class SingleCopyStateManagerImpl extends StateManager {
      */
     public Object saveView(FacesContext context) {
 
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            if (v2DelegateSaveViewMethod != null) {
-                // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
-                try {
-                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
-                } catch (Exception e)  {
-                    log.error("Exception in saveView" , e);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                if (v2DelegateSaveViewMethod != null) {
+                    // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+                    try {
+                        return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                    } catch (Exception e)  {
+                        log.error("Exception in saveView" , e);
+                    }
+                } else {
+                    return delegate.saveSerializedView(context);
                 }
-            } else {
-                return delegate.saveSerializedView(context);
             }
         }
 
@@ -227,10 +230,9 @@ public class SingleCopyStateManagerImpl extends StateManager {
             log.debug("End creating serialized view " + viewRoot.getViewId());
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
 
         Map stateMap = (Map) sessionMap.get( View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
@@ -247,8 +249,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
     public SerializedView saveSerializedView(FacesContext context) {
         initializeParameters( context );
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            return delegate.saveSerializedView(context);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                return delegate.saveSerializedView(context);
+            }
         }
         return (SerializedView) saveView(context);
     }
@@ -385,6 +389,26 @@ public class SingleCopyStateManagerImpl extends StateManager {
             return baos.toByteArray();
         } else {
             return state;
+        }
+    }
+
+    private boolean isSingleStrategy(FacesContext facesContext)  {
+        Object stateStrategy = facesContext.getExternalContext().getRequestMap()
+                .get(ViewRootStateManagerImpl.STATE_STRATEGY);
+        return SINGLE_STRATEGY.equals(stateStrategy);
+    }
+
+    private String getViewNumber(FacesContext facesContext)  {
+        if (facesContext instanceof BridgeFacesContext)  {
+            BridgeFacesContext bfc = (BridgeFacesContext) facesContext;
+            return(bfc.getViewNumber());
+        } else {
+            String viewNumber = (String) facesContext.getExternalContext()
+                .getRequestParameterMap().get(ViewNumberRenderer.VIEW_NUMBER);
+            if (null != viewNumber) {
+                return viewNumber;
+            }
+            return ViewNumberRenderer.getViewNumber(facesContext);
         }
     }
 

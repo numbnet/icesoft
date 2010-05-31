@@ -81,4 +81,13 @@
 
   </tag>
 
+  <tag>
+
+    <name>viewNumber</name>
+    <tag-class>com.icesoft.faces.webapp.ViewNumberTag</tag-class>
+    <body-content>empty</body-content>
+
+  </tag>
+
+
 </taglib>
