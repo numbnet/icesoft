@@ -63,7 +63,7 @@ public class TagClassGenerator {
         addDoTags("End");
         addRelease();
         generatedTagClass.append("\n}");
-//        createJavaFile();
+        createJavaFile();
 
     }
     
@@ -74,7 +74,7 @@ public class TagClassGenerator {
         String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
         String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
   // comment out this so UICommand classes will compile **TEMPORARY
-//        FileWriter.write("support", path, fileName, generatedTagClass);        
+        FileWriter.write("support", path, fileName, generatedTagClass);        
     }
     
     static void addProperties(Class clazz, Component component) {
@@ -184,21 +184,29 @@ public class TagClassGenerator {
             Field field = Generator.fieldsForTagClass.get(iterator.next());
             generatedTagClass.append("\t\tif ("); 
             generatedTagClass.append(field.getName()); 
-            generatedTagClass.append(" != null) {\n\t\t\t_component.set");
-            Property property = (Property) field.getAnnotation(Property.class);
-            if (property.isMethodExpression()) {
-                generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
-                generatedTagClass.append(field.getName().substring(1));  
+            generatedTagClass.append(" != null) {\n\t\t\t");
+            Property property = (Property) field.getAnnotation(Property.class);            
+            if (property.isMethodExpression() && "actionListener".equals(field.getName())) {
+            	generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
+            } else if (property.isMethodExpression() && "action".equals(field.getName())) {
+            	generatedTagClass.append("_component.setActionExpression(action");
             } else {
-                generatedTagClass.append("ValueExpression");            
+	            generatedTagClass.append("_component.set");
+
+	            if (property.isMethodExpression()) {
+	                generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
+	                generatedTagClass.append(field.getName().substring(1));  
+	            } else {
+	                generatedTagClass.append("ValueExpression");            
+	            }
+	            generatedTagClass.append("(");
+	            if (!property.isMethodExpression()) {
+	                generatedTagClass.append("\"");
+	                generatedTagClass.append(field.getName());
+	                generatedTagClass.append("\", ");
+	            }
+	            generatedTagClass.append(field.getName());  
             }
-            generatedTagClass.append("(");
-            if (!property.isMethodExpression()) {
-                generatedTagClass.append("\"");
-                generatedTagClass.append(field.getName());
-                generatedTagClass.append("\", ");
-            }
-            generatedTagClass.append(field.getName());  
             generatedTagClass.append(");\n");    
             generatedTagClass.append("\t\t}\n");              
         }

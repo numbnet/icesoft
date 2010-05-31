@@ -54,7 +54,7 @@ public class PushButtonMeta {
     @Property(inherit=true, isMethodExpression=true)
     private MethodExpression actionListener;
  
-    @Property(isMethodExpression=true, inherit=true, useTemplate=true	)
+    @Property(isMethodExpression=true, inherit=true	)
     private MethodExpression action;
     
     @Property(defaultValue="false",inherit=true, useTemplate=true)
