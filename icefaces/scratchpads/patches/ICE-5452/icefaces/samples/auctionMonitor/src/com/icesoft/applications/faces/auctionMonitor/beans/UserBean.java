@@ -35,7 +35,7 @@ package com.icesoft.applications.faces.auctionMonitor.beans;
 import com.icesoft.applications.faces.auctionMonitor.ChatState;
 import com.icesoft.applications.faces.auctionMonitor.Message;
 import com.icesoft.applications.faces.auctionMonitor.MessageLog;
-import com.icesoft.faces.async.render.SessionRenderer;
+//import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.DisposableBean;
 
 import javax.faces.context.FacesContext;
@@ -86,7 +86,7 @@ public class UserBean implements DisposableBean {
 
 
     public UserBean() {
-        SessionRenderer.addCurrentSession("auction");
+//        SessionRenderer.addCurrentSession("auction");
     }
 
     public boolean isMinimized() {
@@ -417,7 +417,7 @@ public class UserBean implements DisposableBean {
     private void updateMessageLog() {
         //move all users to chat list bottom
         chatState.updateAll();
-        SessionRenderer.render("auction");
+//        SessionRenderer.render("auction");
     }
 
 
