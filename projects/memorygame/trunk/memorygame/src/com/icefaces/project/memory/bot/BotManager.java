@@ -2,19 +2,17 @@ package com.icefaces.project.memory.bot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.game.GameManager;
 import com.icefaces.project.memory.user.UserRenderer;
 import com.icefaces.project.memory.user.UserSession;
+import com.icefaces.project.memory.util.Randomizer;
 
 /**
  * Class used to handle generating and naming computer controlled players (aka "bots")
  */
 public class BotManager {
-	private static final Random randomizer = new Random(System.currentTimeMillis());
-	
 	/**
 	 * Get a list of available computer names
 	 */
@@ -49,7 +47,7 @@ public class BotManager {
 			
 			// If possible pull a unique name from our instance of available names
 			if (names.size() > 0) {
-				currentName = names.remove(randomizer.nextInt(names.size()));
+				currentName = names.remove(Randomizer.getInstance().nextInt(names.size()));
 			}
 			
 			toReturn[i] = generateComputer(currentName, gameManager, currentGame);

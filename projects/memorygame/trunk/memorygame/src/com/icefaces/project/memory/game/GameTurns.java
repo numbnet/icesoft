@@ -23,7 +23,6 @@ package com.icefaces.project.memory.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,12 +30,12 @@ import com.icesoft.faces.async.render.SessionRenderer;
 import com.icefaces.project.memory.exception.ThreadRunningException;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserModel;
+import com.icefaces.project.memory.util.Randomizer;
 
 /**
  * Game class to handle the flipping of cards, determing of scoring, turn tracking, etc. 
  */
 public class GameTurns {
-	private Random randomizer;
 	private GameInstance parentGame;
 	private long reflipDelay;
 	private List<UserModel> users;
@@ -56,7 +55,6 @@ public class GameTurns {
 	}
 	
 	protected void init() {
-		randomizer = new Random(System.currentTimeMillis());
 		threadPool = Executors.newCachedThreadPool();
 	}
 	
@@ -128,7 +126,7 @@ public class GameTurns {
 	}
 	
 	public void determineTurns() {
-		setCurrentTurnUser(users.get(randomizer.nextInt(users.size())));
+		setCurrentTurnUser(users.get(Randomizer.getInstance().nextInt(users.size())));
 		
 		parentGame.getChat().addFirstTurnMessage(currentTurnUser.getName());
 	}
@@ -187,16 +185,19 @@ public class GameTurns {
 						try{
 							Thread.sleep(reflipDelay);
 							
-							// Reflip all cards on a failed match
-							for (GameCard toReflip : listOfMoves) {
-								toReflip.unflip();
+							// Act if the game is still running
+							if (parentGame.getIsStarted()) {
+								// Reflip all cards on a failed match
+								for (GameCard toReflip : listOfMoves) {
+									toReflip.unflip();
+								}
+								
+								// Move to the next user, unless the previous one got a match
+								nextTurnUser();
+								
+								// Reset our move list and flip count after a turn is done
+								resetTrackingVariables();
 							}
-							
-							// Move to the next user, unless the previous one got a match
-							nextTurnUser();
-							
-							// Reset our move list and flip count after a turn is done
-							resetTrackingVariables();
 						}catch (InterruptedException ignored) { }
 						
 						if (parentGame != null) {

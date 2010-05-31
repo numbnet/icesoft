@@ -23,17 +23,16 @@ package com.icefaces.project.memory.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.game.card.GameCardSet;
+import com.icefaces.project.memory.util.Randomizer;
 
 /**
  * Game class to handle the board
  * We'll store all clickable GameCards, the size, and how many matches we have so far
  */
 public class GameBoard {
-	private Random randomizer;
 	private int matchCount = 0; // When this is >= half the cells, game is over
 	private int size = GameManager.DEFAULT_SIZE;
 	private GameCardSet cardSet;
@@ -42,12 +41,6 @@ public class GameBoard {
 	public GameBoard(int size, GameCardSet cardSet) {
 		this.size = size;
 		this.cardSet = cardSet;
-		
-		init();
-	}
-	
-	protected void init() {
-		randomizer = new Random(System.currentTimeMillis());
 	}
 	
 	public int getSize() {
@@ -100,7 +93,7 @@ public class GameBoard {
 		
 		for (int i = 0; i < numberOfCells; i++) {
 			data.add(availableData.remove(
-				randomizer.nextInt(availableData.size())));
+				Randomizer.getInstance().nextInt(availableData.size())));
 		}
 		
 		// Reset our full list since it has been emptied
@@ -130,7 +123,7 @@ public class GameBoard {
 		if (unflippedList.size() > 0) {
 			return data.get(
 					unflippedList.get(
-						randomizer.nextInt(unflippedList.size())));
+						Randomizer.getInstance().nextInt(unflippedList.size())));
 		}
 		
 		return null;
