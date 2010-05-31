@@ -117,7 +117,8 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
-        var options = {execute: execute, render: render, onevent: requestCallback};
+        var viewID = viewIDOf(element);
+        var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
         serializeEventToOptions(event, element, options);
         serializeAdditionalParameters(additionalParameters, options);
 
@@ -135,7 +136,6 @@ var submit;
                 };
             }
 
-            var viewID = viewIDOf(element);
             var deltaSubmitForm = document.getElementById(viewID);
             var clonedElement = element.cloneNode(true);
             var appendedElements = [];
