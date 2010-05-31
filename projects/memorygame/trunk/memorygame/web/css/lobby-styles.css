@@ -52,11 +52,12 @@
 }
 
 .previewPopup .icePnlPopHdr {
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: bold;
 	text-align: left;
-	background-color: #BCBCBC;
-	border-bottom: 1px solid #666666;
+    color: #FFFFFF;
+    background-color: #0B5383;
+    border-bottom: 1px solid #94B3CB;
 	padding: 5px;
 }
 
@@ -76,5 +77,5 @@
 
 .advancedOptionsBar {
 	width: 100%;
-	border-bottom: 1px solid #9999DD;
+	border-bottom: 1px solid #94B3CB;
 }

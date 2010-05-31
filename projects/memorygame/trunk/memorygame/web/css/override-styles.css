@@ -1,31 +1,32 @@
 /* ICEfaces Component Override Styles */
 
 /* rowSelector - Row Selector */
-.iceRowSelSelected {
-    background: #6969B5;
-}
-
-.iceRowSelMouseOver, .iceRowSelSelectedMouseOver {
-    background: #303054;
+.iceRowSelSelected,
+.iceRowSelMouseOver,
+.iceRowSelSelectedMouseOver {
+    background: #0B5383;
 }
 
 .iceRowSelSelected .iceOutTxt,
-.iceRowSelSelectedMouseOver .iceOutTxt,
 .iceRowSelMouseOver .iceOutTxt,
 .iceRowSelSelected .iceOutFrmt,
-.iceRowSelSelectedMouseOver .iceOutFrmt,
 .iceRowSelMouseOver .iceOutFrmt {
-    color: #EEEEFF;
+    color: #FFFFFF;
+}
+
+.iceRowSelSelectedMouseOver .iceOutTxt,
+.iceRowSelSelectedMouseOver .iceOutFrmt {
+    color: #F78208;
 }
 
 /* commandSortHeader - Command Sort Header */
 .iceCmdSrtHdr, .iceCmdSrtHdr:hover,
 .iceCmdSrtHdr a, .iceCmdSrtHdr a:hover,
 .iceDatTblActvSrtHdr td {
-	font-family: "Courier New", Courier, monospace;
+	font-family: tahoma, arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
-	color: #000044;
+	color: #FFFFFF;
 	text-decoration: none;
 }
 
@@ -79,29 +80,29 @@
     text-decoration: none;
     font-weight: normal;
     font-size: 12px;
-    background-color: #FCFCFC;
-    color: #000044;
+    background-color: #FFFFFF;
+    color: #0B5383;
     display: block;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 2px;
     padding-bottom: 2px;
-    border: 1px solid #9999DD;
+    border: 1px solid #94B3CB;
 }
 
 .iceDatPgrScrCol a {
-    color: #000044;
-    border: 1px solid #FCFCFC;
-    background-color: #9999DD;
+    color: #FFFFFF;
+    border: 1px solid #94B3CB;
+    background-color: #0B5383;
 }
 
 .iceDatPgrCol a:hover {
-    border: 1px solid #4466CC;
+    border: 1px solid #0B5383;
     text-decoration: none;
 }
 
 .iceDatPgrScrCol a:hover {
-    border: 1px solid #9999DD;
+    border: 1px solid #FFFFFF;
     text-decoration: none;
 }
 
@@ -124,7 +125,7 @@
 	width: 105px;
 	padding: 0;
 	margin: 0 5px 0 0;
-	border: 1px solid #9999DD;
+	border: 1px solid #94B3CB;
 }
 
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
@@ -132,7 +133,7 @@
     font-weight: bold;
     display: block;
     font-size: 12px;
-	color: #000044;
+	color: #0B5383;
 }
 
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
@@ -141,7 +142,7 @@
 
 .iceMnuBarItem a:hover .iceOutTxt,
 .iceMnuBarItem a:hover .iceMnuBarItemLabel {
-    color: white;
+    color: #FFFFFF;
 }
 
 .iceMnuBarSubMenu {
@@ -149,9 +150,9 @@
     background-color: #FCFCFC;
     display: block;
     width: 165px;
-    border-right: 1px solid #9999DD;
-    border-left: 1px solid #9999DD;
-    border-top: 1px solid #9999DD;
+    border-right: 1px solid #94B3CB;
+    border-left: 1px solid #94B3CB;
+    border-top: 1px solid #94B3CB;
     z-index: 1000;
 }
 
@@ -159,7 +160,7 @@
     padding: 0;
     margin: 0;
     vertical-align: top;
-    border-bottom: 1px solid #9999DD;
+    border-bottom: 1px solid #94B3CB;
 }
 
 .iceMnuItm a, .iceMnuItm a:hover {
@@ -177,20 +178,17 @@
 
 .iceMnuItm a {
     background-color: #FCFCFC;
-    color: #000000;
+    color: #0B5383;
 }
 
 .iceMnuItm a:hover {
-    background-color: #002288;
-    color: #EEEEFF;
+    background-color: #0B5383;
+    color: #FFFFFF;
 }
 
-.iceMnuItm a:hover .iceOutTxt {
-    color: #EEEEFF;
-}
-
-.iceMnuItm a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel {
-    color: #EEEEFF;
+.iceMnuItm a:hover .iceOutTxt,
+.iceMnuItm a:hover .iceMnuItmLabel {
+    color: #FFFFFF;
 }
 
 .iceMnuItmLabel {
@@ -250,17 +248,17 @@
 }
 
 .iceOutConStatInactv {
-    background: url(./images/components/connect_idle.gif) no-repeat center top;
+    background: url('./images/components/connect_idle.gif') no-repeat center top;
 }
 
 .iceOutConStatActv {
-    background: url(./images/components/connect_active.gif) no-repeat center top;
+    background: url('./images/components/connect_active.gif') no-repeat center top;
 }
 
 .iceOutConStatCaution {
-    background: url(./images/components/connect_caution.gif) no-repeat center top;
+    background: url('./images/components/connect_caution.gif') no-repeat center top;
 }
 
 .iceOutConStatDisconnect {
-    background: url(./images/components/connect_disconnected.gif) no-repeat center top;
+    background: url('./images/components/connect_disconnected.gif') no-repeat center top;
 }

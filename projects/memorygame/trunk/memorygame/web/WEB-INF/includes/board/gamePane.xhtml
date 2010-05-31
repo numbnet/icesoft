@@ -46,9 +46,11 @@
 	            </ice:commandButton>
 	        </ice:panelSeries>
 	        </ice:panelGroup>
-            <ice:outputText value="It is your turn #{userSession.name}!"
-                            styleClass="turnNotifier"
-                            rendered="#{userSession.isTurn}"/>
+            <ice:panelGroup rendered="#{userSession.isTurn}">
+                <br/>
+                <ice:outputText value="It is your turn #{userSession.name}!"
+                                styleClass="turnNotifier"/>
+            </ice:panelGroup>
 	    </center>
 	    </ice:form>
 	</c:if>
