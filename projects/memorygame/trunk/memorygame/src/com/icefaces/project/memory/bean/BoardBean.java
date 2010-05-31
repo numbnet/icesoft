@@ -112,7 +112,7 @@ public class BoardBean {
 	}
 	
 	public void requestComputerJoin(ActionEvent event) {
-		userSession.getGameManager().addComputerToGame(userSession.getCurrentGame());
+		userSession.getGameManager().addComputersToGame(userSession.getCurrentGame());
 	}
 	
 	/**

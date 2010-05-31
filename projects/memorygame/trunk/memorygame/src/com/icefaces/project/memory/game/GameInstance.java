@@ -22,6 +22,7 @@
 package com.icefaces.project.memory.game;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Vector;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class GameInstance {
 	private GameBoard board;
 	private GameChat chat;
 	private GameTurns turns;
+	private Random randomizer;
 	
 	public GameInstance() {
 		this(null, null, GameManager.DEFAULT_SIZE,
@@ -91,6 +93,12 @@ public class GameInstance {
 		turns = new GameTurns(this,
 							  this.reflipDelay,
 							  this.users);
+		
+		init();
+	}
+	
+	protected void init() {
+		randomizer = new Random(System.currentTimeMillis());
 	}
 
 	public String getName() {
@@ -188,6 +196,18 @@ public class GameInstance {
 	
 	public boolean getHasUsers() {
 		return getUserCount() > 0;
+	}
+	
+	public boolean getHasNonComputerUsers() {
+		if (getUserCount() > 0) {
+			for (UserModel currentUser : users) {
+				if (!currentUser.getIsComputer()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public boolean getHasUser(UserModel user) {
@@ -303,6 +323,16 @@ public class GameInstance {
 		return false;
 	}
 	
+	/**
+	 * Method called to perform a computer turn in place of a normal user turn
+	 * This will spawn a new thread
+	 * First we'll delay a bit to represent the computer "thinking"
+	 * Then we'll ensure the reflipping thread isn't still running (ie: the cards
+	 *  are in a clickable state for the computer)
+	 * Then, if the game is still going, we'll try to perform our moves
+	 *  by randomly flipping cards
+	 * If our flips result in a match we'll restart this method to fulfill our bonus turn
+	 */
 	public void performComputerTurn() {
 		// Only bother to act if the game is actually running
 		if (isStarted) {
@@ -310,8 +340,11 @@ public class GameInstance {
 				public void run() {
 					// First we'll want to sleep for a bit, to give the illusion of being human
 					try {
-						Thread.sleep(GameManager.BOT_THINK_DELAY);
-					}catch (InterruptedException ignored) { }				
+						Thread.sleep(GameManager.BOT_THINK_DELAY_BASE +
+									 	randomizer.nextInt(GameManager.BOT_THINK_DELAY_VARIATION));
+					}catch (InterruptedException interrupted) {
+						return;
+					}
 					
 					// Then we'll want to make sure the cards have reflipped and we
 					//  are in a game state that is ready to accept new moves
@@ -320,7 +353,10 @@ public class GameInstance {
 					for (int i = 0; i < 5; i++) {
 						if (turns.getThreadRunning()) {
 							try {
-								Thread.sleep(reflipDelay/2);
+								// Don't sleep for the full reflipDelay each time
+								// This is because if we miss the thread stopping by a few milliseconds we
+								//  don't want to have to wait through the entire reflipDelay again
+								Thread.sleep(reflipDelay/3);
 							}catch (InterruptedException ignored) { }
 						}
 						else {
@@ -328,30 +364,36 @@ public class GameInstance {
 						}
 					}
 					
-					boolean scored = false;
-					GameCard toFlip = null;
-					// Perform the computer moves
-					// The cards to flip are chosen totally at random, so the computer
-					//  is not exactly that smart
-					for (int i = 0; i < GameManager.DEFAULT_MAX_FLIP; i++) {
-						// Determine what to flip, then flip it and track whether we had a match
-						toFlip = board.getRandomUnflippedCard();
-						if (toFlip != null) {
-							scored = performTurn(toFlip);
-						}
-						else {
-							scored = false;
+					// Double check the started status, since with all these threads
+					//  it could have been reset after our sleep calls
+					if (isStarted) {
+						boolean scored = false;
+						GameCard toFlip = null;
+						// Perform the computer moves
+						// The cards to flip are chosen totally at random, so the computer
+						//  is not exactly that smart
+						for (int i = 0; i < GameManager.DEFAULT_MAX_FLIP; i++) {
+							// Determine what to flip, then flip it and track whether we had a match
+							toFlip = board.getRandomUnflippedCard();
+							if (toFlip != null) {
+								scored = performTurn(toFlip);
+							}
+							else {
+								scored = false;
+							}
+							
+							// Delay a bit between each move
+							try {
+								Thread.sleep(GameManager.BOT_MOVE_DELAY);
+							}catch (InterruptedException interrupted) {
+								return;
+							}
 						}
 						
-						// Delay a bit between each move
-						try {
-							Thread.sleep(GameManager.BOT_MOVE_DELAY);
-						}catch (InterruptedException ignored) { }
-					}
-					
-					// If we scored a point we need to act again, so restart our computer turn
-					if ((scored) && (isStarted)) {
-						performComputerTurn();
+						// If we scored a point we need to act again, so restart our computer turn
+						if ((scored) && (isStarted)) {
+							performComputerTurn();
+						}
 					}
 				}
 			});
