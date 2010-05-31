@@ -32,7 +32,7 @@
 		        Create New Game
 		    </f:facet>
 		    
-		    <ice:outputLabel for="gameName" value="Name:"/>
+		    <ice:outputLabel for="gameName" value="Game Name:"/>
 		    <ice:inputText id="gameName" value="#{lobbyBean.createdGame.name}"
 		                   required="true" partialSubmit="true"
 		                   action="#{lobbyBean.createGame}"
@@ -118,8 +118,6 @@
 		        <f:selectItem itemValue="4"/>
 		        <f:selectItem itemValue="6"/>
 		        <f:selectItem itemValue="8"/>
-		        <f:selectItem itemValue="10"/>
-		        <f:selectItem itemValue="12"/>
 		    </ice:selectOneMenu>
 		    <ice:message errorClass="errorMessage" for="gameSize"/>
 		    

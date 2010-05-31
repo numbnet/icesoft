@@ -37,7 +37,7 @@ public class UserRenderer {
 	
 	public UserRenderer() {
 	}
-
+	
 	public boolean isInLobby() {
 		return inLobby;
 	}

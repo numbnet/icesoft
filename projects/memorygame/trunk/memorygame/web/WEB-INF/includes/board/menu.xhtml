@@ -71,35 +71,19 @@
 	        <ice:menuItem icon="./css/images/menu/page-layout.png"
 	                      value="Page Layout">
 	            <ice:menuItem icon="./css/images/menu/layout-horizontal.png"
-	                          value="Horizontal (Even)">
-	            <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal"/>
+	                          value="Horizontal">
+	               <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal"/>
 	            </ice:menuItem>
-	            <ice:menuItem icon="./css/images/menu/layout-horizontal-board.png"
-	                          value="Horizontal (Board)">
-	                <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal-board"/>
-	            </ice:menuItem>
-	            <ice:menuItem icon="./css/images/menu/layout-horizontal-chat.png"
-	                          value="Horizontal (Chat)">
-	                <f:setPropertyActionListener target="#{boardBean.layout}" value="horizontal-chat"/>
-	            </ice:menuItem>
-	        <ice:menuItem icon="./css/images/menu/layout-vertical.png"
-	                      value="Vertical (Even)">
-	            <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical"/>
-	            </ice:menuItem>
-	            <ice:menuItem icon="./css/images/menu/layout-vertical-board.png"
-	                          value="Vertical (Board)">
-	                <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical-board"/>
-	            </ice:menuItem>
-	            <ice:menuItem icon="./css/images/menu/layout-vertical-chat.png"
-	                          value="Vertical (Chat)">
-	                <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical-chat"/>
+	            <ice:menuItem icon="./css/images/menu/layout-vertical.png"
+	                          value="Vertical">
+	               <f:setPropertyActionListener target="#{boardBean.layout}" value="vertical"/>
 	            </ice:menuItem>
 	        </ice:menuItem>
 	        <ice:menuItem icon="./css/images/menu/link-invite.png"
 	                      value="Link to Invite"
 	                      actionListener="#{boardBean.openInvite}"/>
             <ice:menuItem icon="./css/images/menu/help.png"
-                          value="Instructions"
+                          value="Help"
                           actionListener="#{boardBean.openHelp}"/>
 	        <ice:menuItem icon="./css/images/menu/leave-game.png"
 	                      value="Leave the Game"

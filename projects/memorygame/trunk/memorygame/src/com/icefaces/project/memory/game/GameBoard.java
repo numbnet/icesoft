@@ -117,6 +117,25 @@ public class GameBoard {
 		return matchCount >= getHalfCellCount();
 	}
 	
+	public GameCard getRandomUnflippedCard() {
+		int dataSize = data.size();
+		
+		List<Integer> unflippedList = new ArrayList<Integer>(dataSize);
+		for (int i = 0; i < dataSize; i++) {
+			if (!data.get(i).getIsFlipped()) {
+				unflippedList.add(i);
+			}
+		}
+		
+		if (unflippedList.size() > 0) {
+			return data.get(
+					unflippedList.get(
+						randomizer.nextInt(unflippedList.size())));
+		}
+		
+		return null;
+	}
+	
 	public int getCellCount() {
 		return size*size;
 	}

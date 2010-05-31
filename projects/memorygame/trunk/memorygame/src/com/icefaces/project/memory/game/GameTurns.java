@@ -37,7 +37,7 @@ import com.icefaces.project.memory.user.UserModel;
  */
 public class GameTurns {
 	private Random randomizer;
-	private String gameName;
+	private GameInstance parentGame;
 	private long reflipDelay;
 	private List<UserModel> users;
 	private UserModel currentTurnUser;
@@ -47,8 +47,8 @@ public class GameTurns {
 	private ExecutorService threadPool; // delicious thread pools
 	private boolean flipThreadRunning = false;
 	
-	public GameTurns(String gameName, long reflipDelay, List<UserModel> users) {
-		this.gameName = gameName;
+	public GameTurns(GameInstance parentGame, long reflipDelay, List<UserModel> users) {
+		this.parentGame = parentGame;
 		this.reflipDelay = reflipDelay;
 		this.users = users;
 		
@@ -70,6 +70,11 @@ public class GameTurns {
 		}
 		if (currentTurnUser != null) {
 			currentTurnUser.setIsTurn(true);
+			
+			if ((currentTurnUser.getIsComputer()) &&
+			    (parentGame != null)) {
+				parentGame.performComputerTurn();
+			}
 		}
 		
 		this.currentTurnUser = currentTurnUser;
@@ -81,6 +86,10 @@ public class GameTurns {
 
 	public void setThreadPool(ExecutorService threadPool) {
 		this.threadPool = threadPool;
+	}
+	
+	public boolean getThreadRunning() {
+		return flipThreadRunning;
 	}
 
 	/**
@@ -120,6 +129,8 @@ public class GameTurns {
 	
 	public void determineTurns() {
 		setCurrentTurnUser(users.get(randomizer.nextInt(users.size())));
+		
+		parentGame.getChat().addFirstTurnMessage(currentTurnUser.getName());
 	}
 	
 	public void stopThreadPool() {
@@ -188,8 +199,8 @@ public class GameTurns {
 							resetTrackingVariables();
 						}catch (InterruptedException ignored) { }
 						
-						if (gameName != null) {
-							SessionRenderer.render(gameName);
+						if (parentGame != null) {
+							SessionRenderer.render(parentGame.getName());
 						}
 						
 						flipThreadRunning = false;

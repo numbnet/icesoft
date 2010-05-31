@@ -70,6 +70,18 @@ public class UserSession extends UserModel implements DisposableBean {
 		return currentGame != null;
 	}
 	
+	public static UserSession generateComputerSession(GameManager gameManager, GameInstance currentGame) {
+		UserSession computer = new UserSession();
+		
+		computer.setName("Skynet (Computer)");
+		computer.setIsComputer(true);
+		computer.setGameManager(gameManager);
+		computer.setCurrentGame(currentGame);
+		computer.setRenderer(new UserRenderer());
+		
+		return computer;
+	}
+	
 	/**
 	 * Method called when the bean is about to be destroyed
 	 * This would normally happen when a user closes their browser and we want to do something

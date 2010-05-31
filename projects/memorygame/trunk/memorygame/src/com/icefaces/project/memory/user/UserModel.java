@@ -25,8 +25,14 @@ public class UserModel {
 	protected String name = "User " + System.currentTimeMillis();
 	protected int score = 0;
 	protected boolean isTurn = false;
+	protected boolean isComputer = false;
 
 	public UserModel() {
+	}
+	
+	public UserModel(String name, boolean isComputer) {
+		this.name = name;
+		this.isComputer = isComputer;
 	}
 	
 	public String getName() {
@@ -51,6 +57,14 @@ public class UserModel {
 
 	public void setIsTurn(boolean isTurn) {
 		this.isTurn = isTurn;
+	}
+	
+	public boolean getIsComputer() {
+		return isComputer;
+	}
+
+	public void setIsComputer(boolean isComputer) {
+		this.isComputer = isComputer;
 	}
 
 	public int incrementScore() {
