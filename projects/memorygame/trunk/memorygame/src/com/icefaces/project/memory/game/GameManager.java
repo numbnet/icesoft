@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
+import com.icefaces.project.memory.bot.BotManager;
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.card.GameCardSetManager;
 import com.icefaces.project.memory.user.UserModel;
-import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
 /**
@@ -40,8 +40,9 @@ public class GameManager {
 	public static final int DEFAULT_MAX_USERS = 2;
 	public static final int DEFAULT_MAX_FLIP = 2;
 	public static final long DEFAULT_REFLIP_DELAY = 1200l;
+	public static final long BOT_THINK_DELAY_BASE = 900l;
+	public static final int BOT_THINK_DELAY_VARIATION = 400;
 	public static final long BOT_MOVE_DELAY = 400l;
-	public static final long BOT_THINK_DELAY = DEFAULT_REFLIP_DELAY;
 	
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
 	
@@ -147,11 +148,14 @@ public class GameManager {
 		}
 	}
 	
-	public boolean addComputerToGame(GameInstance game) {
+	/**
+	 * Method to fill the remaining open slots of a game with computer controlled sessions
+	 */
+	public boolean addComputersToGame(GameInstance game) {
 		if (game.getHasSpace()) {
-			UserModel computer = null;
-			while (!game.getIsFull()) {
-				computer = UserSession.generateComputerSession(this, game);
+			// Generate a bunch of new computer controlled sessions and fill the game with them
+			UserModel[] computers = BotManager.generateComputers(game.getEmptySpace(), this, game);
+			for (UserModel computer : computers) {
 				game.addUser(computer);
 			}
 			
@@ -171,6 +175,13 @@ public class GameManager {
 		if (game.getHasUser(user)) {
 			game.stopGame();
 			game.removeUser(user); // This will cause a render
+			
+			// Check if we only have computer players left
+			// If we do we'll want to remove them as they can't play amongst themselves
+			// This will then cause the game to be shutdown because there are no users left
+			if (!game.getHasNonComputerUsers()) {
+				game.getUsers().clear();
+			}
 			
 			// Remove the game from the list if no one is in it
 			// This will stop empty games from lingering around
