@@ -24,7 +24,6 @@ package com.icefaces.project.memory.bean;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -37,6 +36,7 @@ import com.icefaces.project.memory.game.GameInstanceWrapper;
 import com.icefaces.project.memory.game.card.GameCardSet;
 import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.FacesUtil;
+import com.icefaces.project.memory.util.Randomizer;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -47,8 +47,6 @@ import edu.emory.mathcs.backport.java.util.Collections;
  */
 public class LobbyBean extends SortBean {
 	private static final String RANDOM_CARD_VALUE = "RANDOMIZE";
-	
-	private Random randomizer;
 	
 	private UserSession userSession;
 	private List<GameInstanceWrapper> localGameList;
@@ -65,14 +63,8 @@ public class LobbyBean extends SortBean {
 	
 	public LobbyBean() {
 		super("name");
-		
-		init();
 	}
 	
-	protected void init() {
-		randomizer = new Random(System.currentTimeMillis());
-	}
-
 	public UserSession getUserSession() {
 		return userSession;
 	}
@@ -174,7 +166,7 @@ public class LobbyBean extends SortBean {
 		// Check whether we should attempt to randomize the selected card set, otherwise just set it
 		if (RANDOM_CARD_VALUE.equals(selectedCardSet)) {
 			this.selectedCardSet =
-				getAvailableSetsAsItems()[randomizer.nextInt(availableSetsAsItems.length)].getValue().toString(); 
+				getAvailableSetsAsItems()[Randomizer.getInstance().nextInt(availableSetsAsItems.length)].getValue().toString();
 		}
 		else {
 			this.selectedCardSet = selectedCardSet;
@@ -189,7 +181,7 @@ public class LobbyBean extends SortBean {
 		// Check whether we should attempt to randomize the selected card back, otherwise just set it
 		if (RANDOM_CARD_VALUE.equals(selectedCardBack)) {
 			this.selectedCardBack =
-				getAvailableBackImagesAsItems()[randomizer.nextInt(availableBackImagesAsItems.length)].getValue().toString(); 
+				getAvailableBackImagesAsItems()[Randomizer.getInstance().nextInt(availableBackImagesAsItems.length)].getValue().toString(); 
 		}
 		else {
 			this.selectedCardBack = selectedCardBack;
