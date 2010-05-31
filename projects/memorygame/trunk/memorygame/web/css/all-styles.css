@@ -6,22 +6,22 @@ html, body, .overallContainer {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 12px;
 	font-style: normal;
-	color: #004400;
+	color: #000044;
 }
 
 .errorMessage, .globalErrorMessage {
     font-size: 12px;
-    color: #EE1111;
+    color: #F78208;
 }
 
 a {
     text-decoration: none;
-    color: #337733;
+    color: #333377;
 }
 
 a:hover {
     text-decoration: underline;
-    color: #66AA66;
+    color: #6666AA;
 }
 
 input, textarea, select, .halfButton, .fullButton {
@@ -30,12 +30,12 @@ input, textarea, select, .halfButton, .fullButton {
 	font-style: italic;
 	padding: 2px;
 	margin: 0;
-    background-color: #DDFFDD;
-    color: #004400;
+    background-color: #DDDDFF;
+    color: #000044;
 }
 
 input, textarea {
-	border: 2px inset #99DD99;
+	border: 2px inset #9999DD;
 }
 
 .imageButton, .imageButton-dis {
@@ -46,9 +46,9 @@ input, textarea {
 }
 
 .halfButton, .fullButton, .button {
-    background-color: #008822;
-    color: #EEFFEE;
-	border: 2px outset #44CC66;
+    background-color: #002288;
+    color: #EEEEFF;
+	border: 2px outset #4466CC;
 }
 
 .halfButton {
@@ -66,15 +66,15 @@ input, textarea {
 .genericTable {
 	width: 100%;
 	font-size: 12px;
-	background-color: #DDFFDD;
-	border: 1px solid #99DD99;
+	background-color: #DDDDFF;
+	border: 1px solid #9999DD;
 }
 
 .genericTableHdr {
 	font-size: 12px;
 	font-weight: bold;
-	background-color: #BBEEBB;
-	border: 1px dashed #99DD99;
+	background-color: #BBBBEE;
+	border: 1px dashed #9999DD;
 	padding: 2px;
 }
 
@@ -94,9 +94,9 @@ input, textarea {
 }
 
 .lightRow {
-	background-color: #EEFFEE;
+	background-color: #EEEEFF;
 }
 
 .darkRow {
-	background-color: #CCEECC;
+	background-color: #CCCCEE;
 }

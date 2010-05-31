@@ -1,7 +1,7 @@
 package com.icefaces.project.memory.bean.color;
 
 public class ColorBean {
-	public static final String DEFAULT_COLOR_HEX = "#004400";
+	public static final String DEFAULT_COLOR_HEX = "#000044";
 	
 	private static final UIColor[] FONT_COLORS = new UIColor[] {
 		new UIColor("Default", DEFAULT_COLOR_HEX),
