@@ -43,6 +43,7 @@ import javax.faces.render.RenderKitFactory;
 
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.renderkit.ViewNumberRenderer;
 
 import java.io.IOException;
 import java.util.Map;
@@ -63,6 +64,9 @@ public class ViewRootStateManagerImpl extends StateManager {
     protected boolean pureDelegation;
     protected Method v2DelegateSaveViewMethod;
 
+    public static String STATE_STRATEGY = "com.icesoft.faces.stateManagerStrategy";
+    private String VIEW_STRATEGY = ViewRootStateManagerImpl.class.getName();
+
 
     public ViewRootStateManagerImpl(StateManager delegate) {
         if (log.isInfoEnabled()) {
@@ -80,19 +84,16 @@ public class ViewRootStateManagerImpl extends StateManager {
      * @return The restored ViewRoot, null if none saved for this ICEfaces viewNumber
      */
     public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
-
         initializeParameters( context );
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            return delegate.restoreView(context, viewId, renderKitId);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                return delegate.restoreView(context, viewId, renderKitId);
+            }
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
-        if (log.isDebugEnabled()) {
-            log.debug("RestoreView called for View: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-        } 
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
         Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
@@ -102,10 +103,7 @@ public class ViewRootStateManagerImpl extends StateManager {
         UIViewRoot root;
 
         root = (UIViewRoot) stateMap.get( viewNumber );
-        if (root == null) {
-            log.error("Missing ViewRoot in restoreState, ice.session: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-            return null;
-        }
+
         return root;
     }
 
@@ -138,11 +136,13 @@ public class ViewRootStateManagerImpl extends StateManager {
                 external = true;
             } 
         }
-         try {
+        try {
              v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
-         } catch (Exception e) {
-             log.error("Exception finding JSF1.2 saveView method on delegate", e);
-         }
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Exception finding JSF1.2 saveView method on delegate", e);
+            }
+        }
         parametersInitialized = true;
      }
 
@@ -152,27 +152,27 @@ public class ViewRootStateManagerImpl extends StateManager {
      * @return
      */
     public Object saveView(FacesContext context ) {
-
         initializeParameters(context);
-          if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
-            if (v2DelegateSaveViewMethod != null) {
-                try {
-                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
-                } catch (Exception e)  {
-                    log.error("Exception in saveView" , e);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+                if (v2DelegateSaveViewMethod != null) {
+                    try {
+                        return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                    } catch (Exception e)  {
+                        log.error("Exception in saveView" , e);
+                    }
+                } else {
+                    return delegate.saveSerializedView(context);
                 }
-            } else {
-                return delegate.saveSerializedView(context);
             }
-        } 
+        }
 
         UIViewRoot root = context.getViewRoot();
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
         Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
@@ -181,15 +181,20 @@ public class ViewRootStateManagerImpl extends StateManager {
         stateMap.put( viewNumber, root );
 
         StateManager sm = context.getApplication().getStateManager();
-        return sm.new SerializedView( viewNumber, null);
+        SerializedView serializedView = new StateManager.SerializedView(viewNumber, viewNumber);
+        return serializedView;
     }
 
 
     public SerializedView saveSerializedView(FacesContext context) {
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            return delegate.saveSerializedView(context);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                SerializedView serializedView = delegate.saveSerializedView(context);
+                return serializedView;
+            }
         }
-        return (SerializedView) saveView(context);
+        SerializedView serializedView = (SerializedView) saveView(context);
+        return serializedView;
     }
 
 
@@ -221,9 +226,12 @@ public class ViewRootStateManagerImpl extends StateManager {
     public void writeState(FacesContext context, SerializedView view)
     throws IOException {
         initializeParameters(context);
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            delegate.writeState(context, view);
-        } 
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                delegate.writeState(context, view);
+                return;
+            } 
+        }
 
         ResponseWriter writer = context.getResponseWriter();
         writer.write(STATE_FIELD_START);
@@ -255,6 +263,26 @@ public class ViewRootStateManagerImpl extends StateManager {
                                   result,
                                   "value");
             writer.endElement("input");
+        }
+    }
+
+    private boolean isViewStrategy(FacesContext facesContext)  {
+        Object stateStrategy = facesContext.getExternalContext().getRequestMap()
+                .get(STATE_STRATEGY);
+        return VIEW_STRATEGY.equals(stateStrategy);
+    }
+
+    private String getViewNumber(FacesContext facesContext)  {
+        if (facesContext instanceof BridgeFacesContext)  {
+            BridgeFacesContext bfc = (BridgeFacesContext) facesContext;
+            return(bfc.getViewNumber());
+        } else {
+            String viewNumber = (String) facesContext.getExternalContext()
+                .getRequestParameterMap().get(ViewNumberRenderer.VIEW_NUMBER);
+            if (null != viewNumber) {
+                return viewNumber;
+            }
+            return ViewNumberRenderer.getViewNumber(facesContext);
         }
     }
 
