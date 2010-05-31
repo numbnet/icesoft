@@ -2,11 +2,11 @@
 
 /* rowSelector - Row Selector */
 .iceRowSelSelected {
-    background: #69B569;
+    background: #6969B5;
 }
 
 .iceRowSelMouseOver, .iceRowSelSelectedMouseOver {
-    background: #305430;
+    background: #303054;
 }
 
 .iceRowSelSelected .iceOutTxt,
@@ -15,7 +15,7 @@
 .iceRowSelSelected .iceOutFrmt,
 .iceRowSelSelectedMouseOver .iceOutFrmt,
 .iceRowSelMouseOver .iceOutFrmt {
-    color: #EEFFEE;
+    color: #EEEEFF;
 }
 
 /* commandSortHeader - Command Sort Header */
@@ -25,7 +25,7 @@
 	font-family: "Courier New", Courier, monospace;
 	font-size: 12px;
 	font-weight: bold;
-	color: #004400;
+	color: #000044;
 	text-decoration: none;
 }
 
@@ -80,28 +80,28 @@
     font-weight: normal;
     font-size: 12px;
     background-color: #FCFCFC;
-    color: #004400;
+    color: #000044;
     display: block;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 2px;
     padding-bottom: 2px;
-    border: 1px solid #99DD99;
+    border: 1px solid #9999DD;
 }
 
 .iceDatPgrScrCol a {
-    color: #004400;
+    color: #000044;
     border: 1px solid #FCFCFC;
-    background-color: #99DD99;
+    background-color: #9999DD;
 }
 
 .iceDatPgrCol a:hover {
-    border: 1px solid #44CC66;
+    border: 1px solid #4466CC;
     text-decoration: none;
 }
 
 .iceDatPgrScrCol a:hover {
-    border: 1px solid #99DD99;
+    border: 1px solid #9999DD;
     text-decoration: none;
 }
 
@@ -124,7 +124,7 @@
 	height: 27px;
 	padding: 0;
 	margin: 0;
-	border: 1px solid #99DD99;
+	border: 1px solid #9999DD;
 }
 
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
@@ -132,7 +132,7 @@
     font-weight: bold;
     display: block;
     font-size: 12px;
-	color: #004400;
+	color: #000044;
 }
 
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
@@ -154,7 +154,7 @@
     padding: 0;
     margin: 0;
     vertical-align: top;
-    border-bottom: 1px solid #99DD99;
+    border-bottom: 1px solid #9999DD;
 }
 
 .iceMnuItm a, .iceMnuItm a:hover {
@@ -176,16 +176,16 @@
 }
 
 .iceMnuItm a:hover {
-    background-color: #008822;
-    color: #EEFFEE;
+    background-color: #002288;
+    color: #EEEEFF;
 }
 
 .iceMnuItm a:hover .iceOutTxt {
-    color: #EEFFEE;
+    color: #EEEEFF;
 }
 
 .iceMnuItm a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel {
-    color: #EEFFEE;
+    color: #EEEEFF;
 }
 
 .iceMnuItmLabel {

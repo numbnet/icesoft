@@ -53,8 +53,8 @@
 .rightCell {
 	width: 100%;
 	font-size: 12px;
-	background-color: #DDFFDD;
-	border: 1px solid #99DD99;
+	background-color: #DDDDFF;
+	border: 1px solid #9999DD;
 }
 
 .fiftyWidth {
@@ -62,7 +62,7 @@
 }
 
 .notStartedNotice, .returnToLobby, .winnerMessage {
-	color: #FF0000;
+	color: #F78208;
 	font-weight: bold;
 	font-size: 20px;
 }
@@ -136,7 +136,7 @@
 	width: 30%;
 	text-align: right;
 	overflow: hidden;
-	border-right: 1px solid #99DD99;
+	border-right: 1px solid #9999DD;
 	color: #000000;
 }
 
