@@ -127,6 +127,6 @@ function iceSubmit(aForm, aComponent, anEvent, query) {
 //todo: determine if the cleanup of hidden fields should be at framework or component level
 function resetHiddenFieldsFor(aForm) {
     $enumerate(aForm.elements).each(function(formElement) {
-        if (formElement.type == 'hidden' && formElement.id == '') formElement.value = '';
+        if (formElement.type == 'hidden' && formElement.id == '' && formElement.name != 'javax.faces.RenderKitId') formElement.value = '';
     });
 }
