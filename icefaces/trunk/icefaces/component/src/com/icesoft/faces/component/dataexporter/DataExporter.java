@@ -358,6 +358,7 @@ public class DataExporter extends OutputResource {
             UIComponent uic) {
         StringBuffer str = new StringBuffer();
         Object value = uic.getAttributes().get("value");
+        if (!uic.isRendered()) return str.toString();
         if (value != null)
             str.append(value);
         else {
