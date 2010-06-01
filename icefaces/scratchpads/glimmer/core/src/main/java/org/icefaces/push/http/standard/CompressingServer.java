@@ -37,8 +37,9 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
+import java.io.Serializable;
 
-public class CompressingServer implements Server {
+public class CompressingServer implements Server, Serializable {
     private Server server;
     private MimeTypeMatcher mimeTypeMatcher;
     private boolean compressResources;

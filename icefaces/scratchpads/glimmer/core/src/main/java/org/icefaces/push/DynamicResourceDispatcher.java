@@ -43,8 +43,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
+import java.io.Serializable;
 
-public class DynamicResourceDispatcher implements Server, DynamicResourceRegistry {
+public class DynamicResourceDispatcher implements Server, DynamicResourceRegistry, Serializable {
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
@@ -56,7 +57,7 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
     private MimeTypeMatcher mimeTypeMatcher;
     private String prefix;
     private ArrayList registered = new ArrayList();
-    private SessionDispatcher.Monitor monitor;
+    private transient SessionDispatcher.Monitor monitor;
 
     public DynamicResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor, HttpSession session, Configuration configuration) {
         this.prefix = prefix;

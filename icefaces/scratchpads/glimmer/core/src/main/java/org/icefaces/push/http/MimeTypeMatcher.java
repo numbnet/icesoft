@@ -22,7 +22,9 @@
 
 package org.icefaces.push.http;
 
-public interface MimeTypeMatcher {
+import java.io.Serializable;
+
+public interface MimeTypeMatcher extends Serializable {
 
     String mimeTypeFor(String path);
 }
