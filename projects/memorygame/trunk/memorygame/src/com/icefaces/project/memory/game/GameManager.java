@@ -230,7 +230,6 @@ public class GameManager implements DisposableBean {
 	 * In this case we want to cancel the TimerTask that checks for Card Set related
 	 *  filesystem changes every so often
 	 */
-	@Override
 	public void dispose() throws Exception {
 		if (cardSetManager != null) {
 			cardSetManager.cancelCheckSetChanges();
