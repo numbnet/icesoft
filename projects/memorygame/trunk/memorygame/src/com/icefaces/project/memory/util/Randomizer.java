@@ -37,6 +37,6 @@ public class Randomizer extends Random {
             singleton = new Randomizer();
         }
         
-        return(singleton);
+        return singleton;
     }
 }

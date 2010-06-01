@@ -23,6 +23,7 @@ package com.icefaces.project.memory.game.card;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
@@ -34,7 +35,8 @@ import com.icefaces.project.memory.filter.DirectoryFilter;
 import com.icefaces.project.memory.util.FacesUtil;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to manage the various GameCardSets
@@ -48,6 +50,8 @@ public class GameCardSetManager {
 	public static final String BASE_PATH_FRONT = "./css/images/cardset-front";
 	public static final String BASE_PATH_BACK = "./css/images/cardset-back";
 	public static final String DEFAULT_BACK_IMAGE = "default-back.png";
+	
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	private File setDir;
 	private File backImageDir;
@@ -75,7 +79,6 @@ public class GameCardSetManager {
 	 * A similar approach is used for the back images, except any image at all in
 	 *  BASE_PATH_BACK will be added as a choosable back image
 	 */
-	@SuppressWarnings("unchecked")
 	private void initAvailableSets() {
 		try{
 			if ((!ValidatorUtil.isValidDirectory(setDir)) ||
@@ -119,6 +122,10 @@ public class GameCardSetManager {
 				
 				// Sort the generated list of sets
 				Collections.sort(availableSets);
+				
+				if (log.isInfoEnabled()) {
+					log.info("Initialized " + availableSets.size() + " card sets and " + availableBackImages.size() + " back images.");
+				}
 				
 				return;
 			}
