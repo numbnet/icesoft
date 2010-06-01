@@ -53,6 +53,7 @@ public class GameCardSetManager {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
+	private TimerTask setChangeTask;
 	private File setDir;
 	private File backImageDir;
 	private long lastModDate = -1;
@@ -163,7 +164,7 @@ public class GameCardSetManager {
 	 */
 	private void scheduleCheckSetChanges() {
         // Schedule a task to check for card set directory changes every 5 minutes
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        setChangeTask = new TimerTask() {
             public void run() {
             	// If the directory content of available sets has changed
             	//  we'll want to reinitialize the list
@@ -171,7 +172,22 @@ public class GameCardSetManager {
                 	initAvailableSets();
                 }
             }
-        }, CONTENT_CHECK_RATE, CONTENT_CHECK_RATE);
+        };
+        
+        new Timer(true).scheduleAtFixedRate(setChangeTask,
+        													 CONTENT_CHECK_RATE,
+        													 CONTENT_CHECK_RATE);
+	}
+	
+	/**
+	 * Method to cancel the schedule checking and possible reloading of card sets and back images
+	 */
+	public void cancelCheckSetChanges() {
+		if (setChangeTask != null) {
+			log.info("Cancelling the scheduled task to check for card set changes.");
+			
+			setChangeTask.cancel();
+		}
 	}
 	
 	/**
