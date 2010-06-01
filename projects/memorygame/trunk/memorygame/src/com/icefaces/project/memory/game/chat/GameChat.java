@@ -29,6 +29,9 @@ import java.util.Vector;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.icefaces.project.memory.bean.color.ColorBean;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Game class to manage chat
  * The main purpose is to store a list of GameChatMessages which can be
@@ -39,6 +42,8 @@ public class GameChat {
 	public static final String DEFAULT_COLOR = ColorBean.DEFAULT_COLOR_HEX;
 	public static final DateFormat TIMESTAMP = new SimpleDateFormat("h:mm:ssa");
 	public static final int TABLE_SIZE = 15;
+	
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	private String gameName;
 	private List<GameChatMessage> messages;
@@ -78,6 +83,10 @@ public class GameChat {
 	}
 
 	public void addMessage(GameChatMessage toAdd, boolean renderAfter) {
+		if (log.isInfoEnabled()) {
+			log.info("CHAT> " + toAdd);
+		}
+		
 		messages.add(0, toAdd);
 		
 		// Trim any extra messages to keep the size of the chat log small
