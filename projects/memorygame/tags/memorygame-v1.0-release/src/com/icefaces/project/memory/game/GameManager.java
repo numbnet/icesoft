@@ -31,6 +31,9 @@ import com.icefaces.project.memory.game.card.GameCardSetManager;
 import com.icefaces.project.memory.user.UserModel;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Game class that maintains a list of all available GameInstances
  * This also handles the management of card sets by delegating it to a GameCardSetManager
@@ -43,8 +46,9 @@ public class GameManager {
 	public static final long BOT_THINK_DELAY_BASE = 900l;
 	public static final int BOT_THINK_DELAY_VARIATION = 400;
 	public static final long BOT_MOVE_DELAY = 400l;
-	
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
+	
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	private GameCardSetManager cardSetManager;
 	private List<GameInstance> gameList = new Vector<GameInstance>(0);
@@ -103,6 +107,12 @@ public class GameManager {
 	}
 	
 	public boolean createGame(UserModel user, GameInstance newGame) {
+		if (log.isInfoEnabled()) {
+			log.info("User " + user.getName() + " created a new " + newGame.getMaxUsers() +
+					 " player game called '" + newGame.getName() + "' with the card set " +
+					 newGame.getBoard().getCardSet().getName() + " and back image " + newGame.getBoard().getCardSet().getBackImage() + ".");
+		}
+		
 		// Add the creating user to their own game
 		newGame.addUser(user);
 		
@@ -116,6 +126,10 @@ public class GameManager {
 	}
 	
 	public boolean joinGame(UserModel user, GameInstance game, String password) throws FailedJoinException {
+		if (log.isInfoEnabled()) {
+			log.info("User " + user.getName() + " is attempting to join the game called '" + game.getName() + "'.");
+		}
+		
 		// Ensure the user hasn't already joined the game
 		if (!game.getHasUser(user)) {
 			// Ensure there is a slot available
@@ -151,6 +165,10 @@ public class GameManager {
 	 * Method to fill the remaining open slots of a game with computer controlled sessions
 	 */
 	public boolean addComputersToGame(GameInstance game) {
+		if (log.isInfoEnabled()) {
+			log.info("Attempting to add computers to the game called '" + game.getName() + "'.");
+		}
+		
 		if (game.getHasSpace()) {
 			// Generate a bunch of new computer controlled sessions and fill the game with them
 			UserModel[] computers = BotManager.generateComputers(game.getEmptySpace(), this, game);
@@ -171,6 +189,10 @@ public class GameManager {
 	}
 	
 	public void leaveGame(UserModel user, GameInstance game) {
+		if (log.isInfoEnabled()) {
+			log.info("User " + user.getName() + " is attempting to leave the game called '" + game.getName() + "'.");
+		}
+		
 		if (game.getHasUser(user)) {
 			game.stopGame();
 			game.removeUser(user); // This will cause a render
@@ -185,6 +207,10 @@ public class GameManager {
 			// Remove the game from the list if no one is in it
 			// This will stop empty games from lingering around
 			if (!game.getHasUsers()) {
+				if (log.isInfoEnabled()) {
+					log.info("Shutting down empty game called '" + game.getName() + "'.");
+				}
+				
 				game.shutdownGame();
 				
 				gameList.remove(game);

@@ -25,7 +25,12 @@ import com.icesoft.faces.context.DisposableBean;
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.game.GameManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class UserSession extends UserModel implements DisposableBean {
+	private Log log = LogFactory.getLog(this.getClass());
+	
 	private GameManager gameManager;
 	private GameInstance currentGame;
 	private UserRenderer renderer = new UserRenderer();
@@ -78,9 +83,11 @@ public class UserSession extends UserModel implements DisposableBean {
 	 *  a bunch of idle users populating games and confusing people
 	 */
 	public void dispose() {
+		log.info("Disposing of UserSession bean with name '" + name + "' and current game of '" + currentGame + "'.");
+		
 		if ((gameManager != null) &&
 		    (currentGame != null) &&
-		   (name != null)) {
+		    (name != null)) {
 			gameManager.leaveGame(this, currentGame);
 		}
 	}
