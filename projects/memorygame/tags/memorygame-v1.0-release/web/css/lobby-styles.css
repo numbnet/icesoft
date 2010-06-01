@@ -1,0 +1,81 @@
+.lobbyBox {
+	width: 60%;
+	padding: 5px;
+	margin: 2px;
+}
+
+.nameCol {
+	width: 40%;
+	text-align: left;
+}
+
+.passCol {
+	width: 14%;
+	text-align: center;
+}
+
+.sizeCol {
+	width: 14%;
+	text-align: center;
+}
+
+.cardCol {
+	width: 17%;
+	text-align: center;
+}
+
+.playerCol {
+	width: 15%;
+	text-align: center;
+}
+
+.bulletCol {
+    width: 1%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    vertical-align: top;
+}
+
+.instructCol {
+    width: 99%;
+    text-align: left;
+}
+
+.previewPopup {
+    background-color: #DDDDDD;
+    border: 5px outset #666666;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    z-index: 1005;
+}
+
+.previewPopup .icePnlPopHdr {
+	font-size: 12px;
+	font-weight: bold;
+	text-align: left;
+    color: #FFFFFF;
+    background-color: #0B5383;
+    border-bottom: 1px solid #94B3CB;
+	padding: 5px;
+}
+
+.previewPopup .icePnlPopBody {
+	padding: 5px;
+}
+
+.previewBox {
+	width: 500px;
+	height: 130px;
+	overflow: auto;
+	text-align: center;
+	vertical-align: middle;
+	border: 2px inset #666666;
+	background-color: #000000;
+}
+
+.advancedOptionsBar {
+	width: 100%;
+	border-bottom: 1px solid #94B3CB;
+}
