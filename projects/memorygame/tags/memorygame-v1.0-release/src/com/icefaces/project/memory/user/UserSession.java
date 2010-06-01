@@ -82,7 +82,6 @@ public class UserSession extends UserModel implements DisposableBean {
 	 * In this case we'll try to make them leave their current game, so that we don't have
 	 *  a bunch of idle users populating games and confusing people
 	 */
-	@Override
 	public void dispose() throws Exception {
 		log.info("Disposing of UserSession bean with name '" + name + "' and current game of '" + currentGame + "'.");
 		
