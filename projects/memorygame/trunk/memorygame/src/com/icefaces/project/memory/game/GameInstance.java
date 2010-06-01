@@ -50,8 +50,8 @@ public class GameInstance {
 	protected List<UserModel> usersByScore; // list of players sorted by highest score
 	protected int maxUsers = GameManager.DEFAULT_MAX_USERS;
 	protected long reflipDelay = GameManager.DEFAULT_REFLIP_DELAY;
-	protected boolean isStarted = false;
-	private String winnerMessage;
+	protected volatile boolean isStarted = false; // can be toggled from the main thread or the bot player thread or the winning screen thread
+	protected String winnerMessage;
 	private GameBoard board;
 	private GameChat chat;
 	private GameTurns turns;
@@ -419,27 +419,29 @@ public class GameInstance {
 		chat.addWinnerMessage(message);
 		setWinnerMessage(message);
 		
+		// Stop the game so we have a chance to display the win screen
 		setIsStarted(false);
 		
-		// Start a new thread from the existing pool to close the winning screen and begin the game
+		// Start a new thread from the existing pool to close the winning screen and restart the game
 		turns.getThreadPool().execute(new Runnable() {
 			public void run() {
 				try {
-					Thread.sleep(7500l);
+					Thread.sleep(GameManager.WIN_SCREEN_DISPLAY_TIME);
 				}catch (InterruptedException ignored) { }
 				
-				if (getWinnerMessage() != null) {
-					setWinnerMessage(null);
-					
-					restartGame();
+				// Clear the victory message after our sleep
+				setWinnerMessage(null);
+				
+				// Check whether the game has been started while we slept
+				// If it has we don't need to restart anything, otherwise we
+				//  should perform that task
+				if (!isStarted) {
+					// Restart the game
+					stopGame();
+					startGame();
 				}
 			}
 		});
-	}
-	
-	public void restartGame() {
-		stopGame();
-		startGame();
 	}
 	
 	public void startGame() {

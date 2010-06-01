@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
+import com.icesoft.faces.context.DisposableBean;
 import com.icefaces.project.memory.bot.BotManager;
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.card.GameCardSetManager;
@@ -38,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  * Game class that maintains a list of all available GameInstances
  * This also handles the management of card sets by delegating it to a GameCardSetManager
  */
-public class GameManager {
+public class GameManager implements DisposableBean {
 	public static final int DEFAULT_SIZE = 4;
 	public static final int DEFAULT_MAX_USERS = 2;
 	public static final int DEFAULT_MAX_FLIP = 2;
@@ -46,6 +47,7 @@ public class GameManager {
 	public static final long BOT_THINK_DELAY_BASE = 900l;
 	public static final int BOT_THINK_DELAY_VARIATION = 400;
 	public static final long BOT_MOVE_DELAY = 400l;
+	public static final long WIN_SCREEN_DISPLAY_TIME = 7500l;
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
 	
 	private Log log = LogFactory.getLog(this.getClass());
@@ -220,6 +222,18 @@ public class GameManager {
 			}
 			
 			renderLobby();
+		}
+	}
+
+	/**
+	 * Method to perform some cleanup when this bean is going to get disposed
+	 * In this case we want to cancel the TimerTask that checks for Card Set related
+	 *  filesystem changes every so often
+	 */
+	@Override
+	public void dispose() throws Exception {
+		if (cardSetManager != null) {
+			cardSetManager.cancelCheckSetChanges();
 		}
 	}
 }
