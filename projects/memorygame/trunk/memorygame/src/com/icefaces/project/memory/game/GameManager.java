@@ -129,10 +129,9 @@ public class GameManager {
 				// All looks good, so add the user
 				game.addUser(user);
 				
-				// Determine if the game should be started
-				if (game.getIsFull()) {
-					game.startGame();
-				}
+				// Attempt to start the game
+				// This will naturally check whether it is full
+				game.startGame();
 				
 				// Render everyone in the lobby so they see the change
 				renderLobby();

@@ -21,7 +21,6 @@
 */
 package com.icefaces.project.memory.game;
 
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class GameInstance {
 	public GameInstance() {
 		this(null, null, GameManager.DEFAULT_SIZE,
 			 new GameCardSet(null, 0),
-			 new ArrayList<UserModel>(0),
+			 new Vector<UserModel>(0),
 			 GameManager.DEFAULT_MAX_USERS,
 			 GameManager.DEFAULT_REFLIP_DELAY,
 			 false);
@@ -175,6 +174,10 @@ public class GameInstance {
 	}
 	public void setUsersByScore(List<UserModel> usersByScore) {
 		this.usersByScore = usersByScore;
+	}
+	
+	public void recacheUsersByScore() {
+		setUsersByScore(null);
 	}
 
 	public void renderGame() {
@@ -294,7 +297,7 @@ public class GameInstance {
 				matcher.incrementScore();
 				
 				// Reset the cached user score list so it gets resorted
-				setUsersByScore(null);
+				recacheUsersByScore();
 				
 				// Check if this last match won the round
 				if (board.isGameDone()) {
@@ -412,48 +415,45 @@ public class GameInstance {
 		String message = winningUser.getName() + " won the game with a score of " +
 		                 winningUser.getScore() + ".";
 		
+		// Set these messages as needed and then stop the game as it's over
 		chat.addWinnerMessage(message);
 		setWinnerMessage(message);
 		
-		restartGame();
 		setIsStarted(false);
 		
-		// Start a new thread from the existing pool to close the winning screen begin the game
+		// Start a new thread from the existing pool to close the winning screen and begin the game
 		turns.getThreadPool().execute(new Runnable() {
 			public void run() {
 				try {
 					Thread.sleep(7500l);
 				}catch (InterruptedException ignored) { }
 				
-				setWinnerMessage(null);
-				
-				if (getIsFull()) {
-					setIsStarted(true);
+				if (getWinnerMessage() != null) {
+					setWinnerMessage(null);
+					
+					restartGame();
 				}
-				
-				renderGame();
 			}
 		});
 	}
 	
 	public void restartGame() {
 		stopGame();
-		startGame(false);
+		startGame();
 	}
 	
 	public void startGame() {
-		startGame(true);
-	}
-	
-	public void startGame(boolean renderAfter) {
-		setIsStarted(true);
-		
-		board.generateData();
-		turns.determineTurns();
-		
-		if (renderAfter) {
-			renderGame();
+		if (getIsFull()) {
+			setWinnerMessage(null);
+			setIsStarted(true);
+			
+			// Reset the scoreboard, generate a new grid, and determine the first turn
+			recacheUsersByScore();			
+			board.generateData();
+			turns.determineTurns();
 		}
+		
+		renderGame();
 	}
 	
 	public void stopGame() {
@@ -465,6 +465,7 @@ public class GameInstance {
 	}
 	
 	public void shutdownGame() {
+		setWinnerMessage(null);
 		stopGame();
 		
 		turns.stopThreadPool();
