@@ -34,7 +34,8 @@
                        sortAscending="#{lobbyBean.ascending}"
 	                   styleClass="genericTable"
 	                   columnClasses="nameCol,passCol,sizeCol,cardCol,playerCol"
-	                   rowClasses="lightRow,darkRow">
+	                   rowClasses="lightRow,darkRow"
+                       tabindex="50">
 	            <f:facet name="header">
                     <ice:outputText value="Join Game"
                                     style="font-weight: bold; font-size: 12px;"/>
@@ -140,7 +141,8 @@
 	                    
 	                    <ice:commandButton value="Join Selected"
 	                                       styleClass="halfButton"
-	                                       action="#{lobbyBean.joinGame}"/>                             
+	                                       action="#{lobbyBean.joinGame}"
+                                           tabindex="51"/>                             
 	                </c:if>
 	                <c:if test="#{!gameManager.hasGameList}">
 	                    No existing games were found. Be the first to create one!
