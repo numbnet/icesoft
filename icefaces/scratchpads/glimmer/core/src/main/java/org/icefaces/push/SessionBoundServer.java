@@ -39,12 +39,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.Serializable;
 
-public class SessionBoundServer extends PathDispatcher {
+public class SessionBoundServer extends PathDispatcher implements Serializable {
     private static Logger log = Logger.getLogger(SessionBoundServer.class.getName());
     private static final String ICEFacesBridgeRequestPattern = "\\.icefaces\\.jsf$";
     public static final String SessionExpiryExtension = ":se";
-    private PushContext pushContext;
+    private transient PushContext pushContext;
     private String groupName;
 
     public SessionBoundServer(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
@@ -75,7 +76,9 @@ public class SessionBoundServer extends PathDispatcher {
             windowScopeManager.onDisactivatedWindow(new Observer() {
                 public void update(Observable observable, Object o) {
                     String windowID = (String) o;
-                    pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
+                    if (null != pushContext)  {
+                        pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
+                    }
                 }
             });
             sessionViewManager = new SessionViewManager(pushContext, session);

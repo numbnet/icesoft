@@ -39,9 +39,10 @@ import java.util.Observer;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.Serializable;
 
 //todo: factor out window manager that can be used to manage the window scope 
-public class WindowScopeManager {
+public class WindowScopeManager implements Serializable {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final CurrentScopeThreadLocal CurrentScope = new CurrentScopeThreadLocal();
@@ -214,7 +215,7 @@ public class WindowScopeManager {
         }
     }
 
-    private static class ReadyObservable extends Observable {
+    private static class ReadyObservable extends Observable implements Serializable {
         public synchronized void notifyObservers(Object o) {
             setChanged();
             super.notifyObservers(o);

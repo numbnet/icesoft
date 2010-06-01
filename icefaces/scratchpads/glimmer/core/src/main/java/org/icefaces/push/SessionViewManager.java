@@ -29,9 +29,10 @@ import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.io.Serializable;
 
-public class SessionViewManager implements SessionRenderer {
-    private final PushContext pushContext;
+public class SessionViewManager implements SessionRenderer, Serializable {
+    private transient PushContext pushContext;
     private String groupName;
     private HashSet viewIDs = new HashSet();
     private HashSet groups = new HashSet();
@@ -45,22 +46,22 @@ public class SessionViewManager implements SessionRenderer {
 
     public String addView(String id) {
         viewIDs.add(id);
-        pushContext.addGroupMember(groupName, id);
+        getPushContext().addGroupMember(groupName, id);
 
         Iterator i = groups.iterator();
         while (i.hasNext()) {
-            pushContext.addGroupMember((String) i.next(), id);
+            getPushContext().addGroupMember((String) i.next(), id);
         }
         return id;
     }
 
     public void removeView(String id) {
         viewIDs.remove(id);
-        pushContext.removeGroupMember(groupName, id);
+        getPushContext().removeGroupMember(groupName, id);
 
         Iterator i = groups.iterator();
         while (i.hasNext()) {
-            pushContext.removeGroupMember((String) i.next(), id);
+            getPushContext().removeGroupMember((String) i.next(), id);
         }
     }
 
@@ -70,14 +71,14 @@ public class SessionViewManager implements SessionRenderer {
     }
 
     public void renderViews() {
-        pushContext.push(groupName);
+        getPushContext().push(groupName);
     }
 
     public void addCurrentViewsToGroup(String groupName) {
         groups.add(groupName);
         Iterator i = viewIDs.iterator();
         while (i.hasNext()) {
-            pushContext.addGroupMember(groupName, (String) i.next());
+            getPushContext().addGroupMember(groupName, (String) i.next());
         }
     }
 
@@ -85,7 +86,16 @@ public class SessionViewManager implements SessionRenderer {
         groups.remove(groupName);
         Iterator i = viewIDs.iterator();
         while (i.hasNext()) {
-            pushContext.removeGroupMember(groupName, (String) i.next());
+            getPushContext().removeGroupMember(groupName, (String) i.next());
         }
+    }
+    
+    private PushContext getPushContext()  {
+        if (null == pushContext)  {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            pushContext = (PushContext) facesContext.getExternalContext()
+                    .getApplicationMap().get(PushContext.class.getName());
+        }
+        return pushContext;
     }
 }

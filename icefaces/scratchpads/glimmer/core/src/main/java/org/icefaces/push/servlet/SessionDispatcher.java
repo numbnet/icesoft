@@ -49,26 +49,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
         associateSessionDispatcher(context);
         this.context = context;
 
-        Thread monitor = new Thread("Session Monitor") {
-            public void run() {
-                while (run) {
-                    try {
-                        // Iterate over the session monitors using a copying iterator
-                        Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
-                        while (iterator.hasNext()) {
-                            final Monitor sessionMonitor = (Monitor) iterator.next();
-                            sessionMonitor.shutdownIfExpired();
-                        }
-
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        //ignore interrupts
-                    }
-                }
-            }
-        };
-        monitor.setDaemon(true);
-        monitor.start();
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -204,7 +184,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     public static class Monitor {
         private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
         private Set contexts = new HashSet();
-        private HttpSession session;
+        private transient HttpSession session;
         private long lastAccess;
 
         private Monitor(HttpSession session) {

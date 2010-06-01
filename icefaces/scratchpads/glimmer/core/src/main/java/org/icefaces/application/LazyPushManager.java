@@ -26,8 +26,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
-public class LazyPushManager {
+public class LazyPushManager implements Serializable {
     public LazyPushManager(HttpSession session) {
         session.setAttribute(LazyPushManager.class.getName(), this);
     }
