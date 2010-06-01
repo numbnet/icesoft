@@ -44,6 +44,21 @@
         <ice:outputStyle href="./css/override-styles.css"/>
     </head>
     <body>
+        <div class="header_overall">
+            <div class="header_right">
+                <img src="./css/images/banner-company.jpg"
+                     width="267" height="159"
+                     alt="ICEfaces"/>
+            </div>
+            <div class="header_container">
+                <div class="header_left">
+                    <img src="./css/images/banner-logo.jpg"
+                         width="463" height="100"
+                         alt="ICEfaces Memory Game"/>
+                </div>
+            </div>
+        </div>
+    
     	<c:if test="#{userSession.isInGame}">
 	   		<ice:panelGroup id="oc" style="overallContainer">
 	    		<ice:panelGroup id="l" styleClass="leftPane-#{boardBean.layout}"
