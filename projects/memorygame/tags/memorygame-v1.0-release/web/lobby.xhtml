@@ -35,6 +35,21 @@
         <ice:outputStyle href="./css/override-styles.css"/>
     </head>
     <body>
+        <div class="header_overall">
+            <div class="header_right">
+                <img src="./css/images/banner-company.jpg"
+                     width="267" height="159"
+                     alt="ICEfaces"/>
+            </div>
+            <div class="header_container">
+                <div class="header_left">
+                    <img src="./css/images/banner-logo.jpg"
+                         width="463" height="100"
+                         alt="ICEfaces Memory Game"/>
+                </div>
+            </div>
+        </div>
+    
     	<ice:form>
 	   		<ice:outputText value="#{userSession.renderer.lobbyCall}"
 	   					    style="display: none;"/>
@@ -45,7 +60,7 @@
 			    </ice:panelGroup>
 			</c:if>
 	    </ice:form>
-   
+        
         <center>
             <ice:panelGroup styleClass="lobbyBox">
                <ui:include src="/WEB-INF/includes/lobby/help.xhtml"/>
@@ -63,6 +78,22 @@
     		    <ui:include src="/WEB-INF/includes/lobby/createGame.xhtml"/>
 	        </ice:panelGroup>
         </center>
+        
+        <div class="footer_container">
+            <div class="footer_left">
+                <div style="display: inline; float: left;">
+                    Copyright 2010&amp;nbsp;<a href="http://www.icesoft.com/" target="_blank">ICEsoft Technologies Inc.</a>
+                </div>
+                <div style="display: inline; float:right;">
+                    <i>Powered By&amp;nbsp;<a href="http://www.icefaces.org/" target="_blank">ICEfaces</a></i>
+                </div>
+            </div>
+            <div class="footer_right">
+                <img src="./css/images/banner-footer-company.jpg"
+                     width="121" height="95"
+                     alt="ICEfaces"/>
+            </div>
+        </div>
     </body>
     </html>
 </f:view>
