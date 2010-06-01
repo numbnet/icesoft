@@ -40,6 +40,7 @@ public class EnvConfig {
     public static String ICEFACES_AUTOID = "org.icefaces.autoid";
     private boolean autoIdFlag;
     private boolean ariaEnabledFlag;
+    private boolean compressDOMFlag;
     
     public EnvConfig(Map initMap)  {
         init(initMap);
@@ -60,6 +61,7 @@ public class EnvConfig {
         autoRenderFlag = decodeBoolean(initMap, ICEFACES_AUTO, true);
         autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true);
         ariaEnabledFlag = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true);
+        compressDOMFlag = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false);
     }
 
     boolean decodeBoolean(Map map, String name, boolean defaultValue)  {
@@ -117,4 +119,14 @@ public class EnvConfig {
     public boolean isAriaEnabled() {
         return ariaEnabledFlag;
     }
+
+    /**
+     * Return the init param for org.icefaces.compressDOM
+     *
+     * @return true if DOM compression should be applied
+     */
+    public boolean getCompressDOM() {
+        return compressDOMFlag;
+    }
+
 }

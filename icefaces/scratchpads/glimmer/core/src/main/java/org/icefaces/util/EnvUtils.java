@@ -36,6 +36,7 @@ public class EnvUtils {
     public static String ICEFACES_CONFIG_LOADED = "org.icefaces.config.loaded";
     public static String ICEFACES_RENDER = "org.icefaces.render";
     public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
+    public static String COMPRESS_DOM = "org.icefaces.compressDOM";
 
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
     public static final String BODY_DETECTED = "org.icefaces.bodyDetected";
@@ -97,6 +98,11 @@ public class EnvUtils {
             return EnvConfig.getEnvConfig(facesContext).isAriaEnabled();
         }
         return (Boolean.TRUE.equals(ariaEnabled));
+    }
+
+    public static boolean isCompressDOM(FacesContext facesContext) {
+        //consider making this a per-view setting
+        return EnvConfig.getEnvConfig(facesContext).getCompressDOM();
     }
 
     private static boolean icepushPresent;
