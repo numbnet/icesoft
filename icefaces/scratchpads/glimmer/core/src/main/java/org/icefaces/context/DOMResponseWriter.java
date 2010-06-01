@@ -22,24 +22,30 @@
 
 package org.icefaces.context;
 
-import org.icefaces.util.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.icefaces.util.EnvUtils;
+import org.icefaces.util.DOMUtils;
 
 
 public class DOMResponseWriter extends ResponseWriter {
@@ -238,7 +244,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 stateNode.getParentNode().removeChild(stateNode);
             }
             stateNodes.clear();
-            FacesContext.getCurrentInstance().getViewRoot().getAttributes().put(OLD_DOM, document);
+            saveOldDocument();
         }
 
         document = null;
@@ -547,8 +553,39 @@ public class DOMResponseWriter extends ResponseWriter {
         return document;
     }
 
+    public void saveOldDocument() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isCompressDOM(facesContext))  {
+            facesContext.getViewRoot().getAttributes().put(OLD_DOM, document);
+            return;
+        }
+        byte[] data;
+        DOMDocumentSerializer serializer = new DOMDocumentSerializer();
+        ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
+        serializer.setOutputStream(out);
+        serializer.serialize(document);
+        data = out.toByteArray();
+        facesContext.getViewRoot().getAttributes().put(OLD_DOM, data);
+    }
+
     public Document getOldDocument() {
-        return (Document) FacesContext.getCurrentInstance().getViewRoot().getAttributes().get(OLD_DOM);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isCompressDOM(facesContext))  {
+            return (Document) facesContext.getViewRoot()
+                .getAttributes().get(OLD_DOM);
+        }
+        Document document = DOMUtils.getNewDocument();
+        try {
+            byte[] data = (byte[]) facesContext.getViewRoot()
+                    .getAttributes().get(OLD_DOM);
+            DOMDocumentParser parser = new DOMDocumentParser();
+            ByteArrayInputStream in = new ByteArrayInputStream(data);
+            parser.parse(document, in);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to restore old DOM ", e);
+        }
+
+        return document;
     }
 
     public Node getCursorParent() {
