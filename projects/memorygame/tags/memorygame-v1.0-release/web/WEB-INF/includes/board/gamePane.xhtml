@@ -1,0 +1,114 @@
+<!--
+ ~ Version: MPL 1.1
+ ~
+ ~ "The contents of this file are subject to the Mozilla Public License
+ ~ Version 1.1 (the "License"); you may not use this file except in
+ ~ compliance with the License. You may obtain a copy of the License at
+ ~ http://www.mozilla.org/MPL/
+ ~
+ ~ Software distributed under the License is distributed on an "AS IS"
+ ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ ~ License for the specific language governing rights and limitations under
+ ~ the License.
+ ~
+ ~ The Original Code is ICEfaces 1.5 open source software code, released
+ ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ ~ 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ ~
+ ~ Contributor(s): _____________________.
+ ~
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<c:if test="#{userSession.currentGame.isStarted}">
+	<ice:form id="bf">
+	    <center>
+	        <ice:panelGroup style="padding-top: 10px;">
+	        <ice:panelSeries id="b"
+	                         value="#{userSession.currentGame.board.data}"
+	                         var="card"
+	                         rows="#{userSession.currentGame.board.cellCount}"
+	                         cellspacing="0" cellpadding="0"
+	                         styleClass="gb"
+	                         style="width: #{userSession.currentGame.board.pixelWidth}px; height: #{userSession.currentGame.board.pixelHeight}px;">
+	            <ice:commandButton id="c"
+	                               actionListener="#{boardBean.flipCard}"
+	                               image="#{card.image}"
+	                               styleClass="ci"
+	                               style="width: #{card.pixelWidth}; height: #{card.pixelHeight};"
+	                               disabled="#{!userSession.isTurn}"
+	                               effect="#{card.flipEffect}">
+	                <f:attribute name="clickedCard" value="#{card}"/>
+	            </ice:commandButton>
+	        </ice:panelSeries>
+	        </ice:panelGroup>
+            <ice:panelGroup rendered="#{userSession.isTurn}">
+                <br/>
+                <ice:outputText value="It is your turn #{userSession.name}!"
+                                styleClass="turnNotifier"/>
+            </ice:panelGroup>
+	    </center>
+	    </ice:form>
+	</c:if>
+	
+	<c:if test="#{!userSession.currentGame.isStarted}">
+	    <center>
+	    <br/>
+	    <ice:panelGrid columns="3"
+	                   cellpadding="2" cellspacing="2"
+	                   rendered="#{userSession.currentGame.hasWinner}"
+	                   style="text-align: center;">
+	        <ice:graphicImage url="./css/images/fireworks.gif"
+	                          alt="Fireworks"
+	                          style="width: 100px; height: 100px; border: 0;"/>
+	        <ice:outputText value="#{userSession.currentGame.winnerMessage}"
+	                        styleClass="winnerMessage"/>
+	        <ice:graphicImage url="./css/images/fireworks.gif"
+	                          alt="Fireworks"
+	                          style="width: 100px; height: 100px; border: 0;"/>
+	    </ice:panelGrid>
+	    <ice:panelGroup rendered="#{!userSession.currentGame.hasWinner}">
+	        <ice:outputText value="The game has not started yet."
+	                        styleClass="notStartedNotice"/>
+	        <br/>
+	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} player."
+	                        styleClass="notStartedNotice"
+	                        rendered="#{userSession.currentGame.emptySpace le 1}"/>
+	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} players."
+	                        styleClass="notStartedNotice"
+	                        rendered="#{userSession.currentGame.emptySpace gt 1}"/>
+            <br/>
+            <br/>
+            <ice:outputText value="Tired of waiting for a human opponent?"
+                            styleClass="notStartedNoticeSmall"/>
+            <br/>
+            <ice:outputText value="Click below to start a single player game."
+                            styleClass="notStartedNoticeSmall"/>
+            <br/>
+            <br/>
+            <ice:form>
+                <ice:commandButton value="Play Against the Computer"
+                                   actionListener="#{boardBean.requestComputerJoin}"
+                                   styleClass="halfButton" style="width: 25%;"/>
+            </ice:form>
+	    </ice:panelGroup>
+	    </center>
+	</c:if>
+	
+    <ice:panelGroup>
+		<c:if test="#{boardBean.invitePopup}">
+	       <ice:form>
+	          <ui:include src="/WEB-INF/includes/popups/invitePopup.xhtml"/>
+	       </ice:form>
+		</c:if>
+        <c:if test="#{boardBean.helpPopup}">
+           <ice:form>
+              <ui:include src="/WEB-INF/includes/popups/helpPopup.xhtml"/>
+           </ice:form>
+        </c:if>        
+    </ice:panelGroup>
+</ui:composition>

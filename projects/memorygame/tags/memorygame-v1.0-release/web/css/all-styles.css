@@ -1,0 +1,102 @@
+html, body, .overallContainer {
+	width: 100%;
+	height: 90%;
+	padding: 0;
+	margin: 0;
+	font-family: tahoma, arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	color: #0B5383;
+}
+
+.errorMessage, .globalErrorMessage {
+    font-size: 12px;
+    font-weight: bold;
+    color: #F78208;
+}
+
+a {
+    text-decoration: none;
+    color: #1183CF;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #1183CF;
+}
+
+input, textarea, select, .halfButton, .fullButton {
+    font-family: tahoma, arial, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	padding: 2px;
+	margin: 0;
+    background-color: #E5EDF2;
+    color: #0B5383;
+    border: 1px solid #94B3CB;
+}
+
+.imageButton, .imageButton-dis {
+	border: 0;
+	background: transparent;
+	width: 16px;
+	height: 16px;
+}
+
+.halfButton, .fullButton, .button {
+    font-style: normal;
+    font-weight: bold;
+    background-color: #E5EDF2;
+	border: 2px outset #94B3CB;
+}
+
+.halfButton {
+	width: 50%;
+}
+
+.fullButton {
+	width: 100%;
+}
+
+.button {
+	width: 150px;
+}
+
+.genericTable {
+	width: 100%;
+	font-size: 12px;
+	background-color: #D0E3F1;
+	border: 1px solid #94B3CB;
+}
+
+.genericTableHdr {
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #0B5383;
+	border: 1px solid #94B3CB;
+	padding: 2px;
+}
+
+.labelCol {
+	width: 20%;
+	text-align: right;
+}
+
+.valueCol {
+	width: 35%;
+	text-align: left;
+}
+
+.errorCol {
+	width: 45%;
+	text-align: left;
+}
+
+.lightRow {
+	background-color: #FFFFFF;
+}
+
+.darkRow {
+	background-color: #EFEFEF;
+}
