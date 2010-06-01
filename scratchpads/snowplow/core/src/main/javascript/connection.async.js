@@ -167,7 +167,7 @@ var AsyncConnection;
         //build callbacks only after 'connection' function was defined
         var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
         var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
-        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 300;//allow 300ms of delay possibly introduced by network
+        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 5000;//allow max 5s of delay, possibly introduced by network
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });
@@ -180,19 +180,20 @@ var AsyncConnection;
                 connect();
 
                 timeoutBomb = runOnce(Delay(function() {
-                    warn(logger, 'failed to connect, second try...');
+                    warn(logger, 'failed to connect, second retry...');
                     broadcast(connectionTroubleListeners);
                     connect();
 
                     timeoutBomb = runOnce(Delay(function() {
                         broadcast(connectionDownListeners);
-                    }, heartbeatTimeout / 4));
-                }, heartbeatTimeout / 2));
+                    }, heartbeatTimeout));
+                }, heartbeatTimeout));
             }, heartbeatTimeout));
         }
 
         function initializeConnection() {
             info(logger, 'initialize connection within window ' + namespace.windowID);
+            resetTimeoutBomb();
             connect();
         }
 
