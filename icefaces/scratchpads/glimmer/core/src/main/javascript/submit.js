@@ -25,7 +25,7 @@ var singleSubmitExecuteThisRenderThis;
 var submit;
 (function() {
     function formOf(element) {
-        return element.form ? element.form : enclosingForm(element);
+        return toLowerCase(element.nodeName) == 'form' ? element : enclosingForm(element);
     }
 
     function standardFormSerialization(element) {
