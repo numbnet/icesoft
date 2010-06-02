@@ -21,8 +21,11 @@
 */
 package com.icefaces.project.memory.user;
 
+import com.icefaces.project.memory.util.ValidatorUtil;
+
 public class UserModel {
-	protected String name;
+	private final String ourDefaultName = "User " + System.currentTimeMillis();
+	protected String name = ourDefaultName;
 	protected int score = 0;
 	protected boolean isTurn = false;
 	protected boolean isComputer = false;
@@ -40,7 +43,9 @@ public class UserModel {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if (ValidatorUtil.isValidString(name)) {
+			this.name = name;
+		}
 	}
 
 	public int getScore() {
