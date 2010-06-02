@@ -326,13 +326,16 @@ public class LobbyBean extends SortBean {
 			return null;
 		}
 		
+		// Set our card set and get a new instance of the game
 		createdGame.getBoard().setCardSet(cardSet);
 		GameInstance newGame = new GameInstance(createdGame);
 		
+		// Request creation of the game
 		userSession.getGameManager().createGame(userSession, newGame);
 		userSession.setCurrentGame(newGame);
 		
-		createdGame = null;
+		// Clear the old game instance
+		createdGame = new GameInstance();
 		
 		return redirectToGame();
 	}
