@@ -169,9 +169,8 @@ public class GameCardSetManager {
             	// If the directory content of available sets has changed
             	//  we'll want to reinitialize the list
                 if (checkSetChanges()) {
-                	if (log.isInfoEnabled()) {
-                		log.info("Card set changes detected by the scheduled task, reinitializing list...");
-                	}
+            		log.info("Card set changes detected by the scheduled task, reinitializing list...");
+            		
                 	initAvailableSets();
                 }
             }
@@ -187,9 +186,7 @@ public class GameCardSetManager {
 	 */
 	public void cancelCheckSetChanges() {
 		if (setChangeTask != null) {
-			if (log.isInfoEnabled()) {
-				log.info("Cancelling the scheduled task to check for card set changes.");
-			}
+			log.info("Cancelling the scheduled task to check for card set changes.");
 			
 			setChangeTask.cancel();
 		}
@@ -199,8 +196,13 @@ public class GameCardSetManager {
 	 * Determine whether the card set folders have been modified
 	 */
 	private boolean checkSetChanges() {
-		// Ensure we have a valid set directory
-		if (ValidatorUtil.isValidDirectory(setDir)) {
+		// Check that we have a valid set directory
+	    if (ValidatorUtil.isValidDirectory(setDir)) {
+			// Ensure we have a valid stored modification date, so set it initially
+			if (lastModDate <= 0) {
+				lastModDate = setDir.lastModified();
+			}
+	    	
 			// Check whether the modification date has changed
 			if (lastModDate != setDir.lastModified()) {
 				// Store the recent modification and return 'true' for changes
