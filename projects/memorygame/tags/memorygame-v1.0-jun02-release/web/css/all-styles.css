@@ -1,0 +1,190 @@
+/*
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+*/
+html, body, .overallContainer {
+    background-color: #FFFFFF;
+	width: 100%;
+	height: 90%;
+	padding: 0;
+	margin: 0;
+	font-family: tahoma, arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	color: #0B5383;
+}
+
+.errorMessage, .globalErrorMessage {
+    font-size: 12px;
+    font-weight: bold;
+    color: #F78208;
+}
+
+a {
+    text-decoration: none;
+    color: #1183CF;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #1183CF;
+}
+
+input, textarea, select, .halfButton, .fullButton {
+    font-family: tahoma, arial, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	padding: 2px;
+	margin: 0;
+    background-color: #E5EDF2;
+    color: #0B5383;
+    border: 1px solid #94B3CB;
+}
+
+div.header_overall {
+    background-image: url('./images/banner-back.gif');
+    background-position: right top;
+    background-repeat: repeat-x;
+    color: #5F5F5F;
+    width: 100%;
+    height: 159px;
+}
+
+div.header_container {
+    width: 100%;
+    height: 100px;
+    min-width: 730px;
+}
+
+div.header_container div.header_left {
+    display: inline;
+    height: 100px;
+    position: relative;
+}
+
+div.header_right {
+    float: right;
+    position: absolute;
+    text-align: left;
+    height: 100px;
+    top: 0;
+    right: 0;
+}
+
+div.footer_container {
+    width: 100%;
+    height: 95px;
+    min-width: 730px;
+    background-image: url('./images/banner-footer.gif');
+    background-repeat: repeat-x;
+    background-position: bottom left;
+}
+
+div.footer_container div.footer_left {
+    float: left;
+    display: inline;
+    width: 80%;
+    padding-left: 15px;
+    padding-top: 50px;
+    font-size: 0.9em;
+    text-align: center;
+    color: white;
+}
+
+div.footer_container div.footer_left a, div.footer_container div.footer_left a:hover,
+div.footer_container div.footer_left a:visited {
+    color: orange;
+    text-decoration: none;
+}
+
+div.footer_container div.footer_left a:hover {
+    text-decoration: underline;
+}
+
+div.footer_container div.footer_right {
+    float: right;
+    display: inline;
+    width: 121px;
+}
+
+.imageButton, .imageButton-dis {
+	border: 0;
+	background: transparent;
+	width: 16px;
+	height: 16px;
+}
+
+.halfButton, .fullButton, .button {
+    font-style: normal;
+    font-weight: bold;
+    background-color: #E5EDF2;
+	border: 2px outset #94B3CB;
+}
+
+.halfButton {
+	width: 50%;
+}
+
+.fullButton {
+	width: 100%;
+}
+
+.button {
+	width: 150px;
+}
+
+.genericTable {
+	width: 100%;
+	font-size: 12px;
+	background-color: #D0E3F1;
+	border: 1px solid #94B3CB;
+}
+
+.genericTableHdr {
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #0B5383;
+	border: 1px solid #94B3CB;
+	padding: 2px;
+}
+
+.labelCol {
+	width: 20%;
+	text-align: right;
+}
+
+.valueCol {
+	width: 35%;
+	text-align: left;
+}
+
+.errorCol {
+	width: 45%;
+	text-align: left;
+}
+
+.lightRow {
+	background-color: #FFFFFF;
+}
+
+.darkRow {
+	background-color: #EFEFEF;
+}

@@ -1,0 +1,180 @@
+<!--
+ ~ Version: MPL 1.1
+ ~
+ ~ "The contents of this file are subject to the Mozilla Public License
+ ~ Version 1.1 (the "License"); you may not use this file except in
+ ~ compliance with the License. You may obtain a copy of the License at
+ ~ http://www.mozilla.org/MPL/
+ ~
+ ~ Software distributed under the License is distributed on an "AS IS"
+ ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ ~ License for the specific language governing rights and limitations under
+ ~ the License.
+ ~
+ ~ The Original Code is ICEfaces 1.5 open source software code, released
+ ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ ~ 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ ~
+ ~ Contributor(s): _____________________.
+ ~
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:form>
+		<ice:panelGrid columns="3" cellspacing="2" cellpadding="2"
+		               styleClass="genericTable"
+		               columnClasses="labelCol,valueCol,errorCol">
+		    <f:facet name="header">
+		        Create New Game
+		    </f:facet>
+		    
+		    <ice:outputLabel for="gameName" value="* Game Name:"/>
+		    <ice:inputText id="gameName" value="#{lobbyBean.createdGame.name}"
+		                   required="true" partialSubmit="true"
+		                   action="#{lobbyBean.createGame}"
+		                   maxlength="40" size="21"
+                           tabindex="80">
+		            <f:validator validatorId="UniqueGameNameValidator"/>
+		    </ice:inputText>
+		    <ice:message errorClass="errorMessage" for="gameName"/>
+		    
+		    <ice:outputLabel for="gamePass" value="Optional Password:"/>
+		    <ice:inputSecret id="gamePass" value="#{lobbyBean.createdGame.password}"
+		                     partialSubmit="true" redisplay="true"
+		                     action="#{lobbyBean.createGame}"
+		                     maxlength="20" size="21"
+                             tabindex="81"/>
+		    <ice:message errorClass="errorMessage" for="gamePass"/>
+		    
+		    <ice:outputLabel for="gameSet" value="* Card Images:"/>
+		    <table cellspacing="0" cellpadding="0">
+		        <tr>
+		            <td align="left" valign="middle">
+		                <ice:selectOneMenu id="gameSet"
+		                                   value="#{lobbyBean.selectedCardSet}"
+		                                   partialSubmit="true" required="true"
+		                                   style="width: 150px;"
+                                           tabindex="82">
+		                    <f:selectItem itemValue="" itemLabel="-- Select --"/>
+		                    <f:selectItem itemValue="#{lobbyBean.randomCardValue}" itemLabel="-- Random --"/>
+		                    <f:selectItems value="#{lobbyBean.availableSetsAsItems}"/>
+		                </ice:selectOneMenu>
+		            </td>
+		            <td align="left" valign="middle" style="padding-left: 3px;">
+		                <ice:commandButton image="./css/images/preview.png"
+		                                   alt="Preview Card Images"
+		                                   title="Preview Card Images"
+		                                   immediate="true"
+		                                   actionListener="#{lobbyBean.openCardPreview}"
+		                                   styleClass="imageButton"
+		                                   rendered="#{lobbyBean.hasSelectedCardSet}"
+                                           tabindex="89"/>
+		            </td>
+		        </tr>
+		    </table>
+		    <ice:message errorClass="errorMessage" for="gameSet"/>
+		    
+		    <ice:outputLabel for="backSet" value="* Card Theme:"/>
+		    <table cellspacing="0" cellpadding="0">
+		        <tr>
+		            <td align="left" valign="middle">
+		                <ice:selectOneMenu id="backSet"
+		                                   value="#{lobbyBean.selectedCardBack}"
+		                                   partialSubmit="true" required="true"
+		                                   style="width: 150px;"
+                                           tabindex="83">
+		                    <f:selectItem itemValue="" itemLabel="-- Select --"/>
+		                    <f:selectItem itemValue="#{lobbyBean.randomCardValue}" itemLabel="-- Random --"/>
+		                    <f:selectItems value="#{lobbyBean.availableBackImagesAsItems}"/>
+		                </ice:selectOneMenu>
+		            </td>
+		            <td align="left" valign="middle" style="padding-left: 3px;">
+		                <c:if test="#{lobbyBean.hasSelectedBackImage}">
+		                    <ice:panelGroup panelTooltip="biggerBackPreview">
+		                        <ice:graphicImage url="#{gameManager.cardSetManager.basePathBack}/#{lobbyBean.selectedCardBack}"
+		                                          alt="Preview Card Theme"
+		                                          title="Preview Card Theme"
+		                                          styleClass="imageButton"/>
+		                    </ice:panelGroup>
+		                    <ice:panelTooltip id="biggerBackPreview"
+		                                      displayOn="hover" hideOn="mouseout"
+		                                      draggable="false" moveWithMouse="false">
+		                        <f:facet name="body">
+		                            <ice:graphicImage url="#{gameManager.cardSetManager.basePathBack}/#{lobbyBean.selectedCardBack}"
+		                                              style="border: 0;"/>
+		                        </f:facet>
+		                    </ice:panelTooltip>
+		                </c:if>
+		            </td>
+		        </tr>
+		    </table>
+		    <ice:message errorClass="errorMessage" for="backSet"/>
+		    
+		    <ice:outputLabel for="gameSize" value="* Board Size:"/>
+		    <ice:selectOneMenu id="gameSize"
+		                       value="#{lobbyBean.createdGame.board.size}"
+		                       partialSubmit="true" required="true"
+		                       style="width: 150px;"
+                               tabindex="84">
+		        <f:selectItem itemValue="2"/>
+		        <f:selectItem itemValue="4"/>
+		        <f:selectItem itemValue="6"/>
+		        <f:selectItem itemValue="8"/>
+		    </ice:selectOneMenu>
+		    <ice:message errorClass="errorMessage" for="gameSize"/>
+		    
+		    <ice:outputLabel for="gameUsers" value="* Max Players:"/>
+		    <ice:selectOneMenu id="gameUsers"
+		                       value="#{lobbyBean.createdGame.maxUsers}"
+		                       partialSubmit="true" required="true"
+		                       style="width: 150px;"
+                               tabindex="85">
+		        <f:selectItem itemValue="2"/>
+		        <f:selectItem itemValue="3"/>
+		        <f:selectItem itemValue="4"/>
+		        <f:selectItem itemValue="5"/>
+		        <f:selectItem itemValue="6"/>
+		    </ice:selectOneMenu>
+		    <ice:message errorClass="errorMessage" for="gameUsers"/>
+		    
+		    <ice:outputText value=""/>
+		    <ice:commandLink value="Advanced Options"
+		                     actionListener="#{lobbyBean.toggleAdvancedOptions}"
+		                     immediate="true"
+		                     styleClass="advancedOptionsBar"
+                             tabindex="87"/>
+		    <ice:outputText value=""/>
+		    
+		    <ice:outputLabel for="gameTimeout" value="* Reflip Delay:"
+		                     rendered="#{lobbyBean.advancedOptionsRendered}"/>
+		    <ice:inputText id="gameTimeout"
+		                   value="#{lobbyBean.createdGame.reflipDelay}"
+		                   action="#{lobbyBean.createGame}"
+		                   partialSubmit="true" required="true"
+		                   maxlength="4" size="5"
+		                   rendered="#{lobbyBean.advancedOptionsRendered}"
+                           tabindex="88">
+		       <f:validateLongRange minimum="500" maximum="3000"/>
+		    </ice:inputText>
+		    <ice:message errorClass="errorMessage" for="gameTimeout"
+		                 rendered="#{lobbyBean.advancedOptionsRendered}"/>
+		                   
+		    <f:facet name="footer">
+		        <center>
+                    <ice:outputText value="Fields marked with * are required."
+                                    style="font-style: italic;"/>
+                    <br/>
+                    
+		            <ice:commandButton value="Create Game"
+		                               styleClass="halfButton"
+		                               action="#{lobbyBean.createGame}"
+                                       tabindex="86"/>
+		        </center>
+		    </f:facet>
+		</ice:panelGrid>
+	</ice:form>
+</ui:composition>
