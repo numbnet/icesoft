@@ -12,7 +12,7 @@
   <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
    
   <properties>
-    <jsf.version>2.0.2.FCS</jsf.version>
+    <jsf.version>2.0.2-FCS</jsf.version>
   </properties>
 
   <dependencies>
