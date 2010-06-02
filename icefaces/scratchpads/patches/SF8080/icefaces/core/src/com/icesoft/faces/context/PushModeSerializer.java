@@ -20,20 +20,20 @@ import java.util.HashMap;
 import java.util.Collection;
 
 public class PushModeSerializer implements DOMSerializer {
-    private Document oldDocument;
+    private BridgeFacesContext.DocumentStore store;
     private View view;
     private BridgeFacesContext context;
     private String viewNumber;
 
-    public PushModeSerializer(Document currentDocument, View view, BridgeFacesContext context, String viewNumber) {
-        this.oldDocument = currentDocument;
+    public PushModeSerializer(BridgeFacesContext.DocumentStore store, View view, BridgeFacesContext context, String viewNumber) {
+        this.store = store;
         this.view = view;
         this.context = context;
         this.viewNumber = viewNumber;
     }
 
     public void serialize(Document document) throws IOException {
-        Node[] changed = DOMUtils.domDiff(oldDocument, document);
+        Node[] changed = DOMUtils.domDiff(store.load(), document);
         HashMap depthMaps = new HashMap();
         for (int i = 0; i < changed.length; i++) {
             Element changeRoot =
@@ -98,7 +98,6 @@ public class PushModeSerializer implements DOMSerializer {
             }
         }
 
-        oldDocument = document;
     }
 
     //prune the children by looking for ancestors in the parents collection 

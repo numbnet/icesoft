@@ -94,7 +94,7 @@ public class DOMResponseWriter extends ResponseWriter {
             };
         }
     });
-    private static DocumentBuilder DOCUMENT_BUILDER;
+    static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
         try {
