@@ -75,7 +75,8 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button-focus{
 	border-color:#7D98B8;
-	background-position:0 -1300px;}
+ 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
 	
 .yui-skin-sam .yui-button-focus .first-child{
 	border-color:#7D98B8;}
@@ -89,7 +90,8 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button-hover{
 	border-color:#7D98B8;
-	background-position:0 -1300px;}
+ 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
 	
 .yui-skin-sam .yui-button-hover .first-child{
 	border-color:#7D98B8;}
@@ -103,7 +105,9 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button-active{
 	border-color:#7D98B8;
-	background-position:0 -1700px;}
+  	background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   
+}
 	
 .yui-skin-sam .yui-button-active .first-child{
 	border-color:#7D98B8;}
@@ -124,7 +128,9 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-radio-button-checked,.yui-skin-sam .yui-checkbox-button-checked{
 	border-color:#304369;
-	background-position:0 -1400px;}
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   
+}
 	
 .yui-skin-sam .yui-radio-button-checked .first-child,.yui-skin-sam .yui-checkbox-button-checked .first-child{
 	border-color:#304369;}
@@ -134,7 +140,9 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button-disabled{
 	border-color:#ccc;
-	background-position:0 -1500px;}
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+}
 	
 .yui-skin-sam .yui-button-disabled .first-child{
 	border-color:#ccc;
