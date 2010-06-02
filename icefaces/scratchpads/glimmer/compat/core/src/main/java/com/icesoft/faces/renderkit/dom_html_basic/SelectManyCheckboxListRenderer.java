@@ -114,12 +114,11 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             // render a SelectItemGroup in a nested table
             if (nextSelectItem instanceof SelectItemGroup) {
 
-                Element nextTR = null;
+                Element nextTR = domContext.createElement("tr");
                 Element nextTD = null;
 
                 if (nextSelectItem.getLabel() != null) {
                     if (renderVertically) {
-                        nextTR = domContext.createElement("tr");
                         rootTable.appendChild(nextTR);
                     }
                     nextTD = domContext.createElement("td");
@@ -130,6 +129,8 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 }
                 if (renderVertically) {
                     nextTR = domContext.createElement("tr");
+                    rootTable.appendChild(nextTR);
+                } else {
                     rootTable.appendChild(nextTR);
                 }
                 nextTD = domContext.createElement("td");
