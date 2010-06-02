@@ -158,37 +158,37 @@
     <profile>
        <id>tomcat6</id>
        <activation>
-          <activeByDefault>true</activeByDefault>
+          <activeByDefault>false</activeByDefault>
        </activation>
        <dependencies>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-impl</artifactId>
-             <version>2.0.2.FCS</version>
+             <version>2.0.2-FCS</version>
           </dependency>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-api</artifactId>
-             <version>2.0.2.FCS</version>
+             <version>2.0.2-FCS</version>
           </dependency>
        </dependencies>
     </profile>
     <profile>
        <id>glassfish3</id>
       <activation>
-          <activeByDefault>false</activeByDefault>
+          <activeByDefault>true</activeByDefault>
        </activation>       
        <dependencies>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-impl</artifactId>
-             <version>2.0.2.FCS</version>
+             <version>2.0.2-FCS</version>
              <scope>provided</scope>
           </dependency>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-api</artifactId>
-             <version>2.0.2.FCS</version>
+             <version>2.0.2-FCS</version>
              <scope>provided</scope>
           </dependency>
        </dependencies>
