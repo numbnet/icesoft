@@ -1,0 +1,286 @@
+/*
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+*/
+
+/* ICEfaces Component Override Styles */
+
+/* rowSelector - Row Selector */
+.iceRowSelSelected,
+.iceRowSelMouseOver,
+.iceRowSelSelectedMouseOver {
+    background: #0B5383;
+}
+
+.iceRowSelSelected .iceOutTxt,
+.iceRowSelMouseOver .iceOutTxt,
+.iceRowSelSelected .iceOutFrmt,
+.iceRowSelMouseOver .iceOutFrmt {
+    color: #FFFFFF;
+}
+
+.iceRowSelSelectedMouseOver .iceOutTxt,
+.iceRowSelSelectedMouseOver .iceOutFrmt {
+    color: #F78208;
+}
+
+/* commandSortHeader - Command Sort Header */
+.iceCmdSrtHdr, .iceCmdSrtHdr:hover,
+.iceCmdSrtHdr a, .iceCmdSrtHdr a:hover,
+.iceDatTblActvSrtHdr td {
+	font-family: tahoma, arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.iceCmdSrtHdr:hover,
+.iceCmdSrtHdr a:hover,
+.iceDatTblActvSrtHdr td {
+	text-decoration: underline;
+}
+
+.iceDatTblActvSrtHdr td {
+	text-align: center;
+	width: 100%;
+}
+
+.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc {
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.iceCmdSrtHdrAsc {
+    background-image: url('./images/components/sort_ascending.png');
+}
+
+.iceCmdSrtHdrDesc {
+    background-image: url('./images/components/sort_descending.png');
+}
+
+/* dataPaginator - Data Paginator */
+.iceDatPgrScrOut {
+    background-color: transparent;
+    margin: 10px;
+}
+
+.iceDatPgrScrBtn {
+    background-color: transparent;
+    padding: 2px;
+}
+
+.iceDatPgrScrBtn .iceCmdLnk-dis {
+    border-bottom:none;
+}
+
+.iceDatPgrTbl {
+    background-color: transparent;
+}
+
+.iceDatPgrScrCol a, .iceDatPgrCol a {
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 12px;
+    background-color: #FFFFFF;
+    color: #0B5383;
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #94B3CB;
+}
+
+.iceDatPgrScrCol a {
+    color: #FFFFFF;
+    border: 1px solid #94B3CB;
+    background-color: #0B5383;
+}
+
+.iceDatPgrCol a:hover {
+    border: 1px solid #0B5383;
+    text-decoration: none;
+}
+
+.iceDatPgrScrCol a:hover {
+    border: 1px solid #FFFFFF;
+    text-decoration: none;
+}
+
+/* menuBar and menuItem - Menus */
+.iceMnuBar {
+    padding: 0;
+    margin: 0;
+	width: 100%;
+    white-space: nowrap;
+}
+
+.iceMnuBarItem {
+    float: left;
+    white-space: nowrap;
+    background-color: #FCFCFC;
+    background-image: url('./images/components/menu_gradient.png');
+    background-repeat: repeat-x;
+    background-position: top;
+	height: 25px;
+	width: 105px;
+	padding: 0;
+	margin: 0 5px 0 0;
+	border: 1px solid #94B3CB;
+}
+
+.iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    font-size: 12px;
+	color: #0B5383;
+}
+
+.iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
+    padding: 3px 6px 3px 6px;
+}
+
+.iceMnuBarItem a:hover .iceOutTxt,
+.iceMnuBarItem a:hover .iceMnuBarItemLabel {
+    color: #FFFFFF;
+}
+
+.iceMnuBarSubMenu {
+    position: absolute;
+    background-color: #FCFCFC;
+    display: block;
+    width: 165px;
+    border-right: 1px solid #94B3CB;
+    border-left: 1px solid #94B3CB;
+    border-top: 1px solid #94B3CB;
+    z-index: 1000;
+}
+
+.iceMnuItm {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    border-bottom: 1px solid #94B3CB;
+}
+
+.iceMnuItm a, .iceMnuItm a:hover {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: block;
+    text-decoration: none;
+    text-align: left;
+    vertical-align: top;
+    line-height: 25px;
+    height: 25px;
+    width: 100%;
+}
+
+.iceMnuItm a {
+    background-color: #FCFCFC;
+    color: #0B5383;
+}
+
+.iceMnuItm a:hover {
+    background-color: #0B5383;
+    color: #FFFFFF;
+}
+
+.iceMnuItm a:hover .iceOutTxt,
+.iceMnuItm a:hover .iceMnuItmLabel {
+    color: #FFFFFF;
+}
+
+.iceMnuItmLabel {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 7px;
+    font-weight: normal;
+}
+
+.iceMnuItmLabel, .iceMnuBarItemLabel {
+    font-size: 1.0em;
+    vertical-align: top;
+}
+
+.iceMnuItmImage, .iceMnuBarItemImage {
+    display: inline;
+    padding-left: 2px;
+}
+
+.iceMnuBarItemImage,
+.iceMnuBarItem .iceMnuItmImage {
+    float: left;
+}
+
+.iceMnuItmImage, .iceMnuItmLabel {
+    vertical-align: middle;
+}
+
+.iceMnuBarSubMenuInd {
+    float: right;
+    padding: 5px 0 0 0;
+    margin: 0;
+}
+
+/* panelTooltip - Panel Tooltip */
+.icePnlTlTipBody {
+    background-color: #DDDDDD;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 0;
+}
+
+/* outputConnectionStatus - Connection Status */
+.iceOutConStatInactv, .iceOutConStatActv, .iceOutConStatCaution, .iceOutConStatDisconnect {
+	background-position: center top;
+	background-repeat: no-repeat;
+	height: 25px;
+	width: 25px;
+	position: absolute;
+}
+
+.iceOutConStat {
+	border: 0;
+	float: right;
+	height: 25px;
+	width: 25px;
+}
+
+.iceOutConStatInactv {
+    background: url('./images/components/connect_idle.gif') no-repeat center top;
+}
+
+.iceOutConStatActv {
+    background: url('./images/components/connect_active.gif') no-repeat center top;
+}
+
+.iceOutConStatCaution {
+    background: url('./images/components/connect_caution.gif') no-repeat center top;
+}
+
+.iceOutConStatDisconnect {
+    background: url('./images/components/connect_disconnected.gif') no-repeat center top;
+}
