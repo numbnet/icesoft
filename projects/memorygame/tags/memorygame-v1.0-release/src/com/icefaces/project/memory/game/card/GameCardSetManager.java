@@ -169,14 +169,17 @@ public class GameCardSetManager {
             	// If the directory content of available sets has changed
             	//  we'll want to reinitialize the list
                 if (checkSetChanges()) {
+                	if (log.isInfoEnabled()) {
+                		log.info("Card set changes detected by the scheduled task, reinitializing list...");
+                	}
                 	initAvailableSets();
                 }
             }
         };
         
-        new Timer(true).scheduleAtFixedRate(setChangeTask,
-        													 CONTENT_CHECK_RATE,
-        													 CONTENT_CHECK_RATE);
+        new Timer("setchanges", true).scheduleAtFixedRate(setChangeTask,
+											CONTENT_CHECK_RATE,
+											CONTENT_CHECK_RATE);
 	}
 	
 	/**
@@ -184,7 +187,9 @@ public class GameCardSetManager {
 	 */
 	public void cancelCheckSetChanges() {
 		if (setChangeTask != null) {
-			log.info("Cancelling the scheduled task to check for card set changes.");
+			if (log.isInfoEnabled()) {
+				log.info("Cancelling the scheduled task to check for card set changes.");
+			}
 			
 			setChangeTask.cancel();
 		}
@@ -198,13 +203,10 @@ public class GameCardSetManager {
 		if (ValidatorUtil.isValidDirectory(setDir)) {
 			// Check whether the modification date has changed
 			if (lastModDate != setDir.lastModified()) {
-				if (ValidatorUtil.isValidList(availableSets)) {
-					lastModDate = setDir.lastModified();
-					
-					// Check whether the current list size is different from the file system list
-					return
-						(availableSets.size() != setDir.listFiles(new DirectoryFilter()).length);
-				}
+				// Store the recent modification and return 'true' for changes
+				lastModDate = setDir.lastModified();
+				
+				return true;
 			}
 		}
 		
