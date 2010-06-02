@@ -70,8 +70,13 @@ public class MultiViewServer implements Server {
         try {
             sessionMonitor.touchSession();
             view.servePage(request);
-        } finally {
             associatedPageViews.add(view);
+        } catch (Exception ex){
+            System.out.println("MultiViewServer.service: view " + view.getViewIdentifier() + " failed due to " + ex.getMessage() );
+            views.remove(view.getViewIdentifier());
+            view.dispose();
+            throw ex;
+        } finally {
             view.release();
         }
     }

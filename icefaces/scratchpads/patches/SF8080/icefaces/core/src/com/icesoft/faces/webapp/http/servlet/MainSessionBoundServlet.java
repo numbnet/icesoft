@@ -156,6 +156,7 @@ public class MainSessionBoundServlet implements Server {
                 while (viewIterator.hasNext()) {
                     View view = (View) viewIterator.next();
                     view.dispose();
+                    System.out.println("MainSessionBoundServlet.run: disposing view on session end for view " + view );
                 }
 
                 if (handler != null) {
