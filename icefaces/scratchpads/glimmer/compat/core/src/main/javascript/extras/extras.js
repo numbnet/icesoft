@@ -223,6 +223,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         iceSubmitPartial(form, fld, event);
         setFocus('');
         fld.id = ""; //preserve ICE-2874
+        fld.value=""; //ICE-5492
     } catch(e) {
         console.log("Error in rowSelector[" + e + "]");
     }
