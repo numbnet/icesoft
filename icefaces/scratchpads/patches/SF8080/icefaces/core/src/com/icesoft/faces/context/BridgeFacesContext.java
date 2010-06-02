@@ -38,6 +38,9 @@ import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.jasper.Constants;
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import org.jvnet.fastinfoset.FastInfosetException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -58,6 +61,8 @@ import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -96,6 +101,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
+    private DocumentStore documentStore;
 
     public BridgeFacesContext(BridgeExternalContext externalContext, String viewIdentifier, String sessionID, View view, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         setCurrentInstance(this);
@@ -107,6 +113,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.externalContext = externalContext;
         this.resourceDispatcher = resourceDispatcher;
+        this.documentStore = configuration.getAttributeAsBoolean("compressDOM", false) ? new FastInfosetDocumentStore() : (DocumentStore) new ReferenceDocumentStore();
         this.switchToNormalMode();
     }
 
@@ -240,7 +247,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     public void switchToNormalMode() {
         try {
-            domSerializer = new NormalModeSerializer(this, externalContext.getWriter("UTF-8"));
+            domSerializer = new SaveCurrentDocument(new NormalModeSerializer(this, externalContext.getWriter("UTF-8")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -266,10 +273,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // of DRW does lots of initialization which needs something more than can
         // be faked. Look in the initialize method in the DOMResponseWriter class
         //
-        if (responseWriter != null) {
-            Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(document, view, this, viewNumber);
-        }
+        domSerializer = new SaveCurrentDocument(new PushModeSerializer(documentStore, view, this, viewNumber));
     }
 
     public UIViewRoot getViewRoot() {
@@ -702,4 +706,84 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             resource.withOptions(options);
         }
     }
+
+    public static interface DocumentStore {
+        void save(Document document) throws IOException;
+
+        /* Keep the Document in a more efficient form for
+           fast loading 
+        */
+        void cache(Document document) throws IOException;
+
+        Document load() throws IOException;
+    }
+
+    private static class ReferenceDocumentStore implements DocumentStore {
+        private Document document;
+
+        public void save(Document document) {
+            this.document = document;
+        }
+
+        public void cache(Document document) {
+            this.document = document;
+        }
+
+        public Document load() {
+            return document;
+        }
+    }
+
+    private static class FastInfosetDocumentStore implements DocumentStore {
+        private byte[] data = new byte[0];
+        private Document document = null;
+
+        public void save(Document document) throws IOException {
+            DOMDocumentSerializer serializer = new DOMDocumentSerializer();
+            ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
+            serializer.setOutputStream(out);
+            serializer.serialize(document);
+            data = out.toByteArray();
+            this.document = null;
+        }
+
+        public void cache(Document document) {
+            this.document = document;
+        }
+
+        public Document load() throws IOException {
+            if (null != document) {
+                return document;
+            }
+            if (data.length == 0) return null;
+
+            Document document = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
+            try {
+                DOMDocumentParser parser = new DOMDocumentParser();
+                ByteArrayInputStream in = new ByteArrayInputStream(data);
+                parser.parse(document, in);
+            } catch (FastInfosetException e) {
+                throw new IOException(e.getMessage());
+            }
+
+            return document;
+        }
+    }
+
+
+    private class SaveCurrentDocument implements DOMSerializer {
+        private final DOMSerializer serializer;
+
+        public SaveCurrentDocument(DOMSerializer serializer) {
+            this.serializer = serializer;
+        }
+
+        public void serialize(Document document) throws IOException {
+            serializer.serialize(document);
+            documentStore.save(document);
+        }
+    }
+
+
+
 }
