@@ -24,20 +24,19 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<ice:form>
-	    <ice:panelGrid columns="3" cellspacing="2" cellpadding="2"
-	                   styleClass="genericTable"
-	                   columnClasses="labelCol,valueCol,errorCol">
-	            <f:facet name="header">
-	                Personalization
-	            </f:facet>
-	            
-	        <ice:outputLabel for="userName" value="Your Name:"/>
-	        <ice:inputText id="userName" value="#{userSession.name}"
-	                       required="true" partialSubmit="true"
-	                       maxlength="35" size="36"
-                           tabindex="40"/>
-	        <ice:message errorClass="errorMessage" for="userName"/>
-	    </ice:panelGrid>
-	</ice:form>
+    <ice:panelGrid columns="3" cellspacing="2" cellpadding="2"
+                   styleClass="genericTable"
+                   columnClasses="labelCol,valueCol,errorCol">
+            <f:facet name="header">
+                Personalization
+            </f:facet>
+            
+        <ice:outputLabel for="userName" value="* Your Name:"/>
+        <ice:inputText id="userName" value="#{userSession.name}"
+                       required="true" partialSubmit="true"
+                       action="#{lobbyBean.createGame}"
+                       maxlength="35" size="36"
+                       tabindex="40"/>
+        <ice:message errorClass="errorMessage" for="userName"/>
+    </ice:panelGrid>
 </ui:composition>

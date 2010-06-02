@@ -62,21 +62,23 @@
 	    </ice:form>
         
         <center>
-            <ice:panelGroup styleClass="lobbyBox">
-               <ui:include src="/WEB-INF/includes/lobby/help.xhtml"/>
-            </ice:panelGroup>
-        
-	   		<ice:panelGroup styleClass="lobbyBox">
-	   		   <ui:include src="/WEB-INF/includes/lobby/personalize.xhtml"/>
-			</ice:panelGroup>
-        
-	   		<ice:panelGroup styleClass="lobbyBox">
-   		       <ui:include src="/WEB-INF/includes/lobby/joinGame.xhtml"/>
-	 	    </ice:panelGroup>
-    	
-    		<ice:panelGroup styleClass="lobbyBox">
-    		    <ui:include src="/WEB-INF/includes/lobby/createGame.xhtml"/>
-	        </ice:panelGroup>
+                <ice:panelGroup styleClass="lobbyBox">
+                   <ui:include src="/WEB-INF/includes/lobby/help.xhtml"/>
+                </ice:panelGroup>
+            
+            <ice:form id="l">
+    	   		<ice:panelGroup styleClass="lobbyBox">
+    	   		   <ui:include src="/WEB-INF/includes/lobby/personalize.xhtml"/>
+    			</ice:panelGroup>
+            
+    	   		<ice:panelGroup styleClass="lobbyBox">
+       		       <ui:include src="/WEB-INF/includes/lobby/joinGame.xhtml"/>
+    	 	    </ice:panelGroup>
+        	
+        		<ice:panelGroup styleClass="lobbyBox">
+        		    <ui:include src="/WEB-INF/includes/lobby/createGame.xhtml"/>
+    	        </ice:panelGroup>
+            </ice:form>
         </center>
         
         <div class="footer_container">

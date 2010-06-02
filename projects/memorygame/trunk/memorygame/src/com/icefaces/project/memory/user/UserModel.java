@@ -22,7 +22,7 @@
 package com.icefaces.project.memory.user;
 
 public class UserModel {
-	protected String name = "User " + System.currentTimeMillis();
+	protected String name;
 	protected int score = 0;
 	protected boolean isTurn = false;
 	protected boolean isComputer = false;
