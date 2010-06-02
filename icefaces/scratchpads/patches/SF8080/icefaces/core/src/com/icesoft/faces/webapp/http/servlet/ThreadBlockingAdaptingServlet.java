@@ -44,7 +44,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ThreadBlockingAdaptingServlet implements PseudoServlet {
     private static final Log LOG = LogFactory.getLog(ThreadBlockingAdaptingServlet.class);
-    private static final int TIMEOUT = 1; // minutes
+    private static final int TIMEOUT = 10; // minutes
     private Server server;
 
     public ThreadBlockingAdaptingServlet(Server server) {
