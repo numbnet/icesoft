@@ -23,6 +23,10 @@ package com.icefaces.project.memory.bean;
 
 import javax.faces.event.ActionEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.context.effects.Shake;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserSession;
@@ -32,8 +36,10 @@ import com.icefaces.project.memory.util.FacesUtil;
  * Page bean for the functionality in board.xhtml
  * This will control a few popups, the shake effect, the current layout, etc.
  */
-public class BoardBean {
+public class BoardBean implements DisposableBean {
 	public static final String DEFAULT_LAYOUT = "vertical";
+	
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	private UserSession userSession;
 	private boolean invitePopup = false;
@@ -160,6 +166,30 @@ public class BoardBean {
 		
 		if (!clickedCard.getIsFlipped()) {
 			userSession.getCurrentGame().performTurn(clickedCard);
+		}
+	}
+
+	/**
+	 * Method called when the bean is about to be destroyed
+	 * This would normally happen when a user closes their browser and we want to do something
+	 * In the specific case of our BoardBean this would happen if they quit a game or close their browser
+	 *  while inside a game
+	 * In this case we'll try to make them leave their current game, so that we don't have
+	 *  a bunch of idle users populating games and confusing people
+	 */
+	public void dispose() throws Exception {
+		if (userSession != null) {
+			if (userSession.getCurrentGame() != null) {
+				if (log.isInfoEnabled()) {
+					log.info("Disposing of BoardBean for '" + userSession.getName() + "' in game '" + userSession.getCurrentGame() + "'.");
+				}
+				
+				// Kick the user from their current game
+				userSession.leaveCurrentGame();
+			}
+		}
+		else {
+			log.warn("Disposing of BoardBean with a null user session.");
 		}
 	}
 }

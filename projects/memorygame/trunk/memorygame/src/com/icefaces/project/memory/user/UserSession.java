@@ -21,14 +21,13 @@
 */
 package com.icefaces.project.memory.user;
 
-import com.icesoft.faces.context.DisposableBean;
-import com.icefaces.project.memory.game.GameInstance;
-import com.icefaces.project.memory.game.GameManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class UserSession extends UserModel implements DisposableBean {
+import com.icefaces.project.memory.game.GameInstance;
+import com.icefaces.project.memory.game.GameManager;
+
+public class UserSession extends UserModel {
 	private Log log = LogFactory.getLog(this.getClass());
 	
 	private GameManager gameManager;
@@ -37,6 +36,9 @@ public class UserSession extends UserModel implements DisposableBean {
 	private boolean isShaking = false;
 	
 	public UserSession() {
+		if (log.isInfoEnabled()) {
+			log.info("New session created with default name '" + name + "'.");
+		}
 	}
 	
 	public GameManager getGameManager() {
@@ -74,21 +76,21 @@ public class UserSession extends UserModel implements DisposableBean {
 	public boolean getIsInGame() {
 		return currentGame != null;
 	}
-
+	
 	/**
-	 * Method called when the bean is about to be destroyed
-	 * This would normally happen when a user closes their browser and we want to do something
-	 *  when their session times out
-	 * In this case we'll try to make them leave their current game, so that we don't have
-	 *  a bunch of idle users populating games and confusing people
+	 * Method to attempt to leave the current game, if one is valid
+	 * 
+	 * @return true if a game was left
 	 */
-	public void dispose() throws Exception {
-		log.info("Disposing of UserSession bean with name '" + name + "' and current game of '" + currentGame + "'.");
-		
+	public boolean leaveCurrentGame() {
 		if ((gameManager != null) &&
 		    (currentGame != null) &&
 		    (name != null)) {
 			gameManager.leaveGame(this, currentGame);
+			
+			return true;
 		}
+		
+		return false;
 	}
 }
