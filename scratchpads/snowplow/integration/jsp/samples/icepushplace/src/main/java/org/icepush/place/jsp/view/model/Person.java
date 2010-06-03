@@ -27,11 +27,11 @@ package org.icepush.place.jsp.view.model;
 
 public class Person {
 
-    private String nickname;
-    private String mood;
-    private String comment;
-    private String region;
-    private String technology;
+    private String nickname = "";
+    private String mood = "";
+    private String comment = "";
+    private String region = "";
+    private String technology = "";
 
     public Person() {
 
