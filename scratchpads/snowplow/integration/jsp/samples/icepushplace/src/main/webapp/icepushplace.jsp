@@ -36,26 +36,129 @@
 </jsp:useBean>
 <jsp:setProperty name="members" property="*"/>
 <jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+<% members.getIn().add(person); %>
 </jsp:useBean>
 <jsp:setProperty name="person" property="*"/>
 <jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
 </jsp:useBean>
-<% members.getIn().add(person); %>
+
 <html>
 <head>
 	<title>ICEpush Place</title>
 	<script type="text/javascript" src="code.icepush"></script>
+        <script type="text/javascript">//<![CDATA[
+        function getXmlHttpRequest() {
+        	try {
+        		return new XMLHttpRequest(); // Firefox, Opera 8.0+, Safari
+        	} catch (e) {
+        		try {
+        			return new ActiveXObject("Msxml2.XMLHTTP"); // Internet Explorer
+        		} catch (e) {
+        			try {
+        				return new ActiveXObject("Microsoft.XMLHTTP");
+        			} catch (e) {
+        				alert("Your browser is too old for AJAX!");
+        				return null;
+        			}
+        		}
+        	}
+        }
+        function click_updateSettings(){
+        	var nickName = document.getElementById("settings").elements["nickname"].value;
+                var mood = document.getElementById("settings").elements["mood"].value;
+                var comment = document.getElementById("settings").elements["comment"].value;
+                var region = document.getElementById("settings").elements["region"].value;
+        	var xmlHttp = getXmlHttpRequest();
+        	var params = "nickName=" + nickName + "&mood=" + mood + "&comment=" + comment + "&region=" + region;
+                xmlHttp.open("POST", "./updateSettings.jsp", false);
+        	xmlHttp.setRequestHeader("Content-type",
+        			"application/x-www-form-urlencoded");
+        	xmlHttp.send(params);
+        }
+        //]]></script>
 </head>
 <body>
 <h2>ICEpush Place</h2>
 
+<form id="settings">
+    Nickname: <input type="text" 
+                     value="${person.nickname}"
+                     id="nickname"
+                     name="nickname"
+                     size="20" /><br/><br/>
+    What mood are you in?: <select id="mood" name="mood" >
+                               <option value="average"
+                               <% if (person.getMood().compareTo("average") == 0)  {%>
+                               selected
+                               <% } %>
+                               >average</option>
+                               <option value="shocked"
+                               <% if (person.getMood().compareTo("shocked") == 0)  {%>
+                               selected
+                               <% } %>
+                               >shocked</option>
+                               <option value="angry"
+                               <% if (person.getMood().compareTo("angry") == 0)  {%>
+                               selected
+                               <% } %>
+                               >angry</option>
+                               <option value="happy"
+                               <% if (person.getMood().compareTo("happy") == 0)  {%>
+                               selected
+                               <% } %>
+                               >happy</option>
+                               <option value="sad"
+                               <% if (person.getMood().compareTo("sad") == 0)  {%>
+                               selected
+                               <% } %>
+                               >sad</option>
+                          </select><br/><br/>
+    What's on your mind?: <input type="text" 
+                                 value="${person.comment}"
+                                 id="comment"
+                                 name="comment"
+                                 size="20"/><br/><br/>
+    Change your continent: <select id="region" name="region">
+                               <option value="North America"
+                               <% if (person.getRegion().compareTo("North America") == 0)  {%>
+                               selected
+                               <% } %>
+                               >North America</option>
+                               <option value="Europe"
+                               <% if (person.getRegion().compareTo("Europe") == 0)  {%>
+                               selected
+                               <% } %>
+                               >Europe</option>
+                               <option value="South America"
+                                <% if (person.getRegion().compareTo("South America") == 0)  {%>
+                               selected
+                               <% } %>
+                               >South America</option>
+                               <option value="Asia"
+                               <% if (person.getRegion().compareTo("Asia") == 0)  {%>
+                               selected
+                               <% } %>
+                               >Asia</option>
+                               <option value="Africa"
+                               <% if (person.getRegion().compareTo("Africa") == 0)  {%>
+                               selected
+                               <% } %>
+                               >Africa</option>
+                               <option value="Antarctica"
+                               <% if (person.getRegion().compareTo("Antarctica") == 0)  {%>
+                               selected
+                               <% } %>
+                               >Antarctica</option>
+                           </select><br/><br/>
+    <input type="submit" value="Update" onclick="click_updateSettings();return false;"/>
+</form>
 
 <table>
 	<tr>
 		<td><h4>ICEpush Place&nbsp</h4></td>
 	</tr>
 	<tr>
-		<td><icep:region group="all" page="/whosIn.jsp"/></td>
+		<td><icep:region group="all" page="/members.jsp"/></td>
 	</tr>
 </table>
 <icep:push group="all"/>
