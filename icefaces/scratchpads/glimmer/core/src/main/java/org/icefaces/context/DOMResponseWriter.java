@@ -575,6 +575,8 @@ public class DOMResponseWriter extends ResponseWriter {
                 .getAttributes().get(OLD_DOM);
         }
         Document document = DOMUtils.getNewDocument();
+        //FastInfoset does not tolerate stray xmlns declarations
+        document.setStrictErrorChecking(false);
         try {
             byte[] data = (byte[]) facesContext.getViewRoot()
                     .getAttributes().get(OLD_DOM);
