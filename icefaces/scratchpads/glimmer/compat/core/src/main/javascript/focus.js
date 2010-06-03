@@ -22,14 +22,12 @@
 
 var setFocus;
 var applyFocus;
+var currentFocus;
 
 (function() {
-    var currentFocus;
-
     setFocus = function(id) {
         currentFocus = id;
     };
-
 
     function isValidID(id) {
         return /^\w[\w\-\:]*$/.test(id);
