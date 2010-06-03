@@ -38,7 +38,7 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
 
     protected void renderExtensions() {
         String focusId = facesContext.getExternalContext().getRequestParameterMap().get("ice.focus");
-        if (focusId != null && !focusId.equals("null")) {
+        if (focusId != null && !focusId.equals("null") && !focusId.equals("undefined")) {
             JavascriptContext.focus(facesContext, focusId);
         }
 
