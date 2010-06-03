@@ -31,19 +31,35 @@
 
 <jsp:useBean id="members" class="org.icepush.place.jsp.view.model.Members" scope="application">
 </jsp:useBean>
+<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+</jsp:useBean>
 <table>
     <th>Nickname</th>
     <th>Mood</th>
     <th>What's on your mind?</th>
     <th>Continent</th>
     <th>Client Technology</th>
-    <c:forEach var="elem" items="${members.in}">
+    <th>Latest Post</th>
+    <th>Post Message</th>
+    <c:forEach var="elem" items="${members.in}" varStatus="row">
         <tr>
 		<td><c:out value="${elem.nickname}"/>&nbsp</td>
                 <td><c:out value="${elem.mood}"/>&nbsp</td>
                 <td><c:out value="${elem.comment}"/>&nbsp</td>
                 <td><c:out value="${elem.region}"/>&nbsp</td>
                 <td><c:out value="JSP"/>&nbsp</td>
+                <td><c:out value="${elem.messageIn}"/>&nbsp</td>
+                <td>
+                    <form id="messageForm${row.index}">
+                    <input id="messageOut${row.index}"
+                           type="text"
+                           name="messageOut"
+                            size="20" />&nbsp
+                    <input type="submit"
+                           value="Post"
+                           onclick="click_messageOut(${row.index},'${person.nickname}');return false;"/>
+                    </form>
+                </td>
 	</tr>
    </c:forEach>
 </table>

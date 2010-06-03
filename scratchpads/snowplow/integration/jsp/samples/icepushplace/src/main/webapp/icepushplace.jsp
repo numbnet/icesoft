@@ -75,6 +75,15 @@
         			"application/x-www-form-urlencoded");
         	xmlHttp.send(params);
         }
+        function click_messageOut(row,from){
+        	var messageOut = document.getElementById("messageForm" + row).elements["messageOut" + row].value;
+                var xmlHttp = getXmlHttpRequest();
+        	var params = "messageOut=" + messageOut + "&row=" + row + "&from=" + from;
+                xmlHttp.open("POST", "./messageOut.jsp", false);
+        	xmlHttp.setRequestHeader("Content-type",
+        			"application/x-www-form-urlencoded");
+        	xmlHttp.send(params);
+        }
         //]]></script>
 </head>
 <body>
