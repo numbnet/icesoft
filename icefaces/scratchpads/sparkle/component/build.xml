@@ -77,21 +77,9 @@
   	<!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
-	
-	
-	<!-- delete generated sprites -->
-    <condition property="delete.sprites">
-      <not>
-	    <available file="cache.properties" />
-      </not>
-    </condition>
-	
-	<antcall target="sprites-clean" />
-
-  </target>
-  
-  <target name="sprites-clean" if="delete.sprites">
 	<delete dir="./resources/org.icefaces.component.sprites/out"/>
+	<delete file="cache.properties" />
+
   </target>
   
 <target name="sprites-check" description="Check whether sprites need to be rebuilt">
@@ -131,11 +119,5 @@ Please provide SmartSprite parameters in a 'build.properties' file.
                   loglevel="${log.level}"
                   spritepngdepth="${sprite.png.depth}"
                   spritepngie6="${sprite.png.ie6}" />
-  </target>
-  
-  <!-- delete sprite source files last modified info to force sprite generation -->
-  <target name="sprites-reset">
-    <delete file="cache.properties" />
-    <delete dir="./resources/org.icefaces.component.sprites/out" />
   </target>
 </project>
