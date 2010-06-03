@@ -30,6 +30,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.w3c.dom.Element;
 
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -51,15 +52,16 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getStyle() != null) {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
+            ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
             Element lib = domContext.createElement(HTML.SCRIPT_ELEM);
             lib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            lib.setAttribute(HTML.SRC_ATTR, inputRichText.getBaseURI().toString());
+            lib.setAttribute(HTML.SRC_ATTR, viewHandler.getResourceURL(facesContext, "/" + inputRichText.getBaseURI().toString()));
             root.appendChild(lib);
 
             URI icelibURI = ResourceRegistryLocator.locate(facesContext).loadJavascriptCode(InputRichText.ICE_FCK_EDITOR_JS);
             Element icelib = domContext.createElement(HTML.SCRIPT_ELEM);
             icelib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            icelib.setAttribute(HTML.SRC_ATTR, icelibURI.toString());
+            icelib.setAttribute(HTML.SRC_ATTR, viewHandler.getResourceURL(facesContext, "/" + icelibURI.toString()));
             root.appendChild(icelib);
 
             root.appendChild(div);
@@ -67,12 +69,12 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             StringBuffer call = new StringBuffer();
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage()
-                    + "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() +
+                    + "', '" + inputRichText.getFor() + "', '" + viewHandler.getResourceURL(facesContext, "/" + inputRichText.getBaseURI().getPath()) + "','" + inputRichText.getWidth() +
                     "', '" + inputRichText.getHeight() + "', '" + inputRichText.getToolbar() + "', '" + inputRichText.getCustomConfigPath() +
                     "', '" + inputRichText.getSkin() + "'));");
             //ICE-4760    
-            call.append("$('"+ clientId +"')[\"focus\"]= function(){handleApplicationFocus('"+ clientId+"');};");
-            
+            call.append("$('" + clientId + "')[\"focus\"]= function(){handleApplicationFocus('" + clientId + "');};");
+
             String value = "";
             if (inputRichText.getValue() != null) {
                 value = inputRichText.getValue().toString();
@@ -82,7 +84,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             addHiddenField(domContext, root, ClientIdPool.get(clientId + "Disabled"),
                     String.valueOf(inputRichText.isDisabled()));
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
-            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));            
+            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));
             root.appendChild(script);
