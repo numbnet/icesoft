@@ -32,6 +32,8 @@ public class Person {
     private String comment = "";
     private String region = "";
     private String technology = "";
+    private String messageIn = "";
+    private String messageOut = "";
 
     public Person() {
 
@@ -76,4 +78,19 @@ public class Person {
         this.technology = technology;
     }
 
+    public String getMessageIn() {
+        return messageIn;
+    }
+
+    public void setMessageIn(String messageIn) {
+        this.messageIn = messageIn;
+    }
+
+    public String getMessageOut() {
+        return messageOut;
+    }
+
+    public void setMessageOut(String messageOut) {
+        this.messageOut = messageOut;
+    }
 }

@@ -24,14 +24,14 @@
 
 package org.icepush.place.jsp.view.model;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Members {
-    private Vector in;
+    private ArrayList in;
 
     public Members() {
-	in = new Vector();
+	in = new ArrayList();
     }
 
     public List getIn() {
