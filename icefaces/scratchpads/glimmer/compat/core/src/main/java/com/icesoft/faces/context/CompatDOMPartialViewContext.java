@@ -24,13 +24,11 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.context.DOMPartialViewContext;
-import org.icefaces.context.DOMResponseWriter;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import java.io.IOException;
-import java.io.Writer;
 
 public class CompatDOMPartialViewContext extends DOMPartialViewContext {
 
@@ -39,6 +37,11 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
     }
 
     protected void renderExtensions() {
+        String focusId = facesContext.getExternalContext().getRequestParameterMap().get("ice.focus");
+        if (focusId != null && !focusId.equals("null")) {
+            JavascriptContext.focus(facesContext, focusId);
+        }
+
         String javascriptCalls = JavascriptContext.getJavascriptCalls(facesContext);
         if (javascriptCalls != null && javascriptCalls.trim().length() > 0) {
             try {
