@@ -29,7 +29,7 @@
 	response.setHeader("Expires", "0");//prevents proxy caching
 %>
 
-<jsp:useBean id="members" class="org.icepush.place.jsp.view.model.Members" scope="application">
+<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
 </jsp:useBean>
@@ -41,7 +41,7 @@
     <th>Client Technology</th>
     <th>Latest Post</th>
     <th>Post Message</th>
-    <c:forEach var="elem" items="${members.in}" varStatus="row">
+    <c:forEach var="elem" items="${regions.northAmerica}" varStatus="row">
         <tr>
 		<td><c:out value="${elem.nickname}"/>&nbsp</td>
                 <td><c:out value="${elem.mood}"/>&nbsp</td>
@@ -50,16 +50,17 @@
                 <td><c:out value="JSP"/>&nbsp</td>
                 <td><c:out value="${elem.messageIn}"/>&nbsp</td>
                 <td>
-                    <form id="messageForm${row.index}">
-                    <input id="messageOut${row.index}"
+                    <form id="msgForm${elem.region}${row.index}">
+                    <input id="msgOut${elem.region}${row.index}"
                            type="text"
                            name="messageOut"
                             size="20" />&nbsp
                     <input type="submit"
                            value="Post"
-                           onclick="click_messageOut(${row.index},'${person.nickname}');return false;"/>
+                           onclick="click_messageOut('${elem.region}',${row.index},'${person.nickname}');return false;"/>
                     </form>
                 </td>
 	</tr>
    </c:forEach>
+
 </table>

@@ -30,16 +30,31 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="org.icepush.PushContext"%>
 <%@taglib prefix="icep" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 
-<jsp:useBean id="members" class="org.icepush.place.jsp.view.model.Members" scope="application">
-</jsp:useBean>
-<jsp:setProperty name="members" property="*"/>
-<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
-<% members.getIn().add(person); %>
-</jsp:useBean>
-<jsp:setProperty name="person" property="*"/>
 <jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
+</jsp:useBean>
+<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+</jsp:useBean>
+<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+    <jsp:setProperty name="person" property="*"/>
+<%
+      if(person.getRegion().isEmpty()){
+          person.setRegion("1");
+      }
+      PushContext pushContext = PushContext.getInstance(getServletContext());
+      // Add to appropriate region (render group) and push to group
+      switch(Integer.parseInt(person.getRegion())){
+            case 1: regions.getNorthAmerica().add(person);pushContext.push(person.getRegion());break;
+            case 2: regions.getEurope().add(person);pushContext.push(person.getRegion());break;
+            case 3: regions.getSouthAmerica().add(person);pushContext.push(person.getRegion());break;
+            case 4: regions.getAsia().add(person);pushContext.push(person.getRegion());break;
+            case 5: regions.getAfrica().add(person);pushContext.push(person.getRegion());break;
+            case 6: regions.getAntarctica().add(person);pushContext.push(person.getRegion());break;
+            default: System.out.println("Problem Initializing Person");
+      }
+%>
 </jsp:useBean>
 
 <html>
@@ -75,10 +90,10 @@
         			"application/x-www-form-urlencoded");
         	xmlHttp.send(params);
         }
-        function click_messageOut(row,from){
-        	var messageOut = document.getElementById("messageForm" + row).elements["messageOut" + row].value;
+        function click_messageOut(region,row,from){
+        	var messageOut = document.getElementById("msgForm" + region + row).elements["msgOut" + region + row].value;
                 var xmlHttp = getXmlHttpRequest();
-        	var params = "messageOut=" + messageOut + "&row=" + row + "&from=" + from;
+        	var params = "msgOut=" + messageOut + "&region=" + region + "&row=" + row + "&from=" + from;
                 xmlHttp.open("POST", "./messageOut.jsp", false);
         	xmlHttp.setRequestHeader("Content-type",
         			"application/x-www-form-urlencoded");
@@ -128,33 +143,33 @@
                                  name="comment"
                                  size="20"/><br/><br/>
     Change your continent: <select id="region" name="region">
-                               <option value="North America"
-                               <% if (person.getRegion().compareTo("North America") == 0)  {%>
+                               <option value="1"
+                               <% if (person.getRegion().compareTo("1") == 0)  {%>
                                selected
                                <% } %>
                                >North America</option>
-                               <option value="Europe"
-                               <% if (person.getRegion().compareTo("Europe") == 0)  {%>
+                               <option value="2"
+                               <% if (person.getRegion().compareTo("2") == 0)  {%>
                                selected
                                <% } %>
                                >Europe</option>
-                               <option value="South America"
-                                <% if (person.getRegion().compareTo("South America") == 0)  {%>
+                               <option value="3"
+                                <% if (person.getRegion().compareTo("3") == 0)  {%>
                                selected
                                <% } %>
                                >South America</option>
-                               <option value="Asia"
-                               <% if (person.getRegion().compareTo("Asia") == 0)  {%>
+                               <option value="4"
+                               <% if (person.getRegion().compareTo("4") == 0)  {%>
                                selected
                                <% } %>
                                >Asia</option>
-                               <option value="Africa"
-                               <% if (person.getRegion().compareTo("Africa") == 0)  {%>
+                               <option value="5"
+                               <% if (person.getRegion().compareTo("5") == 0)  {%>
                                selected
                                <% } %>
                                >Africa</option>
-                               <option value="Antarctica"
-                               <% if (person.getRegion().compareTo("Antarctica") == 0)  {%>
+                               <option value="6"
+                               <% if (person.getRegion().compareTo("6") == 0)  {%>
                                selected
                                <% } %>
                                >Antarctica</option>
@@ -167,9 +182,24 @@
 		<td><h4>ICEpush Place&nbsp</h4></td>
 	</tr>
 	<tr>
-		<td><icep:region group="all" page="/members.jsp"/></td>
+		<td><icep:region group="1" page="/northAmerica.jsp"/></td>
+	</tr>
+	<tr>
+		<td><icep:region group="2" page="/europe.jsp"/></td>
+	</tr>
+	<tr>
+		<td><icep:region group="3" page="/southAmerica.jsp"/></td>
+	</tr>
+	<tr>
+		<td><icep:region group="4" page="/asia.jsp"/></td>
+	</tr>
+	<tr>
+		<td><icep:region group="5" page="/africa.jsp"/></td>
+	</tr>
+	<tr>
+		<td><icep:region group="6" page="/antarctica.jsp"/></td>
 	</tr>
 </table>
-<icep:push group="all"/>
+
 </body>
 </html>

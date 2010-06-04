@@ -24,17 +24,48 @@
 
 package org.icepush.place.jsp.view.model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.List;
 
-public class Members {
-    private ArrayList in;
+public class Regions {
 
-    public Members() {
-	in = new ArrayList();
+    private Vector northAmerica;
+    private Vector europe;
+    private Vector southAmerica;
+    private Vector asia;
+    private Vector africa;
+    private Vector antarctica;
+
+    public Regions(){
+        northAmerica = new Vector();
+        europe = new Vector();
+        southAmerica = new Vector();
+        asia = new Vector();
+        africa = new Vector();
+        antarctica = new Vector();
     }
 
-    public List getIn() {
-	return (List)in;
+    public List getNorthAmerica() {
+        return northAmerica;
+    }
+
+    public List getEurope() {
+        return europe;
+    }
+
+    public List getSouthAmerica() {
+        return southAmerica;
+    }
+
+    public List getAsia() {
+        return asia;
+    }
+
+    public Vector getAfrica() {
+        return africa;
+    }
+
+    public List getAntarctica() {
+        return (List)antarctica;
     }
 }
