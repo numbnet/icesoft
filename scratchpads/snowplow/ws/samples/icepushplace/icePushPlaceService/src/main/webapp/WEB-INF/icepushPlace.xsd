@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.icepush.org/ws/samples/icepushplace"
+	elementFormDefault="qualified" attributeFormDefault="qualified"
+        targetNamespace="http://www.icepush.org/ws/samples/icepushplace">
+
+    <xsd:element name="appRegisterRequest" type="tns:AppType"/>
+    <xsd:element name="personLoginRequest" type="tns:PersonRequestType"/>
+    <xsd:element name="personLoginResponse" type="tns:PersonKeyType"/>
+    <xsd:element name="personLogoutRequest" type="tns:PersonRequestType"/>
+    <xsd:element name="personUpdateRequest" type="tns:PersonRequestType"/>
+    <xsd:element name="worldUpdateRequest" type="tns:WorldRequestType"/>
+    <xsd:element name="worldUpdateResponse" type="tns:WorldResponseType"/>
+
+    <xsd:complexType name="AppType">
+        <xsd:sequence>
+            <xsd:element name="World" type="xsd:string"/>
+            <xsd:element name="URL" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PersonType">
+        <xsd:sequence>
+            <xsd:element name="Key" type="xsd:integer"/>
+            <xsd:element name="Name" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PersonRequestType">
+        <xsd:sequence>
+            <xsd:element name="World" type="xsd:string"/>
+            <xsd:element name="Person" type="tns:PersonType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PersonKeyType">
+        <xsd:sequence>
+            <xsd:element name="Key" type="xsd:integer"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WorldRequestType">
+        <xsd:sequence>
+            <xsd:element name="World" type="xsd:string"/>
+            <xsd:element name="LastSequenceNo" type="xsd:unsignedLong"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WorldResponseType">
+        <xsd:sequence>
+            <xsd:element name="SequenceNo" type="xsd:unsignedLong"/>
+            <xsd:element name="Person" type="tns:PersonType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>
