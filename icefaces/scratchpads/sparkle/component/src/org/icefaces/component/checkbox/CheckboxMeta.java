@@ -1,9 +1,11 @@
 package org.icefaces.component.checkbox;
 
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+
+
 
 @Component(
         tagName ="checkbox",
@@ -16,6 +18,7 @@ import org.icefaces.component.annotation.Property;
 		componentFamily="com.icesoft.faces.Checkbox"
         )
         
+
 public class CheckboxMeta {
     
     @Property   
@@ -26,6 +29,26 @@ public class CheckboxMeta {
 	
 	@Property
     private String image;
+//	
+//	@Property (defaultValue="false",
+//	            tlddoc="The value of checkbox, default is false. Pass through to YUI component")
+//	private Boolean value;    
+	
+	@Property(defaultValue="false",
+			tlddoc="Default is false, means uses full submit")
+    private Boolean singleSubmit;
+	    
+    @Property(tlddoc="style of the component")
+	private String style;
+	    
+    @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
+	private String styleClass;     
+ 
+    @Property (defaultValue="0", tlddoc="tabindex of the component")
+    private Integer tabindex;  
+    
+    @Property(defaultValue="false")
+    private Boolean immediate;
     
     @Property (inherit=true, useTemplate=true)
     private Boolean rendered;
