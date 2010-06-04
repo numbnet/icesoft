@@ -32,19 +32,33 @@
 %>
 <jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
 </jsp:useBean>
+<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+</jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
 </jsp:useBean>
-<jsp:useBean id="members" class="org.icepush.place.jsp.view.model.Members" scope="application">
-</jsp:useBean>
+
 <%
 if (person != null) {
-	String messageOut = request.getParameter("messageOut");
+	String messageOut = request.getParameter("msgOut");
+        String region = request.getParameter("region");
         String row = request.getParameter("row");
         String from = request.getParameter("from");
-        Person receiver = (Person)members.getIn().get(Integer.parseInt(row));
+        Person receiver = null;
+        switch(Integer.parseInt(region)){
+            case 1: receiver = ((Person)regions.getNorthAmerica().get(Integer.parseInt(row)));break;
+            case 2: receiver = ((Person)regions.getEurope().get(Integer.parseInt(row)));break;
+            case 3: receiver = ((Person)regions.getSouthAmerica().get(Integer.parseInt(row)));break;
+            case 4: receiver = ((Person)regions.getAsia().get(Integer.parseInt(row)));break;
+            case 5: receiver = ((Person)regions.getAfrica().get(Integer.parseInt(row)));break;
+            case 6: receiver = ((Person)regions.getAntarctica().get(Integer.parseInt(row)));break;
+            default: System.out.println("Receiver of Message Not Found");
+
+        }
+        // Set receiver message
         receiver.setMessageIn(from + " says: " + messageOut);
+        // Push update out to receiver's region
         PushContext pushContext = PushContext.getInstance(getServletContext());
-        pushContext.push("all");
+        pushContext.push(region);
         // Service call to update message in all applications
         // service.sendSettings(person);
 }

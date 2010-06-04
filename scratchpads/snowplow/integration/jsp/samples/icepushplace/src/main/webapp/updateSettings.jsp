@@ -32,8 +32,11 @@
 %>
 <jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
 </jsp:useBean>
+<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+</jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
 </jsp:useBean>
+
 <%
 if (person != null) {
 	String nickName = request.getParameter("nickName");
@@ -41,10 +44,6 @@ if (person != null) {
         String comment = request.getParameter("comment");
         String region = request.getParameter("region");
 	boolean changed = false;
-        System.out.println("nickname: " + nickName + " " + person.getNickname());
-        System.out.println("mood: " + mood + " " + person.getMood());
-        System.out.println("comment: " + comment + " " + person.getComment());
-        System.out.println("region: " + region + " " + person.getRegion());
         if(!person.getNickname().equals(nickName)){
             person.setNickname(nickName);
             changed = true;
@@ -58,12 +57,37 @@ if (person != null) {
             changed = true;
         }
         if(!person.getRegion().equals(region)){
+            // Remove from previous region
+            switch(Integer.parseInt(person.getRegion())){
+                case 1: regions.getNorthAmerica().remove(person);break;
+                case 2: regions.getEurope().remove(person);break;
+                case 3: regions.getSouthAmerica().remove(person);break;
+                case 4: regions.getAsia().remove(person);break;
+                case 5: regions.getAfrica().remove(person);break;
+                case 6: regions.getAntarctica().remove(person);break;
+                default: System.out.println("Problem Removing Person from Region");
+            }
+            // Add to new region
+            switch(Integer.parseInt(region)){
+                case 1: regions.getNorthAmerica().add(person);break;
+                case 2: regions.getEurope().add(person);break;
+                case 3: regions.getSouthAmerica().add(person);break;
+                case 4: regions.getAsia().add(person);break;
+                case 5: regions.getAfrica().add(person);break;
+                case 6: regions.getAntarctica().add(person);break;
+                default: System.out.println("Problem Adding Person to Region");
+            }
+            // Push to remove from old region
+            PushContext pushContext = PushContext.getInstance(getServletContext());
+            pushContext.push(person.getRegion());
+            // Set person in new region
             person.setRegion(region);
             changed = true;
         }
         if(changed){
+            // Push to update region
             PushContext pushContext = PushContext.getInstance(getServletContext());
-	    pushContext.push("all");
+            pushContext.push(person.getRegion());
             // Service call to update settings in all applications
             // service.updateSettings(person);
         }
