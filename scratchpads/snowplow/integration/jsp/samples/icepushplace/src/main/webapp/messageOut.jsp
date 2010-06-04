@@ -39,27 +39,27 @@
 
 <%
 if (person != null) {
-	String messageOut = request.getParameter("msgOut");
-        String region = request.getParameter("region");
-        String row = request.getParameter("row");
-        String from = request.getParameter("from");
-        Person receiver = null;
-        switch(Integer.parseInt(region)){
-            case 1: receiver = ((Person)regions.getNorthAmerica().get(Integer.parseInt(row)));break;
-            case 2: receiver = ((Person)regions.getEurope().get(Integer.parseInt(row)));break;
-            case 3: receiver = ((Person)regions.getSouthAmerica().get(Integer.parseInt(row)));break;
-            case 4: receiver = ((Person)regions.getAsia().get(Integer.parseInt(row)));break;
-            case 5: receiver = ((Person)regions.getAfrica().get(Integer.parseInt(row)));break;
-            case 6: receiver = ((Person)regions.getAntarctica().get(Integer.parseInt(row)));break;
-            default: System.out.println("Receiver of Message Not Found");
+    String messageOut = request.getParameter("msgOut");
+    String region = request.getParameter("region");
+    String row = request.getParameter("row");
+    String from = request.getParameter("from");
+    Person receiver = null;
+    switch(Integer.parseInt(region)){
+        case 1: receiver = ((Person)regions.getNorthAmerica().get(Integer.parseInt(row)));break;
+        case 2: receiver = ((Person)regions.getEurope().get(Integer.parseInt(row)));break;
+        case 3: receiver = ((Person)regions.getSouthAmerica().get(Integer.parseInt(row)));break;
+        case 4: receiver = ((Person)regions.getAsia().get(Integer.parseInt(row)));break;
+        case 5: receiver = ((Person)regions.getAfrica().get(Integer.parseInt(row)));break;
+        case 6: receiver = ((Person)regions.getAntarctica().get(Integer.parseInt(row)));break;
+        default: System.out.println("Receiver of Message Not Found");
 
-        }
-        // Set receiver message
-        receiver.setMessageIn(from + " says: " + messageOut);
-        // Push update out to receiver's region
-        PushContext pushContext = PushContext.getInstance(getServletContext());
-        pushContext.push(region);
-        // Service call to update message in all applications
-        // service.sendSettings(person);
+    }
+    // Set receiver message
+    receiver.setMessageIn(from + " says: " + messageOut);
+    // Push update out to receiver's region
+    PushContext pushContext = PushContext.getInstance(getServletContext());
+    pushContext.push(region);
+    // Service call to update message in all applications
+    // service.sendSettings(person);
 }
 %>

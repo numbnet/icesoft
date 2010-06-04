@@ -33,34 +33,46 @@
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
 </jsp:useBean>
-<table>
-    <th>Nickname</th>
-    <th>Mood</th>
-    <th>What's on your mind?</th>
-    <th>Continent</th>
-    <th>Client Technology</th>
-    <th>Latest Post</th>
-    <th>Post Message</th>
-    <c:forEach var="elem" items="${regions.antarctica}" varStatus="row">
-        <tr>
-		<td><c:out value="${elem.nickname}"/>&nbsp</td>
-                <td><c:out value="${elem.mood}"/>&nbsp</td>
-                <td><c:out value="${elem.comment}"/>&nbsp</td>
-                <td><c:out value="${elem.region}"/>&nbsp</td>
-                <td><c:out value="JSP"/>&nbsp</td>
-                <td><c:out value="${elem.messageIn}"/>&nbsp</td>
-                <td>
-                    <form id="msgForm${elem.region}${row.index}">
-                    <input id="msgOut${elem.region}${row.index}"
-                           type="text"
-                           name="messageOut"
-                            size="20" />&nbsp
-                    <input type="submit"
-                           value="Post"
-                           onclick="click_messageOut('${elem.region}',${row.index},'${person.nickname}');return false;"/>
-                    </form>
-                </td>
-	</tr>
-   </c:forEach>
 
+<table border="1">
+    <thead>
+        <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">Antarctica</span></td></tr>
+    </thead>
+    <tr>
+        <th>Nickname</th>
+        <th>Mood</th>
+        <th>What's on your mind?</th>
+        <th>Client Technology</th>
+        <th>Latest Post</th>
+        <th>Post Message</th>
+    </tr>
+    <c:choose>
+    <c:when test="${empty regions.antarctica}">
+    <tr>
+        <td colspan="6">Empty</td>
+    </tr>
+    </c:when>
+    <c:otherwise>
+    <c:forEach var="elem" items="${regions.antarctica}" varStatus="row">
+    <tr>
+        <td><c:out value="${elem.nickname}"/>&nbsp</td>
+        <td><c:out value="${elem.mood}"/>&nbsp</td>
+        <td><c:out value="${elem.comment}"/>&nbsp</td>
+        <td><c:out value="JSP"/>&nbsp</td>
+        <td><c:out value="${elem.messageIn}"/>&nbsp</td>
+        <td>
+            <form id="msgForm${elem.region}${row.index}">
+            <input id="msgOut${elem.region}${row.index}"
+                   type="text"
+                   name="messageOut"
+                    size="20" />&nbsp
+            <input type="submit"
+                   value="Post"
+                   onclick="click_messageOut('${elem.region}',${row.index},'${person.nickname}');return false;"/>
+            </form>
+        </td>
+    </tr>
+    </c:forEach>
+    </c:otherwise>
+    </c:choose>
 </table>
