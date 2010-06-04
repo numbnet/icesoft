@@ -4,26 +4,29 @@ ice.yui3.slider = {
         //get the slider html element
         var root = document.getElementById(clientId);
         
-        //for short cut and to make it more like OO
+        //for short cut and to make it more like OOP
         var super = ice.yui3;
         
         //load slider module
         super.loadModule('slider');
         
-        //represents JS Slider object
-        var obj = null; 
-               
         //set a callback to create slider component 
         super.use(function(Y){
         
                 //initilize a YUI slider here
-                obj = new Y.Slider({
+                var obj = new Y.Slider({
                     //following two properties has to be set when initializing componnent
                     axis: yuiProps.axis,
                     thumbUrl: jsfProps.thumbUrl
                 }).render(root);
                 
                 //create a generic submit handler
+                // Depending if submitOn is slideStart, slideEnd or slideInterval,
+                //  this will be called either when the user commences sliding,
+                //  finishes sliding, or as they're dragging the slider around,
+                //  if an interval of time passes when they've paused sliding.
+                // If aria is enabled, it will also submit after one of the
+                //  relevant keypresses has been made.
                 var submitHandler = function(event) {
                     //get the value of singleSubmit property
                     var singleSubmit = jsfProps.singleSubmit;
@@ -33,6 +36,9 @@ ice.yui3.slider = {
                     
                     //if aria is enabled, then set aria property so screen reader can pick it
                     if (jsfProps.aria) {
+                        // Because we're in a callback, to be safe we'll lookup
+                        //  the current root element again, instead of using
+                        //  the old root reference, which might be stale.
                         document.getElementById(clientId).firstChild.setAttribute("aria-valuenow", sliderValue);
                     } 
                     
