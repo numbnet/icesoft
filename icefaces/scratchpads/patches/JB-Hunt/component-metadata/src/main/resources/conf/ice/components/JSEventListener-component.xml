@@ -1,0 +1,5 @@
+
+<component>
+    <component-type>com.icesoft.faces.JSEventListener</component-type>
+    <component-class>com.icesoft.faces.component.jseventlistener.JSEventListener</component-class>
+</component>  
