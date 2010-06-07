@@ -33,7 +33,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,16 +69,16 @@ public class FormRenderer extends DomBasicRenderer {
         }
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeBegin(final FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UIForm.class);
         validateNestingForm(uiComponent);
-        DOMContext domContext =
+        final DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         String formClientId = uiComponent.getClientId(facesContext);
 
         if (!domContext.isInitialized()) {
-            Element root = domContext.createElement("form");
+            final Element root = domContext.createElement("form");
 
             domContext.setRootNode(root);
             root.setAttribute("id", formClientId);
@@ -112,12 +114,6 @@ public class FormRenderer extends DomBasicRenderer {
             cssUpdateField.setAttribute(HTML.VALUE_ATTR, "");
             root.appendChild(cssUpdateField);
 
-            Element viewState = domContext.createElement("input");
-            viewState.setAttribute("type", "hidden");
-            viewState.setAttribute("name", "javax.faces.ViewState");
-            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
-            root.appendChild(viewState);
-            
             //JSF 2.0 portlet hidden field
             String viewId = facesContext.getViewRoot().getViewId();
             String actionURL = facesContext.getApplication().getViewHandler()
@@ -134,6 +130,18 @@ public class FormRenderer extends DomBasicRenderer {
                 }
             }
 
+        }
+
+        if (facesContext.isPostback()) {
+            Element viewState = domContext.createElement("input");
+            viewState.setAttribute("id", "javax.faces.ViewState");
+            viewState.setAttribute("type", "hidden");
+            viewState.setAttribute("autocomplete", "off");
+            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
+            domContext.getRootNode().appendChild(viewState);
+            viewState.setAttribute("name", "javax.faces.ViewState");
+        } else {
+            facesContext.getApplication().getViewHandler().writeState(new WriteViewStateOnPageLoad(domContext, facesContext));
         }
 
         // This has to occur outside the isInitialized test, as it has to happen
@@ -389,7 +397,7 @@ public class FormRenderer extends DomBasicRenderer {
         }
         validateNestingForm(parent);
     }
-    
+
     private static String getAction(FacesContext facesContext) {
         String viewId = facesContext.getViewRoot().getViewId();
         String actionURL = facesContext.getApplication().getViewHandler().
@@ -397,4 +405,29 @@ public class FormRenderer extends DomBasicRenderer {
         return (facesContext.getExternalContext().encodeActionURL(actionURL));
     }
 
+    private static class WriteViewStateOnPageLoad extends FacesContextWrapper {
+        private final DOMContext domContext;
+        private final FacesContext facesContext;
+
+        public WriteViewStateOnPageLoad(DOMContext domContext, FacesContext facesContext) {
+            this.domContext = domContext;
+            this.facesContext = facesContext;
+        }
+
+        public ResponseWriter getResponseWriter() {
+            return new ResponseWriterWrapper() {
+                public void write(String content) throws IOException {
+                    domContext.getRootNode().appendChild(domContext.createTextNode(content));
+                }
+
+                public ResponseWriter getWrapped() {
+                    return facesContext.getResponseWriter();
+                }
+            };
+        }
+
+        public FacesContext getWrapped() {
+            return facesContext;
+        }
+    }
 }
