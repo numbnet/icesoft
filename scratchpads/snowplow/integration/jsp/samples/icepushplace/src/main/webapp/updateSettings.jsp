@@ -88,8 +88,11 @@ if (person != null) {
         // Push to update region
         PushContext pushContext = PushContext.getInstance(getServletContext());
         pushContext.push(person.getRegion());
-        // Service call to update settings in all applications
-        // service.updateSettings(person);
+        // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
+        // Service call to display message in all applications
+        // service.requestUpdate(person);
+        // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
+        // IF IT HAS CHANGE, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
     }
 }
 %>
