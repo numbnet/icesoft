@@ -1,0 +1,78 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Command Link Test page</title>
+    <h:outputScript name="jsf.js" library="javax.faces" />
+
+
+        <!--CSS file (default YUI Sam Skin) -->
+        <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.1/build/logger/assets/skins/sam/logger.css"/>
+
+        <!-- Dependencies -->
+        <script src="http://yui.yahooapis.com/2.8.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+        <!-- Source file -->
+        <script src="http://yui.yahooapis.com/2.8.1/build/logger/logger-min.js"></script>
+
+</h:head>
+<h:body>
+
+    <div class="yui-skin-sam" style="float:right;width: 400px;">
+    <div id="compact"></div>
+
+	<script type="text/javascript">
+        var myCompact = new YAHOO.widget.LogReader("compact", {verboseOutput:false});
+               myCompact.setTitle("Compact Output");
+               myCompact.show();
+           YAHOO.log("Initialize method being called");
+	  
+	</script>
+
+    </div>
+
+    <!--<style type="text/css">-->
+    <!--.yui3-skin-sam .yui3-slider-y .yui3-slider-rail,-->
+    <!--.yui3-skin-sam .yui3-slider-y .yui3-slider-rail-cap-left,-->
+    <!--.yui3-skin-sam .yui3-slider-y .yui3-slider-rail-cap-right {-->
+    <!--background-image: url(http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/capsule-dark/rail-y.png);-->
+    <!--}-->
+    <!--</style>-->
+
+      <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
+        <h2> Demonstration commandLink! </h2>
+
+        <h:form id="frm1">
+
+            <ann:commandLink href="http://icefaces.com" >goto icesoft </ann:commandLink>   <br></br>
+            <ann:commandLink value="click me" actionListener="#{link.actionListenerMethod}"  >toggle visibility on image </ann:commandLink>
+
+        </h:form>
+
+        <h:form id="output">
+            <h:panelGroup id="image">
+                <h:graphicImage value="../images/employee.gif" label="output"
+                                rendered="#{link.rendered}" />
+            </h:panelGroup>
+        </h:form>
+    </h:panelGroup>
+
+
+
+
+
+    <a href="index.html"> Goto Main page </a>
+</h:body>
+</html>
+
