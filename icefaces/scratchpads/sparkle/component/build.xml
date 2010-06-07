@@ -18,7 +18,36 @@
         <pathelement path="../component/build/meta"/>
 
   </path>
-    
+  
+	<!-- include source images and css for sprite generation -->
+	<macrodef name="includeresources">
+		<attribute name="dir"/>
+		<attribute name="name"/>
+		<attribute name="skin"/>
+		<sequential>
+			<mkdir dir="${root.dir.path}/@{skin}" />
+			<mkdir dir="${root.dir.path}/@{skin}/@{name}" />
+			<copy todir="${root.dir.path}/@{skin}/@{name}">
+				<fileset dir="@{dir}/@{skin}" includes="**" />
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	<!-- check for any file modifications and call smartsprites -->
+	<macrodef name="generatesprites">
+		<attribute name="skin"/>
+		<sequential>
+			<mkdir dir="${root.dir.path}/@{skin}/base" />
+			<copy todir="${root.dir.path}/@{skin}/base" file="${smartsprites.basedir}/smartsprites/base.css" />
+			<fileset id="@{skin}.files" dir="${root.dir.path}/@{skin}">
+				<modified/>
+			</fileset>
+			<pathconvert property="@{skin}.modified" refid="@{skin}.files" setonempty="false" />
+			<antcall target="smartsprites">
+				<param name="skin" value="@{skin}"/>
+			</antcall>
+		</sequential>
+	</macrodef>
 
   <target name="compile" depends="prepare, generator-dist, compile-meta, generate" 
         description="compile the source " >
@@ -77,43 +106,60 @@
   	<!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
-	<delete dir="./resources/org.icefaces.component.sprites/out"/>
+	
+	<!-- Delete sprite-related files -->
+	<delete dir="${root.dir.path}" />
+	<delete includeemptydirs="true">
+		<fileset dir="resources/org.icefaces.component.sprites" includes="**" />
+	</delete>
 	<delete file="cache.properties" />
 
   </target>
   
-<target name="sprites-check" description="Check whether sprites need to be rebuilt">
-    <available file="${smartsprites.basedir}/build.properties" property="smartsprites.properties.available" />
-    <fail unless="smartsprites.properties.available">
+	<target name="sprites" description="Prepare files to generate sprites.">
 
-Please provide SmartSprite parameters in a 'build.properties' file.
+		<available file="${smartsprites.basedir}/build.properties" property="smartsprites.properties.available" />
+		<fail unless="smartsprites.properties.available">
 
-    </fail>
-	
-    <property file="${smartsprites.basedir}/build.properties" />
-    <taskdef resource="smartsprites.xml">
-      <classpath>
-        <fileset dir="${smartsprites.basedir}/smartsprites">
-          <include name="*.jar" />
-        </fileset>
-      </classpath>
-    </taskdef>
-	
-    <fileset id="sprite-files" dir="${root.dir.path}">
-        <modified/>
-    </fileset>
-	
-    <pathconvert property="sprites.modified.files" 
-                 refid="sprite-files" 
-                 setonempty="false"/>
-	
-</target>
+	Please provide SmartSprite parameters in a 'build.properties' file.
+
+		</fail>
+		
+		<property file="${smartsprites.basedir}/build.properties" />
+		
+		<taskdef resource="smartsprites.xml">
+		  <classpath>
+			<fileset dir="${smartsprites.basedir}/smartsprites">
+			  <include name="*.jar" />
+			</fileset>
+		  </classpath>
+		</taskdef>
+		
+		<mkdir dir="${root.dir.path}" />
+		<!--
+			Specify resources to include in sprite generation. This is done on a per-component, per-skin basis.
+			'dir' is the root directory that contains the sprite sources for the different skins for a component.
+			'skin' is the name of the directory inside 'dir' to look for the files for a specific skin.
+			'name' is the output name of the directory that will contain the generated files for the component inside the skin directory.
+		-->
+		<includeresources dir="src\org\icefaces\component\selectinputdate\sprites" name="calendar" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\pushbutton\sprites" name="button" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\slider\sprites" name="slider" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\tab\sprites" name="tabset" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\selectinputdate\sprites" name="calendar" skin="rime" />
+		
+		<!-- Specify the names of the skins to process, based on the resources included above. -->
+		<generatesprites skin="sam" />
+		<generatesprites skin="rime" />
+		
+	</target>
   
-  <target name="sprites" description="Performs CSS sprite processing" depends="sprites-check" if="sprites.modified.files">
+  
+  <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">
 
-    <smartsprites rootdir="${root.dir.path}"
+    <smartsprites rootdir="${root.dir.path}\${skin}"
                   documentrootdir="${document.root.dir.path}"
-                  outputdir="${output.dir.path}"
+                  outputdir="${output.dir.path}\${skin}"
                   cssfileencoding="${css.file.encoding}"
                   cssfilesuffix="${css.file.suffix}"
                   loglevel="${log.level}"
