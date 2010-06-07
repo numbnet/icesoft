@@ -61,6 +61,7 @@ public class FacesUtil {
 	 * @param beanName to get
 	 * @return the bean
 	 */
+	@SuppressWarnings("deprecation")
 	public static Object getManagedBean(String beanName) {
         FacesContext context = FacesContext.getCurrentInstance();
         
@@ -169,5 +170,31 @@ public class FacesUtil {
         }catch (Exception ignored) { }
         
         return ".";
+    }
+    
+	/**
+	 * Method to refresh the browser to the specified url by adding a META-REFRESH tag to the response
+	 */
+    public static void refreshBrowser(String url) {
+    	HttpServletResponse response = FacesUtil.getCurrentResponse();
+    	
+        if (response != null) {
+            response.setHeader("Refresh", "0; URL=" + response.encodeRedirectURL(url));
+        }
+    }
+    
+    /**
+     * Method to redirect the browser to the specified url via the ExternalContext redirect method
+     */
+    public static void redirectBrowser(String url) {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if ((context != null) &&
+                (context.getExternalContext() != null)) {
+                context.getExternalContext().redirect(url);
+            }
+        }catch (Exception failedRedirect) {
+        	failedRedirect.printStackTrace();
+        }
     }
 }

@@ -31,7 +31,7 @@
         <title>
             Board
             <c:if test="#{userSession.isInGame}">
-                <c:if test="#{!userSession.currentGame.isStarted}">
+                <c:if test="#{!userSession.currentGame.isFull}">
                     - Need #{userSession.currentGame.emptySpace} Player
                 </c:if>
                 - #{userSession.currentGame.name}

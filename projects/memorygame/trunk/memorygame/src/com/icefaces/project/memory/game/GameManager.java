@@ -26,6 +26,8 @@ import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.DisposableBean;
+import com.icefaces.project.memory.bot.BotDifficulty;
+import com.icefaces.project.memory.bot.BotDifficultyManager;
 import com.icefaces.project.memory.bot.BotManager;
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.card.GameCardSetManager;
@@ -166,14 +168,19 @@ public class GameManager implements DisposableBean {
 	/**
 	 * Method to fill the remaining open slots of a game with computer controlled sessions
 	 */
-	public boolean addComputersToGame(GameInstance game) {
+	public boolean addComputersToGame(BotDifficulty difficulty, GameInstance game) {
+		if (difficulty == null) {
+			difficulty = BotDifficultyManager.getDefaultDifficulty();
+		}
+		
 		if (log.isInfoEnabled()) {
-			log.info("Attempting to add computers to the game called '" + game.getName() + "'.");
+			log.info("Attempting to add " + difficulty.getName() + " computers to the game called '" + game.getName() + "'.");
 		}
 		
 		if (game.getHasSpace()) {
 			// Generate a bunch of new computer controlled sessions and fill the game with them
-			UserModel[] computers = BotManager.generateComputers(game.getEmptySpace(), this, game);
+			UserModel[] computers = BotManager.generateComputers(difficulty, game.getEmptySpace(),
+															     this, game);
 			for (UserModel computer : computers) {
 				game.addUser(computer);
 			}

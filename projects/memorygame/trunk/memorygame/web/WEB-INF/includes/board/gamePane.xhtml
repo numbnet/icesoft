@@ -71,31 +71,51 @@
 	                          alt="Fireworks"
 	                          style="width: 100px; height: 100px; border: 0;"/>
 	    </ice:panelGrid>
-	    <ice:panelGroup rendered="#{!userSession.currentGame.hasWinner}">
-	        <ice:outputText value="The game has not started yet."
-	                        styleClass="notStartedNotice"/>
-	        <br/>
-	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} player."
-	                        styleClass="notStartedNotice"
-	                        rendered="#{userSession.currentGame.emptySpace le 1}"/>
-	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} players."
-	                        styleClass="notStartedNotice"
-	                        rendered="#{userSession.currentGame.emptySpace gt 1}"/>
-            <br/>
-            <br/>
-            <ice:outputText value="Tired of waiting for a human opponent?"
-                            styleClass="notStartedNoticeSmall"/>
-            <br/>
-            <ice:outputText value="Click below to start a single player game."
-                            styleClass="notStartedNoticeSmall"/>
-            <br/>
-            <br/>
+        <ice:panelGroup rendered="#{!userSession.currentGame.hasWinner}">
             <ice:form>
-                <ice:commandButton value="Play Against the Computer"
-                                   actionListener="#{boardBean.requestComputerJoin}"
-                                   styleClass="halfButton" style="width: 25%;"/>
+        	    <ice:panelGrid columns="1"
+                               cellpadding="2" cellspacing="2"
+                               style="text-align: center;">
+        	        <ice:outputText value="The game has not started yet."
+        	                        styleClass="notStartedNotice"/>
+                                    
+                    <ice:panelGroup>
+            	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} player."
+            	                        styleClass="notStartedNotice"
+            	                        rendered="#{userSession.currentGame.emptySpace le 1}"/>
+            	        <ice:outputText value="Waiting for #{userSession.currentGame.emptySpace} players."
+            	                        styleClass="notStartedNotice"
+            	                        rendered="#{userSession.currentGame.emptySpace gt 1}"/>
+                    </ice:panelGroup>
+                    
+                    <br/>
+                    
+                    <ice:outputText value="Tired of waiting for a human opponent?"
+                                    styleClass="notStartedNoticeSmall"/>
+                                    
+                    <ice:outputText value="Click below to start a single player game."
+                                    styleClass="notStartedNoticeSmall"/>
+                                    
+                    <br/>
+                                    
+                    <ice:panelGroup>
+                        <ice:outputLabel for="compDiff" value="Computer Difficulty:"
+                                         styleClass="notStartedNoticeTiny"/>
+                        <ice:selectOneMenu id="compDiff"
+                                           value="#{boardBean.computerDifficulty}"
+                                           required="true"
+                                           style="width: 250px;">
+                            <f:selectItems value="#{boardBean.difficultiesAsItems}"/>
+                        </ice:selectOneMenu>
+                        <ice:message errorClass="errorMessage" for="compDiff"/>
+                    </ice:panelGroup>
+                    
+                    <ice:commandButton value="Play Against the Computer"
+                                       actionListener="#{boardBean.requestComputerJoin}"
+                                       styleClass="halfButton" style="width: 75%;"/>
+        	    </ice:panelGrid>
             </ice:form>
-	    </ice:panelGroup>
+        </ice:panelGroup>
 	    </center>
 	</c:if>
 	

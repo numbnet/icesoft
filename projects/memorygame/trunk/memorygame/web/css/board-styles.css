@@ -67,7 +67,7 @@
 	width: 50%;
 }
 
-.notStartedNotice, .notStartedNoticeSmall,
+.notStartedNotice, .notStartedNoticeSmall, .notStartedNoticeTiny,
 .returnToLobby,
 .winnerMessage {
 	color: #F78208;
@@ -77,6 +77,10 @@
 
 .notStartedNoticeSmall {
     font-size: 16px;
+}
+
+.notStartedNoticeTiny {
+    font-size: 14px;
 }
 
 .turnNotifier {

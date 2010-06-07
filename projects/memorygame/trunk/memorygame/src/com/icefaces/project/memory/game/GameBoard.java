@@ -111,12 +111,27 @@ public class GameBoard {
 	}
 	
 	public GameCard getRandomUnflippedCard() {
+		return getRandomUnflippedCard(null);
+	}
+	
+	public GameCard getRandomUnflippedCard(GameCard toExclude) {
 		int dataSize = data.size();
 		
 		List<Integer> unflippedList = new ArrayList<Integer>(dataSize);
+		GameCard currentCard;
 		for (int i = 0; i < dataSize; i++) {
-			if (!data.get(i).getIsFlipped()) {
-				unflippedList.add(i);
+			currentCard = data.get(i);
+			
+			if (!currentCard.getIsFlipped()) {
+				// Ensure our random card doesn't match the passed exclusion
+				if (toExclude != null) {
+					if (toExclude != currentCard) {
+						unflippedList.add(i);
+					}
+				}
+				else {
+					unflippedList.add(i);
+				}
 			}
 		}
 		

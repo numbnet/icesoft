@@ -23,8 +23,6 @@ package com.icefaces.project.memory.bean;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.user.UserSession;
@@ -44,8 +42,8 @@ public class RedirectBean {
 	public static final String GAME_PASS_PARAM = "password";
 	public static final String USER_NAME_PARAM = "user";
 	private static final String REDIRECT_URI = "redirect.iface";
-	private static final String BOARD_URI = "board.iface";
-	private static final String LOBBY_URI = "lobby.iface";
+	private static final String BOARD_URI = "./board.iface";
+	private static final String LOBBY_URI = "./lobby.iface";
 	
 	private UserSession userSession;
 	private boolean hasChecked = false;
@@ -92,7 +90,7 @@ public class RedirectBean {
 		if (ValidatorUtil.isValidString(gameName)) {
 			try{
 				if (joinGame(gameName, gamePass, userName)) {
-					RedirectBean.forceLoadURI("./" + BOARD_URI);
+					redirectToBoard();
 					
 					return true;
 				}
@@ -102,7 +100,7 @@ public class RedirectBean {
 		}
 		
 		// Fallback to redirecting to the lobby
-		RedirectBean.forceLoadURI("./" + LOBBY_URI);
+		redirectToLobby();
 		
 		return false;
 	}
@@ -154,14 +152,11 @@ public class RedirectBean {
 		return toReturn;
 	}
 	
-	/**
-	 * Method to force a url redirect by modifying the header to have a META-REFRESH tag
-	 */
-    public static void forceLoadURI(String url) {
-    	HttpServletResponse response = FacesUtil.getCurrentResponse();
-    	
-        if (response != null) {
-            response.setHeader("Refresh", "0; URL=" + response.encodeRedirectURL(url));
-        }
-    }
+	public static void redirectToBoard() {
+		FacesUtil.refreshBrowser(BOARD_URI);
+	}
+	
+	public static void redirectToLobby() {
+		FacesUtil.refreshBrowser(LOBBY_URI);
+	}
 }

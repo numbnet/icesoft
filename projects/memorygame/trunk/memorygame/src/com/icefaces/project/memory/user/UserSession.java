@@ -28,12 +28,12 @@ import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.game.GameManager;
 
 public class UserSession extends UserModel {
-	private Log log = LogFactory.getLog(this.getClass());
+	protected Log log = LogFactory.getLog(this.getClass());
 	
-	private GameManager gameManager;
-	private GameInstance currentGame;
-	private UserRenderer renderer = new UserRenderer();
-	private boolean isShaking = false;
+	protected GameManager gameManager;
+	protected GameInstance currentGame;
+	protected UserRenderer renderer = new UserRenderer();
+	protected boolean isShaking = false;
 	
 	public UserSession() {
 		if (log.isInfoEnabled()) {
@@ -83,10 +83,10 @@ public class UserSession extends UserModel {
 	 * @return true if a game was left
 	 */
 	public boolean leaveCurrentGame() {
-		if ((gameManager != null) &&
-		    (currentGame != null) &&
-		    (name != null)) {
+		if ((gameManager != null) && (currentGame != null)) {
 			gameManager.leaveGame(this, currentGame);
+			renderer.leaveGame(currentGame.getName());
+			setCurrentGame(null);
 			
 			return true;
 		}
