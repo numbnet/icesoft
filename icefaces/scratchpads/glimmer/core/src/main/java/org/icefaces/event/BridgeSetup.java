@@ -25,6 +25,7 @@ package org.icefaces.event;
 import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.application.LazyPushManager;
 import org.icefaces.application.WindowScopeManager;
+import org.icefaces.context.DOMResponseWriter;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.SessionViewManager;
@@ -131,7 +132,23 @@ public class BridgeSetup implements SystemEventListener {
             root.addComponentResource(context, icefacesSetup, "body");
 
             //make sure there's always a form so that ice.singleSubmit and ice.retrieveUpdate can do their job
-            UIForm retrieveUpdateSetup = new UIForm();
+            UIForm retrieveUpdateSetup = new UIForm() {
+                public void encodeEnd(FacesContext context) throws IOException {
+                    ResponseWriter writer = context.getResponseWriter();
+                    //apply http://jira.icefaces.org/browse/ICE-5728 fix for the dynamically added form
+                    if (context.isPostback() && !context.getViewRoot().getAttributes().containsKey(DOMResponseWriter.OLD_DOM)) {
+                        writer.startElement("input", this);
+                        writer.writeAttribute("id", "javax.faces.ViewState", null);
+                        writer.writeAttribute("type", "hidden", null);
+                        writer.writeAttribute("autocomplete", "off", null);
+                        writer.writeAttribute("value", context.getApplication().getStateManager().getViewState(context), null);
+                        writer.writeAttribute("name", "javax.faces.ViewState", null);
+                        writer.endElement("input");
+                    }
+
+                    super.encodeEnd(context);
+                }
+            };
             retrieveUpdateSetup.setTransient(true);
             //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
             //the corresponding view state key (javax.faces.ViewState) 
