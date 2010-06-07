@@ -48,7 +48,7 @@ public class GameManager implements DisposableBean {
 	public static final long DEFAULT_REFLIP_DELAY = 1200l;
 	public static final long BOT_THINK_DELAY_BASE = 900l;
 	public static final int BOT_THINK_DELAY_VARIATION = 400;
-	public static final long BOT_MOVE_DELAY = 400l;
+	public static final long BOT_MOVE_DELAY = 500l;
 	public static final long WIN_SCREEN_DISPLAY_TIME = 7500l;
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
 	
