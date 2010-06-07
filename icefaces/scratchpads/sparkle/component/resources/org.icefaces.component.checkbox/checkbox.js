@@ -6,28 +6,27 @@ ice.component.checkbox = {
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
        }
        
-	   var button = new YAHOO.widget.Button(clientId, {type: jsProps.type});
+	   var button = new YAHOO.widget.Button(clientId, {type: jsProps.type, checked: jsProps.checked});
 	   
 	   if(jsProps.label) {
 			button.set('label', jsProps.label);
 	    }
 		
-		if (jsfProps.value) {
-			YAHOO.log("jsfProps.value="+jsfProps.value);
-		}
+	
 		var singleSubmit=jsfProps.singleSubmit;	
-		YAHOO.log ("jsProps.checked=-"+jsProps.checked);	
-  		if(jsProps.checked) {	
-   			button.set('checked', jsProps.checked);
- 		}
+		YAHOO.log ("jsProps.checked=-"+jsProps.checked);
+		YAHOO.log (" button set to:-"+button.get('checked'));
+//  		if(jsProps.checked) {	
+//   			button.set('checked', jsProps.checked);
+// 		}
 	   
 		var onCheckedChange = function (e) { 
 			e.target = document.getElementById(clientId);	
 			//get the current value of checked
  	        var submittedValue =  e.newValue;	
 
-//YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" button checked="+checkedValue);
-
+YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" button checked="+button.get('checked'));
+YAHOO.log("  oldValue="+e.prevValue);
 			var params = function(parameter) {
 				parameter(clientId+'_value', submittedValue);
 			};
