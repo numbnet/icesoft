@@ -37,7 +37,10 @@ public class Checkbox extends CheckboxBase {
     public Object getValue() {
 	    System.out.println("Checkbox component value="+super.getValue());	
 		Object value = super.getValue();
-		if (value == null) return Boolean.valueOf(false);
+		if (value == null) {
+		System.out.println("CHECKBOX IS NULL!!!!!!!!");
+			return Boolean.valueOf(false);
+		}
 		return value;
 	}
 

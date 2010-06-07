@@ -23,6 +23,7 @@ public class CheckboxRenderer extends Renderer {
             String clientId = uiComponent.getClientId();
             if (clientId.equals(source)) {
 				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_value"))));
+				System.out.println("RENDERER:- submittedValue="+submittedValue);
 				checkbox.setSubmittedValue(submittedValue);
             }
         }
@@ -86,9 +87,9 @@ public class CheckboxRenderer extends Renderer {
             call.append(checkbox.getLabel());
             call.append("'");
         }
-        call.append(", checked:'");  
+        call.append(", checked:");  
         call.append(checkbox.getValue());
-        call.append("'},");
+        call.append("},");
         //pass JSF component specific properties that would help in slider configuration 
         call.append("{});");
 
