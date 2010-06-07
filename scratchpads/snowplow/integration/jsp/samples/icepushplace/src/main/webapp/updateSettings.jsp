@@ -92,7 +92,7 @@ if (person != null) {
         // Service call to display message in all applications
         // service.requestUpdate(person);
         // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
-        // IF IT HAS CHANGE, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
+        // IF IT HAS CHANGED, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
     }
 }
 %>
