@@ -22,12 +22,14 @@
 package com.icefaces.project.memory.bean;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.context.effects.Shake;
+import com.icefaces.project.memory.bot.BotDifficultyManager;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.FacesUtil;
@@ -47,6 +49,8 @@ public class BoardBean implements DisposableBean {
 	private String layout = DEFAULT_LAYOUT;
 	private Shake shakeEffect = new Shake();
 	private String cachedInviteLink = null;
+	private String computerDifficulty = BotDifficultyManager.getDefaultDifficultyName();
+	private SelectItem[] difficultiesAsItems;
 	
 	public BoardBean() {
 		init();
@@ -101,24 +105,39 @@ public class BoardBean implements DisposableBean {
 	public void setShakeEffect(Shake shakeEffect) {
 		this.shakeEffect = shakeEffect;
 	}
+	
+	public String getComputerDifficulty() {
+		return computerDifficulty;
+	}
+
+	public void setComputerDifficulty(String computerDifficulty) {
+		this.computerDifficulty = computerDifficulty;
+	}
+
+	public SelectItem[] getDifficultiesAsItems() {
+		if (difficultiesAsItems == null) {
+			difficultiesAsItems = BotDifficultyManager.getDifficultiesAsItems();
+		}
+		
+		return difficultiesAsItems;
+	}
+
+	public void setDifficultiesAsItems(SelectItem[] difficultiesAsItems) {
+		this.difficultiesAsItems = difficultiesAsItems;
+	}
 
 	/**
 	 * Method called when a user wishes to leave the game
-	 * We'll reset some renderers, drop from the game itself, and rejoin the lobby
 	 */
 	public String leaveGame() {
-		userSession.getGameManager().leaveGame(userSession, userSession.getCurrentGame());
-		
-		userSession.getRenderer().leaveGame(userSession.getCurrentGame().getName());
-		userSession.getRenderer().joinLobby();
-		
-		userSession.setCurrentGame(null);
+		userSession.leaveCurrentGame();
 		
 		return "lobby";
 	}
 	
 	public void requestComputerJoin(ActionEvent event) {
-		userSession.getGameManager().addComputersToGame(userSession.getCurrentGame());
+		userSession.getGameManager().addComputersToGame(BotDifficultyManager.getDifficultyByName(computerDifficulty),
+												        userSession.getCurrentGame());
 	}
 	
 	/**

@@ -61,21 +61,31 @@ public class GameTurns {
 	public UserModel getCurrentTurnUser() {
 		return currentTurnUser;
 	}
-
+	
 	public void setCurrentTurnUser(UserModel currentTurnUser) {
+		this.currentTurnUser = currentTurnUser;
+	}
+
+	public void changeCurrentTurnUser(UserModel currentTurnUser) {
+		// Remove turn status from the previous turn holder
 		if (this.currentTurnUser != null) {
 			this.currentTurnUser.setIsTurn(false);
 		}
+		
+		// Set the new turn holder status and object
+		// If the user was a computer, we'll want to perform a turn for them
 		if (currentTurnUser != null) {
 			currentTurnUser.setIsTurn(true);
+			setCurrentTurnUser(currentTurnUser);
 			
-			if ((currentTurnUser.getIsComputer()) &&
+			if ((this.currentTurnUser.getIsComputer()) &&
 			    (parentGame != null)) {
 				parentGame.performComputerTurn();
 			}
 		}
-		
-		this.currentTurnUser = currentTurnUser;
+		else {
+			setCurrentTurnUser(null);
+		}
 	}
 	
 	public ExecutorService getThreadPool() {
@@ -117,7 +127,7 @@ public class GameTurns {
 					newUserIndex = 0;
 				}
 				
-				setCurrentTurnUser(users.get(newUserIndex));
+				changeCurrentTurnUser(users.get(newUserIndex));
 			}
 		}
 		else {
@@ -126,7 +136,7 @@ public class GameTurns {
 	}
 	
 	public void determineTurns() {
-		setCurrentTurnUser(users.get(Randomizer.getInstance().nextInt(users.size())));
+		changeCurrentTurnUser(users.get(Randomizer.getInstance().nextInt(users.size())));
 		
 		parentGame.getChat().addFirstTurnMessage(currentTurnUser.getName());
 	}
@@ -139,7 +149,7 @@ public class GameTurns {
 	}
 	
 	public void resetTurns() {
-		setCurrentTurnUser(null);
+		changeCurrentTurnUser(null);
 		
 		resetTrackingVariables();
 	}
