@@ -15,58 +15,42 @@
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body class="yui-skin-sam">
-  <style>
-   /* Push Button example*/ 
-   .yui-button#pushbutton2 button, 
-	.yui-button#pushbutton5 button,  
-	.yui-button#pushbutton8 button { 
-	 
-	    background: url(../button/assets/add.gif) center center no-repeat; 
-	    text-indent: -4em; 
-	    overflow: hidden; 
-	    padding: 0 .75em; 
-	    width: 2em; 
-	    *margin-left: 4em;   /* IE only */ 
-	    *padding: 0 1.75em;  /* IE only */ 
-	 
-	} 
-	 
-	.yui-button#pushbutton3 button, 
-	.yui-button#pushbutton6 button,  
-	.yui-button#pushbutton9 button { 
-	 
-	    padding-left: 2em; 
-	    background: url(../button/assets/add.gif) 10% 50% no-repeat; 
-	 
-	} 
-    </style>         
-<h:panelGroup class="yui-button yui-push-button" >
-         <h2>PushButton Demo</h2>    
+ 
+  <h:panelGroup  id="demo">
+           <h2>PushButton Demo</h2>   
+         <a href="../index.html"> Goto Main page </a>  <br /> 
+         <a href="../buttons.xhtml"> Goto Buttons page </a>    
 	
 	<h:outputText value="click the button trigger the display of the image." />
     <h:outputText value="click again so image disappears"/>
 	<br/>
-	<h:form id="push1Form">
-	<h:panelGroup id="push1">
-	<ann:pushbutton id="pushId" label="#{button.label}" 
-	       actionListener="#{button.actionListenerMethod}"  />
-	</h:panelGroup>
-	</h:form>
+	<fieldset id="pushButtonActionListenerAndAction">
+	   <legend>Simple Buttons on separate forms</legend>
+	   <h:form id="push1Form">
+	      <h:panelGroup id="push1" class="yui-button yui-push-button">
+	       <ann:pushbutton  id="pushId" label="#{button.label}" 
+	           actionListener="#{button.actionListenerMethod}"  />
+	      </h:panelGroup>
+	   </h:form>
 	<br />
-	<h:form id="push2form">
-	<h:panelGroup id="push2">
-	       <ann:pushbutton id="pushId2" label="Action" image="../images/image1.gif"
+	   <h:form id="push2form">
+	      <h:panelGroup id="push2">
+	         <ann:pushbutton id="pushId2" label="Action" image="../images/image1.gif"
 	            action="#{button.methodAction}"  />
-	</h:panelGroup>
-	</h:form>
+	         <h:outputText value="using action property on button" />
+	     </h:panelGroup>
+	    </h:form>
+	</fieldset>
 		<br />
-	<h:form id="regularButtonForm">
+    <fieldset id="htmlcommandbutton">
+       <legend>HtmlCommandButton</legend>
+	    <h:form id="regularButtonForm">
 
-	<h:panelGroup id="hcommandButton">
-	    <h:commandButton id="regular" value="HtmlCommandButton" actionListener="#{button.actionListenerMethod}"/>
-	</h:panelGroup>
-
-   </h:form>  
+        	<h:panelGroup id="hcommandButton">
+	        <h:commandButton id="regular" value="HtmlCommandButton" actionListener="#{button.actionListenerMethod}"/>
+	    </h:panelGroup>
+        </h:form> 
+    </fieldset> 
    
    <h:form id="output">
    	<h:panelGroup id="image">
@@ -76,8 +60,6 @@
    </h:form> 
   </h:panelGroup>
 
-   <a href="../index.html"> Goto Main page </a>   
-   <a href="../buttons.xhtml"> Goto Buttons page </a>  
 </h:body>
 </html>
 
