@@ -45,6 +45,9 @@
     }
     PushContext pushContext = PushContext.getInstance(getServletContext());
     // Add to appropriate region (render group) and push to group
+    // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
+    //service.register();
+    //service.login(person);
     switch(Integer.parseInt(person.getRegion())){
         case 1: regions.getNorthAmerica().add(person);pushContext.push(person.getRegion());break;
         case 2: regions.getEurope().add(person);pushContext.push(person.getRegion());break;

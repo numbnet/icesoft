@@ -8,6 +8,6 @@ public interface IcepushPlaceService{
 
     public void login(Person person);
 
-    public void requestUpdate();
+    public void requestUpdate(Person person);
 
 }

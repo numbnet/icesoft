@@ -13,7 +13,7 @@ public class IcepushPlaceServiceImpl implements IcepushPlaceService{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void requestUpdate() {
+    public void requestUpdate(Person person) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

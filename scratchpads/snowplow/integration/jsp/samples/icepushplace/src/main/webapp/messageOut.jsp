@@ -59,7 +59,8 @@ if (person != null) {
     // Push update out to receiver's region
     PushContext pushContext = PushContext.getInstance(getServletContext());
     pushContext.push(region);
-    // Service call to update message in all applications
-    // service.sendSettings(person);
+    // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
+    // Service call to display message in all applications
+    //service.requestUpdate(person);
 }
 %>
