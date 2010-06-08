@@ -483,14 +483,15 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                     return false;
                 case 38://up
                     if (Element.previous(parent)) {
-                        Element.previous(parent).firstChild.firstChild.focus();
+                        var tr = Element.previous(parent);
+                        tr.firstChild.firstChild.focus();
                         if (singleSelection) {
                             localEvent = Object.clone(event); 
                             window.clearTimeout (singleRowSelectionExecuter);
                             singleRowSelectionExecuter = window.setTimeout(function() {
                                 try {
                                     arguments[0] = localEvent;
-                                    Element.previous(parent).onclick.apply(parent, arguments);
+                                    tr.onclick.apply(tr, arguments);
                                  } catch(ee) {}
                             },400);
                         }                        
@@ -500,14 +501,15 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                     return false;
                 case 40://down
                     if (Element.next(parent)) {
-                        Element.next(parent).firstChild.firstChild.focus();
+                        var tr = Element.next(parent);
+                        tr.firstChild.firstChild.focus();
                         if (singleSelection) {
                             localEvent = Object.clone(event); 
                             window.clearTimeout (singleRowSelectionExecuter);
                             singleRowSelectionExecuter = window.setTimeout(function() {
                                 try {
                                     arguments[0] = localEvent;                                
-                                    Element.next(parent).onclick.apply(parent, arguments);
+                                    tr.onclick.apply(tr, arguments);
                                  } catch(ee) {}
                             },400);
                         }
