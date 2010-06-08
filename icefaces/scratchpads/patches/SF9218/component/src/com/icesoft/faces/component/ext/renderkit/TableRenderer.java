@@ -743,7 +743,9 @@ public class TableRenderer
                         if (uiData.getColNumber() == 0 && rowSelectorFound
                                 && rowSelector.isKeyboardNavigationEnabled()) {
                             boolean singleSelection = false;
-                            if(!rowSelector.isEnhancedMultiple() && !rowSelector.getMultiple().booleanValue()) {
+                            if(!rowSelector.isEnhancedMultiple() 
+								&& !rowSelector.getMultiple().booleanValue()) 
+								&& rowSelector.isSingleRowAutoSelect()) {
                                 singleSelection = true;
                             }
                             anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
