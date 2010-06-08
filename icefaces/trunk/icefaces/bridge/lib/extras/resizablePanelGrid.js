@@ -332,6 +332,9 @@ Ice.PanelDivider.addMethods({
         this.getGhost().style.visibility="hidden";
     }
       this.ghost.setStyle({width:this.source.getStyle("width")});
+      if (Prototype.Browser.IE && this.horizontal) {
+          this.ghost.style.width = Element.getWidth(this.source) + "px";
+      }
     return this.ghost;
   },
 
