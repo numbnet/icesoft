@@ -744,7 +744,7 @@ public class TableRenderer
                                 && rowSelector.isKeyboardNavigationEnabled()) {
                             boolean singleSelection = false;
                             if(!rowSelector.isEnhancedMultiple() 
-								&& !rowSelector.getMultiple().booleanValue()) 
+								&& !rowSelector.getMultiple().booleanValue() 
 								&& rowSelector.isSingleRowAutoSelect()) {
                                 singleSelection = true;
                             }
