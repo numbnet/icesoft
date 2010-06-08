@@ -88,7 +88,7 @@ public class CommandLinkRenderer extends Renderer {
 
 		// js call. Ah, this part was to hook up with that overriden js method.
         StringBuilder call= new StringBuilder();
-        call.append("ice.component.commandLink.updateProperties('");
+        call.append("ice.component.commandlink.updateProperties('");
         call.append(clientId);
         call.append("', ");
         //pass through YUI  properties
