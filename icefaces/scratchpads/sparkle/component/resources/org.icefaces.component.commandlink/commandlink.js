@@ -1,20 +1,17 @@
 ice.component.commandlink = {
+
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	//setup Yahoo logger for commandlink class
 
 	YAHOO.util.Event.onDOMReady(function() {
+});
 
-
-    });
-
-
-	
 	var Dom = YAHOO.util.Dom;
 	var oLinkButton = new YAHOO.widget.Button(clientId,{label: jsProps.label }, {type: jsProps.type});
 
 //		button = new YAHOO.widget.Button(clientId,{label: jsProps.label }, {type: jsProps.type});
 
-	logger.log("params singleSubmit"+jsfProps.singleSubmit);
+	// logger.log("params singleSubmit"+jsfProps.singleSubmit);
 		
 		if(jsProps.label) {
 			oLinkButton.set('label', jsProps.label);
@@ -26,7 +23,7 @@ ice.component.commandlink = {
 		
 	  
 	var onClick = function (e) {
-		logger.log("in onClick function for e="+e);
+		// logger.log("in onClick function for e="+e);
 		buttonNode = document.getElementById(clientId);
 
 	        if (jsfProps.singleSubmit) {
@@ -40,7 +37,7 @@ ice.component.commandlink = {
 
 		// the following lines didn't work alone..had to put the fn in the constructoras well
 		oLinkButton.on("click", onClick);
- 		oLinkButton.addListener("onclick", onButtonClick);
+// 		oLinkButton.addListener("onclick", onButtonClick);
 
 		bindYUI(oLinkButton);
 	},
