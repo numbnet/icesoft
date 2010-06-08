@@ -716,7 +716,7 @@ public class RowSelector extends UIPanel {
         ValueBinding vb = getValueBinding("singleRowAutoSelect");
         Boolean boolVal = vb != null ?
                 (Boolean) vb.getValue(getFacesContext()) : null;
-        return boolVal != null ? boolVal.booleanValue() : true;
+        return boolVal != null ? boolVal.booleanValue() : false;
     }
 
     public void setSingleRowAutoSelect(boolean singleRowAutoSelect) {
