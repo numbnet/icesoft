@@ -31,6 +31,7 @@ import com.icefaces.project.memory.game.GameBoard;
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.game.GameManager;
 import com.icefaces.project.memory.game.card.GameCard;
+import com.icefaces.project.memory.game.chat.GameChatMessage;
 import com.icefaces.project.memory.user.UserRenderer;
 import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.Randomizer;
@@ -43,22 +44,15 @@ public class BotSession extends UserSession {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
-	public BotSession(String baseName, int level, int errorChance, int moveDelayModifier,
+	public BotSession(String name, int level, int errorChance, int moveDelayModifier,
 		              GameManager gameManager, GameInstance currentGame) {
-		super();
+		super(gameManager, currentGame, new UserRenderer());
 		
 		this.isComputer = true;
-		
 		this.level = level;
 		this.errorChance = errorChance;
 		this.moveDelayModifier = moveDelayModifier;
-		
-		this.name = baseName + " (Level " + level + " Computer)";
-		
-		this.gameManager = gameManager;
-		this.currentGame = currentGame;
-		this.renderer = new UserRenderer();
-		
+		this.name = "Bot " + name;
 		this.memorizedCards = new ArrayList<GameCard>(level);
 	}
 
@@ -98,6 +92,12 @@ public class BotSession extends UserSession {
 		return level > GameManager.DEFAULT_MAX_FLIP;
 	}
 
+	/**
+	 * Method to memorize a card, if we haven't already
+	 * By memorizing cards we can "recall" them later and simulate how
+	 *  a human would play the game, instead of just cheating and looping
+	 *  through the game board in an unflipped state
+	 */
 	public boolean memorizeCard(GameCard toMemorize) {
 		// Ensure we haven't already memorized the card
 		for (GameCard loopCard : memorizedCards) {
@@ -117,10 +117,17 @@ public class BotSession extends UserSession {
 		return true;
 	}
 	
+	/**
+	 * Clear our current memorized cards
+	 * Useful between rounds in the same game
+	 */
 	public void clearAllMemorizedCards() {
 		memorizedCards.clear();
 	}
 	
+	/**
+	 * Method to clear all flipped cards from our memory, so we don't bother checking them
+	 */
 	public void clearFlippedMemorizedCards() {
 		List<GameCard> flippedToRemove = null;
 		for (GameCard loopCard : memorizedCards) {
@@ -140,12 +147,22 @@ public class BotSession extends UserSession {
 		}
 	}
 	
+	/**
+	 * Ensure that we are intelligent enough to perform a non-random move,
+	 *  and also that our errorChance didn't fire this check
+	 */
 	private boolean canDetermineMoves() {
 		return ((getIsIntelligent()) &&
 			    (memorizedCards.size() > 0) &&
-			    (Randomizer.getInstance().nextInt(100) > errorChance));
+			    (Randomizer.getInstance().nextInt(100) <= errorChance));
 	}
 	
+	/**
+	 * Method to determine what cards we want to flip for our turn
+	 * We'll first check if any cards we've memorized would match each other
+	 * Otherwise we'll intelligently randomize our moves
+	 * The end result is a returned set of GameCard objects to flip
+	 */
 	public GameCard[] determineMoves(GameBoard board) {
 		GameCard[] toReturn = new GameCard[GameManager.DEFAULT_MAX_FLIP];
 		
@@ -159,8 +176,8 @@ public class BotSession extends UserSession {
 				resultCard = compareCardToMemory(cardToCheck);
 				
 				if (resultCard != null) {
-					toReturn[0] = cardToCheck;
-					toReturn[1] = resultCard;
+					toReturn[0] = resultCard;
+					toReturn[1] = cardToCheck;
 					
 					if (log.isDebugEnabled()) {
 						log.debug("Computer " + name + " (Level " + level + ", " + errorChance + "%) remembered a matching move.");
@@ -174,6 +191,13 @@ public class BotSession extends UserSession {
 		return randomlyDetermineMoves(board);
 	}
 	
+	/**
+	 * Method to intelligently determine a random move
+	 * We'll try to randomize our first card, then check our memory to see if
+	 *  we remember something it matches against, otherwise we'll randomize our
+	 *  second card too
+	 * The pair of moves are then returned
+	 */
 	private GameCard[] randomlyDetermineMoves(GameBoard board) {
 		GameCard[] toReturn = new GameCard[GameManager.DEFAULT_MAX_FLIP];
 		
@@ -202,6 +226,10 @@ public class BotSession extends UserSession {
 		return toReturn;
 	}
 	
+	/**
+	 * Method to loop through our memorized cards and compare them to the passed card
+	 * We'll return the first match, or null if no match was found
+	 */
 	private GameCard compareCardToMemory(GameCard toCompare) {
 		for (GameCard loopCard : memorizedCards) {
 			// Check against ONLY other cards, and look for a match
@@ -212,5 +240,14 @@ public class BotSession extends UserSession {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Convenience method to add a chat message from this bot, based on the passed text
+	 */
+	public void botChat(String text) {
+		if (currentGame != null) {
+			currentGame.getChat().addMessage(new GameChatMessage(name, text));
+		}
 	}
 }

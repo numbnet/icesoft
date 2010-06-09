@@ -41,6 +41,14 @@ public class UserSession extends UserModel {
 		}
 	}
 	
+	public UserSession(GameManager gameManager, GameInstance currentGame, UserRenderer renderer) {
+		super();
+		
+		this.gameManager = gameManager;
+		this.currentGame = currentGame;
+		this.renderer = renderer;
+	}
+	
 	public GameManager getGameManager() {
 		return gameManager;
 	}

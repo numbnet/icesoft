@@ -23,6 +23,11 @@ package com.icefaces.project.memory.bot;
 
 import com.icefaces.project.memory.util.Randomizer;
 
+/**
+ * Class representing the difficulty of a bot
+ * Some factors that make a bot more challenging to play against include
+ *  how long their memorized card list will be, what their error chance will be, etc.
+ */
 public class BotDifficulty {
 	private String name;
 	private String description;
@@ -101,6 +106,9 @@ public class BotDifficulty {
 		this.moveDelayModifier = moveDelayModifier;
 	}
 
+	/**
+	 * Method to generate a random level for this difficulty based on minLevel and rangeLevel
+	 */
 	public int generateNewLevel() {
 		if (rangeLevel > 0) {
 			return minLevel + Randomizer.getInstance().nextInt(rangeLevel);
@@ -109,6 +117,9 @@ public class BotDifficulty {
 		return minLevel;
 	}
 	
+	/**
+	 * Method to generate a random error chance for this difficulty based on minErrorChance and rangeErrorChance
+	 */
 	public int generateNewErrorChance() {
 		if (rangeErrorChance > 0) {
 			return minErrorChance + Randomizer.getInstance().nextInt(rangeErrorChance);

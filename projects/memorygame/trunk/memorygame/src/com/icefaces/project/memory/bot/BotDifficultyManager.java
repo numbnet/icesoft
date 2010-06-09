@@ -25,6 +25,10 @@ import javax.faces.model.SelectItem;
 
 import com.icefaces.project.memory.util.ValidatorUtil;
 
+/**
+ * Class used to track the different Bot Difficulty levels, and provide
+ *  a few simple access methods to the underlying list
+ */
 public class BotDifficultyManager {
 	private static BotDifficulty[] difficulties = new BotDifficulty[] {
 		new BotDifficulty("Simple", "Randomly guesses all moves.", 0, 0, 0, 0, 0),

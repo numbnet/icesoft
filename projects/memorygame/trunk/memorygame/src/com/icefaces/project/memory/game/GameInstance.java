@@ -25,6 +25,7 @@ import java.util.Vector;
 import java.util.List;
 
 import com.icesoft.faces.async.render.SessionRenderer;
+import com.icefaces.project.memory.bot.BotChatManager;
 import com.icefaces.project.memory.bot.BotManager;
 import com.icefaces.project.memory.comparator.UserByScoreComparator;
 import com.icefaces.project.memory.exception.ThreadRunningException;
@@ -206,6 +207,18 @@ public class GameInstance {
 		return false;
 	}
 	
+	public boolean getHasComputerUsers() {
+		if (getUserCount() > 0) {
+			for (UserModel loopUser : users) {
+				if (loopUser.getIsComputer()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	public boolean getHasUser(UserModel user) {
 		if (getHasUsers()) {
 			for (UserModel loopUser : users) {
@@ -268,6 +281,11 @@ public class GameInstance {
 		// Put in a notification to the chat log
 		chat.addEnterMessage(user.getName());
 		
+		// Greet the other players if we're a computer
+		if (user.getIsComputer()) {
+			BotChatManager.botChatJoinGreeting(user);
+		}
+		
 		// Update the game to let everyone know a new user joined
 		renderGame();
 	}
@@ -293,6 +311,7 @@ public class GameInstance {
 		try{
 			// Tell the BotManager to remember what card was flipped
 			// This will help the computer players on their future turns
+			// Note this won't have any effect if no computer users are present
 			BotManager.memorizeCard(users, toFlip);
 			
 			// Check whether we scored a point
@@ -307,6 +326,16 @@ public class GameInstance {
 				// Check if this last match won the round
 				if (board.isGameDone()) {
 					someoneWon();
+				}
+				else {
+					// If the user was not a computer then tell the bots to congratulate the player
+					if (!matcher.getIsComputer()) {
+						BotChatManager.botChatCongratulateScore(users, matcher.getName());
+					}
+					// Otherwise have the bots taunt the other players
+					else {
+						BotChatManager.botChatTauntOnScore(matcher);
+					}
 				}
 				
 				renderGame();
@@ -349,6 +378,9 @@ public class GameInstance {
 		// Set these messages as needed and then stop the game as it's over
 		chat.addWinnerMessage(message);
 		setWinnerMessage(message);
+		
+		// Make the bots congratulate the winner
+		BotChatManager.botChatCongratulateWin(users, winningUser.getName(), winningUser.getIsComputer());
 		
 		// Stop the game so we have a chance to display the win screen
 		setIsStarted(false);
