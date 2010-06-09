@@ -1,6 +1,8 @@
 package org.icefaces.generator.xmlbuilder;
 
 import org.icefaces.generator.Generator;
+import org.icefaces.generator.GeneratorContext;
+import org.icefaces.generator.Utility;
 import org.w3c.dom.Element;
 
 import org.icefaces.component.annotation.Component;
@@ -16,7 +18,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd");
         root.setAttribute("version",            "2.0");
         getDocument().appendChild(root);
-        addNode(root, "namespace", Generator.namespace);
+        addNode(root, "namespace", GeneratorContext.namespace);
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -28,7 +30,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         Element component_element = getDocument().createElement("component");
         tag.appendChild(component_element);
         try {
-            addNode(component_element, "component-type", Generator.getComponentType(component));
+            addNode(component_element, "component-type", Utility.getComponentType(component));
             if (!"".equals(component.rendererType())) {
                 addNode(component_element, "renderer-type", component.rendererType());
             }
@@ -36,7 +38,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         } catch (Exception e) {
             e.printStackTrace();
         } 
-        if (Generator.currentClassHasMethodExpression) {
+        if (GeneratorContext.getInstance().getActiveComponentContext().isHasMethodExpression()) {
             addNode(component_element, "handler-class", clazz.getName()+ "Handler");
         }
         //addNode(component_element, "handler-class", component.handlerClass());
