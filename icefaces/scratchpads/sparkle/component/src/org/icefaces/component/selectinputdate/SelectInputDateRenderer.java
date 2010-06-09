@@ -119,13 +119,14 @@ public class SelectInputDateRenderer extends Renderer {
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
         System.out.println("params = " + params);
-        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", HTML.ID_ATTR);
+        writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 //        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
-//        writer.write("alert('renderAsPopup = " + renderAsPopup + "');");
         writer.write("YAHOO.icefaces.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     @Override
