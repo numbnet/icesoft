@@ -1,4 +1,4 @@
-package org.icefaces.generator;
+package org.icefaces.generator.utils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.Writer;

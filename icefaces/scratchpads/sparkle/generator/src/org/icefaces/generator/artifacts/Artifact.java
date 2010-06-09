@@ -1,4 +1,6 @@
-package org.icefaces.generator;
+package org.icefaces.generator.artifacts;
+
+import org.icefaces.generator.context.ComponentContext;
 
 public abstract class Artifact {
 	ComponentContext componentContext;

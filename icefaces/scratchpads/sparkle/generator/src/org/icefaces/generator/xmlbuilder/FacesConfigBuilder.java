@@ -1,7 +1,7 @@
 package org.icefaces.generator.xmlbuilder;
 
 import org.icefaces.generator.Generator;
-import org.icefaces.generator.Utility;
+import org.icefaces.generator.utils.Utility;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
