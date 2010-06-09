@@ -19,7 +19,8 @@
 <h:body class="ice-skin-rime yui-skin-sam">
     <h:form id="calForm1">
         <h:outputText value="renderAsPopup"/>
-        <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}"/>
+        <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onclick="alert(this.id + ' = ' + this.checked); ice.se(event, this);"/>
+<!--
         <h:outputText value="renderInputField (popup only)"/>
         <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}"/>
         <br/>
@@ -31,11 +32,14 @@
             <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
             <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
         </h:selectOneMenu>
+-->
     </h:form>
+<!--
     <h:outputText value="output: "/>
     <h:outputText id="output" value="#{calendarBean.selectedDate}">
         <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
     </h:outputText>
+-->
     <h:form id="calForm2">
         <ann:selectInputDate id="calendar4" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
@@ -44,6 +48,7 @@
             <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
         </ann:selectInputDate>
     </h:form>
+<!--
     <div style="height:350px"/>
     <a href="index.html">Goto Main page</a>
     <script type="text/javascript">
@@ -64,6 +69,7 @@
         })();
         //]]>
     </script>
+-->
 </h:body>
 </html>
 
