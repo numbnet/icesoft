@@ -1,4 +1,4 @@
-package org.icefaces.generator;
+package org.icefaces.generator.context;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.icefaces.component.annotation.PropertyTemplate;
+import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
 import org.icefaces.generator.xmlbuilder.TLDBuilder;

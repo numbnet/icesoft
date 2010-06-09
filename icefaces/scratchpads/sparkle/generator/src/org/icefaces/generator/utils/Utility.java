@@ -1,4 +1,4 @@
-package org.icefaces.generator;
+package org.icefaces.generator.utils;
 
 import java.lang.reflect.Field;
 

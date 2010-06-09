@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.generator.Generator;
-import org.icefaces.generator.GeneratorContext;
+import org.icefaces.generator.context.GeneratorContext;
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;

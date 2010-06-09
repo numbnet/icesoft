@@ -1,8 +1,8 @@
 package org.icefaces.generator.xmlbuilder;
 
 import org.icefaces.generator.Generator;
-import org.icefaces.generator.GeneratorContext;
-import org.icefaces.generator.Utility;
+import org.icefaces.generator.context.GeneratorContext;
+import org.icefaces.generator.utils.Utility;
 import org.w3c.dom.Element;
 
 import org.icefaces.component.annotation.Component;

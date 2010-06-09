@@ -1,4 +1,4 @@
-package org.icefaces.generator;
+package org.icefaces.generator.artifacts;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -9,6 +9,10 @@ import java.util.Map;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.generator.context.ComponentContext;
+import org.icefaces.generator.context.GeneratorContext;
+import org.icefaces.generator.utils.FileWriter;
+import org.icefaces.generator.utils.Utility;
 
 public class TagArtifact extends Artifact{
 	private StringBuilder generatedTagClass;

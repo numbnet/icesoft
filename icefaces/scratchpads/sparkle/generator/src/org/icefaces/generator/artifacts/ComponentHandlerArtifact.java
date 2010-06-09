@@ -1,10 +1,13 @@
-package org.icefaces.generator;
+package org.icefaces.generator.artifacts;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.generator.context.ComponentContext;
+import org.icefaces.generator.utils.FileWriter;
+import org.icefaces.generator.utils.Utility;
 
 public class ComponentHandlerArtifact extends Artifact{
     private StringBuilder generatedComponentHandlerClass;
