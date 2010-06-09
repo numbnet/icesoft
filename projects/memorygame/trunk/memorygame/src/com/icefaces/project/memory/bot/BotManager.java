@@ -161,14 +161,14 @@ public class BotManager {
 					// If we scored a point we need to act again, so restart our computer turn
 					if ((scored) && (game.getIsStarted())) {
 						performComputerTurn(game);
-						return;
 					}
+					return;
 				}
 				// If the game is not running we don't want to act, but we also still haven't completed our turn
 				// So we'll sleep a bit and try again
 				else {
 					try {
-						Thread.sleep(BOT_THINK_DELAY_BASE);
+						Thread.sleep(BOT_THINK_DELAY_BASE*2);
 					}catch (InterruptedException ignored) { }
 					
 					performComputerTurn(game);
