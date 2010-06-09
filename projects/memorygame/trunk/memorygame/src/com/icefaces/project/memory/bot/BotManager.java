@@ -88,10 +88,10 @@ public class BotManager {
 	 * This will handle all the proper toggling of flags and values to ensure the session is valid and
 	 *  can be directly added to a GameInstance
 	 */
-	public static BotSession generateComputer(String baseName, BotDifficulty difficulty,
+	public static BotSession generateComputer(String name, BotDifficulty difficulty,
 										      GameManager gameManager, GameInstance currentGame) {
 		// Create a new BotSession and return it
-		return new BotSession(baseName,
+		return new BotSession(name,
 							  difficulty.generateNewLevel(), difficulty.generateNewErrorChance(),
 							  difficulty.getMoveDelayModifier(),
 							  gameManager, currentGame);
@@ -104,7 +104,6 @@ public class BotManager {
 	 * Then we'll ensure the reflipping thread isn't still running (ie: the cards
 	 *  are in a clickable state for the computer)
 	 * Then, if the game is still going, we'll try to perform our moves
-	 *  by randomly flipping cards
 	 * If our flips result in a match we'll restart this method to fulfill our bonus turn
 	 */
 	public static void performComputerTurn(final GameInstance game) {
@@ -128,7 +127,7 @@ public class BotManager {
 							// Don't sleep for the full reflipDelay each time
 							// This is because if we miss the thread stopping by a few milliseconds we
 							//  don't want to have to wait through the entire reflipDelay again
-							Thread.sleep(game.getReflipDelay()/3);
+							Thread.sleep(game.getReflipDelay() / 3);
 						}catch (InterruptedException ignored) { }
 					}
 					else {
@@ -157,21 +156,23 @@ public class BotManager {
 						return;
 					}
 					scored = game.performTurn(moves[1]);
-					
-					// If we scored a point we need to act again, so restart our computer turn
+
+					// Check if we need to act again because we scored a point
 					if ((scored) && (game.getIsStarted())) {
 						performComputerTurn(game);
 					}
+					
 					return;
 				}
 				// If the game is not running we don't want to act, but we also still haven't completed our turn
 				// So we'll sleep a bit and try again
 				else {
 					try {
-						Thread.sleep(BOT_THINK_DELAY_BASE*2);
+						Thread.sleep(BOT_THINK_DELAY_BASE * 2);
 					}catch (InterruptedException ignored) { }
 					
 					performComputerTurn(game);
+					
 					return;
 				}
 			}
@@ -192,6 +193,10 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Method to loop through the passed users and delegate clearing memorized
+	 *  cards to every user session that is a bot
+	 */
 	public static void clearMemorizedCards(List<UserModel> users) {
 		for (UserModel loopUser : users) {
 			if (loopUser.getIsComputer()) {
