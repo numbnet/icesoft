@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.generator.Generator;
+import org.icefaces.generator.GeneratorContext;
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;
@@ -22,8 +23,8 @@ public class TLDBuilder extends XMLBuilder{
         getDocument().appendChild(root);
         addNode(root, "tlib-version", "2.1");
         //addNode(root, "jsp-version", "1.2");
-        addNode(root, "short-name", Generator.shortName);
-        addNode(root, "uri", Generator.namespace);
+        addNode(root, "short-name", GeneratorContext.shortName);
+        addNode(root, "uri", GeneratorContext.namespace);
         addNode(root, "display-name", "ICEfaces Component Suite");         
     }
 

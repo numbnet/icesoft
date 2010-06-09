@@ -1,6 +1,7 @@
 package org.icefaces.generator.xmlbuilder;
 
 import org.icefaces.generator.Generator;
+import org.icefaces.generator.Utility;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -51,7 +52,7 @@ public class FacesConfigBuilder extends XMLBuilder{
             if ("".equals(rendererType)) return;
             Text comp_renderer_type_text = getDocument().createTextNode(rendererType);
             
-            String componentFamily = Generator.getFamily(component);
+            String componentFamily = Utility.getFamily(component);
 
             Text comp_family_text = getDocument().createTextNode(componentFamily);
             
