@@ -21,15 +21,15 @@
 */
 package com.icefaces.project.memory.util;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
-public class Randomizer extends Random {
+public class Randomizer extends SecureRandom {
 	private static final long serialVersionUID = -8323038414458263329L;
 	
 	private static Randomizer singleton = null;
     
     private Randomizer() {
-    	super(System.currentTimeMillis());
+    	super();
     }
     
     public static synchronized Randomizer getInstance() {

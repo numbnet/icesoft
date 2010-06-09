@@ -38,11 +38,12 @@ import com.icefaces.project.memory.util.Randomizer;
 public class BotSession extends UserSession {
 	private int level;
 	private int errorChance;
+	private int moveDelayModifier;
 	private List<GameCard> memorizedCards;
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
-	public BotSession(String baseName, int level, int errorChance,
+	public BotSession(String baseName, int level, int errorChance, int moveDelayModifier,
 		              GameManager gameManager, GameInstance currentGame) {
 		super();
 		
@@ -50,8 +51,9 @@ public class BotSession extends UserSession {
 		
 		this.level = level;
 		this.errorChance = errorChance;
+		this.moveDelayModifier = moveDelayModifier;
 		
-		this.name = baseName + " (Computer)";
+		this.name = baseName + " (Level " + level + " Computer)";
 		
 		this.gameManager = gameManager;
 		this.currentGame = currentGame;
@@ -76,6 +78,14 @@ public class BotSession extends UserSession {
 		this.errorChance = errorChance;
 	}
 	
+	public int getMoveDelayModifier() {
+		return moveDelayModifier;
+	}
+
+	public void setMoveDelayModifier(int moveDelayModifier) {
+		this.moveDelayModifier = moveDelayModifier;
+	}
+
 	public List<GameCard> getMemorizedCards() {
 		return memorizedCards;
 	}

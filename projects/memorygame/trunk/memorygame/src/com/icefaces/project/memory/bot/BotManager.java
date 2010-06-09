@@ -34,6 +34,11 @@ import com.icefaces.project.memory.util.Randomizer;
  * Class used to handle generating and naming computer controlled players (aka "bots")
  */
 public class BotManager {
+	public static final long BOT_THINK_DELAY_BASE = 900l;
+	public static final int BOT_THINK_DELAY_VARIATION = 500;
+	public static final long BOT_MOVE_DELAY = 700l;
+	public static final int BOT_MOVE_DELAY_VARIATION = 600;	
+	
 	/**
 	 * Get a list of available computer names
 	 */
@@ -88,6 +93,7 @@ public class BotManager {
 		// Create a new BotSession and return it
 		return new BotSession(baseName,
 							  difficulty.generateNewLevel(), difficulty.generateNewErrorChance(),
+							  difficulty.getMoveDelayModifier(),
 							  gameManager, currentGame);
 	}
 	
@@ -106,8 +112,8 @@ public class BotManager {
 			public void run() {
 				// First we'll want to sleep for a bit, to give the illusion of being human
 				try {
-					Thread.sleep(GameManager.BOT_THINK_DELAY_BASE +
-								 Randomizer.getInstance().nextInt(GameManager.BOT_THINK_DELAY_VARIATION));
+					Thread.sleep(BOT_THINK_DELAY_BASE +
+								 Randomizer.getInstance().nextInt(BOT_THINK_DELAY_VARIATION));
 				}catch (InterruptedException interrupted) {
 					return;
 				}
@@ -142,30 +148,31 @@ public class BotManager {
 					GameCard[] moves = bot.determineMoves(game.getBoard());
 					
 					// Run through the actual moves
-					for (int i = 0; i < moves.length; i++) {
-						scored = game.performTurn(moves[i]);
-						
-						// Delay a bit between each move
-						try {
-							Thread.sleep(GameManager.BOT_MOVE_DELAY);
-						}catch (InterruptedException interrupted) {
-							return;
-						}
+					game.performTurn(moves[0]);
+					try {
+						Thread.sleep(BOT_MOVE_DELAY +
+									 Randomizer.getInstance().nextInt(BOT_MOVE_DELAY_VARIATION) -
+									 bot.getMoveDelayModifier());
+					}catch (InterruptedException interrupted) {
+						return;
 					}
+					scored = game.performTurn(moves[1]);
 					
 					// If we scored a point we need to act again, so restart our computer turn
 					if ((scored) && (game.getIsStarted())) {
 						performComputerTurn(game);
+						return;
 					}
 				}
 				// If the game is not running we don't want to act, but we also still haven't completed our turn
 				// So we'll sleep a bit and try again
 				else {
 					try {
-						Thread.sleep(GameManager.BOT_THINK_DELAY_BASE);
+						Thread.sleep(BOT_THINK_DELAY_BASE);
 					}catch (InterruptedException ignored) { }
 					
 					performComputerTurn(game);
+					return;
 				}
 			}
 		});
