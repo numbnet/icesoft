@@ -25,7 +25,6 @@ package org.icefaces.event;
 import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.application.LazyPushManager;
 import org.icefaces.application.WindowScopeManager;
-import org.icefaces.context.DOMResponseWriter;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.SessionViewManager;
@@ -135,8 +134,8 @@ public class BridgeSetup implements SystemEventListener {
             UIForm retrieveUpdateSetup = new UIForm() {
                 public void encodeEnd(FacesContext context) throws IOException {
                     ResponseWriter writer = context.getResponseWriter();
-                    //apply http://jira.icefaces.org/browse/ICE-5728 fix for the dynamically added form
-                    if (context.isPostback() && !context.getViewRoot().getAttributes().containsKey(DOMResponseWriter.OLD_DOM)) {
+                    //apply similar fix as for http://jira.icefaces.org/browse/ICE-5728
+                    if (context.isPostback()) {
                         writer.startElement("input", this);
                         writer.writeAttribute("id", "javax.faces.ViewState", null);
                         writer.writeAttribute("type", "hidden", null);
