@@ -27,11 +27,11 @@ import com.icefaces.project.memory.util.ValidatorUtil;
 
 public class BotDifficultyManager {
 	private static BotDifficulty[] difficulties = new BotDifficulty[] {
-		new BotDifficulty("Simple", "Randomly guesses all moves.", 0, 0, 0, 0),
-		new BotDifficulty("Easy", "Can sometimes remember previous cards.", 1, 2, 10, 25),
-		new BotDifficulty("Normal", "Represents the usual memory of a person.", 3, 2, 5, 8),
-		new BotDifficulty("Hard", "Sharp memory ensures lots of matches.", 4, 5, 0, 6),
-		new BotDifficulty("Brutal", "Limitless memory without error.", 64, 0, 0, 0)
+		new BotDifficulty("Simple", "Randomly guesses all moves.", 0, 0, 0, 0, 0),
+		new BotDifficulty("Easy", "Can sometimes remember previous cards.", 1, 2, 10, 25, 50),
+		new BotDifficulty("Normal", "Represents the usual memory of a person.", 3, 2, 5, 8, 100),
+		new BotDifficulty("Hard", "Sharp memory ensures lots of matches.", 5, 3, 0, 7, 200),
+		new BotDifficulty("Brutal", "Limitless memory without error.", 64, 0, 0, 0, 300)
 	};
 	private static BotDifficulty defaultDifficulty = difficulties[2]; // Default to "Normal"
 	

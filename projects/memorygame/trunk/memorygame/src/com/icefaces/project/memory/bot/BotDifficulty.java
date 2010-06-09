@@ -30,16 +30,19 @@ public class BotDifficulty {
 	private int rangeLevel;
 	private int minErrorChance;
 	private int rangeErrorChance;
+	private int moveDelayModifier;
 	
 	public BotDifficulty(String name, String description,
 						 int minLevel, int rangeLevel,
-						 int minErrorChance, int rangeErrorChance) {
+						 int minErrorChance, int rangeErrorChance,
+						 int moveDelayModifier) {
 		this.name = name;
 		this.description = description;
 		this.minLevel = minLevel;
 		this.rangeLevel = rangeLevel;
 		this.minErrorChance = minErrorChance;
 		this.rangeErrorChance = rangeErrorChance;
+		this.moveDelayModifier = moveDelayModifier;
 	}
 	
 	public String getName() {
@@ -90,6 +93,14 @@ public class BotDifficulty {
 		this.rangeErrorChance = rangeErrorChance;
 	}
 	
+	public int getMoveDelayModifier() {
+		return moveDelayModifier;
+	}
+
+	public void setMoveDelayModifier(int moveDelayModifier) {
+		this.moveDelayModifier = moveDelayModifier;
+	}
+
 	public int generateNewLevel() {
 		if (rangeLevel > 0) {
 			return minLevel + Randomizer.getInstance().nextInt(rangeLevel);
