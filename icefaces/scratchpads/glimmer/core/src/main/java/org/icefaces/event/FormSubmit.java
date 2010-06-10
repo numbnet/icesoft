@@ -33,20 +33,30 @@
 
 package org.icefaces.event;
 
+import org.icefaces.application.ExternalContextConfiguration;
+import org.icefaces.push.Configuration;
+import org.icefaces.util.EnvUtils;
+
+import javax.faces.component.UIOutput;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
 
 public class FormSubmit implements SystemEventListener {
     public static final String DISABLE_CAPTURE_SUBMIT = "DISABLE_CAPTURE_SUBMIT";
+    private boolean deltaSubmit;
+
+    public FormSubmit() {
+        Configuration configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
+        deltaSubmit = configuration.getAttributeAsBoolean("deltaSubmit", false);
+    }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-//System.out.println("FormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(context)) {
             return;
@@ -54,14 +64,29 @@ public class FormSubmit implements SystemEventListener {
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
-//System.out.println("FormSubmit  DISABLE_CAPTURE_SUBMIT  " + form.getClientId(context));
             return;
         }
-        
-        FormScriptWriter scriptWriter = new FormScriptWriter(
-            "ice'.captureSubmit'(''{0}''')';ice'.captureEnterKey'(''{0}''')';",
-            DISABLE_CAPTURE_SUBMIT,
-            "_captureSubmit");
+
+        UIOutput scriptWriter = new UIOutputWriter() {
+            public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                String formId = form.getClientId(context);
+                writer.startElement("script", this);
+                writer.writeAttribute("type", "text/javascript", "type");
+                writer.writeAttribute("id", getClientId(context), "id");
+                writer.write("ice.captureSubmit('");
+                writer.write(formId);
+                writer.write("',");
+                writer.write(Boolean.toString(deltaSubmit));
+                writer.write(");");
+                writer.write("ice.captureEnterKey('");
+                writer.write(formId);
+                writer.write("');");
+                writer.endElement("script");
+            }
+        };
+
+        scriptWriter.setId(form.getId() + "_captureSubmit");
+        scriptWriter.setTransient(true);
         form.getChildren().add(0, scriptWriter);
     }
 
