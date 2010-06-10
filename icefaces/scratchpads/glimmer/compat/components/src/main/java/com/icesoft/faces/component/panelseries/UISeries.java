@@ -64,6 +64,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.component.UIColumn;
+import java.util.Collection;
 
 
 /**
