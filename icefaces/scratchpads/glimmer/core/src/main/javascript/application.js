@@ -163,7 +163,7 @@ if (!window.ice.icefaces) {
             };
         };
 
-        namespace.captureSubmit = function(id) {
+        namespace.captureSubmit = function(id, delta) {
             var f = document.getElementById(id);
             //hijack browser form submit, instead submit through an Ajax request
             f.submit = function() {
@@ -182,11 +182,9 @@ if (!window.ice.icefaces) {
                 };
             });
 
-            onLoad(window, function() {
-                if (deltaSubmit(f)) {
-                    f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
-                }
-            });
+            if (delta) {
+                f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
+            }
         };
 
         var client = Client(true);
