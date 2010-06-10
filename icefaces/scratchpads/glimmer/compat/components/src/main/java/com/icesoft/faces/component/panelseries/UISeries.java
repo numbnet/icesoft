@@ -60,6 +60,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.component.UIColumn;
 
 
 /**
@@ -696,6 +700,253 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         return super.isRendered();
     } 
     
+    /**
+     * <p class="changed_added_2_0">Override the behavior in {@link
+     * UIComponent#visitTree} to handle iteration correctly.</p>
+     *
+     * <div class="changed_added_2_0">
+
+     * <p>If the {@link UIComponent#isVisitable} method of this instance
+     * returns <code>false</code>, take no action and return.</p>
+
+     * <p>Otherwise, save aside the result of a call to {@link
+     * #getRowIndex}.  Call {@link UIComponent#pushComponentToEL} and
+     * invoke the visit callback on this <code>UIData</code> instance as
+     * described in {@link UIComponent#visitTree}.  Let the result of
+     * the invoctaion be <em>visitResult</em>.  If <em>visitResult</em>
+     * is {@link javax.faces.component.visit.VisitResult#COMPLETE}, take no further action and
+     * return <code>true</code>.  Otherwise, determine if we need to
+     * visit our children.  The default implementation calls {@link
+     * javax.faces.component.visit.VisitContext#getSubtreeIdsToVisit} passing <code>this</code> as
+     * the argument.  If the result of that call is non-empty, let
+     * <em>doVisitChildren</em> be <code>true</code>.  If
+     * <em>doVisitChildren</em> is <code>true</code> and
+     * <em>visitResult</em> is {@link javax.faces.component.visit.VisitResult#ACCEPT}, take the
+     * following action.<p>
+
+     * <ul>
+
+     * 	  <li><p>If this component has facets, call {@link
+     * 	  UIComponent#getFacets} on this instance and invoke the
+     * 	  <code>values()</code> method.  For each
+     * 	  <code>UIComponent</code> in the returned <code>Map</code>,
+     * 	  call {@link UIComponent#visitTree}.</p></li>
+
+     * 	  <li><p>If this component has children, for each child
+     * 	  <code>UIComponent</code> retured from calling {@link
+     * 	  #getChildren} on this instance, if the child has facets, call
+     * 	  {@link UIComponent#getFacets} on the child instance and invoke
+     * 	  the <code>values()</code> method.  For each
+     * 	  <code>UIComponent</code> in the returned <code>Map</code>,
+     * 	  call {@link UIComponent#visitTree}.</p></li>
+
+     * 	  <li><p>Iterate over the columns and rows.</p>
+
+     * <ul>
+
+     * 	  <li><p>Let <em>rowsToProcess</em> be the return from {@link
+     * 	  #getRows}.  </p></li>
+
+     * 	  <li><p>Let <em>rowIndex</em> be the return from {@link
+     * 	  #getFirst} - 1.</p></li>
+
+     * 	  <li><p>While the number of rows processed is less than
+     * 	  <em>rowsToProcess</em>, take the following actions.</p>
+
+     * <p>Call {@link #setRowIndex}, passing the current row index.</p>
+
+     * <p>If {@link #isRowAvailable} returns <code>false</code>, take no
+     * further action and return <code>false</code>.</p>
+
+     * <p>For each child component of this <code>UIData</code> that is
+     * also an instance of {@link javax.faces.component.UIColumn}, call {@link
+     * UIComponent#visitTree} on the child.  If such a call returns
+     * <code>true</code>, terminate iteration and return
+     * <code>true</code>.  Take no action on non <code>UIColumn</code>
+     * children.</p>
+
+     *     </li>
+
+     * </ul>
+
+     *    </li>
+
+     * </ul>
+
+     * <p>Call {@link #popComponentFromEL} and restore the saved row
+     * index with a call to {@link #setRowIndex}.</p>
+
+     * <p>Return <code>false</code> to allow the visiting to
+     * continue.</p>
+
+     * </div>
+     *
+     * @param context the <code>VisitContext</code> that provides
+     * context for performing the visit.
+     *
+     * @param callback the callback to be invoked for each node
+     * encountered in the visit.
+
+     * @throws NullPointerException if any of the parameters are
+     * <code>null</code>.
+
+     * 
+     */
+    @Override
+    public boolean visitTree(VisitContext context, 
+                             VisitCallback callback) {
+
+        // First check to see whether we are visitable.  If not
+        // short-circuit out of this subtree, though allow the
+        // visit to proceed through to other subtrees.
+        if (!isVisitable(context))
+            return false;
+
+        // Clear out the row index is one is set so that
+        // we start from a clean slate.
+        int oldRowIndex = getRowIndex();
+        setRowIndex(-1);
+
+        // Push ourselves to EL
+        FacesContext facesContext = context.getFacesContext();
+        pushComponentToEL(facesContext, null);
+
+        try {
+
+            // Visit ourselves.  Note that we delegate to the 
+            // VisitContext to actually perform the visit.
+            VisitResult result = context.invokeVisitCallback(this, callback);
+
+            // If the visit is complete, short-circuit out and end the visit
+            if (result == VisitResult.COMPLETE)
+                return true;
+
+            // Visit children, short-circuiting as necessary
+            if ((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
+
+                // First visit facets
+                if (visitFacets(context, callback))
+                    return true;
+
+                // Next column facets
+                if (visitColumnFacets(context, callback))
+                    return true;
+
+                // And finally, visit rows
+                if (visitColumnsAndRows(context, callback))
+                    return true;
+            }
+        }
+        finally {
+            // Clean up - pop EL and restore old row index
+            popComponentFromEL(facesContext);
+            setRowIndex(oldRowIndex);
+        }
+
+        // Return false to allow the visit to continue
+        return false;
+    }
+    // Tests whether we need to visit our children as part of
+    // a tree visit
+    private boolean doVisitChildren(VisitContext context) {
+
+        // Just need to check whether there are any ids under this
+        // subtree.  Make sure row index is cleared out since 
+        // getSubtreeIdsToVisit() needs our row-less client id.
+        setRowIndex(-1);
+        Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
+        assert(idsToVisit != null);
+
+        // All ids or non-empty collection means we need to visit our children.
+        return (!idsToVisit.isEmpty());
+    }
+    // Visit each facet of this component exactly once
+    private boolean visitFacets(VisitContext context, VisitCallback callback) {
+
+        setRowIndex(-1);
+        if (getFacetCount() > 0) {
+            for (UIComponent facet : getFacets().values()) {
+                if (facet.visitTree(context, callback))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Visit each facet of our child UIColumn components exactly once
+    private boolean visitColumnFacets(VisitContext context, 
+                                      VisitCallback callback) {
+        setRowIndex(-1);
+        if (getChildCount() > 0) {
+            for (UIComponent column : getChildren()) {
+                if (column.getFacetCount() > 0) {
+                    for (UIComponent columnFacet : column.getFacets().values()) {
+                        if (columnFacet.visitTree(context, callback))
+                            return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Visit each column and row
+    private boolean visitColumnsAndRows(VisitContext context,  VisitCallback callback) {
+
+
+        // first, visit all columns
+        if (getChildCount() > 0) {
+            for (UIComponent kid : getChildren()) {
+                if (kid.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }
+
+        // Iterate over our UIColumn children, once per row
+        int processed = 0;
+        int rowIndex = getFirst() - 1;
+        int rows = getRows();
+
+        while (true) {
+
+            // Have we processed the requested number of rows?
+            if ((rows > 0) && (++processed > rows)) {
+                break;
+            }
+
+            // Expose the current row in the specified request attribute
+            setRowIndex(++rowIndex);
+            if (!isRowAvailable()) {
+                break; // Scrolled past the last row
+            }
+
+            // Visit as required on the *children* of the UIColumn
+            // (facets have been done a single time with rowIndex=-1 already)
+            if (getChildCount() > 0) {
+                for (UIComponent kid : getChildren()) {
+                    if (kid instanceof UIColumn) {
+                        if (kid.getChildCount() > 0) {
+                            for (UIComponent grandkid : kid.getChildren()) {
+                                if (grandkid.visitTree(context, callback)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    } else {
+                        if (kid.visitTree(context, callback)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return false;
+    }
 }
 
 class ChildState implements Serializable {
