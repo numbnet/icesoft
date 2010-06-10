@@ -27,22 +27,33 @@ public class ICEpushPlaceEndpoint {
     }
 
     @PayloadRoot(localPart = "personLoginRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
-	public JAXBElement<PersonKeyType> loginPerson(JAXBElement<PersonRequestType> requestElement) {
+	public JAXBElement<BigInteger> loginPerson(JAXBElement<PersonRequestType> requestElement) {
 	PersonRequestType request = requestElement.getValue();
-        BigInteger key = icePushPlaceService.loginPerson(request.getWorld(), request.getPerson());
-	PersonKeyType personKey = new PersonKeyType();
-	personKey.setKey(key);
-	return objectFactory.createPersonLoginResponse(personKey);
-    }
-    /*
-    @PayloadRoot(localPart = "personLogoutRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
-    public void logoutPerson(personLogoutRequest request) {
-        icePushPlaceService.logoutPerson(request.getWorld(), request.getPerson());
+	Integer personKey = icePushPlaceService.
+	    loginPerson(request.getWorld(), request.getPerson());
+	return objectFactory.createPersonLoginResponse(new BigInteger(personKey.toString()));
     }
 
     @PayloadRoot(localPart = "personUpdateRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
-    public void updatePerson(personLoginRequest request) {
-        icePushPlaceService.updatePerson(request.getWorld(), request.getPerson());
-	}*/
+	public void updatePerson(JAXBElement<PersonRequestType> requestElement) {
+	PersonRequestType request = requestElement.getValue();
+	icePushPlaceService.updatePerson(request.getWorld(), 
+					 request.getPerson());
+    }
+
+    @PayloadRoot(localPart = "personLogoutRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
+	public void logoutPerson(JAXBElement<PersonRequestType> requestElement) {
+	PersonRequestType request = requestElement.getValue();
+	icePushPlaceService.logoutPerson(request.getWorld(), 
+					 request.getPerson());
+    }
+
+    @PayloadRoot(localPart = "WorldUpdateRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
+	public JAXBElement<WorldResponseType> updateWorld(JAXBElement<WorldRequestType> requestElement) {
+	WorldRequestType request = requestElement.getValue();
+	WorldResponseType response = icePushPlaceService.
+	    updateWorld(request.getWorld(), request.getLastSequenceNo());
+	return objectFactory.createWorldUpdateResponse(response);
+    }
 
 }
