@@ -23,8 +23,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -34,7 +34,7 @@ import javax.faces.el.ValueBinding;
  * The component extends the javax.faces.component.html.HtmlPanelGroup.
  */
 public class PanelTab
-        extends UIColumn {
+        extends HtmlPanelGroup {
     /**
      * The component type.
      */
@@ -118,7 +118,7 @@ public class PanelTab
      * @see javax.faces.component.html.HtmlPanelGroup#getStyleClass()
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this,
+        return Util.getQualifiedStyleClass(this, 
                 styleClass,
                 CSS_DEFAULT.PANEL_TAB_DEFAULT_STYLECLASS,
                 "styleClass");
@@ -223,12 +223,11 @@ public class PanelTab
     }
 
     private transient Object values[];
-
     /* (non-Javadoc)
-    * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
-    */
+     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+     */
     public Object saveState(FacesContext context) {
-        if (values == null) {
+        if(values == null){
             values = new Object[24];
         }
         values[0] = super.saveState(context);
@@ -255,7 +254,7 @@ public class PanelTab
         values[21] = iconAlignRight;
         values[22] = labelWidth;
         values[23] = labelWrap;
-
+        
         return ((Object) (values));
     }
 
@@ -284,8 +283,8 @@ public class PanelTab
         onkeypress = (String) values[17];
         onkeydown = (String) values[18];
         onkeyup = (String) values[19];
-        icon = (String) values[20];
-        iconAlignRight = (Boolean) values[21];
+        icon = (String)values[20];
+        iconAlignRight = (Boolean)values[21];
         labelWidth = (String) values[22];
         labelWrap = (Boolean) values[23];
     }
@@ -583,8 +582,8 @@ public class PanelTab
         }
         ValueBinding vb = getValueBinding("iconAlignRight");
         return vb != null ?
-                ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
-                false;
+               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+               false;
     }
 
     /**
@@ -596,23 +595,23 @@ public class PanelTab
     void addHeaderText(DOMContext domContext, Node parent, Node child,
                        PanelTabSet tabSet) {
         Element table = (Element) domContext.createElement(HTML.TABLE_ELEM);
-        table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-        table.setAttribute(HTML.CELLSPACING_ATTR, "0");
+        table.setAttribute(HTML.CELLPADDING_ATTR,"0");
+        table.setAttribute(HTML.CELLSPACING_ATTR,"0");
         Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
         Element labelTd = (Element) domContext.createElement(HTML.TD_ELEM);
         table.appendChild(tr);
-
+        
         Element div = (Element) domContext.createElement(HTML.DIV_ELEM);
         parent.appendChild(div);
         div.appendChild(table);
-
+        
         if (getLabelWidth() != null) {
-            div.setAttribute(HTML.STYLE_ATTR, "width:" + getLabelWidth() + "px;overflow:hidden;");
-
+            div.setAttribute(HTML.STYLE_ATTR, "width:"+getLabelWidth()+"px;overflow:hidden;");
+            
             if (isLabelWrap()) {
-                labelTd.setAttribute(HTML.STYLE_ATTR, "white-space: normal;width:" + getLabelWidth() + "px;");
+                labelTd.setAttribute(HTML.STYLE_ATTR, "white-space: normal;width:"+getLabelWidth()+"px;");
                 Element innerDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
-                innerDiv.setAttribute(HTML.STYLE_ATTR, "max-width:" + getLabelWidth() + "px;text-align:left;");
+                innerDiv.setAttribute(HTML.STYLE_ATTR, "max-width:"+getLabelWidth()+"px;text-align:left;");
                 labelTd.appendChild(innerDiv);
                 innerDiv.appendChild(child);
             } else {
@@ -644,28 +643,28 @@ public class PanelTab
             tr.appendChild(labelTd);
             iconClass += CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_LEFT;
         }
-        iconClass = Util.getQualifiedStyleClass(tabSet, iconClass);
+        iconClass = Util.getQualifiedStyleClass(tabSet,iconClass);
         icon.setAttribute(HTML.CLASS_ATTR, iconClass);
     }
 
     String getTabOnClass(String placement) {
-        return Util.getQualifiedStyleClass(this,
+        return Util.getQualifiedStyleClass(this, 
                 CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_TABONCLASS +
-                        placement);
+                placement);
     }
-
+    
     String getTabOffClass(String placement) {
-        return Util.getQualifiedStyleClass(this,
-                CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_TABOFFCLASS +
-                        placement);
+        return Util.getQualifiedStyleClass(this, 
+        CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_TABOFFCLASS +
+        placement);
     }
-
+    
     String getTabOverClass(String placement) {
-        return Util.getQualifiedStyleClass(this,
+        return Util.getQualifiedStyleClass(this, 
                 CSS_DEFAULT.PANEL_TAB_SET_DEFAULT_TABOVERCLASS +
-                        placement);
+                placement);    
     }
-
+    
     /**
      * @param labelWidth
      */
@@ -683,7 +682,7 @@ public class PanelTab
         ValueBinding vb = getValueBinding("labelWidth");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-
+    
     /**
      * @param labelWrap
      */
@@ -700,11 +699,11 @@ public class PanelTab
         }
         ValueBinding vb = getValueBinding("labelWrap");
         return vb != null ?
-                ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
-                false;
+               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+               false;
     }
-
+    
     public UIComponent getLabelFacet() {
         return (UIComponent) getFacet("label");
-    }
+    }    
 }
