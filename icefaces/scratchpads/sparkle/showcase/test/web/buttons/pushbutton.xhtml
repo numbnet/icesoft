@@ -24,18 +24,28 @@
 	<h:outputText value="click the button trigger the display of the image." />
     <h:outputText value="click again so image disappears"/>
 	<br/>
-	<fieldset id="pushButtonActionListenerAndAction">
+	<fieldset id="pushButtonActionListenerForm">
 	   <legend>Simple Buttons on separate forms</legend>
 	   <h:form id="push1Form">
+	     <ann:logger rendered="false"/>
 	      <h:panelGroup id="push1" class="yui-button yui-push-button">
 	       <ann:pushbutton  id="pushId" label="#{button.label}" 
 	           actionListener="#{button.actionListenerMethod}"  />
 	      </h:panelGroup>
 	   </h:form>
+	 </fieldset>
 	<br />
+	<fieldset id="pushButtonActionForm">
+	  <h:outputText id="instructions" value="singleSubmit is true so button should"/>
+	  <h:outputText id="instr2" value="  only submit itself and update picture"/>
 	   <h:form id="push2form">
+	      <h:panelGroup id="extraDataGroup" >
+	          <h:inputText id="testData" value="#{button.extraData}"/>
+	      </h:panelGroup>
 	      <h:panelGroup id="push2">
-	         <ann:pushbutton id="pushId2" label="Action" image="../images/image1.gif"
+	         <ann:pushbutton id="pushId2" label="Action" 
+	            singleSubmit="true"
+	            image="../images/image1.gif"
 	            action="#{button.methodAction}"  />
 	         <h:outputText value="using action property on button" />
 	     </h:panelGroup>
@@ -56,6 +66,8 @@
    	<h:panelGroup id="image">
 	   <h:graphicImage value="../images/employee.gif" label="output"
 	   rendered="#{button.rendered}" />
+	   <br />
+	   <h:outputText id="extraDataTest" value="#{button.extraData}"/>
 	</h:panelGroup>
    </h:form> 
   </h:panelGroup>
