@@ -154,7 +154,7 @@ public class CoreComponentUtils {
                 if (component != null) {
                     break;
                 }
-            } else if (componentId.endsWith(child.getId())) {
+            } else if (child.getId() != null && componentId.endsWith(child.getId())) {
                 component = child;
                 break;
             }
@@ -186,7 +186,7 @@ public class CoreComponentUtils {
             if (component != null) {
                 break;
             }
-            if (componentId.endsWith(child.getId())) {
+            if (child.getId() != null && componentId.endsWith(child.getId())) {
                 component = child;
                 break;
             }
