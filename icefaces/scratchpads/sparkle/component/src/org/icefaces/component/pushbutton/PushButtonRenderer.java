@@ -17,14 +17,16 @@ import org.icefaces.util.EnvUtils;
 public class PushButtonRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+    	System.out.println(" PushButtonRenderer: decode");
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         if (requestParameterMap.containsKey("ice.event.captured")) {
-//            PushButton pushButton = (PushButton) uiComponent;
-//            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-//            String clientId = pushButton.getClientId();
+            PushButton pushButton = (PushButton) uiComponent;
+            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+            String clientId = pushButton.getClientId();
             uiComponent.queueEvent(new ActionEvent(uiComponent));
+     	   System.out.println("button pressed is "+source+" for clientId="+clientId);
 //           if (clientId.equals(source)) {
-//        	   System.out.println("button pressed is "+source+" for clientId="+clientId);
+
 ////               try {
 //            	   //do I need to check to see if it is disabled first?
 //            	   //ActionSource2 has a list of ActionListeners available
@@ -43,7 +45,7 @@ public class PushButtonRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         PushButton pushButton = (PushButton) uiComponent;
-		System.out.println("in renderer and label="+pushButton.getLabel());
+//		System.out.println("in renderer and label="+pushButton.getLabel());
 		// root element
         //writer.startElement(HTML.INPUT_ELEM, uiComponent);
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -98,7 +100,8 @@ public class PushButtonRenderer extends Renderer {
         //pass JSF component specific properties that would help in slider configuration 
         call.append("{");
         call.append("singleSubmit:");
-        call.append(pushButton.isSingleSubmit());       
+        call.append(pushButton.isSingleSubmit()); 
+  //      System.out.println("PushButtonRenderer, singleSubmit="+pushButton.isSingleSubmit() +" for clientId="+clientId);
    
 //        call.append(", ");        
 //        call.append("aria:");
