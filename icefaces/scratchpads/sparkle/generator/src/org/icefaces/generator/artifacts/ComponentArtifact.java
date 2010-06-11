@@ -10,13 +10,14 @@ import java.util.Map;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Facet;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.context.GeneratorContext;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.utils.Utility;
 
 public class ComponentArtifact extends Artifact{
-	private StringBuilder generatedComponentClass;
+	private StringBuilder generatedComponentClass = new StringBuilder();;
 	private List<Field> generatedComponentProperties = new ArrayList<Field>();
 
 	public ComponentArtifact(ComponentContext componentContext) {
@@ -29,9 +30,6 @@ public class ComponentArtifact extends Artifact{
 
 	private void startComponentClass(Class clazz, Component component) {
 		//initialize
-		generatedComponentClass = new StringBuilder();
-		generatedComponentProperties = new ArrayList<Field>();
-
 		// add entry to faces-config
 		GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
 		GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
@@ -46,6 +44,9 @@ public class ComponentArtifact extends Artifact{
 		generatedComponentClass.append("import javax.faces.context.FacesContext;\n");
 		generatedComponentClass.append("import javax.el.MethodExpression;\n");
 		generatedComponentClass.append("import javax.el.ValueExpression;\n\n");
+		for (Behavior behavior: getComponentContext().getBehaviors()) {
+			behavior.addImportsToComponent(generatedComponentClass);
+		}
 		generatedComponentClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 
 
@@ -53,6 +54,15 @@ public class ComponentArtifact extends Artifact{
 		generatedComponentClass.append(Utility.getClassName(component).substring(classIndicator+1));
 		generatedComponentClass.append(" extends ");
 		generatedComponentClass.append(component.extendsClass());
+		String interfaceNames = "";
+		for (Behavior behavior: getComponentContext().getBehaviors()) {
+			interfaceNames+=behavior.getInterfaceName()+",";
+		}
+		if (!"".equals(interfaceNames)) {
+			generatedComponentClass.append(" implements ");
+			generatedComponentClass.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
+		}
+		
 		generatedComponentClass.append("{\n");
 
 		generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
@@ -70,6 +80,9 @@ public class ComponentArtifact extends Artifact{
 
 
 	private void endComponentClass() {
+		for (Behavior behavior: getComponentContext().getBehaviors()) {
+			behavior.addCodeToComponent(generatedComponentClass);
+		}		
 		generatedComponentClass.append("\n}");
 		createJavaFile();
 
@@ -103,7 +116,10 @@ public class ComponentArtifact extends Artifact{
 
 	private void addPropertyEnum() {
 
-		generatedComponentClass.append("\n\tprotected enum PropertyKeys {\n");        
+		generatedComponentClass.append("\n\tprotected enum PropertyKeys {\n");    
+		for (Behavior behavior: getComponentContext().getBehaviors()) {
+			behavior.addPropertiesEnumToComponent(generatedComponentClass);
+		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
 			generatedComponentClass.append("\t\t");     
 			generatedComponentClass.append(generatedComponentProperties.get(i).getName()); 
@@ -119,84 +135,91 @@ public class ComponentArtifact extends Artifact{
 	}
 
 	private void addGetterSetter() {
+		for (Behavior behavior: getComponentContext().getBehaviors()) {
+			behavior.addGetterSetter(this,generatedComponentClass);
+		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++) {
 			Field field = generatedComponentProperties.get(i);
-			Property prop = (Property)field.getAnnotation(Property.class);
-
-			boolean isBoolean = field.getType().getName().endsWith("boolean")||
-			field.getType().getName().endsWith("Boolean");
-
-			//set
-			addJavaDoc(field.getName(), true, prop.javadocSet());
-			generatedComponentClass.append("\tpublic void set");
-			generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-			generatedComponentClass.append(field.getName().substring(1));
-
-			generatedComponentClass.append("(");
-			if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
-				generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
-			} else {
-				generatedComponentClass.append(field.getType().getName());
-			}
-			generatedComponentClass.append(" ");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(", ");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(");\n");
-			generatedComponentClass.append("\t\thandleAttribute(\"");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append("\", ");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(");\n");
-			generatedComponentClass.append("\t}\n");
-
-
-
-			//get   
-
-			addJavaDoc(field.getName(), false, prop.javadocGet());
-
-			generatedComponentClass.append("\tpublic ");
-			if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
-				generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
-			} else {
-				generatedComponentClass.append(field.getType().getName());
-			}
-			generatedComponentClass.append(" ");
-
-
-			if (isBoolean) {
-				generatedComponentClass.append("is");
-			} else {
-				generatedComponentClass.append("get");                    
-			}
-			generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-			generatedComponentClass.append(field.getName().substring(1));
-			generatedComponentClass.append("() {\n");
-			generatedComponentClass.append("\t\t return (");
-			generatedComponentClass.append(field.getType().getName());
-
-			generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
-			generatedComponentClass.append(field.getName());
-			String defaultValue = prop.defaultValue();
-			if (!"null".equals(defaultValue)) {
-				generatedComponentClass.append(", ");
-				if (field.getType().getName().endsWith("String") &&
-						prop.defaultValueIsStringLiteral()) {
-					generatedComponentClass.append("\"");
-					generatedComponentClass.append(defaultValue);
-					generatedComponentClass.append("\"");
-				} else {
-					generatedComponentClass.append(defaultValue);
-				}
-			}                  
-
-			generatedComponentClass.append(");\n\t}\n");
+			addGetterSetter(field);
 		}
 	}
 
+	public void addGetterSetter(Field field) {
+		Property prop = (Property)field.getAnnotation(Property.class);
+
+		boolean isBoolean = field.getType().getName().endsWith("boolean")||
+		field.getType().getName().endsWith("Boolean");
+
+		//set
+		addJavaDoc(field.getName(), true, prop.javadocSet());
+		generatedComponentClass.append("\tpublic void set");
+		generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
+		generatedComponentClass.append(field.getName().substring(1));
+
+		generatedComponentClass.append("(");
+		if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
+			generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
+		} else {
+			generatedComponentClass.append(field.getType().getName());
+		}
+		generatedComponentClass.append(" ");
+		generatedComponentClass.append(field.getName());
+		generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
+		generatedComponentClass.append(field.getName());
+		generatedComponentClass.append(", ");
+		generatedComponentClass.append(field.getName());
+		generatedComponentClass.append(");\n");
+		generatedComponentClass.append("\t\thandleAttribute(\"");
+		generatedComponentClass.append(field.getName());
+		generatedComponentClass.append("\", ");
+		generatedComponentClass.append(field.getName());
+		generatedComponentClass.append(");\n");
+		generatedComponentClass.append("\t}\n");
+
+
+
+		//get   
+
+		addJavaDoc(field.getName(), false, prop.javadocGet());
+
+		generatedComponentClass.append("\tpublic ");
+		if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
+			generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
+		} else {
+			generatedComponentClass.append(field.getType().getName());
+		}
+		generatedComponentClass.append(" ");
+
+
+		if (isBoolean) {
+			generatedComponentClass.append("is");
+		} else {
+			generatedComponentClass.append("get");                    
+		}
+		generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
+		generatedComponentClass.append(field.getName().substring(1));
+		generatedComponentClass.append("() {\n");
+		generatedComponentClass.append("\t\t return (");
+		generatedComponentClass.append(field.getType().getName());
+
+		generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
+		generatedComponentClass.append(field.getName());
+		String defaultValue = prop.defaultValue();
+		if (!"null".equals(defaultValue)) {
+			generatedComponentClass.append(", ");
+			if (field.getType().getName().endsWith("String") &&
+					prop.defaultValueIsStringLiteral()) {
+				generatedComponentClass.append("\"");
+				generatedComponentClass.append(defaultValue);
+				generatedComponentClass.append("\"");
+			} else {
+				generatedComponentClass.append(defaultValue);
+			}
+		}                  
+
+		generatedComponentClass.append(");\n\t}\n");
+		
+	}
 	private void addJavaDoc(String name, boolean isSetter, String doc) {
 		generatedComponentClass.append("\n\t/**\n");
 		if (isSetter) {
