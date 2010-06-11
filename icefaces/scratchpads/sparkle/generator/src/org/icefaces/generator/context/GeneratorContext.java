@@ -1,17 +1,22 @@
 package org.icefaces.generator.context;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+ 
+
 import org.icefaces.component.annotation.PropertyTemplate;
+import org.icefaces.generator.behavior.ActionSourceBehavior;
+import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
 import org.icefaces.generator.xmlbuilder.TLDBuilder;
 
-public class GeneratorContext {
+public class GeneratorContext{
 	private static GeneratorContext generatorContext = null;
     public static final Map<String,String> WrapperTypes= new HashMap<String, String>();
 	private TLDBuilder tldBuilder = new TLDBuilder();
@@ -22,8 +27,15 @@ public class GeneratorContext {
     private ComponentContext activeComponentContext;
     public final static String shortName = "ann";    
     public final static String namespace = "http://www.icesoft.com/icefaces/component/annotated";
+    private List<Behavior> behaviors = new ArrayList<Behavior>();
     
-    static {
+ 
+
+	public List<Behavior> getBehaviors() {
+		return behaviors;
+	}
+
+	static {
         WrapperTypes.put("java.lang.Boolean", "boolean");
         WrapperTypes.put("java.lang.Byte", "byte");
         WrapperTypes.put("java.lang.Character", "char");
@@ -33,9 +45,9 @@ public class GeneratorContext {
         WrapperTypes.put("java.lang.Long", "long");
         WrapperTypes.put("java.lang.Short", "short");  
     }
-    
 
 	private GeneratorContext() {
+		getBehaviors().add(new ActionSourceBehavior());
         components = FileWriter.getAnnotatedCompsList();
         loadPropertyTemplate();
 	}
@@ -69,8 +81,7 @@ public class GeneratorContext {
 	}
 
 	public ComponentContext createComponentContext(Class clazz) {
-		setActiveComponentContext(new ComponentContext(clazz));
-		return getActiveComponentContext();
+		return new ComponentContext(clazz);
 	}
 	
 	public void setActiveComponentContext(ComponentContext activeComponentContext) {

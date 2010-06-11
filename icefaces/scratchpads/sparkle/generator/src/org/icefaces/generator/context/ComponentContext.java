@@ -1,11 +1,14 @@
 package org.icefaces.generator.context;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
+import org.icefaces.component.annotation.ActionSource;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Facet;
 import org.icefaces.component.annotation.Facets;
@@ -14,6 +17,8 @@ import org.icefaces.generator.artifacts.Artifact;
 import org.icefaces.generator.artifacts.ComponentArtifact;
 import org.icefaces.generator.artifacts.ComponentHandlerArtifact;
 import org.icefaces.generator.artifacts.TagArtifact;
+import org.icefaces.generator.behavior.ActionSourceBehavior;
+import org.icefaces.generator.behavior.Behavior;
 
 public class ComponentContext {
 	private Map<String, Field> fieldsForComponentClass = new HashMap<String, Field>();
@@ -22,7 +27,17 @@ public class ComponentContext {
     private Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
     private Map<String, Artifact> artifacts = new HashMap<String, Artifact>();
     private Class activeClass;
-    private boolean hasMethodExpression;
+    private List<Behavior> behaviors = new ArrayList<Behavior>();
+    
+    public List<Behavior> getBehaviors() {
+		return behaviors;
+	}
+
+	public void setBehaviors(List<Behavior> behaviors) {
+		this.behaviors = behaviors;
+	}
+
+	private boolean hasMethodExpression;
     
     public Map<String, Field> getFieldsForComponentClass() {
 		return fieldsForComponentClass;
@@ -83,12 +98,23 @@ public class ComponentContext {
 	}
 
 	public ComponentContext(Class clazz) {
-		this.activeClass = clazz;
+		GeneratorContext.getInstance().setActiveComponentContext(this);
+		setActiveClass(clazz);
     	processAnnotation(clazz, true);
+    	
     	artifacts.put(ComponentArtifact.class.getSimpleName(), new ComponentArtifact(this));
     	artifacts.put(TagArtifact.class.getSimpleName(), new TagArtifact(this));
     	artifacts.put(ComponentHandlerArtifact.class.getName(), new ComponentHandlerArtifact(this));
-    }
+
+    	for (Behavior behavior: GeneratorContext.getInstance().getBehaviors()) {
+    		if (behavior.hasBehavior(clazz)) {
+    			System.out.println("Behavior found ");
+    			//attach behavior to the component context
+    			getBehaviors().add(behavior);
+    			behavior.addProperties(this);
+    		}
+    	}
+	}
     
     private void processAnnotation(Class clazz, boolean isBaseClass) {
         //This is annotated class 
