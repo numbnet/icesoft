@@ -1,20 +1,15 @@
 ice.component.pushbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-	//setup Yahoo logger for pushbutton class
+    if (YAHOO.widget.Logger){
+	 	  YAHOO.widget.Logger.enableBrowserConsole();
+     }
+        //get the button html element
+        var buttonRoot = document.getElementById(clientId);
+    
+		var button = new YAHOO.widget.Button(clientId,
+				{label: jsProps.label, 
+			      type: jsProps.type});
 
-	YAHOO.util.Event.onDOMReady(function() {
-	    var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
-	    calLogReader.setTitle("Button Logger");
-	    calLogReader.hideSource("global");
-	    calLogReader.hideSource("LogReader");
-});
-	var logger = new YAHOO.widget.LogWriter("pushId 2");
-	
-		var Dom = YAHOO.util.Dom;
-		var button = new YAHOO.widget.Button(clientId,{label: jsProps.label }, {type: jsProps.type});
-
-
-		logger.log("params singleSubmit"+jsfProps.singleSubmit);
 		
 		if(jsProps.label) {
 			button.set('label', jsProps.label);
@@ -24,23 +19,38 @@ ice.component.pushbutton = {
 			button.set('button', jsProps.type);
 		} 
 		
-	  
-		var onClick = function (e) {
-			logger.log("in onClick function for e="+e);
-			buttonNode = document.getElementById(clientId);
+		if (jsfProps.singleSubmit){
+			button.set('singleSubmit', jsfProps.singleSubmit);
+			YAHOO.log("set singleSubmit to "+jsfProps.singleSubmit);
+		}
+		
+//		var singleSubmit=false;
+//		if (jsfProps.singleSubmit){
+//			YAHOO.log("jsProps.singleSubmit="+jsfProps.singleSubmit);
+//			button.set('singleSubmit',jsfProps.singleSubmit);
+//			YAHOO.log("set singleSubmit to "+singleSubmit); 
+//		}
+		
 
+		var onClick = function (e) {
+			YAHOO.log("in onClick function for e="+e+" with clientId="+clientId);
+			buttonNode = document.getElementById(clientId);
+YAHOO.log(" buttonRoot="+buttonRoot+"  buttonNode="+buttonNode+" e.target="+e.target);
+   
+
+            //button does not submit when using it by Node or root
+            //as they are both type of SPAN rather than BUTTON
 	        if (jsfProps.singleSubmit) {
-	        	logger.log("not single submit");
-                ice.se(e, e.target); 
+	        	YAHOO.log(" single submit is true for clientId="+clientId);
+                ice.se(e, buttonRoot); 
             } else {
-            	logger.log("single Submit is false");
-                ice.s(e, e.target);                    
+            	YAHOO.log("single Submit is false for clientId="+clientId);
+                ice.s(e, buttonRoot);                    
             }             
 		};
 
 		// the following lines didn't work alone..had to put the fn in the constructoras well
 		button.on("click", onClick);
-// 		button.addListener("onclick", onButtonClick);
 
 		bindYUI(button);
 	},
