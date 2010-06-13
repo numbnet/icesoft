@@ -80,7 +80,7 @@ public class SliderMeta {
     @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
     private String styleClass;  
 
-    @Property(defaultValue="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-x.png")
+    @Property()
     private String thumbUrl; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")

@@ -93,5 +93,18 @@ public class Slider extends SliderBase{
             event.setPhaseId(PhaseId.INVOKE_APPLICATION);
         }
         super.queueEvent(event);
-    }  
+    } 
+    
+    public String getThumbUrl() {
+    	String thumbUrl = super.getThumbUrl();
+    	if (null == thumbUrl) {
+    		if ("x".equals(getAxis())) {
+    			thumbUrl =  "javax.faces.resource/assets/skins/sam/thumb-x.png.jsf?ln=yui/3_1_1";
+    		} else {
+    			thumbUrl = "javax.faces.resource/assets/skins/sam/thumb-y.png.jsf?ln=yui/3_1_1";
+    		}
+    	}
+    	return thumbUrl;
+    }
+    
 }
