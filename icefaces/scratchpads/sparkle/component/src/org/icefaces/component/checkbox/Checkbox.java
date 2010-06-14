@@ -20,7 +20,8 @@ import java.io.IOException;
 
 @ResourceDependencies({
 
-	    @ResourceDependency(name = "out/sam/button/button.css", library = "org.icefaces.component.sprites"),
+	    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+	    @ResourceDependency(name = "sam/button/button-skin.css", library = "org.icefaces.component.sprites"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
@@ -34,15 +35,15 @@ public class Checkbox extends CheckboxBase {
 
 	// return false if current value is null
 
-    public Object getValue() {
-	    System.out.println("Checkbox component value="+super.getValue());	
-		Object value = super.getValue();
-		if (value == null) {
-		System.out.println("CHECKBOX IS NULL!!!!!!!!");
-			return Boolean.valueOf(false);
-		}
-		return value;
-	}
+//    public Object getValue() {
+//	    System.out.println("Checkbox component value="+super.getValue());	
+//		Object value = super.getValue();
+//		if (value == null) {
+//		System.out.println("CHECKBOX IS NULL!!!!!!!!");
+//			return Boolean.valueOf(false);
+//		}
+//		return value;
+//	}
 
 }
 
