@@ -4094,267 +4094,315 @@ Ice.KeyNavigator = Class.create({
 
     keydown: function(event) {
         this.srcElement = Event.element(event);
-        switch (event.keyCode) {
-
+        switch(event.keyCode) {
+    
             case Event.KEY_RETURN:
                 this.showMenu(event);
                 break;
-            /*
-             case Event.KEY_UP:
-             this.goNorth(event);
-             Event.stop(event);
-             break;
+	    
+            case Event.KEY_UP:
+                this.goNorth(event);
+                Event.stop(event);            
+                break;
 
-             case Event.KEY_DOWN:
-             this.goSouth(event);
-             Event.stop(event);
-             break;
+            case Event.KEY_DOWN:
+                this.goSouth(event);
+                Event.stop(event);            
+                break;
 
-             case Event.KEY_LEFT:
-             this.goWest(event);
-             Event.stop(event);
-             break;
-             */
+            case Event.KEY_LEFT:
+                this.goWest(event);
+                Event.stop(event);            
+                break;
+
             case Event.KEY_RIGHT:
                 this.goEast(event);
                 Event.stop(event);
                 break;
-        }
+         }
     },
 
-    goNorth: function(event) {
-    },
+    goNorth: function(event) {},
 
-    goSouth: function(event) {
-    },
+    goSouth: function(event) {},
 
-    goWest: function(event) {
-    },
+    goWest: function(event) {},
 
-    goEast: function(event) {
-    }
+    goEast: function(event) {}
 
 });
 
-Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-    initialize: function($super, componentId, displayOnClick) {
-        $super(componentId);
-        this.displayOnClick = displayOnClick;
-        this.component.onclick = this.hideAll.bindAsEventListener(this);
-        document.onclick = this.hideAllDocument.bindAsEventListener(this);
+	Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
+	  initialize: function($super, componentId, displayOnClick) {
+	    $super(componentId);
+	    this.displayOnClick = displayOnClick;
+	    this.component.onclick = this.hideAll.bindAsEventListener(this);
+	    document.onclick = this.hideAllDocument.bindAsEventListener(this);    
+	  
+	    if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
+	        this.vertical = true;
+	    } else {
+	        this.vertical = false;
+	    }
+	    this.clicked = true;
+	    this.configureRootItems();
+	  }
+	});
 
-        if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
-            this.vertical = true;
-        } else {
-            this.vertical = false;
-        }
-        this.clicked = true;
-        this.configureRootItems();
-    }
-});
+	Ice.MenuBarKeyNavigator.addMethods({
+	  goEast: function(event) {
+	    this.applyFocus('e');
+	  },
+	  
+	  goWest: function(event) { 
+	    this.applyFocus('w');
+	  },
 
-Ice.MenuBarKeyNavigator.addMethods({
-    goEast: function(event) {
-        var rootItem = this.srcElement.up('.' + this.getMenuBarItemClass());
-        if (rootItem) {
-            //        Element.removeClassName(rootItem, 'iceMnuBarItemhover');
-            var nextItem = rootItem.next('.' + this.getMenuBarItemClass());
-            if (nextItem) {
-                //            Element.addClassName(nextItem, 'iceMnuBarItemhover');
-                var anch = nextItem.down('a');
-                anch.focus();
-            }
-            return;
-        }
+	  goSouth: function(event) {
+	    this.applyFocus('s');
+	  },
 
-        var submenu = this.srcElement.down('.' + this.getSubMenuIndClass());
-        if (submenu) {
-            //       Element.removeClassName(submenu, 'iceMnuBarItemhover');
-            var pdiv = this.srcElement.up('.iceMnuItm');
-            //     Element.addClassName(pdiv, 'iceMnuBarItemhover');
-            var submnuDiv = $(pdiv.id + '_sub');
-            var firstAnch = submnuDiv.down('a');
-            firstAnch.focus();
+	  goNorth: function(event) { 
+	    this.applyFocus('n');  
+	  },
 
-        }
+	  focusMenuItem: function(iclass, next, direct) {
+	      var ci = this.srcElement.up(iclass);
+	      if (ci) {
+	          if(direct =='e') {
+	             var sm = $(ci.id+'_sub');
+	             this.focusAnchor(sm);
+	             return;
+	          }
+	          
+	          if(direct =='w') {
+	             var owner = $(ci.id.substring(0, ci.id.length-6));
+	             if (owner) {
+	                this.focusAnchor(owner);
+	             } else {
+	                this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+	             }
+	             return;
+	          }          
+	                                   
+	          var ni = null;
+	          if(next) {
+	             ni = ci.next(iclass);
+	          } else {
+	             ni = ci.previous(iclass);  
+	             if (!ni && direct == 'n') {
+	                this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+	                return;
+	             }        
+	          }
+	          this.focusAnchor(ni);
+	      }
+	  },
+	  
+	  focusSubMenuItem: function(item) {
+	      if (item) {
+	         var sm = $(item.id+'_sub');
+	         this.focusAnchor(sm);
+	      }
+	  },
+	  
+	  focusAnchor: function(item) {
+	      if (item) {
+	          try {
+	              var anch = item.down('a');
+	              anch.focus();
+	          } catch(e){}
+	      }
+	  },
+	  
+    applyFocus: function(direct) {
+	      var p = this.srcElement.parentNode;
+	      var pm = Element.hasClassName(p, this.getPopupMenuClass());      
+	      var mb = Element.hasClassName(p, this.getMenuBarItemClass());
+	      var mi = Element.hasClassName(p, this.getMenuItemClass());
+
+	        if(mb){
+	            switch(direct) {
+	                case 's':
+	                if (this.vertical) 
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);
+	                else
+	                    this.focusSubMenuItem(p);
+	                break;
+	                
+	                case 'e':
+	                if (this.vertical)
+	                    this.focusSubMenuItem(p);
+	                else
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);                    
+	                break;
+	                
+	                case 'w':
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass());
+	                break;
+	                                    
+	                case 'n':
+	                    if (this.vertical)
+	                        this.focusMenuItem('.'+this.getMenuBarItemClass());
+	                break;
+	            }
+	            
+	        }else if (mi) {
+	            this.focusMenuItem('.'+this.getMenuItemClass(), direct == 's', direct);
+	        }else if (pm) {
+	            switch(direct) {
+	                case 'n':
+	                     this.focusMenuItem('.'+this.getPopupMenuClass());
+	                break;
+	                case 's':
+	                     this.focusMenuItem('.'+this.getPopupMenuClass(), true);                
+	                break;
+	                case 'e':
+	                      this.focusSubMenuItem(p);
+	                break;                
+	                
+	             }                
+	        }
     },
-
-    goWest: function(event) {
-        var rootItem = this.srcElement.up('.' + this.getMenuBarItemClass());
-        if (rootItem) {
-            Element.removeClassName(rootItem, 'iceMnuBarItemhover');
-            var previousItem = rootItem.previous('.' + this.getMenuBarItemClass());
-            if (previousItem) {
-                Element.addClassName(previousItem, 'iceMnuBarItemhover');
-                var anch = previousItem.down('a');
-                anch.focus();
-            }
-            return;
-        }
-
-        var submenu = this.srcElement.previous('.iceMnuItm');
-        Element.removeClassName(submenu, 'iceMnuItemhover');
-        if (submenu == null) {
-            var pdiv = this.srcElement.up('.' + this.getSubMenuClass());
-            if (pdiv) {
-                var owner = $(pdiv.id.substring(0, pdiv.id.length - 4));
-                if (owner) {
-                    var anch = owner.down('a');
-                    Element.addClassName(owner, 'iceMnuItemhover');
-                    anch.focus();
-                }
-            }
-        }
-    },
-
-    goSouth: function(event) {
-        var rootItem = this.srcElement.up('.' + this.getMenuBarItemClass());
-        if (rootItem) {
-            Element.removeClassName(rootItem, 'iceMnuBarItemhover');
-            var submenu = $(rootItem.id + '_sub');
-            if (submenu) {
-                var anch = submenu.down('a');
-                Element.addClassName(submenu, 'iceMnuBarItemhover');
-                anch.focus();
-            }
-            return;
-        }
-        var menuItem = this.srcElement.up('.iceMnuItm');
-        Element.removeClassName(menuItem, 'iceMnuBarItemhover');
-        var nextItem = menuItem.next('.iceMnuItm');
-        if (nextItem) {
-            var anch = nextItem.down('a');
-            Element.addClassName(nextItem, 'iceMnuBarItemhover');
-            anch.focus();
-        }
-    },
-
-    goNorth: function(event) {
-        var menuItem = this.srcElement.up('.iceMnuItm');
-        Element.removeClassName(menuItem, 'iceMnuBarItemhover');
-        var previousItem = menuItem.previous('.iceMnuItm');
-        if (previousItem) {
-            var anch = previousItem.down('a');
-            Element.addClassName(previousItem, 'iceMnuItemhover');
-            anch.focus();
-        }
-    },
-
+	  
+	  
     getMenuBarItemClass: function(event) {
-        if (this.vertical) {
-            return "iceMnuBarVrtItem";
-        } else {
-            return "iceMnuBarItem";
-        }
-    },
+	    if (this.vertical) {
+	        return "iceMnuBarVrtItem";
+	    } else {
+	        return "iceMnuBarItem";
+	    }
+	  },
 
-    getSubMenuClass: function(event) {
-        if (this.vertical) {
-            return "iceMnuBarVrtSubMenu";
-        } else {
-            return "iceMnuBarSubMenu";
-        }
-    },
+	  getSubMenuClass: function(event) {
+	    if (this.vertical) {
+	        return "iceMnuBarVrtSubMenu";
+	    } else {
+	        return "iceMnuBarSubMenu";
+	    }
+	  },
 
-    getSubMenuIndClass: function(event) {
-        if (this.vertical) {
-            return "iceMnuBarVrtSubMenuInd";
-        } else {
-            return "iceMnuBarSubMenuInd";
-        }
+	  getSubMenuIndClass: function(event) {
+	    if (this.vertical) {
+	        return "iceMnuBarVrtSubMenuInd";
+	    } else {
+	        return "iceMnuBarSubMenuInd";
+	    }
+	  },
+	  
+	  getRootClass: function() {
+	    if (this.vertical) {
+	        return "iceMnuBarVrt";
+	    } else {
+	        return "iceMnuBar";
+	    }  
+	  },
+	  
+	  getMenuItemClass: function() {
+	     return "iceMnuItm";
+	  },
+	  
+	  getPopupMenuClass: function() {
+	     return "iceMnuPopVrtItem";
+	  },
+	    
+	  hover: function(event, element, isMouseDown) {
+	    if (!isMouseDown) {
+	        if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
+	            //already hovered do nothing
+	            return;
+	        }
+	    }
+	    Ice.Menu.currentHover = element.id;
+	    if (this.clicked) {
+	       if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
+	          this.clicked = false;
+	          return;
+	       }    
+	    
+	        var submenu = $(element.id + '_sub');
+	        Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
+	        if (this.vertical) {
+	            Ice.Menu.show(this.component,submenu,element);
+	        } else {
+	            Ice.Menu.show(element,submenu,null);
+	        }
+	    }
+	  },
+	  
+	  mousedown: function(event, element) {
+	    Ice.Menu.lastClickedMenu = this.component.id;
+	    if (this.clicked) {
+	        this.clicked = false;
+	    } else {
+	        this.clicked = true;    
+	        this.hover(event, element, true);
+	    }
+	  },
+	  
+	  focus: function(event, element) {
+	    this.hover(event, element);
+	  },
+	  
+	  configureRootItems: function () {
+	    var rootLevelItems = this.component.childNodes;
+	    for(i=0; i < rootLevelItems.length; i++) {
+	        var element = rootLevelItems[i];
+		    if (element.tagName == "DIV") {
+		        if (Element.hasClassName(element, this.getMenuBarItemClass())) {
+		            element.onmouseover = this.hover.bindAsEventListener(this, element);
+			        //add focus support 
+			        var anch = element.firstChild;
+			        if (anch.tagName == "A") {
+			            anch.onfocus = this.focus.bindAsEventListener(this, element);
+			        }
+			        if (this.displayOnClick) { 
+			            element.onmousedown = this.mousedown.bindAsEventListener(this, element);
+			            this.clicked = false;            
+			        }
+		        }
+		    }
+	    }
+	  },
+	  
+	  hideAll:function(event) {
+	      element = Event.element(event); 
+	      var baritem = element.up('.'+ this.getMenuBarItemClass());
+	      var elt = event.element();
+	      if (elt && elt.match("a[onclick]")) {
+	          elt = elt.down();
+	      }
+	      if (elt) {
+	          elt = elt.up(".iceMnuItm a[onclick^='return false']");
+	      }
+	      if (!(baritem && this.clicked) && !elt) {
+	        Ice.Menu.lastClickedMenue = null;
+	        Ice.Menu.hideAll();
+	        if (this.displayOnClick) {       
+	            this.clicked = false;
+	        }         
+	      }
+	      event.stopPropagation();
     },
-
-    getRootClass: function() {
-        if (this.vertical) {
-            return "iceMnuBarVrt";
-        } else {
-            return "iceMnuBar";
-        }
-    },
-
-    hover: function(event) {
-        if (this.clicked) {
-            try {
-            element = Event.element(event).up('.' + this.getMenuBarItemClass());
-            if (!element) return;
-            var submenu = $(element.id + '_sub');
-            Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
-            if (this.vertical) {
-                var rootElement = element.up('.' + this.getRootClass())
-                Ice.Menu.show(rootElement, submenu, element);
-            } else {
-                Ice.Menu.show(element, submenu, null);
-            }
-            } catch(e) {logger.info(e);}
-        }
-    },
-
-    mousedown: function(event) {
-        element = Event.element(event);
-        if (this.clicked) {
-            this.clicked = false;
-        } else {
-            this.clicked = true;
-            this.hover(event);
-        }
-    },
-
-    focus: function(event) {
-        this.hover(event);
-    },
-
-    configureRootItems: function () {
-        var rootLevelItems = this.component.childNodes;
-        for (i = 0; i < rootLevelItems.length; i++) {
-            if (rootLevelItems[i].tagName == "DIV") {
-                if (Element.hasClassName(rootLevelItems[i], this.getMenuBarItemClass())) {
-                    rootLevelItems[i].onmouseover = this.hover.bindAsEventListener(this);
-                    //add focus support
-                    var anch = rootLevelItems[i].firstChild;
-                    if (anch.tagName == "A") {
-                        anch.onfocus = this.focus.bindAsEventListener(this);
-                    }
-                    if (this.displayOnClick) {
-                        rootLevelItems[i].onmousedown = this.mousedown.bindAsEventListener(this);
-                        this.clicked = false;
-                    }
-                }
-            }
-        }
-    },
-
-    hideAll:function(event) {
-        element = Event.element(event);
-        var baritem = element.up('.' + this.getMenuBarItemClass());
-        var elt = event.element();
-        if (elt && elt.match("a[onclick]")) {
-            elt = elt.down();
-        }
-        if (elt) {
-            elt = elt.up(".iceMnuItm a[onclick^='return false']");
-        }
-        if (!(baritem && this.clicked) && !elt) {
-            Ice.Menu.hideAll();
-            if (this.displayOnClick) {
-                this.clicked = false;
-            }
-        }
-        event.stopPropagation();
-    },
-
+	   
     hideAllDocument:function(event) {
+        Ice.Menu.lastClickedMenu = "document";
+        if (this.displayOnClick) {       
+            this.clicked = false;
+        } 
         Ice.Menu.hideAll();
     },
-
+	      
     showMenu:function(event) {
-        element = Event.element(event);
-        var baritem = element.up('.' + this.getMenuBarItemClass());
+        element = Event.element(event);    
+        var baritem = element.up('.'+ this.getMenuBarItemClass());
         if (baritem && this.displayOnClick) {
-            this.mousedown(event);
-        }
+            this.mousedown(event, baritem);
+       }
     }
 
 });
+
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
