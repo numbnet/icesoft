@@ -1,7 +1,14 @@
-YAHOO.namespace("icefaces.calendar");
-
 (function(){
 
+//YAHOO.namespace("icefaces.calendar");
+var calendarns = this, i, ns;
+//calendarns = (function(){return this;}).call();
+//ns = "YAHOO.icefaces.calendar".split(".");
+ns = "ice.component.calendar".split(".");
+for (i = 0; i < ns.length; i++) {
+    calendarns[ns[i]] = calendarns[ns[i]] || {};
+    calendarns = calendarns[ns[i]];
+}
 YAHOO.util.Event.onDOMReady(function() {
     var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
     calLogReader.setTitle("Calendar Logger");
@@ -17,6 +24,7 @@ var IceCalendar = function(container, config, params) {
     this.params = params;
 };
 var renderFooter = function(html) {
+    html = IceCalendar.superclass.renderFooter.call(this, html);
     var hourField = this.cfg.getProperty("hourField");
     if (!hourField) return html;
 
@@ -44,7 +52,7 @@ var renderFooter = function(html) {
             result = this.cfg.setProperty("amPmStr", selValue, true);
         }
         if (!renderAsPopup) {
-            YAHOO.icefaces.calendar.timeSelectHandler(this, evt);
+            calendarns.timeSelectHandler(this, evt);
         }
     };
     var selAvailable = function (selId) {
@@ -123,7 +131,7 @@ var setProperty = function(key, value) {
 var overrides = {renderFooter:renderFooter, get:getProperty, set:setProperty};
 YAHOO.extend(IceCalendar, YuiCalendar, overrides);
 
-YAHOO.icefaces.calendar.getTime = function(calendar) {
+calendarns.getTime = function(calendar) {
     var hr = 0, min = 0;
     var hourField = calendar.cfg.getProperty("hourField");
     if (hourField) {
@@ -138,7 +146,7 @@ YAHOO.icefaces.calendar.getTime = function(calendar) {
     }
     return {hr:hr, min:min};
 };
-YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
+calendarns.timeSelectHandler = function(calendar, evt) {
     var Dom = YAHOO.util.Dom;
     var rootDivId = calendar.params.divId, calValueEl = this[rootDivId].calValueEl;
     var date = calendar.getSelectedDates()[0];
@@ -151,7 +159,7 @@ YAHOO.icefaces.calendar.timeSelectHandler = function(calendar, evt) {
         });
     }
 };
-YAHOO.icefaces.calendar.configCal = function (calendar, params) {
+calendarns.configCal = function (calendar, params) {
     calendar.cfg.addProperty("selectedHour", {value:params.selectedHour});
     calendar.cfg.addProperty("selectedMinute", {value:params.selectedMinute});
     calendar.cfg.addProperty("hourField", {value:params.hourField});
@@ -164,7 +172,7 @@ YAHOO.icefaces.calendar.configCal = function (calendar, params) {
     }
     this[params.divId].yuiComponent = calendar;
 };
-YAHOO.icefaces.calendar.aria = function() {
+calendarns.aria = function() {
     var Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener,
@@ -332,7 +340,7 @@ YAHOO.icefaces.calendar.aria = function() {
     {fn:kl1Handler, correctScope:this});
     kl1.enable();
 };
-YAHOO.icefaces.calendar.init = function(params) {
+calendarns.init = function(params) {
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
@@ -356,7 +364,7 @@ YAHOO.icefaces.calendar.init = function(params) {
     Dom.insertBefore(calValueEl, rootDiv);
     if (!params.renderAsPopup) {
         function dateSelectHandler(type, args, calendar) {
-            var time = YAHOO.icefaces.calendar.getTime(calendar);
+            var time = calendarns.getTime(calendar);
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
@@ -402,7 +410,7 @@ YAHOO.icefaces.calendar.init = function(params) {
         toggleBtnEl.replaceClass("close-popup", "open-popup");
         if (calendar.getSelectedDates().length > 0) {
             var date = calendar.getSelectedDates()[0];
-            var time = YAHOO.icefaces.calendar.getTime(calendar);
+            var time = calendarns.getTime(calendar);
             var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
             calValueEl.setAttributes({value:dateStr}, true);
             if (params.singleSubmit || params.renderInputField) {
@@ -480,7 +488,7 @@ YAHOO.icefaces.calendar.init = function(params) {
 
     Event.onDOMReady(domReady);
 };
-YAHOO.icefaces.calendar.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
+calendarns.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
     this[clientId] = this[clientId] || {};
     var lang = YAHOO.lang;
     var params = lang.merge({divId:clientId}, jsProps, jsfProps);
@@ -488,7 +496,7 @@ YAHOO.icefaces.calendar.initialize = function(clientId, jsProps, jsfProps, bindY
     this.init(params);
     bindYUI(this[clientId].yuiComponent);
 };
-YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps, events) {
+calendarns.updateProperties = function(clientId, jsProps, jsfProps, events) {
 //    YAHOO.log("In updateProperties()", "info", "calendar.js");
 //    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
     logger.log("In updateProperties()");
@@ -510,7 +518,7 @@ YAHOO.icefaces.calendar.updateProperties = function(clientId, jsProps, jsfProps,
     }
     ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
 };
-YAHOO.icefaces.calendar.getInstance = function(clientId, callback) {
+calendarns.getInstance = function(clientId, callback) {
     ice.component.getInstance(clientId, callback, this);
 };
 
