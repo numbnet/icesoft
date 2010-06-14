@@ -129,7 +129,7 @@ var setProperty = function(key, value) {
     this.cfg.setProperty(key, value, false);
 };
 var overrides = {renderFooter:renderFooter, get:getProperty, set:setProperty};
-YAHOO.extend(IceCalendar, YuiCalendar, overrides);
+YAHOO.lang.extend(IceCalendar, YuiCalendar, overrides);
 
 calendarns.getTime = function(calendar) {
     var hr = 0, min = 0;
