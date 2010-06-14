@@ -1,7 +1,10 @@
 package org.icefaces.component.checkbox;
 
+
+
 import java.io.IOException;
 import java.util.*;
+
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -11,7 +14,6 @@ import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.util.EnvUtils;
-
 
 public class CheckboxRenderer extends Renderer {
 
@@ -23,8 +25,16 @@ public class CheckboxRenderer extends Renderer {
             String clientId = uiComponent.getClientId();
             if (clientId.equals(source)) {
 				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_value"))));
-				System.out.println("RENDERER:- submittedValue="+submittedValue);
+				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
+				System.out.println("\t\tRenderer:- submittedValue="+submittedValue+" HIDDEN value="+hiddenValue);
 				checkbox.setSubmittedValue(submittedValue);
+            }else{
+            	System.out.println("clientId="+clientId+" not same as source="+source);
+            	//update with hidden field
+				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
+				System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
+				Boolean submittedValue= Boolean.valueOf(hiddenValue);
+				checkbox.setSubmittedValue(submittedValue);           	
             }
         }
     }
@@ -36,11 +46,9 @@ public class CheckboxRenderer extends Renderer {
         Checkbox checkbox = (Checkbox) uiComponent;
 
 		// root element
-        //writer.startElement(HTML.INPUT_ELEM, uiComponent);
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-		//writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-		//writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
+
 		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
 		
 		// first child
@@ -71,10 +79,19 @@ public class CheckboxRenderer extends Renderer {
 		Checkbox checkbox = (Checkbox) uiComponent;
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
+		
+        
+		//hidden input for single submit=true
 		writer.endElement(HTML.SPAN_ELEM);
-		//writer.endElement(HTML.INPUT_ELEM);
+	    writer.startElement("input", uiComponent);
+	    writer.writeAttribute("type", "hidden", null);
+	    writer.writeAttribute("name",clientId+"_hidden", null);
+	    writer.writeAttribute("id",clientId+"_hidden", null);
+	    writer.writeAttribute("value",checkbox.getValue(), null);
+	    writer.endElement("input");		
 		
 		// js call
+
         StringBuilder call= new StringBuilder();
         call.append("ice.component.checkbox.updateProperties('");
         call.append(clientId);
@@ -90,12 +107,23 @@ public class CheckboxRenderer extends Renderer {
         call.append(", checked:");  
         call.append(checkbox.getValue());
         call.append("},");
-        //pass JSF component specific properties that would help in slider configuration 
-        call.append("{});");
 
+        //pass JSF component specific properties 
+        call.append("{");
+        call.append("singleSubmit:");
+        call.append(checkbox.isSingleSubmit());       
+        call.append(", ");        
+//        call.append("aria:");
+//        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+//        call.append(", ");        
+        call.append("tabindex:");
+        call.append(checkbox.getTabindex());   
+        call.append("});");
+        
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
         writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
+
     }
 }

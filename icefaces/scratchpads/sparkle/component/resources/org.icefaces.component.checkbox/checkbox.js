@@ -1,41 +1,53 @@
 ice.component.checkbox = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	   var Dom = YAHOO.util.Dom;
-      
+       var buttonRoot = document.getElementById(clientId);
+       
        if (YAHOO.widget.Logger){
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
        }
        
-	   var button = new YAHOO.widget.Button(clientId, {type: jsProps.type, checked: jsProps.checked});
-	   
+	   var button = new YAHOO.widget.Button(clientId, {type: jsProps.type});
+YAHOO.log ("ClientId is="+clientId);	   
 	   if(jsProps.label) {
 			button.set('label', jsProps.label);
 	    }
 		
-	
+		if (jsfProps.value) {
+			YAHOO.log("jsfProps.value="+jsfProps.value);
+		}
 		var singleSubmit=jsfProps.singleSubmit;	
-		YAHOO.log ("jsProps.checked=-"+jsProps.checked);
-		YAHOO.log (" button set to:-"+button.get('checked'));
-//  		if(jsProps.checked) {	
-//   			button.set('checked', jsProps.checked);
-// 		}
+		YAHOO.log ("jsProps.checked=-"+jsProps.checked);	
+  		if(jsProps.checked) {	
+   			button.set('checked', jsProps.checked);
+ 		}
 	   
-		var onCheckedChange = function (e) { 
-			e.target = document.getElementById(clientId);	
+		var onCheckedChange = function (e) { 			
+		    buttonNode = document.getElementById(clientId);
+		    YAHOO.log(" buttonRoot="+buttonRoot+"  buttonNode="+buttonNode+" e.target="+e.target);
+		    //e.target is null so have to set the target to the root of this button for submit
+
 			//get the current value of checked
  	        var submittedValue =  e.newValue;	
 
-YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" button checked="+button.get('checked'));
-YAHOO.log("  oldValue="+e.prevValue);
+YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" old="+e.prevValue);
+
 			var params = function(parameter) {
 				parameter(clientId+'_value', submittedValue);
 			};
+    
+			var hiddenField = Dom.get(clientId+"_hidden");
+			hiddenField.value=submittedValue;
+
+	YAHOO.log(" hidden Field="+clientId+"_hidden"+" has value="+hiddenField.value);
+			
 	        if (singleSubmit) {
-//	         	YAHOO.log("not single submit");
-                ice.se(e, e.target, params); 
+ 	         	YAHOO.log("single submit goes to server");
+ 	         	e.target = buttonNode;	
+                ice.se(e, buttonRoot, params); 
             } else {
-//            	YAHOO.log("single Submit is false");
-                ice.s(e, e.target, params);                    
+             	YAHOO.log("single Submit is false doesn't go to server");
+                ice.s(e, buttonRoot, params);                    
             }           
 		};
 
@@ -46,7 +58,7 @@ YAHOO.log("  oldValue="+e.prevValue);
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
-		YAHOO.log("updateProperties for clientId="+clientId+" checked="+jsProps.checked);
+		YAHOO.log("updateProperties for clientId="+clientId);
        ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  
