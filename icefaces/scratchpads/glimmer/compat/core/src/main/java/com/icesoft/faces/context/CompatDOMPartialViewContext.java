@@ -24,16 +24,23 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.context.DOMPartialViewContext;
+import org.icefaces.context.DOMResponseWriter;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
+import java.io.FilterWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 public class CompatDOMPartialViewContext extends DOMPartialViewContext {
 
     public CompatDOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
         super(partialViewContext, facesContext);
+    }
+
+    protected Writer getResponseOutputWriter() throws IOException {
+        return new WriteViewStateMarkup(super.getResponseOutputWriter());
     }
 
     protected void renderExtensions() {
@@ -55,4 +62,19 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
         }
     }
 
+    private class WriteViewStateMarkup extends FilterWriter {
+        protected WriteViewStateMarkup(Writer out) {
+            super(out);
+        }
+
+        public void write(String str) throws IOException {
+            if (DOMResponseWriter.STATE_FIELD_MARKER.equals(str)) {
+                out.write("<input id=\"javax.faces.ViewState\" type=\"hidden\" autocomplete=\"off\" value=\"");
+                out.write(facesContext.getApplication().getStateManager().getViewState(facesContext));
+                out.write("\" name=\"javax.faces.ViewState\"/>");
+            } else {
+                out.write(str);
+            }
+        }
+    }
 }

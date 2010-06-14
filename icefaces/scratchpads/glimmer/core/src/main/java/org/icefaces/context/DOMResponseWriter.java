@@ -22,13 +22,15 @@
 
 package org.icefaces.context;
 
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import org.icefaces.util.DOMUtils;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
-import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -44,16 +46,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.icefaces.util.EnvUtils;
-import org.icefaces.util.DOMUtils;
-
 
 public class DOMResponseWriter extends ResponseWriter {
-
     private static Logger log = Logger.getLogger("org.icefaces.context.DOMResponseWriter");
 
     public static final String OLD_DOM = "org.icefaces.old-dom";
-    private static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
+    public static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     protected static final String XML_MARKER = "<?xml";
     protected static final String DOCTYPE_MARKER = "<!DOCTYPE";
 
@@ -249,7 +247,6 @@ public class DOMResponseWriter extends ResponseWriter {
 
         document = null;
         cursor = null;
-//        savedJSFStateCursor = null;
     }
 
     /**
@@ -555,7 +552,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void saveOldDocument() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isCompressDOM(facesContext))  {
+        if (!EnvUtils.isCompressDOM(facesContext)) {
             facesContext.getViewRoot().getAttributes().put(OLD_DOM, document);
             return;
         }
@@ -570,9 +567,9 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public Document getOldDocument() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isCompressDOM(facesContext))  {
+        if (!EnvUtils.isCompressDOM(facesContext)) {
             return (Document) facesContext.getViewRoot()
-                .getAttributes().get(OLD_DOM);
+                    .getAttributes().get(OLD_DOM);
         }
         Document document = DOMUtils.getNewDocument();
         //FastInfoset does not tolerate stray xmlns declarations

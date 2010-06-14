@@ -78,16 +78,16 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     public void setPartialRequest(boolean isPartialRequest) {
         wrapped.setPartialRequest(isPartialRequest);
     }
-    
+
     @Override
     public boolean isAjaxRequest() {
         if (isAjaxRequest != null)
             return isAjaxRequest;
         return wrapped.isAjaxRequest();
     }
-    
+
     public void setAjaxRequest(boolean isAjaxRequest) {
-        this.isAjaxRequest = isAjaxRequest; 
+        this.isAjaxRequest = isAjaxRequest;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         if (null == partialWriter) {
             try {
                 //TODO: ensure this can co-exist with other PartialViewContext implementations
-                Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
+                Writer outputWriter = getResponseOutputWriter();
                 ResponseWriter basicWriter = new BasicResponseWriter(outputWriter, "text/html", "utf-8");
                 partialWriter = new PartialResponseWriter(basicWriter);
             } catch (Exception e) {
@@ -124,7 +124,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 //TODO: understand why the original writer must be restored
                 //it may be for error handling cases
                 //facesContext.getAttributes().put(ORIGINAL_WRITER, orig);
-                Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
+                Writer outputWriter = getResponseOutputWriter();
                 DOMResponseWriter writer = createDOMResponseWriter(outputWriter);
                 facesContext.setResponseWriter(writer);
 
@@ -199,6 +199,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
+    }
+
+    protected Writer getResponseOutputWriter() throws IOException {
+        return facesContext.getExternalContext().getResponseOutputWriter();
     }
 
     private void writeXMLPreamble(Writer writer) throws IOException {

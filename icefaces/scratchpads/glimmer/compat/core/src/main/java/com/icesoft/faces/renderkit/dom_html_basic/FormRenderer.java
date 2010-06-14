@@ -33,9 +33,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,15 +41,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FormRenderer extends DomBasicRenderer {
-
-    public static final String COMMAND_LINK_HIDDEN_FIELD =
-            "command_link_hidden_field";
-    private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY =
-            "com.icesoft.faces.FormRequiredHidden";
     private static Logger log = Logger.getLogger("com.icesoft.faces.compat");
-
-    public static final String STATE_SAVING_MARKER = "stateSavingMarker";
-
+    public static final String COMMAND_LINK_HIDDEN_FIELD = "command_link_hidden_field";
+    private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY = "com.icesoft.faces.FormRequiredHidden";
+    public static final String STATE_SAVING_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -132,17 +124,9 @@ public class FormRenderer extends DomBasicRenderer {
 
         }
 
-        if (facesContext.isPostback()) {
-            Element viewState = domContext.createElement("input");
-            viewState.setAttribute("id", "javax.faces.ViewState");
-            viewState.setAttribute("type", "hidden");
-            viewState.setAttribute("autocomplete", "off");
-            viewState.setAttribute("value", facesContext.getApplication().getStateManager().getViewState(facesContext));
-            domContext.getRootNode().appendChild(viewState);
-            viewState.setAttribute("name", "javax.faces.ViewState");
-        } else {
-            facesContext.getApplication().getViewHandler().writeState(new WriteViewStateOnPageLoad(domContext, facesContext));
-        }
+        //Write state so that full component state is available when marker is replaced
+        //Currently we have to put the marker node in the DOM to position the marker correctly
+        domContext.getRootNode().appendChild(domContext.createTextNode(STATE_SAVING_MARKER));
 
         // This has to occur outside the isInitialized test, as it has to happen
         // all the time, even if the form otherwise has not changed.
@@ -193,10 +177,6 @@ public class FormRenderer extends DomBasicRenderer {
 
         }
 
-
-        //String contextClass = facesContext.getClass().toString();
-        //root.setAttribute("context_type", contextClass);
-
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         String autoComplete = (String) uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
         if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
@@ -209,26 +189,6 @@ public class FormRenderer extends DomBasicRenderer {
             root.setAttribute("onsubmit", "return false;");
         }
 
-        //Write state at end of encodeEnd so that full component state is available
-        //when marker is replaced
-        //facesContext.getApplication().getViewHandler().writeState(facesContext);
-        // Currently we have to put the marker node in the DOM here, because
-        // the DOMResponseWriter doesn't have the same View of the DOM as this object does,
-        // because this object isn't using the DOMResponseWriter. 
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        //TODO: Verify if we need State Saving here still
-//        if (ImplementationUtil.isJSFStateSaving() && (writer instanceof DOMResponseWriter)) {
-//            DOMResponseWriter domWriter = (DOMResponseWriter) writer;
-//            Node n = domContext.createElement("div");
-//
-//            String id = formClientId +
-//                        NamingContainer.SEPARATOR_CHAR +STATE_SAVING_MARKER;
-//
-//            root.appendChild( n );
-//            ((Element) n).setAttribute( "id", id );
-//            domWriter.trackMarkerNode( n );
-//        }
         domContext.stepInto(uiComponent);
     }
 
@@ -257,7 +217,7 @@ public class FormRenderer extends DomBasicRenderer {
             messages.encodeEnd(facesContext);
         }
 
-        facesContext.getApplication().getViewHandler().writeState(facesContext);
+        //facesContext.getApplication().getViewHandler().writeState(facesContext);
         domContext.stepOver();
     }
 
@@ -403,31 +363,5 @@ public class FormRenderer extends DomBasicRenderer {
         String actionURL = facesContext.getApplication().getViewHandler().
                 getActionURL(facesContext, viewId);
         return (facesContext.getExternalContext().encodeActionURL(actionURL));
-    }
-
-    private static class WriteViewStateOnPageLoad extends FacesContextWrapper {
-        private final DOMContext domContext;
-        private final FacesContext facesContext;
-
-        public WriteViewStateOnPageLoad(DOMContext domContext, FacesContext facesContext) {
-            this.domContext = domContext;
-            this.facesContext = facesContext;
-        }
-
-        public ResponseWriter getResponseWriter() {
-            return new ResponseWriterWrapper() {
-                public void write(String content) throws IOException {
-                    domContext.getRootNode().appendChild(domContext.createTextNode(content));
-                }
-
-                public ResponseWriter getWrapped() {
-                    return facesContext.getResponseWriter();
-                }
-            };
-        }
-
-        public FacesContext getWrapped() {
-            return facesContext;
-        }
     }
 }
