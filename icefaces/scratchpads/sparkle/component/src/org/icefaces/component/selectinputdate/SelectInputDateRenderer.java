@@ -124,7 +124,7 @@ public class SelectInputDateRenderer extends Renderer {
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 //        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
-        writer.write("YAHOO.icefaces.calendar.updateProperties(" + params + ");");
+        writer.write("ice.component.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
     }
