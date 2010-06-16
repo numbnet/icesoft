@@ -49,7 +49,7 @@ function formOf(element) {
 
 function iceSubmitPartial(form, component, evt, query) {
     form = (form ? form : component.form);
-    if(!query) {
+    if (!query) {
         query = new Ice.Parameter.Query();
     }
     if (Ice.InputFileIdPreUpload)
@@ -61,7 +61,9 @@ function iceSubmitPartial(form, component, evt, query) {
     if (Ice.FCKeditorUtility)
         Ice.FCKeditorUtility.saveAll();
     query.add('ice.submit.partial', true);
-    $event(evt, component).serializeOn(query);
+    var event = $event(evt, component);
+    var cancelBlockUI = event.type() == 'blur';
+    event.serializeOn(query);
     if (form && form.id) {
         $element(form).serializeOn(query);
     }
@@ -71,7 +73,7 @@ function iceSubmitPartial(form, component, evt, query) {
             c.serializeOn(query);
         }
     }
-    query.sendOn(currentConnection($element(form), $element(component)));
+    query.sendOn(currentConnection($element(form), $element(component)), cancelBlockUI);
     resetHiddenFieldsFor(form);
     return false;
 }
@@ -80,7 +82,7 @@ function iceSubmit(aForm, aComponent, anEvent, query) {
     aForm = (aForm ? aForm : aComponent.form);
     var event = $event(anEvent, aComponent);
     var form = $element(aForm);
-    if(!query) {
+    if (!query) {
         query = new Ice.Parameter.Query();
     }
     if (Ice.InputFileIdPreUpload)
@@ -92,6 +94,7 @@ function iceSubmit(aForm, aComponent, anEvent, query) {
     if (Ice.FCKeditorUtility)
         Ice.FCKeditorUtility.saveAll();
     query.add('ice.submit.partial', false);
+    var cancelBlockUI = event.type() == 'blur';
     //all key events are discarded except when 'enter' is pressed...not good!
     if (event.isKeyEvent()) {
         if (event.isEnterKey()) {
@@ -106,7 +109,7 @@ function iceSubmit(aForm, aComponent, anEvent, query) {
             if (form) {
                 form.serializeOn(query);
             }
-            query.sendOn(currentConnection($element(aForm), $element(aComponent)));
+            query.sendOn(currentConnection($element(aForm), $element(aComponent)), cancelBlockUI);
         }
     } else {
         var component = aComponent && aComponent.id ? $element(aComponent) : null;
@@ -117,7 +120,7 @@ function iceSubmit(aForm, aComponent, anEvent, query) {
         if (form) {
             form.serializeOn(query);
         }
-        query.sendOn(currentConnection($element(aForm), $element(aComponent)));
+        query.sendOn(currentConnection($element(aForm), $element(aComponent)), cancelBlockUI);
     }
 
     resetHiddenFieldsFor(aForm);

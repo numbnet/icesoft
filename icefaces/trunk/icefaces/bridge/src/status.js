@@ -293,7 +293,7 @@
             var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
 
             var pointerIndicator = new This.PointerIndicator(container);
-            this.busy = new This.OverlappingStateProtector(configuration.blockUI ? new This.MuxIndicator(pointerIndicator, new This.OverlayIndicator(configuration)) : pointerIndicator);
+            this.busy = new This.OverlappingStateProtector(pointerIndicator);
             this.sessionExpired = this.sessionExpiredRedirect ? this.sessionExpiredRedirect : new This.PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, this);
             this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new This.PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, this);
             this.serverError = new This.PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, this);
@@ -338,9 +338,7 @@
             var connectionWorking = new Ice.Status.ElementIndicator(workingID, indicators);
             var connectionIdle = new Ice.Status.ElementIndicator(idleID, indicators);
             var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
-            var busyElementIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
-            var busyIndicator = defaultStatusManager.configuration.blockUI ?
-                                new Ice.Status.MuxIndicator(busyElementIndicator, new Ice.Status.OverlayIndicator(defaultStatusManager.configuration)) : busyElementIndicator;
+            var busyIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
 
             this.busy = new Ice.Status.OverlappingStateProtector(displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator);
             this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);

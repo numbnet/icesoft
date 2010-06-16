@@ -126,9 +126,9 @@
             this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
         },
 
-        send: function(query) {
+        send: function(query, ignoreLocking) {
             if (this.lock.isReleased()) {
-                this.lock.acquire();
+                if (!ignoreLocking) this.lock.acquire();
                 try {
                     var compoundQuery = new Query();
                     compoundQuery.addQuery(query);
@@ -138,7 +138,7 @@
                     this.logger.debug('send > ' + compoundQuery.asString());
                     this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         This.FormPost(request);
-                        request.on(Connection.OK, this.lock.release);
+                        if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
                         request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.BadResponse, this.badResponseCallback);
@@ -147,7 +147,7 @@
                         this.onSendListeners.broadcast(request);
                     }.bind(this));
                 } catch (e) {
-                    this.lock.release();
+                    if (!ignoreLocking) this.lock.release();
                 }
             }
         },

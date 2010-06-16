@@ -71,8 +71,8 @@
             return result.join('\n') + (displayPartialy ? '\n......\n......' : '');
         },
 
-        sendOn: function(connection) {
-            connection.send(this);
+        sendOn: function(connection, cancelBlockUI) {
+            connection.send(this, cancelBlockUI);
         },
 
         serializeOn: function(query) {
