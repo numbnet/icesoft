@@ -69,6 +69,9 @@ public class FormSubmit implements SystemEventListener {
 
         UIOutput scriptWriter = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
+                    return;
+                }
                 String formId = form.getClientId(context);
                 writer.startElement("script", this);
                 writer.writeAttribute("type", "text/javascript", "type");
