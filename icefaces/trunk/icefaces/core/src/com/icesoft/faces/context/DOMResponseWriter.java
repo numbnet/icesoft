@@ -395,7 +395,6 @@ public class DOMResponseWriter extends ResponseWriter {
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "optimizedJSListenerCleanup: " + configuration.getAttribute("optimizedJSListenerCleanup", "false") + "," +
-                        "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + synchronousMode + "," +
@@ -403,6 +402,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
                         "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
+                        "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "context: '" + contextPath + "', " +
                         (synchronousMode ?
                                 //encode path for URL rewrite session tracking mode

@@ -290,9 +290,9 @@
             this.logger.info('asynchronous mode');
         },
 
-        send: function(query) {
+        send: function(query, ignoreLocking) {
             if (this.lock.isReleased()) {
-                this.lock.acquire();
+                if (!ignoreLocking) this.lock.acquire();
                 try {
                     var compoundQuery = new Query();
                     compoundQuery.addQuery(query);
@@ -302,7 +302,7 @@
                     this.logger.debug('send > ' + compoundQuery.asString());
                     this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         Connection.FormPost(request);
-                        request.on(Connection.OK, this.lock.release);
+                        if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
                         request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
@@ -310,7 +310,7 @@
                         this.onSendListeners.broadcast();
                     }.bind(this));
                 } catch (e) {
-                    this.lock.release();
+                    if (!ignoreLocking) this.lock.release();
                 }
             }
         },

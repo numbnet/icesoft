@@ -53,7 +53,11 @@
             return false;
         },
 
-    //todo: rename to 'capturingElement'
+        type: function() {
+            return this.event.type;
+        },
+
+        //todo: rename to 'capturingElement'
         captured: function() {
             return this.currentElement ? Element.adaptToElement(this.currentElement) : null;
         },
@@ -109,7 +113,7 @@
     });
 
     This.IE.Event = This.Event.subclass({
-    //todo: rename to 'triggeringElement'
+        //todo: rename to 'triggeringElement'
         target: function() {
             return this.event.srcElement ? Element.adaptToElement(this.event.srcElement) : null;
         },
@@ -124,10 +128,10 @@
     });
 
     This.Netscape.Event = This.Event.subclass({
-    //todo: rename to 'triggeringElement'
+        //todo: rename to 'triggeringElement'
         target: function() {
             //event.currrentTarget workaround for BlackBerry
-            if (window.blackberry)  {
+            if (window.blackberry) {
                 return this.event.currentTarget ? Element.adaptToElement(this.event.currentTarget) : null;
             }
             return this.event.target ? Element.adaptToElement(this.event.target) : null;
