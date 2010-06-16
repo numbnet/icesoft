@@ -22,25 +22,18 @@
 
 package org.icefaces.component.inputFiles;
 
-import org.icefaces.util.EnvUtils;
-import org.icefaces.event.FormScriptWriter;
 import org.icefaces.event.FormSubmit;
 
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.BehaviorEvent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.html.HtmlForm;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UINamingContainer;
-import java.util.Set;
 import java.util.Iterator;
 import java.io.IOException;
 
@@ -84,24 +77,6 @@ public class InputFilesFormSubmit implements SystemEventListener {
         output.setTransient(true);
         form.getChildren().add(output);
         
-        /*
-        form.addClientBehavior("submit", new ClientBehavior() {
-            public String getScript(ClientBehaviorContext clientBehaviorContext) {
-                FacesContext context = clientBehaviorContext.getFacesContext();
-                String iframeClientId =
-                    clientBehaviorContext.getComponent().getClientId(context) +
-                    UINamingContainer.getSeparatorChar(context) + iframeId;
-                return "ice_file_upload.form_onsubmit(event,this,'"+iframeClientId+"');";
-            }
-            public void decode(FacesContext facesContext, UIComponent uiComponent) {
-            }
-            public Set<ClientBehaviorHint> getHints() {
-                return null;
-            }
-            public void broadcast(BehaviorEvent behaviorEvent) {
-            }
-        });
-         */
         String iframeClientIdSuffix = UINamingContainer.getSeparatorChar(context) + iframeId;
         FormScriptWriter scriptWriter = new FormScriptWriter(
             "ice_inputFiles'.captureFormOnsubmit'(''{0}'', ''{0}" + iframeClientIdSuffix + "''')';",
