@@ -314,6 +314,10 @@
             return this.currentElement == null ? null : Element.adaptToElement(this.currentElement);
         },
 
+        type: function() {
+            return 'unknown';
+        },
+
         serializeEventOn: function(query) {
             query.add('ice.event.target', this.target() && this.target().id());
             query.add('ice.event.captured', this.captured() && this.captured().id());
