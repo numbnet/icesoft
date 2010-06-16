@@ -1,5 +1,6 @@
 (function(){
 
+/*
 //YAHOO.namespace("icefaces.calendar");
 var calendarns = this, i, ns;
 //calendarns = (function(){return this;}).call();
@@ -9,6 +10,8 @@ for (i = 0; i < ns.length; i++) {
     calendarns[ns[i]] = calendarns[ns[i]] || {};
     calendarns = calendarns[ns[i]];
 }
+*/
+var calendarns = ice.component.calendar = {}; // namespace creation as in tabset.js
 YAHOO.util.Event.onDOMReady(function() {
     var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
     calLogReader.setTitle("Calendar Logger");
@@ -25,15 +28,16 @@ var IceCalendar = function(container, config, params) {
 };
 var renderFooter = function(html) {
     html = IceCalendar.superclass.renderFooter.call(this, html);
-    var hourField = this.cfg.getProperty("hourField");
+    var cfg = this.cfg;
+    var hourField = cfg.getProperty("hourField");
     if (!hourField) return html;
 
-    var selectedHour = parseInt(this.cfg.getProperty("selectedHour"), 10);
-    var selectedMinute = parseInt(this.cfg.getProperty("selectedMinute"), 10);
-    var amPmStr = this.cfg.getProperty("amPmStr");
-    var amStr = this.cfg.getProperty("amStr");
-    var pmStr = this.cfg.getProperty("pmStr");
-    var renderAsPopup = this.cfg.getProperty("renderAsPopup");
+    var selectedHour = parseInt(cfg.getProperty("selectedHour"), 10);
+    var selectedMinute = parseInt(cfg.getProperty("selectedMinute"), 10);
+    var amPmStr = cfg.getProperty("amPmStr");
+    var amStr = cfg.getProperty("amStr");
+    var pmStr = cfg.getProperty("pmStr");
+    var renderAsPopup = cfg.getProperty("renderAsPopup");
     var selHrId = this.containerId + "_selHr";
     var selMinId = this.containerId + "_selMin";
     var selAmPmId = this.containerId + "_selAmPm";
@@ -42,14 +46,14 @@ var renderFooter = function(html) {
     var calendar = this;
 
     var doSelChange = function (evt, selId) {
-        var selValue =  Dom.get(selId).value;
-        var result;
+        var selValue = Dom.get(selId).value;
+        var result, cfg = this.cfg;
         if (selId == selHrId) {
-            result = this.cfg.setProperty("selectedHour", selValue, true);
+            result = cfg.setProperty("selectedHour", selValue, true);
         } else if (selId == selMinId) {
-            result = this.cfg.setProperty("selectedMinute", selValue, true);
+            result = cfg.setProperty("selectedMinute", selValue, true);
         } else if (selId == selAmPmId) {
-            result = this.cfg.setProperty("amPmStr", selValue, true);
+            result = cfg.setProperty("amPmStr", selValue, true);
         }
         if (!renderAsPopup) {
             calendarns.timeSelectHandler(this, evt);
@@ -408,20 +412,19 @@ calendarns.init = function(params) {
     var okClick = function(evt, dialog) {
         this.hide();
         toggleBtnEl.replaceClass("close-popup", "open-popup");
-        if (calendar.getSelectedDates().length > 0) {
-            var date = calendar.getSelectedDates()[0];
-            var time = calendarns.getTime(calendar);
-            var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
-            calValueEl.setAttributes({value:dateStr}, true);
-            if (params.singleSubmit || params.renderInputField) {
-                ice.se(evt, Dom.get(rootDivId), function(p) {
-                    p(calValueEl.get("name"), calValueEl.get("value"));
-                    if (!params.singleSubmit && params.renderInputField) {
-                        p("formatSubmit", "formatSubmit");
-                    }
-                });
+        if (calendar.getSelectedDates().length <= 0) return;
+        var date = calendar.getSelectedDates()[0];
+        var time = calendarns.getTime(calendar);
+        var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
+        calValueEl.setAttributes({value:dateStr}, true);
+        var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
+        if (!submit) return;
+        submit(evt, Dom.get(rootDivId), function(p) {
+            p(calValueEl.get("name"), calValueEl.get("value"));
+            if (!params.singleSubmit && params.renderInputField) {
+                p("formatSubmit", "formatSubmit");
             }
-        }
+        });
     };
     var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
         visible:false,
