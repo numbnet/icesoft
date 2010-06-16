@@ -168,6 +168,9 @@ ice.yui3.slider = {
                             event.halt();
                         }
                     }, root);
+                    Y.on("click", function(event) {
+                    	root.firstChild.focus();
+                    }, root);
                 }
                 //bind the initilized js component, so it can be reused for later calls
                 bindYUI(obj);
