@@ -49,13 +49,10 @@
 
             <f:facet name="header">
                 <ice:panelGroup>
-                    <ice:commandLink
-                            actionListener="#{applicationController.navigationEvent}"
+                    <ice:outputText
                             styleClass="navNodeLink"
                             value="#{msgs[nodeLevel1.label]}">
-                        <f:param name="nodeId"
-                                 value="#{nodeLevel1.id}"/>
-                    </ice:commandLink>
+                    </ice:outputText>
                 </ice:panelGroup>
             </f:facet>
            
