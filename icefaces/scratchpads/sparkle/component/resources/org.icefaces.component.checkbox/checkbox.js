@@ -6,59 +6,96 @@ ice.component.checkbox = {
        if (YAHOO.widget.Logger){
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
        }
-       
-	   var button = new YAHOO.widget.Button(clientId, {type: jsProps.type});
-YAHOO.log ("ClientId is="+clientId);	   
+       var spanId = clientId+"_span";
+	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type});
+	   
 	   if(jsProps.label) {
 			button.set('label', jsProps.label);
 	    }
 		
-		if (jsfProps.value) {
-			YAHOO.log("jsfProps.value="+jsfProps.value);
-		}
+		var hiddenField = Dom.get(clientId+"_hidden");
 		var singleSubmit=jsfProps.singleSubmit;	
-		YAHOO.log ("jsProps.checked=-"+jsProps.checked);	
+		
+		//use input hidden field instead to update value for server push
   		if(jsProps.checked) {	
-   			button.set('checked', jsProps.checked);
+   			button.set('checked', hiddenField.value);
  		}
+  		
+  		if (jsfProps.disabled){
+  			button.set('disabled', true);
+  		}else{
+  			button.set('disabled', false);
+  		}
 	   
 		var onCheckedChange = function (e) { 			
-		    buttonNode = document.getElementById(clientId);
-		    YAHOO.log(" buttonRoot="+buttonRoot+"  buttonNode="+buttonNode+" e.target="+e.target);
-		    //e.target is null so have to set the target to the root of this button for submit
-
+		    buttonNode = document.getElementById(spanId);
+	
 			//get the current value of checked
  	        var submittedValue =  e.newValue;	
 
-YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" old="+e.prevValue);
-
+            YAHOO.log("in onCheckedChange and e.newValue="+e.newValue+" old="+e.prevValue);
+           //not using this param anymore..using hidden field now June 16, 2010
 			var params = function(parameter) {
 				parameter(clientId+'_value', submittedValue);
 			};
-    
-			var hiddenField = Dom.get(clientId+"_hidden");
+            //update hidden field's value
+
 			hiddenField.value=submittedValue;
 
-	YAHOO.log(" hidden Field="+clientId+"_hidden"+" has value="+hiddenField.value);
+	        YAHOO.log(" hidden Field="+clientId+"_hidden"+" has value="+hiddenField.value);
 			
 	        if (singleSubmit) {
  	         	YAHOO.log("single submit goes to server");
+ 			    //e.target is null so have to set the target to the root of this button for submit
  	         	e.target = buttonNode;	
                 ice.se(e, buttonRoot, params); 
             } else {
              	YAHOO.log("single Submit is false doesn't go to server");
                 ice.s(e, buttonRoot, params);                    
-            }           
+            }  
+	        button.set
 		};
 
 		button.on("checkedChange", onCheckedChange);
-
+		
+	    if (jsfProps.aria) {
+	         //add roles and attributes to the YUI slider widget
+	            buttonNode = document.getElementById(spanId);
+	            buttonNode.firstChild.setAttribute("role", "button");
+	            buttonNode.firstChild.setAttribute("aria-describedby",jsProps.label);
+	            if (jsfProps.disabled){
+	            	buttonNode.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
+	            }
+	            //listen for keydown event, to provide short-cut key support.
+	          
+	            button.on("keydown", function(event) {
+	                //get the current value of the element and set the aria values
+	            	//the space bar toggles the button
+	                var isSpace = event.keyCode == 32;
+	   
+	                if (isSpace) {
+	                	// submit the thing
+	                	YAHOO.log(" submit this thing for keycode="+event.keyCode);
+	                
+	                	//update the root of this element to set the aria values
+	        			buttonNode = document.getElementById(spanId);
+	          			//get the current value of checked
+	         	        var submittedValue =  event.newValue;
+	         	        if (submittedValue){
+	        	            buttonNode.firstChild.setAttribute("aria-checked",true);	         	        	
+	         	        }else {
+	        	            buttonNode.firstChild.setAttribute("aria-checked",false);	         	        	
+	         	        }
+	         	        
+	         	       //the space seems to fire the onClick event for both FF and Safari     
+	                }
+	            }, buttonRoot);
+	    }
 		bindYUI(button);
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
-		YAHOO.log("updateProperties for clientId="+clientId);
        ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  

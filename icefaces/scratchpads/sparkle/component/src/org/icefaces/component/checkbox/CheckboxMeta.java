@@ -29,10 +29,6 @@ public class CheckboxMeta {
 	
 	@Property
     private String image;
-//	
-//	@Property (defaultValue="false",
-//	            tlddoc="The value of checkbox, default is false. Pass through to YUI component")
-//	private Boolean value;    
 	
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
@@ -52,6 +48,10 @@ public class CheckboxMeta {
     
     @Property (inherit=true, useTemplate=true)
     private Boolean rendered;
+    
+    @Property (defaultValue="false",
+    		tlddoc="disabled property is required by aria specs")
+    private Boolean disabled;
     
     @Property (inherit=true, useTemplate=true)
     private UIComponent binding;    
