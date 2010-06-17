@@ -23,19 +23,20 @@ public class CheckboxRenderer extends Renderer {
             Checkbox checkbox = (Checkbox) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = uiComponent.getClientId();
-            if (clientId.equals(source)) {
-				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_value"))));
+            //as of code review June 16th, just use the hidden field for update in every instance
+  /*          if (clientId.equals(source)) {
+				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_span"+"_value"))));
 				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
 				System.out.println("\t\tRenderer:- submittedValue="+submittedValue+" HIDDEN value="+hiddenValue);
 				checkbox.setSubmittedValue(submittedValue);
-            }else{
+            }else{ */
             	System.out.println("clientId="+clientId+" not same as source="+source);
             	//update with hidden field
 				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
 				System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
 				Boolean submittedValue= Boolean.valueOf(hiddenValue);
 				checkbox.setSubmittedValue(submittedValue);           	
-            }
+          //  }
         }
     }
 
@@ -46,19 +47,23 @@ public class CheckboxRenderer extends Renderer {
         Checkbox checkbox = (Checkbox) uiComponent;
 
 		// root element
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        
+		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);      
 
 		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkbox-button", null);
 		
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
-		
+	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
 		
 		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
 		if (checkbox.getImage() != null) {
@@ -78,20 +83,20 @@ public class CheckboxRenderer extends Renderer {
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
         writer.endElement(HTML.BUTTON_ELEM);
-		writer.endElement(HTML.SPAN_ELEM);
-		
-        
-		//hidden input for single submit=true
-		writer.endElement(HTML.SPAN_ELEM);
+		writer.endElement(HTML.SPAN_ELEM);  
+	    
+		writer.endElement(HTML.SPAN_ELEM);			
+		//hidden input for single submit=false	
 	    writer.startElement("input", uiComponent);
 	    writer.writeAttribute("type", "hidden", null);
 	    writer.writeAttribute("name",clientId+"_hidden", null);
 	    writer.writeAttribute("id",clientId+"_hidden", null);
 	    writer.writeAttribute("value",checkbox.getValue(), null);
-	    writer.endElement("input");		
-		
+	    writer.endElement("input");	
 		// js call
-
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId +"_sp", null);      
+		       
         StringBuilder call= new StringBuilder();
         call.append("ice.component.checkbox.updateProperties('");
         call.append(clientId);
@@ -113,9 +118,12 @@ public class CheckboxRenderer extends Renderer {
         call.append("singleSubmit:");
         call.append(checkbox.isSingleSubmit());       
         call.append(", ");        
-//        call.append("aria:");
-//        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-//        call.append(", ");        
+        call.append("aria:");
+        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+        call.append(", "); 
+        call.append("disabled:");
+        call.append(checkbox.isDisabled());  
+        call.append(", ");      
         call.append("tabindex:");
         call.append(checkbox.getTabindex());   
         call.append("});");
@@ -124,6 +132,8 @@ public class CheckboxRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
         writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
-
+        writer.endElement(HTML.SPAN_ELEM);
+        
+       writer.endElement(HTML.DIV_ELEM);
     }
 }
