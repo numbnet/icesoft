@@ -36,9 +36,9 @@
 
 <faces-config>
 
-    <application>
-        <state-manager>com.icesoft.faces.application.ViewRootStateManagerImpl</state-manager>
-    </application>
+    <lifecycle>
+        <phase-listener>com.icesoft.faces.application.OverridePhaseListener</phase-listener>
+    </lifecycle>
 
 <!-- Managed Beans -->
 <managed-bean>
