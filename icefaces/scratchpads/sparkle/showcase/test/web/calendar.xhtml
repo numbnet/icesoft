@@ -9,37 +9,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title>Calendar4</title>
-    <!--
-        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/button/assets/skins/sam/button.css&amp;2.8.0r4/build/calendar/assets/skins/sam/calendar.css&amp;2.8.0r4/build/container/assets/skins/sam/container.css&amp;2.8.0r4/build/logger/assets/skins/sam/logger.css"/>
-        <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-debug.js&amp;2.8.0r4/build/dom/dom-debug.js&amp;2.8.0r4/build/event/event-debug.js&amp;2.8.0r4/build/element/element-debug.js&amp;2.8.0r4/build/button/button-debug.js&amp;2.8.0r4/build/calendar/calendar-debug.js&amp;2.8.0r4/build/dragdrop/dragdrop-debug.js&amp;2.8.0r4/build/container/container-debug.js&amp;2.8.0r4/build/logger/logger-debug.js"></script>
-        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/selector/selector-min.js"/>
-        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/event-delegate/event-delegate-min.js"/>
-    -->
 </h:head>
 <h:body class="ice-skin-rime yui-skin-sam">
     <h:form id="calForm1">
         <h:outputText value="renderAsPopup"/>
-        <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onclick="alert(this.id + ' = ' + this.checked); ice.se(event, this);"/>
-<!--
+        <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onclick="ice.se(event, this);"/>
         <h:outputText value="renderInputField (popup only)"/>
-        <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}"/>
+        <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}" onclick="ice.se(event, this);"/>
         <br/>
         <h:outputText value="singleSubmit"/>
-        <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}"/>
+        <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}" onclick="ice.se(event, this);"/>
         <h:outputText value="pattern"/>
         <h:selectOneMenu id="pattern" value="#{calendarBean.pattern}" onchange="ice.se(event, this);">
             <f:selectItem itemLabel="MM/dd/yyyy" itemValue="MM/dd/yyyy"/>
             <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
             <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
         </h:selectOneMenu>
--->
     </h:form>
-<!--
     <h:outputText value="output: "/>
     <h:outputText id="output" value="#{calendarBean.selectedDate}">
         <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
     </h:outputText>
--->
     <h:form id="calForm2">
         <ann:selectInputDate id="calendar4" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"

@@ -22,7 +22,7 @@ var logger = new YAHOO.widget.LogWriter("Calendar 4");
 //YAHOO.icefaces.calendar.logger = new YAHOO.widget.LogWriter("Calendar 4");
 
 var YuiCalendar = YAHOO.widget.Calendar;
-var IceCalendar = function(container, config, params) {
+var IceCalendar = function(container, config, params) { // ICE calendar constructor
     IceCalendar.superclass.constructor.call(this, container, config);
     this.params = params;
 };
@@ -137,14 +137,15 @@ YAHOO.lang.extend(IceCalendar, YuiCalendar, overrides);
 
 calendarns.getTime = function(calendar) {
     var hr = 0, min = 0;
-    var hourField = calendar.cfg.getProperty("hourField");
+    var cfg = calendar.cfg;
+    var hourField = cfg.getProperty("hourField");
     if (hourField) {
-        hr = parseInt(calendar.cfg.getProperty("selectedHour"), 10);
-        min = parseInt(calendar.cfg.getProperty("selectedMinute"), 10);
+        hr = parseInt(cfg.getProperty("selectedHour"), 10);
+        min = parseInt(cfg.getProperty("selectedMinute"), 10);
         if (hourField == "HOUR_OF_DAY1" && hr == 24 || hourField == "HOUR1" && hr == 12) {
             hr = 0;
         }
-        if (hourField.match(/^HOUR[01]$/) && calendar.cfg.getProperty("amPmStr") == calendar.cfg.getProperty("pmStr")) {
+        if (hourField.match(/^HOUR[01]$/) && cfg.getProperty("amPmStr") == cfg.getProperty("pmStr")) {
             hr += 12;
         }
     }
@@ -152,29 +153,30 @@ calendarns.getTime = function(calendar) {
 };
 calendarns.timeSelectHandler = function(calendar, evt) {
     var Dom = YAHOO.util.Dom;
-    var rootDivId = calendar.params.divId, calValueEl = this[rootDivId].calValueEl;
+    var rootId = calendar.params.clientId, calValueEl = this[rootId].calValueEl;
     var date = calendar.getSelectedDates()[0];
     var time = this.getTime(calendar);
     var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
     calValueEl.set("value", dateStr, true);
     if (calendar.params.singleSubmit) {
-        ice.se(evt, Dom.get(rootDivId), function(p) {
+        ice.se(evt, Dom.get(rootId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
         });
     }
 };
 calendarns.configCal = function (calendar, params) {
-    calendar.cfg.addProperty("selectedHour", {value:params.selectedHour});
-    calendar.cfg.addProperty("selectedMinute", {value:params.selectedMinute});
-    calendar.cfg.addProperty("hourField", {value:params.hourField});
-    calendar.cfg.addProperty("amPmStr", {value:params.amPmStr});
-    calendar.cfg.addProperty("amStr", {value:params.amStr});
-    calendar.cfg.addProperty("pmStr", {value:params.pmStr});
-    calendar.cfg.addProperty("renderAsPopup", {value:params.renderAsPopup});
+    var cfg = calendar.cfg;
+    cfg.addProperty("selectedHour", {value:params.selectedHour});
+    cfg.addProperty("selectedMinute", {value:params.selectedMinute});
+    cfg.addProperty("hourField", {value:params.hourField});
+    cfg.addProperty("amPmStr", {value:params.amPmStr});
+    cfg.addProperty("amStr", {value:params.amStr});
+    cfg.addProperty("pmStr", {value:params.pmStr});
+    cfg.addProperty("renderAsPopup", {value:params.renderAsPopup});
     if (params.ariaEnabled) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
-    this[params.divId].yuiComponent = calendar;
+    this[params.clientId].yuiComponent = calendar;
 };
 calendarns.aria = function() {
     var Event = YAHOO.util.Event,
@@ -350,34 +352,37 @@ calendarns.init = function(params) {
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener;
 
-    var rootDivId = params.divId;
-    Dom.setAttribute(rootDivId, "className", "");
-    Dom.get(rootDivId).innerHTML = "";
-    var rootDiv = new Element(rootDivId);
-    var calValueId = rootDivId + "_value";
-    var calValueHtmlEl = Dom.get(calValueId);
-    var calValueEl;
-    rootDiv.addClass("ice-calcontainer");
-    if (calValueHtmlEl) {
-        calValueEl = new Element(calValueHtmlEl);
+    var rootId = params.clientId, rootEl = new Element(rootId); // server-side rendering root
+    var calRootId = rootId + "_calRoot", calRootEl;             // client-side rendering root
+    var calContainerId = rootId + "_cal", calContainerEl;       // calendar container
+    var calRootHtmlEl = Dom.getLastChildBy(Dom.get(rootId), function(el){return el.id == calRootId;});
+    if (calRootHtmlEl) {
+        calRootHtmlEl.innerHTML = "";
+        calRootEl = new Element(calRootHtmlEl);
     } else {
-        calValueEl = new Element(document.createElement("input"), {type:"hidden", id:calValueId, name:calValueId});
+        calRootEl = new Element(document.createElement("div"), {id:calRootId, className:"ice-calcontainer"});
+        calRootEl.appendTo(rootEl);
     }
-    calValueEl.set("value", params.dateStr, true);
-    this[rootDivId].calValueEl = calValueEl;
-    Dom.insertBefore(calValueEl, rootDiv);
-    if (!params.renderAsPopup) {
+    // hidden field to store date value string
+    var calValueId = rootId + "_value";
+    var calValueEl = new Element(document.createElement("input"), {type:"hidden", id:calValueId, name:calValueId, value:params.dateStr});
+    calValueEl.appendTo(calRootEl);
+    this[rootId].calValueEl = calValueEl;
+    var calendar; // IceCalendar object
+    if (!params.renderAsPopup) { // inline calendar
+        calContainerEl = new Element(document.createElement("div"), {id:calContainerId});
+        calContainerEl.appendTo(calRootEl);
         function dateSelectHandler(type, args, calendar) {
             var time = calendarns.getTime(calendar);
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
-                ice.se(null, Dom.get(rootDivId), function(p) {
+                ice.se(null, Dom.get(rootId), function(p) {
                     p(calValueEl.get("name"), calValueEl.get("value"));
                 });
             }
         }
-        var calendar = new IceCalendar(rootDivId, {
+        calendar = new IceCalendar(calContainerEl, {
             pagedate:params.pageDate,
             selected:params.selectedDate,
             hide_blank_weeks:true,
@@ -388,22 +393,22 @@ calendarns.init = function(params) {
         calendar.render();
         return;
     }
-    var inputId = rootDivId + "_input";
+    var inputId = rootId + "_input";
     var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, className:"text-input", id:inputId, name:inputId});
     var toggleBtnEl = new Element(document.createElement("div"), {className:"toggle-popup open-popup"});
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
-            ice.se(evt, Dom.get(rootDivId), function(p) {
+            ice.se(evt, Dom.get(rootId), function(p) {
                 p(calValueEl.get("name"), calValueEl.get("value"));
             });
         }
     };
     if (params.renderInputField) {
-        inputEl.appendTo(rootDiv);
+        inputEl.appendTo(calRootEl);
         inputEl.addListener("change", inputChange);
     }
-    toggleBtnEl.appendTo(rootDiv);
+    toggleBtnEl.appendTo(calRootEl);
 
     var cancelClick = function() {
         this.hide();
@@ -419,14 +424,14 @@ calendarns.init = function(params) {
         calValueEl.setAttributes({value:dateStr}, true);
         var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
         if (!submit) return;
-        submit(evt, Dom.get(rootDivId), function(p) {
+        submit(evt, Dom.get(rootId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
             if (!params.singleSubmit && params.renderInputField) {
                 p("formatSubmit", "formatSubmit");
             }
         });
     };
-    var dialog = new YAHOO.widget.Dialog(rootDivId + "_dialog", {
+    var dialog = new YAHOO.widget.Dialog(rootId + "_dialog", {
         visible:false,
         context:[params.renderInputField ? inputEl : toggleBtnEl, "tl", "bl"],
         buttons:[{text:"OK", handler:okClick}, {text:"Cancel", isDefault:true, handler:cancelClick}],
@@ -435,10 +440,10 @@ calendarns.init = function(params) {
         underlay:"none",
         constraintoviewport:true
     });
-    dialog.setBody("<div id='" + rootDivId + "_cal'/>");
-    dialog.render(rootDiv);
+    dialog.setBody("<div id='" + calContainerId + "'/>");
+    dialog.render(calRootEl);
 
-    calendar = new IceCalendar(rootDivId + "_cal", {
+    calendar = new IceCalendar(calContainerId, {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
@@ -494,7 +499,7 @@ calendarns.init = function(params) {
 calendarns.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
     this[clientId] = this[clientId] || {};
     var lang = YAHOO.lang;
-    var params = lang.merge({divId:clientId}, jsProps, jsfProps);
+    var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
 //    console.log(lang.dump(params));
     this.init(params);
     bindYUI(this[clientId].yuiComponent);
