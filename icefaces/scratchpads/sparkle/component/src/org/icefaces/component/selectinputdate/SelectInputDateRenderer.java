@@ -27,6 +27,16 @@ public class SelectInputDateRenderer extends Renderer {
     }
 
     @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        // ignore children
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         System.out.println("\nSelectInputDateRenderer.encodeEnd");
         printParams(context);
@@ -34,7 +44,6 @@ public class SelectInputDateRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate selectInputDate = (SelectInputDate) component;
         String clientId = component.getClientId(context);
-        writer.endElement(HTML.DIV_ELEM);
 
         DateTimeConverter converter = selectInputDate.resolveDateTimeConverter(context);
         TimeZone tz = selectInputDate.resolveTimeZone(context);
@@ -127,6 +136,7 @@ public class SelectInputDateRenderer extends Renderer {
         writer.write("ice.component.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.SCRIPT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     @Override
