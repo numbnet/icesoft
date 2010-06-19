@@ -3,7 +3,6 @@ package org.icefaces.component.commandlink;
 import java.io.IOException;
 import java.util.*;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,7 +44,7 @@ public class CommandLinkRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
 
         CommandLink commandLink = (CommandLink) uiComponent;
-		System.out.println("in renderer and label = " );
+		System.out.println("in renderer is instanceof? " + uiComponent.getClass() + " instanceof? " + (uiComponent instanceof CommandLink) );
 		// root element
         //writer.startElement(HTML.INPUT_ELEM, uiComponent);
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
@@ -55,10 +54,14 @@ public class CommandLinkRenderer extends Renderer {
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
+		writer.writeAttribute(HTML.ID_ATTR, "first-child", null);
 
 		// button element
         String temp;
 		writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+        // This is the inline model 
+//        writer.writeAttribute(HTML.ONCLICK_ATTR, "return ice.component.commandlink.theInsideClick(event)", null);
+        
 //		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         if ((temp = commandLink.getHref()) != null) {
             writer.writeAttribute(HTML.HREF_ATTR, temp, null );
@@ -81,12 +84,11 @@ public class CommandLinkRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
         
-		CommandLink commandLink  = (CommandLink) uiComponent;
+		CommandLink commandLink = (CommandLink) uiComponent;
         writer.endElement(HTML.ANCHOR_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
 
-		// js call. Ah, this part was to hook up with that overriden js method.
         StringBuilder call= new StringBuilder();
         call.append("ice.component.commandlink.updateProperties('");
         call.append(clientId);
@@ -106,12 +108,20 @@ public class CommandLinkRenderer extends Renderer {
         call.append("singleSubmit:");
         call.append(commandLink.isSingleSubmit());
 
-//        call.append(", ");
-//        call.append("aria:");
-//        call.append(EnvUtils.isAriaEnabled(facesContext));
+
+        Object o;
+        boolean doAction = ( ((o = commandLink.getActionListener()) != null) || ((o=
+                commandLink.getAction()) != null) );
+        System.out.println("Value of doAction = "+ doAction);
+        call.append(", ");
+        call.append("aria:");
+        call.append(EnvUtils.isAriaEnabled(facesContext));
         call.append(", ");
         call.append("tabindex:");
         call.append(commandLink.getTabindex());
+        call.append(", ");
+        call.append("doAction:");
+        call.append(false);
         call.append("});");
 
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
