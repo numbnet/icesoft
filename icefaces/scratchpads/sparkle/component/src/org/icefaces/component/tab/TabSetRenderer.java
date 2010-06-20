@@ -113,6 +113,7 @@ public class TabSetRenderer extends Renderer{
         int selectedIndex = tabSet.getSelectedIndex();
         String onupdate = tabSet.getOnupdate();
         StringBuilder call= new StringBuilder();
+        boolean effectOnHover = tabSet.isEffectOnHover();
         call.append("ice.component.tabset.updateProperties('");
         call.append(clientId);
         call.append("', ");
@@ -132,7 +133,7 @@ public class TabSetRenderer extends Renderer{
         call.append("aria:");
         call.append(EnvUtils.isAriaEnabled(facesContext)); 
         call.append(", hover:");
-        call.append(false);  
+        call.append(effectOnHover);  
         call.append(", selectedIndex:");
         call.append(selectedIndex);         
         call.append("});");

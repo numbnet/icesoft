@@ -20,7 +20,8 @@ import javax.faces.event.ValueChangeEvent;
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
-    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
+    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab"),    
+    @ResourceDependency(name = "animation/animation-min.js",library = "yui/2_8_1")
 })
 public class TabSet extends TabSetBase {
     

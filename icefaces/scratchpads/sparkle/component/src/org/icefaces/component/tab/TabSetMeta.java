@@ -60,6 +60,8 @@ public class TabSetMeta {
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
     
+    @Property(defaultValue="false") 
+    private Boolean effectOnHover;  
     
     @Facets
     class FacetsMeta{
