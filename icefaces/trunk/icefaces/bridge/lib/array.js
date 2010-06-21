@@ -49,7 +49,7 @@ Object.extend(Array.prototype, {
 
     complement: function(other) {
         return this.reject(function(item) {
-            return other.include(item); 
+            return other.include(item);
         });
     },
 
@@ -78,15 +78,16 @@ Object.extend(Array.prototype, {
         return copy;
     },
 
-    broadcast: function(event) {
+    broadcast: function() {
+        var args = arguments;
         this.each(function(element) {
-            element(event);
+            element.apply(element, args);
         });
     },
 
     broadcaster: function() {
-        return function(event) {
-            this.broadcast(event);
+        return function() {
+            this.broadcast.apply(this, arguments);
         }.bind(this);
     },
 

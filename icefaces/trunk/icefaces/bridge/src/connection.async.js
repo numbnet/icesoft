@@ -38,7 +38,6 @@
             this.receiveChannel = new Ajax.Client(this.logger.child('blocking'));
             this.defaultQuery = defaultQuery;
             this.onSendListeners = [];
-            this.onReceiveFromSendListeners = [];
             this.onReceiveListeners = [];
             this.onServerErrorListeners = [];
             this.connectionDownListeners = [];
@@ -294,6 +293,7 @@
             if (this.lock.isReleased()) {
                 if (!ignoreLocking) this.lock.acquire();
                 try {
+                    var onReceiveFromSendListeners = [];
                     var compoundQuery = new Query();
                     compoundQuery.addQuery(query);
                     compoundQuery.addQuery(this.defaultQuery);
@@ -303,11 +303,13 @@
                     this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         Connection.FormPost(request);
                         if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
-                        request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.OK, onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
                         request.on(Connection.OK, Connection.Close);
-                        this.onSendListeners.broadcast();
+                        this.onSendListeners.broadcast(function(onReceive) {
+                            if (onReceive) onReceiveFromSendListeners.push(onReceive);
+                        }, ignoreLocking);
                     }.bind(this));
                 } catch (e) {
                     if (!ignoreLocking) this.lock.release();
@@ -315,9 +317,8 @@
             }
         },
 
-        onSend: function(sendCallback, receiveCallback) {
+        onSend: function(sendCallback) {
             this.onSendListeners.push(sendCallback);
-            if (receiveCallback) this.onReceiveFromSendListeners.push(receiveCallback);
         },
 
         onReceive: function(callback) {
@@ -347,7 +348,7 @@
             } catch (e) {
                 //ignore, we really need to shutdown
             } finally {
-                [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners, this.onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
+                [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners ].eachWithGuard(function(listeners) {
                     listeners.clear();
                 });
                 this.listener.abort();
