@@ -203,7 +203,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                         var extElem = address.asExtendedElement();
                         if (!got_bridge_optimizedJSListenerCleanup) {
                             bridge_optimizedJSListenerCleanup =
-                                extElem.findBridge().optimizedJSListenerCleanup;
+                            extElem.findBridge().optimizedJSListenerCleanup;
                             got_bridge_optimizedJSListenerCleanup = true;
                         }
                         extElem.updateDOM(update, bridge_optimizedJSListenerCleanup);
@@ -217,11 +217,11 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     }
                 });
                 if (numUpdate > 0) {
-                        if (Ice.StateMon) {
-                            Ice.StateMon.checkAll();
-                            Ice.StateMon.rebuild();
-                        }
+                    if (Ice.StateMon) {
+                        Ice.StateMon.checkAll();
+                        Ice.StateMon.rebuild();
                     }
+                }
             });
             commandDispatcher.register('session-expired', function() {
                 try {
@@ -240,10 +240,16 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 dispose();
             });
 
-            connection.onSend(function() {
+            var blockUI = configuration.connection.blockUI ? new Ice.Status.OverlayIndicator(configuration) : new Ice.Status.NOOPIndicator();
+
+            connection.onSend(function(onReceive, ignoreLocking) {
+                if (!ignoreLocking) blockUI.on();
                 statusManager.busy.on();
-            }, function() {
-                statusManager.busy.off();
+
+                onReceive(function() {
+                    statusManager.busy.off();
+                    if (!ignoreLocking) blockUI.off();
+                });
             });
 
             connection.onReceive(function(response) {

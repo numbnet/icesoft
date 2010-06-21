@@ -85,7 +85,6 @@
             this.channel = new Ajax.Client(this.logger);
             this.defaultQuery = defaultQuery;
             this.onSendListeners = [];
-            this.onReceiveFromSendListeners = [];
             this.onReceiveListeners = [];
             this.onServerErrorListeners = [];
             this.connectionDownListeners = [];
@@ -130,21 +129,23 @@
             if (this.lock.isReleased()) {
                 if (!ignoreLocking) this.lock.acquire();
                 try {
+                    var onReceiveFromSendListeners = [];
                     var compoundQuery = new Query();
                     compoundQuery.addQuery(query);
                     compoundQuery.addQuery(this.defaultQuery);
                     compoundQuery.add('ice.focus', window.currentFocus);
-
                     this.logger.debug('send > ' + compoundQuery.asString());
                     this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         This.FormPost(request);
                         if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
-                        request.on(Connection.OK, this.onReceiveFromSendListeners.broadcaster());
+                        request.on(Connection.OK, onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
                         request.on(Connection.BadResponse, this.badResponseCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
                         request.on(Connection.OK, Connection.Close);
-                        this.onSendListeners.broadcast(request);
+                        this.onSendListeners.broadcast(function(onReceive) {
+                            if (onReceive) onReceiveFromSendListeners.push(onReceive);
+                        }, ignoreLocking);
                     }.bind(this));
                 } catch (e) {
                     if (!ignoreLocking) this.lock.release();
@@ -152,9 +153,8 @@
             }
         },
 
-        onSend: function(sendCallback, receiveCallback) {
+        onSend: function(sendCallback) {
             this.onSendListeners.push(sendCallback);
-            if (receiveCallback) this.onReceiveFromSendListeners.push(receiveCallback);
         },
 
         onReceive: function(callback) {
@@ -176,7 +176,7 @@
             this.shutdown = Function.NOOP;
             //avoid sending XMLHTTP requests that might create new sessions on the server
             this.send = Function.NOOP;
-            [ this.onSendListeners, this.onReceiveListeners, this.onServerErrorListeners, this.connectionDownListeners, this.onReceiveFromSendListeners ].eachWithGuard(function(listeners) {
+            [ this.onSendListeners, this.onReceiveListeners, this.onServerErrorListeners, this.connectionDownListeners ].eachWithGuard(function(listeners) {
                 listeners.clear();
             });
         }
