@@ -26,12 +26,12 @@ import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.Serializable;
 
-public class SessionViewManager implements SessionRenderer, Serializable {
+public class SessionViewManager implements Serializable {
     private transient PushContext pushContext;
     private String groupName;
     private HashSet viewIDs = new HashSet();
@@ -41,7 +41,6 @@ public class SessionViewManager implements SessionRenderer, Serializable {
         this.pushContext = pushContext;
         this.groupName = session.getId();
         session.setAttribute(SessionViewManager.class.getName(), this);
-        session.setAttribute(SessionRenderer.class.getName(), this);
     }
 
     public String addView(String id) {
@@ -89,9 +88,9 @@ public class SessionViewManager implements SessionRenderer, Serializable {
             getPushContext().removeGroupMember(groupName, (String) i.next());
         }
     }
-    
-    private PushContext getPushContext()  {
-        if (null == pushContext)  {
+
+    private PushContext getPushContext() {
+        if (null == pushContext) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             pushContext = (PushContext) facesContext.getExternalContext()
                     .getApplicationMap().get(PushContext.class.getName());
