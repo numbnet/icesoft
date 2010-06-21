@@ -47,7 +47,7 @@ public class WindowScopeSetup implements PhaseListener {
         }
 
         try {
-            WindowScopeManager.lookup(context).determineWindowID(context);
+            WindowScopeManager.determineWindowID(context);
         } catch (Exception e) {
             log.log(Level.WARNING, "Unable to set up WindowScope ", e);
         }

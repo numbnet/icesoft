@@ -31,21 +31,18 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.context.FacesContext;
 
 public class DisposeWindowScope extends AbstractServer {
-    private final WindowScopeManager windowScopeManager;
-
-    public DisposeWindowScope(WindowScopeManager windowScopeManager) {
-        this.windowScopeManager = windowScopeManager;
-    }
 
     public void service(Request request) throws Exception {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         String windowID = request.getParameter("ice.window");
-        windowScopeManager.disposeWindow(windowID);
+        WindowScopeManager.disposeWindow(context, windowID);
 
         if (EnvUtils.isICEpushPresent()) {
             try {
                 String[] viewIDs = request.getParameterAsStrings("ice.view");
                 for (int i = 0; i < viewIDs.length; i++) {
-                    SessionViewManager.removeView(FacesContext.getCurrentInstance(), viewIDs[i]);
+                    SessionViewManager.removeView(context, viewIDs[i]);
                 }
             } catch (RuntimeException e) {
                 //missing ice.view parameters means that none of the views within the page

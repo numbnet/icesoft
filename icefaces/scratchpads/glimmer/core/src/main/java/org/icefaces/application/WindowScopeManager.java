@@ -22,14 +22,15 @@
 
 package org.icefaces.application;
 
-import org.icefaces.push.Configuration;
-
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PostConstructCustomScopeEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
 import javax.faces.event.ScopeContext;
-import javax.servlet.http.HttpSession;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,33 +40,22 @@ import java.util.Observer;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.Serializable;
 
-//todo: factor out window manager that can be used to manage the window scope 
-public class WindowScopeManager implements Serializable {
+public class WindowScopeManager {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final CurrentScopeThreadLocal CurrentScope = new CurrentScopeThreadLocal();
-    private HashMap windowScopedMaps = new HashMap();
-    private LinkedList disposedWindowScopedMaps = new LinkedList();
-    private long expirationPeriod;
-    private Observable activatedWindowNotifier = new ReadyObservable();
-    private Observable disactivatedWindowNotifier = new ReadyObservable();
-    private String seed;
+    private static String seed = Integer.toString(new Random().nextInt(1000), 36);
 
-    public WindowScopeManager(Configuration configuration) {
-        expirationPeriod = configuration.getAttributeAsLong("windowScopeExpiration", 1000);
-        seed = Integer.toString(new Random().nextInt(1000), 36);
+    public static ScopeMap lookupWindowScope(FacesContext context) {
+        return (ScopeMap) getState(context).windowScopedMaps.get(CurrentScope.lookup());
     }
 
-    public ScopeMap lookupWindowScope() {
-        return (ScopeMap) windowScopedMaps.get(CurrentScope.lookup());
-    }
-
-    public synchronized String determineWindowID(FacesContext context) {
+    public static synchronized String determineWindowID(FacesContext context) {
+        State state = getState(context);
         String id = context.getExternalContext().getRequestParameterMap().get("ice.window");
         try {
-            for (Object scopeMap : new ArrayList(disposedWindowScopedMaps)) {
+            for (Object scopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
                 ScopeMap map = (ScopeMap) scopeMap;
                 if (!map.getId().equals(id)) {
                     map.discardIfExpired(context);
@@ -77,23 +67,23 @@ public class WindowScopeManager implements Serializable {
 
         if (id == null) {
             ScopeMap scopeMap;
-            if (disposedWindowScopedMaps.isEmpty()) {
+            if (state.disposedWindowScopedMaps.isEmpty()) {
                 scopeMap = new ScopeMap(context);
             } else {
-                scopeMap = (ScopeMap) disposedWindowScopedMaps.removeFirst();
+                scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
             }
-            scopeMap.activate();
+            scopeMap.activate(state);
             return scopeMap.id;
         } else {
-            if (windowScopedMaps.containsKey(id)) {
+            if (state.windowScopedMaps.containsKey(id)) {
                 CurrentScope.associate(id);
                 return id;
             } else {
                 //this must be a postback request while the window is reloading or redirecting
-                for (Object disposedScopeMap : new ArrayList(disposedWindowScopedMaps)) {
+                for (Object disposedScopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
                     ScopeMap scopeMap = (ScopeMap) disposedScopeMap;
                     if (scopeMap.getId().equals(id)) {
-                        scopeMap.activate();
+                        scopeMap.activate(state);
                         return id;
                     }
                 }
@@ -102,21 +92,22 @@ public class WindowScopeManager implements Serializable {
         }
     }
 
-    private synchronized String generateID() {
+    private static synchronized String generateID() {
         return seed + Long.toString(System.currentTimeMillis(), 36);
     }
 
-    public synchronized void disposeWindow(String id) {
-        disactivatedWindowNotifier.notifyObservers(id);
-        ScopeMap scopeMap = (ScopeMap) windowScopedMaps.get(id);
+    public static synchronized void disposeWindow(FacesContext context, String id) {
+        State state = getState(context);
+        state.disactivatedWindowNotifier.notifyObservers(id);
+        ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
-            scopeMap.disactivate();
+            scopeMap.disactivate(state);
         }
     }
 
-    public class ScopeMap extends HashMap {
+    public static class ScopeMap extends HashMap {
         private String id = generateID();
         private long timestamp = -1;
 
@@ -136,73 +127,39 @@ public class WindowScopeManager implements Serializable {
         }
 
         private void discardIfExpired(FacesContext facesContext) {
-            if (System.currentTimeMillis() > timestamp + expirationPeriod) {
+            State state = getState(facesContext);
+            new ExternalContextConfiguration("org.icefaces", facesContext.getExternalContext());
+            if (System.currentTimeMillis() > timestamp + state.expirationPeriod) {
                 boolean processingEvents = facesContext.isProcessingEvents();
                 try {
                     facesContext.setProcessingEvents(true);
                     ScopeContext context = new ScopeContext(ScopeName, this);
                     facesContext.getApplication().publishEvent(facesContext, PreDestroyCustomScopeEvent.class, context);
                 } finally {
-                    disposedWindowScopedMaps.remove(this);
+                    state.disposedWindowScopedMaps.remove(this);
                     facesContext.setProcessingEvents(processingEvents);
                 }
             }
         }
 
-        private void activate() {
-            activatedWindowNotifier.notifyObservers(id);
+        private void activate(State state) {
+            state.activatedWindowNotifier.notifyObservers(id);
             CurrentScope.associate(id);
-            windowScopedMaps.put(id, this);
+            state.windowScopedMaps.put(id, this);
         }
 
-        private void disactivate() {
+        private void disactivate(State state) {
             timestamp = System.currentTimeMillis();
-            disposedWindowScopedMaps.addLast(windowScopedMaps.remove(id));
+            state.disposedWindowScopedMaps.addLast(state.windowScopedMaps.remove(id));
         }
     }
 
-    public void onActivatedWindow(Observer observer) {
-        activatedWindowNotifier.addObserver(observer);
+    public static void onActivatedWindow(FacesContext context, Observer observer) {
+        getState(context).activatedWindowNotifier.addObserver(observer);
     }
 
-    public void onDisactivatedWindow(Observer observer) {
-        disactivatedWindowNotifier.addObserver(observer);
-    }
-
-    public synchronized static WindowScopeManager lookup(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        //ICE-5281:  We require that a session be available at this point and it may not have
-        //           been created otherwise.
-        Object session = externalContext.getSession(true);
-        Map sessionMap = externalContext.getSessionMap();
-        ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
-        return lookup(sessionMap, configuration);
-    }
-
-    public synchronized static WindowScopeManager lookup(Map sessionMap, Configuration configuration) {
-        Object o = sessionMap.get(WindowScopeManager.class.getName());
-        final WindowScopeManager manager;
-        if (o == null) {
-            manager = new WindowScopeManager(configuration);
-            sessionMap.put(WindowScopeManager.class.getName(), manager);
-        } else {
-            manager = (WindowScopeManager) o;
-        }
-
-        return manager;
-    }
-
-    public synchronized static WindowScopeManager lookup(HttpSession session, Configuration configuration) {
-        Object o = session.getAttribute(WindowScopeManager.class.getName());
-        final WindowScopeManager manager;
-        if (o == null) {
-            manager = new WindowScopeManager(configuration);
-            session.setAttribute(WindowScopeManager.class.getName(), manager);
-        } else {
-            manager = (WindowScopeManager) o;
-        }
-
-        return manager;
+    public static void onDisactivatedWindow(FacesContext context, Observer observer) {
+        getState(context).disactivatedWindowNotifier.addObserver(observer);
     }
 
     private static class CurrentScopeThreadLocal extends ThreadLocal {
@@ -215,11 +172,54 @@ public class WindowScopeManager implements Serializable {
         }
     }
 
-    private static class ReadyObservable extends Observable implements Serializable {
-        public synchronized void notifyObservers(Object o) {
+    private static State getState(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        //ICE-5281:  We require that a session be available at this point and it may not have
+        //           been created otherwise.
+        externalContext.getSession(true);
+        Map sessionMap = externalContext.getSessionMap();
+        State state = (State) sessionMap.get(WindowScopeManager.class.getName());
+        if (state == null) {
+            ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
+            state = new State(configuration.getAttributeAsLong("windowScopeExpiration", 1000));
+            sessionMap.put(WindowScopeManager.class.getName(), state);
+        }
+
+        return state;
+    }
+
+    private static class ReadyObservable extends Observable {
+        public synchronized void notifyObservers(Object object) {
             setChanged();
-            super.notifyObservers(o);
+            super.notifyObservers(object);
             clearChanged();
+        }
+    }
+
+    private static class State implements Externalizable {
+        private transient Observable activatedWindowNotifier = new ReadyObservable();
+        private transient Observable disactivatedWindowNotifier = new ReadyObservable();
+        private HashMap windowScopedMaps = new HashMap();
+        private LinkedList disposedWindowScopedMaps = new LinkedList();
+        public long expirationPeriod;
+
+        private State(long expirationPeriod) {
+            this.expirationPeriod = expirationPeriod;
+        }
+
+        public void writeExternal(ObjectOutput out) throws IOException {
+            out.writeObject(windowScopedMaps);
+            out.writeObject(disposedWindowScopedMaps);
+            out.writeLong(expirationPeriod);
+        }
+
+        public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+            windowScopedMaps = (HashMap) in.readObject();
+            disposedWindowScopedMaps = (LinkedList) in.readObject();
+            expirationPeriod = in.readLong();
+
+            activatedWindowNotifier = new ReadyObservable();
+            disactivatedWindowNotifier = new ReadyObservable();
         }
     }
 }
