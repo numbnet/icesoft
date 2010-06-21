@@ -22,11 +22,14 @@
 
 package org.icefaces.application;
 
+import org.icefaces.push.Configuration;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PostConstructCustomScopeEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
 import javax.faces.event.ScopeContext;
+import javax.servlet.http.HttpSession;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -154,12 +157,12 @@ public class WindowScopeManager {
         }
     }
 
-    public static void onActivatedWindow(FacesContext context, Observer observer) {
-        getState(context).activatedWindowNotifier.addObserver(observer);
+    public static void onActivatedWindow(HttpSession session, Configuration configuration, Observer observer) {
+        getState(session, configuration).activatedWindowNotifier.addObserver(observer);
     }
 
-    public static void onDisactivatedWindow(FacesContext context, Observer observer) {
-        getState(context).disactivatedWindowNotifier.addObserver(observer);
+    public static void onDisactivatedWindow(HttpSession session, Configuration configuration, Observer observer) {
+        getState(session, configuration).disactivatedWindowNotifier.addObserver(observer);
     }
 
     private static class CurrentScopeThreadLocal extends ThreadLocal {
@@ -174,15 +177,22 @@ public class WindowScopeManager {
 
     private static State getState(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
-        //ICE-5281:  We require that a session be available at this point and it may not have
-        //           been created otherwise.
-        externalContext.getSession(true);
         Map sessionMap = externalContext.getSessionMap();
         State state = (State) sessionMap.get(WindowScopeManager.class.getName());
         if (state == null) {
             ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
             state = new State(configuration.getAttributeAsLong("windowScopeExpiration", 1000));
             sessionMap.put(WindowScopeManager.class.getName(), state);
+        }
+
+        return state;
+    }
+
+    private static State getState(HttpSession session, Configuration configuration) {
+        State state = (State) session.getAttribute(WindowScopeManager.class.getName());
+        if (state == null) {
+            state = new State(configuration.getAttributeAsLong("windowScopeExpiration", 1000));
+            session.setAttribute(WindowScopeManager.class.getName(), state);
         }
 
         return state;
@@ -202,6 +212,9 @@ public class WindowScopeManager {
         private HashMap windowScopedMaps = new HashMap();
         private LinkedList disposedWindowScopedMaps = new LinkedList();
         public long expirationPeriod;
+
+        private State() {
+        }
 
         private State(long expirationPeriod) {
             this.expirationPeriod = expirationPeriod;
