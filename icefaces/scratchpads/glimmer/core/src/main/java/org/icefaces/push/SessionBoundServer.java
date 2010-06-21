@@ -35,11 +35,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.Serializable;
 
 public class SessionBoundServer extends PathDispatcher implements Serializable {
     private static Logger log = Logger.getLogger(SessionBoundServer.class.getName());
@@ -58,7 +58,6 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
         };
         final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
 
-        SessionViewManager sessionViewManager = null;
         try {
             this.pushContext = PushContext.getInstance(session.getServletContext());
             windowScopeManager.onActivatedWindow(new Observer() {
@@ -76,18 +75,17 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
             windowScopeManager.onDisactivatedWindow(new Observer() {
                 public void update(Observable observable, Object o) {
                     String windowID = (String) o;
-                    if (null != pushContext)  {
+                    if (null != pushContext) {
                         pushContext.removeGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
                     }
                 }
             });
-            sessionViewManager = new SessionViewManager(pushContext, session);
             new LazyPushManager(session);
         } catch (Throwable t) {
             log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
         }
 
-        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager, sessionViewManager)));
+        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager)));
         dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 

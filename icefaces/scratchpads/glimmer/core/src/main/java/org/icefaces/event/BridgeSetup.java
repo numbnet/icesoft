@@ -155,7 +155,7 @@ public class BridgeSetup implements SystemEventListener {
             root.addComponentResource(context, retrieveUpdateSetup, "body");
 
             if (EnvUtils.isICEpushPresent()) {
-                SessionViewManager.lookup(context).addView(viewID);
+                SessionViewManager.addView(context, viewID);
                 final String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
                     public void encode(ResponseWriter writer, FacesContext context) throws IOException {

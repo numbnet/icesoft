@@ -25,76 +25,89 @@ package org.icefaces.push;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SessionViewManager implements Serializable {
-    private transient PushContext pushContext;
-    private String groupName;
-    private HashSet viewIDs = new HashSet();
-    private HashSet groups = new HashSet();
+public class SessionViewManager {
 
-    public SessionViewManager(PushContext pushContext, HttpSession session) {
-        this.pushContext = pushContext;
-        this.groupName = session.getId();
-        session.setAttribute(SessionViewManager.class.getName(), this);
-    }
+    public static String addView(FacesContext context, String id) {
+        PushContext pushContext = getPushContext(context);
+        State state = getState(context);
+        state.viewIDs.add(id);
+        pushContext.addGroupMember(state.groupName, id);
 
-    public String addView(String id) {
-        viewIDs.add(id);
-        getPushContext().addGroupMember(groupName, id);
-
-        Iterator i = groups.iterator();
+        Iterator i = state.groups.iterator();
         while (i.hasNext()) {
-            getPushContext().addGroupMember((String) i.next(), id);
+            pushContext.addGroupMember((String) i.next(), id);
         }
         return id;
     }
 
-    public void removeView(String id) {
-        viewIDs.remove(id);
-        getPushContext().removeGroupMember(groupName, id);
+    public static void removeView(FacesContext context, String id) {
+        PushContext pushContext = getPushContext(context);
+        State state = getState(context);
+        state.viewIDs.remove(id);
+        pushContext.removeGroupMember(state.groupName, id);
 
-        Iterator i = groups.iterator();
+        Iterator i = state.groups.iterator();
         while (i.hasNext()) {
-            getPushContext().removeGroupMember((String) i.next(), id);
+            pushContext.removeGroupMember((String) i.next(), id);
         }
     }
 
-    public static SessionViewManager lookup(FacesContext context) {
+    public static void addCurrentViewsToGroup(FacesContext context, String groupName) {
+        PushContext pushContext = getPushContext(context);
+        State state = getState(context);
+        state.groups.add(groupName);
+        Iterator i = state.viewIDs.iterator();
+        while (i.hasNext()) {
+            pushContext.addGroupMember(groupName, (String) i.next());
+        }
+    }
+
+    public static void removeCurrentViewsFromGroup(FacesContext context, String groupName) {
+        PushContext pushContext = getPushContext(context);
+        State state = getState(context);
+        state.groups.remove(groupName);
+        Iterator i = state.viewIDs.iterator();
+        while (i.hasNext()) {
+            pushContext.removeGroupMember(groupName, (String) i.next());
+        }
+    }
+
+    private static PushContext getPushContext(FacesContext facesContext) {
+        return (PushContext) facesContext.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+    }
+
+    private static SessionViewManager.State getState(FacesContext context) {
         Map sessionMap = context.getExternalContext().getSessionMap();
-        return (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
-    }
-
-    public void renderViews() {
-        getPushContext().push(groupName);
-    }
-
-    public void addCurrentViewsToGroup(String groupName) {
-        groups.add(groupName);
-        Iterator i = viewIDs.iterator();
-        while (i.hasNext()) {
-            getPushContext().addGroupMember(groupName, (String) i.next());
+        State state = (State) sessionMap.get(SessionViewManager.class.getName());
+        if (state == null) {
+            Object session = context.getExternalContext().getSession(true);
+            if (session instanceof HttpSession) {
+                state = new State(((HttpSession) session).getId());
+            } else if (session instanceof PortletSession) {
+                state = new State(((PortletSession) session).getId());
+            } else {
+                throw new RuntimeException("Unknown session object: " + session);
+            }
+            sessionMap.put(SessionViewManager.class.getName(), state);
         }
+
+        return state;
     }
 
-    public void removeCurrentViewsFromGroup(String groupName) {
-        groups.remove(groupName);
-        Iterator i = viewIDs.iterator();
-        while (i.hasNext()) {
-            getPushContext().removeGroupMember(groupName, (String) i.next());
-        }
-    }
+    private static class State implements Serializable {
+        private String groupName;
+        private HashSet viewIDs = new HashSet();
+        private HashSet groups = new HashSet();
 
-    private PushContext getPushContext() {
-        if (null == pushContext) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            pushContext = (PushContext) facesContext.getExternalContext()
-                    .getApplicationMap().get(PushContext.class.getName());
+        private State(String groupName) {
+            this.groupName = groupName;
         }
-        return pushContext;
     }
 }
