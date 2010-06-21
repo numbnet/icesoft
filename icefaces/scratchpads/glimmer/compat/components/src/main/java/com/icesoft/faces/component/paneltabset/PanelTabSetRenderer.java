@@ -620,7 +620,7 @@ public class PanelTabSetRenderer
             } else {
                 //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
                 label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
-                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>";
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' />";
                 // set focus handler
                 if (tabSet.isKeyboardNavigationEnabled()) {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, true);");
