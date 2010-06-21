@@ -26,8 +26,8 @@ import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
 import org.icefaces.push.SessionBoundServer;
 
-import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
+import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -41,7 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class ICEfacesResourceHandler extends ResourceHandler implements CurrentContext {
+public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements CurrentContext {
     private static Logger log = Logger.getLogger(ICEfacesResourceHandler.class.getName());
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
@@ -70,20 +70,8 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
         }
     }
 
-    public Resource createResource(String s) {
-        return handler.createResource(s);
-    }
-
-    public Resource createResource(String s, String s1) {
-        return handler.createResource(s, s1);
-    }
-
-    public Resource createResource(String s, String s1, String s2) {
-        return handler.createResource(s, s1, s2);
-    }
-
-    public boolean libraryExists(String s) {
-        return handler.libraryExists(s);
+    public ResourceHandler getWrapped() {
+        return handler;
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
@@ -129,10 +117,6 @@ public class ICEfacesResourceHandler extends ResourceHandler implements CurrentC
             return false;
         }
         return resourceRequest;
-    }
-
-    public String getRendererTypeForResourceName(String s) {
-        return handler.getRendererTypeForResourceName(s);
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
