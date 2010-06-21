@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.DisposableBean;
+import com.icefaces.project.memory.bean.RedirectBean;
 import com.icefaces.project.memory.bot.BotDifficulty;
 import com.icefaces.project.memory.bot.BotDifficultyManager;
 import com.icefaces.project.memory.bot.BotManager;
@@ -131,8 +132,16 @@ public class GameManager implements DisposableBean {
 			log.info("User " + user.getName() + " is attempting to join the game called '" + game.getName() + "'.");
 		}
 		
-		// Ensure the user hasn't already joined the game
-		if (!game.getHasUser(user)) {
+		// If the user has already joined the game then just redirect them to the board
+		// This can happen if they manually go back to the lobby page and then try to
+		//  rejoin the same game
+		if (game.getHasUser(user)) {
+			RedirectBean.redirectToBoard();
+			
+			return true;
+		}
+		// Otherwise proceed with normal game joining
+		else {
 			// Ensure there is a slot available
 			if (game.getHasSpace()) {
 				if (game.getHasPassword()) {
@@ -156,9 +165,6 @@ public class GameManager implements DisposableBean {
 			else {
 				throw new FailedJoinException("Game '" + game.getName() + "' is full.");
 			}
-		}
-		else {
-			throw new FailedJoinException("Game '" + game.getName() + "' already has a user with your name.");
 		}
 	}
 	
