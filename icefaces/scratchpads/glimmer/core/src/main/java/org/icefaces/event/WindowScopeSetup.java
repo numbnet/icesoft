@@ -25,6 +25,7 @@ package org.icefaces.event;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.servlet.SessionExpiredException;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -47,6 +48,10 @@ public class WindowScopeSetup implements PhaseListener {
         }
 
         try {
+            ExternalContext externalContext = context.getExternalContext();
+            //ICE-5281:  We require that a session be available at this point and it may not have
+            //           been created otherwise.
+            Object session = externalContext.getSession(true);
             WindowScopeManager.determineWindowID(context);
         } catch (Exception e) {
             log.log(Level.WARNING, "Unable to set up WindowScope ", e);

@@ -58,8 +58,7 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
 
         try {
             this.pushContext = PushContext.getInstance(session.getServletContext());
-            FacesContext context = FacesContext.getCurrentInstance();
-            WindowScopeManager.onActivatedWindow(context, new Observer() {
+            WindowScopeManager.onActivatedWindow(session, configuration, new Observer() {
                 public void update(Observable observable, Object o) {
                     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                     HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -71,7 +70,7 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
                     pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
                 }
             });
-            WindowScopeManager.onDisactivatedWindow(context, new Observer() {
+            WindowScopeManager.onDisactivatedWindow(session, configuration, new Observer() {
                 public void update(Observable observable, Object o) {
                     String windowID = (String) o;
                     if (null != pushContext) {
