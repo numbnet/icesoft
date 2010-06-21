@@ -240,7 +240,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 dispose();
             });
 
-            var blockUI = configuration.connection.blockUI ? new Ice.Status.OverlayIndicator(configuration) : new Ice.Status.NOOPIndicator();
+            var blockUI = configuration.connection.blockUI ? new Ice.Status.OverlayIndicator(configuration) : Ice.Status.NOOPIndicator;
 
             connection.onSend(function(onReceive, ignoreLocking) {
                 if (!ignoreLocking) blockUI.on();
