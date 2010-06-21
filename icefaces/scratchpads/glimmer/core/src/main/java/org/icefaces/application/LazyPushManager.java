@@ -23,60 +23,70 @@
 package org.icefaces.application;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.Serializable;
 
-public class LazyPushManager implements Serializable {
-    public LazyPushManager(HttpSession session) {
-        session.setAttribute(LazyPushManager.class.getName(), this);
-    }
+public class LazyPushManager {
 
-    private int noOfRegistrations = 0;
-    private HashMap individualyRegisteredViews = new HashMap();
-
-    public boolean enablePush(String viewID) {
-        if (noOfRegistrations > 0) {
+    public static boolean enablePush(FacesContext context, String viewID) {
+        State state = getState(context);
+        if (state.noOfRegistrations > 0) {
             return true;
         }
 
-        Integer no = (Integer) individualyRegisteredViews.get(viewID);
+        Integer no = (Integer) state.individualyRegisteredViews.get(viewID);
         return no != null && no > 0;
     }
 
-    public void enablePushForView(String viewID) {
-        Integer no = (Integer) individualyRegisteredViews.get(viewID);
+    public static void enablePushForView(FacesContext context, String viewID) {
+        State state = getState(context);
+        Integer no = (Integer) state.individualyRegisteredViews.get(viewID);
         if (no == null) {
-            individualyRegisteredViews.put(viewID, 1);
+            state.individualyRegisteredViews.put(viewID, 1);
         } else {
-            individualyRegisteredViews.put(viewID, ++no);
+            state.individualyRegisteredViews.put(viewID, ++no);
         }
     }
 
-    public void disablePushForView(String viewID) {
-        Integer no = (Integer) individualyRegisteredViews.get(viewID);
+    public static void disablePushForView(FacesContext context, String viewID) {
+        State state = getState(context);
+        Integer no = (Integer) state.individualyRegisteredViews.get(viewID);
         if (no != null) {
             --no;
 
             if (no > 0) {
-                individualyRegisteredViews.put(viewID, no);
+                state.individualyRegisteredViews.put(viewID, no);
             } else {
-                individualyRegisteredViews.remove(viewID);
+                state.individualyRegisteredViews.remove(viewID);
             }
         }
     }
 
-    public void enablePushForSessionViews() {
-        noOfRegistrations++;
+    public static void enablePushForSessionViews(FacesContext context) {
+        State state = getState(context);
+        state.noOfRegistrations++;
     }
 
-    public void disablePushForSessionViews() {
-        noOfRegistrations--;
+    public static void disablePushForSessionViews(FacesContext context) {
+        State state = getState(context);
+        state.noOfRegistrations--;
     }
 
-    public static LazyPushManager lookup(FacesContext context) {
+    private static State getState(FacesContext context) {
         Map sessionMap = context.getExternalContext().getSessionMap();
-        return (LazyPushManager) sessionMap.get(LazyPushManager.class.getName());
+        State state = (State) sessionMap.get(LazyPushManager.class.getName());
+        if (state == null) {
+            state = new State();
+            sessionMap.put(LazyPushManager.class.getName(), state);
+        }
+
+        return state;
+    }
+
+    //it is okay to serialize *static* inner classes: http://java.sun.com/javase/6/docs/platform/serialization/spec/serial-arch.html#7182
+    private static class State implements Serializable {
+        private int noOfRegistrations = 0;
+        private HashMap individualyRegisteredViews = new HashMap();
     }
 }

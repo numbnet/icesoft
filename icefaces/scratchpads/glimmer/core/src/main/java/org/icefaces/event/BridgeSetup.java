@@ -164,7 +164,7 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("id", this.getClientId(context), null);
                         writer.startElement("script", this);
                         writer.writeAttribute("type", "text/javascript", null);
-                        writer.write(LazyPushManager.lookup(context).enablePush(viewID) ?
+                        writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "', '" + sessionExpiryPushID + "');" : "");
                         writer.endElement("script");
                         writer.endElement("span");
