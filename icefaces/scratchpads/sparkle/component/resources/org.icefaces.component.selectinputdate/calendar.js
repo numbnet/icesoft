@@ -21,7 +21,9 @@ YAHOO.util.Event.onDOMReady(function() {
 var logger = new YAHOO.widget.LogWriter("Calendar 4");
 //YAHOO.icefaces.calendar.logger = new YAHOO.widget.LogWriter("Calendar 4");
 
-var YuiCalendar = YAHOO.widget.Calendar;
+var YuiCalendar = YAHOO.widget.Calendar,
+           lang = YAHOO.lang,
+          Event = YAHOO.util.Event;
 var IceCalendar = function(container, config, params) { // ICE calendar constructor
     IceCalendar.superclass.constructor.call(this, container, config);
     this.params = params;
@@ -133,9 +135,10 @@ var setProperty = function(key, value) {
     this.cfg.setProperty(key, value, false);
 };
 var overrides = {renderFooter:renderFooter, get:getProperty, set:setProperty};
-YAHOO.lang.extend(IceCalendar, YuiCalendar, overrides);
+lang.extend(IceCalendar, YuiCalendar, overrides);
 
-calendarns.getTime = function(calendar) {
+var ns = { // public functions for calendar namespace
+getTime: function(calendar) {
     var hr = 0, min = 0;
     var cfg = calendar.cfg;
     var hourField = cfg.getProperty("hourField");
@@ -150,8 +153,8 @@ calendarns.getTime = function(calendar) {
         }
     }
     return {hr:hr, min:min};
-};
-calendarns.timeSelectHandler = function(calendar, evt) {
+},
+timeSelectHandler: function(calendar, evt) {
     var Dom = YAHOO.util.Dom;
     var rootId = calendar.params.clientId, calValueEl = this[rootId].calValueEl;
     var date = calendar.getSelectedDates()[0];
@@ -163,8 +166,8 @@ calendarns.timeSelectHandler = function(calendar, evt) {
             p(calValueEl.get("name"), calValueEl.get("value"));
         });
     }
-};
-calendarns.configCal = function (calendar, params) {
+},
+configCal: function (calendar, params) {
     var cfg = calendar.cfg;
     cfg.addProperty("selectedHour", {value:params.selectedHour});
     cfg.addProperty("selectedMinute", {value:params.selectedMinute});
@@ -177,8 +180,8 @@ calendarns.configCal = function (calendar, params) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
     this[params.clientId].yuiComponent = calendar;
-};
-calendarns.aria = function() {
+},
+aria: function() {
     var Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener,
@@ -345,8 +348,8 @@ calendarns.aria = function() {
     {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.PAGE_UP,keys.PAGE_DOWN,keys.HOME,keys.END]},
     {fn:kl1Handler, correctScope:this});
     kl1.enable();
-};
-calendarns.init = function(params) {
+},
+init: function(params) {
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
@@ -495,21 +498,22 @@ calendarns.init = function(params) {
     };
 
     Event.onDOMReady(domReady);
-};
-calendarns.initialize = function(clientId, jsProps, jsfProps, bindYUI) {
+},
+initialize: function(clientId, jsProps, jsfProps, bindYUI) {
     this[clientId] = this[clientId] || {};
-    var lang = YAHOO.lang;
+//    var lang = YAHOO.lang;
     var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
 //    console.log(lang.dump(params));
     this.init(params);
     bindYUI(this[clientId].yuiComponent);
-};
-calendarns.updateProperties = function(clientId, jsProps, jsfProps, events) {
+},
+updateProperties: function(clientId, jsProps, jsfProps, events) {
+    Event.onContentReady(clientId, function(){
 //    YAHOO.log("In updateProperties()", "info", "calendar.js");
 //    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
     logger.log("In updateProperties()");
     logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
-    var lang = YAHOO.lang;
+//    var lang = YAHOO.lang;
     var context = ice.component.getJSContext(clientId);
     if (context && context.isAttached()) {
         var prevProps = lang.merge(context.getJSProps(), context.getJSFProps());
@@ -525,10 +529,12 @@ calendarns.updateProperties = function(clientId, jsProps, jsfProps, events) {
         }
     }
     ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
-};
-calendarns.getInstance = function(clientId, callback) {
+    }, this, true);
+},
+getInstance: function(clientId, callback) {
     ice.component.getInstance(clientId, callback, this);
+}
 };
-
+lang.augmentObject(calendarns, ns, true);
 })();
     

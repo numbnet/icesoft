@@ -39,7 +39,7 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         System.out.println("\nSelectInputDateRenderer.encodeEnd");
-        printParams(context);
+//        printParams();
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
         SelectInputDate selectInputDate = (SelectInputDate) component;
@@ -142,7 +142,7 @@ public class SelectInputDateRenderer extends Renderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         System.out.println("\nSelectInputDateRenderer.decode");
-        printParams(context);
+        printParams();
         super.decode(context, component);
         SelectInputDate selectInputDate = (SelectInputDate) component;
         String clientId = component.getClientId(context);
@@ -176,8 +176,8 @@ public class SelectInputDateRenderer extends Renderer {
         return selectInputDate.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
     }
 
-    private void printParams(FacesContext context) {
-        Map<String, String[]> paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
+    private void printParams() {
+        Map<String, String[]> paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
         String key;
         String[] values;
         for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
