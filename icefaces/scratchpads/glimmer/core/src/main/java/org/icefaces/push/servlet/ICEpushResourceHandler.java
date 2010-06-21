@@ -26,6 +26,7 @@ import org.icepush.servlet.MainServlet;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
+import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -38,7 +39,7 @@ import java.util.regex.Pattern;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ICEpushResourceHandler extends ResourceHandler {
+public class ICEpushResourceHandler extends ResourceHandlerWrapper {
     private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
     private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush\\.jsf$");
     private ResourceHandler handler;
@@ -55,20 +56,8 @@ public class ICEpushResourceHandler extends ResourceHandler {
         }
     }
 
-    public Resource createResource(String s) {
-        return handler.createResource(s);
-    }
-
-    public Resource createResource(String s, String s1) {
-        return handler.createResource(s, s1);
-    }
-
-    public Resource createResource(String s, String s1, String s2) {
-        return handler.createResource(s, s1, s2);
-    }
-
-    public boolean libraryExists(String s) {
-        return handler.libraryExists(s);
+    public ResourceHandler getWrapped() {
+        return handler;
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
@@ -103,10 +92,6 @@ public class ICEpushResourceHandler extends ResourceHandler {
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
         String requestURI = servletRequest.getRequestURI();
         return handler.isResourceRequest(facesContext) || ICEpushRequestPattern.matcher(requestURI).find();
-    }
-
-    public String getRendererTypeForResourceName(String s) {
-        return handler.getRendererTypeForResourceName(s);
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
