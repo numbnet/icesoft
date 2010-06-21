@@ -69,7 +69,7 @@ public class WindowELResolver extends ELResolver {
 
     private WindowScopeManager.ScopeMap getScope(ELContext elContext) {
         FacesContext ctx = (FacesContext) elContext.getContext(FacesContext.class);
-        return WindowScopeManager.lookup(ctx).lookupWindowScope();
+        return WindowScopeManager.lookupWindowScope(ctx);
     }
 
 

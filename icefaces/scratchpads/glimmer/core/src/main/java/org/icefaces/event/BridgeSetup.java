@@ -95,7 +95,7 @@ public class BridgeSetup implements SystemEventListener {
         root.addComponentResource(context, new JavascriptResourceOutput("bridge.js" + invalidateHTTPCache), "head");
 
         try {
-            final String windowID = WindowScopeManager.lookup(context).lookupWindowScope().getId();
+            final String windowID = WindowScopeManager.lookupWindowScope(context).getId();
             final String viewID = assignViewID(externalContext);
 
             UIOutput icefacesSetup = new UIOutputWriter() {

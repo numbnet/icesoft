@@ -49,7 +49,7 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
-                writer.writeAttribute("value", WindowScopeManager.lookup(context).lookupWindowScope().getId(), null);
+                writer.writeAttribute("value", WindowScopeManager.lookupWindowScope(context).getId(), null);
                 writer.endElement("input");
 
                 writer.startElement("input", this);

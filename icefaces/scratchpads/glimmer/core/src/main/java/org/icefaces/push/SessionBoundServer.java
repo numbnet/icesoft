@@ -55,11 +55,11 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
                 return session.getServletContext().getMimeType(path);
             }
         };
-        final WindowScopeManager windowScopeManager = WindowScopeManager.lookup(session, configuration);
 
         try {
             this.pushContext = PushContext.getInstance(session.getServletContext());
-            windowScopeManager.onActivatedWindow(new Observer() {
+            FacesContext context = FacesContext.getCurrentInstance();
+            WindowScopeManager.onActivatedWindow(context, new Observer() {
                 public void update(Observable observable, Object o) {
                     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                     HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -71,7 +71,7 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
                     pushContext.addGroupMember(inferSessionExpiryIdentifier(groupName), inferSessionExpiryIdentifier(windowID));
                 }
             });
-            windowScopeManager.onDisactivatedWindow(new Observer() {
+            WindowScopeManager.onDisactivatedWindow(context, new Observer() {
                 public void update(Observable observable, Object o) {
                     String windowID = (String) o;
                     if (null != pushContext) {
@@ -83,7 +83,7 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
             log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
         }
 
-        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope(windowScopeManager)));
+        dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope()));
         dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 
