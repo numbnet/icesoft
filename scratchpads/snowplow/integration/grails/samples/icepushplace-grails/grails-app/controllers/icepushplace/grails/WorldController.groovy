@@ -3,8 +3,9 @@ package icepushplace.grails
 import org.icepush.place.grails.view.model.Person
 
 class WorldController {
+
   def index = {
-      println "INDEX"
+      
   }
 
   private void noCache(response) {
@@ -14,10 +15,8 @@ class WorldController {
   }
 
   def updateSettings = {
-    println "UPDATESETTINGS"
     noCache(response)
     def thisPerson = session["person"]
-    println params
     def submittedNickname = params["submittedNickname"];
     def mood = params["mood"];
     def comment = params["comment"];
@@ -76,7 +75,30 @@ class WorldController {
   }
 
   def messageOut = {
+    def messageOut = params["msgOut"];
+    def region = params["region"];
+    def row = params["row"];
+    def from = params["from"];
+    def receiver
+    def regions = servletContext['regions']
+    switch(region){
+        case '1': receiver = regions.northAmerica.get(Integer.parseInt(row));break;
+        case '2': receiver = regions.europe.get(Integer.parseInt(row));break;
+        case '3': receiver = regions.southAmerica.get(Integer.parseInt(row));break;
+        case '4': receiver = regions.asia.get(Integer.parseInt(row));break;
+        case '5': receiver = regions.africa.get(Integer.parseInt(row));break;
+        case '6': receiver = regions.antarctica.get(Integer.parseInt(row));break;
+        default: println("Receiver of Message Not Found");
 
+    }
+    // Set receiver message
+    receiver.messageIn = from + " says: " + messageOut;
+    // Push update out to receiver's region
+    push region;
+    // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
+    // Service call to display message in all applications
+    //service.requestUpdate(person);
+    render ""
   }
 
   def northAmerica = {
@@ -84,4 +106,35 @@ class WorldController {
     def regions = servletContext['regions']
     [northAmerica: regions.northAmerica]
   }
+
+  def europe = {
+    noCache(response)
+    def regions = servletContext['regions']
+    [europe: regions.europe]
+  }
+
+  def southAmerica = {
+    noCache(response)
+    def regions = servletContext['regions']
+    [southAmerica: regions.southAmerica]
+  }
+
+  def asia = {
+    noCache(response)
+    def regions = servletContext['regions']
+    [asia: regions.asia]
+  }
+
+  def africa = {
+    noCache(response)
+    def regions = servletContext['regions']
+    [africa: regions.africa]
+  }
+
+  def antarctica = {
+    noCache(response)
+    def regions = servletContext['regions']
+    [antarctica: regions.antarctica]
+  }
+
 }

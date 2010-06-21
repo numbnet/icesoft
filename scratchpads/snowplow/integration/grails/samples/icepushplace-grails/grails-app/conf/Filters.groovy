@@ -3,22 +3,17 @@ import org.icepush.place.grails.view.model.Regions
 
 class Filters {
   def filters = {
-    initialization(controller: '*', action: '*') {
+    initialization(controller: 'world', action: '*') {
       before = {
        if (!servletContext['regions']){
-            println 'FILTER CREATING Application BEAN'
             def regions = new Regions();
             servletContext['regions'] = regions
        }
-       if (request.getSession(false) == null || !session['person']) {
-            println 'FILTER CREATING Session BEAN'
-            def thisPerson = new Person();
-            thisPerson.region = '1'
-            def regions = servletContext['regions']
-            regions.northAmerica.add(thisPerson);
-            //push thisPerson.region
-            session['person'] = thisPerson
-       }
+       if (request.getSession(false) == null ||
+                !session['person']) {
+          log.info("unauthorized request '$request.requestURI', directing to $controllerName");
+          redirect controller:"register"
+        }
       }
     }
   }

@@ -23,7 +23,7 @@
   --%>
 <table border="1">
     <thead>
-        <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">North America</span></td></tr>
+        <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">Europe</span></td></tr>
     </thead>
     <tr>
         <th>Nickname</th>
@@ -33,13 +33,13 @@
         <th>Latest Post</th>
         <th>Post Message</th>
     </tr>
-    <g:if test="${!northAmerica}">
+    <g:if test="${!europe}">
     <tr>
         <td colspan="6">Empty</td>
     </tr>
     </g:if>
-    <g:if test="${northAmerica}">
-    <g:each var="elem" in="${northAmerica}" status="row">
+    <g:if test="${europe}">
+    <g:each var="elem" in="${europe}" status="row">
     <tr>
         <td>${elem.nickname}</td>
         <td>${elem.mood}</td>

@@ -20,7 +20,7 @@ public class Person {
     private String messageOut = "";
 
     public Person() {
-
+ 
     }
 
     public String getNickname() {

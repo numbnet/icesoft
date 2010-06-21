@@ -162,12 +162,11 @@
 <h2>Regions</h2>
 
 <icep:region group="1" controller="world" action="northAmerica"/><br/><br/>
-<!--
-<icep:region group="2" page="/europe.jsp"/><br/><br/>
-<icep:region group="3" page="/southAmerica.jsp"/><br/><br/>
-<icep:region group="4" page="/asia.jsp"/><br/><br/>
-<icep:region group="5" page="/africa.jsp"/><br/><br/>
-<icep:region group="6" page="/antarctica.jsp"/><br/><br/>
--->
+<icep:region group="2" controller="world" action="europe"/><br/><br/>
+<icep:region group="3" controller="world" action="southAmerica"/><br/><br/>
+<icep:region group="4" controller="world" action="asia"/><br/><br/>
+<icep:region group="5" controller="world" action="africa"/><br/><br/>
+<icep:region group="6" controller="world" action="antarctica"/><br/><br/>
+
 </body>
 </html>
