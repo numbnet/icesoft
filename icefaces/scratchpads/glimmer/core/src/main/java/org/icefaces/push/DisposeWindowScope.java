@@ -28,13 +28,13 @@ import org.icefaces.push.http.Request;
 import org.icefaces.push.http.standard.OKHandler;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.context.FacesContext;
+
 public class DisposeWindowScope extends AbstractServer {
     private final WindowScopeManager windowScopeManager;
-    private SessionViewManager sessionViewManager;
 
-    public DisposeWindowScope(WindowScopeManager windowScopeManager, SessionViewManager sessionViewManager) {
+    public DisposeWindowScope(WindowScopeManager windowScopeManager) {
         this.windowScopeManager = windowScopeManager;
-        this.sessionViewManager = sessionViewManager;
     }
 
     public void service(Request request) throws Exception {
@@ -45,7 +45,7 @@ public class DisposeWindowScope extends AbstractServer {
             try {
                 String[] viewIDs = request.getParameterAsStrings("ice.view");
                 for (int i = 0; i < viewIDs.length; i++) {
-                    sessionViewManager.removeView(viewIDs[i]);
+                    SessionViewManager.removeView(FacesContext.getCurrentInstance(), viewIDs[i]);
                 }
             } catch (RuntimeException e) {
                 //missing ice.view parameters means that none of the views within the page

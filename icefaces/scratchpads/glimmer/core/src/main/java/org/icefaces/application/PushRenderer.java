@@ -85,10 +85,8 @@ public class PushRenderer {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            Map sessionMap = context.getExternalContext().getSessionMap();
             LazyPushManager.lookup(context).enablePushForSessionViews();
-            SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
-            sessionViewManager.addCurrentViewsToGroup(groupName);
+            SessionViewManager.addCurrentViewsToGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }
@@ -105,9 +103,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             LazyPushManager.lookup(context).disablePushForSessionViews();
-            Map sessionMap = context.getExternalContext().getSessionMap();
-            SessionViewManager sessionViewManager = (SessionViewManager) sessionMap.get(SessionViewManager.class.getName());
-            sessionViewManager.removeCurrentViewsFromGroup(groupName);
+            SessionViewManager.removeCurrentViewsFromGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }
