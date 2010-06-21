@@ -22,7 +22,6 @@
 
 package org.icefaces.push;
 
-import org.icefaces.application.LazyPushManager;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.http.MimeTypeMatcher;
 import org.icefaces.push.servlet.BasicAdaptingServlet;
@@ -80,7 +79,6 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
                     }
                 }
             });
-            new LazyPushManager(session);
         } catch (Throwable t) {
             log.log(Level.INFO, "Ajax Push Dispatching not available: " + t);
         }

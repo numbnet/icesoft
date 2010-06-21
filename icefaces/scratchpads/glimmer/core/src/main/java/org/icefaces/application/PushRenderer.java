@@ -48,7 +48,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             String viewID = lookupViewState(context);
-            LazyPushManager.lookup(context).enablePushForView(viewID);
+            LazyPushManager.enablePushForView(context, viewID);
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             pushContext.addGroupMember(groupName, viewID);
         } else {
@@ -66,7 +66,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             String viewID = lookupViewState(context);
-            LazyPushManager.lookup(context).disablePushForView(viewID);
+            LazyPushManager.disablePushForView(context, viewID);
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             pushContext.removeGroupMember(groupName, viewID);
         } else {
@@ -85,7 +85,7 @@ public class PushRenderer {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            LazyPushManager.lookup(context).enablePushForSessionViews();
+            LazyPushManager.enablePushForSessionViews(context);
             SessionViewManager.addCurrentViewsToGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
@@ -102,7 +102,7 @@ public class PushRenderer {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            LazyPushManager.lookup(context).disablePushForSessionViews();
+            LazyPushManager.disablePushForSessionViews(context);
             SessionViewManager.removeCurrentViewsFromGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
