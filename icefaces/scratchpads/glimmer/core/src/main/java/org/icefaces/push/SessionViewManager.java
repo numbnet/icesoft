@@ -101,6 +101,7 @@ public class SessionViewManager {
         return state;
     }
 
+    //it is okay to serialize *static* inner classes: http://java.sun.com/javase/6/docs/platform/serialization/spec/serial-arch.html#7182 
     private static class State implements Serializable {
         private String groupName;
         private HashSet viewIDs = new HashSet();
