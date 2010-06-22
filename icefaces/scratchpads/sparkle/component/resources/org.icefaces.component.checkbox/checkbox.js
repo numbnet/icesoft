@@ -1,7 +1,7 @@
 ice.component.checkbox = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	   var Dom = YAHOO.util.Dom;
-       var buttonRoot = document.getElementById(clientId);
+       var divNode = document.getElementById(clientId);
        
        if (YAHOO.widget.Logger){
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
@@ -29,7 +29,7 @@ ice.component.checkbox = {
 	   
 		var onCheckedChange = function (e) { 			
 		    buttonNode = document.getElementById(spanId);
-	
+	        divNode = document.getElementById(clientId);
 			//get the current value of checked
  	        var submittedValue =  e.newValue;	
 
@@ -48,10 +48,10 @@ ice.component.checkbox = {
  	         	YAHOO.log("single submit goes to server");
  			    //e.target is null so have to set the target to the root of this button for submit
  	         	e.target = buttonNode;	
-                ice.se(e, buttonRoot, params); 
+                ice.se(e, divNode, params); 
             } else {
              	YAHOO.log("single Submit is false doesn't go to server");
-                ice.s(e, buttonRoot, params);                    
+                ice.s(e, divNode, params);                    
             }  
 	        button.set
 		};
@@ -89,7 +89,7 @@ ice.component.checkbox = {
 	         	        
 	         	       //the space seems to fire the onClick event for both FF and Safari     
 	                }
-	            }, buttonRoot);
+	            }, divNode);
 	    }
 		bindYUI(button);
 	},

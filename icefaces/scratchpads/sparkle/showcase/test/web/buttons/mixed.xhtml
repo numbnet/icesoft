@@ -17,28 +17,28 @@
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body>
-<ui:remove> <ann:logger rendered="false"/>  </ui:remove>
-    <h:panelGroup styleClass="yui-skin-sam">
+ 
+    <h:panelGroup id="overPanel" styleClass="yui-skin-sam">
       <h2>Buttons partial submit Demo</h2>  
       <h5>    
          <a href="../index.html"> Goto Main page </a>  <br /> 
          <a href="../buttons.xhtml"> Goto Buttons page </a>   </h5>         
     <h:form id="form1">
-
+     <ann:logger rendered="false"/> 
 	  <h:outputText value="Single Submit test for Check button " />
 	  <br/><br/>
 	  <h:panelGrid id="buttonGroupId" columns="2">
 	    <ann:checkbox id="chkbox" label="button1" 
 	       value="#{button.checked}"
 	       singleSubmit="false"/>
-	    <h:outputText value="isChecked:  #{button.checked} "/>
+	    <h:outputText id="chkval" value="isChecked:  #{button.checked} "/>
 	  </h:panelGrid>
 	 <br />
 	 <h:panelGrid id="buttonGroup2" columns="2">  
 	   <ann:checkbox id="chkbox2" label="button2"
 	       value="#{button.checked2}"
 	       singleSubmit="false"/>
-	       <h:outputText value="checked2: #{button.checked2}" />
+	       <h:outputText id="chk2" value="checked2: #{button.checked2}" />
 	   </h:panelGrid>
 	  <br />
 	   <h:panelGroup id="push1" class="yui-button yui-push-button">
@@ -46,10 +46,7 @@
 	           actionListener="#{button.actionListenerMethod}"  />
 	     </h:panelGroup>
     </h:form>
-    
-
-
-       
+    	      
     </h:panelGroup>
 
    <a href="index.html"> Goto Main page </a>    

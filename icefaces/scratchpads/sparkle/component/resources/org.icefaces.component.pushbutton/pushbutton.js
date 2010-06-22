@@ -3,10 +3,13 @@ ice.component.pushbutton = {
     if (YAHOO.widget.Logger){
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
      }
+        //want the span id
+        var spanId = clientId+"_span";
+        YAHOO.log("clientId="+clientId+" spanId="+spanId);
         //get the button html element
-        var buttonRoot = document.getElementById(clientId);
+        var buttonNode = document.getElementById(spanId);
     
-		var button = new YAHOO.widget.Button(clientId,
+		var button = new YAHOO.widget.Button(spanId,
 				{label: jsProps.label, 
 			      type: jsProps.type});
 
@@ -21,37 +24,46 @@ ice.component.pushbutton = {
 		
 		if (jsfProps.singleSubmit){
 			button.set('singleSubmit', jsfProps.singleSubmit);
-			YAHOO.log("set singleSubmit to "+jsfProps.singleSubmit);
 		}
-		
-//		var singleSubmit=false;
-//		if (jsfProps.singleSubmit){
-//			YAHOO.log("jsProps.singleSubmit="+jsfProps.singleSubmit);
-//			button.set('singleSubmit',jsfProps.singleSubmit);
-//			YAHOO.log("set singleSubmit to "+singleSubmit); 
-//		}
-		
+	
+        if (jsfProps.disabled){
+              button.set("disabled", true);
+        } else{
+        	button.set("disabled", false);
+        }
 
 		var onClick = function (e) {
-			YAHOO.log("in onClick function for e="+e+" with clientId="+clientId);
-			buttonNode = document.getElementById(clientId);
-YAHOO.log(" buttonRoot="+buttonRoot+"  buttonNode="+buttonNode+" e.target="+e.target);
-   
-
-            //button does not submit when using it by Node or root
-            //as they are both type of SPAN rather than BUTTON
+           YAHOO.log(" in onClick and e.target="+e.target);
+   		   YAHOO.log("  buttonRoot="+buttonRoot+"  buttonNode="+buttonNode);
+            var divRoot= document.getElementById(clientId);
+            //singleSubmit means button just submits itself and renders itself
+            //single submit false means that it submits the form
 	        if (jsfProps.singleSubmit) {
-	        	YAHOO.log(" single submit is true for clientId="+clientId);
-                ice.se(e, buttonRoot); 
+	        	YAHOO.log(" single submit is true for clientId="+spanId);
+                ice.se(e, divRoot); 
             } else {
-            	YAHOO.log("single Submit is false for clientId="+clientId);
-                ice.s(e, buttonRoot);                    
+            	YAHOO.log("single Submit is false for clientId="+spanId);
+                ice.s(e, divRoot);                    
             }             
 		};
+		
+		buttonRoot = document.getElementById(spanId);
+		if (jsfProps.aria) {
+		    //add roles and attributes to the YUI slider widget
+		    buttonRoot.firstChild.setAttribute("role", "button");
+		    if (jsProps.label){
+		         buttonRoot.firstChild.setAttribute("aria-describedby",jsProps.label);
+		    } else {
+		    	buttonRoot.firstChild.setAttribute("aria-describedby","button description unavailable");
+		    }
+		    if (jsfProps.disabled){
+		    	buttonRoot.firstChild.setAttribute("aria-disabled", jsfProps.disabled);
+		    }   
+		}
 
-		// the following lines didn't work alone..had to put the fn in the constructoras well
 		button.on("click", onClick);
-
+	
+		
 		bindYUI(button);
 	},
 	
