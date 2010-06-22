@@ -8,9 +8,9 @@
 <h:head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <title>Calendar4</title>
+    <title>Calendar 4</title>
 </h:head>
-<h:body class="ice-skin-rime yui-skin-sam">
+<h:body class="ice-skin-rime">
     <h:form id="calForm1">
         <h:outputText value="renderAsPopup"/>
         <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onclick="ice.se(event, this);"/>
@@ -24,25 +24,49 @@
             <f:selectItem itemLabel="MM/dd/yyyy" itemValue="MM/dd/yyyy"/>
             <f:selectItem itemLabel="MMM/dd/yyyy HH:mm" itemValue="MMM/dd/yyyy HH:mm"/>
             <f:selectItem itemLabel="MMM/dd/yyyy hh:mm a" itemValue="MMM/dd/yyyy hh:mm a"/>
+            <f:selectItem itemLabel="MMM/dd/yyyy KK:mm a" itemValue="MMM/dd/yyyy KK:mm a"/>
         </h:selectOneMenu>
     </h:form>
     <h:outputText value="output: "/>
     <h:outputText id="output" value="#{calendarBean.selectedDate}">
-        <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
+        <f:convertDateTime pattern="yyyy-M-d H:m" timeZone="Canada/Mountain"/>
     </h:outputText>
+    <h:outputText value=" (0-based 24-hour)"/>
     <h:form id="calForm2">
+        <ann:selectInputDate id="calendar1" value="#{calendarBean.selectedDate}"
+                             renderAsPopup="#{calendarBean.renderAsPopup}"
+                             renderInputField="#{calendarBean.renderInputField}"
+                             singleSubmit="#{calendarBean.singleSubmit}"
+                             rendered="#{calendarBean.pattern == 'MM/dd/yyyy'}">
+            <f:convertDateTime pattern="MM/dd/yyyy" timeZone="Canada/Mountain"/>
+        </ann:selectInputDate>
+        <ann:selectInputDate id="calendar2" value="#{calendarBean.selectedDate}"
+                             renderAsPopup="#{calendarBean.renderAsPopup}"
+                             renderInputField="#{calendarBean.renderInputField}"
+                             singleSubmit="#{calendarBean.singleSubmit}"
+                             rendered="#{calendarBean.pattern == 'MMM/dd/yyyy HH:mm'}">
+            <f:convertDateTime pattern="MMM/dd/yyyy HH:mm" timeZone="Canada/Mountain"/>
+        </ann:selectInputDate>
+        <ann:selectInputDate id="calendar3" value="#{calendarBean.selectedDate}"
+                             renderAsPopup="#{calendarBean.renderAsPopup}"
+                             renderInputField="#{calendarBean.renderInputField}"
+                             singleSubmit="#{calendarBean.singleSubmit}"
+                             rendered="#{calendarBean.pattern == 'MMM/dd/yyyy hh:mm a'}">
+            <f:convertDateTime pattern="MMM/dd/yyyy hh:mm a" timeZone="Canada/Mountain"/>
+        </ann:selectInputDate>
         <ann:selectInputDate id="calendar4" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
                              renderInputField="#{calendarBean.renderInputField}"
-                             singleSubmit="#{calendarBean.singleSubmit}">
-            <f:convertDateTime pattern="#{calendarBean.pattern}" timeZone="Canada/Mountain"/>
+                             singleSubmit="#{calendarBean.singleSubmit}"
+                             rendered="#{calendarBean.pattern == 'MMM/dd/yyyy KK:mm a'}">
+            <f:convertDateTime pattern="MMM/dd/yyyy KK:mm a" timeZone="Canada/Mountain"/>
         </ann:selectInputDate>
     </h:form>
-<!--
     <div style="height:350px"/>
     <a href="index.html">Goto Main page</a>
     <script type="text/javascript">
         //<![CDATA[
+/*
         (function() {
             var Event = YAHOO.util.Event;
             var listener = function(evt, id) {
@@ -57,9 +81,9 @@
             Event.addListener("calForm1:renderInputField", "click", listener, "calForm1:renderInputField", false);
             Event.addListener("calForm1:singleSubmit", "click", listener, "calForm1:singleSubmit", false);
         })();
+*/
         //]]>
     </script>
--->
 </h:body>
 </html>
 

@@ -51,7 +51,7 @@ public class SelectInputDateRenderer extends Renderer {
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Date date;
-        if (paramMap.get("formatSubmit") != null) {
+        if (paramMap.get(clientId + "_formatSubmit") != null) {
             date = (Date) converter.getAsObject(context, component, (String) selectInputDate.getSubmittedValue());
         } else {
             date = (Date) selectInputDate.getValue();
@@ -67,7 +67,7 @@ public class SelectInputDateRenderer extends Renderer {
         formatter.applyPattern("MM/dd/yyyy");
         String selectedDate = formatter.format(date);
 
-        System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
+//        System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
         formatter.applyPattern(SelectInputDate.getDateTimeConverterPattern(converter));
         StringBuffer stringBuffer = new StringBuffer();
         DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
@@ -154,15 +154,16 @@ public class SelectInputDateRenderer extends Renderer {
         formatter.setTimeZone(selectInputDate.resolveTimeZone(context));
         formatter.applyPattern("yyyy-M-d H:m");
         try {
-            System.out.println("formatter.toPattern() = " + formatter.toPattern());
-            System.out.println("formatter.toLocalizedPattern() = " + formatter.toLocalizedPattern());
-            System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
+//            System.out.println("formatter.toPattern() = " + formatter.toPattern());
+//            System.out.println("formatter.toLocalizedPattern() = " + formatter.toLocalizedPattern());
+//            System.out.println("SelectInputDate.getDateTimeConverterPattern(converter) = " + SelectInputDate.getDateTimeConverterPattern(converter));
             dateString = converter.getAsString(context, selectInputDate, formatter.parse(dateString));
         } catch (ParseException e) {
 //            e.printStackTrace();
         }
         selectInputDate.setSubmittedValue(dateString);
-        if (paramMap.get("formatSubmit") != null) {
+        if (paramMap.get(clientId + "_formatSubmit") != null) {
+            System.out.println("To renderResponse()");
             context.renderResponse();
         }
     }
