@@ -57,8 +57,8 @@ public class CalendarBean {
     }
 
     public void setPattern(String pattern) {
-        System.out.println("\nCalendarBean.setPattern");
-        System.out.println("pattern = " + pattern);
+//        System.out.println("\nCalendarBean.setPattern");
+//        System.out.println("pattern = " + pattern);
         this.pattern = pattern;
     }
 }

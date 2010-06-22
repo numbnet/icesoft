@@ -1,5 +1,4 @@
 (function(){
-
 /*
 //YAHOO.namespace("icefaces.calendar");
 var calendarns = this, i, ns;
@@ -12,6 +11,7 @@ for (i = 0; i < ns.length; i++) {
 }
 */
 var calendarns = ice.component.calendar = {}; // namespace creation as in tabset.js
+/*
 YAHOO.util.Event.onDOMReady(function() {
     var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
     calLogReader.setTitle("Calendar Logger");
@@ -19,8 +19,7 @@ YAHOO.util.Event.onDOMReady(function() {
     calLogReader.hideSource("LogReader");
 });
 var logger = new YAHOO.widget.LogWriter("Calendar 4");
-//YAHOO.icefaces.calendar.logger = new YAHOO.widget.LogWriter("Calendar 4");
-
+*/
 var YuiCalendar = YAHOO.widget.Calendar,
            lang = YAHOO.lang,
           Event = YAHOO.util.Event;
@@ -430,7 +429,7 @@ init: function(params) {
         submit(evt, Dom.get(rootId), function(p) {
             p(calValueEl.get("name"), calValueEl.get("value"));
             if (!params.singleSubmit && params.renderInputField) {
-                p("formatSubmit", "formatSubmit");
+                p(rootId + "_formatSubmit", "");
             }
         });
     };
@@ -509,10 +508,10 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
 },
 updateProperties: function(clientId, jsProps, jsfProps, events) {
     Event.onContentReady(clientId, function(){
-//    YAHOO.log("In updateProperties()", "info", "calendar.js");
-//    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
-    logger.log("In updateProperties()");
-    logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
+    YAHOO.log("In updateProperties()", "info", "calendar.js");
+    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
+//    logger.log("In updateProperties()");
+//    logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
 //    var lang = YAHOO.lang;
     var context = ice.component.getJSContext(clientId);
     if (context && context.isAttached()) {
