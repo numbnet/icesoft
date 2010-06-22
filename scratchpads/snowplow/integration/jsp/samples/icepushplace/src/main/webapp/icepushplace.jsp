@@ -37,24 +37,24 @@
 </jsp:useBean>
 <jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
 </jsp:useBean>
-<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+<jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
     <jsp:setProperty name="person" property="*"/>
 <%
-    if(person.getRegion().isEmpty()){
-      person.setRegion("1");
+    if(person.getKey() == 0){
+      person.setKey(1);
     }
-    PushContext pushContext = PushContext.getInstance(getServletContext());
+    //PushContext pushContext = PushContext.getInstance(getServletContext());
     // Add to appropriate region (render group) and push to group
     // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
-    //service.register();
-    //service.login(person);
-    switch(Integer.parseInt(person.getRegion())){
-        case 1: regions.getNorthAmerica().add(person);pushContext.push(person.getRegion());break;
-        case 2: regions.getEurope().add(person);pushContext.push(person.getRegion());break;
-        case 3: regions.getSouthAmerica().add(person);pushContext.push(person.getRegion());break;
-        case 4: regions.getAsia().add(person);pushContext.push(person.getRegion());break;
-        case 5: regions.getAfrica().add(person);pushContext.push(person.getRegion());break;
-        case 6: regions.getAntarctica().add(person);pushContext.push(person.getRegion());break;
+    service.register();
+    service.login(person);
+    switch(person.getKey()){
+        case 1: regions.getNorthAmerica().add(person);service.updateWorld(person.getKey());break;
+        case 2: regions.getEurope().add(person);service.updateWorld(person.getKey());break;
+        case 3: regions.getSouthAmerica().add(person);service.updateWorld(person.getKey());break;
+        case 4: regions.getAsia().add(person);service.updateWorld(person.getKey());break;
+        case 5: regions.getAfrica().add(person);service.updateWorld(person.getKey());break;
+        case 6: regions.getAntarctica().add(person);service.updateWorld(person.getKey());break;
         default: System.out.println("Problem Initializing Person");
     }
 %>
@@ -174,32 +174,32 @@
             <td>
                 <select id="region" name="region">
                     <option value="1"
-                    <% if (person.getRegion().compareTo("1") == 0)  {%>
+                    <% if (person.getKey() == 1)  {%>
                     selected
                     <% } %>
                     >North America</option>
                     <option value="2"
-                    <% if (person.getRegion().compareTo("2") == 0)  {%>
+                    <% if (person.getKey() == 2)  {%>
                     selected
                     <% } %>
                     >Europe</option>
                     <option value="3"
-                    <% if (person.getRegion().compareTo("3") == 0)  {%>
+                    <% if (person.getKey() == 3)  {%>
                     selected
                     <% } %>
                     >South America</option>
                     <option value="4"
-                    <% if (person.getRegion().compareTo("4") == 0)  {%>
+                    <% if (person.getKey() == 4)  {%>
                     selected
                     <% } %>
                     >Asia</option>
                     <option value="5"
-                    <% if (person.getRegion().compareTo("5") == 0)  {%>
+                    <% if (person.getKey() == 5)  {%>
                     selected
                     <% } %>
                     >Africa</option>
                     <option value="6"
-                    <% if (person.getRegion().compareTo("6") == 0)  {%>
+                    <% if (person.getKey() == 6)  {%>
                     selected
                     <% } %>
                     >Antarctica</option>

@@ -23,7 +23,7 @@
   --%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="org.icepush.PushContext,org.icepush.place.jsp.view.model.Person"%>
+<%@page import="org.icepush.PushContext,org.icepush.ws.samples.icepushplace.PersonType"%>
 <%@taglib prefix="icep" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 <%
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");//HTTP 1.1
@@ -34,7 +34,7 @@
 </jsp:useBean>
 <jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
 </jsp:useBean>
-<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+<jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
 <%
@@ -43,22 +43,23 @@ if (person != null) {
     String region = request.getParameter("region");
     String row = request.getParameter("row");
     String from = request.getParameter("from");
-    Person receiver = null;
+    PersonType receiver = null;
     switch(Integer.parseInt(region)){
-        case 1: receiver = ((Person)regions.getNorthAmerica().get(Integer.parseInt(row)));break;
-        case 2: receiver = ((Person)regions.getEurope().get(Integer.parseInt(row)));break;
-        case 3: receiver = ((Person)regions.getSouthAmerica().get(Integer.parseInt(row)));break;
-        case 4: receiver = ((Person)regions.getAsia().get(Integer.parseInt(row)));break;
-        case 5: receiver = ((Person)regions.getAfrica().get(Integer.parseInt(row)));break;
-        case 6: receiver = ((Person)regions.getAntarctica().get(Integer.parseInt(row)));break;
+        case 1: receiver = ((PersonType)regions.getNorthAmerica().get(Integer.parseInt(row)));break;
+        case 2: receiver = ((PersonType)regions.getEurope().get(Integer.parseInt(row)));break;
+        case 3: receiver = ((PersonType)regions.getSouthAmerica().get(Integer.parseInt(row)));break;
+        case 4: receiver = ((PersonType)regions.getAsia().get(Integer.parseInt(row)));break;
+        case 5: receiver = ((PersonType)regions.getAfrica().get(Integer.parseInt(row)));break;
+        case 6: receiver = ((PersonType)regions.getAntarctica().get(Integer.parseInt(row)));break;
         default: System.out.println("Receiver of Message Not Found");
 
     }
     // Set receiver message
     receiver.setMessageIn(from + " says: " + messageOut);
     // Push update out to receiver's region
-    PushContext pushContext = PushContext.getInstance(getServletContext());
-    pushContext.push(region);
+    //PushContext pushContext = PushContext.getInstance(getServletContext());
+    //pushContext.push(region);
+    service.updateWorld(Integer.parseInt(region));
     // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
     // Service call to display message in all applications
     //service.requestUpdate(person);
