@@ -34,7 +34,7 @@
 </jsp:useBean>
 <jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
 </jsp:useBean>
-<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+<jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
 <%
@@ -44,8 +44,8 @@ if (person != null) {
     String comment = request.getParameter("comment");
     String region = request.getParameter("region");
     boolean changed = false;
-    if(!person.getNickname().equals(nickName)){
-        person.setNickname(nickName);
+    if(!person.getName().equals(nickName)){
+        person.setName(nickName);
         changed = true;
     }
     if(!person.getMood().equals(mood)){
@@ -56,9 +56,9 @@ if (person != null) {
         person.setComment(comment);
         changed = true;
     }
-    if(!person.getRegion().equals(region)){
+    if(person.getKey() != Integer.parseInt(region)){
         // Remove from previous region
-        switch(Integer.parseInt(person.getRegion())){
+        switch(person.getKey()){
             case 1: regions.getNorthAmerica().remove(person);break;
             case 2: regions.getEurope().remove(person);break;
             case 3: regions.getSouthAmerica().remove(person);break;
@@ -78,16 +78,18 @@ if (person != null) {
             default: System.out.println("Problem Adding Person to Region");
         }
         // Push to remove from old region
-        PushContext pushContext = PushContext.getInstance(getServletContext());
-        pushContext.push(person.getRegion());
+        //PushContext pushContext = PushContext.getInstance(getServletContext());
+        //pushContext.push(person.getRegion());
+        service.updateWorld(person.getKey());
         // Set person in new region
-        person.setRegion(region);
+        person.setKey(Integer.parseInt(region));
         changed = true;
     }
     if(changed){
         // Push to update region
-        PushContext pushContext = PushContext.getInstance(getServletContext());
-        pushContext.push(person.getRegion());
+        //PushContext pushContext = PushContext.getInstance(getServletContext());
+        //pushContext.push(person.getRegion());
+        service.updateWorld(person.getKey());
         // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
         // Service call to display message in all applications
         // service.requestUpdate(person);

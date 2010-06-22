@@ -26,7 +26,8 @@
 
     <property file="local.properties"/>
     <property file="../samples.properties"/>
-    <property file="${root.offset}/build.properties"/>  
+    <property file="${root.offset}/build.properties"/>
+    <property name="app.lib.dir" location="${web.inf.dir}/lib"/>
         
     <import file="${root.offset}/build-common.xml"/>
     
@@ -34,6 +35,7 @@
         <icepush.jsp.available/>
         <compile>
             <add.classpath.elements>
+                <fileset dir="${app.lib.dir}" includes="*.jar"/>
                 <fileset refid="icepush.jsp.dist"/>
             </add.classpath.elements>
         </compile>

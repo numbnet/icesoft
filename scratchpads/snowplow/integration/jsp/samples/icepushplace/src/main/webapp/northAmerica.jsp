@@ -31,7 +31,7 @@
 
 <jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
 </jsp:useBean>
-<jsp:useBean id="person" class="org.icepush.place.jsp.view.model.Person" scope="session">
+<jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
 <table border="1">

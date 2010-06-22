@@ -1,13 +1,16 @@
 package org.icepush.place.jsp.services;
 
-import org.icepush.place.jsp.view.model.Person;
+import org.icepush.ws.samples.icepushplace.PersonType;
+import org.icepush.ws.samples.icepushplace.WorldResponseType;
 
 public interface IcepushPlaceService{
 
     public void register();
 
-    public void login(Person person);
-
-    public void requestUpdate(Person person);
+    public void login(PersonType person);
+    
+    public void updatePerson(PersonType person);
+    
+    public WorldResponseType updateWorld(long lastSequenceNo);
 
 }
