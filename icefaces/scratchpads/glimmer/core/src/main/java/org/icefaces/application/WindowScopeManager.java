@@ -213,7 +213,7 @@ public class WindowScopeManager {
         private LinkedList disposedWindowScopedMaps = new LinkedList();
         public long expirationPeriod;
 
-        private State() {
+        public State() {
         }
 
         private State(long expirationPeriod) {
