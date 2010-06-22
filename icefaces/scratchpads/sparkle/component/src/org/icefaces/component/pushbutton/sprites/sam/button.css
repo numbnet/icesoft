@@ -7,7 +7,8 @@ version: 2.6.0
 .yui-button{
 	display:-moz-inline-box;
 	display:inline-block;
-	vertical-align:text-bottom;}
+	vertical-align:text-bottom;
+	}
 	
 .yui-button .first-child{
 	display:block;
@@ -19,9 +20,13 @@ version: 2.6.0
     border:none;margin:0;}
     
 .yui-button button{
-	background-color:transparent;
-	*overflow:visible;
-	cursor:pointer;}
+	border-width:1px 0;
+	border-style:solid;
+	border-color:#808080;
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	margin:auto .25em;
+	}
 	
 .yui-button a{
 	text-decoration:none;}
@@ -53,6 +58,12 @@ version: 2.6.0
 	min-height:2em;
 	*min-height:auto;
 	color:#000;
+	border-width:1px 0;
+	border-style:solid;
+	border-color:#808080;
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	margin:auto .25em;}
 	}
 	
 .yui-skin-sam .yui-button a{
@@ -97,7 +108,10 @@ version: 2.6.0
 	border-color:#7D98B8;}
 	
 .yui-skin-sam .yui-button-hover button,.yui-skin-sam .yui-button-hover a{
-	color:#000;}
+	color:#000;
+	border-color:#7D98B8;
+ 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
 	
 .yui-skin-sam .yui-split-button-hover button{
 	background-image:url(split-button-arrow-hover.png);  /** sprite-ref: sprite;  */
@@ -113,7 +127,11 @@ version: 2.6.0
 	border-color:#7D98B8;}
 	
 .yui-skin-sam .yui-button-active button,.yui-skin-sam .yui-button-active a{
-	color:#000;}
+	color:#000;
+	border-color:#7D98B8;
+  	background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	 }
 	
 .yui-skin-sam .yui-split-button-activeoption{
 	border-color:#808080;
@@ -126,17 +144,25 @@ version: 2.6.0
 	background-image:url(split-button-arrow-active.png);  /** sprite-ref: sprite;  */
 	}
 	
-.yui-skin-sam .yui-radio-button-checked,.yui-skin-sam .yui-checkbox-button-checked{
+.yui-skin-sam .yui-radio-button-checked,.yui-skin-sam
+ .yui-checkbox-button-checked{
 	border-color:#304369;
 	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   
 }
 	
-.yui-skin-sam .yui-radio-button-checked .first-child,.yui-skin-sam .yui-checkbox-button-checked .first-child{
-	border-color:#304369;}
+.yui-skin-sam .yui-radio-button-checked .first-child,
+.yui-skin-sam .yui-checkbox-button-checked .first-child{
+	border-color:#304369;
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+	}
 	
 .yui-skin-sam .yui-radio-button-checked button,.yui-skin-sam .yui-checkbox-button-checked button{
-	color:#fff;}
+	color:#fff;
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+	}
 	
 .yui-skin-sam .yui-button-disabled{
 	border-color:#ccc;
@@ -146,11 +172,16 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button-disabled .first-child{
 	border-color:#ccc;
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
 	}
 	
 .yui-skin-sam .yui-button-disabled button,.yui-skin-sam .yui-button-disabled a{
 	color:#A6A6A6;
-	cursor:default;}
+	cursor:default;
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+	}
 	
 .yui-skin-sam .yui-menu-button-disabled button{
 	background-image:url(menu-button-arrow-disabled.png);  /** sprite-ref: sprite;  */

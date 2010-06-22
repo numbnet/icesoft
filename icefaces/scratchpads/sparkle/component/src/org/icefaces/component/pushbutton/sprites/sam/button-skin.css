@@ -21,8 +21,8 @@ version: 2.6.0
     border-style: solid;
     border-color: #808080;
     margin: 0 -1px;
-    *position: relative;    /* Necessary to get negative margins working in IE */
-    *left: -1px;
+    position: relative;    
+    left: -1px;
     
 	/* 
 		Don't apply rounded corners for IE 6 (Quirks and Standards Mode) and IE 7 Quirks Mode 
@@ -142,26 +142,24 @@ version: 2.6.0
 
 /* Active state */
 
-.yui-skin-sam .yui-button-active {
-    
+.yui-skin-sam .yui-button-active {   
     border-color: #7D98B8;
     background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;   
- /*   background-position: 0 -1700px; using image in existing sprite with offset  */
-    
+	background-repeat: repeat-x;      
 }
 
 .yui-skin-sam .yui-button-active .first-child {
-
     border-color: #7D98B8;
-
+    background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   
 }
 
 .yui-skin-sam .yui-button-active button, 
 .yui-skin-sam .yui-button-active a {
-
     color: #000;
-
+    border-color: #7D98B8;
+    background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   
 }
 
 .yui-skin-sam .yui-split-button-activeoption {
@@ -198,14 +196,16 @@ version: 2.6.0
 .yui-skin-sam .yui-checkbox-button-checked .first-child {
 
     border-color: #304369;
-
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;  
 }
 
 .yui-skin-sam .yui-radio-button-checked button,
 .yui-skin-sam .yui-checkbox-button-checked button { 
 
     color: #fff;
-
+	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;  
 }
 
 

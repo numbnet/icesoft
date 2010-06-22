@@ -9,7 +9,7 @@ import javax.faces.component.UIOutput;
 import java.io.IOException;
 
 @ResourceDependencies({
-    @ResourceDependency(name = "out/sam/button/button.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
     @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),

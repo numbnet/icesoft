@@ -17,25 +17,24 @@ import org.icefaces.util.EnvUtils;
 public class PushButtonRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-    	System.out.println(" PushButtonRenderer: decode");
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         if (requestParameterMap.containsKey("ice.event.captured")) {
             PushButton pushButton = (PushButton) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = pushButton.getClientId();
-            uiComponent.queueEvent(new ActionEvent(uiComponent));
-     	   System.out.println("button pressed is "+source+" for clientId="+clientId);
-//           if (clientId.equals(source)) {
+       	    System.out.println("PBR:decode() button pressed is "+source+" for clientId="+clientId);
+             if (clientId.equals(source)) { //won't always be the same ??
+                try {
+             	   //do I need to check to see if it is disabled first?
+             	   //ActionSource2 has a list of ActionListeners available
+             	   //will that change this piece of code?
+             	   if (!pushButton.isDisabled()){
+                        uiComponent.queueEvent(new ActionEvent (uiComponent));
 
-////               try {
-//            	   //do I need to check to see if it is disabled first?
-//            	   //ActionSource2 has a list of ActionListeners available
-//            	   //will that change this piece of code?
-//            	   if (!pushButton.isdisabled()){
-//                       uiComponent.queueEvent(new FacesEvent (uiComponent));
-//            	   }
-//               } catch (Exception e) {}
-//           }
+             	   }
+                } catch (Exception e) {}
+             }
+//            else System.out.println("PBR: clientId!=source");
         }
     }
 
@@ -45,31 +44,37 @@ public class PushButtonRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         PushButton pushButton = (PushButton) uiComponent;
-//		System.out.println("in renderer and label="+pushButton.getLabel());
+
 		// root element
-        //writer.startElement(HTML.INPUT_ELEM, uiComponent);
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        
+		writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
 		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-min yui-push-button", null);
 		
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
-		
+	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
+	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-		
+		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);		
 		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
 		if (pushButton.getImage() == null) {
 			writer.startElement(HTML.SPAN_ELEM, uiComponent);
 			writer.write(pushButton.getLabel());
 			writer.endElement(HTML.SPAN_ELEM);
 		}else {	
+			writer.startElement(HTML.SPAN_ELEM, uiComponent);
+			writer.writeAttribute(HTML.ID_ATTR, clientId+"_btn_img", null);
 			writer.startElement(HTML.IMG_ELEM, uiComponent);
 			writer.writeAttribute(HTML.SRC_ATTR, pushButton.getImage(), null);
 			writer.endElement(HTML.IMG_ELEM);
+			writer.endElement(HTML.SPAN_ELEM);
 		}
     }
     
@@ -81,7 +86,9 @@ public class PushButtonRenderer extends Renderer {
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
-		
+	
+	    writer.startElement(HTML.SPAN_ELEM, uiComponent);
+	    writer.writeAttribute(HTML.ID_ATTR, clientId +"_sp", null); 
 		// js call
         StringBuilder call= new StringBuilder();
         call.append("ice.component.pushbutton.updateProperties('");
@@ -97,16 +104,17 @@ public class PushButtonRenderer extends Renderer {
         }
 
         call.append("},");
-        //pass JSF component specific properties that would help in slider configuration 
+        //pass JSF component specific properties 
         call.append("{");
         call.append("singleSubmit:");
-        call.append(pushButton.isSingleSubmit()); 
-  //      System.out.println("PushButtonRenderer, singleSubmit="+pushButton.isSingleSubmit() +" for clientId="+clientId);
-   
-//        call.append(", ");        
-//        call.append("aria:");
-//        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+        call.append(pushButton.isSingleSubmit());  
         call.append(", ");        
+        call.append("aria:");
+        call.append(EnvUtils.isAriaEnabled(facesContext)); 
+        call.append(", ");  
+        call.append("disabled:");
+        call.append(pushButton.isDisabled());  
+        call.append(", ");                
         call.append("tabindex:");
         call.append(pushButton.getTabindex());   
         call.append("});");
@@ -115,5 +123,8 @@ public class PushButtonRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
         writer.write(call.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
+        
+        writer.endElement(HTML.SPAN_ELEM);      
+        writer.endElement(HTML.DIV_ELEM);
     }
 }
