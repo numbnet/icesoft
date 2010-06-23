@@ -24,6 +24,10 @@ var singleSubmitExecuteThis;
 var singleSubmitExecuteThisRenderThis;
 var submit;
 (function() {
+    function idOrElement(e) {
+        return isString(e) ? document.getElementById(e) : e;
+    }
+
     function formOf(element) {
         return toLowerCase(element.nodeName) == 'form' ? element : enclosingForm(element);
     }
@@ -110,17 +114,33 @@ var submit;
 
     singleSubmitExecuteThis = function(event, element, additionalParameters) {
         if (standardFormSerialization(element)) {
-            return fullSubmit('@this', '@all', event, element, additionalParameters);
+            return fullSubmit('@this', '@all', event, idOrElement(element), function(p) {
+                p('ice.submit.type', 'ice.se');
+                p('ice.submit.serialization', 'form');
+                if (additionalParameters) additionalParameters(p);
+            });
         } else {
-            return singleSubmit('@this', '@all', event, element, additionalParameters);
+            return singleSubmit('@this', '@all', event, idOrElement(element), function(p) {
+                p('ice.submit.type', 'ice.se');
+                p('ice.submit.serialization', 'element');
+                if (additionalParameters) additionalParameters(p);
+            });
         }
     };
 
     singleSubmitExecuteThisRenderThis = function(event, element, additionalParameters) {
         if (standardFormSerialization(element)) {
-            return fullSubmit('@this', '@this', event, element, additionalParameters);
+            return fullSubmit('@this', '@this', event, idOrElement(element), function(p) {
+                p('ice.submit.type', 'ice.ser');
+                p('ice.submit.serialization', 'form');
+                if (additionalParameters) additionalParameters(p);
+            });
         } else {
-            return singleSubmit('@this', '@this', event, element, additionalParameters);
+            return singleSubmit('@this', '@this', event, idOrElement(element), function(p) {
+                p('ice.submit.type', 'ice.ser');
+                p('ice.submit.serialization', 'element');
+                if (additionalParameters) additionalParameters(p);
+            });
         }
     };
 
@@ -181,6 +201,10 @@ var submit;
     }
 
     submit = function(event, element, additionalParameters) {
-        return fullSubmit('@all', '@all', event, element, additionalParameters);
+        return fullSubmit('@all', '@all', event, idOrElement(element), function(p) {
+            p('ice.submit.type', 'ice.s');
+            p('ice.submit.serialization', 'form');
+            if (additionalParameters) additionalParameters(p);
+        });
     };
 })();
