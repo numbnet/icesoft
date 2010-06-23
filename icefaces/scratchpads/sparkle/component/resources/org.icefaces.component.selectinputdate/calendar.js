@@ -162,7 +162,7 @@ timeSelectHandler: function(calendar, evt) {
     calValueEl.set("value", dateStr, true);
     if (calendar.params.singleSubmit) {
         ice.se(evt, Dom.get(rootId), function(p) {
-            p(calValueEl.get("name"), calValueEl.get("value"));
+//            p(calValueEl.get("name"), calValueEl.get("value"));
         });
     }
 },
@@ -380,7 +380,7 @@ init: function(params) {
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
                 ice.se(null, Dom.get(rootId), function(p) {
-                    p(calValueEl.get("name"), calValueEl.get("value"));
+//                    p(calValueEl.get("name"), calValueEl.get("value"));
                 });
             }
         }
@@ -402,7 +402,7 @@ init: function(params) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
             ice.se(evt, Dom.get(rootId), function(p) {
-                p(calValueEl.get("name"), calValueEl.get("value"));
+//                p(calValueEl.get("name"), calValueEl.get("value"));
             });
         }
     };
@@ -427,7 +427,7 @@ init: function(params) {
         var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
         if (!submit) return;
         submit(evt, Dom.get(rootId), function(p) {
-            p(calValueEl.get("name"), calValueEl.get("value"));
+//            p(calValueEl.get("name"), calValueEl.get("value"));
             if (!params.singleSubmit && params.renderInputField) {
                 p(rootId + "_formatSubmit", "");
             }
