@@ -387,8 +387,8 @@ init: function(params) {
         calendar = new IceCalendar(calContainerEl, {
             pagedate:params.pageDate,
             selected:params.selectedDate,
-            hide_blank_weeks:true,
-            navigator:true
+            hide_blank_weeks:true
+//            navigator:true
         }, params);
         this.configCal(calendar, params);
         calendar.selectEvent.subscribe(dateSelectHandler, calendar, true);
@@ -449,8 +449,8 @@ init: function(params) {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
-        hide_blank_weeks:true,
-        navigator:true
+        hide_blank_weeks:true
+//        navigator:true
     }, params);
     this.configCal(calendar, params);
     calendar.render();
