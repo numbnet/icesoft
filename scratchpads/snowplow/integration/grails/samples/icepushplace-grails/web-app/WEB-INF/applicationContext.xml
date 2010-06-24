@@ -38,5 +38,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="encoding">
           <value>utf-8</value>
         </property>
-   </bean>    	
+   </bean>
+
+<!-- icePushPlaceService Begin -->
+    <bean id="client" abstract="true">
+        <property name="defaultUri" value="http://localhost:8080/icePushPlaceService"/>
+    </bean>
+
+    <bean id="icepushPlaceClient" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWsClient" parent="client">
+        <constructor-arg>
+            <bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+        </constructor-arg>
+        <property name="marshaller" ref="marshaller"/>
+        <property name="unmarshaller" ref="marshaller"/>
+    </bean>
+
+    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="org.icepush.ws.samples.icepushplace"/>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+<!-- icePushPlaceService End -->
 </beans>
