@@ -1,4 +1,3 @@
-import org.icepush.place.grails.view.model.Person
 import org.icepush.place.grails.view.model.Regions
 
 class Filters {

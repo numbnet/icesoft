@@ -1,5 +1,5 @@
 package icepushplace.grails
-import org.icepush.place.grails.view.model.Person
+import org.icepush.ws.samples.icepushplace.PersonType
 
 class RegisterController {
 
@@ -8,11 +8,11 @@ class RegisterController {
   }
 
   def register = {
-    def thisPerson = new Person();
-    thisPerson.nickname = params["submittedNickname"]
+    def thisPerson = new PersonType();
+    thisPerson.name = params["submittedNickname"]
     thisPerson.mood = params["mood"]
     thisPerson.comment = params["comment"]
-    thisPerson.region = params["region"]
+    thisPerson.key = Integer.parseInt(params["region"])
     session['person'] = thisPerson
     def regions = servletContext['regions']
     // Add to region
@@ -25,7 +25,7 @@ class RegisterController {
         case '6': regions.antarctica.add(thisPerson);break;
         default: println "Problem Initializing Person";
     }
-    push thisPerson.region
+    push thisPerson.key.toString()
     response.status = 200;
     render " "
   }
