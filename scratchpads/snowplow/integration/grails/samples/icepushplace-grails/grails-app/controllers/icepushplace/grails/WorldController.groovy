@@ -16,6 +16,7 @@ class WorldController {
 
   def updateSettings = {
     noCache(response)
+    def icepushPlaceService = servletContext['service']
     def thisPerson = session["person"]
     def submittedNickname = params["submittedNickname"];
     def mood = params["mood"];
@@ -57,17 +58,20 @@ class WorldController {
             default: println "Problem Adding Person to Region";
         }
         // Push to remove from old region
-        push thisPerson.key.toString()
+        //push thisPerson.key.toString()
+        icepushPlaceService.updateWorld(thisPerson.key)
         // Set person in new region
         thisPerson.key = Integer.parseInt(region);
         changed = true;
     }
     if(changed){
         // Push to update region
-        push thisPerson.key.toString()
+        //push thisPerson.key.toString()
         // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
         // Service call to display message in all applications
         // service.requestUpdate(person);
+        icepushPlaceService.updatePerson(thisPerson)
+        icepushPlaceService.updateWorld(thisPerson.key)
         // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
         // IF IT HAS CHANGED, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
     }
@@ -75,6 +79,7 @@ class WorldController {
   }
 
   def messageOut = {
+    def icepushPlaceService = servletContext['service']
     def messageOut = params["msgOut"];
     def region = params["region"];
     def row = params["row"];
@@ -94,10 +99,11 @@ class WorldController {
     // Set receiver message
     receiver.messageIn = from + " says: " + messageOut;
     // Push update out to receiver's region
-    push region;
+    //push region;
     // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
     // Service call to display message in all applications
     //service.requestUpdate(person);
+    icepushPlaceService.updateWorld(Long.parseLong(region))
     render ""
   }
 

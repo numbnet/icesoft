@@ -25,7 +25,9 @@ class RegisterController {
         case '6': regions.antarctica.add(thisPerson);break;
         default: println "Problem Initializing Person";
     }
-    push thisPerson.key.toString()
+    //push thisPerson.key.toString()
+    def icepushPlaceService = servletContext['service']
+    icepushPlaceService.login(thisPerson)
     response.status = 200;
     render " "
   }
