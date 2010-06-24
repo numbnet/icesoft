@@ -27,7 +27,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
   
-  <f:view locale="#{localeBean.currentLanguage}">
+  <f:view locale="#{localeBean.currentLanguage}" contentType="text/html">
 
     <ice:loadBundle
             basename="org.icefaces.application.showcase.view.resources.messages"
@@ -46,7 +46,7 @@
         <link href="./css/images/favicon.ico" rel="icon" type="image/x-icon"></link>
     </h:head>
     <h:body>
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A" />
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A"  type="text/javascript"/>
         <ui:insert name="header">
             <ui:include src="/WEB-INF/includes/content/header.xhtml"/>
         </ui:insert>

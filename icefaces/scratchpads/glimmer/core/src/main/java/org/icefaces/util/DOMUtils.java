@@ -546,11 +546,11 @@ public class DOMUtils {
             } else if (ch == '\'') {
                 buffer.append("&#39;");
             } else if (ch == '"') {
-                buffer.append("&quot;");
+                buffer.append("&#34;");
             } else if (ch >= 0xA0 && ch <= 0xff) {
-                buffer.append("&").append(escapeAnsi(ch)).append(";");
+                buffer.append("&#").append(Integer.toString(ch)).append(";");
             } else if (ch == 0x20AC) {//special case for euro symbol
-                buffer.append("&euro;");
+                buffer.append("&#8364;");
             } else {
                 buffer.append(ch);
             }
