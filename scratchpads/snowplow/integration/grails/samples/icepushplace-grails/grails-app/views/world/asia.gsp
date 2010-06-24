@@ -41,20 +41,20 @@
     <g:if test="${asia}">
     <g:each var="elem" in="${asia}" status="row">
     <tr>
-        <td>${elem.nickname}</td>
+        <td>${elem.name}</td>
         <td>${elem.mood}</td>
         <td>${elem.comment}</td>
         <td>Grails</td>
         <td>${elem.messageIn}</td>
         <td>
-            <form id="msgForm${elem.region}${row}">
-            <input id="msgOut${elem.region}${row}"
+            <form id="msgForm${elem.key}${row}">
+            <input id="msgOut${elem.key}${row}"
                    type="text"
                    name="messageOut"
                     size="20" />&nbsp
             <input type="submit"
                    value="Post"
-                   onclick="click_messageOut('${elem.region}',${row},'<%=session["person"].nickname%>');return false;"/>
+                   onclick="click_messageOut('${elem.key}',${row},'<%=session["person"].name%>');return false;"/>
             </form>
         </td>
     </tr>

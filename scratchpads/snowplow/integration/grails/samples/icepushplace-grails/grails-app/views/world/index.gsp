@@ -55,7 +55,7 @@
             <td>Nickname: </td>
             <td>
                 <input type="text"
-                       value="<%=session["person"].nickname%>"
+                       value="<%=session["person"].name%>"
                        id="nickname"
                        name="nickname"
                        size="20" />
@@ -114,32 +114,32 @@
             <td>
                 <select id="region" name="region">
                     <option value="1"
-                    <% if(session["person"].region == "1") {%>
+                    <% if(session["person"].key == 1) {%>
                     selected
                     <% } %>
                     >North America</option>
                     <option value="2"
-                    <% if(session["person"].region == "2") {%>
+                    <% if(session["person"].key == 2) {%>
                     selected
                     <% } %>
                     >Europe</option>
                     <option value="3"
-                    <% if(session["person"].region == "3") {%>
+                    <% if(session["person"].key == 3) {%>
                     selected
                     <% } %>
                     >South America</option>
                     <option value="4"
-                    <% if(session["person"].region == "4") {%>
+                    <% if(session["person"].key == 4) {%>
                     selected
                     <% } %>
                     >Asia</option>
                     <option value="5"
-                    <% if(session["person"].region == "5") {%>
+                    <% if(session["person"].key == 5) {%>
                     selected
                     <% } %>
                     >Africa</option>
                     <option value="6"
-                    <% if(session["person"].region == "6") {%>
+                    <% if(session["person"].key == 6) {%>
                     selected
                     <% } %>
                     >Antarctica</option>

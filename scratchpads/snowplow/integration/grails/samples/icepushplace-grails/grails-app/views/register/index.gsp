@@ -56,11 +56,11 @@
 <form id="init">
     Nickname: <input type="text" name="nickname" size="20"/><br/><br/>
     What mood are you in?: <select name="mood">
-                               <option>average</option>
-                               <option>shocked</option>
-                               <option>angry</option>
-                               <option>happy</option>
-                               <option>sad</option>
+                               <option value="average">average</option>
+                               <option value="shocked">shocked</option>
+                               <option value="angry">angry</option>
+                               <option value="happy">happy</option>
+                               <option value="sad">sad</option>
                           </select><br/><br/>
     What's on your mind?: <input type="text" name="comment" size="20"/><br/><br/>
     Change your region: <select name="region">
