@@ -40,6 +40,7 @@ import com.icesoft.faces.env.AcegiAuthWrapper;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.env.SpringAuthWrapper;
+import com.icesoft.faces.env.SpringAuthWrapperV3;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.command.Redirect;
@@ -75,28 +76,25 @@ import java.util.Set;
  */
 public abstract class BridgeExternalContext extends ExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
-    protected static Class AuthenticationClass = null;
     protected static Class AcegiAuthenticationClass = null;
-    protected static Class SpringAuthenticationClass = null;
+    protected static Class SpringAuthenticationClassV2 = null;
+    protected static Class SpringAuthenticationClassV3 = null;
 
     static {
         try {
             AcegiAuthenticationClass = Class.forName("org.acegisecurity.Authentication");
-            AuthenticationClass = AcegiAuthenticationClass;
             Log.debug("Acegi Security detected.");
         } catch (Throwable t) {
             Log.debug("Acegi Security not detected.");
         }
         try {
-            SpringAuthenticationClass = Class.forName("org.springframework.security.Authentication");
-            AuthenticationClass = SpringAuthenticationClass;
+            SpringAuthenticationClassV2 = Class.forName("org.springframework.security.Authentication");
             Log.debug("Spring Security detected.");
         } catch (Throwable t) {
             Log.debug("Spring Security not detected.");
         }
         try {
-            SpringAuthenticationClass = Class.forName("org.springframework.security.core.Authentication");
-            AuthenticationClass = SpringAuthenticationClass;
+            SpringAuthenticationClassV3 = Class.forName("org.springframework.security.core.Authentication");
             Log.debug("Spring Security 3 detected.");
         } catch (Throwable t) {
             Log.debug("Spring Security 3 not detected.");
@@ -471,11 +469,14 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     protected Authorization detectAuthorization(final Principal principal) {
-        if (AuthenticationClass != null) {
-            return SpringAuthenticationClass == null ? AcegiAuthWrapper.getVerifier(principal, sessionMap) : SpringAuthWrapper.getVerifier(principal, sessionMap);
-        } else {
-            return defaultAuthorization;
+        if (AcegiAuthenticationClass != null) {
+            return AcegiAuthWrapper.getVerifier(principal, sessionMap);
+        } else if (SpringAuthenticationClassV2 != null) {
+            return SpringAuthWrapper.getVerifier(principal, sessionMap);
+        } else if (SpringAuthenticationClassV3 != null) {
+            return SpringAuthWrapperV3.getVerifier(principal, sessionMap);
         }
+        return defaultAuthorization;
     }
 
     public String getResponseCharacterEncoding() {
