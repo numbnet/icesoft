@@ -243,12 +243,43 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             var blockUI = configuration.connection.blockUI ? new Ice.Status.OverlayIndicator(configuration) : Ice.Status.NOOPIndicator;
 
             connection.onSend(function(onReceive, ignoreLocking) {
-                if (!ignoreLocking) blockUI.on();
+                var unblockUI;
+                if (ignoreLocking) {
+                    unblockUI = Function.NOOP;
+                } else {
+                    blockUI.on();
+
+                    var cancelEventCallback = function() {
+                        return false;
+                    };
+                    var rollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([], function(result, type) {
+                        return result.concat($enumerate(container.getElementsByTagName(type)).collect(function(e) {
+                            var onkeypress = e.onkeypress;
+                            var onkeyup = e.onkeyup;
+                            var onkeydown = e.onkeydown;
+                            e.onkeypress = cancelEventCallback;
+                            e.onkeyup = cancelEventCallback;
+                            e.onkeydown = cancelEventCallback;
+
+                            return function() {
+                                e.onkeypress = onkeypress;
+                                e.onkeyup = onkeyup;
+                                e.onkeydown = onkeydown;
+                            };
+                        }));
+                    });
+
+                    unblockUI = function() {
+                        rollbacks.broadcast();
+                        blockUI.off();
+                    };
+                }
+
                 statusManager.busy.on();
 
                 onReceive(function() {
                     statusManager.busy.off();
-                    if (!ignoreLocking) blockUI.off();
+                    unblockUI();
                 });
             });
 
