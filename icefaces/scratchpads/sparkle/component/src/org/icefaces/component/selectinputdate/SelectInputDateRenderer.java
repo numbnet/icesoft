@@ -51,7 +51,7 @@ public class SelectInputDateRenderer extends Renderer {
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Date date;
-        if (paramMap.get(clientId + "_formatSubmit") != null) {
+        if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
             date = (Date) converter.getAsObject(context, component, (String) selectInputDate.getSubmittedValue());
         } else {
             date = (Date) selectInputDate.getValue();
@@ -162,8 +162,8 @@ public class SelectInputDateRenderer extends Renderer {
 //            e.printStackTrace();
         }
         selectInputDate.setSubmittedValue(dateString);
-        if (paramMap.get(clientId + "_formatSubmit") != null) {
-            System.out.println("To renderResponse()");
+        if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
+            System.out.println("Skip to renderResponse()");
             context.renderResponse();
         }
     }
