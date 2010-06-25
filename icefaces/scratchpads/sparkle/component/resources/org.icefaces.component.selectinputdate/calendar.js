@@ -154,16 +154,13 @@ getTime: function(calendar) {
     return {hr:hr, min:min};
 },
 timeSelectHandler: function(calendar, evt) {
-    var Dom = YAHOO.util.Dom;
     var rootId = calendar.params.clientId, calValueEl = this[rootId].calValueEl;
     var date = calendar.getSelectedDates()[0];
     var time = this.getTime(calendar);
     var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
     calValueEl.set("value", dateStr, true);
     if (calendar.params.singleSubmit) {
-        ice.se(evt, Dom.get(rootId), function(p) {
-//            p(calValueEl.get("name"), calValueEl.get("value"));
-        });
+        ice.se(evt, rootId);
     }
 },
 configCal: function (calendar, params) {
@@ -379,9 +376,9 @@ init: function(params) {
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
-                ice.se(null, Dom.get(rootId), function(p) {
-//                    p(calValueEl.get("name"), calValueEl.get("value"));
-                });
+                YAHOO.log("Calling ice.se() with:", "info", "calendar.js");
+                YAHOO.log(Dom.get(rootId), "info", "calendar.js");
+                ice.se(null, rootId);
             }
         }
         calendar = new IceCalendar(calContainerEl, {
@@ -401,9 +398,7 @@ init: function(params) {
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
-            ice.se(evt, Dom.get(rootId), function(p) {
-//                p(calValueEl.get("name"), calValueEl.get("value"));
-            });
+            ice.se(evt, rootId);
         }
     };
     if (params.renderInputField) {
@@ -425,13 +420,7 @@ init: function(params) {
         var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
         calValueEl.setAttributes({value:dateStr}, true);
         var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
-        if (!submit) return;
-        submit(evt, Dom.get(rootId), function(p) {
-//            p(calValueEl.get("name"), calValueEl.get("value"));
-            if (!params.singleSubmit && params.renderInputField) {
-                p(rootId + "_formatSubmit", "");
-            }
-        });
+        if (submit) submit(evt, rootId);
     };
     var dialog = new YAHOO.widget.Dialog(rootId + "_dialog", {
         visible:false,
