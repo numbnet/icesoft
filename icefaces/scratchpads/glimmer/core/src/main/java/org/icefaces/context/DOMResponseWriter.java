@@ -37,6 +37,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,8 +48,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class DOMResponseWriter extends ResponseWriter {
+public class DOMResponseWriter extends ResponseWriterWrapper {
     private static Logger log = Logger.getLogger("org.icefaces.context.DOMResponseWriter");
+
+    public static final String DEFAULT_ENCODING = "UTF-8";
+    private String encoding;
+    public static final String DEFAULT_TYPE = "text/html";
+    private String contentType;
 
     public static final String OLD_DOM = "org.icefaces.old-dom";
     public static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
@@ -56,6 +62,7 @@ public class DOMResponseWriter extends ResponseWriter {
     protected static final String DOCTYPE_MARKER = "<!DOCTYPE";
 
     private Writer writer;
+    private ResponseWriter wrapped;
     private Document document;
     private Node cursor;
     private List<Node> stateNodes = new ArrayList<Node>();
@@ -72,48 +79,30 @@ public class DOMResponseWriter extends ResponseWriter {
     private boolean isStyle;
 
 
-    public DOMResponseWriter(Writer writer) {
-        this(DOMUtils.getNewDocument(), writer);
-    }
-
-    public DOMResponseWriter(Document document, Writer writer) {
+    public DOMResponseWriter(Writer writer, String encoding, String contentType) {
         this.writer = writer;
-        this.document = document;
+
+        if (writer instanceof ResponseWriter) {
+            wrapped = (ResponseWriter) writer;
+        }
+
+        this.encoding = (encoding != null) ? encoding: DEFAULT_ENCODING;
+        this.contentType = (contentType != null) ? contentType: DEFAULT_TYPE;
     }
 
-    /**
-     * <p>Return the content type (such as "text/html") for this {@link
-     * javax.faces.context.ResponseWriter}.  Note: this must not include the "charset="
-     * suffix.</p>
-     */
-    public String getContentType() {
-        //TODO:  Should we make this switchable for other content types
-        //A somewhat dated article of interest appears here: http://hixie.ch/advocacy/xhtml
-        return "text/html";
+    public ResponseWriter getWrapped() {
+        return wrapped;
     }
 
-    /**
-     * <p>Return the character encoding (such as "ISO-8859-1") for this
-     * {@link javax.faces.context.ResponseWriter}.  Please see <a
-     * href="http://www.iana.org/assignments/character-sets">the
-     * IANA</a> for a list of character encodings.</p>
-     */
     public String getCharacterEncoding() {
-        //TODO:  What is the logic for actually determining what this should be?
-        return "UTF-8";
+        return encoding;
     }
 
-    /**
-     * Write a portion of an array of characters.
-     *
-     * @param cbuf Array of characters
-     * @param off  Offset from which to start writing characters
-     * @param len  Number of characters to write
-     * @throws java.io.IOException If an I/O error occurs
-     */
+    public String getContentType() {
+        return contentType;
+    }
+
     public void write(char[] cbuf, int off, int len) throws IOException {
-        //TODO: I believe we only need to implement the single basic write() method as the
-        //other write methods all eventually call down to this anyway.
         if (0 == len) {
             return;
         }
@@ -190,45 +179,17 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
 
-    /**
-     * <p>Flush any ouput buffered by the output method to the
-     * underlying Writer or OutputStream.  This method
-     * will not flush the underlying Writer or OutputStream;  it
-     * simply clears any values buffered by this {@link javax.faces.context.ResponseWriter}.</p>
-     */
     public void flush() throws IOException {
     }
 
-    /**
-     * Close the stream, flushing it first.  Once a stream has been closed,
-     * further write() or flush() invocations will cause an IOException to be
-     * thrown.  Closing a previously-closed stream, however, has no effect.
-     *
-     * @throws java.io.IOException If an I/O error occurs
-     */
     public void close() throws IOException {
     }
 
-    /**
-     * <p>Write whatever text should begin a response.</p>
-     *
-     * @throws java.io.IOException if an input/output error occurs
-     */
     public void startDocument() throws IOException {
-
-        //TODO: Should we always create a new document here?  The constructor takes one
-        //as an argument which would always get replaced when this method is called.
         document = DOMUtils.getNewDocument();
         cursor = document;
     }
 
-    /**
-     * <p>Write whatever text should end a response.  If there is an open
-     * element that has been created by a call to <code>startElement()</code>,
-     * that element will be closed first.</p>
-     *
-     * @throws java.io.IOException if an input/output error occurs
-     */
     public void endDocument() throws IOException {
         boolean isPartialRequest = FacesContext.getCurrentInstance().getPartialViewContext().isPartialRequest();
 
@@ -249,26 +210,6 @@ public class DOMResponseWriter extends ResponseWriter {
         cursor = null;
     }
 
-    /**
-     * <p>Write the start of an element, up to and including the
-     * element name.  Once this method has been called, clients can
-     * call the <code>writeAttribute()</code> or
-     * <code>writeURIAttribute()</code> methods to add attributes and
-     * corresponding values.  The starting element will be closed
-     * (that is, the trailing '>' character added)
-     * on any subsequent call to <code>startElement()</code>,
-     * <code>writeComment()</code>,
-     * <code>writeText()</code>, <code>endElement()</code>,
-     * <code>endDocument()</code>, <code>close()</code>,
-     * <code>flush()</code>, or <code>write()</code>.</p>
-     *
-     * @param name      Name of the element to be started
-     * @param component The {@link javax.faces.component.UIComponent} (if any) to which
-     *                  this element corresponds
-     * @throws java.io.IOException  if an input/output error occurs
-     * @throws NullPointerException if <code>name</code>
-     *                              is <code>null</code>
-     */
     public void startElement(String name, UIComponent component) throws IOException {
 
         if (suppressNextNode) {
@@ -278,78 +219,27 @@ public class DOMResponseWriter extends ResponseWriter {
             return;
         }
         isScriptOrStyle(name);
-        //TODO:  Does this ever happen - ie does startDocument not get called for some reason?
+
         if (null == document) {
             document = DOMUtils.getNewDocument();
         }
         pointCursorAt(appendToCursor(document.createElement(name)));
     }
 
-    /**
-     * <p>Write the end of an element, after closing any open element
-     * created by a call to <code>startElement()</code>.  Elements must be
-     * closed in the inverse order from which they were opened; it is an
-     * error to do otherwise.</p>
-     *
-     * @param name Name of the element to be ended
-     * @throws java.io.IOException  if an input/output error occurs
-     * @throws NullPointerException if <code>name</code>
-     *                              is <code>null</code>
-     */
     public void endElement(String name) throws IOException {
         pointCursorAt(cursor.getParentNode());
     }
 
-    /**
-     * <p>Write an attribute name and corresponding value, after converting
-     * that text to a String (if necessary), and after performing any escaping
-     * appropriate for the markup language being rendered.
-     * This method may only be called after a call to
-     * <code>startElement()</code>, and before the opened element has been
-     * closed.</p>
-     *
-     * @param name     Attribute name to be added
-     * @param value    Attribute value to be added
-     * @param property Name of the property or attribute (if any) of the
-     *                 {@link javax.faces.component.UIComponent} associated with the containing element,
-     *                 to which this generated attribute corresponds
-     * @throws IllegalStateException if this method is called when there
-     *                               is no currently open element
-     * @throws java.io.IOException   if an input/output error occurs
-     * @throws NullPointerException  if <code>name</code> is
-     *                               <code>null</code>
-     */
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (null == value) {
             return;
         }
-        //TODO: As per the javadoc, is there any escaping we should be aware of here?
         Attr attribute = document.createAttribute(name.trim());
         attribute.setValue(String.valueOf(value));
         appendToCursor(attribute);
     }
 
-    /**
-     * <p>Write a URI attribute name and corresponding value, after converting
-     * that text to a String (if necessary), and after performing any encoding
-     * appropriate to the markup language being rendered.
-     * This method may only be called after a call to
-     * <code>startElement()</code>, and before the opened element has been
-     * closed.</p>
-     *
-     * @param name     Attribute name to be added
-     * @param value    Attribute value to be added
-     * @param property Name of the property or attribute (if any) of the
-     *                 {@link javax.faces.component.UIComponent} associated with the containing element,
-     *                 to which this generated attribute corresponds
-     * @throws IllegalStateException if this method is called when there
-     *                               is no currently open element
-     * @throws java.io.IOException   if an input/output error occurs
-     * @throws NullPointerException  if <code>name</code> is
-     *                               <code>null</code>
-     */
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
-        //TODO: Should there be more comprehensvie encoding here?
         String stringValue = String.valueOf(value);
         if (stringValue.startsWith("javascript:")) {
             writeAttribute(name, stringValue, property);
@@ -358,20 +248,7 @@ public class DOMResponseWriter extends ResponseWriter {
         }
     }
 
-    /**
-     * <p>Write a comment containing the specified text, after converting
-     * that text to a String (if necessary), and after performing any escaping
-     * appropriate for the markup language being rendered.  If there is
-     * an open element that has been created by a call to
-     * <code>startElement()</code>, that element will be closed first.</p>
-     *
-     * @param comment Text content of the comment
-     * @throws java.io.IOException  if an input/output error occurs
-     * @throws NullPointerException if <code>comment</code>
-     *                              is <code>null</code>
-     */
     public void writeComment(Object comment) throws IOException {
-        //TODO: We don't always consistently check for null document?  Should we? Escaping?
         String commentString = String.valueOf(comment);
         if (null == document) {
             writer.write(commentString);
@@ -380,21 +257,6 @@ public class DOMResponseWriter extends ResponseWriter {
         appendToCursor(document.createComment(commentString));
     }
 
-    /**
-     * <p>Write an object, after converting it to a String (if necessary),
-     * and after performing any escaping appropriate for the markup language
-     * being rendered.  If there is an open element that has been created
-     * by a call to <code>startElement()</code>, that element will be closed
-     * first.</p>
-     *
-     * @param text     Text to be written
-     * @param property Name of the property or attribute (if any) of the
-     *                 {@link javax.faces.component.UIComponent} associated with the containing element,
-     *                 to which this generated text corresponds
-     * @throws java.io.IOException  if an input/output error occurs
-     * @throws NullPointerException if <code>text</code>
-     *                              is <code>null</code>
-     */
     public void writeText(Object text, String property) throws IOException {
 
         if (text == null) {
@@ -411,21 +273,6 @@ public class DOMResponseWriter extends ResponseWriter {
         appendToCursor(textString);
     }
 
-    /**
-     * <p>Write text from a character array, after any performing any
-     * escaping appropriate for the markup language being rendered.
-     * If there is an open element that has been created by a call to
-     * <code>startElement()</code>, that element will be closed first.</p>
-     *
-     * @param text Text to be written
-     * @param off  Starting offset (zero-relative)
-     * @param len  Number of characters to be written
-     * @throws IndexOutOfBoundsException if the calculated starting or
-     *                                   ending position is outside the bounds of the character array
-     * @throws java.io.IOException       if an input/output error occurs
-     * @throws NullPointerException      if <code>text</code>
-     *                                   is <code>null</code>
-     */
     public void writeText(char[] text, int off, int len) throws IOException {
         // escaping done in writeText(object, String) method
         if (len == 0) {
@@ -434,19 +281,27 @@ public class DOMResponseWriter extends ResponseWriter {
         writeText(new String(text, off, len), null);
     }
 
-    /**
-     * <p>Create and return a new instance of this {@link javax.faces.context.ResponseWriter},
-     * using the specified <code>Writer</code> as the output destination.</p>
-     *
-     * @param writer The <code>Writer</code> that is the output destination
-     */
+    public void writeText(Object text, UIComponent component, String property) throws IOException {
+        writeText(text, property);
+    }
+
     public ResponseWriter cloneWithWriter(Writer writer) {
-        //TODO: Should we be creating a brand new one here or using the same document
-        //with a new writer?
-        if (writer.getClass().getName().endsWith("FastStringWriter")) {
-            return new BasicResponseWriter(writer, getContentType(), getCharacterEncoding());
+        String enc = getCharacterEncoding();
+        String type = getContentType();
+
+        if (writer instanceof ResponseWriter) {
+            wrapped = (ResponseWriter) writer;
+            enc = wrapped.getCharacterEncoding();
+            type = wrapped.getContentType();
         }
-        return new DOMResponseWriter(null, writer);
+
+        ResponseWriter clone = null;
+        if (writer.getClass().getName().endsWith("FastStringWriter")) {
+            clone = new BasicResponseWriter(writer,enc,type);
+        } else {
+            clone = new DOMResponseWriter(writer,enc,type);
+        }
+        return clone;
     }
 
 

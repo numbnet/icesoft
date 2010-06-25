@@ -22,21 +22,33 @@
 
 package org.icefaces.context;
 
-import javax.faces.context.ResponseWriter;
-import java.io.Writer;
-import java.io.IOException;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
+import java.io.IOException;
+import java.io.Writer;
 
-public class BasicResponseWriter extends ResponseWriter  {
+public class BasicResponseWriter extends ResponseWriterWrapper {
+
     private Writer writer;
-    String contentType;
-    String characterEncoding;
     boolean closeStart = false;
+    private ResponseWriter wrapped;
+    private String encoding;
+    private String contentType;
 
-    public BasicResponseWriter(Writer writer, String contentType, String characterEncoding)  {
+    public BasicResponseWriter(Writer writer, String encoding,  String contentType)  {
         this.writer = writer;
-        this.contentType = contentType;
-        this.characterEncoding = characterEncoding;
+
+        if (writer instanceof ResponseWriter) {
+            wrapped = (ResponseWriter) writer;
+        }
+
+        this.encoding = (encoding != null) ? encoding: DOMResponseWriter.DEFAULT_ENCODING;
+        this.contentType = (contentType != null) ? contentType: DOMResponseWriter.DEFAULT_TYPE;
+    }
+
+    public ResponseWriter getWrapped() {
+        return wrapped;
     }
 
     public String getContentType()  {
@@ -44,7 +56,7 @@ public class BasicResponseWriter extends ResponseWriter  {
     }
 
     public String getCharacterEncoding()  {
-        return characterEncoding;
+        return encoding;
     }
 
     public void flush() throws IOException  {
@@ -101,22 +113,14 @@ public class BasicResponseWriter extends ResponseWriter  {
         writer.write("-->");
     }
 
-    public void writeText(Object text, String componentPropertyName) throws IOException {
-        throw new UnsupportedOperationException("Implement writeText with escaping");
-    }
     public void writeText(Object text, UIComponent component, String componentPropertyName) throws IOException  {
         closeStartIfNecessary();
         writer.write(text.toString());
     }
-    public void writeText(char[] chars, int offset, int length) throws IOException  {
-        throw new UnsupportedOperationException("Implement writeText with escaping");
+    public ResponseWriter cloneWithWriter(Writer writer)  {
+        return new BasicResponseWriter(writer, getCharacterEncoding(), getContentType());
     }
 
-    public ResponseWriter cloneWithWriter(Writer writer)  {
-        return new BasicResponseWriter(writer, getContentType(), getCharacterEncoding());
-//        throw new UnsupportedOperationException("BasicResponseWriter does not support cloning");
-    }
-    
     public void close() throws IOException  {
         closeStartIfNecessary();
         writer.close();

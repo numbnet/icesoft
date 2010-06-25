@@ -92,16 +92,19 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public PartialResponseWriter getPartialResponseWriter() {
+        PartialResponseWriter defaultWriter = wrapped.getPartialResponseWriter();
 
         if (!EnvUtils.isICEfacesView(facesContext)) {
-            return wrapped.getPartialResponseWriter();
+            return defaultWriter;
         }
 
         if (null == partialWriter) {
             try {
-                //TODO: ensure this can co-exist with other PartialViewContext implementations
-                Writer outputWriter = getResponseOutputWriter();
-                ResponseWriter basicWriter = new BasicResponseWriter(outputWriter, "text/html", "utf-8");
+                //TODO: need to revisit the strategy for getting the "raw" output writer directly
+                Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
+                ResponseWriter basicWriter = new BasicResponseWriter(outputWriter,
+                        defaultWriter.getCharacterEncoding(),
+                        defaultWriter.getContentType());
                 partialWriter = new PartialResponseWriter(basicWriter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -121,19 +124,20 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         if (phaseId == PhaseId.RENDER_RESPONSE) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
-                //TODO: understand why the original writer must be restored
-                //it may be for error handling cases
-                //facesContext.getAttributes().put(ORIGINAL_WRITER, orig);
-                Writer outputWriter = getResponseOutputWriter();
-                DOMResponseWriter writer = createDOMResponseWriter(outputWriter);
+                ExternalContext ec = facesContext.getExternalContext();
+
+                //TODO: need to revisit the strategy for getting the "raw" output writer directly
+                Writer outputWriter = ec.getResponseOutputWriter();
+                ec.setResponseContentType("text/xml");
+                ec.addResponseHeader("Cache-Control", "no-cache");
+
+                DOMResponseWriter writer = new DOMResponseWriter(outputWriter,
+                        ec.getRequestCharacterEncoding(),
+                        ec.getRequestContentType());
                 facesContext.setResponseWriter(writer);
 
-                ExternalContext exContext = facesContext.getExternalContext();
-                exContext.setResponseContentType("text/xml");
-                exContext.addResponseHeader("Cache-Control", "no-cache");
-
                 Document oldDOM = writer.getOldDocument();
-                applyBrowserChanges(exContext.getRequestParameterValuesMap(), oldDOM);
+                applyBrowserChanges(ec.getRequestParameterValuesMap(), oldDOM);
 
                 UIViewRoot viewRoot = facesContext.getViewRoot();
                 Node[] diffs = new Node[0];
@@ -199,10 +203,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
-    }
-
-    protected Writer getResponseOutputWriter() throws IOException {
-        return facesContext.getExternalContext().getResponseOutputWriter();
     }
 
     private void writeXMLPreamble(Writer writer) throws IOException {
@@ -416,9 +416,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         //do nothing.
     }
 
-    protected DOMResponseWriter createDOMResponseWriter(Writer outputWriter) {
-        return new DOMResponseWriter(outputWriter);
-    }
 }
 
 class DOMPartialRenderCallback implements VisitCallback {

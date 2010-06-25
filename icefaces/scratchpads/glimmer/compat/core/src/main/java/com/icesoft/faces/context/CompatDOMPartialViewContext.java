@@ -40,7 +40,7 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
     }
 
     protected Writer getResponseOutputWriter() throws IOException {
-        return new WriteViewStateMarkup(super.getResponseOutputWriter());
+        return new WriteViewStateMarkup(facesContext.getExternalContext().getResponseOutputWriter());
     }
 
     protected void renderExtensions() {
