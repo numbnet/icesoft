@@ -469,12 +469,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     protected Authorization detectAuthorization(final Principal principal) {
-        if (AcegiAuthenticationClass != null) {
-            return AcegiAuthWrapper.getVerifier(principal, sessionMap);
+          // Instantiate security service newest to oldest.
+        if (SpringAuthenticationClassV3 != null) {
+            return SpringAuthWrapperV3.getVerifier(principal, sessionMap);
         } else if (SpringAuthenticationClassV2 != null) {
             return SpringAuthWrapper.getVerifier(principal, sessionMap);
-        } else if (SpringAuthenticationClassV3 != null) {
-            return SpringAuthWrapperV3.getVerifier(principal, sessionMap);
+        } else if (AcegiAuthenticationClass != null) {
+            return AcegiAuthWrapper.getVerifier(principal, sessionMap);
         }
         return defaultAuthorization;
     }
