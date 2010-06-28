@@ -187,6 +187,46 @@ if (!window.ice.icefaces) {
             }
         };
 
+        //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
+        namespace.onAfterUpdate(function(updates) {
+            var viewState;
+            var forms = inject(updates.getElementsByTagName('update'), [], function(result, update) {
+                var id = update.getAttribute('id');
+                if (id == 'javax.faces.ViewState') {
+                    viewState = update.firstChild.data;
+                } else {
+                    var e;
+                    if (id == 'javax.faces.ViewHead') {
+                        return result;//ignore update
+                    } else if (id == 'javax.faces.ViewRoot') {
+                        e = document.documentElement;
+                    } else if (id == 'javax.faces.ViewBody') {
+                        e = document.body;
+                    } else {
+                        e = document.getElementById(id);
+                    }
+
+                    if (toLowerCase(e.nodeName) == 'form') {
+                        append(result, e);//the form is the updated element
+                    } else {
+                        var updatedForms = asArray(e.getElementsByTagName('form'));//find the enclosed forms
+                        result = concatenate(result, updatedForms);
+                    }
+                }
+
+                return result;
+            });
+
+            if (viewState) {
+                //add hidden input field to the updated forms that don't have it
+                each(forms, function(form) {
+                    if (!form['javax.faces.ViewState']) {
+                        appendHiddenInputElement(form, 'javax.faces.ViewState', viewState);
+                    }
+                });
+            }
+        });
+
         var client = Client(true);
         onBeforeUnload(window, function() {
             postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
