@@ -112,15 +112,16 @@ var submit;
         }
     }
 
-    singleSubmitExecuteThis = function(event, element, additionalParameters) {
+    singleSubmitExecuteThis = function(event, idorelement, additionalParameters) {
+        var element = idOrElement(idorelement);
         if (standardFormSerialization(element)) {
-            return fullSubmit('@this', '@all', event, idOrElement(element), function(p) {
+            return fullSubmit('@this', '@all', event, element, function(p) {
                 p('ice.submit.type', 'ice.se');
                 p('ice.submit.serialization', 'form');
                 if (additionalParameters) additionalParameters(p);
             });
         } else {
-            return singleSubmit('@this', '@all', event, idOrElement(element), function(p) {
+            return singleSubmit('@this', '@all', event, element, function(p) {
                 p('ice.submit.type', 'ice.se');
                 p('ice.submit.serialization', 'element');
                 if (additionalParameters) additionalParameters(p);
@@ -128,15 +129,16 @@ var submit;
         }
     };
 
-    singleSubmitExecuteThisRenderThis = function(event, element, additionalParameters) {
+    singleSubmitExecuteThisRenderThis = function(event, idorelement, additionalParameters) {
+        var element = idOrElement(idorelement);
         if (standardFormSerialization(element)) {
-            return fullSubmit('@this', '@this', event, idOrElement(element), function(p) {
+            return fullSubmit('@this', '@this', event, element, function(p) {
                 p('ice.submit.type', 'ice.ser');
                 p('ice.submit.serialization', 'form');
                 if (additionalParameters) additionalParameters(p);
             });
         } else {
-            return singleSubmit('@this', '@this', event, idOrElement(element), function(p) {
+            return singleSubmit('@this', '@this', event, element, function(p) {
                 p('ice.submit.type', 'ice.ser');
                 p('ice.submit.serialization', 'element');
                 if (additionalParameters) additionalParameters(p);
