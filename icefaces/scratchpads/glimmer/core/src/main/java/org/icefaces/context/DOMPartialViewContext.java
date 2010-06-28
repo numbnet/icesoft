@@ -101,7 +101,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         if (null == partialWriter) {
             try {
                 //TODO: need to revisit the strategy for getting the "raw" output writer directly
-                Writer outputWriter = facesContext.getExternalContext().getResponseOutputWriter();
+                Writer outputWriter = getResponseOutputWriter();
                 ResponseWriter basicWriter = new BasicResponseWriter(outputWriter,
                         defaultWriter.getCharacterEncoding(),
                         defaultWriter.getContentType());
@@ -127,7 +127,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 ExternalContext ec = facesContext.getExternalContext();
 
                 //TODO: need to revisit the strategy for getting the "raw" output writer directly
-                Writer outputWriter = ec.getResponseOutputWriter();
+                Writer outputWriter = getResponseOutputWriter();
                 ec.setResponseContentType("text/xml");
                 ec.addResponseHeader("Cache-Control", "no-cache");
 
@@ -203,6 +203,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         } else {
             super.processPartial(phaseId);
         }
+    }
+
+    protected Writer getResponseOutputWriter() throws IOException {
+        return facesContext.getExternalContext().getResponseOutputWriter();
     }
 
     private void writeXMLPreamble(Writer writer) throws IOException {
