@@ -240,18 +240,15 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 dispose();
             });
 
-            var blockUI = configuration.connection.blockUI ? new Ice.Status.OverlayIndicator(configuration) : Ice.Status.NOOPIndicator;
 
-            connection.onSend(function(onReceive, ignoreLocking) {
-                var unblockUI;
-                if (ignoreLocking) {
-                    unblockUI = Function.NOOP;
-                } else {
-                    blockUI.on();
-
-                    var cancelEventCallback = function() {
-                        return false;
-                    };
+            var blockUI;
+            if (configuration.connection.blockUI) {
+                var blockUIOverlay = new Ice.Status.OverlayIndicator(configuration);
+                var cancelEventCallback = function() {
+                    return false;
+                };
+                blockUI = function() {
+                    blockUIOverlay.on();
                     var rollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([], function(result, type) {
                         return result.concat($enumerate(container.getElementsByTagName(type)).collect(function(e) {
                             var onkeypress = e.onkeypress;
@@ -269,12 +266,19 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                         }));
                     });
 
-                    unblockUI = function() {
+                    return function() {
                         rollbacks.broadcast();
-                        blockUI.off();
+                        blockUIOverlay.off();
                     };
-                }
+                };
+            } else {
+                blockUI = function() {
+                    return Function.NOOP;
+                };
+            }
 
+            connection.onSend(function(onReceive, ignoreLocking) {
+                var unblockUI = ignoreLocking ? Function.NOOP : blockUI();
                 statusManager.busy.on();
 
                 onReceive(function() {
