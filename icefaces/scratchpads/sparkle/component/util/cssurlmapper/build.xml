@@ -1,0 +1,17 @@
+<project name="cssurlmapper" default="compile" basedir=".">
+
+	<path id="compile.run.classpath">
+		<fileset dir="lib" includes="*.jar"/>
+	</path>
+	
+	<target name="compile">
+		<javac srcdir="src/org/icefaces/util/cssurlmapper" destdir="." debug="true">
+			<classpath refid="compile.run.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="clean">
+		<delete dir="org"/>
+	</target>
+
+</project>
