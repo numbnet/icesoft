@@ -38,6 +38,10 @@ import org.icefaces.push.Configuration;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIOutput;
+import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -91,9 +95,35 @@ public class FormSubmit implements SystemEventListener {
         scriptWriter.setId(form.getId() + "_captureSubmit");
         scriptWriter.setTransient(true);
         form.getChildren().add(0, scriptWriter);
+
+        AjaxDisabledWriter disabledWriter = new AjaxDisabledWriter();
+        disabledWriter.setTransient(true);
+        //add to end of list
+        form.getChildren().add(disabledWriter);
+
     }
 
     public boolean isListenerForSource(Object source) {
         return source instanceof HtmlForm;
+    }
+}
+
+class AjaxDisabledWriter extends UIOutputWriter  {
+    public void encode(ResponseWriter writer, FacesContext context) 
+            throws IOException {
+        UIForm form =  AjaxDisabledList.getContainingForm(this);
+        writer.startElement("input", this);
+        writer.writeAttribute("type", "hidden", "type");
+        writer.writeAttribute("id", getClientId(context), "id");
+        writer.writeAttribute("disabled", "true", "disabled");
+        writer.writeAttribute("value", form.getAttributes()
+                .get(AjaxDisabledList.DISABLED_LIST), "value");
+        writer.endElement("input");
+    }
+
+    public String getClientId(FacesContext context)  {
+        UIForm form =  AjaxDisabledList.getContainingForm(this);
+        return (form.getClientId() + UINamingContainer
+                    .getSeparatorChar(context)+ "ajaxDisabled");
     }
 }
