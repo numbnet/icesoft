@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 
 /**
  * This is the default implementation of the AssociatedPageViews interface.  It has logic for handling
@@ -52,7 +53,7 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
     private ViewsPageBidiMap bidi = new ViewsPageBidiMap();
     private static Class impl;
 
-    public abstract String getPageId();
+    public abstract String getPageId() throws Exception;
 
     public static AssociatedPageViews getImplementation(Configuration config) {
 
@@ -89,16 +90,24 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
     }
 
     public void add(View view) {
-        String pageId = getPageId();
-        bidi.put(pageId, view);
+        String pageId = null;
+        try {
+            pageId = getPageId();
+            bidi.put(pageId, view);
+        } catch (Exception e) {
+            if (log.isWarnEnabled()) {
+                log.warn("could not get a page id " + e);
+            }
+        }
     }
 
-    public void disposeAssociatedViews(View view) {
+    public void disposeAssociatedViews(Map views, View view) {
         Set associatedViews = bidi.getAssociatedViews(view);
-        Iterator views = associatedViews.iterator();
-        while (views.hasNext()) {
-            View v = (View) views.next();
+        Iterator relatedView = associatedViews.iterator();
+        while (relatedView.hasNext()) {
+            View v = (View) relatedView.next();
             v.dispose();
+            views.remove(v.getViewIdentifier());
             if (log.isDebugEnabled()) {
                 log.debug("disposed " + v.toString());
             }
