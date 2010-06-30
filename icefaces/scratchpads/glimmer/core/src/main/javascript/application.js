@@ -169,16 +169,21 @@ if (!window.ice.icefaces) {
             f.submit = function() {
                 submit(null, f);
             };
-            f.onsubmit = none;
+//            f.onsubmit = none;
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
-                    f.onsubmit = function() {
-                        submit(event, element);
-                        f.onsubmit = none;
-                        return false;
-                    };
+                    var disabled = document.getElementById(id+":ajaxDisabled").value;
+                    if (disabled.indexOf(" "+element.id+" ") > 0)  {
+                        return true;
+                    }  else {
+                        f.onsubmit = function() {
+                            submit(event, element);
+                            f.onsubmit = none;
+                            return false;
+                        };
+                    }
                 };
             });
 
