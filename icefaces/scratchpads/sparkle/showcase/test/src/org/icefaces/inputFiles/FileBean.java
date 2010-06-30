@@ -1,5 +1,7 @@
 package org.icefaces.inputFiles;
 
+import org.icefaces.component.inputFiles.InputFilesEvent;
+
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -25,5 +27,9 @@ public class FileBean {
     
     public void mixed(ActionEvent e) {
         System.out.println("mixed()  e: " + e);
+    }
+    
+    public void inputFilesListener(InputFilesEvent e) {
+        System.out.println("inputFilesListener()  e: " + e + "  phase: " + e.getPhaseId());
     }
 }
