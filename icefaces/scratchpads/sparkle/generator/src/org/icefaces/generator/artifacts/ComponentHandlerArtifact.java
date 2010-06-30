@@ -21,8 +21,7 @@ public class ComponentHandlerArtifact extends Artifact{
         if (!getComponentContext().isHasMethodExpression()) return;
         Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
         startComponentClass(getComponentContext().getActiveClass(), component);
-        Artifact componentArtifact = getComponentContext().getArtifact(ComponentArtifact.class);
-        addRules(((ComponentArtifact)getComponentContext().getArtifact(ComponentArtifact.class)).getGeneratedComponentProperties());  
+        addRules(getComponentContext().getPropertyFieldsForComponentClassAsList());
         endComponentClass();
 		
 	}
