@@ -267,10 +267,9 @@ function WindowLogHandler(thresholdPriority, name) {
         }
     }
 
-    onKeyPress(document, function(evt) {
+    onKeyUp(document, function(evt) {
         var event = $event(evt, document.documentElement);
-        var key = keyCode(event);
-        if ((key == 20 || key == 84 || key == 25) && isCtrlPressed(event) && isShiftPressed(event)) {
+        if (keyCode(event) == 84 && isCtrlPressed(event) && isShiftPressed(event)) {
             showWindow();
             logEntry = displayEntry;
         }
