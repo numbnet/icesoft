@@ -34,6 +34,8 @@ package com.icesoft.faces.webapp.http.portlet.page;
 
 import com.icesoft.faces.context.View;
 
+import java.util.Map;
+
 /**
  * In a portlet environment, there can be multiple views on a single page.  It's generally desirable that, when
  * one view is disposed due to navigation or closing a window/tab that all the associated views of that portal
@@ -80,12 +82,18 @@ public interface AssociatedPageViews {
     static final String NOOP_IMPLEMENTATION = "com.icesoft.faces.webapp.http.portlet.page.NoOpAssociatedPageViews";
 
     /**
+     * Key to associate in a request so that views on the same portal page of different tabs/windows
+     * can be distinguished.
+     */
+    static final String VIEWS_REQUEST_MARKER = "com.icesoft.faces.viewsRequestMarker";
+
+    /**
      * The implementation of this method will typically use portal implementation specific logic to determine the
      * unique page name/id that the current portlet resides in.
      *
      * @return The unique name or id of the page that the portlet resides in.
      */
-    public String getPageId();
+    public String getPageId() throws Exception;
 
     /**
      * Associates the the specified view to the current page. Implementations should rely on the superclass
@@ -101,6 +109,6 @@ public interface AssociatedPageViews {
      *
      * @param view The view to dispose.
      */
-    public void disposeAssociatedViews(View view);
+    public void disposeAssociatedViews(Map views, View view);
 
 }
