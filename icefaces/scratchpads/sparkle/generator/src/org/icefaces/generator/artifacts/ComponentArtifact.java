@@ -101,15 +101,10 @@ public class ComponentArtifact extends Artifact{
 		FileWriter.write("base", path, fileName, generatedComponentClass);        
 		System.out.println("____________________________Creating component class ends_________________________");
 	}
-
-	private void addProperties(Map<String, Field> properties) {
-		Iterator<Field> fields = properties.values().iterator();
-		while(fields.hasNext()) {
-			Field field = fields.next();
-			if(field.isAnnotationPresent(Property.class)){
-				generatedComponentProperties.add(field);
-			}
-		}
+    
+    
+	private void addProperties(List<Field> properties) {
+        generatedComponentProperties.addAll(properties);
 		addPropertyEnum();
 		addGetterSetter();
 	}
@@ -403,7 +398,7 @@ public class ComponentArtifact extends Artifact{
 	public void build() {
 		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
 		startComponentClass(getComponentContext().getActiveClass(), component);
-		addProperties(getComponentContext().getFieldsForComponentClass());  
+		addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
 		addFacet(getComponentContext().getActiveClass(), component);
 		addInternalFields();
 		handleAttribute();        

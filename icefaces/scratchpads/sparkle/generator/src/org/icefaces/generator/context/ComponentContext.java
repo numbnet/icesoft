@@ -42,6 +42,18 @@ public class ComponentContext {
     public Map<String, Field> getFieldsForComponentClass() {
 		return fieldsForComponentClass;
 	}
+    
+    public List<Field> getPropertyFieldsForComponentClassAsList() {
+        ArrayList<Field> ret = new ArrayList<Field>(fieldsForComponentClass.size()+1);
+		Iterator<Field> fields = fieldsForComponentClass.values().iterator();
+		while(fields.hasNext()) {
+			Field field = fields.next();
+			if(field.isAnnotationPresent(Property.class)){
+				ret.add(field);
+			}
+		}
+        return ret;
+    }
 
 	public void setFieldsForComponentClass(
 			Map<String, Field> fieldsForComponentClass) {
