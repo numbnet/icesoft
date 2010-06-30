@@ -22,19 +22,31 @@
 
 package org.icefaces.component.inputFiles;
 
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.component.UIComponent;
+public enum InputFilesStatuses implements InputFilesStatus {
+    UPLOADING(false, "Uploading"),
+    SUCCESS(true, "Success"),
+    INVALID(false, "Invalid"),
+    MAX_TOTAL_SIZE_EXCEEDED(false, "Exceeded max total size"),
+    MAX_FILE_SIZE_EXCEEDED(false, "Exceeded max file size"),
+    MAX_FILE_COUNT_EXCEEDED(false, "Exceeded max file count"),
+    REQUIRED(false, "No file specified, when one was required"),
+    UNKNOWN_SIZE(false, "Unknown file size"),
+    UNSPECIFIED_NAME(false, "Unspecified name"),
+    INVALID_CONTENT_TYPE(false, "Invalid content type");
 
-public class InputFilesEvent extends FacesEvent {
-    public InputFilesEvent(UIComponent src) {
-        super(src);
-    }
-    
-    public void processListener(FacesListener facesListener) {
+    private InputFilesStatuses(boolean success, String messageFormat) {
+        this.success = success;
+        this.messageFormat = messageFormat;
     }
 
-    public boolean isAppropriateListener(FacesListener facesListener) {
-        return false;
+    public boolean isSuccess() {
+        return this.success;
     }
-}
+
+    public String getMessageFormat() {
+        return this.messageFormat;
+    }
+
+    private boolean success;
+    private String messageFormat;
+}    

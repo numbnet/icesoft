@@ -22,6 +22,9 @@
 
 package org.icefaces.component.inputFiles;
 
-public interface InputFilesListener {
-    public void x();
+import java.io.Serializable;
+
+public interface InputFilesStatus extends Serializable {
+    public boolean isSuccess();
+    public String getMessageFormat();
 }
