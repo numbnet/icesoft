@@ -1,6 +1,29 @@
+/*
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ */
+
 package org.icefaces.component.inputFiles;
 
 import org.icefaces.context.DOMPartialViewContext;
+import org.icefaces.util.CoreUtils;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.ProgressListener;
@@ -10,7 +33,14 @@ import org.apache.commons.fileupload.util.Streams;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.faces.event.FacesEvent;
 import javax.faces.context.PartialViewContext;
+import javax.faces.context.FacesContext;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.component.UIComponent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.List;
@@ -20,13 +50,23 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Collection;
+import java.util.Set;
 import java.io.InputStream;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 
 public class InputFilesPhaseListener implements PhaseListener {
     public void afterPhase(PhaseEvent phaseEvent) {
 //        System.out.println("InputFilesPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
 //        System.out.println("InputFilesPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
 //        System.out.println("InputFilesPhaseListener.afterPhase()     responseComplete: " + phaseEvent.getFacesContext().getResponseComplete());
+        if (phaseEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+//System.out.println("InputFilesPhaseListener.afterPhase()  InputFiles.removeInfos()");
+            InputFiles.removeInfos(phaseEvent.getFacesContext());
+        }
     }
 
     public void beforePhase(PhaseEvent phaseEvent) {
@@ -41,6 +81,35 @@ public class InputFilesPhaseListener implements PhaseListener {
 //            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.isExecuteAll : " + phaseEvent.getFacesContext().getPartialViewContext().isExecuteAll());
 //            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.isRenderAll  : " + phaseEvent.getFacesContext().getPartialViewContext().isRenderAll());
         }
+        
+        if (phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+            final Map<String, FacesEvent> clientId2FacesEvent = InputFiles.
+                removeEventsForPreRender(phaseEvent.getFacesContext());            
+            if (clientId2FacesEvent != null) {
+                Set<String> clientIds = clientId2FacesEvent.keySet();
+                EnumSet<VisitHint> hints = EnumSet.of(
+                    VisitHint.SKIP_UNRENDERED);
+                VisitContext visitContext = VisitContext.createVisitContext(
+                    phaseEvent.getFacesContext(), clientIds, hints);
+                VisitCallback vcall = new VisitCallback() {
+                    public VisitResult visit(VisitContext visitContext,
+                                             UIComponent uiComponent) {
+                        FacesContext facesContext = visitContext.getFacesContext();
+                        String clientId = uiComponent.getClientId(facesContext);
+                        FacesEvent event = clientId2FacesEvent.get(clientId);
+//System.out.println("InputFilesPhaseListener  pre-Render  clientId: " + clientId + "  event: " + event);
+                        if (event != null) {
+                            uiComponent.broadcast(event);
+                        }
+                        return VisitResult.REJECT;
+                    }
+                };
+                phaseEvent.getFacesContext().getViewRoot().visitTree(
+                    visitContext, vcall);
+            }
+            return;
+        }
+        
         if (!phaseEvent.getPhaseId().equals(PhaseId.RESTORE_VIEW))
             return;
             
@@ -65,7 +134,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                         long currPercent = (read * 100L) / total;
                         if (currPercent >= (lastPercent + 10L)) {
                             lastPercent = currPercent;
-                            System.out.println("Progress: " + lastPercent + "%");
+//System.out.println("Progress: " + lastPercent + "%");
                         }
                     }
                     else {
@@ -74,6 +143,8 @@ public class InputFilesPhaseListener implements PhaseListener {
                 }
             });
             Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
+            byte[] buffer = new byte[4096];
+            Map<String,InputFilesInfo> clientId2Info = new HashMap<String,InputFilesInfo>(6);
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
@@ -81,7 +152,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                     if (item.isFormField()) {
                         String name = item.getFieldName();
                         String value = Streams.asString(item.openStream());
-                        System.out.println("Field:  " + name + "  ->  " + value);
+//System.out.println("Field:  " + name + "  ->  " + value);
                         
                         List<String> parameterList = parameterListMap.get(name);
                         if (parameterList == null) {
@@ -90,17 +161,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                         }
                         parameterList.add(value);
                     } else {
-                        String name = item.getName();
-                        String fieldName = item.getFieldName();
-                        String contentType = item.getContentType();
-                        System.out.println("File  name: " + name);
-                        System.out.println("File  fieldName: " + fieldName);
-                        System.out.println("File  contentType: " + contentType);
-                        //FileOutputStream = new FileOutputStream("C:\\aaa\\" + name);
-                        InputStream in = item.openStream();
-                        byte[] buffer = new byte[4096];
-                        while (in.read(buffer) >= 0) {}
-                        //TODO
+                        uploadFile(item, clientId2Info, buffer);
                     }
                 }
             }
@@ -108,6 +169,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                 System.out.println("Problem: " + e);
                 e.printStackTrace();
             }
+            InputFiles.storeInfosForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Info);
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
@@ -184,6 +246,163 @@ public class InputFilesPhaseListener implements PhaseListener {
             System.out.println("  RequestParameterMap  " + key + " -> " + rpm.get(key));
         }
         */
+    }
+    
+    private static void uploadFile(
+            FileItemStream item,
+            Map<String,InputFilesInfo> clientId2Info,
+            byte[] buffer) {
+        InputFilesInfo info = null;
+        InputFilesInfo.FileEntry fileEntry = null;
+        
+        File file = null;
+        long fileSizeRead = 0L;
+        InputFilesStatus status = InputFilesStatuses.UPLOADING;
+        
+//System.out.println("vvvvvvvvvvvvvvv");
+        try {
+            String name = item.getName();
+            String fieldName = item.getFieldName();
+            String contentType = item.getContentType();
+//System.out.println("File  name: " + name);
+//System.out.println("File  fieldName: " + fieldName);
+//System.out.println("File  contentType: " + contentType);
+
+            // IE gives us the whole path on the client, but we just
+            //  want the client end file name, not the path
+            String fileName = null;
+            if (name != null && name.length() > 0) {
+                File tempFileName = new File(name);
+                fileName = tempFileName.getName();
+            }
+//System.out.println("File    IE adjusted fileName: " + fileName);
+            
+            // When no file name is given, that means the user did
+            // not upload a file
+            if (fileName != null && fileName.length() > 0) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                String identifier = fieldName;
+                InputFilesConfig config = InputFiles.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
+                // config being null might be indicative of a non-ICEfaces'-inputFiles component in the form
+//System.out.println("File    config: " + config);
+
+                info = clientId2Info.get(config.getClientId());
+                if (info == null) {
+                    info = new InputFilesInfo(config.isViaCallback());
+                    clientId2Info.put(config.getClientId(), info);
+                }
+//System.out.println("File    info: " + info);
+                
+                fileEntry = new InputFilesInfo.FileEntry();
+                fileEntry.begin(fileName, contentType);
+
+                long availableTotalSize = info.getAvailableTotalSize(config.getMaxTotalSize());
+//System.out.println("File    availableTotalSize: " + availableTotalSize);
+                long availableFileSize = config.getMaxFileSize();
+//System.out.println("File    availableFileSize: " + availableFileSize);
+                
+                String folder = null;
+                // absolutePath takes precedence over relativePath
+                if (config.getAbsolutePath() != null && config.getAbsolutePath().length() > 0) {
+                    folder = config.getAbsolutePath();
+//System.out.println("File    Using absolutePath: " + folder);
+                }
+                else {
+                    folder = CoreUtils.getRealPath(facesContext, config.getRelativePath());
+//System.out.println("File    Using relativePath: " + folder);
+                }
+                if (folder == null) {
+//System.out.println("File    folder is null");
+                    folder = "";
+                }
+
+                if (config.isUseSessionSubdir()) {
+                    String sessionId = CoreUtils.getSessionId(facesContext);
+                    if (sessionId != null && sessionId.length() > 0) {
+                        String FILE_SEPARATOR = System.getProperty("file.separator");
+                        if (folder != null && folder.trim().length() > 0) {
+                            folder = folder + FILE_SEPARATOR;
+                        }
+                        folder = folder + sessionId;
+//System.out.println("File    Using sessionSubdir: " + folder);
+                    }
+                }
+
+                File folderFile = new File(folder);
+                if (!folderFile.exists())
+                    folderFile.mkdirs();
+                if (config.isUseOriginalFilename()) {
+                    file = new File(folderFile, fileName);
+//System.out.println("File    original  file: " + file);
+                }
+                else {
+                    file = File.createTempFile("ice_file_", null, folderFile);
+//System.out.println("File    sanitise  file: " + file);
+                }
+//System.out.println("File    file: " + file);
+                InputStream in = item.openStream();
+                OutputStream output = new FileOutputStream(file);
+                try {
+                    boolean overQuota = false;
+                    while (true) {
+                        int read = in.read(buffer);
+                        if (read < 0) {
+                            break;
+                        }
+                        fileSizeRead += read;
+                        if (!overQuota) {
+                            if (fileSizeRead > availableFileSize) {
+                                overQuota = true;
+                                status = InputFilesStatuses.MAX_FILE_SIZE_EXCEEDED;
+                            }
+                            else if (fileSizeRead > availableTotalSize) {
+                                overQuota = true;
+                                status = InputFilesStatuses.MAX_TOTAL_SIZE_EXCEEDED;
+                            }
+                            if (!overQuota) {
+                                output.write(buffer, 0, read);
+                            }
+                        }
+                    }
+//System.out.println("File    fileSizeRead: " + fileSizeRead);
+//if (overQuota)
+//  System.out.println("File    overQuota  status: " + status);
+                    if (status == InputFilesStatuses.UPLOADING) {
+                        status = InputFilesStatuses.SUCCESS;
+                    }
+                }
+                finally {
+                    output.flush();
+                    output.close();
+                }
+            }
+            else { // If no file name specified
+//System.out.println("File    UNSPECIFIED_NAME");
+                status = InputFilesStatuses.UNSPECIFIED_NAME;
+                InputStream in = item.openStream();
+                while (in.read(buffer) >= 0) {}
+            }
+        }
+        catch(Exception e) {
+//System.out.println("File    Exception: " + e);
+            status = InputFilesStatuses.INVALID;
+            //TODO Put e.getMessage() into status somehow
+            e.printStackTrace();
+        }
+        
+        if (file != null && !status.isSuccess()) {
+//System.out.println("File    Unsuccessful file being deleted");
+            file.delete();
+            file = null;
+        }
+        
+//System.out.println("File    Ending  status: " + status);
+        if (info != null && fileEntry != null) {
+            fileEntry.finish(file, fileSizeRead, status);
+            info.addCompletedFileEntry(fileEntry);
+//System.out.println("File    Added completed file");
+        }
+//System.out.println("^^^^^^^^^^^^^^^");
     }
 
     public PhaseId getPhaseId() {
