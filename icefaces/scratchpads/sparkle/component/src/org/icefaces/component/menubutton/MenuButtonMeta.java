@@ -1,0 +1,76 @@
+  package org.icefaces.component.menubutton;
+
+import javax.faces.component.UIComponent;
+
+import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
+
+import javax.el.MethodExpression;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+
+
+@Component(
+        tagName ="menubutton",
+        componentClass ="org.icefaces.component.menubutton.MenuButton",
+        rendererClass ="org.icefaces.component.menubutton.MenuButtonRenderer", 
+        componentType = "org.icefaces.MenuButton", 
+        rendererType = "org.icefaces.MenuButtonRenderer",            
+        extendsClass = "javax.faces.component.UISelectOne", 
+        generatedClass = "org.icefaces.component.menubutton.MenuButtonBase",
+		componentFamily="com.icesoft.faces.MenuButton"
+        )
+        
+public class MenuButtonMeta {  
+	
+    @Property(defaultValue="false")    
+    private Boolean immediate; 
+    
+    @Property   
+    private String label;
+
+    @Property (inherit=true, useTemplate=true)
+    private String id;
+	
+	@Property
+    private String image;
+    
+    @Property (defaultValue="false",
+    		tlddoc="if overlay is true can use menuitems with html markup")
+    private Boolean overlay;
+   
+//    @Property (inherit=true)
+//    private String value;
+    
+    @Property (tlddoc="Need a mnu name to bind the yui widget to the markup")
+    private String menuName;
+    
+//    @Property (tlddoc="need to know how many menuitems in the menu")
+//    private int numMenuItems;
+    
+    @Property (tlddoc="basic selection is within this string indicator")
+    private String selectedMenuItem;
+    
+    @Property (inherit=true, useTemplate=true)
+    private UIComponent binding;  
+    
+//    @Property (tlddoc="use this to create a group of buttons")
+//    private SelectItemGroup selectItemGroup;
+//    
+//    @Property (tlddoc="the selected Split button")
+//    private SelectItem selectedItem;
+    @Property (defaultValue="false",
+    		tlddoc="disabled property is required by aria specs")
+    private Boolean disabled;
+    
+    @Property (defaultValue="0", tlddoc="tabindex of the component")
+    private Integer tabindex;  
+    
+	@Property(defaultValue="false",
+			tlddoc="Default is false, means uses full submit")
+    private Boolean singleSubmit;
+	
+    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+            tlddoc="on menu item change value change event can be captured with this listener")
+    private MethodExpression menuSelectionListener;
+}
