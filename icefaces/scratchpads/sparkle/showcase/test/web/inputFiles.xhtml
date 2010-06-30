@@ -12,6 +12,10 @@
     <title>Input Files</title>
 </h:head>
 <h:body styleClass="yui-skin-sam">
+    <h:panelGrid columns="2">
+        <h:outputText value="Messages: "/>
+        <h:messages id="myMessages"/>
+    </h:panelGrid>
     <h:form id="justRegular">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form that only has regular input components, and no inputFiles component" />
@@ -29,6 +33,125 @@
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
     </h:form>
+    
+    
+    <h:form id="form1">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form1  None" />
+    	    <ann:inputFiles inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form2">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form2  Abs" />
+    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload2"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form3">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form3  Rel" />
+    	    <ann:inputFiles relativePath="upload3"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    <h:form id="form4">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form4  Both" />
+    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload4" relativePath="upload4"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    
+    <h:form id="form5">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form5  None NoSess Orig" />
+    	    <ann:inputFiles useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form6">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form6  Abs NoSess Orig" />
+    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload6" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form7">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form7  Rel NoSess Orig" />
+    	    <ann:inputFiles relativePath="upload7" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    <h:form id="form8">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form8  Both NoSess Orig" />
+    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload8" relativePath="upload8" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form9">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form9  [Rel NoSess Orig] maxTotalSize 50" />
+    	    <ann:inputFiles maxTotalSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form10">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form10  [Rel NoSess Orig] maxFileSize 50" />
+    	    <ann:inputFiles maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form11">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form11  [Rel NoSess Orig] maxTotalSize maxFileSize 50" />
+    	    <ann:inputFiles maxTotalSize="50" maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form12">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form12  (1) Immediate true" />
+    	    <ann:inputFiles id="one"
+                            immediate="true"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+    	    <h:outputText value="Form12  (2) Immediate false" />
+    	    <ann:inputFiles id="two"
+                            immediate="false"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+    	    <h:outputText value="Form12  (3) maxTotalSize 100" />
+    	    <ann:inputFiles id="three"
+                            maxTotalSize="100"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
 </h:body>
 </f:view>
 </html>
