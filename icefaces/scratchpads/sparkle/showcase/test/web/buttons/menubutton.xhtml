@@ -1,0 +1,76 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Buttons partial submit test</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+/*<style type="text/css">  */
+
+    /*
+        Set the "zoom" property to "normal" since it is set to "1" by the 
+        ".example-container .bd" rule in yui.css and this causes a Menu
+        instance's width to expand to 100% of the browser viewport.
+    */
+    
+ /*   div.yuimenu .bd {   
+        zoom: normal;
+    }
+
+    #form1 fieldset {
+        border: 2px groove #ccc;
+        margin: .5em;
+        padding: .5em;
+    }
+    </style>  */
+</h:head>
+<h:body>
+ 
+  <h:panelGroup id="overPanel" styleClass="yui-skin-sam">
+      <h2>Buttons partial submit Demo</h2>  
+      <h5>    
+         <a href="../index.html"> Goto Main page </a>  <br /> 
+         <a href="../buttons.xhtml"> Goto Buttons page </a>   </h5> 
+   <fieldset id="menuButtonFromMarkupForm">
+   <legend>menu from markup</legend>        
+    <h:form id="form1">
+     <ann:logger rendered="false"/> 
+	  <h:outputText value="Menu button " />
+	  <br/><br/>
+	  <h:panelGrid id="buttonGroupId" columns="2">
+	    <h:panelGroup id="panelGroupforMenubutton">
+	     <ann:menubutton id="menubutton" label="menu1" 
+	       menuName="menu1"
+	       singleSubmit="true">
+	         <ann:menuitem value="0" label="One" action="#{menubutton.menuItem1Action}"/>
+	         <ann:menuitem value="1" label="Two" action="#{menubutton.menuItem2Action}"/>
+	         <ann:menuitem value="2" label="Three" actionListener="#{menubutton.menuItem3ActionListener}"/>
+	      </ann:menubutton>
+	   </h:panelGroup>
+	   <h:panelGroup id="outputCheck">
+	      <h:outputText id="menuItem1" value="isMenuItem1:  #{menubutton.menuItem1} "/>
+	      <br />
+	      <h:outputText id="menuItem2" value="isMenuItem2:  #{menubutton.menuItem2} "/>
+	      <br />
+	      <h:outputText id="menuItem3" value="isMenuItem0:  #{menubutton.menuItem3} "/>
+      </h:panelGroup>
+      </h:panelGrid>
+
+    </h:form>
+    </fieldset>	      
+   </h:panelGroup>
+
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
