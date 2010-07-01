@@ -127,9 +127,9 @@ public class FileWriter {
             return String.valueOf(field.get(field));
         } catch (Exception fe) {
             try {
-                Method m = clazz.getMethod(methodName, null);
+                Method m = clazz.getMethod(methodName, (Class[]) null);
                 Object o = clazz.newInstance();
-                return String.valueOf(m.invoke(o, null));
+                return String.valueOf(m.invoke(o, (Object[]) null));
             } catch (Exception me ) {
                 me.printStackTrace();
             }
