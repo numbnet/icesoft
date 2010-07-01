@@ -175,7 +175,7 @@ if (!window.ice.icefaces) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
                     var disabled = document.getElementById(id+":ajaxDisabled").value;
-                    if (disabled.indexOf(" "+element.id+" ") > 0)  {
+                    if (disabled.indexOf(" "+element.id+" ") >= 0)  {
                         return true;
                     }  else {
                         f.onsubmit = function() {
