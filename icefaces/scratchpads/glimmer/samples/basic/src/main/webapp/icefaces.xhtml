@@ -53,7 +53,9 @@
         </h:commandButton>
         <br/>
         <h:outputText value="Reload entire page: "/>
-        <h:commandButton id="reload" value="reload"/>
+        <h:commandButton id="reload" value="reload">
+            <f:ajax disabled="true" />
+        </h:commandButton>
         <br/>
         <h:commandButton id="btn2" action="/icefaces.jsf" value="ICEfaces Page" />
         <br/>
