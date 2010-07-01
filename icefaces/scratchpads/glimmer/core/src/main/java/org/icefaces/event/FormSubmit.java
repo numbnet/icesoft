@@ -116,8 +116,9 @@ class AjaxDisabledWriter extends UIOutputWriter  {
         writer.writeAttribute("type", "hidden", "type");
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("disabled", "true", "disabled");
+        //consume with remove to reset the list each time
         writer.writeAttribute("value", form.getAttributes()
-                .get(AjaxDisabledList.DISABLED_LIST), "value");
+                .remove(AjaxDisabledList.DISABLED_LIST), "value");
         writer.endElement("input");
     }
 
