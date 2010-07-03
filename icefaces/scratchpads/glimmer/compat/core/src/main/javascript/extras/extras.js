@@ -3798,15 +3798,12 @@ Ice.ResizableGrid.addMethods({
     getAllColumnsWidth:function() {
         var container = this.getContainerElement();
         var children = container.firstChild.firstChild.childNodes;
-        var gap = 2;
-        if (Prototype.Browser.Gecko) {
-            gap += 2;
-        }
         var widths = "";
         for (i = 0; i < children.length; i++) {
-            if (i % gap == 0) {
-                widths += Element.getStyle(children[i].firstChild, "width") + ",";
-            }
+        	if (children[i].className == 'iceDatTblResBor') {
+        		continue;
+        	}
+            widths += Element.getStyle(children[i].firstChild, "width") + ",";
         }
         return widths;
     }
