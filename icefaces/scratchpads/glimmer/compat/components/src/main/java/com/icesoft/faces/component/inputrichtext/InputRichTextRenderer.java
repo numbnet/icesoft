@@ -83,11 +83,14 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                     value);
             addHiddenField(domContext, root, ClientIdPool.get(clientId + "Disabled"),
                     String.valueOf(inputRichText.isDisabled()));
+            Element scriptHolder = domContext.createElement(HTML.DIV_ELEM);
+            scriptHolder.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
+            scriptHolder.setAttribute(HTML.STYLE_ATTR, "display:none");
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
-            script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));
-            root.appendChild(script);
+            scriptHolder.appendChild(script);
+            root.appendChild(scriptHolder);
             if (inputRichText.isSaveOnSubmit()) {
                 Element saveOnSubmit = domContext.createElement(HTML.INPUT_ELEM);
                 saveOnSubmit.setAttribute(HTML.ID_ATTR, clientId + "saveOnSubmit");
