@@ -47,16 +47,17 @@ import java.util.logging.Logger;
 public class WindowScopeManager {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
-    private static final CurrentScopeThreadLocal CurrentScope = new CurrentScopeThreadLocal();
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
 
     public static ScopeMap lookupWindowScope(FacesContext context) {
-        return (ScopeMap) getState(context).windowScopedMaps.get(CurrentScope.lookup());
+        String id = lookupAssociatedWindowID(context.getExternalContext().getRequestMap());
+        return (ScopeMap) getState(context).windowScopedMaps.get(id);
     }
 
     public static synchronized String determineWindowID(FacesContext context) {
         State state = getState(context);
-        String id = context.getExternalContext().getRequestParameterMap().get("ice.window");
+        ExternalContext externalContext = context.getExternalContext();
+        String id = externalContext.getRequestParameterMap().get("ice.window");
         try {
             for (Object scopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
                 ScopeMap map = (ScopeMap) scopeMap;
@@ -68,6 +69,7 @@ public class WindowScopeManager {
             Log.log(Level.FINE, "Failed to remove window scope map", e);
         }
 
+        Map requestMap = externalContext.getRequestMap();
         if (id == null) {
             ScopeMap scopeMap;
             if (state.disposedWindowScopedMaps.isEmpty()) {
@@ -76,10 +78,11 @@ public class WindowScopeManager {
                 scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
             }
             scopeMap.activate(state);
+            associateWindowID(scopeMap.id, requestMap);
             return scopeMap.id;
         } else {
             if (state.windowScopedMaps.containsKey(id)) {
-                CurrentScope.associate(id);
+                associateWindowID(id, requestMap);
                 return id;
             } else {
                 //this must be a postback request while the window is reloading or redirecting
@@ -87,6 +90,7 @@ public class WindowScopeManager {
                     ScopeMap scopeMap = (ScopeMap) disposedScopeMap;
                     if (scopeMap.getId().equals(id)) {
                         scopeMap.activate(state);
+                        associateWindowID(id, requestMap);
                         return id;
                     }
                 }
@@ -147,7 +151,6 @@ public class WindowScopeManager {
 
         private void activate(State state) {
             state.activatedWindowNotifier.notifyObservers(id);
-            CurrentScope.associate(id);
             state.windowScopedMaps.put(id, this);
         }
 
@@ -165,14 +168,12 @@ public class WindowScopeManager {
         getState(session, configuration).disactivatedWindowNotifier.addObserver(observer);
     }
 
-    private static class CurrentScopeThreadLocal extends ThreadLocal {
-        String lookup() {
-            return (String) get();
-        }
+    private static String lookupAssociatedWindowID(Map requestMap) {
+        return (String) requestMap.get(WindowScopeManager.class.getName());
+    }
 
-        void associate(String windowID) {
-            set(windowID);
-        }
+    private static void associateWindowID(String id, Map requestMap) {
+        requestMap.put(WindowScopeManager.class.getName(), id);
     }
 
     private static State getState(FacesContext context) {
