@@ -530,6 +530,8 @@ p#clear {
 .ice-skin-rime .ice-calcontainer .toggle-popup {
     width: 18px;
     height: 18px;
+    padding: 0;
+    border: 0;
     overflow: hidden;
     cursor: pointer;
 }

@@ -394,7 +394,7 @@ init: function(params) {
     }
     var inputId = rootId + "_input";
     var inputEl = new Element(document.createElement("input"), {type:"text", value:params.dateStr, className:"text-input", id:inputId, name:inputId});
-    var toggleBtnEl = new Element(document.createElement("div"), {className:"toggle-popup open-popup"});
+    var toggleBtnEl = new Element(document.createElement("input"), {type:"button", className:"toggle-popup open-popup"});
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
         if (params.singleSubmit) {
