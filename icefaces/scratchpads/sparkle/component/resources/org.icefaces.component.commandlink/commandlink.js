@@ -1,13 +1,14 @@
 ice.component.commandlink = {
 
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
+	    YAHOO.widget.Logger.enableBrowserConsole();
 
 	YAHOO.util.Event.onDOMReady(function() {
     });
 
-	var Dom = YAHOO.util.Dom;
-	jprops = jsfProps;
-	var oLinkButton = new YAHOO.widget.Button(clientId,{label: jsProps.label }, {type: jsProps.type});
+
+    var spanId = clientId + "_span";
+	var oLinkButton = new YAHOO.widget.Button(spanId,{label: jsProps.label }, {type: jsProps.type});
 
 	// logger.log("params singleSubmit"+jsfProps.singleSubmit);
 		
@@ -18,37 +19,15 @@ ice.component.commandlink = {
 		if(jsProps.type) {
 			oLinkButton.set('button', jsProps.type);
 		}
-		this.jprops = jsfProps;
-		
-	  
-	    var onClick = function (e) {
-		    // logger.log(  " in onClick function for e = " + e );
-		    buttonNode = document.getElementById(clientId);
+	    var isSingle = jsfProps.singleSubmit;
+	    //alert("Single submit is: " + this.isSingle + ", origninal " +  jsfProps.singleSubmit);
+	    YAHOO.log(" - local isSingle: " + this.isSingle + " original " + jsfProps.singleSubmit);
+        root = document.getElementById(spanId);
 
-            alert ("jsfProps.doAction = " + jsfProps.doAction);
-            if (!jsfProps.doAction) {
-                e.returnValue=false;
-                YAHOO.util.stopEvent(e);
-                }
-
-		    alert ("First");
-
-	        if (jsfProps.singleSubmit) {
-	        	YAHOO.log("not single submit");
-                ice.se(e, e.target);
-            } else {
-            	YAHOO.log("single Submit is false");
-                ice.s(e, e.target);
-            }
-            alert("Second");
-            alert("Third");
-            return false;
-		};
-
-        root = document.getElementById(clientId);
-
-        root.onclick = this.theInsideClick;
-
+        if (jsfProps.doAction) {
+            root.onclick = this.actionClickHandler;
+        }
+        //oLinkButton.onclick = this.theInsideClick;
 
 		//oLinkButton.on("click", onClick);
 		// Set the aria role for the link. No further attributes supported.
@@ -68,31 +47,24 @@ ice.component.commandlink = {
    }, 
 
 
+   // handle clickage
+   actionClickHandler:function (e) {
+       //alert("ice.s, return false click handler");
+       //e.returnValue=false;
 
-   theInsideClick:function (e) {
+       var divRoot = document.getElementById(this.spanId);
+       YAHOO.log(" ++=+++++ How about: " + this.isSingle + "?" );
 
-       e.returnValue=false;
-
-	   //buttonNode = document.getElementById(clientId);
-       ice.s(e, e.target);
-
-       //YAHOO.util.stopEvent(e);
-       // YUI 3? 
-       //DOMEventFacade.preventDefault(false);
-
-       //e.preventDefault();
+       if (this.isSingle) {
+           YAHOO.log(" ++=+++++ SINGLE SUBMIT onClick and e.target="+e.target + ", while divRoot = " + divRoot);
+           ice.se(e, e.target);
+       } else {
+           YAHOO.log(" Full Submit onClick and e.target="+e.target + ", while divRoot = " + divRoot);
+           ice.s(e, e.target);
+       }
+      // YAHOO.util.stopEvent(e);
        return false;
-	}
+	},
+
 
 };
-
- var theOutsideOnClick = function (e) {
-
-		    //buttonNode = document.getElementById(clientId);
-            ice.s(e, e.target);
-            alert("My Function second");
-            e.returnValue=false;
-            // YAHOO.util.stopEvent(e);
-            window.event.returnValue=false;
-            return false;
-		};
