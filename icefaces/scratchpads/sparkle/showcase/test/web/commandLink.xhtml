@@ -7,9 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
-
-        >
+      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated" >
 <f:view  contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -20,6 +18,12 @@
 </h:head>
 <h:body>
 
+    <script>
+        function myOnClick() {
+            alert("Standalone onclick called");
+            return false;
+        }
+    </script>
   
 
     <!--<style type="text/css">-->
@@ -36,17 +40,45 @@
         <div class="yui-skin-sam" id="sam-skin-div">
             <h:form id="frm1">
 
-                <ann:commandLink href="http://icefaces.com" >Regular output Link</ann:commandLink>   <br></br>
-                <ann:commandLink value="click me" actionListener="#{link.actionListenerMethod}" >action Listener example </ann:commandLink>
+                This simple output link should only navigate to google.com <br></br>
+                <ann:commandLink href="http://google.com" >Google.com</ann:commandLink>   <p></p>
 
+            </h:form>
+            <h:form id="frm2">
+                This link should only toggle the employee image <br></br>
+                <ann:commandLink value="click me" actionListener="#{linkBean.actionListenerMethod}" >Link with actionListener only  </ann:commandLink>
+                <p></p>
+            </h:form>
+
+            <h:form id="frm3">
+                A single submit link with actionOnly <br></br>
+                <ann:commandLink value="click me" singleSubmit="true" actionListener="#{linkBean.actionListenerMethod}" >Single Submit action  </ann:commandLink>
+                <p></p>
+            </h:form>
+
+            <h:form id="frm4">
+                This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
+                <ann:commandLink  href="http://www.google.ca" actionListener="#{linkBean.hrefAndActionMethod}" >Link with actionListener and HREF defined
+                </ann:commandLink>
+
+                <p></p>
+            </h:form>
+
+            <h:form id="frm5">
+                <a id="success" href="http://www.icefaces.org" onclick="return ice.component.commandlink.theInsideClick(event)" >Link ID Test for IE</a>
             </h:form>
 
             <h:form id="output">
                 <h:panelGroup id="image">
                     <h:graphicImage value="images/employee.gif" label="output"
-                                    rendered="#{link.rendered}" />
+                                    rendered="#{linkBean.rendered}" />
                 </h:panelGroup>
+
+               <ui:remove> <ann:logger rendered="false" />    </ui:remove>
+
+
             </h:form>
+
         </div>
     </h:panelGroup>
 
