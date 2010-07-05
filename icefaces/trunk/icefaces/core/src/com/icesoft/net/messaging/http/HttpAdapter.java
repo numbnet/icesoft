@@ -34,6 +34,7 @@ package com.icesoft.net.messaging.http;
 
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
@@ -164,7 +165,14 @@ implements MessageServiceAdapter {
                                     request.getParameter("message"));
                             headersToProperties(request, _message);
                             try {
-                                request.respondWith(new OKHandler());
+                                request.respondWith(
+                                    new OKHandler() {
+                                        public void respond(final Response response)
+                                        throws Exception {
+                                            super.respond(response);
+                                            response.setHeader("X-Powered-By", new String[] { "HTTP Adapter" });
+                                        }
+                                    });
                             } catch (Exception exception) {
                                 if (LOG.isErrorEnabled()) {
                                     LOG.error(
@@ -185,7 +193,14 @@ implements MessageServiceAdapter {
                                         ")");
                             }
                             try {
-                                request.respondWith(new NotFoundHandler(""));
+                                request.respondWith(
+                                    new NotFoundHandler("") {
+                                        public void respond(final Response response)
+                                        throws Exception {
+                                            super.respond(response);
+                                            response.setHeader("X-Powered-By", new String[] { "HTTP Adapter" });
+                                        }
+                                    });
                             } catch (Exception exception) {
                                 if (LOG.isErrorEnabled()) {
                                     LOG.error(
@@ -266,6 +281,7 @@ implements MessageServiceAdapter {
                 _connection.setDoOutput(true);
                 _connection.setRequestMethod("POST");
                 propertiesToHeaders(message, _connection);
+                _connection.setRequestProperty("X-Powered-By", "HTTP Adapter");
                 _connection.setRequestProperty("X-Target-Name", targetName);
                 _writer =
                     new OutputStreamWriter(_connection.getOutputStream());
@@ -283,6 +299,11 @@ implements MessageServiceAdapter {
                             message);
                 }
                 _reader = new InputStreamReader(_connection.getInputStream());
+                String _xPoweredBy = _connection.getHeaderField("X-Powered-By");
+                if (_xPoweredBy == null || _xPoweredBy.indexOf("HTTP Adapter") == -1) {
+                    // 200 OK received, but not from the HTTP Adapter.
+                    throw new MessageServiceException("200 OK received, but not from HTTPAdapter.");
+                }
                 if (LOG.isDebugEnabled()) {
                     StringBuffer _buffer = new StringBuffer();
                     Iterator _headerFields =
