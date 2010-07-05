@@ -144,12 +144,28 @@ public class Main {
 	}
 	
 	private static void printHelp(Options options) {
-	
+
+		System.out.println("This tool parses CSS files and maps URLs from a standard format to the JSF");
+		System.out.println("resource loader format. For example, an image in a different directory than");
+		System.out.println("the CSS file would be mapped as follows:");
+		System.out.println("   url(../icon.gif) => url(#{resource['mylibrary/images/icon.gif']})");
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("cssurlmapper", options );
+		formatter.printHelp("cssurlmapper", options);
+		System.out.println("It is required to specify the name of the library where the resource will be");
+		System.out.println("located in the production environment. Additionally, the JSF resource loader");
+		System.out.println("does not accept occurrences of '..' in path names. So, the full path of the");
+		System.out.println("resource, starting from the root library folder, will be resolved by this tool.");
+		System.out.println("The starting directory for building this path can be specified with the");
+		System.out.println("--reference-dir option. Otherwise, the value of --root-dir will be used.");
 	}
 	
 	private static void processDirectory(File dir, String libraryName, File referenceDir, File outputDir) {
+		try {
+			System.out.println("Entering directory " + dir.getCanonicalPath());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		File[] children = dir.listFiles();
 		for (int i = 0; i < children.length; i++) {
 			try {
@@ -168,10 +184,16 @@ public class Main {
 				System.out.println(e.getMessage());
 			}
 		}
+		
+		try {
+			System.out.println("Leaving directory " + dir.getCanonicalPath());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	private static void processFile(File file, String libraryName, File referenceDir, File outputDir) {
-		CssUrlMapper transformer = new CssUrlMapper(file, libraryName, referenceDir, outputDir);
-		transformer.run();
+		CssUrlMapper mapper = new CssUrlMapper(file, libraryName, referenceDir, outputDir);
+		mapper.run();
 	}
 }

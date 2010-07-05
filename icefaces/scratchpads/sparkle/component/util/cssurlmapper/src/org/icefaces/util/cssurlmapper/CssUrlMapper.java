@@ -28,8 +28,11 @@ public class CssUrlMapper {
 	public void run() {
 	
 		try {
+			System.out.println("Reading file " + this.file.getCanonicalPath());
 			FileReader reader = new FileReader(this.file);
-			FileWriter writer = new FileWriter(new File(this.outputDir, this.file.getName()));
+			
+			File outputFile = new File(this.outputDir, this.file.getName());
+			FileWriter writer = new FileWriter(outputFile);
 			
 			boolean inComments = false;
 			int lastChar = 0;
@@ -72,6 +75,7 @@ public class CssUrlMapper {
 				writer.write(currentUrl.toString()); // flush buffers
 			}
 			
+			System.out.println("Writing file " + outputFile.getCanonicalPath());
 			writer.close();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -81,7 +85,6 @@ public class CssUrlMapper {
 	private String transformUrl(UrlOccurrence url) {
 
 		String path = url.getUrlChars().trim();
-		// TODO: if unquoted url, unescape all sequences
 		
 		if (path.startsWith("http://") || path.startsWith("#{resource")) { 
 			return url.toString(); // not a local resource or already in JSF format, do not modify

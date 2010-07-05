@@ -57,11 +57,7 @@ public class UrlOccurrence {
 				}
 				break;
 			case 4: // whitespace and comments before the actual url, starting quotes
-			
-				// TODO: we only need to use the 'lastChar'  variable to determine escaping sequences and comments...
-				//  we can always write the last character and the current character...
-
-				// check for comments first
+				// check first for comments
 				if (c == '*' && lastChar == '/' && !inComments) { // comments start
 					inComments = true;
 					startBuffer.appendCodePoint(lastChar);
@@ -79,7 +75,7 @@ public class UrlOccurrence {
 					urlBuffer.appendCodePoint(c);
 					this.quoted = false;
 					this.doubleQuoted = false;
-				} else if (Character.isWhitespace(c) || inComments) {
+				} else if (Character.isWhitespace(c) || inComments) { // just add character
 					startBuffer.appendCodePoint(c);
 				} else {
 					if (c == '/' || c == '*') {
@@ -141,7 +137,7 @@ public class UrlOccurrence {
 				lastChar = c;
 				
 				break;
-			case 6: // whitespace and comments after the actual url, other characters also, but we're not concerned 
+			case 6: // whitespace and comments after the actual url, there might be other characters as well
 				endBuffer.appendCodePoint(c);
 				if (c == ')') {
 					this.complete = true;
