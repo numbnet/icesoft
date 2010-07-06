@@ -1,6 +1,7 @@
 package org.icefaces.component.selectinputdate;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -121,12 +122,35 @@ public class SelectInputDateRenderer extends Renderer {
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
 */
+/*
         String params = "'" + clientId + "',{pageDate:'" + pageDate +
                 "',selectedDate:'" + selectedDate + "'},{dateStr:'" + dateStr + "',selectedHour:'" + selectedHour +
                 "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
                 "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
                 "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
                 ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
+*/
+        String params = "'" + clientId + "'," +
+                JSONBuilder.create().
+                beginMap().
+                    entry("pageDate", pageDate).
+                    entry("selectedDate", selectedDate).
+                endMap().toString()
+                + "," +
+                JSONBuilder.create().
+                beginMap().
+                    entry("dateStr", dateStr).
+                    entry("selectedHour", selectedHour).
+                    entry("selectedMinute", selectedMinute).
+                    entry("hourField", hourField).
+                    entry("amPmStr", amPmStr).
+                    entry("amStr", amPmStrings[0]).
+                    entry("pmStr", amPmStrings[1]).
+                    entry("renderAsPopup", renderAsPopup).
+                    entry("renderInputField", renderInputField).
+                    entry("singleSubmit", singleSubmit).
+                    entry("ariaEnabled", ariaEnabled).
+                endMap().toString();
         System.out.println("params = " + params);
         writer.startElement(HTML.SPAN_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", HTML.ID_ATTR);
