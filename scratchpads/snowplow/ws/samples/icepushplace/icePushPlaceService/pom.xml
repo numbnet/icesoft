@@ -106,7 +106,7 @@
       </dependency>
         <dependency>
             <groupId>org.springframework.ws</groupId>
-            <artifactId>spring-ws</artifactId>
+            <artifactId>spring-ws-core-tiger</artifactId>
             <version>1.5.9</version>
         </dependency>
         <dependency>
@@ -119,12 +119,12 @@
             <artifactId>wsdl4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <scope>runtime</scope>
             <version>1.2.15</version>
-        </dependency>
+        </dependency> -->
    </dependencies>
 
 <!--

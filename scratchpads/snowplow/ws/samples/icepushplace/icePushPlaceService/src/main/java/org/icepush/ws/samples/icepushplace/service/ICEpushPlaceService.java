@@ -16,17 +16,23 @@ public class ICEpushPlaceService {
     private Hashtable<String,Application> apps;
     private Hashtable<String,World> worlds;
     private long masterSequenceNo;
+    private Application oldestApp;
 
     public ICEpushPlaceService() {
 	apps = new Hashtable<String,Application>();
 	worlds = new Hashtable<String,World>();
 	masterSequenceNo = Long.MIN_VALUE;
+	oldestApp = null;
     }
 
     public void registerApp(AppType app) {
+	Application application = new Application(app);
 	if (!apps.containsKey(app.getURL())) {
-	    Application application = new Application(app);
 	    apps.put(app.getURL(), application);
+	    apps.put(app.getURL(), application);
+	    if (apps.size() == 1) {
+		oldestApp = application;
+	    }
 	}
 	if (!worlds.containsKey(app.getWorld())) {
 	    World world = new World(app.getWorld());
@@ -53,6 +59,7 @@ public class ICEpushPlaceService {
 
 	    // Add the person.
 	    person.setStatus(ADD);
+	    person.setKey(key);
 	    Person newPerson = new Person(person);
 	    newPerson.setLastSequenceNo(++masterSequenceNo);
 	    world.getPeople().put(new Integer(key), newPerson);
@@ -126,6 +133,7 @@ public class ICEpushPlaceService {
 	System.out.println("World Update Starting: world='" +
 			   myWorld + "'");
 	if (world != null) {
+	    
 	    Hashtable<Integer,Person> people = world.getPeople();
 	    for (Enumeration e = people.elements() ; e.hasMoreElements() ;) {
 		Person person = (Person)e.nextElement();

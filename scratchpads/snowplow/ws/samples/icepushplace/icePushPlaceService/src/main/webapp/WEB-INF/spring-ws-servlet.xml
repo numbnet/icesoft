@@ -21,7 +21,7 @@
 
     <bean id="icepushplace" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
         <property name="schema" ref="schema"/>
-        <property name="portTypeName" value="ImageRepository"/>
+        <property name="portTypeName" value="ICEpushPlace"/>
         <property name="locationUri" value="http://localhost:8080/icepushplace/"/>
     </bean>
 
