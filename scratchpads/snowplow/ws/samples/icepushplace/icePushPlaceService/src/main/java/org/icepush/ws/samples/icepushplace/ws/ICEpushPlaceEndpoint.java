@@ -48,7 +48,7 @@ public class ICEpushPlaceEndpoint {
 					 request.getPerson());
     }
 
-    @PayloadRoot(localPart = "WorldUpdateRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
+    @PayloadRoot(localPart = "worldUpdateRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
 	public JAXBElement<WorldResponseType> updateWorld(JAXBElement<WorldRequestType> requestElement) {
 	WorldRequestType request = requestElement.getValue();
 	WorldResponseType response = icePushPlaceService.
