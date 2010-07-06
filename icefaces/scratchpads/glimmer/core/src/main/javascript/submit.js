@@ -152,6 +152,20 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
+        var disabled = document.getElementById(element.id+":ajaxDisabled");
+        if (disabled)  {
+            var disabledArray = disabled.value.split(" ");
+            var l = disabledArray.length;
+            for(var i = 1; i < l; i++) {
+                var name = disabledArray[i];
+                var field = element[name];
+                if ( (field) && (field.value == name ) && (element.nativeSubmit) ) {
+                    element.nativeSubmit();
+                    return;
+                }
+            }
+        }
+
         var viewID = viewIDOf(element);
         var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
         serializeEventToOptions(event, element, options);
