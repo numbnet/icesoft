@@ -112,13 +112,17 @@ class AjaxDisabledWriter extends UIOutputWriter  {
     public void encode(ResponseWriter writer, FacesContext context) 
             throws IOException {
         UIForm form =  AjaxDisabledList.getContainingForm(this);
+        //consume with remove to reset the list each time
+        String value = (String) form.getAttributes()
+                .remove(AjaxDisabledList.DISABLED_LIST);
+        if (null == value) {
+            return;
+        }
         writer.startElement("input", this);
         writer.writeAttribute("type", "hidden", "type");
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("disabled", "true", "disabled");
-        //consume with remove to reset the list each time
-        writer.writeAttribute("value", form.getAttributes()
-                .remove(AjaxDisabledList.DISABLED_LIST), "value");
+        writer.writeAttribute("value", value, "value");
         writer.endElement("input");
     }
 

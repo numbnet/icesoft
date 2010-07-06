@@ -166,6 +166,7 @@ if (!window.ice.icefaces) {
         namespace.captureSubmit = function(id, delta) {
             var f = document.getElementById(id);
             //hijack browser form submit, instead submit through an Ajax request
+            f.nativeSubmit = f.submit;
             f.submit = function() {
                 submit(null, f);
             };
@@ -174,16 +175,16 @@ if (!window.ice.icefaces) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
-                    var disabled = document.getElementById(id+":ajaxDisabled").value;
-                    if (disabled.indexOf(" "+element.id+" ") >= 0)  {
+                    var disabled = document.getElementById(id+":ajaxDisabled");
+                    if ( (disabled) && 
+                         (disabled.value.indexOf(" " + element.id + " ") >= 0) )  {
                         return true;
-                    }  else {
-                        f.onsubmit = function() {
-                            submit(event, element);
-                            f.onsubmit = none;
-                            return false;
-                        };
                     }
+                    f.onsubmit = function() {
+                        submit(event, element);
+                        f.onsubmit = none;
+                        return false;
+                    };
                 };
             });
 
