@@ -22,7 +22,7 @@
 
 package com.icesoft.faces.context;
 
-import org.icefaces.push.DynamicResourceDispatcher;
+import org.icefaces.application.DynamicResourceRegistry;
 import org.icefaces.push.http.DynamicResource;
 import org.icefaces.push.http.DynamicResourceLinker;
 
@@ -36,12 +36,12 @@ import java.util.Map;
 
 public class ResourceRegistryLocator {
     public static ResourceRegistry locate(FacesContext context) {
-        Map session = context.getExternalContext().getSessionMap();
-        if (session.containsKey(ResourceRegistry.class.getName())) {
-            return (ResourceRegistry) session.get(ResourceRegistry.class.getName());
+        Map applicationMap = context.getExternalContext().getApplicationMap();
+        if (applicationMap.containsKey(ResourceRegistry.class.getName())) {
+            return (ResourceRegistry) applicationMap.get(ResourceRegistry.class.getName());
         } else {
-            ResourceRegistry registry = new DynamicResourceDispatcherAdapter((DynamicResourceDispatcher) session.get(DynamicResourceDispatcher.class.getName()), context);
-            session.put(ResourceRegistry.class.getName(), registry);
+            ResourceRegistry registry = new DynamicResourceDispatcherAdapter(DynamicResourceRegistry.Locator.locate(context), context);
+            applicationMap.put(ResourceRegistry.class.getName(), registry);
             return registry;
         }
     }
@@ -49,9 +49,9 @@ public class ResourceRegistryLocator {
     private static class DynamicResourceDispatcherAdapter implements ResourceRegistry {
         private ArrayList cssRuleURIs = new ArrayList();
         private ArrayList jsCodeURIs = new ArrayList();
-        private DynamicResourceDispatcher resourceDispatcher;
+        private DynamicResourceRegistry resourceDispatcher;
 
-        private DynamicResourceDispatcherAdapter(DynamicResourceDispatcher resourceDispatcher, FacesContext context) {
+        private DynamicResourceDispatcherAdapter(DynamicResourceRegistry resourceDispatcher, FacesContext context) {
             this.resourceDispatcher = resourceDispatcher;
         }
 

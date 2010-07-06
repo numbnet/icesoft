@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,16 +67,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     protected abstract PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
 
-    public void touchSession(HttpSession session) {
-        if (session != null) {
-            String id = session.getId();
-            if (SessionMonitors.containsKey(id)) {
-                Monitor monitor = (Monitor) SessionMonitors.get(id);
-                monitor.touchSession();
-            }
-        }
-    }
-
     protected void checkSession(HttpSession session) throws Exception {
         final String id = session.getId();
         final Monitor monitor;
@@ -109,11 +98,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     private void sessionShutdown(HttpSession session) {
         PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
-        if(servlet != null ){
+        if (servlet != null) {
             servlet.shutdown();
         } else {
             if (log.isLoggable(Level.FINE)) {
-                log.fine("no PseudoServlet for " + session.getId() );
+                log.fine("no PseudoServlet for " + session.getId());
             }
         }
     }

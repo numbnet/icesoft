@@ -58,8 +58,8 @@ public interface DynamicResourceRegistry {
     public class Locator {
 
         public static DynamicResourceRegistry locate(FacesContext context) {
-            Map session = context.getExternalContext().getSessionMap();
-            return (DynamicResourceRegistry) session.get(DynamicResourceDispatcher.class.getName());
+            Map applicationMap = context.getExternalContext().getApplicationMap();
+            return (DynamicResourceRegistry) applicationMap.get(DynamicResourceDispatcher.class.getName());
         }
     }
 }
