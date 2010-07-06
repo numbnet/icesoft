@@ -49,6 +49,7 @@ public class GameManager implements DisposableBean {
 	public static final long DEFAULT_REFLIP_DELAY = 1200l;
 	public static final long WIN_SCREEN_DISPLAY_TIME = 7500l;
 	public static final String RENDER_GROUP_LOBBY = "render-lobby";
+	public static final String TEST_MODE_GAME_NAME = "Activate Test Mode";
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
@@ -106,6 +107,10 @@ public class GameManager implements DisposableBean {
 		}
 		
 		return 0;
+	}
+	
+	public static boolean checkTestMode(String name) {
+		return TEST_MODE_GAME_NAME.equalsIgnoreCase(name);
 	}
 	
 	public boolean createGame(UserModel user, GameInstance newGame) {

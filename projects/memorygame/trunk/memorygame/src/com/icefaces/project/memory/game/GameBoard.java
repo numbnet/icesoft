@@ -67,11 +67,15 @@ public class GameBoard {
 		this.data = data;
 	}
 	
+	public void generateData() {
+		generateData(false);
+	}
+	
 	/**
 	 * Method to generate the board based on our current card set
 	 * We'll basically get a valid GameCard for every slot in our board grid
 	 */
-	public void generateData() {
+	public void generateData(boolean testMode) {
 		int numberOfCells = getCellCount();
 		int halfLifeCells = getHalfCellCount();
 		
@@ -91,9 +95,16 @@ public class GameBoard {
 			}
 		}
 		
+		int cellIndex = -1;
 		for (int i = 0; i < numberOfCells; i++) {
-			data.add(availableData.remove(
-				Randomizer.getInstance().nextInt(availableData.size())));
+			cellIndex = Randomizer.getInstance().nextInt(availableData.size());
+			
+			// Remove the random aspect if we're in test mode and just grab the first data item from the list
+			if (testMode) {
+				cellIndex = 0;
+			}
+			
+			data.add(availableData.remove(cellIndex));
 		}
 		
 		// Reset our full list since it has been emptied

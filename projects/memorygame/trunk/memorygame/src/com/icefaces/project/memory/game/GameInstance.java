@@ -56,6 +56,7 @@ public class GameInstance {
 	private GameBoard board;
 	private GameChat chat;
 	private GameTurns turns;
+	private boolean testMode = false;
 	
 	public GameInstance() {
 		this(null, null, GameManager.DEFAULT_SIZE,
@@ -63,7 +64,7 @@ public class GameInstance {
 			 new Vector<UserModel>(0),
 			 GameManager.DEFAULT_MAX_USERS,
 			 GameManager.DEFAULT_REFLIP_DELAY,
-			 false);
+			 false, false);
 	}
 	
 	public GameInstance(GameInstance clone) {
@@ -74,12 +75,14 @@ public class GameInstance {
 		     clone.getUsers(),
 		     clone.getMaxUsers(),
 		     clone.getReflipDelay(),
-		     clone.getIsStarted());
+		     clone.getIsStarted(),
+		     clone.getTestMode());
 	}
 	
 	public GameInstance(String name, String password, int size,
 			GameCardSet cardSet, List<UserModel> users,
-			int maxUsers, long reflipDelay, boolean isStarted) {
+			int maxUsers, long reflipDelay, boolean isStarted,
+			boolean testMode) {
 		this.name = name;
 		this.password = password;
 		this.users = users;
@@ -87,11 +90,17 @@ public class GameInstance {
 		this.reflipDelay = reflipDelay;
 		this.isStarted = isStarted;
 		
-		board = new GameBoard(size, cardSet);
-		chat = new GameChat(this.name);
-		turns = new GameTurns(this,
-							  this.reflipDelay,
-							  this.users);
+		this.board = new GameBoard(size, cardSet);
+		this.chat = new GameChat(this.name);
+		this.turns = new GameTurns(this,
+			   				       this.reflipDelay,
+							       this.users);
+		
+		// Determine if we're in test mode, and notify the user accordingly
+		this.testMode = GameManager.checkTestMode(this.name);
+		if (this.testMode) {
+			this.chat.addTestModeMessage();
+		}
 	}
 	
 	public String getName() {
@@ -129,6 +138,12 @@ public class GameInstance {
 	}
 	public void setIsStarted(boolean isStarted) {
 		this.isStarted = isStarted;
+	}
+	public boolean getTestMode() {
+		return testMode;
+	}
+	public void setTestMode(boolean testMode) {
+		this.testMode = testMode;
 	}
 	public boolean getHasWinner() {
 		return getWinnerMessage() != null;
@@ -419,10 +434,10 @@ public class GameInstance {
 			BotManager.clearMemorizedCards(users);
 			
 			// Generate a new board
-			board.generateData();
+			board.generateData(testMode);
 			
 			// Determine the first turn
-			turns.determineTurns();
+			turns.determineTurns(testMode);
 		}
 		
 		renderGame();

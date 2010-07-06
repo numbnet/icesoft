@@ -118,4 +118,8 @@ public class GameChat {
 	public void addWinnerMessage(String message) {
 		addMessage(new GameChatMessage(SYSTEM_NAME, message), false);
 	}
+	
+	public void addTestModeMessage() {
+		addMessage(new GameChatMessage(SYSTEM_NAME, "Activated test mode. Random aspects have been removed."), false);
+	}
 }
