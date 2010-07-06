@@ -34,12 +34,14 @@ import org.icefaces.push.http.Server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
-import java.io.Serializable;
 
 public class CompressingServer implements Server, Serializable {
+    private static Logger log = Logger.getLogger(CompressingServer.class.getName());
     private Server server;
     private MimeTypeMatcher mimeTypeMatcher;
     private boolean compressResources;
@@ -57,20 +59,29 @@ public class CompressingServer implements Server, Serializable {
     }
 
     public void service(Request request) throws Exception {
-        if (compressResources) {
-            String mimeType = mimeTypeMatcher.mimeTypeFor(request.getURI().getPath());
-            if (noCompressForMimeTypes.contains(mimeType)) {
-                server.service(request);
-            } else {
-                String acceptEncodingHeader = request.getHeader("Accept-Encoding");
-                if (acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
-                    server.service(new CompressingRequest(request));
-                } else {
+        try {
+            if (compressResources) {
+                String mimeType = mimeTypeMatcher.mimeTypeFor(request.getURI().getPath());
+                if (noCompressForMimeTypes.contains(mimeType)) {
                     server.service(request);
+                } else {
+                    String acceptEncodingHeader = request.getHeader("Accept-Encoding");
+                    if (acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
+                        server.service(new CompressingRequest(request));
+                    } else {
+                        server.service(request);
+                    }
                 }
+            } else {
+                server.service(request);
             }
-        } else {
-            server.service(request);
+        } catch (IOException e) {
+            //capture & log Tomcat specific exception
+            if (e.getClass().getName().endsWith("ClientAbortException")) {
+                log.fine("Browser closed the connection prematurely for " + request.getURI());
+            } else {
+                throw e;
+            }
         }
     }
 

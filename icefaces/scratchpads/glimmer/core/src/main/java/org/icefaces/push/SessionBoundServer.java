@@ -23,10 +23,8 @@
 package org.icefaces.push;
 
 import org.icefaces.application.WindowScopeManager;
-import org.icefaces.push.http.MimeTypeMatcher;
 import org.icefaces.push.servlet.BasicAdaptingServlet;
 import org.icefaces.push.servlet.PathDispatcher;
-import org.icefaces.push.servlet.SessionDispatcher;
 import org.icepush.PushContext;
 
 import javax.faces.context.ExternalContext;
@@ -34,27 +32,21 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SessionBoundServer extends PathDispatcher implements Serializable {
+public class SessionBoundServer extends PathDispatcher {
     private static Logger log = Logger.getLogger(SessionBoundServer.class.getName());
     private static final String ICEFacesBridgeRequestPattern = "\\.icefaces\\.jsf$";
     public static final String SessionExpiryExtension = ":se";
     private transient PushContext pushContext;
     private String groupName;
 
-    public SessionBoundServer(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, Configuration configuration) {
+    public SessionBoundServer(final HttpSession session, Configuration configuration) {
         this.groupName = session.getId();
 
-        final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
-            public String mimeTypeFor(String path) {
-                return session.getServletContext().getMimeType(path);
-            }
-        };
 
         try {
             this.pushContext = PushContext.getInstance(session.getServletContext());
@@ -83,7 +75,6 @@ public class SessionBoundServer extends PathDispatcher implements Serializable {
         }
 
         dispatchOn(".*dispose\\-window" + ICEFacesBridgeRequestPattern, new BasicAdaptingServlet(new DisposeWindowScope()));
-        dispatchOn(".*icefaces\\/resource\\/.*", new BasicAdaptingServlet(new DynamicResourceDispatcher("icefaces/resource/", mimeTypeMatcher, sessionMonitor, session, configuration)));
     }
 
     public void shutdown() {

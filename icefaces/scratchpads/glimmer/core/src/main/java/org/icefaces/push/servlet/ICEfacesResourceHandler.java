@@ -24,7 +24,10 @@ package org.icefaces.push.servlet;
 
 import org.icefaces.push.Configuration;
 import org.icefaces.push.CurrentContext;
+import org.icefaces.push.DynamicResourceDispatcher;
 import org.icefaces.push.SessionBoundServer;
+import org.icefaces.push.http.MimeTypeMatcher;
+import org.icefaces.push.http.standard.CompressingServer;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -46,26 +49,36 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
-    private SessionDispatcher dispatcher;
+    private static final String ResourcesPathPrefix = "icefaces/resource/";
+    private PathDispatcher dispatcher = new PathDispatcher();
 
     private ResourceHandler handler;
 
     public ICEfacesResourceHandler(ResourceHandler handler) {
         this.handler = handler;
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().getApplicationMap().put(
-            ICEfacesResourceHandler.class.getName(), this);
+        ExternalContext externalContext = facesContext.getExternalContext();
+        externalContext.getApplicationMap().put(ICEfacesResourceHandler.class.getName(), this);
         try {
-            final ServletContext context = (ServletContext) 
-                    facesContext.getExternalContext().getContext();
-            final Configuration configuration = 
-                    new ServletContextConfiguration("org.icefaces", context);
-            dispatcher = new SessionDispatcher(context) {
-                protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
-                    return new SessionBoundServer(session, sessionMonitor, configuration);
+            final ServletContext context = (ServletContext) externalContext.getContext();
+            final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
+            final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
+                public String mimeTypeFor(String path) {
+                    return context.getMimeType(path);
                 }
             };
-        } catch (Throwable t)  {
+            DynamicResourceDispatcher resourceDispatcher = new DynamicResourceDispatcher(ResourcesPathPrefix, mimeTypeMatcher);
+            //register resource dispatcher to be looked up later
+            externalContext.getApplicationMap().put(DynamicResourceDispatcher.class.getName(), resourceDispatcher);
+            //register servlets for path dispatching
+            dispatcher.dispatchOn(".*" + ResourcesPathPrefix + ".*",
+                    new BasicAdaptingServlet(new CompressingServer(resourceDispatcher, mimeTypeMatcher, configuration)));
+            dispatcher.dispatchOn(".*", new SessionDispatcher(context) {
+                protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor) {
+                    return new SessionBoundServer(session, configuration);
+                }
+            });
+        } catch (Throwable t) {
             log.log(Level.INFO, "HttpSession Handling not available: " + t);
         }
     }
@@ -76,7 +89,7 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         ExternalContext externalContext = facesContext.getExternalContext();
-        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+        if (!(externalContext.getRequest() instanceof HttpServletRequest)) {
             handler.handleResourceRequest(facesContext);
             return;
         }
@@ -98,7 +111,7 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
 
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
-        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+        if (!(externalContext.getRequest() instanceof HttpServletRequest)) {
             return handler.isResourceRequest(facesContext);
         }
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
@@ -107,11 +120,6 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
                 handler.isResourceRequest(facesContext) ||
                         ICEfacesBridgeRequestPattern.matcher(requestURI).find() ||
                         ICEfacesResourceRequestPattern.matcher(requestURI).find();
-        if (!resourceRequest && !requestURI.endsWith("ice.session.donottouch")) {
-            if (null != dispatcher) {
-                dispatcher.touchSession((HttpSession) externalContext.getSession(false));
-            }
-        }
         if (!servletRequest.isRequestedSessionIdValid() && facesContext.isPostback() && !resourceRequest && !handler.isResourceRequest(facesContext)) {
             servletRequest.setAttribute(SessionExpiredException.class.getName(), SessionExpiredException.class);
             return false;
@@ -159,10 +167,10 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        SessionDispatcher shutdownDispatcher =
+        PseudoServlet dispatcher =
                 ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher;
-        if (null != shutdownDispatcher) {
-            shutdownDispatcher.shutdown();
+        if (null != dispatcher) {
+            dispatcher.shutdown();
         }
     }
 
