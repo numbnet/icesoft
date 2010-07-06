@@ -136,7 +136,18 @@ public class GameTurns {
 	}
 	
 	public void determineTurns() {
-		changeCurrentTurnUser(users.get(Randomizer.getInstance().nextInt(users.size())));
+		determineTurns(false);
+	}
+	
+	public void determineTurns(boolean testMode) {
+		int userIndex = Randomizer.getInstance().nextInt(users.size());
+		
+		// Reset to a hardcoded index to let the first user go if we're in test mode 
+		if (testMode) {
+			userIndex = 0;
+		}
+		
+		changeCurrentTurnUser(users.get(userIndex));
 		
 		parentGame.getChat().addFirstTurnMessage(currentTurnUser.getName());
 	}
