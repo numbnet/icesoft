@@ -77,7 +77,6 @@
                 icefaces.jar
                 icepush.jar
                 icefaces-compat.jar
-                icefaces-comps-compat.jar
                 el-api.jar
                 jstl.jar
                 xercesImpl.jar
@@ -86,7 +85,7 @@
         <exclude name="el-api.jar" if="jsf12"/>
         <exclude name="el-api.jar" if="serverel"/>
         <exclude name="el-api.jar" if="noelapi"/>
-        <exclude name="jstl.jar" if="serverjsf" unless="jsf" />
+        <exclude name="jstl.jar" if="serverjsf" unless="jsf"/>
         <exclude name="xercesImpl.jar" if="websphere6"/>
         <exclude name="xml-apis.jar" if="websphere6"/>
         <exclude name="xercesImpl.jar" if="jsf12"/>
@@ -222,7 +221,7 @@
                  webxml="${web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
                 <add.filesets/>
                 <metainf dir="./src">
-                	<include name="context.xml"/>
+                    <include name="context.xml"/>
                 </metainf>
             </war>
 
