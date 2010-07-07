@@ -29,6 +29,7 @@ import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.http.MimeTypeMatcher;
 import org.icefaces.push.http.standard.CompressingServer;
 
+import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
@@ -188,4 +189,16 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
             set(null);
         }
     }
+
+    public Resource createResource(String resourceName)  {
+        //MyFaces rejects resource names containing "?"
+        String resourcePart = resourceName;
+        if (resourceName.contains("?"))  {
+            int queryIndex = resourceName.indexOf("?");
+            resourcePart = resourceName.substring(0, queryIndex);
+        }
+
+        return handler.createResource(resourcePart);
+    }
+
 }
