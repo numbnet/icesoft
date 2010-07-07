@@ -246,7 +246,7 @@ public class GameManager implements DisposableBean {
 	 *  filesystem changes every so often
 	 */
 	public void dispose() throws Exception {
-		if (cardSetManager != null) {
+		if (getCardSetManager() != null) {
 			cardSetManager.cancelCheckSetChanges();
 		}
 	}
