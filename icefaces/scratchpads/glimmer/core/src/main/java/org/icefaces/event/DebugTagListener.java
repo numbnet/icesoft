@@ -49,7 +49,7 @@ public class DebugTagListener implements SystemEventListener {
     private final static Logger log = Logger.getLogger(DebugTagListener.class.getName());
 	
     public boolean isListenerForSource(Object source) {
-		 return source instanceof UIDebug;
+		 return source.getClass().getName().equals("com.sun.faces.facelets.tag.ui.UIDebug");
 	}
 
 	public void processEvent(SystemEvent event) throws AbortProcessingException {

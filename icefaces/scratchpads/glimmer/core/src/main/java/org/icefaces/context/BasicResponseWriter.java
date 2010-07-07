@@ -131,6 +131,11 @@ public class BasicResponseWriter extends ResponseWriterWrapper {
         writer.write(chars, offset, length);
     }
 
+    public void write(String chars) throws IOException  {
+        closeStartIfNecessary();
+        writer.write(chars);
+    }
+
     private void closeStartIfNecessary() throws IOException {
         if (closeStart)  {
             writer.write('>');
