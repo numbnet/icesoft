@@ -170,6 +170,9 @@ public class Main {
 		for (int i = 0; i < children.length; i++) {
 			try {
 				File file = children[i];
+				if (file.isHidden()) { // do not process hidden files and directories
+					continue;
+				}
 				if (file.isDirectory()) {
 					File newOutputDir = new File(outputDir, file.getName());
 					newOutputDir.mkdir();
