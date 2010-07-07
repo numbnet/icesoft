@@ -54,8 +54,8 @@ public class JSONBuilder {
 
     public JSONBuilder entry(String key, String value) {
         appendCommaAndKey(key);
-        value = value.replace("\"", "\\\"");
         value = value.replace("\\", "\\\\");
+        value = value.replace("\"", "\\\"");
         value = value.replace("/", "\\/");
         value = value.replace("\b", "\\b");
         value = value.replace("\f", "\\f");
