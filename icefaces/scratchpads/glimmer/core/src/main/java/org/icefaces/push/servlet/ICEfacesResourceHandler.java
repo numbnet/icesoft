@@ -23,7 +23,6 @@
 package org.icefaces.push.servlet;
 
 import org.icefaces.push.Configuration;
-import org.icefaces.push.CurrentContext;
 import org.icefaces.push.DynamicResourceDispatcher;
 import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.http.MimeTypeMatcher;
@@ -45,11 +44,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements CurrentContext {
+public class ICEfacesResourceHandler extends ResourceHandlerWrapper {
     private static Logger log = Logger.getLogger(ICEfacesResourceHandler.class.getName());
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
-    private static final CurrentContextPath currentContextPath = new CurrentContextPath();
     private static final String ResourcesPathPrefix = "icefaces/resource/";
     private PathDispatcher dispatcher = new PathDispatcher();
 
@@ -130,7 +128,6 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         try {
-            currentContextPath.attach(request.getContextPath());
             dispatcher.service(request, response);
         } catch (SocketException e) {
             if ("Broken pipe".equals(e.getMessage())) {
@@ -158,13 +155,7 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
             }
         } catch (Exception e) {
             throw new ServletException(e);
-        } finally {
-            currentContextPath.detach();
         }
-    }
-
-    public String getPath() {
-        return currentContextPath.lookup();
     }
 
     public static void notifyContextShutdown(ServletContext context) {
@@ -175,25 +166,10 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper implements C
         }
     }
 
-    //todo: factor out into a ServletContextDispatcher
-    private static class CurrentContextPath extends ThreadLocal {
-        public String lookup() {
-            return (String) get();
-        }
-
-        public void attach(String path) {
-            set(path);
-        }
-
-        public void detach() {
-            set(null);
-        }
-    }
-
-    public Resource createResource(String resourceName)  {
+    public Resource createResource(String resourceName) {
         //MyFaces rejects resource names containing "?"
         String resourcePart = resourceName;
-        if (resourceName.contains("?"))  {
+        if (resourceName.contains("?")) {
             int queryIndex = resourceName.indexOf("?");
             resourcePart = resourceName.substring(0, queryIndex);
         }
