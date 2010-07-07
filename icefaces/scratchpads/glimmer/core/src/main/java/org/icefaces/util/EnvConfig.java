@@ -58,38 +58,41 @@ public class EnvConfig {
     }
     
     public void init(Map initMap)  {
-        autoRenderFlag = decodeBoolean(initMap, ICEFACES_AUTO, true);
-        autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true);
-        ariaEnabledFlag = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true);
-        compressDOMFlag = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false);
+        StringBuilder info = new StringBuilder();
+        autoRenderFlag = decodeBoolean(initMap, ICEFACES_AUTO, true, info);
+        autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true, info);
+        ariaEnabledFlag = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true, info);
+        compressDOMFlag = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
+        log.info("ICEfaces Configuration: " + info);
     }
 
-    boolean decodeBoolean(Map map, String name, boolean defaultValue)  {
+    boolean decodeBoolean(Map map, String name, boolean defaultValue, StringBuilder info)  {
         String paramValue = (String) map.get(name);
         if (null == paramValue)  {
-            log.info("ICEfaces init parameter " + name + " defaulting to " + defaultValue); 
+            info.append(name + " = " + defaultValue + " [default]  "); 
             return defaultValue;
         }
         if ("true".equalsIgnoreCase(paramValue)) {
-            log.info("ICEfaces init parameter " + name + " set to true"); 
+            info.append(name + " = true  "); 
             return true;
         }
         if ("false".equalsIgnoreCase(paramValue)) {
-            log.info("ICEfaces init parameter " + name + " set to false"); 
+            info.append(name + " = false  "); 
             return false;
         }
-        log.warning("ICEfaces init parameter " + name + " malformed: [" + 
-                paramValue + "] defaulting to " + defaultValue); 
+        info.append(name + " = " + defaultValue + 
+                " [default replacing malformed non-boolean value: " + 
+                paramValue + "]  "); 
         return defaultValue;
     }
 
-    String decodeString(Map map, String name, String defaultValue)  {
+    String decodeString(Map map, String name, String defaultValue, StringBuilder info)  {
         String paramValue = (String) map.get(name);
         if (null == paramValue)  {
-            log.info("ICEfaces init parameter " + name + " defaulting to " + defaultValue); 
+            info.append(name + " = " + defaultValue + " [default]  "); 
             return defaultValue;
         }
-        log.info("ICEfaces init parameter " + name + " set to " + paramValue); 
+            info.append(name + " = " + paramValue + "  "); 
         return paramValue;
     }
 
