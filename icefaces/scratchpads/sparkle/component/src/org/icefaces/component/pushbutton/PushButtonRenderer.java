@@ -88,9 +88,7 @@ public class PushButtonRenderer extends Renderer {
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
-		
-	    writer.startElement(HTML.SPAN_ELEM, uiComponent);
-	    writer.writeAttribute(HTML.ID_ATTR, clientId +"_sp", null); 
+		 
 		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
 	    String label = "";
 	    String ifImage = "";
@@ -119,8 +117,7 @@ public class PushButtonRenderer extends Renderer {
 
         String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
-        
-        writer.endElement(HTML.SPAN_ELEM);      
+            
         writer.endElement(HTML.DIV_ELEM);
     }
 }
