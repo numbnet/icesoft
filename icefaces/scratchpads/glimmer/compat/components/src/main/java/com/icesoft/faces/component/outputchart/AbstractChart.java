@@ -51,6 +51,9 @@ public abstract class AbstractChart {
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
     private ImageMapArea clickedImageMapArea;
 
+    public AbstractChart() {
+    }
+
     public AbstractChart(UIComponent uiComponent) throws Throwable {
     }
 
