@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-public class ResourceServlet extends HttpServlet {
+public class CompatResourceServlet extends HttpServlet {
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
     private PseudoServlet main;
 

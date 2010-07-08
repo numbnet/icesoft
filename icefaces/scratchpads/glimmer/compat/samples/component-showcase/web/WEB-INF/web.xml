@@ -68,7 +68,7 @@
 
     <servlet>
         <servlet-name>Resource Servlet</servlet-name>
-        <servlet-class>com.icesoft.faces.webapp.ResourceServlet</servlet-class>
+        <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
