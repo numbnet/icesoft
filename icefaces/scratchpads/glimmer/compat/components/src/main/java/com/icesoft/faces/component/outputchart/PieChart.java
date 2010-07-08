@@ -38,6 +38,9 @@ import java.awt.*;
 
 public class PieChart extends AbstractChart {
 
+    public PieChart()  {
+    }
+
     public PieChart(UIComponent outputChart) throws Throwable {
         super(outputChart);
     }

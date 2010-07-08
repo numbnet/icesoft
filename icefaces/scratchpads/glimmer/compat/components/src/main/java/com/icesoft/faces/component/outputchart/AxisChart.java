@@ -48,6 +48,9 @@ import java.awt.geom.Point2D;
 
 public class AxisChart extends AbstractChart {
 
+    public AxisChart()  {
+    }
+
     public AxisChart(UIComponent uiComponent) throws Throwable {
         super(uiComponent);
     }
