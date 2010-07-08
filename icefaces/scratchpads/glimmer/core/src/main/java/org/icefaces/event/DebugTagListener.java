@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderViewEvent;
@@ -62,7 +63,14 @@ public class DebugTagListener implements SystemEventListener {
             final UIDebug debugTag = (UIDebug) ((PostAddToViewEvent) event).getComponent();
             String debugId = debugTag.getId();
             UIComponent parent = (UIComponent)debugTag.getParent();
-  
+            //We can pretend the following hack is legitimate because the
+            //UIDebug component should be transient and is not useful during
+            //restore view
+            if (context.getCurrentPhaseId().equals(PhaseId.RESTORE_VIEW))  {
+                   parent.getChildren().remove(debugTag);
+                   return;
+            }
+
             if (parent instanceof javax.faces.component.html.HtmlPanelGroup)
                return; //do nothing as it's already contained in panelGroup
             else{
