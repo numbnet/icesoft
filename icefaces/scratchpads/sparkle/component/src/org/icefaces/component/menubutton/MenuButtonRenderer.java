@@ -12,6 +12,8 @@ import javax.faces.render.Renderer;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
 
 
@@ -67,7 +69,7 @@ public class MenuButtonRenderer extends Renderer {
 		writer.endElement(HTML.SPAN_ELEM);
 	
  		writer.startElement(HTML.SPAN_ELEM, uiComponent);
- 		writeScriptTag(uiComponent, writer, clientId, menuButton);
+ 		writeScriptTag(uiComponent, writer, clientId, menuButton, facesContext);
     }
 
 	private void writeOuterDivAndFirstChildSpan(UIComponent uiComponent,
@@ -80,9 +82,7 @@ public class MenuButtonRenderer extends Renderer {
 		writer.writeAttribute(HTML.CLASS_ATTR, outerDivClass, null);
        //first child not appropriate for this type of markup when
 	   // at least not using overlay
-//		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-//		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
-//	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
+
 	}
     /**
      * 
@@ -122,49 +122,33 @@ public class MenuButtonRenderer extends Renderer {
 
 	
 	private void writeScriptTag(UIComponent uiComponent, ResponseWriter writer,
-			String clientId, MenuButton menuButton) throws IOException {
+			String clientId, MenuButton menuButton,
+			FacesContext facesContext) throws IOException {
 
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
-		//scipt tag and surrounding span
-		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
+		//script tag and surrounding span
+	
 		// js call
-        StringBuilder call= new StringBuilder();
-        call.append("ice.component.menubutton.updateProperties('");
-        call.append(clientId);
-        call.append("', ");
-        //pass through YUI  properties 
-        call.append("{");
-        call.append("type:'menu'");
-//        if (menuButton.getImage() == null) {
-//            call.append(", label:'");  
-//            call.append(menuButton.getLabel());
-//            call.append("'");
-//        }
-        call.append(", menu:'");  
-        call.append(clientId+"_buttonselect");
-        call.append("'},");
-        //pass JSF component specific properties that would help in slider configuration 
-        //pass JSF component specific properties 
-        call.append("{");
-        call.append("singleSubmit:");
-        call.append(menuButton.isSingleSubmit());  
-        call.append(", ");        
-//        call.append("aria:");
-//        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-//        call.append(", ");  
-        call.append("disabled:");
-        call.append(menuButton.isDisabled());  
-        call.append(", ");                
-        call.append("tabindex:");
-        call.append(menuButton.getTabindex());   
-        call.append("});");
+	    String params = "'" + clientId + "'," +
+           JSONBuilder.create().
+           beginMap().
+               entry("type", "menu").
+               entry("menu", clientId+"_buttonselect").
+           endMap().toString() 
+           + "," +
+           JSONBuilder.create().
+           beginMap().
+               entry("disabled", menuButton.isDisabled()).
+               entry("tabindex", menuButton.getTabindex()).
+               entry("singleSubmit", menuButton.isSingleSubmit()).
+               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
+           endMap().toString();
+          System.out.println("params = " + params);	    
 
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-        writer.write(call.toString());
-        writer.endElement(HTML.SCRIPT_ELEM);
+        String finalScript = "ice.component.menubutton.updateProperties(" + params + ");";
+        ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
+	 	
         writer.endElement(HTML.SPAN_ELEM);
 	}
 }
