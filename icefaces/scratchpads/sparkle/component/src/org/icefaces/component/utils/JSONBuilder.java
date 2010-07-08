@@ -1,57 +1,118 @@
 package org.icefaces.component.utils;
 
+/**
+ * Utility API that builds the parameter strings, performs param escaping.
+ * Output is a JSON string as specified at <a href="http://www.json.org/">json.org</a>.
+ * Based on <a href="http://jira.icefaces.org/browse/ICE-5831">spec.</a> from Mark Collette
+ * and <a href="http://yui.yahooapis.com/2.8.1/build/json/json.js"">code from YUI</a>.
+ * List of escaped characters can be found at <a href="http://www.json.org/">json.org</a>.
+ */
 public class JSONBuilder {
     private StringBuilder params = new StringBuilder();
 
+    /**
+     * Makes a new instance of JSONBuilder.
+     * @return a reference to this object.
+     */
     public static JSONBuilder create() {
         return new JSONBuilder();
     }
 
+    /**
+     * Begins an anonymous object.
+     * @return a reference to this object.
+     */
     public JSONBuilder beginMap() {
         params.append("{");
         return this;
     }
 
+    /**
+     * Begins a named object.
+     * @param key name of the object.
+     * @return a reference to this object.
+     */
     public JSONBuilder beginMap(String key) {
         appendCommaAndKey(key);
         return beginMap();
     }
 
+    /**
+     * Ends an object.
+     * @return a reference to this object.
+     */
     public JSONBuilder endMap() {
         params.append("}");
         return this;
     }
 
+    /**
+     * Adds an int property.
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, int value) {
         appendCommaAndKey(key);
         params.append(value);
         return this;
     }
 
+    /**
+     * Adds a long property.
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, long value) {
         appendCommaAndKey(key);
         params.append(value);
         return this;
     }
 
+    /**
+     * Adds a float property.
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, float value) {
         appendCommaAndKey(key);
         params.append(value);
         return this;
     }
 
+    /**
+     * Adds a double property.
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, double value) {
         appendCommaAndKey(key);
         params.append(value);
         return this;
     }
 
+    /**
+     * Adds a boolean property.
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, boolean value) {
         appendCommaAndKey(key);
         params.append(value);
         return this;
     }
 
+    /**
+     * Adds a String property.
+     * Adds quotes and does JSON string escaping, as described at <a href="http://www.json.org/">json.org</a>. 
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
     public JSONBuilder entry(String key, String value) {
         appendCommaAndKey(key);
         value = value.replace("\\", "\\\\");
@@ -66,6 +127,10 @@ public class JSONBuilder {
         return this;
     }
 
+    /**
+     * Outputs the JSON string.
+     * @return the JSON string.
+     */
     public String toString() {
         return params.toString();
     }
