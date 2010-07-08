@@ -80,12 +80,12 @@
         </copy>
     </target>
 
-    <target name="compile.components">
+    <target name="compile.components" depends="compile">
         <ant antfile="${components.dir}/build.xml" target="gen.facelets.file" inheritall="false" inheritrefs="false"/>
         <ant antfile="${components.dir}/build.xml" target="test" inheritall="false" inheritrefs="false"/>
     </target>
 
-    <target name="jar" depends="compile, compile.components" description="assemble icefaces-compat.jar">
+    <target name="jar" depends="compile.components" description="assemble icefaces-compat.jar">
         <copy file="../component-metadata/target/classes/conf/faces-config.xml"
               todir="${build.dir}/resources/META-INF"/>
         <copy todir="${build.dir}/resources/META-INF">

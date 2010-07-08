@@ -22,23 +22,23 @@
 
 <project name="icefaces-comps-compat" default="jar.components">
 
-    <property name="src.dir"           location="src/main/java/"/>
-    <property name="build.dir"         location="build"/>
+    <property name="src.dir" location="src/main/java/"/>
+    <property name="build.dir" location="build"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
-    <property name="test.classes.dir"  location="${build.dir}/test-classes"/>
-    <property name="build.doc.dir"     location="${build.dir}/doc"/>
+    <property name="test.classes.dir" location="${build.dir}/test-classes"/>
+    <property name="build.doc.dir" location="${build.dir}/doc"/>
     <property name="build.api.doc.dir" location="${build.doc.dir}/api"/>
     <property name="build.tld.doc.dir" location="${build.doc.dir}/tld"/>
-    <property name="dist.dir"          location="dist"/>
-    <property name="compat.lib.dir"    location="../lib"/>
-    <property name="lib.dir"           location="../../lib"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="compat.lib.dir" location="../lib"/>
+    <property name="lib.dir" location="../../lib"/>
 
     <property name="generate.taglib.src" location="./build/generate/src"/>
-    <property name="tld.file"            location="./build/generate/src/icefaces_component.tld"/>
-    <property name="facelets.file"       location="./src/main/resources/META-INF/icefaces.taglib.xml"/>
+    <property name="tld.file" location="./build/generate/src/icefaces_component.tld"/>
+    <property name="facelets.file" location="./src/main/resources/META-INF/icefaces.taglib.xml"/>
 
     <property name="build.sysclasspath" value="ignore"/>
-    <property name="compile.debug"      value="true"/>
+    <property name="compile.debug" value="true"/>
 
     <property name="company" value="ICEsoft Technologies, Inc."/>
     <property name="product" value="ICEfaces"/>
@@ -56,26 +56,29 @@
         <pathelement location="${build.classes.dir}"/>
         <fileset dir="${lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
         <fileset dir="${compat.lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
+        <pathelement location="../core/build/classes"/>
     </path>
     <path id="compile.test.classpath">
         <pathelement location="${build.classes.dir}"/>
         <fileset dir="../component-metadata/target" includes="*.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
-        <fileset dir="${compat.lib.dir}" includes="*.jar" excludes="jsf-api.jar, jsf-impl.jar, ${ant.project.name}.jar"/>
+        <fileset dir="${compat.lib.dir}" includes="*.jar"
+                 excludes="jsf-api.jar, jsf-impl.jar, ${ant.project.name}.jar"/>
     </path>
 
     <macrodef name="build.jar">
         <element name="add.metainfs" optional="true"/>
         <sequential>
             <delete file="${dist.dir}/${ant.project.name}.jar"/>
-            <mkdir   dir="${dist.dir}"/>
+            <mkdir dir="${dist.dir}"/>
             <jar destfile="${dist.dir}/${ant.project.name}.jar" duplicate="fail">
                 <fileset dir="${build.classes.dir}"/>
                 <fileset dir="${src.dir}" excludes="**/*.java"/>
                 <manifest>
                     <section name="com.icesoft.faces">
                         <attribute name="Implementation-Title" value="${product}"/>
-                        <attribute name="Implementation-Version" value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})"/>
+                        <attribute name="Implementation-Version"
+                                   value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})"/>
                         <attribute name="Implementation-Vendor" value="${company}"/>
                     </section>
                 </manifest>
@@ -103,13 +106,13 @@
 
     <target name="compile" depends="generate.metadata">
         <delete dir="${build.classes.dir}"/>
-        <mkdir  dir="${build.classes.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
 
-<echo>EXCLUDED FileUploadServlet</echo>
+        <echo>EXCLUDED FileUploadServlet</echo>
         <javac destdir="${build.classes.dir}" sourcepath=""
-            debug="${compile.debug}" source="1.5" target="1.5"
-excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
-        >
+               debug="${compile.debug}" source="1.5" target="1.5"
+               excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
+                >
             <classpath refid="compile.run.classpath"/>
             <src location="${src.dir}"/>
             <src location="${generate.taglib.src}"/>
@@ -119,10 +122,10 @@ excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
 
     <target name="gen.facelets.file" depends="compile">
         <java classname="com.icesoft.faces.webapp.parser.TagToComponentMap"
-            fork="true" failonerror="true"
-            error="${build.dir}/gen.facelets.file.error.txt"
-            output="${build.dir}/gen.facelets.file.output.txt"
-        >
+              fork="true" failonerror="true"
+              error="${build.dir}/gen.facelets.file.error.txt"
+              output="${build.dir}/gen.facelets.file.output.txt"
+                >
             <arg value="facelets"/>
             <arg value="${facelets.file}"/>
             <arg value="${tld.file}"/>
@@ -148,43 +151,43 @@ excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
         <delete dir="${build.api.doc.dir}"/>
         <javadoc packagenames="com.icesoft.faces.component.*"
 
-               failonerror="true"
+                 failonerror="true"
 
-               defaultexcludes="yes"
+                 defaultexcludes="yes"
 
-               destdir="${build.api.doc.dir}"
+                 destdir="${build.api.doc.dir}"
 
-               version="true"
+                 version="true"
 
-               use="true"
+                 use="true"
 
-               windowtitle="ICEfaces components">
+                 windowtitle="ICEfaces components">
 
-        <fileset dir="${src.dir}" casesensitive="yes">
+            <fileset dir="${src.dir}" casesensitive="yes">
 
-            <include name="**/*.java"/>
+                <include name="**/*.java"/>
 
-            <exclude name="**/*Tag.java"/>
+                <exclude name="**/*Tag.java"/>
 
-            <exclude name="**/*Renderer.java"/>
+                <exclude name="**/*Renderer.java"/>
 
-            <exclude name="**/event/*.java"/>
+                <exclude name="**/event/*.java"/>
 
-            <exclude name="**/event/faces/*.java"/>
+                <exclude name="**/event/faces/*.java"/>
 
-            <exclude name="**/util/*.java"/>
+                <exclude name="**/util/*.java"/>
 
-            <exclude name="**/taglib/*.java"/>
+                <exclude name="**/taglib/*.java"/>
 
-            <exclude name="**/utils/*.java"/>
+                <exclude name="**/utils/*.java"/>
 
-        </fileset>
+            </fileset>
 
-        <classpath refid="compile.run.classpath"/>
+            <classpath refid="compile.run.classpath"/>
 
-        <doctitle><![CDATA[<h1>ICEFaces</h1><br/><p>The API Javadocs for the ice components</p>]]></doctitle>
+            <doctitle><![CDATA[<h1>ICEFaces</h1><br/><p>The API Javadocs for the ice components</p>]]></doctitle>
 
-      </javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
@@ -194,58 +197,59 @@ excludes="com/icesoft/faces/component/inputfile/FileUploadServlet.java"
 
     <target name="generate.metadata">
         <ant antfile="../component-metadata/build.xml"
-     target="jar" inheritAll="false"/>
+             target="jar" inheritAll="false"/>
 
         <copy todir="build/generate/src">
-    <fileset dir="../component-metadata/target/generated-sources/taglib/main/java" includes="**/*.java"/>
-  </copy>
-  <copy todir="build/generate/src">
-    <fileset dir="../component-metadata/target/generated-sources/tld" includes="**/*.tld"/>
-  </copy>
+            <fileset dir="../component-metadata/target/generated-sources/taglib/main/java" includes="**/*.java"/>
+        </copy>
+        <copy todir="build/generate/src">
+            <fileset dir="../component-metadata/target/generated-sources/tld" includes="**/*.tld"/>
+        </copy>
     </target>
 
-    <target name="compile-tests" depends="junit-present, compile" description="Compile the test code" if="junit.present">
-        
+    <target name="compile-tests" depends="junit-present, compile" description="Compile the test code"
+            if="junit.present">
+
         <mkdir dir="${test.classes.dir}"/>
         <javac destdir="${test.classes.dir}" excludes="**/package.html" debug="true" optimize="false">
             <src>
-                <pathelement location="test/java" />
+                <pathelement location="test/java"/>
                 <pathelement location="../component-metadata/target/generated-sources/testbeaninfo/main/java"/>
                 <pathelement location="../component-metadata/target/generated-sources/component/main/java"/>
             </src>
             <classpath>
-                <path refid="compile.test.classpath"/>           
-                <pathelement location="${ant.home}/lib/junit.jar"/>                
+                <path refid="compile.test.classpath"/>
+                <pathelement location="${ant.home}/lib/junit.jar"/>
             </classpath>
         </javac>
     </target>
 
     <target name="test" depends="junit-present, compile-tests" if="junit.present" description="Run the test cases">
-        <mkdir dir="${test.classes.dir}/test-reports" />
+        <mkdir dir="${test.classes.dir}/test-reports"/>
         <junit printSummary="yes" haltonerror="true" haltonfailure="true" fork="yes" dir=".">
-            <sysproperty key="basedir" value="." />
-            <formatter type="plain" />
+            <sysproperty key="basedir" value="."/>
+            <formatter type="plain"/>
             <classpath>
-                <pathelement path="${test.classes.dir}"/>          
-                <pathelement path="${build.classes.dir}"/> 
-                <path refid="compile.test.classpath"/>    
+                <pathelement path="${test.classes.dir}"/>
+                <pathelement path="${build.classes.dir}"/>
+                <path refid="compile.test.classpath"/>
                 <pathelement path="${src.dir}"/>
             </classpath>
             <batchtest todir="${test.classes.dir}/test-reports">
                 <fileset dir="test/java">
-                    <include name="**/*Test.java" />
-                    <exclude name="**/*Abstract*Test.java" />
+                    <include name="**/*Test.java"/>
+                    <exclude name="**/*Abstract*Test.java"/>
                 </fileset>
             </batchtest>
         </junit>
     </target>
     <target name="test-junit-present" unless="skip.test">
-        <available classname="junit.framework.Test" property="junit.present" />
+        <available classname="junit.framework.Test" property="junit.present"/>
     </target>
     <target name="junit-present" depends="test-junit-present" unless="junit.present">
         <echo>================================= WARNING ================================</echo>
-        <echo> Property 'skip.test' set OR </echo>
-        <echo> Junit isn&apos;t present in your $ANT_HOME/lib directory. Tests not executed. </echo>
+        <echo>Property 'skip.test' set OR</echo>
+        <echo>Junit isn&apos;t present in your $ANT_HOME/lib directory. Tests not executed.</echo>
         <echo>==========================================================================</echo>
     </target>
 </project>
