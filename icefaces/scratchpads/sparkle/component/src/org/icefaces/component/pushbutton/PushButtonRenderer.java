@@ -11,6 +11,8 @@ import javax.faces.render.Renderer;
 
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
 
 
@@ -86,43 +88,37 @@ public class PushButtonRenderer extends Renderer {
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);
-	
+		
 	    writer.startElement(HTML.SPAN_ELEM, uiComponent);
 	    writer.writeAttribute(HTML.ID_ATTR, clientId +"_sp", null); 
-		// js call
-        StringBuilder call= new StringBuilder();
-        call.append("ice.component.pushbutton.updateProperties('");
-        call.append(clientId);
-        call.append("', ");
-        //pass through YUI  properties 
-        call.append("{");
-        call.append("type:'button'");
-        if (pushButton.getImage() == null) {
-            call.append(", label:'");  
-            call.append(pushButton.getLabel());
-            call.append("'");
-        }
+		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
+	    String label = "";
+	    String ifImage = "";
+	    if (null!=pushButton.getLabel() || !pushButton.getLabel().equals(""))label=pushButton.getLabel();
+	   // need to worry if label isn't set?
+	    if (pushButton.getImage()==null){
+	        ifImage = JSONBuilder.create().beginMap().
+	        entry("type", "button").
+	        entry("label", label).endMap().toString();
+	    }
+	    else {
+	        ifImage = JSONBuilder.create().beginMap().
+	        entry("type", "button").endMap().toString();  
+	    }
+	    String params = "'" + clientId + "'," +
+        ifImage
+           + "," +
+           JSONBuilder.create().
+           beginMap().
+               entry("disabled", pushButton.isDisabled()).
+               entry("tabindex", pushButton.getTabindex()).
+               entry("singleSubmit", pushButton.isSingleSubmit()).
+               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
+           endMap().toString();
+          System.out.println("params = " + params);	    
 
-        call.append("},");
-        //pass JSF component specific properties 
-        call.append("{");
-        call.append("singleSubmit:");
-        call.append(pushButton.isSingleSubmit());  
-        call.append(", ");        
-        call.append("aria:");
-        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-        call.append(", ");  
-        call.append("disabled:");
-        call.append(pushButton.isDisabled());  
-        call.append(", ");                
-        call.append("tabindex:");
-        call.append(pushButton.getTabindex());   
-        call.append("});");
- 
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-        writer.write(call.toString());
-        writer.endElement(HTML.SCRIPT_ELEM);
+        String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
+        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
         
         writer.endElement(HTML.SPAN_ELEM);      
         writer.endElement(HTML.DIV_ELEM);
