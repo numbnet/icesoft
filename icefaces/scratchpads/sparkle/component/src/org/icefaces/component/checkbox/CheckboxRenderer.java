@@ -13,6 +13,8 @@ import javax.faces.render.Renderer;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
 
 public class CheckboxRenderer extends Renderer {
@@ -86,53 +88,51 @@ public class CheckboxRenderer extends Renderer {
 		writer.endElement(HTML.SPAN_ELEM);  
 	    
 		writer.endElement(HTML.SPAN_ELEM);			
-		//hidden input for single submit=false	
+		//hidden input for single submit=false
+		
 	    writer.startElement("input", uiComponent);
 	    writer.writeAttribute("type", "hidden", null);
 	    writer.writeAttribute("name",clientId+"_hidden", null);
 	    writer.writeAttribute("id",clientId+"_hidden", null);
 	    writer.writeAttribute("value",checkbox.getValue(), null);
 	    writer.endElement("input");	
-		// js call
-        writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId +"_sp", null);      
-		       
-        StringBuilder call= new StringBuilder();
-        call.append("ice.component.checkbox.updateProperties('");
-        call.append(clientId);
-        call.append("', ");
-        //pass through YUI slider properties 
-        call.append("{");
-        call.append("type:'checkbox'");
-        if (checkbox.getImage() == null) {
-            call.append(", label:'");  
-            call.append(checkbox.getLabel());
-            call.append("'");
-        }
-        call.append(", checked:");  
-        call.append(checkbox.getValue());
-        call.append("},");
+     
+		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
+	    //note that ScriptWriter takes care of the span tag surrounding the script
+	    String label = "";
+	    String ifImage = "";
+	    if (null!=checkbox.getLabel() || !checkbox.getLabel().equals(""))label=checkbox.getLabel();
+	   // need to worry if label isn't set?
+	    String boxValue = String.valueOf(checkbox.getValue());
+	    boolean isChecked = false;
+	    if (boxValue.equals("true") || boxValue.equals("on") || boxValue.equals("yes"))isChecked=true;
+	    boolean needLabel = (checkbox.getImage()==null);
+	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
+	    if (needLabel){
+	        ifImage = JSONBuilder.create().beginMap().
+	        entry("type", "checkbox").
+	        entry("checked", isChecked).
+	        entry("label", label).endMap().toString();
+	    }
+	    else {
+	        ifImage = JSONBuilder.create().beginMap().
+	        entry("type", "checkbox").
+	        entry("checked", isChecked).endMap().toString();  
+	    }
+	    String params = "'" + clientId + "'," +
+        ifImage
+           + "," +
+           JSONBuilder.create().
+           beginMap().
+               entry("disabled", checkbox.isDisabled()).
+               entry("tabindex", checkbox.getTabindex()).
+               entry("singleSubmit", checkbox.isSingleSubmit()).
+               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
+           endMap().toString();
+          System.out.println("params = " + params);	    
 
-        //pass JSF component specific properties 
-        call.append("{");
-        call.append("singleSubmit:");
-        call.append(checkbox.isSingleSubmit());       
-        call.append(", ");        
-        call.append("aria:");
-        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-        call.append(", "); 
-        call.append("disabled:");
-        call.append(checkbox.isDisabled());  
-        call.append(", ");      
-        call.append("tabindex:");
-        call.append(checkbox.getTabindex());   
-        call.append("});");
-        
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-        writer.write(call.toString());
-        writer.endElement(HTML.SCRIPT_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
+        String finalScript = "ice.component.checkbox.updateProperties(" + params + ");";
+        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);        		  
         
        writer.endElement(HTML.DIV_ELEM);
     }
