@@ -51,9 +51,8 @@ ice.component.checkbox = {
                 ice.se(e, divNode, params); 
             } else {
              	YAHOO.log("single Submit is false doesn't go to server");
-                ice.s(e, divNode, params);                    
-            }  
-	        button.set
+                //no submit!! already updated the hidden field                    
+            } 
 		};
 
 		button.on("checkedChange", onCheckedChange);
