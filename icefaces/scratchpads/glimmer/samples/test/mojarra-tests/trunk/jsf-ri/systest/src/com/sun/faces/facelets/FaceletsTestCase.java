@@ -39,6 +39,7 @@ package com.sun.faces.facelets;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSpan;
@@ -247,7 +248,7 @@ public class FaceletsTestCase extends AbstractTestCase {
         HtmlSubmitInput submit = (HtmlSubmitInput) getInputContainingGivenId(page, "form1:sub");
         page = submit.click();
 
-        DomNode messageDiv = lastpage.getHtmlElementById("form1:messages1");
+        DomNode messageDiv = page.getHtmlElementById("form1:messages1");
         HtmlUnorderedList list = (HtmlUnorderedList) messageDiv.getFirstChild();
         int count = 0;
         for (HtmlElement element : list.getAllHtmlChildElements()) {
