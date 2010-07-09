@@ -10,6 +10,11 @@
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
   <property name="exploded"  location="${build}/exploded"/>
+  <property name="doc" location="${build}/doc"/>
+  <property name="tld.doc" location="${doc}/tld"/>
+  <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
+  <property name="tld.jar"  location="../../glimmer/lib/"/>
+
   <dirname property="smartsprites.basedir" file="${ant.file.smartsprites}"/>
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
@@ -166,4 +171,26 @@
                   spritepngdepth="${sprite.png.depth}"
                   spritepngie6="${sprite.png.ie6}" />
   </target>
+
+    <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+    		<mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="Sparkle Components"/>
+                <arg value="-windowtitle"/>
+                <arg value="Sparkle Components"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+
+    <target name="tlddoc">
+        <gen.tld.doc tld.file="${tld.file}"/>
+    </target>
 </project>

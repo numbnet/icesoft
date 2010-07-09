@@ -16,9 +16,9 @@ public class TLDBuilder extends XMLBuilder{
     public TLDBuilder() {
         super("components.tld");
         Element root = getDocument().createElement("taglib");
-        root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
-        root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
-        root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
+      //  root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
+     //   root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
+    //    root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
         root.setAttribute("version",            "2.1");
         getDocument().appendChild(root);
         addNode(root, "tlib-version", "2.1");
