@@ -40,6 +40,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.WeakHashMap;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -52,7 +53,9 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
     };
     private MimeTypeMatcher mimeTypeMatcher;
     private String prefix;
-    private WeakHashMap mappings = new WeakHashMap();
+    //introducing a memory leak, but ensuring that resources
+    //are available when requested
+    private HashMap mappings = new HashMap();
 
     public DynamicResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher) {
         this.prefix = prefix;
