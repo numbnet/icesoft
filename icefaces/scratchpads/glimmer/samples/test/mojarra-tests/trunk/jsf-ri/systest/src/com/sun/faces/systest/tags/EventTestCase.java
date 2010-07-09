@@ -90,7 +90,7 @@ public class EventTestCase extends AbstractTestCase {
         HtmlPage page = getPage("/faces/eventTag.xhtml");
         List<HtmlSpan> outputs = new ArrayList<HtmlSpan>(4);
         getAllElementsOfGivenClass(page, outputs, HtmlSpan.class);
-        assertTrue(outputs.size() - 2 == 6);
+        assertTrue(outputs.size() == 6);
         validateOutput(outputs);
 
         HtmlSubmitInput submit = (HtmlSubmitInput) getInputContainingGivenId(page, "click");
@@ -105,6 +105,10 @@ public class EventTestCase extends AbstractTestCase {
     public void testBeforeViewRender() throws Exception {
         HtmlPage page = getPage("/faces/eventTag01.xhtml");
         assertTrue(-1 != page.asText().indexOf("class javax.faces.component.UIViewRoot pre-render"));
+
+        page = getPage("/faces/eventTag02.xhtml");
+        assertTrue(-1 != page.asText().indexOf("class javax.faces.component.UIViewRoot pre-render"));
+
     }
 
 
