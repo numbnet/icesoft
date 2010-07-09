@@ -126,33 +126,9 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper {
         return resourceRequest;
     }
 
-    public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException {
         try {
             dispatcher.service(request, response);
-        } catch (SocketException e) {
-            if ("Broken pipe".equals(e.getMessage())) {
-                // client left the page
-                if (log.isLoggable(Level.FINEST)) {
-                    log.log(Level.FINEST, "Connection broken by client.", e);
-                } else if (log.isLoggable(Level.FINE)) {
-                    log.log(Level.FINE, "Connection broken by client: " + e.getMessage());
-                }
-            } else {
-                throw new ServletException(e);
-            }
-        } catch (RuntimeException e) {
-            //ICE-4261: We cannot wrap RuntimeExceptions as ServletExceptions because of support for Jetty
-            //Continuations.  However, if the message of a RuntimeException is null, Tomcat won't
-            //properly redirect to the configured error-page.  So we need a new RuntimeException
-            //that actually includes a message.
-            if ("org.mortbay.jetty.RetryRequest".equals(e.getClass().getName())) {
-                throw e;
-            } else if (e.getMessage() != null) {
-                throw e;
-            } else {
-                throw new RuntimeException("wrapped Exception: " +
-                        e.getClass().getName(), e);
-            }
         } catch (Exception e) {
             throw new ServletException(e);
         }
