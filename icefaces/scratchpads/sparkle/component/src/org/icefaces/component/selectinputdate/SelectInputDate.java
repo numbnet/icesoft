@@ -26,6 +26,7 @@ import java.io.IOException;
         @ResourceDependency(library = "yui/2_8_1", name = "container/container-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
         @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
