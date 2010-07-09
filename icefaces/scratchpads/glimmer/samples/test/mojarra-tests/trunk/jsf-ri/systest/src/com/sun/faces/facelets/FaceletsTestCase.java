@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  * 
- * Copyright 1997-2009 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Sun Microsystems, Inc. All rights reserved.
  * 
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -39,7 +39,14 @@ package com.sun.faces.facelets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSpan;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
+import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.sun.faces.htmlunit.AbstractTestCase;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -245,7 +252,7 @@ public class FaceletsTestCase extends AbstractTestCase {
         int count = 0;
         for (HtmlElement element : list.getAllHtmlChildElements()) {
             count++;
-            assertEquals("form1:input: Validation Error: Value is less than allowable minimum of '5'", element.asText());
+            assertEquals("form1:input: Validation Error: Length is less than allowable minimum of '5'", element.asText());
             if (count > 1) {
                 fail("Expected a single validation failure");
             }
@@ -266,7 +273,7 @@ public class FaceletsTestCase extends AbstractTestCase {
         count = 0;
         for (HtmlElement element : list2.getAllHtmlChildElements()) {
             count++;
-            assertEquals("form2:input2: Validation Error: Value is less than allowable minimum of '5'", element.asText());
+            assertEquals("form2:input2: Validation Error: Length is less than allowable minimum of '5'", element.asText());
             if (count > 1) {
                 fail("Expected a single validation failure");
             }
@@ -294,6 +301,102 @@ public class FaceletsTestCase extends AbstractTestCase {
             submit = (HtmlSubmitInput) getInputContainingGivenId(page, "form:button");
         }
 
+    }
+
+    public void testWhen() throws Exception {
+        HtmlPage page = getPage("/faces/facelets/when.xhtml");
+        String text = page.asText();
+        assertTrue(text.contains("size = 1"));
+        assertTrue(text.contains("isEmpty = false"));
+        assertTrue(text.contains("there is some!!!"));
+        assertTrue(text.contains("there is some (really)!!!"));
+
+    }
+
+
+    /**
+     * Added for issue 1552.
+     */
+    public void testModeratelyComplexTemplating() throws Exception {
+        HtmlPage page = getPage("/faces/facelets/templateDecoration2.xhtml");
+        String text = page.asText();
+        assertTrue(text.contains("Inserted from client1 Default"));
+    }
+
+
+    /**
+     * Added for issue 1313
+     */
+    public void testIssue1313() throws Exception {
+
+        HtmlPage page = getPage("/faces/facelets/issue1313.xhtml");
+        List<HtmlDivision> divs = new ArrayList<HtmlDivision>();
+
+        getAllElementsOfGivenClass(page, divs, HtmlDivision.class);
+        validateToggleState1(divs);
+        HtmlSubmitInput input = (HtmlSubmitInput)
+              getInputContainingGivenId(page, "form:nonajax");
+        assertNotNull(input);
+        page = input.click();
+        divs.clear();
+        getAllElementsOfGivenClass(page, divs, HtmlDivision.class);
+        validateToggleState2(divs);
+        input = (HtmlSubmitInput)
+              getInputContainingGivenId(page, "form:ajax");
+        assertNotNull(input);
+        page = input.click();
+        divs.clear();
+        getAllElementsOfGivenClass(page, divs, HtmlDivision.class);
+        validateToggleState1(divs);
+        input = (HtmlSubmitInput)
+              getInputContainingGivenId(page, "form:nonajax");
+        assertNotNull(input);
+        page = input.click();
+        divs.clear();
+        getAllElementsOfGivenClass(page, divs, HtmlDivision.class);
+        validateToggleState2(divs);
+        input = (HtmlSubmitInput)
+              getInputContainingGivenId(page, "form:ajax");
+        assertNotNull(input);
+        page = input.click();
+        divs.clear();
+        getAllElementsOfGivenClass(page, divs, HtmlDivision.class);
+        validateToggleState1(divs);
+
+    }
+
+
+    // --------------------------------------------------------- Private Methods
+
+
+    private void validateToggleState1(List<HtmlDivision> divs) {
+        assertTrue(divs.size() == 2);
+        HtmlDivision div1 = divs.get(0);
+        assertEquals("frag1", "frag1", div1.getId());
+        assertEquals("frag1", "frag1", div1.asText().trim());
+        HtmlDivision div2 = divs.get(1);
+        assertEquals("otherwise", "otherwise", div2.getId());
+        assertEquals("C:OTHERWISE TOGGLE STATE FALSE C:OTHERWISE",
+                     "C:OTHERWISE TOGGLE STATE FALSE C:OTHERWISE",
+                     div2.asText().trim());
+    }
+
+
+    private void validateToggleState2(List<HtmlDivision> divs) {
+        assertTrue(divs.size() == 3);
+        HtmlDivision div1 = divs.get(0);
+        assertEquals("frag2", "frag2", div1.getId());
+        assertEquals("frag2", "frag2", div1.asText().trim());
+        HtmlDivision div2 = divs.get(1);
+        assertEquals("if", "if", div2.getId());
+        assertEquals("C:IF TOGGLE STATE TRUE C:IF",
+                     "C:IF TOGGLE STATE TRUE C:IF",
+                     div2.asText().trim());
+        HtmlDivision div3 = divs.get(2);
+        assertEquals("when", "when", div3.getId());
+        assertEquals("C:WHEN TOGGLE STATE TRUE C:WHEN",
+                     "C:WHEN TOGGLE STATE TRUE C:WHEN",
+                     div3.asText().trim());
     }
 
 

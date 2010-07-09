@@ -1,29 +1,7 @@
 /*
- * Version: MPL 1.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- */
-
-/*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Sun Microsystems, Inc. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -77,7 +55,11 @@ import com.sun.faces.cactus.ServletFacesTestCase;
 import com.sun.faces.config.WebConfiguration;
 import com.sun.faces.util.Util;
 import com.sun.faces.application.ApplicationAssociate;
-import com.sun.faces.application.resource.ResourceManager;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import javax.faces.application.Application;
 import org.apache.cactus.WebRequest;
 import org.apache.cactus.WebResponse;
 
@@ -85,6 +67,13 @@ import org.apache.cactus.WebResponse;
  * Tests com.sun.faces.application.resource.ResourceHandlerImpl
  */
 public class TestResourceHandlerImpl extends ServletFacesTestCase {
+
+    /* HTTP Date format required by the HTTP/1.1 RFC */
+    private static final String RFC1123_DATE_PATTERN =
+          "EEE, dd MMM yyyy HH:mm:ss zzz";
+
+    private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
+
 
      public TestResourceHandlerImpl() {
         super("TestResourceHandlerImpl");
@@ -366,8 +355,16 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
 
-        handler.handleResourceRequest(getFacesContext());
+	try {
+	    handler.handleResourceRequest(getFacesContext());
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
+
     }
 
     public void endUserSpecifiedResourceExclude1(WebResponse res) {
@@ -383,8 +380,16 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
 
-        assertTrue(handler.isResourceRequest(getFacesContext()));
+	try {
+	    assertTrue(handler.isResourceRequest(getFacesContext()));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
+
     }
 
     public void endUserSpecifiedResourceExclude2(WebResponse res) {
@@ -401,8 +406,16 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         WebConfiguration webconfig = WebConfiguration.getInstance(getFacesContext().getExternalContext());
         webconfig.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.ResourceExcludes, ".gif");
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
 
-        assertTrue(handler.isResourceRequest(getFacesContext()));
+	try {
+	    assertTrue(handler.isResourceRequest(getFacesContext()));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
+
     }
 
     public void endUserSpecifiedResourceExclude3(WebResponse res) {
@@ -475,8 +488,20 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
     //
     public void beginHandleResourceRequest3(WebRequest req) {
         req.setURL("localhost:8080", "/test", "/javax.faces.resource/duke-nv.gif.faces", null, null);
+        long 
+                curTime = System.currentTimeMillis(),
+                threeHoursAgo = curTime - 10800000L;
+        facesService.setModificationTime("resources/duke-nv.gif", 
+                threeHoursAgo);
+        facesService.setModificationTime("resources/nvLibrary/duke-nv.gif",
+                threeHoursAgo);
+        SimpleDateFormat format =
+                new SimpleDateFormat(RFC1123_DATE_PATTERN, Locale.US);
+        format.setTimeZone(GMT);
+        Date headerValue = new Date(curTime);
+        
         req.addParameter("ln", "nvLibrary");
-        req.addHeader("If-Modified-Since", "Sat, 29 Oct 1994 19:43:31 GMT");
+        req.addHeader("If-Modified-Since", format.format(headerValue));
     }
 
 
@@ -549,21 +574,29 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         WebConfiguration config = WebConfiguration.getInstance();
         config.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.CompressableMimeTypes, "image/gif");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        app.setResourceHandler(handler);
+
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(response.containsHeader("content-encoding"));
+        try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(response.containsHeader("content-encoding"));
+        } finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
     }
 
@@ -582,8 +615,11 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         WebConfiguration config = WebConfiguration.getInstance();
         config.overrideContextInitParameter(WebConfiguration.WebContextInitParameter.CompressableMimeTypes, "image/gif");
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext()
               .getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
@@ -592,14 +628,17 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
               .getResource("META-INF/resources/nvLibrary-jar/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(response.containsHeader("content-encoding"));
-
+        try {
+            assertTrue(Arrays.equals(control, test));
+            assertTrue(response.containsHeader("content-length"));
+            assertTrue(response.containsHeader("last-modified"));
+            assertTrue(response.containsHeader("expires"));
+            assertTrue(response.containsHeader("etag"));
+            assertTrue(response.containsHeader("content-type"));
+            assertTrue(response.containsHeader("content-encoding"));
+        } finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
     }
 
     //==========================================================================
@@ -617,19 +656,26 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"));
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(!response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(!response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
     }
 
@@ -650,6 +696,9 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext()
               .getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
@@ -658,13 +707,17 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
               .getExternalContext().getResource("/resources/nvLibrary/duke-nv.gif"));
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(!response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(!response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
     }
 
@@ -685,20 +738,28 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), false);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(!response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(!response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
+	    
     }
 
 
@@ -720,19 +781,27 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), false);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(!response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(!response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
+
 
     }
 
@@ -755,19 +824,26 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
         byte[] control = getBytes(getFacesContext().getExternalContext().getResource("/resources/duke-nv.gif"), true);
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
-        assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(Arrays.equals(control, test));
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
     }
 
@@ -788,6 +864,9 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         ApplicationAssociate associate = ApplicationAssociate.getInstance(getFacesContext().getExternalContext());
         associate.setResourceManager(new ResourceManager(associate.getResourceCache()));
         ResourceHandler handler = new ResourceHandlerImpl();
+        Application app = getFacesContext().getApplication();
+        ResourceHandler oldResourceHandler = app.getResourceHandler();
+        app.setResourceHandler(handler);
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
         TestResponseWrapper wrapper = new TestResponseWrapper(response);
         getFacesContext().getExternalContext().setResponse(wrapper);
@@ -795,12 +874,16 @@ public class TestResourceHandlerImpl extends ServletFacesTestCase {
         handler.handleResourceRequest(getFacesContext());
         byte[] test = wrapper.getBytes();
         assertTrue(Arrays.equals(control, test));
-        assertTrue(response.containsHeader("content-length"));
-        assertTrue(response.containsHeader("last-modified"));
-        assertTrue(response.containsHeader("expires"));
-        assertTrue(response.containsHeader("etag"));
-        assertTrue(response.containsHeader("content-type"));
-        assertTrue(!response.containsHeader("content-encoding"));
+	try {
+	    assertTrue(response.containsHeader("content-length"));
+	    assertTrue(response.containsHeader("last-modified"));
+	    assertTrue(response.containsHeader("expires"));
+	    assertTrue(response.containsHeader("etag"));
+	    assertTrue(response.containsHeader("content-type"));
+	    assertTrue(!response.containsHeader("content-encoding"));
+	} finally {
+            app.setResourceHandler(oldResourceHandler);
+        }
 
     }
 
