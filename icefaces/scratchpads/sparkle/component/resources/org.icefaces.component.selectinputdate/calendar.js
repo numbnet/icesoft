@@ -22,6 +22,7 @@ var logger = new YAHOO.widget.LogWriter("Calendar 4");
 */
 var YuiCalendar = YAHOO.widget.Calendar,
            lang = YAHOO.lang,
+           JSON = lang.JSON,
           Event = YAHOO.util.Event;
 var IceCalendar = function(container, config, params) { // ICE calendar constructor
     IceCalendar.superclass.constructor.call(this, container, config);
@@ -488,20 +489,20 @@ init: function(params) {
     Event.onDOMReady(domReady);
 },
 initialize: function(clientId, jsProps, jsfProps, bindYUI) {
+    YAHOO.log("In initialize()", "info", "calendar.js");
     this[clientId] = this[clientId] || {};
-//    var lang = YAHOO.lang;
     var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
-//    console.log(lang.dump(params));
+    YAHOO.log("params = " + lang.dump(params), "info", "calendar.js");
     this.init(params);
     bindYUI(this[clientId].yuiComponent);
 },
 updateProperties: function(clientId, jsProps, jsfProps, events) {
     Event.onContentReady(clientId, function(){
     YAHOO.log("In updateProperties()", "info", "calendar.js");
-    YAHOO.log("renderAsPopup = " + jsfProps.renderAsPopup, "info", "calendar.js");
+    YAHOO.log("jsProps = " + JSON.stringify(jsProps, null, 4), "info", "calendar.js");
+    YAHOO.log("jsfProps = " + JSON.stringify(jsfProps, null, 4), "info", "calendar.js");
 //    logger.log("In updateProperties()");
 //    logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
-//    var lang = YAHOO.lang;
     var context = ice.component.getJSContext(clientId);
     if (context && context.isAttached()) {
         var prevProps = lang.merge(context.getJSProps(), context.getJSFProps());

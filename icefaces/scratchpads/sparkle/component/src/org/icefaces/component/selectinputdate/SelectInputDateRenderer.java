@@ -2,6 +2,7 @@ package org.icefaces.component.selectinputdate;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -101,35 +102,6 @@ public class SelectInputDateRenderer extends Renderer {
         String amPmStr = formatter.format(date);
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
 
-        boolean renderAsPopup = selectInputDate.isRenderAsPopup();
-        boolean renderInputField = selectInputDate.isRenderInputField();
-        boolean singleSubmit = selectInputDate.isSingleSubmit();
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
-
-/*
-        String params = "{divId:'" + clientId + "',dateStr:'" + dateStr + "',pageDate:'" + pageDate +
-                "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
-                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
-                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
-                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
-                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
-*/
-/*
-        String params = "'" + clientId + "',{dateStr:'" + dateStr + "',pageDate:'" + pageDate +
-                "',selectedDate:'" + selectedDate + "',selectedHour:'" + selectedHour +
-                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
-                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
-                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
-                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
-*/
-/*
-        String params = "'" + clientId + "',{pageDate:'" + pageDate +
-                "',selectedDate:'" + selectedDate + "'},{dateStr:'" + dateStr + "',selectedHour:'" + selectedHour +
-                "',selectedMinute:'" + selectedMinute + "',hourField:'" + hourField + "',amPmStr:'" + amPmStr +
-                "',amStr:'" + amPmStrings[0] + "',pmStr:'" + amPmStrings[1] +
-                "',renderAsPopup:" + renderAsPopup + ",renderInputField:" + renderInputField +
-                ",singleSubmit:" + singleSubmit + ",ariaEnabled:" + ariaEnabled + "}";
-*/
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
                 beginMap().
@@ -146,20 +118,13 @@ public class SelectInputDateRenderer extends Renderer {
                     entry("amPmStr", amPmStr).
                     entry("amStr", amPmStrings[0]).
                     entry("pmStr", amPmStrings[1]).
-                    entry("renderAsPopup", renderAsPopup).
-                    entry("renderInputField", renderInputField).
-                    entry("singleSubmit", singleSubmit).
-                    entry("ariaEnabled", ariaEnabled).
+                    entry("renderAsPopup", selectInputDate.isRenderAsPopup()).
+                    entry("renderInputField", selectInputDate.isRenderInputField()).
+                    entry("singleSubmit", selectInputDate.isSingleSubmit()).
+                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
                 endMap().toString();
         System.out.println("params = " + params);
-        writer.startElement(HTML.SPAN_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "_script", HTML.ID_ATTR);
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-//        writer.write("YAHOO.icefaces.calendar.init(" + params + ");");
-        writer.write("ice.component.calendar.updateProperties(" + params + ");");
-        writer.endElement(HTML.SCRIPT_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
+        ScriptWriter.insertScript(context, component, "ice.component.calendar.updateProperties(" + params + ");");
         writer.endElement(HTML.DIV_ELEM);
     }
 
