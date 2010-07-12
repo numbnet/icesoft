@@ -4,6 +4,7 @@ import org.icepush.ws.samples.icepushplace.*;
 
 import javax.xml.bind.JAXBElement;
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.SoapFaultClientException;
@@ -21,14 +22,21 @@ public class ICEpushPlaceWsClient extends WebServiceGatewaySupport {
         super(messageFactory);
     }
 
-    public void registerApp(String world, String url) throws SoapFaultClientException {
+    public long registerApp(String url, List<String> newWorlds ) throws SoapFaultClientException {
 	AppType request = new AppType();
-	request.setWorld(world);
 	request.setURL(url);
+	List<String> oldWorlds = request.getWorld();
+	oldWorlds.addAll(newWorlds);
         JAXBElement<AppType> registerAppRequest = objectFactory.createAppRegisterRequest(request);
+	System.out.println("Register App request: URL = " + request.getURL() +
+			   " Size = " + request.getWorld().size() +
+			   " First = " + request.getWorld().get(0));
         getWebServiceTemplate().marshalSendAndReceive(registerAppRequest);
+        JAXBElement<BigInteger> startingSequenceNo  = 
+	    (JAXBElement<BigInteger>) getWebServiceTemplate().
+	    marshalSendAndReceive(registerAppRequest);
+	return startingSequenceNo.getValue().longValue();
     }
-
     public PersonType loginPerson(String world, PersonType person) throws SoapFaultClientException, BadWorldException {
 	PersonRequestType request = new PersonRequestType();
 	request.setWorld(world);
@@ -64,9 +72,10 @@ public class ICEpushPlaceWsClient extends WebServiceGatewaySupport {
 	getWebServiceTemplate().marshalSendAndReceive(logoutPersonRequest);
     }
 
-    public WorldResponseType updateWorld(String world, long lastSequenceNo) {
+    public WorldResponseType updateWorld(String URL, String world, long lastSequenceNo) {
 	WorldRequestType request = new WorldRequestType();
 	request.setWorld(world);
+	request.setApp(URL);
 	request.setLastSequenceNo(lastSequenceNo);
 
         JAXBElement<WorldRequestType> updateWorldRequest = objectFactory.createWorldUpdateRequest(request);
