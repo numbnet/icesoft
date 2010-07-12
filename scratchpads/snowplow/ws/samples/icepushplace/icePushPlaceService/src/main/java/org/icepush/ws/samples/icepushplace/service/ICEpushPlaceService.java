@@ -2,6 +2,10 @@ package org.icepush.ws.samples.icepushplace.service;
 
 import java.util.Hashtable;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.Enumeration;
 import java.math.BigInteger;
 
@@ -22,25 +26,27 @@ public class ICEpushPlaceService {
 	apps = new Hashtable<String,Application>();
 	worlds = new Hashtable<String,World>();
 	masterSequenceNo = Long.MIN_VALUE;
-	oldestApp = null;
     }
 
-    public void registerApp(AppType app) {
-	Application application = new Application(app);
-	if (!apps.containsKey(app.getURL())) {
+    public long registerApp(AppType app) {
+	Application application = apps.get(app.getURL());
+	if (application == null) {
+	    application = new Application(masterSequenceNo, app.getWorld());
 	    apps.put(app.getURL(), application);
-	    apps.put(app.getURL(), application);
-	    if (apps.size() == 1) {
-		oldestApp = application;
+	    System.out.println("Registered Application: " + app.getURL());
+	}
+
+	for (Iterator i=application.getWorlds().descendingIterator(); i.hasNext();) {
+	    String newWorld = (String)i.next();
+	    World world = worlds.get(newWorld);
+	    if (world == null) {
+		world = new World(newWorld);
+		worlds.put(newWorld, world);
+		System.out.println("New World: " + newWorld);
 	    }
+	    world.addApp(application);
 	}
-	if (!worlds.containsKey(app.getWorld())) {
-	    World world = new World(app.getWorld());
-	    worlds.put(app.getWorld(), world);
-	    System.out.println("Registered Application: World='" +
-			       app.getWorld() + "' URL='" + 
-			       app.getURL() + "'");
-	}
+	return masterSequenceNo;
     }
 
     public Integer loginPerson(String myWorld, PersonType person) {
@@ -125,20 +131,34 @@ public class ICEpushPlaceService {
 	}
     }
 
-    public WorldResponseType updateWorld(String myWorld, long lastSequenceNo) {
+    public WorldResponseType updateWorld(String myApp, String myWorld, long lastSequenceNo) {
 	World world = worlds.get(myWorld);
 	WorldResponseType response = new WorldResponseType();
 	response.setSequenceNo(masterSequenceNo);
 	List<PersonType> changedPeople = response.getPerson();
-	System.out.println("World Update Starting: world='" +
-			   myWorld + "'");
-	if (world != null) {
-	    
+	System.out.println("World Update Starting: URL = " + myApp + 
+			   " world='" + myWorld + "'");
+
+	Application app = apps.get(myApp);
+	if (world != null && app != null) {
+
+	    // Find tardiest app;
+	    app.setLastSequenceNo(masterSequenceNo);
+	    long oldestUpdate = world.getOldestApp();
+
+	    // Build response;
 	    Hashtable<Integer,Person> people = world.getPeople();
-	    for (Enumeration e = people.elements() ; e.hasMoreElements() ;) {
-		Person person = (Person)e.nextElement();
+	    for (Enumeration<Person> ee = people.elements() ; ee.hasMoreElements() ;) {
+		Person person = ee.nextElement();
 		if (person.getLastSequenceNo() > lastSequenceNo) {
 		    changedPeople.add(person.getPersonData());
+		} else if (person.getLastSequenceNo() < oldestUpdate &&
+			   person.getPersonData().getStatus() == DELETE) {
+		    // Person is obsolete;
+		    people.remove(person.getPersonData().getKey());
+		    System.out.println("Removing obsolete person: " +
+				       person.getPersonData().getName() + 
+				       " key = " + person.getPersonData().getKey());
 		}
 	    }
 	}
@@ -173,13 +193,14 @@ public class ICEpushPlaceService {
 	}
     }
 
-    private class Application extends AppType {
+    private class Application {
 	private long lastSequenceNo;
+	private TreeSet<String> worlds;
 
-	public Application(AppType app) {
-	    this.setURL(app.getURL());
-	    this.setWorld(app.getWorld());
-	    lastSequenceNo = Long.MIN_VALUE;
+	public Application(long startingSequenceNo, List<String> newWorlds) {
+	    worlds = new TreeSet<String>();
+	    addWorlds(newWorlds);
+	    lastSequenceNo = startingSequenceNo;
 	}
 
 	public long getLastSequenceNo() {
@@ -188,15 +209,43 @@ public class ICEpushPlaceService {
 	public void setLastSequenceNo(long lastNo) {
 	    lastSequenceNo = lastNo;
 	}
+	public TreeSet getWorlds() {
+	    return worlds;
+	}
+	public void addWorlds(List<String> newWorlds) {
+	    for (ListIterator e = newWorlds.listIterator() ; e.hasNext() ;) {
+		worlds.add((String)e.next());
+	    }
+	}
+    }	
+
+    private class ApplicationComparator implements Comparator{
+
+	public int compare(Object firstApp, Object secondApp) {
+	    Application app1 = (Application) firstApp;
+	    Application app2 = (Application) secondApp;
+	    if (app1.getLastSequenceNo() < app2.getLastSequenceNo()) {
+		return -1;
+	    } else if (app1.getLastSequenceNo() > app2.getLastSequenceNo()) {
+		return 1;
+	    }
+	    return 0;
+	}
+
+	public boolean equals(Object obj) {
+	    return this.equals(obj);
+	}
     }	
 
     private class World {
 	private final String name;
 	private final Hashtable<Integer,Person> people;
+	private TreeSet apps;
 
 	public World(String name) {
 	    this.name = name;
 	    people = new Hashtable<Integer,Person>();
+	    apps = new TreeSet(new ApplicationComparator());
 	}
 
 	public String getName() {
@@ -205,6 +254,14 @@ public class ICEpushPlaceService {
 
 	public Hashtable<Integer,Person> getPeople() {
 	    return people;
+	}
+
+	public void addApp(Application app) {
+	    apps.add(app);
+	}
+
+	public long getOldestApp() {
+	    return ((Application)apps.first()).getLastSequenceNo();
 	}
     }	
 }

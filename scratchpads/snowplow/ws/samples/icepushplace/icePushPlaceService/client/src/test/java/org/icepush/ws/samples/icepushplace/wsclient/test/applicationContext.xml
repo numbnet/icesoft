@@ -18,6 +18,10 @@
         <property name="contextPath" value="org.icepush.ws.samples.icepushplace"/>
         <property name="mtomEnabled" value="true"/>
     </bean>
-
+    <bean id="icepushPlaceWorld" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld">
+        <property name="webServiceURL" value="http://localhost:8080/icePushPlaceService"/>
+        <property name="applicationURL" value="http://localhost:8080/myApp"/>
+        <property name="wsClient" ref="icepushPlaceClient"/>
+    </bean>
 
 </beans>

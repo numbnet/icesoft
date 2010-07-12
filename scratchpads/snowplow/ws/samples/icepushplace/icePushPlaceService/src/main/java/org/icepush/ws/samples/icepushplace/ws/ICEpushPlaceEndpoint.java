@@ -21,9 +21,10 @@ public class ICEpushPlaceEndpoint {
     }
 
     @PayloadRoot(localPart = "appRegisterRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
-	public void registerApp(JAXBElement<AppType> requestElement) {
+	public JAXBElement<BigInteger> registerApp(JAXBElement<AppType> requestElement) {
 	AppType app = requestElement.getValue();
-        icePushPlaceService.registerApp(app);
+	Long startingSequenceNo = new Long(icePushPlaceService.registerApp(app));
+	return objectFactory.createAppRegisterResponse(new BigInteger(startingSequenceNo.toString()));
     }
 
     @PayloadRoot(localPart = "personLoginRequest", namespace = "http://www.icepush.org/ws/samples/icepushplace")
@@ -52,7 +53,8 @@ public class ICEpushPlaceEndpoint {
 	public JAXBElement<WorldResponseType> updateWorld(JAXBElement<WorldRequestType> requestElement) {
 	WorldRequestType request = requestElement.getValue();
 	WorldResponseType response = icePushPlaceService.
-	    updateWorld(request.getWorld(), request.getLastSequenceNo());
+	    updateWorld(request.getApp(), request.getWorld(), 
+			request.getLastSequenceNo());
 	return objectFactory.createWorldUpdateResponse(response);
     }
 

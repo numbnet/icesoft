@@ -5,6 +5,7 @@
         targetNamespace="http://www.icepush.org/ws/samples/icepushplace">
 
     <xsd:element name="appRegisterRequest" type="tns:AppType"/>
+    <xsd:element name="appRegisterResponse" type="xsd:integer"/>
     <xsd:element name="personLoginRequest" type="tns:PersonRequestType"/>
     <xsd:element name="personLoginResponse" type="xsd:integer"/>
     <xsd:element name="personLogoutRequest" type="tns:PersonRequestType"/>
@@ -14,8 +15,8 @@
 
     <xsd:complexType name="AppType">
         <xsd:sequence>
-            <xsd:element name="World" type="xsd:string"/>
             <xsd:element name="URL" type="xsd:string"/>
+            <xsd:element name="World" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -41,6 +42,7 @@
 
     <xsd:complexType name="WorldRequestType">
         <xsd:sequence>
+            <xsd:element name="App" type="xsd:string"/>
             <xsd:element name="World" type="xsd:string"/>
             <xsd:element name="LastSequenceNo" type="xsd:long"/>
         </xsd:sequence>

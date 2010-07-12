@@ -4,6 +4,7 @@ package org.icepush.ws.samples.icepushplace.wsclient.test;
 //import java.util.ListIterator;
 
 import org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWsClient;
+import org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld;
 import org.icepush.ws.samples.icepushplace.*;
 
 import org.springframework.context.ApplicationContext;
@@ -16,7 +17,8 @@ public class Driver {
                 new ClassPathXmlApplicationContext("applicationContext.xml", Driver.class);
 
     ICEpushPlaceWsClient client =  (ICEpushPlaceWsClient) applicationContext.getBean("icepushPlaceClient", ICEpushPlaceWsClient.class);
-	Tests tests = new Tests(client);
-	tests.testSequence1();
+    ICEpushPlaceWorld world =  (ICEpushPlaceWorld) applicationContext.getBean("icepushPlaceWorld", ICEpushPlaceWorld.class);
+    Tests tests = new Tests(client);
+    tests.testSequence2(world);
     }
 }
