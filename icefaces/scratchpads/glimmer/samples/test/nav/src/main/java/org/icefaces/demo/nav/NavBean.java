@@ -39,6 +39,10 @@ public class NavBean implements Serializable {
         return navData2b;
     }
 
+    public String getNavData3a(){
+        return navData2a;
+    }
+
     public void setNavData1a(String data){
         navData1a = data;
     }
@@ -55,12 +59,24 @@ public class NavBean implements Serializable {
         navData2b = data;
     }
 
+    public void setNavData3a(String data){
+        navData2a = data;
+    }
+
     public String gotoPage01(){
         return "page01";
     }
 
     public String gotoPage02(){
         return "page02";
+    }
+
+    public String otherPageForward(){
+        return "otherPageForward";
+    }
+
+    public String otherPageRedirect(){
+        return "otherPageRedirect";
     }
 
 }
