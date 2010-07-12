@@ -23,7 +23,8 @@ import org.icefaces.component.annotation.Property;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentType = "org.icesoft.faces.Slider",
         rendererType = "org.icesoft.faces.SliderRenderer",
-        componentFamily="com.icesoft.faces.Slider"    
+        componentFamily="com.icesoft.faces.Slider",
+        tlddoc="This is an extension of YUI's slider component."
     )
 public class SliderMeta {
     // Every java field in the Meta class can be annotated to become either a
