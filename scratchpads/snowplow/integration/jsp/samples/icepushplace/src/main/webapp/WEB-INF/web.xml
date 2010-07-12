@@ -33,6 +33,17 @@
         ICEpush Place sample
     </description>
     <servlet>
+        <servlet-name>springapp</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>springapp</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>icepush</servlet-name>
         <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
