@@ -49,10 +49,14 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "name", field.getName());
         addNode(attribute, "required", String.valueOf(property.required()));
         addNode(attribute, "rtexprvalue", "false");        
-        Element description = getDocument().createElement("description");  
-        CDATASection descriptionCDATA = getDocument().createCDATASection(property.tlddoc());
+        Element description = getDocument().createElement("description");
+        String des = property.tlddoc();
+        if ("null".endsWith(des)) {
+        	des = "&nbsp;";
+        }
+        CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
-        tag.appendChild(description);        
+        attribute.appendChild(description);        
     }
     
     
