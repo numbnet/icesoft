@@ -64,6 +64,7 @@
         <fileset dir="${lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
         <fileset dir="${compat.lib.dir}" includes="*.jar"
                  excludes="jsf-api.jar, jsf-impl.jar, ${ant.project.name}.jar"/>
+        <pathelement location="../core/build/classes"/>
     </path>
 
     <macrodef name="build.jar">
