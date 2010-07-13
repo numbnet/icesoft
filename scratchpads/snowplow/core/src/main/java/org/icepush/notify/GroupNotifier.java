@@ -22,8 +22,13 @@
 
 package org.icepush.notify;
 
+import java.io.Serializable;
 
-public class GroupNotifier extends Notifier {
+import org.icepush.PushContext;
+
+public class GroupNotifier
+extends Notifier
+implements Serializable {
     private String group;
 
     public GroupNotifier() {
@@ -40,6 +45,9 @@ public class GroupNotifier extends Notifier {
     }
 
     public void push() {
-        getPushContext().push(group);
+        PushContext context = getPushContext();
+        if (context != null) {
+            getPushContext().push(group);
+        }
     }
 }

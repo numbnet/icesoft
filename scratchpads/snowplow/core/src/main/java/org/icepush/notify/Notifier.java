@@ -22,10 +22,13 @@
 
 package org.icepush.notify;
 
+import java.io.Serializable;
+
 import org.icepush.PushContext;
 
-public class Notifier {
-    private PushContext pushContext;
+public class Notifier
+implements Serializable {
+    private transient PushContext pushContext;
 
     public Notifier() {
     }

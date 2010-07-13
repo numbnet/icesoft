@@ -1,5 +1,4 @@
 /*
- *
  * Version: MPL 1.1
  *
  * "The contents of this file are subject to the Mozilla Public License
@@ -18,54 +17,55 @@
  * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
- *
  */
-
 package org.icepush.jsp.samples.region;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 
 import org.icepush.notify.GroupNotifier;
 
-public class GroupNotificationCounter extends GroupNotifier {
-	private Map<String,Long> counters;
-	private long interval = 3000; //default to 3 secs
+public class GroupNotificationCounter
+extends GroupNotifier
+implements Serializable {
+	private final Map<String, Long> counters = new Hashtable<String, Long>();
+
+    private long interval = 3000; //default to 3 secs
 
 	public GroupNotificationCounter() {
-		super();
-		counters = new Hashtable<String,Long>();
-	}
-
-	public void setGroup(String grp) {
-		super.setGroup(grp);
-		if (!counters.containsKey(grp)) {
-			counters.put(grp, new Long(System.currentTimeMillis()));
-		}
-	}
-
-	public long getInterval() {
-		return interval;
-	}
-
-	public void setInterval(long interval) {
-		this.interval = interval;
+        super();
 	}
 
 	public long getCounter() {
 		return getCounter(getGroup());
 	}
 
-	public long getCounter(String group) {
-		Long start = (Long) counters.get(group);
+	public long getCounter(final String group) {
+		Long start = counters.get(group);
 		if (start == null) {
 			return 0;
 		} else {
 			long now = System.currentTimeMillis();
-			if( interval < 1 ) //ensure interval always > 0 
+			if( interval < 1 ) { //ensure interval always > 0
 				interval = 1000;
-			return (now - start.longValue()) / interval;
+            }
+			return (now - start) / interval;
 		}
 	}
+
+    public long getInterval() {
+        return interval;
+    }
+
+    public void setGroup(final String group) {
+        super.setGroup(group);
+        if (!counters.containsKey(group)) {
+            counters.put(group, System.currentTimeMillis());
+        }
+    }
+
+    public void setInterval(final long interval) {
+        this.interval = interval;
+    }
 }
