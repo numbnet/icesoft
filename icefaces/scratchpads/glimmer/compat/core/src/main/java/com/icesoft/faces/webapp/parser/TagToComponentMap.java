@@ -30,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -89,7 +90,7 @@ public class TagToComponentMap implements Serializable {
     public Hashtable getTagToComponentMap() {
         return tagToComponentMap;
     }
-
+    
     /**
      * Takes a TLD file, parses it and build up map from tag name to tag
      * processing class.
@@ -98,7 +99,6 @@ public class TagToComponentMap implements Serializable {
      * @throws IOException If digester barfs.
      */
     public void addTags(InputStream tldInput) throws IOException {
-
         /*
           Use the digester to parse input file looking for <tag> entries, extract the <name>
           and extract the <tag-class> and build hash table for looking up component
@@ -139,7 +139,58 @@ public class TagToComponentMap implements Serializable {
         } finally {
             tldInput.close();
         }
-    }
+    }   
+    
+    /**
+     * Same as addTags but this one has more info such as attributes/descriptions
+     *
+     * @param tldInput The TLD to process
+     * @throws IOException If digester barfs.
+     */
+    public void addTagAttrib(InputStream tldInput) throws IOException {
+
+        Digester digester = new Digester();
+        digester.setNamespaceAware(true);
+        digester.setValidating(false);
+        digester.setEntityResolver(ParserUtils.entityResolver);
+        digester.setUseContextClassLoader(false);
+
+        /* Need to set the class loader to work.  Not sure why.
+           May need to change when we move behind servlet container or Tomcat */
+        digester.setClassLoader(loader);
+
+        // This rule creates an element we can use to populate the map;
+        digester.addObjectCreate("taglib/tag", "com.icesoft.faces.webapp.parser.TagToTagClassElement");
+        digester.addObjectCreate("taglib/uri", "java.lang.StringBuffer");
+
+        // This rule pushes everything into the hash table;
+        NameRule nRule =  new NameRule(tagToComponentMap, faceletsTaglibXmlWriter);
+        digester.addRule("taglib/tag", nRule);
+        digester.addRule("taglib/uri", nRule);
+
+        // These rules scoop the values from <name> and <tag-class> elements;
+        digester.addCallMethod("taglib/tag/name", "setTagName", 0);
+        digester.addCallMethod("taglib/tag/tag-class", "setTagClass", 0);
+        digester.addCallMethod("taglib/tag/description", "setDescription", 0);
+        digester.addCallMethod("taglib/uri", "append", 0);
+
+        digester.addObjectCreate("taglib/tag/attribute", "com.icesoft.faces.webapp.parser.AttributeElement");
+      
+        digester.addCallMethod("taglib/tag/attribute/name", "setName", 0);
+        digester.addCallMethod("taglib/tag/attribute/required", "setRequired", 0);
+        digester.addCallMethod("taglib/tag/attribute/description", "setDescription", 0);
+        digester.addSetNext("taglib/tag/attribute", "addAttribute");
+        
+        try {
+            digester.parse(tldInput);
+        } catch (Throwable e) {
+            IOException ioe = new IOException("Can't parse tld " + tldInput.toString());
+            ioe.initCause(e);
+            throw ioe;
+        } finally {
+            tldInput.close();
+        }
+    }    
 
 
     /**
@@ -190,7 +241,7 @@ public class TagToComponentMap implements Serializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (args[0].equals("facelets")) {
+        } else if (args[0].equals("facelets") || args[0].equals("facelets-eclipse") ) {
             // Build new component map from tld, and use that to
             //  generate a Facelets taglib.xml
             // args[0] is command
@@ -213,7 +264,11 @@ public class TagToComponentMap implements Serializable {
 
                 map.setFaceletsTaglibXmlWriter(faceletsTaglibXmlWriter);
                 tldFile = new FileInputStream(args[2]);
-                map.addTags((InputStream) tldFile);
+                if (args[0].equals("facelets")) {
+                	map.addTags((InputStream) tldFile);
+                } else {
+                	map.addTagAttrib((InputStream) tldFile);
+                }
 
                 faceletsTaglibXmlWriter.write(trailer);
                 faceletsTaglibXmlWriter.flush();
@@ -233,11 +288,9 @@ public class TagToComponentMap implements Serializable {
  */
 final class NameRule extends Rule {
     // A class for adding tag name to current element;
-
     private Hashtable componentMap;
     private Writer faceletsTaglibXmlWriter;
     private String currentNamespace;
-
     private static final Log log = LogFactory.getLog(NameRule.class);
 
     /**
@@ -261,7 +314,6 @@ final class NameRule extends Rule {
      * @deprecated
      */
     public void begin(Attributes attributes) throws Exception {
-
     }
 
     /**
@@ -376,6 +428,160 @@ final class NameRule extends Rule {
                                 elem.getTagName() +
                                 ", Tag class: " + elem.getTagClass() +
                                 ", Exception: " + e);
+            }
+        }
+    }
+}
+
+/**
+ * Same as NameRule but with more info required by ide
+ */
+final class NamedRule extends Rule {
+    // A class for adding tag name to current element;
+    private Hashtable componentMap;
+    private Writer faceletsTaglibXmlWriter;
+    private String currentNamespace;
+    private static final Log log = LogFactory.getLog(NamedRule.class);
+
+    /**
+     * Constructor.
+     *
+     * @param map    The map being created.
+     * @param writer
+     */
+    public NamedRule(Hashtable map, Writer writer) {
+        super();
+        componentMap = map;
+        faceletsTaglibXmlWriter = writer;
+        currentNamespace = null;
+    }
+
+    /**
+     * Do nothing in begin.
+     *
+     * @param attributes The tag attributes
+     * @throws Exception No exception thrown.
+     * @deprecated
+     */
+    public void begin(Attributes attributes) throws Exception {
+    }
+
+    /**
+     * Puts the element into the map.
+     *
+     * @param namespace Not used
+     * @param name      Not used
+     */
+    public void end(String namespace, String name) {
+        if (name.equals("uri")) {
+            if (faceletsTaglibXmlWriter != null) {
+                try {
+                    String ns = digester.peek().toString();
+                    boolean namespaceChanged =
+                            (ns != null && ns.length() > 0) &&
+                                    (currentNamespace == null ||
+                                            !currentNamespace.equals(ns));
+                    if (namespaceChanged) {
+                        currentNamespace = ns;
+                        String nsOutput ="	<namespace>" + currentNamespace + "</namespace>\n";
+                        faceletsTaglibXmlWriter.write(nsOutput);
+                    }
+                }
+                catch (Exception e) {
+                	log.error("Problem writing ns to eclipse taglib.xml", e);
+                }
+            }
+            return;
+        }
+
+        TagToTagClassElement elem = (TagToTagClassElement) digester.peek();
+
+        /* Don't want to duplicate tag entries.  Need JSF tags to be first though */
+        if (componentMap.get(elem.getTagName()) != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Duplicate Tag " + elem.getTagName() + " not processed");
+            }
+            return;
+        }
+
+        componentMap.put(elem.getTagName(), elem.getTagClass());
+        if (log.isDebugEnabled()) {
+            log.debug( "Adding " + elem.getTagName() + ": " + elem.getTagClass());
+        }
+
+        if (faceletsTaglibXmlWriter != null) {
+            try {
+                String tagName = elem.getTagName();
+                String tagClassStr = elem.getTagClass();
+                if (tagName != null && tagClassStr != null &&
+                        tagClassStr.indexOf("com.icesoft") >= 0) {
+                    // We have to have special cases for any tags that
+                    //  are not UIComponents, but are instead simply tags
+                    // Map from JSP tag TabChangeListenerTag to
+                    //  Facelets TabChangeListenerHandler
+                    if (tagName.equals("tabChangeListener")) {
+                        StringBuffer sb = new StringBuffer(256);
+                        sb.append("\t<tag>\n\t\t<tag-name>");
+                        sb.append(tagName);
+                        sb.append("</tag-name>\n\t\t<handler-class>");
+                        sb.append("com.icesoft.faces.facelets.TabChangeListenerHandler");
+                        sb.append("</handler-class>\n\t</tag>\n");
+                        faceletsTaglibXmlWriter.write(sb.toString());
+                    } else {
+                        Class tagClass = Class.forName(tagClassStr);
+                        Object tagObj = tagClass.newInstance();
+                        java.lang.reflect.Method getComponentTypeMeth =
+                                tagClass.getMethod("getComponentType",new Class[]{});
+                        String componentType =
+                        	(String) getComponentTypeMeth.invoke( tagObj, new Object[]{});
+                        java.lang.reflect.Method getRendererTypeMeth =
+                                tagClass.getMethod("getRendererType",new Class[]{});
+                        String rendererType =
+                                (String) getRendererTypeMeth.invoke(tagObj, new Object[]{});
+
+                        StringBuffer sb = new StringBuffer(256);
+                        sb.append("\t<tag>\n\t\t<description><![CDATA[");
+                        sb.append(elem.getDescription());
+                        sb.append("]]></description>\n");
+                        sb.append("\t\t<tag-name>");
+                        sb.append(tagName);
+                        sb.append("</tag-name>\n\t\t<component>\n\t\t\t<component-type>");
+                        sb.append(componentType);
+                        sb.append("</component-type>\n");
+                        if (rendererType != null) {
+                            sb.append("\t\t\t<renderer-type>");
+                            sb.append(rendererType);
+                            sb.append("</renderer-type>\n");
+                        }
+                        //TODO: is this handler necessary?  Yes..required for method binding of custom comps
+                        sb.append("\t\t\t<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>\n");
+                        sb.append("\t\t</component>\n"); 
+                        ArrayList<AttributeElement> list = elem.getAttributes();
+                       
+                        for (AttributeElement attributeElement : list) {
+							sb.append("\t\t<attribute>\n");
+							sb.append("\t\t\t<description><![CDATA[");
+							sb.append(attributeElement.getDescription());
+							sb.append("]]></description>\n");
+							
+							sb.append("\t\t\t<name>");
+							sb.append(attributeElement.getName());
+							sb.append("</name>\n");
+							
+							sb.append("\t\t\t<required>");
+							sb.append(attributeElement.getRequired());
+							sb.append("</required>\n");
+							sb.append("\t\t</attribute>\n");
+						}
+                        sb.append("\t</tag>\n");
+                        faceletsTaglibXmlWriter.write(sb.toString());
+                    }
+                }
+            }
+            catch (Exception e) {
+                log.error("Problem writing tag to eclipse taglib.xml. Tag name: " +
+                    elem.getTagName() + ", Tag class: " + elem.getTagClass() , e);
+                        
             }
         }
     }
