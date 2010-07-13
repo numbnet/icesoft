@@ -22,6 +22,8 @@
 
 package com.icesoft.faces.webapp.parser;
 
+import java.util.ArrayList;
+
 /**
  * A simple class needed to process tag libraries when creating a
  * TagToComponentMap object.  This object is created by the digester to hold
@@ -33,13 +35,28 @@ public class TagToTagClassElement {
     /* An obect that we can use to digest <tag> entries in a tld */
     private String tagName;
     private String tagClass;
+    private String description;
+    private ArrayList<AttributeElement> attributes;
 
-    /**
+    public ArrayList<AttributeElement> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(ArrayList<AttributeElement> attributes) {
+		this.attributes = attributes;
+	}
+	
+	public void addAttribute (AttributeElement a) {
+		attributes.add(a);
+	}
+
+	/**
      * Constructor.
      */
     public TagToTagClassElement() {
         tagName = null;
         tagClass = null;
+        attributes = new ArrayList<AttributeElement>();
     }
 
     /**
@@ -59,6 +76,10 @@ public class TagToTagClassElement {
     public String getTagClass() {
         return tagClass;
     }
+    
+    public String getDescription() {
+    	return description;
+    }
 
     /**
      * TagName setter.
@@ -76,5 +97,9 @@ public class TagToTagClassElement {
      */
     public void setTagClass(String className) {
         tagClass = className;
+    }
+    
+    public void setDescription (String description) {
+    	this.description = description;
     }
 }    
