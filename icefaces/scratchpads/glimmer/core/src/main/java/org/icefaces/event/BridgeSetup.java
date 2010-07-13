@@ -64,9 +64,16 @@ public class BridgeSetup implements SystemEventListener {
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (!EnvUtils.isICEfacesView(context)) {
-            if (log.isLoggable(Level.INFO)) {
-                log.log(Level.INFO, "ICEfaces disabled for view " + context.getViewRoot().getViewId() +
-                        " (h:head and h:body tags must be used)");
+            //If ICEfaces is not configured for this view, we don't need to process this event.
+            return;
+        }
+
+        if(!EnvUtils.hasHeadAndBodyComponents(context)){
+            //If ICEfaces is configured for this view, but the h:head and/or h:body components
+            //are not available, we cannot process it but we log the reason. 
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING, "ICEfaces configured for view " + context.getViewRoot().getViewId() +
+                        " but h:head and h:body components are required");
             }
             return;
         }

@@ -60,9 +60,23 @@ public class EnvUtils {
     }
 
     public static boolean isICEfacesView(FacesContext facesContext) {
+        //Check to see if the view is configured to use ICEfaces (default is to enable ICEfaces).
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
 
+        Object icefacesRender = viewMap.get(ICEFACES_RENDER);
+        if (null == icefacesRender) {
+            icefacesRender = new Boolean(
+                    EnvConfig.getEnvConfig(facesContext).getAutoRender());
+            viewMap.put(ICEFACES_RENDER, icefacesRender);
+        }
+        //using .equals on Boolean to obtain boolean robustly
+        return (Boolean.TRUE.equals(icefacesRender));
+    }
+
+    public static boolean hasHeadAndBodyComponents(FacesContext facesContext){
         //ICE-5613: ICEfaces must have h:head and h:body tags to render resources into
-        //Without these components, ICEfaces is disabled.  The component
+        //Without these components, ICEfaces is disabled.
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
         if (!viewMap.containsKey(HEAD_DETECTED) || !viewMap.containsKey(BODY_DETECTED) ) {
@@ -73,17 +87,7 @@ public class EnvUtils {
             }
             return false;
         }
-
-        //If the h:head and h:body components are available, then we can check to see if
-        //the view is configured to use ICEfaces (default is to enable ICEfaces).
-        Object icefacesRender = viewMap.get(ICEFACES_RENDER);
-        if (null == icefacesRender) {
-            icefacesRender = new Boolean(
-                    EnvConfig.getEnvConfig(facesContext).getAutoRender());
-            viewMap.put(ICEFACES_RENDER, icefacesRender);
-        }
-        //using .equals on Boolean to obtain boolean robustly
-        return (Boolean.TRUE.equals(icefacesRender));
+        return true;
     }
 
     public static boolean isAutoId(FacesContext facesContext) {
