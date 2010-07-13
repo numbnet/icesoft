@@ -188,6 +188,7 @@ public class UserBean implements Serializable {
 
         // Assign the nick and enter the conversation
         this.nick = nick;
+        enterConversation(null);
     }
 
     public void setColor(String color) {
