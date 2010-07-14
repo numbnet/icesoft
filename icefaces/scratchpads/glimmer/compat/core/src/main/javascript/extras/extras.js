@@ -2257,7 +2257,7 @@ Autocompleter.Base.prototype = {
     },
 
     onHover: function(event) {
-        var element = Event.findElement(event, 'div');
+        var element = Event.findElement(event, 'DIV');
         if (this.index != element.autocompleteIndex) {
             if (!this.skip_mouse_hover) this.index = element.autocompleteIndex;
             this.render();
@@ -2275,7 +2275,7 @@ Autocompleter.Base.prototype = {
     onClick: function(event) {
         this.hidden = true;
         // Hack to fix before beta. Was popup up the list after a selection was made
-        var element = Event.findElement(event, 'div');
+        var element = Event.findElement(event, 'DIV');
         this.index = element.autocompleteIndex;
         var idx = element.autocompleteIndex;
         this.selectEntry();
@@ -3849,7 +3849,7 @@ Ice.PanelDivider.addMethods({
 
 
     getPreviousElement: function() {
-        if (this.source.previousSibling.tagName == "div") {
+        if (this.source.previousSibling.tagName == "DIV") {
             return this.source.previousSibling;
         } else {
             return this.source.previousSibling.previousSibling;
@@ -3857,7 +3857,7 @@ Ice.PanelDivider.addMethods({
     },
 
     getNextElement: function() {
-        if (this.source.nextSibling.tagName == "div") {
+        if (this.source.nextSibling.tagName == "DIV") {
             return this.source.nextSibling;
         } else {
             return this.source.nextSibling.nextSibling;
@@ -4345,7 +4345,7 @@ Ice.KeyNavigator = Class.create({
 	    var rootLevelItems = this.component.childNodes;
 	    for(i=0; i < rootLevelItems.length; i++) {
 	        var element = rootLevelItems[i];
-		    if (element.tagName == "div") {
+		    if (element.tagName == "DIV") {
 		        if (Element.hasClassName(element, this.getMenuBarItemClass())) {
 		            element.onmouseover = this.hover.bindAsEventListener(this, element);
 			        //add focus support 
