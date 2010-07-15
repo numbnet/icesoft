@@ -41,6 +41,15 @@ import java.io.IOException;
 
 import org.icefaces.util.EnvUtils;
 
+/**
+ * <p>
+ *   The <code>ResourceRegistry</code> allows an application to register
+ *   javax.faces.application.Resource instances at runtime.  Each Resource
+ *   is registered in a specified scope (Application, Session, View, Flash
+ *   Window) so that the resource can be garbage collected when the scope
+ *   expires.
+ * </p>
+ */
 public class ResourceRegistry extends ResourceHandlerWrapper  {
     private static Logger log = Logger.getLogger(ResourceRegistry.class.getName());
     private ResourceHandler wrapped;
@@ -99,7 +108,8 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     }
 
     /**
-     * Add the provided resource to the scopeMap.
+     * Add the provided resource to the custom scope Map.  This is intended to 
+     * be used only in cases not covered by the other scope-specific methods.
      *
      * @param scopeMap the resource
      * @param scopeMap the resource
