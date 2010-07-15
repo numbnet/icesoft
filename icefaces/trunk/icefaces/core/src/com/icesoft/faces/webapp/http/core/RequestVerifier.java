@@ -41,6 +41,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.Arrays;
 
+import javax.servlet.http.Cookie;
+
 public class RequestVerifier implements Server {
     private final static Log log = LogFactory.getLog(RequestVerifier.class);
     private Configuration configuration;
@@ -62,7 +64,21 @@ public class RequestVerifier implements Server {
                 if (Arrays.asList(request.getParameterAsStrings("ice.session")).contains(sessionID)) {
                     server.service(request);
                 } else {
-                    log.debug("Missmatched 'ice.session' value. Session has expired.");
+                    if (log.isDebugEnabled()) {
+                        String JSESSIONID = null;
+                        Cookie[] cookies = request.getCookies();
+                        for (int i = 0; JSESSIONID == null && i < cookies.length; i++) {
+                            if (cookies[i].getName().equalsIgnoreCase("JSESSIONID")) {
+                                JSESSIONID = cookies[i].getValue();
+                            }
+                        }
+                        log.debug(
+                            "Missmatched 'ice.session' value. Session has expired. (" +
+                                "Server's ice.session: '" + sessionID + "', " +
+                                "Client's ice.session(s): " +
+                                    "'" + Arrays.asList(request.getParameterAsStrings("ice.session")) + "', " +
+                                "Client's JSESSIONID: '" + JSESSIONID + "')");
+                    }
                     if ( "true".equalsIgnoreCase(configuration
                             .getAttribute("sessionExpiredServerRedirect", 
                                           "false")) )  {
