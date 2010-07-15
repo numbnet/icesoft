@@ -106,6 +106,6 @@ public @interface Component {
    * Name of the properties, that needs to be included from the parent class.
    * @return property names.
    */
-  String[] includePropsdferties() default {};
+  String[] includeProperties() default {};
 
 }
