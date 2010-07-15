@@ -59,8 +59,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 					}
 				}
 			}
-			
-			System.out.println("WARN - Failed to remove user " + name + ".");
 		}
 		
 		return Boolean.FALSE;
