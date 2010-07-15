@@ -8,6 +8,9 @@ import java.util.List;
 import org.icepush.integration.icepushplace.client.WorldService;
 import org.icepush.integration.icepushplace.client.model.User;
 import org.icepush.integration.icepushplace.shared.ValidatorUtil;
+import org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -28,11 +31,24 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	
 	@Override
 	public Boolean addUser(User user) throws IllegalArgumentException {
+        // Temporary to test out connecting to the web service
+		try{
+			System.out.println("ADD USER START");
+			System.out.println("Servlet Context: " + getServletContext());
+			WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+			System.out.println("Application Context: " + applicationContext);
+			ICEpushPlaceWorld world = (ICEpushPlaceWorld)applicationContext.getBean("icepushPlaceWorld", ICEpushPlaceWorld.class);
+			System.out.println("World: " + world);
+		}catch (Exception failedTest) {
+			failedTest.printStackTrace();
+			System.out.println("Failed to test the Spring integration");
+		}
+		
 		List<User> userList = getUsersByRegion(user.getRegion());
 		
 		if (userList != null) {
 			userList.add(user);
-			
+            
 			System.out.println("INFO - Added user " + user.getName() + " (mood: " + user.getMood() + ") to region " + user.getRegion() + ".");
 			
 			return Boolean.TRUE;
