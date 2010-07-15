@@ -22,7 +22,7 @@
 
 package org.icefaces.push;
 
-import org.icefaces.application.DynamicResourceRegistry;
+import org.icefaces.push.DynamicResourceRegistry;
 import org.icefaces.push.http.DynamicResource;
 import org.icefaces.push.http.DynamicResourceLinker;
 import org.icefaces.push.http.MimeTypeMatcher;

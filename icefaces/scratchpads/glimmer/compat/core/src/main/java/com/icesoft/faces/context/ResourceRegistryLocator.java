@@ -22,7 +22,7 @@
 
 package com.icesoft.faces.context;
 
-import org.icefaces.application.DynamicResourceRegistry;
+import org.icefaces.push.DynamicResourceRegistry;
 import org.icefaces.push.http.DynamicResource;
 import org.icefaces.push.http.DynamicResourceLinker;
 
