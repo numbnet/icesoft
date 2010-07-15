@@ -135,10 +135,12 @@ public class ICEfacesResourceHandler extends ResourceHandlerWrapper {
     }
 
     public static void notifyContextShutdown(ServletContext context) {
-        PseudoServlet dispatcher =
-                ((ICEfacesResourceHandler) context.getAttribute(ICEfacesResourceHandler.class.getName())).dispatcher;
-        if (null != dispatcher) {
-            dispatcher.shutdown();
+        Object obj = context.getAttribute(ICEfacesResourceHandler.class.getName());
+        if( obj != null ){
+            PseudoServlet dispatcher = ((ICEfacesResourceHandler) obj).dispatcher;
+            if (null != dispatcher) {
+                dispatcher.shutdown();
+            }
         }
     }
 
