@@ -24,6 +24,7 @@ package org.icefaces.util;
 
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIViewRoot;
+import javax.faces.application.Resource;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +42,10 @@ public class EnvUtils {
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
     public static final String BODY_DETECTED = "org.icefaces.bodyDetected";
 
+    private static String RESOURCE_PREFIX = "/javax.faces.resource/";
+    private static String PATH_TEMPLATE = "org.icefaces.resource.pathTemplate";
+    private static String DUMMY_RESOURCE = "bridge.js";
+    private static String[] DEFAULT_TEMPLATE = new String[] {RESOURCE_PREFIX, ".jsf"};
 
     static {
         try {
@@ -123,4 +128,33 @@ public class EnvUtils {
     public static boolean isICEpushPresent() {
         return icepushPresent;
     }
+    
+    public static String[] getPathTemplate()  {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Map applicationMap = facesContext.getExternalContext()
+                .getApplicationMap();
+        String[] pathTemplate = (String[]) applicationMap.get(PATH_TEMPLATE);
+        if (null != pathTemplate)  {
+            return pathTemplate;
+        }
+        Resource dummyResource = facesContext.getApplication()
+                .getResourceHandler().createResource(DUMMY_RESOURCE);
+        if (null != dummyResource)  {
+            String dummyPath = dummyResource.getRequestPath();
+            pathTemplate = extractPathTemplate(dummyPath);
+        }
+        if (null == pathTemplate)  {
+            return DEFAULT_TEMPLATE;
+        }
+        applicationMap.put(PATH_TEMPLATE, pathTemplate);
+        return pathTemplate;
+    }
+
+    private static String[] extractPathTemplate(String path)  {
+        int start = path.indexOf(DUMMY_RESOURCE);
+        String pre = path.substring(0, start);
+        String post = path.substring(start + DUMMY_RESOURCE.length());
+        return new String[] {pre, post};
+    }
+
 }

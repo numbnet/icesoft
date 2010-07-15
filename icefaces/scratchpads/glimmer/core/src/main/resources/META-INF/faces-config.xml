@@ -46,6 +46,7 @@
     <application>
         <resource-handler>org.icefaces.push.servlet.ICEpushResourceHandler</resource-handler>
         <resource-handler>org.icefaces.push.servlet.ICEfacesResourceHandler</resource-handler>
+        <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
         <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
         <system-event-listener>
             <system-event-listener-class>org.icefaces.event.FormSubmit</system-event-listener-class>
