@@ -4,6 +4,10 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
+
+  <listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
   
   <!-- Servlets -->
   <servlet>
