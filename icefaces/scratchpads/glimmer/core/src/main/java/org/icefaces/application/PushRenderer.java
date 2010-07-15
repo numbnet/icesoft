@@ -31,6 +31,15 @@ import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * <p>
+ *   The <code>PushRenderer</code>  allows an application to initiate
+ *   rendering asynchronously and independently of user interaction for a
+ *   group of sessions or views.  When a session is rendered, all windows or
+ *   views that a particular user has open in their session will be updated via
+ *   Ajax Push with the current application state.
+ * </p>
+ */
 public class PushRenderer {
     private static Logger log = Logger.getLogger(PushRenderer.class.getName());
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";

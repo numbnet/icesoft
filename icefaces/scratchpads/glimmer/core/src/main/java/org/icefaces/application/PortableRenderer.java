@@ -23,7 +23,7 @@
 package org.icefaces.application;
 
 /**
- * PortableRenderer can trigger asynchronous renderings in the context of the application.
+ * PortableRenderer can trigger asynchronous rendering outside of a JSF lifecycle.
  */
 public interface PortableRenderer {
 
@@ -33,8 +33,7 @@ public interface PortableRenderer {
      * scope of the current thread scope, the current view will not be
      * asynchronously rendered
      * (it is already rendered as a result of the user event being
-     * processed).  For more fine-grained control
-     * use the RenderManager API.
-     */
+     * processed).  
+    */
     void render(String group);
 }
