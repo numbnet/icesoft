@@ -196,6 +196,18 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
                 .getViewRoot().getViewMap(), resource );
     }
 
+    /**
+     * Add the provided resource in window scope.
+     *
+     * @param scopeMap the resource
+     * @param scopeMap the resource
+     * @return the requestPath of the resource
+     */
+    public static String addWindowResource(Resource resource)  {
+        return addResource("w", WindowScopeManager.lookupWindowScope(
+                FacesContext.getCurrentInstance()), resource );
+    }
+
 
 }
 
