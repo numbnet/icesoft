@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.application;
+package org.icefaces.push;
 
 import org.icefaces.push.DynamicResourceDispatcher;
 import org.icefaces.push.http.DynamicResource;
