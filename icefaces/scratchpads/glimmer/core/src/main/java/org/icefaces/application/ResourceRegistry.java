@@ -121,7 +121,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
 
     private static String addResource(String prefix, Map scopeMap, 
             Resource resource)  {
-        int index = getNextKey(scopeMap);
+        int index = getNextKey();
         String key = prefix + String.valueOf(index);
         ResourceRegistryHolder holder = 
                 new ResourceRegistryHolder(key, resource);
@@ -148,13 +148,15 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         }
     }
 
-    private synchronized static int getNextKey(Map scopeMap)  {
-        Integer currentKey = (Integer) scopeMap.get(CURRENT_KEY);
+    private synchronized static int getNextKey()  {
+        Map appMap = FacesContext.getCurrentInstance().getExternalContext()
+                .getApplicationMap();
+        Integer currentKey = (Integer) appMap.get(CURRENT_KEY);
         if (null == currentKey)  {
             currentKey = new Integer(1);
         }
         currentKey = new Integer(currentKey.intValue() + 1);
-        scopeMap.put(CURRENT_KEY, currentKey);
+        appMap.put(CURRENT_KEY, currentKey);
         return currentKey.intValue();
     }
 
