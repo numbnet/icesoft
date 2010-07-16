@@ -121,8 +121,14 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
 
     private static String addResource(String prefix, Map scopeMap, 
             Resource resource)  {
-        int index = getNextKey();
-        String key = prefix + String.valueOf(index);
+        String name = resource.getResourceName();
+        String key;
+        if ( (null != name) && (name.length() > 0) )  {
+            key = name;
+        } else {
+            int index = getNextKey();
+            key = prefix + String.valueOf(index);
+        }
         ResourceRegistryHolder holder = 
                 new ResourceRegistryHolder(key, resource);
         scopeMap.put(MAP_PREFIX + key, holder);
