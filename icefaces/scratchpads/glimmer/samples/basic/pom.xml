@@ -27,8 +27,11 @@
   <artifactId>basic</artifactId>
   <packaging>war</packaging>
   <name>@{artifactId}</name>
-  <version>2.0-A3</version>
+  <version>2.0-Beta1</version>
   <description />
+  <properties>
+    <jsf.version>2.0.3-FCS</jsf.version>
+  </properties>
   <repositories>
      <repository>
         <id>snapshots</id>
@@ -88,37 +91,37 @@
     <profile>
        <id>tomcat6</id>
        <activation>
-          <activeByDefault>false</activeByDefault>
+          <activeByDefault>true</activeByDefault>
        </activation>
        <dependencies>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-impl</artifactId>
-             <version>2.0.2-FCS</version>
+             <version>${jsf.version}</version>
           </dependency>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-api</artifactId>
-             <version>2.0.2-FCS</version>
+             <version>${jsf.version}</version>
           </dependency>
        </dependencies>
     </profile>
     <profile>
        <id>glassfish3</id>
       <activation>
-          <activeByDefault>true</activeByDefault>
+          <activeByDefault>false</activeByDefault>
        </activation>       
        <dependencies>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-impl</artifactId>
-             <version>2.0.2-FCS</version>
+             <version>${jsf.version}</version>
              <scope>provided</scope>
           </dependency>
           <dependency>
              <groupId>javax.faces</groupId>
              <artifactId>jsf-api</artifactId>
-             <version>2.0.2-FCS</version>
+             <version>${jsf.version}</version>
              <scope>provided</scope>
           </dependency>
        </dependencies>

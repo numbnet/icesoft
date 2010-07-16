@@ -41,14 +41,6 @@
 	      	 <localRepository refid="local.repository"/>      	
 	         	  <pom refid="compatPom"/>
 	      </artifact:install>	
-	      <artifact:pom id="compatCompsPom" file="icefaces-comps-compat.pom"> 
-	    	 <localRepository refid="local.repository"/>
-	      </artifact:pom>
-	       <echo>installing icefaces-${compatCompsPom.version} to local repository</echo>
-	      <artifact:install file="${lib.dir}/icefaces-comps-compat.jar" >
-	      	 <localRepository refid="local.repository"/>      	
-	    	  <pom refid="compatCompsPom"/>
-	      </artifact:install>
 	      
 	    </target>
 

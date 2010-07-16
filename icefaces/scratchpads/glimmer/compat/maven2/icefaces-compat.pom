@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-compat</artifactId>
-  <version>2.0-A3</version>
+  <version>2.0-Beta1</version>
   <packaging>jar</packaging>
   <name>ICEfaces Compat Core</name>
   <url>http://www.icefaces.org</url> 
@@ -71,6 +71,27 @@
       <version>1.0</version>
       <scope>provided</scope>
     </dependency>
+    <!--  next dependencies brought over from A3 comps-compat -->
+    <!--  jstl jar required for panelSeries as it is used in
+          component-showcase example -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
+    <!-- next lib only required if using dataExporter component
+    <dependency>
+ 	<groupId>net.sourceforge.jexcelapi</groupId>
+ 	<artifactId>jxl</artifactId>
+ 	<version>2.6.8</version>
+    </dependency>  -->
+    <!-- next lib only required if using Krysalis jcharts
+    <dependency>
+ 	<groupId>net.sf.jcharts</groupId>
+ 	<artifactId>krysalis-jCharts</artifactId>
+ 	<version>1.0.0-alpha-1</version>
+    </dependency>  -->
  
   </dependencies>
 </project>

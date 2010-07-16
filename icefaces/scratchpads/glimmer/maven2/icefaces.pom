@@ -5,14 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces</artifactId>
-  <version>2.0-A3</version>
+  <version>2.0-Beta1</version>
   <packaging>jar</packaging>
   <name>ICEfaces Core</name>
   <url>http://www.icefaces.org</url> 
   <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
    
   <properties>
-    <jsf.version>2.0.2-FCS</jsf.version>
+    <jsf.version>2.0.3-FCS</jsf.version>
   </properties>
 
   <dependencies>
