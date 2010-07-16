@@ -3,7 +3,7 @@ package org.icepush.integration.icepushplace.shared;
 import java.util.List;
 
 /**
- * Utility class to manage the validation of strings, directories, etc.
+ * Utility class to manage the validation of strings, lists, etc.
  */
 public class ValidatorUtil {
 	/**
