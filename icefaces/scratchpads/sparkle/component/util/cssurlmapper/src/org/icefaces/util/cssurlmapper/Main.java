@@ -159,7 +159,7 @@ public class Main {
 		System.out.println("--reference-dir option. Otherwise, the value of --root-dir will be used.");
 	}
 	
-	private static void processDirectory(File dir, String libraryName, File referenceDir, File outputDir) {
+	public static void processDirectory(File dir, String libraryName, File referenceDir, File outputDir) {
 		try {
 			System.out.println("Entering directory " + dir.getCanonicalPath());
 		} catch (Exception e) {
@@ -195,7 +195,7 @@ public class Main {
 		}
 	}
 	
-	private static void processFile(File file, String libraryName, File referenceDir, File outputDir) {
+	public static void processFile(File file, String libraryName, File referenceDir, File outputDir) {
 		CssUrlMapper mapper = new CssUrlMapper(file, libraryName, referenceDir, outputDir);
 		mapper.run();
 	}
