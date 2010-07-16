@@ -3,8 +3,11 @@ package org.icepush.integration.icepushplace.client.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-	private static final long serialVersionUID = 1008168282470225034L;
+	private static final long serialVersionUID = 7887673308558051901L;
+
+	public static final int DEFAULT_KEY = -1;
 	
+	private int key;
 	private String name;
 	private String mood;
 	private String mind;
@@ -14,10 +17,23 @@ public class User implements Serializable {
 	}
 	
 	public User(String name, String mood, String mind, String region) {
+		this(DEFAULT_KEY, name, mood, mind, region);
+	}
+	
+	public User(int key, String name, String mood, String mind, String region) {
+		this.key = key;
 		this.name = name;
 		this.mood = mood;
 		this.mind = mind;
 		this.region = region;
+	}	
+	
+	public int getKey() {
+		return key;
+	}
+
+	public void setKey(int key) {
+		this.key = key;
 	}
 
 	public String getName() {
@@ -50,5 +66,9 @@ public class User implements Serializable {
 	
 	public void setRegion(String region) {
 		this.region = region;
+	}
+	
+	public boolean hasKey() {
+		return getKey() != DEFAULT_KEY;
 	}
 }

@@ -1,8 +1,6 @@
 package org.icepush.integration.icepushplace.server;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import org.icepush.integration.icepushplace.client.WorldService;
@@ -17,15 +15,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
 public class WorldServiceImpl extends RemoteServiceServlet implements WorldService {
-	private HashMap<String,List<User>> regionMap = generateRegionMap();
 	private ICEpushPlaceWorld world = null;
 	
 	private ICEpushPlaceWorld generateWorld() {
-        // Temporary to test out connecting to the web service
 		try{
-			WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+			WebApplicationContext applicationContext =
+				WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+			
 			if (applicationContext != null) {
-				return (ICEpushPlaceWorld)applicationContext.getBean("icepushPlaceWorld", ICEpushPlaceWorld.class);
+				return (ICEpushPlaceWorld)applicationContext.getBean(
+							"icepushPlaceWorld", ICEpushPlaceWorld.class);
 			}
 		}catch (Exception failedTest) {
 			failedTest.printStackTrace();
@@ -43,17 +42,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		return world;
 	}
 	
-	private HashMap<String,List<User>> generateRegionMap() {
-		HashMap<String,List<User>> toReturn =
-				new HashMap<String,List<User>>(WorldService.REGIONS.length);
-		
-		for (String currentRegion : WorldService.REGIONS) {
-			toReturn.put(currentRegion, new ArrayList<User>(0));
-		}
-		
-		return toReturn;
-	}
-	
 	private int convertRegionToInt(String region) {
 		for (int i = 0; i < ICEpushPlaceWorld.CONTINENT.length; i++) {
 			if (region.equals(ICEpushPlaceWorld.CONTINENT[i])) {
@@ -64,8 +52,15 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		return -1;
 	}
 	
+	private User buildUser(String name, String mood, String mind, String region) {
+		return new User(name, mood, mind, region);
+	}
+	
 	private PersonType convertUserToPerson(User toConvert) {
 		PersonType toReturn = new PersonType();
+		if (toConvert.hasKey()) {
+			toReturn.setKey(toConvert.getKey());
+		}
 		toReturn.setName(toConvert.getName());
 		toReturn.setMood(toConvert.getMood());
 		toReturn.setComment(toConvert.getMind());
@@ -76,6 +71,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	
 	private User convertPersonToUser(PersonType toConvert, String region) {
 		User toReturn = new User();
+		toReturn.setKey(toConvert.getKey());
 		toReturn.setName(toConvert.getName());
 		toReturn.setMood(toConvert.getMood());
 		toReturn.setMind(toConvert.getComment());
@@ -85,51 +81,34 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	}
 	
 	@Override
-	public Boolean addUser(User user) throws IllegalArgumentException {
+	public User addUser(String name, String mood, String mind, String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
-			world.loginPerson(user.getRegion(), convertUserToPerson(user));
+			User user = buildUser(name, mood, mind, region);
+			PersonType resultPerson = world.loginPerson(region, convertUserToPerson(user));
 			
-			System.out.println("INFO - Added user " + user.getName() + " (mood: " + user.getMood() + ") to region " + user.getRegion() + ".");
-			
-			return Boolean.TRUE;
+			if (resultPerson != null) {
+				user.setKey(resultPerson.getKey());
+				
+				System.out.println("INFO - Added user " + user.getName() + " (mood: " + user.getMood() + ") to region " + user.getRegion() + " with key " + user.getKey() + ".");
+				
+				return user;
+			}
 		}
 		
-		System.out.println("ERROR - Failed to add user " + user.getName() + " to region " + user.getRegion() + ".");
+		System.out.println("ERROR - Failed to add user " + name + " to region " + region + ".");
 		
-		return Boolean.FALSE;
-		
-		/*
-		List<User> userList = getUsersByRegion(user.getRegion());
-		
-		if (userList != null) {
-			userList.add(user);
-            
-			System.out.println("INFO - Added user " + user.getName() + " (mood: " + user.getMood() + ") to region " + user.getRegion() + ".");
-			
-			return Boolean.TRUE;
-		}
-		
-		System.out.println("ERROR - Failed to add user " + user.getName() + " to region " + user.getRegion() + ".");
-		
-		return Boolean.FALSE;
-		*/
+		return null;
 	}
 	
 	@Override
-	public Boolean removeUser(String name) throws IllegalArgumentException {
-		if (ValidatorUtil.isValidString(name)) {
-			Collection<List<User>> allUsers = regionMap.values();
-			
-			for (List<User> currentUserList : allUsers) {
-				if (ValidatorUtil.isValidList(currentUserList)) {
-					for (User currentUser : currentUserList) {
-						if (name.equals(currentUser.getName())) {
-							System.out.println("INFO - Removed user " + name + ".");
-							
-							return currentUserList.remove(currentUser);
-						}
-					}
-				}
+	public Boolean removeUser(User user) throws IllegalArgumentException {
+		if (getWorld() != null) {
+			if ((user != null) && (user.hasKey())) {
+				world.logoutPerson(user.getRegion(), convertUserToPerson(user));
+				
+				System.out.println("INFO - Removed user " + user.getName() + " with key " + user.getKey() + ".");
+				
+				return Boolean.TRUE;
 			}
 		}
 		
