@@ -20,7 +20,7 @@
     </bean>
     <bean id="icepushPlaceWorld" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld">
         <property name="webServiceURL" value="http://localhost:18080/icePushPlaceService"/>
-        <property name="applicationURL" value="http://localhost:18080/myApp"/>
+        <property name="applicationURL" value="http://localhost:18080/icepush-place-gwt"/>
         <property name="wsClient" ref="icepushPlaceClient"/>
     </bean>
 
