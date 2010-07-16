@@ -15,5 +15,13 @@ Once the release has been made, it will take a day or so for the proper entries 
 
 NOTE: The instructions above assume that you have previously installed maven2.
 
+Each example has it's own build pom and you can run >mvn clean package to create 2 different profiles
+See which one in the pom is the default.  (either Tomcat6 or Glassfishv3 for now-->really just builds with 
+jsf2 jars (tomcat) or without (glassfish).
+
+
+...or >mvn clean packet -Ptomcat6 
+(which runs the correct profile for a server which doesn't already contain the jsf jars).
+
 
 
