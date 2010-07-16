@@ -42,6 +42,10 @@
         <param-name>org.icefaces.render.auto</param-name>
         <param-value>false</param-value>
     </context-param>
+    <context-param>
+        <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
+        <param-value>false</param-value>
+    </context-param>
 
     <!-- Faces Servlet -->
     <servlet>
