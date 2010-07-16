@@ -2,6 +2,10 @@ package org.icepush.integration.icepushplace.client.model;
 
 import java.io.Serializable;
 
+/**
+ * Client-side object representing a user and all their related information (name, mood, etc.)
+ * This also tracks a key which is used during web service calls
+ */
 public class User implements Serializable {
 	private static final long serialVersionUID = 7887673308558051901L;
 
