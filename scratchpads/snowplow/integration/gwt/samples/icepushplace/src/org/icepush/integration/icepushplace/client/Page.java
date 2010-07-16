@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class Page implements EntryPoint, ClosingHandler {
     private final WorldServiceAsync worldService = GWT.create(WorldService.class);
     
-    private String ourName;
+    private User ourUser;
     private Panel loginPanel;
     private Panel worldPanel;
     
@@ -103,18 +103,17 @@ public class Page implements EntryPoint, ClosingHandler {
 			}
 
 			private void loginHandler() {
-				worldService.addUser(
-					 new User(nameField.getText(),
-							  moodList.getValue(moodList.getSelectedIndex()),
-							  mindArea.getText(),
-							  regionList.getValue(regionList.getSelectedIndex())),
-					 new AsyncCallback<Boolean>() {
+				worldService.addUser(nameField.getText(),
+									 moodList.getValue(moodList.getSelectedIndex()),
+									 mindArea.getText(),
+									 regionList.getValue(regionList.getSelectedIndex()),
+					 new AsyncCallback<User>() {
 							public void onFailure(Throwable caught) {
 								errorLabel.setText(caught.getMessage());
 							}
 
-							public void onSuccess(Boolean result) {
-								ourName = nameField.getText();
+							public void onSuccess(User result) {
+								ourUser = result;
 								
 								useWorldPanel();
 							}
@@ -204,15 +203,15 @@ public class Page implements EntryPoint, ClosingHandler {
 		RootPanel.get("panelContainer").clear();
 		RootPanel.get("panelContainer").add(panel);
 	}
-
+	
 	@Override
 	public void onWindowClosing(ClosingEvent event) {
-		worldService.removeUser(ourName, new AsyncCallback<Boolean>() {
+		worldService.removeUser(ourUser, new AsyncCallback<Boolean>() {
 			public void onFailure(Throwable caught) {
 			}
 			
 			public void onSuccess(Boolean result) {
-				ourName = null;
+				ourUser = null;
 			}
 		});
 	}

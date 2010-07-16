@@ -23,9 +23,9 @@ public interface WorldService extends RemoteService {
 										  "sad"};
     public static final String MOOD_IMAGE_PREFIX = "images/mood-";
     public static final String MOOD_IMAGE_SUFFIX = ".png";
-	
-	public Boolean addUser(User user) throws IllegalArgumentException;
-	public Boolean removeUser(String name) throws IllegalArgumentException;
+    
+	public User addUser(String name, String mood, String mind, String region) throws IllegalArgumentException;
+	public Boolean removeUser(User user) throws IllegalArgumentException;
 	public User getUser(String name) throws IllegalArgumentException;
 	public User getUserInRegion(String name, String region) throws IllegalArgumentException;
 	public List<User> getUsersByRegion(String region) throws IllegalArgumentException;
