@@ -37,12 +37,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractChart {
+public abstract class AbstractChart implements Serializable {
     private final Log log = LogFactory.getLog(AbstractChart.class);
     protected Chart chart = null;
     private Chart userDefinedChart = null;
