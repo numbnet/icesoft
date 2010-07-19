@@ -390,27 +390,28 @@ public class DOMResponseWriter extends ResponseWriter {
         ResourceBundle localizedBundle = bridgeMessageResolver.bundleFor(context.getViewRoot().getLocale());
         //todo: build startup script only once on aplication startup
         boolean synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
-        String startupScript =
-                "window.disposeViewsURI = '" + blockingRequestHandlerContext + "block/dispose-views';\n" +
+        String startupScript = context.getStartupScript();
+        if (null == startupScript)  {
+            startupScript =
+                "window.disposeViewsURI = '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/dispose-views") +"';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "optimizedJSListenerCleanup: " + configuration.getAttribute("optimizedJSListenerCleanup", "false") + "," +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + synchronousMode + "," +
-                        "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
-                        "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
+                        "connectionLostRedirectURI: " + encodeURL(externalContext, connectionLostRedirectURI) + "," +
+                        "sessionExpiredRedirectURI: " + encodeURL(externalContext, sessionExpiredRedirectURI) + "," +
                         "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
                         "context: '" + contextPath + "', " +
+                        "sendReceiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/send-receive-updates") + "'," +
                         (synchronousMode ?
-                                //encode path for URL rewrite session tracking mode
-                                ("sendReceiveUpdatesURI: '" + externalContext.encodeResourceURL(contextPath + "block/send-receive-updates") + "',") :
-                                ("sendReceiveUpdatesURI: '" + contextPath + "block/send-receive-updates" + "'," +
-                                        "pingURI: '" + contextPath + "block/ping" + "'," +
-                                        "receiveUpdatesURI: '" + contextPath + "block/receive-updates" + "'," +
-                                        "receiveUpdatedViewsURI: '" + blockingRequestHandlerContext + "block/receive-updated-views" + "',") +
+                                ("") :
+                                ("pingURI: '" + encodeURL(externalContext, contextPath + "block/ping") + "'," +
+                                        "receiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/receive-updates") + "'," +
+                                        "receiveUpdatedViewsURI: '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/receive-updated-views") + "',") +
                                         "heartbeat: {" +
                                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
                                         "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
@@ -426,6 +427,8 @@ public class DOMResponseWriter extends ResponseWriter {
                         "buttonText: '" + localizedBundle.getString("button-text") + "'" +
                         "}" +
                         "}, container);";
+        }
+        context.setStartupScript(startupScript);
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
         configurationElement.setAttribute("id", configurationID);
@@ -474,6 +477,13 @@ public class DOMResponseWriter extends ResponseWriter {
             element.setAttribute("id", "cntIncDiv");
             appendContentReferences(element);
         }
+    }
+
+    private static String encodeURL(ExternalContext ec, String url){
+        if(url == null || url.equals("null")){
+            return url;
+        }
+        return ec.encodeResourceURL(url);
     }
 
     private void enhanceHead(Element head) {

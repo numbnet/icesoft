@@ -366,6 +366,18 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return viewNumber;
     }
 
+    //Maintain the startupScript to avoid invoking response.encodeURL on
+    //a stale response
+    String startupScript = null;
+
+    void setStartupScript(String script)  {
+        this.startupScript = script;
+    }
+
+    String getStartupScript()  {
+        return startupScript;
+    }
+
     /**
      * Return the id of the Element that currently has focus in the browser.
      *
