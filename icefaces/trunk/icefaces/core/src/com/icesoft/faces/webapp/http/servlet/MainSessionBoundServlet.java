@@ -167,12 +167,13 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         Server upload = new UploadServer(views, configuration);
         Server receiveSendUpdates = new RequestVerifier(configuration, sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
-        dispatchOn(".*block\\/receive\\-updated\\-views$", new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()));
+        //end match expressions with ($|;) to match end of URL or start of ;jsessionid
+        dispatchOn(".*block\\/receive\\-updated\\-views($|;)", new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()));
         PathDispatcherServer dispatcherServer = new PathDispatcherServer();
-        dispatcherServer.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
-        dispatcherServer.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
-        dispatcherServer.dispatchOn(".*block\\/ping$", receivePing);
-        dispatcherServer.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
+        dispatcherServer.dispatchOn(".*block\\/send\\-receive\\-updates($|;)", receiveSendUpdates);
+        dispatcherServer.dispatchOn(".*block\\/receive\\-updates($|;)", sendUpdates);
+        dispatcherServer.dispatchOn(".*block\\/ping($|;)", receivePing);
+        dispatcherServer.dispatchOn(".*block\\/dispose\\-views($|;)", disposeViews);
         dispatcherServer.dispatchOn(ResourceRegex, resourceDispatcher);
         dispatcherServer.dispatchOn(".*uploadHtml", upload);
         dispatcherServer.dispatchOn(".*", new ServerProxy(viewServlet) {
