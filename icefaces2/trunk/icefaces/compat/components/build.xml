@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="icefaces-comps-compat" default="jar.components">
+<project name="icefaces-comps-compat" default="gen.facelets.file">
 
     <property name="src.dir" location="src/main/java/"/>
     <property name="build.dir" location="build"/>
