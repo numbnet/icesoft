@@ -168,7 +168,7 @@ public class WindowScopeManager {
         getState(session, configuration).disactivatedWindowNotifier.addObserver(observer);
     }
 
-    private static String lookupAssociatedWindowID(Map requestMap) {
+    public static String lookupAssociatedWindowID(Map requestMap) {
         return (String) requestMap.get(WindowScopeManager.class.getName());
     }
 

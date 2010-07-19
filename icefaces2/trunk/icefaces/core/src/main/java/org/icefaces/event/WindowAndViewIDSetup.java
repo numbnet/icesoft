@@ -34,8 +34,11 @@ import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class WindowAndViewIDSetup implements SystemEventListener {
+    private static final Logger Log = Logger.getLogger(WindowAndViewIDSetup.class.getName());
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -46,6 +49,17 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                Map requestMap = context.getExternalContext().getRequestMap();
+
+                if (WindowScopeManager.lookupAssociatedWindowID(requestMap) == null) {
+                    Log.severe("Missing window ID attribute. Request map cleared prematurely.");
+                    return;
+                }
+                if (requestMap.get(BridgeSetup.ViewState) == null) {
+                    Log.severe("Missing view ID attribute. Request map cleared prematurely.");
+                    return;
+                }
+
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
@@ -55,7 +69,7 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.view", null);
-                writer.writeAttribute("value", context.getExternalContext().getRequestMap().get(BridgeSetup.ViewState), null);
+                writer.writeAttribute("value", requestMap.get(BridgeSetup.ViewState), null);
                 writer.endElement("input");
             }
         };
