@@ -54,20 +54,25 @@
     </target>
 
     <target name="bundle">
-
         <mkdir dir="${bundle.dir}"/>
 
         <copy todir="${bundle.dir.bin}">
           <fileset dir="."/>
         </copy>
         <antcall target="bundle.bin"/>
-        <zip destfile="${bundle.dir}/${bundle.name.bin}.zip" basedir="${bundle.dir.bin}"/>
+
+        <zip destfile="${bundle.dir}/${bundle.name.bin}.zip">
+            <zipfileset dir="${bundle.dir}/${bundle.name.bin}" prefix="${bundle.name.bin}"/>
+        </zip>
 
         <copy todir="${bundle.dir.src}">
           <fileset dir="."/>
         </copy>
         <antcall target="bundle.src"/>
-        <zip destfile="${bundle.dir}/${bundle.name.src}.zip" basedir="${bundle.dir.src}"/>
+
+        <zip destfile="${bundle.dir}/${bundle.name.src}.zip">
+            <zipfileset dir="${bundle.dir}/${bundle.name.src}" prefix="${bundle.name.src}"/>
+        </zip>
 
     </target>
 
