@@ -120,7 +120,6 @@
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
 
-        <delete dir="${bundle.dir.bin}/samples/basic"/>
         <delete dir="${bundle.dir.bin}/samples/test"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/classes"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/dist/exploded"/>
@@ -141,15 +140,14 @@
 
         <!-- Remove the following files and directories as they are not required for the source bundle -->
         <delete>
-            <fileset dir="${bundle.dir.bin}/lib">
+            <fileset dir="${bundle.dir.src}/lib">
                 <include name="commons-fileupload.jar"/>
             </fileset>
         </delete>
 
-        <delete dir="${bundle.dir.bin}/test"/>
+        <delete dir="${bundle.dir.src}/test"/>
         
-        <delete dir="${bundle.dir.bin}/samples/basic"/>
-        <delete dir="${bundle.dir.bin}/samples/test"/>
+        <delete dir="${bundle.dir.src}/samples/test"/>
 
     </target>
 
