@@ -72,13 +72,12 @@
       <scope>provided</scope>
     </dependency>
     <!--  next dependencies brought over from A3 comps-compat -->
-    <!--  jstl jar required for panelSeries as it is used in
-          component-showcase example -->
-    <dependency>
+    <!--  jstl jar may be required for panelSeries at run time -->
+  <!-- <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <version>1.1.2</version>
-    </dependency>
+    </dependency> -->
 
     <!-- next lib only required if using dataExporter component
     <dependency>
