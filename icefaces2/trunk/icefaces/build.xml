@@ -113,6 +113,7 @@
                 <include name="freemarker*.jar"/>
                 <include name="jsf-metadata*.jar"/>
                 <include name="jsp-api*.jar"/>
+                <include name="portlet*.jar"/>
             </fileset>
         </delete>
 
