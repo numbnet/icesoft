@@ -129,8 +129,12 @@
         <delete dir="${javadocs.dir}"/>
         <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 Compatibility API" failonerror="true">
             <classpath>
-                <pathelement location="../lib/icefaces-compat.jar"/>
-                <pathelement location="../lib/icefaces-comps-compat.jar"/>
+                <fileset dir="${lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
+                <fileset dir="${compat.lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
             </classpath>
             <fileset dir="${java.dir}">
                 <include name="com/icesoft/faces/context/DOMContext.java"/>
