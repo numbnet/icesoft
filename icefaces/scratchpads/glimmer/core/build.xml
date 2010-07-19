@@ -119,8 +119,15 @@
         <delete dir="${javadocs.dir}"/>
         <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 API" failonerror="true">
             <fileset dir="${java.dir}" defaultexcludes="yes">
-                <include name="org/**"/>
+                <include name="org/icefaces/util/EnvUtils.java"/>
+                <include name="org/icefaces/application/PortableRenderer.java"/>
+                <include name="org/icefaces/application/PushRenderer.java"/>
             </fileset>
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
+            </classpath>
             <doctitle><![CDATA[<h2>ICEfaces 2 API</h2>]]></doctitle>
         </javadoc>
     </target>
