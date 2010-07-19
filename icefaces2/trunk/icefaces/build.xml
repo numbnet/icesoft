@@ -74,22 +74,22 @@
     <target name="bundle.bin">
 
         <!-- Clean and build everything for the binary bundle -->
-        <subant>
+        <subant target="allclean">
             <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
-            <target name="allclean"/>
-            <target name="world"/>
+        </subant>
+
+        <subant target="world">
+            <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
         </subant>
 
         <!-- Create the JavaDocs for Core and Compat Core and move them to the root bundle directory -->
-        <subant>
+        <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
-            <target name="javadoc"/>
         </subant>
         <move file="${bundle.dir.bin}/core/build/javadocs" tofile="${bundle.dir}/javadocs-core"/>
 
-        <subant>
+        <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/compat/core" includes="build.xml"/>
-            <target name="javadoc"/>
         </subant>
         <move file="${bundle.dir.bin}/compat/core/build/javadocs" tofile="${bundle.dir}/javadocs-compat"/>
 
