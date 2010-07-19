@@ -41,17 +41,16 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class DOMUtils {
 
@@ -67,7 +66,7 @@ public class DOMUtils {
 
     //TODO: look at replacing with a lighter, more targetted DOM implementation
     private static DocumentBuilder DOCUMENT_BUILDER;
-    private static boolean isDOMChecking = true;                          
+    private static boolean isDOMChecking = true;
 
     static {
         try {
@@ -220,13 +219,19 @@ public class DOMUtils {
 
             case Node.TEXT_NODE:
                 if (!isInCdata) {
-                    writer.write(  node.getNodeValue() );
+                    writer.write(node.getNodeValue());
                 } else {
                     String value = node.getNodeValue();
                     String escaped = CDATA_END.matcher(value)
                             .replaceAll("]]>]]&gt;<![CDATA[");
                     writer.write(escaped);
                 }
+                break;
+
+            case Node.CDATA_SECTION_NODE:
+                writer.write("<![CDATA[");
+                writer.write(node.getNodeValue());
+                writer.write("]]>");
                 break;
         }
     }
@@ -295,7 +300,7 @@ public class DOMUtils {
      *         empty array if no nodes are different
      */
     public static Node[] domDiff(Document oldDOM, Document newDOM) {
-        return nodeDiff( oldDOM.getDocumentElement(), newDOM.getDocumentElement());
+        return nodeDiff(oldDOM.getDocumentElement(), newDOM.getDocumentElement());
     }
 
     /**

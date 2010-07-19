@@ -27,6 +27,7 @@ import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.icefaces.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -86,8 +87,8 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             wrapped = (ResponseWriter) writer;
         }
 
-        this.encoding = (encoding != null) ? encoding: DEFAULT_ENCODING;
-        this.contentType = (contentType != null) ? contentType: DEFAULT_TYPE;
+        this.encoding = (encoding != null) ? encoding : DEFAULT_ENCODING;
+        this.contentType = (contentType != null) ? contentType : DEFAULT_TYPE;
     }
 
     public ResponseWriter getWrapped() {
@@ -172,7 +173,12 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             return;
         }
         try {
-            appendToCursor(document.createTextNode(str));
+            if (cursor.getNodeType() == Node.CDATA_SECTION_NODE) {
+                CDATASection section = (CDATASection) cursor;
+                section.appendData(str);
+            } else {
+                appendToCursor(document.createTextNode(str));
+            }
         } catch (Exception e) {
             log.log(Level.SEVERE, "failed to write " + str, e);
         }
@@ -285,6 +291,17 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         writeText(text, property);
     }
 
+    public void startCDATA() throws IOException {
+        if (null == document) {
+            document = DOMUtils.getNewDocument();
+        }
+        pointCursorAt(appendToCursor(document.createCDATASection("")));
+    }
+
+    public void endCDATA() throws IOException {
+        pointCursorAt(cursor.getParentNode());
+    }
+
     public ResponseWriter cloneWithWriter(Writer writer) {
         String enc = getCharacterEncoding();
         String type = getContentType();
@@ -297,17 +314,21 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
 
         ResponseWriter clone = null;
         if (writer.getClass().getName().endsWith("FastStringWriter")) {
-            clone = new BasicResponseWriter(writer,enc,type);
+            clone = new BasicResponseWriter(writer, enc, type);
         } else {
-            clone = new DOMResponseWriter(writer,enc,type);
+            clone = new DOMResponseWriter(writer, enc, type);
         }
         return clone;
     }
 
-
-    //
     private Node appendToCursor(String data) {
-        return appendToCursor(document.createTextNode(data));
+        if (cursor.getNodeType() == Node.CDATA_SECTION_NODE) {
+            CDATASection section = (CDATASection) cursor;
+            section.appendData(data);
+            return section;
+        } else {
+            return appendToCursor(document.createTextNode(data));
+        }
     }
 
     private Node appendToCursor(Node node) {
