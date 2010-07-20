@@ -30,22 +30,22 @@
 	response.setHeader("Pragma", "no-cache");//HTTP 1.0
 	response.setHeader("Expires", "0");//prevents proxy caching
 %>
-<jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
-</jsp:useBean>
-<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+<jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
 <%
 if (person != null) {
-    String nickName = request.getParameter("nickName");
+    String name = request.getParameter("name");
     String mood = request.getParameter("mood");
     String comment = request.getParameter("comment");
-    String region = request.getParameter("region");
+    int region = Integer.parseInt(request.getParameter("region"));
     boolean changed = false;
-    if(!person.getName().equals(nickName)){
-        person.setName(nickName);
+    boolean moving = false;
+    int oldRegion = -1;
+    if(!person.getName().equals(name)){
+        person.setName(name);
         changed = true;
     }
     if(!person.getMood().equals(mood)){
@@ -56,45 +56,24 @@ if (person != null) {
         person.setComment(comment);
         changed = true;
     }
-    if(person.getKey() != Integer.parseInt(region)){
-        // Remove from previous region
-        switch(person.getKey()){
-            case 1: regions.getNorthAmerica().remove(person);break;
-            case 2: regions.getEurope().remove(person);break;
-            case 3: regions.getSouthAmerica().remove(person);break;
-            case 4: regions.getAsia().remove(person);break;
-            case 5: regions.getAfrica().remove(person);break;
-            case 6: regions.getAntarctica().remove(person);break;
-            default: System.out.println("Problem Removing Person from Region");
-        }
-        // Add to new region
-        switch(Integer.parseInt(region)){
-            case 1: regions.getNorthAmerica().add(person);break;
-            case 2: regions.getEurope().add(person);break;
-            case 3: regions.getSouthAmerica().add(person);break;
-            case 4: regions.getAsia().add(person);break;
-            case 5: regions.getAfrica().add(person);break;
-            case 6: regions.getAntarctica().add(person);break;
-            default: System.out.println("Problem Adding Person to Region");
-        }
-        // Push to remove from old region
-        //PushContext pushContext = PushContext.getInstance(getServletContext());
-        //pushContext.push(person.getRegion());
-        service.updateWorld(person.getKey());
-        // Set person in new region
-        person.setKey(Integer.parseInt(region));
-        changed = true;
+    if(person.getRegion() != region){
+	moving = true;
+	oldRegion = person.getRegion();
+	person.setRegion(region);
     }
     if(changed){
         // Push to update region
         //PushContext pushContext = PushContext.getInstance(getServletContext());
         //pushContext.push(person.getRegion());
-        service.updateWorld(person.getKey());
+        world.updatePerson(person.getRegion(), person);
         // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
         // Service call to display message in all applications
         // service.requestUpdate(person);
         // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
         // IF IT HAS CHANGED, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
     }
+   if(moving) {
+        person = world.movePerson(oldRegion,region,person);
+   }
 }
 %>

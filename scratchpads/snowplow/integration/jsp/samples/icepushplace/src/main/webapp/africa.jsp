@@ -29,8 +29,9 @@
 	response.setHeader("Expires", "0");//prevents proxy caching
 %>
 
-<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+<jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
 </jsp:useBean>
+<jsp:setProperty name="world" property="continentAccess" value="0"/>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
@@ -39,7 +40,7 @@
         <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">Africa</span></td></tr>
     </thead>
     <tr>
-        <th>Nickname</th>
+        <th>Name</th>
         <th>Mood</th>
         <th>What's on your mind?</th>
         <th>Client Technology</th>
@@ -47,15 +48,15 @@
         <th>Post Message</th>
     </tr>
     <c:choose>
-    <c:when test="${empty regions.africa}">
+    <c:when test="${empty world.continent}">
     <tr>
         <td colspan="6">Empty</td>
     </tr>
     </c:when>
     <c:otherwise>
-    <c:forEach var="elem" items="${regions.africa}" varStatus="row">
+    <c:forEach var="elem" items="${world.continent}" varStatus="row">
     <tr>
-        <td><c:out value="${elem.nickname}"/>&nbsp</td>
+        <td><c:out value="${elem.name}"/>&nbsp</td>
         <td><c:out value="${elem.mood}"/>&nbsp</td>
         <td><c:out value="${elem.comment}"/>&nbsp</td>
         <td><c:out value="JSP"/>&nbsp</td>
@@ -68,7 +69,7 @@
                     size="20" />&nbsp
             <input type="submit"
                    value="Post"
-                   onclick="click_messageOut('${elem.region}',${row.index},'${person.nickname}');return false;"/>
+                   onclick="click_messageOut('${elem.region}',${row.index},'${person.name}');return false;"/>
             </form>
         </td>
     </tr>
