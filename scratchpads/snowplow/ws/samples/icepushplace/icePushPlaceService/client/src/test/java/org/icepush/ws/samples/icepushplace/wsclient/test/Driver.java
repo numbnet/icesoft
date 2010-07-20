@@ -13,12 +13,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Driver {
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext =
-                new ClassPathXmlApplicationContext("applicationContext.xml", Driver.class);
-
-    ICEpushPlaceWsClient client =  (ICEpushPlaceWsClient) applicationContext.getBean("icepushPlaceClient", ICEpushPlaceWsClient.class);
-    ICEpushPlaceWorld world =  (ICEpushPlaceWorld) applicationContext.getBean("icepushPlaceWorld", ICEpushPlaceWorld.class);
-    Tests tests = new Tests(client);
-    tests.testSequence2(world);
+	ICEpushPlaceWorld world =  new ICEpushPlaceWorld();
+	world.setApplicationURL("http://myApp.com/");
+	world.setWebServiceURL("http://localhost:8080/icePushPlaceService");
+	Tests tests = new Tests(world);
+	tests.testSequence2();
     }
 }

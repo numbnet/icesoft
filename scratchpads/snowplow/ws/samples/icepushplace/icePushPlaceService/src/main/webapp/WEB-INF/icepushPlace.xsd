@@ -24,6 +24,7 @@
         <xsd:sequence>
             <xsd:element name="Key" type="xsd:int"/>
             <xsd:element name="Status" type="xsd:int"/>
+            <xsd:element name="Region" type="xsd:int"/>
             <xsd:element name="Name" type="xsd:string"/>
             <xsd:element name="Mood" type="xsd:string"/>
             <xsd:element name="Comment" type="xsd:string"/>
