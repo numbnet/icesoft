@@ -152,7 +152,7 @@
       	<scope>provided</scope>
      </dependency>  
      <dependency>
-         <groupId>org.icefaces</groupId>
+         <groupId>org.icepush</groupId>
          <artifactId>icepush</artifactId>
          <version>${version}</version>
      </dependency>
