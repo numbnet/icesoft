@@ -35,6 +35,9 @@
                 <include name="icepush.jar"/>
                 <include name="commons-fileupload.jar"/>
             </lib>
+            <lib dir="../../../sparkle/component/lib">
+                <include name="commons-fileupload.jar"/>
+            </lib>
 <!--
             <lib dir="../../../glimmer/compat/lib">
                 <include name="jstl.jar"/>
