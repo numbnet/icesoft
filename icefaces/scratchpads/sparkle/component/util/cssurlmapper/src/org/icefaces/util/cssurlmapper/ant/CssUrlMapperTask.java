@@ -31,10 +31,6 @@ public class CssUrlMapperTask {
     }
 	
     public void execute() throws BuildException {
-        System.out.println("libraryname: " + libraryname);
-		System.out.println("inputdir: " + inputdir);
-		System.out.println("outputdir: " + outputdir);
-		System.out.println("referencedir: " + referencedir);
 		
 		try {
 			if (libraryname.equals("") || inputdir.equals("") || outputdir.equals("")) {

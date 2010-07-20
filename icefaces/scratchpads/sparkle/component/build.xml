@@ -194,8 +194,12 @@
   
 	<target name="nosprites" description="Copy resources from source folders, transforming URLs in CSS files" unless="use.sprites">
 		
-		<!-- map the URLs in the original CSS files and place them in the approrpiate library -->
-		<!--<mapnosprites library="org.icefaces.component.sprites" dir="src/org/icefaces/component/slider/sprites" skin="sam" />-->
+		<!--
+			Map the URLs in the original CSS files and place them in the approrpiate library.
+			'library' is the name of the resource library where the resources will be reachable.
+			'dir' is the root directory that contains the source files of the different skins of a component.
+			'skin' is the name of the directory inside 'dir' to look for the files for a specific skin.			
+		-->
 		
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src\org\icefaces\component\menubutton\sprites" skin="sam" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src\org\icefaces\component\pushbutton\sprites" skin="sam" />
@@ -230,7 +234,7 @@
 		<mkdir dir="${root.dir.path}" />
 		<!--
 			Specify resources to include in sprite generation. This is done on a per-component, per-skin basis.
-			'dir' is the root directory that contains the sprite sources for the different skins for a component.
+			'dir' is the root directory that contains the sprite sources for the different skins of a component.
 			'skin' is the name of the directory inside 'dir' to look for the files for a specific skin.
 			'name' is the output name of the directory that will contain the generated files for the component inside the skin directory.
 		-->
@@ -246,7 +250,13 @@
 		<generatesprites skin="sam" />
 		<generatesprites skin="rime" />
 		
-		<!-- map the URLs in the generated CSS files -->
+		<!--
+			Map the URLs in the generated CSS files to the JSF2 format and place them in the corresponding library.
+			There should be one declaration of 'mapsprites' for every 'includeresources' declaration.
+			'library' is the name of the resource library where the resources will be reachable.
+			'name' is the name of the component (or arbitrary set of resources).
+			'skin' is the name of the processed skin.
+		-->
 		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="sam" />
 		<mapsprites library="org.icefaces.component.selectinputdate" name="calendar" skin="sam" />

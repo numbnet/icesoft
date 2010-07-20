@@ -93,8 +93,10 @@ public class CssUrlMapper {
 		String resourcePath = "";
 		
 		try {
-			File tempFile = new File(this.file.getCanonicalPath()); // trick to get a complete path
+			// trick to get a complete path and without ..'s
+			File tempFile = new File(this.file.getCanonicalPath());
 			File file = new File(tempFile.getParentFile(), path);
+			file = new File(file.getCanonicalPath());
 			
 			if (this.relativePathDirectory == null) {
 				resourcePath = "/" + file.getName();
