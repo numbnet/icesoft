@@ -9,6 +9,7 @@
   <property name="dist"  location="dist"/>
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
+  <property name="lib"  location="lib/"/>
   <property name="exploded"  location="${build}/exploded"/>
   <property name="doc" location="${build}/doc"/>
   <property name="tld.doc" location="${doc}/tld"/>
@@ -18,6 +19,7 @@
   <dirname property="smartsprites.basedir" file="${ant.file.smartsprites}"/>
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+  	    <fileset dir="${lib}" includes="*.jar"/>
         <pathelement path="../component/src"/>
         <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
