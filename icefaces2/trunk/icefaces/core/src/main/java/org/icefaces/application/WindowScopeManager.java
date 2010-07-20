@@ -23,13 +23,30 @@
 package org.icefaces.application;
 
 import org.icefaces.push.Configuration;
+import org.icefaces.push.SessionViewManager;
+import org.icefaces.util.EnvUtils;
+
+import org.icepush.PushContext;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.application.ResourceHandler;
 import javax.faces.event.PostConstructCustomScopeEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
 import javax.faces.event.ScopeContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.FactoryFinder;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionEvent;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -44,10 +61,84 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowScopeManager {
+public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener, HttpSessionListener  {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
+    private static final String SESSION_EXPIRY_EXTENSION = ":se";
+
+    private ResourceHandler wrapped;
+
+    public WindowScopeManager(ResourceHandler wrapped)  {
+        this.wrapped = wrapped;
+        //insane bit of code to call addPhaseListener(this)
+        //if determineWindowID can run lazily, this PhaseListener approach
+        //may not be necessary
+        LifecycleFactory factory = (LifecycleFactory)
+            FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+        lifecycle.addPhaseListener(this);
+    }
+
+    public ResourceHandler getWrapped() {
+        return wrapped;
+    }
+
+    public void handleResourceRequest(FacesContext facesContext) throws IOException {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String path = externalContext.getRequestServletPath();
+        if (!path.contains("dispose-window"))  {
+            wrapped.handleResourceRequest(facesContext);
+            return;
+        }
+        String windowID = externalContext.getRequestParameterMap().get("ice.window");
+        disposeWindow(facesContext, windowID);
+
+        if (EnvUtils.isICEpushPresent()) {
+            try {
+                String[] viewIDs = externalContext
+                        .getRequestParameterValuesMap().get("ice.view");
+                for (int i = 0; i < viewIDs.length; i++) {
+                    SessionViewManager.removeView(facesContext, viewIDs[i]);
+                }
+            } catch (RuntimeException e) {
+                //missing ice.view parameters means that none of the views within the page
+                //was registered with PushRenderer before page unload
+            }
+        }
+    }
+
+    public boolean isResourceRequest(FacesContext facesContext)  {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String path = externalContext.getRequestServletPath();
+        if (path.contains("dispose-window"))  {
+            return true;
+        }
+        return wrapped.isResourceRequest(facesContext);
+    }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.RESTORE_VIEW;
+    }
+
+    public void beforePhase(PhaseEvent event) {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
+        try {
+            ExternalContext externalContext = context.getExternalContext();
+            //ICE-5281:  We require that a session be available at this point and it may not have
+            //           been created otherwise.
+            //WindowScope should not cause session creation until the time objects need to be stored
+            //in window scope
+            //Object session = externalContext.getSession(true);
+            WindowScopeManager.determineWindowID(context);
+        } catch (Exception e) {
+            Log.log(Level.WARNING, "Unable to set up WindowScope ", e);
+        }
+    }
+
+    public void afterPhase(PhaseEvent event) {
+    }
 
     public static ScopeMap lookupWindowScope(FacesContext context) {
         String id = lookupAssociatedWindowID(context.getExternalContext().getRequestMap());
@@ -105,13 +196,27 @@ public class WindowScopeManager {
 
     public static synchronized void disposeWindow(FacesContext context, String id) {
         State state = getState(context);
-        state.disactivatedWindowNotifier.notifyObservers(id);
+        ExternalContext externalContext = context.getExternalContext();
+        //TODO remove Servlet dependency
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String sessionID = session.getId();
+        PushContext.getInstance((ServletContext) externalContext.getContext())
+                .removeGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, 
+                        id + SESSION_EXPIRY_EXTENSION);
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
         }
+    }
+
+    public void sessionCreated(HttpSessionEvent se)   {
+    }
+
+    public void sessionDestroyed(HttpSessionEvent se)   {
+        PushContext.getInstance(se.getSession().getServletContext())
+                .push(se.getSession().getId() + SESSION_EXPIRY_EXTENSION);
     }
 
     public static class ScopeMap extends HashMap {
@@ -150,7 +255,18 @@ public class WindowScopeManager {
         }
 
         private void activate(State state) {
-            state.activatedWindowNotifier.notifyObservers(id);
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            //TODO fix the Servlet dependency here
+            HttpServletRequest request = (HttpServletRequest) context.getRequest();
+            HttpServletResponse response = (HttpServletResponse) context.getResponse();
+            HttpSession session = (HttpSession) context.getSession(true);
+            String sessionID = session.getId();
+            PushContext pushContext = PushContext.getInstance(
+                    session.getServletContext());
+            //this call will set the browser ID cookie
+            pushContext.createPushId(request, response);
+            pushContext.addGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, 
+                    id + SESSION_EXPIRY_EXTENSION);
             state.windowScopedMaps.put(id, this);
         }
 
@@ -158,14 +274,6 @@ public class WindowScopeManager {
             timestamp = System.currentTimeMillis();
             state.disposedWindowScopedMaps.addLast(state.windowScopedMaps.remove(id));
         }
-    }
-
-    public static void onActivatedWindow(HttpSession session, Configuration configuration, Observer observer) {
-        getState(session, configuration).activatedWindowNotifier.addObserver(observer);
-    }
-
-    public static void onDisactivatedWindow(HttpSession session, Configuration configuration, Observer observer) {
-        getState(session, configuration).disactivatedWindowNotifier.addObserver(observer);
     }
 
     public static String lookupAssociatedWindowID(Map requestMap) {

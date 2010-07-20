@@ -41,6 +41,7 @@ public class EnvConfig {
     private boolean autoIdFlag;
     private boolean ariaEnabledFlag;
     private boolean compressDOMFlag;
+    boolean compressResources = true;
     
     public EnvConfig(Map initMap)  {
         init(initMap);
@@ -63,6 +64,7 @@ public class EnvConfig {
         autoIdFlag = decodeBoolean(initMap, ICEFACES_AUTOID, true, info);
         ariaEnabledFlag = decodeBoolean(initMap, EnvUtils.ARIA_ENABLED, true, info);
         compressDOMFlag = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
+        compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, true, info);
         log.info("ICEfaces Configuration: " + info);
     }
 

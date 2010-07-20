@@ -41,12 +41,12 @@
     </render-kit>
     <lifecycle>
         <phase-listener>org.icefaces.event.DeltaSubmitPhaseListener</phase-listener>
-        <phase-listener>org.icefaces.event.WindowScopeSetup</phase-listener>
     </lifecycle>
     <application>
         <resource-handler>org.icefaces.push.servlet.ICEpushResourceHandler</resource-handler>
-        <resource-handler>org.icefaces.push.servlet.ICEfacesResourceHandler</resource-handler>
+        <resource-handler>org.icefaces.push.DynamicResourceDispatcher</resource-handler>
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
+        <resource-handler>org.icefaces.application.WindowScopeManager</resource-handler>
         <el-resolver>org.icefaces.application.WindowELResolver</el-resolver>
         <system-event-listener>
             <system-event-listener-class>org.icefaces.event.FormSubmit</system-event-listener-class>

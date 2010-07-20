@@ -25,55 +25,118 @@ package org.icefaces.push;
 import org.icefaces.push.DynamicResourceRegistry;
 import org.icefaces.push.http.DynamicResource;
 import org.icefaces.push.http.DynamicResourceLinker;
-import org.icefaces.push.http.MimeTypeMatcher;
-import org.icefaces.push.http.Request;
-import org.icefaces.push.http.Response;
-import org.icefaces.push.http.ResponseHandler;
-import org.icefaces.push.http.Server;
-import org.icefaces.push.http.standard.NotFoundHandler;
 import org.icefaces.util.Base64;
+import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.Util;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
+import javax.faces.application.ResourceHandlerWrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
-import java.util.WeakHashMap;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-public class DynamicResourceDispatcher implements Server, DynamicResourceRegistry {
+public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements DynamicResourceRegistry {
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
+    private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
+    private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
+    private static final String RESOURCE_PREFIX = "icefaces/resource";
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
             //do nothing!
         }
     };
-    private MimeTypeMatcher mimeTypeMatcher;
+    private final static DateFormat DATE_FORMAT = 
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     private String prefix;
     //introducing a memory leak, but ensuring that resources
     //are available when requested
     private HashMap mappings = new HashMap();
 
-    public DynamicResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher) {
-        this.prefix = prefix;
-        this.mimeTypeMatcher = mimeTypeMatcher;
+    private ResourceHandler wrapped;
+
+    public DynamicResourceDispatcher(ResourceHandler wrapped) {
+        this.prefix = RESOURCE_PREFIX;
+        this.wrapped = wrapped;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        externalContext.getApplicationMap().put(
+                DynamicResourceDispatcher.class.getName(), this );
     }
 
-    public void service(Request request) throws Exception {
-        String path = request.getURI().getPath();
+    public ResourceHandler getWrapped() {
+        return wrapped;
+    }
+
+    public void handleResourceRequest(FacesContext facesContext) throws IOException {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String path = getFullPath(externalContext);
+        if (!shouldHandle(path))  {
+            wrapped.handleResourceRequest(facesContext);
+            return;
+        }
+
         Iterator i = mappings.values().iterator();
         while (i.hasNext()) {
             Mapping mapping = (Mapping) i.next();
             if (mapping != null && mapping.matches(path)) {
-                mapping.getServer().service(request);
+                mapping.handleResourceRequest(facesContext);
                 return;
             }
         }
 
-        request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+        externalContext.responseSendError( 404, 
+                "Could not find requested dynamic resource." );
+    }
+
+    public boolean isResourceRequest(FacesContext facesContext) {
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String path = getFullPath(externalContext);
+        if (shouldHandle(path))  {
+            return true;
+        }
+        return wrapped.isResourceRequest(facesContext);
+    }
+
+    private String getFullPath(ExternalContext externalContext)  {
+        String path = externalContext.getRequestServletPath();
+        String pathInfo = externalContext.getRequestPathInfo();
+        if (null != pathInfo)  {
+            path = path + pathInfo;
+        }
+        return path;
+    }
+
+    public Resource createResource(String resourceName) {
+        //MyFaces rejects resource names containing "?"
+        String resourcePart = resourceName;
+        if (resourceName.contains("?")) {
+            int queryIndex = resourceName.indexOf("?");
+            resourcePart = resourceName.substring(0, queryIndex);
+        }
+
+        return wrapped.createResource(resourcePart);
+    }
+
+    private boolean shouldHandle(String path)  {
+        if (null == path)  {
+            return false;
+        }
+        return ICEfacesBridgeRequestPattern.matcher(path).find() 
+                || ICEfacesResourceRequestPattern.matcher(path).find();
     }
 
     public URI registerResource(DynamicResource resource) {
@@ -116,50 +179,54 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
         mappings.clear();
     }
 
-    private class ResourceServer implements Server, ResponseHandler {
+    private class ResourceServer  {
         private final Date lastModified = new Date();
-        private final ResponseHandler notModified = new ResponseHandler() {
-            public void respond(Response response) throws Exception {
-                response.setStatus(304);
-                response.setHeader("ETag", encode(resource));
-                response.setHeader("Date", new Date());
-                response.setHeader("Last-Modified", lastModified);
-            }
-        };
         private final DynamicResource resource;
 
         public ResourceServer(DynamicResource resource) {
             this.resource = resource;
         }
 
-        public void service(Request request) throws Exception {
+        public void handleResourceRequest(FacesContext facesContext) throws IOException {
+            ExternalContext externalContext = facesContext.getExternalContext();
             try {
-                Date modifiedSince = request.getHeaderAsDate("If-Modified-Since");
+                Date modifiedSince = DATE_FORMAT.parse(
+                        externalContext.getRequestHeaderMap()
+                        .get("If-Modified-Since") );
                 if (lastModified.getTime() > modifiedSince.getTime() + 1000) {
-                    request.respondWith(this);
+                    respond(facesContext);
                 } else {
-                    request.respondWith(notModified);
+                    externalContext.setResponseStatus(304);
+                    externalContext.setResponseHeader(
+                            "ETag", encode(resource));
+                    externalContext.setResponseHeader(
+                            "Date", DATE_FORMAT.format(new Date()));
+                    externalContext.setResponseHeader(
+                            "Last-Modified", DATE_FORMAT.format(lastModified));
                 }
             } catch (Exception e) {
-                request.respondWith(this);
+                respond(facesContext);
             }
         }
 
-        public void respond(final Response response) throws Exception {
+        public void respond(FacesContext facesContext) throws IOException {
+            ExternalContext externalContext = facesContext.getExternalContext();
             ResourceOptions options = new ResourceOptions();
             resource.withOptions(options);
             if (options.mimeType == null && options.fileName != null) {
-                options.mimeType = mimeTypeMatcher.mimeTypeFor(options.fileName);
+                options.mimeType = externalContext.getMimeType(options.fileName);
             }
-            response.setHeader("ETag", encode(resource));
-            response.setHeader("Cache-Control", "public");
-            response.setHeader("Content-Type", options.mimeType);
-            response.setHeader("Last-Modified", options.lastModified);
+            externalContext.setResponseHeader("ETag", encode(resource));
+            externalContext.setResponseHeader("Cache-Control", "public");
+            externalContext.setResponseHeader("Content-Type", options.mimeType);
+            externalContext.setResponseHeader("Last-Modified", DATE_FORMAT.format(
+                    options.lastModified));
             if (options.expiresBy != null) {
-                response.setHeader("Expires", options.expiresBy);
+                externalContext.setResponseHeader("Expires", 
+                        DATE_FORMAT.format(options.expiresBy));
             }
             if (options.attachement && options.contentDispositionFileName != null) {
-                response.setHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
+                externalContext.setResponseHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
             }
             InputStream inputStream = resource.open();
             if (inputStream == null) {
@@ -168,7 +235,22 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
                         (options.attachement ? "; attachment: " + options.fileName : "") +
                         "] returned a null input stream.");
             } else {
-                response.writeBodyFrom(inputStream);
+                InputStream in = resource.open();
+                OutputStream out = externalContext.getResponseOutputStream();
+                
+                try {
+                    if (Util.acceptGzip(externalContext) && 
+                            EnvUtils.isCompressResources(facesContext) && 
+                            Util.shouldCompress(options.mimeType) )  {
+                        externalContext.setResponseHeader("Content-Encoding", "gzip");
+                        Util.compressStream(in, out);
+                    } else {
+                        Util.copyStream(in, out);
+                    }
+                } catch (IOException e) {
+                    log.log(Level.WARNING, "Failed to serve resource " 
+                            + externalContext.getRequestServletPath(), e);
+                }
             }
         }
 
@@ -279,8 +361,8 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
     }
 
     private class Mapping {
-        private Pattern pattern;
-        private Server server;
+        Pattern pattern;
+        private ResourceServer server;
 
         private Mapping(String expression, DynamicResource resource) {
             this.pattern = Pattern.compile(expression);
@@ -291,8 +373,8 @@ public class DynamicResourceDispatcher implements Server, DynamicResourceRegistr
             return pattern.matcher(path).find();
         }
 
-        public Server getServer() {
-            return server;
+        public void handleResourceRequest(FacesContext facesContext) throws IOException {
+            server.handleResourceRequest(facesContext);
         }
     }
 }
