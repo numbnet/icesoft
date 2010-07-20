@@ -26,7 +26,6 @@ import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.application.LazyPushManager;
 import org.icefaces.application.WindowScopeManager;
 import org.icefaces.push.Configuration;
-import org.icefaces.push.SessionBoundServer;
 import org.icefaces.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 
@@ -163,7 +162,7 @@ public class BridgeSetup implements SystemEventListener {
 
             if (EnvUtils.isICEpushPresent()) {
                 SessionViewManager.addView(context, viewID);
-                final String sessionExpiryPushID = SessionBoundServer.inferSessionExpiryIdentifier(windowID);
+                final String sessionExpiryPushID = windowID + ":se";
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
                     public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                         //need a span to make sure JSF bridge evaluates included script properly

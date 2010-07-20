@@ -22,73 +22,91 @@
 
 package com.icesoft.faces.webapp;
 
-import org.icefaces.push.Configuration;
-import org.icefaces.push.http.MimeTypeMatcher;
-import org.icefaces.push.servlet.BasicAdaptingServlet;
-import org.icefaces.push.servlet.PseudoServlet;
-import org.icefaces.push.servlet.ServletContextConfiguration;
+import org.icefaces.impl.util.Util;
+import org.icefaces.util.EnvUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.net.URI;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class CompatResourceServlet extends HttpServlet {
-    private static final CurrentContextPath currentContextPath = new CurrentContextPath();
-    private PseudoServlet main;
+    private static Logger log = Logger.getLogger(CompatResourceServlet.class.getName());
+    private static final String BASE_PATH = "com/icesoft/faces/resources/css/";
+    private final static DateFormat DATE_FORMAT = 
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+    private ClassLoader loader;
+    private final Date lastModified = new Date();
+    private final String STARTUP_TIME = DATE_FORMAT.format(lastModified);
+    private ServletContext servletContext;
 
-    public void init(final ServletConfig servletConfig) throws ServletException {
+    public void init(final ServletConfig servletConfig) throws ServletException  {
         super.init(servletConfig);
-        final ServletContext context = servletConfig.getServletContext();
-        final Configuration configuration = new ServletContextConfiguration("org.icefaces", context);
-        final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
-            public String mimeTypeFor(String extension) {
-                return context.getMimeType(extension);
+        this.loader = this.getClass().getClassLoader();
+        this.servletContext = servletConfig.getServletContext();
+    }
+
+    public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        String modifedHeader = httpServletRequest
+                .getHeader("If-Modified-Since");
+        if (null != modifedHeader)  {
+            try {
+                Date modifiedSince = DATE_FORMAT.parse(modifedHeader);
+                if (modifiedSince.getTime() + 1000 > lastModified.getTime() ) {
+                    //respond with a not-modifed
+                    httpServletResponse.setStatus(304);
+                    //TODO: calculate ETag
+        //            httpServletResponse.setHeader(
+        //                    "ETag", encode(resource));
+                    httpServletResponse.setDateHeader(
+                            "Date", new Date().getTime());
+                    httpServletResponse.setDateHeader(
+                            "Last-Modified", lastModified.getTime());
+                    return;
+                }
+            } catch (ParseException e)  {
+                //if the headers are corrupted, still just serve the resource
+                log.log(Level.WARNING, "failed to parse date: " + modifedHeader , e);
             }
-        };
-        final FileLocator localFileLocator = new FileLocator() {
-            public File locate(String path) {
-                URI contextURI = URI.create(currentContextPath.lookup());
-                URI pathURI = URI.create(path);
-                String result = contextURI.relativize(pathURI).getPath();
-                String fileLocation = context.getRealPath(result);
-                return new File(fileLocation);
-            }
-        };
-        main = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-    }
+        }
 
-    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        try {
-            currentContextPath.attach(httpServletRequest.getContextPath());
-            main.service(httpServletRequest, httpServletResponse);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        } finally {
-            currentContextPath.detach();
+        String path = httpServletRequest.getPathInfo();
+        String file = path.substring(path.lastIndexOf("css/") + 4, path.length());
+        final InputStream in = loader.getResourceAsStream(BASE_PATH + file);
+        if (null == in)  {
+            httpServletResponse.setStatus(404, "CSS resource not found");
+            return;
+        }
+        String mimeType = servletContext.getMimeType(path);
+        httpServletResponse.setHeader("Content-Type", mimeType);
+        httpServletResponse.setHeader("Last-Modified", STARTUP_TIME);
+
+        OutputStream out = httpServletResponse.getOutputStream();
+
+        boolean compressResources = !"false".equalsIgnoreCase(
+                servletContext.getInitParameter(EnvUtils.COMPRESS_RESOURCES) );
+        String acceptHeader = httpServletRequest.getHeader("Accept-Encoding");
+        boolean acceptGzip = (null != acceptHeader) && 
+            (acceptHeader.indexOf("gzip") >=0);
+        if (acceptGzip && compressResources && Util.shouldCompress(mimeType) )  {
+            httpServletResponse.setHeader("Content-Encoding", "gzip");
+            Util.compressStream(in, out);
+        } else {
+            Util.copyStream(in, out);
         }
     }
 
-    public void destroy() {
-        main.shutdown();
-    }
-
-    private static class CurrentContextPath extends ThreadLocal {
-        public String lookup() {
-            return (String) get();
-        }
-
-        public void attach(String path) {
-            set(path);
-        }
-
-        public void detach() {
-            set(null);
-        }
-    }
 }

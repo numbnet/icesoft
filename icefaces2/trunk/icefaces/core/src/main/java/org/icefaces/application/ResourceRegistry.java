@@ -40,6 +40,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.util.Util;
 
 /**
  * <p>
@@ -93,18 +94,16 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         }
         InputStream in = resource.getInputStream();
         OutputStream out = externalContext.getResponseOutputStream();
-        byte[] buf = new byte[1000];
-        try {
-            int l = 1;
-            while (l > 0) {
-                l = in.read(buf);
-                if (l > 0) {
-                    out.write(buf, 0, l);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (Util.acceptGzip(externalContext) && 
+                EnvUtils.isCompressResources(facesContext) && 
+                Util.shouldCompress(resource.getContentType()) )  {
+            externalContext.setResponseHeader("Content-Encoding", "gzip");
+            Util.compressStream(in, out);
+        } else {
+            Util.copyStream(in, out);
         }
+
     }
 
     /**
