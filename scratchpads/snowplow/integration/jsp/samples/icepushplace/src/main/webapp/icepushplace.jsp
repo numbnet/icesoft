@@ -33,33 +33,19 @@
 <%@page import="org.icepush.PushContext"%>
 <%@taglib prefix="icep" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 
-<jsp:useBean id="service" class="org.icepush.place.jsp.services.impl.IcepushPlaceServiceImpl" scope="application">
-</jsp:useBean>
-<jsp:useBean id="regions" class="org.icepush.place.jsp.view.model.Regions" scope="application">
+<jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
+   <jsp:setProperty name="world" property="webServiceURL" value="http://localhost:8080/icePushPlaceService"/>
+   <jsp:setProperty name="world" property="applicationURL" value="http://localhost:8080/myApp"/>
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
     <jsp:setProperty name="person" property="*"/>
-<%
-    if(person.getKey() == 0){
-      person.setKey(1);
-    }
-    //PushContext pushContext = PushContext.getInstance(getServletContext());
-    // Add to appropriate region (render group) and push to group
-    // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
-    service.register();
-    service.login(person);
-    switch(person.getKey()){
-        case 1: regions.getNorthAmerica().add(person);service.updateWorld(person.getKey());break;
-        case 2: regions.getEurope().add(person);service.updateWorld(person.getKey());break;
-        case 3: regions.getSouthAmerica().add(person);service.updateWorld(person.getKey());break;
-        case 4: regions.getAsia().add(person);service.updateWorld(person.getKey());break;
-        case 5: regions.getAfrica().add(person);service.updateWorld(person.getKey());break;
-        case 6: regions.getAntarctica().add(person);service.updateWorld(person.getKey());break;
-        default: System.out.println("Problem Initializing Person");
-    }
-%>
 </jsp:useBean>
 
+<% 
+if (person.getKey() == 0) {
+   person = world.loginPerson(person.getRegion(), person);
+}
+%>
 <html>
 <head>
     <title>ICEpush Place</title>
@@ -77,17 +63,19 @@
                 } catch (e) {
                     alert("Your browser is too old for AJAX!");
                     return null;
-                }
+
+
+		    }
             }
         }
     }
     function click_updateSettings(){
-        var nickName = document.getElementById("settings").elements["nickname"].value;
+        var name = document.getElementById("settings").elements["name"].value;
         var mood = document.getElementById("settings").elements["mood"].value;
         var comment = document.getElementById("settings").elements["comment"].value;
         var region = document.getElementById("settings").elements["region"].value;
         var xmlHttp = getXmlHttpRequest();
-        var params = "nickName=" + nickName + "&mood=" + mood + "&comment=" + comment + "&region=" + region;
+        var params = "name=" + name + "&mood=" + mood + "&comment=" + comment + "&region=" + region;
         xmlHttp.open("POST", "./updateSettings.jsp", false);
         xmlHttp.setRequestHeader("Content-type",
                         "application/x-www-form-urlencoded");
@@ -112,11 +100,11 @@
     <table border="1">
         <th colspan="2"><h4>ICEpush Place Console&nbsp</h4></th>
         <tr>
-            <td>Nickname: </td>
+            <td>Name: </td>
             <td>
                 <input type="text"
-                       value="${person.nickname}"
-                       id="nickname"
+                       value="${person.name}"
+                       id="name"
                        name="nickname"
                        size="20" />
             </td>
@@ -173,33 +161,33 @@
             </td>
             <td>
                 <select id="region" name="region">
-                    <option value="1"
-                    <% if (person.getKey() == 1)  {%>
+                    <option value="4"
+                    <% if (person.getRegion() == 4)  {%>
                     selected
                     <% } %>
                     >North America</option>
-                    <option value="2"
-                    <% if (person.getKey() == 2)  {%>
+                    <option value="3"
+                    <% if (person.getRegion() == 3)  {%>
                     selected
                     <% } %>
                     >Europe</option>
-                    <option value="3"
-                    <% if (person.getKey() == 3)  {%>
+                    <option value="5"
+                    <% if (person.getRegion() == 5)  {%>
                     selected
                     <% } %>
                     >South America</option>
-                    <option value="4"
-                    <% if (person.getKey() == 4)  {%>
+                    <option value="2"
+                    <% if (person.getRegion() == 2)  {%>
                     selected
                     <% } %>
                     >Asia</option>
-                    <option value="5"
-                    <% if (person.getKey() == 5)  {%>
+                    <option value="0"
+                    <% if (person.getRegion() == 0)  {%>
                     selected
                     <% } %>
                     >Africa</option>
-                    <option value="6"
-                    <% if (person.getKey() == 6)  {%>
+                    <option value="1"
+                    <% if (person.getRegion() == 1)  {%>
                     selected
                     <% } %>
                     >Antarctica</option>
