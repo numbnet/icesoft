@@ -1,6 +1,10 @@
 package org.icepush.ws.samples.icepushplace.wsclient;
 
 import org.icepush.ws.samples.icepushplace.*;
+//import org.springframework.context.ApplicationContext;
+//import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ByteArrayResource;
 
 import java.util.Arrays;
 import java.lang.reflect.Array;
@@ -8,8 +12,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Hashtable;
 import java.util.Vector;
-
-import org.icepush.ws.samples.icepushplace.*;
 
 public class ICEpushPlaceWorld {
 
@@ -33,10 +35,12 @@ public class ICEpushPlaceWorld {
     private int currentPerson;
 
     public ICEpushPlaceWorld() {
+
 	continents = (Hashtable<Integer,PersonType>[])Array.newInstance(Hashtable.class, CONTINENT.length);
 	for (int i=AFRICA; i<=SOUTH_AMERICA; i++) {
 	    continents[i] = new Hashtable();
 	}
+	System.out.println("New World Created.");
     }
 
     public void setWebServiceURL(String URL) {
@@ -57,17 +61,12 @@ public class ICEpushPlaceWorld {
     public String getApplicationURL() {
 	return applicationURL;
     }
-    public void setWsClient(ICEpushPlaceWsClient client) {
-        wsClient = client;
-	if (!registered) {
-	    registerWithService();
-	}
-    }
+
     public ICEpushPlaceWsClient getWsClient() {
 	return wsClient;
     }
-    
-    public void setContinent(int continent) {
+
+    public void setContinentAccess(int continent) {
 	currentContinent = continent;
     }
 
@@ -120,6 +119,7 @@ public class ICEpushPlaceWorld {
     }
 
     public PersonType loginPerson(int continent, PersonType person) {
+	System.out.println("Logging in person" + continent + " " + person.getName());
 	return loginPerson(CONTINENT[continent], person);
     }
 
@@ -146,7 +146,34 @@ public class ICEpushPlaceWorld {
     }
 
     private void registerWithService() {
-	if (wsClient != null && webServiceURL != null & applicationURL !=null) {
+	if (webServiceURL != null & applicationURL !=null) {
+	    String appContext = new String (
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+"<beans xmlns=\"http://www.springframework.org/schema/beans\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\">\n" +
+"    <bean id=\"client\" abstract=\"true\">" +
+"        <property name=\"defaultUri\" value=\"" + webServiceURL + "\"/>\n" +
+"    </bean>\n" +
+"    <bean id=\"icepushPlaceClient\" class=\"org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWsClient\" parent=\"client\">\n" +
+"        <constructor-arg>\n" +
+"            <bean class=\"org.springframework.ws.soap.saaj.SaajSoapMessageFactory\"/>\n" +
+"        </constructor-arg>\n" +
+"        <property name=\"marshaller\" ref=\"marshaller\"/>\n" +
+"        <property name=\"unmarshaller\" ref=\"marshaller\"/>\n" +
+"    </bean>\n" +
+"    <bean id=\"marshaller\" class=\"org.springframework.oxm.jaxb.Jaxb2Marshaller\">\n" +
+"        <property name=\"contextPath\" value=\"org.icepush.ws.samples.icepushplace\"/>\n" +
+"        <property name=\"mtomEnabled\" value=\"true\"/>\n" +
+"    </bean>\n" +
+"</beans>\n");
+	    /*	    ApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("applicationContext.xml", 
+						   ICEpushPlaceWorld.class);
+
+						   wsClient =  (ICEpushPlaceWsClient) applicationContext.getBean("icepushPlaceClient", ICEpushPlaceWsClient.class);*/
+	    ByteArrayResource bytes = new ByteArrayResource(appContext.getBytes());
+	    XmlBeanFactory factory = new XmlBeanFactory(bytes);
+	    wsClient =  (ICEpushPlaceWsClient) factory.getBean("icepushPlaceClient");
+
 	    List<String> allContinents =  Arrays.asList(CONTINENT);
 	    currentSequenceNo = wsClient.registerApp(applicationURL, allContinents);
 	    registered = true;

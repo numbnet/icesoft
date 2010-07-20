@@ -13,12 +13,12 @@ import org.icepush.ws.samples.icepushplace.*;
 
 public class Tests {
 
-    ICEpushPlaceWsClient client;
+    ICEpushPlaceWorld world;
     private static final String testURL = "http://localhost:8080/testURL";
     private static final String testWorld = "TestWorld";
     
-    public Tests(ICEpushPlaceWsClient client) {
-	this.client = client;
+    public Tests(ICEpushPlaceWorld world) {
+	this.world = world;
     }
 
     public void testSequence1() {
@@ -31,27 +31,27 @@ public class Tests {
 	    ArrayList<String> worlds = new ArrayList<String>();
 	    worlds.add(testWorld);
 	    worlds.add("OtherWorld");
-	    long lastSequenceNo = client.registerApp(testURL, worlds);
+	    long lastSequenceNo = world.getWsClient().registerApp(testURL, worlds);
 	    System.out.println("Test Driver: Registered Application - Starting Sequence No = " + lastSequenceNo);
 
 	    PersonType person = new PersonType();
 	    person.setName("Frank");
 
-	    person = client.loginPerson(testWorld, person);
+	    person = world.getWsClient().loginPerson(testWorld, person);
 	    System.out.println("Test Driver: Login " + person.getName() + 
 			       " key=" + person.getKey());
 	    person.setName("Joe");
-	    person = client.loginPerson(testWorld, person);
+	    person = world.getWsClient().loginPerson(testWorld, person);
 
 	    lastSequenceNo = getWorldUpdate(lastSequenceNo);
 
 	    person.setName("BadJoe");
-	    client.updatePerson(testWorld, person);
+	    world.getWsClient().updatePerson(testWorld, person);
 	    System.out.println("Test Driver: Update " + person.getName() + 
 			       " key=" + person.getKey());
 	    lastSequenceNo = getWorldUpdate(lastSequenceNo);
 
-	    client.logoutPerson(testWorld, person);
+	    world.getWsClient().logoutPerson(testWorld, person);
 	    System.out.println("Test Driver: Logout " + person.getName() + 
 	    " key=" + person.getKey());
 
@@ -60,9 +60,9 @@ public class Tests {
 	} catch(Exception e) {
 	    System.out.println("Test Driver: Exception occured: " + e.toString());	    e.printStackTrace();
 	}
-    }
+    } 
 
-    public void testSequence2(ICEpushPlaceWorld world) {
+    public void testSequence2() {
 
 	System.out.println("**** Running Test Sequence 2 ****");
 	PersonType person = new PersonType();
@@ -82,7 +82,7 @@ public class Tests {
 
     private long getWorldUpdate(long lastSequenceNo) {
 	System.out.println("World Update Request: SequenceNo = " + lastSequenceNo);
-	WorldResponseType response = client.updateWorld(testURL, testWorld, lastSequenceNo);
+	WorldResponseType response = world.getWsClient().updateWorld(testURL, testWorld, lastSequenceNo);
 	lastSequenceNo = response.getSequenceNo();
 	System.out.println("World Update: SequenceNo = " + lastSequenceNo);
 	List<PersonType> people = response.getPerson();
@@ -100,7 +100,7 @@ public class Tests {
 	System.out.println("Updating World View");
 	for (int i=world.AFRICA; i<=world.SOUTH_AMERICA; i++) {
 	    System.out.println(world.CONTINENT[i]);
-	    world.setContinent(i);
+	    world.setContinentAccess(i);
 	    List<PersonType> continent = world.getContinent();
 	    for (ListIterator e = continent.listIterator() ; e.hasNext() ;) {
 		PersonType person = (PersonType)e.next();
