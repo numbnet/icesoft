@@ -128,6 +128,7 @@
         <delete dir="${bundle.dir.bin}/samples/test"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/classes"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/dist/exploded"/>
+        <delete dir="${bundle.dir.bin}/samples/basic/tests"/>
 
         <delete dir="${bundle.dir.bin}/compat/samples/compat-basic"/>
         <delete dir="${bundle.dir.bin}/compat/samples/auctionMonitor/web/WEB-INF/lib"/>
@@ -152,6 +153,7 @@
 
         <delete dir="${bundle.dir.src}/test"/>
         
+        <delete dir="${bundle.dir.src}/samples/basic/tests"/>
         <delete dir="${bundle.dir.src}/samples/test"/>
 
     </target>
