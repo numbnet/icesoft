@@ -35,7 +35,9 @@ public class Move extends Effect {
     private String mode;
 
 
-    public Move(){}
+    public Move() {
+    }
+
     /**
      * Move an element to a new position
      *
@@ -124,14 +126,14 @@ public class Move extends Effect {
      * @return
      */
     public String getFunctionName() {
-        return "new Effect.Move";
+        return "new Ice.Scriptaculous.Effect.Move";
     }
 
     public int hasCode() {
         return EffectHashCode.MOVE * (x * 1) * (y * 2) +
-               ("relative".equals(mode) ? 1 : 2);
+                ("relative".equals(mode) ? 1 : 2);
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;

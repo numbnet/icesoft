@@ -73,7 +73,7 @@ public class Highlight extends Effect {
      */
     public String getFunctionName() {
 
-        return "new Effect.Highlight";
+        return "new Ice.Scriptaculous.Effect.Highlight";
     }
 
     public int hashCode() {

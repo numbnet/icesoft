@@ -22,8 +22,6 @@
 
 package com.icesoft.faces.context.effects;
 
-import com.icesoft.faces.util.CoreUtils;
-
 /**
  * Set the opacity of an HTML element
  */
@@ -50,17 +48,17 @@ public class Opacity extends Effect {
         setFrom(from);
         setTo(to);
     }
-    
+
     /**
-     * @param from Starting opacity
-     * @param to   end opacity
-     * @param duration 
+     * @param from     Starting opacity
+     * @param to       end opacity
+     * @param duration
      */
     public Opacity(float from, float to, float duration) {
         this(from, to);
         setDelay(duration);
     }
-    
+
     /**
      * Get the opacity
      *
@@ -76,9 +74,9 @@ public class Opacity extends Effect {
      * @return
      */
     public String getFunctionName() {
-        return "new Effect.Opacity";
+        return "new Ice.Scriptaculous.Effect.Opacity";
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;

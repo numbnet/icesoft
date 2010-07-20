@@ -20,28 +20,25 @@
  *
  */
 
-package com.icesoft.faces.component.menubar; 
+package com.icesoft.faces.component.menubar;
 
-import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
-import com.icesoft.faces.component.ext.HtmlPanelGroup;
-import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.util.pooling.ClientIdPool;
 import org.icefaces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -50,8 +47,8 @@ import javax.faces.event.ActionListener;
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 
 public class MenuItemRenderer extends MenuItemRendererBase {
@@ -80,12 +77,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Map requestParameterMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         String hiddenFieldName = deriveCommonHiddenFieldName(facesContext,
-                                                             (MenuItem) uiComponent);
+                (MenuItem) uiComponent);
         String hiddenFieldNameInRequestMap =
                 (String) requestParameterMap.get(hiddenFieldName);
 
         if (hiddenFieldNameInRequestMap == null
-            || hiddenFieldNameInRequestMap.equals("")) {
+                || hiddenFieldNameInRequestMap.equals("")) {
             // this command link did not invoke the submit
             return;
         }
@@ -116,7 +113,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
 
         if (!(uiComponent.getParent() instanceof MenuBar) &&
-            !(uiComponent.getParent() instanceof MenuItems)) {
+                !(uiComponent.getParent() instanceof MenuItems)) {
             throw new InvalidComponentTypeException(
                     "MenuBar expected as parent of top-level MenuItem");
         }
@@ -151,16 +148,16 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             topLevelDiv.setAttribute(HTML.ID_ATTR, clientId);
         }
         Element topLevelDiv = (Element) domContext.getRootNode();
-      //  topLevelDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL");
+        //  topLevelDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL");
 
         String rootItemSubClass = CSS_DEFAULT.MENU_BAR_ITEM_STYLE;
         if (vertical) {
             rootItemSubClass = CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE +
-                                rootItemSubClass;
+                    rootItemSubClass;
         }
         String qualifiedName = ((MenuItem) uiComponent).
-        getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
-                rootItemSubClass);
+                getUserDefinedStyleClass(menuComponent.getItemStyleClass(),
+                        rootItemSubClass);
         String call = null;
         if (uiComponent.getChildCount() > 0) {
             topLevelDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
@@ -173,12 +170,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     supermenu += "_sub";
                 }
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                expand(supermenu, clientId + "_sub",
-                        KEYWORD_THIS) + "";
+                        expand(supermenu, clientId + "_sub",
+                                KEYWORD_THIS) + "";
             } else {
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                    expand("this", clientId + "_sub",
-                           KEYWORD_NULL) + "";
+                        expand("this", clientId + "_sub",
+                                KEYWORD_NULL) + "";
             }
             if (menuComponent instanceof MenuPopup) {
                 topLevelDiv.setAttribute(displayEvent, call);
@@ -188,13 +185,13 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     qualifiedName, rootItemSubClass, PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
             if (menuComponent instanceof MenuPopup) {
                 topLevelDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                       "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
-              }
+                        "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
+            }
         }
-        
+
         if (menuComponent instanceof MenuPopup) {
-            if (((MenuPopup)menuComponent).getHideOn() != null) {
-                if (((MenuPopup)menuComponent).getHideOn().equals("mouseout")) {
+            if (((MenuPopup) menuComponent).getHideOn() != null) {
+                if (((MenuPopup) menuComponent).getHideOn().equals("mouseout")) {
                     topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
                 } else {
                     topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
@@ -207,33 +204,32 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
             }
         }
-        
+
         String title = ((MenuItem) uiComponent).getTitle();
-        if(title != null && title.length() > 0)
+        if (title != null && title.length() > 0)
             topLevelDiv.setAttribute(HTML.TITLE_ATTR, title);
 
         DOMContext.removeChildren(topLevelDiv);
         Element masterDiv = topLevelDiv;
         String topLevelMenuId = menuComponent.getClientId(facesContext);
-        while(masterDiv != null &&
-              !masterDiv.getAttribute(HTML.ID_ATTR).equals(topLevelMenuId) )
-        {
+        while (masterDiv != null &&
+                !masterDiv.getAttribute(HTML.ID_ATTR).equals(topLevelMenuId)) {
             masterDiv = (Element) masterDiv.getParentNode();
         }
 
         renderAnchor(facesContext, domContext, (MenuItem) uiComponent,
-                     topLevelDiv, menuComponent, vertical);
+                topLevelDiv, menuComponent, vertical);
         if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
-            Element anch = (Element)topLevelDiv.getChildNodes().item(0);
+            Element anch = (Element) topLevelDiv.getChildNodes().item(0);
             String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
             onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
             anch.setAttribute(HTML.ONCLICK_ATTR, onclick);
-            anch.setAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.onmouseover();");              
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.onmouseover();");
         }
         if ((uiComponent.getChildCount() > 0) &&
-            (((MenuItem) uiComponent).isChildrenMenuItem())) {
+                (((MenuItem) uiComponent).isChildrenMenuItem())) {
             renderChildrenRecursive(facesContext, menuComponent, uiComponent,
-                                    vertical, masterDiv);
+                    vertical, masterDiv);
 
         }
     }
@@ -241,44 +237,44 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     private String expand(String supermenu, String submenu, String submenuDiv) {
         // delimit ids to force resolution from ids to elements
         if (!(supermenu.equalsIgnoreCase(KEYWORD_NULL)) &&
-            !(supermenu.equalsIgnoreCase(KEYWORD_THIS))) {
-            supermenu = "$('" + supermenu + "')";
+                !(supermenu.equalsIgnoreCase(KEYWORD_THIS))) {
+            supermenu = "Ice.Prototype.$('" + supermenu + "')";
         }
         if (!(submenu.equalsIgnoreCase(KEYWORD_NULL)) &&
-            !(submenu.equalsIgnoreCase(KEYWORD_THIS))) {
-            submenu = "$('" + submenu + "')";
+                !(submenu.equalsIgnoreCase(KEYWORD_THIS))) {
+            submenu = "Ice.Prototype.$('" + submenu + "')";
         }
         if (!(submenuDiv.equalsIgnoreCase(KEYWORD_NULL)) &&
-            !(submenuDiv.equalsIgnoreCase(KEYWORD_THIS))) {
-            submenuDiv = "$('" + submenuDiv + "')";
+                !(submenuDiv.equalsIgnoreCase(KEYWORD_THIS))) {
+            submenuDiv = "Ice.Prototype.$('" + submenuDiv + "')";
         }
         return "Ice.Menu.show(" + supermenu + "," + submenu + "," + submenuDiv +
-               ");";
+                ");";
     }
 
     protected static String deriveCommonHiddenFieldName(
             FacesContext facesContext,
             UIComponent uiComponent) {
 
-        if (Beans.isDesignTime()){
+        if (Beans.isDesignTime()) {
             return "";
         }
         UIComponent parentNamingContainer = findForm(uiComponent);
         String parentClientId = parentNamingContainer.getClientId(facesContext);
         String hiddenFieldName = parentClientId
-                                 + NamingContainer.SEPARATOR_CHAR
-                                 + UIViewRoot.UNIQUE_ID_PREFIX
-                                 + HIDDEN_FIELD_NAME;
+                + NamingContainer.SEPARATOR_CHAR
+                + UIViewRoot.UNIQUE_ID_PREFIX
+                + HIDDEN_FIELD_NAME;
         return hiddenFieldName;
     }
-    
+
     /**
      * Used to add icon and label to the
-     *  {Top Level, No Link, Horizontal} menu items
+     * {Top Level, No Link, Horizontal} menu items
      * and add icon, label and indicator to the
-     *  {Top Level, No Link, Vertical} menu items 
+     * {Top Level, No Link, Vertical} menu items
      * Doesn't render spacer, if no icon given
-     */ 
+     */
     private Element makeTopLevelAnchor(FacesContext facesContext,
                                        MenuItem menuItem,
                                        MenuBar menuBar,
@@ -291,33 +287,33 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             if (link != null && link.length() > 0) {
                 anchor.setAttribute(HTML.HREF_ATTR, link);
             }
-            String target = menuItem.getTarget(); 
+            String target = menuItem.getTarget();
             if (target != null && target.length() > 0) {
                 anchor.setAttribute(HTML.TARGET_ATTR, target);
             }
-            String onclick = menuItem.getOnclick(); 
+            String onclick = menuItem.getOnclick();
             if (onclick != null && onclick.length() > 0) {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, onclick);
             }
-            if ( (!menuItem.isLinkSpecified()) &&
-                 (onclick == null || onclick.length() == 0) ) {
+            if ((!menuItem.isLinkSpecified()) &&
+                    (onclick == null || onclick.length() == 0)) {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
-        
+
         if (vertical) {
             if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
                 Element subImg = domContext.createElement(HTML.IMG_ELEM);
                 subImg.setAttribute(HTML.SRC_ATTR,
-                    CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
+                        CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
                 subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 subImg.setAttribute(HTML.CLASS_ATTR,
-                    menuBar.getSubMenuIndicatorStyleClass());
+                        menuBar.getSubMenuIndicatorStyleClass());
                 subImg.setAttribute(HTML.ALT_ATTR, "");
                 anchor.appendChild(subImg);
             }
         }
-        
+
         // only render icons if noIcons is false
         if (!menuBar.getNoIcons().equalsIgnoreCase("true")) {
             // do not render icon if it is the default blank image
@@ -325,15 +321,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             if (icon != null && icon.length() > 0) {
                 Element iconImg = domContext.createElement(HTML.IMG_ELEM);
                 iconImg.setAttribute(HTML.SRC_ATTR,
-                    CoreUtils.resolveResourceURL(facesContext, icon));
+                        CoreUtils.resolveResourceURL(facesContext, icon));
                 iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
-                    getUserDefinedStyleClass(menuBar.getItemImageStyleClass(),
-                        (vertical?CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE:"")+
-                        CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
-                        CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
+                        getUserDefinedStyleClass(menuBar.getItemImageStyleClass(),
+                        (vertical ? CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE : "") +
+                                CSS_DEFAULT.MENU_BAR_ITEM_STYLE +
+                                CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
                 String alt = menuItem.getAlt();
-                if(alt != null && alt.length() > 0)
+                if (alt != null && alt.length() > 0)
                     iconImg.setAttribute(HTML.ALT_ATTR, alt);
                 anchor.appendChild(iconImg);
             }
@@ -347,8 +343,8 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             anchor.setAttribute(HTML.CLASS_ATTR, "iceLink-dis");
         }
         span.setAttribute(HTML.CLASS_ATTR, menuItem.
-                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
-                        (vertical?CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE:"")+
+                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
+                (vertical ? CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE : "") +
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
         anchor.appendChild(span);
         // create text
@@ -361,7 +357,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     /**
      * Used to add icon, label and indicator to the
      * {Sub Level, No Link} menu items
-     */ 
+     */
     private Element makeAnchor(FacesContext facesContext, DOMContext domContext,
                                MenuItem menuItem, MenuBar menuBar) {
 
@@ -371,44 +367,44 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             if (link != null && link.length() > 0) {
                 anchor.setAttribute(HTML.HREF_ATTR, link);
             }
-            String target = menuItem.getTarget(); 
+            String target = menuItem.getTarget();
             if (target != null && target.length() > 0) {
                 anchor.setAttribute(HTML.TARGET_ATTR, target);
             }
-            String onclick = menuItem.getOnclick(); 
+            String onclick = menuItem.getOnclick();
             if (onclick != null && onclick.length() > 0) {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, onclick);
             }
-            if ( (!menuItem.isLinkSpecified()) &&
-                 (onclick == null || onclick.length() == 0) ) {
+            if ((!menuItem.isLinkSpecified()) &&
+                    (onclick == null || onclick.length() == 0)) {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
         anchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
-                menuItem.getClientId(facesContext)+ ":"+LINK_SUFFIX));
+                menuItem.getClientId(facesContext) + ":" + LINK_SUFFIX));
         if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
             subImg.setAttribute(HTML.SRC_ATTR,
-                CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
+                    CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
-                                menuBar.getSubMenuIndicatorStyleClass());
+                    menuBar.getSubMenuIndicatorStyleClass());
             subImg.setAttribute(HTML.ALT_ATTR, "");
             anchor.appendChild(subImg);
         }
 
         // only render icons if noIcons is false
         if (!menuBar.getNoIcons().equalsIgnoreCase("true")) {
-            String icon = menuItem.getIcon(); 
+            String icon = menuItem.getIcon();
             if (icon != null && icon.length() > 0) {
                 Element iconImg = domContext.createElement(HTML.IMG_ELEM);
                 iconImg.setAttribute(HTML.SRC_ATTR,
-                    CoreUtils.resolveResourceURL(facesContext, icon));
+                        CoreUtils.resolveResourceURL(facesContext, icon));
                 iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 iconImg.setAttribute(HTML.CLASS_ATTR,
-                    menuItem.getImageStyleClass());
+                        menuItem.getImageStyleClass());
                 String alt = menuItem.getAlt();
-                if(alt != null && alt.length() > 0)
+                if (alt != null && alt.length() > 0)
                     iconImg.setAttribute(HTML.ALT_ATTR, alt);
                 anchor.appendChild(iconImg);
             }
@@ -417,9 +413,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         // create a span for text
         Element span = domContext.createElement(HTML.SPAN_ELEM);
         if (!menuItem.isDisabled()) {
-            anchor.setAttribute(HTML.CLASS_ATTR,"iceLink");
+            anchor.setAttribute(HTML.CLASS_ATTR, "iceLink");
         } else {
-            anchor.setAttribute(HTML.CLASS_ATTR,"iceLink-dis");
+            anchor.setAttribute(HTML.CLASS_ATTR, "iceLink-dis");
         }
         span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
 
@@ -443,16 +439,16 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (!uiComponent.isRendered()) {
             return;
         }
-        
+
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // create the div that will hold all the sub menu items
         Element submenuDiv = domContext.createElement(HTML.DIV_ELEM);
-     //   submenuDiv.setAttribute(HTML.NAME_ATTR, "SUBMENU");
+        //   submenuDiv.setAttribute(HTML.NAME_ATTR, "SUBMENU");
         String subMenuDivId = uiComponent.getClientId(facesContext) + SUB;
         submenuDiv.setAttribute(HTML.ID_ATTR, subMenuDivId);
 
-        
+
         submenuDiv.setAttribute(HTML.CLASS_ATTR, menuComponent.getSubMenuStyleClass());
         submenuDiv.setAttribute(HTML.STYLE_ATTR, "display:none");
         masterDiv.appendChild(submenuDiv);
@@ -460,32 +456,30 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         // render each menuItem in this submenu
         boolean disabled = false;
         Boolean disObj = (Boolean) uiComponent.getAttributes().get("disabled");
-        if(disObj != null && disObj.booleanValue())
+        if (disObj != null && disObj.booleanValue())
             disabled = true;
         for (int childIndex = 0; childIndex < uiComponent.getChildCount(); childIndex++) {
             UIComponent nextSubMenuItem =
-                (UIComponent) uiComponent.getChildren().get(childIndex);
+                    (UIComponent) uiComponent.getChildren().get(childIndex);
 //System.out.println("renderChildrenRecursive()  "+ste.length+"      Render  childIndex: " + childIndex + "  child: " + nextSubMenuItem);
-            if(nextSubMenuItem instanceof MenuItem) {
+            if (nextSubMenuItem instanceof MenuItem) {
 //System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItem  : " + ((MenuItem)nextSubMenuItem).getValue());
                 renderSubMenuItem(
-                    facesContext, domContext,
-                    (MenuItem) nextSubMenuItem, menuComponent,
-                    disabled, vertical,
-                    submenuDiv, subMenuDivId);
-            }
-            else if(nextSubMenuItem instanceof MenuItems) {
+                        facesContext, domContext,
+                        (MenuItem) nextSubMenuItem, menuComponent,
+                        disabled, vertical,
+                        submenuDiv, subMenuDivId);
+            } else if (nextSubMenuItem instanceof MenuItems) {
 //System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItems");
                 renderSubMenuItems(
-                    facesContext, domContext,
-                    (MenuItems) nextSubMenuItem, menuComponent,
-                    disabled, vertical,
-                    submenuDiv, subMenuDivId);
-            }
-            else if(nextSubMenuItem instanceof MenuItemSeparator) {
+                        facesContext, domContext,
+                        (MenuItems) nextSubMenuItem, menuComponent,
+                        disabled, vertical,
+                        submenuDiv, subMenuDivId);
+            } else if (nextSubMenuItem instanceof MenuItemSeparator) {
 //System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItemSeparator");
                 renderSubMenuItemSeparator(
-                    domContext, (MenuItemSeparator) nextSubMenuItem, submenuDiv);
+                        domContext, (MenuItemSeparator) nextSubMenuItem, submenuDiv);
             }
         }
 
@@ -495,32 +489,31 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         for (int childIndex = 0; childIndex < uiComponent.getChildCount(); childIndex++) {
             UIComponent nextSubMenuItem =
-                (UIComponent) uiComponent.getChildren().get(childIndex);
+                    (UIComponent) uiComponent.getChildren().get(childIndex);
 //System.out.println("renderChildrenRecursive()  "+ste.length+"      Recurse  childIndex: " + childIndex + "  child: " + nextSubMenuItem);
-            if(nextSubMenuItem instanceof MenuItem) {
+            if (nextSubMenuItem instanceof MenuItem) {
                 MenuItem mi = (MenuItem) nextSubMenuItem;
 //System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItem  : " + mi.getValue());
-                if(mi.isChildrenMenuItem()) {
+                if (mi.isChildrenMenuItem()) {
                     renderChildrenRecursive(
-                        facesContext, menuComponent, mi,
-                        vertical, masterDiv);
+                            facesContext, menuComponent, mi,
+                            vertical, masterDiv);
                 }
-            }
-            else if(nextSubMenuItem instanceof MenuItems) {
+            } else if (nextSubMenuItem instanceof MenuItems) {
 //System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItems");
                 MenuItems mis = (MenuItems) nextSubMenuItem;
                 List kids = mis.prepareChildren();
-                if(kids != null) {
-                    for(int kidIndex = 0; kidIndex < kids.size(); kidIndex++) {
+                if (kids != null) {
+                    for (int kidIndex = 0; kidIndex < kids.size(); kidIndex++) {
                         UIComponent nextKid = (UIComponent) kids.get(kidIndex);
 //System.out.println("renderChildrenRecursive()  "+ste.length+"      Recurse  kidIndex: " + kidIndex + "  kid: " + nextKid);
-                        if(nextKid instanceof MenuItem) {
+                        if (nextKid instanceof MenuItem) {
                             MenuItem mi = (MenuItem) nextKid;
 //System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItem  : " + mi.getValue());
-                            if(mi.isChildrenMenuItem()) {
+                            if (mi.isChildrenMenuItem()) {
                                 renderChildrenRecursive(
-                                    facesContext, menuComponent, mi,
-                                    vertical, masterDiv);
+                                        facesContext, menuComponent, mi,
+                                        vertical, masterDiv);
                             }
                         }
                     }
@@ -528,7 +521,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
         }
     }
-    
+
     private void renderSubMenuItemSeparator(DOMContext domContext, MenuItemSeparator nextSubMenuItem, Element submenuDiv) {
         if (!nextSubMenuItem.isRendered()) {
             return;
@@ -537,38 +530,35 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         submenuDiv.appendChild(subMenuItemDiv);
         renderSeparatorDiv(domContext, subMenuItemDiv, nextSubMenuItem);
     }
-    
+
     private void renderSubMenuItems(
-        FacesContext facesContext, DOMContext domContext,
-        MenuItems nextSubMenuItems, MenuBar menuComponent,
-        boolean disabled, boolean vertical,
-        Element submenuDiv, String subMenuDivId)
-    {
+            FacesContext facesContext, DOMContext domContext,
+            MenuItems nextSubMenuItems, MenuBar menuComponent,
+            boolean disabled, boolean vertical,
+            Element submenuDiv, String subMenuDivId) {
         List children = nextSubMenuItems.prepareChildren();
-        if(children != null) {
-            for(int i = 0; i < children.size(); i++) {
+        if (children != null) {
+            for (int i = 0; i < children.size(); i++) {
                 MenuItemBase mib = (MenuItemBase) children.get(i);
-                if(mib instanceof MenuItem) {
+                if (mib instanceof MenuItem) {
                     renderSubMenuItem(
-                        facesContext, domContext,
-                        (MenuItem) mib, menuComponent,
-                        disabled, vertical,
-                        submenuDiv, subMenuDivId);
-                }
-                else if(mib instanceof MenuItemSeparator) {
+                            facesContext, domContext,
+                            (MenuItem) mib, menuComponent,
+                            disabled, vertical,
+                            submenuDiv, subMenuDivId);
+                } else if (mib instanceof MenuItemSeparator) {
                     renderSubMenuItemSeparator(
-                        domContext, (MenuItemSeparator) mib, submenuDiv);
+                            domContext, (MenuItemSeparator) mib, submenuDiv);
                 }
             }
         }
     }
-    
+
     private void renderSubMenuItem(
-        FacesContext facesContext, DOMContext domContext,
-        MenuItem nextSubMenuItem, MenuBar menuComponent,
-        boolean disabled, boolean vertical,
-        Element submenuDiv, String subMenuDivId)
-    {
+            FacesContext facesContext, DOMContext domContext,
+            MenuItem nextSubMenuItem, MenuBar menuComponent,
+            boolean disabled, boolean vertical,
+            Element submenuDiv, String subMenuDivId) {
         if (!nextSubMenuItem.isRendered()) {
             return;
         }
@@ -579,29 +569,29 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
         submenuDiv.appendChild(subMenuItemDiv);
         String qualifiedName = nextSubMenuItem.getStyleClass();
-       // subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
+        // subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
         String subMenuItemClientId = nextSubMenuItem.getClientId(facesContext);
         subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
         if (nextSubMenuItem.isChildrenMenuItem()) {
             call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-            expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
-            "";
+                    expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
+                    "";
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
-                CoreUtils.addPortletStyleClassToQualifiedClass(
-                    qualifiedName, qualifiedName,
-                    PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
+                    CoreUtils.addPortletStyleClassToQualifiedClass(
+                            qualifiedName, qualifiedName,
+                            PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
             subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR, call);
         } else {
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
-                CoreUtils.addPortletStyleClassToQualifiedClass(
-                    qualifiedName, qualifiedName,
-                    PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
+                    CoreUtils.addPortletStyleClassToQualifiedClass(
+                            qualifiedName, qualifiedName,
+                            PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
             subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
+                    "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
         }
         if (menuComponent instanceof MenuPopup) {
-            if (((MenuPopup)menuComponent).getHideOn() != null) {
-                if (((MenuPopup)menuComponent).getHideOn().equals("mouseout")) {
+            if (((MenuPopup) menuComponent).getHideOn() != null) {
+                if (((MenuPopup) menuComponent).getHideOn().equals("mouseout")) {
                     subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
                 } else {
                     subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
@@ -612,10 +602,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         } else {
             if (!menuComponent.isDisplayOnClick()) {
                 subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.hideOnMouseOut('" + menuComponent.getClientId(facesContext) + "',event);");
-            }        
+            }
         }
         String title = nextSubMenuItem.getTitle();
-        if(title != null && title.length() > 0)
+        if (title != null && title.length() > 0)
             subMenuItemDiv.setAttribute(HTML.TITLE_ATTR, title);
         // if parent is disabled apply the disabled attribute value of the parent menuItem to this submenuItem
         if (disabled) {
@@ -623,25 +613,25 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
         // add a command link if we need one
         renderAnchor(facesContext, domContext,
-            nextSubMenuItem, subMenuItemDiv,
-            menuComponent, vertical);
+                nextSubMenuItem, subMenuItemDiv,
+                menuComponent, vertical);
 
-        Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+        Element anch = (Element) subMenuItemDiv.getChildNodes().item(0);
 
         if (call != null) {
-            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ subMenuItemDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
-        }   
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( Ice.Prototype.$('" + subMenuItemDiv.getAttribute("id") + "_sub').style.display == 'none') { " + call + "}");
+        }
         if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
             String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
             onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
-            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
-        }        
+            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);
+        }
 
 //      Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
 //      anch.setAttribute(HTML.HREF_ATTR, "javascript:void(0);");
-         
+
     }
-    
+
     /**
      * @param facesContext
      * @param domContext
@@ -660,8 +650,8 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         // check if this is a Top Level Menu or MenuItems
         if ((nextSubMenuItem.getParent() instanceof MenuBar) ||
-            ((nextSubMenuItem.getParent() instanceof MenuItems)
-             && (nextSubMenuItem.getParent().getParent() instanceof MenuBar))) {
+                ((nextSubMenuItem.getParent() instanceof MenuItems)
+                        && (nextSubMenuItem.getParent().getParent() instanceof MenuBar))) {
             // handle action/actionListeners if attached to top level menuItems
             if (nextSubMenuItem.hasActionOrActionListener()) {
                 HtmlCommandLink link = new HtmlCommandLink();
@@ -678,7 +668,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     }
                     ActionListener[] actionListeners = nextSubMenuItem.getActionListeners();
                     if (actionListeners != null) {
-                        for(int i = 0; i < actionListeners.length; i++) {
+                        for (int i = 0; i < actionListeners.length; i++) {
                             link.removeActionListener(actionListeners[i]);
                             link.addActionListener(actionListeners[i]);
                         }
@@ -692,7 +682,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 Node lastCursorParent = domContext.getCursorParent();
                 domContext.setCursorParent(subMenuItemDiv);
                 addChildrenToLink(
-                    link, nextSubMenuItem, menuComponent, true, !vertical);                    
+                        link, nextSubMenuItem, menuComponent, true, !vertical);
                 ((MenuItem) nextSubMenuItem).addParameter(link);
                 try {
                     encodeParentAndChildren(facesContext, link);
@@ -704,12 +694,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             } else {
                 // anchor
                 Element anchor = makeTopLevelAnchor(
-                    facesContext, nextSubMenuItem, menuComponent, vertical);
+                        facesContext, nextSubMenuItem, menuComponent, vertical);
                 subMenuItemDiv.appendChild(anchor);
             }
         } else if (nextSubMenuItem.hasActionOrActionListener()) {
             HtmlCommandLink link = new HtmlCommandLink();
-            if (nextSubMenuItem.isDisabled()){
+            if (nextSubMenuItem.isDisabled()) {
                 link.setDisabled(true);
             } else { // only set action and actionListeners on enabled menuItems
                 MethodBinding action = nextSubMenuItem.getAction();
@@ -722,7 +712,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 }
                 ActionListener[] actionListeners = nextSubMenuItem.getActionListeners();
                 if (actionListeners != null) {
-                    for(int i = 0; i < actionListeners.length; i++) {
+                    for (int i = 0; i < actionListeners.length; i++) {
                         link.removeActionListener(actionListeners[i]);
                         link.addActionListener(actionListeners[i]);
                     }
@@ -736,7 +726,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             Node lastCursorParent = domContext.getCursorParent();
             domContext.setCursorParent(subMenuItemDiv);
             addChildrenToLink(
-                link, nextSubMenuItem, menuComponent, false, !vertical);                    
+                    link, nextSubMenuItem, menuComponent, false, !vertical);
             ((MenuItem) nextSubMenuItem).addParameter(link);
             try {
                 encodeParentAndChildren(facesContext, link);
@@ -749,25 +739,25 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         } else {
             // anchor
             Element anchor = makeAnchor(facesContext, domContext,
-                                        nextSubMenuItem, menuComponent);
+                    nextSubMenuItem, menuComponent);
             subMenuItemDiv.appendChild(anchor);
         }
     }
 
     /**
      * Used to add icon and label to the
-     *  {Top Level, Link, Horizontal} menu items
+     * {Top Level, Link, Horizontal} menu items
      * and add icon, label and indicator to the
-     *  {Top Level, Link, Vertical} and the {Sub Level, Link} menu items
-     */ 
+     * {Top Level, Link, Vertical} and the {Sub Level, Link} menu items
+     */
     private void addChildrenToLink(HtmlCommandLink link,
                                    MenuItem nextSubMenuItem,
                                    MenuBar menuComponent,
                                    boolean topLevel,
                                    boolean horizontal) {
-        if(!(topLevel && horizontal)) {
+        if (!(topLevel && horizontal)) {
             if (nextSubMenuItem.getChildCount() > 0 &&
-                nextSubMenuItem.isChildrenMenuItem()) {
+                    nextSubMenuItem.isChildrenMenuItem()) {
                 HtmlGraphicImage image = new HtmlGraphicImage();
                 image.setId(INDICATOR_SUFFIX);
                 image.setUrl(getSubMenuImage(menuComponent));
@@ -776,24 +766,23 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 link.getChildren().add(image);
             }
         }
-        
-        if( !menuComponent.getNoIcons().equalsIgnoreCase("true") ) {
+
+        if (!menuComponent.getNoIcons().equalsIgnoreCase("true")) {
             String icon = null;
-            if(topLevel) {
+            if (topLevel) {
                 // do not render icon if it is the default blank image
                 icon = nextSubMenuItem.getSpecifiedIcon();
-            }
-            else {
+            } else {
                 icon = nextSubMenuItem.getIcon();
             }
-            if(icon != null && icon.length() > 0) {
+            if (icon != null && icon.length() > 0) {
                 HtmlGraphicImage image = new HtmlGraphicImage();
                 image.setId(ICON_SUFFIX);
                 image.setUrl(icon);
                 image.setStyle("border:none;");
                 image.setStyleClass(nextSubMenuItem.getImageStyleClass());
                 String alt = nextSubMenuItem.getAlt();
-                if(alt != null && alt.length() > 0)
+                if (alt != null && alt.length() > 0)
                     image.setAlt(alt);
                 link.getChildren().add(image);
             }
@@ -811,9 +800,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         link.setValue("");
         link.getChildren().add(outputText);
     }
-    
-    private void renderSeparatorDiv(DOMContext domContext, Element parent, 
-            MenuItemSeparator menuItemSeparator) {
+
+    private void renderSeparatorDiv(DOMContext domContext, Element parent,
+                                    MenuItemSeparator menuItemSeparator) {
         Element hr = domContext.createElement("hr");
         parent.setAttribute(HTML.CLASS_ATTR, menuItemSeparator.getStyleClass());
         parent.appendChild(hr);
@@ -864,7 +853,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             Map.Entry next = (Map.Entry) entries.next();
             if (!next.getKey().toString().equals("rand")) {
                 System.out.println("[" + next.getKey().toString() + "=" +
-                                   next.getValue() + "]");
+                        next.getValue() + "]");
             }
         }
         System.out
@@ -873,7 +862,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 "client id = [" + uiComponent.getClientId(facesContext));
         System.out.println(
                 "################################################ QUEUEING for hidden field [" +
-                hiddenValue + "]");
+                        hiddenValue + "]");
     }
 
     /* (non-Javadoc)

@@ -29,7 +29,7 @@ package com.icesoft.faces.context.effects;
 public class Shake extends Effect {
 
     public String getFunctionName() {
-        return "Effect.Shake";
+        return "Ice.Scriptaculous.Effect.Shake";
     }
 
     public boolean equals(Object obj) {
