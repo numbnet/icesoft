@@ -51,7 +51,7 @@ public class Shrink extends Effect {
     }
 
     public String getFunctionName() {
-        return "Effect.Shrink";
+        return "Ice.Scriptaculous.Effect.Shrink";
     }
 
     public boolean equals(Object obj) {

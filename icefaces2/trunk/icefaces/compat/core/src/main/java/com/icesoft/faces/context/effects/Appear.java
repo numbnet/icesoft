@@ -95,7 +95,7 @@ public class Appear extends Effect {
      * @return
      */
     public String getFunctionName() {
-        return "Effect.Appear";
+        return "Ice.Scriptaculous.Effect.Appear";
     }
 
     public int hashCode() {
@@ -103,7 +103,7 @@ public class Appear extends Effect {
         int to = (int) (this.to * 100);
         return EffectHashCode.APPEAR * from * to;
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;

@@ -29,7 +29,7 @@ package com.icesoft.faces.context.effects;
 public class BlindUp extends Effect {
 
     public String getFunctionName() {
-        return "Effect.BlindUp";
+        return "Ice.Scriptaculous.Effect.BlindUp";
     }
 
     public boolean equals(Object obj) {

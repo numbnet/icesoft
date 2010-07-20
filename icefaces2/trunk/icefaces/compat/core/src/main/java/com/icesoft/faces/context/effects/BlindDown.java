@@ -25,14 +25,13 @@ package com.icesoft.faces.context.effects;
 /**
  * script.aculo.us blind down effect
  * Simulates a window blind, where the contents of the affected elements stay in place.
- * 
  */
 public class BlindDown extends Effect {
 
     public String getFunctionName() {
-        return "Effect.BlindDown";
+        return "Ice.Scriptaculous.Effect.BlindDown";
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;
