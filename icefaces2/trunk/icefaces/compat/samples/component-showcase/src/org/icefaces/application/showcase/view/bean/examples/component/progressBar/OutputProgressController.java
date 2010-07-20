@@ -33,6 +33,7 @@ import javax.faces.event.ActionEvent;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 
 import java.io.Serializable;
@@ -59,7 +60,15 @@ public class OutputProgressController implements Serializable{
     // just creating a new thread for each user.
     protected static ThreadPoolExecutor longRunningTaskThreadPool =
             new ThreadPoolExecutor(5, 15, 30, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue(20));
+                    new LinkedBlockingQueue(20), new ThreadFactory() {
+                        int i = 0;
+                        public Thread newThread(Runnable r) {
+                            Thread t = new Thread(r);
+                            t.setDaemon(true);
+                            t.setName("progressControllerWorker-" + (i++));
+                            return t;
+                        }
+                    });
     
     // Model where we store the dynamic properties associated with outputProgress
     private OutputProgressModel outputProgressModel;
