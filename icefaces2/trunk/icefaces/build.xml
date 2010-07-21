@@ -47,6 +47,7 @@
 		</fileset>
         </subant>
         <delete file="lib/icefaces.jar"/>
+        <delete file="lib/icefaces-compat.jar"/>
     </target>
 
     <target name="bundle.clean">
