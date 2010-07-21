@@ -35,6 +35,8 @@ import java.util.zip.GZIPOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Util {
     private static Logger log = Logger.getLogger(Util.class.getName());
@@ -43,6 +45,8 @@ public class Util {
             "application/zip", "application/x-compress", "application/x-gzip ",
             "application/java-archive", "video/x-sgi-movie", "audio/x-mpeg ",
             "video/mp4", "video/mpeg");
+    public static final DateFormat HTTP_DATE = 
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 
     public static void copyStream(InputStream in, OutputStream out) throws IOException {
         byte[] buf = new byte[1000];

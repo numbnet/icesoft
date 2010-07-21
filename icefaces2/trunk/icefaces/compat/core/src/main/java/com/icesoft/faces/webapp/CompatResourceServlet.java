@@ -25,8 +25,6 @@ package com.icesoft.faces.webapp;
 import org.icefaces.impl.util.Util;
 import org.icefaces.util.EnvUtils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import javax.servlet.ServletConfig;
@@ -46,11 +44,9 @@ import java.util.logging.Logger;
 public class CompatResourceServlet extends HttpServlet {
     private static Logger log = Logger.getLogger(CompatResourceServlet.class.getName());
     private static final String BASE_PATH = "com/icesoft/faces/resources/css/";
-    private final static DateFormat DATE_FORMAT = 
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     private ClassLoader loader;
     private final Date lastModified = new Date();
-    private final String STARTUP_TIME = DATE_FORMAT.format(lastModified);
+    private final String STARTUP_TIME = Util.HTTP_DATE.format(lastModified);
     private ServletContext servletContext;
 
     public void init(final ServletConfig servletConfig) throws ServletException  {
@@ -64,7 +60,7 @@ public class CompatResourceServlet extends HttpServlet {
                 .getHeader("If-Modified-Since");
         if (null != modifedHeader)  {
             try {
-                Date modifiedSince = DATE_FORMAT.parse(modifedHeader);
+                Date modifiedSince = Util.HTTP_DATE.parse(modifedHeader);
                 if (modifiedSince.getTime() + 1000 > lastModified.getTime() ) {
                     //respond with a not-modifed
                     httpServletResponse.setStatus(304);

@@ -41,8 +41,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -59,8 +57,6 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
             //do nothing!
         }
     };
-    private final static DateFormat DATE_FORMAT = 
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     private String prefix;
     //introducing a memory leak, but ensuring that resources
     //are available when requested
@@ -190,7 +186,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         public void handleResourceRequest(FacesContext facesContext) throws IOException {
             ExternalContext externalContext = facesContext.getExternalContext();
             try {
-                Date modifiedSince = DATE_FORMAT.parse(
+                Date modifiedSince = Util.HTTP_DATE.parse(
                         externalContext.getRequestHeaderMap()
                         .get("If-Modified-Since") );
                 if (lastModified.getTime() > modifiedSince.getTime() + 1000) {
@@ -200,9 +196,9 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                     externalContext.setResponseHeader(
                             "ETag", encode(resource));
                     externalContext.setResponseHeader(
-                            "Date", DATE_FORMAT.format(new Date()));
+                            "Date", Util.HTTP_DATE.format(new Date()));
                     externalContext.setResponseHeader(
-                            "Last-Modified", DATE_FORMAT.format(lastModified));
+                            "Last-Modified", Util.HTTP_DATE.format(lastModified));
                 }
             } catch (Exception e) {
                 respond(facesContext);
@@ -219,11 +215,11 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
             externalContext.setResponseHeader("ETag", encode(resource));
             externalContext.setResponseHeader("Cache-Control", "public");
             externalContext.setResponseHeader("Content-Type", options.mimeType);
-            externalContext.setResponseHeader("Last-Modified", DATE_FORMAT.format(
-                    options.lastModified));
+            externalContext.setResponseHeader("Last-Modified", 
+                    Util.HTTP_DATE.format(options.lastModified));
             if (options.expiresBy != null) {
                 externalContext.setResponseHeader("Expires", 
-                        DATE_FORMAT.format(options.expiresBy));
+                        Util.HTTP_DATE.format(options.expiresBy));
             }
             if (options.attachement && options.contentDispositionFileName != null) {
                 externalContext.setResponseHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
