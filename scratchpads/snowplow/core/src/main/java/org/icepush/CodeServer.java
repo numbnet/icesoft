@@ -36,7 +36,7 @@ public class CodeServer extends ResponseHandlerServer {
         super(new ResponseHandler() {
             public void respond(Response response) throws Exception {
                 response.setHeader("Content-Type", "text/javascript");
-                InputStream code = CodeServer.class.getResourceAsStream("/icepush.js");
+                InputStream code = CodeServer.class.getResourceAsStream("/META-INF/resources/icepush.js");
                 InputStream configuration = new ByteArrayInputStream(("ice.push.configuration.contextPath='" + context.getContextPath() + "';").getBytes("UTF-8"));
 
                 response.writeBodyFrom(new SequenceInputStream(code, configuration));
