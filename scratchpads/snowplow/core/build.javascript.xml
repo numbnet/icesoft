@@ -28,7 +28,7 @@
     <property name="src.dir" location="src/main/javascript"/>
     <property name="lib.dir" location="src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/javascript"/>
-    <property name="script" location="${build.dir}/icepush.js"/>
+    <property name="script" location="${build.dir}/META-INF/resources/icepush.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" description="Collate bridge code">
