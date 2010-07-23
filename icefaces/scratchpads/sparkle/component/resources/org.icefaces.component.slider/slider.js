@@ -6,9 +6,13 @@ ice.yui3.slider = {
         
         //for short cut and to make it more like OOP
         var super = ice.yui3;
+
+        var Dom = YAHOO.util.Dom;
         
         //load slider module
         super.loadModule('slider');
+
+        var hiddenField = Dom.get(clientId+"_hidden");
         
         //set a callback to create slider component 
         super.use(function(Y){
@@ -40,33 +44,17 @@ ice.yui3.slider = {
                         //  the current root element again, instead of using
                         //  the old root reference, which might be stale.
                         document.getElementById(clientId).firstChild.setAttribute("aria-valuenow", sliderValue);
-                    } 
-                    
-                    //slider doesn't use a hidden field, so create a param
-                    var params = function(parameter) {
-                        //param tha represents value of slider
-                        parameter(clientId+'_value', sliderValue);
-                        
-                        //callback to revertback the slider value in case if current slider value
-                        //doesn't match with last known server value. It could be due to 
-                        //the validation error.
-                        parameter('onevent', function(data) { 
-                                //we want to execute after DOM Update was compeleted.                                
-                                if (data.status == 'success') {
-                                    //last known value
-                                    var lastKnownValue = super.getJSContext(clientId).getJSProps().value;   
-                                    if (lastKnownValue != sliderValue) {
-                                         obj.set('value', lastKnownValue);  
-                                    }
-                                }
-                         });
-                                           
-                    };
+                    }
+
+                    // Strategy is now to use hidden field rather than
+                    // request map value
+
+                    hiddenField.value=sliderValue;
                     
                     if (singleSubmit) {
-                        ice.singleSubmit(event, root, params); 
+                        ice.singleSubmit(event, root);
                     } else {
-                        ice.submit(event, root, params);                    
+                        ice.submit(event, root);                    
                     }                    
                 };
                                 
