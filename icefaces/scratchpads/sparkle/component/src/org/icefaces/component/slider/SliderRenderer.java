@@ -57,6 +57,7 @@ public class SliderRenderer extends Renderer{
 			int submittedValue = 0;
             try {
                 submittedValue = Integer.valueOf(hiddenValue);
+                log.finer("Decoded slider value [id:value] [" + clientId + ":" + hiddenValue + "]" );
             } catch (NumberFormatException nfe) {
                 log.warning("NumberFormatException  Decoding value for [id:value] [" + clientId + ":" + hiddenValue + "]");
             } catch (NullPointerException npe) {
