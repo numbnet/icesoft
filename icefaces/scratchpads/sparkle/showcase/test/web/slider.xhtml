@@ -36,6 +36,7 @@
             <h:panelGroup id="slider1">
                 <h:outputText id="out1" value="#{sliderBean.valueChangeString}"/>             
             </h:panelGroup>
+
             <ann:slider id="s1" length="300px" value="#{sliderBean.value1}" valueChangeListener="#{sliderBean.sliderChanged}" />
             </ann:tab>       
             <ann:tab  id="tab2" label="Tab 2">
@@ -49,10 +50,12 @@
         <h:panelGroup id="slider2">
            <h:outputText id="out2" value="Slider 2 value = #{sliderBean.value2}"/> 
            </h:panelGroup>
+
          <ann:slider id="s2" length="150px" value="#{sliderBean.value2}"/>
       </h:form>   
 
-       <h:panelGrid id="pgrid" columns="4">  
+    <h:form id="form2">
+       <h:panelGrid id="pgrid" columns="4">
       <h:panelGroup id="pg">          
            <h:panelGroup id="slider3">
            <h:outputText id="out3" value="Slider 3 value = #{sliderBean.value3}"/> 
@@ -66,13 +69,10 @@
            </h:panelGroup>
            <ann:slider id="s4" axis="y" length="117px" thumbUrl="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-y.png" styleClass="hSlider" value="#{sliderBean.value4}"/>
          </h:panelGroup>
+       </h:panelGrid>
 
-           <h:form id="frm2">
-                    <input id="inBtn" type="button" value="get slider 4 value using javascript"  onclick="ice.yui.slider.getInstance('s4', function(slider) {alert(slider.get('value'))})"/> 
-           </h:form>
-       </h:panelGrid>  
-       
-
+         <input id="inBtn" type="button" value="get slider 4 value using javascript"  onclick="ice.yui3.slider.getInstance('form2:s4', function(slider) {alert(slider.get('value'))})"/>
+        </h:form>
        
     </h:panelGroup>
 
