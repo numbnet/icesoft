@@ -15,8 +15,8 @@
   <property name="tld.doc" location="${doc}/tld"/>
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
   <property name="tld.jar"  location="../../glimmer/lib/"/>
-
-  <dirname property="smartsprites.basedir" file="${ant.file.smartsprites}"/>
+  <property name="smartsprites.basedir" location="../tools/smartsprites" />
+  
   <path id="compile.run.classpath">
   	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
   	    <fileset dir="${lib}" includes="*.jar"/>
@@ -45,7 +45,7 @@
 		<attribute name="skin"/>
 		<sequential>
 			<mkdir dir="${root.dir.path}/@{skin}/base" />
-			<copy todir="${root.dir.path}/@{skin}/base" file="${smartsprites.basedir}/smartsprites/base.css" />
+			<copy todir="${root.dir.path}/@{skin}/base" file="${smartsprites.basedir}/base.css" />
 			<fileset id="@{skin}.files" dir="${root.dir.path}/@{skin}">
 				<modified/>
 			</fileset>
@@ -214,18 +214,18 @@
 	
 	<target name="sprites" description="Prepare files to generate sprites." if="use.sprites">
 
-		<available file="${smartsprites.basedir}/build.properties" property="smartsprites.properties.available" />
+		<available file="build.properties" property="smartsprites.properties.available" />
 		<fail unless="smartsprites.properties.available">
 
 	Please provide SmartSprite parameters in a 'build.properties' file.
 
 		</fail>
 		
-		<property file="${smartsprites.basedir}/build.properties" />
+		<property file="build.properties" />
 		
 		<taskdef resource="smartsprites.xml">
 		  <classpath>
-			<fileset dir="${smartsprites.basedir}/smartsprites">
+			<fileset dir="${smartsprites.basedir}">
 			  <include name="*.jar" />
 			</fileset>
 		  </classpath>
