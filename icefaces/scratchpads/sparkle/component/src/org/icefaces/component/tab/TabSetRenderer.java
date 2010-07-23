@@ -12,6 +12,8 @@ import javax.faces.render.Renderer;
 
 import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 
@@ -112,32 +114,27 @@ public class TabSetRenderer extends Renderer{
         boolean singleSubmit = tabSet.isSingleSubmit();        
         int selectedIndex = tabSet.getSelectedIndex();
         String onupdate = tabSet.getOnupdate();
-        StringBuilder call= new StringBuilder();
         boolean effectOnHover = tabSet.isEffectOnHover();
-        call.append("ice.component.tabset.updateProperties('");
-        call.append(clientId);
-        call.append("', ");
-        //pass through YUI slider properties 
-        call.append("{");
-        call.append("orientation:'");
-        call.append(orientation);
-        call.append("'},");
-        //pass JSF component specific properties that would help in slider configuration 
-        call.append("{");
-        call.append("isSingleSubmit:");
-        call.append(singleSubmit);
-        call.append(", ");        
-        call.append("isClientSide:");
-        call.append(isClientSide);       
-        call.append(", ");        
-        call.append("aria:");
-        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-        call.append(", hover:");
-        call.append(effectOnHover);  
-        call.append(", selectedIndex:");
-        call.append(selectedIndex);         
-        call.append("});");
+
         
+        StringBuilder call = new StringBuilder();
+        call.append("ice.component.tabset.updateProperties('")
+        .append(clientId)
+        .append("', ")
+        .append(
+	        JSONBuilder.create().beginMap()
+	        .entry("orientation", orientation)
+	        .endMap().toString())
+        .append(", ")
+        .append(
+	        JSONBuilder.create().beginMap()
+	        .entry("isSingleSubmit", singleSubmit)
+	        .entry("isClientSide", isClientSide)
+	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
+	        .entry("hover", effectOnHover)
+	        .entry("selectedIndex", selectedIndex).endMap().toString())
+        .append(");");
+       
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none", HTML.STYLE_ATTR);         
@@ -145,10 +142,7 @@ public class TabSetRenderer extends Renderer{
         writer.endElement(HTML.DIV_ELEM);
      
         if (isClientSide) {
-            writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR);             
-            writer.write(call.toString());
-            writer.endElement(HTML.SCRIPT_ELEM);
+            ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
         } else {
             writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR); 
         }
