@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public class ICEpushResourceHandler extends ResourceHandlerWrapper {
     private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
     private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush\\.jsf$");
+    private static final String RESOURCE_KEY = "javax.faces.resource";
     private ResourceHandler handler;
     private MainServlet mainServlet;
 
@@ -66,6 +67,18 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper {
             return;
         }
         ExternalContext externalContext = facesContext.getExternalContext();
+        String resourceName = facesContext.getExternalContext()
+            .getRequestParameterMap().get(RESOURCE_KEY);
+        //special proxied code path for portlets
+        if ("listen.icepush".equals(resourceName))  {
+            try {
+                mainServlet.service(new ProxyHttpServletRequest(facesContext), 
+                        new ProxyHttpServletResponse(facesContext));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return;
+        }
         if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
             handler.handleResourceRequest(facesContext);
             return;
@@ -85,6 +98,11 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper {
     }
 
     public boolean isResourceRequest(FacesContext facesContext) {
+        String resourceName = facesContext.getExternalContext()
+            .getRequestParameterMap().get(RESOURCE_KEY);
+        if ("listen.icepush".equals(resourceName))  {
+            return true;
+        }
         ExternalContext externalContext = facesContext.getExternalContext();
         if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
             return handler.isResourceRequest(facesContext);
