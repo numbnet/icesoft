@@ -84,25 +84,25 @@ public class BridgeSetup implements SystemEventListener {
 
         final String invalidateHTTPCache = "?a" + hashCode();
 
-        //replace with icepush.js resource in icepush.jar
         if (EnvUtils.isICEpushPresent()) {
-            UIOutput icepushCode = new UIOutputWriter() {
-                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
-                    writer.startElement("script", this);
-                    writer.writeAttribute("type", "text/javascript", null);
-                    writer.writeAttribute("src", "code.icepush.jsf" + invalidateHTTPCache, null);
-                    writer.endElement("script");
-                }
-            };
-            icepushCode.setTransient(true);
-            root.addComponentResource(context, icepushCode, "head");
+            root.addComponentResource(context, new JavascriptResourceOutput("icepush.js" + invalidateHTTPCache), "head");
         }
 
         root.addComponentResource(context, new JavascriptResourceOutput("bridge.js" + invalidateHTTPCache), "head");
 
         try {
-            final String windowID = WindowScopeManager.lookupWindowScope(context).getId();
+            String tempWindowID = "unknownWindow";
+            WindowScopeManager.ScopeMap windowScope = 
+                    WindowScopeManager.lookupWindowScope(context);
+            if (null != windowScope)  {
+                tempWindowID =  windowScope.getId();
+            } else {
+                log.log(Level.WARNING, "Unable to find WindowScope for view " + 
+                        context.getViewRoot().getViewId() );
+            }
+            final String windowID = tempWindowID;
             final String viewID = assignViewID(externalContext);
+
 
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -153,6 +153,11 @@ public class BridgeSetup implements SystemEventListener {
 
                     super.encodeEnd(context);
                 }
+
+                //ID is assigned uniquely by ICEpush so no need to prepend
+                public String getClientId(FacesContext context)  {
+                    return getId();
+                }
             };
             retrieveUpdateSetup.setTransient(true);
             //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
@@ -172,6 +177,15 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "', '" + sessionExpiryPushID + "');" : "");
+                        String[] pathTemplate = EnvUtils.getPathTemplate();
+                        String rawURL = pathTemplate[0] + "listen.icepush" 
+                                + pathTemplate[1];
+                        String encodedURL = context.getExternalContext()
+                            .encodeResourceURL(rawURL);
+                        if (!rawURL.equals(encodedURL))  {
+                            writer.write("ice.push.configuration.uri=\"" +
+                               encodedURL + "\";");
+                        }
                         writer.endElement("script");
                         writer.endElement("span");
                     }
