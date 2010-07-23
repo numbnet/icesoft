@@ -2,6 +2,7 @@ package org.icefaces.component.slider;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -9,8 +10,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
 
 /**
@@ -28,6 +30,7 @@ import org.icefaces.util.EnvUtils;
  *   doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
 public class SliderRenderer extends Renderer{
+    private final static Logger log = Logger.getLogger(SliderRenderer.class.getName());
     // The decode method, in the renderer, is responsible for taking the values
     //  that have been submitted from the browser, and seeing if they correspond
     //  to this particular component, and also for the correct row(s) of any
@@ -44,11 +47,26 @@ public class SliderRenderer extends Renderer{
             Slider slider = (Slider)uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = uiComponent.getClientId(facesContext);
+
+            if ("ice.ser".equals(requestParameterMap.get("ice.submit.type"))) {
+                facesContext.renderResponse();
+                return; 
+            }
+            String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));;
+
+			int submittedValue = 0;
+            try {
+                submittedValue = Integer.valueOf(hiddenValue);
+            } catch (NumberFormatException nfe) {
+                log.warning("NumberFormatException  Decoding value for [id:value] [" + clientId + ":" + hiddenValue + "]");
+            } catch (NullPointerException npe) {
+                log.warning("NullPointerException  Decoding value for [id:value] [" + clientId + ":" + hiddenValue + "]");
+            }
+
             //If I am a source of event?
             if (clientId.equals(source)) {
                 try {
                     int value = slider.getValue();
-                    int submittedValue = Integer.parseInt((String.valueOf(requestParameterMap.get(clientId+"_value"))));
                     //if there is a value change, queue a valueChangeEvent    
                     if (value != submittedValue) { 
                         uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
@@ -71,8 +89,16 @@ public class SliderRenderer extends Renderer{
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();        
         Slider slider = (Slider)uiComponent;
+
+        // Write outer div
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + "_div", HTML.ID_ATTR);
+
         //YUI3 slider requires a div, where it renders slider component.
         writer.startElement(HTML.DIV_ELEM, uiComponent);
+
+        
+
         // The Java UIComponent clientId corresponds with the Javascript DOM id
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         // If the application has specified a string of CSS class name(s), output it
@@ -85,63 +111,54 @@ public class SliderRenderer extends Renderer{
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
-        writer.endElement(HTML.DIV_ELEM);  
-        
-        // After rendering the div tag, render a script tag, containing the
-        // javascript necessary to initialise the YUI slider object.
-        //make a call to YUI3 helper API to update 
-        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "script", HTML.ID_ATTR); 
-        StringBuilder call= new StringBuilder();
-        call.append("ice.yui3.slider.updateProperties('");
-        call.append(clientId);
-        call.append("', ");
-        //pass through YUI slider properties 
-        call.append("{");
-        call.append("min:");
-        call.append(slider.getMin());
-        call.append(", ");
-        call.append("max:");
-        call.append(slider.getMax());
-        call.append(", ");
-        call.append("value:");
-        call.append(slider.getValue());
-        call.append(", ");
-        call.append("axis:'");
-        call.append(slider.getAxis());
-        call.append("', ");
-        call.append("length:'");
-        call.append(slider.getLength());
-        call.append("', ");
-        call.append("clickableRail:'");
-        call.append(slider.isClickableRail());		
-        call.append("'},");
-        //pass JSF component specific properties that would help in slider configuration 
-        call.append("{");
-        String thumbUrl = slider.getThumbUrl(); 
-        if (thumbUrl != null && thumbUrl.trim().length() > 0) {
-            call.append("thumbUrl:'");
-            call.append(thumbUrl);
-            call.append("', ");
-        }
-        call.append("submitOn:'");
-        call.append(slider.getSubmitOn());
-        call.append("', ");
-        call.append("singleSubmit:");
-        call.append(slider.isSingleSubmit());
-        call.append(", ");        
-        call.append("slideInterval:");
-        call.append(slider.getSlideInterval());       
-        call.append(", ");        
-        call.append("aria:");
-        call.append(EnvUtils.isAriaEnabled(facesContext)); 
-        call.append(", ");        
-        call.append("tabindex:");
-        call.append(slider.getTabindex());   
-        call.append("});");
-        writer.write(call.toString());
-        writer.endElement(HTML.SCRIPT_ELEM);  
-                
-    }
+        writer.endElement(HTML.DIV_ELEM);
 
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("name",clientId+"_hidden", null);
+        writer.writeAttribute("id",clientId+"_hidden", null);
+        writer.writeAttribute("value",slider.getValue(), null);
+        writer.endElement("input");
+
+        
+        // pass jsProps through to YUI, pass jsfProps to custom javascript. 
+        JSONBuilder jsBuilder = JSONBuilder.create().beginMap().
+                entry("min", slider.getMin()).
+                entry("max", slider.getMax()).
+                entry("value", slider.getValue()).
+                entry("axis", slider.getAxis()).
+                entry("length", slider.getLength()).
+                entry("clickableRail", slider.isClickableRail());
+
+        String thumbUrl = slider.getThumbUrl();
+        if (thumbUrl != null && thumbUrl.trim().length() > 0) {
+            jsBuilder.entry("thumbUrl", thumbUrl);
+        }
+
+        JSONBuilder jb = JSONBuilder.create().beginMap().
+                entry("submitOn", slider.getSubmitOn()).
+                entry("singleSubmit", slider.isSingleSubmit()).
+                entry("slideInterval", slider.getSlideInterval()).
+                entry("aria", EnvUtils.isAriaEnabled(facesContext)).
+                entry("tabindex", slider.getTabindex());
+
+
+        if (thumbUrl != null && thumbUrl.trim().length() > 0) {
+                jb.entry("thumbUrl", thumbUrl);
+        }
+
+        String jsProps = jsBuilder.endMap().toString();
+        String jsfProps = jb.endMap().toString();
+        String params = "'" + clientId + "'," +
+                        jsProps
+                        + "," +
+                        jsfProps;
+        String finalScript = "ice.yui3.slider.updateProperties(" + params + ");";
+        log.finer("slider script contents: " + finalScript);
+        ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
+
+        // End the enclosing div
+        writer.endElement(HTML.DIV_ELEM);
+
+    }
 }
