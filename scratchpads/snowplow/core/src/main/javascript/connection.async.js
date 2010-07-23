@@ -130,7 +130,9 @@ var AsyncConnection;
                     offerCandidature();
                 } else {
                     debug(logger, 'connect...');
-                    listener = postAsynchronously(channel, contextPath() + '/listen.icepush' + fileExtension(), function(q) {
+                    var listenURI = ice.push.configuration.uri ? 
+                            ice.push.configuration.uri : contextPath() + '/listen.icepush' + fileExtension();                    
+                    listener = postAsynchronously(channel, listenURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                         askForConfiguration(q);
                     }, function(request) {
