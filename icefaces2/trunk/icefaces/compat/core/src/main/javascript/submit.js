@@ -31,6 +31,7 @@ var formOf;
                 if (formElement.type == 'hidden' && formElement.id == '' &&
                     formElement.name != 'javax.faces.ViewState' &&
                     formElement.name != 'ice.window' &&
+                    formElement.name != 'javax.faces.encodedURL' &&
                     formElement.name != 'ice.view') {
                     formElement.value = '';
                 }
