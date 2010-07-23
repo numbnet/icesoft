@@ -61,7 +61,6 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.ResultDataModel;
 import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
-import javax.servlet.jsp.jstl.sql.Result;
 import javax.swing.tree.TreeModel;
 import java.io.IOException;
 import java.io.Serializable;
@@ -82,6 +81,16 @@ import java.util.Set;
 public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.series";
     public static final String RENDERER_TYPE = "com.icesoft.faces.seriesRenderer";    
+    
+    private static Class javax_servlet_jsp_jstl_sql_Result_class = null;
+    static {
+        try {
+            javax_servlet_jsp_jstl_sql_Result_class = Class.forName(
+                "javax.servlet.jsp.jstl.sql.Result");
+        }
+        catch(Exception e) {}
+    }
+    
     protected transient DataModel dataModel = null;
     private int rowIndex = -1;
     protected Map savedChildren = new HashMap();
@@ -368,8 +377,10 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             this.dataModel = new ArrayDataModel((Object[]) currentValue);
         } else if (currentValue instanceof ResultSet) {
             this.dataModel = new ResultSetDataModel((ResultSet) currentValue);
-        } else if (currentValue instanceof Result) {
-            this.dataModel = new ResultDataModel((Result) currentValue);
+        } else if (javax_servlet_jsp_jstl_sql_Result_class != null &&
+                   javax_servlet_jsp_jstl_sql_Result_class.isInstance(currentValue)) {
+            this.dataModel = new ResultDataModel();
+            this.dataModel.setWrappedData(currentValue);
         } else if (currentValue instanceof TreeModel) {
             this.dataModel = new TreeDataModel((TreeModel) currentValue);
         } else if (currentValue instanceof Set) {
