@@ -30,41 +30,23 @@
   ~ not delete the provisions above, a recipient may use your version of
   ~ this file under either the MPL or the LGPL License."
   -->
-  
-&uiselectmany-props;
-&select-common-props;
-&ice-att-partialSubmitDelay-props;
-<property>
-    <description>
-        <![CDATA[
-         <p>The base name for all style classes. Default is 
-         <b>iceSelMnyLb</b> if enabled and <b>iceSelMnyLb-dis</b> 
-         if disabled.
-         </p>
-		]]>
-    </description>
-    <property-name>styleClass</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>ADVANCED</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
 
-<property>
+<component>
 	<description>
-		Number of available options to be shown at all times. If not specified, 
-		all available options are shown.
-	</description>  
-    <property-name>size</property-name>
-    <property-class>int</property-class>
-    <property-extension>
-        <category>JAVASCRIPT</category>
-        <editor-class>
-            &javascriptEditor;
-        </editor-class>
-    </property-extension>
-</property>
-        
+
+	</description>
+
+	<display-name>JSEventListener</display-name>
+	<component-type>com.icesoft.faces.JSEventListener</component-type>
+
+	&ice-cust-jseventlistener-props;
+
+	<component-extension>
+		<base-component-type>
+			javax.faces.Command
+		</base-component-type>
+		<component-family>javax.faces.Command</component-family>
+		<renderer-type>com.icesoft.faces.JSEventListenerRenderer</renderer-type>
+	</component-extension>
+
+</component>

@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,17 +18,26 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
-import com.icesoft.faces.component.panelpopup.PanelPopup;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.util.DelimitedProperties;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
@@ -39,7 +48,6 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.DnDCache;
-import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -50,8 +58,13 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import com.icesoft.util.pooling.ClientIdPool;
 
 public class GroupRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer {
@@ -59,21 +72,21 @@ public class GroupRenderer
     protected static final String STATUS = "status";
 
     protected static final String DROP = "dropID";
-    protected static final String HIDDEN_FILED = ":iceDND";
+    protected static final String HIDDEN_FILED = ":iceDND";    
     private static Log log = LogFactory.getLog(GroupRenderer.class);
 
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =
-            new String[]{HTML.STYLE_ATTR};
-
-
+        new String[] { HTML.STYLE_ATTR };
+   
+    
     private static final String[] PASSTHRU_JS_EVENTS = LocalEffectEncoder.maskEvents(
             ExtendedAttributeConstants.getAttributes(
-                    ExtendedAttributeConstants.ICE_PANELGROUP));
+                ExtendedAttributeConstants.ICE_PANELGROUP));
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(
-                    ExtendedAttributeConstants.ICE_PANELGROUP,
-                    new String[][]{PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
+                ExtendedAttributeConstants.ICE_PANELGROUP,
+                new String[][] {PASSTHRU_EXCLUDE, PASSTHRU_JS_EVENTS});
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -98,9 +111,9 @@ public class GroupRenderer
                     // Drag an drop needs some hidden fields
                     UIComponent form = findForm(uiComponent);
                     String formId = form.getClientId(facesContext);
-
-                    FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId + HIDDEN_FILED));
-
+                    
+                    FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId+HIDDEN_FILED));
+ 
                 }
             }
 
@@ -109,18 +122,26 @@ public class GroupRenderer
                 DnDCache.getInstance(facesContext, true).put(
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
-                String call = addJavascriptCalls(uiComponent, dndType, null, facesContext);
-
-                Map rendererJavascriptDraggable = new HashMap();
+                StringBuffer dropCall = new StringBuffer();
+                String call = addJavascriptCalls(uiComponent, dndType, null, facesContext, dropCall);
+                
+                String clientId = uiComponent.getClientId(facesContext);
+                Element script = domContext.createElement(HTML.SCRIPT_ELEM);
+                script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId+"script"));
+                script.appendChild(domContext.createTextNode(dropCall.toString()));
+                rootSpan.appendChild(script);
+                Map rendererJavascriptDraggable =new HashMap();
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
-                        "Ice.Scriptaculous.Draggable.removeMe(this.id);");
-                rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call);
+                            "Draggable.removeMe(this.id);");
+                rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call );
+                rendererJavascriptDraggable.put(HTML.ONMOUSEOVER_ATTR, dropCall.toString());                
+                
                 LocalEffectEncoder.encode(
-                        facesContext, uiComponent, PASSTHRU_JS_EVENTS,
-                        rendererJavascriptDraggable, rootSpan, null);
+                        facesContext, uiComponent, PASSTHRU_JS_EVENTS, 
+                                    rendererJavascriptDraggable, rootSpan, null);                
             } else {
                 LocalEffectEncoder.encode(
-                        facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, rootSpan, null);
+                        facesContext, uiComponent, PASSTHRU_JS_EVENTS, null, rootSpan, null);                
             }
 
 
@@ -145,14 +166,14 @@ public class GroupRenderer
                     extraStyle += "height:" + scrollHeight + ";overflow:auto;";
                 } else {
                     extraStyle += "width:" + scrollWidth + ";height:" +
-                            scrollHeight + ";overflow:auto;";
+                                  scrollHeight + ";overflow:auto;";
                 }
             }
 
             CurrentStyle.apply(facesContext, uiComponent, null, extraStyle);
             MenuPopupHelper.renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
-            PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent,
-                    rootSpan, passThruAttributes);
+            PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent, 
+                                            rootSpan, passThruAttributes);           
             domContext.stepInto(uiComponent);
             // domContext.stepOver();
         } catch (Exception e) {
@@ -162,7 +183,8 @@ public class GroupRenderer
 
     protected String addJavascriptCalls(UIComponent uiComponent, String dndType,
                                         String handleId,
-                                        FacesContext facesContext) {
+                                        FacesContext facesContext,
+                                        StringBuffer dropCall) {
         String calls = "";
 
         boolean dragListener =
@@ -188,24 +210,24 @@ public class GroupRenderer
         if ("DRAG".equalsIgnoreCase(dndType)) {
 
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
-                    handleId, dragOptions, dragMask,
-                    facesContext);
+                                          handleId, dragOptions, dragMask,
+                                          facesContext);
 
         } else if ("drop".equalsIgnoreCase(dndType)) {
-            DragDrop.addDroptarget(
+            dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
-                    dropMask, hoverClass);
+                    dropMask, hoverClass));
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
 
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
-                    handleId, dragOptions, dragMask,
-                    facesContext);
-            DragDrop.addDroptarget(
+                                          handleId, dragOptions, dragMask,
+                                          facesContext);
+            dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
-                    dropMask, hoverClass);
+                    dropMask, hoverClass));
         } else {
             throw new IllegalArgumentException("Value [" + dndType +
-                    "] is not valid for dndType. Please use drag or drop");
+                                               "] is not valid for dndType. Please use drag or drop");
         }
         return calls;
     }
@@ -247,44 +269,54 @@ public class GroupRenderer
             log.trace("GroupRenderer:decode");
         }
         MenuPopupHelper.decodeMenuContext(context, component);
-        if (component instanceof PanelPopup) {
-            String dndType = getDndType(component);
-            if ("dragdrop".equals(dndType) || "DRAG".equals(dndType)) {
-                PanelPopup panel = (PanelPopup) component;
-                if (panel.getAutoPosition() != null || panel.isAutoCentre()) {
-                    panel.setDragged(true);
-                }
-            }
-        }
         if (component instanceof HtmlPanelGroup) {
             HtmlPanelGroup panel = (HtmlPanelGroup) component;
             String dndType = getDndType(component);
 
             if (panel.getDraggable() != null || panel.getDropTarget() != null) {
-
+/*
+                Map paramValuesMap = context.getExternalContext().getRequestParameterValuesMap();
+                Iterator it = paramValuesMap.entrySet().iterator();
+                Map.Entry entry;
+                String key;
+                String[] values;
+                while (it.hasNext()) {
+                    entry = (Map.Entry) it.next();
+                    key = (String) entry.getKey();
+                    values = (String[]) entry.getValue();
+                    System.out.print(key);
+                    System.out.print(" = ");
+                    for (int i = 0; i < values.length; i++) {
+                        System.out.print(values[i]);
+                        System.out.print(", ");
+                    }
+                    System.out.println();
+                }
+*/
+         
                 Map requestMap = context.getExternalContext().getRequestParameterMap();
-
+                
                 UIComponent form = findForm(component);
                 String formId = form.getClientId(context);
-                String hdnFld = ClientIdPool.get(formId + HIDDEN_FILED);
+                String hdnFld = ClientIdPool.get(formId+HIDDEN_FILED);
                 if (!requestMap.containsKey(hdnFld)) return;
                 String value = String.valueOf(requestMap.get(hdnFld));
                 DelimitedProperties delimitedProperties = new DelimitedProperties(value);
-
+                
                 String fieldName = clientId + STATUS;
                 String status = delimitedProperties.get(fieldName);
-
+                
                 if (status == null) {
                     if (log.isTraceEnabled()) {
                         log.trace("Drag Drop Status for ID [" +
-                                panel.getClientId(context) +
-                                "] Field Name [" + fieldName +
-                                "] is null. Returning");
+                                  panel.getClientId(context) +
+                                  "] Field Name [" + fieldName +
+                                  "] is null. Returning");
                     }
                     return;
                 }
                 String targetID = delimitedProperties.get(clientId + DROP);
-
+                
                 Object targetDragValue = null;
                 Object targetDropValue = null;
 
@@ -292,8 +324,8 @@ public class GroupRenderer
                     DnDCache dndCache = DnDCache.getInstance(context, false);
                     if ("drop".equals(dndType)) {
                         targetDragValue = dndCache.getDragValue(targetID);
-                        targetDropValue = dndCache.getDropValue(panel.getClientId(context));
-                    } else {
+                        targetDropValue = dndCache.getDropValue(panel.getClientId(context));                        
+                    } else {                    
                         targetDragValue = dndCache.getDragValue(panel.getClientId(context));
                         targetDropValue = dndCache.getDropValue(targetID);
                     }
@@ -301,16 +333,11 @@ public class GroupRenderer
 
                 if (log.isTraceEnabled()) {
                     log.trace("Dnd Event Client ID [" +
-                            component.getClientId(context) + "] Target ID [" +
-                            targetID + "] Status [" + status + "]");
+                              component.getClientId(context) + "] Target ID [" +
+                              targetID + "] Status [" + status + "]");
                 }
 
 
-                if (panel.getDragListener() == null &&
-                        panel.getDropListener() == null) {
-
-                    return;
-                }
                 int type = 0;
                 try {
                     type = Integer.parseInt(status);
@@ -321,22 +348,28 @@ public class GroupRenderer
                         return;
                     }
                 }
-
+                if (type > 0 && type < 4) {
+                    panel.getAttributes().put("dragged", Boolean.TRUE);
+                }
+                if (panel.getDragListener() == null &&
+                    panel.getDropListener() == null) {
+                    return;
+                }
 
                 MethodBinding listener = panel.getDragListener();
                 if (listener != null) {
 
                     DragEvent event = new DragEvent(component, type, targetID,
-                            targetDragValue,
-                            targetDropValue);
+                                                    targetDragValue,
+                                                    targetDropValue);
                     panel.queueEvent(event);
                 }
                 listener = panel.getDropListener();
                 if (listener != null) {
 
                     DropEvent event = new DropEvent(component, type, targetID,
-                            targetDragValue,
-                            targetDropValue);
+                                                    targetDragValue,
+                                                    targetDropValue);
                     panel.queueEvent(event);
                 }
             }
@@ -363,10 +396,10 @@ public class GroupRenderer
         String formId = form.getClientId(facesContext);
         String clientId = uiComponent.getClientId(facesContext);
         return formId
-                + NamingContainer.SEPARATOR_CHAR
-                + UIViewRoot.UNIQUE_ID_PREFIX
-                + clientId
-                + name;
+               + NamingContainer.SEPARATOR_CHAR
+               + UIViewRoot.UNIQUE_ID_PREFIX
+               + clientId
+               + name;
     }
 
     protected String getDndType(UIComponent uiComponent) {
@@ -376,7 +409,7 @@ public class GroupRenderer
         String droppable =
                 (String) uiComponent.getAttributes().get("dropTarget");
         if ("true".equalsIgnoreCase(draggable) &&
-                "true".equalsIgnoreCase(droppable)) {
+            "true".equalsIgnoreCase(droppable)) {
             dndType = "dragdrop";
         } else if ("true".equalsIgnoreCase(draggable)) {
             dndType = "DRAG";

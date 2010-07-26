@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 package org.icefaces.application.showcase.view.bean.examples.component.rowSelector;
 
@@ -26,12 +36,16 @@ import org.icefaces.application.showcase.model.entity.Employee;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.RowSelectorEvent;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 /**
@@ -99,7 +113,8 @@ public class RowSelectController extends DataTableBase {
      * @param event jsf action event.
      */
     public void changeSelectionMode(ValueChangeEvent event) {
-        String newValue = event.getNewValue().toString(); 
+        
+    	String newValue = event.getNewValue() != null ? event.getNewValue().toString() : null; 
         multiple = false;
         enhancedMultiple = false;
         if ("Single".equals(newValue)){
@@ -154,5 +169,52 @@ public class RowSelectController extends DataTableBase {
 
     public void setEnhancedMultiple(boolean enhancedMultiple) {
         this.enhancedMultiple = enhancedMultiple;
+    }
+    
+    public void jsListener(ActionEvent event) {
+        Map parameter = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (parameter.containsKey("ice.event.keycode")) {
+            boolean shiftKey = "true".equals(parameter.get("ice.event.shift"));
+            boolean E = "69".equals(parameter.get("ice.event.keycode"));
+            boolean DEL = "46".equals(parameter.get("ice.event.keycode"));
+            boolean ESC = "27".equals(parameter.get("ice.event.keycode"));  
+            
+            if (shiftKey && E) {
+                editRecords(true);
+            } else if (ESC) {
+                editRecords(false);
+            }else if (DEL) {
+                deleteRecords();
+            }            
+        }
+    }
+
+    private void editRecords(boolean edit) {
+        Employee employee;
+        for(int i = 0, max = employees.size(); i < max; i++){
+            employee = (Employee)employees.get(i);
+            if (!edit) {
+                employee.setEdit(edit);
+            } else {
+                if (employee.isSelected()) 
+                    employee.setEdit(edit);
+            }
+        }   
+    }
+
+    private void deleteRecords() {
+        Employee employee;
+        List removeList = new ArrayList();
+        for(int i = 0, max = employees.size(); i < max; i++){
+            employee = (Employee)employees.get(i);
+            if (employee.isSelected()) {
+                removeList.add(employee);
+
+            }
+        }
+        Iterator iterator = removeList.iterator();
+        while (iterator.hasNext()) {
+            employees.remove((Employee)iterator.next());
+        }
     }
 }

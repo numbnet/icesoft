@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <!--
-  ~ Version: MPL 1.1
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
   ~ "The contents of this file are subject to the Mozilla Public License
   ~ Version 1.1 (the "License"); you may not use this file except in
@@ -20,6 +20,16 @@
   ~
   ~ Contributor(s): _____________________.
   ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
   -->
 
 <!-- ================== ICEfaces Component METADATA  ========================== -->
@@ -134,6 +144,7 @@
   <!ENTITY ice-att-autoComplete-props SYSTEM "ice_properties/ice-att-autoComplete-props.xml">
   <!ENTITY ice-att-partialsubmit-props SYSTEM "ice_properties/ice-att-partialsubmit-props.xml">
   <!ENTITY ice-att-partialsubmit-true-props SYSTEM "ice_properties/ice-att-partialsubmit-true-props.xml">
+  <!ENTITY ice-att-partialSubmitDelay-props SYSTEM "ice_properties/ice-att-partialSubmitDelay-props.xml">
   <!ENTITY ice-att-userrole-enabled-props SYSTEM "ice_properties/ice-att-userrole-enabled-props.xml">
   <!ENTITY ice-att-userrole-rendered-props SYSTEM "ice_properties/ice-att-userrole-rendered-props.xml">
   <!ENTITY ice-att-visible-props SYSTEM "ice_properties/ice-att-visible-props.xml">
@@ -186,6 +197,7 @@
   <!ENTITY ice-cust-panelBorder-props SYSTEM "ice_cust_properties/cust-panelBorder-props.xml">
   <!ENTITY ice-cust-datapaginator-props SYSTEM "ice_cust_properties/cust-datapaginator-props.xml">
   <!ENTITY ice-cust-inputFile-props SYSTEM "ice_cust_properties/cust-inputFile-props.xml">
+  <!ENTITY ice-cust-jseventlistener-props SYSTEM "ice_cust_properties/cust-jseventlistener-props.xml">
   <!ENTITY ice-cust-gmap-props SYSTEM "ice_cust_properties/cust-gmap-props.xml">
   <!ENTITY ice-cust-gMapLatLng-props SYSTEM "ice_cust_properties/cust-gMapLatLng-props.xml">
   <!ENTITY ice-cust-gMapLatLngs-props SYSTEM "ice_cust_properties/cust-gMapLatLngs-props.xml">
@@ -335,6 +347,9 @@
   
   <!ENTITY inputFile-component   SYSTEM "custom/inputFile-component.xml">
   <!ENTITY inputFile-renderer    SYSTEM "custom/inputFile-renderer.xml">
+
+  <!ENTITY jseventlistener-component   SYSTEM "custom/jseventlistener-component.xml">
+  <!ENTITY jseventlistener-renderer    SYSTEM "custom/jseventlistener-renderer.xml">
 
   <!ENTITY gmap-component   SYSTEM "custom/gmap-component.xml">
   <!ENTITY gmap-renderer    SYSTEM "custom/gmap-renderer.xml">
@@ -533,6 +548,7 @@
 	<!--  custom component -->
 	&selectinputdate-component;
 	&inputFile-component;
+	&jseventlistener-component;
 	&gmap-component;
     &gMapLatLng-component;
     &gMapLatLngs-component;
@@ -623,6 +639,7 @@
 		<!-- custom component -->
 		&selectinputdate-renderer;
 		&inputFile-renderer;
+		&jseventlistener-renderer;
 		&gmap-renderer;
         &gMapLatLng-renderer;
         &gMapLatLngs-renderer;

@@ -1,3 +1,34 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
 /* Original Copyright
  * Copyright 2004 The Apache Software Foundation.
  *
@@ -49,10 +80,11 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     private static final String PREVIOUS_FACET_NAME = "previous";
     private static final String FAST_FORWARD_FACET_NAME = "fastforward";
     private static final String FAST_REWIND_FACET_NAME = "fastrewind";
-
+    private int oldRow = -1;
+    private int pageIndex;
     // just for caching the associated uidata
     private transient UIData _UIData;
-
+    private Boolean keyboardNavigationEnabled;    
     private MethodBinding _actionListener;
     private Boolean disabled = null;
 
@@ -150,10 +182,12 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                     pageindex = 1;
                 }
                 uiData.setFirst(uiData.getRows() * (pageindex - 1));
-                //page links are not a UICommand. They are just elements, so
-                //by now the pageindex has been changed, now this component
-                //itself needs to call the renderResponse. 
-                getFacesContext().renderResponse();
+                if (isImmediate()) {
+                    //page links are not a UICommand. They are just elements, so
+                    //by now the pageindex has been changed, now this component
+                    //itself needs to call the renderResponse. 
+                    getFacesContext().renderResponse();
+                }
             }
             broadcastToActionListener(scrollerEvent);            
         }
@@ -207,9 +241,14 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         UIData uiData = getUIData();
         int rows = uiData.getRows();
         int pageCount = getPageCount();
-        int pageIndex = 0;
+        int first = uiData.getFirst();
+        //respect if the dataTable.rows gets changed by some other component.
+        if (oldRow != -1 && oldRow != rows) {
+            first = rows * (pageIndex-1);
+        }
+        int tempPageIndex = pageIndex;
         if (rows > 0) {
-            pageIndex = uiData.getFirst() / rows + 1;
+            pageIndex =first / rows + 1;
             // if the page index > pageCount then some rows may have been removed
             // so we need to show the last page which may be a partial or full page
             // worth of data
@@ -223,7 +262,16 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                      + " has invalid rows attribute.");
             pageIndex = 0;
         }
-
+        
+        //the first was not in range, so recalculate
+        if (tempPageIndex != pageIndex) {
+            first = (rows * pageIndex)-rows;
+        }
+        //apply the calculated first for current page
+        if (oldRow != -1 && oldRow != rows) {
+            uiData.setFirst(first);
+        }
+        oldRow = rows;
         if (rows == 0) {
             pageIndex = 1;
         } else if (uiData.getFirst() % rows > 0) {
@@ -833,7 +881,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -855,6 +903,10 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[18] = renderedOnUserRole;
         values[19] = enabledOnUserRole;
         values[20] = disabled;
+        values[21] = new Integer(oldRow);   
+        values[22] = new Integer(pageIndex);  
+        values[23] = keyboardNavigationEnabled;
+                
         return values;
     }
 
@@ -886,7 +938,9 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         renderedOnUserRole = (String)values[18];
         enabledOnUserRole = (String)values[19];
         disabled = (Boolean)values[20];
-
+        oldRow = ((Integer) values[21]).intValue();
+        pageIndex = ((Integer) values[22]).intValue();
+        keyboardNavigationEnabled = (Boolean) values[23];
     }
 
     /**
@@ -1066,5 +1120,28 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
             }
         }
         return modelResultSet.booleanValue();
+    }
+    
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }      
+    
+    public void decode(FacesContext context) {
+        //each cycle can have new component
+        UIData uiData = findUIData();
+        setUIData(uiData);
+        uiData.getAttributes().put(DataPaginator.class.getName(), getClientId(context));
+        super.decode(context);
     }
 }

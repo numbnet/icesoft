@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Version: MPL 1.1
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
   ~ "The contents of this file are subject to the Mozilla Public License
   ~ Version 1.1 (the "License"); you may not use this file except in
@@ -19,6 +19,16 @@
   ~
   ~ Contributor(s): _____________________.
   ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
   -->
 
 <!DOCTYPE faces-config PUBLIC
@@ -48,6 +58,7 @@
 <!ENTITY ice-HtmlOutputText-renderer SYSTEM "ice/renderers/HtmlOutputText-renderer.xml">
 <!ENTITY ice-HtmlPanelGrid-renderer SYSTEM "ice/renderers/HtmlPanelGrid-renderer.xml">
 <!ENTITY ice-HtmlPanelGroup-renderer SYSTEM "ice/renderers/HtmlPanelGroup-renderer.xml">
+<!ENTITY ice-JSEventListener-renderer SYSTEM "ice/renderers/JSEventListener-renderer.xml">
 <!ENTITY ice-HtmlRadio-renderer SYSTEM "ice/renderers/HtmlRadio-renderer.xml">
 <!ENTITY ice-HtmlSelectBooleanCheckbox-renderer SYSTEM "ice/renderers/HtmlSelectBooleanCheckbox-renderer.xml">
 <!ENTITY ice-HtmlSelectManyCheckbox-renderer SYSTEM "ice/renderers/HtmlSelectManyCheckbox-renderer.xml">
@@ -123,6 +134,7 @@
 <!ENTITY ice-HtmlOutputText-component SYSTEM "ice/components/HtmlOutputText-component.xml">
 <!ENTITY ice-HtmlPanelGrid-component SYSTEM "ice/components/HtmlPanelGrid-component.xml">
 <!ENTITY ice-HtmlPanelGroup-component SYSTEM "ice/components/HtmlPanelGroup-component.xml">
+<!ENTITY ice-JSEventListener-component SYSTEM "ice/components/JSEventListener-component.xml">
 <!ENTITY ice-HtmlRadio-component SYSTEM "ice/components/HtmlRadio-component.xml">
 <!ENTITY ice-HtmlSelectBooleanCheckbox-component SYSTEM "ice/components/HtmlSelectBooleanCheckbox-component.xml">
 <!ENTITY ice-HtmlSelectManyCheckbox-component SYSTEM "ice/components/HtmlSelectManyCheckbox-component.xml">
@@ -205,6 +217,7 @@
     &ice-HtmlOutputText-component;
     &ice-HtmlPanelGrid-component;
     &ice-HtmlPanelGroup-component;
+    &ice-JSEventListener-component;
     &ice-HtmlRadio-component;
     &ice-HtmlSelectBooleanCheckbox-component;
     &ice-HtmlSelectManyCheckbox-component;
@@ -276,6 +289,7 @@
             &ice-HtmlOutputText-renderer;
             &ice-HtmlPanelGrid-renderer;
             &ice-HtmlPanelGroup-renderer;
+            &ice-JSEventListener-renderer;
             &ice-HtmlRadio-renderer;
             &ice-HtmlSelectBooleanCheckbox-renderer;
             &ice-HtmlSelectManyCheckbox-renderer;

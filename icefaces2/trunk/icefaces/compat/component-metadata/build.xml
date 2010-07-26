@@ -67,12 +67,19 @@
         <filter token="taglib-prefix" value="${project.taglib.prefix}" />
         <filter token="taglib-uri" value="${project.taglib.uri}" />
         <mkdir dir="${maven.build.output}" />
+        <copy file="src/main/java/com/icesoft/metadata/generators/TLDGenerator.java"
+              todir="${project.build.directory}" overwrite="true" preservelastmodified="true"/>
+        <replace file="src/main/java/com/icesoft/metadata/generators/TLDGenerator.java">
+            <replacefilter token="@tlib-version@" value="${project.version}"/>
+        </replace>
         <javac destdir="${maven.build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false">
             <src>
                 <pathelement location="src/main/java" />
             </src>
             <classpath refid="build.classpath" />
         </javac>
+        <move file="${project.build.directory}/TLDGenerator.java"
+              todir="src/main/java/com/icesoft/metadata/generators" overwrite="true" preservelastmodified="true"/>
         <copy todir="${maven.build.output}" filtering="on">
             <fileset dir="src/main/resources" />
         </copy>        

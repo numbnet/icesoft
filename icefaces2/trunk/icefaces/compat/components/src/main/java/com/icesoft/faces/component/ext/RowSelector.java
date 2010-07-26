@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext;
@@ -28,6 +38,7 @@ import com.icesoft.faces.component.ext.renderkit.TableRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -40,6 +51,7 @@ import javax.faces.FacesException;
 import javax.faces.application.NavigationHandler;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -66,14 +78,17 @@ public class RowSelector extends UIPanel {
     private Integer dblClickDelay;
     private Boolean preStyleOnSelection;
     private String renderedOnUserRole = null;
-    
     transient private List selectedRowsList = new ArrayList();
-    
-
+    private Boolean keyboardNavigationEnabled;     
+    private Boolean singleRowAutoSelect;  
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
     public static final int DEFAULT_DBLCLICK_DELAY = 200;
+    
+    //to deselect multiple rows with paginator we need to keep track of whole
+    //selection.
+    private List currentSelection = new ArrayList();
 
     public RowSelector(){
        JavascriptContext
@@ -102,8 +117,23 @@ public class RowSelector extends UIPanel {
         } else {
             this.value = value;
         }
+        //the value can be changed by decode as well as application code, so this
+        //is the single point to keep selection state in synch
+        try {
+            updateCurrentSelection(value);
+          //this catch satisfy JUNIT test, where its not a JSF environment
+        } catch (Exception e){e.printStackTrace();}
     }
-
+    
+    private void updateCurrentSelection(Boolean value) {
+        HtmlDataTable dataTable = getParentDataTable(this);
+        int rowindex = dataTable.getRowIndex();
+        if (value.booleanValue()) {
+            currentSelection.add(new Integer(rowindex));
+        } else {
+            currentSelection.remove(new Integer(rowindex));
+        }
+    }
     public Integer  getClickedRow() {
         ValueBinding vb = getValueBinding("clickedRow");
         if (vb != null) {
@@ -323,11 +353,10 @@ public class RowSelector extends UIPanel {
         String clickCountParameter = TableRenderer.getClickCountParameterName(dataTableId);
         String clickedRowIndex = (String) requestMap.get(clickedRowParameter);
         String clickCount = (String) requestMap.get(clickCountParameter);
-        
         ClickActionEvent clickActionEvent = null;
         RowSelector rowSelector = (RowSelector) this;
         boolean skipSelection = false;
-        
+
         if (clickedRowIndex != null && clickCount != null) {
             if (clickedRowIndex.trim().length() != 0 && clickCount.trim().length() != 0) {
                 int rowIndex = dataTable.getRowIndex();
@@ -397,6 +426,30 @@ public class RowSelector extends UIPanel {
                 if (isEnhancedMultiple()) {
                     if ((!isCtrlKey && !isShiftKey) || isShiftKey ) {
                         b = true ; //always select
+                        //fix for ICE-5571)
+                        if (!isCtrlKey && !isShiftKey) {
+                            //before selecting any row, first deselect all rows across the page if any
+                            deselectPreviousSelection(dataTable, rowIndex);
+                        } else if (isShiftKey) {
+                              if(!isCtrlKey) {
+                                  deselectPreviousSelection(dataTable, rowIndex);  
+                              }
+                              int oldIndex = oldRow.intValue();
+                              int currentIndex = rowIndex;
+                              if (oldIndex > rowIndex ) {//backward selection
+                                  for  (;oldIndex >=  currentIndex; currentIndex++) {
+                                      dataTable.setRowIndex(currentIndex);
+                                      setValue(Boolean.TRUE);
+                                  }  
+                              } else if (oldIndex  < rowIndex) {//forward selection
+                                  for  (;oldIndex < currentIndex ; oldIndex++) {
+                                      dataTable.setRowIndex(oldIndex);
+                                      setValue(Boolean.TRUE);
+                                  }                                  
+                              }
+                              dataTable.setRowIndex(rowIndex);
+                        }
+                        
                         _queueEvent(rowSelector, rowIndex, b, clickActionEvent);
                         return;
                     }
@@ -417,41 +470,23 @@ public class RowSelector extends UIPanel {
                         }
                     }
                 }
-            } else {
-                if (isEnhancedMultiple()) {
-                    if (!isCtrlKey && !isShiftKey) {
-                        rowSelector.setValue(Boolean.FALSE);
-                        return;
-                    }
-                    if (isShiftKey) {
-                      if (oldRow.intValue() < row) {
-                            if ((rowIndex >= oldRow.intValue() && rowIndex <= row )){
-                                rowSelector.setValue(Boolean.TRUE);
-                                selectedRowsList.add(new Integer(rowIndex));
-                            } else {
-                                if (!isCtrlKey)
-                                    rowSelector.setValue(Boolean.FALSE);
-                            }
-
-                      } else if (oldRow.intValue() >= row){
-                            if (rowIndex <= oldRow.intValue() && rowIndex >= row ) {
-                                rowSelector.setValue(Boolean.TRUE);
-                                selectedRowsList.add(new Integer(rowIndex));                                
-                            } else {
-                                if (!isCtrlKey)
-                                    rowSelector.setValue(Boolean.FALSE);                               
-                            }
-                      }
-                      return;
-                    }                    
-                }
-            }
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-     private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
+    private void deselectPreviousSelection(UIData uiData, int rowindex) {
+        Integer[] selection = new Integer[currentSelection.size()];
+        currentSelection.toArray(selection);
+        for (int i=0; i<selection.length; i++) {
+            uiData.setRowIndex((selection[i]).intValue());
+            setValue(Boolean.FALSE);
+        }
+        uiData.setRowIndex(rowindex);
+    }
+    
+    private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
         UIComponent parentComp = uiComponenent.getParent();
         if (parentComp == null) {
             throw new RuntimeException(
@@ -538,7 +573,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[19];
+        Object[] state = new Object[22];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -558,6 +593,9 @@ public class RowSelector extends UIPanel {
         state[16] = dblClickDelay;
         state[17] = preStyleOnSelection;
         state[18] = renderedOnUserRole;
+        state[19] = keyboardNavigationEnabled;    
+        state[20] = singleRowAutoSelect;    
+        state[21] = currentSelection;
         return state;
     }
 
@@ -585,7 +623,10 @@ public class RowSelector extends UIPanel {
             restoreAttachedState(context, state[15]);
         dblClickDelay = (Integer) state[16];
         preStyleOnSelection = (Boolean) state[17];
-        renderedOnUserRole = (String) state[18]; 
+        renderedOnUserRole = (String) state[18];
+        keyboardNavigationEnabled = (Boolean) state[19];      
+        singleRowAutoSelect = (Boolean) state[20];
+        currentSelection = (List)state[21]; 
     }
     
     private String styleClass;
@@ -680,4 +721,33 @@ public class RowSelector extends UIPanel {
         }
         return super.isRendered();
     } 
+    
+    
+    public boolean isKeyboardNavigationEnabled() {
+        if (keyboardNavigationEnabled != null) {
+            return keyboardNavigationEnabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("keyboardNavigationEnabled");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
+        this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }  
+    
+    public boolean isSingleRowAutoSelect() {
+        if (singleRowAutoSelect != null) {
+            return singleRowAutoSelect.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("singleRowAutoSelect");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setSingleRowAutoSelect(boolean singleRowAutoSelect) {
+        this.singleRowAutoSelect = new Boolean(singleRowAutoSelect);
+    }     
 }

@@ -145,11 +145,15 @@ Ice.PanelCollapsible = {
     }
 }
 
-Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames) {
+var singleRowSelectionExecuter;
+var localEvent;
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleClassNames, row) {
     var ctrlKyFld = document.getElementsByName(hdnFld + 'ctrKy');
     var sftKyFld = document.getElementsByName(hdnFld + 'sftKy');
     if (!event)
         var event = window.event;
+    if (!event)
+        var event = localEvent;                
 
     if (ctrlKyFld.length > 0) {
         ctrlKyFld = ctrlKyFld[0];
@@ -188,7 +192,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 if (tname == 'input' ||
                     tname == 'select' ||
                     tname == 'option' ||
-                    tname == 'a' ||
+                    (tname == 'a' && 'iceHdnLnk' != targ.className) ||
                     tname == 'textarea')
                 {
                     return;
@@ -201,12 +205,27 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 }
             }
         }
-        var evt = Event.extend(event);
-        var row = evt.element();
-        if (row.tagName.toLowerCase() != "tr") {
-            row = evt.element().up("tr[onclick*='Ice.tableRowClicked']");
+        //mouse clicked on the row, here we would like to set the focus id to the 
+        //hidden focus link on this tr.
+        
+        //first look if its already installed
+        var focusElement = row["iceHdnLnk"];
+        //not installed yet
+        if (!focusElement) {
+            //look in the dom
+            var anchors = row.getElementsByTagName("a");
+            if (anchors.length > 0 && 
+                anchors[0].className == 'iceHdnLnk') {
+               //found 
+               focusElement = anchors[0];
+               //install on the row, so next time dom lookup will not be required.
+               row["iceHdnLnk"] = focusElement;
+            }
         }
-        if (row) {
+        //if focusElement has found, its mean keyboard navigation is enabled set the focus id.
+        if (focusElement) {
+            setFocus(focusElement.id);
+        }
             // If preStyleOnSelection=false, then toggleClassNames=='', so we
             // should leave the row styling alone
             if (toggleClassNames) {
@@ -214,7 +233,6 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                 row.onmouseover = Prototype.emptyFunction;
                 row.onmouseout = Prototype.emptyFunction;
             }
-        }
         var form = document.getElementById(formId);
         var fld = form[hdnFld];
         fld.value = rowid;
@@ -225,7 +243,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         fld.id = ""; //preserve ICE-2874
         fld.value=""; //ICE-5492
     } catch(e) {
-        console.log("Error in rowSelector[" + e + "]");
+        logger.info("Error in rowSelector[" + e + "]");
     }
 }
 
@@ -274,7 +292,7 @@ Ice.clickEvent = Class.create({
         var countField = document.forms[this.formId][this.hdnClkCount];
         countField.value = numClicks;
         if (this.toggleOnClick) {
-            Ice.tableRowClicked(this.event, this.useEvent, this.rowid, this.formId, this.hdnFld, this.toggleClassNames);
+            Ice.tableRowClicked(this.event, this.useEvent, this.rowid, this.formId, this.hdnFld, this.toggleClassNames, this.elem);
         } else {
             var nothingEvent = new Object();
             iceSubmitPartial(null, rowField, nothingEvent);
@@ -381,6 +399,29 @@ Ice.util = {
             elementHeight < containerElementTop) {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.top = "-" + newElementX + "px";
+            var iframe = $(element).up().next("iframe");
+            if (iframe) {
+                iframe.clonePosition(element);
+            }
+        }
+        var inputWidth = $(containerElement).select("input:first-child")[0].getWidth();
+        var elementWidth = $(element).getWidth();
+        var elementCumulativeLeft = Element.cumulativeOffset($(element)).left;
+        var documentY = document.viewport.getScrollOffsets().left + document.viewport.getWidth();
+        var containerElementLeft = Element.cumulativeOffset($(containerElement)).left ;
+        diff = elementCumulativeLeft - containerElementLeft ;
+        var elementY = elementCumulativeLeft + $(element).getWidth();
+        var newElementY = elementWidth + diff;
+      
+        if (documentY < elementY && 
+              newElementY < documentY && 
+               elementWidth < containerElementLeft) {
+            $(element).parentNode.style.position = "absolute";
+            $(element).parentNode.style.left =  "-" + (elementWidth - inputWidth) + "px";
+            iframe = $(element).up().next("iframe");
+            if (iframe) {
+                iframe.clonePosition(element);
+            }
         }
     },
     radioCheckboxEnter: function(form, component, evt) {
@@ -828,10 +869,36 @@ Ice.DnD.StyleReader = {
 
 Ice.modal = Class.create();
 Ice.modal = {
-    running:false,
+    running:{},
+    isRunning:function(target) {
+        return (this.running[target]!= null);
+    },
+    
+    //caller Ice.modal.start()
+    setRunning:function(target) {
+        //register modal popup
+        this.running[target] = target;
+        this.disableTabindex(target);        
+    },
+    
+    //caller Ice.modal.stop()
+    stopRunning:function(target) {
+        //de-register modal popup
+        delete this.running[target];
+        //if there are more than one modal popups then this will enable the focus on
+        //last opened modal popup and if there is no modal popup left then it will
+        //enable the focus on the document.  
+        this.restoreTabindex(this.getRunning());
+    },
+    
+    //returns last modal popup on the stack, null if there isn't any    
+    getRunning:function() {
+        var modal = null;
+        for (m in this.running)
+           modal = m;
+        return modal;
+    },
     target:null,
-    ids: [],
-    tabindexValues: [],
     zIndexCount: 25000,
     start:function(target, iframeUrl,trigger, manualPosition) {
         var modal = document.getElementById(target);
@@ -889,9 +956,12 @@ Ice.modal = {
                     }
                     modalWidth = parseInt(modalWidth) / 2;
                     modalHeight = parseInt(modalHeight) / 2;
-                    modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
-                    modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
+                    if (!manualPosition && !Ice.autoCentre.ids.include(target)) {
+                        modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
+                        modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
+                    }
                     frame.style.display = frameDisp;
+                    $(frame.nextSibling).clonePosition(frame);
                 }
             };
             resize();
@@ -903,11 +973,8 @@ Ice.modal = {
 
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 2;
         Ice.modal.target = modal;
-        Ice.modal.ids.push(target);
-        if (!Ice.modal.running) {
-            Ice.modal.disableTabindex();
-        }
-        Ice.modal.running = true;
+        //register modal popup
+        Ice.modal.setRunning(target);
         modal.style.visibility = 'visible';
         if (trigger) {
             Ice.modal.trigger = trigger;
@@ -916,64 +983,67 @@ Ice.modal = {
         }
     },
     stop:function(target) {
-        if (Ice.modal.ids.last() == target) {
+        if (Ice.modal.getRunning() == target) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 iframe.parentNode.removeChild(iframe.nextSibling);            	
                 iframe.parentNode.removeChild(iframe);
                 logger.debug('removed modal iframe for : ' + target);
             }
-            Ice.modal.ids.pop();
-            Ice.modal.zIndexCount -= 3;            
-            Ice.modal.running = false;
+            //de-register modal popup
+            Ice.modal.stopRunning(target);
+            Ice.modal.zIndexCount -= 3;
             if (Ice.modal.trigger) {
                 Ice.Focus.setFocus(Ice.modal.trigger);
                 Ice.modal.trigger = '';
             }
-            Ice.modal.restoreTabindex();
         }
     },
-    disableTabindex: function() {
+    enableDisableTabindex: function(target, enable) {
+        var targetElement = null;
+        if (target) {
+              targetElement = $(target);
+        } else {
+              targetElement = document;
+        }        
         var focusables = {};
-        focusables.a = document.getElementsByTagName('a');
-        focusables.area = document.getElementsByTagName('area');
-        focusables.button = document.getElementsByTagName('button');
-        focusables.input = document.getElementsByTagName('input');
-        focusables.object = document.getElementsByTagName('object');
-        focusables.select = document.getElementsByTagName('select');
-        focusables.textarea = document.getElementsByTagName('textarea');
+        focusables.a = targetElement.getElementsByTagName('a');
+        focusables.area = targetElement.getElementsByTagName('area');
+        focusables.button = targetElement.getElementsByTagName('button');
+        focusables.input = targetElement.getElementsByTagName('input');
+        focusables.object = targetElement.getElementsByTagName('object');
+        focusables.select = targetElement.getElementsByTagName('select');
+        focusables.textarea = targetElement.getElementsByTagName('textarea');
 
-        var tabindexValues = [];
         for (listName in focusables) {
             var list = focusables[listName]
             for (var j = 0; j < list.length; j++) {
                 var ele = list[j];
-                if (!Ice.modal.containedInId(ele,Ice.modal.ids.last())) {
-                    var obj = {};
-                    obj.element = ele;
-                    obj.tabIndex = ele.tabIndex ? ele.tabIndex : '';
-                    ele.tabIndex = '-1';
-                    tabindexValues.push(obj);
+                if (enable) {//restore
+                   //restore index only if it was saved
+                   if (ele['oldtabIndex']!= null) {
+                      ele.tabIndex = ele['oldtabIndex'];
+                   }
+                } else {//disable
+                  //save index only if it was not saved already
+                  if (!ele['oldtabIndex']) {
+                        ele['oldtabIndex'] = ele.tabIndex ? ele.tabIndex:'';
+                  }
+                  ele.tabIndex = '-1';     
                 }
             }
-        }
-        Ice.modal.tabindexValues = tabindexValues;
+        }    
     },
-    restoreTabindex: function() {
-        Ice.modal.tabindexValues.each(function(obj) {
-            obj.element.tabIndex = obj.tabIndex;
-        });
-        Ice.modal.tabindexValues = [];
-    },
-    containedInId:function(node, id) {
-        if (node.id == id) {
-            return true;
-        }
-        var parent = node.parentNode;
-        if (parent) {
-            return Ice.modal.containedInId(parent, id);
-        }
-        return false;
+    disableTabindex: function(target, restore) {     
+        //restore all is necessary to support more than one modal
+        this.restoreTabindex();   
+        //disable all
+        this.enableDisableTabindex(null, false); 
+        //restore current modal, so it elements can have focus
+        this.restoreTabindex(target);      
+    },    
+    restoreTabindex: function(target) {  
+        this.enableDisableTabindex(target, true);
     }
 };
 
@@ -988,13 +1058,13 @@ Ice.autoCentre = {
         var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
         var div = document.getElementById(id);
         if (div) {
+            Element.setStyle(div, {position:'absolute'});
             var x = Math.round((Element.getWidth(document.body) - Element.getWidth(div)) / 2 + scrollX);
             if (x < 0) x = 0;
             var y = Math.round(((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - Element.getHeight(div)) / 2 + scrollY);
             if (y < 0) y = 0;
             x = x + "px";
             y = y + "px";
-            Element.setStyle(div, {position:'absolute'});
             Element.setStyle(div, {left: x});
             Element.setStyle(div, {top:y});
         }
@@ -1679,6 +1749,11 @@ Droppables.isAffected = function(point, element, drop) {
 
 Droppables.ORIGINAL_add = Droppables.add;
 Droppables.add = function(ele, options) {
+    //this should not be performed for Sortable
+    if (options && !options.sort)  {
+        if (ele['droppableInstalled']) return;
+        ele['droppableInstalled']=true;
+    }
     var monitors = Ice.StateMon.monitors;
     for (i = 0; i < monitors.length; i++) {
         monitor = monitors[i];
@@ -2067,12 +2142,34 @@ Autocompleter.Base.prototype = {
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
                               function(element, update) {
+                                  // Based on code from MSDN
+                                  var ieEngine = null;
+                                  if (window.navigator.appName == "Microsoft Internet Explorer") {
+                                      if (document.documentMode) {
+                                          ieEngine = document.documentMode;
+                                      } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                                          ieEngine = 7;
+                                      } else {
+                                          ieEngine = 5;
+                                      }
+                                  }
                                 try {
                                   if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
                                       update.style.position = 'absolute';
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
                                       update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
                                           offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+                                      if (ieEngine == 7 || ieEngine == 8) {
+                                          var savedPos = element.style.position;
+                                          element.style.position = "relative";
+                                          update.style.left = element.offsetLeft + "px";
+                                          if (ieEngine == 7) {
+                                              update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                          } else if (ieEngine == 8) {
+                                              update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
+                                          }
+                                          element.style.position = savedPos;
+                                      }
                                   }
                                   Effect.Appear(update, {duration:0.15});
                                 } catch(e){logger.info(e);}  
@@ -3257,6 +3354,8 @@ var visibleTooltipList = new Array();
 
 ToolTipPanelPopup = Class.create({
   initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
+      //tooltip is not rendered 
+      if (!$(tooltipCompId)) return;
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true");
@@ -3269,6 +3368,8 @@ ToolTipPanelPopup = Class.create({
     this.ctxValue = ctxValue
     this.iFrameUrl = iFrameUrl;
     this.moveWithMouse = moveWithMouse;
+      this.displayOn = displayOn;
+      this.event = event;
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -3324,6 +3425,10 @@ ToolTipPanelPopup = Class.create({
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
     this.addToVisibleList();    
+      //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler    
+      if (this.event && this.displayOn == 'altclick') {
+          Event.extend(this.event).stop();
+      }
   },
 
   hidePopupOnMouseOut: function(event) {
@@ -3391,7 +3496,7 @@ ToolTipPanelPopup = Class.create({
   },
 
   updateCordinate: function(event) {
-    if (Event.element(event) != this.src && !event.element().descendantOf(this.src)) return;
+      if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
       if (!this.isTooltipVisible() || !this.moveWithMouse) return;
@@ -4681,6 +4786,8 @@ Ice.Menu = Class.create();
 Ice.Menu = {
     menuContext:null,
     currentMenu:null,
+    currentHover:null,    
+    lastClickedMenu:null,   
     openMenus:new Array(0),
     printOpenMenus:function() {
         var openMenuString = '';
@@ -4715,6 +4822,7 @@ Ice.Menu = {
         Ice.Menu.openMenus = new Array();
         Ice.Menu.currentMenu = null;
         Ice.Menu.menuContext = null;
+        Ice.Menu.currentHover = null;        
     },
     getPosition: function(element, positionProperty) {
         var position = 0;
@@ -4725,43 +4833,88 @@ Ice.Menu = {
         return position;
     },
     show: function(supermenu, submenu, submenuDiv) {
-        supermenu = $(supermenu);
-        submenu = $(submenu);
-        submenuDiv = $(submenuDiv);
         if (submenu) {
             var menu = $(submenu);
             //menu is already visible, don't do anything
             if (menu && menu.style.display == '') return;
             Ice.Menu.showMenuWithId(submenu);
+            var supmVPO = supermenu.viewportOffset(),
+                submVPO = submenu.viewportOffset(),
+                viewport = document.viewport,
+                supmOW = supermenu.offsetWidth,
+                submOW = submenu.offsetWidth,  
+                submOH = submenu.offsetHeight,  
+                supmOH = supermenu.offsetHeight;
+                submenuDiv = $(submenuDiv);
             if (submenuDiv) {
+                var subdOH = submenuDiv.offsetHeight;
                 // ICE-3196, ICE-3620
-                if (supermenu.viewportOffset().left + supermenu.offsetWidth + submenu.offsetWidth < document.viewport.getWidth()) {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supermenu.offsetWidth});
+                if (supmVPO.left + supmOW + submOW < viewport.getWidth()) {
+                    if(Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW});
+                    
                 } else {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submenu.offsetWidth});
+                    if(Prototype.Browser.IE)
+                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW}, supmVPO);
+                    else 
+                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
+                    
                 }
-                if (submenuDiv.viewportOffset().top + submenu.offsetHeight < document.viewport.getHeight()) {
-                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                if (submenuDiv.viewportOffset().top + submOH < viewport.getHeight()) {
+                    if(Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
+                    else 
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});          
                 } else {
-                    submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                        offsetTop:- submenu.offsetHeight + submenuDiv.offsetHeight});
+                    if(Prototype.Browser.IE)                
+                      Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                         offsetTop:- submOH + subdOH});   
+                    else
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                            offsetTop:- submOH + subdOH});
                 }
             } else {
                 // ICE-3196, ICE-3620
-                if (supermenu.viewportOffset().left + submenu.offsetWidth < document.viewport.getWidth()) {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+                if (supmVPO.left + submOW < viewport.getWidth()) {
+                    if(Prototype.Browser.IE)   
+                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false}, supmVPO);
+                    else              
+                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+                                    
                 } else {
-                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
-                        offsetLeft:document.viewport.getWidth() - supermenu.viewportOffset().left - submenu.offsetWidth});
+                    if(Prototype.Browser.IE)   
+                         Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false,
+                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO); 
+	                else
+	                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
+                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
+                
                 }
-                if (supermenu.viewportOffset().top + supermenu.offsetHeight + submenu.offsetHeight < document.viewport.getHeight()) {
-                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supermenu.offsetHeight});
+                if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
+                    if (Prototype.Browser.IE) {
+                        Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH}, supmVPO);
+                        if (parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE") + 5)) < 8 && supermenu.cumulativeScrollOffset().top > 0) {
+                            submenu.style.top = submenu.offsetTop - supermenu.viewportOffset().top + supermenu.positionedOffset().top;
+                        }
+                    } else {
+                        submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
+                }
                 } else {
-                    submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.offsetHeight});
+                    if(Prototype.Browser.IE)   
+                       Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH}, supmVPO);
+                    else              
+                       submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
+                      
                 }
             }
-            if (submenu.viewportOffset().top < 0) { // ICE-3658
-                submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submenu.viewportOffset().top});
+            submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
+            if (submVPO.top < 0) { // ICE-3658
+//                if(Prototype.Browser.IE)
+//                    Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
+//                else
+                    submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
         }
@@ -4790,7 +4943,12 @@ Ice.Menu = {
             iframe.setStyle({position: "absolute", opacity: 0}).hide();
             menuDiv.insert({before: iframe});
         }
-        iframe.clonePosition(menuDiv).show();
+        if (Prototype.Browser.IE) {
+            Ice.clonePositionIE(iframe, menuDiv);
+        } else {
+            Element.clonePosition(iframe, menuDiv);
+        }
+        iframe.show();
     },
     contextMenuPopup: function(event, popupMenu, targComp) {
         var dynamic = $(popupMenu + "_dynamic");
@@ -4983,6 +5141,75 @@ Ice.Menu = {
         return false;
     }
 }
+
+//modified version of Prototype's Element.clonePosition for IE
+Ice.clonePositionIE = function(element, source, options, sourceVOS) {
+      logger.info('Using clonePosition() optimized for IE');
+        var options = Object.extend({
+            setLeft:    true,
+            setTop:     true,
+            setWidth:   true,
+            setHeight:  true,
+            offsetTop:  0,
+            offsetLeft: 0
+        }, arguments[2] || { });
+        element = $(element);
+    // find page position of source
+        var p = null;
+        if (sourceVOS){
+            p = sourceVOS;
+        } else {
+            p = source.viewportOffset();
+        }
+        
+
+
+    // find coordinate system to use
+        var delta = [0, 0];
+        var parent = null;
+    // delta [0,0] will do fine with position: fixed elements, 
+        // position:absolute needs offsetParent deltas
+        if (Element.getStyle(element, 'position') == 'absolute') {
+            parent = element.getOffsetParent();
+            
+            var top = Element.getStyle(parent, 'top');
+            var left = Element.getStyle(parent, 'left');
+            var bdyScrollTop = document.documentElement.scrollTop;
+            var bdyScrollLeft = document.documentElement.scrollLeft;            
+            var repositioned = false;
+            
+            _viewportOffset =  parent['_viewportOffset'];
+            
+            if (!_viewportOffset) {
+                parent['_top'] = null;
+                parent['_left'] = null;
+                parent['_bodyScrollTop'] = bdyScrollTop;
+                parent['_bodyScrollLeft'] = bdyScrollLeft;                
+                repositioned = true;
+            } else {
+                repositioned = !((parent['_top'] == top && parent['_left'] == left) && 
+                (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft)); 
+            }
+           
+            parent['_top'] = top;
+            parent['_left'] = left;
+            parent['_bodyScrollTop'] = bdyScrollTop;
+            parent['_bodyScrollLeft'] = bdyScrollLeft;   
+            if(repositioned) {
+                delta = parent.viewportOffset();
+                parent['_viewportOffset'] = delta;                 
+            } else {
+               delta = parent['_viewportOffset'];
+            }
+        }
+
+    // set position
+        if (options.setLeft)   element.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
+        if (options.setTop)    element.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
+        if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
+        if (options.setHeight) element.style.height = source.offsetHeight + 'px';
+        return element;
+    };
 
 ice.onAfterUpdate(function() {
     if (Ice.StateMon) {
@@ -5187,6 +5414,7 @@ Ice.simulateFocus = function(ele, anc) {
     anc.style.borderWidth='0px';
     anc.style.outlineWidth='0px'; 
     anc.style.margin='0px';  
+    if (ele == null) return; 
     ele['_borderStyle'] = ele.style.borderStyle;     
     ele.style.borderStyle='dotted';
     ele['_borderWidth'] = ele.style.borderWidth;   
@@ -5199,6 +5427,7 @@ Ice.simulateBlur = function(ele, anc) {
     if(!document.all) {    
         anc.style.visibility='visible';
     } 
+    if (ele == null) return; 
     ele.style.borderStyle = ele['_borderStyle'];
     ele.style.borderWidth = ele['_borderWidth'];  
     ele.style.borderColor = ele['_borderColor'];   
@@ -5225,5 +5454,179 @@ Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
         }
     }
     new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
+}
+
+Ice.tblRowFocus = function(anc, singleSelection) {
+    var parent = anc.parentNode.parentNode;
+    Ice.simulateFocus(null, anc);
+    setFocus(anc.id);
+    parent.onmouseover.apply(parent, arguments);
+    if (anc["keydownRegistered"] == null) {
+        Element.observe(anc, "keydown", function(event) {
+            event = Event.extend(event);
+            var keyCode = event.keyCode;
+            switch(keyCode) {
+                case 0://Firefox
+                case 32://IE && Safari
+                    parent.onclick.apply(parent, arguments);
+                    Event.stop(event);
+                    return false;
+                case 38://up
+                    if (Element.previous(parent)) {
+                        var tr = Element.previous(parent);
+                        tr.firstChild.firstChild.focus();
+                        if (singleSelection) {
+                            localEvent = Object.clone(event); 
+                            window.clearTimeout (singleRowSelectionExecuter);
+                            singleRowSelectionExecuter = window.setTimeout(function() {
+                                try {
+                                    arguments[0] = localEvent;
+                                    tr.onclick.apply(tr, arguments);
+                                 } catch(ee) {}
+                            },400);
+                        }                        
+                    }
+
+                    Event.stop(event);                    
+                    return false;
+                case 40://down
+                    if (Element.next(parent)) {
+                        var tr = Element.next(parent);
+                        tr.firstChild.firstChild.focus();
+                        if (singleSelection) {
+                            localEvent = Object.clone(event); 
+                            window.clearTimeout (singleRowSelectionExecuter);
+                            singleRowSelectionExecuter = window.setTimeout(function() {
+                                try {
+                                    arguments[0] = localEvent;                                
+                                    tr.onclick.apply(tr, arguments);
+                                 } catch(ee) {}
+                            },400);
+                        }
+                    }
+                    Event.stop(event);                    
+                    return false;
+                case 33: //page up 
+                case 34: //page down
+                case 35: //end
+                case 36: //home 
+                   var table = Element.up(parent, ".iceDatTbl");
+                   var paginator = null;
+                   if (table["paginator"] == null) {
+                       if (Prototype.Browser.IE) {
+                            var paginators = $(document.body).select(".iceDatPgr");
+                            for(i=0; i < paginators.length; i++) {
+                                if (paginators[i].name == table.id){
+                                    paginator = paginators[i];
+                                    table["paginator"] = paginator;
+                                    break;
+                                }
+                            }
+                        } else {
+                            var paginators = document.getElementsByName(table.id);
+                            if (paginators.length > 0) {
+                                paginator = paginators[0];
+                            }
+                        }
+                   }
+                   if (paginator) {
+                        Ice.DatPagKybrd(paginator.id, event);
+                   }
+                   return false;                    
+            }//select
+        });
+        anc["keydownRegistered"] = true;
+    }
+    
+};
+
+Ice.tblRowBlur = function(anc) {
+    var parent = anc.parentNode.parentNode;
+    Ice.simulateBlur(null, anc);
+    parent.onmouseout.apply(parent, arguments);  
+    setFocus('');
+}
+
+Ice.tblMsOvr = function(tr) {
+  //  var focusHoveredTr = tr.up("table")["focusHoveredTr"];
+   // if (focusHoveredTr && tr.id != focusHoveredTr.id) {
+    //    focusHoveredTr.onmouseout.apply(focusHoveredTr, arguments);
+   // }
+    
+} 
+
+
+Ice.DatPagKybrd = function(pId, event){
+     event = Event.extend(event);
+     var keyCode = event.keyCode;
+     var button = null;
+     switch(keyCode) {  
+        case 33: //page up
+            logger.info('PageUp');
+            button = "previous";
+        break;
+        case 34: //page down
+             button = "next";
+                    logger.info('pageDown');
+        break;
+        case 35: //end
+             button = "last";
+                   logger.info('end');
+        break;
+        case 36: //home 
+                     button = "first";
+                    logger.info('Home');
+        break;
+     }
+     
+     if (button == null) return;
+     var form = formOf(document.getElementById(pId));
+     var query = new Ice.Parameter.Query();
+     query.add(pId, button);
+     if (event.target.id.contains(pId)) {
+        query.add(pId+'kbd', 'true');    
+     } 
+     iceSubmitPartial(form, null, event, query);
+     Event.stop(event); 
+     
+}
+
+Prototype.Browser.Safari4 = navigator.userAgent.indexOf('4.0.4 Safari') > -1;
+Prototype.Browser.Chrome = navigator.userAgent.indexOf('Chrome') > -1;
+
+String.prototype.trim = function () {
+    return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+Ice.registerEventListener = function(ele, mask, handler) {
+    if (mask == null || mask == '') return;
+    ele = $(ele);
+    if (ele["listenerInstalled"]) return;
+    ele["listenerInstalled"] = true;
+    events = mask.split(",");
+    if (handler) {
+        try {
+          ele["jshandler"] = eval(handler.trim());
+        } catch (e) {logger.info(e);}
+    }
+          
+    for (i=0; i<events.length; i++) {
+        Event.observe(ele, events[i].trim(), function(event) {
+        event = Event.extend(event);
+        var proceed = true;
+        if (ele["jshandler"]) {
+            try {
+               proceed = ele["jshandler"](event);
+            } catch (e) { logger.info(e) }
+        }
+        if (!proceed) return;
+        try {
+           var form = formOf(ele);
+           var query = new Ice.Parameter.Query();
+           query.add(ele.id, 'submitted'); 
+           iceSubmitPartial(form, null, event, query); 
+        } catch (e) {logger.info(e);}                       
+        });
+    }
 }
 

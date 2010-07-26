@@ -1,3 +1,34 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
 /* Original Copyright
  * Copyright 2004 The Apache Software Foundation.
  * 
@@ -375,7 +406,7 @@ public class SelectInputDateRenderer
                         OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                     FormRenderer.addHiddenField(
                         facesContext,
-                        parentForm.getClientId(facesContext)+ ":j_idcl");
+                        parentForm.getClientId(facesContext)+ ":_idcl");
                     PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributesWithoutTabindex);
                     domContext.stepOver();
                     return ;
@@ -567,138 +598,138 @@ public class SelectInputDateRenderer
         }
 
       //System.out.println("SIDR.encodeEnd()  isTime? " + SelectInputDate.isTime(converter));
-      if (SelectInputDate.isTime(converter)) {
-          Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
-          Element tr = domContext.createElement(HTML.TR_ELEM);
-          Element td = domContext.createElement(HTML.TD_ELEM);
-          td.setAttribute(HTML.COLSPAN_ATTR, "7");
-          td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
-          Element hours = domContext.createElement(HTML.SELECT_ELEM);
-          hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HOUR);
-          hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HOUR);
-          hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-          hours.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
-          
-          // Convert from an hour to an index into the list of hours
-                  int hrs[] = selectInputDate.getHours(facesContext);
-  //System.out.println("SIDR.encodeEnd()  hrs: " + hrs[0] + ", " + hrs[hrs.length-1]);
-                  int hourIndex;
-                  int min;
-                  int amPm;                    
-  //System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
-                  if (!actuallyHaveTime &&
-                      selectInputDate.getHoursSubmittedValue() != null &&
-                      selectInputDate.getMinutesSubmittedValue() != null)
-                  {
-  //System.out.println("SIDR.encodeEnd()  Using submitted hours and minutes");
-                      hourIndex = selectInputDate.getHoursSubmittedValue().intValue();
-  //System.out.println("SIDR.encodeEnd()  hour: " + hourIndex);
-                      min = selectInputDate.getMinutesSubmittedValue().intValue();
-  //System.out.println("SIDR.encodeEnd()  min: " + min);
-                      String amPmStr = selectInputDate.getAmPmSubmittedValue(); 
-  //System.out.println("SIDR.encodeEnd()  amPmStr: " + amPmStr);
-              if (amPmStr != null) {
-                  amPm = amPmStr.equalsIgnoreCase("PM") ? 1 : 0;
-                      }
-                      else {
-                          amPm = (hourIndex >= 12) ? 1 : 0;
-                      }
-  //System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
-                      if (hrs[0] == 1) {
-                          hourIndex--;
-                          if (hourIndex < 0) {
-                              hourIndex = hrs.length - 1;
-                          }
-                      }
-  //System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
-                  }
-                  else {
-                      if (hrs.length > 12) {
-                          hourIndex = timeKeeper.get(Calendar.HOUR_OF_DAY);
-  //System.out.println("SIDR.encodeEnd()  hour 24: " + hourIndex);
-                      } else {
-                          hourIndex = timeKeeper.get(Calendar.HOUR);
-  //System.out.println("SIDR.encodeEnd()  hour 12: " + hourIndex);
-                      }
-                      if (hrs[0] == 1) {
-                          hourIndex--;
-                          if (hourIndex < 0) {
-                              hourIndex = hrs.length - 1;
-                          }
-                      }
-  //System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
+        if (SelectInputDate.isTime(converter)) {
+            Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
+            Element tr = domContext.createElement(HTML.TR_ELEM);
+            Element td = domContext.createElement(HTML.TD_ELEM);
+            td.setAttribute(HTML.COLSPAN_ATTR, "7");
+            td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
+            Element hours = domContext.createElement(HTML.SELECT_ELEM);
+            hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HOUR);
+            hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HOUR);
+            hours.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+            hours.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+            
+            // Convert from an hour to an index into the list of hours
+            int hrs[] = selectInputDate.getHours(facesContext);
+//System.out.println("SIDR.encodeEnd()  hrs: " + hrs[0] + ", " + hrs[hrs.length-1]);
+            int hourIndex;
+            int min;
+            int amPm;                    
+//System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
+            if (!actuallyHaveTime &&
+                selectInputDate.getHoursSubmittedValue() != null &&
+                selectInputDate.getMinutesSubmittedValue() != null)
+            {
+//System.out.println("SIDR.encodeEnd()  Using submitted hours and minutes");
+                hourIndex = selectInputDate.getHoursSubmittedValue().intValue();
+//System.out.println("SIDR.encodeEnd()  hour: " + hourIndex);
+                min = selectInputDate.getMinutesSubmittedValue().intValue();
+//System.out.println("SIDR.encodeEnd()  min: " + min);
+                String amPmStr = selectInputDate.getAmPmSubmittedValue(); 
+//System.out.println("SIDR.encodeEnd()  amPmStr: " + amPmStr);
+                if (amPmStr != null) {
+                    amPm = amPmStr.equalsIgnoreCase("PM") ? 1 : 0;
+                }
+                else {
+                    amPm = (hourIndex >= 12) ? 1 : 0;
+                }
+//System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
+                if (hrs[0] == 1) {
+                    hourIndex--;
+                    if (hourIndex < 0) {
+                        hourIndex = hrs.length - 1;
+                    }
+                }
+//System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
+            }
+            else {
+                if (hrs.length > 12) {
+                    hourIndex = timeKeeper.get(Calendar.HOUR_OF_DAY);
+//System.out.println("SIDR.encodeEnd()  hour 24: " + hourIndex);
+                } else {
+                    hourIndex = timeKeeper.get(Calendar.HOUR);
+//System.out.println("SIDR.encodeEnd()  hour 12: " + hourIndex);
+                }
+                if (hrs[0] == 1) {
+                    hourIndex--;
+                    if (hourIndex < 0) {
+                        hourIndex = hrs.length - 1;
+                    }
+                }
+//System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
 
-                      min = timeKeeper.get(Calendar.MINUTE);
-                      amPm = timeKeeper.get(Calendar.AM_PM) ;                    
-  //System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
-          }
-          for (int i = 0; i < hrs.length; i++ ) {
-              Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
-              hoursOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(hrs[i]));
-              Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
-              hoursOption.appendChild(hourText);
-              if (i == hourIndex) {
-                  hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
-              }
-              hours.appendChild(hoursOption);
-          }
-          Element minutes = domContext.createElement(HTML.SELECT_ELEM);
-          minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
-          minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
-          minutes.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-          minutes.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
-          for (int i = 0; i < 60; i++ ) {
-              Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
-              minutesOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
-              String digits = String.valueOf(i);
-              if (i < 10) {
-                  digits = "0" + digits;
-              }
-              Text minuteText = domContext.createTextNode(digits);
-              minutesOption.appendChild(minuteText);
-              if (i == min) {
-                  minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
-              }
-              minutes.appendChild(minutesOption);
-          }
-          
-          Text colon = domContext.createTextNode(":"); 
-          tfoot.appendChild(tr);
-          tr.appendChild(td);
-          td.appendChild(hours);
-          td.appendChild(colon);
-          td.appendChild(minutes);
-          
-          if (selectInputDate.isAmPm(facesContext)){
-              Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
-              amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
-              amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
-              amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
-              amPmElement.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
-              String[] symbolsAmPm = symbols.getAmPmStrings();
-              
-              Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
-              amPmElementOption.setAttribute(HTML.VALUE_ATTR, "AM");
-              Text amPmElementText = domContext.createTextNode(symbolsAmPm[0]);
-              amPmElementOption.appendChild(amPmElementText);
+                min = timeKeeper.get(Calendar.MINUTE);
+                amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+//System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
+            }
+            for (int i = 0; i < hrs.length; i++ ) {
+                Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
+                hoursOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(hrs[i]));
+                Text hourText = domContext.createTextNode(String.valueOf(hrs[i]));
+                hoursOption.appendChild(hourText);
+                if (i == hourIndex) {
+                    hoursOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                }
+                hours.appendChild(hoursOption);
+            }
+            Element minutes = domContext.createElement(HTML.SELECT_ELEM);
+            minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
+            minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
+            minutes.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+            minutes.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+            for (int i = 0; i < 60; i++ ) {
+                Element minutesOption = domContext.createElement(HTML.OPTION_ELEM);
+                minutesOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
+                String digits = String.valueOf(i);
+                if (i < 10) {
+                    digits = "0" + digits;
+                }
+                Text minuteText = domContext.createTextNode(digits);
+                minutesOption.appendChild(minuteText);
+                if (i == min) {
+                    minutesOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                }
+                minutes.appendChild(minutesOption);
+            }
+            
+            Text colon = domContext.createTextNode(":"); 
+            tfoot.appendChild(tr);
+            tr.appendChild(td);
+            td.appendChild(hours);
+            td.appendChild(colon);
+            td.appendChild(minutes);
+            
+            if (selectInputDate.isAmPm(facesContext)){
+                Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
+                amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
+                amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
+                amPmElement.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                amPmElement.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                String[] symbolsAmPm = symbols.getAmPmStrings();
+                
+                Element amPmElementOption = domContext.createElement(HTML.OPTION_ELEM);
+                amPmElementOption.setAttribute(HTML.VALUE_ATTR, "AM");
+                Text amPmElementText = domContext.createTextNode(symbolsAmPm[0]);
+                amPmElementOption.appendChild(amPmElementText);
 
-              Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
-              amPmElementOption2.setAttribute(HTML.VALUE_ATTR, "PM");                  
-              Text amPmElementText2 = domContext.createTextNode(symbolsAmPm[1]);
-              amPmElementOption2.appendChild(amPmElementText2);
-              if (amPm == 0) {
-                  amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
-              } else {
-                  amPmElementOption2.setAttribute(HTML.SELECTED_ATTR, "true");                                
-              }
-              amPmElement.appendChild(amPmElementOption);                            
-              amPmElement.appendChild(amPmElementOption2);
-              td.appendChild(amPmElement);
-          }
-          table.appendChild(tfoot);
-      }                
+                Element amPmElementOption2 = domContext.createElement(HTML.OPTION_ELEM);
+                amPmElementOption2.setAttribute(HTML.VALUE_ATTR, "PM");                  
+                Text amPmElementText2 = domContext.createTextNode(symbolsAmPm[1]);
+                amPmElementOption2.appendChild(amPmElementText2);
+                if (amPm == 0) {
+                    amPmElementOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                } else {
+                    amPmElementOption2.setAttribute(HTML.SELECTED_ATTR, "true");                                
+                }
+                amPmElement.appendChild(amPmElementOption);                            
+                amPmElement.appendChild(amPmElementOption2);
+                td.appendChild(amPmElement);
+            }
+            table.appendChild(tfoot);
+        }
         // purge child components as they have been encoded no need to keep them around
-//        selectInputDate.getChildren().removeAll(selectInputDate.getChildren());
+        selectInputDate.getChildren().clear();
 
         // steps to the position where the next sibling should be rendered
         domContext.stepOver();
@@ -1425,7 +1456,7 @@ public class SelectInputDateRenderer
         //this is a fix for bug 340
         UIComponent form = findForm(uiComponent);
         String formId = form.getClientId(facesContext);
-        return formId + ":j_idcl";
+        return formId + ":_idcl";
     }
 
     private int checkLink(Object eventCapturedId, String clickedLink, String clientId) {
@@ -1576,7 +1607,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                 if (enterKeyPressed) {
                     dateSelect.setHoursSubmittedValue(null);
                     dateSelect.setMinutesSubmittedValue(null);
-                    component.queueEvent(new ActionEvent(component));
+                    if ("13".equalsIgnoreCase(String.valueOf(requestParameterMap.get("ice.event.keycode")))) {
+                        component.queueEvent(new ActionEvent(component));
+                    }
                 }
             }
         }
@@ -1620,7 +1653,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             decodeInputText(facesContext, component);
             dateSelect.setHoursSubmittedValue(null);
             dateSelect.setMinutesSubmittedValue(null);
-            component.queueEvent(new ActionEvent(component));
+            if ("13".equalsIgnoreCase(String.valueOf(requestParameterMap.get("ice.event.keycode")))) {
+                component.queueEvent(new ActionEvent(component));
+            }
         }
         // not a nav event
         dateSelect.setNavEvent(false);
@@ -1788,7 +1823,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                     date = (Date) converter.getAsObject(facesContext, dateSelect, submittedDate);
                 } catch (Exception e) {
                     date = null;
-                }                
+                }
 //System.out.println("mergeTimeIntoDateString()    before calendar date: " + date);
                 if (date != null) {
                     TimeZone tz = dateSelect.resolveTimeZone(facesContext);

@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.outputresource;
@@ -26,13 +36,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.net.URLEncoder;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,9 +78,10 @@ public class OutputResource extends UIComponentBase {
 	transient String path;
 	private Boolean shared;
     private String target;
-
+    private Boolean UIDataChild = null;
 	public static final String TYPE_IMAGE = "image";
 	public static final String TYPE_BUTTON = "button";
+	private transient Map  resources;
 
 	/*
 	 * (non-Javadoc)
@@ -106,12 +119,32 @@ public class OutputResource extends UIComponentBase {
 	    }
 	    if (currResource == null) return null;
 		final String fileName = getFileName();
-        if( registeredResource == null ){
-            registeredResource = new RegisteredResource(this, currResource, fileName);
-				path = ResourceRegistryLocator.locate(FacesContext.getCurrentInstance()).registerResource(
-				        registeredResource).getRawPath();
+		if (!isUIDataChild()) {
+            if( registeredResource == null ){
+                registeredResource = new RegisteredResource(this, currResource,
+                    fileName);
+    		}
+            else {
+            registeredResource.updateContents(this, currResource, fileName);
+            }
+            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).
+                registerResource(registeredResource).getRawPath();
+            registeredResource.setPath(path);
+		} else {
+		    if (resources == null) {
+		        resources = new HashMap();
+		    }
+	        if (!resources.containsKey(currResource)) {
+		          registeredResource = new RegisteredResource(this, currResource, fileName);
+                resources.put(currResource, registeredResource);
+		    } else {
+		        registeredResource = (RegisteredResource)resources.get(currResource);
+		        registeredResource.updateContents(this, currResource, fileName);
+		    }
+            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(registeredResource).getRawPath();
+            registeredResource.setPath(path);
 		}
-        registeredResource.updateContents(this, currResource, fileName);
+		
 		return currResource;
 	}
 	
@@ -294,7 +327,7 @@ public class OutputResource extends UIComponentBase {
 	 * </p>
 	 */
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[14];
+		Object values[] = new Object[15];
 		values[0] = super.saveState(context);
 		values[1] = resource;
 		values[2] = mimeType;
@@ -309,6 +342,7 @@ public class OutputResource extends UIComponentBase {
 		values[11] = attachment;
 		values[12] = shared;
 		values[13] = target;
+		values[14] = UIDataChild;
 		return ((Object) (values));
 	}
 
@@ -334,6 +368,7 @@ public class OutputResource extends UIComponentBase {
 		attachment = (Boolean) values[11];
 		shared = (Boolean)values[12];
         target = (String) values[13];
+        UIDataChild = (Boolean) values[14];        
     }
 
 	public boolean getAttachment() {
@@ -345,7 +380,7 @@ public class OutputResource extends UIComponentBase {
 	}
 
 	public String getPath() {
-		return path + "?"+ registeredResource.calculateDigest().hashCode();
+		return  path; 
 	}
 	
 	public boolean isShared(){
@@ -376,6 +411,21 @@ public class OutputResource extends UIComponentBase {
     public void setTarget(String target) {
         this.target = target;
     }
+    
+    private boolean isUIDataChild() {
+        if (UIDataChild == null) {
+            UIDataChild = Boolean.FALSE;
+            UIComponent parent = this.getParent();
+            while(parent != null) {
+                if (parent instanceof UIData) {
+                    UIDataChild = Boolean.TRUE;
+                    break;
+                }
+                parent = parent.getParent();
+            }
+        }
+        return UIDataChild.booleanValue();
+    }    
 }
 
 class RegisteredResource implements Resource {
@@ -387,7 +437,8 @@ class RegisteredResource implements Resource {
     private boolean isAttachment;
     private boolean isShared;
     private String userAgent;
-
+    private String path;
+    
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
         updateContents(outputResource, resource, fileName);
         Map headerMap = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap();
@@ -395,7 +446,7 @@ class RegisteredResource implements Resource {
     }
 
     public String calculateDigest() {
-        return resource.calculateDigest() + (isShared ? "" : String.valueOf(this.hashCode()));
+        return resource.calculateDigest() + (isShared ? "" : String.valueOf(resource.hashCode()));
     }
 
     public Date lastModified() {
@@ -404,6 +455,14 @@ class RegisteredResource implements Resource {
 
     public InputStream open() throws IOException {
         return resource.open();
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path= path;
     }
 
     void updateContents(OutputResource outputResource, Resource resource, String fileName) {
@@ -415,7 +474,6 @@ class RegisteredResource implements Resource {
         isAttachment = outputResource.isAttachment();
         isShared = outputResource.isShared();
     }
-    
     
     public void withOptions(Options options) {
         ResourceOptions resourceOptions = new ResourceOptions();

@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext;
@@ -57,6 +67,7 @@ public class HtmlSelectOneListbox
     private String renderedOnUserRole = null;
     private Effect effect;
     private Boolean visible = null;
+    private Integer partialSubmitDelay;
 
     private CurrentStyle currentStyle;
           private Effect onclickeffect;
@@ -116,6 +127,23 @@ public class HtmlSelectOneListbox
         Boolean boolVal =
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() : DEFAULT_VISIBLE;
+    }
+    
+    public void setPartialSubmitDelay(int partialSubmitDelay) {
+        this.partialSubmitDelay = new Integer(partialSubmitDelay);
+    }
+    
+    public int getPartialSubmitDelay() {
+        if (this.partialSubmitDelay != null) {
+            return this.partialSubmitDelay.intValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmitDelay");
+        if (vb != null) {
+            Integer val = (Integer) vb.getValue(getFacesContext());
+            if (val != null)
+                return val.intValue();
+        }
+        return 300;
     }
 
     /**
@@ -521,7 +549,7 @@ public class HtmlSelectOneListbox
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -542,6 +570,7 @@ public class HtmlSelectOneListbox
         values[17] = autocomplete;
         values[18] = currentStyle;
         values[19] = visible;
+        values[20] = partialSubmitDelay;
         return ((Object) (values));
         
     }
@@ -572,6 +601,7 @@ public class HtmlSelectOneListbox
         autocomplete = (String) values[17];
         currentStyle = (CurrentStyle) values[18];
         visible = (Boolean) values[19];
+        partialSubmitDelay = (Integer) values[20];
     }
 }
 

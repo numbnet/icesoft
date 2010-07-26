@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext.renderkit;
@@ -32,6 +42,7 @@ import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -213,7 +224,7 @@ public class TableRenderer
             DOMContext.getDOMContext(facesContext, uiComponent);
             Element tr = domContext.createElement("tr");
             thead.appendChild(tr);
-            List childList = uiComponent.getChildren();
+            List childList = uiComponent.getChildren(); 
             Iterator childColumns = childList.iterator();
             int columnIndex = 1;
             int headerStyleLength = getHeaderStyles(uiComponent).length;
@@ -233,7 +244,7 @@ public class TableRenderer
                                           styleIndex,
                                           !childColumns.hasNext(),
                                           columnWidths);
-                    columnIndex++;
+                   columnIndex++;
                 } else if (nextColumn instanceof UIColumns) {
                     columnIndex = processUIColumnsHeader(facesContext,
                                                          uiComponent,
@@ -506,12 +517,29 @@ public class TableRenderer
                     }                    
                 }
                 th.setAttribute("class",styleClass);
-                String width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
+                String width = null;
+                Element cursorParent = th;
+                if (htmlDataTable.isResizable()) {
+                    Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
+                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
+                    th.appendChild(columnHeaderDiv);
+                    width = htmlDataTable.getNextResizableTblColumnWidth();
+                    if (width != null) {
+                        width = "width:"+ width +";";
+                        columnHeaderDiv.setAttribute(HTML.STYLE_ATTR, width);
+                    }
+                    cursorParent = columnHeaderDiv;                    
+                }
+                
+   
+                if (width == null) {
+                    width = getWidthFromColumnWidthsArray(htmlDataTable, columnsWidth);
+                }
                 if (width != null) {
                     th.setAttribute("style", width);
                 }
                 //th.setAttribute("colgroup", "col");
-                domContext.setCursorParent(th);
+                domContext.setCursorParent(cursorParent);
                 encodeParentAndChildren(facesContext, headerFacet);
                 domContext.setCursorParent(oldParent);
             }
@@ -521,6 +549,20 @@ public class TableRenderer
             rowIndex++;
             columnIndex++;
             nextColumn.setRowIndex(rowIndex);
+
+            if (htmlDataTable.isResizable() && nextColumn.getRowCount() > rowIndex) {
+                Element handlerTd = domContext.createElement(element);
+                handlerTd.setAttribute("valign", "top");
+                handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
+                handlerTd.setAttribute(HTML.ONMOUSEOVER_ATTR, "ResizableUtil.adjustHeight(this)");
+                Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
+                resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
+                resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
+                resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
+                resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
+                handlerTd.appendChild(resizeHandler);
+                tr.appendChild(handlerTd);
+            }
         }
         nextColumn.setRowIndex(-1);
         return columnIndex;
@@ -534,6 +576,7 @@ public class TableRenderer
                 DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
         Element originalRoot = root;
+        String clientId = uiComponent.getClientId(facesContext);
         
         boolean scrollable = isScrollable(uiComponent); 
         if (scrollable) {
@@ -644,7 +687,7 @@ public class TableRenderer
         int columnStyleIndex;
         int columnStylesMaxIndex = columnStyles.length - 1;
         resetGroupState(uiData);
-        while (uiData.isRowAvailable()) {
+       while (uiData.isRowAvailable()) {
             columnStyleIndex = 0;
             String selectedClass = null;
             if (rowStylesMaxIndex >= 0) {
@@ -666,7 +709,7 @@ public class TableRenderer
                     if (null == rowSelector.getClickListener() && null == rowSelector.getClickAction()) {
                     tr.setAttribute("onclick", rowSelectionFunctionName +
                             "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "');");
+                            "', '"+ formId +"', '"+ paramId +"','" + toggleClass + "', this);");
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
@@ -695,13 +738,14 @@ public class TableRenderer
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
+            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"';");
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"';");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.enableTxtSelection(document.body); this.className='" +
@@ -725,6 +769,24 @@ public class TableRenderer
                     if (nextChild instanceof UIColumn) {
                         uiData.setColNumber(uiData.getColNumber()+1);                        
                         Element td = domContext.createElement(HTML.TD_ELEM);
+                        //add row focus handler for rowSelector
+                        if (uiData.getColNumber() == 0 && rowSelectorFound
+                                && rowSelector.isKeyboardNavigationEnabled()) {
+                            boolean singleSelection = false;
+                            if(!rowSelector.isEnhancedMultiple() 
+                                    && !rowSelector.getMultiple().booleanValue() 
+                                    && rowSelector.isSingleRowAutoSelect()) {
+                                singleSelection = true;
+                            }
+                            anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
+                            anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);             
+                            anchor.setAttribute(HTML.HREF_ATTR, "#"); 
+                            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                                        "/xmlhttp/css/xp/css-images/spacer.gif") + "'/>"));
+                            anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
+                            anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   
+                            td.appendChild(anchor);                            
+                        }                        
                         String iceColumnStyle = null;
                         String iceColumnStyleClass = null;
                         //we want to perform this operation on ice:column only
@@ -821,13 +883,16 @@ public class TableRenderer
                         encodeParentAndChildren(facesContext, nextChild);
                         domContext.setCursorParent(oldCursorParent);
                     } else if (nextChild instanceof UIColumns) {
+                        if (isResizable == null) { 
+                            isResizable = Boolean.valueOf(uiData.isResizable());
+                        }
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
                                       columnStyleIndex,
                                       hiddenInputNode, hiddenClickedRowField, 
                                       hiddenClickCountField,
-                                      columnWidths);
+                                      columnWidths, isResizable.booleanValue());
                         nextChild.encodeEnd(facesContext);
                        
                     }
@@ -854,7 +919,8 @@ public class TableRenderer
                                int columnStyleIndex, 
                                Element rowSelectorHiddenField,
                                Element clickEventRowField, Element clickEventCountField,
-                               String[] columnWidths) throws IOException {
+                               String[] columnWidths,
+                               boolean isResizable) throws IOException {
         UIColumns uiList = (UIColumns) columns;
         HtmlDataTable table = ((HtmlDataTable) uiList.getParent());
         int rowIndex = uiList.getFirst();
@@ -902,6 +968,18 @@ public class TableRenderer
             rowIndex++;
             countOfRowsDisplayed++;
             uiList.setRowIndex(rowIndex);
+            
+
+            if (isResizable && uiList.getRowCount() > rowIndex) {
+                Element eTd = domContext.createElement(HTML.TD_ELEM);
+                eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
+                Element img = domContext.createElement(HTML.IMG_ELEM);
+                img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
+                        FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
+                eTd.appendChild(img);
+                tr.appendChild(eTd);
+            }            
+            
         }
 
         uiList.setRowIndex(-1);
