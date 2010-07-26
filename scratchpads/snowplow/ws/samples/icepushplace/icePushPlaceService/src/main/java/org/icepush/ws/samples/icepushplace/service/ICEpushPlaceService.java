@@ -10,6 +10,8 @@ import java.util.Enumeration;
 import java.math.BigInteger;
 
 import org.icepush.ws.samples.icepushplace.*;
+import org.icepush.PushClient;
+import org.icepush.client.PushClientException;
 
 public class ICEpushPlaceService {
 
@@ -31,7 +33,8 @@ public class ICEpushPlaceService {
     public long registerApp(AppType app) {
 	Application application = apps.get(app.getURL());
 	if (application == null) {
-	    application = new Application(masterSequenceNo, app.getWorld());
+	    application = new Application(masterSequenceNo, app.getWorld(),
+					  app.getURL());
 	    apps.put(app.getURL(), application);
 	    System.out.println("Registered Application: " + app.getURL());
 	}
@@ -73,6 +76,7 @@ public class ICEpushPlaceService {
 			       myWorld + "' Name='" + 
 			       person.getName() + "' key='" + key + 
 			       "' seqNo=" + masterSequenceNo);
+	    notifyApps(myWorld);
 	}
 	else {
 	    System.out.println("Logged In Failed: World='" + myWorld + "'");
@@ -93,6 +97,7 @@ public class ICEpushPlaceService {
 		System.out.println("Update: World='" +
 				   myWorld + "' Name='" + 
 				   person.getName() + "' seqNo=" + masterSequenceNo);
+		notifyApps(myWorld);
 	    } else {
 		System.out.println("Update Failed - Person Not Found: World='" +
 				   myWorld + "' Name='" + 
@@ -118,6 +123,7 @@ public class ICEpushPlaceService {
 		System.out.println("Log Out: World='" +
 				   myWorld + "' Name='" + 
 				   person.getName() + "' seqNo=" + masterSequenceNo);
+		notifyApps(myWorld);
 	    } else {
 		System.out.println("Log Out Failed - Person Not Found: World='" +
 				   myWorld + "' Name='" + 
@@ -135,9 +141,8 @@ public class ICEpushPlaceService {
 	World world = worlds.get(myWorld);
 	WorldResponseType response = new WorldResponseType();
 	response.setSequenceNo(masterSequenceNo);
+	response.setWorld(myWorld);
 	List<PersonType> changedPeople = response.getPerson();
-	System.out.println("World Update Starting: URL = " + myApp + 
-			   " world='" + myWorld + "'");
 
 	Application app = apps.get(myApp);
 	if (world != null && app != null) {
@@ -164,9 +169,25 @@ public class ICEpushPlaceService {
 	}
 	System.out.println("World Update: world='" +
 			   myWorld + "' length = " + 
-			   changedPeople.size() + "' seqNo=" + 
-			   response.getSequenceNo());
+			   changedPeople.size() + "' seqNos=" + 
+			   response.getSequenceNo() + "," + lastSequenceNo);
 	return response;
+    }
+
+    private void notifyApps(String myWorld) {
+	for (Enumeration<Application> ee = apps.elements() ; ee.hasMoreElements() ;) {
+	    Application app = ee.nextElement();
+	    if (app.containsWorld(myWorld)) {
+		try {
+		    app.getPushClient().notify(myWorld);
+		} catch (PushClientException e) {
+		    System.out.println("Could not notify " + app.getURL() +
+				       " : " + e.toString());
+		}
+		System.out.println("Notifying: " + app.getURL() + " World: " +
+				   myWorld);
+	    }
+	}
     }
 
     private class Person {
@@ -196,11 +217,21 @@ public class ICEpushPlaceService {
     private class Application {
 	private long lastSequenceNo;
 	private TreeSet<String> worlds;
+	private PushClient pushClient;
+	private String url;
 
-	public Application(long startingSequenceNo, List<String> newWorlds) {
+	public Application(long startingSequenceNo, List<String> newWorlds,
+			   String appURL) {
+	    url = appURL;
 	    worlds = new TreeSet<String>();
 	    addWorlds(newWorlds);
 	    lastSequenceNo = startingSequenceNo;
+	    try {
+		pushClient = new PushClient(appURL);
+	    } catch (PushClientException e) {
+		System.out.println("Could not establish PushClient to: " + url 
+				  + " : " + e.toString());
+	    }
 	}
 
 	public long getLastSequenceNo() {
@@ -216,6 +247,15 @@ public class ICEpushPlaceService {
 	    for (ListIterator e = newWorlds.listIterator() ; e.hasNext() ;) {
 		worlds.add((String)e.next());
 	    }
+	}
+	public PushClient getPushClient() {
+	    return pushClient;
+	}
+	public String getURL() {
+	    return url;
+	}
+	public boolean containsWorld(String world) {
+	    return worlds.contains(world);
 	}
     }	
 

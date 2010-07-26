@@ -98,17 +98,33 @@ public class Tests {
 
     private void updateWorld(ICEpushPlaceWorld world) {
 	System.out.println("Updating World View");
-	for (int i=world.AFRICA; i<=world.SOUTH_AMERICA; i++) {
-	    System.out.println(world.CONTINENT[i]);
-	    world.setContinentAccess(i);
-	    List<PersonType> continent = world.getContinent();
-	    for (ListIterator e = continent.listIterator() ; e.hasNext() ;) {
-		PersonType person = (PersonType)e.next();
-		System.out.println(person.getName()+ ": key = " +
-				   person.getKey() + ", status = " + 
-				   person.getStatus());
-	    }
-	    System.out.println("-----------");
+	System.out.println(world.CONTINENT[world.AFRICA]);
+	List<PersonType> continent = world.getContinent(world.AFRICA);
+	printUpdates(continent);
+	System.out.println(world.CONTINENT[world.ANTARCTICA]);
+	continent = world.getContinent(world.ANTARCTICA);
+	printUpdates(continent);
+	System.out.println(world.CONTINENT[world.ASIA]);
+	continent = world.getContinent(world.ASIA);
+	printUpdates(continent);
+	System.out.println(world.CONTINENT[world.EUROPE]);
+	continent = world.getContinent(world.EUROPE);
+	printUpdates(continent);
+	System.out.println(world.CONTINENT[world.NORTH_AMERICA]);
+	continent = world.getContinent(world.NORTH_AMERICA);
+	printUpdates(continent);
+	System.out.println(world.CONTINENT[world.SOUTH_AMERICA]);
+	continent = world.getContinent(world.SOUTH_AMERICA);
+	printUpdates(continent);
+	System.out.println("-----------");
+    }
+
+    private void printUpdates(List<PersonType> continent) {
+	for (ListIterator e = continent.listIterator() ; e.hasNext() ;) {
+	    PersonType person = (PersonType)e.next();
+	    System.out.println(person.getName()+ ": key = " +
+			       person.getKey() + ", status = " + 
+			       person.getStatus());
 	}
 	System.out.println("-----------");
     }

@@ -9,6 +9,13 @@
     <name>icePushPlaceService Spring-WS Application</name>
     <url>http://www.springframework.org/spring-ws</url>
 
+    <repositories>
+      <repository>
+	<id>snapshots</id>
+	<url>http://anonsvn.icefaces.org/repo/maven2/snapshots/</url>
+      </repository>
+    </repositories> 
+
    <pluginRepositories>
        <pluginRepository>
            <id>java.net</id>
@@ -52,6 +59,11 @@
                     <groupId>javax.activation</groupId>
                     <artifactId>activation</artifactId>
                 </dependency>
+		<dependency>
+		  <groupId>org.icepush</groupId>
+		  <artifactId>icepush</artifactId>
+		  <version>2.0-Beta1</version>
+		</dependency>
             </dependencies>
         </profile>
     </profiles>
@@ -119,6 +131,11 @@
             <artifactId>wsdl4j</artifactId>
             <version>1.6.1</version>
         </dependency>
+	<dependency>
+	  <groupId>org.icepush</groupId>
+	  <artifactId>icepush</artifactId>
+	  <version>2.0-Beta1</version>
+	</dependency>
 <!--        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
