@@ -19,7 +19,10 @@
  * Contributor(s): _____________________.
  *
  */
+ 
 package org.icefaces.application.showcase.view.bean.examples.component.progressBar;
+
+import java.io.Serializable;
 
 /**
  * <p>The OutputProgressModel class stores properties that are used to dynamically
@@ -28,7 +31,7 @@ package org.icefaces.application.showcase.view.bean.examples.component.progressB
  * @see org.icefaces.application.showcase.view.bean.examples.component.progressBar.OutputProgressController
  * @since 1.7
  */
-public class OutputProgressModel {
+public class OutputProgressModel implements Serializable  {
   
 	
     // true indicates intermdiate mode, false indicates standard output progress
