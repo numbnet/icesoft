@@ -127,8 +127,9 @@ public class OutputResource extends UIComponentBase {
             else {
             registeredResource.updateContents(this, currResource, fileName);
             }
-            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).
-                registerResource(registeredResource).getRawPath();
+            path = ResourceRegistryLocator.locate(
+                    FacesContext.getCurrentInstance())
+                            .registerResource(registeredResource).getRawPath();
             registeredResource.setPath(path);
 		} else {
 		    if (resources == null) {
@@ -141,7 +142,9 @@ public class OutputResource extends UIComponentBase {
 		        registeredResource = (RegisteredResource)resources.get(currResource);
 		        registeredResource.updateContents(this, currResource, fileName);
 		    }
-            path = ((ResourceRegistry) FacesContext.getCurrentInstance()).registerResource(registeredResource).getRawPath();
+            path = ResourceRegistryLocator.locate(
+                    FacesContext.getCurrentInstance())
+                            .registerResource(registeredResource).getRawPath();
             registeredResource.setPath(path);
 		}
 		

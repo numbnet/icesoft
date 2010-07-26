@@ -36,7 +36,7 @@ import java.util.Date;
 
 @ManagedBean(name = "resourceBean")
 @ViewScoped
-public class OutputResourceBean {
+public class OutputResourceBean implements Serializable {
 
     private Resource imgResource;
     private Resource pdfResource;
