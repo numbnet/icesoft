@@ -1,8 +1,6 @@
 package org.icepush.ws.samples.icepushplace.wsclient;
 
 import org.icepush.ws.samples.icepushplace.*;
-//import org.springframework.context.ApplicationContext;
-//import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -30,17 +28,18 @@ public class ICEpushPlaceWorld {
     private String applicationURL;
     private ICEpushPlaceWsClient wsClient;
     private boolean registered = false;
-    private long currentSequenceNo;
-    private int currentContinent;
+    private long[] currentSequenceNo;
+    private int continent;
     private int currentPerson;
 
     public ICEpushPlaceWorld() {
 
 	continents = (Hashtable<Integer,PersonType>[])Array.newInstance(Hashtable.class, CONTINENT.length);
+	currentSequenceNo = new long[CONTINENT.length];
+
 	for (int i=AFRICA; i<=SOUTH_AMERICA; i++) {
 	    continents[i] = new Hashtable();
 	}
-	System.out.println("New World Created.");
     }
 
     public void setWebServiceURL(String URL) {
@@ -66,44 +65,58 @@ public class ICEpushPlaceWorld {
 	return wsClient;
     }
 
-    public void setContinentAccess(int continent) {
-	currentContinent = continent;
+    public List<PersonType> getAfrica() {
+	return getContinent(AFRICA);
     }
 
-    public List<PersonType> getContinent() {
-	getContinentUpdates();
-	return (List) new Vector<PersonType>(continents[currentContinent].values());
+    public List<PersonType> getAntarctica() {
+	return getContinent(ANTARCTICA);
     }
 
-    public List<PersonType> getContinentUpdates() {
+    public List<PersonType> getAsia() {
+	return getContinent(ASIA);
+    }
+
+    public List<PersonType> getEurope() {
+	return getContinent(EUROPE);
+    }
+
+    public List<PersonType> getNorthAmerica() {
+	List<PersonType> people = getContinent(NORTH_AMERICA);
+	return people;
+    }
+
+    public List<PersonType> getSouthAmerica() {
+	return getContinentUpdates(SOUTH_AMERICA);
+    }
+
+    public List<PersonType> getContinent(int continent) {
+	getContinentUpdates(continent);
+	return (List) new Vector<PersonType>(continents[continent].values());
+    }
+
+    public List<PersonType> getContinentUpdates(int continent) {
 	WorldResponseType response = 
-	    wsClient.updateWorld(applicationURL, CONTINENT[currentContinent],
-				 currentSequenceNo);
+	    wsClient.updateWorld(applicationURL, CONTINENT[continent],
+				 currentSequenceNo[continent]);
 	List<PersonType> people = response.getPerson();
+	currentSequenceNo[continent] = response.getSequenceNo();
 	for (ListIterator e = people.listIterator() ; e.hasNext() ;) {
 	    PersonType person = (PersonType)e.next();
 	    if (person.getStatus() == ICEpushPlaceWsClient.DELETE) {
-		continents[currentContinent].remove(person.getKey());
+		continents[continent].remove(person.getKey());
 	    } else {
-		continents[currentContinent].put(new Integer(person.getKey()), 
-						 person);
+		continents[continent].put(new Integer(person.getKey()), 
+					  person);
 	    }
 	}
 	return people;
     }
 
-    public void setPerson(int personKey) {
-	currentPerson = personKey;
-    }
-
-    public PersonType getPerson() {
-	return (PersonType) continents[currentContinent].get(currentPerson);
-    }
-
-
     public PersonType loginPerson(String continent, PersonType person) {
+	setProperRegion(person, continent);
 	try {
-	   person = wsClient.loginPerson(continent, person);
+	    person = wsClient.loginPerson(continent, person);
 	} catch (BadWorldException e) {
 	    System.out.println("Oops: Bad World" + e.toString());
 	}
@@ -119,7 +132,6 @@ public class ICEpushPlaceWorld {
     }
 
     public PersonType loginPerson(int continent, PersonType person) {
-	System.out.println("Logging in person" + continent + " " + person.getName());
 	return loginPerson(CONTINENT[continent], person);
     }
 
@@ -133,6 +145,7 @@ public class ICEpushPlaceWorld {
 
     public PersonType movePerson(String from, String to, PersonType person) {
 	logoutPerson(from, person);
+	setProperRegion(person, to);
 	try {
 	   person = wsClient.loginPerson(to, person);
 	} catch (BadWorldException e) {
@@ -165,18 +178,36 @@ public class ICEpushPlaceWorld {
 "        <property name=\"mtomEnabled\" value=\"true\"/>\n" +
 "    </bean>\n" +
 "</beans>\n");
-	    /*	    ApplicationContext applicationContext =
-                new ClassPathXmlApplicationContext("applicationContext.xml", 
-						   ICEpushPlaceWorld.class);
-
-						   wsClient =  (ICEpushPlaceWsClient) applicationContext.getBean("icepushPlaceClient", ICEpushPlaceWsClient.class);*/
 	    ByteArrayResource bytes = new ByteArrayResource(appContext.getBytes());
 	    XmlBeanFactory factory = new XmlBeanFactory(bytes);
 	    wsClient =  (ICEpushPlaceWsClient) factory.getBean("icepushPlaceClient");
 
 	    List<String> allContinents =  Arrays.asList(CONTINENT);
-	    currentSequenceNo = wsClient.registerApp(applicationURL, allContinents);
+	    long startingSequenceNo = wsClient.registerApp(applicationURL, 
+							   allContinents);
+	    for (int i=AFRICA; i<=SOUTH_AMERICA; i++) {
+		currentSequenceNo[i] = startingSequenceNo;
+	    }
 	    registered = true;
 	}
+    }
+
+    private void setProperRegion(PersonType person, String continent) {
+	if (!CONTINENT[person.getRegion()].equals(continent)) {
+	    person.setRegion(findContinent(continent));
+	}
+    }
+
+    private int findContinent(String continent) {
+	int i = AFRICA;
+	while (i <= SOUTH_AMERICA) {
+	    if (CONTINENT[i].equals(continent)) {
+		return i;
+	    } else {
+		i++;
+	    }
+	}
+	System.out.println("Cound not find Continent " + continent);
+	return -1;
     }
 }
