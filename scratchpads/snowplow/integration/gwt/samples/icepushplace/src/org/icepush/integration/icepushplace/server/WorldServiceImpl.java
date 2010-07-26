@@ -8,8 +8,6 @@ import org.icepush.integration.icepushplace.client.model.User;
 import org.icepush.integration.icepushplace.shared.ValidatorUtil;
 import org.icepush.ws.samples.icepushplace.PersonType;
 import org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -28,16 +26,12 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	 */
 	private ICEpushPlaceWorld generateWorld() {
 		try{
-			// Use Spring to try to get our WEB-INF/applicationContext.xml through the servlet context
-			// This will allow us to lookup Spring beans
-			WebApplicationContext applicationContext =
-				WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-
-			// Get the ICEpushPlaceWorld bean from the application context, if possible
-			if (applicationContext != null) {
-				return (ICEpushPlaceWorld)applicationContext.getBean(
-							"icepushPlaceWorld", ICEpushPlaceWorld.class);
-			}
+			ICEpushPlaceWorld world = new ICEpushPlaceWorld();
+			
+			world.setApplicationURL(WorldService.APPLICATION_URL);
+			world.setWebServiceURL(WorldService.WEBSERVICE_URL);
+			
+			return world;
 		}catch (Exception failedTest) {
 			failedTest.printStackTrace();
 			System.err.println("Failed to create an ICEpushPlaceWorld service object.");
@@ -195,8 +189,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	public User getUserInRegion(String name, String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Get a list of all users in the passed region
-			world.setContinent(convertRegionToInt(region));
-			List<PersonType> personList = world.getContinent();
+			List<PersonType> personList = world.getContinent(convertRegionToInt(region));
 			
 			// If the list is valid we'll loop through it and try to find a match for our passed name
 			if (ValidatorUtil.isValidList(personList)) {
@@ -222,8 +215,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	public List<User> getUsersByRegion(String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Get a list of all the users in the passed region
-			world.setContinent(convertRegionToInt(region));
-			List<PersonType> personList = world.getContinent();
+			List<PersonType> personList = world.getContinent(convertRegionToInt(region));
 			
 			// If the list is valid we'll want to convert it to a list of Users instead of PersonTypes and return that
 			if (ValidatorUtil.isValidList(personList)) {
