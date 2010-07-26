@@ -42,13 +42,10 @@ if (person != null) {
     int row = Integer.parseInt(request.getParameter("row"));
     String from = request.getParameter("from");
     PersonType receiver = null;
-    world.setContinentAccess(region);
-    receiver = world.getContinent().get(row);
+    receiver = world.getContinent(region).get(row);
+
     // Set receiver message
     receiver.setMessageIn(from + " says: " + messageOut);
     world.updatePerson(receiver.getRegion(), receiver);
-    // Push update out to receiver's region
-    //PushContext pushContext = PushContext.getInstance(getServletContext());
-    //pushContext.push(region);
 }
 %>

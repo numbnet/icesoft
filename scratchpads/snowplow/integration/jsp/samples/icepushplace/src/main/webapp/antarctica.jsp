@@ -31,7 +31,6 @@
 
 <jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
 </jsp:useBean>
-<jsp:setProperty name="world" property="continentAccess" value="1"/>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
@@ -48,13 +47,13 @@
         <th>Post Message</th>
     </tr>
     <c:choose>
-    <c:when test="${empty world.continent}">
+    <c:when test="${empty world.antarctica}">
     <tr>
         <td colspan="6">Empty</td>
     </tr>
     </c:when>
     <c:otherwise>
-    <c:forEach var="elem" items="${world.continent}" varStatus="row">
+    <c:forEach var="elem" items="${world.antarctica}" varStatus="row">
     <tr>
         <td><c:out value="${elem.name}"/>&nbsp</td>
         <td><c:out value="${elem.mood}"/>&nbsp</td>

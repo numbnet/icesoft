@@ -35,7 +35,7 @@
 
 <jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
    <jsp:setProperty name="world" property="webServiceURL" value="http://localhost:8080/icePushPlaceService"/>
-   <jsp:setProperty name="world" property="applicationURL" value="http://localhost:8080/myApp"/>
+   <jsp:setProperty name="world" property="applicationURL" value="http://localhost:8080/icepush-place/"/>
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
     <jsp:setProperty name="person" property="*"/>
@@ -63,9 +63,7 @@ if (person.getKey() == 0) {
                 } catch (e) {
                     alert("Your browser is too old for AJAX!");
                     return null;
-
-
-		    }
+		}
             }
         }
     }
@@ -206,12 +204,12 @@ if (person.getKey() == 0) {
 </form>
 
 <h2>Regions</h2>
-<icep:region group="1" page="/northAmerica.jsp"/><br/><br/>
-<icep:region group="2" page="/europe.jsp"/><br/><br/>
-<icep:region group="3" page="/southAmerica.jsp"/><br/><br/>
-<icep:region group="4" page="/asia.jsp"/><br/><br/>
-<icep:region group="5" page="/africa.jsp"/><br/><br/>
-<icep:region group="6" page="/antarctica.jsp"/><br/><br/>
+<icep:region group="North America" page="/northAmerica.jsp"/><br/><br/>
+<icep:region group="Europe" page="/europe.jsp"/><br/><br/>
+<icep:region group="South America" page="/southAmerica.jsp"/><br/><br/>
+<icep:region group="Asia" page="/asia.jsp"/><br/><br/>
+<icep:region group="Africa" page="/africa.jsp"/><br/><br/>
+<icep:region group="Antarctica" page="/antarctica.jsp"/><br/><br/>
 
 </body>
 </html>
