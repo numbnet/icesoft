@@ -44,6 +44,8 @@ if (person != null) {
     boolean changed = false;
     boolean moving = false;
     int oldRegion = -1;
+    System.out.println("Updating " + person.getName() + " :" + person.getRegion() +
+                      ":"+person.getKey());
     if(!person.getName().equals(name)){
         person.setName(name);
         changed = true;
@@ -58,22 +60,12 @@ if (person != null) {
     }
     if(person.getRegion() != region){
 	moving = true;
-	oldRegion = person.getRegion();
-	person.setRegion(region);
     }
     if(changed){
-        // Push to update region
-        //PushContext pushContext = PushContext.getInstance(getServletContext());
-        //pushContext.push(person.getRegion());
         world.updatePerson(person.getRegion(), person);
-        // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
-        // Service call to display message in all applications
-        // service.requestUpdate(person);
-        // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
-        // IF IT HAS CHANGED, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
     }
-   if(moving) {
-        person = world.movePerson(oldRegion,region,person);
-   }
+    if(moving) {
+        person = world.movePerson(person.getRegion(),region,person);
+    }
 }
 %>
