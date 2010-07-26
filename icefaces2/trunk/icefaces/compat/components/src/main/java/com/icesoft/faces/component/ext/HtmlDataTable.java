@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext;
@@ -61,7 +71,7 @@ public class HtmlDataTable
     private String headerClasses = null;
     private Boolean clientOnly = null;
     private Boolean scrollFooter = null;
-    private int oldRows = -1;
+
     public HtmlDataTable() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -97,11 +107,6 @@ public class HtmlDataTable
 
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        int currentRows = getRows();
-        if (oldRows != -1 && oldRows != currentRows) {
-            setFirst(0);
-        }
-        oldRows = currentRows;
     }
     
     /**
@@ -157,7 +162,7 @@ public class HtmlDataTable
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[16];
+        Object values[] = new Object[15];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = columnWidths;
@@ -173,7 +178,6 @@ public class HtmlDataTable
         values[12] = new Integer(resizableTblColumnsWidthIndex);
         values[13] = scrollable;
         values[14] = Boolean.valueOf(isResizableColumnWidthsSet);
-        values[15] = new Integer(oldRows);        
         return ((Object) (values));
     }
 
@@ -198,7 +202,6 @@ public class HtmlDataTable
         resizableTblColumnsWidthIndex = ((Integer) values[12]).intValue();
         scrollable = (Boolean) values[13];
         isResizableColumnWidthsSet = ((Boolean) values[14]).booleanValue();
-        oldRows = ((Integer) values[15]).intValue();        
     }
 
     public String getComponentType() {

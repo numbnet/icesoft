@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.menubar;
@@ -49,8 +59,6 @@ import com.icesoft.util.pooling.CSSNamePool;
  * By default the MenuItem is rendered by the "com.icesoft.faces.View" renderer
  * type.
  *
- * @author Chris Brown
- * @author gmccleary
  * @version 1.1
  */
 public class MenuItem extends MenuItemBase {
@@ -67,6 +75,7 @@ public class MenuItem extends MenuItemBase {
     private String title;
     private String alt;
     private String onclick;
+    private String style;
 
     /**
      * String constant defining default menu icon img
@@ -469,11 +478,33 @@ public class MenuItem extends MenuItemBase {
         ValueBinding vb = getValueBinding("onclick");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    /**
+     * <p>Set the value of the <code>style</code> property.</p>
+     *
+     * @param style
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+    
+    /**
+     * <p>Return the value of the <code>style</code> property.</p>
+     *
+     * @return String style
+     */
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
     private transient Object states[];
     public Object saveState(FacesContext context){
         if(states == null){
-            states = new Object[14];
+            states = new Object[15];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, action);
@@ -489,6 +520,7 @@ public class MenuItem extends MenuItemBase {
         states[11] = target;
         states[12] = title;
         states[13] = saveAttachedState(context, value);
+        states[14] = style;
         return states;
     }
 
@@ -508,5 +540,6 @@ public class MenuItem extends MenuItemBase {
         target = (String) states[11];
         title = (String) states[12];
         value = restoreAttachedState(context, states[13]);
+        style = (String) states[14];
     }
 }

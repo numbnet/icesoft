@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,6 +18,16 @@
  *
  * Contributor(s): _____________________.
  *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.ext.renderkit;
@@ -26,6 +36,8 @@ import com.icesoft.faces.component.IceExtended;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlSelectManyMenu;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Set;
@@ -44,8 +56,20 @@ public class MenuRenderer
                                  UIComponent uiComponent, Element root,
                                  String currentValue, Set excludes) {
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute(getEventType(uiComponent),"setFocus('');" +
-                              this.ICESUBMITPARTIAL);
+            boolean isSelectMenu =
+                    (uiComponent instanceof HtmlSelectOneMenu) ||
+                    (uiComponent instanceof HtmlSelectManyMenu);
+            if (isSelectMenu) {
+                Number partialSubmitDelay = (Number)
+                        uiComponent.getAttributes().get("partialSubmitDelay");
+                root.setAttribute(getEventType(uiComponent),
+                        "setFocus('');Ice.selectChange(form,this,event,"+
+                        partialSubmitDelay+");");
+            }
+            else {
+                root.setAttribute(getEventType(uiComponent), "setFocus('');" +
+                        ICESUBMITPARTIAL);
+            }
             excludes.add(getEventType(uiComponent));
         }
     }

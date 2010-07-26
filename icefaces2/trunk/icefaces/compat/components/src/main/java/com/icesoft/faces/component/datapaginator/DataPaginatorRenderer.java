@@ -1,3 +1,34 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
 /* Original Copyright
  * Copyright 2004 The Apache Software Foundation.
  * 
@@ -31,8 +62,10 @@ import org.w3c.dom.Element;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -107,6 +140,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             if (displayedRowsCount > max) {
                 displayedRowsCount = max;
             }
+            if (displayedRowsCount == 0) {
+                displayedRowsCount = scroller.getRowCount();
+            }
             requestMap.put(displayedRowsCountVar,
                            new Integer(displayedRowsCount));
         }
@@ -124,7 +160,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         if (lastRowIndexVar != null) {
             int lastRowIndex = scroller.getFirstRow() + scroller.getRows();
             int count = scroller.getRowCount();
-            if (lastRowIndex > count) {
+            if (lastRowIndex > count || lastRowIndex == 0) {
                 lastRowIndex = count;
             }
             requestMap.put(lastRowIndexVar, new Integer(lastRowIndex));
@@ -183,7 +219,6 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             //Reset the dataTable model before setting variables
             scroller.getUIData().setValue(null);
             scroller.getUIData().setRowIndex(-1);
-            ((UISeries) scroller.getUIData()).ensureFirstRowInRange(); // ICE-2783
             setVariables(facesContext, scroller);
         }
     }
@@ -240,7 +275,10 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
         Element table = (Element) domContext.getRootNode();
         DOMContext.removeChildren(table);
-
+        if (scroller.isKeyboardNavigationEnabled()) {
+            table.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
+        }
+        table.setAttribute(HTML.NAME_ATTR, scroller.getUIData().getClientId(facesContext));
         Element tr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(tr);
 
@@ -341,7 +379,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
              DataPaginator.FACET_NEXT.equals(facetName) 
              ))
             ) {
-            link.setDisabled(true);
+            link.getAttributes().put(HTML.ONCLICK_ATTR, "return false;");
+            link.getAttributes().put(HTML.STYLE_ATTR, "cursor:default;");
+            link.getAttributes().put(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");            
         } else {
             link.setDisabled(false);
         }
@@ -408,8 +448,18 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             domContext.setCursorParent(td);
             String cStyleClass;
 
+            Element link = getLink(facesContext, domContext, scroller,
+                    Integer.toString(idx), idx, formId);
+            
             if (idx == pageIndex) {
+                String clientId = scroller.getClientId(facesContext);
                 cStyleClass = scroller.getPaginatorActiveColumnClass();
+                // set the focus on current page, if it was a keyboard
+                Map parameter = facesContext.getExternalContext().getRequestParameterMap();
+                if (parameter.containsKey(clientId)
+                        && parameter.containsKey(clientId+"kbd")) {
+                    JavascriptContext.applicationFocus(facesContext, link.getAttribute("id"));
+                }
 
             } else {
                 cStyleClass = scroller.getPaginatorColumnClass();
@@ -419,8 +469,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                 td.setAttribute(HTML.CLASS_ATTR, cStyleClass);
             }
 
-            Element link = getLink(facesContext, domContext, scroller,
-                                   Integer.toString(idx), idx, formId);
+
             td.appendChild(link);
         }
     }
