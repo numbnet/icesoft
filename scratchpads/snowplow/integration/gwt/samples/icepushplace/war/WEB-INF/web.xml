@@ -20,6 +20,17 @@
     <url-pattern>/icepushplace/world</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+      <servlet-name>icepush</servlet-name>
+      <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>icepush</servlet-name>
+      <url-pattern>*.icepush</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Page.html</welcome-file>
