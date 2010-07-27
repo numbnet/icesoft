@@ -34,7 +34,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 			return world;
 		}catch (Exception failedTest) {
 			failedTest.printStackTrace();
-			System.err.println("Failed to create an ICEpushPlaceWorld service object.");
+			System.out.println("ERROR - Failed to create an ICEpushPlaceWorld service object.");
 		}
 		
 		return null;

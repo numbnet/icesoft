@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/spring-oxm-tiger-1.5.9.jar"/>
 	<classpathentry kind="lib" path="lib/spring-ws-core-1.5.9.jar"/>
 	<classpathentry kind="lib" path="lib/spring-xml-1.5.9.jar"/>
+	<classpathentry kind="lib" path="lib/icepush.jar"/>
+	<classpathentry kind="lib" path="lib/icepush-gwt.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

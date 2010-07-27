@@ -1,7 +1,10 @@
 package org.icepush.integration.icepushplace.client;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.icepush.gwt.client.GWTPushContext;
+import org.icepush.gwt.client.PushEventListener;
 import org.icepush.integration.icepushplace.client.model.User;
 import org.icepush.integration.icepushplace.shared.ValidatorUtil;
 
@@ -12,6 +15,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
@@ -38,6 +42,10 @@ public class Page implements EntryPoint, ClosingHandler {
     private User ourUser;
     private Panel loginPanel;
     private Panel worldPanel;
+    private HashMap<String,Panel> regionPanels = new HashMap<String,Panel>(WorldService.REGIONS.length);
+    
+    private PushEventListener pushListener;
+    private String entryPushGroup;
     
     public Page() {
     	// Detect when the browser closes a tab or quits, so we can act on that
@@ -51,9 +59,18 @@ public class Page implements EntryPoint, ClosingHandler {
 	 *  what state the application is in
 	 */
 	public void onModuleLoad() {
+		// Add a push listener to refresh when we hear an event
+		pushListener = new PushEventListener() {
+			public void onPushEvent() {
+				refreshWorld();
+		    }
+	    };
+	    entryPushGroup = "login" + Random.nextInt(); // Try to keep the group name unique
+	    GWTPushContext.getInstance().addPushEventListener(pushListener, entryPushGroup);
+		
+        // Generate our various panels
 		generateLoginPanel();
 		generateWorldPanel();
-		
 		useLoginPanel();
 	}
 	
@@ -118,18 +135,29 @@ public class Page implements EntryPoint, ClosingHandler {
 									 mindArea.getText(),
 									 regionList.getValue(regionList.getSelectedIndex()),
 					 new AsyncCallback<User>() {
-							public void onFailure(Throwable caught) {
-								errorLabel.setText(caught.getMessage());
-							}
+						public void onFailure(Throwable caught) {
+							errorLabel.setText(caught.getMessage());
+						}
 
-							public void onSuccess(User result) {
-								// Store our local user
-								ourUser = result;
-								
-								// Switch to the world panel
-								useWorldPanel();
-							}
-					   });
+						public void onSuccess(User result) {
+							// Store our local user
+							ourUser = result;
+							
+							// Push to our login group to refresh the page enough to see our self in the list
+							GWTPushContext.getInstance().push(entryPushGroup);
+							
+							// Add a new push listener for the continent we wish to join
+							pushListener = new PushEventListener() {
+								public void onPushEvent() {
+									refreshRegion(ourUser.getRegion());
+							    }
+						    };
+						    GWTPushContext.getInstance().addPushEventListener(pushListener, ourUser.getRegion());							
+							
+							// Switch to the world panel
+							useWorldPanel();
+						}
+				});
 			}
 		}
 		
@@ -147,9 +175,8 @@ public class Page implements EntryPoint, ClosingHandler {
 		// Create a handler for the Refresh button action
 		class RefreshButtonHandler implements ClickHandler, KeyUpHandler {
 			public void onClick(ClickEvent event) {
-				// Regenerate our world panel (mainly so new users in each region will be added)
-				generateWorldPanel();
-				useWorldPanel();
+				// Regenerate our world panel (so new users in each region will be added)
+				refreshWorld();
 			}
 			
 			public void onKeyUp(KeyUpEvent event) {
@@ -161,25 +188,40 @@ public class Page implements EntryPoint, ClosingHandler {
 		refreshButton.addClickHandler(new RefreshButtonHandler());
 		
 		// Add all the components to the worldPanel
+		//worldPanel = new VerticalPanel();
 		worldPanel = new VerticalPanel();
 		worldPanel.add(refreshButton);
 		
 		// Add each region as a new panel
 		for (String currentRegion : WorldService.REGIONS) {
-			worldPanel.add(makeRegionPanel(currentRegion));
+			regionPanels.put(currentRegion, makeRegionPanel(currentRegion));
+			
+			worldPanel.add(regionPanels.get(currentRegion));
 		}
 	}
 	
 	/**
-	 * Method to make a UI Panel for a single named region
+	 * Method to make a new UI Panel for a single named region
 	 * This will look up all users in the region and display their mood image, name, and thoughts
 	 * 
 	 * @param region to make a Panel for
 	 * @return the constructed Panel
 	 */
 	private Panel makeRegionPanel(String region) {
-		final Panel toReturn = new VerticalPanel();
-		toReturn.add(makeBoldLabel(region));
+		return makeRegionPanel(region, new VerticalPanel());
+	}
+
+	/**
+	 * Method to clear and repopulate an existing UI Panel for a single named region
+	 * This will look up all users in the region and display their mood image, name, and thoughts
+	 * 
+	 * @param region to make a Panel for
+	 * @param base to rebuild the contents for
+	 * @return the constructed Panel
+	 */
+	private Panel makeRegionPanel(String region, final Panel base) {
+		base.clear();
+		base.add(makeBoldLabel(region));
 		
 		// Get a list of users for this region
 		worldService.getUsersByRegion(region, new AsyncCallback<List<User>>() {
@@ -198,13 +240,13 @@ public class Page implements EntryPoint, ClosingHandler {
 						userPanel.add(new Label(currentUser.getName()));
 						userPanel.add(new Label("'" + currentUser.getMind() + "'"));
 						
-						toReturn.add(userPanel);
+						base.add(userPanel);
 					}
 				}
 			}
 		});
 		
-		return toReturn;
+		return base;
 	}
 	
 	/**
@@ -269,6 +311,31 @@ public class Page implements EntryPoint, ClosingHandler {
 	}
 	
 	/**
+	 * Method to rebuild and redisplay the worldPanel
+	 */
+	public void refreshWorld() {
+		generateWorldPanel();
+		useWorldPanel();
+	}
+	
+	/**
+	 * Method to rebuild a single region panel, so that the users in it will be refreshed
+	 * 
+	 * @param region to refresh
+	 */
+	public void refreshRegion(String region) {
+		Panel toRefresh = regionPanels.get(region);
+		
+		// Either rebuild the panel contents or the entire world
+		if (toRefresh != null) {
+			makeRegionPanel(region, toRefresh);
+		}
+		else {
+			refreshWorld();
+		}
+	}
+	
+	/**
 	 * Generic method to switch the main page view panel
 	 * This will clear the headerLabel and panelContainer of child components
 	 *  then add the new passed components
@@ -300,6 +367,11 @@ public class Page implements EntryPoint, ClosingHandler {
 			}
 			
 			public void onSuccess(Boolean result) {
+				if (pushListener != null) {
+					// Try to remove our old listener for a different continent
+					GWTPushContext.getInstance().removePushEventListenerFromGroup(pushListener, ourUser.getRegion());
+				}
+				
 				ourUser = null;
 			}
 		});
