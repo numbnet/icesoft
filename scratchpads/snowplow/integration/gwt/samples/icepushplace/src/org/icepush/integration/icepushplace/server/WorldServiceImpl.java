@@ -16,6 +16,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 @SuppressWarnings("serial")
 public class WorldServiceImpl extends RemoteServiceServlet implements WorldService {
+	public static final String[] REGIONS = ICEpushPlaceWorld.CONTINENT;
+	
 	private ICEpushPlaceWorld world = null;
 	
 	/**
@@ -166,7 +168,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 			
 			// Loop through all regions in the world
 			// We'll then search in each region for the desired user
-			for (String currentRegion : WorldService.REGIONS) {
+			for (String currentRegion : WorldServiceImpl.REGIONS) {
 				toReturn = getUserInRegion(name, currentRegion);
 				
 				if (toReturn != null) {
@@ -210,7 +212,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.getUsersByRegion
-	 */	
+	 */
 	@Override
 	public List<User> getUsersByRegion(String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
@@ -230,5 +232,13 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		}
 		
 		return null;
+	}
+
+	/**
+	 * @see org.icepush.integration.icepushplace.client.WorldService.getAllRegions
+	 */
+	@Override
+	public String[] getAllRegions() throws IllegalArgumentException {
+		return REGIONS;
 	}
 }

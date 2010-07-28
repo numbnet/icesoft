@@ -15,4 +15,5 @@ public interface WorldServiceAsync {
 	public void getUser(String name, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void getUserInRegion(String name, String region, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void getUsersByRegion(String region, AsyncCallback<List<User>> callback) throws IllegalArgumentException;
+	public void getAllRegions(AsyncCallback<String[]> callback) throws IllegalArgumentException;
 }
