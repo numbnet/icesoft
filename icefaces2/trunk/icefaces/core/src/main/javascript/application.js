@@ -32,6 +32,7 @@ if (!window.ice.icefaces) {
         //include collection.js
         //include hashtable.js
         //include string.js
+        //include delay.js
         //include window.js
         namespace.onLoad = curry(onLoad, window);
         namespace.onUnload = curry(onUnload, window);
@@ -170,14 +171,13 @@ if (!window.ice.icefaces) {
             f.submit = function() {
                 submit(null, f);
             };
-//            f.onsubmit = none;
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
-                    var disabled = document.getElementById(id+":ajaxDisabled");
-                    if ( (disabled) && 
-                         (disabled.value.indexOf(" " + element.id + " ") >= 0) )  {
+                    var disabled = document.getElementById(id + ":ajaxDisabled");
+                    if ((disabled) &&
+                        (disabled.value.indexOf(" " + element.id + " ") >= 0)) {
                         return true;
                     }
                     f.onsubmit = function() {
@@ -189,7 +189,9 @@ if (!window.ice.icefaces) {
             });
 
             if (delta) {
-                f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
+                runOnce(Delay(function() {
+                    f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
+                }, 200));
             }
         };
 
