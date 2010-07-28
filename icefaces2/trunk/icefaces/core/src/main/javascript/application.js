@@ -187,12 +187,11 @@ if (!window.ice.icefaces) {
                     };
                 };
             });
+        };
 
-            if (delta) {
-                runOnce(Delay(function() {
-                    f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
-                }, 200));
-            }
+        namespace.calculateInitialParameters = function(id) {
+            var f = document.getElementById(id);
+            f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
         };
 
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
