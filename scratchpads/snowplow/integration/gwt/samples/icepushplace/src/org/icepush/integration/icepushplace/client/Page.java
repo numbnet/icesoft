@@ -39,10 +39,11 @@ import com.google.gwt.user.client.ui.Widget;
 public class Page implements EntryPoint, ClosingHandler {
     private final WorldServiceAsync worldService = GWT.create(WorldService.class);
     
+    private String[] regions;
     private User ourUser;
     private Panel loginPanel;
     private Panel worldPanel;
-    private HashMap<String,Panel> regionPanels = new HashMap<String,Panel>(WorldService.REGIONS.length);
+    private HashMap<String,Panel> regionPanels;
     
     private PushEventListener pushListener;
     private String entryPushGroup;
@@ -68,10 +69,23 @@ public class Page implements EntryPoint, ClosingHandler {
 	    entryPushGroup = "login" + Random.nextInt(); // Try to keep the group name unique
 	    GWTPushContext.getInstance().addPushEventListener(pushListener, entryPushGroup);
 		
-        // Generate our various panels
-		generateLoginPanel();
-		generateWorldPanel();
-		useLoginPanel();
+		worldService.getAllRegions(new AsyncCallback<String[]>() {
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess(String[] result) {
+				// Store our list of regions
+				regions = result;
+				
+				// Create the map of region panels
+				regionPanels = new HashMap<String,Panel>(regions.length);
+				
+		        // Generate our various panels
+				generateLoginPanel();
+				generateWorldPanel();
+				useLoginPanel();
+			}
+		});
 	}
 	
 	/**
@@ -97,8 +111,8 @@ public class Page implements EntryPoint, ClosingHandler {
 		
 		// Generate the region list
 		final ListBox regionList = new ListBox();
-		for (int i =0 ;i < WorldService.REGIONS.length; i++) {
-			regionList.addItem(WorldService.REGIONS[i]);
+		for (int i = 0; i < regions.length; i++) {
+			regionList.addItem(regions[i]);
 		}
 		
 		// Generate the login button
@@ -143,19 +157,24 @@ public class Page implements EntryPoint, ClosingHandler {
 							// Store our local user
 							ourUser = result;
 							
-							// Push to our login group to refresh the page enough to see our self in the list
-							GWTPushContext.getInstance().push(entryPushGroup);
-							
-							// Add a new push listener for the continent we wish to join
-							pushListener = new PushEventListener() {
-								public void onPushEvent() {
-									refreshRegion(ourUser.getRegion());
-							    }
-						    };
-						    GWTPushContext.getInstance().addPushEventListener(pushListener, ourUser.getRegion());							
-							
 							// Switch to the world panel
 							useWorldPanel();
+							
+							// Push to update the page to show the world panel
+							GWTPushContext.getInstance().push(entryPushGroup);
+							
+							// Add a push listener for every region
+							for (int i = 0; i < regions.length; i++) {
+								final String currentRegion = regions[i];
+								
+								// Make the push listener refresh just the region upon event capture
+								pushListener = new PushEventListener() {
+									public void onPushEvent() {
+										refreshRegion(currentRegion);
+								    }
+							    };
+							    GWTPushContext.getInstance().addPushEventListener(pushListener, currentRegion);
+							}
 						}
 				});
 			}
@@ -193,7 +212,7 @@ public class Page implements EntryPoint, ClosingHandler {
 		worldPanel.add(refreshButton);
 		
 		// Add each region as a new panel
-		for (String currentRegion : WorldService.REGIONS) {
+		for (String currentRegion : regions) {
 			regionPanels.put(currentRegion, makeRegionPanel(currentRegion));
 			
 			worldPanel.add(regionPanels.get(currentRegion));

@@ -15,13 +15,6 @@ public interface WorldService extends RemoteService {
 	// Hardcoded urls used when creating an ICEpushPlaceWorld object
 	public static final String APPLICATION_URL = "http://localhost:18080/icepush-place-gwt";
 	public static final String WEBSERVICE_URL = "http://localhost:18080/icePushPlaceService";
-	// All available regions (aka continents)
-	public static final String[] REGIONS = {"North America",
-											"Europe",
-											"South America",
-											"Asia",
-											"Africa",
-											"Antarctica"};
 	// All available moods
 	public static final String[] MOODS = {"average",
 										  "shocked",
@@ -83,4 +76,12 @@ public interface WorldService extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public List<User> getUsersByRegion(String region) throws IllegalArgumentException;
+	
+	/**
+	 * Method to get the names of all regions
+	 * 
+	 * @return the list of region names
+	 * @throws IllegalArgumentException
+	 */
+	public String[] getAllRegions()  throws IllegalArgumentException;
 }
