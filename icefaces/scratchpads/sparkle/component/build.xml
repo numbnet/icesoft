@@ -97,6 +97,18 @@
 			</delete>
 		</sequential>
 	</macrodef>
+	
+	<macrodef name="concatskin">
+		<attribute name="name"/>
+		<sequential>
+			<concat destfile="${resources}/${skins.lib}/@{name}.css" append="true">
+				<fileset dir="${resources}">
+					<include name="**/@{name}/*.css" />
+					<exclude name="yui/**" />
+				</fileset>
+			</concat>
+		</sequential>
+	</macrodef>
 
   <target name="compile" depends="prepare, generator-dist, compile-meta, generate" 
         description="compile the source " >
@@ -169,6 +181,10 @@
 		<!-- only one of the following will be executed, depending on use.sprites property -->
 		<antcall target="nosprites" />
 		<antcall target="sprites" />
+		
+		<concatskin name="rime" />
+		<concatskin name="sam" />
+		
 	</target>
 	
 	<target name="cssurlmapper" description="Build the CSS URL mapping tool.">
@@ -183,6 +199,9 @@
 		<delete dir="${temp.dir.path}" />
 		<delete includeemptydirs="true">
 			<fileset dir="${resources}/${sprites.lib}" includes="**" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${resources}/${skins.lib}" includes="**" />
 		</delete>
 		<delete file="cache.properties" />
 		
