@@ -21,6 +21,6 @@
   ~
   -->
 
-<Context antiJarLocking="true" antiResourceLocking="true" path="/component-showcase" >
+<Context antiJarLocking="true" antiResourceLocking="true">
 
 </Context>
