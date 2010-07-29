@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" 
+             version="2.0"
+	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces 2: Buttons & Links                                           -->
+    <!-- =================================================================== -->
+
+	<portlet>
+		<portlet-name>buttonsAndLinks</portlet-name>
+		<display-name>ICEfaces 2: Button and Links</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/standard/buttonsAndLinks.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: Buttons and Links</title>
+            <short-title>Buttons and Links</short-title>
+            <keywords>ICEfaces Component Showcase Buttons Links</keywords>
+        </portlet-info>
+	</portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces 2: Text Fields                                             -->
+    <!-- =================================================================== -->
+
+	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: Text Fields</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/standard/textFields.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: Text Fields</title>
+            <short-title>Buttons and Links</short-title>
+            <keywords>ICEfaces Component Showcase Buttons Links</keywords>
+        </portlet-info>
+	</portlet>
+
+</portlet-app>
