@@ -132,7 +132,7 @@ public class GroupRenderer
                 rootSpan.appendChild(script);
                 Map rendererJavascriptDraggable =new HashMap();
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOUT_ATTR,
-                            "Draggable.removeMe(this.id);");
+                        "Ice.Scriptaculous.Draggable.removeMe(this.id);");
                 rendererJavascriptDraggable.put(HTML.ONMOUSEMOVE_ATTR, call );
                 rendererJavascriptDraggable.put(HTML.ONMOUSEOVER_ATTR, dropCall.toString());                
                 
