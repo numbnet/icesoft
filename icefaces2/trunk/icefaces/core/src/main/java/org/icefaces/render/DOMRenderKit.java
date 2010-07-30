@@ -65,7 +65,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     public void addRenderer(String family, String rendererType, Renderer r) {
-        Renderer renderer = deltaSubmit && "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
+        Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         super.addRenderer(family, rendererType, renderer);
     }
 
@@ -85,13 +85,15 @@ public class DOMRenderKit extends RenderKitWrapper {
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
             FormEndRendering.renderIntoForm(context, component);
 
-            ResponseWriter writer = context.getResponseWriter();
-            writer.startElement("script", component);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.writeText("ice.calculateInitialParameters('", null);
-            writer.writeText(component.getClientId(context), null);
-            writer.writeText("');", null);
-            writer.endElement("script");
+            if (deltaSubmit)  {
+                ResponseWriter writer = context.getResponseWriter();
+                writer.startElement("script", component);
+                writer.writeAttribute("type", "text/javascript", null);
+                writer.writeText("ice.calculateInitialParameters('", null);
+                writer.writeText(component.getClientId(context), null);
+                writer.writeText("');", null);
+                writer.endElement("script");
+            }
             super.encodeEnd(context, component);
         }
     }
