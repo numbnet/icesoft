@@ -242,6 +242,7 @@
     <target name="just-ice.jar" depends="gen.component.map, build.bridge">
         <build.jar jar.file.name="just-ice.jar">
             <add.metainfs>
+                <metainf file="conf/META-INF/components.xml"/>
                 <metainf file="conf/META-INF/include.tld"/>
                 <metainf dir="conf/just-ice"/>
             </add.metainfs>
