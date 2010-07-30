@@ -178,7 +178,9 @@ public class SelectInputDateRenderer
     //handled title
     private static final String[] passThruAttributes = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
     //required for popup calendar
-    private static final String[] passThruAttributesWithoutTabindex = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR, HTML.TITLE_ATTR };                        
+    private static final String[] passThruAttributesWithoutTabindex = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR, HTML.TITLE_ATTR };
+
+    private static final String ID_SUFFIX = ":j_idcl";
 
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
@@ -406,7 +408,7 @@ public class SelectInputDateRenderer
                         OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                     FormRenderer.addHiddenField(
                         facesContext,
-                        parentForm.getClientId(facesContext)+ ":_idcl");
+                        parentForm.getClientId(facesContext)+ ID_SUFFIX);
                     PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributesWithoutTabindex);
                     domContext.stepOver();
                     return ;
@@ -1456,7 +1458,7 @@ public class SelectInputDateRenderer
         //this is a fix for bug 340
         UIComponent form = findForm(uiComponent);
         String formId = form.getClientId(facesContext);
-        return formId + ":j_idcl";
+        return formId + ID_SUFFIX;
     }
 
     private int checkLink(Object eventCapturedId, String clickedLink, String clientId) {
