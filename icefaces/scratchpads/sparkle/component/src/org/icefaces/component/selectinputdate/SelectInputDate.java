@@ -15,7 +15,6 @@ import java.io.IOException;
 
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
-        @ResourceDependency(name = "rime/calendar/calendar.css", library = "org.icefaces.component.sprites"),
         @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
