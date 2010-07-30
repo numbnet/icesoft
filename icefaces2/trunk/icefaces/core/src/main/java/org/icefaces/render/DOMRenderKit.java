@@ -28,11 +28,11 @@ import org.icefaces.context.DOMResponseWriter;
 import org.icefaces.event.MainEventListener;
 import org.icefaces.push.Configuration;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.FormEndRendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitWrapper;
 import javax.faces.render.Renderer;
@@ -43,9 +43,8 @@ import java.util.logging.Logger;
 
 public class DOMRenderKit extends RenderKitWrapper {
     private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
-
-    MainEventListener mainEventListener = new MainEventListener();
-    RenderKit delegate;
+    private MainEventListener mainEventListener = new MainEventListener();
+    private RenderKit delegate;
     private boolean deltaSubmit;
 
     //Announce ICEfaces 2.0
@@ -78,26 +77,14 @@ public class DOMRenderKit extends RenderKitWrapper {
         return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
     }
 
-    private class FormBoost extends Renderer {
-        private Renderer renderer;
-
+    private class FormBoost extends RendererWrapper {
         private FormBoost(Renderer renderer) {
-            this.renderer = renderer;
-        }
-
-        public void decode(FacesContext context, UIComponent component) {
-            renderer.decode(context, component);
-        }
-
-        public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-            renderer.encodeBegin(context, component);
-        }
-
-        public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-            super.encodeChildren(context, component);
+            super(renderer);
         }
 
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+            FormEndRendering.renderIntoForm(context, component);
+
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("script", component);
             writer.writeAttribute("type", "text/javascript", null);
@@ -105,19 +92,7 @@ public class DOMRenderKit extends RenderKitWrapper {
             writer.writeText(component.getClientId(context), null);
             writer.writeText("');", null);
             writer.endElement("script");
-            renderer.encodeEnd(context, component);
-        }
-
-        public String convertClientId(FacesContext context, String clientId) {
-            return renderer.convertClientId(context, clientId);
-        }
-
-        public boolean getRendersChildren() {
-            return renderer.getRendersChildren();
-        }
-
-        public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-            return renderer.getConvertedValue(context, component, submittedValue);
+            super.encodeEnd(context, component);
         }
     }
 }

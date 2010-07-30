@@ -31,10 +31,6 @@
     </lifecycle>
     <application>
         <system-event-listener>
-            <system-event-listener-class>com.icesoft.faces.application.OverrideDefaultFormRenderers</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
-        </system-event-listener>
-        <system-event-listener>
             <system-event-listener-class>com.icesoft.faces.application.ExtrasSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
@@ -51,5 +47,5 @@
     <factory>
         <partial-view-context-factory>com.icesoft.faces.context.CompatDOMPartialViewContextFactory
         </partial-view-context-factory>
-    </factory>    
+    </factory>
 </faces-config>
