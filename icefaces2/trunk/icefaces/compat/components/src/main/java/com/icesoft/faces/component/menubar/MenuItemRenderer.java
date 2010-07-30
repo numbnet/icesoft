@@ -1,5 +1,5 @@
 /*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ * Version: MPL 1.1
  *
  * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,16 +18,6 @@
  *
  * Contributor(s): _____________________.
  *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
  */
 
 package com.icesoft.faces.component.menubar; 
@@ -38,8 +28,6 @@ import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
-import com.icesoft.faces.component.ext.HtmlPanelGroup;
-import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -51,7 +39,6 @@ import org.w3c.dom.Node;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -60,8 +47,8 @@ import javax.faces.event.ActionListener;
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 
 public class MenuItemRenderer extends MenuItemRendererBase {
@@ -255,15 +242,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         // delimit ids to force resolution from ids to elements
         if (!(supermenu.equalsIgnoreCase(KEYWORD_NULL)) &&
             !(supermenu.equalsIgnoreCase(KEYWORD_THIS))) {
-            supermenu = "$('" + supermenu + "')";
+            supermenu = "Ice.Prototype.$('" + supermenu + "')";
         }
         if (!(submenu.equalsIgnoreCase(KEYWORD_NULL)) &&
             !(submenu.equalsIgnoreCase(KEYWORD_THIS))) {
-            submenu = "$('" + submenu + "')";
+            submenu = "Ice.Prototype.$('" + submenu + "')";
         }
         if (!(submenuDiv.equalsIgnoreCase(KEYWORD_NULL)) &&
             !(submenuDiv.equalsIgnoreCase(KEYWORD_THIS))) {
-            submenuDiv = "$('" + submenuDiv + "')";
+            submenuDiv = "Ice.Prototype.$('" + submenuDiv + "')";
         }
         return "Ice.Menu.show(" + supermenu + "," + submenu + "," + submenuDiv +
                ");";
@@ -645,7 +632,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
 
         if (call != null) {
-            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ subMenuItemDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( Ice.Prototype.$('" + subMenuItemDiv.getAttribute("id") + "_sub').style.display == 'none') { " + call + "}");
         }   
         if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
             String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
