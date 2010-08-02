@@ -65,7 +65,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     public void addRenderer(String family, String rendererType, Renderer r) {
-        Renderer renderer = deltaSubmit && "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
+        Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         super.addRenderer(family, rendererType, renderer);
     }
 
