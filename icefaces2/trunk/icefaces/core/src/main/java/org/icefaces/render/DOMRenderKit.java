@@ -46,6 +46,10 @@ public class DOMRenderKit extends RenderKitWrapper {
     private MainEventListener mainEventListener = new MainEventListener();
     private RenderKit delegate;
     private boolean deltaSubmit;
+    private Renderer modifiedMessagesRenderer = null;
+    private static final String MESSAGES = "javax.faces.Messages";
+    private static final String MESSAGES_CLASS = 
+            "org.icefaces.faces.renderkit.html_basic.MessagesRenderer";
 
     //Announce ICEfaces 2.0
     static {
@@ -58,6 +62,12 @@ public class DOMRenderKit extends RenderKitWrapper {
         this.delegate = delegate;
         Configuration configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
         deltaSubmit = configuration.getAttributeAsBoolean("deltaSubmit", false);
+        try {
+            modifiedMessagesRenderer = 
+                    (Renderer) Class.forName(MESSAGES_CLASS).newInstance();
+        } catch (Throwable t)  {
+            log.fine("No override for Messages Renderer " + t.toString());
+        }
     }
 
     public RenderKit getWrapped() {
@@ -67,6 +77,13 @@ public class DOMRenderKit extends RenderKitWrapper {
     public void addRenderer(String family, String rendererType, Renderer r) {
         Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         super.addRenderer(family, rendererType, renderer);
+    }
+
+    public Renderer getRenderer(String family, String type)  {
+        if ((null != modifiedMessagesRenderer) && MESSAGES.equals(family) && MESSAGES.equals(type))  {
+            return modifiedMessagesRenderer;
+        }
+        return delegate.getRenderer(family, type);
     }
 
     public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
