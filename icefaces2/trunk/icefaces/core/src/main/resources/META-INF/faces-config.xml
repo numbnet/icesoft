@@ -33,11 +33,6 @@
     <render-kit>
         <render-kit-id>HTML_BASIC</render-kit-id>
         <render-kit-class>org.icefaces.render.DOMRenderKit</render-kit-class>
-        <renderer>
-            <component-family>javax.faces.Messages</component-family>
-            <renderer-type>javax.faces.Messages</renderer-type>
-            <renderer-class>org.icefaces.faces.renderkit.html_basic.MessagesRenderer</renderer-class>
-        </renderer>
     </render-kit>
     <lifecycle>
         <phase-listener>org.icefaces.event.DeltaSubmitPhaseListener</phase-listener>
