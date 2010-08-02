@@ -1,6 +1,7 @@
 <project name="test" default="war">
 
     <property name="classes.dir" value="web/WEB-INF/classes"/>
+    <property name="icefaces2.lib.dir" location="../../../../../../ossrepo/icefaces2/trunk/icefaces/lib"/>
 
     <target name="clean">
         <delete dir="dist"/>
@@ -11,15 +12,13 @@
         <mkdir dir="${classes.dir}"/>
         <javac srcdir="src" destdir="${classes.dir}">
             <classpath>
-                <fileset dir="../../../glimmer/lib">
+                <fileset dir="${icefaces2.lib.dir}">
                     <include name="jsf-api.jar"/>
+                    <include name="el-api-2.2.1-b03.jar"/>
                 </fileset>
                 <fileset dir="../../../sparkle/component/dist">
                     <include name="sparkle-comps.jar"/>
                 </fileset>
-                <fileset dir="../../../../trunk/icefaces/lib">
-                    <include name="el-api.jar"/>
-                </fileset>                 
             </classpath>
         </javac>
     </target>
@@ -28,7 +27,7 @@
         <mkdir dir="dist"/>
         <war basedir="web" destfile="dist/${ant.project.name}.war">
             <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
-            <lib dir="../../../glimmer/lib">
+            <lib dir="${icefaces2.lib.dir}">
                 <include name="icefaces.jar"/>
                 <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
