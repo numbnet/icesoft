@@ -28,10 +28,14 @@ var formOf;
     function resetHiddenFieldsFor(aForm) {
         try {
             each(aForm.elements, function(formElement) {
+                var elName = formElement.name;
                 if (formElement.type == 'hidden' && formElement.id == '' &&
                     formElement.name != 'javax.faces.ViewState' &&
                     formElement.name != 'ice.window' &&
+                    //special case for Portlet bridge
                     formElement.name != 'javax.faces.encodedURL' &&
+                    //special case for MyFaces 2.0
+                    (elName.lastIndexOf("_SUBMIT") != (elName.length - 7)) &&
                     formElement.name != 'ice.view') {
                     formElement.value = '';
                 }
