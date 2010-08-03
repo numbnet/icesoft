@@ -489,6 +489,21 @@ Ice.PanelDivider.adjustPercentBasedHeight = function(divider, isHorizontal) {
         rootElement.style.height = newVal + "px"; 
         $(divider).style.height = newVal + "px";
     }
+    // Based on code from MSDN
+    var ieEngine = null;
+    if (window.navigator.appName == "Microsoft Internet Explorer") {
+        if (document.documentMode) {
+            ieEngine = document.documentMode;
+        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+            ieEngine = 7;
+        } else {
+            ieEngine = 5;
+        }
+    }
+    if (ieEngine == 5 && rootHeight) {
+        Element.previous(divider).style.height = rootHeight;
+        Element.next(divider).style.height = rootHeight;
+    }
 }
 
 //this function recusivly check the height of the parent element, until one found
