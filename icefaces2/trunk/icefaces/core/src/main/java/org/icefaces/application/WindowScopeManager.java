@@ -25,28 +25,27 @@ package org.icefaces.application;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
-
 import org.icepush.PushContext;
 
+import javax.faces.FactoryFinder;
+import javax.faces.application.ResourceHandler;
+import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.application.ResourceHandlerWrapper;
-import javax.faces.application.ResourceHandler;
-import javax.faces.event.PostConstructCustomScopeEvent;
-import javax.faces.event.PreDestroyCustomScopeEvent;
-import javax.faces.event.ScopeContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PreDestroyCustomScopeEvent;
+import javax.faces.event.ScopeContext;
 import javax.faces.lifecycle.Lifecycle;
-import javax.faces.FactoryFinder;
+import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -56,12 +55,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener, HttpSessionListener  {
+public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener, HttpSessionListener {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
@@ -69,13 +67,13 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     private ResourceHandler wrapped;
 
-    public WindowScopeManager(ResourceHandler wrapped)  {
+    public WindowScopeManager(ResourceHandler wrapped) {
         this.wrapped = wrapped;
         //insane bit of code to call addPhaseListener(this)
         //if determineWindowID can run lazily, this PhaseListener approach
         //may not be necessary
         LifecycleFactory factory = (LifecycleFactory)
-            FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+                FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         lifecycle.addPhaseListener(this);
     }
@@ -87,7 +85,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         ExternalContext externalContext = facesContext.getExternalContext();
         String path = externalContext.getRequestServletPath();
-        if (!path.contains("dispose-window"))  {
+        if (!path.contains("dispose-window")) {
             wrapped.handleResourceRequest(facesContext);
             return;
         }
@@ -108,10 +106,10 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         }
     }
 
-    public boolean isResourceRequest(FacesContext facesContext)  {
+    public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         String path = externalContext.getRequestServletPath();
-        if (path.contains("dispose-window"))  {
+        if (path.contains("dispose-window")) {
             return true;
         }
         return wrapped.isResourceRequest(facesContext);
@@ -200,23 +198,34 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         //TODO remove Servlet dependency
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String sessionID = session.getId();
-        PushContext.getInstance((ServletContext) externalContext.getContext())
-                .removeGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, 
-                        id + SESSION_EXPIRY_EXTENSION);
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
         }
+
+        try {
+            ServletContext servletContext = (ServletContext) externalContext.getContext();
+            PushContext pushContext = PushContext.getInstance(servletContext);
+            pushContext.removeGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, id + SESSION_EXPIRY_EXTENSION);
+        } catch (NoClassDefFoundError e) {
+            Log.info("ICEpush library missing. Session expiry notification disabled.");
+        }
     }
 
-    public void sessionCreated(HttpSessionEvent se)   {
+    public void sessionCreated(HttpSessionEvent se) {
     }
 
-    public void sessionDestroyed(HttpSessionEvent se)   {
-        PushContext.getInstance(se.getSession().getServletContext())
-                .push(se.getSession().getId() + SESSION_EXPIRY_EXTENSION);
+    public void sessionDestroyed(HttpSessionEvent se) {
+        try {
+            HttpSession session = se.getSession();
+            ServletContext servletContext = session.getServletContext();
+            PushContext pushContext = PushContext.getInstance(servletContext);
+            pushContext.push(session.getId() + SESSION_EXPIRY_EXTENSION);
+        } catch (NoClassDefFoundError e) {
+            Log.info("ICEpush library missing. Session expiry notification disabled.");
+        }
     }
 
     public static class ScopeMap extends HashMap {
@@ -260,14 +269,18 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             HttpServletRequest request = (HttpServletRequest) context.getRequest();
             HttpServletResponse response = (HttpServletResponse) context.getResponse();
             HttpSession session = (HttpSession) context.getSession(true);
-            String sessionID = session.getId();
-            PushContext pushContext = PushContext.getInstance(
-                    session.getServletContext());
-            //this call will set the browser ID cookie
-            pushContext.createPushId(request, response);
-            pushContext.addGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, 
-                    id + SESSION_EXPIRY_EXTENSION);
             state.windowScopedMaps.put(id, this);
+
+            try {
+                String sessionID = session.getId();
+                PushContext pushContext = PushContext.getInstance(session.getServletContext());
+                //this call will set the browser ID cookie
+                pushContext.createPushId(request, response);
+                pushContext.addGroupMember(sessionID + SESSION_EXPIRY_EXTENSION,
+                        id + SESSION_EXPIRY_EXTENSION);
+            } catch (NoClassDefFoundError e) {
+                Log.info("ICEpush library missing. Session expiry notification disabled.");
+            }
         }
 
         private void disactivate(State state) {
