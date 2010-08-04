@@ -25,6 +25,7 @@
     <property name="java.dir" location="./src/main/java"/>
     <property name="web.dir" location="./src/main/webapp"/>
     <property name="lib.dir" location="../../lib"/>
+    <property name="lib.compat.dir" location="${lib.dir}/../compat/lib"/>
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="res.dir" location="./src/main/resources"/>
@@ -43,6 +44,12 @@
 	        <exclude name="icefaces.jar" unless="ice"/>
             <exclude name="icepush.jar"  unless="push"/>
 	    </patternset>
+    </patternset>
+
+    <patternset id="lib.distribute.compat" 
+                includes="icefaces-compat.jar commons-logging.jar">
+        <exclude name="icefaces-compat.jar"        unless="compat"/>
+        <exclude name="commons-logging.jar"        unless="compat"/>
     </patternset>
 
     <target name="clean">
@@ -83,6 +90,9 @@
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
+            <lib dir="${lib.compat.dir}">
+                <patternset refid="lib.distribute.compat"/>
+            </lib>
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
@@ -109,7 +119,7 @@
     </target>
 
     <target name="war.ice"
-            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
+            description="generate .war file (includes ICEfaces, excludes ICEpush and the JSF libraries)">
         <antcall target="war.basic">
             <param name="ice"  value="true"/>
         </antcall>
@@ -133,7 +143,6 @@
     </target>
 
     <target name="deploy.gf3"
-            depends="war"
             description="copy .war file to Glassfish v3 autodeploy directory">
         <copy todir="${glassfish.v3.deploy}">
             <fileset dir="${dist.dir}">
