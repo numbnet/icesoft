@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+         <ice:outputText value="Input page"/>
+         <ice:panelGrid columns="2">
+         	<ice:outputText value="Please enter your name"/>
+         	<ice:inputText value="#{demo.name}" maxlength="30" size="30" partialSubmit="true" />
+         </ice:panelGrid>
+         <ice:commandButton action="#{demo.doClick}" value="Click me!"/>
+         <hr/>
+</ui:component>
