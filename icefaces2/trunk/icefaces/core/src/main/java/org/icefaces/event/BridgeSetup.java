@@ -141,7 +141,7 @@ public class BridgeSetup implements SystemEventListener {
                 public void encodeEnd(FacesContext context) throws IOException {
                     ResponseWriter writer = context.getResponseWriter();
                     //apply similar fix as for http://jira.icefaces.org/browse/ICE-5728
-                    if (context.isPostback()) {
+                    if (EnvUtils.needViewStateHack() && context.isPostback()) {
                         writer.startElement("input", this);
                         writer.writeAttribute("id", "javax.faces.ViewState", null);
                         writer.writeAttribute("type", "hidden", null);

@@ -120,6 +120,7 @@ public class EnvUtils {
     }
 
     private static boolean icepushPresent;
+    private static boolean mojarraPresent = false;
 
     static {
         try {
@@ -128,12 +129,23 @@ public class EnvUtils {
         } catch (ClassNotFoundException e) {
             icepushPresent = false;
         }
+        try {
+            Class.forName("com.sun.faces.context.FacesContextImpl");
+            mojarraPresent = true;
+        } catch (Throwable t) {
+            mojarraPresent = false;
+        }
     }
 
     public static boolean isICEpushPresent() {
         return icepushPresent;
     }
-    
+
+    //remove this once multi-form ViewState is addressed
+    public static boolean needViewStateHack() {
+        return mojarraPresent;
+    }
+
     public static String[] getPathTemplate()  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map applicationMap = facesContext.getExternalContext()
