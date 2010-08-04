@@ -25,6 +25,7 @@ package org.icefaces.application;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.ConfigurationException;
 
+import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 
 public class ExternalContextConfiguration extends Configuration {
@@ -56,7 +57,8 @@ public class ExternalContextConfiguration extends Configuration {
 
     public String getAttribute(String paramName) throws ConfigurationException {
         String attributeName = postfixWith(paramName);
-        String value = context.getInitParameter(attributeName);
+        //ExternalContext became stale under MyFaces 2.0
+        String value = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(attributeName);
         if (value == null) {
             throw new ConfigurationException("Cannot find parameter: " + attributeName);
         } else {
