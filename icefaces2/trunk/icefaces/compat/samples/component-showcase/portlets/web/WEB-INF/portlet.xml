@@ -81,7 +81,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-columns</portlet-name>
 		<display-name>ICEfaces 2: dataTable-columns</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -104,7 +104,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-commandSortHeader</portlet-name>
 		<display-name>ICEfaces 2: dataTable-commandSortHeader</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -127,7 +127,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-dataExporter</portlet-name>
 		<display-name>ICEfaces 2: dataTable-dataExporter</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -150,7 +150,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-dataScrolling</portlet-name>
 		<display-name>ICEfaces 2: dataTable-dataScrolling</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -173,7 +173,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-expandable</portlet-name>
 		<display-name>ICEfaces 2: dataTable-expandable</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -196,7 +196,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-grouping</portlet-name>
 		<display-name>ICEfaces 2: dataTable-grouping</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -219,7 +219,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-resizableColumns</portlet-name>
 		<display-name>ICEfaces 2: dataTable-resizableColumns</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -242,7 +242,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dataTable-rowSelection</portlet-name>
 		<display-name>ICEfaces 2: dataTable-rowSelection</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -265,7 +265,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>dragDrop</portlet-name>
 		<display-name>ICEfaces 2: dragDrop</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -288,7 +288,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>effects</portlet-name>
 		<display-name>ICEfaces 2: effects</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -311,7 +311,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>gmap</portlet-name>
 		<display-name>ICEfaces 2: gmap</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -334,7 +334,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>inputFile</portlet-name>
 		<display-name>ICEfaces 2: inputFile</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -357,7 +357,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>inputRichText</portlet-name>
 		<display-name>ICEfaces 2: inputRichText</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -380,7 +380,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>menuBar</portlet-name>
 		<display-name>ICEfaces 2: menuBar</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -403,7 +403,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>menuPopup</portlet-name>
 		<display-name>ICEfaces 2: menuPopup</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -426,7 +426,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputChart</portlet-name>
 		<display-name>ICEfaces 2: outputChart</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -449,7 +449,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputConnectionStatus</portlet-name>
 		<display-name>ICEfaces 2: outputConnectionStatus</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -472,7 +472,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputDeclaration</portlet-name>
 		<display-name>ICEfaces 2: outputDeclaration</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -495,7 +495,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputMedia</portlet-name>
 		<display-name>ICEfaces 2: outputMedia</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -518,7 +518,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputProgress</portlet-name>
 		<display-name>ICEfaces 2: outputProgress</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -541,7 +541,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>outputResource</portlet-name>
 		<display-name>ICEfaces 2: outputResource</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -564,7 +564,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>selectInputDate</portlet-name>
 		<display-name>ICEfaces 2: selectInputDate</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -587,7 +587,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>selectInputText</portlet-name>
 		<display-name>ICEfaces 2: selectInputText</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -610,7 +610,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>setEventPhase</portlet-name>
 		<display-name>ICEfaces 2: setEventPhase</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -633,7 +633,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>tree</portlet-name>
 		<display-name>ICEfaces 2: tree</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -656,7 +656,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelBorder</portlet-name>
 		<display-name>ICEfaces 2: panelBorder</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -679,7 +679,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelCollapsible</portlet-name>
 		<display-name>ICEfaces 2: panelCollapsible</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -702,7 +702,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelDivider</portlet-name>
 		<display-name>ICEfaces 2: panelDivider</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -725,7 +725,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelPopup</portlet-name>
 		<display-name>ICEfaces 2: panelPopup</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -748,7 +748,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelPositioned</portlet-name>
 		<display-name>ICEfaces 2: panelPositioned</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -771,7 +771,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelSeries</portlet-name>
 		<display-name>ICEfaces 2: panelSeries</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -794,7 +794,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelStack</portlet-name>
 		<display-name>ICEfaces 2: panelStack</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -817,7 +817,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelTabSet-dynamic</portlet-name>
 		<display-name>ICEfaces 2: panelTabSet-dynamic</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -840,7 +840,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelTabSet-static</portlet-name>
 		<display-name>ICEfaces 2: panelTabSet-static</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
@@ -863,7 +863,7 @@
 	</portlet>
 
   	<portlet>
-		<portlet-name>textFields</portlet-name>
+		<portlet-name>panelTooltip</portlet-name>
 		<display-name>ICEfaces 2: panelTooltip</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
