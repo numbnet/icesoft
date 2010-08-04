@@ -22,6 +22,8 @@
 
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPositioned;
 
+import java.io.Serializable;
+
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
@@ -29,7 +31,7 @@ import com.icesoft.faces.context.effects.Highlight;
  * Simple Persons Object used to store data which is used by the
  * PositionedPanelBean.
  */
-public class PostionedPanelPerson {
+public class PostionedPanelPerson implements Serializable {
 
     private String name;
     private int rank;
