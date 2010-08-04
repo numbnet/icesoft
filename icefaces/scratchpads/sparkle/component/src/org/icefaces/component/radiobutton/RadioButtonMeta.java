@@ -23,6 +23,12 @@ public class RadioButtonMeta {
     
     @Property   
     private String label;
+    
+    @Property
+    private String name;
+    
+    @Property(tlddoc="require groupId that this button belongs to")
+    private String group;
 
     @Property (inherit=true, useTemplate=true)
     private String id;
