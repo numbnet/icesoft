@@ -27,6 +27,42 @@
     <category name="ICEfaces 2">
         <portlet id="buttonsAndLinks"/>
         <portlet id="textFields"/>
+        <portlet id="selectionTags"/>
+        <portlet id="dataTable-columns"/>
+        <portlet id="dataTable-commandSortHeader"/>
+        <portlet id="dataTable-dataExporter"/>
+        <portlet id="dataTable-dataScrolling"/>
+        <portlet id="dataTable-expandable"/>
+        <portlet id="dataTable-grouping"/>
+        <portlet id="dataTable-resizableColumns"/>
+        <portlet id="dataTable-rowSelection"/>
+        <portlet id="dragDrop"/>
+        <portlet id="effects"/>
+        <portlet id="gmap"/>
+        <portlet id="inputFile"/>
+        <portlet id="inputRichText"/>
+        <portlet id="menuBar"/>
+        <portlet id="menuPopup"/>
+        <portlet id="outputChart"/>
+        <portlet id="outputConnectionStatus"/>
+        <portlet id="outputDeclaration"/>
+        <portlet id="outputMedia"/>
+        <portlet id="outputProgress"/>
+        <portlet id="outputResource"/>
+        <portlet id="selectInputDate"/>
+        <portlet id="selectInputText"/>
+        <portlet id="setEventPhase"/>
+        <portlet id="tree"/>
+        <portlet id="panelBorder"/>
+        <portlet id="panelCollapsible"/>
+        <portlet id="panelDivider"/>
+        <portlet id="panelPopup"/>
+        <portlet id="panelPositioned"/>
+        <portlet id="panelSeries"/>
+        <portlet id="panelStack"/>
+        <portlet id="panelTabSet-dynamic"/>
+        <portlet id="panelTabSet-static"/>
+        <portlet id="panelTooltip"/>
     </category>
 
 </display>
