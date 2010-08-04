@@ -152,7 +152,7 @@ public class DynamicTabSetBean implements Serializable {
      * Inner class that represents a tab object with a label, content, and an
      * index.
      */
-    public class Tab {
+    public class Tab implements Serializable  {
         MsgString label;
         MsgString content;
         private int index;
@@ -184,7 +184,7 @@ public class DynamicTabSetBean implements Serializable {
         }          
     }
     
-    public static class MsgString {
+    public static class MsgString implements Serializable  {
         private String msg;
         private boolean isKey;
         private MsgString next;
