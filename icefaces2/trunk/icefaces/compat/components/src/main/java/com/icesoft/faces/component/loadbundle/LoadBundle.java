@@ -86,6 +86,24 @@ public class LoadBundle extends UIOutput implements Serializable{
         oldLocale = currentLocale;
     }
 
+    //TODO: factor encodeBegin and getBundle accounting for side-effects
+    private ResourceBundle getBundle()  {
+        if (null != bundle)  {
+            return bundle;
+        }
+        String newBasename = getBasename();
+        Locale currentLocale = getFacesContext().getViewRoot().getLocale();
+        boolean reloadRequired = !((oldLocale != null) && 
+                oldLocale.getLanguage().equals(currentLocale.getLanguage()))
+            || !oldBasename.equals(newBasename);
+        if (reloadRequired) {
+            bundle = ResourceBundle.getBundle(newBasename.trim(),
+                    currentLocale,
+                    MessageUtils.getClassLoader(this)); 
+        }
+        return bundle;
+    }
+
     public void setBasename(String basename) {
         this.basename = basename;
     }
@@ -142,15 +160,15 @@ public class LoadBundle extends UIOutput implements Serializable{
             }
 
             public boolean containsKey(Object key) {
-                return (null == key)?  false : (null != bundle.getObject(key.toString())) ;
+                return (null == key)?  false : (null != getBundle().getObject(key.toString())) ;
             }
 
             public boolean containsValue(Object value) {
                 boolean found = false;
                 Object currentValue = null;
-                Enumeration keys = bundle.getKeys();
+                Enumeration keys = getBundle().getKeys();
                 while (keys.hasMoreElements()) {
-                    currentValue = bundle.getObject((String) keys.nextElement());
+                    currentValue = getBundle().getObject((String) keys.nextElement());
                     if ( (value == currentValue) ||
                             ((null != currentValue) && currentValue.equals(value))) {
                         found = true;
@@ -162,10 +180,10 @@ public class LoadBundle extends UIOutput implements Serializable{
 
             public Set entrySet() {
                 HashMap entries = new HashMap();
-                Enumeration keys = bundle.getKeys();
+                Enumeration keys = getBundle().getKeys();
                 while (keys.hasMoreElements()) {
                     Object key = keys.nextElement();
-                    Object value = bundle.getObject((String)key);
+                    Object value = getBundle().getObject((String)key);
                     entries.put(key, value);
                 }
                 return entries.entrySet();
@@ -175,7 +193,7 @@ public class LoadBundle extends UIOutput implements Serializable{
                 if (null == key) return null;
                 Object result = null;
                 try {
-                    result = bundle.getObject(key.toString());
+                    result = getBundle().getObject(key.toString());
                 } catch (MissingResourceException mre) {
                     result = "???"+ key + "???";
                 }
@@ -183,12 +201,12 @@ public class LoadBundle extends UIOutput implements Serializable{
             }
 
             public boolean isEmpty() {
-                return !bundle.getKeys().hasMoreElements();
+                return !getBundle().getKeys().hasMoreElements();
             }
 
             public Set keySet() {
                 Set keySet = new HashSet();
-                Enumeration keys = bundle.getKeys();
+                Enumeration keys = getBundle().getKeys();
                 while (keys.hasMoreElements()) {
                     keySet.add(keys.nextElement());
                 }
@@ -208,7 +226,7 @@ public class LoadBundle extends UIOutput implements Serializable{
 
             public int size() {
                 int size = 0;
-                Enumeration keys = bundle.getKeys();
+                Enumeration keys = getBundle().getKeys();
                 while (keys.hasMoreElements()) {
                     keys.nextElement();
                     size++;
@@ -218,15 +236,15 @@ public class LoadBundle extends UIOutput implements Serializable{
 
             public Collection values() {
                 ArrayList values = new ArrayList();
-                Enumeration keys = bundle.getKeys();
+                Enumeration keys = getBundle().getKeys();
                 while(keys.hasMoreElements()) {
-                    values.add(bundle.getObject((String)keys.nextElement()));
+                    values.add(getBundle().getObject((String)keys.nextElement()));
                 }
                 return values;
             }
             
             public int hashCode() {
-                return bundle.hashCode();
+                return getBundle().hashCode();
             }
             
         }
