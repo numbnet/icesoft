@@ -43,8 +43,8 @@ import java.io.Serializable;
 @ViewScoped
 public class ColumnsBean implements Serializable {
 
-    private DataModel columnDataModel;
-    private DataModel rowDataModel;
+    private transient DataModel columnDataModel;
+    private transient DataModel rowDataModel;
     private Map cellMap = new HashMap();
 
     public static final int NUMBER_OF_ITEMS = 24;
@@ -73,10 +73,16 @@ public class ColumnsBean implements Serializable {
     }
 
     public DataModel getRowDataModel() {
+        if (null == rowDataModel)  {
+            generateDataModels();
+        }
         return rowDataModel;
     }
 
     public DataModel getColumnDataModel() {
+        if (null == columnDataModel)  {
+            generateDataModels();
+        }
         return columnDataModel;
     }
 
@@ -219,7 +225,7 @@ public class ColumnsBean implements Serializable {
     /**
      * Utility class used to keep track of the cells in a table.
      */
-    private class CellKey {
+    private class CellKey implements Serializable  {
         private final Object row;
         private final Object column;
 
