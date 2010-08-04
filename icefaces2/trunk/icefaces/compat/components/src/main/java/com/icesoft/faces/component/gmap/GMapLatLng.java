@@ -23,12 +23,13 @@
 package com.icesoft.faces.component.gmap;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-public class GMapLatLng extends UIPanel{
+public class GMapLatLng extends UIPanel implements Serializable  {
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.GMapLatLng";
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.GMapLatLng";
 
