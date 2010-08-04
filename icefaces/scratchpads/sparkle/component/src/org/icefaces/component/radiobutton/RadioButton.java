@@ -11,10 +11,10 @@ import javax.faces.model.SelectItem;
 import java.io.IOException;
 
 @ResourceDependencies({
-    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(name = "rime/radiobutton.css", library = "org.icefaces.component.radiobutton"),
     @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
-    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
-    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-debug.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-debug.js"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
     @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton")    

@@ -4,6 +4,8 @@ import javax.faces.component.UIComponent;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+
+import org.icefaces.component.annotation.Field;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
@@ -27,8 +29,11 @@ public class ButtonGroupMeta {
     @Property (inherit=true, useTemplate=true)
     private String id;
     
+    //not sure this is needed as the string id of the 
+    //selected radio button in the group is stored
+    //in the value property.
     @Property
-    private String selectedRadioId;
+    protected String selectedItemId;
     
     @Property (inherit=true, useTemplate=true)
     private UIComponent binding;  
