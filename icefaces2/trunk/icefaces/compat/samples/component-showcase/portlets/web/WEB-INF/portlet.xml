@@ -79,6 +79,29 @@
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
 	</portlet>
+    
+	<portlet>
+		<portlet-name>selectionTags</portlet-name>
+		<display-name>ICEfaces 2: selectionTags</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/standard/selectionTags.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: selectionTags</title>
+            <short-title>selectionTags</short-title>
+            <keywords>ICEfaces Component Showcase selectionTags</keywords>
+        </portlet-info>
+	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-columns</portlet-name>
