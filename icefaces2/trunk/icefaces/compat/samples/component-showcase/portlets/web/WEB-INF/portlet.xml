@@ -80,4 +80,810 @@
         </portlet-info>
 	</portlet>
 
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-columns</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-columns.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-columns</title>
+            <short-title>dataTable-columns</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-columns</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-commandSortHeader</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-commandSortHeader</title>
+            <short-title>dataTable-commandSortHeader</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-commandSortHeader</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-dataExporter</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-dataExporter.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-dataExporter</title>
+            <short-title>dataTable-dataExporter</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-dataExporter</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-dataScrolling</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-dataScrolling.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-dataScrolling</title>
+            <short-title>dataTable-dataScrolling</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-dataScrolling</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-expandable</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-expandable.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-expandable</title>
+            <short-title>dataTable-expandable</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-expandable</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-grouping</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-grouping.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-grouping</title>
+            <short-title>dataTable-grouping</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-grouping</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-resizableColumns</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-resizableColumns.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-resizableColumns</title>
+            <short-title>dataTable-resizableColumns</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-resizableColumns</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dataTable-rowSelection</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dataTable-rowSelection.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dataTable-rowSelection</title>
+            <short-title>dataTable-rowSelection</short-title>
+            <keywords>ICEfaces Component Showcase dataTable-rowSelection</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: dragDrop</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/dragDrop.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: dragDrop</title>
+            <short-title>dragDrop</short-title>
+            <keywords>ICEfaces Component Showcase dragDrop</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: effects</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/effects.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: effects</title>
+            <short-title>effects</short-title>
+            <keywords>ICEfaces Component Showcase effects</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: gmap</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/gmap.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: gmap</title>
+            <short-title>gmap</short-title>
+            <keywords>ICEfaces Component Showcase gmap</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: inputFile</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/inputFile.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: inputFile</title>
+            <short-title>inputFile</short-title>
+            <keywords>ICEfaces Component Showcase inputFile</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: inputRichText</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/inputRichText.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: inputRichText</title>
+            <short-title>inputRichText</short-title>
+            <keywords>ICEfaces Component Showcase inputRichText</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: menuBar</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/menuBar.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: menuBar</title>
+            <short-title>menuBar</short-title>
+            <keywords>ICEfaces Component Showcase menuBar</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: menuPopup</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/menuPopup.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: menuPopup</title>
+            <short-title>menuPopup</short-title>
+            <keywords>ICEfaces Component Showcase menuPopup</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputChart</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputChart.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputChart</title>
+            <short-title>outputChart</short-title>
+            <keywords>ICEfaces Component Showcase outputChart</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputConnectionStatus</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputConnectionStatus.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputConnectionStatus</title>
+            <short-title>outputConnectionStatus</short-title>
+            <keywords>ICEfaces Component Showcase outputConnectionStatus</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputDeclaration</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputDeclaration.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputDeclaration</title>
+            <short-title>outputDeclaration</short-title>
+            <keywords>ICEfaces Component Showcase outputDeclaration</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputMedia</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputMedia.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputMedia</title>
+            <short-title>outputMedia</short-title>
+            <keywords>ICEfaces Component Showcase outputMedia</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputProgress</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputProgress.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputProgress</title>
+            <short-title>outputProgress</short-title>
+            <keywords>ICEfaces Component Showcase outputProgress</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: outputResource</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/outputResource.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: outputResource</title>
+            <short-title>outputResource</short-title>
+            <keywords>ICEfaces Component Showcase outputResource</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: selectInputDate</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/selectInputDate.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: selectInputDate</title>
+            <short-title>selectInputDate</short-title>
+            <keywords>ICEfaces Component Showcase selectInputDate</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: selectInputText</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/selectInputText.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: selectInputText</title>
+            <short-title>selectInputText</short-title>
+            <keywords>ICEfaces Component Showcase selectInputText</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: setEventPhase</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/setEventPhase.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: setEventPhase</title>
+            <short-title>setEventPhase</short-title>
+            <keywords>ICEfaces Component Showcase setEventPhase</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: tree</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/custom/tree.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: tree</title>
+            <short-title>tree</short-title>
+            <keywords>ICEfaces Component Showcase tree</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelBorder</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelBorder.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelBorder</title>
+            <short-title>panelBorder</short-title>
+            <keywords>ICEfaces Component Showcase panelBorder</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelCollapsible</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelCollapsible.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelCollapsible</title>
+            <short-title>panelCollapsible</short-title>
+            <keywords>ICEfaces Component Showcase panelCollapsible</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelDivider</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelDivider.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelDivider</title>
+            <short-title>panelDivider</short-title>
+            <keywords>ICEfaces Component Showcase panelDivider</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelPopup</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelPopup.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelPopup</title>
+            <short-title>panelPopup</short-title>
+            <keywords>ICEfaces Component Showcase panelPopup</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelPositioned</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelPositioned.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelPositioned</title>
+            <short-title>panelPositioned</short-title>
+            <keywords>ICEfaces Component Showcase panelPositioned</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelSeries</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelSeries.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelSeries</title>
+            <short-title>panelSeries</short-title>
+            <keywords>ICEfaces Component Showcase panelSeries</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelStack</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelStack.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelStack</title>
+            <short-title>panelStack</short-title>
+            <keywords>ICEfaces Component Showcase panelStack</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelTabSet-dynamic</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelTabSet-dynamic.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelTabSet-dynamic</title>
+            <short-title>panelTabSet-dynamic</short-title>
+            <keywords>ICEfaces Component Showcase panelTabSet-dynamic</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelTabSet-static</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelTabSet-static.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelTabSet-static</title>
+            <short-title>panelTabSet-static</short-title>
+            <keywords>ICEfaces Component Showcase panelTabSet-static</keywords>
+        </portlet-info>
+	</portlet>
+
+  	<portlet>
+		<portlet-name>textFields</portlet-name>
+		<display-name>ICEfaces 2: panelTooltip</display-name>
+		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/view.xhtml</value>
+		</init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/WEB-INF/includes/examples/panel/panelTooltip.xhtml</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+        <portlet-info>
+            <title>ICEfaces 2: panelTooltip</title>
+            <short-title>panelTooltip</short-title>
+            <keywords>ICEfaces Component Showcase panelTooltip</keywords>
+        </portlet-info>
+	</portlet>
+
+
 </portlet-app>
