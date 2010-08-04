@@ -47,11 +47,9 @@ public class OutputResourceBean implements Serializable {
 
     public OutputResourceBean() {
         try {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ExternalContext ec = fc.getExternalContext();
-            imgResource = new MyResource(ec, "logo.jpg");
-            pdfResource = new MyResource(ec, "WP_Security_Whitepaper.pdf");
-            pdfResourceDynFileName = new MyResource(ec, "WP_Security_Whitepaper.pdf");
+            imgResource = new MyResource("logo.jpg");
+            pdfResource = new MyResource("WP_Security_Whitepaper.pdf");
+            pdfResourceDynFileName = new MyResource("WP_Security_Whitepaper.pdf");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -96,10 +94,8 @@ class MyResource implements Resource, Serializable {
     private String resourceName;
     private InputStream inputStream;
     private final Date lastModified;
-    private ExternalContext extContext;
 
-    public MyResource(ExternalContext ec, String resourceName) {
-        this.extContext = ec;
+    public MyResource( String resourceName) {
         this.resourceName = resourceName;
         this.lastModified = new Date();
     }
@@ -115,7 +111,9 @@ class MyResource implements Resource, Serializable {
      * com.icesoft.faces.context.FileResource, com.icesoft.faces.context.JarResource.
      */
     public InputStream open() throws IOException {
-        InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
+        InputStream stream = FacesContext.getCurrentInstance()
+                .getExternalContext().getResourceAsStream(
+                        OutputResourceBean.RESOURCE_PATH + resourceName);
         byte[] byteArray = OutputResourceBean.toByteArray(stream);
         inputStream = new ByteArrayInputStream(byteArray);
         return inputStream;
