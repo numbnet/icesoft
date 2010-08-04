@@ -896,6 +896,8 @@ public class TableRenderer
                         nextChild.encodeEnd(facesContext);
                        
                     }
+                } else if (nextChild instanceof UIColumn) {
+                    uiData.setColNumber(uiData.getColNumber() + 1);
                 }
 
             }
