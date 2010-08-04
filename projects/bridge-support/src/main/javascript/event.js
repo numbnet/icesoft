@@ -34,6 +34,10 @@ var type = operator();
 var yes = any;
 var no = none;
 
+function isIEEvent(event) {
+    return event.srcElement && !event.preventDefault;
+}
+
 function Event(event, capturingElement) {
     return object(function(method) {
         method(cancel, function(self) {
@@ -306,11 +310,11 @@ function $event(e, element) {
     if (capturedEvent && capturedEvent.type) {
         var eventType = 'on' + capturedEvent.type;
         if (contains(KeyListenerNames, eventType)) {
-            return window.event ? IEKeyEvent(event, element) : NetscapeKeyEvent(e, element);
+            return isIEEvent(capturedEvent) ? IEKeyEvent(capturedEvent, element) : NetscapeKeyEvent(capturedEvent, element);
         } else if (contains(MouseListenerNames, eventType)) {
-            return window.event ? IEMouseEvent(event, element) : NetscapeMouseEvent(e, element);
+            return isIEEvent(capturedEvent) ? IEMouseEvent(capturedEvent, element) : NetscapeMouseEvent(capturedEvent, element);
         } else {
-            return window.event ? IEEvent(event, element) : NetscapeEvent(e, element);
+            return isIEEvent(capturedEvent) ? IEEvent(capturedEvent, element) : NetscapeEvent(capturedEvent, element);
         }
     } else {
         return UnknownEvent(element);
