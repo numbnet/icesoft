@@ -356,6 +356,36 @@ public class GroupRenderer
                 }
             }
         }
+		if (component instanceof PanelPopup) {
+            PanelPopup popup = (PanelPopup) component;
+            if (popup.isModal()) {
+//                printParams();
+                Map requestMap = context.getExternalContext().getRequestParameterMap();
+                if (requestMap.containsKey(clientId + "_rendered")) {
+                    JavascriptContext.addJavascriptCall(context, "Ice.modal.stop('" + clientId + "');");
+                }
+            }
+        }
+    }
+
+    public static void printParams() {
+        Map paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
+        Iterator it = paramValuesMap.entrySet().iterator();
+        Map.Entry entry;
+        String key;
+        String[] values;
+        while (it.hasNext()) {
+            entry = (Map.Entry) it.next();
+            key = (String) entry.getKey();
+            values = (String[]) entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (int i = 0; i < values.length; i++) {
+                System.out.print(values[i]);
+                System.out.print(", ");
+            }
+            System.out.println();
+		}
     }
 
 
