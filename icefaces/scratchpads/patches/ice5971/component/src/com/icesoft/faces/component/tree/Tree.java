@@ -281,7 +281,7 @@ public class Tree extends UICommand implements NamingContainer {
         IceUserObject iceUserObject = (IceUserObject) userObjectMap
                 .get(ICE_USER_OBJECT);
         if (null == iceUserObject)  {
-            iceUserObject = new IceUserObject(node);
+            iceUserObject = new IceUserObjectMapWrapper(userObjectMap);
             userObjectMap.put(ICE_USER_OBJECT, iceUserObject);
         }
         return iceUserObject;
