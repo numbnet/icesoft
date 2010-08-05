@@ -103,7 +103,7 @@ public class TreeRenderer extends DomBasicRenderer {
                 DefaultMutableTreeNode navigatedNode =
                         treeComponent.getNavigatedNode();
                 IceUserObject userObject =
-                        (IceUserObject) navigatedNode.getUserObject();
+                        Tree.getUserObject(navigatedNode);
                 if (userObject != null) {
                     treeComponent.setNavigationEventType(
                             userObject.isExpanded() ?
@@ -297,7 +297,7 @@ public class TreeRenderer extends DomBasicRenderer {
         // iterate child nodes
         int childCount = current.getChildCount();
         if (childCount > 0 &&
-            ((IceUserObject) current.getUserObject()).isExpanded()) {
+            Tree.getUserObject(current).isExpanded()) {
             // render CHILD div
             Element childDiv = domContext.createElement(HTML.DIV_ELEM);
             childDiv.setAttribute(HTML.NAME_ATTR, "c");
@@ -352,7 +352,7 @@ public class TreeRenderer extends DomBasicRenderer {
         treeComponent.setNodePath(pathToCurrentNode);
 
         // efficiency and simplicity
-        IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
+        IceUserObject userObject = Tree.getUserObject(currentNode);
         if (currentNode.getLevel() == 0 && treeComponent.getTitle() != null) {
             treeNodeDiv.setAttribute(HTML.TITLE_ATTR, treeComponent.getTitle());
         } else {

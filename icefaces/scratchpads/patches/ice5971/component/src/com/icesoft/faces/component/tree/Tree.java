@@ -136,6 +136,11 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public static final String ID_PREFIX = "n-";
 
+    /**
+     * String constant for tree node id prefix.
+     */
+    public static final String ICE_USER_OBJECT = "com.icesoft.faces.IceUserObject";
+
     // private attributes
     transient private DefaultMutableTreeNode navigatedNode;
     private String navigationEventType;
@@ -262,6 +267,24 @@ public class Tree extends UICommand implements NamingContainer {
         restoreChildrenState(facesContext);
 
 
+    }
+
+    /**
+     * @return IceUserObject userObject
+     */
+    public static IceUserObject getUserObject(DefaultMutableTreeNode node) {
+        Object userObject = node.getUserObject();
+        if ( (null == userObject) || (userObject instanceof IceUserObject) )  {
+            return (IceUserObject) userObject;
+        }
+        Map userObjectMap = (Map) userObject;
+        IceUserObject iceUserObject = (IceUserObject) userObjectMap
+                .get(ICE_USER_OBJECT);
+        if (null == iceUserObject)  {
+            iceUserObject = new IceUserObject(node);
+            userObjectMap.put(ICE_USER_OBJECT, iceUserObject);
+        }
+        return iceUserObject;
     }
 
     /**
@@ -1002,7 +1025,7 @@ public class Tree extends UICommand implements NamingContainer {
         }
 
         // recurse currentRoot's children
-        IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
+        IceUserObject userObject = getUserObject(currentNode);
         if (userObject.isExpanded()) {
             int childCount = currentNode.getChildCount();
             for (int childIndex = 0; childIndex < childCount; childIndex++) {
