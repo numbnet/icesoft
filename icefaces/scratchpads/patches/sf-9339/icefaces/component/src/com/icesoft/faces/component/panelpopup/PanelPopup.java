@@ -216,7 +216,7 @@ public class PanelPopup extends HtmlPanelGroup {
 
 	private void stopModal() {
         String caller = new Exception().getStackTrace()[2].getMethodName();
-        if(caller.startsWith("render")) {   
+        if(caller.startsWith("encode") || caller.startsWith("render")) {   
             JavascriptContext.addJavascriptCall(getFacesContext(), 
                 "Ice.modal.stop('" + getClientId(getFacesContext()) + "');");
         }	    
