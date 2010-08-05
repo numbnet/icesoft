@@ -96,12 +96,10 @@ public class TreeDataModel extends DataModel {
         for (int i = 0; i < count; i++) {
             DefaultMutableTreeNode child =
                     (DefaultMutableTreeNode) treeNode.getChildAt(i);
-            ((IceUserObject) child.getUserObject())
-                    .setRowIndex(treeNodeRowIndex++);
-            addNodeToMap(child,
-                         ((IceUserObject) child.getUserObject()).getRowIndex());
+            Tree.getUserObject(child).setRowIndex(treeNodeRowIndex++);
+            addNodeToMap(child, Tree.getUserObject(child).getRowIndex());
 
-            if (((IceUserObject) child.getUserObject()).isExpanded()) {
+            if (Tree.getUserObject(child).isExpanded()) {
                 childCount += treeNode.getChildCount();
                 setChildCount(child);
             }
@@ -118,10 +116,9 @@ public class TreeDataModel extends DataModel {
         treeNodeRowIndex = 0;
         //There will be a root always
         childCount = 1;
-        ((IceUserObject) root.getUserObject()).setRowIndex(treeNodeRowIndex++);
-        addNodeToMap(root,
-                     ((IceUserObject) root.getUserObject()).getRowIndex());
-        if (((IceUserObject) root.getUserObject()).isExpanded()) {
+        Tree.getUserObject(root).setRowIndex(treeNodeRowIndex++);
+        addNodeToMap(root, Tree.getUserObject(root).getRowIndex());
+        if (Tree.getUserObject(root).isExpanded()) {
             childCount += root.getChildCount();
 
         }
