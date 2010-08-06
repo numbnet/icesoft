@@ -71,5 +71,3 @@ ICEfaces component can be configured to run in the respective environment.
    included in the build by default.  If you are using JDK 1.6 it is suggested
    that you used the ant property -DisJDK16 to exclude the JAXB libraries from
    the component-showcase.war
-
-
