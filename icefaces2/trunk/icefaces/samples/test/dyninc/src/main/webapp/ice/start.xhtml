@@ -37,6 +37,18 @@
         <ice2:config render="true" />
          <div id="content">
              <ice:form>
+                 
+                 <ice:panelGrid columns="2">
+                     <ice:outputText value="Response writer:"/>
+                     <ice:outputText value="#{nav.responseWriter}"/>
+
+                     <ice:outputText value="Page path:"/>
+                     <ice:outputText value="#{nav.path}"/>
+
+                     <ice:outputText value="Bean scope:"/>
+                     <ice:outputText value="#{nav.scope}"/>
+                 </ice:panelGrid>
+
              	<ui:include src="/ice/#{nav.path}" />
              </ice:form>
          </div>
