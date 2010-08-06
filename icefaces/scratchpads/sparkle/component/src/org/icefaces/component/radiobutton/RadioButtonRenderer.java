@@ -7,16 +7,13 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.component.utils.BasicInputRenderer;
 import org.icefaces.component.utils.HTML;
-import org.icefaces.util.EnvUtils;
 
 
-public class RadioButtonRenderer extends BasicInputRenderer {
+
+public class RadioButtonRenderer extends Renderer {
 	private final static Logger log = Logger.getLogger(RadioButtonRenderer.class.getName());
     
 	public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -84,28 +81,28 @@ public class RadioButtonRenderer extends BasicInputRenderer {
 		   writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-radio-button yui-button-checked", null);
         else{
            writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-radio-button", null);
-        }
+       }
 		// first child		
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 		//label
 		writer.startElement(HTML.LABEL_ELEM, uiComponent);
-		writer.writeAttribute(HTML.FOR_ATTR, uiComponent, clientId+"_button");
+		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_button", null );
 		writer.write(label);
 		writer.endElement(HTML.LABEL_ELEM);
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.ID_ATTR, uiComponent, clientId+"_button");
+		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
 		
 		//yui sample markup for the buttongroup shows
 		//name is same for all buttons in the group and no id is rendered
 		writer.writeAttribute("name", radioButton.getGroup(), null);
 		writer.writeAttribute(HTML.VALUE_ATTR, radioButton.getValue(), null);
-	  	if (radioButton.isChecked()){
- //    		writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
-	  		writer.write(HTML.CHECKED_ATTR);
-     	}
+//	  	if (radioButton.isChecked()){
+// //    		writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
+//	  		writer.write(HTML.CHECKED_ATTR);
+//     	}
 		
 		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
 		if (radioButton.getImage() != null) {
