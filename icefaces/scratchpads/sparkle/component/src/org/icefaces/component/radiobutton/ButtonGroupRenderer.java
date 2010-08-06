@@ -8,17 +8,17 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.BasicInputRenderer;
 
 
 
-public class ButtonGroupRenderer extends BasicInputRenderer {
+public class ButtonGroupRenderer extends Renderer {
 	private final static Logger log = Logger.getLogger(ButtonGroupRenderer.class.getName());
     
 	public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -102,7 +102,7 @@ public class ButtonGroupRenderer extends BasicInputRenderer {
 	    String params = "'" + clientId + "'," +
            JSONBuilder.create().
            beginMap().
-               entry("type", "radio").
+               entry("name", clientId).
            endMap().toString() 
            + "," +
            JSONBuilder.create().
