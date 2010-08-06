@@ -16,6 +16,9 @@ import org.icefaces.generator.context.GeneratorContext;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.utils.Utility;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 public class ComponentArtifact extends Artifact{
 	private StringBuilder generatedComponentClass = new StringBuilder();;
 	private List<Field> generatedComponentProperties = new ArrayList<Field>();
@@ -43,11 +46,33 @@ public class ComponentArtifact extends Artifact{
 		generatedComponentClass.append("import java.util.Arrays;\n\n");
 		generatedComponentClass.append("import javax.faces.context.FacesContext;\n");
 		generatedComponentClass.append("import javax.el.MethodExpression;\n");
-		generatedComponentClass.append("import javax.el.ValueExpression;\n\n");
+		generatedComponentClass.append("import javax.el.ValueExpression;\n");
+		generatedComponentClass.append("import javax.faces.application.ResourceDependencies;\n");
+		generatedComponentClass.append("import javax.faces.application.ResourceDependency;\n\n");		
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addImportsToComponent(generatedComponentClass);
 		}
 		generatedComponentClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
+		
+		// copy @ResourceDependency annotations
+		if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
+			generatedComponentClass.append("\n");
+			generatedComponentClass.append("@ResourceDependencies({\n");
+			
+			ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
+			ResourceDependency[] rds = rd.value();
+			int rdsLength = rds.length;
+			for (int i = 0; i < rdsLength; i++) {
+				generatedComponentClass.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\")");
+				if (i < (rdsLength-1)) {
+					generatedComponentClass.append(",");
+				}
+				generatedComponentClass.append("\n");
+			}
+			
+			generatedComponentClass.append("})");
+			generatedComponentClass.append("\n\n");
+		}
 
 
 		generatedComponentClass.append("public class ");
