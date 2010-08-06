@@ -29,18 +29,11 @@
               xmlns:ice="http://www.icesoft.com/icefaces/component">
 
     <ice:panelGrid columns="2">
-        <ice:outputText value="Response writer:"/>
-        <ice:outputText value="#{nav.responseWriter}"/>
-
-        <ice:outputText value="Page path:"/>
-        <ice:outputText value="#{nav.path}"/>
-
         <ice:outputText value="Data:"/>
         <ice:outputText value="#{nav.data}"/>
 
         <ice:outputText value="Enter data:"/>
-        <ice:inputText value="#{nav.data}" maxlength="10" size="10"/>
-
+        <ice:inputText value="#{nav.data}" maxlength="10" size="10" partialSubmit="true"/>
     </ice:panelGrid>
 
     <ice:panelGrid columns="3">

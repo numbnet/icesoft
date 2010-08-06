@@ -28,18 +28,11 @@
               xmlns:h="http://java.sun.com/jsf/html">
 
     <h:panelGrid columns="2">
-        <h:outputText value="Response writer:"/>
-        <h:outputText value="#{nav.responseWriter}"/>
-
-        <h:outputText value="Page path:"/>
-        <h:outputText value="#{nav.path}"/>
-
         <h:outputText value="Data:"/>
         <h:outputText value="#{nav.data}"/>
 
         <h:outputText value="Enter data:"/>
         <h:inputText value="#{nav.data}" maxlength="10" size="10"/>
-
     </h:panelGrid>
 
     <h:panelGrid columns="3">
