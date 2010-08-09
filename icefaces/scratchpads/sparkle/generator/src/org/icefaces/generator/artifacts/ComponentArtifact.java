@@ -15,15 +15,19 @@ import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.context.GeneratorContext;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.utils.Utility;
+import java.util.logging.Logger;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 public class ComponentArtifact extends Artifact{
-	private StringBuilder generatedComponentClass = new StringBuilder();;
-	private List<Field> generatedComponentProperties = new ArrayList<Field>();
 
-	public ComponentArtifact(ComponentContext componentContext) {
+    private StringBuilder writer = new StringBuilder();
+
+	private List<Field> generatedComponentProperties = new ArrayList<Field>();
+    private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
+
+    public ComponentArtifact(ComponentContext componentContext) {
 		super(componentContext);
 	}
 
@@ -37,78 +41,86 @@ public class ComponentArtifact extends Artifact{
 		GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
 		GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
 		int classIndicator =  Utility.getClassName(component).lastIndexOf(".");
-		generatedComponentClass.append("package ");
-		generatedComponentClass.append(Utility.getClassName(component).substring(0, classIndicator));
-		generatedComponentClass.append(";\n\n");
-		generatedComponentClass.append("import java.io.IOException;\n");
-		generatedComponentClass.append("import java.util.List;\n");
-		generatedComponentClass.append("import java.util.ArrayList;\n");
-		generatedComponentClass.append("import java.util.Arrays;\n\n");
-		generatedComponentClass.append("import javax.faces.context.FacesContext;\n");
-		generatedComponentClass.append("import javax.el.MethodExpression;\n");
-		generatedComponentClass.append("import javax.el.ValueExpression;\n");
-		generatedComponentClass.append("import javax.faces.application.ResourceDependencies;\n");
-		generatedComponentClass.append("import javax.faces.application.ResourceDependency;\n\n");		
+
+		writer.append("package ");
+		writer.append(Utility.getClassName(component).substring(0, classIndicator));
+		writer.append(";\n\n");
+		writer.append("import java.io.IOException;\n");
+		writer.append("import java.util.List;\n");
+		writer.append("import java.util.ArrayList;\n");
+		writer.append("import java.util.Map;\n");
+		writer.append("import java.util.HashMap;\n");
+		writer.append("import java.util.Arrays;\n\n");
+		writer.append("import javax.faces.context.FacesContext;\n");
+		writer.append("import javax.el.MethodExpression;\n");
+		writer.append("import javax.el.ValueExpression;\n\n");
+		writer.append("import javax.faces.event.PhaseId;\n");
+		writer.append("import javax.faces.component.StateHelper;\n\n");
+
+		writer.append("import javax.faces.application.ResourceDependencies;\n");
+		writer.append("import javax.faces.application.ResourceDependency;\n\n");
+
+
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addImportsToComponent(generatedComponentClass);
+			behavior.addImportsToComponent(writer);
 		}
-		generatedComponentClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
+		writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 		
 		// copy @ResourceDependency annotations
 		if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
-			generatedComponentClass.append("\n");
-			generatedComponentClass.append("@ResourceDependencies({\n");
+			writer.append("\n");
+			writer.append("@ResourceDependencies({\n");
 			
 			ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
 			ResourceDependency[] rds = rd.value();
 			int rdsLength = rds.length;
 			for (int i = 0; i < rdsLength; i++) {
-				generatedComponentClass.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\")");
+				writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\")");
 				if (i < (rdsLength-1)) {
-					generatedComponentClass.append(",");
+					writer.append(",");
 				}
-				generatedComponentClass.append("\n");
+				writer.append("\n");
 			}
 			
-			generatedComponentClass.append("})");
-			generatedComponentClass.append("\n\n");
+			writer.append("})");
+			writer.append("\n\n");
 		}
 
 
-		generatedComponentClass.append("public class ");
-		generatedComponentClass.append(Utility.getClassName(component).substring(classIndicator+1));
-		generatedComponentClass.append(" extends ");
-		generatedComponentClass.append(component.extendsClass());
+		writer.append("public class ");
+		writer.append(Utility.getClassName(component).substring(classIndicator+1));
+		writer.append(" extends ");
+		writer.append(component.extendsClass());
 		String interfaceNames = "";
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			interfaceNames+=behavior.getInterfaceName()+",";
 		}
 		if (!"".equals(interfaceNames)) {
-			generatedComponentClass.append(" implements ");
-			generatedComponentClass.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
+			writer.append(" implements ");
+			writer.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
 		}
 		
-		generatedComponentClass.append("{\n");
+		writer.append("{\n");
 
-		generatedComponentClass.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
+		writer.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
 		String rendererType = null;
 		if (!"null".equals(component.rendererType())) {
 			rendererType = "\""+ component.rendererType() + "\"";
 		}
 
-		generatedComponentClass.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
+		writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
 
-		generatedComponentClass.append("\n\tpublic String getFamily() {\n\t\treturn \"");
-		generatedComponentClass.append(Utility.getFamily(component));
-		generatedComponentClass.append("\";\n\t}\n\n");
+		writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
+		writer.append(Utility.getFamily(component));
+		writer.append("\";\n\t}\n\n");
 	}
 
 
 	private void endComponentClass() {
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addCodeToComponent(generatedComponentClass);
+			behavior.addCodeToComponent(writer);
 		}		
-		generatedComponentClass.append("\n}");
+		writer.append("\n}");
 		createJavaFile();
 
 	}
@@ -123,7 +135,7 @@ public class ComponentArtifact extends Artifact{
 		System.out.println("____package "+ pack);        
 		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
 		System.out.println("____path "+ path);         
-		FileWriter.write("base", path, fileName, generatedComponentClass);        
+		FileWriter.write("base", path, fileName, writer);
 		System.out.println("____________________________Creating component class ends_________________________");
 	}
     
@@ -136,27 +148,27 @@ public class ComponentArtifact extends Artifact{
 
 	private void addPropertyEnum() {
 
-		generatedComponentClass.append("\n\tprotected enum PropertyKeys {\n");    
+		writer.append("\n\tprotected enum PropertyKeys {\n");
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addPropertiesEnumToComponent(generatedComponentClass);
+			behavior.addPropertiesEnumToComponent(writer);
 		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
-			generatedComponentClass.append("\t\t");     
-			generatedComponentClass.append(generatedComponentProperties.get(i).getName()); 
-			generatedComponentClass.append(",\n");            
+			writer.append("\t\t");
+			writer.append(generatedComponentProperties.get(i).getName());
+			writer.append(",\n");
 		}
-		generatedComponentClass.append("\t\t;\n");
-		generatedComponentClass.append("\t\tString toString;\n"); 
-		generatedComponentClass.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");        
-		generatedComponentClass.append("\t\tPropertyKeys() { }\n"); 
-		generatedComponentClass.append("\t\tpublic String toString() {\n");       
-		generatedComponentClass.append("\t\t\treturn ((toString != null) ? toString : super.toString());\n");       
-		generatedComponentClass.append("\t\t}\n\t}\n");   
+		writer.append("\t\t;\n");
+		writer.append("\t\tString toString;\n");
+		writer.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");
+		writer.append("\t\tPropertyKeys() { }\n");
+		writer.append("\t\tpublic String toString() {\n");
+		writer.append("\t\t\treturn ((toString != null) ? toString : super.toString());\n");
+		writer.append("\t\t}\n\t}\n");
 	}
 
 	private void addGetterSetter() {
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addGetterSetter(this,generatedComponentClass);
+			behavior.addGetterSetter(this, writer);
 		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++) {
 			Field field = generatedComponentProperties.get(i);
@@ -164,106 +176,209 @@ public class ComponentArtifact extends Artifact{
 		}
 	}
 
+    /**
+     * Add a getter/setter for the property for a given field. This method writes the
+     * getters to return a Wrapper class for most primitive types, the exceptions being
+     * if the method name has a signature from EditableValueHolder that can't be changed. 
+     * @param field
+     */
 	public void addGetterSetter(Field field) {
 		Property prop = (Property)field.getAnnotation(Property.class);
 
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
 
-		//set
+        
+        // primitive properties are supported (ones with values
+        // even if no default is specified in the Meta). Wrapper properties
+        // (null default and settable values) are also supported
+        // There are four property names which must be forced to be primitive
+        // or else the generated signiture clashes with the property names in
+        // EditableValueHolder
+        boolean isPrimitive = field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+
+          String returnAndArgumentType = field.getType().getName();
+
+        // If primitive property, get the primitive return type
+        // otherwise leave it as is.
+        if (isPrimitive) {
+            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            }
+        }
+
+		// writing Setter
+
 		addJavaDoc(field.getName(), true, prop.javadocSet());
-		generatedComponentClass.append("\tpublic void set");
-		generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-		generatedComponentClass.append(field.getName().substring(1));
+		writer.append("\tpublic void set");
+		writer.append(field.getName().substring(0,1).toUpperCase());
+		writer.append(field.getName().substring(1));
 
-		generatedComponentClass.append("(");
-		if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
-			generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
-		} else {
-			generatedComponentClass.append(field.getType().getName());
-		}
-		generatedComponentClass.append(" ");
-		generatedComponentClass.append(field.getName());
-		generatedComponentClass.append(") {\n\t\tgetStateHelper().put(PropertyKeys.");
-		generatedComponentClass.append(field.getName());
-		generatedComponentClass.append(", ");
-		generatedComponentClass.append(field.getName());
-		generatedComponentClass.append(");\n");
-		generatedComponentClass.append("\t\thandleAttribute(\"");
-		generatedComponentClass.append(field.getName());
-		generatedComponentClass.append("\", ");
-		generatedComponentClass.append(field.getName());
-		generatedComponentClass.append(");\n");
-		generatedComponentClass.append("\t}\n");
+        // Allow java autoconversion to deal with most of the conversion between
+        // primitive types and Wrapper classes
+		writer.append("(");
+        writer.append( returnAndArgumentType );
+		writer.append(" ");
+		writer.append(field.getName());
+		writer.append(") {");
+
+        writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
+        writer.append(field.getName());
+        writer.append(".name() );");
+
+        writer.append("\n\t\tMap clientValues = null;");
+        writer.append("\n\t\tif (ve != null) {");
+        writer.append("\n\t\t\t// map of style values per clientId");
+        writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
+        writer.append( field.getName() );
+        writer.append(" );");
+
+        writer.append("\n\t\t} else { ");
+
+        writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+        writer.append("\n\t\t\tclientValues = (Map) sh.get(PropertyKeys.");
+        writer.append(field.getName() );
+        writer.append(");");
+
+        writer.append("\n\t\t\tif (clientValues == null) {" );
+        writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
+        writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
+        writer.append(field.getName());
+        writer.append(", clientValues ); ");
+        writer.append("\n\t\t\t}");
+        writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
+        writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
+        writer.append("\n\t\t\t\tclientValues.put(\"defValue\",");
+        writer.append(field.getName() );
+        writer.append(");");
+        writer.append("\n\t\t\t} else {");
+        writer.append("\n\t\t\t\tString clientId = getClientId();");
+        writer.append("\n\t\t\t\tclientValues.put(clientId, ");
+        writer.append(field.getName() );
+        writer.append(");" );
+
+        writer.append("\n\t\t\t}" );
+        writer.append("\n\t\t}" );
+        writer.append("\n\t}\n" );
 
 
-
-		//get   
+		//getter   
 
 		addJavaDoc(field.getName(), false, prop.javadocGet());
 
-		generatedComponentClass.append("\tpublic ");
-		if (GeneratorContext.WrapperTypes.containsKey(field.getType().getName().trim())) {
-			generatedComponentClass.append(GeneratorContext.WrapperTypes.get(field.getType().getName()));
-		} else {
-			generatedComponentClass.append(field.getType().getName());
-		}
-		generatedComponentClass.append(" ");
 
+
+        // Internal value representation is always Wrapper type
+        String internalType = returnAndArgumentType;
+        if (GeneratorContext.InvWrapperTypes.containsKey( returnAndArgumentType ) ) {
+            internalType = GeneratorContext.InvWrapperTypes.get( returnAndArgumentType );
+        }
+
+		writer.append("\tpublic ");
+        writer.append( returnAndArgumentType );
+		writer.append(" ");
 
 		if (isBoolean) {
-			generatedComponentClass.append("is");
+			writer.append("is");
 		} else {
-			generatedComponentClass.append("get");                    
+			writer.append("get");
 		}
-		generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-		generatedComponentClass.append(field.getName().substring(1));
-		generatedComponentClass.append("() {\n");
-		generatedComponentClass.append("\t\t return (");
-		generatedComponentClass.append(field.getType().getName());
+		writer.append(field.getName().substring(0,1).toUpperCase());
+		writer.append(field.getName().substring(1));
+		writer.append("() {\n");
 
-		generatedComponentClass.append(") getStateHelper().eval(PropertyKeys.");
-		generatedComponentClass.append(field.getName());
-		String defaultValue = prop.defaultValue();
-		if (!"null".equals(defaultValue)) {
-			generatedComponentClass.append(", ");
-			if (field.getType().getName().endsWith("String") &&
-					prop.defaultValueIsStringLiteral()) {
-				generatedComponentClass.append("\"");
-				generatedComponentClass.append(defaultValue);
-				generatedComponentClass.append("\"");
-			} else {
-				generatedComponentClass.append(defaultValue);
-			}
-		}                  
+        // start of the code
+        writer.append("\n\t\t").append(internalType).append(" retVal = ");
+                                                                                                                              
+        // No defined default value is returned as the string "null". This has to
+        // be handled for various cases. primitives must have a default of some kind
+        // and Strings have to return null (not "null") to work.
+        String defaultValue = prop.defaultValue();
+        Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+                           isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
-		generatedComponentClass.append(");\n\t}\n");
-		
+        if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+            defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+        }
+
+        if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+            writer.append("\"");
+        }
+        writer.append( defaultValue );
+        if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+            writer.append("\"");
+        }
+        writer.append(";");
+
+        // Start of Value Expression code
+        writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
+        writer.append(field.getName());
+        writer.append(".name() );");
+
+
+
+        writer.append("\n\t\tif (ve != null) {" );
+        // For primitives, don't overwrite a default value with a null value obtained from
+        // the value expression. For the stateHelper, we're the ones putting those values
+        // into the map, hence a value wont be found there.
+        if (isPrimitive) {
+            writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
+            writer.append("\n\t\t\tif (o != null) { " );
+            writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+                                       (") o; ");
+            writer.append("\n\t\t\t}"); 
+        } else {
+            writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+                                       (") ve.getValue( getFacesContext().getELContext() ); ");
+        }
+        writer.append("\n\t\t} else {");
+        writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+        writer.append("\n\t\t\tMap clientValues = (Map) sh.get(PropertyKeys.");
+
+        writer.append(field.getName() );
+        writer.append(");");
+        writer.append("\n\t\t\tif( clientValues != null ) { " );
+
+        // differentiate between the case where the map has clientId and it's value is null
+        // verses it not existing in the map at all.
+        writer.append("\n\t\t\t\tString clientId = getClientId();");
+        writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+        writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+        writer.append("\n\t\t\t\t} else if (clientValues.containsKey ( \"defValue\" ) ) { ");
+        writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(\"defValue\" ); ");
+        writer.append("\n\t\t\t\t}");
+        writer.append("\n\t\t\t}");
+        writer.append("\n\t\t}");
+        writer.append("\n\t\treturn retVal;");
+        writer.append("\n\t}\n");
 	}
+
+
 	private void addJavaDoc(String name, boolean isSetter, String doc) {
-		generatedComponentClass.append("\n\t/**\n");
+		writer.append("\n\t/**\n");
 		if (isSetter) {
-			generatedComponentClass.append("\t* <p>Set the value of the <code>");
+			writer.append("\t* <p>Set the value of the <code>");
 		} else {
-			generatedComponentClass.append("\t* <p>Return the value of the <code>");            
+			writer.append("\t* <p>Return the value of the <code>");
 		}
-		generatedComponentClass.append(name);
-		generatedComponentClass.append("</code> property.</p>");                
+		writer.append(name);
+		writer.append("</code> property.</p>");
 		if (doc != null && !"".equals(doc)) {
 			String[] lines = doc.split("\n");
-			generatedComponentClass.append("\n\t* <p>Contents:");
+			writer.append("\n\t* <p>Contents:");
 
 			for (int j=0; j < lines.length; j++){
 				if (j>0) {
-					generatedComponentClass.append("\n\t* ");
+					writer.append("\n\t* ");
 				}
-				generatedComponentClass.append(lines[j]);
+				writer.append(lines[j]);
 				if (j == (lines.length-1)) {
-					generatedComponentClass.append("</p>");
+					writer.append("</p>");
 				}                        
 			}
 		} 
-		generatedComponentClass.append("\n\t*/\n");         
+		writer.append("\n\t*/\n");
 	}
 
 
@@ -275,36 +390,36 @@ public class ComponentArtifact extends Artifact{
 			Facet facet = (Facet)field.getAnnotation(Facet.class);
 			String facetName = field.getName();
 			addJavaDoc(field.getName() + " facet", true, facet.javadocSet());
-			generatedComponentClass.append("\tpublic void set");
-			generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-			generatedComponentClass.append(field.getName().substring(1));
-			generatedComponentClass.append("Facet");
+			writer.append("\tpublic void set");
+			writer.append(field.getName().substring(0,1).toUpperCase());
+			writer.append(field.getName().substring(1));
+			writer.append("Facet");
 
-			generatedComponentClass.append("(");
-			generatedComponentClass.append(field.getType().getName());
-			generatedComponentClass.append(" ");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(") {\n\t\tgetFacets().put(\"");
-			generatedComponentClass.append(facetName);
-			generatedComponentClass.append("\", ");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(");\n");
-			generatedComponentClass.append("\t}\n");
+			writer.append("(");
+			writer.append(field.getType().getName());
+			writer.append(" ");
+			writer.append(field.getName());
+			writer.append(") {\n\t\tgetFacets().put(\"");
+			writer.append(facetName);
+			writer.append("\", ");
+			writer.append(field.getName());
+			writer.append(");\n");
+			writer.append("\t}\n");
 
 
 			//getter
 			addJavaDoc(field.getName() + " facet", false, facet.javadocGet());
-			generatedComponentClass.append("\tpublic ");
-			generatedComponentClass.append(field.getType().getName());
-			generatedComponentClass.append(" ");
-			generatedComponentClass.append("get");                    
-			generatedComponentClass.append(field.getName().substring(0,1).toUpperCase());
-			generatedComponentClass.append(field.getName().substring(1));
-			generatedComponentClass.append("Facet");
-			generatedComponentClass.append("() {\n");
-			generatedComponentClass.append("\t\t return getFacet(\"");
-			generatedComponentClass.append(facetName);
-			generatedComponentClass.append("\");\n\t}\n");            
+			writer.append("\tpublic ");
+			writer.append(field.getType().getName());
+			writer.append(" ");
+			writer.append("get");
+			writer.append(field.getName().substring(0,1).toUpperCase());
+			writer.append(field.getName().substring(1));
+			writer.append("Facet");
+			writer.append("() {\n");
+			writer.append("\t\t return getFacet(\"");
+			writer.append(facetName);
+			writer.append("\");\n\t}\n");
 
 		}
 
@@ -319,105 +434,105 @@ public class ComponentArtifact extends Artifact{
 			Field field = fields.next();
 			org.icefaces.component.annotation.Field fieldAnnotation = (org.icefaces.component.annotation.Field)field.getAnnotation(org.icefaces.component.annotation.Field.class);
 
-			generatedComponentClass.append("\tprotected ");
-			generatedComponentClass.append(field.getType().getName());
-			generatedComponentClass.append(" ");            
-			generatedComponentClass.append(field.getName());
+			writer.append("\tprotected ");
+			writer.append(field.getType().getName());
+			writer.append(" ");
+			writer.append(field.getName());
 			String defaultValue = fieldAnnotation.defaultValue();
 			boolean defaultValueIsStringLiteral = fieldAnnotation.defaultValueIsStringLiteral();            
 			if (!fieldAnnotation.isTransient()) {
 				nonTransientProperties.put(field.getName(), field);
 			}
 			if (!"null".equals(defaultValue)) {
-				generatedComponentClass.append(" = ");
+				writer.append(" = ");
 				if (field.getType().getName().endsWith("String") &&
 						defaultValueIsStringLiteral) {
-					generatedComponentClass.append("\"");
-					generatedComponentClass.append(defaultValue);
-					generatedComponentClass.append("\"");
+					writer.append("\"");
+					writer.append(defaultValue);
+					writer.append("\"");
 				} else {
-					generatedComponentClass.append(defaultValue);
+					writer.append(defaultValue);
 				}
 			}
-			generatedComponentClass.append(";\n");
+			writer.append(";\n");
 
 		}
 
 
 		//write saveState
 		fields = nonTransientProperties.values().iterator();
-		generatedComponentClass.append("\n\tprivate Object[] values;\n");
-		generatedComponentClass.append("\n\tpublic Object saveState(FacesContext context) {\n");
-		generatedComponentClass.append("\t\tif (context == null) {\n");
-		generatedComponentClass.append("\t\t\tthrow new NullPointerException();\n\t\t}");
-		generatedComponentClass.append("\n\t\tif (values == null) {\n");
-		generatedComponentClass.append("\t\t\tvalues = new Object[");
-		generatedComponentClass.append(getComponentContext().getInternalFieldsForComponentClass().values().size()+1);
-		generatedComponentClass.append("];\n\t\t}\n");
-		generatedComponentClass.append("\t\tvalues[0] = super.saveState(context);\n");
+		writer.append("\n\tprivate Object[] values;\n");
+		writer.append("\n\tpublic Object saveState(FacesContext context) {\n");
+		writer.append("\t\tif (context == null) {\n");
+		writer.append("\t\t\tthrow new NullPointerException();\n\t\t}");
+		writer.append("\n\t\tif (values == null) {\n");
+		writer.append("\t\t\tvalues = new Object[");
+		writer.append(getComponentContext().getInternalFieldsForComponentClass().values().size()+1);
+		writer.append("];\n\t\t}\n");
+		writer.append("\t\tvalues[0] = super.saveState(context);\n");
 
 
 		int i=1;
 		while (fields.hasNext()) {
 			Field field = fields.next();
-			generatedComponentClass.append("\t\tvalues[");
-			generatedComponentClass.append(i++);
-			generatedComponentClass.append("] = ");            
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(";\n");
+			writer.append("\t\tvalues[");
+			writer.append(i++);
+			writer.append("] = ");
+			writer.append(field.getName());
+			writer.append(";\n");
 		}
-		generatedComponentClass.append("\t\treturn (values);\n");   
-		generatedComponentClass.append("\t}\n");
+		writer.append("\t\treturn (values);\n");
+		writer.append("\t}\n");
 
 
 
 		//writer restoreState
 		fields = nonTransientProperties.values().iterator();
-		generatedComponentClass.append("\n\tpublic void restoreState(FacesContext context, Object state) {\n");
-		generatedComponentClass.append("\t\tif (context == null) {\n");
-		generatedComponentClass.append("\t\t\tthrow new NullPointerException();\n\t\t}");
-		generatedComponentClass.append("\n\t\tif (state == null) {\n");
-		generatedComponentClass.append("\t\t\treturn;\n\t\t}\n");
-		generatedComponentClass.append("\t\tvalues = (Object[]) state;\n");
-		generatedComponentClass.append("\t\tsuper.restoreState(context, values[0]);\n");
+		writer.append("\n\tpublic void restoreState(FacesContext context, Object state) {\n");
+		writer.append("\t\tif (context == null) {\n");
+		writer.append("\t\t\tthrow new NullPointerException();\n\t\t}");
+		writer.append("\n\t\tif (state == null) {\n");
+		writer.append("\t\t\treturn;\n\t\t}\n");
+		writer.append("\t\tvalues = (Object[]) state;\n");
+		writer.append("\t\tsuper.restoreState(context, values[0]);\n");
 
 
 		i=1;
 		while (fields.hasNext()) {
 			Field field = fields.next();
-			generatedComponentClass.append("\t\t");
-			generatedComponentClass.append(field.getName());
-			generatedComponentClass.append(" = ");
-			generatedComponentClass.append("(");
-			generatedComponentClass.append(field.getType().getName());
-			generatedComponentClass.append(") values["); 
-			generatedComponentClass.append(i++);
-			generatedComponentClass.append("];\n");
+			writer.append("\t\t");
+			writer.append(field.getName());
+			writer.append(" = ");
+			writer.append("(");
+			writer.append(field.getType().getName());
+			writer.append(") values[");
+			writer.append(i++);
+			writer.append("];\n");
 		}
-		generatedComponentClass.append("\t}\n");     
+		writer.append("\t}\n");
 
 	}
 
 	private void handleAttribute() {
-		generatedComponentClass.append("\t\tprivate void handleAttribute(String name, Object value) {\n");
-		generatedComponentClass.append("\t\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
-		generatedComponentClass.append("\t\t\tif (setAttributes == null) {\n");
-		generatedComponentClass.append("\t\t\t\tString cname = this.getClass().getName();\n");
-		generatedComponentClass.append("\t\t\t\tif (cname != null) {\n");
-		generatedComponentClass.append("\t\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
-		generatedComponentClass.append("\t\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
-		generatedComponentClass.append("\t\t\t}\n\t\t}\n");
-		generatedComponentClass.append("\t\tif (setAttributes != null) {\n");
-		generatedComponentClass.append("\t\t\tif (value == null) {\n");
-		generatedComponentClass.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
-		generatedComponentClass.append("\t\t\t\tif (ve == null) {\n");
-		generatedComponentClass.append("\t\t\t\t\tsetAttributes.remove(name);\n");
-		generatedComponentClass.append("\t\t\t}\n");
-		generatedComponentClass.append("\t\t\t\t\t} else if (!setAttributes.contains(name)) {\n");
-		generatedComponentClass.append("\t\t\t\t\t\tsetAttributes.add(name);\n");
-		generatedComponentClass.append("\t\t\t}\n");
-		generatedComponentClass.append("\t\t}\n");
-		generatedComponentClass.append("\t}\n");       
+		writer.append("\t\tprivate void handleAttribute(String name, Object value) {\n");
+		writer.append("\t\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
+		writer.append("\t\t\tif (setAttributes == null) {\n");
+		writer.append("\t\t\t\tString cname = this.getClass().getName();\n");
+		writer.append("\t\t\t\tif (cname != null) {\n");
+		writer.append("\t\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
+		writer.append("\t\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
+		writer.append("\t\t\t}\n\t\t}\n");
+		writer.append("\t\tif (setAttributes != null) {\n");
+		writer.append("\t\t\tif (value == null) {\n");
+		writer.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
+		writer.append("\t\t\t\tif (ve == null) {\n");
+		writer.append("\t\t\t\t\tsetAttributes.remove(name);\n");
+		writer.append("\t\t\t}\n");
+		writer.append("\t\t\t\t\t} else if (!setAttributes.contains(name)) {\n");
+		writer.append("\t\t\t\t\t\tsetAttributes.add(name);\n");
+		writer.append("\t\t\t}\n");
+		writer.append("\t\t}\n");
+		writer.append("\t}\n");
 	}
 
 	public void build() {
