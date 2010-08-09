@@ -137,15 +137,13 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             }
         }
 
-        String submittingElement = ((String[]) submittedParameters.get("javax.faces.source"))[0];
         //remove parameters that don't participate in the parameter diffing
         Map newPreviousParameters = new HashMap(parameterValuesMap);
         Iterator directParameterIterator = directParameters.iterator();
         while (directParameterIterator.hasNext()) {
             String parameterName = (String) directParameterIterator.next();
-            //make sure parameter corresponding to the submitting (source) element participates in parameter diffing
-            //this direct parameter is serialized additionally by iceSubmit/iceSubmitPartial functions
-            if (!parameterName.equals(submittingElement)) {
+            //don't remove parameter when it also participates in the parameter diffing
+            if (!submittedParameters.containsKey("patch+" + parameterName)) {
                 newPreviousParameters.remove(parameterName);
             }
         }
