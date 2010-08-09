@@ -7,6 +7,8 @@ import org.icefaces.component.annotation.Property;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName ="radiobutton",
@@ -19,6 +21,16 @@ import javax.faces.model.SelectItemGroup;
 		componentFamily="com.icesoft.faces.RadioButton"
         )
         
+@ResourceDependencies({
+    @ResourceDependency(name = "rime/radiobutton.css", library = "org.icefaces.component.radiobutton"),
+    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-debug.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-debug.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+    @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton")    
+})
+
 public class RadioButtonMeta {
     
     @Property   

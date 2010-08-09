@@ -6,6 +6,9 @@ import javax.el.MethodExpression;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
   @Component(
         tagName ="commandLink",
           componentClass ="org.icefaces.component.commandlink.CommandLink",
@@ -16,6 +19,18 @@ import org.icefaces.component.annotation.Property;
           generatedClass = "org.icefaces.component.commandlink.CommandLinkBase",
           componentFamily="com.icesoft.faces.CommandLink"
           )
+
+@ResourceDependencies({
+	@ResourceDependency(library = "yui/2_8_1", name = "button/assets/skins/sam/button.css"),
+    @ResourceDependency(library = "yui/2_8_1", name = "logger/assets/skins/sam/logger.css"),
+    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "logger/logger-min.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="commandlink.js",library="org.icefaces.component.commandlink")
+})
 
   public class CommandLinkMeta {
 

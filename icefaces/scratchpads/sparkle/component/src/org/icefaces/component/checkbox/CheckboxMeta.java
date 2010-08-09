@@ -4,7 +4,8 @@ package org.icefaces.component.checkbox;
 import javax.faces.component.UIComponent;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
-
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -18,6 +19,17 @@ import org.icefaces.component.annotation.Property;
 		componentFamily="com.icesoft.faces.Checkbox"
         )
         
+@ResourceDependencies({
+
+	    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+	    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+	    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+	    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+		@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+	    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+        @ResourceDependency(name="checkbox.js",library="org.icefaces.component.checkbox")    
+
+})
 
 public class CheckboxMeta {
     

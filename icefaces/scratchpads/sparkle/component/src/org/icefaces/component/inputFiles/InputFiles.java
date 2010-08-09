@@ -22,7 +22,6 @@
 
 package org.icefaces.component.inputFiles;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
@@ -37,7 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.text.MessageFormat;
 
-@ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
 public class InputFiles extends InputFilesBase {
     private static final String INFO_KEY = "org.icefaces.component.inputFiles.infos";
     private static final String EVENT_KEY = "org.icefaces.component.inputFiles.events";

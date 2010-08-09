@@ -5,6 +5,9 @@ import javax.el.MethodExpression;
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 // Each Meta class requires a @Component annotation
 @Component(
         // The tag name, as it will be used in view definitions (.xhtml files)
@@ -26,6 +29,39 @@ import org.icefaces.component.annotation.Property;
         componentFamily="com.icesoft.faces.Slider",
         tlddoc="This is an extension of YUI's slider component."
     )
+	
+@ResourceDependencies({
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider"),
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="yui/yui-later-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="event-custom/event-custom-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="attribute/attribute-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="event/event-base-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="pluginhost/pluginhost-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="dom/dom-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="node/node-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="event/event-delegate-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="event/event-focus-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="base/base-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="classnamemanager/classnamemanager-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="widget/widget-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="yui/yui-throttle-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="dd/dd-ddm-base-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="dd/dd-drag-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="dd/dd-constrain-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="dump/dump-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="substitute/substitute-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="slider/slider-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="intl/intl-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="slider/assets/skins/sam/slider.css",library="yui/3_1_1"),
+	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1")
+})
+
 public class SliderMeta {
     // Every java field in the Meta class can be annotated to become either a
     //  Property, Field or Facet, in the generatedClass.

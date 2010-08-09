@@ -9,6 +9,8 @@ import org.icefaces.component.annotation.Field;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName ="buttongroup",
@@ -21,6 +23,15 @@ import javax.faces.model.SelectItemGroup;
 		componentFamily="com.icesoft.faces.RadioButton"
         )
         
+@ResourceDependencies({
+    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+    @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton")    
+})
+
 public class ButtonGroupMeta {
     
     @Property   

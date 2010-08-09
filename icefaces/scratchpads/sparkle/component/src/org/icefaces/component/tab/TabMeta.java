@@ -8,6 +8,8 @@ import org.icefaces.component.annotation.Facets;
 import org.icefaces.component.annotation.Properties;
 import org.icefaces.component.annotation.Property;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(tagName ="tab",
         componentClass ="org.icefaces.component.tab.Tab",
@@ -16,6 +18,15 @@ import org.icefaces.component.annotation.Property;
         generatedClass = "org.icefaces.component.tab.TabBase",
         componentFamily="com.icesoft.faces.TabSet"
         )
+		
+@ResourceDependencies({
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
+    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab"),    
+    @ResourceDependency(name = "animation/animation-min.js",library = "yui/2_8_1")
+})
+
 public class TabMeta {
     @Property   
     private String label;
