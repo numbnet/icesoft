@@ -81,4 +81,18 @@ class ViewsPageBidiMap {
         viewsOnPage.clear();
         pageForView.clear();
     }
+
+    public String toString() {
+        return super.toString() + 
+                "\n  views on page: " + viewsOnPage +
+                "\n  page for view: " + pageForView;
+    }
+
+    public void remove(View view) {
+        Object pageId = pageForView.remove(view);
+        if( pageId != null ){
+            viewsOnPage.remove(pageId);
+        }
+
+    }
 }
