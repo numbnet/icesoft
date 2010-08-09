@@ -44,21 +44,30 @@
                 <ann:commandLink href="http://google.com" >Google.com</ann:commandLink>   <p></p>
 
             </h:form>
+
+            The following two items are in the same form to test single submit. 
+            <hr></hr>
+
             <h:form id="frm2">
                 This link should only toggle the employee image <br></br>
-                <ann:commandLink value="click me" actionListener="#{linkBean.actionListenerMethod}" >Link with actionListener only  </ann:commandLink>
+                <ann:commandLink value="click me" actionListener="#{linkBean.actionListenerMethod}" >
+                        Link with actionListener only  </ann:commandLink>
                 <p></p>
-            </h:form>
 
-            <h:form id="frm3">
                 A single submit link with actionOnly <br></br>
-                <ann:commandLink value="click me" singleSubmit="true" actionListener="#{linkBean.actionListenerMethod}" >Single Submit action  </ann:commandLink>
+                <ann:commandLink value="click me" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" >Single Submit action
+                    <!--<f:param name="fartyTowel" value="10" /> -->
+                </ann:commandLink>
                 <p></p>
             </h:form>
 
+            <hr></hr>
             <h:form id="frm4">
                 This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
-                <ann:commandLink  href="http://www.google.ca" actionListener="#{linkBean.hrefAndActionMethod}" >Link with actionListener and HREF defined
+                <ann:commandLink  href="http://www.google.ca"
+                                  actionListener="#{linkBean.hrefAndActionMethod}"
+                                  NoSuchAttribute ="TROGLADYTE LADY" >Link with actionListener and HREF defined
+
                 </ann:commandLink>
 
                 <p></p>
