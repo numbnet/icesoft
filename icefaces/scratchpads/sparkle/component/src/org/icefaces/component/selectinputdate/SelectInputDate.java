@@ -1,7 +1,5 @@
 package org.icefaces.component.selectinputdate;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
@@ -13,23 +11,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.io.IOException;
 
-@ResourceDependencies({
-        @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
-        @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
-//        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
-//        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
-//        @ResourceDependency(library = "yui/2_8_1", name = "event/event-debug.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "calendar/calendar-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "container/container-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
-        @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
-        @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
-        @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
-        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
-})
 public class SelectInputDate extends SelectInputDateBase {
     
     // Copied from 1.8.2

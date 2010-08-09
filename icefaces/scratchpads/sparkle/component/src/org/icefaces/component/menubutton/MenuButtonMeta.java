@@ -9,6 +9,8 @@ import javax.el.MethodExpression;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName ="menubutton",
@@ -21,6 +23,22 @@ import javax.faces.model.SelectItemGroup;
 		componentFamily="com.icesoft.faces.MenuButton"
         )
         
+@ResourceDependencies({
+	@ResourceDependency(name = "sam/menu/fonts-min.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(name = "sam/menu/menu.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(library = "yui/2_8_1", name="yuiloader/yuiloader-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name="yuiloader/dom-min.js"),   
+    @ResourceDependency(library = "yui/2_8_1", name = "event/event-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "container/container_core-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "menu/menu.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),   
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+    @ResourceDependency(name="menubutton.js",library="org.icefaces.component.menubutton")    
+})
+
 public class MenuButtonMeta {  
 	
     @Property(defaultValue="false")    

@@ -6,8 +6,6 @@ import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -16,13 +14,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-@ResourceDependencies({
-    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
-    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
-    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab"),    
-    @ResourceDependency(name = "animation/animation-min.js",library = "yui/2_8_1")
-})
 public class TabSet extends TabSetBase {
     
     public TabSet() {

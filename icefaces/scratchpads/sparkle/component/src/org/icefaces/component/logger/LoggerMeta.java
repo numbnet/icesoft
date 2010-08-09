@@ -7,6 +7,9 @@ import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import java.util.List;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
         tagName ="logger",
         componentClass ="org.icefaces.component.Logger.Logger",
@@ -18,6 +21,16 @@ import java.util.List;
 		componentFamily="com.icesoft.faces.Logger"
         )
         
+@ResourceDependencies({
+    @ResourceDependency(library = "yui/2_8_1", name = "logger/assets/skins/sam/logger.css"),
+    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "logger/logger-min.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+    @ResourceDependency(name="logger.js",library="org.icefaces.component.logger")
+})
+
 public class LoggerMeta {
 //    
 //    @Property   

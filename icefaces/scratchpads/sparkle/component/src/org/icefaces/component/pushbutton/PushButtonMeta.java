@@ -7,6 +7,9 @@ import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import java.util.List;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
         tagName ="pushbutton",
         componentClass ="org.icefaces.component.pushbutton.PushButton",
@@ -17,6 +20,16 @@ import java.util.List;
         generatedClass = "org.icefaces.component.pushbutton.PushButtonBase",
 		componentFamily="com.icesoft.faces.PushButton"
         )
+		
+@ResourceDependencies({
+    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
+    @ResourceDependency(name="pushbutton.js",library="org.icefaces.component.pushbutton")
+})
         
 public class PushButtonMeta {
     
