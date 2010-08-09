@@ -41,6 +41,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map;
 
+import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicLong;
+
 /**
  * This is the default implementation of the AssociatedPageViews interface.  It has logic for handling
  * all aspects of the associated views except for determining the portal page name/id.  Implementations
@@ -52,6 +54,9 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
 
     private ViewsPageBidiMap bidi = new ViewsPageBidiMap();
     private static Class impl;
+
+    public static final String VIEW_GROUP = "com.icesoft.faces.portlet.viewId";
+    private AtomicLong counter = new AtomicLong(0);
 
     public abstract String getPageId() throws Exception;
 
@@ -112,7 +117,11 @@ public abstract class AssociatedPageViewsImpl implements AssociatedPageViews {
                 log.debug("disposed " + v.toString());
             }
         }
-        bidi.clear();
+        bidi.remove(view);
+    }
+
+    protected long getNextCounter(){
+        return counter.getAndIncrement();    
     }
 }
 

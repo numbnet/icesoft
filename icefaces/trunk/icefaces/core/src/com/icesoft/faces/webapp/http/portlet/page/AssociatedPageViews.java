@@ -40,7 +40,7 @@ import java.util.Map;
  * In a portlet environment, there can be multiple views on a single page.  It's generally desirable that, when
  * one view is disposed due to navigation or closing a window/tab that all the associated views of that portal
  * page are also disposed.  To do that, we need to track all the views associated with the page. However, since
- * there is no specified way to determine which page a portlet/view is on, the strategy for finding out are
+ * there is no specified way to determine which page a portlet/view is on, the strategy for finding out is
  * specific to the container.
  * <p/>
  * To support this feature in a portal container, you should do the following:
