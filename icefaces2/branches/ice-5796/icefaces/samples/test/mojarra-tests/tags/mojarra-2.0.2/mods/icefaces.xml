@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+            
+<project name="icefaces-test-extension" basedir=".">
+	<!--
+	    Adjust this property to match the location of the ICEfaces 2 root in the repository
+	-->
+    <property name="icefaces.root"
+              location="/Users/deryk/Repo/svn/ossrepo/icefaces/scratchpads/glimmer"/> 
+
+    
+    <!-- Locations of all the relevant ICEfaces 2 libraries -->
+    <property name="icefaces.lib"
+              value="${icefaces.root}/lib/icefaces.jar"/>    
+    <property name="icepush.lib"
+              value="${icefaces.root}/lib/icepush.jar"/>    
+    <property name="icefaces-compat.lib"
+              value="${icefaces.root}/compat/lib/icefaces-compat.jar"/>    
+    <property name="icefaces-comps-compat.lib"
+              value="${icefaces.root}/compat/lib/icefaces-comps-compat.jar"/> 
+    
+    <!-- 
+        This property includes the specific ICEfaces jars to add to the webapp
+    -->
+    
+    <!-- -->
+    <property name="icefaces.jars" value="${icefaces.lib}"/>   
+     
+    
+    <!--  
+    <property name="icefaces.jars" value=""/>  
+          -->       
+
+
+</project>
