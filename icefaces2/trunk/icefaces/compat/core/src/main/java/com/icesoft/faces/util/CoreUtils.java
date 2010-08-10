@@ -24,6 +24,7 @@ package com.icesoft.faces.util;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.io.Serializable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -150,13 +151,17 @@ public class CoreUtils {
             //it to the default messages map
             if (messages == null || !messages.hasNext()) {
                 if(input.getAttributes().get(localFacesMsgId) != null) {
-                    message = (FacesMessage) input.getAttributes().get(localFacesMsgId);
-                    facesContext.addMessage(clientId, message);
+                    message = ((FacesMessageHolder) input.getAttributes()
+                            .get(localFacesMsgId)).message;
+                    if (null != message) {
+                        facesContext.addMessage(clientId, message);
+                    }
                 }
             } else {//if found, then store it to the component's message map,
                 //so can be served later.
                 message = (FacesMessage) messages.next();
-                input.getAttributes().put(localFacesMsgId,message );
+                input.getAttributes().put(localFacesMsgId, 
+                    new FacesMessageHolder(message) );
             }
         } else { //component is valid, so remove the old message.
             input.getAttributes().remove(localFacesMsgId);
@@ -278,4 +283,14 @@ public class CoreUtils {
             return null;
         }        
     }    
+}
+
+//remove this once FacesMessage.Severity is Serializable
+//see https://javaserverfaces.dev.java.net/issues/show_bug.cgi?id=1766
+class FacesMessageHolder implements Serializable {
+    transient FacesMessage message;
+    
+    public FacesMessageHolder(FacesMessage message)  {
+        this.message = message;
+    }
 }
