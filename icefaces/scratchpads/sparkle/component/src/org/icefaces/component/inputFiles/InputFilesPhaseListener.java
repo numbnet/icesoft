@@ -24,11 +24,11 @@ package org.icefaces.component.inputFiles;
 
 import org.icefaces.context.DOMPartialViewContext;
 import org.icefaces.util.CoreUtils;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.ProgressListener;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
+import org.icefaces.apache.commons.fileupload.FileItemStream;
+import org.icefaces.apache.commons.fileupload.FileItemIterator;
+import org.icefaces.apache.commons.fileupload.ProgressListener;
+import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.icefaces.apache.commons.fileupload.util.Streams;
 
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -126,7 +126,6 @@ public class InputFilesPhaseListener implements PhaseListener {
 //        System.out.println("InputFilesPhaseListener.beforePhase()  isMultipart: " + isMultipart);
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
-            uploader.setFileSizeMax(100000000L);
             uploader.setProgressListener(new ProgressListener() {
                 private long lastPercent = 0;
                 public void update(long read, long total, int chunkIndex) {
