@@ -27,6 +27,7 @@ import org.icefaces.component.annotation.Component;
 import javax.el.MethodExpression;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.application.ResourceDependencies;
 
 @Component(
     tagName         = "inputFiles",
@@ -39,8 +40,9 @@ import javax.faces.application.ResourceDependency;
     componentFamily = "org.icefaces.faces.InputFiles"
 )
 
-@ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
-
+@ResourceDependencies({
+    @ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
+})
 public class InputFilesMeta {
     @Property(defaultValue="false",
         tlddoc="Default is false, means uses full submit.")
