@@ -994,7 +994,9 @@ Ice.modal = {
             Ice.modal.stopRunning(target);
             Ice.modal.zIndexCount -= 3;
             if (Ice.modal.trigger) {
-                Ice.Focus.setFocus(Ice.modal.trigger);
+                if (Ice.Focus && Ice.Focus.setFocus) {
+                    Ice.Focus.setFocus(Ice.modal.trigger);
+                }
                 Ice.modal.trigger = '';
             }
         }
@@ -4667,7 +4669,9 @@ Ice.PanelConfirmation = Class.create({
         Ice.modal.stop(this.panel.id);
         Ice.autoCentre.stop(this.panel.id);
         Draggable.removeMe(this.panel.id);
-        Ice.Focus.setFocus(this.srcComp.id);
+        if (Ice.Focus && Ice.Focus.setFocus) {
+            Ice.Focus.setFocus(this.srcComp.id);
+        }
     },
     handleDraggableObject: function() {
         if (this.isDraggable) {
