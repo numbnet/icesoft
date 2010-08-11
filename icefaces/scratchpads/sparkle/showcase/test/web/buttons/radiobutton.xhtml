@@ -17,12 +17,14 @@
 <h:body styleClass="ice-skin-rime">
   
          <h2>RadioButton Demo</h2>   
-
+<fieldset id="RadioButtonSubmitFalseForm">
+  <legend>Radio Button Group single submit false</legend>
   <h:form id="radioButtonForm">
        <ann:logger rendered="false"/> 
 	<br/>
 	<h:panelGroup id="radioPanel1">
 	  <ann:buttongroup id="buttongroup1" 
+	     value="#{button.selectedRadio}"
 	     valueChangeListener="#{button.showValues}">
 	    <ann:radiobutton id="radio1" group="buttongroup1" label="One" 
 	       value="Radio 1" />
@@ -34,14 +36,21 @@
 	  <ann:pushbutton id="submitbutton" value="submit"
 	    label="submit" singleSubmit="false"/>
 	</h:panelGroup>
-	<br />
    </h:form>
+  <h:panelGroup id="showselectedRadio">
+      <h:outputText id="actualValueForm1" value="SelectedValue form 1 is #{button.selectedRadio}"/>
+  </h:panelGroup>
+</fieldset>  
   
-
+ <br />
+ <fieldset id="RadioButtonSubmitFalseForm">
+  <legend>Radio Button Group single submit true</legend>
    <h:form id="radio2form">
    <ann:logger rendered="false"/> 
      <h:panelGroup id="radioPanel2">
-	  <ann:buttongroup id="buttongroup2" singleSubmit="true">
+	  <ann:buttongroup id="buttongroup2" 
+	    value="#{button.selectedRadio2}"
+	    singleSubmit="true">
 	    <ann:radiobutton id="radio1" group="buttongroup2" label="A" 
 	       value="Radio 2-1" />
 	    <ann:radiobutton id="radio2" group="buttongroup2" label="B"
@@ -51,7 +60,10 @@
 	  </ann:buttongroup>
 	</h:panelGroup>
    </h:form>   
-
+ <h:panelGroup id="showselectedRadio2">
+      <h:outputText id="actualValueForm2" value="SelectedValue form 2 is #{button.selectedRadio2}"/>
+  </h:panelGroup>
+ </fieldset>
   <br />
   <h:panelGroup id="linkstoOtherpages">
          <a href="../index.html"> Goto Main page </a>  <br /> 
