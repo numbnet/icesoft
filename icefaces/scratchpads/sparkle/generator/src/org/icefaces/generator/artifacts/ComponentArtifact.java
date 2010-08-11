@@ -75,7 +75,7 @@ public class ComponentArtifact extends Artifact{
 			ResourceDependency[] rds = rd.value();
 			int rdsLength = rds.length;
 			for (int i = 0; i < rdsLength; i++) {
-				writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\")");
+				writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\",target=\"" + rds[i].target() + "\")");
 				if (i < (rdsLength-1)) {
 					writer.append(",");
 				}
@@ -84,8 +84,10 @@ public class ComponentArtifact extends Artifact{
 			
 			writer.append("})");
 			writer.append("\n\n");
+		} else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
+			ResourceDependency rd = (ResourceDependency) clazz.getAnnotation(ResourceDependency.class);
+			writer.append("@ResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
 		}
-
 
 		writer.append("public class ");
 		writer.append(Utility.getClassName(component).substring(classIndicator+1));
