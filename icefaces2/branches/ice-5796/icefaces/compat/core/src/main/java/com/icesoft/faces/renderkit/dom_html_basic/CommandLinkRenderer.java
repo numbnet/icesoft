@@ -200,6 +200,26 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         return buffer.toString();
     }
 
+    protected static String getJavascriptReset(
+            FacesContext facesContext,
+            UICommand uiCommand, Map parameters) {
+        StringBuffer buffer;
+//        buffer = new StringBuffer("var form=formOf(this);form['");
+        //assume getJavaScriptReset always appended after getJavascriptHiddenFieldSetters
+        buffer = new StringBuffer("form['");
+        buffer.append(deriveCommonHiddenFieldName(facesContext, uiCommand));
+        buffer.append("'].value='';");
+        Iterator parameterKeys = parameters.keySet().iterator();
+        while (parameterKeys.hasNext()) {
+            String nextParamName = (String) parameterKeys.next();
+            Object nextParamValue = parameters.get(nextParamName);
+            buffer.append("form['");
+            buffer.append(nextParamName);
+            buffer.append("'].value='';");
+        }
+        return buffer.toString();
+    }
+
     public boolean getRendersChildren() {
         return false;
     }
