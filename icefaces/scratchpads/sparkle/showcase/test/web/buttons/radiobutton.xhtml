@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated" >
+      xmlns:ice="http://www.icefaces.org/icefaces/components" >
 <f:view  contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -20,20 +20,20 @@
 <fieldset id="RadioButtonSubmitFalseForm">
   <legend>Radio Button Group single submit false</legend>
   <h:form id="radioButtonForm">
-       <ann:logger rendered="false"/> 
+       <ice:logger rendered="false"/> 
 	<br/>
 	<h:panelGroup id="radioPanel1">
-	  <ann:buttongroup id="buttongroup1" 
+	  <ice:radioButtonGroup id="buttongroup1" 
 	     value="#{button.selectedRadio}"
 	     valueChangeListener="#{button.showValues}">
-	    <ann:radiobutton id="radio1" group="buttongroup1" label="One" 
+	    <ice:radioButton id="radio1" group="buttongroup1" label="One" 
 	       value="Radio 1" />
-	    <ann:radiobutton id="radio2" group="buttongroup1" label="Two"
+	    <ice:radioButton id="radio2" group="buttongroup1" label="Two"
 	       value="Radio 2"/> 
-	  </ann:buttongroup>
+	  </ice:radioButtonGroup>
 	</h:panelGroup>
 	<h:panelGroup id="submissionButton">
-	  <ann:pushbutton id="submitbutton" value="submit"
+	  <ice:pushbutton id="submitbutton" value="submit"
 	    label="submit" singleSubmit="false"/>
 	</h:panelGroup>
    </h:form>
@@ -46,18 +46,18 @@
  <fieldset id="RadioButtonSubmitFalseForm">
   <legend>Radio Button Group single submit true</legend>
    <h:form id="radio2form">
-   <ann:logger rendered="false"/> 
+   <ice:logger rendered="false"/> 
      <h:panelGroup id="radioPanel2">
-	  <ann:buttongroup id="buttongroup2" 
+	  <ice:radioButtonGroup id="buttongroup2" 
 	    value="#{button.selectedRadio2}"
 	    singleSubmit="true">
-	    <ann:radiobutton id="radio1" group="buttongroup2" label="A" 
+	    <ice:radioButton id="radio1" group="buttongroup2" label="A" 
 	       value="Radio 2-1" />
-	    <ann:radiobutton id="radio2" group="buttongroup2" label="B"
+	    <ice:radioButton id="radio2" group="buttongroup2" label="B"
 	       value="Radio 2-2"/> 
-	    <ann:radiobutton id="radio3" group="buttongroup2" label="C"
+	    <ice:radioButton id="radio3" group="buttongroup2" label="C"
 	       value="Radio 2-3"/>
-	  </ann:buttongroup>
+	  </ice:radioButtonGroup>
 	</h:panelGroup>
    </h:form>   
  <h:panelGroup id="showselectedRadio2">

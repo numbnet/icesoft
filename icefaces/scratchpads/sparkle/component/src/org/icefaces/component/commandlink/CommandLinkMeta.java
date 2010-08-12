@@ -10,7 +10,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
   @Component(
-        tagName ="commandLink",
+        tagName ="linkButton",
           componentClass ="org.icefaces.component.commandlink.CommandLink",
           rendererClass ="org.icefaces.component.commandlink.CommandLinkRenderer",
           componentType = "org.icefaces.CommandLink",

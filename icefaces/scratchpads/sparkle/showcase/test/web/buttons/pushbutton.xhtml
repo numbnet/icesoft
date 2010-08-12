@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated" >
+      xmlns:ice="http://www.icefaces.org/icefaces/components" >
 <f:view  contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -27,7 +27,7 @@
 	<fieldset id="pushButtonActionListenerForm">
 	   <legend>Simple Buttons on separate forms</legend>
 	   <h:form id="push1Form">
-	     <ann:logger rendered="false"/>
+	     <ice:logger rendered="false"/>
 	      <h:panelGrid columns="3">
 	          <h:panelGrid id="firstNameGroup">
 	             <h:outputText value="First Name"/>
@@ -36,7 +36,7 @@
 	             <h:inputText id="last" value="#{button.lastName}"/>
 	          </h:panelGrid>
 	        <h:panelGroup id="push1">
-	         <ann:pushbutton  id="pushId" label="#{button.label}" 
+	         <ice:pushbutton  id="pushId" label="#{button.label}" 
 	           actionListener="#{button.actionListenerMethod}"  />
 	        </h:panelGroup>
 	        <h:panelGroup id="outputTextTests">
@@ -56,7 +56,7 @@
 	          <h:inputText id="testData" value="#{button.extraData}"/>
 	        </h:panelGroup>
 	        <h:panelGroup id="push2">
-	         <ann:pushbutton id="pushId2" label="Action" 
+	         <ice:pushbutton id="pushId2" label="Action" 
 	            singleSubmit="true"
 	            image="../images/image1.gif"
 	            action="#{button.methodAction}"  />
@@ -75,7 +75,7 @@
 	       <h:panelGrid id="disabledId" columns="2">       	
 	          <h:commandButton id="regular" value="HtmlCommandButton" 
 	               actionListener="#{button.actionListenerMethod}"/>     
-	          <ann:pushbutton id="disabledButton" label="disabled"
+	          <ice:pushbutton id="disabledButton" label="disabled"
 	               disabled="true" singleSubmit="true"
 	               action="${button.methodAction}"/>
 	        </h:panelGrid>

@@ -13,7 +13,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName ="buttongroup",
+        tagName ="radioButtonGroup",
         componentClass ="org.icefaces.component.radiobutton.ButtonGroup",
         rendererClass ="org.icefaces.component.radiobutton.ButtonGroupRenderer", 
         componentType = "org.icefaces.ButtonGroup", 

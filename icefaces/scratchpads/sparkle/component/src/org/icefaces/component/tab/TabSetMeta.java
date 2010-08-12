@@ -18,7 +18,7 @@ import org.icefaces.component.annotation.Field;
 import org.icefaces.component.annotation.Property;
 
 @Component(
-    tagName ="tabSet",
+    tagName ="tabPanel",
     componentClass ="org.icefaces.component.tab.TabSet",
     rendererClass ="org.icefaces.component.tab.TabSetRenderer",
     componentType = "org.icesoft.faces.TabSet",

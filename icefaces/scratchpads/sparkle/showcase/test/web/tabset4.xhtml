@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -25,16 +25,16 @@
        </h:panelGrid> 
                
        <h:messages />
-       <ann:tabSet dynamic="true" binding="#{tabBean.tabSet}">
-            <ann:tab label="Tab 1">
+       <ice:tabPanel dynamic="true" binding="#{tabBean.tabSet}">
+            <ice:tab label="Tab 1">
                 <h:outputText value="This is tab 1"/> <br/>
-            </ann:tab>
-            <ann:tab label="Tab 2">
+            </ice:tab>
+            <ice:tab label="Tab 2">
                 <h:panelGrid>
                     <h:outputText value="This is tab 2" />
                 </h:panelGrid>            
-            </ann:tab> 
-        </ann:tabSet>
+            </ice:tab> 
+        </ice:tabPanel>
     <h:commandButton value="goto main page" action="main"/>
     </h:form>
 

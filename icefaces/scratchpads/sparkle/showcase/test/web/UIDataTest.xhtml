@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
 <h:head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -26,8 +26,8 @@
         <div class="yui-skin-sam yui3-skin-sam">
            <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
              <h:column>
-                 <ann:commandLink  style="#{styleHolder.style}"  actionListener="#{columnBean.incrementStyleIndex}">
-                     This is a link</ann:commandLink>
+                 <ice:linkButton  style="#{styleHolder.style}"  actionListener="#{columnBean.incrementStyleIndex}">
+                     This is a link</ice:linkButton>
              </h:column>
            </h:dataTable>
         </div>
@@ -39,8 +39,8 @@
         <div class="yui-skin-sam yui3-skin-sam">
            <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
              <h:column>
-                 <ann:commandLink  style="text-decoration: line-through;" actionListener="#{columnBean.incrementStyleIndex}">
-                     This is a link to </ann:commandLink>
+                 <ice:linkButton  style="text-decoration: line-through;" actionListener="#{columnBean.incrementStyleIndex}">
+                     This is a link to </ice:linkButton>
              </h:column>
            </h:dataTable>
         </div>
@@ -52,8 +52,8 @@
         <div class="yui-skin-sam">
            <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
              <h:column>
-                 <ann:commandLink  label="check me" actionListener="#{columnBean.incrementStyleIndex}">
-                     This is a link to </ann:commandLink>
+                 <ice:linkButton  label="check me" actionListener="#{columnBean.incrementStyleIndex}">
+                     This is a link to </ice:linkButton>
              </h:column>
            </h:dataTable>
         </div>

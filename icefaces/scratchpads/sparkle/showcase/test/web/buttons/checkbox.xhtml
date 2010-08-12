@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -23,11 +23,11 @@
          <a href="../index.html"> Goto Main page </a>  <br /> 
          <a href="../buttons.xhtml"> Goto Buttons page </a>            
     <h:form>
-  <ann:logger rendered="false"/> 
+  <ice:logger rendered="false"/> 
 	<h:outputText value="Check/uncheck the button to display/hide the image." />
 	<br/><br/>
 	
-	<ann:checkbox id="chkbox" label="#{button.checkButtonLabel}" 
+	<ice:checkboxButton id="chkbox" label="#{button.checkButtonLabel}" 
 	       value="#{button.checked}"
 	       singleSubmit="true"/>
 	   <!--    image="http://www.icefaces.org/main/css/images/tools_contactus.gif" /> -->

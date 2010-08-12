@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view contentType="text/html"/>
@@ -23,16 +23,16 @@
        <h:messages />
        <h:dataTable  value="#{tabBean.movies}" var="movie">
             <h:column>
-            <ann:tabSet  dynamic="true" tabIndex="#{movie.tabindex}">
-            <ann:tab label="#{movie.director}" rendered="#{movie.rendered1}">
+            <ice:tabPanel  dynamic="true" tabIndex="#{movie.tabindex}">
+            <ice:tab label="#{movie.director}" rendered="#{movie.rendered1}">
                    
                 <h:outputText value="#{movie.plot}"/> 
                 
-            </ann:tab>
-            <ann:tab label="#{movie.title}" rendered="#{movie.rendered2}" >
+            </ice:tab>
+            <ice:tab label="#{movie.title}" rendered="#{movie.rendered2}" >
                    <h:outputText value="#{movie.genre}"/> <br/>
-             </ann:tab>   
-        </ann:tabSet>
+             </ice:tab>   
+        </ice:tabPanel>
          <h:commandButton value="Hide tab1" actionListener="#{movie.hideTab1}" /> 
          <h:commandButton value="Hide tab2" actionListener="#{movie.hideTab2}" /> 
          <h:commandButton value="show All" actionListener="#{movie.showTabs}" />

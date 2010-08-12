@@ -2,7 +2,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -15,38 +15,38 @@
   <h:panelGroup styleClass=" yui-skin-sam">
    <h4> In this demo tabsets are not enclosed inside a "form", instead it uses tabsetController component. </h4>	
  
-       <ann:tabSet id="myTabSet">
-            <ann:tab label="Tab contents from JSP" >
+       <ice:tabPanel id="myTabSet">
+            <ice:tab label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
 
 <hr/>
 
 <b>This form contains two "tabSetController" components. One for the above tabset and another one for the tabset in the bottom of the page. Which shows there isn't any order restriction </b><br/>
     <h:form>
-        <ann:tabSetController for="myTabSet" />
-        <ann:tabSetController for="myTabSet2" />
+        <ice:tabSetController for="myTabSet" />
+        <ice:tabSetController for="myTabSet2" />
 	    <h:inputText />
     </h:form>
 <hr/>
-        <ann:tabSet id="myTabSet2">
-            <ann:tab label="Tab contents from JSP" >
+        <ice:tabPanel id="myTabSet2">
+            <ice:tab label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
    </h:panelGroup>
    <a href="index.html"> Goto Main page </a>    
 </h:body>

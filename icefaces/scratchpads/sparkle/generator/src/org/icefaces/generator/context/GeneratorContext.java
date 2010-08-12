@@ -26,8 +26,8 @@ public class GeneratorContext{
 	private List<Class> components;
     private Map<String, Object> propertyTemplate = new HashMap<String, Object>();
     private ComponentContext activeComponentContext;
-    public final static String shortName = "ann";    
-    public final static String namespace = "http://www.icesoft.com/icefaces/component/annotated";
+    public final static String shortName = "ice";    
+    public final static String namespace = "http://www.icefaces.org/icefaces/components";
     private List<Behavior> behaviors = new ArrayList<Behavior>();
      public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
      public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();

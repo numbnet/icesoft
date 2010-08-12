@@ -2,7 +2,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -16,17 +16,17 @@
    <h4> tabsetController form has a required field. So if the form submitted with empty input text there should be a validation error.</h4>	
    <br/>
    <b>This tabset uses singleSubmit="true", which mean that if doesn't do a full submit. On tab change only tab index will be submitted and executed.</b>
-       <ann:tabSet id="myTabSet" singleSubmit="true">
-            <ann:tab label="Tab contents from JSP" >
+       <ice:tabPanel id="myTabSet" singleSubmit="true">
+            <ice:tab label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
 
 <hr/>
 
@@ -35,23 +35,23 @@
 	    <h:inputText id="inputText" required="true"/>
 	    	
 
-        <ann:tabSetController for="myTabSet" />
-        <ann:tabSetController for="myTabSet2" />
+        <ice:tabSetController for="myTabSet" />
+        <ice:tabSetController for="myTabSet2" />
     </h:form>
 <hr/>
 
    <b>Chanding a tab should cause validation error on the form as the tab change would invoke a full submit </b>
-        <ann:tabSet id="myTabSet2">
-            <ann:tab label="Tab contents from JSP" >
+        <ice:tabPanel id="myTabSet2">
+            <ice:tab label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
    </h:panelGroup>
    <a href="index.html"> Goto Main page </a>    
 </h:body>

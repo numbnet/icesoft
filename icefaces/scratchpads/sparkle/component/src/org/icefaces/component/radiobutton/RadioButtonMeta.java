@@ -11,7 +11,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName ="radiobutton",
+        tagName ="radioButton",
         componentClass ="org.icefaces.component.radiobutton.RadioButton",
         rendererClass ="org.icefaces.component.radiobutton.RadioButtonRenderer", 
         componentType = "org.icefaces.RadioButton", 
