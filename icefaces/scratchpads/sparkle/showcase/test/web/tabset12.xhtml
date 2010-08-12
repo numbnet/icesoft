@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -19,20 +19,20 @@
 </h:head>
 <h:body>
      <h:form styleClass=" rime">
-       <ann:tabSet>
-            <ann:tab >
+       <ice:tabPanel>
+            <ice:tab >
                    <f:facet name="label">
                     <h:outputText value="YUI g"/>
                    </f:facet>
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
     </h:form>
 
    <a href="index.html"> Goto Main page </a>    

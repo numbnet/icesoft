@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -24,25 +24,25 @@
          <a href="../index.html"> Goto Main page </a>  <br /> 
          <a href="../buttons.xhtml"> Goto Buttons page </a>   </h5>         
     <h:form id="form1">
-     <ann:logger rendered="false"/> 
+     <ice:logger rendered="false"/> 
 	  <h:outputText value="Single Submit test for Check button " />
 	  <br/><br/>
 	  <h:panelGrid id="buttonGroupId" columns="2">
-	    <ann:checkbox id="chkbox" label="button1" 
+	    <ice:checkboxButton id="chkbox" label="button1" 
 	       value="#{button.checked}"
 	       singleSubmit="false"/>
 	    <h:outputText id="chkval" value="isChecked:  #{button.checked} "/>
 	  </h:panelGrid>
 	 <br />
 	 <h:panelGrid id="buttonGroup2" columns="2">  
-	   <ann:checkbox id="chkbox2" label="button2"
+	   <ice:checkboxButton id="chkbox2" label="button2"
 	       value="#{button.checked2}"
 	       singleSubmit="false"/>
 	       <h:outputText id="chk2" value="checked2: #{button.checked2}" />
 	   </h:panelGrid>
 	  <br />
 	   <h:panelGroup id="push1" class="yui-button yui-push-button">
-	         <ann:pushbutton  id="pushId" label="submitForm" 
+	         <ice:pushbutton  id="pushId" label="submitForm" 
 	           actionListener="#{button.actionListenerMethod}"  />
 	     </h:panelGroup>
     </h:form>

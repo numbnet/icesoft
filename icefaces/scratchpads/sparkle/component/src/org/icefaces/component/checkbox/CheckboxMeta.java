@@ -9,7 +9,7 @@ import javax.faces.application.ResourceDependency;
 
 
 @Component(
-        tagName ="checkbox",
+        tagName ="checkboxButton",
         componentClass ="org.icefaces.component.checkbox.Checkbox",
         rendererClass ="org.icefaces.component.checkbox.CheckboxRenderer", 
         componentType = "org.icefaces.Checkbox", 

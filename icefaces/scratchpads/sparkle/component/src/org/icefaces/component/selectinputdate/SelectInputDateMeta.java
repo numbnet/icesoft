@@ -9,7 +9,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(componentClass = "org.icefaces.component.selectinputdate.SelectInputDate",
-        tagName = "selectInputDate",
+        tagName = "dateTimeSelector",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "javax.faces.Input",
         componentType = "com.icesoft.faces.SelectInputDate",

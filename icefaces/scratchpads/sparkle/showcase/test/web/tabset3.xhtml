@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -18,19 +18,19 @@
 </h:head>
 <h:body>
     <h:form styleClass=" yui-skin-sam">
-       <ann:tabSet>
-            <ann:tab label="Tab 1" >
+       <ice:tabPanel>
+            <ice:tab label="Tab 1" >
                 <h:inputText value="#{tabBean.txt1}"/>    
                 <h:inputText value="#{tabBean.txt2}"/>                  
-            </ann:tab>       
-            <ann:tab label="Tab 2" >
+            </ice:tab>       
+            <ice:tab label="Tab 2" >
                 <h:inputText value="#{tabBean.txt3}"/>    
           
-            </ann:tab>
-            <ann:tab label="Tab 3" >
+            </ice:tab>
+            <ice:tab label="Tab 3" >
                 <h:inputText value="#{tabBean.txt4}"/>    
-            </ann:tab>
-        </ann:tabSet> 
+            </ice:tab>
+        </ice:tabPanel> 
         <h:panelGrid>
         	<h:outputText value="#{tabBean.txt1}"/> 
         	<h:outputText value="#{tabBean.txt2}"/> 

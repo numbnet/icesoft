@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -27,21 +27,21 @@
 	</h:commandButton> 
 	</h:form>	
     <h:panelGroup styleClass=" yui-skin-sam" rendered="#{tabBean.renderPanel}">
-       <ann:tabSet clientSide="true">
-            <ann:tab label="Tab contents from JSP" >
+       <ice:tabPanel clientSide="true">
+            <ice:tab label="Tab contents from JSP" >
                 <h:form>
                     <h:inputText required="true" />
 				    <h:commandButton value="submit"/> 
                     <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>
                 </h:form>            
-            </ann:tab>       
-            <ann:tab label="Tab contents from Bean #{tabBean.counter}" >
+            </ice:tab>       
+            <ice:tab label="Tab contents from Bean #{tabBean.counter}" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ann:tab>
-            <ann:tab label="Tab contents.." >
+            </ice:tab>
+            <ice:tab label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ann:tab>
-        </ann:tabSet>
+            </ice:tab>
+        </ice:tabPanel>
       </h:panelGroup> 
 
 

@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated" >
+      xmlns:ice="http://www.icefaces.org/icefaces/components" >
 <f:view  contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -41,7 +41,7 @@
             <h:form id="frm1">
 
                 This simple output link should only navigate to google.com <br></br>
-                <ann:commandLink href="http://google.com" >Google.com</ann:commandLink>   <p></p>
+                <ice:linkButton href="http://google.com" >Google.com</ice:linkButton>   <p></p>
 
             </h:form>
 
@@ -50,25 +50,25 @@
 
             <h:form id="frm2">
                 This link should only toggle the employee image <br></br>
-                <ann:commandLink value="click me" actionListener="#{linkBean.actionListenerMethod}" >
-                        Link with actionListener only  </ann:commandLink>
+                <ice:linkButton value="click me" actionListener="#{linkBean.actionListenerMethod}" >
+                        Link with actionListener only  </ice:linkButton>
                 <p></p>
 
                 A single submit link with actionOnly <br></br>
-                <ann:commandLink value="click me" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" >Single Submit action
+                <ice:linkButton value="click me" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" >Single Submit action
                     <!--<f:param name="fartyTowel" value="10" /> -->
-                </ann:commandLink>
+                </ice:linkButton>
                 <p></p>
             </h:form>
 
             <hr></hr>
             <h:form id="frm4">
                 This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
-                <ann:commandLink  href="http://www.google.ca"
+                <ice:linkButton  href="http://www.google.ca"
                                   actionListener="#{linkBean.hrefAndActionMethod}"
                                   NoSuchAttribute = "TROGLADYTE LADY" >Link with actionListener and HREF defined
 
-                </ann:commandLink>
+                </ice:linkButton>
 
                 <p></p>
             </h:form>
@@ -83,7 +83,7 @@
                                     rendered="#{linkBean.rendered}" />
                 </h:panelGroup>
 
-               <ui:remove> <ann:logger rendered="false" />    </ui:remove>
+               <ui:remove> <ice:logger rendered="false" />    </ui:remove>
 
 
             </h:form>

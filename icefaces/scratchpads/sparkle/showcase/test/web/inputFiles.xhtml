@@ -6,7 +6,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated">
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
 <f:view>
 <h:head>
     <title>Input Files</title>
@@ -29,7 +29,7 @@
     	    <h:outputText value="Form with inputFiles component" />
             <h:inputText id="text" value="#{fileBean.mixedText}"/>
     	    <h:outputText id="textUpper" value="#{fileBean.mixedTextUppercase}" />
-    	    <ann:inputFiles />
+    	    <ice:inputFiles />
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
     </h:form>
@@ -38,7 +38,7 @@
     <h:form id="form1">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form1  None" />
-    	    <ann:inputFiles inputFilesListener="#{fileBean.inputFilesListener}"/>
+    	    <ice:inputFiles inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
     </h:form>
@@ -46,7 +46,7 @@
     <h:form id="form2">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form2  Abs" />
-    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload2"
+    	    <ice:inputFiles absolutePath="c:\\ICE-5032\\upload2"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -55,7 +55,7 @@
     <h:form id="form3">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form3  Rel" />
-    	    <ann:inputFiles relativePath="upload3"
+    	    <ice:inputFiles relativePath="upload3"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -64,7 +64,7 @@
     <h:form id="form4">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form4  Both" />
-    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload4" relativePath="upload4"
+    	    <ice:inputFiles absolutePath="c:\\ICE-5032\\upload4" relativePath="upload4"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -74,7 +74,7 @@
     <h:form id="form5">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form5  None NoSess Orig" />
-    	    <ann:inputFiles useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -83,7 +83,7 @@
     <h:form id="form6">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form6  Abs NoSess Orig" />
-    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload6" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles absolutePath="c:\\ICE-5032\\upload6" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -92,7 +92,7 @@
     <h:form id="form7">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form7  Rel NoSess Orig" />
-    	    <ann:inputFiles relativePath="upload7" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles relativePath="upload7" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -101,7 +101,7 @@
     <h:form id="form8">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form8  Both NoSess Orig" />
-    	    <ann:inputFiles absolutePath="c:\\ICE-5032\\upload8" relativePath="upload8" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles absolutePath="c:\\ICE-5032\\upload8" relativePath="upload8" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -110,7 +110,7 @@
     <h:form id="form9">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form9  [Rel NoSess Orig] maxTotalSize 50" />
-    	    <ann:inputFiles maxTotalSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles maxTotalSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -119,7 +119,7 @@
     <h:form id="form10">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form10  [Rel NoSess Orig] maxFileSize 50" />
-    	    <ann:inputFiles maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -128,7 +128,7 @@
     <h:form id="form11">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form11  [Rel NoSess Orig] maxTotalSize maxFileSize 50" />
-    	    <ann:inputFiles maxTotalSize="50" maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+    	    <ice:inputFiles maxTotalSize="50" maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
                      inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
         </h:panelGrid>
@@ -137,15 +137,15 @@
     <h:form id="form12">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form12  (1) Immediate true" />
-    	    <ann:inputFiles id="one"
+    	    <ice:inputFiles id="one"
                             immediate="true"
                             inputFilesListener="#{fileBean.inputFilesListener}"/>
     	    <h:outputText value="Form12  (2) Immediate false" />
-    	    <ann:inputFiles id="two"
+    	    <ice:inputFiles id="two"
                             immediate="false"
                             inputFilesListener="#{fileBean.inputFilesListener}"/>
     	    <h:outputText value="Form12  (3) maxTotalSize 100" />
-    	    <ann:inputFiles id="three"
+    	    <ice:inputFiles id="three"
                             maxTotalSize="100"
                             inputFilesListener="#{fileBean.inputFilesListener}"/>
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>

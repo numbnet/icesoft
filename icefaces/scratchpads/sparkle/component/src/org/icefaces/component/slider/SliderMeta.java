@@ -11,7 +11,7 @@ import javax.faces.application.ResourceDependency;
 // Each Meta class requires a @Component annotation
 @Component(
         // The tag name, as it will be used in view definitions (.xhtml files)
-        tagName ="slider",
+        tagName ="sliderEntry",
         // The end class that will be used by applications. Hand-coded.
         // The componentClass extends generatedClass, which extends extendsClass.
         componentClass ="org.icefaces.component.slider.Slider",

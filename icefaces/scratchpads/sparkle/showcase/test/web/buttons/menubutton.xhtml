@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ann="http://www.icesoft.com/icefaces/component/annotated"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
 
         >
 <f:view  contentType="text/html"/>
@@ -44,18 +44,18 @@
    <fieldset id="menuButtonFromMarkupForm">
    <legend>menu from markup</legend>        
     <h:form id="form1">
-     <ann:logger rendered="false"/> 
+     <ice:logger rendered="false"/> 
 	  <h:outputText value="Menu button " />
 	  <br/><br/>
 	  <h:panelGrid id="buttonGroupId" columns="2">
 	    <h:panelGroup id="panelGroupforMenubutton">
-	     <ann:menubutton id="menubutton" label="menu1" 
+	     <ice:menubutton id="menubutton" label="menu1" 
 	       menuName="menu1"
 	       singleSubmit="true">
-	         <ann:menuitem value="0" label="One" action="#{menubutton.menuItem1Action}"/>
-	         <ann:menuitem value="1" label="Two" action="#{menubutton.menuItem2Action}"/>
-	         <ann:menuitem value="2" label="Three" actionListener="#{menubutton.menuItem3ActionListener}"/>
-	      </ann:menubutton>
+	         <ice:menuitem value="0" label="One" action="#{menubutton.menuItem1Action}"/>
+	         <ice:menuitem value="1" label="Two" action="#{menubutton.menuItem2Action}"/>
+	         <ice:menuitem value="2" label="Three" actionListener="#{menubutton.menuItem3ActionListener}"/>
+	      </ice:menubutton>
 	   </h:panelGroup>
 	   <h:panelGroup id="outputCheck">
 	      <h:outputText id="menuItem1" value="isMenuItem1:  #{menubutton.menuItem1} "/>
