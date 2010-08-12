@@ -551,7 +551,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOn .MidMid>a, .icePnlTbOn .MidMid>div {
+.icePnlTbOn .MidMid a, .icePnlTbOn .MidMid div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -562,7 +562,7 @@ fieldset {
 }
 
 
-* html .icePnlTbOn .MidMid>a, * html .icePnlTbOn .MidMid>div {
+* html .icePnlTbOn .MidMid a, * html .icePnlTbOn .MidMid div {
     width: 1%;
 }
 
@@ -652,7 +652,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOff .MidMid>a, icePnlTbOff .MidMid>div {
+.icePnlTbOff .MidMid a, icePnlTbOff .MidMid div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -662,7 +662,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOff .MidMid>a, * html .icePnlTbOff .MidMid>div {
+* html .icePnlTbOff .MidMid a, * html .icePnlTbOff .MidMid div {
     width: 1%;
 }
 
@@ -753,7 +753,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOver .MidMid>a, .icePnlTbOver .MidMid>div{
+.icePnlTbOver .MidMid a, .icePnlTbOver .MidMid div{
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -763,7 +763,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOver .MidMid>a, * html .icePnlTbOver .MidMid>div {
+* html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid div {
     width: 1%;
 }
 
@@ -886,7 +886,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOnBtm .MidMid>a, .icePnlTbOnBtm .MidMid>div {
+.icePnlTbOnBtm .MidMid a, .icePnlTbOnBtm .MidMid div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -896,7 +896,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOnBtm .MidMid>a, * html .icePnlTbOnBtm .MidMid>div {
+* html .icePnlTbOnBtm .MidMid a, * html .icePnlTbOnBtm .MidMid div {
     width: 1%;
 }
 
@@ -986,7 +986,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOffBtm .MidMid>a, .icePnlTbOffBtm .MidMid>div{
+.icePnlTbOffBtm .MidMid a, .icePnlTbOffBtm .MidMid div{
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -996,7 +996,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOffBtm .MidMid>a, * html .icePnlTbOffBtm .MidMid>div {
+* html .icePnlTbOffBtm .MidMid a, * html .icePnlTbOffBtm .MidMid div {
     width: 1%;
 }
 
@@ -1087,7 +1087,7 @@ fieldset {
     white-space: nowrap;
 }
 
-.icePnlTbOverBtm .MidMid>a, .icePnlTbOverBtm .MidMid>div {
+.icePnlTbOverBtm .MidMid a, .icePnlTbOverBtm .MidMid div {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
@@ -1097,7 +1097,7 @@ fieldset {
     padding-left: 15px;
 }
 
-* html .icePnlTbOverBtm .MidMid>a, * html .icePnlTbOverBtm .MidMid>div {
+* html .icePnlTbOverBtm .MidMid a, * html .icePnlTbOverBtm .MidMid div {
     width: 1%;
 }
 
@@ -2917,10 +2917,29 @@ Disabled classes for the calendar controls
 /*
 ----------- DataExporter ----------
 */
+.iceDatExp img {
+    border: none;
+}
+
 .iceDatExp input{
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .icePnlTbLblLnk img {
     border: 0;
+}
+
+/*
+----------- focus hidden link ----------
+*/
+
+.iceHdnLnk {
+    float:left;
+    border:none;
+    margin:0px;
+}
+
+.iceHdnLnk img{
+    border:0; 
+    width:0px; 
 }
