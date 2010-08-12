@@ -3066,10 +3066,29 @@ Disabled classes for the calendar controls
 /*
 ----------- DataExporter ----------
 */
+.iceDatExp img {
+    border: none;
+}
+
 .iceDatExp input{
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .icePnlTbLblLnk img {
     border: 0;
+}
+
+/*
+----------- focus hidden link ----------
+*/
+
+.iceHdnLnk {
+    float:left;
+    border:none;
+    margin:0px;
+}
+
+.iceHdnLnk img{
+    border:0; 
+    width:0px;    
 }
