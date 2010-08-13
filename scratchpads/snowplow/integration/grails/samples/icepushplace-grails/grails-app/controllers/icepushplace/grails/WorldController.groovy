@@ -16,131 +16,86 @@ class WorldController {
 
   def updateSettings = {
     noCache(response)
-    def icepushPlaceService = servletContext['service']
+    def world = servletContext['world']
     def thisPerson = session["person"]
-    def submittedNickname = params["submittedNickname"];
-    def mood = params["mood"];
-    def comment = params["comment"];
-    def region = params["region"];
-    def changed;
+    def submittedNickname = params["submittedNickname"]
+    def mood = params["mood"]
+    def comment = params["comment"]
+    def region = Integer.parseInt(params["region"])
+    def changed
+    def moving
+    def oldRegion = -1
     if(thisPerson.name != submittedNickname){
-        thisPerson.name = submittedNickname;
-        changed = true;
+        thisPerson.name = submittedNickname
+        changed = true
     }
     if(thisPerson.mood != mood){
-        thisPerson.mood = mood;
-        changed = true;
+        thisPerson.mood = mood
+        changed = true
     }
     if(thisPerson.comment != comment){
-        thisPerson.comment = comment;
-        changed = true;
+        thisPerson.comment = comment
+        changed = true
     }
-    if(thisPerson.key.toString() != region){
-        def regions = servletContext['regions']
-        // Remove from previous region
-        switch(thisPerson.key){
-            case 1: regions.northAmerica.remove(thisPerson);break;
-            case 2: regions.europe.remove(thisPerson);break;
-            case 3: regions.southAmerica.remove(thisPerson);break;
-            case 4: regions.asia.remove(thisPerson);break;
-            case 5: regions.africa.remove(thisPerson);break;
-            case 6: regions.antarctica.remove(thisPerson);break;
-            default: println "Problem Removing Person from Region";
-        }
-        // Add to new region
-        switch(region){
-            case '1': regions.northAmerica.add(thisPerson);break;
-            case '2': regions.europe.add(thisPerson);break;
-            case '3': regions.southAmerica.add(thisPerson);break;
-            case '4': regions.asia.add(thisPerson);break;
-            case '5': regions.africa.add(thisPerson);break;
-            case '6': regions.antarctica.add(thisPerson);break;
-            default: println "Problem Adding Person to Region";
-        }
-        // Push to remove from old region
-        //push thisPerson.key.toString()
-        icepushPlaceService.updateWorld(thisPerson.key)
-        // Set person in new region
-        thisPerson.key = Integer.parseInt(region);
-        changed = true;
+    if(thisPerson.region != region){
+        moving = true
     }
     if(changed){
-        // Push to update region
-        //push thisPerson.key.toString()
-        // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
-        // Service call to display message in all applications
-        // service.requestUpdate(person);
-        icepushPlaceService.updatePerson(thisPerson)
-        icepushPlaceService.updateWorld(thisPerson.key)
-        // THE SERVICE CALL WILL HAVE TO CHECK THE PERSON'S REGION.
-        // IF IT HAS CHANGED, A PUSH WILL HAVE TO BE CALLED ON THE OLD REGION AS WELL.
+        world.updatePerson(thisPerson.region, thisPerson);
+    }
+    if(moving) {
+        session["person"] = world.movePerson(thisPerson.region,region,thisPerson)
     }
     render ""
   }
 
   def messageOut = {
-    def icepushPlaceService = servletContext['service']
-    def messageOut = params["msgOut"];
-    def region = params["region"];
-    def row = params["row"];
-    def from = params["from"];
+    def messageOut = params["msgOut"]
+    def region = Integer.parseInt(params["region"])
+    def row = Integer.parseInt(params["row"])
+    def from = params["from"]
     def receiver
-    def regions = servletContext['regions']
-    switch(region){
-        case '1': receiver = regions.northAmerica.get(Integer.parseInt(row));break;
-        case '2': receiver = regions.europe.get(Integer.parseInt(row));break;
-        case '3': receiver = regions.southAmerica.get(Integer.parseInt(row));break;
-        case '4': receiver = regions.asia.get(Integer.parseInt(row));break;
-        case '5': receiver = regions.africa.get(Integer.parseInt(row));break;
-        case '6': receiver = regions.antarctica.get(Integer.parseInt(row));break;
-        default: println("Receiver of Message Not Found");
-
-    }
-    // Set receiver message
-    receiver.messageIn = from + " says: " + messageOut;
-    // Push update out to receiver's region
-    //push region;
-    // TODO: WILL BE REPLACED WITH SOMETHING LIKE:
-    // Service call to display message in all applications
-    //service.requestUpdate(person);
-    icepushPlaceService.updateWorld(Long.parseLong(region))
+    def world = servletContext['world']
+    receiver = world.getContinent(region).get(row)
+    receiver.messageIn = from + " says: " + messageOut
+    world.updatePerson(receiver.region, receiver)
     render ""
   }
 
   def northAmerica = {
     noCache(response)
-    def regions = servletContext['regions']
-    [northAmerica: regions.northAmerica]
+    def world = servletContext['world']
+    [northAmerica: world.northAmerica]
   }
 
   def europe = {
     noCache(response)
-    def regions = servletContext['regions']
-    [europe: regions.europe]
+    def world = servletContext['world']
+    [europe: world.europe]
   }
 
   def southAmerica = {
     noCache(response)
-    def regions = servletContext['regions']
-    [southAmerica: regions.southAmerica]
+    def world = servletContext['world']
+    [southAmerica: world.southAmerica]
   }
 
   def asia = {
     noCache(response)
-    def regions = servletContext['regions']
-    [asia: regions.asia]
+    def world = servletContext['world']
+    [asia: world.asia]
   }
 
   def africa = {
     noCache(response)
-    def regions = servletContext['regions']
-    [africa: regions.africa]
+    def world = servletContext['world']
+    [africa: world.africa]
   }
 
   def antarctica = {
     noCache(response)
-    def regions = servletContext['regions']
-    [antarctica: regions.antarctica]
+    def world = servletContext['world']
+    [antarctica: world.antarctica]
   }
 
 }

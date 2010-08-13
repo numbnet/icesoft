@@ -113,33 +113,33 @@
             </td>
             <td>
                 <select id="region" name="region">
-                    <option value="1"
-                    <% if(session["person"].key == 1) {%>
+                    <option value="4"
+                    <% if(session["person"].region == 4) {%>
                     selected
                     <% } %>
                     >North America</option>
-                    <option value="2"
-                    <% if(session["person"].key == 2) {%>
+                    <option value="3"
+                    <% if(session["person"].region == 3) {%>
                     selected
                     <% } %>
                     >Europe</option>
-                    <option value="3"
-                    <% if(session["person"].key == 3) {%>
+                    <option value="5"
+                    <% if(session["person"].region == 5) {%>
                     selected
                     <% } %>
                     >South America</option>
-                    <option value="4"
-                    <% if(session["person"].key == 4) {%>
+                    <option value="2"
+                    <% if(session["person"].region == 2) {%>
                     selected
                     <% } %>
                     >Asia</option>
-                    <option value="5"
-                    <% if(session["person"].key == 5) {%>
+                    <option value="0"
+                    <% if(session["person"].region == 0) {%>
                     selected
                     <% } %>
                     >Africa</option>
-                    <option value="6"
-                    <% if(session["person"].key == 6) {%>
+                    <option value="1"
+                    <% if(session["person"].region == 1) {%>
                     selected
                     <% } %>
                     >Antarctica</option>
@@ -161,12 +161,12 @@
 
 <h2>Regions</h2>
 
-<icep:region group="1" controller="world" action="northAmerica"/><br/><br/>
-<icep:region group="2" controller="world" action="europe"/><br/><br/>
-<icep:region group="3" controller="world" action="southAmerica"/><br/><br/>
-<icep:region group="4" controller="world" action="asia"/><br/><br/>
-<icep:region group="5" controller="world" action="africa"/><br/><br/>
-<icep:region group="6" controller="world" action="antarctica"/><br/><br/>
+<icep:region group="North America" controller="world" action="northAmerica"/><br/><br/>
+<icep:region group="Europe" controller="world" action="europe"/><br/><br/>
+<icep:region group="South America" controller="world" action="southAmerica"/><br/><br/>
+<icep:region group="Asia" controller="world" action="asia"/><br/><br/>
+<icep:region group="Africa" controller="world" action="africa"/><br/><br/>
+<icep:region group="Antarctica" controller="world" action="antarctica"/><br/><br/>
 
 </body>
 </html>

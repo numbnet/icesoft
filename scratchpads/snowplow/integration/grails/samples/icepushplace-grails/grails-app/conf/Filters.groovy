@@ -1,22 +1,18 @@
-import org.icepush.place.grails.view.model.Regions
-import org.icepush.place.grails.services.IcepushPlaceService
+import org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld
 
 class Filters {
   def filters = {
     initialization(controller: 'world', action: '*') {
       before = {
-       if (!servletContext['regions']){
-            def regions = new Regions();
-            servletContext['regions'] = regions
-       }
-       if (!servletContext['service']){
-           def icepushPlaceService = new IcepushPlaceService();
-           icepushPlaceService.register()
-           servletContext['service'] = icepushPlaceService
+       if (!servletContext['world']){
+            def world = new ICEpushPlaceWorld()
+            world.setWebServiceURL("http://localhost:8080/icePushPlaceService")
+            world.setApplicationURL("http://localhost:8080/icepushplace-grails-0.1")
+            servletContext['world'] = world
        }
        if (request.getSession(false) == null ||
                 !session['person']) {
-          log.info("unauthorized request '$request.requestURI', directing to $controllerName");
+          log.info("unauthorized request '$request.requestURI', directing to $controllerName")
           redirect controller:"register"
         }
       }
