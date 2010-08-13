@@ -435,7 +435,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     private void renderChildrenRecursive(FacesContext facesContext,
                                          MenuBar menuComponent,
                                          UIComponent uiComponent,
-                                         boolean vertical, Element masterDiv) {
+                                         boolean vertical, Element masterDiv) throws IOException {
 //StackTraceElement[] ste = Thread.currentThread().getStackTrace();
 //System.out.println("renderChildrenRecursive()  "+ste.length+"  called in: " + this);
 //System.out.println("renderChildrenRecursive()  "+ste.length+"    uiComponent: " + uiComponent);
@@ -543,7 +543,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         FacesContext facesContext, DOMContext domContext,
         MenuItems nextSubMenuItems, MenuBar menuComponent,
         boolean disabled, boolean vertical,
-        Element submenuDiv, String subMenuDivId)
+        Element submenuDiv, String subMenuDivId) throws IOException
     {
         List children = nextSubMenuItems.prepareChildren();
         if(children != null) {
@@ -568,7 +568,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         FacesContext facesContext, DOMContext domContext,
         MenuItem nextSubMenuItem, MenuBar menuComponent,
         boolean disabled, boolean vertical,
-        Element submenuDiv, String subMenuDivId)
+        Element submenuDiv, String subMenuDivId) throws IOException
     {
         if (!nextSubMenuItem.isRendered()) {
             return;
@@ -625,25 +625,40 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (disabled) {
             nextSubMenuItem.setDisabled(disabled);
         }
+        
+        UIComponent content = nextSubMenuItem.getFacet("content");
+        if (content != null) {
+            Node cursor = domContext.getCursorParent();
+            domContext.setCursorParent(subMenuItemDiv);
+            try {
+                content.encodeAll(facesContext);
+            }
+            finally {
+                domContext.setCursorParent(cursor);
+            }
+            return;
+        }
+        
         // add a command link if we need one
         renderAnchor(facesContext, domContext,
             nextSubMenuItem, subMenuItemDiv,
             menuComponent, vertical);
+        
+        if (subMenuItemDiv.getChildNodes().getLength() > 0) {
+            Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
 
-        Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+            if (call != null) {
+                anch.setAttribute(HTML.ONFOCUS_ATTR, "if( Ice.Prototype.$('" + subMenuItemDiv.getAttribute("id") + "_sub').style.display == 'none') { " + call + "}");
+            }
+            if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
+                String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
+                onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
+                anch.setAttribute(HTML.ONCLICK_ATTR, onclick);
+            }
 
-        if (call != null) {
-            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( Ice.Prototype.$('" + subMenuItemDiv.getAttribute("id") + "_sub').style.display == 'none') { " + call + "}");
-        }   
-        if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
-            String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
-            onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
-            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
-        }        
-
-//      Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
-//      anch.setAttribute(HTML.HREF_ATTR, "javascript:void(0);");
-         
+//          Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+//          anch.setAttribute(HTML.HREF_ATTR, "javascript:void(0);");
+        }
     }
     
     /**
