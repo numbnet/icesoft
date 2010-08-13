@@ -1,25 +1,23 @@
-package org.icefaces.component.selectinputdate;
+package org.icefaces.component.datetimeselector;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 
-import java.util.Date;
-
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@Component(componentClass = "org.icefaces.component.selectinputdate.SelectInputDate",
+@Component(componentClass = "org.icefaces.component.datetimeselector.DateTimeSelector",
         tagName = "dateTimeSelector",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "javax.faces.Input",
-        componentType = "com.icesoft.faces.SelectInputDate",
-        rendererClass = "org.icefaces.component.selectinputdate.SelectInputDateRenderer",
+        componentType = "com.icesoft.faces.DateTimeSelector",
+        rendererClass = "org.icefaces.component.datetimeselector.DateTimeSelectorRenderer",
         rendererType = "com.icesoft.faces.Calendar",
-        generatedClass = "org.icefaces.component.selectinputdate.SelectInputDateBase"
+        generatedClass = "org.icefaces.component.datetimeselector.DateTimeSelectorBase"
 )
 
 @ResourceDependencies({
-        @ResourceDependency(name = "container.css", library = "org.icefaces.component.selectinputdate"),
+        @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeselector"),
         @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
@@ -33,10 +31,10 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
         @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
-        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.selectinputdate")
+        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeselector")
 })
 
-public class SelectInputDateMeta {
+public class DateTimeSelectorMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render a text input field for a popup calendar.")
     private Boolean renderInputField;
 

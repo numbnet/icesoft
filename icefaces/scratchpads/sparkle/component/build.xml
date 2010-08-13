@@ -220,11 +220,11 @@
 		
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src\org\icefaces\component\menubutton\sprites" skin="sam" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src\org\icefaces\component\pushbutton\sprites" skin="sam" />
-		<mapnosprites library="org.icefaces.component.selectinputdate" dir="src\org\icefaces\component\selectinputdate\sprites" skin="sam" />
+		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\sprites" skin="sam" />
 		<mapnosprites library="org.icefaces.component.slider" dir="src\org\icefaces\component\slider\sprites" skin="sam" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\sprites" skin="sam" />
 		
-		<mapnosprites library="org.icefaces.component.selectinputdate" dir="src\org\icefaces\component\selectinputdate\sprites" skin="rime" />
+		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\sprites" skin="rime" />
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\sprites" skin="rime" />
 
 	</target>
@@ -257,11 +257,11 @@
 		-->
 		<includeresources dir="src\org\icefaces\component\menubutton\sprites" name="menubutton" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\pushbutton\sprites" name="button" skin="sam" />
-		<includeresources dir="src\org\icefaces\component\selectinputdate\sprites" name="calendar" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\datetimeselector\sprites" name="calendar" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\slider\sprites" name="slider" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\tab\sprites" name="tabset" skin="sam" />
 		
-		<includeresources dir="src\org\icefaces\component\selectinputdate\sprites" name="calendar" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\datetimeselector\sprites" name="calendar" skin="rime" />
 
 		<!-- Specify the names of the skins to process, based on the resources included above. -->
 		<generatesprites skin="sam" />
@@ -276,11 +276,11 @@
 		-->
 		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="sam" />
-		<mapsprites library="org.icefaces.component.selectinputdate" name="calendar" skin="sam" />
+		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="sam" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="sam" />
 		
-		<mapsprites library="org.icefaces.component.selectinputdate" name="calendar" skin="rime" />
+		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="rime" />
 		
 		<!-- copy sprite images to the sprites resource library -->
 		<copy todir="${resources}/${sprites.lib}">
