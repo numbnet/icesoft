@@ -1,4 +1,4 @@
-package org.icefaces.component.selectinputdate;
+package org.icefaces.component.datetimeselector;
 
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
@@ -11,11 +11,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.io.IOException;
 
-public class SelectInputDate extends SelectInputDateBase {
+public class DateTimeSelector extends DateTimeSelectorBase {
     
     // Copied from 1.8.2
     /**
-     * To properly function, selectInputDate needs to use the same timezone
+     * To properly function, dateTimeSelector needs to use the same timezone
      * in the inputText field as well as the calendar, which is accomplished
      * by using a javax.faces.convert.DateTimeConverter, which provides
      * the required Converter behaviours, as we as gives access to its
