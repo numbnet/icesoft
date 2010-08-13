@@ -61,6 +61,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     private static final String KEYWORD_THIS = "this";
     private static final String DEFAULT_IMAGEDIR = "/xmlhttp/css/xp/css-images/";
     private static final String SUBMENU_IMAGE = "submenu.gif";
+    private static final String TOPSUBMENU_IMAGE = "topsubmenu.gif";
     private static final String LINK_SUFFIX = "link";
     private static final String GROUP_SUFFIX = "grp";
     private static final String INDICATOR_SUFFIX = "ind";
@@ -304,18 +305,18 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
-        
-        if (vertical) {
-            if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
-                Element subImg = domContext.createElement(HTML.IMG_ELEM);
-                subImg.setAttribute(HTML.SRC_ATTR,
-                    CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
-                subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
-                subImg.setAttribute(HTML.CLASS_ATTR,
-                    menuBar.getSubMenuIndicatorStyleClass());
-                subImg.setAttribute(HTML.ALT_ATTR, "");
-                anchor.appendChild(subImg);
-            }
+
+        if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
+            Element subImg = domContext.createElement(HTML.IMG_ELEM);
+            String img = (vertical ? getSubMenuImage(menuBar) :
+                getTopSubMenuImage(menuBar));
+            subImg.setAttribute(HTML.SRC_ATTR,
+                CoreUtils.resolveResourceURL(facesContext, img));
+            subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
+            subImg.setAttribute(HTML.CLASS_ATTR,
+                menuBar.getSubMenuIndicatorStyleClass());
+            subImg.setAttribute(HTML.ALT_ATTR, "");
+            anchor.appendChild(subImg);
         }
         
         // only render icons if noIcons is false
@@ -768,18 +769,21 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                                    MenuBar menuComponent,
                                    boolean topLevel,
                                    boolean horizontal) {
-        if(!(topLevel && horizontal)) {
-            if (nextSubMenuItem.getChildCount() > 0 &&
-                nextSubMenuItem.isChildrenMenuItem()) {
-                HtmlGraphicImage image = new HtmlGraphicImage();
-                image.setId(INDICATOR_SUFFIX);
+        if (nextSubMenuItem.getChildCount() > 0 &&
+            nextSubMenuItem.isChildrenMenuItem()) {
+            HtmlGraphicImage image = new HtmlGraphicImage();
+            image.setId(INDICATOR_SUFFIX);
+            if(!(topLevel && horizontal)) {
                 image.setUrl(getSubMenuImage(menuComponent));
-                image.setStyle("border:none;");
-                image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
-                link.getChildren().add(image);
             }
+            else {
+                image.setUrl(getTopSubMenuImage(menuComponent));
+            }
+            image.setStyle("border:none;");
+            image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
+            link.getChildren().add(image);
         }
-        
+
         if( !menuComponent.getNoIcons().equalsIgnoreCase("true") ) {
             String icon = null;
             if(topLevel) {
@@ -826,13 +830,24 @@ public class MenuItemRenderer extends MenuItemRendererBase {
      * @return SubMenuImage url
      */
     private String getSubMenuImage(MenuBar menuComponent) {
-        String customPath = null;
-        if ((customPath = menuComponent.getImageDir()) != null) {
+        String customPath = menuComponent.getImageDir();
+        if (customPath != null) {
             return customPath + SUBMENU_IMAGE;
         }
         return DEFAULT_IMAGEDIR + SUBMENU_IMAGE;
     }
 
+    /**
+     * @return TopSubMenuImage url
+     */
+    private String getTopSubMenuImage(MenuBar menuComponent) {
+        String customPath = menuComponent.getImageDir();
+        if (customPath != null) {
+            return customPath + TOPSUBMENU_IMAGE;
+        }
+        return DEFAULT_IMAGEDIR + TOPSUBMENU_IMAGE;
+    }
+    
     protected String getTextValue(UIComponent component) {
         if (component instanceof MenuItem) {
             return ((MenuItem) component).getValue().toString();
