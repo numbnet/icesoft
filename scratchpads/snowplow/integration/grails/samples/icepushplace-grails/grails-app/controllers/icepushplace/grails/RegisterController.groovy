@@ -8,27 +8,15 @@ class RegisterController {
   }
 
   def register = {
-    def thisPerson = new PersonType();
+    def thisPerson = new PersonType()
     thisPerson.name = params["submittedNickname"]
     thisPerson.mood = params["mood"]
     thisPerson.comment = params["comment"]
-    thisPerson.key = Integer.parseInt(params["region"])
+    thisPerson.region = Integer.parseInt(params["region"])
+    def world = servletContext['world']
+    thisPerson = world.loginPerson(thisPerson.region, thisPerson)
     session['person'] = thisPerson
-    def regions = servletContext['regions']
-    // Add to region
-    switch(params["region"]){
-        case '1': regions.northAmerica.add(thisPerson);break;
-        case '2': regions.europe.add(thisPerson);break;
-        case '3': regions.southAmerica.add(thisPerson);break;
-        case '4': regions.asia.add(thisPerson);break;
-        case '5': regions.africa.add(thisPerson);break;
-        case '6': regions.antarctica.add(thisPerson);break;
-        default: println "Problem Initializing Person";
-    }
-    //push thisPerson.key.toString()
-    def icepushPlaceService = servletContext['service']
-    icepushPlaceService.login(thisPerson)
-    response.status = 200;
+    response.status = 200
     render " "
   }
 

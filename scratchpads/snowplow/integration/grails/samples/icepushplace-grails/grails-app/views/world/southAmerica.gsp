@@ -47,14 +47,14 @@
         <td>Grails</td>
         <td>${elem.messageIn}</td>
         <td>
-            <form id="msgForm${elem.key}${row}">
-            <input id="msgOut${elem.key}${row}"
+            <form id="msgForm${elem.region}${row}">
+            <input id="msgOut${elem.region}${row}"
                    type="text"
                    name="messageOut"
                     size="20" />&nbsp
             <input type="submit"
                    value="Post"
-                   onclick="click_messageOut('${elem.key}',${row},'<%=session["person"].name%>');return false;"/>
+                   onclick="click_messageOut('${elem.region}',${row},'<%=session["person"].name%>');return false;"/>
             </form>
         </td>
     </tr>

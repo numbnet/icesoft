@@ -64,12 +64,12 @@
                           </select><br/><br/>
     What's on your mind?: <input type="text" name="comment" size="20"/><br/><br/>
     Change your region: <select name="region">
-                               <option value="1">North America</option>
-                               <option value="2">Europe</option>
-                               <option value="3">South America</option>
-                               <option value="4">Asia</option>
-                               <option value="5">Africa</option>
-                               <option value="6">Antarctica</option>
+                               <option value="4">North America</option>
+                               <option value="3">Europe</option>
+                               <option value="5">South America</option>
+                               <option value="2">Asia</option>
+                               <option value="0">Africa</option>
+                               <option value="1">Antarctica</option>
                            </select><br/><br/>
     <input type="button" value="Enter" onclick="register();" />
 </form>
