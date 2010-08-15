@@ -106,7 +106,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
 
             div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
             div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility && Ice.FCKeditorUtility.updateValue ('" + clientId + "');");
 
             domContext.stepOver();
         }
