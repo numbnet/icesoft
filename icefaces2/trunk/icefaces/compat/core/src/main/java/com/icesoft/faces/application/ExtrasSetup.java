@@ -22,6 +22,7 @@
 
 package com.icesoft.faces.application;
 
+import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.event.UIOutputWriter;
@@ -166,6 +167,13 @@ public class ExtrasSetup implements SystemEventListener {
             writer.startElement("span", component);
             writer.writeAttribute("id", formClientID + "hdnFldsDiv", null);
 
+            //css input field is required by some renderers (such as DnD)
+            writer.startElement("input", component);
+            writer.writeAttribute("type", "hidden", null);
+            writer.writeAttribute("name", CurrentStyle.CSS_UPDATE_FIELD, null);
+            writer.writeAttribute("value", "", null);
+            writer.endElement("input");
+
             //Render any required hidden fields. There is a list
             //(on the request map of the external context) of
             //'required hidden fields'. Hidden fields can be
@@ -198,7 +206,6 @@ public class ExtrasSetup implements SystemEventListener {
                 //remove map to avoid being used by the next rendered form
                 requestMap.remove(FormRenderer.COMMAND_LINK_HIDDEN_FIELDS_KEY);
             }
-
             writer.endElement("span");
         }
     }
