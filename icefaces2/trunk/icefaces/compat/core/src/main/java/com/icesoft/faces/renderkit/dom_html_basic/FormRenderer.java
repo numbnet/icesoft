@@ -24,7 +24,6 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.util.SeamUtilities;
 import org.w3c.dom.Element;
 
@@ -95,15 +94,6 @@ public class FormRenderer extends DomBasicRenderer {
             formHiddenField.setAttribute("name", formClientId);
             formHiddenField.setAttribute("value", formClientId);
             root.appendChild(formHiddenField);
-
-            // Only render the css update field once. Rendering more then one will cause
-            // a duplicate ID error
-            Element cssUpdateField = domContext.createElement(HTML.INPUT_ELEM);
-            cssUpdateField.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
-            cssUpdateField.setAttribute(HTML.NAME_ATTR,
-                    CurrentStyle.CSS_UPDATE_FIELD);
-            cssUpdateField.setAttribute(HTML.VALUE_ATTR, "");
-            root.appendChild(cssUpdateField);
 
             //JSF 2.0 portlet hidden field
             String viewId = facesContext.getViewRoot().getViewId();
