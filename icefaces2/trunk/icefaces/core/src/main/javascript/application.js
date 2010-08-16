@@ -89,11 +89,14 @@ if (!window.ice.icefaces) {
             return configurationOf(element).viewID;
         }
 
-        function appendHiddenInputElement(form, name, value) {
+        function appendHiddenInputElement(form, name, value, defaultValue) {
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('name', name);
             hiddenInput.setAttribute('value', value);
             hiddenInput.setAttribute('type', 'hidden');
+            if (defaultValue) {
+                hiddenInput.defaultValue = defaultValue;
+            }
             form.appendChild(hiddenInput);
             return hiddenInput;
         }
@@ -228,7 +231,7 @@ if (!window.ice.icefaces) {
                 //add hidden input field to the updated forms that don't have it
                 each(forms, function(form) {
                     if (!form['javax.faces.ViewState']) {
-                        appendHiddenInputElement(form, 'javax.faces.ViewState', viewState);
+                        appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                     }
                 });
             }
