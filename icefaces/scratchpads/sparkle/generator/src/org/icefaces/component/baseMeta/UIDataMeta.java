@@ -2,7 +2,6 @@ package org.icefaces.component.baseMeta;
 
 import org.icefaces.component.annotation.Property;
 
-import javax.faces.component.SavedState;
 import java.util.Map;
 
 /**
