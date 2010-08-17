@@ -46,15 +46,15 @@ if (person != null) {
     int oldRegion = -1;
     System.out.println("Updating " + person.getName() + " :" + person.getRegion() +
                       ":"+person.getKey());
-    if(!person.getName().equals(name)){
+    if (!name.equals(person.getName())) {
         person.setName(name);
         changed = true;
     }
-    if(!person.getMood().equals(mood)){
+    if (!mood.equals(person.getMood())) {
         person.setMood(mood);
         changed = true;
     }
-    if(!person.getComment().equals(comment)){
+    if (!comment.equals(person.getComment())) {
         person.setComment(comment);
         changed = true;
     }
