@@ -10,9 +10,9 @@ import javax.faces.application.ResourceDependency;
         tagName = "dateTimeSelector",
         extendsClass = "javax.faces.component.UIInput",
         componentFamily = "javax.faces.Input",
-        componentType = "com.icesoft.faces.DateTimeSelector",
+        componentType = "org.icefaces.DateTimeSelector",
         rendererClass = "org.icefaces.component.datetimeselector.DateTimeSelectorRenderer",
-        rendererType = "com.icesoft.faces.Calendar",
+        rendererType = "org.icefaces.Calendar",
         generatedClass = "org.icefaces.component.datetimeselector.DateTimeSelectorBase"
 )
 
