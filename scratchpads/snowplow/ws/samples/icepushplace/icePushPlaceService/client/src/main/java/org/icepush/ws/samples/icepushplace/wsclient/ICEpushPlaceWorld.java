@@ -82,12 +82,11 @@ public class ICEpushPlaceWorld {
     }
 
     public List<PersonType> getNorthAmerica() {
-	List<PersonType> people = getContinent(NORTH_AMERICA);
-	return people;
+	return getContinent(NORTH_AMERICA);
     }
 
     public List<PersonType> getSouthAmerica() {
-	return getContinentUpdates(SOUTH_AMERICA);
+	return getContinent(SOUTH_AMERICA);
     }
 
     public List<PersonType> getContinent(int continent) {
