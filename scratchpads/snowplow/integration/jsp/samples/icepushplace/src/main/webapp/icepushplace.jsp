@@ -45,6 +45,12 @@
 if (person.getKey() == 0) {
    person = world.loginPerson(person.getRegion(), person);
 }
+if (person.getName() == null){
+    person.setName("");
+}
+if (person.getComment() == null){
+    person.setComment("");
+}
 %>
 <html>
 <head>
