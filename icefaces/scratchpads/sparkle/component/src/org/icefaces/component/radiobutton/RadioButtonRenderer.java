@@ -5,11 +5,15 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.JSONBuilder;
+import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.util.EnvUtils;
 
 
 
@@ -99,10 +103,10 @@ public class RadioButtonRenderer extends Renderer {
 		//name is same for all buttons in the group and no id is rendered
 		writer.writeAttribute("name", radioButton.getGroup(), null);
 		writer.writeAttribute(HTML.VALUE_ATTR, radioButton.getValue(), null);
-//	  	if (radioButton.isChecked()){
-// //    		writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
-//	  		writer.write(HTML.CHECKED_ATTR);
-//     	}
+	  	if (radioButton.isChecked()){
+ //    		writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
+	  		writer.write(HTML.CHECKED_ATTR);
+     	}
 		
 		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
 		if (radioButton.getImage() != null) {
@@ -114,12 +118,6 @@ public class RadioButtonRenderer extends Renderer {
 			writer.writeAttribute(HTML.SRC_ATTR, radioButton.getImage(), null);
 			writer.endElement(HTML.IMG_ELEM);
 		}
-//		else {
-//			writer.startElement(HTML.SPAN_ELEM, uiComponent);
-//			writer.write(radioButton.getLabel());
-//			writer.endElement(HTML.SPAN_ELEM);	
-//		}
-
 		
     }
     
@@ -130,36 +128,69 @@ public class RadioButtonRenderer extends Renderer {
     private ButtonGroup getGroup(FacesContext facesContext,
 			UIComponent uiComponent, String clientId) {
     	UIComponent parent = uiComponent.getParent();
-    	if (parent instanceof ButtonGroup) return (ButtonGroup)parent;
+    	RadioButton rb = (RadioButton)uiComponent;
+    	if (parent instanceof ButtonGroup) {
+    	 // need to make sure it's the correct buttongroup
+    	 //   if (rb.getGroup().equals(anObject)
+    		return (ButtonGroup)parent;
+    	}
+    	else//keep going up 
+    	{
+//    	   UIViewRoot root = facesContext.getViewRoot();
+    	   UIComponent bgroup = findComponent(facesContext.getViewRoot(), rb.getGroup());
+    	   if (null!=bgroup && bgroup instanceof ButtonGroup){
+    		   return (ButtonGroup)bgroup;
+    	   }else System.out.println("didn't find bgroup for id="+rb.getGroup()+" bgroup is class="+bgroup.getClass().getName());
+    	}
 		return null;
 	}
+//could augment this class to include the class that the parent should be??
+    private UIComponent findComponent(UIComponent parent, String id){
+    	if (id.equals(parent.getId())){
+    		return parent;
+    	}
+    	Iterator<UIComponent> children = parent.getFacetsAndChildren();
+    	while(children.hasNext()){
+    		UIComponent child = (UIComponent)children.next();
+    		UIComponent uicomp = findComponent(child, id);
+    		if (uicomp!=null){
+    			System.out.println("found buttongroup id="+id);
+    			return uicomp;
+    		}
+    	}
+    	return null;
+    }
+    
 
-//	private boolean isSelected(FacesContext facesContext,
-//			UIComponent uiComponent, String clientId) {
-//		// check to see if id of buttonGroup parent shows this button to 
-//    	//be selected
-//    	boolean selected=false;
-//    	UIComponent parent = uiComponent.getParent();
-//    	System.out.println(" RBR isSelected(), parent="+parent);
-//    	if (parent instanceof ButtonGroup){
-//    		ButtonGroup bg = (ButtonGroup)parent;
-//    		String selectedId=String.valueOf(bg.getSelectedItemId());
-//    		System.out.println("selectedId="+selectedId+" clientId="+clientId);
-//    		if (selectedId.equals(clientId))selected=true;
-//    	}
-//    	System.out.println("returning from isselected boolean="+selected);
-//		return selected;
-//	}
     @Override
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
+		System.out.println("RB:encodeEnd() for clientId="+clientId);
 		RadioButton radioButton = (RadioButton) uiComponent;
-	       writer.endElement(HTML.BUTTON_ELEM);
-			writer.endElement(HTML.SPAN_ELEM);  
-		    
-			writer.endElement(HTML.SPAN_ELEM);			
+	    writer.endElement(HTML.BUTTON_ELEM);
+		writer.endElement(HTML.SPAN_ELEM); 
+		String groupId = radioButton.getGroup();
+		// js call
+		String params = "'" + clientId + "'," +
+	           JSONBuilder.create().
+	           beginMap().
+	               entry("name", groupId).
+	           endMap().toString() 
+	           + "," +
+	           JSONBuilder.create().
+	           beginMap().
+	               entry("disabled", radioButton.isDisabled()).
+	               entry("tabindex", radioButton.getTabindex()).
+	               entry("singleSubmit", radioButton.isSingleSubmit()).
+	               entry("checked", radioButton.isChecked()).
+	               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
+	           endMap().toString();
+//	          System.out.println("params = " + params);	    
 
+	        String finalScript = "ice.component.radio.updateProperties(" + params + ");";
+	        ScriptWriter.insertScript(facesContext, uiComponent, finalScript);		    		
+         writer.endElement(HTML.SPAN_ELEM);
     }
 }
