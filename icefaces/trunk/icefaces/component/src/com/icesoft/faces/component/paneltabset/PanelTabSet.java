@@ -134,16 +134,8 @@ public class PanelTabSet
                         while (facets.hasNext()) {
                             UIComponent facet = (UIComponent)
                                     child.getFacets().get(facets.next());
-                            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-                            facet.processDecodes(context);
-                            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-                            facet.processValidators(context);
-                            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                            facet.processUpdates(context);
-                            } else {
-                            throw new IllegalArgumentException();
-                            }
-                        }                           
+                            applyPhase(context, facet, phaseId);
+                        }
                     }
                     tabIdx++;
                 }
@@ -163,6 +155,13 @@ public class PanelTabSet
                     
                     if (tabIdx == selectedIndex) {
                         applyPhase(context, childOrFacet, phaseId);
+                    } else {
+                        Iterator facets = childOrFacet.getFacets().keySet().iterator();
+                        while (facets.hasNext()) {
+                            UIComponent facet = (UIComponent)
+                                    childOrFacet.getFacets().get(facets.next());
+                            applyPhase(context, facet, phaseId);
+                        }
                     }
                     tabIdx++;
                 } else {
