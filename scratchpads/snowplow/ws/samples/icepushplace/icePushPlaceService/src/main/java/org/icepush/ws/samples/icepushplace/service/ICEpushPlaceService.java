@@ -49,7 +49,7 @@ public class ICEpushPlaceService {
 	    }
 	    world.addApp(application);
 	}
-	return masterSequenceNo;
+	return Long.MIN_VALUE;
     }
 
     public Integer loginPerson(String myWorld, PersonType person) {
