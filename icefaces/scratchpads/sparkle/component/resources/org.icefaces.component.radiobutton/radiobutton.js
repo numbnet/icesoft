@@ -9,9 +9,7 @@ ice.component.radiobutton = {
 	 	 	  YAHOO.widget.Logger.enableBrowserConsole();
 	    }
 	    YAHOO.log("INIT clientId="+clientId+" divNode="+divNode+" groupId="+groupId);
-	
-	    var obuttonGroup = YAHOO.widget.ButtonGroup;
-	    
+		    
 	    function onButtonGroupReady(){
 		   var obuttonGroup = new YAHOO.widget.ButtonGroup(groupId);
 		   
@@ -23,7 +21,7 @@ ice.component.radiobutton = {
 		   var hiddenField= Dom.get(clientId+"_hidden");
 		   if (Dom.get(clientId+"_hidden")){
 			//   var hiddenField = Dom.get(clientId+"_hidden");
-			   var hiddenFieldValue = Dom.get(clientId+"_hidden").value;
+			   var hiddenFieldValue = hiddenField.value;
 			   YAHOO.log("hiddenField="+hiddenField+" value = "+hiddenFieldValue);
 			   if (hiddenField.value) {
 				   YAHOO.log("    value of hiddenField="+hiddenField.value);
@@ -48,6 +46,7 @@ ice.component.radiobutton = {
 			logger.info('radiobutton group initialized');
 		//only fired when the checked value has changed so will always 
 		// fire valueChangeListener??
+			
 		var onChecked2 = function(event){
 		    groupNode = document.getElementById(groupId);
 		    YAHOO.log("groupNode="+groupNode+" button group="+obuttonGroup+" divNode="+divNode);
@@ -91,7 +90,39 @@ ice.component.radiobutton = {
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, yuiProps, jsfProps, events) {
 	   YAHOO.log("updateProperties selectedItemId="+jsfProps.selectedItemId);
-       ice.component.updateProperties(clientId, yuiProps, jsfProps, events, this);
+		var Dom = YAHOO.util.Dom;
+		var isDone = false;
+		//for now use the prop value, but later get it from the hiddenfield
+		   var context = ice.component.getJSContext(clientId);
+		    if (context && context.isAttached()) {
+		    	isDone=true;
+		    	var buttonGroup = context.getComponent();
+		    	YAHOO.log("Did this get a buttonGroup??"+ buttonGroup.toString());
+		    	
+			   var hiddenField= Dom.get(clientId+"_hidden");
+			   if (Dom.get(clientId+"_hidden")){
+	
+				   var hiddenFieldValue = hiddenField.value;
+				   YAHOO.log("in UP:- hiddenField="+hiddenField+" value = "+hiddenFieldValue);
+				   if (hiddenField.value) {
+					   YAHOO.log("    value of hiddenField="+hiddenField.value);
+	 			    for (var i = 0; i < buttonGroup.getCount(); i++){
+	 				   YAHOO.log("   for loop i="+i);
+	 				   YAHOO.log("   button id="+buttonGroup.getButton(i).get("id"));
+	 				   if (buttonGroup.getButton(i).get("id") == hiddenField.value ){
+	 					   buttonGroup.check(i);
+	 					   YAHOO.log("    set button i=" +i+" to checkd");
+	 				   }else{
+	 					   buttonGroup.getButton(i).set("checked",false);
+	 					   YAHOO.log("   set button i="+i+" to unchecked");
+	 				   }
+				    }
+				   }
+			   }else YAHOO.log("hiddenField not set!!! still null");
+		    }
+		if(!isDone){
+	       ice.component.updateProperties(clientId, yuiProps, jsfProps, events, this);
+		}
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
