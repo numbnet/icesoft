@@ -30,6 +30,7 @@ import org.icepush.PushContext;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -140,7 +141,11 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     public static ScopeMap lookupWindowScope(FacesContext context) {
         String id = lookupAssociatedWindowID(context.getExternalContext().getRequestMap());
-        return (ScopeMap) getState(context).windowScopedMaps.get(id);
+        ScopeMap scopeMap = (ScopeMap) getState(context).windowScopedMaps.get(id);
+        if(scopeMap == null ){
+            throw new ViewExpiredException("Window has gone out of scope due to view expiry",context.getViewRoot().getViewId());
+        }
+        return scopeMap;
     }
 
     public static synchronized String determineWindowID(FacesContext context) {
