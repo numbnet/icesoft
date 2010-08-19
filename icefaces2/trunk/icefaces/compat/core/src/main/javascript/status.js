@@ -356,9 +356,9 @@ var ComponentIndicators;
         ice.onSubmitResponse(function() {
             indctrs && off(indctrs.busy);
         });
-        ice.onServerError(function() {
-            indctrs && on(indctrs.serverError);
-        });
+//        ice.onServerError(function() {
+//            indctrs && on(indctrs.serverError);
+//        });
         ice.onSessionExpiry(function() {
             indctrs && on(indctrs.sessionExpired);
         });
