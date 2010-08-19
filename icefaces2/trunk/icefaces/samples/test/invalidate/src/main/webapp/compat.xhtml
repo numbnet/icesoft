@@ -63,11 +63,11 @@
                 <ice:commandButton value="Submit" actionListener="#{bean.submit}"/>
             </ice:panelGroup>
 
-            <ice:outputText value="Invalidate session using session.invalidate():"/>
-            <ice:commandButton value="Standard Invalidation" actionListener="#{bean.invalidateStandard}"/>
+            <ice:outputText value="Invalidate session using session.invalidate() with action:"/>
+            <ice:commandButton value="Standard Invalidation" action="#{bean.invalidateStandard}"/>
 
-            <ice:outputText value="Invalidate session using SessionInvalidationFilter:"/>
-            <ice:commandButton value="Filter Invalidation" actionListener="#{bean.invalidateFilter}"/>
+            <ice:outputText value="Invalidate session using session.invalidate() with actionListener:"/>
+            <ice:commandButton value="Standard Invalidation" actionListener="#{bean.invalidateStandard}"/>
 
             <ice:outputText value="Invalidate session by going to logout.jsp:"/>
             <ice:outputLink value="/invalidate/logout.jsp">Click here to navigate to logout.jsp.</ice:outputLink>

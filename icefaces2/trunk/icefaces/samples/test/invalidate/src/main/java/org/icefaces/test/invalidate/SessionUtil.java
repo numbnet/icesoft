@@ -33,7 +33,6 @@ public class SessionUtil implements HttpSessionListener {
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         log.info("session created: " + httpSessionEvent.getSession().toString() );
-        Thread.dumpStack();
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {

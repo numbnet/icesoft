@@ -62,16 +62,25 @@
                 <h:commandButton value="Submit" actionListener="#{bean.submit}"/>
             </h:panelGroup>
 
-            <h:outputText value="Invalidate session using session.invalidate():"/>
+            <h:outputText value="Invalidate session using session.invalidate() with action:"/>
+            <h:commandButton value="Standard Invalidation" action="#{bean.invalidateStandard}"/>
+
+            <h:outputText value="Invalidate session using session.invalidate() via Ajax with action:"/>
+            <h:commandButton value="Standard Invalidation" action="#{bean.invalidateStandard}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+
+            <h:outputText value="Invalidate session using session.invalidate() with actionListener:"/>
             <h:commandButton value="Standard Invalidation" actionListener="#{bean.invalidateStandard}"/>
 
-            <h:outputText value="Invalidate session using SessionInvalidationFilter:"/>
-            <h:commandButton value="Filter Invalidation" actionListener="#{bean.invalidateFilter}"/>
-            
+            <h:outputText value="Invalidate session using session.invalidate() via Ajax with actionListener:"/>
+            <h:commandButton value="Standard Invalidation" actionListener="#{bean.invalidateStandard}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+
             <h:outputText value="Invalidate session by going to logout.jsp:"/>
             <h:outputLink value="/invalidate/logout.jsp">Click here to navigate to logout.jsp.</h:outputLink>
         </h:panelGrid>
-
         
     </h:form>
 
