@@ -22,8 +22,8 @@
 <html>
 <head></head>
 <body>
-<a href="faces/stock/start.xhtml">Stock JSF</a><br/>
-<a href="faces/ice/start.xhtml">ICEfaces</a><br/>
-<a href="faces/compat/start.xhtml">ICEfaces Compat</a><br/>
+<a href="faces/stock.xhtml">Stock JSF</a><br/>
+<a href="faces/ice.xhtml">ICEfaces</a><br/>
+<a href="faces/compat.xhtml">ICEfaces Compat</a><br/>
 </body>
 </html>

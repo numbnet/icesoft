@@ -105,15 +105,31 @@ public class TestBean implements Serializable {
         log.info("TestBean.submit: called for " + this);
     }
 
+    public String invalidateStandard() {
+        log.info("TestBean.invalidateStandard action: called for " + this);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        ec.invalidateSession();
+        return null;
+    }
+
     public void invalidateStandard(ActionEvent event) {
-        log.info("TestBean.invalidateStandard: called for " + this);
+        log.info("TestBean.invalidateStandard actionListener: called for " + this);
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
         ec.invalidateSession();
     }
 
+    public String invalidateFilter() {
+        log.info("TestBean.invalidateFilter action: called for " + this);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        ec.getRequestMap().put(EnvUtils.SESSION_INVALIDATION, "true");
+        return null;
+    }
+
     public void invalidateFilter(ActionEvent event) {
-        log.info("TestBean.invalidateFilter: called for " + this);
+        log.info("TestBean.invalidateFilter actionListener: called for " + this);
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
         ec.getRequestMap().put(EnvUtils.SESSION_INVALIDATION, "true");
