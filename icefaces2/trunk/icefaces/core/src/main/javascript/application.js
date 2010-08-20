@@ -46,6 +46,8 @@ if (!window.ice.icefaces) {
         namespace.submit = submit;
         namespace.s = submit;
 
+        namespace.configuration = new Object();
+
         //todo: find better solution for configuring ICEpush
         //this is meant to be used by ICEpush JS code
         if (namespace.push) namespace.push.configuration.uriSuffix = '.jsf';
