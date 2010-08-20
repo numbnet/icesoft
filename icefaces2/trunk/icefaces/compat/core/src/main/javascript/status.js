@@ -314,7 +314,7 @@ var ComponentIndicators;
             busy: busyIndicator,
             sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
             connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+            serverError: NOOPIndicator,
             connectionTrouble: NOOPIndicator
         };
     };
@@ -356,9 +356,9 @@ var ComponentIndicators;
         ice.onSubmitResponse(function() {
             indctrs && off(indctrs.busy);
         });
-//        ice.onServerError(function() {
-//            indctrs && on(indctrs.serverError);
-//        });
+        ice.onServerError(function() {
+            indctrs && on(indctrs.serverError);
+        });
         ice.onSessionExpiry(function() {
             indctrs && on(indctrs.sessionExpired);
         });

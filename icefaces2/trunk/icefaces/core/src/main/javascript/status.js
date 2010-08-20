@@ -102,25 +102,29 @@
         return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
     }
 
-    if (!namespace.configuration || !namespace.configuration.disableDefaultIndicators) {
-        onLoad(window, function() {
-            namespace.onServerError(function(code, html, xmlContent) {
-                //test if server error message is formatted in XML
-                var message;
-                var description;
-                if (xmlContent) {
-                    message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
-                    description = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
-                } else {
-                    message = extractTagContent('title', html);
-                    description = extractTagContent('body', html);
-                }
-                PopupIndicator(message, description, BackgroundOverlay);
-            });
-
-            namespace.onSessionExpiry(function() {
-                PopupIndicator("User session expired", "Reload the page to start another user session", BackgroundOverlay);
-            });
+    onLoad(window, function() {
+        namespace.onServerError(function(code, html, xmlContent) {
+            if (namespace.configuration.disableDefaultIndicators) {
+                return;
+            }
+            //test if server error message is formatted in XML
+            var message;
+            var description;
+            if (xmlContent) {
+                message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
+                description = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+            } else {
+                message = extractTagContent('title', html);
+                description = extractTagContent('body', html);
+            }
+            PopupIndicator(message, description, BackgroundOverlay);
         });
-    }
+
+        namespace.onSessionExpiry(function() {
+            if (namespace.configuration.disableDefaultIndicators) {
+                return;
+            }
+            PopupIndicator("User session expired", "Reload the page to start another user session", BackgroundOverlay);
+        });
+    });
 })();
