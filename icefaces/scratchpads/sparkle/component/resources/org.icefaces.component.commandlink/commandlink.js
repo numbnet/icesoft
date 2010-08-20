@@ -30,7 +30,7 @@ ice.component.commandlink = {
     clickHandler : function (e, clientId) {
 
         var JSContext = ice.component.getJSContext(clientId);
-        var singleSubmit = JSContext..getJSFProps().singleSubmit;
+        var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
         var divRoot = document.getElementById(clientId);
 
