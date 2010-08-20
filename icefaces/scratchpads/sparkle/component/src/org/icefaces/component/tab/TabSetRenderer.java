@@ -2,14 +2,18 @@ package org.icefaces.component.tab;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.component.effects.EffectBehavior;
+import org.icefaces.component.effects.Effect;
 import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
@@ -23,7 +27,7 @@ public class TabSetRenderer extends Renderer{
         return true;
     }
 
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+    public void decode(final FacesContext facesContext, final UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
             String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
@@ -39,6 +43,11 @@ public class TabSetRenderer extends Renderer{
                 } catch (Exception e) {}
             }
         }
+        Utils.iterateEffects(uiComponent, new Effect.Iterator() {
+			public void next(String name, EffectBehavior effectBehavior) {
+				effectBehavior.decode(facesContext, uiComponent);				
+			}
+		});
     }
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -115,7 +124,12 @@ public class TabSetRenderer extends Renderer{
         int selectedIndex = tabSet.getSelectedIndex();
         String onupdate = tabSet.getOnupdate();
         boolean effectOnHover = tabSet.isEffectOnHover();
-
+        final StringBuilder effect = new StringBuilder();
+        Utils.iterateEffects(uiComponent, new Effect.Iterator() {
+			public void next(String event, EffectBehavior effectBehavior) {
+				effect.append(effectBehavior.getName());				
+			}
+		});        
         
         StringBuilder call = new StringBuilder();
         call.append("ice.component.tabset.updateProperties('")
@@ -132,6 +146,7 @@ public class TabSetRenderer extends Renderer{
 	        .entry("isClientSide", isClientSide)
 	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
 	        .entry("hover", effectOnHover)
+	        .entry("effect", effect.toString())
 	        .entry("selectedIndex", selectedIndex).endMap().toString())
         .append(");");
        
@@ -203,6 +218,16 @@ public class TabSetRenderer extends Renderer{
             Utils.renderChild(facesContext, tab);
         } else {
             if (tabSet.getSelectedIndex() == index) {
+                final StringBuilder styleClasses = new StringBuilder();
+                Utils.iterateEffects(tabSet, new Effect.Iterator() {
+        			public void next(String name, EffectBehavior effectBehavior) {
+        		        if (effectBehavior.getEffectClass() != null) {
+        		        	styleClasses.append(effectBehavior.getEffectClass());
+        		        	styleClasses.append(" ");
+        		        }
+        			}
+        		});
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClasses, HTML.CLASS_ATTR);
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);

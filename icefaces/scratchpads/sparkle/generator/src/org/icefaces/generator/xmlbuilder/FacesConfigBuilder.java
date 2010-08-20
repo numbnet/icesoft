@@ -17,8 +17,9 @@ public class FacesConfigBuilder extends XMLBuilder{
         root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd");
         root.setAttribute("version",            "2.0");
         root.setAttribute("metadata-complete",  "false");
-        Element render_kit = getDocument().createElement("render-kit");
         getDocument().appendChild(root);
+        addEffectBehavior();
+        Element render_kit = getDocument().createElement("render-kit");
         root.appendChild(render_kit);        
     }
     
@@ -83,6 +84,18 @@ public class FacesConfigBuilder extends XMLBuilder{
     public void addEntry(Class clazz, Component component) {
         this.addComponentInfo(clazz, component);
         this.addRendererInfo(clazz, component);
+    }
+    
+    private void addEffectBehavior() {
+        Element behavior = getDocument().createElement("behavior");
+        Element behaviorId = getDocument().createElement("behavior-id"); 
+        behaviorId.appendChild(getDocument().createTextNode("org.icefaces.effects.Effect"));
+        
+        Element behaviorClass = getDocument().createElement("behavior-class"); 
+        behaviorClass.appendChild(getDocument().createTextNode("org.icefaces.component.effects.EffectBehavior"));
+        behavior.appendChild(behaviorId);
+        behavior.appendChild(behaviorClass);
+        getDocument().getDocumentElement().appendChild(behavior);
     }
     
     /*
