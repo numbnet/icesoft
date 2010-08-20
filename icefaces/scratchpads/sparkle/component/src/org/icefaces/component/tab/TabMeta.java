@@ -20,11 +20,17 @@ import javax.faces.application.ResourceDependency;
         )
 		
 @ResourceDependencies({
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
+    @ResourceDependency(name ="json/json-min.js",library = "yui/3_1_1"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
+    @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
+    @ResourceDependency(name="animation.css",library="org.icefaces.component.animation"),    
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
-    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab"),    
-    @ResourceDependency(name = "animation/animation-min.js",library = "yui/2_8_1")
+    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
 
 public class TabMeta {

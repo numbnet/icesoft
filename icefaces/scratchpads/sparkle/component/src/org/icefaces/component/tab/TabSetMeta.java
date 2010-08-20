@@ -16,7 +16,7 @@ import org.icefaces.component.annotation.Facet;
 import org.icefaces.component.annotation.Facets;
 import org.icefaces.component.annotation.Field;
 import org.icefaces.component.annotation.Property;
-
+import org.icefaces.component.annotation.ClientBehaviorHolder;
 @Component(
     tagName ="tabPanel",
     componentClass ="org.icefaces.component.tab.TabSet",
@@ -27,6 +27,7 @@ import org.icefaces.component.annotation.Property;
     generatedClass = "org.icefaces.component.tab.TabSetBase",
     componentFamily="com.icesoft.faces.TabSet"    
 )
+@ClientBehaviorHolder 
 public class TabSetMeta {
     
     @Property(defaultValue="false")    

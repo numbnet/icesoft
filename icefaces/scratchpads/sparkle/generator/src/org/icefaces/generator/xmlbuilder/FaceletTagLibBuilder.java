@@ -19,6 +19,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         root.setAttribute("version",            "2.0");
         getDocument().appendChild(root);
         addNode(root, "namespace", GeneratorContext.namespace);
+        addEffectBehavior();
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -42,5 +43,15 @@ public class FaceletTagLibBuilder extends XMLBuilder{
             addNode(component_element, "handler-class", clazz.getName()+ "Handler");
         }
         //addNode(component_element, "handler-class", component.handlerClass());
+    }
+    
+    private void addEffectBehavior() {
+        Element root = (Element)getDocument().getDocumentElement();
+        tag = getDocument().createElement("tag");        
+        root.appendChild(tag);
+        addNode(tag, "tag-name", "effect");
+        Element behavior = getDocument().createElement("behavior");
+        tag.appendChild(behavior);
+        addNode(behavior, "behavior-id", "org.icefaces.effects.Effect");  
     }
 }

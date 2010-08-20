@@ -11,6 +11,7 @@ import java.util.Map;
 import org.icefaces.component.annotation.PropertyTemplate;
 import org.icefaces.generator.behavior.ActionSourceBehavior;
 import org.icefaces.generator.behavior.Behavior;
+import org.icefaces.generator.behavior.ClientBehaviorHolder;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
@@ -74,7 +75,8 @@ public class GeneratorContext{
 
 	private GeneratorContext() {
 		getBehaviors().add(new ActionSourceBehavior());
-        components = FileWriter.getAnnotatedCompsList();
+		getBehaviors().add(new ClientBehaviorHolder());
+		components = FileWriter.getAnnotatedCompsList();
         loadPropertyTemplate();
 	}
 	

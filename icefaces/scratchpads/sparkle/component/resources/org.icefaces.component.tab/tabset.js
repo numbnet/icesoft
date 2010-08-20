@@ -83,7 +83,7 @@ ice.component.tabset = {
                         };
             if (jsfProps.isClientSide){
             	ice.component.clientState.set(clientId, currentIndex);
-                //logger.info('Client side tab ');
+                console.info('Client side tab ');
             } else {
                 var targetElement = thiz.getTabIndexField(tbset);
                 if(targetElement) {
@@ -182,7 +182,109 @@ ice.component.tabset = {
            //support enter key regardless of keyboard or aria support 
            tabs[i].on('keypress', onKeyPress, i); 
        }
-       tabview.addListener('activeTabChange', tabChange);       
+       
+    
+	   console.info('effect >>> '+ jsfProps.effect );
+	   
+	   if (jsfProps.effect) {
+		   console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
+		   var effect = jsfProps.effect;
+		   tabview.contentTransition = function(newTab, oldTab) {	console.info('1. server side tab ');
+		        var currentIndex = tabview.getTabIndex(newTab);
+
+
+					var Effect = new ice.yui3.effects[effect](oldTab.get('contentEl').id);
+					Effect.setContainerId(clientId);
+					
+					console.info('2. server side tab '+ oldTab.get('contentEl').id);
+					
+					
+					Effect.on('end', function() {
+					    
+						
+						var tbset = document.getElementById(clientId);
+					    console.info('3. onend server side tab ');
+						oldTab.set('contentVisible', false);
+						YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
+						newTab.set('contentVisible', true);
+						console.info('3.a onend server side tab ');
+						 
+						if (jsfProps.isClientSide){
+							
+							ice.component.clientState.set(clientId, currentIndex);
+							var Effect = new ice.yui3.effects['Appear'](newTab.get('contentEl').id);
+							Effect.setContainerId(clientId);
+							Effect.run();	
+							console.info('Client side tab ');
+							
+							
+						} else {
+
+						        tabIndexInfo = clientId + '='+ currentIndex;
+
+							    var targetElement = thiz.getTabIndexField(tbset);
+
+								if(targetElement) {
+									targetElement.value = tabIndexInfo;
+								}            	
+							var event ={};
+							            var params = function(parameter) {
+                            parameter('onevent', function(data) { 
+                                if (data.status == 'success') {console.info('Sucesssssss');
+                        YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
+						newTab.set('contentVisible', true);
+						         
+                                	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
+									Appear.setContainerId(clientId);
+                                	Appear.run();
+									/*
+                                        var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
+	                                                                           if (lastKnownSelectedIndex != currentIndex) {
+	                                            tabview.removeListener('activeTabChange'); 
+	                                            tabview.set('activeIndex', lastKnownSelectedIndex);
+	                                            tabview.addListener('activeTabChange', tabChange); 
+	                                            currentIndex = lastKnownSelectedIndex; 
+	                                      }
+                                    */
+                                   /*
+                                       var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
+
+                                        //set the focus back to the selected tab
+                                        if (LIs.length > currentIndex) {
+                                            Dom.getFirstChild(LIs[currentIndex]).focus();
+                                        }        
+                                     */                                    
+                                }
+                            });
+                        };
+								
+								try {
+									if (jsfProps.isSingleSubmit) {
+										//backup id
+										var elementId = targetElement.id;
+										//replace id with the id of tabset component, so the "execute" property can be set to tabset id
+										targetElement.id = clientId;
+										ice.se(event, targetElement, params);
+										//restore id
+										targetElement.id = elementId;
+									} else {
+										ice.submit(event, targetElement, params);                    
+									}
+								} catch(e) {
+									logger.info(e);
+								} 
+					
+						}
+					});
+					
+					try {
+					Effect.run();
+					} catch(e) {					console.info('run executed. server side tab '+ e);}
+					console.info('run executed. server side tab ');
+		   }
+	   } else { 
+		   tabview.addListener('activeTabChange', tabChange);
+	   }
        bindYUI(tabview);
    },
    
