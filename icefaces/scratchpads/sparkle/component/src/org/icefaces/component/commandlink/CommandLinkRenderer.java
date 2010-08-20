@@ -61,7 +61,7 @@ public class CommandLinkRenderer extends Renderer {
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
 
         // Uncomment this for the so - called inline model onclick handler 
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "return ice.component.commandlink.myClickHandler(event, '" + clientId + "' );", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "return ice.component.commandlink.clickHandler(event, '" + clientId + "' );", null);
         if ((temp = commandLink.getHref()) != null) {
             writer.writeAttribute(HTML.HREF_ATTR, temp, null );
         }
