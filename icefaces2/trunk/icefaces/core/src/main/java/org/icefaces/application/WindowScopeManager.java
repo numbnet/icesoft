@@ -28,6 +28,7 @@ import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
 
 import javax.faces.FactoryFinder;
+import javax.faces.component.UIViewRoot;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ViewExpiredException;
@@ -142,8 +143,11 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     public static ScopeMap lookupWindowScope(FacesContext context) {
         String id = lookupAssociatedWindowID(context.getExternalContext().getRequestMap());
         ScopeMap scopeMap = (ScopeMap) getState(context).windowScopedMaps.get(id);
-        if(scopeMap == null ){
-            throw new ViewExpiredException("Window has gone out of scope due to view expiry",context.getViewRoot().getViewId());
+        if (scopeMap == null) {
+            UIViewRoot root = context.getViewRoot();
+            if (root != null) {
+                throw new ViewExpiredException("Window has gone out of scope due to view expiry", root.getViewId());
+            }
         }
         return scopeMap;
     }
