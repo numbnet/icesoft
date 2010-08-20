@@ -19,10 +19,14 @@
  * Contributor(s): _____________________.
  */
 
-if (!window.console) console = {};
-console.log = console.log || function(){};
+if (!window.console) {
+    console = {};
+    console.log = function() {};
+}
 
-var handleError = function handleError(error) {
+var jsfErrorCallback = function handleError(error) {
+
+    console.log("JSF error callback:");
 
     var type = error.type;
     console.log("type: " + type);
@@ -55,5 +59,20 @@ var handleError = function handleError(error) {
 
 }
 
-jsf.ajax.addOnError(handleError);
+var iceErrorCallback = function iceHandleError(statusCode, responseTxt, responseDOM) {
+    console.log("ICEfaces error callback:");
+    console.log("response code: " + statusCode);
+    console.log("response text: " + responseTxt);
+    console.log("response xml: " + responseDOM);
+    
+    if(responseTxt.indexOf("ViewExpiredException") >= 0 ){
+        window.location.href = "./viewExpired.xhtml";
+    }
+}
 
+if (ice) {
+    ice.configuration.disableDefaultIndicators = true;
+    ice.onServerError(iceErrorCallback);
+} else {
+    jsf.ajax.addOnError(jsfErrorCallback);
+}
