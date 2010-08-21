@@ -50,6 +50,10 @@ public class CommandLinkRenderer extends Renderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-link-button", null);
+         String style = commandLink.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
 
         // first child
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
