@@ -1710,7 +1710,7 @@ table.iceSelInpDate tbody tr td table{
     z-index: 1000;
 }
 
-.iceMnuItm {
+.iceMnuItm, .iceMnuItmCont {
     padding: 0;
     margin: 0;
     vertical-align: top;

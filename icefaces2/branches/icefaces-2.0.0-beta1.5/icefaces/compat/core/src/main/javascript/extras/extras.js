@@ -4278,16 +4278,20 @@ Ice.KeyNavigator = Class.create({
 	  },
 
 	  goSouth: function(event) {
+////logger.info("Ice.MenuBarKeyNavigator.goSouth()");
 	    this.applyFocus('s');
 	  },
 
 	  goNorth: function(event) { 
+////logger.info("Ice.MenuBarKeyNavigator.goNorth()");
 	    this.applyFocus('n');  
 	  },
 
-	  focusMenuItem: function(iclass, next, direct) {
+	  focusMenuItem: function(iclass, iclass2, direct) {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()  iclass: " + iclass + "  direct: " + direct);
 	      var ci = this.srcElement.up(iclass);
 	      if (ci) {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    ci.id: " + ci.id);
 	          if(direct =='e') {
 	             var sm = $(ci.id+'_sub');
 	             this.focusAnchor(sm);
@@ -4305,16 +4309,42 @@ Ice.KeyNavigator = Class.create({
 	          }          
 	                                   
 	          var ni = null;
-	          if(next) {
-	             ni = ci.next(iclass);
-	          } else {
-	             ni = ci.previous(iclass);  
+	          if(direct == 's') {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == s");
+                  if (iclass2) {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == s  iclass2: " +iclass2);
+                      ni = ci.next(iclass +","+ iclass2);
+                  }
+                  else {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == s  !iclass2");
+                      ni = ci.next(iclass);
+                  }
+	          } else if(direct == 'n') {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == n");
+                  if (iclass2) {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == n  iclass2: " +iclass2);
+                      ni = ci.previous(iclass +","+ iclass2);
+                  }
+                  else {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == n  !iclass2");
+                      ni = ci.previous(iclass);
+                  }
 	             if (!ni && direct == 'n') {
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()    direct == n  !ni");
 	                this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
 	                return;
 	             }        
 	          }
-	          this.focusAnchor(ni);
+              if (ni) {
+                  var cont = Element.hasClassName(ni, this.getMenuItemContentClass());
+////logger.info("Ice.MenuBarKeyNavigator.focusMenuItem()  " + "  cont: " + cont + "  ni.id: " + ni.id);
+                  if (cont) {
+                      this.focusAnything(ni);
+                  }
+                  else {
+                      this.focusAnchor(ni);
+                  }
+              }
 	      }
 	  },
 	  
@@ -4333,18 +4363,42 @@ Ice.KeyNavigator = Class.create({
 	          } catch(e){}
 	      }
 	  },
+        
+	  focusAnything: function(item) {
+	      if (item) {
+	          try {
+	              var anch = item.down('a');
+                  if (anch) {
+                      anch.focus();
+                  } else {
+                      var inp = item.down('input');
+                      if (inp) {
+                          inp.focus();
+                      } else {
+                          var sel = item.down('select');
+                          if (sel) {
+                              sel.focus();
+                          }
+                      }
+                  }
+	          } catch(e){}
+	      }
+	  },
 	  
     applyFocus: function(direct) {
 	      var p = this.srcElement.parentNode;
 	      var pm = Element.hasClassName(p, this.getPopupMenuClass());      
 	      var mb = Element.hasClassName(p, this.getMenuBarItemClass());
 	      var mi = Element.hasClassName(p, this.getMenuItemClass());
+	      var mic = Element.hasClassName(p, this.getMenuItemContentClass()) ||
+                    Element.hasClassName(p.up('.'+this.getMenuItemContentClass()), this.getMenuItemContentClass());
+////logger.info("Ice.MenuBarKeyNavigator.applyFocus()  mb: " + mb + "  mi: " + mi + "  mic: " + mic);
 
 	        if(mb){
 	            switch(direct) {
 	                case 's':
 	                if (this.vertical) 
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), null, 's');
 	                else
 	                    this.focusSubMenuItem(p);
 	                break;
@@ -4353,28 +4407,30 @@ Ice.KeyNavigator = Class.create({
 	                if (this.vertical)
 	                    this.focusSubMenuItem(p);
 	                else
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);                    
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), null, 's');                    
 	                break;
 	                
 	                case 'w':
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass());
+	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), null, 'n');
 	                break;
 	                                    
 	                case 'n':
 	                    if (this.vertical)
-	                        this.focusMenuItem('.'+this.getMenuBarItemClass());
+	                        this.focusMenuItem('.'+this.getMenuBarItemClass(), null, 'n');
 	                break;
 	            }
 	            
 	        }else if (mi) {
-	            this.focusMenuItem('.'+this.getMenuItemClass(), direct == 's', direct);
+	            this.focusMenuItem('.'+this.getMenuItemClass(), '.'+this.getMenuItemContentClass(), direct);
+	        }else if (mic) {
+	            this.focusMenuItem('.'+this.getMenuItemContentClass(), '.'+this.getMenuItemClass(), direct);
 	        }else if (pm) {
 	            switch(direct) {
 	                case 'n':
-	                     this.focusMenuItem('.'+this.getPopupMenuClass());
+	                     this.focusMenuItem('.'+this.getPopupMenuClass(), null, 'n');
 	                break;
 	                case 's':
-	                     this.focusMenuItem('.'+this.getPopupMenuClass(), true);                
+	                     this.focusMenuItem('.'+this.getPopupMenuClass(), null, 's');                
 	                break;
 	                case 'e':
 	                      this.focusSubMenuItem(p);
@@ -4421,6 +4477,10 @@ Ice.KeyNavigator = Class.create({
 	     return "iceMnuItm";
 	  },
 	  
+	  getMenuItemContentClass: function() {
+	     return "iceMnuItmCont";
+	  },
+	  
 	  getPopupMenuClass: function() {
 	     return "iceMnuPopVrtItem";
 	  },
@@ -4440,6 +4500,7 @@ Ice.KeyNavigator = Class.create({
 	       }    
 	    
 	        var submenu = $(element.id + '_sub');
+//logger.info("Ice.MenuBarKeyNavigator.hover() ... submenu.id: " + submenu.id);
 	        Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
 	        if (this.vertical) {
 	            Ice.Menu.show(this.component,submenu,element);
@@ -4455,6 +4516,7 @@ Ice.KeyNavigator = Class.create({
 	        this.clicked = false;
 	    } else {
 	        this.clicked = true;    
+//logger.info("Ice.MenuBarKeyNavigator.mousedown() ... element.id: " + element.id);
 	        this.hover(event, element, true);
 	    }
 	  },
@@ -4486,7 +4548,9 @@ Ice.KeyNavigator = Class.create({
 	  
 	  hideAll:function(event) {
 	      element = Event.element(event); 
+//logger.info("Ice.MenuBarKeyNavigator.hideAll()  element.id: " + element.id);
 	      var baritem = element.up('.'+ this.getMenuBarItemClass());
+          var mic = element.up('.'+ this.getMenuItemContentClass());
 	      var elt = event.element();
 	      if (elt && elt.match("a[onclick]")) {
 	          elt = elt.down();
@@ -4494,8 +4558,8 @@ Ice.KeyNavigator = Class.create({
 	      if (elt) {
 	          elt = elt.up(".iceMnuItm a[onclick^='return false']");
 	      }
-	      if (!(baritem && this.clicked) && !elt) {
-	        Ice.Menu.lastClickedMenue = null;
+	      if (!(baritem && this.clicked) && !elt && !mic) {
+	        Ice.Menu.lastClickedMenu = null;
 	        Ice.Menu.hideAll();
 	        if (this.displayOnClick) {       
 	            this.clicked = false;
@@ -4834,6 +4898,7 @@ Ice.Menu = {
         return buffer;
     },
     hideAll: function() {
+//logger.info("Ice.Menu.hideAll()");
         for (var i = 0; i < Ice.Menu.openMenus.length; i++) {
             if (Ice.Menu.openMenus[i].iframe) Ice.Menu.openMenus[i].iframe.hide(); // ICE-2066, ICE-2912
             Ice.Menu.openMenus[i].style.display = 'none';
@@ -5020,6 +5085,7 @@ Ice.Menu = {
         }
     },
     hideOrphanedMenusNotRelatedTo: function(hoverMenu) {
+//logger.info("Ice.Menu.hideOrphanedMenusNotRelatedTo()  hoverMenu.id: " + hoverMenu.id);
         // form an array of allowable names
         var relatedMenus = new Array();
         var idSegments = hoverMenu.id.split(':');
@@ -5053,6 +5119,7 @@ Ice.Menu = {
         Ice.Menu.hideMenusWithIdsInArray(menusToHide);
     },
     hideSubmenu: function(hoverMenu) {
+//logger.info("Ice.Menu.hideSubmenu()  hoverMenu.id: " + hoverMenu.id);
         var cur = Ice.Menu.currentMenu;
         var hoverParentId = hoverMenu.id.substring(0, hoverMenu.id.lastIndexOf(':'));
         var curParentId = cur.id.substring(0, cur.id.lastIndexOf(':'));
@@ -5070,6 +5137,7 @@ Ice.Menu = {
     hideMenuWithId: function(menu) {
         menu = $(menu);
         if (menu) {
+//logger.info("Ice.Menu.hideMenuWithId()  menu.id: " + menu.id);
             if (menu.iframe) menu.iframe.hide(); // ICE-2066, ICE-2912
             menu.style.display = 'none';
             Ice.Menu.removeFromOpenMenus(menu);
@@ -5077,6 +5145,7 @@ Ice.Menu = {
         return;
     },
     removeFromOpenMenus: function(menu) {
+//logger.info("Ice.Menu.removeFromOpenMenus()  menu.id: " + menu.id);
         var tempArray = new Array();
         for (var i = 0; i < Ice.Menu.openMenus.length; i ++) {
             if (Ice.Menu.openMenus[i].id != menu.id) {
