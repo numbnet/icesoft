@@ -1528,7 +1528,7 @@ input {
     z-index: 1000;
 }
 
-.iceMnuItm { /* was iceSubMenuRow*/
+.iceMnuItm, .iceMnuItmCont { /* was iceSubMenuRow*/
     padding: 0px;
     display: block;
     height: auto;
