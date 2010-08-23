@@ -48,23 +48,20 @@ public class SessionExpiredListener implements HttpSessionListener {
         //then being invalidated programmatically.  In that case, we don't handle it here.
         FacesContext fc = FacesContext.getCurrentInstance();
         if (fc == null) {
-            if (log.isLoggable(Level.INFO)) {
-                log.log(Level.INFO, "session destroyed but FacesContext is not available");
+            if (log.isLoggable(Level.FINE)) {
+                log.log(Level.FINE, "session destroyed but FacesContext is not available");
             }
             return;
         }
 
+        Application app = fc.getApplication();
         if( app == null ){
             ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
             app = factory.getApplication();
         }
 
-        log.log(Level.INFO, "app is " + app);
-
         ExceptionQueuedEventContext ctxt =
                 new ExceptionQueuedEventContext(fc, new SessionExpiredException("session has expired") );
         app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
-
-        log.log(Level.INFO, "published " + ctxt);
     }
 }
