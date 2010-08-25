@@ -42,7 +42,6 @@
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
         <portlet-name>panelBorder</portlet-name>
         <instanceable>true</instanceable>
@@ -169,11 +168,13 @@
         <ajaxable>false</ajaxable>
     </portlet>
 
+<!-- 
     <portlet>
         <portlet-name>inputFile</portlet-name>
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+ -->
 
     <portlet>
         <portlet-name>inputRichText</portlet-name>
@@ -205,11 +206,13 @@
         <ajaxable>false</ajaxable>
     </portlet>
 
+<!-- 
     <portlet>
         <portlet-name>outputDeclaration</portlet-name>
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
+ -->
 
     <portlet>
         <portlet-name>outputMedia</portlet-name>
