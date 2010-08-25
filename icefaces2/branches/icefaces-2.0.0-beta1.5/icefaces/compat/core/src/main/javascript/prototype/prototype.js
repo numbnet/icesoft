@@ -43,7 +43,7 @@ var Prototype = {
         }
     })(),
 
-    BrowserFeatures: {
+    BrowserFeatures: window.Prototype && window.Prototype.BrowserFeatures ? window.Prototype.BrowserFeatures : {
         XPath: !!document.evaluate,
         SelectorsAPI: !!document.querySelector,
         ElementExtensions: (function() {
