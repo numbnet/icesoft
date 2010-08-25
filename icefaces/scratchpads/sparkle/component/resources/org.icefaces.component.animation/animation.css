@@ -1,3 +1,23 @@
-.Fade {
+.FadeTo {
   opacity:0;
+}
+
+.FadeFrom {
+  opacity:1;
+}
+
+.AppearTo {
+  opacity:1;
+}
+
+.AppearFrom {
+  opacity:0;
+}
+
+.HighlightTo {
+  background-color:green; 
+}
+
+.HighlightFrom {
+  background-color:red; 
 }

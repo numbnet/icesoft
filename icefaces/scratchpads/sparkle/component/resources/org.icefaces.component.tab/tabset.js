@@ -192,15 +192,8 @@ ice.component.tabset = {
 		   tabview.contentTransition = function(newTab, oldTab) {	console.info('1. server side tab ');
 		        var currentIndex = tabview.getTabIndex(newTab);
 
-
-					var Effect = new ice.yui3.effects[effect](oldTab.get('contentEl').id);
-					Effect.setContainerId(clientId);
-					
-					console.info('2. server side tab '+ oldTab.get('contentEl').id);
-					
-					
-					Effect.on('end', function() {
-					    
+					var callback = function(_effect) {
+					    console.info('_EFFEFEFEF '+ _effect);
 						
 						var tbset = document.getElementById(clientId);
 					    console.info('3. onend server side tab ');
@@ -231,12 +224,12 @@ ice.component.tabset = {
 							            var params = function(parameter) {
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {console.info('Sucesssssss');
-                        YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
+                       // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
 						newTab.set('contentVisible', true);
-						         
-                                	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
-									Appear.setContainerId(clientId);
-                                	Appear.run();
+						         _effect.set('node', '#'+ newTab.get('contentEl').id);
+                              //  	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
+								//	Appear.setContainerId(clientId);
+                                //	Appear.run();
 									/*
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
 	                                                                           if (lastKnownSelectedIndex != currentIndex) {
@@ -275,7 +268,15 @@ ice.component.tabset = {
 								} 
 					
 						}
-					});
+					};
+
+					var Effect = new ice.yui3.effects[effect]({node: '#'+  oldTab.get('contentEl').id,  revert:true}, callback);
+					Effect.setContainerId(clientId);
+					
+					console.info('2. server side tab '+ oldTab.get('contentEl').id);
+					
+					
+				
 					
 					try {
 					Effect.run();

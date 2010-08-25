@@ -12,17 +12,20 @@ import javax.faces.component.behavior.FacesBehavior;
  
 import javax.faces.context.FacesContext;
 
-@FacesBehavior("org.icefaces.effects.Effect")
 public class EffectBehavior extends ClientBehaviorBase{
 	private static final String EFFECT_TYPE = "effectType";
     private Map<String, ValueExpression> bindings;
-	private String id;
-	private String name;
-	
- 
+	private String effectsLib = "ice.yui3.effects";
+	private boolean usingStyleClass;
 
-	private Effect effectType = new Fade();
-	private String color;	
+	protected String getEffectsLib() {
+		return effectsLib;
+	}
+
+	protected void setEffectsLib(String effectsLib) {
+		this.effectsLib = effectsLib;
+	}
+
 	private String effectClass;
     public String getEffectClass() {
 		return effectClass;
@@ -31,57 +34,27 @@ public class EffectBehavior extends ClientBehaviorBase{
 	public void setEffectClass(String effectClass) {
 		this.effectClass = effectClass;
 	}
-
-	public void setType(Effect effectType) {
-        this.effectType = effectType;
-        clearInitialState();
-    }
+ 
     
-    public Effect getType() {
-
-        return (Effect) eval(EFFECT_TYPE, effectType);
-
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-        clearInitialState();
-    }
-    
-    public String getName() {
-        return (String) eval("name", name);
-
-    }  
-    
-    public void setColor(String color) {
-        this.color = color;
-        clearInitialState();
-    }
-    
-    public String getColor() {
-        return (String) eval("color", color);
-
-    }    
-    
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		if (this.id == null) {
-			this.id = "effect_"+ id ;
-		}
-		this.id = id;
-	}
-
 	public EffectBehavior() {
 		System.out.println("EffectBehavior initialized ");
 	}
 	
+	public void setUsingStyleClass(boolean usingStyleClass) {
+		this.usingStyleClass = usingStyleClass;
+    }
+    
+    public boolean isUsingStyleClass() {
+        return usingStyleClass;
+
+    }
+    
+    public String getName() {
+    	return this.getClass().getSimpleName();
+    }
  
     public String getScript(ClientBehaviorContext behaviorContext) {
-    	setId(behaviorContext.getComponent().getId());
-    	return effectType.getScript(behaviorContext.getComponent().getId());
+     	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ behaviorContext.getComponent().getClientId() +"').run()";
     }
     
     public void decode(FacesContext context,
@@ -95,7 +68,7 @@ public class EffectBehavior extends ClientBehaviorBase{
 		}
     }
     
-    private Object eval(String propertyName, Object value) {
+    protected Object eval(String propertyName, Object value) {
 
         if (value != null) {
             return value;
@@ -169,7 +142,7 @@ public class EffectBehavior extends ClientBehaviorBase{
         clearInitialState();
     }  
 
-    private void setLiteralValue(String propertyName,
+    protected void setLiteralValue(String propertyName,
             ValueExpression expression) {
 
 		assert(expression.isLiteralText());
@@ -182,16 +155,15 @@ public class EffectBehavior extends ClientBehaviorBase{
 		} catch (javax.el.ELException ele) {
 		throw new FacesException(ele);
 		}
-		
-		if (EFFECT_TYPE.equals(propertyName)) {
-			effectType = (Effect)value;
-		}else if ("color".equals(propertyName)) {
-			color = (String)value;
-		}else if ("name".equals(propertyName)) {
-			name = (String)value;
-		}   
-		
-    }    
+		castValue(propertyName, value);
+    }   
+    
+    protected void castValue(String propertyName, Object value) {
+
+    }
+	public interface Iterator {
+		public void next (String name, EffectBehavior effectBehavior);
+	}
 }
 
 //faces-config.xml
