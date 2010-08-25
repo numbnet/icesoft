@@ -1,21 +1,50 @@
 package org.icefaces.component.effects;
 
-public abstract class Effect {
-	private String fromStyleClass;
-	private String toStyleClass;
-	private String name;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.FacesBehavior;
+
+@FacesBehavior("org.icefaces.effects.Effect")
+public class Effect extends EffectBehavior{
+ 
+	EffectBehavior effect = new Fade();
+	private String using = "Fade";
+
+	public void setUsing(String using) {
+		if (!using.equals(this.using)) {
+			use(using);
+		}
+		this.using = using;
+        clearInitialState();
+    }
+    
+    public String getUsing() {
+        return (String) eval("using", using);
+
+    }
+    
+    protected void castValue(String propertyName, Object value) {
+        if ("using".equals(propertyName)) {
+			using = (String)value;
+		}
+    }
+    
+    public String getName() {
+    	return effect.getClass().getSimpleName();
+    }
 	
-	Effect(String name) {
-		this.name = name;
+	public String getScript(ClientBehaviorContext behaviorContext) {
+    	 return effect.getScript(behaviorContext);
+    }
+
+	private void use(String name) {
+		if ("Fade".equals(name)) {
+			effect = new Fade();
+		} else if ("Appear".equals(name)) {
+			effect = new Appear();
+		} else if ("Highlight".equals(name)) {
+			effect = new Highlight();
+		}
 	}
+
 	
-	public String getScript(String elementId) {
-		String script = "new ice.yui3.effects['" + name +"']('"+ elementId +"').run()";
-		System.out.println("SCRIPT CALL : "+ script);
-		return script;
-	}
-	
-	public interface Iterator {
-		public void next (String name, EffectBehavior effectBehavior);
-	}
 }
