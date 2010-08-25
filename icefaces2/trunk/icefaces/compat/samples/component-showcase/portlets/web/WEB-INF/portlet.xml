@@ -26,13 +26,9 @@
 	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
-    <!-- =================================================================== -->
-    <!-- ICEfaces 2: Buttons & Links                                           -->
-    <!-- =================================================================== -->
-
 	<portlet>
 		<portlet-name>buttonsAndLinks</portlet-name>
-		<display-name>ICEfaces 2: Button and Links</display-name>
+		<display-name>Button and Links</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -47,19 +43,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: Buttons and Links</title>
+            <title>Buttons and Links</title>
             <short-title>Buttons and Links</short-title>
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
 	</portlet>
 
-    <!-- =================================================================== -->
-    <!-- ICEfaces 2: Text Fields                                             -->
-    <!-- =================================================================== -->
-
 	<portlet>
 		<portlet-name>textFields</portlet-name>
-		<display-name>ICEfaces 2: Text Fields</display-name>
+		<display-name>Text Fields</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -74,7 +66,7 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: Text Fields</title>
+            <title>Text Fields</title>
             <short-title>Buttons and Links</short-title>
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
@@ -82,7 +74,7 @@
     
 	<portlet>
 		<portlet-name>selectionTags</portlet-name>
-		<display-name>ICEfaces 2: selectionTags</display-name>
+		<display-name>Selection Components</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -97,15 +89,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: selectionTags</title>
-            <short-title>selectionTags</short-title>
+            <title>Selection Components</title>
+            <short-title>Selection Components</short-title>
             <keywords>ICEfaces Component Showcase selectionTags</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-columns</portlet-name>
-		<display-name>ICEfaces 2: dataTable-columns</display-name>
+		<display-name>Dynamic Columns</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -120,15 +112,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-columns</title>
-            <short-title>dataTable-columns</short-title>
+            <title>Dynamic Columns</title>
+            <short-title>Dynamic Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-columns</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-commandSortHeader</portlet-name>
-		<display-name>ICEfaces 2: dataTable-commandSortHeader</display-name>
+		<display-name>Sortable Columns</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -143,15 +135,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-commandSortHeader</title>
-            <short-title>dataTable-commandSortHeader</short-title>
+            <title>Sortable Columns</title>
+            <short-title>Sortable Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-commandSortHeader</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-dataExporter</portlet-name>
-		<display-name>ICEfaces 2: dataTable-dataExporter</display-name>
+		<display-name>Data Export</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -166,15 +158,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-dataExporter</title>
-            <short-title>dataTable-dataExporter</short-title>
+            <title>Data Export</title>
+            <short-title>Datatable Data Export</short-title>
             <keywords>ICEfaces Component Showcase dataTable-dataExporter</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-dataScrolling</portlet-name>
-		<display-name>ICEfaces 2: dataTable-dataScrolling</display-name>
+		<display-name>Scroller</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -189,15 +181,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-dataScrolling</title>
-            <short-title>dataTable-dataScrolling</short-title>
+            <title>Scroller</title>
+            <short-title>Datatable Scroller</short-title>
             <keywords>ICEfaces Component Showcase dataTable-dataScrolling</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-expandable</portlet-name>
-		<display-name>ICEfaces 2: dataTable-expandable</display-name>
+		<display-name>Expandable Rows</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -212,15 +204,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-expandable</title>
-            <short-title>dataTable-expandable</short-title>
+            <title>Expandable Rows</title>
+            <short-title>Expandable Rows</short-title>
             <keywords>ICEfaces Component Showcase dataTable-expandable</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-grouping</portlet-name>
-		<display-name>ICEfaces 2: dataTable-grouping</display-name>
+		<display-name>Grouping</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -235,15 +227,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-grouping</title>
-            <short-title>dataTable-grouping</short-title>
+            <title>Grouping</title>
+            <short-title>Grouping</short-title>
             <keywords>ICEfaces Component Showcase dataTable-grouping</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-resizableColumns</portlet-name>
-		<display-name>ICEfaces 2: dataTable-resizableColumns</display-name>
+		<display-name>Resizable Columns</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -258,15 +250,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-resizableColumns</title>
-            <short-title>dataTable-resizableColumns</short-title>
+            <title>Resizable Columns</title>
+            <short-title>Resizable Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-resizableColumns</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dataTable-rowSelection</portlet-name>
-		<display-name>ICEfaces 2: dataTable-rowSelection</display-name>
+		<display-name>Row Selectors</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -281,15 +273,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dataTable-rowSelection</title>
-            <short-title>dataTable-rowSelection</short-title>
+            <title>Row Selectors</title>
+            <short-title>Row Selectors</short-title>
             <keywords>ICEfaces Component Showcase dataTable-rowSelection</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>dragDrop</portlet-name>
-		<display-name>ICEfaces 2: dragDrop</display-name>
+		<display-name>Drag and Drop</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -304,15 +296,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: dragDrop</title>
-            <short-title>dragDrop</short-title>
+            <title>Drag and Drop</title>
+            <short-title>Drag and Drop</short-title>
             <keywords>ICEfaces Component Showcase dragDrop</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>effects</portlet-name>
-		<display-name>ICEfaces 2: effects</display-name>
+		<display-name>Effects</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -327,15 +319,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: effects</title>
-            <short-title>effects</short-title>
+            <title>Effects</title>
+            <short-title>Effects</short-title>
             <keywords>ICEfaces Component Showcase effects</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>gmap</portlet-name>
-		<display-name>ICEfaces 2: gmap</display-name>
+		<display-name>Google Maps</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -350,15 +342,16 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: gmap</title>
-            <short-title>gmap</short-title>
+            <title>Google Maps</title>
+            <short-title>Google Maps</short-title>
             <keywords>ICEfaces Component Showcase gmap</keywords>
         </portlet-info>
 	</portlet>
 
+<!-- 
   	<portlet>
 		<portlet-name>inputFile</portlet-name>
-		<display-name>ICEfaces 2: inputFile</display-name>
+		<display-name>File Upload</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -373,15 +366,16 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: inputFile</title>
-            <short-title>inputFile</short-title>
+            <title>File Upload</title>
+            <short-title>File Upload</short-title>
             <keywords>ICEfaces Component Showcase inputFile</keywords>
         </portlet-info>
 	</portlet>
+ -->
 
   	<portlet>
 		<portlet-name>inputRichText</portlet-name>
-		<display-name>ICEfaces 2: inputRichText</display-name>
+		<display-name>Rich Text Editor</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -396,15 +390,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: inputRichText</title>
-            <short-title>inputRichText</short-title>
+            <title>Rich Text Editor</title>
+            <short-title>Rich Text Editor</short-title>
             <keywords>ICEfaces Component Showcase inputRichText</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>menuBar</portlet-name>
-		<display-name>ICEfaces 2: menuBar</display-name>
+		<display-name>Menu Bar</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -419,15 +413,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: menuBar</title>
-            <short-title>menuBar</short-title>
+            <title>Menu Bar</title>
+            <short-title>Menu Bar</short-title>
             <keywords>ICEfaces Component Showcase menuBar</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>menuPopup</portlet-name>
-		<display-name>ICEfaces 2: menuPopup</display-name>
+		<display-name>Menu Popup</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -442,15 +436,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: menuPopup</title>
-            <short-title>menuPopup</short-title>
+            <title>Menu Popup</title>
+            <short-title>Menu Popup</short-title>
             <keywords>ICEfaces Component Showcase menuPopup</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>outputChart</portlet-name>
-		<display-name>ICEfaces 2: outputChart</display-name>
+		<display-name>Charts</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -465,15 +459,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputChart</title>
-            <short-title>outputChart</short-title>
+            <title>Charts</title>
+            <short-title>Charts</short-title>
             <keywords>ICEfaces Component Showcase outputChart</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>outputConnectionStatus</portlet-name>
-		<display-name>ICEfaces 2: outputConnectionStatus</display-name>
+		<display-name>Connection Status</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -488,15 +482,16 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputConnectionStatus</title>
-            <short-title>outputConnectionStatus</short-title>
+            <title>Connection Status</title>
+            <short-title>Connection Status</short-title>
             <keywords>ICEfaces Component Showcase outputConnectionStatus</keywords>
         </portlet-info>
 	</portlet>
 
+<!-- 
   	<portlet>
 		<portlet-name>outputDeclaration</portlet-name>
-		<display-name>ICEfaces 2: outputDeclaration</display-name>
+		<display-name>Document Type Declaration</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -511,15 +506,16 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputDeclaration</title>
-            <short-title>outputDeclaration</short-title>
+            <title>Document Type Declaration</title>
+            <short-title>Document Type Declaration</short-title>
             <keywords>ICEfaces Component Showcase outputDeclaration</keywords>
         </portlet-info>
 	</portlet>
+ -->
 
   	<portlet>
 		<portlet-name>outputMedia</portlet-name>
-		<display-name>ICEfaces 2: outputMedia</display-name>
+		<display-name>Media</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -534,15 +530,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputMedia</title>
-            <short-title>outputMedia</short-title>
+            <title>Media</title>
+            <short-title>Media</short-title>
             <keywords>ICEfaces Component Showcase outputMedia</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>outputProgress</portlet-name>
-		<display-name>ICEfaces 2: outputProgress</display-name>
+		<display-name>Progress Bar</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -557,15 +553,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputProgress</title>
-            <short-title>outputProgress</short-title>
+            <title>Progress Bar</title>
+            <short-title>Progress Bar</short-title>
             <keywords>ICEfaces Component Showcase outputProgress</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>outputResource</portlet-name>
-		<display-name>ICEfaces 2: outputResource</display-name>
+		<display-name>File Download</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -580,15 +576,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: outputResource</title>
-            <short-title>outputResource</short-title>
+            <title>File Download</title>
+            <short-title>File Download</short-title>
             <keywords>ICEfaces Component Showcase outputResource</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>selectInputDate</portlet-name>
-		<display-name>ICEfaces 2: selectInputDate</display-name>
+		<display-name>Date Picker</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -603,15 +599,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: selectInputDate</title>
-            <short-title>selectInputDate</short-title>
+            <title>Date Picker</title>
+            <short-title>Date Picker</short-title>
             <keywords>ICEfaces Component Showcase selectInputDate</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>selectInputText</portlet-name>
-		<display-name>ICEfaces 2: selectInputText</display-name>
+		<display-name>Text Input</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -626,15 +622,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: selectInputText</title>
-            <short-title>selectInputText</short-title>
+            <title>Text Input</title>
+            <short-title>Text Input</short-title>
             <keywords>ICEfaces Component Showcase selectInputText</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>setEventPhase</portlet-name>
-		<display-name>ICEfaces 2: setEventPhase</display-name>
+		<display-name>Set Event Phase</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -649,15 +645,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: setEventPhase</title>
-            <short-title>setEventPhase</short-title>
+            <title>Set Event Phase</title>
+            <short-title>Set Event Phase</short-title>
             <keywords>ICEfaces Component Showcase setEventPhase</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>tree</portlet-name>
-		<display-name>ICEfaces 2: tree</display-name>
+		<display-name>Tree</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -672,15 +668,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: tree</title>
-            <short-title>tree</short-title>
+            <title>Tree</title>
+            <short-title>Tree</short-title>
             <keywords>ICEfaces Component Showcase tree</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelBorder</portlet-name>
-		<display-name>ICEfaces 2: panelBorder</display-name>
+		<display-name>Border</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -695,15 +691,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelBorder</title>
-            <short-title>panelBorder</short-title>
+            <title>Border</title>
+            <short-title>Panel Border</short-title>
             <keywords>ICEfaces Component Showcase panelBorder</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelCollapsible</portlet-name>
-		<display-name>ICEfaces 2: panelCollapsible</display-name>
+		<display-name>Collapsible</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -718,15 +714,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelCollapsible</title>
-            <short-title>panelCollapsible</short-title>
+            <title>Collapsible</title>
+            <short-title>Panel Collapsible</short-title>
             <keywords>ICEfaces Component Showcase panelCollapsible</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelDivider</portlet-name>
-		<display-name>ICEfaces 2: panelDivider</display-name>
+		<display-name>Divider</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -741,15 +737,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelDivider</title>
-            <short-title>panelDivider</short-title>
+            <title>Divider</title>
+            <short-title>Panel Divider</short-title>
             <keywords>ICEfaces Component Showcase panelDivider</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelPopup</portlet-name>
-		<display-name>ICEfaces 2: panelPopup</display-name>
+		<display-name>Popup</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -764,15 +760,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelPopup</title>
-            <short-title>panelPopup</short-title>
+            <title>Popup</title>
+            <short-title>Panel Popup</short-title>
             <keywords>ICEfaces Component Showcase panelPopup</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelPositioned</portlet-name>
-		<display-name>ICEfaces 2: panelPositioned</display-name>
+		<display-name>Positioned</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -787,15 +783,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelPositioned</title>
-            <short-title>panelPositioned</short-title>
+            <title>Positioned</title>
+            <short-title>Panel Positioned</short-title>
             <keywords>ICEfaces Component Showcase panelPositioned</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelSeries</portlet-name>
-		<display-name>ICEfaces 2: panelSeries</display-name>
+		<display-name>Series</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -810,15 +806,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelSeries</title>
-            <short-title>panelSeries</short-title>
+            <title>Series</title>
+            <short-title>Panel Series</short-title>
             <keywords>ICEfaces Component Showcase panelSeries</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelStack</portlet-name>
-		<display-name>ICEfaces 2: panelStack</display-name>
+		<display-name>Stack</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -833,15 +829,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelStack</title>
-            <short-title>panelStack</short-title>
+            <title>Stack</title>
+            <short-title>Panel Stack</short-title>
             <keywords>ICEfaces Component Showcase panelStack</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelTabSet-dynamic</portlet-name>
-		<display-name>ICEfaces 2: panelTabSet-dynamic</display-name>
+		<display-name>Tabset Dynamic</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -856,15 +852,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelTabSet-dynamic</title>
-            <short-title>panelTabSet-dynamic</short-title>
+            <title>Tabset Dynamic</title>
+            <short-title>Panel Tabset Dynamic</short-title>
             <keywords>ICEfaces Component Showcase panelTabSet-dynamic</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelTabSet-static</portlet-name>
-		<display-name>ICEfaces 2: panelTabSet-static</display-name>
+		<display-name>Tabset Static</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -879,15 +875,15 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelTabSet-static</title>
-            <short-title>panelTabSet-static</short-title>
+            <title>Tabset Static</title>
+            <short-title>Panel Tabset Static</short-title>
             <keywords>ICEfaces Component Showcase panelTabSet-static</keywords>
         </portlet-info>
 	</portlet>
 
   	<portlet>
 		<portlet-name>panelTooltip</portlet-name>
-		<display-name>ICEfaces 2: panelTooltip</display-name>
+		<display-name>Tooltip</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -902,8 +898,8 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>ICEfaces 2: panelTooltip</title>
-            <short-title>panelTooltip</short-title>
+            <title>Tooltip</title>
+            <short-title>Panel Tooltip</short-title>
             <keywords>ICEfaces Component Showcase panelTooltip</keywords>
         </portlet-info>
 	</portlet>
