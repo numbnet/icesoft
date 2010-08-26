@@ -1655,6 +1655,10 @@ table.iceSelInpDate tbody tr td table{
     background-color: #FCFCFC;
 }
 
+.iceMnuBarItem {
+    display: inline;
+}
+
 .iceMnuBarItem, .iceMnuBarVrtItem {
     border: 1px solid #DBDBDB;
     float: left;
@@ -1669,25 +1673,34 @@ table.iceSelInpDate tbody tr td table{
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover, .iceMnuBarVrtItem a, .iceMnuBarVrtItem span, .iceMnuBarVrtItem a:hover {
     text-decoration: none;
     font-weight: bold;
-    display: block;
     font-size: 1.0em;
     color: #000000;
 }
 
-.iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
-    padding: 3px 6px 3px 6px;
+.iceMnuBarItem a, .iceMnuBarItem a:hover {
+    padding: 3px;
 }
 
-.iceMnuBarVrtItem a, .iceMnuBarVrtItem span, .iceMnuBarVrtItem a:hover {
+.iceMnuBarItem span {
+    padding: 3px;
+}
+
+.iceMnuBarVrtItem a, .iceMnuBarVrtItem a:hover {
+    padding: 3px 0 3px 6px;
+}
+
+.iceMnuBarVrtItem span {
     padding: 3px 0 3px 6px;
 }
 
 .iceMnuBarItem a, .iceMnuBarVrtItem a {
     background-image: url( "./css-images/bottom_menu_bg.png" );
+    display: block;
 }
 
 .iceMnuBarItem a:hover, .iceMnuBarVrtItem a:hover {
     background-image: url( "./css-images/bottom_menu_btn_bg_on.png" );
+    display: block;
 }
 
 .iceMnuItmSep {
@@ -1755,10 +1768,10 @@ table.iceSelInpDate tbody tr td table{
     font-weight: normal;
 }
 
-.iceMnuItmLabel, .iceMnuBarItemLabel {
+.iceMnuItmLabel, .iceMnuBarItemLabel, .iceMnuBarVrtItemLabel {
     font-size: 1.0em;
     /*width: 100%;*/
-    vertical-align: top;
+    vertical-align: super;
 }
 
 .iceDatTbl td span.iceMnuItmLabel {
@@ -1775,9 +1788,17 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .iceMnuBarSubMenuInd {
-    float: right;
-    padding: 5px 0 0 0;
+    display: inline;
     margin: 0;
+}
+
+.iceMnuBarVrtItem .iceMnuBarSubMenuInd {
+    float: right;
+}
+
+.iceMnuItm .iceMnuBarSubMenuInd, .iceMnuItmVrt .iceMnuBarSubMenuInd {
+    padding: 5px 0 0 0;
+    float: right;
 }
 
 .iceMnuBarVrt {
