@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.context.GeneratorContext;
 import org.icefaces.generator.utils.FileWriter;
@@ -125,7 +124,7 @@ public class TagArtifact extends Artifact{
 			}
 			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, property);
 
-			String type = (property.isMethodExpression()) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
+			String type = (property.isMethodExpression() == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
 
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
@@ -188,21 +187,21 @@ public class TagArtifact extends Artifact{
 			generatedTagClass.append(field.getName()); 
 			generatedTagClass.append(" != null) {\n\t\t\t");
 			Property property = (Property) field.getAnnotation(Property.class);            
-			if (property.isMethodExpression() && "actionListener".equals(field.getName())) {
+			if (property.isMethodExpression() == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) {
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.isMethodExpression() && "action".equals(field.getName())) {
+			} else if (property.isMethodExpression()  == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) {
 				generatedTagClass.append("_component.setActionExpression(action");
 			} else {
 				generatedTagClass.append("_component.set");
 
-				if (property.isMethodExpression()) {
+				if (property.isMethodExpression()  == Expression.METHOD_EXPRESSION) {
 					generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
 					generatedTagClass.append(field.getName().substring(1));  
 				} else {
 					generatedTagClass.append("ValueExpression");            
 				}
 				generatedTagClass.append("(");
-				if (!property.isMethodExpression()) {
+				if (property.isMethodExpression() == Expression.VALUE_EXPRESSION) {
 					generatedTagClass.append("\"");
 					generatedTagClass.append(field.getName());
 					generatedTagClass.append("\", ");

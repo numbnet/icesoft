@@ -5,17 +5,16 @@ import java.util.Iterator;
 
 import javax.el.MethodExpression;
 
-import org.icefaces.component.annotation.ActionSource;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 
 public class ActionSourceBehavior extends Behavior{
 //	private final String ACTION_EXPRESSION = "actionExpression";
 	
-	@Property(isMethodExpression=true)
+	@Property(isMethodExpression=Expression.METHOD_EXPRESSION)
 	private MethodExpression actionExpression;
 	
-	@Property(isMethodExpression=true)
+	@Property(isMethodExpression=Expression.METHOD_EXPRESSION)
 	private MethodExpression actionListener;
 	
 	public ActionSourceBehavior() {

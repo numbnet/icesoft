@@ -1,9 +1,7 @@
 package org.icefaces.component.menubutton;
 
 import javax.faces.component.UIComponent;
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Properties;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.el.MethodExpression;
 
@@ -17,7 +15,7 @@ import javax.el.MethodExpression;
         componentFamily="com.icesoft.faces.MenuButton"
         )
 public class MenuItemMeta {
-        @Property(inherit=true)   
+        @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
         private String id;
         
 	    @Property  
@@ -28,16 +26,16 @@ public class MenuItemMeta {
 	    @Property   
 	    private Boolean disabled;    
 
-	    @Property(inherit=true)   
+	    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
 	    private Boolean rendered;
 	    
-	    @Property(inherit=true, isMethodExpression=true)
+	    @Property(inherit=Inherit.SUPERCLASS_PROPERTY, isMethodExpression=Expression.METHOD_EXPRESSION)
 	    private MethodExpression actionListener;
 	 
-	    @Property(isMethodExpression=true, inherit=true	)
+	    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY	)
 	    private MethodExpression action;
 	    
-	    @Property(defaultValue="false",inherit=true, useTemplate=true)
+	    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
 	    private Boolean immediate;
 }
 

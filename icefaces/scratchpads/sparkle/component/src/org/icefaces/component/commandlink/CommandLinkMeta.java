@@ -3,8 +3,7 @@
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -37,7 +36,7 @@ import javax.faces.application.ResourceDependency;
       @Property
       private String label;
 
-      @Property (inherit=true, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private String id;
 
       @Property
@@ -65,13 +64,13 @@ import javax.faces.application.ResourceDependency;
               tlddoc="Default is false, means uses full submit")
       private Boolean singleSubmit;
 
-      @Property (inherit=true, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private UIComponent binding;
 
       @Property (defaultValue="false")
       private Boolean disabled;
 
-      @Property (inherit=true, defaultValue="true")
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
       private Boolean rendered;
 
       @Property (defaultValue="0", tlddoc="tabindex of the component")
@@ -83,12 +82,12 @@ import javax.faces.application.ResourceDependency;
       @Property(tlddoc="style of the component")
       private String style;
 
-      @Property(inherit=true, isMethodExpression=true)
+      @Property(inherit=Inherit.SUPERCLASS_PROPERTY, isMethodExpression=Expression.METHOD_EXPRESSION)
     private MethodExpression actionListener;
 
-    @Property(isMethodExpression=true, inherit=true	)
+    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY)
     private MethodExpression action;
 
-    @Property(defaultValue="false",inherit=true, useTemplate=true)
+    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean immediate;
   }

@@ -2,11 +2,7 @@ package org.icefaces.component.tab;
 
 import javax.faces.component.UIComponent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Facet;
-import org.icefaces.component.annotation.Facets;
-import org.icefaces.component.annotation.Properties;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -27,9 +23,9 @@ public class TabMeta {
     private Boolean cacheData;
     @Property   
     private Boolean disabled;    
-    @Property(inherit=true)   
+    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
     private String id;    
-    @Property(inherit=true)   
+    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
     private Boolean rendered;    
 
     

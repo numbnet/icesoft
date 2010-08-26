@@ -2,8 +2,7 @@ package org.icefaces.component.checkbox;
 
 
 import javax.faces.component.UIComponent;
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -36,7 +35,7 @@ public class CheckboxMeta {
     @Property   
     private String label;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
 	
 	@Property
@@ -58,14 +57,14 @@ public class CheckboxMeta {
     @Property(defaultValue="false")
     private Boolean immediate;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean rendered;
     
     @Property (defaultValue="false",
     		tlddoc="disabled property is required by aria specs")
     private Boolean disabled;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding;    
 
 }

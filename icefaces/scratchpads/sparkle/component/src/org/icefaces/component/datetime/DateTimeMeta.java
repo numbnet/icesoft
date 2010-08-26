@@ -3,8 +3,7 @@ package org.icefaces.component.datetime;
 
 import javax.faces.component.UIComponent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 @Component(
         tagName ="dateTime",
@@ -21,13 +20,13 @@ public class DateTimeMeta{
     @Property
     private String format;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean rendered;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding;    
 
 }

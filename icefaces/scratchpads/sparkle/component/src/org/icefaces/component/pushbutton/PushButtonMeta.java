@@ -3,8 +3,7 @@
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 import javax.faces.event.ActionListener;
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import java.util.List;
 
 import javax.faces.application.ResourceDependencies;
@@ -36,7 +35,7 @@ public class PushButtonMeta {
     @Property   
     private String label;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
 	
 	@Property
@@ -46,13 +45,13 @@ public class PushButtonMeta {
 			tlddoc="Default is false, means uses full submit")
     private Boolean singleSubmit;
 	
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding;  
     
     @Property (defaultValue="false")
     private Boolean disabled;
     
-    @Property (inherit=true, defaultValue="true")
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
     private Boolean rendered;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")
@@ -64,12 +63,12 @@ public class PushButtonMeta {
     @Property(tlddoc="style of the component")
     private String style;
     
-    @Property(inherit=true, isMethodExpression=true)
+    @Property(inherit=Inherit.SUPERCLASS_PROPERTY, isMethodExpression=Expression.METHOD_EXPRESSION)
     private MethodExpression actionListener;
  
-    @Property(isMethodExpression=true, inherit=true	)
+    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY	)
     private MethodExpression action;
     
-    @Property(defaultValue="false",inherit=true, useTemplate=true)
+    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean immediate;
 }

@@ -13,12 +13,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Facet;
-import org.icefaces.component.annotation.Facets;
-import org.icefaces.component.annotation.Field;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.annotation.ClientBehaviorHolder;
+import org.icefaces.component.annotation.*;
 @Component(
     tagName ="tabPanel",
     componentClass ="org.icefaces.component.tab.TabSet",
@@ -65,7 +60,7 @@ public class TabSetMeta {
     @Property (tlddoc="style will be rendered on a root element of this component") 
     private String style;
     
-    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
     
