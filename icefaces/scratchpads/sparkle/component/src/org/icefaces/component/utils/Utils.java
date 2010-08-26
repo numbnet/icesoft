@@ -68,7 +68,7 @@ public class Utils {
     }
     
     
-    public static boolean iterateEffects(UIComponent uiComponent, Effect.Iterator iterator) {
+    public static boolean iterateEffects(UIComponent uiComponent, EffectBehavior.Iterator iterator) {
     	if (!(uiComponent instanceof ClientBehaviorHolder)) return false;
     	for (String effect : ((ClientBehaviorHolder)uiComponent).getClientBehaviors().keySet()) {
     		for (ClientBehavior behavior: ((ClientBehaviorHolder)uiComponent).getClientBehaviors().get(effect)) {

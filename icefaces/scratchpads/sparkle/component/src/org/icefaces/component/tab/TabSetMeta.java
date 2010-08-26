@@ -1,6 +1,8 @@
 package org.icefaces.component.tab;
 
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,6 +29,12 @@ import org.icefaces.component.annotation.ClientBehaviorHolder;
     generatedClass = "org.icefaces.component.tab.TabSetBase",
     componentFamily="com.icesoft.faces.TabSet"    
 )
+@ResourceDependencies({
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+    @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
+    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
+})
 @ClientBehaviorHolder 
 public class TabSetMeta {
     

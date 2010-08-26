@@ -20,9 +20,6 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         getDocument().appendChild(root);
         addNode(root, "namespace", GeneratorContext.namespace);
         addEffectBehavior("Effect");
-        addEffectBehavior("Fade");  
-        addEffectBehavior("Appear");
-        addEffectBehavior("Highlight");        
     }
 
     public void addTagInfo(Class clazz, Component component) {

@@ -1,10 +1,13 @@
 package org.icefaces.component.effects;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -12,12 +15,70 @@ import javax.faces.component.behavior.FacesBehavior;
  
 import javax.faces.context.FacesContext;
 
+import org.icefaces.component.utils.ScriptWriter;
+@FacesBehavior("org.icefaces.effects.Effect")
+@ResourceDependencies({
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
+    @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
+    @ResourceDependency(name="animation.css",library="org.icefaces.component.animation")   
+})
 public class EffectBehavior extends ClientBehaviorBase{
-	private static final String EFFECT_TYPE = "effectType";
     private Map<String, ValueExpression> bindings;
 	private String effectsLib = "ice.yui3.effects";
 	private boolean usingStyleClass;
+	private boolean run;
+	Effect effect = new Fade();
+	private String name = "Fade";
+ 
+	public void setName(String name) {
+		if (!name.equals(this.name)) {
+			use(name);
+		}
+		this.name = name;
+        clearInitialState();
+    }
+    
+    public String getName() {
+        return (String) eval("name", name);
 
+    }
+
+	public void setRun(boolean run) {
+		this.run = run;
+        clearInitialState();
+    }
+    
+    public boolean isRun() {
+        return (Boolean) eval("run", run);
+
+    }
+    
+    private void run(FacesContext facesContext, UIComponent uiComponent) {
+    	if (isRun()) {
+	    	try {
+				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent) );
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			setRun(true);
+    	}
+    }
+	private void use(String name) {
+		if ("Fade".equals(name)) {
+			effect = new Fade();
+		} else if ("Appear".equals(name)) {
+			effect = new Appear();
+		} else if ("Highlight".equals(name)) {
+			effect = new Highlight();
+		}
+	}
+	
 	protected String getEffectsLib() {
 		return effectsLib;
 	}
@@ -48,13 +109,13 @@ public class EffectBehavior extends ClientBehaviorBase{
         return usingStyleClass;
 
     }
-    
-    public String getName() {
-    	return this.getClass().getSimpleName();
-    }
- 
+
     public String getScript(ClientBehaviorContext behaviorContext) {
-     	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ behaviorContext.getComponent().getClientId() +"').run()";
+     	return buildScript(behaviorContext.getComponent());
+    }
+    
+    private String buildScript(UIComponent uiComponent) {
+    	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ uiComponent.getClientId().replaceAll(":", "\\\\:") +"').run()";
     }
     
     public void decode(FacesContext context,
@@ -68,6 +129,9 @@ public class EffectBehavior extends ClientBehaviorBase{
 		}
     }
     
+    public void encodeBegin(FacesContext context, UIComponent uiComponent){
+    	run(context, uiComponent);
+    }
     protected Object eval(String propertyName, Object value) {
 
         if (value != null) {
@@ -155,29 +219,12 @@ public class EffectBehavior extends ClientBehaviorBase{
 		} catch (javax.el.ELException ele) {
 		throw new FacesException(ele);
 		}
-		castValue(propertyName, value);
+		if ("run".equals(propertyName)) {
+			run = (Boolean)value;
+		}
     }   
-    
-    protected void castValue(String propertyName, Object value) {
-
-    }
+ 
 	public interface Iterator {
 		public void next (String name, EffectBehavior effectBehavior);
 	}
 }
-
-//faces-config.xml
-//<behavior>
-//<behavior-id>org.icefaces.effects.Effect</behavior-id>
-// <behavior-class>
-//  org.icefaces.component.effects.EffectBehavior
-// </behavior-class>
-//</behavior>
-
-//taglib.xml
-//<tag>
-//	<tag-name>effect</tag-name>
-//		<behavior>
-//			<behavior-id>org.icefaces.effects.Effect</behavior-id>
-//	</behavior>
-// </tag>

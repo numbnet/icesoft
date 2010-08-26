@@ -1,8 +1,5 @@
 package org.icefaces.component.effects;
 
-import javax.faces.component.behavior.FacesBehavior;
-
-@FacesBehavior("org.icefaces.effects.Appear")
-public class Appear extends EffectBehavior{
+public class Appear extends Effect{
  
 }

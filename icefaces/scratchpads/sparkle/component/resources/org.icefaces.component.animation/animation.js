@@ -60,6 +60,11 @@ ice.yui3.effectHelper = {
 };
 ice.yui3.effects = {};
 YUI().use("anim", "json", function(Y) {
+	var _one = Y.one;
+	Y.one = function(id) {
+		id = id.replace(':', '\\:');
+		return _one(id);
+	}
     function  EffectBase(param, callback) {
 		this.orignalRun = EffectBase.superclass.run;
 		this.effectClass = "";
