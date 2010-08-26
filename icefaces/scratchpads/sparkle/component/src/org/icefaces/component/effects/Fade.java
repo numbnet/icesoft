@@ -1,9 +1,7 @@
 package org.icefaces.component.effects;
 
-import javax.faces.component.behavior.FacesBehavior;
-
-@FacesBehavior("org.icefaces.effects.Fade")
-public class Fade extends EffectBehavior{
+ 
+public class Fade extends Effect{
 
 	private float from = 1;
 	private float to = 0;
@@ -11,11 +9,7 @@ public class Fade extends EffectBehavior{
 	public Fade() {
 		
 	}
-	public Fade(float from, float to) {
-		super();
-		setFrom(from);
-		setTo(to);
-	}
+ 
 	
 	
 	public float getFrom() {
@@ -32,7 +26,4 @@ public class Fade extends EffectBehavior{
 		this.to = to;
 		setUsingStyleClass(false);		
 	}
- 
-	
-	
 }

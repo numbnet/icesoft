@@ -43,7 +43,7 @@ public class TabSetRenderer extends Renderer{
                 } catch (Exception e) {}
             }
         }
-        Utils.iterateEffects(uiComponent, new Effect.Iterator() {
+        Utils.iterateEffects(uiComponent, new EffectBehavior.Iterator() {
 			public void next(String name, EffectBehavior effectBehavior) {
 				effectBehavior.decode(facesContext, uiComponent);				
 			}
@@ -103,7 +103,7 @@ public class TabSetRenderer extends Renderer{
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        TabSet tabSet = (TabSet) uiComponent;        
+        final TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
         String userDefinedClass = String.valueOf(tabSet.getAttributes().get("styleClass"));       
         String styleClass = userDefinedClass != null ? 
@@ -125,8 +125,9 @@ public class TabSetRenderer extends Renderer{
         String onupdate = tabSet.getOnupdate();
         boolean effectOnHover = tabSet.isEffectOnHover();
         final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(uiComponent, new Effect.Iterator() {
+        Utils.iterateEffects(uiComponent, new EffectBehavior.Iterator() {
 			public void next(String event, EffectBehavior effectBehavior) {
+				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
 				effect.append(effectBehavior.getName());				
 			}
 		});        
@@ -219,7 +220,7 @@ public class TabSetRenderer extends Renderer{
         } else {
             if (tabSet.getSelectedIndex() == index) {
                 final StringBuilder styleClasses = new StringBuilder();
-                Utils.iterateEffects(tabSet, new Effect.Iterator() {
+                Utils.iterateEffects(tabSet, new EffectBehavior.Iterator() {
         			public void next(String name, EffectBehavior effectBehavior) {
         		        if (effectBehavior.getEffectClass() != null) {
         		        	styleClasses.append(effectBehavior.getEffectClass());

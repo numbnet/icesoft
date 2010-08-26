@@ -19,9 +19,6 @@ public class FacesConfigBuilder extends XMLBuilder{
         root.setAttribute("metadata-complete",  "false");
         getDocument().appendChild(root);
         addEffectBehavior("Effect");
-        addEffectBehavior("Fade");
-        addEffectBehavior("Appear"); 
-        addEffectBehavior("Highlight");        
         Element render_kit = getDocument().createElement("render-kit");
         root.appendChild(render_kit);        
     }
@@ -95,7 +92,7 @@ public class FacesConfigBuilder extends XMLBuilder{
         behaviorId.appendChild(getDocument().createTextNode("org.icefaces.effects."+ name));
         
         Element behaviorClass = getDocument().createElement("behavior-class"); 
-        behaviorClass.appendChild(getDocument().createTextNode("org.icefaces.component.effects."+ name));
+        behaviorClass.appendChild(getDocument().createTextNode("org.icefaces.component.effects."+ name + "Behavior"));
         behavior.appendChild(behaviorId);
         behavior.appendChild(behaviorClass);
         getDocument().getDocumentElement().appendChild(behavior);
