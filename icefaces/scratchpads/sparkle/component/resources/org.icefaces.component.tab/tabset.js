@@ -2,7 +2,7 @@ ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
        var Dom = YAHOO.util.Dom;
-       var super = ice.component;
+  
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
