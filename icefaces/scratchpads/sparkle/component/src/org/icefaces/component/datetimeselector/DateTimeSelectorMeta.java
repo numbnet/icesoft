@@ -1,7 +1,6 @@
 package org.icefaces.component.datetimeselector;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -44,9 +43,9 @@ public class DateTimeSelectorMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to use single or full submit.")
     private Boolean singleSubmit;
 
-    @Property(inherit = true, tlddoc = "ID of the component.")
+    @Property(inherit = Inherit.SUPERCLASS_PROPERTY, tlddoc = "ID of the component.")
     private String id;
 
-    @Property(inherit = true, tlddoc = "Value of the component as a Date object.")
+    @Property(inherit = Inherit.SUPERCLASS_PROPERTY, tlddoc = "Value of the component as a Date object.")
     private Object value;
 }

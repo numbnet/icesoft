@@ -2,8 +2,7 @@
 
 import javax.faces.component.UIComponent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.el.MethodExpression;
 import javax.faces.model.SelectItem;
@@ -47,7 +46,7 @@ public class MenuButtonMeta {
     @Property   
     private String label;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
 	
 	@Property
@@ -69,7 +68,7 @@ public class MenuButtonMeta {
     @Property (tlddoc="basic selection is within this string indicator")
     private String selectedMenuItem;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding;  
     
 //    @Property (tlddoc="use this to create a group of buttons")
@@ -88,7 +87,7 @@ public class MenuButtonMeta {
 			tlddoc="Default is false, means uses full submit")
     private Boolean singleSubmit;
 	
-    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on menu item change value change event can be captured with this listener")
     private MethodExpression menuSelectionListener;
 }

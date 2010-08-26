@@ -2,8 +2,7 @@
 
 import javax.faces.component.UIComponent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
@@ -41,7 +40,7 @@ public class RadioButtonMeta {
     @Property(tlddoc="require groupId that this button belongs to")
     private String group;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
 	
 	@Property
@@ -50,7 +49,7 @@ public class RadioButtonMeta {
     @Property  (defaultValue="false")
     private Boolean checked;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding; 
     
 	@Property(defaultValue="false",
@@ -69,7 +68,7 @@ public class RadioButtonMeta {
 	@Property(defaultValue="false")
     private Boolean immediate;
 	    
-	@Property (inherit=true, useTemplate=true)
+	@Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean rendered;
 	    
 	@Property (defaultValue="false",

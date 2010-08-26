@@ -3,8 +3,7 @@
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 import javax.faces.event.ActionListener;
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import java.util.List;
 
 import javax.faces.application.ResourceDependencies;
@@ -36,7 +35,7 @@ public class LoggerMeta {
 //    @Property   
 //    private String label;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
 	
 	@Property
@@ -57,7 +56,7 @@ public class LoggerMeta {
 //other properties not included here are thresholdMax, thresholdMin,
 //draggable, outputBuffer, newestOnTop, verboseOutput, entryFormat
 	
-    @Property (inherit=true, defaultValue="true")
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
     private Boolean rendered;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")

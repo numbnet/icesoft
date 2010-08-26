@@ -22,8 +22,7 @@
 
 package org.icefaces.component.inputFiles;
 
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.*;
 import javax.el.MethodExpression;
 
 import javax.faces.application.ResourceDependency;
@@ -62,7 +61,7 @@ public class InputFilesMeta {
     	"InputFilesInfo object from the info property of the InputFiles " +
     	"component, giving access to the status information of the " +
     	"successfully, and unsuccessfully, uploaded files.",
-    	isMethodExpression=true, methodExpressionArgument=
+    	isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
         "org.icefaces.component.inputFiles.InputFilesEvent")
     private MethodExpression inputFilesListener;
 

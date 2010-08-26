@@ -22,7 +22,7 @@ public @interface Property {
 	 * </pre>
      * @return boolean value.
      */
-    boolean isMethodExpression() default false;
+    Expression isMethodExpression() default Expression.VALUE_EXPRESSION;
     
     /**
      * Allows to define method expression argument if any.
@@ -54,7 +54,7 @@ public @interface Property {
      * </pre>
      * @return 
      */    
-    boolean defaultValueIsStringLiteral() default true;
+    DefaultValueType defaultValueIsStringLiteral() default DefaultValueType.STRING_LITERAL;
     
     
     /**
@@ -79,7 +79,7 @@ public @interface Property {
      * Attribute that goes inside the TLD for each attribute. It also helps IDEs
      * 
      */
-    boolean required() default false;
+    Required required() default Required.OPTIONAL;
     
     /**
      * the "org.icefaces.component.annotation.PropertyTemplate" class keeps template for 
@@ -97,5 +97,5 @@ public @interface Property {
      * and IDEs
      * @return
      */
-    boolean inherit() default false;
+    Inherit inherit() default Inherit.LOCAL_PROPERTY;
 }

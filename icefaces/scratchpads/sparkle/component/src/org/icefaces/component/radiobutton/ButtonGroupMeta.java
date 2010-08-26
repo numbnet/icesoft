@@ -2,8 +2,7 @@
 
 import javax.faces.component.UIComponent;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import org.icefaces.component.annotation.Field;
 import javax.faces.model.SelectItem;
@@ -37,7 +36,7 @@ public class ButtonGroupMeta {
     @Property   
     private String label;
 
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private String id;
     
     //not sure this is needed as the string id of the 
@@ -46,7 +45,7 @@ public class ButtonGroupMeta {
     @Property
     protected String selectedItemId;
     
-    @Property (inherit=true, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private UIComponent binding;  
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
@@ -64,7 +63,7 @@ public class ButtonGroupMeta {
 	@Property(defaultValue="false")
     private Boolean immediate;
 	    
-	@Property (inherit=true, useTemplate=true)
+	@Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
     private Boolean rendered;
 	    
 	@Property (defaultValue="false",

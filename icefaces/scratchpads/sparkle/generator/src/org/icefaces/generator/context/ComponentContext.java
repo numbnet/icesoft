@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.icefaces.component.annotation.ActionSource;
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Facet;
-import org.icefaces.component.annotation.Facets;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import org.icefaces.generator.artifacts.Artifact;
 import org.icefaces.generator.artifacts.ComponentArtifact;
 import org.icefaces.generator.artifacts.ComponentHandlerArtifact;
@@ -129,6 +125,9 @@ public class ComponentContext {
 	}
     
     private void processAnnotation(Class clazz, boolean isBaseClass) {
+	System.out.println("**********");
+	System.out.println(org.icefaces.component.annotation.Expression.DEFAULT);
+	System.out.println("**********");
         //This is annotated class 
         if (clazz.isAnnotationPresent(Component.class)) {
             Component component = (Component) clazz.getAnnotation(Component.class);
@@ -174,7 +173,7 @@ public class ComponentContext {
                 if(field.isAnnotationPresent(Property.class)){
                     Property property = (Property) field.getAnnotation(Property.class);
                    //inherited properties should go to the tag class only
-                    if (property.inherit()) {
+                    if (property.inherit() == Inherit.SUPERCLASS_PROPERTY) {
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
                         }                              
@@ -183,7 +182,7 @@ public class ComponentContext {
                         
                         
                         if (!fieldsForComponentClass.containsKey(field.getName())) { 
-                            if (property.isMethodExpression()) {
+                            if (property.isMethodExpression() == Expression.METHOD_EXPRESSION) {
                                 hasMethodExpression = true;
                             }
                             fieldsForComponentClass.put(field.getName(), field);

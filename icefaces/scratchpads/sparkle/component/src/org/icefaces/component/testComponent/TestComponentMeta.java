@@ -3,8 +3,7 @@
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
   @Component(
           tagName ="testComponent",
@@ -32,10 +31,10 @@ import org.icefaces.component.annotation.Property;
       @Property (defaultValue="21")
       private String stringPropertyThree;
 
-      @Property(defaultValue="false",inherit=true, useTemplate=true)
+      @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private Boolean immediate;
 
-      @Property (inherit=true, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private String id;
 
       // boolean
@@ -103,13 +102,13 @@ import org.icefaces.component.annotation.Property;
       @Property  (defaultValue="Hello World!")
       private String stringTwo;
 
-      @Property (inherit=true, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private UIComponent binding;
 
       @Property (defaultValue="false")
       private Boolean disabled;
 
-      @Property (inherit=true, defaultValue="true")
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
       private Boolean rendered;
 
       @Property (defaultValue="0", tlddoc="tabindex of the component")
@@ -121,10 +120,10 @@ import org.icefaces.component.annotation.Property;
       @Property(tlddoc="style of the component", defaultValue="text-decoration: XXXXXX-YYY;")
       private String style;
 
-      @Property(inherit=true, isMethodExpression=true)
+      @Property(inherit=Inherit.SUPERCLASS_PROPERTY, isMethodExpression=Expression.METHOD_EXPRESSION)
       private MethodExpression actionListener;
 
-      @Property(isMethodExpression=true, inherit=true	)
+      @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY	)
       private MethodExpression action;
 
 

@@ -3,8 +3,7 @@ package org.icefaces.generator.artifacts;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.utils.Utility;
@@ -79,7 +78,7 @@ public class ComponentHandlerArtifact extends Artifact{
         for (int i = 0; i < fields.size(); i++) {
             Field field = fields.get(i);
             Property prop = (Property)field.getAnnotation(Property.class);
-            if (prop.isMethodExpression()) {
+            if (prop.isMethodExpression() == Expression.METHOD_EXPRESSION) {
                 generatedComponentHandlerClass.append("\t\tmetaRuleset.addRule( new MethodRule(\"");
                 generatedComponentHandlerClass.append(field.getName());
                 generatedComponentHandlerClass.append("\", null, new Class[");

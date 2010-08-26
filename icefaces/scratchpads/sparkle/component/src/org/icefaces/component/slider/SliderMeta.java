@@ -2,8 +2,7 @@ package org.icefaces.component.slider;
 
 import javax.el.MethodExpression;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.*;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -132,6 +131,6 @@ public class SliderMeta {
     // A MethodExpression Property is a special type, that does not generate
     //  the same code, as it does not use a ValueExpression, but instead
     //  describes a method to be called, and the parameter to pass to it.
-    @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
 }
