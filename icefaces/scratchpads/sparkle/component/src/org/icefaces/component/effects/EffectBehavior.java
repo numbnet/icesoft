@@ -28,28 +28,47 @@ import org.icefaces.component.utils.ScriptWriter;
     @ResourceDependency(name="animation.css",library="org.icefaces.component.animation")   
 })
 public class EffectBehavior extends ClientBehaviorBase{
+	public final static String BEHAVIOR_ID = "org.icefaces.effects.Effect";
     private Map<String, ValueExpression> bindings;
 	private String effectsLib = "ice.yui3.effects";
 	private boolean usingStyleClass;
 	private boolean run;
 	Effect effect = new Fade();
-	private String name = "Fade";
+	
+	 
+	public void setEffectObject(Effect effect) {
+		this.effect = effect;
+        clearInitialState();
+    }
+    
+    public Effect getEffect() {
+        return (Effect) eval("effectObject", effect);
+
+    }
+
+
+    
  
 	public void setName(String name) {
-		if (!name.equals(this.name)) {
-			use(name);
-		}
-		this.name = name;
+		use(name);
         clearInitialState();
     }
     
     public String getName() {
-        return (String) eval("name", name);
+        return effect.getClass().getSimpleName();
 
     }
 
 	public void setRun(boolean run) {
-		this.run = run;
+        ValueExpression expression = getValueExpression("run");
+
+        if (expression != null) {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            expression.setValue(ctx.getELContext(), run);
+        } else {
+        
+        	this.run = run;
+        }
         clearInitialState();
     }
     
@@ -59,15 +78,14 @@ public class EffectBehavior extends ClientBehaviorBase{
     }
     
     private void run(FacesContext facesContext, UIComponent uiComponent) {
-    	if (isRun()) {
+    	if (!isRun()) return;
+    		setRun(false);
 	    	try {
 				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent) );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			setRun(true);
-    	}
     }
 	private void use(String name) {
 		if ("Fade".equals(name)) {
@@ -111,11 +129,12 @@ public class EffectBehavior extends ClientBehaviorBase{
     }
 
     public String getScript(ClientBehaviorContext behaviorContext) {
+    	run(behaviorContext.getFacesContext(), behaviorContext.getComponent());
      	return buildScript(behaviorContext.getComponent());
     }
     
     private String buildScript(UIComponent uiComponent) {
-    	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ uiComponent.getClientId().replaceAll(":", "\\\\:") +"').run()";
+    	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ uiComponent.getClientId() +"').run()";
     }
     
     public void decode(FacesContext context,
@@ -125,7 +144,6 @@ public class EffectBehavior extends ClientBehaviorBase{
 		String id = "effect_"+ component.getClientId();
 		if (map.containsKey(id)) {
 			setEffectClass(map.get(id).toString());
-			System.out.println("Deocde Effect class found "+ getEffectClass());
 		}
     }
     
@@ -134,17 +152,16 @@ public class EffectBehavior extends ClientBehaviorBase{
     }
     protected Object eval(String propertyName, Object value) {
 
-        if (value != null) {
-            return value;
-        }
-
         ValueExpression expression = getValueExpression(propertyName);
 
         if (expression != null) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             return expression.getValue(ctx.getELContext());
         }
-
+        
+        if (value != null) {
+            return value;
+        }
         return null;
     }   
     
@@ -193,6 +210,13 @@ public class EffectBehavior extends ClientBehaviorBase{
                 }
 
                 bindings.put(name, binding);
+        		if ("effectObject".equals(name)) {
+        			effect = ((Effect)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			effect.setEffectBehavior(this);
+        		} else if ("name".equals(name)) {
+        			String effectName = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			use(effectName);
+        		}
             }
         } else {
             if (bindings != null) {
