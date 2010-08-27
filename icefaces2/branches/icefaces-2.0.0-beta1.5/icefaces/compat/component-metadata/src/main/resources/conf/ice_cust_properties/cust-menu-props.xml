@@ -147,6 +147,28 @@
 </property>
 
 <property>
+    <description> 
+       <![CDATA[<p>
+       In menu items which are arranged vertically, such as sub-menus, and also
+       top-level menu items when the orientation is vertical, an indicator is
+       displayed when that menu item has children in a sub-menu. Typically that
+       indicator is an image of an arrow pointing to the right. But, with a
+       top-level horizontal menu, any children would display below, not to the
+       right. As well it's typically not customary to show an indicator of
+       children. This option allows for showing the indicator, which involves
+       displaying a file called 'topsubmenu.gif' in the imageDir folder. The
+       default value is false, which does not show the indicator.</p>
+        ]]>
+    </description>
+    <property-name>displaySubMenuIndicatorWhenHorizontal</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
+
+<property>
 	<description>
 
 		Flag indicating that this component's value must be converted
