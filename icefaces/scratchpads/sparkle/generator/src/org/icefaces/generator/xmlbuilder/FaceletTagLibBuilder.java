@@ -52,6 +52,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         addNode(tag, "tag-name", name.toLowerCase());
         Element behavior = getDocument().createElement("behavior");
         tag.appendChild(behavior);
-        addNode(behavior, "behavior-id", "org.icefaces.effects."+ name);  
+        addNode(behavior, "behavior-id", "org.icefaces.effects."+ name);
+        addNode(behavior, "handler-class", "org.icefaces.component.effects.EffectBehaviorHandler");   
     }
 }
