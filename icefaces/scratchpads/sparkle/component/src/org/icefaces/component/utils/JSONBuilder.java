@@ -114,18 +114,34 @@ public class JSONBuilder {
      * @return a reference to this object.
      */
     public JSONBuilder entry(String key, String value) {
+        return entry(key, value, false);
+    }
+    
+    /**
+     * Adds a String property as String literal optionally.
+     * Adds quotes and does JSON string escaping, as described at <a href="http://www.json.org/">json.org</a>. 
+     * @param key name of the property.
+     * @param value value of the property.
+     * @return a reference to this object.
+     */
+    public JSONBuilder entry(String key, String value, boolean isStringLiteral) {
         appendCommaAndKey(key);
-        value = value.replace("\\", "\\\\");
-        value = value.replace("\"", "\\\"");
-        value = value.replace("/", "\\/");
-        value = value.replace("\b", "\\b");
-        value = value.replace("\f", "\\f");
-        value = value.replace("\n", "\\n");
-        value = value.replace("\r", "\\r");
-        value = value.replace("\t", "\\t");
-        params.append('"').append(value).append('"');
+        if (isStringLiteral) {
+        	params.append(value);   
+        } else {
+	        value = value.replace("\\", "\\\\");
+	        value = value.replace("\"", "\\\"");
+	        value = value.replace("/", "\\/");
+	        value = value.replace("\b", "\\b");
+	        value = value.replace("\f", "\\f");
+	        value = value.replace("\n", "\\n");
+	        value = value.replace("\r", "\\r");
+	        value = value.replace("\t", "\\t");
+	    	params.append('"').append(value).append('"');     
+        }
         return this;
     }
+    
 
     /**
      * Outputs the JSON string.

@@ -134,7 +134,8 @@ public class EffectBehavior extends ClientBehaviorBase{
     }
     
     private String buildScript(UIComponent uiComponent) {
-    	return "new "+ getEffectsLib() + "['" + getName() + "']('"+ uiComponent.getClientId() +"').run()";
+    	effect.setSourceElement(uiComponent.getClientId());
+    	return "new "+ getEffectsLib() + "['" + getName() + "']("+ effect.getPropertiesAsJSON() +").run()";
     }
     
     public void decode(FacesContext context,
