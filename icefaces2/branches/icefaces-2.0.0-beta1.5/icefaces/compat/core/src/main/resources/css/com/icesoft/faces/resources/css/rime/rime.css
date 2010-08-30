@@ -1716,7 +1716,7 @@ table.iceSelInpDate tbody tr td table{
     position: absolute;
     background-color: #FCFCFC;
     display: block;
-    /*width: 145px;*/
+    width: 145px;
     border-right: 1px solid #DBDBDB;
     border-left: 1px solid #DBDBDB;
     border-top: 1px solid #DBDBDB;
@@ -1765,7 +1765,6 @@ table.iceSelInpDate tbody tr td table{
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 7px;
-    padding-right: 7px;
     font-weight: normal;
 }
 
