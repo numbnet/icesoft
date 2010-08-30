@@ -100,14 +100,19 @@
                              columnClasses="series-columns">
                     <h:outputText value="#{msgs['messages']}: [#{chatRoom.numberOfMessages}]"
                                   escape="false"/>
-                    <h:graphicImage alt="spacer"
-                                    url="/images/spacer.png"
-                                    rendered="true"/>
+                    <h:commandButton image="/images/up-arrow.png"
+                                     rendered="#{participant.hasPreviousMessages}"
+                                     actionListener="#{participant.previousMessages}"/>
                     <ui:repeat value="#{chatRoom.messages}"
-                               var="message">
+                               var="message"
+                               offset="#{participant.firstMessageIndex}"
+                               size="#{participant.displayedMessages}">
                         <h:outputText value="#{message}"/>
                         <br/>
                     </ui:repeat>
+                    <h:commandButton image="/images/down-arrow.png"
+                                     rendered="#{participant.hasNextMessages}"
+                                     actionListener="#{participant.nextMessages}"/>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"
                                     rendered="true"/>
