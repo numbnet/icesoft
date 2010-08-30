@@ -22,10 +22,14 @@
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
-        xmlns:ui="http://java.sun.com/jsf/facelets">
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        locale="en">
 
     <h:head/>
     <h:body>
+
+        <f:loadBundle basename="org.icefaces.sample.portlet.chat.resources.messages"
+                      var="msgs"/>
 
         <!-- Login/Logout -->
         <h:form>
@@ -36,7 +40,7 @@
                          cellspacing="4"
                          width="100%"
                          rendered="#{not participant.registered}">
-                <h:commandButton value="Login: "
+                <h:commandButton value="#{msgs['login']}: "
                                  actionListener="#{participant.login}"/>
                 <h:inputText value="#{participant.handle}"
                              required="true"/>
@@ -51,12 +55,12 @@
                          rendered="#{participant.registered}">
 
                 <!-- Logout -->
-                <h:commandButton value="Logout: "
+                <h:commandButton value="#{msgs['logout']}: "
                                  actionListener="#{participant.logout}"/>
                 <h:outputText value="#{participant.handle}"/>
 
                 <!-- Send Message -->
-                <h:commandButton value="Send: "
+                <h:commandButton value="#{msgs['send']}: "
                                  actionListener="#{participant.sendMessage}"/>
                 <h:inputText value="#{participant.message}"/>
             </h:panelGrid>
@@ -75,7 +79,7 @@
                 <!-- Participants -->
                 <h:panelGrid columns="1"
                              rowClasses="series-rows">
-                    <h:outputText value="Participants: [#{chatRoom.numberOfParticipants}]"
+                    <h:outputText value="#{msgs['participants']}: [#{chatRoom.numberOfParticipants}]"
                                   escape="false"/>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"
@@ -94,7 +98,7 @@
                 <h:panelGrid columns="1"
                              rowClasses="series-rows"
                              columnClasses="series-columns">
-                    <h:outputText value="Messages: [#{chatRoom.numberOfMessages}]"
+                    <h:outputText value="#{msgs['messages']}: [#{chatRoom.numberOfMessages}]"
                                   escape="false"/>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"

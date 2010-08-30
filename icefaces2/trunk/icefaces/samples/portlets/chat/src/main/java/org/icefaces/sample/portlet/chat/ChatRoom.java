@@ -22,13 +22,10 @@
 package org.icefaces.sample.portlet.chat;
 
 import org.icefaces.application.PushRenderer;
-import org.icefaces.application.PortableRenderer;
-import org.icefaces.util.EnvUtils;
+import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedBean;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -38,7 +35,7 @@ import java.util.logging.Logger;
  * It is also responsible for firing server-initiated rendering calls
  * when the state of the application has changed.
  */
-@ManagedBean(name="chatRoom")
+@ManagedBean(name = "chatRoom")
 @ApplicationScoped
 public class ChatRoom {
 
@@ -54,20 +51,22 @@ public class ChatRoom {
     }
 
     public void addParticipant(Participant participant) {
-        if(hasParticipant(participant)){
+        if (hasParticipant(participant)) {
             return;
         }
-        participants.put(participant.getHandle(),participant);
+        participants.put(participant.getHandle(), participant);
         PushRenderer.addCurrentSession(ChatRoom.ROOM_RENDERER_NAME);
-        addMessage(participant, "joined the chat");
+        String localizedMessage = ResourceUtil.getLocalizedMessage("joined", participant.getHandle());
+        addMessage(participant, localizedMessage);
     }
 
     public void removeParticipant(Participant participant) {
-        if(!hasParticipant(participant)){
+        if (!hasParticipant(participant)) {
             return;
         }
         participants.remove(participant.getHandle());
-        addMessage(participant, "left the chat");
+        String localizedMessage = ResourceUtil.getLocalizedMessage("left", participant.getHandle());
+        addMessage(participant, localizedMessage);
         PushRenderer.removeCurrentSession(ROOM_RENDERER_NAME);
     }
 
@@ -92,7 +91,7 @@ public class ChatRoom {
     }
 
     public void addMessage(Participant participant, String message) {
-        if( participant != null && participant.getHandle() != null ){
+        if (participant != null && participant.getHandle() != null) {
             addMessage(new Message(participant, message));
             PushRenderer.render(ROOM_RENDERER_NAME);
         }

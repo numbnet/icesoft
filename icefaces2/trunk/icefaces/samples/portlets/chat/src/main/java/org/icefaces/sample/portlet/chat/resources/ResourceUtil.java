@@ -34,30 +34,45 @@ import java.util.ResourceBundle;
  */
 public class ResourceUtil {
 
-    private static final String BUNDLE = "com.icesoft.tutorial.resources.messages";
+    private static final String BUNDLE = "org.icefaces.sample.portlet.chat.resources.messages";
 
-    public static void addMessage(String messagePatternKey) {
+    public static void addLocalizedMessage(String messagePatternKey) {
         String[] messageArgs = {};
-        addMessage(messagePatternKey,messageArgs);
+        addLocalizedMessage(messagePatternKey,messageArgs);
     }
 
-    public static void addMessage(String messagePatternKey, String message) {
+    public static void addLocalizedMessage(String messagePatternKey, String message) {
         String[] messageArgs = {message};
-        addMessage(messagePatternKey,messageArgs);
+        addLocalizedMessage(messagePatternKey,messageArgs);
     }
 
-    public static void addMessage(String messagePatternKey, String[] messageArgs) {
+    public static void addLocalizedMessage(String messagePatternKey, String[] messageArgs) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String localizedMessage = getLocalizedMessage(messagePatternKey, messageArgs);
+        facesContext.addMessage(null,new FacesMessage(localizedMessage));
+    }
+
+    public static String getLocalizedMessage(String messagePatternKey) {
+        String[] messageArgs = {};
+        return getLocalizedMessage(messagePatternKey,messageArgs);
+    }
+
+    public static String getLocalizedMessage(String messagePatternKey, String message) {
+        String[] messageArgs = {message};
+        return getLocalizedMessage(messagePatternKey,messageArgs);
+    }
+
+    public static String getLocalizedMessage(String messagePatternKey, String[] messageArgs){
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot root = facesContext.getViewRoot();
         Locale locale = root.getLocale();
         String localizedPattern = ResourceUtil.getI18NString(locale,messagePatternKey);
-        String localizedMessage = MessageFormat.format(localizedPattern,(Object[])messageArgs);
-        facesContext.addMessage(null,new FacesMessage(localizedMessage));
+        return MessageFormat.format(localizedPattern,(Object[])messageArgs);
     }
 
     public static String getI18NString(Locale locale, String key) {
 
-        String text = null;
+        String text;
         try {
             ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE, locale);
             text = bundle.getString(key);

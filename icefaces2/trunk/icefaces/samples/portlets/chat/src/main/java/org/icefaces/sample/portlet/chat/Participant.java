@@ -21,6 +21,8 @@
 
 package org.icefaces.sample.portlet.chat;
 
+import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
+
 import javax.annotation.PreDestroy;
 import javax.faces.event.ActionEvent;
 import java.util.logging.Logger;
@@ -74,11 +76,11 @@ public class Participant {
             if (!chatRoom.hasParticipant(this)) {
                 chatRoom.addParticipant(this);
             } else {
-//                ResourceUtil.addMessage("alreadyRegistered", handle);
+                ResourceUtil.addLocalizedMessage("alreadyRegistered", handle);
                 handle = null;
             }
         } else {
-//            ResourceUtil.addMessage("badHandle");
+            ResourceUtil.addLocalizedMessage("badHandle");
         }
     }
 
