@@ -25,8 +25,8 @@ import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 
 import javax.annotation.PreDestroy;
 import javax.faces.event.ActionEvent;
-import java.util.logging.Logger;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * The Participant class stores information about an individual participant
@@ -46,7 +46,7 @@ public class Participant {
     private String message;
 
     private int firstMessageIndex = 0;
-    private int displayedMessages = 5;
+    private int numOfDisplayedMessages = 5;
 
     public Participant() {
     }
@@ -119,37 +119,37 @@ public class Participant {
     public void setFirstMessageIndex(int firstMessageIndex) {
     }
 
-    public int getDisplayedMessages() {
-        return displayedMessages;
+    public int getNumOfDisplayedMessages() {
+        return numOfDisplayedMessages;
     }
 
-    public void setDisplayedMessages(int displayedMessages) {
+    public void setNumOfDisplayedMessages(int numOfDisplayedMessages) {
     }
 
-    public void previousMessages(ActionEvent event) {
-        firstMessageIndex = firstMessageIndex - displayedMessages;
-        if( firstMessageIndex < 0 ){
-            firstMessageIndex = 0;
-        }
+    public boolean isOlder() {
+        return (firstMessageIndex + numOfDisplayedMessages) < chatRoom.getNumberOfMessages();
     }
 
-    public boolean hasPreviousMessages(){
-        return firstMessageIndex >= displayedMessages;
-    }
-
-    public void nextMessages(ActionEvent event) {
-        firstMessageIndex = firstMessageIndex + displayedMessages;
-        if( firstMessageIndex > chatRoom.getNumberOfMessages() - 1 ){
+    public void olderMessages(ActionEvent event) {
+        firstMessageIndex++;
+        if (firstMessageIndex > chatRoom.getNumberOfMessages() - 1) {
             firstMessageIndex = chatRoom.getNumberOfMessages() - 1;
         }
     }
 
-    public boolean hasNextMessages(){
-        return (firstMessageIndex + displayedMessages) < chatRoom.getNumberOfMessages();
+    public boolean isNewer() {
+        return firstMessageIndex > 0;
     }
 
-    public List getMessages(){
-        return chatRoom.getMessages(firstMessageIndex, displayedMessages);
+    public void newerMessages(ActionEvent event) {
+        firstMessageIndex--;
+        if (firstMessageIndex < 0) {
+            firstMessageIndex = 0;
+        }
+    }
+
+    public List getMessages() {
+        return chatRoom.getMessages(firstMessageIndex, numOfDisplayedMessages);
     }
 
 

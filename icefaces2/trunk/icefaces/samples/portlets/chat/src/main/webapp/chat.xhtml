@@ -100,22 +100,23 @@
                              columnClasses="series-columns">
                     <h:outputText value="#{msgs['messages']}: [#{chatRoom.numberOfMessages}]"
                                   escape="false"/>
+                    <h:graphicImage alt="spacer"
+                                    url="/images/spacer.png"
+                                    rendered="#{not participant.newer}"/>
                     <h:commandButton image="/images/up-arrow.png"
-                                     rendered="#{participant.hasPreviousMessages}"
-                                     actionListener="#{participant.previousMessages}"/>
-                    <ui:repeat value="#{chatRoom.messages}"
-                               var="message"
-                               offset="#{participant.firstMessageIndex}"
-                               size="#{participant.displayedMessages}">
+                                     rendered="#{participant.newer}"
+                                     actionListener="#{participant.newerMessages}"/>
+                    <ui:repeat value="#{participant.messages}"
+                               var="message">
                         <h:outputText value="#{message}"/>
                         <br/>
                     </ui:repeat>
-                    <h:commandButton image="/images/down-arrow.png"
-                                     rendered="#{participant.hasNextMessages}"
-                                     actionListener="#{participant.nextMessages}"/>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"
-                                    rendered="true"/>
+                                    rendered="#{not participant.older}"/>
+                    <h:commandButton image="/images/down-arrow.png"
+                                     rendered="#{participant.older}"
+                                     actionListener="#{participant.olderMessages}"/>
                 </h:panelGrid>
 
             </h:panelGrid>
