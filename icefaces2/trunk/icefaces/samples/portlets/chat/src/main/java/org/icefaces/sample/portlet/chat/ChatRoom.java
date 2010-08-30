@@ -100,4 +100,8 @@ public class ChatRoom {
     public boolean hasParticipant(Participant participant) {
         return participants.containsKey(participant.getHandle());
     }
+
+    public List getMessages(int start, int number){
+        return messages.subList(start,number);
+    }
 }

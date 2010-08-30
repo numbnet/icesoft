@@ -26,6 +26,7 @@ import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 import javax.annotation.PreDestroy;
 import javax.faces.event.ActionEvent;
 import java.util.logging.Logger;
+import java.util.List;
 
 /**
  * The Participant class stores information about an individual participant
@@ -43,6 +44,9 @@ public class Participant {
     private String handle;
     private ChatRoom chatRoom;
     private String message;
+
+    private int firstMessageIndex = 0;
+    private int displayedMessages = 5;
 
     public Participant() {
     }
@@ -107,5 +111,46 @@ public class Participant {
     public String toString() {
         return super.toString() + " [" + handle + "]";
     }
+
+    public int getFirstMessageIndex() {
+        return firstMessageIndex;
+    }
+
+    public void setFirstMessageIndex(int firstMessageIndex) {
+    }
+
+    public int getDisplayedMessages() {
+        return displayedMessages;
+    }
+
+    public void setDisplayedMessages(int displayedMessages) {
+    }
+
+    public void previousMessages(ActionEvent event) {
+        firstMessageIndex = firstMessageIndex - displayedMessages;
+        if( firstMessageIndex < 0 ){
+            firstMessageIndex = 0;
+        }
+    }
+
+    public boolean hasPreviousMessages(){
+        return firstMessageIndex >= displayedMessages;
+    }
+
+    public void nextMessages(ActionEvent event) {
+        firstMessageIndex = firstMessageIndex + displayedMessages;
+        if( firstMessageIndex > chatRoom.getNumberOfMessages() - 1 ){
+            firstMessageIndex = chatRoom.getNumberOfMessages() - 1;
+        }
+    }
+
+    public boolean hasNextMessages(){
+        return (firstMessageIndex + displayedMessages) < chatRoom.getNumberOfMessages();
+    }
+
+    public List getMessages(){
+        return chatRoom.getMessages(firstMessageIndex, displayedMessages);
+    }
+
 
 }
