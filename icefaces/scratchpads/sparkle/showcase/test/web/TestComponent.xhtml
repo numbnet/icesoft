@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ice="http://www.icefaces.org/icefaces/components">
+      xmlns:ann="http://www.icefaces.org/icefaces/components">
 <h:head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -27,11 +27,11 @@
 
 
      <h:form id="justPlainDefaultsForm">
-                <ice:testComponent label="Hello World!"/>
+                <ann:testComponent label="Hello World!"/>
     </h:form>
-    <em>
+
     The following test component has the same meta file initialization, but the non-initialized case has been replaced
-    with properties set from attributes on the web page and the first row should match the meta default value shown in the second row.</em> 
+    with properties set from attributes on the web page and the first row should match the meta default value shown in the second row.
       <h:form id="settingForm">
                 <ann:testComponent label="Hello from the web page"
                                    floatOne="1234.5678"
