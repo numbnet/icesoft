@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+
+&base-props;
+&core-props;
+&ice-att-userrole-rendered-props;
+<property>
+    <description>
+        URL of the media data object. Relative URL is relative to the current web page.
+    </description>
+    <property-name>source</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        Message displayed while loading the media data.
+    </description>
+    <property-name>standbyText</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        Overrides default codebase set by the player attribute.
+    </description>
+    <property-name>codebase</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        MIME type of the media data. If not specified, the browser will try to determine
+        the MIME type based on the media source file extension.
+    </description>
+    <property-name>mimeType</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+             &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        "windows", "flash", "quicktime" or "real". This sets the default values for the
+        object tag's classid and codebase attributes and param name used to specify
+        the URL of the media data object. It also sets the default value for the embed
+        tag's pluginspage attribute.
+    </description>
+    <property-name>player</property-name>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &selectOneDomainEditor;
+        </editor-class>
+    </property-extension>
+</property>
