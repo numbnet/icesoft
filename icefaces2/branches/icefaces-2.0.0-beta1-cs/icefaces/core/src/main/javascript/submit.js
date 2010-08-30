@@ -152,7 +152,7 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
-        var disabled = document.getElementById(element.id+":ajaxDisabled");
+        var disabled = element && document.getElementById(element.id+":ajaxDisabled");
         if (disabled)  {
             var disabledArray = disabled.value.split(" ");
             var l = disabledArray.length;

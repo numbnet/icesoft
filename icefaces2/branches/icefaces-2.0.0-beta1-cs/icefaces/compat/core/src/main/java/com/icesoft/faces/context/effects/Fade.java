@@ -92,7 +92,7 @@ public class Fade extends Effect {
      * @return
      */
     public String getFunctionName() {
-        return "Effect.Fade";
+        return "Ice.Scriptaculous.Effect.Fade";
     }
 
     public int hashCode() {

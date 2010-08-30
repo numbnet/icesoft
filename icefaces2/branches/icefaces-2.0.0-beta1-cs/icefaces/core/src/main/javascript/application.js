@@ -77,6 +77,9 @@ if (!window.ice.icefaces) {
         function configurationOf(element) {
             return detect(parents(element), function(e) {
                 return e.configuration;
+            }, function() {
+                //fail over to body element in case the 'element' doesn't have parents
+                return document.body;
             }).configuration;
         }
 
@@ -88,11 +91,14 @@ if (!window.ice.icefaces) {
             return configurationOf(element).viewID;
         }
 
-        function appendHiddenInputElement(form, name, value) {
+        function appendHiddenInputElement(form, name, value, defaultValue) {
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('name', name);
             hiddenInput.setAttribute('value', value);
             hiddenInput.setAttribute('type', 'hidden');
+            if (defaultValue) {
+                hiddenInput.defaultValue = defaultValue;
+            }
             form.appendChild(hiddenInput);
             return hiddenInput;
         }
@@ -175,13 +181,14 @@ if (!window.ice.icefaces) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
-                    var disabled = document.getElementById(id+":ajaxDisabled");
-                    if ( (disabled) && 
-                         (disabled.value.indexOf(" " + element.id + " ") >= 0) )  {
+                    var elementID = element.id;
+                    var disabled = document.getElementById(id + ':ajaxDisabled');
+                    if (disabled && disabled.value.indexOf(' ' + elementID + ' ') >= 0) {
                         return true;
                     }
                     f.onsubmit = function() {
-                        submit(event, element);
+                        var el = (elementID && document.getElementById(elementID)) || triggeredBy($event(event, element));
+                        submit(event, el);
                         f.onsubmit = none;
                         return false;
                     };
@@ -227,7 +234,7 @@ if (!window.ice.icefaces) {
                 //add hidden input field to the updated forms that don't have it
                 each(forms, function(form) {
                     if (!form['javax.faces.ViewState']) {
-                        appendHiddenInputElement(form, 'javax.faces.ViewState', viewState);
+                        appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                     }
                 });
             }

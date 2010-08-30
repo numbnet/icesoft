@@ -28,6 +28,7 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.utils.DnDCache;
+import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -37,7 +38,6 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,8 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
-
-import com.icesoft.util.pooling.ClientIdPool;
 
 /**
  * Renderer for Positioned Panel
@@ -78,7 +76,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                 String style = ((PanelPositioned) uiComponent).getStyle();
                 String styleClass =
                         ((PanelPositioned) uiComponent).getStyleClass();
-                if(style != null && style.length() > 0)
+                if (style != null && style.length() > 0)
                     root.setAttribute(HTML.STYLE_ATTR, style);
                 else
                     root.removeAttribute(HTML.STYLE_ATTR);
@@ -150,15 +148,15 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
 
 
         String updateCode =
-                "function(){var o = Sortable.options('" + id + "');" +
-                "var s = o.serializeValue;" +
-                "f = $('" + orderFieldId + "');" +
-                "f.value = s;" +
-                "}";
+                "function(){var o = Ice.Scriptaculous.Sortable.options('" + id + "');" +
+                        "var s = o.serializeValue;" +
+                        "f = Ice.Prototype.$('" + orderFieldId + "');" +
+                        "f.value = s;" +
+                        "}";
         ea.addFunction("onUpdate", updateCode);
 
         if (!panelPositioned.isDisabled()) {
-            String call = "Sortable.create('" + id + "'" + ea.toString();
+            String call = "Ice.Scriptaculous.Sortable.create('" + id + "'" + ea.toString();
             JavascriptContext.addJavascriptCall(facesContext, call);
         }
         DOMContext.getDOMContext(facesContext, uiComponent).stepOver();
@@ -180,7 +178,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                 if (log.isTraceEnabled()) {
                     for (int i = 0; i < seriesList.size(); i++) {
                         log.trace("Encode index[" + i + "] value [" +
-                                  seriesList.get(i) + "]");
+                                seriesList.get(i) + "]");
                     }
                 }
                 Iterator cells = seriesList.iterator();
@@ -201,11 +199,11 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                                 encodeParentAndChildren(facesContext, nextChild);
                                 String childId =
                                         nextChild.getClientId(facesContext);
-    
+
                                 ppm.setIndex(childId, index);
                                 DnDCache.getInstance(facesContext, false)
                                         .putPositionPanelValue(childId, seriesList,
-                                                               index);
+                                                index);
                             }
                         }
                     }
@@ -253,7 +251,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                         } else {
                             throw new RuntimeException(
                                     "PanelPositioned must have a java.util.List instance set as " +
-                                    "its value");
+                                            "its value");
                         }
                         if (st.hasMoreTokens()) { // Don't do a thing if its blank
                             st.nextToken();//Last Token
@@ -267,17 +265,17 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
 
                             while (st.hasMoreTokens()) {
                                 String id = st.nextToken();
-                               
+
                                 int index = sortOrder.getIndex(id);
 
                                 if (index != -1) {
                                     Object obj = oldList.get(index);
                                     if (log.isTraceEnabled()) {
                                         log.trace("Moving ID[" + id +
-                                                  "] Value [" + obj.toString() +
-                                                  "] from index [" +
-                                                  index + "] to [" +
-                                                  currentIndex + "]");
+                                                "] Value [" + obj.toString() +
+                                                "] from index [" +
+                                                index + "] to [" +
+                                                currentIndex + "]");
                                     }
                                     if (!processedElementsList.contains(id)) {
                                         newList.add(obj);
@@ -296,14 +294,14 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                                                 source.get(ppv.getValueIndex());
                                         if (log.isTraceEnabled()) {
                                             log.trace("Added value [" +
-                                                      sourceValue + "]");
+                                                    sourceValue + "]");
                                         }
                                         newList.add(sourceValue);
 
                                     } else {
                                         throw new RuntimeException(
                                                 "Unable to find Value for ID[" +
-                                                id + "]");
+                                                        id + "]");
                                     }
 
 
@@ -314,17 +312,15 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                             int event_type = eventInfo[0];
                             int newIndex = eventInfo[1];
                             int oldIndex = eventInfo[2];
-                            if(event_type == PanelPositionedEvent.TYPE_MOVE){
+                            if (event_type == PanelPositionedEvent.TYPE_MOVE) {
 
-                                if(lastIndex != oldIndex){
+                                if (lastIndex != oldIndex) {
                                     int a = newIndex;
                                     newIndex = oldIndex;
                                     oldIndex = a;
 
                                 }
                             }
-                          
-                          
 
 
                             if (log.isTraceEnabled()) {
@@ -336,7 +332,6 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                                 }
                             }
                             setChanged(context);
-
 
 
                             uiSeries.queueEvent(new PanelPositionedEvent(
@@ -374,42 +369,42 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                     uiComponent, String
                     name) {
         UIComponent form = findForm(uiComponent);
-        if(form == null){
+        if (form == null) {
             throw new NullPointerException("PanelPositioned must be contained withing an <ice:form>");
         }
         String formId = form.getClientId(facesContext);
         String clientId = uiComponent.getClientId(facesContext);
         return formId
-               + NamingContainer.SEPARATOR_CHAR
-               + UIViewRoot.UNIQUE_ID_PREFIX
-               + clientId
-               + name;
+                + NamingContainer.SEPARATOR_CHAR
+                + UIViewRoot.UNIQUE_ID_PREFIX
+                + clientId
+                + name;
     }
 
-    private int[] getEventInfo(List l1, List l2){
+    private int[] getEventInfo(List l1, List l2) {
         int type;
         int newIndex = -1;
         int oldIndex = -1;
-        if(l1.size() > l2.size()){
+        if (l1.size() > l2.size()) {
             type = PanelPositionedEvent.TYPE_REMOVE;
-        }else if(l1.size() < l2.size()){
+        } else if (l1.size() < l2.size()) {
             type = PanelPositionedEvent.TYPE_ADD;
             List l = l1;
             l1 = l2;
             l2 = l;
-        }else{
+        } else {
             type = PanelPositionedEvent.TYPE_MOVE;
-            for(int i = 0; i < l1.size(); i++){
-                if(l1.get(i) != l2.get(i)){
-                    if(newIndex == -1)newIndex = i;
+            for (int i = 0; i < l1.size(); i++) {
+                if (l1.get(i) != l2.get(i)) {
+                    if (newIndex == -1) newIndex = i;
                     else oldIndex = i;
                 }
             }
         }
-        if(type != PanelPositionedEvent.TYPE_MOVE){
-            for(int i = 0; i < l1.size(); i++){
+        if (type != PanelPositionedEvent.TYPE_MOVE) {
+            for (int i = 0; i < l1.size(); i++) {
                 // Find the odd one
-                if(!l2.contains(l1.get(i))){
+                if (!l2.contains(l1.get(i))) {
                     newIndex = i;
                 }
             }

@@ -14,31 +14,29 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
  */
 
-package com.icesoft.faces.context.effects;
+package org.icefaces.util;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 /**
- * script.aculo.us shake effect
- * Shanke an element from left ot right
+ * Special renderer used for rendering markup within a form.
  */
-public class Shake extends Effect {
+public interface FormEndRenderer {
 
-    public String getFunctionName() {
-        return "Ice.Scriptaculous.Effect.Shake";
-    }
-
-    public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof Shake)) {
-            return false;
-        }
-        return true;
-    }
+    /**
+     * Encode the markup.
+     *
+     * @param context current FacesContext
+     * @param form    current form component
+     * @throws IOException
+     */
+    void encode(FacesContext context, UIComponent form) throws IOException;
 }

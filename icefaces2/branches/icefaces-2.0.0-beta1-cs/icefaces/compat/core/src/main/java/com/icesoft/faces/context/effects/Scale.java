@@ -26,7 +26,7 @@ import com.icesoft.faces.util.CoreUtils;
 
 /**
  * script.aculo.us scale effect
- *
+ * <p/>
  * Grow or shrink an element by a specifed percent. (Default 50%)
  */
 public class Scale extends Effect {
@@ -114,7 +114,7 @@ public class Scale extends Effect {
     }
 
     public String getFunctionName() {
-        return "new Effect.Scale";
+        return "new Ice.Scriptaculous.Effect.Scale";
     }
 
     public String toString(String var, String lastCall) {

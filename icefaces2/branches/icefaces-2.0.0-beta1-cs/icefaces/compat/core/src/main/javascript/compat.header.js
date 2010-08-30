@@ -14,31 +14,9 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
-package com.icesoft.faces.context.effects;
-
-/**
- * script.aculo.us shake effect
- * Shanke an element from left ot right
- */
-public class Shake extends Effect {
-
-    public String getFunctionName() {
-        return "Ice.Scriptaculous.Effect.Shake";
-    }
-
-    public boolean equals(Object obj) {
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof Shake)) {
-            return false;
-        }
-        return true;
-    }
-}
+(function() {

@@ -22,10 +22,12 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.util.CoreComponentUtils;
+
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.StringTokenizer;
-import javax.faces.component.UIComponent;
-import com.icesoft.util.CoreComponentUtils;
+
 /**
  * Make HTML Elements draggable or droppable
  * Makes the element drop (Move Down)  and fade out at the same time.
@@ -35,6 +37,7 @@ public class DragDrop {
 
     /**
      * Make an HTML element draggable
+     *
      * @param id
      * @param handleId
      * @param options
@@ -72,11 +75,12 @@ public class DragDrop {
             }
         }
         return addDragable(id, handleId, revert, ghosting, solid, dragGhost,
-                           pointerDraw, mask, facesContext);
+                pointerDraw, mask, facesContext);
     }
 
     /**
      * make an HTML element draggable
+     *
      * @param id
      * @param handleId
      * @param revert
@@ -105,12 +109,13 @@ public class DragDrop {
             ea.addFunction("starteffect", "function(){}");
             ea.addFunction("endeffect", "function(){}");
         }
-        String call = "new Draggable('" + id + "'" + ea.toString();
+        String call = "new Ice.Scriptaculous.Draggable('" + id + "'" + ea.toString();
         return call;
     }
 
     /**
      * Make an HTML element droppable
+     *
      * @param uiComponent
      * @param acceptClass
      * @param facesContext
@@ -135,8 +140,8 @@ public class DragDrop {
         ea.add("hoverclass", hoverClass);
         if (scrollid != null && scrollid.trim().length() > 0) {
             ea.add("scrollid", scrollid);
-        }        
-        String call = "Droppables.add('" + id + "'" + ea.toString();        
+        }
+        String call = "Ice.Scriptaculous.Droppables.add('" + id + "'" + ea.toString();
         JavascriptContext.addJavascriptCall(facesContext, call);
         return call;
     }

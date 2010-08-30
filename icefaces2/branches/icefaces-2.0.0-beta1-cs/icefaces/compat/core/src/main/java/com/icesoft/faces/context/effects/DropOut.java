@@ -28,8 +28,9 @@ package com.icesoft.faces.context.effects;
 public class DropOut extends Effect {
 
     public String getFunctionName() {
-        return "Effect.DropOut";
+        return "Ice.Scriptaculous.Effect.DropOut";
     }
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;

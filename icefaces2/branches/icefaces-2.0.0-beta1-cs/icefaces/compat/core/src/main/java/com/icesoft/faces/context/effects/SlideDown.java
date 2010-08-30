@@ -29,7 +29,7 @@ package com.icesoft.faces.context.effects;
 public class SlideDown extends Effect {
 
     public String getFunctionName() {
-        return "Effect.SlideDown";
+        return "Ice.Scriptaculous.Effect.SlideDown";
     }
 
     public boolean equals(Object obj) {

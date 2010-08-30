@@ -60,10 +60,17 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                     return;
                 }
 
+                WindowScopeManager.ScopeMap scopeMap = WindowScopeManager.lookupWindowScope(context);
+                final String windowID;
+                if (scopeMap == null) {
+                    windowID = "unknownWindow";
+                } else {
+                    windowID = scopeMap.getId();
+                }
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
-                writer.writeAttribute("value", WindowScopeManager.lookupWindowScope(context).getId(), null);
+                writer.writeAttribute("value", windowID, null);
                 writer.endElement("input");
 
                 writer.startElement("input", this);

@@ -29,7 +29,7 @@ package com.icesoft.faces.context.effects;
 public class Squish extends Effect {
 
     public String getFunctionName() {
-        return "Effect.Squish";
+        return "Ice.Scriptaculous.Effect.Squish";
     }
 
     public boolean equals(Object obj) {

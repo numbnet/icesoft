@@ -22,8 +22,6 @@
 
 package com.icesoft.faces.context.effects;
 
-import com.icesoft.faces.util.CoreUtils;
-
 /**
  * Pulsate or flash an HTML element
  */
@@ -72,7 +70,7 @@ public class Pulsate extends Effect {
      * @return
      */
     public String getFunctionName() {
-        return "Effect.Pulsate";
+        return "Ice.Scriptaculous.Effect.Pulsate";
     }
 
     public int hashCode() {

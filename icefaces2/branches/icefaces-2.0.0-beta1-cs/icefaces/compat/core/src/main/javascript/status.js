@@ -245,7 +245,7 @@ var ComponentIndicators;
                 descriptionElementStyle.marginBottom = '7px';
                 descriptionElementStyle.fontWeight = 'normal';
 
-                var buttonElement = messageContainer.appendChild(document.createElement('input'));
+                var buttonElement = document.createElement('input');
                 buttonElement.type = 'button';
                 buttonElement.value = buttonText;
                 var buttonElementStyle = buttonElement.style;
@@ -254,6 +254,7 @@ var ComponentIndicators;
                 buttonElement.onclick = function() {
                     window.location.reload();
                 };
+                messageContainer.appendChild(buttonElement);
                 var resize = function() {
                     messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
                     messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
@@ -358,14 +359,17 @@ var ComponentIndicators;
         ice.onServerError(function() {
             indctrs && on(indctrs.serverError);
         });
-        ice.onBlockingConnectionUnstable(function() {
-            indctrs && on(indctrs.connectionTrouble);
-        });
-        ice.onBlockingConnectionLost(function() {
-            indctrs && on(indctrs.connectionLost);
-        });
         ice.onSessionExpiry(function() {
             indctrs && on(indctrs.sessionExpired);
         });
+
+        if (ice.push) {
+            ice.onBlockingConnectionUnstable(function() {
+                indctrs && on(indctrs.connectionTrouble);
+            });
+            ice.onBlockingConnectionLost(function() {
+                indctrs && on(indctrs.connectionLost);
+            });
+        }
     });
 })();
