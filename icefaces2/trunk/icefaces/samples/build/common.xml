@@ -154,5 +154,14 @@
         </copy>
     </target>
 
+    <target name="deploy.tomcat6"
+            description="copy .war file to Tomcat 6 webapps directory">
+        <copy todir="${tomcat.v6.deploy}">
+            <fileset dir="${dist.dir}">
+                <include name="${ant.project.name}.war"/>
+            </fileset>
+        </copy>
+    </target>
+
 </project>
 
