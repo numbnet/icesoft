@@ -22,13 +22,16 @@
 
 <project name="common">
 
+    <property name="icefaces.base.dir" location="../.."/>
+    <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
+    <property name="lib.compat.dir" location="${icefaces.base.dir}/compat/lib"/>
+
     <property name="java.dir" location="./src/main/java"/>
+    <property name="res.dir" location="./src/main/resources"/>
     <property name="web.dir" location="./src/main/webapp"/>
-    <property name="lib.dir" location="../../lib"/>
-    <property name="lib.compat.dir" location="${lib.dir}/../compat/lib"/>
+    
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
-    <property name="res.dir" location="./src/main/resources"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
     <patternset id="lib.compile">
