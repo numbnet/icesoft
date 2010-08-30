@@ -27,11 +27,11 @@
     <property name="src.dir" location="${basedir}/src/main/javascript"/>
     <property name="extras.dir" location="${src.dir}/extras"/>
     <property name="prototype.dir" location="${src.dir}/prototype"/>
-    <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>    
+    <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
     <property name="script" location="${build.dir}/compat.js"/>
-    <property name="icefaces-compat.js" location="${build.dir}/icefaces-compat.js"/>    
+    <property name="icefaces-compat.js" location="${build.dir}/icefaces-compat.js"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
 
     <target name="prepare" depends="build.icefaces.compat" description="Collate bridge code">
@@ -63,13 +63,14 @@
     </target>
 
 
-    <target name="build.icefaces.compat"  description="Collate compat components code">
+    <target name="build.icefaces.compat" description="Collate compat components code">
         <tstamp/>
         <echoproperties/>
-        <mkdir dir="${build.dir}"/>    
+        <mkdir dir="${build.dir}"/>
         <concat destfile="${icefaces-compat.js}" append="yes" fixlastline="yes">
+            <header file="src/main/javascript/compat.header.js"/>
+            <footer file="src/main/javascript/compat.footer.js"/>
             <filelist dir="${prototype.dir}">
-                <file name="HEADER"/>  
                 <file name="prototype.js"/>
             </filelist>
             <filelist dir="${scriptaculous.dir}">
@@ -86,7 +87,7 @@
         </concat>
     </target>
 
-    
+
     <target name="build.bridge.uncompressed" depends="prepare">
         <touch file="${script}"/>
         <move file="${tmp}" tofile="${script}" overwrite="yes">

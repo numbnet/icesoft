@@ -22,17 +22,16 @@
 
 package com.icesoft.faces.component.tree;
 
-import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
-
+import com.icesoft.util.pooling.ClientIdPool;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -43,8 +42,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import java.io.IOException;
 import java.util.Map;
-
-import com.icesoft.util.pooling.ClientIdPool;
 
 /**
  * TreeRenderer is an ICEfaces D2D renderer for the Tree component.
@@ -82,14 +79,14 @@ public class TreeRenderer extends DomBasicRenderer {
                 .getHiddenTreeExpandFieldName(
                         uiComponent.getClientId(facesContext),
                         CustomComponentUtils.getFormName(uiComponent,
-                                                         facesContext));
+                                facesContext));
         String pathToExpandedNode = (String) facesContext.getExternalContext()
                 .getRequestParameterMap().get(expandNodeKey);
         // handle navigation: if the user clicked on an open/close icon
         // then expand/contract the appropriate node by updating the state
         // of the user object encapsulated by the tree node that was expanded/collapsed
         if (pathToExpandedNode != null &&
-            !pathToExpandedNode.equalsIgnoreCase("")) {
+                !pathToExpandedNode.equalsIgnoreCase("")) {
             try {
                 treeComponent.setPathToExpandedNode(pathToExpandedNode);
                 // get the node that was expanded/contracted
@@ -100,8 +97,8 @@ public class TreeRenderer extends DomBasicRenderer {
                 if (userObject != null) {
                     treeComponent.setNavigationEventType(
                             userObject.isExpanded() ?
-                            Tree.NAVIGATION_EVENT_COLLAPSE :
-                            Tree.NAVIGATION_EVENT_EXPAND);
+                                    Tree.NAVIGATION_EVENT_COLLAPSE :
+                                    Tree.NAVIGATION_EVENT_EXPAND);
                     userObject.setExpanded(!userObject.isExpanded());
                 }
 
@@ -138,7 +135,7 @@ public class TreeRenderer extends DomBasicRenderer {
         if (treeComponent.getChildCount() != 1) {
             throw new MalformedTreeTagException(
                     "The tree tag requires a single child treeNode tag. Found [" +
-                    treeComponent.getChildCount() + "]");
+                            treeComponent.getChildCount() + "]");
         }
 
         if (treeModel == null) {
@@ -151,7 +148,7 @@ public class TreeRenderer extends DomBasicRenderer {
         if (!domContext.isInitialized()) {
             Element rootDOMNode = domContext.createRootElement(HTML.DIV_ELEM);
             rootDOMNode.setAttribute(HTML.ID_ATTR,
-                                     uiComponent.getClientId(facesContext));
+                    uiComponent.getClientId(facesContext));
         }
         // get the root node
         Element rootDomNode = (Element) domContext.getRootNode();
@@ -159,7 +156,7 @@ public class TreeRenderer extends DomBasicRenderer {
         rootDomNode
                 .setAttribute(HTML.CLASS_ATTR, treeComponent.getStyleClass());
         String style = treeComponent.getStyle();
-        if(style != null && style.length() > 0)
+        if (style != null && style.length() > 0)
             rootDomNode.setAttribute(HTML.STYLE_ATTR, style);
         else
             rootDomNode.removeAttribute(HTML.STYLE_ATTR);
@@ -173,8 +170,8 @@ public class TreeRenderer extends DomBasicRenderer {
             String keydown = DomBasicRenderer.combinedPassThru(userKeyDown, keyboardSupport);
             rootDomNode.setAttribute(HTML.ONKEYDOWN_ATTR, keydown);
             String userClick = (String) uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
-            String click = DomBasicRenderer.combinedPassThru(userClick, keyboardSupport);        
-            rootDomNode.setAttribute(HTML.ONCLICK_ATTR, click);     
+            String click = DomBasicRenderer.combinedPassThru(userClick, keyboardSupport);
+            rootDomNode.setAttribute(HTML.ONCLICK_ATTR, click);
         }
         domContext.stepInto(uiComponent);
 
@@ -184,7 +181,7 @@ public class TreeRenderer extends DomBasicRenderer {
         String hideRootNodeAttribute =
                 (String) treeComponent.getAttributes().get("hideRootNode");
         return hideRootNodeAttribute != null &&
-               hideRootNodeAttribute.equalsIgnoreCase("true");
+                hideRootNodeAttribute.equalsIgnoreCase("true");
     }
 
     private boolean isHideNavigation(Tree treeComponent) {
@@ -221,9 +218,9 @@ public class TreeRenderer extends DomBasicRenderer {
         }
 
         encodeParentAndChildNodes(facesContext, (Tree) uiComponent,
-                                  (DefaultMutableTreeNode) treeModel.getRoot(),
-                                  hideRootNode, rootNode, treeComponentRootNode,
-                                  treeNode);
+                (DefaultMutableTreeNode) treeModel.getRoot(),
+                hideRootNode, rootNode, treeComponentRootNode,
+                treeNode);
 
     }
 
@@ -255,7 +252,7 @@ public class TreeRenderer extends DomBasicRenderer {
             requestMap.put(varAttribute, current);
             if (!treeNode.isRendered()) {
                 return;
-            }            
+            }
             domContext.setCursorParent(parentDOMNode);
 
             treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
@@ -264,8 +261,8 @@ public class TreeRenderer extends DomBasicRenderer {
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
             encodeNode(facesContext, treeComponent, current, treeNodeDiv,
-                       domContext, treeComponentRootNode, treeNode,
-                       parentDOMNode);
+                    domContext, treeComponentRootNode, treeNode,
+                    parentDOMNode);
 
         } else {
             // root node is hidden 
@@ -275,7 +272,7 @@ public class TreeRenderer extends DomBasicRenderer {
             requestMap.put(varAttribute, current);
             if (!treeNode.isRendered()) {
                 return;
-            }            
+            }
             domContext.setCursorParent(parentDOMNode);
 
             treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
@@ -286,11 +283,11 @@ public class TreeRenderer extends DomBasicRenderer {
                     .getClientId(facesContext) + "-d-rt"));
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
-       }
+        }
         // iterate child nodes
         int childCount = current.getChildCount();
         if (childCount > 0 &&
-            ((IceUserObject) current.getUserObject()).isExpanded()) {
+                ((IceUserObject) current.getUserObject()).isExpanded()) {
             // render CHILD div
             Element childDiv = domContext.createElement(HTML.DIV_ELEM);
             childDiv.setAttribute(HTML.NAME_ATTR, "c");
@@ -303,8 +300,8 @@ public class TreeRenderer extends DomBasicRenderer {
             for (int i = 0; i < childCount; i++) {
                 next = (DefaultMutableTreeNode) current.getChildAt(i);
                 encodeParentAndChildNodes(facesContext, treeComponent, next,
-                                          false, childDiv,
-                                          treeComponentRootNode, treeNode);
+                        false, childDiv,
+                        treeComponentRootNode, treeNode);
             }
         }
     }
@@ -338,7 +335,7 @@ public class TreeRenderer extends DomBasicRenderer {
         String pathToCurrentNode = TreeRenderer.getPathAsString(currentNode,
                 (DefaultMutableTreeNode) treeComponent.getModel()
                         .getRoot());
-        
+
         treeNode.setMutable(currentNode);
         treeNode.setId(Tree.ID_PREFIX + pathToCurrentRoot);
         treeNode.setParent(treeComponent);
@@ -397,16 +394,16 @@ public class TreeRenderer extends DomBasicRenderer {
 
             if (renderBlank) {
                 verticalLine.setAttribute(HTML.SRC_ATTR,
-                                          treeComponent.getLineBlankImage());
+                        treeComponent.getLineBlankImage());
             } else if ((i == 0) && (!hideRootNode)) {
                 verticalLine.setAttribute(HTML.SRC_ATTR,
-                                          treeComponent.getLineBlankImage());
+                        treeComponent.getLineBlankImage());
             } else if (isLastChild || isCollapsedAndFinalBranch) {
                 verticalLine.setAttribute(HTML.SRC_ATTR,
-                                          treeComponent.getLineBottomImage());
+                        treeComponent.getLineBottomImage());
             } else {
                 verticalLine.setAttribute(HTML.SRC_ATTR,
-                                          treeComponent.getLineVerticalImage());
+                        treeComponent.getLineVerticalImage());
             }
 
             verticalLine.setAttribute(HTML.BORDER_ATTR, "0");
@@ -421,23 +418,23 @@ public class TreeRenderer extends DomBasicRenderer {
             Element navAnchor = domContext.createElement(HTML.ANCHOR_ELEM);
             navAnchor.setAttribute(HTML.HREF_ATTR, "javascript:;");
             navAnchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
-                                   treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot));
+                    treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot));
             navAnchor.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             navAnchor.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
             String hiddenFieldName =
                     CustomComponentUtils.getHiddenTreeExpandFieldName(
                             treeComponent.getClientId(facesContext),
                             CustomComponentUtils.getFormName(treeComponent,
-                                                             facesContext));
+                                    facesContext));
 
             String onclickString =
                     "document.forms['" + formId + "']['" + hiddenFieldName +
-                    "'].value="
-                    + "'" + pathToCurrentRoot + "';"
-                    + "iceSubmitPartial("
-                    + " document.forms['" + formId + "'],"
-                    + " this,event); "
-                    + "return false;";
+                            "'].value="
+                            + "'" + pathToCurrentRoot + "';"
+                            + "iceSubmitPartial("
+                            + " document.forms['" + formId + "'],"
+                            + " this,event); "
+                            + "return false;";
 
             navAnchor.setAttribute(HTML.ONCLICK_ATTR, onclickString);
             treeNodeDiv.appendChild(navAnchor);
@@ -457,37 +454,37 @@ public class TreeRenderer extends DomBasicRenderer {
             // Encode the middle image by default
             // *** cleanup replaced line images with blanks ***
             if (currentNode.isRoot() ||
-                hideRootNode
-                && currentNode.getNextSibling() == null
-                && currentNode == treeComponentRootNode.getFirstChild()
+                    hideRootNode
+                            && currentNode.getNextSibling() == null
+                            && currentNode == treeComponentRootNode.getFirstChild()
                     ) {
                 iconImage.setAttribute(HTML.SRC_ATTR, isExpanded ?
                         treeComponent.getNavCloseTopNoSiblingsImage() : treeComponent.getNavOpenTopNoSiblingsImage());
             } else if (
-                       hideRootNode &&
-                       treeComponentRootNode.getFirstChild() == currentNode) {
+                    hideRootNode &&
+                            treeComponentRootNode.getFirstChild() == currentNode) {
                 if (isExpanded) {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavCloseTopImage());
+                            treeComponent.getNavCloseTopImage());
                 } else {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavOpenTopImage());
+                            treeComponent.getNavOpenTopImage());
                 }
             } else if (currentNode.getNextSibling() == null) {
                 if (isExpanded) {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavCloseBottomImage());
+                            treeComponent.getNavCloseBottomImage());
                 } else {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavOpenBottomImage());
+                            treeComponent.getNavOpenBottomImage());
                 }
             } else {
                 if (isExpanded) {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavCloseMiddleImage());
+                            treeComponent.getNavCloseMiddleImage());
                 } else {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavOpenMiddleImage());
+                            treeComponent.getNavOpenMiddleImage());
                 }
             }
             iconImage.setAttribute(HTML.BORDER_ATTR, "0");
@@ -499,7 +496,7 @@ public class TreeRenderer extends DomBasicRenderer {
             Element lineImage = domContext.createElement(HTML.IMG_ELEM);
             Text space = domContext.createTextNode(" ");
             treeNodeDiv.appendChild(space);
-            
+
             treeNodeDiv.appendChild(lineImage);
             lineImage.setAttribute(HTML.BORDER_ATTR, "0");
             lineImage.setAttribute(HTML.ALT_ATTR, "");
@@ -507,19 +504,19 @@ public class TreeRenderer extends DomBasicRenderer {
             if (currentNode.getNextSibling() == null) {
                 // use lineBottomNode image
                 lineImage.setAttribute(HTML.SRC_ATTR,
-                                       treeComponent.getLineBottomImage());
+                        treeComponent.getLineBottomImage());
             } else {
                 // use lineMiddleNode image
                 lineImage.setAttribute(HTML.SRC_ATTR,
-                                       treeComponent.getLineMiddleImage());
+                        treeComponent.getLineMiddleImage());
             }
             treeNodeDiv.appendChild(domContext.createTextNode(" "));
         }
 
         String pathToNode = TreeRenderer.getPathAsString(currentNode,
-                                                         (DefaultMutableTreeNode) treeComponent
-                                                                 .getModel()
-                                                                 .getRoot());
+                (DefaultMutableTreeNode) treeComponent
+                        .getModel()
+                        .getRoot());
         treeNodeDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(treeComponent
                 .getClientId(facesContext) + "-d-" + pathToNode));
 
@@ -528,7 +525,7 @@ public class TreeRenderer extends DomBasicRenderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         treeNodeDiv.normalize();
     }
 
@@ -587,20 +584,20 @@ public class TreeRenderer extends DomBasicRenderer {
         tree_folder_close.setAttribute(HTML.SRC_ATTR, appBase + "tree_folder_close.gif");
         tree_line_last_node.setAttribute(HTML.SRC_ATTR, appBase + "tree_line_last_node.gif");
         tree_nav_bottom_close.setAttribute(HTML.SRC_ATTR, appBase +
-                                                          "tree_nav_bottom_close.gif");
+                "tree_nav_bottom_close.gif");
         tree_nav_middle_open.setAttribute(HTML.SRC_ATTR, appBase +
-                                                         "tree_nav_middle_open.gif");
+                "tree_nav_middle_open.gif");
         tree_nav_top_open_no_siblings.setAttribute(HTML.SRC_ATTR, appBase +
-                                                                  "tree_nav_top_open_no_siblings.gif");
+                "tree_nav_top_open_no_siblings.gif");
         tree_folder_open.setAttribute(HTML.SRC_ATTR, appBase +
-                                                     "tree_folder_open.gif");
+                "tree_folder_open.gif");
         tree_line_middle_node.setAttribute(HTML.SRC_ATTR, appBase +
-                                                          "tree_line_middle_node.gif");
+                "tree_line_middle_node.gif");
         tree_nav_bottom_open.setAttribute(HTML.SRC_ATTR, appBase +
-                                                         "tree_nav_bottom_open.gif");
+                "tree_nav_bottom_open.gif");
         tree_nav_top_close.setAttribute(HTML.SRC_ATTR, appBase +
-                                                       "tree_nav_top_close.gif");
-        
+                "tree_nav_top_close.gif");
+
 
         imageLoaderDiv.appendChild(tree_document);
         imageLoaderDiv.appendChild(tree_line_blank);
@@ -617,17 +614,17 @@ public class TreeRenderer extends DomBasicRenderer {
         imageLoaderDiv.appendChild(tree_nav_bottom_open);
         imageLoaderDiv.appendChild(tree_nav_top_close);
 
-        String hiddenTreeExpandFieldName =  CustomComponentUtils.getHiddenTreeExpandFieldName(
+        String hiddenTreeExpandFieldName = CustomComponentUtils.getHiddenTreeExpandFieldName(
                 uiComponent.getClientId(facesContext),
                 CustomComponentUtils.getFormName(uiComponent,
-                                                 facesContext));
-        
+                        facesContext));
+
         Element hiddenTreeExpand = domContext.createElement(HTML.INPUT_ELEM);
         hiddenTreeExpand.setAttribute(HTML.TYPE_ATTR, "hidden");
         hiddenTreeExpand.setAttribute(HTML.NAME_ATTR, hiddenTreeExpandFieldName);
         hiddenTreeExpand.setAttribute(HTML.ID_ATTR, hiddenTreeExpandFieldName);
         Element hiddenTreeAction = domContext.createElement(HTML.INPUT_ELEM);
-        hiddenTreeAction.setAttribute(HTML.TYPE_ATTR, "hidden");        
+        hiddenTreeAction.setAttribute(HTML.TYPE_ATTR, "hidden");
         hiddenTreeAction.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeActionFieldName(
                 uiComponent.getClientId(
                         facesContext),
@@ -636,8 +633,8 @@ public class TreeRenderer extends DomBasicRenderer {
                         facesContext)));
         rootNode.appendChild(hiddenTreeAction);
         rootNode.appendChild(hiddenTreeExpand);
-        JavascriptContext.addJavascriptCall(facesContext, 
-                "$('"+ hiddenTreeExpandFieldName +"').value='';");
+        JavascriptContext.addJavascriptCall(facesContext,
+                "Ice.Prototype.$('" + hiddenTreeExpandFieldName + "').value='';");
         domContext.stepOver();
     }
 

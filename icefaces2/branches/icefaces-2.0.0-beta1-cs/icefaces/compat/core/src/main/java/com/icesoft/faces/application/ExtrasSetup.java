@@ -22,13 +22,18 @@
 
 package com.icesoft.faces.application;
 
+import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import org.icefaces.application.ExternalContextConfiguration;
 import org.icefaces.event.UIOutputWriter;
 import org.icefaces.push.Configuration;
 import org.icefaces.push.ConfigurationException;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.FormEndRenderer;
+import org.icefaces.util.FormEndRendering;
 
 import javax.faces.application.ViewHandler;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -37,7 +42,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.ListResourceBundle;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -53,6 +60,7 @@ public class ExtrasSetup implements SystemEventListener {
             };
         }
     };
+    private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
     private final Configuration configuration;
 
     public ExtrasSetup() {
@@ -139,6 +147,8 @@ public class ExtrasSetup implements SystemEventListener {
             };
             output.setTransient(true);
             root.addComponentResource(context, output, "body");
+
+            FormEndRendering.addRenderer(context, FormHiddenInputFields);
         }
     }
 
@@ -147,6 +157,56 @@ public class ExtrasSetup implements SystemEventListener {
             setRendererType("javax.faces.resource.Script");
             getAttributes().put("name", path);
             setTransient(true);
+        }
+    }
+
+    private static class FormHiddenInputFieldsRenderer implements FormEndRenderer {
+        public void encode(FacesContext context, UIComponent component) throws IOException {
+            ResponseWriter writer = context.getResponseWriter();
+            String formClientID = component.getClientId(context);
+            writer.startElement("span", component);
+            writer.writeAttribute("id", formClientID + "hdnFldsDiv", null);
+
+            //css input field is required by some renderers (such as DnD)
+            writer.startElement("input", component);
+            writer.writeAttribute("type", "hidden", null);
+            writer.writeAttribute("name", CurrentStyle.CSS_UPDATE_FIELD, null);
+            writer.writeAttribute("value", "", null);
+            writer.endElement("input");
+
+            //Render any required hidden fields. There is a list
+            //(on the request map of the external context) of
+            //'required hidden fields'. Hidden fields can be
+            //contributed by the CommandLinkRenderer. Contribution
+            //is made during rendering of this form's commandLink
+            //children so we have to wait for the child renderers
+            //to complete their work before we render the hidden
+            //fields. Therefore, this method should be called from
+            //the form's encodeEnd method. We can assume that the
+            //hidden fields are the last fields in the form because
+            //they are rendered in the FormRenderer's encodeEnd
+            //method. Note that the CommandLinkRenderer adds one
+            //hidden field that indicates the id of the link that
+            //was clicked to submit the form ( in case there are
+            //multiple commandLinks on a page) and one hidden field
+            //for each of its UIParameter children.
+            Map requestMap = context.getExternalContext().getRequestMap();
+            Map map = (Map) requestMap.get(FormRenderer.COMMAND_LINK_HIDDEN_FIELDS_KEY);
+            if (map != null) {
+                Iterator fields = map.entrySet().iterator();
+                while (fields.hasNext()) {
+                    Map.Entry nextField = (Map.Entry) fields.next();
+                    if (FormRenderer.COMMAND_LINK_HIDDEN_FIELD.equals(nextField.getValue())) {
+                        writer.startElement("input", component);
+                        writer.writeAttribute("type", "hidden", null);
+                        writer.writeAttribute("name", nextField.getKey().toString(), null);
+                        writer.endElement("input");
+                    }
+                }
+                //remove map to avoid being used by the next rendered form
+                requestMap.remove(FormRenderer.COMMAND_LINK_HIDDEN_FIELDS_KEY);
+            }
+            writer.endElement("span");
         }
     }
 }

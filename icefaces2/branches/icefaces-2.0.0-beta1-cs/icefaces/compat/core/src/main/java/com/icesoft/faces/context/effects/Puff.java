@@ -29,9 +29,9 @@ package com.icesoft.faces.context.effects;
 public class Puff extends Effect {
 
     public String getFunctionName() {
-        return "Effect.Puff";
+        return "Ice.Scriptaculous.Effect.Puff";
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;

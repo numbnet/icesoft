@@ -24,7 +24,6 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.util.SeamUtilities;
 import org.w3c.dom.Element;
 
@@ -35,7 +34,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +41,7 @@ import java.util.logging.Logger;
 public class FormRenderer extends DomBasicRenderer {
     private static Logger log = Logger.getLogger("com.icesoft.faces.compat");
     public static final String COMMAND_LINK_HIDDEN_FIELD = "command_link_hidden_field";
-    private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY = "com.icesoft.faces.FormRequiredHidden";
+    public static final String COMMAND_LINK_HIDDEN_FIELDS_KEY = "com.icesoft.faces.FormRequiredHidden";
     public static final String STATE_SAVING_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
 
@@ -96,15 +94,6 @@ public class FormRenderer extends DomBasicRenderer {
             formHiddenField.setAttribute("name", formClientId);
             formHiddenField.setAttribute("value", formClientId);
             root.appendChild(formHiddenField);
-
-            // Only render the css update field once. Rendering more then one will cause
-            // a duplicate ID error
-            Element cssUpdateField = domContext.createElement(HTML.INPUT_ELEM);
-            cssUpdateField.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
-            cssUpdateField.setAttribute(HTML.NAME_ATTR,
-                    CurrentStyle.CSS_UPDATE_FIELD);
-            cssUpdateField.setAttribute(HTML.VALUE_ATTR, "");
-            root.appendChild(cssUpdateField);
 
             //JSF 2.0 portlet hidden field
             String viewId = facesContext.getViewRoot().getViewId();
@@ -205,9 +194,6 @@ public class FormRenderer extends DomBasicRenderer {
         // other renderers as well)
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        // set static class variable for support of myfaces command link
-        renderCommandLinkHiddenFields(facesContext, uiComponent);
-
         //check if the messages renderer asked to be rendered later,
         //if yes, then re-render it
         if (uiComponent.getAttributes().get("$ice-msgs$") != null) {
@@ -219,73 +205,6 @@ public class FormRenderer extends DomBasicRenderer {
 
         //facesContext.getApplication().getViewHandler().writeState(facesContext);
         domContext.stepOver();
-    }
-
-
-    /**
-     * @param facesContext
-     * @param uiComponent  Render any required hidden fields. There is a list
-     *                     (on the request map of the external context) of
-     *                     'required hidden fields'. Hidden fields can be
-     *                     contributed by the CommandLinkRenderer. Contribution
-     *                     is made during rendering of this form's commandLink
-     *                     children so we have to wait for the child renderers
-     *                     to complete their work before we render the hidden
-     *                     fields. Therefore, this method should be called from
-     *                     the form's encodeEnd method. We can assume that the
-     *                     hidden fields are the last fields in the form because
-     *                     they are rendered in the FormRenderer's encodeEnd
-     *                     method. Note that the CommandLinkRenderer adds one
-     *                     hidden field that indicates the id of the link that
-     *                     was clicked to submit the form ( in case there are
-     *                     multiple commandLinks on a page) and one hidden field
-     *                     for each of its UIParameter children.
-     */
-    private static void renderCommandLinkHiddenFields(FacesContext facesContext,
-                                                      UIComponent uiComponent) {
-        Map commandLinkHiddenFields = getCommandLinkFields(facesContext);
-        if (commandLinkHiddenFields != null) {
-            renderRequiredCommandLinkHiddenFields(uiComponent, facesContext,
-                    commandLinkHiddenFields);
-            resetCommandLinkFieldsInRequestMap(facesContext);
-        }
-    }
-
-    /**
-     * @param facesContext
-     */
-    private static void resetCommandLinkFieldsInRequestMap(
-            FacesContext facesContext) {
-        Map requestMap = facesContext.getExternalContext().getRequestMap();
-        requestMap.put(COMMAND_LINK_HIDDEN_FIELDS_KEY, null);
-    }
-
-    /**
-     * @param uiComponent
-     * @param facesContext
-     * @param map
-     */
-    private static void renderRequiredCommandLinkHiddenFields(
-            UIComponent uiComponent,
-            FacesContext facesContext, Map map) {
-        DOMContext domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent);
-        Element root = (Element) domContext.getRootNode();
-        Element hiddenFieldsDiv = domContext.createElement(HTML.DIV_ELEM);
-        hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
-        hiddenFieldsDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
-        root.appendChild(hiddenFieldsDiv);
-
-        Iterator commandLinkFields = map.entrySet().iterator();
-        while (commandLinkFields.hasNext()) {
-            Map.Entry nextField = (Map.Entry) commandLinkFields.next();
-            if (COMMAND_LINK_HIDDEN_FIELD.equals(nextField.getValue())) {
-                Element next = domContext.createElement("input");
-                next.setAttribute("type", "hidden");
-                next.setAttribute("name", nextField.getKey().toString());
-                hiddenFieldsDiv.appendChild(next);
-            }
-        }
     }
 
     /**

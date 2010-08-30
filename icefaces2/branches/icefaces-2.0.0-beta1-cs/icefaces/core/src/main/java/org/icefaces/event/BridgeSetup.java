@@ -70,7 +70,7 @@ public class BridgeSetup implements SystemEventListener {
 
         if(!EnvUtils.hasHeadAndBodyComponents(context)){
             //If ICEfaces is configured for this view, but the h:head and/or h:body components
-            //are not available, we cannot process it but we log the reason. 
+            //are not available, we cannot process it but we log the reason.
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "ICEfaces configured for view " + context.getViewRoot().getViewId() +
                         " but h:head and h:body components are required");
@@ -102,7 +102,14 @@ public class BridgeSetup implements SystemEventListener {
         root.addComponentResource(context, new JavascriptResourceOutput("bridge.js" + invalidateHTTPCache), "head");
 
         try {
-            final String windowID = WindowScopeManager.lookupWindowScope(context).getId();
+            WindowScopeManager.ScopeMap windowScope = WindowScopeManager.lookupWindowScope(context);
+            final String windowID;
+            if (null == windowScope) {
+                windowID = "unknownWindow";
+                log.log(Level.WARNING, "Unable to find WindowScope for view " + context.getViewRoot().getViewId());
+            } else {
+                windowID =  windowScope.getId();
+            }
             final String viewID = assignViewID(externalContext);
 
             UIOutput icefacesSetup = new UIOutputWriter() {
@@ -157,7 +164,7 @@ public class BridgeSetup implements SystemEventListener {
             };
             retrieveUpdateSetup.setTransient(true);
             //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
-            //the corresponding view state key (javax.faces.ViewState) 
+            //the corresponding view state key (javax.faces.ViewState)
             retrieveUpdateSetup.setId(viewID);
             root.addComponentResource(context, retrieveUpdateSetup, "body");
 

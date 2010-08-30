@@ -278,11 +278,11 @@ function NetscapeKeyEvent(event, capturingElement) {
 }
 
 function isEnterKey(event) {
-    return isKeyEvent(event) && keyCode(event) == 13;
+    return keyCode(event) == 13;
 }
 
 function isEscKey(event) {
-    return isKeyEvent(event) && keyCode(event) == 27;
+    return keyCode(event) == 27;
 }
 
 function UnknownEvent(capturingElement) {

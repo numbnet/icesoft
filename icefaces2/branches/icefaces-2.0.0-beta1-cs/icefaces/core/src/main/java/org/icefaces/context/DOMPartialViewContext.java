@@ -445,7 +445,7 @@ class DOMPartialRenderCallback implements VisitCallback {
             component.encodeAll(facesContext);
             Node newSubtree = domWriter.getDocument().getElementById(clientId);
             //these should be non-overlapping by application design
-            if (null == oldSubtree) {
+            if (null == oldSubtree || component.getAttributes().containsKey("disable-domdiff")) {
                 diffs.add(newSubtree);
             } else {
                 diffs.addAll(Arrays.asList(DOMUtils.nodeDiff(oldSubtree, newSubtree)));

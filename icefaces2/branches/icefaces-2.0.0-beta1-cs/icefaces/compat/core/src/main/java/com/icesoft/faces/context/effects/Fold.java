@@ -29,9 +29,9 @@ package com.icesoft.faces.context.effects;
 public class Fold extends Effect {
 
     public String getFunctionName() {
-        return "Effect.Fold";
+        return "Ice.Scriptaculous.Effect.Fold";
     }
-    
+
     public boolean equals(Object obj) {
         if (!super.equals(obj)) {
             return false;
