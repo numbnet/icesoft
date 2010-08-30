@@ -188,7 +188,7 @@ ice.component.tabset = {
 	   
 	   if (jsfProps.effect) {
 		   console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
-		   var effect = jsfProps.effect;
+		   var effect = eval(jsfProps.effect);
 		   tabview.contentTransition = function(newTab, oldTab) {	console.info('1. server side tab ');
 		        var currentIndex = tabview.getTabIndex(newTab);
 
@@ -270,16 +270,17 @@ ice.component.tabset = {
 						}
 					};
 
-					var Effect = new ice.yui3.effects[effect]({node: '#'+  oldTab.get('contentEl').id,  revert:true}, callback);
-					Effect.setContainerId(clientId);
+					//var Effect = new ice.yui3.effects[effect]({node: '#'+  oldTab.get('contentEl').id,  revert:true}, callback);
+					//Effect.setContainerId(clientId);
 					
 					console.info('2. server side tab '+ oldTab.get('contentEl').id);
 					
-					
-				
-					
+					effect.set('node', '#'+  oldTab.get('contentEl').id);
+					effect.setContainerId(clientId);
+				    effect.revert = true;
+					effect.setPreRevert(callback);
 					try {
-					Effect.run();
+					effect.run();
 					} catch(e) {					console.info('run executed. server side tab '+ e);}
 					console.info('run executed. server side tab ');
 		   }

@@ -17,13 +17,13 @@ public class Fade extends Effect{
 	}
 	public void setFrom(float from) {
 		this.from = from;
-		setUsingStyleClass(false);
+ 
 	}
 	public float getTo() {
 		return to;
 	}
 	public void setTo(float to) {
 		this.to = to;
-		setUsingStyleClass(false);		
+		 	
 	}
 }

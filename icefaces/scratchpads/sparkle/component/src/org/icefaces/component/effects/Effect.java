@@ -1,15 +1,17 @@
 package org.icefaces.component.effects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.icefaces.component.utils.JSONBuilder;
 
 public abstract class Effect{
-	private boolean usingStyleClass;
+ 
 	private EffectBehavior effectBehavior;
-	private Map properties = new HashMap(); 
+	private Map<String, Object> properties = new HashMap(); 
 	private String sourceElement;
 	
     String getSourceElement() {
@@ -73,13 +75,7 @@ public abstract class Effect{
 		this.effectBehavior = effectBehavior;
 	}
 
-	public boolean isUsingStyleClass() {
-		return usingStyleClass;
-	}
-
-	public void setUsingStyleClass(boolean usingStyleClass) {
-		this.usingStyleClass = usingStyleClass;
-	}
+ 
 
 	public String getName() {
     	return this.getClass().getSimpleName();

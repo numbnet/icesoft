@@ -16,11 +16,13 @@ import javax.faces.view.facelets.TagException;
 
 public class EffectBehaviorHandler extends BehaviorHandler{
     private final TagAttribute run;
+    private final TagAttribute name;
     private final TagAttribute effectObject;
     
  	public EffectBehaviorHandler(BehaviorConfig config) {
 		super(config);
 		run = this.getAttribute("run");
+		name = this.getAttribute("name");
 		effectObject = this.getAttribute("effectObject");
 		System.out.println("EffectBehaviorHandler createdddd");
 		
@@ -75,7 +77,8 @@ public class EffectBehaviorHandler extends BehaviorHandler{
     	Application application = context.getFacesContext().getApplication();
     	EffectBehavior effectBehavior = (EffectBehavior)application.createBehavior(EffectBehavior.BEHAVIOR_ID);
     	setAttribute(context, run, effectBehavior, Boolean.class);
-    	setAttribute(context, effectObject, effectBehavior, Effect.class);    	
+    	setAttribute(context, effectObject, effectBehavior, Effect.class);   
+    	setAttribute(context, name, effectBehavior, String.class);      	
     	
     	
     	return effectBehavior;

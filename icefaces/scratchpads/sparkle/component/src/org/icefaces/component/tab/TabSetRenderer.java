@@ -1,12 +1,14 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
@@ -128,7 +130,39 @@ public class TabSetRenderer extends Renderer{
         Utils.iterateEffects(uiComponent, new EffectBehavior.Iterator() {
 			public void next(String event, EffectBehavior effectBehavior) {
 				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
-				effect.append(effectBehavior.getName());				
+				effect.append(effectBehavior.getScript(new ClientBehaviorContext(){
+
+					@Override
+					public UIComponent getComponent() {
+						// TODO Auto-generated method stub
+						return tabSet;
+					}
+
+					@Override
+					public String getEventName() {
+						// TODO Auto-generated method stub
+						return "transition";
+					}
+
+					@Override
+					public FacesContext getFacesContext() {
+						// TODO Auto-generated method stub
+						return FacesContext.getCurrentInstance();
+					}
+
+					@Override
+					public Collection<Parameter> getParameters() {
+						// TODO Auto-generated method stub
+						return null;
+					}
+
+					@Override
+					public String getSourceId() {
+						// TODO Auto-generated method stub
+						return null;
+					}
+					
+				}, false));	
 			}
 		});        
         
@@ -219,16 +253,16 @@ public class TabSetRenderer extends Renderer{
             Utils.renderChild(facesContext, tab);
         } else {
             if (tabSet.getSelectedIndex() == index) {
-                final StringBuilder styleClasses = new StringBuilder();
+                final StringBuilder style = new StringBuilder();
                 Utils.iterateEffects(tabSet, new EffectBehavior.Iterator() {
         			public void next(String name, EffectBehavior effectBehavior) {
-        		        if (effectBehavior.getEffectClass() != null) {
-        		        	styleClasses.append(effectBehavior.getEffectClass());
-        		        	styleClasses.append(" ");
+        		        if (effectBehavior.getStyle() != null) {
+        		        	style.append(effectBehavior.getStyle());
+        		        	style.append(";");
         		        }
         			}
         		});
-                writer.writeAttribute(HTML.CLASS_ATTR, styleClasses, HTML.CLASS_ATTR);
+                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
                 Utils.renderChild(facesContext, tab);
             } else {
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
