@@ -32,8 +32,8 @@ import java.util.logging.Logger;
 /**
  * The ChatRoom class is the hub of the application.  It keeps track of
  * Participants (adding and removing) as well as the message history.
- * It is also responsible for firing server-initiated rendering calls
- * when the state of the application has changed.
+ * It is also responsible for firing Ajax Push requests when the state
+ * of the application has changed.
  */
 @ManagedBean(name = "chatRoom")
 @ApplicationScoped
@@ -101,7 +101,18 @@ public class ChatRoom {
         return participants.containsKey(participant.getHandle());
     }
 
-    public List getMessages(int start, int number){
-        return messages.subList(start,number);
+    public List getMessages(int start, int number) {
+
+        System.out.println("ChatRoom.getMessages: " + start + ", " + number + ", " + messages.size());
+
+        if (start > messages.size()) {
+            start = 0;
+        }
+
+        if ((start + number) > messages.size()) {
+            number = messages.size() - start;
+        }
+
+        return messages.subList(start, start + number);
     }
 }
