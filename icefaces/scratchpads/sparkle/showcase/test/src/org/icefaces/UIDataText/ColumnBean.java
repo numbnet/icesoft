@@ -46,11 +46,13 @@ public class ColumnBean implements Serializable {
    }
     
     public void incrementStyleIndex(ActionEvent e) {
+
         UIComponent uic = e.getComponent();
         CommandLink cl = (CommandLink) uic;
         //cl.setStyle("black_line");
         int index = styleIndex++ % styleData.size();
         String newStyle = styleData.get( index ).toString();
+
         System.out.println("--> Setting style to: " + newStyle + " at " + index);
         cl.setStyle( newStyle );
     }
