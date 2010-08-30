@@ -19,4 +19,14 @@
 }
 
 .HighlightFrom {
+  background-color:#EDF5FF; 
+}
+
+
+.myTab .HighlightTo{
+  background-color:pink; 
+}
+
+.myTab2 .HighlightTo{
+  background-color:yellow; 
 }

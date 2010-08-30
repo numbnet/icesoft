@@ -34,8 +34,17 @@ public class EffectBehavior extends ClientBehaviorBase{
 	private boolean usingStyleClass;
 	private boolean run;
 	Effect effect = new Fade();
+	private String style;
 	
 	 
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
+
 	public void setEffectObject(Effect effect) {
 		this.effect = effect;
         clearInitialState();
@@ -81,7 +90,7 @@ public class EffectBehavior extends ClientBehaviorBase{
     	if (!isRun()) return;
     		setRun(false);
 	    	try {
-				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent) );
+				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent, true) );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -105,13 +114,13 @@ public class EffectBehavior extends ClientBehaviorBase{
 		this.effectsLib = effectsLib;
 	}
 
-	private String effectClass;
-    public String getEffectClass() {
-		return effectClass;
+	private String styleClass;
+    public String getStyleClass() {
+		return styleClass;
 	}
 
-	public void setEffectClass(String effectClass) {
-		this.effectClass = effectClass;
+	public void setStyleClass(String styleClass) {
+		this.styleClass = styleClass;
 	}
  
     
@@ -129,22 +138,33 @@ public class EffectBehavior extends ClientBehaviorBase{
     }
 
     public String getScript(ClientBehaviorContext behaviorContext) {
-    	run(behaviorContext.getFacesContext(), behaviorContext.getComponent());
-     	return buildScript(behaviorContext.getComponent());
+     	return buildScript(behaviorContext.getComponent(), true);
     }
     
-    private String buildScript(UIComponent uiComponent) {
+    public String getScript(ClientBehaviorContext behaviorContext, boolean execute) {
+     	return buildScript(behaviorContext.getComponent(), execute);
+    }
+
+    
+    private String buildScript(UIComponent uiComponent, boolean execute) {
     	effect.setSourceElement(uiComponent.getClientId());
-    	return "new "+ getEffectsLib() + "['" + getName() + "']("+ effect.getPropertiesAsJSON() +").run()";
+    	if (uiComponent.getAttributes().get("styleClass") != null) {
+    		effect.getProperties().put("componentStyleClass", uiComponent.getAttributes().get("styleClass"));
+    	}
+    	String call = "new "+ getEffectsLib() + "['" + getName() + "']("+ effect.getPropertiesAsJSON() +")";
+    	if (execute)
+    		call +=".run()";
+    	return call;
     }
     
     public void decode(FacesContext context,
             UIComponent component) {
     	super.decode(context, component);
 		Map map = context.getExternalContext().getRequestParameterMap();
-		String id = "effect_"+ component.getClientId();
+		String id = "effect_style"+ component.getClientId();
 		if (map.containsKey(id)) {
-			setEffectClass(map.get(id).toString());
+			setStyle(map.get(id).toString());
+			System.out.println("Style found "+ map.get(id).toString());
 		}
     }
     
@@ -246,6 +266,8 @@ public class EffectBehavior extends ClientBehaviorBase{
 		}
 		if ("run".equals(propertyName)) {
 			run = (Boolean)value;
+		} else if ("name".equals(propertyName)){
+			setName((String)value);
 		}
     }   
  
