@@ -889,6 +889,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
      * @return TopSubMenuImage url
      */
     private String getTopSubMenuImage(MenuBar menuComponent) {
+        if (!menuComponent.isDisplaySubMenuIndicatorWhenHorizontal()) {
+            return DEFAULT_IMAGEDIR + "spacer.gif";
+        }
         String customPath = menuComponent.getImageDir();
         if (customPath != null) {
             return customPath + TOPSUBMENU_IMAGE;

@@ -97,6 +97,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String renderedOnUserRole = null;
     private String noIcons;
     private Boolean displayOnClick;
+    private Boolean displaySubMenuIndicatorWhenHorizontal;
     private Boolean keyboardNavigationEnabled;        
     /**
      * default no args constructor
@@ -391,13 +392,30 @@ public class MenuBar extends UICommand implements NamingContainer {
         }
         return false;
     }
-
+    
+    public void setDisplaySubMenuIndicatorWhenHorizontal(
+        boolean displaySubMenuIndicatorWhenHorizontal) {
+        this.displaySubMenuIndicatorWhenHorizontal = Boolean.valueOf(
+            displaySubMenuIndicatorWhenHorizontal);
+    }
+    
+    public boolean isDisplaySubMenuIndicatorWhenHorizontal() {
+        if (displaySubMenuIndicatorWhenHorizontal != null) {
+            return displaySubMenuIndicatorWhenHorizontal.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("displaySubMenuIndicatorWhenHorizontal");
+        if (vb != null) {
+            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        }
+        return false;
+    }
+    
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = displayOnClick;
         values[2] = imageDir;
@@ -406,7 +424,8 @@ public class MenuBar extends UICommand implements NamingContainer {
         values[5] = renderedOnUserRole;
         values[6] = style;
         values[7] = styleClass;
-        values[8] = keyboardNavigationEnabled;        
+        values[8] = keyboardNavigationEnabled;
+        values[9] = displaySubMenuIndicatorWhenHorizontal;
         return values;
     }
 
@@ -420,7 +439,8 @@ public class MenuBar extends UICommand implements NamingContainer {
         renderedOnUserRole = (String) values[5];
         style = (String) values[6];
         styleClass = (String) values[7];
-        keyboardNavigationEnabled = (Boolean) values[8];          
+        keyboardNavigationEnabled = (Boolean) values[8];
+        displaySubMenuIndicatorWhenHorizontal = (Boolean) values[9];
     }
     
     public boolean invokeOnComponent(FacesContext context, String clientId,
