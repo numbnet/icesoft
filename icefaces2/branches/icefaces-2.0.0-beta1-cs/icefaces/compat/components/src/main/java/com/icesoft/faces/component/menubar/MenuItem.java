@@ -420,9 +420,11 @@ public class MenuItem extends MenuItemBase {
      * @return String styleClass
      */
     public String getStyleClass() {
+        String defaultStyleClass = (this.getFacet("content") == null) ?
+            CSS_DEFAULT.MENU_ITEM_STYLE : CSS_DEFAULT.MENU_ITEM_CONTENT_STYLE;
         return Util.getQualifiedStyleClass(this, 
                 styleClass, 
-                CSS_DEFAULT.MENU_ITEM_STYLE, 
+                defaultStyleClass, 
                 "styleClass",
                 isDisabled());
     }

@@ -208,6 +208,7 @@ public class CSS_DEFAULT {
     public static String MENU_BAR_VERTICAL_SUFFIX_STYLE = "Vrt";
     
     public static String MENU_ITEM_STYLE = "iceMnuItm";
+    public static String MENU_ITEM_CONTENT_STYLE = "iceMnuItmCont";
     public static String MENU_ITEM_LABEL_STYLE = "Label";
     public static String MENU_ITEM_IMAGE_STYLE = "Image";
     
