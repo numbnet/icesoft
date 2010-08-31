@@ -22,15 +22,6 @@ import org.icefaces.component.annotation.*;
    */
   public class TestComponentMeta {
 
-      @Property
-      private String stringPropertyOne;
-
-      @Property (defaultValue="default String Value")
-      private String stringPropertyTwo;
-
-      @Property (defaultValue="21")
-      private String stringPropertyThree;
-
       @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private Boolean immediate;
 
@@ -60,41 +51,53 @@ import org.icefaces.component.annotation.*;
       @Property
       private int integerOne;
 
-      @Property (defaultValue="12")
+      @Property (defaultValue="11111111")
       private int integerTwo;
 
       @Property
-      private Integer IntegerWrapperOne;
+      private Integer integerWrapperOne;
 
-      @Property (defaultValue="12")
-      private Integer IntegerWrapperTwo;
+      @Property (defaultValue="12345678")
+      private Integer integerWrapperTwo;
 
       // floats
 
       @Property
       private float floatOne;
 
-      @Property (defaultValue="12f")
+      @Property (defaultValue="1234.5678f")
       private float floatTwo;
 
       @Property
-      private Float FloatWrapperOne;
+      private Float floatWrapperOne;
 
-      @Property (defaultValue="12.345678f")
-      private Float FloatWrapperTwo;
+      @Property (defaultValue="1234.5678f")
+      private Float floatWrapperTwo;
+
+       @Property
+      private float doubleOne;
+
+      @Property (defaultValue="1234.5678")
+      private double doubleTwo;
+
+      @Property
+      private Double doubleWrapperOne;
+
+      @Property (defaultValue="1234.5678")
+      private Double doubleWrapperTwo;
 
       // long
       @Property
       private long longOne;
 
-      @Property (defaultValue="12l")
+      @Property (defaultValue="12345678l")
       private long longTwo;
 
       @Property
-      private Long LongWrapperOne;
+      private Long longWrapperOne;
 
-      @Property (defaultValue="12L")
-      private Long LongWrapperTwo;
+      @Property (defaultValue="1234567l")
+      private Long longWrapperTwo;
 
       @Property
       private String stringOne;
