@@ -209,9 +209,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String title = ((MenuItem) uiComponent).getTitle();
         if(title != null && title.length() > 0)
             topLevelDiv.setAttribute(HTML.TITLE_ATTR, title);
-        String style = ((MenuItem) uiComponent).getStyle();
-        if(style != null && style.length() > 0)
-            topLevelDiv.setAttribute(HTML.STYLE_ATTR, style);
 
         DOMContext.removeChildren(topLevelDiv);
         Element masterDiv = topLevelDiv;
@@ -635,9 +632,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String title = nextSubMenuItem.getTitle();
         if(title != null && title.length() > 0)
             subMenuItemDiv.setAttribute(HTML.TITLE_ATTR, title);
-        String style = nextSubMenuItem.getStyle();
-        if(style != null && style.length() > 0)
-            subMenuItemDiv.setAttribute(HTML.STYLE_ATTR, style);
         // if parent is disabled apply the disabled attribute value of the parent menuItem to this submenuItem
         if (disabled) {
             nextSubMenuItem.setDisabled(disabled);
