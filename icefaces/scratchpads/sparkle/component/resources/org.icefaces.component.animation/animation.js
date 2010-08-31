@@ -128,7 +128,17 @@ YUI().use("anim", "json", function(Y) {
 			}
 		});
 	 
-   		
+        thiz = this;	
+		this.peer = {
+			run: function() {
+			    if(thiz.peerName) {
+					new ice.yui3.effects[thiz.peerName](thiz.param).run();
+			    } else {
+					console.info('No peer is defined for this component');
+				}
+			   
+			}
+		};   		
     }
  
     Y.extend(EffectBase, Y.Anim , {
@@ -171,46 +181,104 @@ YUI().use("anim", "json", function(Y) {
     });
 
     function  Fade(param, callback) {
+	     console.info('new Fade '+ param);
     	Fade.superclass.constructor.apply(this, arguments);
 		this.effectClass = "Fade";
+		this.peerName = "Appear";
     }
  
     Y.extend(Fade, EffectBase, {
         setDefaults: function() {
               if (!this.param['to']) {
-    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y);
-    			  node.addClass("FadeTo");
-            	  this.set('to', {opacity: node.getStyle('opacity')});
-            	  node.removeClass("FadeTo");
+    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y, this);
+				  
+ 				 node.addClass("FadeTo");
+
+    			  var opacity = node.getStyle('opacity');
+				  if (!opacity) {
+				      opacity = this.get('node').getStyle('opacity');
+				  }
+				  
+				  if (!opacity) {
+				      opacity = 1;
+				  }
+				  
+            	  this.set('to', {
+            		  'opacity': opacity
+            		  });
+				node.removeClass("FadeTo");	  
+    		 		  
               }
               if (!this.param['from']) {
-    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y);
+    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y, this);
+
     			  node.addClass("FadeFrom");
-            	  this.set('from', {opacity: node.getStyle('opacity')});
+    			  var opacity = node.getStyle('opacity');
+				 
+    			  if (!opacity) {
+    				  opacity = this.get('node').getStyle('opacity');
+    			  }
+				  
+				  if (!opacity) {
+				      opacity = 0;
+				  }				  
+   
+            	  this.set('from', { 
+            		  'opacity': opacity
+            		  });
             	  node.removeClass("FadeFrom");
-              }              
+              }             
         }
     });
 
     function  Appear(param, callback) {
+	     console.info('new Appear '+ param);
         Appear.superclass.constructor.apply(this, arguments);
-		this.effectClass = "Appear";		
+		this.effectClass = "Appear";
+		this.peerName = "Fade";
     }
  
     Y.extend(Appear, EffectBase, {
         setDefaults: function() {
-        if (!this.param['to']) {    	
-		  var node = ice.yui3.effectHelper.getStyledAnimElement(Y);
-		  node.addClass("AppearTo");
-    	  this.set('to', {opacity: node.getStyle('opacity')});
-    	  node.removeClass("AppearTo");
-        }
-          if (!this.param['from']) {
-			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y);
-			  node.addClass("AppearFrom");
-        	  this.set('from', {opacity: node.getStyle('opacity')});
-        	  node.removeClass("AppearFrom");
-          }     	  
+              if (!this.param['to']) {
+    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y, this);
+				  
+ 				 node.addClass("AppearTo");
+
+    			  var opacity = node.getStyle('opacity');
+				  if (!opacity) {
+				      opacity = this.get('node').getStyle('opacity');
+				  }
+				  
+				  if (!opacity) {
+				      opacity = 0;
+				  }
+				  
+            	  this.set('to', {
+            		  'opacity': opacity
+            		  });
+				node.removeClass("AppearTo");	  
+    		 		  
+              }
+              if (!this.param['from']) {
+    			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y, this);
+
+    			  node.addClass("AppearFrom");
+    			  var opacity = node.getStyle('opacity');
+				 
+    			  if (!opacity) {
+    				  opacity = this.get('node').getStyle('opacity');
+    			  }
+				  
+				  if (!opacity) {
+				      opacity = 1;
+				  }				  
+   
+            	  this.set('from', { 
+            		  'opacity': opacity
+            		  });
+            	  node.removeClass("AppearFrom");
+              }  	  
     	}        
     });
 
