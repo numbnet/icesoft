@@ -305,18 +305,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, "return Ice.Menu.cancelEvent(event);");
             }
         }
-
-        if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
-            Element subImg = domContext.createElement(HTML.IMG_ELEM);
-            String img = (vertical ? getSubMenuImage(menuBar) :
-                getTopSubMenuImage(menuBar));
-            subImg.setAttribute(HTML.SRC_ATTR,
-                CoreUtils.resolveResourceURL(facesContext, img));
-            subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
-            subImg.setAttribute(HTML.CLASS_ATTR,
-                menuBar.getSubMenuIndicatorStyleClass());
-            subImg.setAttribute(HTML.ALT_ATTR, "");
-            anchor.appendChild(subImg);
+        
+        if (vertical) {
+            makeTopLevelIndicator(facesContext, domContext, anchor, menuItem,
+                menuBar, vertical);
         }
         
         // only render icons if noIcons is false
@@ -356,9 +348,34 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
 
+        if (!vertical) {
+            makeTopLevelIndicator(facesContext, domContext, anchor, menuItem,
+                menuBar, vertical);
+        }
+        
         return anchor;
     }
 
+    private void makeTopLevelIndicator(FacesContext facesContext,
+                                       DOMContext domContext,
+                                       Element anchor,
+                                       MenuItem menuItem,
+                                       MenuBar menuBar,
+                                       boolean vertical) {
+        if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
+            Element subImg = domContext.createElement(HTML.IMG_ELEM);
+            String img = (vertical ? getSubMenuImage(menuBar) :
+                getTopSubMenuImage(menuBar));
+            subImg.setAttribute(HTML.SRC_ATTR,
+                CoreUtils.resolveResourceURL(facesContext, img));
+            subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
+            subImg.setAttribute(HTML.CLASS_ATTR,
+                menuBar.getSubMenuIndicatorStyleClass());
+            subImg.setAttribute(HTML.ALT_ATTR, "");
+            anchor.appendChild(subImg);
+        }
+    }
+    
     /**
      * Used to add icon, label and indicator to the
      * {Sub Level, No Link} menu items
@@ -774,31 +791,21 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     }
 
     /**
-     * Used to add icon and label to the
-     *  {Top Level, Link, Horizontal} menu items
-     * and add icon, label and indicator to the
-     *  {Top Level, Link, Vertical} and the {Sub Level, Link} menu items
+     * Used to add icon and label and indicator to the
+     *  {Top Level, Link, Horizontal}
+     *  {Top Level, Link, Vertical}
+     *  {Sub Level, Link} menu items
      */ 
     private void addChildrenToLink(HtmlCommandLink link,
                                    MenuItem nextSubMenuItem,
                                    MenuBar menuComponent,
                                    boolean topLevel,
                                    boolean horizontal) {
-        if (nextSubMenuItem.getChildCount() > 0 &&
-            nextSubMenuItem.isChildrenMenuItem()) {
-            HtmlGraphicImage image = new HtmlGraphicImage();
-            image.setId(INDICATOR_SUFFIX);
-            if(!(topLevel && horizontal)) {
-                image.setUrl(getSubMenuImage(menuComponent));
-            }
-            else {
-                image.setUrl(getTopSubMenuImage(menuComponent));
-            }
-            image.setStyle("border:none;");
-            image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
-            link.getChildren().add(image);
+        if (!(topLevel && horizontal)) {
+            addIndicatorToLink(
+                link, nextSubMenuItem, menuComponent, topLevel, horizontal);            
         }
-
+        
         if( !menuComponent.getNoIcons().equalsIgnoreCase("true") ) {
             String icon = null;
             if(topLevel) {
@@ -832,6 +839,32 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         outputText.setStyleClass(nextSubMenuItem.getLabelStyleClass());
         link.setValue("");
         link.getChildren().add(outputText);
+        
+        if (topLevel && horizontal) {
+            addIndicatorToLink(
+                link, nextSubMenuItem, menuComponent, topLevel, horizontal);            
+        }
+    }
+    
+    private void addIndicatorToLink(HtmlCommandLink link,
+                                    MenuItem nextSubMenuItem,
+                                    MenuBar menuComponent,
+                                    boolean topLevel,
+                                    boolean horizontal) {
+        if (nextSubMenuItem.getChildCount() > 0 &&
+            nextSubMenuItem.isChildrenMenuItem()) {
+            HtmlGraphicImage image = new HtmlGraphicImage();
+            image.setId(INDICATOR_SUFFIX);
+            if(topLevel && horizontal) {
+                image.setUrl(getTopSubMenuImage(menuComponent));
+            }
+            else {
+                image.setUrl(getSubMenuImage(menuComponent));
+            }
+            image.setStyle("border:none;");
+            image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
+            link.getChildren().add(image);
+        }
     }
     
     private void renderSeparatorDiv(DOMContext domContext, Element parent, 
