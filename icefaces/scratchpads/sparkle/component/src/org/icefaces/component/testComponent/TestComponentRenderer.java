@@ -43,57 +43,64 @@ public class TestComponentRenderer extends Renderer {
         TestComponent tc = (TestComponent) uiComponent;
         // root element
 
-        System.out.println("TestComponent = " + tc);
-
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "line-height: 1em;", null);
 
-        writer.append( "<br></br>Label = " + tc.getLabel() + " this should have a default");
-        writer.append( "<br></br>float one = " + tc.getFloatOne() + " this should be 0.0");
-        writer.append( "<br></br>float two = " + tc.getFloatTwo() + " this should have a default value (12.0)");
-        writer.append( "<br></br>Float Wrapper one =  " + tc.getFloatWrapperOne() + " this should be null");
-        writer.append( "<br></br>Float Wrapper two =  " + tc.getFloatWrapperTwo() + " this should have a default value");
-        writer.append( "<br></br>integer one =  " + tc.getIntegerOne()  + " this should be zero");
-        writer.append( "<br></br>integer two =  " + tc.getIntegerTwo() + " this should have a default (12)");
+        writer.append( "<br></br>Label = " + tc.getLabel() );
+        writer.append( "<br></br>float one = " + tc.getFloatOne() );
+        writer.append( "<br></br>float two = " + tc.getFloatTwo() );
+        writer.append( "<br></br>Float Wrapper one =  " + tc.getFloatWrapperOne() );
+        writer.append( "<br></br>Float Wrapper two =  " + tc.getFloatWrapperTwo() );
+        writer.append( "<br></br>integer one =  " + tc.getIntegerOne() );
+        writer.append( "<br></br>integer two =  " + tc.getIntegerTwo() );
+
+        writer.append( "<br></br>Integer Wrapper one =  " + tc.getIntegerWrapperOne() );
+        writer.append( "<br></br>Integer Wrapper two =  " + tc.getIntegerWrapperTwo() );
+
+        writer.append( "<br></br>Long Value one =  " + tc.getLongOne() );
+        writer.append( "<br></br>Long vlaue two =  " + tc.getLongTwo() );
+        writer.append( "<br></br>Long Wrapper one =  " + tc.getLongWrapperOne() );
+        writer.append( "<br></br>Long Wrapper two =  " + tc.getLongWrapperTwo() );
 
 
-        writer.append( "<br></br>Integer Wrapper one =  " + tc.getIntegerWrapperOne() + " this should be null");
-        writer.append( "<br></br>Integer Wrapper two =  " + tc.getIntegerWrapperTwo() + " this should have a default (12)");
+        writer.append( "<br></br>Boolean one =  " + tc.isBooleanOne() );
+        writer.append( "<br></br>Boolean two =  " + tc.isBooleanTwo() );
 
-        writer.append( "<br></br>Boolean one =  " + tc.isBooleanWrapperOne() + " this should be null");
-        writer.append( "<br></br>Boolean two =  " + tc.isBooleanWrapperTwo() + " this should have a default value (true)");
+        writer.append( "<br></br>Boolean Wrapper one =  " + tc.isBooleanWrapperOne() );
+        writer.append( "<br></br>Boolean Wrapper two =  " + tc.isBooleanWrapperTwo() );
 
-        writer.append( "<br></br>String property one =  " + tc.getStringOne() + " this should be null");
-        writer.append( "<br></br>String property two =  " + tc.getStringTwo() + " this should have a default value (Hello World!)");
+        writer.append( "<br></br>String property one =  " + tc.getStringOne() );
+        writer.append( "<br></br>String property two =  " + tc.getStringTwo() );
         writer.endElement(HTML.DIV_ELEM);
 
 
-        // Now go and do some stuff to the component
-
-        tc.setFloatOne( tc.getFloatOne() + 1.0f );
-        tc.setFloatTwo( tc.getFloatTwo() + 1.0f );
-
-        Float f = tc.getFloatWrapperOne();
-        // catch the first pass through
-        if (f == null) {
-            f = new Float(0f);
-        }
-        tc.setFloatWrapperOne( f + Float.valueOf ("1.0") );
-        f = tc.getFloatWrapperTwo();
-        tc.setFloatWrapperTwo( f + Float.valueOf ("13.0") );
-
-        tc.setIntegerOne( tc.getIntegerOne() + 1);
-        tc.setIntegerTwo( tc.getIntegerTwo() + 1);
-
-        tc.setBooleanOne( !tc.isBooleanOne());
-        tc.setBooleanTwo( !tc.isBooleanTwo());
-
-        Boolean b = tc.isBooleanWrapperOne();
-        if (b == null) {
-            b = Boolean.valueOf(false);
-        }
-        tc.setBooleanWrapperOne( ! b );
-        tc.setBooleanWrapperTwo( ! tc.isBooleanWrapperTwo() );
+//        // Now go and do some stuff to the component
+//
+//        tc.setFloatOne( tc.getFloatOne() + 1.0f );
+//        tc.setFloatTwo( tc.getFloatTwo() + 1.0f );
+//
+//        Float f = tc.getFloatWrapperOne();
+//        // catch the first pass through
+//        if (f == null) {
+//            f = new Float(0f);
+//        }
+//        tc.setFloatWrapperOne( f + Float.valueOf ("1.0") );
+//        f = tc.getFloatWrapperTwo();
+//        tc.setFloatWrapperTwo( f + Float.valueOf ("13.0") );
+//
+//        tc.setIntegerOne( tc.getIntegerOne() + 1);
+//        tc.setIntegerTwo( tc.getIntegerTwo() + 1);
+//
+//        tc.setBooleanOne( !tc.isBooleanOne());
+//        tc.setBooleanTwo( !tc.isBooleanTwo());
+//
+//        Boolean b = tc.isBooleanWrapperOne();
+//        if (b == null) {
+//            b = Boolean.valueOf(false);
+//        }
+//        tc.setBooleanWrapperOne( ! b );
+//        tc.setBooleanWrapperTwo( ! tc.isBooleanWrapperTwo() );
 
     }
 
