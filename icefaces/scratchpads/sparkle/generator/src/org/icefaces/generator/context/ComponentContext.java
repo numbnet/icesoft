@@ -15,6 +15,7 @@ import org.icefaces.generator.artifacts.ComponentHandlerArtifact;
 import org.icefaces.generator.artifacts.TagArtifact;
 import org.icefaces.generator.behavior.ActionSourceBehavior;
 import org.icefaces.generator.behavior.Behavior;
+import org.icefaces.generator.utils.PropertyValues;
 
 public class ComponentContext {
 	private Map<String, Field> fieldsForComponentClass = new HashMap<String, Field>();
@@ -24,6 +25,7 @@ public class ComponentContext {
     private Map<String, Artifact> artifacts = new HashMap<String, Artifact>();
     private Class activeClass;
     private List<Behavior> behaviors = new ArrayList<Behavior>();
+	private Map<Field, PropertyValues> propertyValuesMap = new HashMap<Field, PropertyValues>();
     
     public List<Behavior> getBehaviors() {
 		return behaviors;
@@ -80,6 +82,10 @@ public class ComponentContext {
 	public void setFieldsForTagClass(Map<String, Field> fieldsForTagClass) {
 		this.fieldsForTagClass = fieldsForTagClass;
 	}
+	
+    public Map<Field, PropertyValues> getPropertyValuesMap() {
+		return propertyValuesMap;
+	}
 
 	public boolean isHasMethodExpression() {
 		return hasMethodExpression;
@@ -125,9 +131,7 @@ public class ComponentContext {
 	}
     
     private void processAnnotation(Class clazz, boolean isBaseClass) {
-	System.out.println("**********");
-	System.out.println(org.icefaces.component.annotation.Expression.DEFAULT);
-	System.out.println("**********");
+
         //This is annotated class 
         if (clazz.isAnnotationPresent(Component.class)) {
             Component component = (Component) clazz.getAnnotation(Component.class);
@@ -172,6 +176,13 @@ public class ComponentContext {
                 Field field = fields[i];
                 if(field.isAnnotationPresent(Property.class)){
                     Property property = (Property) field.getAnnotation(Property.class);
+					
+					PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz); // collect @Property values from top to bottom
+					// /* debug */ System.out.println("--- Final"); displayValues(propertyValues);
+					setDefaultValues(propertyValues); // if values end up being UNSET, then set them to default
+					// /* debug */ System.out.println("--- Defaults"); displayValues(propertyValues);
+					propertyValuesMap.put(field, propertyValues);
+					
                    //inherited properties should go to the tag class only
                     if (property.inherit() == Inherit.SUPERCLASS_PROPERTY) {
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
@@ -221,5 +232,101 @@ public class ComponentContext {
         }
     }    
     
-
+	private static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
+		return collectPropertyValues(fieldName, clazz, new PropertyValues());
+	}
+	
+	private static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues) {
+		Class superClass = clazz.getSuperclass();
+		// /* debug */ System.out.println(clazz.getName());
+		if (superClass != null) {
+			 // /* debug */ System.out.println("  go up to " + superClass.getName());
+			collectPropertyValues(fieldName, superClass, propertyValues);
+		}
+		try {
+			Field field = clazz.getDeclaredField(fieldName);
+			if (field.isAnnotationPresent(Property.class)) {
+				Property property = (Property) field.getAnnotation(Property.class);
+				
+				if (property.isMethodExpression() != Expression.UNSET) {
+					propertyValues.isMethodExpression = property.isMethodExpression();
+				}
+				if (!property.methodExpressionArgument().equals(Property.Null)) {
+					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
+				}
+				if (!property.defaultValue().equals(Property.Null)) {
+					propertyValues.defaultValue = property.defaultValue();
+				}
+				if (property.defaultValueIsStringLiteral() != DefaultValueType.UNSET) {
+					propertyValues.defaultValueIsStringLiteral = property.defaultValueIsStringLiteral();
+				}
+				if (!property.tlddoc().equals(Property.Null)) {
+					propertyValues.tlddoc = property.tlddoc();
+				}
+				if (!property.javadocGet().equals(Property.Null)) {
+					propertyValues.javadocGet = property.javadocGet();
+				}
+				if (!property.javadocSet().equals(Property.Null)) {
+					propertyValues.javadocSet = property.javadocSet();
+				}
+				if (property.required() != Required.UNSET) {
+					propertyValues.required = property.required();
+				}
+				if (property.inherit() != Inherit.UNSET) {
+					propertyValues.inherit = property.inherit();
+				}
+				// /* debug */ displayValues(propertyValues);
+			}
+		} catch (NoSuchFieldException e) {
+			// do nothing
+		}
+		return propertyValues;
+	}
+	
+	private static void setDefaultValues(PropertyValues propertyValues) {
+	
+		if (propertyValues.isMethodExpression == Expression.UNSET) {
+			propertyValues.isMethodExpression = Expression.DEFAULT;
+		}
+		if (propertyValues.methodExpressionArgument.equals(Property.Null)) {
+			propertyValues.methodExpressionArgument = "";
+		}
+		if (propertyValues.defaultValue.equals(Property.Null)) {
+			propertyValues.defaultValue = "";
+		}
+		if (propertyValues.defaultValueIsStringLiteral == DefaultValueType.UNSET) {
+			propertyValues.defaultValueIsStringLiteral = DefaultValueType.DEFAULT;
+		}
+		if (propertyValues.tlddoc.equals(Property.Null)) {
+			propertyValues.tlddoc = "";
+		}
+		if (propertyValues.javadocGet.equals(Property.Null)) {
+			propertyValues.javadocGet = "";
+		}
+		if (propertyValues.javadocSet.equals(Property.Null)) {
+			propertyValues.javadocSet = "";
+		}
+		if (propertyValues.required == Required.UNSET) {
+			propertyValues.required = Required.DEFAULT;
+		}
+		if (propertyValues.inherit == Inherit.UNSET) {
+			propertyValues.inherit = Inherit.DEFAULT;
+		}
+	}
+	
+	private static void displayValues(PropertyValues propertyValues) {
+	
+		System.out.println();
+		System.out.println("**********");
+		System.out.println("isMethodExpression " + propertyValues.isMethodExpression);
+		System.out.println("methodExpressionArgument " + propertyValues.methodExpressionArgument);
+		System.out.println("defaultValue " + propertyValues.defaultValue);
+		System.out.println("defaultValueIsStringLiteral " + propertyValues.defaultValueIsStringLiteral);
+		System.out.println("tlddoc " + propertyValues.tlddoc);
+		System.out.println("javadocGet " + propertyValues.javadocGet);
+		System.out.println("javadocSet " + propertyValues.javadocSet);
+		System.out.println("required " + propertyValues.required);
+		System.out.println("inherit " + propertyValues.inherit);
+		System.out.println("**********");
+	}
 }

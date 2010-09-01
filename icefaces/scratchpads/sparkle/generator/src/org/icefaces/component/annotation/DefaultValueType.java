@@ -5,5 +5,5 @@ public enum DefaultValueType {
 	EXPRESSION,
 	UNSET;
 	
-	public static final DefaultValueType DEFAULT_DEFAULT_VALUE_TYPE = DefaultValueType.STRING_LITERAL;
+	public static final DefaultValueType DEFAULT = DefaultValueType.STRING_LITERAL;
 }

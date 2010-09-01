@@ -5,5 +5,5 @@ public enum Inherit {
 	LOCAL_PROPERTY,
 	UNSET;
 	
-	public final static Inherit DEFAULT_INHERIT = Inherit.LOCAL_PROPERTY;
+	public final static Inherit DEFAULT = Inherit.LOCAL_PROPERTY;
 }

@@ -5,5 +5,5 @@ public enum Required {
 	OPTIONAL,
 	UNSET;
 	
-	public static final Required DEFAULT_REQUIRED = Required.OPTIONAL;
+	public static final Required DEFAULT = Required.OPTIONAL;
 }
