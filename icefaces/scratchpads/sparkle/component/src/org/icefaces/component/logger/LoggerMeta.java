@@ -9,6 +9,8 @@ import java.util.List;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+
 @Component(
         tagName ="logger",
         componentClass ="org.icefaces.component.Logger.Logger",
@@ -30,7 +32,7 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(name="logger.js",library="org.icefaces.component.logger")
 })
 
-public class LoggerMeta {
+public class LoggerMeta extends UIComponentBaseMeta {
 //    
 //    @Property   
 //    private String label;

@@ -5,6 +5,8 @@ import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UIInputMeta;
+
 @Component(componentClass = "org.icefaces.component.datetimeselector.DateTimeSelector",
         tagName = "dateTimeSelector",
         extendsClass = "javax.faces.component.UIInput",
@@ -33,7 +35,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeselector")
 })
 
-public class DateTimeSelectorMeta {
+public class DateTimeSelectorMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render a text input field for a popup calendar.")
     private Boolean renderInputField;
 

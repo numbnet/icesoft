@@ -11,6 +11,8 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UISelectOneMeta;
+
 @Component(
         tagName ="menubutton",
         componentClass ="org.icefaces.component.menubutton.MenuButton",
@@ -38,7 +40,7 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(name="menubutton.js",library="org.icefaces.component.menubutton")    
 })
 
-public class MenuButtonMeta {  
+public class MenuButtonMeta extends UISelectOneMeta {  
 	
     @Property(defaultValue="false")    
     private Boolean immediate; 

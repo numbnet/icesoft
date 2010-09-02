@@ -8,6 +8,8 @@ import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UICommandMeta;
+
   @Component(
         tagName ="linkButton",
           componentClass ="org.icefaces.component.commandlink.CommandLink",
@@ -31,7 +33,7 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(name="commandlink.js",library="org.icefaces.component.commandlink")
 })
 
-  public class CommandLinkMeta {
+  public class CommandLinkMeta extends UICommandMeta {
 
       @Property
       private String label;

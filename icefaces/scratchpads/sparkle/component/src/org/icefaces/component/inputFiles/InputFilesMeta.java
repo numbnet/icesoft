@@ -28,6 +28,8 @@ import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.application.ResourceDependencies;
 
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+
 @Component(
     tagName         = "inputFiles",
     componentClass  = "org.icefaces.component.inputFiles.InputFiles",
@@ -42,7 +44,7 @@ import javax.faces.application.ResourceDependencies;
 @ResourceDependencies({
     @ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
 })
-public class InputFilesMeta {
+public class InputFilesMeta extends UIComponentBaseMeta {
     @Property(defaultValue="false",
         tlddoc="Default is false, means uses full submit.")
     private Boolean singleSubmit;

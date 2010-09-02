@@ -9,6 +9,8 @@ import java.util.List;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UICommandMeta;
+
 @Component(
         tagName ="pushbutton",
         componentClass ="org.icefaces.component.pushbutton.PushButton",
@@ -30,7 +32,7 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(name="pushbutton.js",library="org.icefaces.component.pushbutton")
 })
         
-public class PushButtonMeta {
+public class PushButtonMeta extends UICommandMeta {
     
     @Property   
     private String label;

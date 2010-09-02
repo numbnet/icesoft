@@ -11,6 +11,8 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UISelectOneMeta;
+
 @Component(
         tagName ="radioButtonGroup",
         componentClass ="org.icefaces.component.radiobutton.ButtonGroup",
@@ -31,7 +33,7 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton")    
 })
 
-public class ButtonGroupMeta {
+public class ButtonGroupMeta extends UISelectOneMeta {
     
     @Property   
     private String label;

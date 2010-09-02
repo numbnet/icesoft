@@ -4,6 +4,8 @@ import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Field;
 import org.icefaces.component.annotation.Property;
 
+import org.icefaces.component.baseMeta.UIPanelMeta;
+
 @Component(tagName ="tabSetController",
         componentClass ="org.icefaces.component.tab.TabSetController",
         componentType = "com.icesoft.faces.TabSetController",
@@ -11,7 +13,7 @@ import org.icefaces.component.annotation.Property;
         generatedClass = "org.icefaces.component.tab.TabSetControllerBase",
         componentFamily="com.icesoft.faces.TabSet"
         )
-public class TabSetControllerMeta {
+public class TabSetControllerMeta extends UIPanelMeta {
     @Property  
     private String For;
     

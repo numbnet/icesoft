@@ -14,6 +14,9 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.annotation.*;
+
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+
 @Component(
     tagName ="tabPanel",
     componentClass ="org.icefaces.component.tab.TabSet",
@@ -31,7 +34,7 @@ import org.icefaces.component.annotation.*;
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
 @ClientBehaviorHolder 
-public class TabSetMeta {
+public class TabSetMeta extends UIComponentBaseMeta {
     
     @Property(defaultValue="false")    
     private Boolean immediate; 
