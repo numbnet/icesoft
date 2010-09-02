@@ -46,7 +46,7 @@ public class ComponentContext {
 		Iterator<Field> fields = fieldsForComponentClass.values().iterator();
 		while(fields.hasNext()) {
 			Field field = fields.next();
-			if(field.isAnnotationPresent(Property.class)){
+			if(field.isAnnotationPresent(Property.class)){ /* @@@ maybe not necessary */
 				ret.add(field);
 			}
 		}
@@ -142,11 +142,11 @@ public class ComponentContext {
             
             for (int i=0; i < props.length; i++) {
                 //check if any included property is defined in the property template
-                 Object prop = GeneratorContext.getInstance().getPropertyTemplate().get(props[i]);
+                 Object prop = GeneratorContext.getInstance().getPropertyTemplate().get(props[i]); /* @@@ not necessary, this is a string, field map */
                  
                  //include property is referencing list of properties add all
                  if (prop instanceof List) {
-                     Iterator<String> iterator = ((List)prop).iterator();
+                     Iterator<String> iterator = ((List)prop).iterator(); /* @@@ maybe not, we're just dispatching fields for artifacts */
                      while(iterator.hasNext()) {
                          String propName = iterator.next();
                          if (!fieldsForComponentClass.containsKey(propName)) {
@@ -159,7 +159,7 @@ public class ComponentContext {
                      }
                   //include properties are defining single property   
                  } else {
-                     Field field = ((Field)prop);
+                     Field field = ((Field)prop); /* @@@ maybe not necessary */
                      if (!fieldsForComponentClass.containsKey(field.getName())) {                       
                          fieldsForComponentClass.put(field.getName(), field);
                      }                         
@@ -175,7 +175,7 @@ public class ComponentContext {
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
                 if(field.isAnnotationPresent(Property.class)){
-                    Property property = (Property) field.getAnnotation(Property.class);
+                    Property property = (Property) field.getAnnotation(Property.class); /* @@@ necessary to use annotation at this point */
 					
 					PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz); // collect @Property values from top to bottom
 					// /* debug */ System.out.println("--- Final"); displayValues(propertyValues);
@@ -184,7 +184,7 @@ public class ComponentContext {
 					propertyValuesMap.put(field, propertyValues);
 					
                    //inherited properties should go to the tag class only
-                    if (property.inherit() == Inherit.SUPERCLASS_PROPERTY) {
+                    if (propertyValues.inherit == Inherit.SUPERCLASS_PROPERTY) { /* @@@ changed */
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
                         }                              
@@ -193,7 +193,7 @@ public class ComponentContext {
                         
                         
                         if (!fieldsForComponentClass.containsKey(field.getName())) { 
-                            if (property.isMethodExpression() == Expression.METHOD_EXPRESSION) {
+                            if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
                                 hasMethodExpression = true;
                             }
                             fieldsForComponentClass.put(field.getName(), field);
@@ -240,7 +240,7 @@ public class ComponentContext {
 		Class superClass = clazz.getSuperclass();
 		// /* debug */ System.out.println(clazz.getName());
 		if (superClass != null) {
-			 // /* debug */ System.out.println("  go up to " + superClass.getName());
+			// /* debug */ System.out.println("  go up to " + superClass.getName());
 			collectPropertyValues(fieldName, superClass, propertyValues);
 		}
 		try {
@@ -292,7 +292,7 @@ public class ComponentContext {
 			propertyValues.methodExpressionArgument = "";
 		}
 		if (propertyValues.defaultValue.equals(Property.Null)) {
-			propertyValues.defaultValue = "";
+			propertyValues.defaultValue = "null";
 		}
 		if (propertyValues.defaultValueIsStringLiteral == DefaultValueType.UNSET) {
 			propertyValues.defaultValueIsStringLiteral = DefaultValueType.DEFAULT;

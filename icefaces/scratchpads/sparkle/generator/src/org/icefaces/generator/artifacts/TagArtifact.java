@@ -13,6 +13,8 @@ import org.icefaces.generator.context.GeneratorContext;
 import org.icefaces.generator.utils.FileWriter;
 import org.icefaces.generator.utils.Utility;
 
+import org.icefaces.generator.utils.PropertyValues;
+
 public class TagArtifact extends Artifact{
 	private StringBuilder generatedTagClass;
 	private Map<String, Field> generatedTagProperties;
@@ -91,7 +93,7 @@ public class TagArtifact extends Artifact{
 		for (int i=0; i<fields.length; i++) {
 			Field field = fields[i];
 			boolean addToTagClass = false;
-			addToTagClass = field.isAnnotationPresent(Property.class);
+			addToTagClass = field.isAnnotationPresent(Property.class); /* @@@ maybe not necessary */
 			if(!addToTagClass) {
 				if (GeneratorContext.getInstance().getPropertyTemplate().containsKey(clazz.getSimpleName())) {
 					if (((List)GeneratorContext.getInstance().getPropertyTemplate().get(clazz.getSimpleName())).contains(field.getName())) {
@@ -112,19 +114,21 @@ public class TagArtifact extends Artifact{
 		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			Property property = field.getAnnotation(Property.class);
+			Property property = field.getAnnotation(Property.class); /* @@@ kept for useTemplate */
+			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
+			
 			//must be inherited property from non-icefaces class
-			if (property == null || property.useTemplate()) {
+			if (property == null || property.useTemplate()) { /* @@@ kept for now */
 
 				Field o = (Field)GeneratorContext.getInstance().getPropertyTemplate().get(field.getName());
 				if (null==o){
 					System.out.println("Template field not found: "+field.getName());
 				}
-				property = (Property) o.getAnnotation(Property.class);
+				property = (Property) o.getAnnotation(Property.class); /* @@@ kept*/
 			}
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, property);
+			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, property); /* @@@ to do: only need to remove argument */
 
-			String type = (property.isMethodExpression() == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
+			String type = (prop.isMethodExpression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression "; /* @@@ changed */
 
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
@@ -186,22 +190,23 @@ public class TagArtifact extends Artifact{
 			generatedTagClass.append("\t\tif ("); 
 			generatedTagClass.append(field.getName()); 
 			generatedTagClass.append(" != null) {\n\t\t\t");
-			Property property = (Property) field.getAnnotation(Property.class);            
-			if (property.isMethodExpression() == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) {
+			//Property property = (Property) field.getAnnotation(Property.class);            /* @@@ removed */
+			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
+			if (property.isMethodExpression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) { /* @@@ changed */
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.isMethodExpression()  == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) {
+			} else if (property.isMethodExpression  == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) { /* @@@ changed */
 				generatedTagClass.append("_component.setActionExpression(action");
 			} else {
 				generatedTagClass.append("_component.set");
 
-				if (property.isMethodExpression()  == Expression.METHOD_EXPRESSION) {
+				if (property.isMethodExpression  == Expression.METHOD_EXPRESSION) { /* @@@ changed */
 					generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
 					generatedTagClass.append(field.getName().substring(1));  
 				} else {
 					generatedTagClass.append("ValueExpression");            
 				}
 				generatedTagClass.append("(");
-				if (property.isMethodExpression() == Expression.VALUE_EXPRESSION) {
+				if (property.isMethodExpression == Expression.VALUE_EXPRESSION) { /* @@@ changed */
 					generatedTagClass.append("\"");
 					generatedTagClass.append(field.getName());
 					generatedTagClass.append("\", ");

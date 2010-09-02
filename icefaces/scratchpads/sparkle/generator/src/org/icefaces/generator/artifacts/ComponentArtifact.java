@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.generator.utils.PropertyValues;
+
 public class ComponentArtifact extends Artifact{
 
     private StringBuilder writer = new StringBuilder();
@@ -185,7 +187,8 @@ public class ComponentArtifact extends Artifact{
      * @param field
      */
 	public void addGetterSetter(Field field) {
-		Property prop = (Property)field.getAnnotation(Property.class);
+		//Property prop = (Property)field.getAnnotation(Property.class); /* @@@ removed*/
+		PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
@@ -212,7 +215,7 @@ public class ComponentArtifact extends Artifact{
 
 		// writing Setter
 
-		addJavaDoc(field.getName(), true, prop.javadocSet());
+		addJavaDoc(field.getName(), true, prop.javadocSet); /* @@@ changed */
 		writer.append("\tpublic void set");
 		writer.append(field.getName().substring(0,1).toUpperCase());
 		writer.append(field.getName().substring(1));
@@ -267,7 +270,7 @@ public class ComponentArtifact extends Artifact{
 
 		//getter   
 
-		addJavaDoc(field.getName(), false, prop.javadocGet());
+		addJavaDoc(field.getName(), false, prop.javadocGet); /* @@@ changed */
 
 
 
@@ -296,7 +299,7 @@ public class ComponentArtifact extends Artifact{
         // No defined default value is returned as the string "null". This has to
         // be handled for various cases. primitives must have a default of some kind
         // and Strings have to return null (not "null") to work.
-        String defaultValue = prop.defaultValue();
+        String defaultValue = prop.defaultValue; /* @@@ changed */
         Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
                            isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
