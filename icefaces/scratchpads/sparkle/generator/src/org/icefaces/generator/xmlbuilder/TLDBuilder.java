@@ -9,6 +9,9 @@ import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.generator.Generator;
 import org.icefaces.generator.context.GeneratorContext;
+import org.icefaces.generator.context.ComponentContext;
+
+import org.icefaces.generator.utils.PropertyValues;
 
 public class TLDBuilder extends XMLBuilder{
     private Element tag;
@@ -43,14 +46,19 @@ public class TLDBuilder extends XMLBuilder{
         tag.appendChild(description);
     }
     
-    public void addAttributeInfo(Field field, Property property) {
+    public void addAttributeInfo(Field field, Property property) { /* @@@ to do: remove property argument, change calls*/
+		/* @@@ added */
+		ComponentContext component = GeneratorContext.getInstance().getActiveComponentContext();
+		PropertyValues propertyValues = component.getPropertyValuesMap().get(field);
+		/* @@@ to do: check for null? */
+		
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
         addNode(attribute, "name", field.getName());
-        addNode(attribute, "required", String.valueOf(property.required()));
+        addNode(attribute, "required", String.valueOf(propertyValues.required)); /* @@@ changed */
         addNode(attribute, "rtexprvalue", "false");        
         Element description = getDocument().createElement("description");
-        String des = property.tlddoc();
+        String des = propertyValues.tlddoc; /* @@@ changed */
         if ("null".endsWith(des)) {
         	des = "&nbsp;";
         }
