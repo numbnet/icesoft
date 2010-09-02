@@ -7,6 +7,8 @@ import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UICommandMeta;
+
 @Component(tagName ="tab",
         componentClass ="org.icefaces.component.tab.Tab",
         componentType = "com.icesoft.faces.Tab",
@@ -14,7 +16,7 @@ import javax.faces.application.ResourceDependency;
         generatedClass = "org.icefaces.component.tab.TabBase",
         componentFamily="com.icesoft.faces.TabSet"
         )
-public class TabMeta {
+public class TabMeta extends UICommandMeta {
     @Property   
     private String label;
     @Property   

@@ -7,6 +7,8 @@ import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+
 // Each Meta class requires a @Component annotation
 @Component(
         // The tag name, as it will be used in view definitions (.xhtml files)
@@ -61,7 +63,7 @@ import javax.faces.application.ResourceDependency;
 	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1")
 })
 
-public class SliderMeta {
+public class SliderMeta extends UIComponentBaseMeta {
     // Every java field in the Meta class can be annotated to become either a
     //  Property, Field or Facet, in the generatedClass.
     // @Property annotations are for properties that should have a StateHelper,

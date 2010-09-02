@@ -6,6 +6,7 @@ import org.icefaces.component.annotation.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
+import org.icefaces.component.baseMeta.UISelectBooleanMeta;
 
 @Component(
         tagName ="checkboxButton",
@@ -30,7 +31,7 @@ import javax.faces.application.ResourceDependency;
 
 })
 
-public class CheckboxMeta {
+public class CheckboxMeta extends UISelectBooleanMeta {
     
     @Property   
     private String label;

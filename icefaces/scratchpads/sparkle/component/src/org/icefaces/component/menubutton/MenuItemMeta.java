@@ -5,6 +5,8 @@ import org.icefaces.component.annotation.*;
 
 import javax.el.MethodExpression;
 
+import org.icefaces.component.baseMeta.UICommandMeta;
+
 @Component(tagName ="menuitem",
         componentClass ="org.icefaces.component.menubutton.MenuItem",
         rendererClass ="org.icefaces.component.menubutton.MenuItemRenderer", 
@@ -14,7 +16,7 @@ import javax.el.MethodExpression;
         generatedClass = "org.icefaces.component.menubutton.MenuItemBase",
         componentFamily="com.icesoft.faces.MenuButton"
         )
-public class MenuItemMeta {
+public class MenuItemMeta extends UICommandMeta {
         @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
         private String id;
         

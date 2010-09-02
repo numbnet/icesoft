@@ -5,6 +5,8 @@ import javax.el.MethodExpression;
 
 import org.icefaces.component.annotation.*;
 
+import org.icefaces.component.baseMeta.UICommandMeta;
+
   @Component(
           tagName ="testComponent",
           componentClass ="org.icefaces.component.testComponent.TestComponent",
@@ -20,7 +22,7 @@ import org.icefaces.component.annotation.*;
    * The intention is to insert test properties here to fully exercise
    * the code generation portion of the component generator.
    */
-  public class TestComponentMeta {
+  public class TestComponentMeta extends UICommandMeta {
 
       @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
       private Boolean immediate;
