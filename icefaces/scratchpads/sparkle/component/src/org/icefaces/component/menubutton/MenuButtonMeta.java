@@ -48,7 +48,7 @@ public class MenuButtonMeta extends UISelectOneMeta {
     @Property   
     private String label;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private String id;
 	
 	@Property
@@ -70,7 +70,7 @@ public class MenuButtonMeta extends UISelectOneMeta {
     @Property (tlddoc="basic selection is within this string indicator")
     private String selectedMenuItem;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private UIComponent binding;  
     
 //    @Property (tlddoc="use this to create a group of buttons")

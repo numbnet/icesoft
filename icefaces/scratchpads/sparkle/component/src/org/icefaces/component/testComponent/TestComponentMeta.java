@@ -24,10 +24,10 @@ import org.icefaces.component.baseMeta.UICommandMeta;
    */
   public class TestComponentMeta extends UICommandMeta {
 
-      @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+      @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)
       private Boolean immediate;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
       private String id;
 
       // boolean
@@ -107,7 +107,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
       @Property  (defaultValue="Hello World!")
       private String stringTwo;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
       private UIComponent binding;
 
       @Property (defaultValue="false")

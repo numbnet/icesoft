@@ -93,7 +93,9 @@ public class TagArtifact extends Artifact{
 		for (int i=0; i<fields.length; i++) {
 			Field field = fields[i];
 			boolean addToTagClass = false;
-			addToTagClass = field.isAnnotationPresent(Property.class); /* @@@ maybe not necessary */
+			addToTagClass = field.isAnnotationPresent(Property.class); /* @@@ maybe not necessary to remove */
+			
+			/* // ### removed
 			if(!addToTagClass) {
 				if (GeneratorContext.getInstance().getPropertyTemplate().containsKey(clazz.getSimpleName())) {
 					if (((List)GeneratorContext.getInstance().getPropertyTemplate().get(clazz.getSimpleName())).contains(field.getName())) {
@@ -101,6 +103,7 @@ public class TagArtifact extends Artifact{
 					}
 				}
 			}
+			*/
 
 			if(addToTagClass ){
 				if (!generatedTagProperties.containsKey(field.getName()))
@@ -114,19 +117,20 @@ public class TagArtifact extends Artifact{
 		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			Property property = field.getAnnotation(Property.class); /* @@@ kept for useTemplate */
+			// Property property = field.getAnnotation(Property.class); /* @@@ kept for useTemplate */ /* ### removed */
 			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
 			
+			/* // ### removed
 			//must be inherited property from non-icefaces class
-			if (property == null || property.useTemplate()) { /* @@@ kept for now */
-
+			if (property == null || property.useTemplate()) { // @@@ kept for now 
 				Field o = (Field)GeneratorContext.getInstance().getPropertyTemplate().get(field.getName());
 				if (null==o){
 					System.out.println("Template field not found: "+field.getName());
 				}
-				property = (Property) o.getAnnotation(Property.class); /* @@@ kept*/
+				property = (Property) o.getAnnotation(Property.class); // @@@ kept
 			}
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, property); /* @@@ to do: only need to remove argument */
+			*/
+			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, null); // @@@ to do: only need to remove argument
 
 			String type = (prop.isMethodExpression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression "; /* @@@ changed */
 

@@ -140,13 +140,15 @@ public class ComponentContext {
             //these properties should go to the component as well as tag class
             String[] props = component.includeProperties();
             
+			/* ### to do: remove all this for block; it's safe to remove, so far no component uses it */
+			/*
             for (int i=0; i < props.length; i++) {
                 //check if any included property is defined in the property template
-                 Object prop = GeneratorContext.getInstance().getPropertyTemplate().get(props[i]); /* @@@ not necessary, this is a string, field map */
+                 Object prop = GeneratorContext.getInstance().getPropertyTemplate().get(props[i]); // @@@ not necessary, this is a string, field map 
                  
                  //include property is referencing list of properties add all
                  if (prop instanceof List) {
-                     Iterator<String> iterator = ((List)prop).iterator(); /* @@@ maybe not, we're just dispatching fields for artifacts */
+                     Iterator<String> iterator = ((List)prop).iterator(); // @@@ maybe not, we're just dispatching fields for artifacts 
                      while(iterator.hasNext()) {
                          String propName = iterator.next();
                          if (!fieldsForComponentClass.containsKey(propName)) {
@@ -159,7 +161,7 @@ public class ComponentContext {
                      }
                   //include properties are defining single property   
                  } else {
-                     Field field = ((Field)prop); /* @@@ maybe not necessary */
+                     Field field = ((Field)prop); // @@@ maybe not necessary 
                      if (!fieldsForComponentClass.containsKey(field.getName())) {                       
                          fieldsForComponentClass.put(field.getName(), field);
                      }                         
@@ -168,10 +170,13 @@ public class ComponentContext {
                      }                      
                  }
             }
+			*/
+			
             //now we have done with include properties, now get all properties which 
             //are define on the annotated component itself.
             
-            Field[] fields = clazz.getDeclaredFields();
+            //Field[] fields = clazz.getDeclaredFields(); /* ### removed */
+			Field[] fields = getDeclaredFields(clazz); /* ### added */
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
                 if(field.isAnnotationPresent(Property.class)){
@@ -312,6 +317,46 @@ public class ComponentContext {
 		if (propertyValues.inherit == Inherit.UNSET) {
 			propertyValues.inherit = Inherit.DEFAULT;
 		}
+	}
+	
+	private static Field[] getDeclaredFields(Class clazz) {
+		return getDeclaredFields(clazz, new HashMap<String, Field>());
+	}
+	
+	private static Field[] getDeclaredFields(Class clazz, Map<String, Field> fields) {
+		
+		if (fields == null) {
+			fields = new HashMap<String, Field>();
+		}
+		
+		// add fields to map
+		Field[] localFields = clazz.getDeclaredFields();
+		for (int i = 0; i < localFields.length; i++) {
+			if (!fields.containsKey(localFields[i].getName())) {
+				fields.put(localFields[i].getName(), localFields[i]);
+			}
+		}
+	
+		Class superClass = clazz.getSuperclass();
+		if (superClass != null) {
+			return getDeclaredFields(superClass, fields);
+		} else {
+			//Field[] result = (Field[]) fields.values().toArray();
+			Object[] values = fields.values().toArray();
+			Field[] result = new Field[values.length];
+			for (int i = 0; i < values.length; i++) {
+				result[i] = (Field) values[i];
+			}
+			return result;
+		}
+	}
+	
+	private static void displayFields(Field[] result) {
+		System.out.println("**********");
+		for (int i = 0; i < result.length; i++) {
+			System.out.println(result[i].getName());
+		}
+		System.out.println("**********");
 	}
 	
 	private static void displayValues(PropertyValues propertyValues) {

@@ -42,7 +42,7 @@ public class RadioButtonMeta extends UISelectOneMeta {
     @Property(tlddoc="require groupId that this button belongs to")
     private String group;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private String id;
 	
 	@Property
@@ -51,7 +51,7 @@ public class RadioButtonMeta extends UISelectOneMeta {
     @Property  (defaultValue="false")
     private Boolean checked;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private UIComponent binding; 
     
 	@Property(defaultValue="false",
@@ -70,7 +70,7 @@ public class RadioButtonMeta extends UISelectOneMeta {
 	@Property(defaultValue="false")
     private Boolean immediate;
 	    
-	@Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+	@Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private Boolean rendered;
 	    
 	@Property (defaultValue="false",

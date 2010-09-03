@@ -36,7 +36,7 @@ public class CheckboxMeta extends UISelectBooleanMeta {
     @Property   
     private String label;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private String id;
 	
 	@Property
@@ -58,14 +58,14 @@ public class CheckboxMeta extends UISelectBooleanMeta {
     @Property(defaultValue="false")
     private Boolean immediate;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private Boolean rendered;
     
     @Property (defaultValue="false",
     		tlddoc="disabled property is required by aria specs")
     private Boolean disabled;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private UIComponent binding;    
 
 }

@@ -38,7 +38,7 @@ public class ButtonGroupMeta extends UISelectOneMeta {
     @Property   
     private String label;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private String id;
     
     //not sure this is needed as the string id of the 
@@ -47,7 +47,7 @@ public class ButtonGroupMeta extends UISelectOneMeta {
     @Property
     protected String selectedItemId;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private UIComponent binding;  
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
@@ -65,7 +65,7 @@ public class ButtonGroupMeta extends UISelectOneMeta {
 	@Property(defaultValue="false")
     private Boolean immediate;
 	    
-	@Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+	@Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private Boolean rendered;
 	    
 	@Property (defaultValue="false",
