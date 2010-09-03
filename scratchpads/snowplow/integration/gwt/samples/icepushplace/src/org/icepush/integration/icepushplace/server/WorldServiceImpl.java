@@ -87,9 +87,14 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		toReturn.setName(toConvert.getName());
 		toReturn.setMood(toConvert.getMood());
 		toReturn.setComment(toConvert.getMind());
+		toReturn.setMessageIn(toConvert.getMessage());
 		toReturn.setTechnology("GWT");
 		
 		return toReturn;
+	}
+	
+	private User convertPersonToUser(PersonType toConvert) {
+		return convertPersonToUser(toConvert, ICEpushPlaceWorld.CONTINENT[toConvert.getRegion()]);
 	}
 	
 	/**
@@ -107,6 +112,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		toReturn.setMood(toConvert.getMood());
 		toReturn.setMind(toConvert.getComment());
 		toReturn.setRegion(region);
+		toReturn.setMessage(toConvert.getMessageIn());
 		
 		return toReturn;
 	}
@@ -115,10 +121,10 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	 * @see org.icepush.integration.icepushplace.client.WorldService.addUser
 	 */
 	@Override
-	public User addUser(String name, String mood, String mind, String region) throws IllegalArgumentException {
+	public User addUser(String name, String mood, String mind, String region, String message) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Construct the user object based on the passed values
-			User user = new User(name, mood, mind, region);
+			User user = new User(name, mood, mind, region, message);
 			
 			// Attempt to use the web service to log the user in
 			PersonType resultPerson = world.loginPerson(region, convertUserToPerson(user));
@@ -134,6 +140,60 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		}
 		
 		System.out.println("ERROR - Failed to add user " + name + " to region " + region + ".");
+		
+		return null;
+	}
+	
+	/**
+	 * @see org.icepush.integration.icepushplace.client.WorldService.updateUser
+	 */
+	@Override
+	public Boolean updateUser(User user) throws IllegalArgumentException {
+		if (getWorld() != null) {
+			if (user != null) {
+				world.updatePerson(user.getRegion(), convertUserToPerson(user));
+				
+				System.out.println("INFO - Updated user " + user.getName() + " on continent " + user.getRegion() + ".");
+				
+				return Boolean.TRUE;
+			}
+		}
+		
+		return Boolean.FALSE;
+	}
+	
+	/**
+	 * @see org.icepush.integration.icepushplace.client.WorldService.smartUpdateUser
+	 */
+	@Override
+	public User smartUpdateUser(String oldRegion, User user) throws IllegalArgumentException {
+		if (user != null) {
+			Boolean returnStatus = updateUser(user);
+			
+			if (returnStatus) {
+				if ((oldRegion != null) && (!oldRegion.equals(user.getRegion()))) {
+					return moveUser(oldRegion, user);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @see org.icepush.integration.icepushplace.client.WorldService.moveUser
+	 */
+	@Override
+	public User moveUser(String oldRegion, User user) throws IllegalArgumentException {
+		if (getWorld() != null) {
+			if (user != null) {
+				PersonType returnPerson = world.movePerson(oldRegion, user.getRegion(), convertUserToPerson(user));
+				
+				System.out.println("INFO - Moved user " + user.getName() + " from " + oldRegion + " to " + user.getRegion() + ".");
+				
+				return convertPersonToUser(returnPerson);
+			}
+		}
 		
 		return null;
 	}

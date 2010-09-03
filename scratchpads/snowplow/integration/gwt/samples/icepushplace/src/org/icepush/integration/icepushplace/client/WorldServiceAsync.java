@@ -10,7 +10,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Asynchronous remote service used by GWT to interact with the world by adding and removing users, getting continents, etc.
  */
 public interface WorldServiceAsync {
-	public void addUser(String name, String mood, String mind, String region, AsyncCallback<User> callback) throws IllegalArgumentException;
+	public void addUser(String name, String mood, String mind, String region, String message, AsyncCallback<User> callback) throws IllegalArgumentException;
+	public void updateUser(User user, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void smartUpdateUser(String oldRegion, User user, AsyncCallback<User> callback) throws IllegalArgumentException;
+	public void moveUser(String oldRegion, User user, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void removeUser(User user, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 	public void getUser(String name, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void getUserInRegion(String name, String region, AsyncCallback<User> callback) throws IllegalArgumentException;
