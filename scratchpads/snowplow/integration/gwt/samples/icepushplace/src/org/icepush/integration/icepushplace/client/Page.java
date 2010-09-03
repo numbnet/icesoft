@@ -12,22 +12,20 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,13 +35,28 @@ import com.google.gwt.user.client.ui.Widget;
  * This will manage the login panel and the world panel, plus a local user once they login
  */
 public class Page implements EntryPoint, ClosingHandler {
+	public static final String PAGEID_HEADER = "headerLabel";
+	public static final String PAGEID_PANEL = "panelContainer";
+	
     private final WorldServiceAsync worldService = GWT.create(WorldService.class);
     
     private String[] regions;
     private User ourUser;
-    private Panel loginPanel;
+    
+    private Widget inputSet;
+    
     private Panel worldPanel;
     private HashMap<String,Panel> regionPanels;
+    
+    private Button loginButton;
+    private Button updateButton;
+    private Label errorLabel;
+    
+    private TextBox nameField;
+    private TextBox mindField;
+    private TextBox messageField;
+    private ListBox moodList;
+    private ListBox regionList;
     
     private PushEventListener pushListener;
     private String entryPushGroup;
@@ -80,143 +93,66 @@ public class Page implements EntryPoint, ClosingHandler {
 				// Create the map of region panels
 				regionPanels = new HashMap<String,Panel>(regions.length);
 				
-		        // Generate our various panels
-				generateLoginPanel();
-				generateWorldPanel();
+				// Start with the login panel
 				useLoginPanel();
 			}
 		});
 	}
 	
-	/**
-	 * Method to create, setup, and customize the login panel
-	 * This will have a few fields a user can fill in to enter the main application
-	 */
-	private void generateLoginPanel() {
+	private Widget generateInputSet() {
 		// Generate the name field
-		final TextBox nameField = new TextBox();
-		nameField.setText("New User");
-		nameField.setFocus(true);
+		if (nameField == null) {
+			nameField = new TextBox();
+			nameField.setMaxLength(15);
+			nameField.setStyleName("nameInput");
+			nameField.setFocus(true);
+			nameField.setText("New User");
+		}
 		
 		// Generate the mood list
-		final ListBox moodList = new ListBox();
-		for (int i = 0; i < WorldService.MOODS.length; i++) {
-			moodList.addItem(WorldService.MOODS[i]);
+		if (moodList == null) {
+			moodList = new ListBox();
+			moodList.setStyleName("moodInput");
+			
+			for (int i = 0; i < WorldService.MOODS.length; i++) {
+				moodList.addItem(WorldService.MOODS[i]);
+			}
 		}
 		
 		// Generate the 'on your mind' area
-		final TextArea mindArea = new TextArea();
-		mindArea.setCharacterWidth(25);
-		mindArea.setVisibleLines(3);
+		if (mindField == null) {
+			mindField = new TextBox();
+			mindField.setMaxLength(150);
+			mindField.setStyleName("thoughtInput");
+		}
+		
+		// Generate the message field
+		if (messageField == null) {
+			messageField = new TextBox();
+			messageField.setMaxLength(150);
+			messageField.setStyleName("messageInput");
+		}
 		
 		// Generate the region list
-		final ListBox regionList = new ListBox();
-		for (int i = 0; i < regions.length; i++) {
-			regionList.addItem(regions[i]);
-		}
-		
-		// Generate the login button
-		Button loginButton = new Button("Login");
-		
-		// Generate the error label
-		final Label errorLabel = new Label();
-		
-		// Add all components to the loginPanel
-		loginPanel = new VerticalPanel();
-		loginPanel.add(makeField("Nickname:", nameField));
-		loginPanel.add(makeField("What mood are you in?:", moodList));
-		loginPanel.add(makeField("What's on your mind?:", mindArea));
-		loginPanel.add(makeField("Change your region:", regionList));
-	    loginPanel.add(loginButton);
-	    loginPanel.add(errorLabel);
-	    
-		// Create a handler for the button action
-		class LoginButtonHandler implements ClickHandler, KeyUpHandler {
-			public void onClick(ClickEvent event) {
-				loginHandler();
-			}
-
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					loginHandler();
-				}
-			}
-
-			private void loginHandler() {
-				// Attempt to add this user to the world via our remote service
-				worldService.addUser(nameField.getText(),
-									 moodList.getValue(moodList.getSelectedIndex()),
-									 mindArea.getText(),
-									 regionList.getValue(regionList.getSelectedIndex()),
-					 new AsyncCallback<User>() {
-						public void onFailure(Throwable caught) {
-							errorLabel.setText(caught.getMessage());
-						}
-
-						public void onSuccess(User result) {
-							// Store our local user
-							ourUser = result;
-							
-							// Switch to the world panel
-							useWorldPanel();
-							
-							// Push to update the page to show the world panel
-							GWTPushContext.getInstance().push(entryPushGroup);
-							
-							// Add a push listener for every region
-							for (int i = 0; i < regions.length; i++) {
-								final String currentRegion = regions[i];
-								
-								// Make the push listener refresh just the region upon event capture
-								pushListener = new PushEventListener() {
-									public void onPushEvent() {
-										refreshRegion(currentRegion);
-								    }
-							    };
-							    GWTPushContext.getInstance().addPushEventListener(pushListener, currentRegion);
-							}
-						}
-				});
-			}
-		}
-		
-		// Add button action handlers
-		LoginButtonHandler handler = new LoginButtonHandler();
-		loginButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
-	}
-	
-	/**
-	 * Method to create, setup, and customize the world panel
-	 * This will have a list of regions / continents and show the different users found in each
-	 */
-	private void generateWorldPanel() {
-		// Create a handler for the Refresh button action
-		class RefreshButtonHandler implements ClickHandler, KeyUpHandler {
-			public void onClick(ClickEvent event) {
-				// Regenerate our world panel (so new users in each region will be added)
-				refreshWorld();
-			}
+		if (regionList == null) {
+			regionList = new ListBox();
+			regionList.setStyleName("regionInput");
 			
-			public void onKeyUp(KeyUpEvent event) {
+			for (int i = 0; i < regions.length; i++) {
+				regionList.addItem(regions[i]);
 			}
 		}
 		
-		// Generate the refresh button
-		Button refreshButton = new Button("Refresh");
-		refreshButton.addClickHandler(new RefreshButtonHandler());
+		// Add all components to the returned grid
+		Grid toReturn = new Grid(5, 2);
+		toReturn.setStyleName("inputSet");
+		toReturn.setWidget(0, 0, makeStyleLabel("Nickname:", "nameLabel"));		toReturn.setWidget(0, 1, nameField);
+		toReturn.setWidget(1, 0, makeStyleLabel("Mood:", "moodLabel"));			toReturn.setWidget(1, 1, moodList);
+		toReturn.setWidget(2, 0, makeStyleLabel("Thoughts:", "thoughtLabel"));	toReturn.setWidget(2, 1, mindField);
+		toReturn.setWidget(3, 0, makeStyleLabel("Message:", "messageLabel"));	toReturn.setWidget(3, 1, messageField);
+		toReturn.setWidget(4, 0, makeStyleLabel("Region:", "regionLabel"));		toReturn.setWidget(4, 1, regionList);
 		
-		// Add all the components to the worldPanel
-		//worldPanel = new VerticalPanel();
-		worldPanel = new VerticalPanel();
-		worldPanel.add(refreshButton);
-		
-		// Add each region as a new panel
-		for (String currentRegion : regions) {
-			regionPanels.put(currentRegion, makeRegionPanel(currentRegion));
-			
-			worldPanel.add(regionPanels.get(currentRegion));
-		}
+		return toReturn;
 	}
 	
 	/**
@@ -240,7 +176,15 @@ public class Page implements EntryPoint, ClosingHandler {
 	 */
 	private Panel makeRegionPanel(String region, final Panel base) {
 		base.clear();
-		base.add(makeBoldLabel(region));
+		base.setWidth("100%");
+		
+		Panel labelPanel = new FlowPanel();
+		labelPanel.setWidth("100%");
+		labelPanel.setStyleName("regionPanel");
+		
+		labelPanel.add(makeStyleLabel(region, "regionHeader"));
+		
+		base.add(labelPanel);
 		
 		// Get a list of users for this region
 		worldService.getUsersByRegion(region, new AsyncCallback<List<User>>() {
@@ -250,16 +194,27 @@ public class Page implements EntryPoint, ClosingHandler {
 			public void onSuccess(List<User> result) {
 				// If we retrieved a list of users properly we'll want to add them to our panel
 				if (ValidatorUtil.isValidList(result)) {
-					Panel userPanel = null;
+					FlexTable userTable = null;
 					
-					// For each user we'll add the mood image, name, and thoughts
+					// For each user we'll add the mood image, name, thought, and message
 					for (User currentUser : result) {
-						userPanel = new HorizontalPanel();
-						userPanel.add(makeMoodImage(currentUser.getMood()));
-						userPanel.add(new Label(currentUser.getName()));
-						userPanel.add(new Label("'" + currentUser.getMind() + "'"));
+						userTable = new FlexTable();
+						userTable.setWidget(0, 0, makeMoodImage(currentUser.getMood()));
+						userTable.setWidget(0, 1, new Label(currentUser.getName()));
+						if ((currentUser.getMind() != null) && (currentUser.getMind().trim().length() > 0)) {
+							userTable.setWidget(0, userTable.getCellCount(0),
+											   new Label("thinks '" + currentUser.getMind() + "'"));
+						}
+						if ((currentUser.getMessage() != null) && (currentUser.getMessage().trim().length() > 0)) {
+							if ((currentUser.getMind() != null) && (currentUser.getMind().trim().length() > 0)) {
+								userTable.setWidget(0, userTable.getCellCount(0),
+										           new Label("and"));
+							}
+							userTable.setWidget(0, userTable.getCellCount(0),
+									           new Label("says '" + currentUser.getMessage() + "'"));
+						}
 						
-						base.add(userPanel);
+						base.add(userTable);
 					}
 				}
 			}
@@ -286,55 +241,82 @@ public class Page implements EntryPoint, ClosingHandler {
 	}
 	
 	/**
-	 * Method to associate a label with a generic widget
-	 * This is useful for a lot of form inputs, like "Nickname: [_______]"
+	 * Method to associate the passed style class with a newly created label
 	 * 
-	 * @param text to use in the label
-	 * @param widget to associate
-	 * @return the constructed Panel with the label/value pair
+	 * @param text of the label
+	 * @param style of the label
+	 * @return created label
 	 */
-	private Panel makeField(String text, Widget widget) {
-		Panel toReturn = new HorizontalPanel();
-		
-		toReturn.add(new Label(text));
-		toReturn.add(widget);
+	private Label makeStyleLabel(String text, String style) {
+		Label toReturn = new Label(text);
+		toReturn.setStyleName(style);
 		
 		return toReturn;
 	}
 	
 	/**
-	 * Method to create a generic bold label
+	 * Method to determine what index should be selected in a ListBox
+	 * This will look at all available items and find one that matches the passed toSelect
 	 * 
-	 * @param text to use in the label
-	 * @return the constructed bold Label
+	 * @param component to select an index for
+	 * @param toSelect to try to find in the component
 	 */
-	private Label makeBoldLabel(String text) {
-		Label toReturn = new Label(text);
-		toReturn.setStyleName("boldLabel");
-		
-		return toReturn;
-	}	
+	private void selectListBox(ListBox component, String toSelect) {
+	    String currentText = null;
+	    for (int i = 0; i < component.getItemCount(); i++) {
+	    	currentText = component.getItemText(i);
+	    	
+	    	if (currentText.equals(toSelect)) {
+	    		component.setSelectedIndex(i);
+	    		return;
+	    	}
+	    }
+	}
 	
 	/**
 	 * Method to switch the page view to the loginPanel
 	 */
 	private void useLoginPanel() {
-		switchPanel("Enter ICEpush Place", loginPanel);
+		if (loginButton == null) {
+			loginButton = new Button("Login");
+			loginButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					loginHandler();
+				}
+			});
+		}
+		
+		switchPanel("ICEpush Place Login", null, loginButton);
 	}
 	
 	/**
 	 * Method to switch the page view to the worldPanel
 	 */
 	private void useWorldPanel() {
-		switchPanel("Welcome to the World", worldPanel);
-	}
-	
-	/**
-	 * Method to rebuild and redisplay the worldPanel
-	 */
-	public void refreshWorld() {
-		generateWorldPanel();
-		useWorldPanel();
+		// Generate the world panel as needed
+		if (worldPanel == null) {
+			worldPanel = new VerticalPanel();
+			worldPanel.setStyleName("worldPanel");
+			
+			// Add each region as a new panel
+			for (String currentRegion : regions) {
+				regionPanels.put(currentRegion, makeRegionPanel(currentRegion));
+				
+				worldPanel.add(regionPanels.get(currentRegion));
+			}
+		}
+		
+		// Generate the update button as needed
+		if (updateButton == null) {
+			updateButton = new Button("Update");
+			updateButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					updateHandler();
+				}
+			});
+		}
+		
+		switchPanel("ICEpush Place View", worldPanel, updateButton);
 	}
 	
 	/**
@@ -355,6 +337,16 @@ public class Page implements EntryPoint, ClosingHandler {
 	}
 	
 	/**
+	 * Method to rebuild and redisplay the worldPanel
+	 */
+	public void refreshWorld() {
+		// Nullify the worldPanel so it will be rebuilt via useWorldPanel
+		worldPanel = null;
+		
+		useWorldPanel();
+	}
+	
+	/**
 	 * Generic method to switch the main page view panel
 	 * This will clear the headerLabel and panelContainer of child components
 	 *  then add the new passed components
@@ -362,14 +354,110 @@ public class Page implements EntryPoint, ClosingHandler {
 	 * @param title text to use in the header label
 	 * @param panel to switch to
 	 */
-	private void switchPanel(String title, Panel panel) {
+	private void switchPanel(String title, Panel panel, Button button) {
 		// Reset the header
-		RootPanel.get("headerLabel").clear();
-		RootPanel.get("headerLabel").add(new Label(title));
+		RootPanel.get(PAGEID_HEADER).clear();
+		RootPanel.get(PAGEID_HEADER).add(new Label(title));
+		
+		// Generate input and error components as needed
+		if (inputSet == null) {
+			inputSet = generateInputSet();
+		}
+		if (errorLabel == null) {
+			errorLabel = new Label();
+		}
+		
+		// Set the inputSet fields if we have an ourUser object
+	    if (ourUser != null) {
+		    nameField.setText(ourUser.getName());
+		    mindField.setText(ourUser.getMind());
+		    messageField.setText(ourUser.getMessage());
+		    selectListBox(moodList, ourUser.getMood());
+		    selectListBox(regionList, ourUser.getRegion());
+	    }
 		
 		// Reset the main panel
-		RootPanel.get("panelContainer").clear();
-		RootPanel.get("panelContainer").add(panel);
+		RootPanel.get(PAGEID_PANEL).clear();
+		RootPanel.get(PAGEID_PANEL).add(inputSet);
+		if (button != null) {
+			RootPanel.get(PAGEID_PANEL).add(button);
+		}
+		RootPanel.get(PAGEID_PANEL).add(errorLabel);
+		if (panel != null) {
+			RootPanel.get(PAGEID_PANEL).add(panel);
+		}
+	}
+	
+	private void loginHandler() {
+		// Attempt to add this user to the world via our remote service
+		worldService.addUser(nameField.getText(),
+							 moodList.getValue(moodList.getSelectedIndex()),
+							 mindField.getText(),
+							 regionList.getValue(regionList.getSelectedIndex()),
+							 messageField.getText(),
+			 new AsyncCallback<User>() {
+				public void onFailure(Throwable caught) {
+					errorLabel.setText(caught.getMessage());
+				}
+
+				public void onSuccess(User result) {
+					// Store our local user
+					ourUser = result;
+					
+					// Switch to the world panel
+					useWorldPanel();
+					
+					// Push to update the page to show the world panel
+					GWTPushContext.getInstance().push(entryPushGroup);
+					
+					// Add a push listener for every region
+					for (int i = 0; i < regions.length; i++) {
+						final String currentRegion = regions[i];
+						
+						// Make the push listener refresh just the region upon event capture
+						pushListener = new PushEventListener() {
+							public void onPushEvent() {
+								refreshRegion(currentRegion);
+						    }
+					    };
+					    GWTPushContext.getInstance().addPushEventListener(pushListener, currentRegion);
+					}
+				}
+		});
+	}
+	
+	private void updateHandler() {
+		// Store our old region so we can update it during a move
+		final String oldRegion = ourUser.getRegion();
+		
+		// Update the user values first
+		ourUser.setName(nameField.getText());
+		ourUser.setMood(moodList.getValue(moodList.getSelectedIndex()));
+		ourUser.setMind(mindField.getText());
+		ourUser.setMessage(messageField.getText());
+		ourUser.setRegion(regionList.getValue(regionList.getSelectedIndex()));
+		
+		// Call our service to try to move/update the user
+		worldService.smartUpdateUser(oldRegion, ourUser, new AsyncCallback<User>() {
+			public void onFailure(Throwable caught) {
+				errorLabel.setText(caught.getMessage());
+			}
+
+			public void onSuccess(User result) {
+				// Update our user if needed
+				if (result != null) {
+					ourUser = result;
+				}
+				
+				// Update the region our user is currently in
+				GWTPushContext.getInstance().push(ourUser.getRegion());
+				
+				// Also update our old region if we have a different one
+				if (!ourUser.getRegion().equals(oldRegion)) {
+					GWTPushContext.getInstance().push(oldRegion);
+				}
+			}
+		});
 	}
 	
 	/**

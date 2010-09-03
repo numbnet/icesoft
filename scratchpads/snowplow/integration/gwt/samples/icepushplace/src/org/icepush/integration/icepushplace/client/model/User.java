@@ -16,20 +16,22 @@ public class User implements Serializable {
 	private String mood;
 	private String mind;
 	private String region;
+	private String message;
 	
 	public User() {
 	}
 	
-	public User(String name, String mood, String mind, String region) {
-		this(DEFAULT_KEY, name, mood, mind, region);
+	public User(String name, String mood, String mind, String region, String message) {
+		this(DEFAULT_KEY, name, mood, mind, region, message);
 	}
 	
-	public User(int key, String name, String mood, String mind, String region) {
+	public User(int key, String name, String mood, String mind, String region, String message) {
 		this.key = key;
 		this.name = name;
 		this.mood = mood;
 		this.mind = mind;
 		this.region = region;
+		this.message = message;
 	}	
 	
 	public int getKey() {
@@ -72,7 +74,19 @@ public class User implements Serializable {
 		this.region = region;
 	}
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public boolean hasKey() {
 		return getKey() != DEFAULT_KEY;
+	}
+	
+	public String toString() {
+		return name + " is " + mood + " in " + region + ", thinking '" + mind + "' and saying '" + message + "'.";
 	}
 }

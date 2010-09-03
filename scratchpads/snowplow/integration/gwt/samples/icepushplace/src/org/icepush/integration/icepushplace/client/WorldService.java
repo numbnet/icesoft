@@ -13,8 +13,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("world")
 public interface WorldService extends RemoteService {
     // Hardcoded urls used when creating an ICEpushPlaceWorld object
-    public static final String APPLICATION_URL = "http://localhost:8080/icepush-place-gwt";
-    public static final String WEBSERVICE_URL = "http://localhost:8080/icePushPlaceService";
+    public static final String APPLICATION_URL = "http://localhost:18080/icepush-place-gwt";
+    public static final String WEBSERVICE_URL = "http://localhost:18080/icePushPlaceService";
     // All available moods
     public static final String[] MOODS = {"average",
                                           "shocked",
@@ -34,10 +34,43 @@ public interface WorldService extends RemoteService {
      * @param mood of the user to create
      * @param mind of the user to create
      * @param region to add the user to
+     * @param message to send
      * @return User created as part of the add
      * @throws IllegalArgumentException on error
      */
-    public User addUser(String name, String mood, String mind, String region) throws IllegalArgumentException;
+    public User addUser(String name, String mood, String mind, String region, String message) throws IllegalArgumentException;
+    
+    /**
+     * Method to update an existing user, such as changing their name or mood
+     * 
+     * @param user to update
+     * @return true on successful update, false otherwise
+     * @throws IllegalArgumentException on error
+     */
+    public Boolean updateUser(User user) throws IllegalArgumentException;
+    
+    /**
+     * Method to intelligently update a user. This means we'll check if their continent changed,
+     *  if it did we'll perform a moveUser
+     * Regardless of whether we move, we'll also perform an updateUser
+     * This method saves the user from having to determine this logic themselves
+     * 
+     * @param oldRegion the region the user last came from
+     * @param user to intelligently update and/or move
+     * @return User modified as part of the update
+     * @throws IllegalArgumentException on error
+     */
+    public User smartUpdateUser(String oldRegion, User user) throws IllegalArgumentException;
+    
+    /**
+     * Method to move a user from one continent to another
+     * 
+     * @param oldRegion continent to leave
+     * @param user to move
+     * @return User modified as part of the move
+     * @throws IllegalArgumentException on error
+     */
+    public User moveUser(String oldRegion, User user) throws IllegalArgumentException;
 
     /**
      * Method to remove an existing user from the world
