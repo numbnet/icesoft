@@ -38,7 +38,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
       @Property
       private String label;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
       private String id;
 
       @Property
@@ -66,7 +66,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
               tlddoc="Default is false, means uses full submit")
       private Boolean singleSubmit;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
       private UIComponent binding;
 
       @Property (defaultValue="false")
@@ -90,6 +90,6 @@ import org.icefaces.component.baseMeta.UICommandMeta;
     @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY)
     private MethodExpression action;
 
-    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)
     private Boolean immediate;
   }

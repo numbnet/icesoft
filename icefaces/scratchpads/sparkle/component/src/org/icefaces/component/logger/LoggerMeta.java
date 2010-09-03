@@ -37,7 +37,7 @@ public class LoggerMeta extends UIComponentBaseMeta {
 //    @Property   
 //    private String label;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
     private String id;
 	
 	@Property

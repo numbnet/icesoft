@@ -37,7 +37,7 @@ public class MenuItemMeta extends UICommandMeta {
 	    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY	)
 	    private MethodExpression action;
 	    
-	    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY, useTemplate=true)
+	    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)
 	    private Boolean immediate;
 }
 

@@ -8,7 +8,7 @@ import java.util.Map;
 
  
 
-import org.icefaces.component.annotation.PropertyTemplate;
+//import org.icefaces.component.annotation.PropertyTemplate; /* ### removed */
 import org.icefaces.generator.behavior.ActionSourceBehavior;
 import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.behavior.ClientBehaviorHolder;
@@ -25,7 +25,7 @@ public class GeneratorContext{
     private FacesConfigBuilder facesConfigBuilder = new FacesConfigBuilder(); 
     private FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
 	private List<Class> components;
-    private Map<String, Object> propertyTemplate = new HashMap<String, Object>();
+    // private Map<String, Object> propertyTemplate = new HashMap<String, Object>(); /* ### removed */
     private ComponentContext activeComponentContext;
     public final static String shortName = "ice";    
     public final static String namespace = "http://www.icefaces.org/icefaces/components";
@@ -77,7 +77,7 @@ public class GeneratorContext{
 		getBehaviors().add(new ActionSourceBehavior());
 		getBehaviors().add(new ClientBehaviorHolder());
 		components = FileWriter.getAnnotatedCompsList();
-        loadPropertyTemplate();
+        // loadPropertyTemplate(); /* ### to do: remove */
 	}
 	
     public TLDBuilder getTldBuilder() {
@@ -116,13 +116,15 @@ public class GeneratorContext{
 		this.activeComponentContext = activeComponentContext;
 	}
 
-	public Map<String, Object> getPropertyTemplate() {
+	/*
+	public Map<String, Object> getPropertyTemplate() { // ### to do: remove
 		return propertyTemplate;
 	}
 
-	public void setPropertyTemplate(Map<String, Object> propertyTemplate) {
+	public void setPropertyTemplate(Map<String, Object> propertyTemplate) { // ### to do: remove 
 		this.propertyTemplate = propertyTemplate;
 	}
+	*/
 	
 	public static GeneratorContext getInstance() {
 		if (generatorContext == null) {
@@ -131,8 +133,9 @@ public class GeneratorContext{
 		return generatorContext;
 	}
 
+	/*
     //this method loads predefine properties 
-    private void loadPropertyTemplate() {
+    private void loadPropertyTemplate() { // ### to do: remove 
         Field[] fields = PropertyTemplate.class.getDeclaredFields();
         for (int i=0; i < fields.length; i++) {
             //its mean "public static", must be sun class name and its properties
@@ -149,6 +152,7 @@ public class GeneratorContext{
             }
         }
     }
+	*/
     
     public List<Class> getComponents() {
     	return this.components;
