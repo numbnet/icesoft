@@ -54,7 +54,8 @@ if (person.getComment() == null){
 %>
 <html>
 <head>
-    <title>ICEpush Place</title>
+    <title>JSP ICEpush Place</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="code.icepush"></script>
     <script type="text/javascript">//<![CDATA[
     function getXmlHttpRequest() {
@@ -98,27 +99,26 @@ if (person.getComment() == null){
     </script>
 </head>
 <body>
-<h2>ICEpush Place</h2>
+<center>
+<h1>JSP - ICEpush Place View</h1>
 
 <form id="settings">
-    <table border="1">
-        <th colspan="2"><h4>ICEpush Place Console&nbsp</h4></th>
+    <table class="inputSet">
+        <tbody>
         <tr>
-            <td>Name: </td>
             <td>
-                <input type="text"
-                       value="${person.name}"
-                       id="name"
-                       name="nickname"
-                       size="20" />
+                <div class="nameLabel">Nickname:</div>
+            </td>
+            <td>
+                <input type="text" id="name" name="nickname" maxlength="15" class="nameInput" value="${person.name}"/>
             </td>
         </tr>
         <tr>
             <td>
-                What mood are you in?:
+                <div class="moodLabel">Mood:</div>
             </td>
             <td>
-                <select id="mood" name="mood" >
+                <select id="mood" name="mood" class="moodInput">
                     <option value="average"
                     <% if (person.getMood().compareTo("average") == 0)  {%>
                     selected
@@ -144,27 +144,23 @@ if (person.getComment() == null){
                     selected
                     <% } %>
                     >sad</option>
-                </select>
+                </select>            
             </td>
         </tr>
         <tr>
             <td>
-                What's on your mind?:
+                <div class="thoughtLabel">Thoughts:</div>
             </td>
             <td>
-                <input type="text"
-                       value="${person.comment}"
-                       id="comment"
-                       name="comment"
-                       size="20"/>
+                <input type="text" id="comment" name="comment" maxlength="150" class="thoughtInput" value="${person.comment}"/>
             </td>
         </tr>
         <tr>
             <td>
-                Change your region:
+                <div class="regionLabel">Region:</div>
             </td>
             <td>
-                <select id="region" name="region">
+                <select id="region" name="region" class="regionInput">
                     <option value="4"
                     <% if (person.getRegion() == 4)  {%>
                     selected
@@ -195,27 +191,38 @@ if (person.getComment() == null){
                     selected
                     <% } %>
                     >Antarctica</option>
-                    </select>
+                </select>
             </td>
         </tr>
-        <tr>
-            <td>
-                
-            </td>
-            <td>
-                <input type="submit" value="Update" onclick="click_updateSettings();return false;"/>
-            </td>
-        </tr>
+    </tbody>
     </table>
+    
+    <input type="submit" value="Update" onclick="click_updateSettings();return false;"/>
 </form>
 
-<h2>Regions</h2>
-<icep:region group="North America" page="/northAmerica.jsp"/><br/><br/>
-<icep:region group="Europe" page="/europe.jsp"/><br/><br/>
-<icep:region group="South America" page="/southAmerica.jsp"/><br/><br/>
-<icep:region group="Asia" page="/asia.jsp"/><br/><br/>
-<icep:region group="Africa" page="/africa.jsp"/><br/><br/>
-<icep:region group="Antarctica" page="/antarctica.jsp"/><br/><br/>
+<table class="worldPanel" cellspacing="0" cellpadding="0">
+<tbody>
+    <tr><td>
+        <icep:region group="Africa" page="/africa.jsp"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Antarctica" page="/antarctica.jsp"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Asia" page="/asia.jsp"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Europe" page="/europe.jsp"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="North America" page="/northAmerica.jsp"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="South America" page="/southAmerica.jsp"/>
+    </td></tr>
+</tbody>
+</table>
 
+</center>
 </body>
 </html>

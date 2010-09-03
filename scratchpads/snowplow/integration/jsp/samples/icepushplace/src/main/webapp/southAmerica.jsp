@@ -34,45 +34,61 @@
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
 </jsp:useBean>
 
-<table border="1">
-    <thead>
-        <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">South America</span></td></tr>
-    </thead>
+<table cellspacing="0" cellpadding="0" style="width: 100%;">
+<tbody>
     <tr>
-        <th>Name</th>
-        <th>Mood</th>
-        <th>What's on your mind?</th>
-        <th>Client Technology</th>
-        <th>Latest Post</th>
-        <th>Post Message</th>
+        <td>
+            <div class="regionPanel" style="width: 100%;">
+                <div class="regionHeader">South America</div>
+            </div>
+        </td>
     </tr>
     <c:choose>
     <c:when test="${empty world.southAmerica}">
-    <tr>
-        <td colspan="6">Empty</td>
-    </tr>
+        <tr><td>
+            <table>
+            <tbody>
+                <tr><td>
+                    No users on this continent.
+                </td></tr>
+            </tbody>
+            </table>
+        </td></tr>
     </c:when>
     <c:otherwise>
-    <c:forEach var="elem" items="${world.southAmerica}" varStatus="row">
-    <tr>
-        <td><c:out value="${elem.name}"/>&nbsp</td>
-        <td><c:out value="${elem.mood}"/>&nbsp</td>
-        <td><c:out value="${elem.comment}"/>&nbsp</td>
-        <td><c:out value="JSP"/>&nbsp</td>
-        <td><c:out value="${elem.messageIn}"/>&nbsp</td>
-        <td>
-            <form id="msgForm${elem.region}${row.index}">
-            <input id="msgOut${elem.region}${row.index}"
-                   type="text"
-                   name="messageOut"
-                    size="20" />&nbsp
-            <input type="submit"
-                   value="Post"
-                   onclick="click_messageOut('${elem.region}',${row.index},'${person.name}');return false;"/>
-            </form>
-        </td>
-    </tr>
+    <c:forEach var="elem" items="${world.southAmerica}" varStatus="row">    
+        <tr><td>
+            <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="images/mood-${elem.mood}.png" style="width: 26px; height: 29px;">
+                    </td>
+                    <td>
+                        <c:out value="${elem.name}"/>
+                    </td>
+                    <c:if test="${!empty elem.technology}">
+                    <td>
+                        <c:out value="using ${elem.technology}"/>
+                    </td>
+                    </c:if>
+                    <td>
+                        <c:out value="thinks '${elem.comment}'"/>
+                    <td>
+                    <c:if test="${!empty elem.messageIn}">
+                    <td>
+                        and
+                    <td>
+                    <td>
+                        <c:out value="says '${elem.messageIn}'"/>            
+                    </td>
+                    </c:if>
+                </tr>
+            </tbody>
+            </table>
+        </td></tr>
     </c:forEach>
     </c:otherwise>
     </c:choose>
+</tbody>
 </table>
