@@ -192,15 +192,20 @@ public class Page implements EntryPoint, ClosingHandler {
 			}
 			
 			public void onSuccess(List<User> result) {
+				FlexTable userTable = null;
+				
 				// If we retrieved a list of users properly we'll want to add them to our panel
 				if (ValidatorUtil.isValidList(result)) {
-					FlexTable userTable = null;
 					
 					// For each user we'll add the mood image, name, thought, and message
 					for (User currentUser : result) {
 						userTable = new FlexTable();
 						userTable.setWidget(0, 0, makeMoodImage(currentUser.getMood()));
 						userTable.setWidget(0, 1, new Label(currentUser.getName()));
+						if ((currentUser.getTechnology() != null) && (currentUser.getTechnology().trim().length() > 0)) {
+							userTable.setWidget(0, userTable.getCellCount(0),
+												new Label("using " + currentUser.getTechnology()));
+						}
 						if ((currentUser.getMind() != null) && (currentUser.getMind().trim().length() > 0)) {
 							userTable.setWidget(0, userTable.getCellCount(0),
 											   new Label("thinks '" + currentUser.getMind() + "'"));
@@ -216,6 +221,12 @@ public class Page implements EntryPoint, ClosingHandler {
 						
 						base.add(userTable);
 					}
+				}
+				else {
+					userTable = new FlexTable();
+					userTable.setWidget(0, 0, new Label("No users on this continent."));
+					
+					base.add(userTable);
 				}
 			}
 		});
@@ -286,7 +297,7 @@ public class Page implements EntryPoint, ClosingHandler {
 			});
 		}
 		
-		switchPanel("ICEpush Place Login", null, loginButton);
+		switchPanel(WorldService.OUR_TECHNOLOGY + " - ICEpush Place Login", null, loginButton);
 	}
 	
 	/**
@@ -316,7 +327,7 @@ public class Page implements EntryPoint, ClosingHandler {
 			});
 		}
 		
-		switchPanel("ICEpush Place View", worldPanel, updateButton);
+		switchPanel(WorldService.OUR_TECHNOLOGY + " - ICEpush Place View", worldPanel, updateButton);
 	}
 	
 	/**
