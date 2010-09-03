@@ -25,6 +25,7 @@ public interface WorldService extends RemoteService {
     public static final String MOOD_IMAGE_PREFIX = "images/mood-";
     // The suffix to mood images, in this case a file extension
     public static final String MOOD_IMAGE_SUFFIX = ".png";
+    public static final String OUR_TECHNOLOGY = "GWT";
 
     /**
      * Method to construct and add a user to the world

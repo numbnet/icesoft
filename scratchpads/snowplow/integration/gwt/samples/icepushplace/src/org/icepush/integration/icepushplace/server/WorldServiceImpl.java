@@ -88,7 +88,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		toReturn.setMood(toConvert.getMood());
 		toReturn.setComment(toConvert.getMind());
 		toReturn.setMessageIn(toConvert.getMessage());
-		toReturn.setTechnology("GWT");
+		toReturn.setTechnology(WorldService.OUR_TECHNOLOGY);
 		
 		return toReturn;
 	}
@@ -113,6 +113,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 		toReturn.setMind(toConvert.getComment());
 		toReturn.setRegion(region);
 		toReturn.setMessage(toConvert.getMessageIn());
+		toReturn.setTechnology(toConvert.getTechnology());
 		
 		return toReturn;
 	}
@@ -124,7 +125,7 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	public User addUser(String name, String mood, String mind, String region, String message) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Construct the user object based on the passed values
-			User user = new User(name, mood, mind, region, message);
+			User user = new User(name, mood, mind, region, message, WorldService.OUR_TECHNOLOGY);
 			
 			// Attempt to use the web service to log the user in
 			PersonType resultPerson = world.loginPerson(region, convertUserToPerson(user));

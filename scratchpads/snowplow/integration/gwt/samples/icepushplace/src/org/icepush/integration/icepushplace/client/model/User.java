@@ -17,21 +17,23 @@ public class User implements Serializable {
 	private String mind;
 	private String region;
 	private String message;
+	private String technology;
 	
 	public User() {
 	}
 	
-	public User(String name, String mood, String mind, String region, String message) {
-		this(DEFAULT_KEY, name, mood, mind, region, message);
+	public User(String name, String mood, String mind, String region, String message, String technology) {
+		this(DEFAULT_KEY, name, mood, mind, region, message, technology);
 	}
 	
-	public User(int key, String name, String mood, String mind, String region, String message) {
+	public User(int key, String name, String mood, String mind, String region, String message, String technology) {
 		this.key = key;
 		this.name = name;
 		this.mood = mood;
 		this.mind = mind;
 		this.region = region;
 		this.message = message;
+		this.technology = technology;
 	}	
 	
 	public int getKey() {
@@ -82,11 +84,19 @@ public class User implements Serializable {
 		this.message = message;
 	}
 
+	public String getTechnology() {
+		return technology;
+	}
+
+	public void setTechnology(String technology) {
+		this.technology = technology;
+	}
+
 	public boolean hasKey() {
 		return getKey() != DEFAULT_KEY;
 	}
 	
 	public String toString() {
-		return name + " is " + mood + " in " + region + ", thinking '" + mind + "' and saying '" + message + "'.";
+		return name + " using " + technology + " is " + mood + " in " + region + ", thinking '" + mind + "' and saying '" + message + "'.";
 	}
 }
