@@ -14,6 +14,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
+import org.icefaces.component.effects.ClientBehaviorContextImpl;
 import org.icefaces.component.effects.EffectBehavior;
 import org.icefaces.component.effects.Effect;
 import org.icefaces.component.utils.ARIA;
@@ -29,7 +30,7 @@ public class TabSetRenderer extends Renderer{
         return true;
     }
 
-    public void decode(final FacesContext facesContext, final UIComponent uiComponent) {
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
             String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
@@ -45,9 +46,9 @@ public class TabSetRenderer extends Renderer{
                 } catch (Exception e) {}
             }
         }
-        Utils.iterateEffects(uiComponent, new EffectBehavior.Iterator() {
+        Utils.iterateEffects(new EffectBehavior.Iterator(uiComponent) {
 			public void next(String name, EffectBehavior effectBehavior) {
-				effectBehavior.decode(facesContext, uiComponent);				
+				effectBehavior.decode(FacesContext.getCurrentInstance(), this.getUIComponent());				
 			}
 		});
     }
@@ -127,42 +128,10 @@ public class TabSetRenderer extends Renderer{
         String onupdate = tabSet.getOnupdate();
         boolean effectOnHover = tabSet.isEffectOnHover();
         final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(uiComponent, new EffectBehavior.Iterator() {
+        Utils.iterateEffects(new EffectBehavior.Iterator(uiComponent) {
 			public void next(String event, EffectBehavior effectBehavior) {
 				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
-				effect.append(effectBehavior.getScript(new ClientBehaviorContext(){
-
-					@Override
-					public UIComponent getComponent() {
-						// TODO Auto-generated method stub
-						return tabSet;
-					}
-
-					@Override
-					public String getEventName() {
-						// TODO Auto-generated method stub
-						return "transition";
-					}
-
-					@Override
-					public FacesContext getFacesContext() {
-						// TODO Auto-generated method stub
-						return FacesContext.getCurrentInstance();
-					}
-
-					@Override
-					public Collection<Parameter> getParameters() {
-						// TODO Auto-generated method stub
-						return null;
-					}
-
-					@Override
-					public String getSourceId() {
-						// TODO Auto-generated method stub
-						return null;
-					}
-					
-				}, false));	
+				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
 			}
 		});        
         
@@ -254,7 +223,7 @@ public class TabSetRenderer extends Renderer{
         } else {
             if (tabSet.getSelectedIndex() == index) {
                 final StringBuilder style = new StringBuilder();
-                Utils.iterateEffects(tabSet, new EffectBehavior.Iterator() {
+                Utils.iterateEffects(new EffectBehavior.Iterator(tabSet) {
         			public void next(String name, EffectBehavior effectBehavior) {
         		        if (effectBehavior.getStyle() != null) {
         		        	style.append(effectBehavior.getStyle());

@@ -444,14 +444,36 @@ init: function(params) {
     }, params);
     this.configCal(calendar, params);
     calendar.render();
-
+	var effect;
+	try {
+		effect = (params['effect']) ? eval (params['effect']): null;
+		if (effect) effect.set('node', '#'+ dialog.id+'_c');	
+    } catch (e) {}
+ 
     var toggleClick = function() {
+	
+	
         if (this.hasClass("open-popup")) {
+				if (effect) {
+					peer = effect.getPeer();
+					peer.set('node', '#'+ dialog.id+'_c');
+					peer.run();
+				}
             dialog.show();
             this.replaceClass("open-popup", "close-popup");
+			
         } else {
-            dialog.hide();
-            this.replaceClass("close-popup", "open-popup");
+			if (effect) {
+				thiz = this;
+				effect.on('end', function() {
+					dialog.hide();
+					thiz.replaceClass("close-popup", "open-popup");
+				});
+				effect.run();
+			} else {
+				dialog.hide();
+				this.replaceClass("close-popup", "open-popup");			
+			}
         }
     };
     var inputEnter = function(evType, fireArgs, subscribeObj) {

@@ -279,7 +279,7 @@ ice.component.tabset = {
 					effect.setContainerId(clientId);
 				    effect.revert = true;
 					effect.setPreRevert(callback);
-					try {
+					try {console.info('run executed. ');
 					effect.run();
 					} catch(e) {					console.info('run executed. server side tab '+ e);}
 					console.info('run executed. server side tab ');

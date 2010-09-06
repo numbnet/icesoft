@@ -10,8 +10,7 @@ import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-
-import org.icefaces.component.effects.Effect;
+ 
 import org.icefaces.component.effects.EffectBehavior;
 
 public class Utils {
@@ -68,10 +67,10 @@ public class Utils {
     }
     
     
-    public static boolean iterateEffects(UIComponent uiComponent, EffectBehavior.Iterator iterator) {
-    	if (!(uiComponent instanceof ClientBehaviorHolder)) return false;
-    	for (String effect : ((ClientBehaviorHolder)uiComponent).getClientBehaviors().keySet()) {
-    		for (ClientBehavior behavior: ((ClientBehaviorHolder)uiComponent).getClientBehaviors().get(effect)) {
+    public static boolean iterateEffects(EffectBehavior.Iterator iterator) {
+    	if (!(iterator.getUIComponent() instanceof ClientBehaviorHolder)) return false;
+    	for (String effect : ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().keySet()) {
+    		for (ClientBehavior behavior: ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().get(effect)) {
     			if (behavior instanceof EffectBehavior) {
     				iterator.next(effect, (EffectBehavior)behavior);		
     			}
