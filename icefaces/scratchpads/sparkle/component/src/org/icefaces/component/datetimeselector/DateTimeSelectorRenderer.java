@@ -3,10 +3,15 @@ package org.icefaces.component.datetimeselector;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.component.utils.Utils;
 import org.icefaces.component.datetimeselector.DateTimeSelector;
+import org.icefaces.component.effects.ClientBehaviorContextImpl;
+import org.icefaces.component.effects.EffectBehavior;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorContext.Parameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -102,7 +107,13 @@ public class DateTimeSelectorRenderer extends Renderer {
         formatter.applyPattern("a");
         String amPmStr = formatter.format(date);
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
-
+        final StringBuilder effect = new StringBuilder();
+        Utils.iterateEffects(new EffectBehavior.Iterator(component) {
+			public void next(String event, EffectBehavior effectBehavior) {
+				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
+			}
+		});
+        
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
                 beginMap().
@@ -123,6 +134,7 @@ public class DateTimeSelectorRenderer extends Renderer {
                     entry("renderInputField", dateTimeSelector.isRenderInputField()).
                     entry("singleSubmit", dateTimeSelector.isSingleSubmit()).
                     entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
+                    entry("effect", effect.toString()).                    
                 endMap().toString();
         System.out.println("params = " + params);
         ScriptWriter.insertScript(context, component, "ice.component.calendar.updateProperties(" + params + ");");

@@ -126,19 +126,8 @@ YUI().use("anim", "json", function(Y) {
 						   this.chainEffect();
 					   }
 			}
-		});
-	 
-        thiz = this;	
-		this.peer = {
-			run: function() {
-			    if(thiz.peerName) {
-					new ice.yui3.effects[thiz.peerName](thiz.param).run();
-			    } else {
-					console.info('No peer is defined for this component');
-				}
-			   
-			}
-		};   		
+		}); 
+  		
     }
  
     Y.extend(EffectBase, Y.Anim , {
@@ -168,6 +157,8 @@ YUI().use("anim", "json", function(Y) {
 		},
 		
 		run: function() {
+		    console.info('addding classs '+ this.effectClass);
+		    this.get('node').addClass(this.effectClass+"From");
 			this.setDefaults();
 			this.orignalRun();
 
@@ -175,6 +166,20 @@ YUI().use("anim", "json", function(Y) {
 		
 		setPreRevert: function(callback) {
 			this.preRevert = callback;
+		},
+		
+		setPeerName: function(peerName) {
+			this.peerName = peerName;
+		},
+ 
+		getPeer:function() {
+			     if(this.peerName) {
+					return new ice.yui3.effects[this.peerName](this.param);
+			     } else {
+					console.info('No peer is defined for this component');
+					return this;					
+				 }
+              
 		}
 
 			
@@ -184,11 +189,13 @@ YUI().use("anim", "json", function(Y) {
 	     console.info('new Fade '+ param);
     	Fade.superclass.constructor.apply(this, arguments);
 		this.effectClass = "Fade";
-		this.peerName = "Appear";
+		 
+ 
     }
  
     Y.extend(Fade, EffectBase, {
         setDefaults: function() {
+		      this.setPeerName('Appear');
               if (!this.param['to']) {
     			  var node = ice.yui3.effectHelper.getStyledAnimElement(Y, this);
 				  

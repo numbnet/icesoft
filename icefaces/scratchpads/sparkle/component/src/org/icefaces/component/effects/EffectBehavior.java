@@ -271,7 +271,21 @@ public class EffectBehavior extends ClientBehaviorBase{
 		}
     }   
  
-	public interface Iterator {
+	public interface IIterator {
 		public void next (String name, EffectBehavior effectBehavior);
+	}
+	
+	public static abstract class Iterator implements IIterator {
+		private UIComponent uiComponent;
+		private Iterator(){
+			
+		}
+		public Iterator(UIComponent uiComponent) {
+			this.uiComponent = uiComponent;
+		}
+		
+		public UIComponent getUIComponent() {
+			return this.uiComponent;
+		}
 	}
 }

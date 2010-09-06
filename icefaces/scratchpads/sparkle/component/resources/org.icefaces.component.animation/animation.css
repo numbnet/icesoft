@@ -8,10 +8,13 @@
 
 .AppearTo {
   opacity:1;
+  
 }
 
 .AppearFrom {
   opacity:0;
+  display:block;
+  visibility:visible;
 }
 
 .HighlightTo {
@@ -24,9 +27,9 @@
 
 
 .myTab .HighlightTo{
-  background-color:pink; 
+  background-color:#c1cdc1; 
 }
 
 .myTab2 .HighlightTo{
-  background-color:yellow; 
+  background-color:#838b83; 
 }
