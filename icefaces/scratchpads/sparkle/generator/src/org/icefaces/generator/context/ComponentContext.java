@@ -3,6 +3,7 @@ package org.icefaces.generator.context;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,7 @@ public class ComponentContext {
             System.out.println(clazz.getDeclaredClasses());
             //first get all properties this annotated component wants to include
             //these properties should go to the component as well as tag class
-            String[] props = component.includeProperties();
+            //String[] props = component.includeProperties();
             
 			/* ### to do: remove all this for block; it's safe to remove, so far no component uses it */
 			/*
@@ -172,6 +173,14 @@ public class ComponentContext {
             }
 			*/
 			
+			// disinherit properties
+			String[] disinheritProperties = component.disinheritProperties();
+			HashSet<String> disinheritPropertiesSet = new HashSet<String>();
+			
+            for (int i=0; i < disinheritProperties.length; i++) {
+				disinheritPropertiesSet.add(disinheritProperties[i]);
+            }
+			
             //now we have done with include properties, now get all properties which 
             //are define on the annotated component itself.
             
@@ -179,13 +188,15 @@ public class ComponentContext {
 			Field[] fields = getDeclaredFields(clazz); /* ### added */
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
+				if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
+					continue;
+				}
                 if(field.isAnnotationPresent(Property.class)){
                     Property property = (Property) field.getAnnotation(Property.class); /* @@@ necessary to use annotation at this point */
-					
 					PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz); // collect @Property values from top to bottom
 					// /* debug */ System.out.println("--- Final"); displayValues(propertyValues);
 					setDefaultValues(propertyValues); // if values end up being UNSET, then set them to default
-					// /* debug */ System.out.println("--- Defaults"); displayValues(propertyValues);
+					// /* debug */ System.out.println("--- Defaults\n> " + field.getName()); displayValues(propertyValues);
 					propertyValuesMap.put(field, propertyValues);
 					
                    //inherited properties should go to the tag class only
@@ -212,10 +223,13 @@ public class ComponentContext {
                 }
             }
         } 
-        
+      
+	/* // %%% removed 
       if (clazz.getSuperclass() != null) {
           processAnnotation(clazz.getSuperclass(), false);
       }
+	*/
+
       processFacets(clazz);
   }    
     
@@ -235,8 +249,8 @@ public class ComponentContext {
 
             }
         }
-    }    
-    
+    } 
+	
 	private static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
 		return collectPropertyValues(fieldName, clazz, new PropertyValues());
 	}
@@ -246,13 +260,25 @@ public class ComponentContext {
 		// /* debug */ System.out.println(clazz.getName());
 		if (superClass != null) {
 			// /* debug */ System.out.println("  go up to " + superClass.getName());
-			collectPropertyValues(fieldName, superClass, propertyValues);
+			boolean inherit = true;
+			try {
+				Field field = clazz.getDeclaredField(fieldName);
+				if (field.isAnnotationPresent(Property.class)) {
+					Property property = (Property) field.getAnnotation(Property.class);
+					inherit = property.inherit() != Inherit.LOCAL_PROPERTY;
+				}
+			} catch (NoSuchFieldException e) {
+				// do nothing
+			}
+			
+			if (inherit) {
+				collectPropertyValues(fieldName, superClass, propertyValues);
+			}
 		}
 		try {
 			Field field = clazz.getDeclaredField(fieldName);
 			if (field.isAnnotationPresent(Property.class)) {
 				Property property = (Property) field.getAnnotation(Property.class);
-				
 				if (property.isMethodExpression() != Expression.UNSET) {
 					propertyValues.isMethodExpression = property.isMethodExpression();
 				}
@@ -341,7 +367,6 @@ public class ComponentContext {
 		if (superClass != null) {
 			return getDeclaredFields(superClass, fields);
 		} else {
-			//Field[] result = (Field[]) fields.values().toArray();
 			Object[] values = fields.values().toArray();
 			Field[] result = new Field[values.length];
 			for (int i = 0; i < values.length; i++) {
