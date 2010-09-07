@@ -28,6 +28,8 @@ import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.icefaces.util.DOMUtils;
+
 public class BasicResponseWriter extends ResponseWriterWrapper {
 
     private Writer writer;
@@ -97,7 +99,7 @@ public class BasicResponseWriter extends ResponseWriterWrapper {
         writer.write(' ');
         writer.write(name);
         writer.write("=\"");
-        writer.write(String.valueOf(value));
+        writer.write(DOMUtils.escapeAttribute(String.valueOf(value)));
         writer.write("\"");
     }
 
