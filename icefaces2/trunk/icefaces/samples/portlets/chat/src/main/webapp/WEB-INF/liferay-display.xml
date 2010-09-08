@@ -24,6 +24,6 @@
 
 <display>
     <category name="ICEfaces 2">
-        <portlet id="chat"/>
+        <portlet id="ice2-chat"/>
     </category>
 </display>
