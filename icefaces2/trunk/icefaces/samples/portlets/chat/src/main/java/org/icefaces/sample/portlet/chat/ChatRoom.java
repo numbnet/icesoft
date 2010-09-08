@@ -103,8 +103,6 @@ public class ChatRoom {
 
     public List getMessages(int start, int number) {
 
-        System.out.println("ChatRoom.getMessages: " + start + ", " + number + ", " + messages.size());
-
         if (start > messages.size()) {
             start = 0;
         }
