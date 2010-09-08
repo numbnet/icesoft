@@ -36,13 +36,13 @@ var submit;
         return configurationOf(element).standardFormSerialization;
     }
 
-    function serializeEventToOptions(event, element, options) {
+    function serializeEventToOptions(event, options) {
         var collectingQuery = object(function(method) {
             method(addNameValue, function(self, name, value) {
                 options[name] = value;
             });
         });
-        serializeOn($event(event, element), collectingQuery);
+        serializeOn(event, collectingQuery);
     }
 
     function serializeAdditionalParameters(additionalParameters, options) {
@@ -100,7 +100,12 @@ var submit;
 
             event = event || null;
             var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
-            serializeEventToOptions(event, element, options);
+            var decoratedEvent = $event(event, element);
+
+            cancelBubbling(decoratedEvent);
+            cancelDefaultAction(decoratedEvent);
+
+            serializeEventToOptions(decoratedEvent, options);
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(element, event, options);
         } finally {
@@ -152,14 +157,14 @@ var submit;
     function fullSubmit(execute, render, event, element, additionalParameters) {
         event = event || null;
 
-        var disabled = document.getElementById(element.id+":ajaxDisabled");
-        if (disabled)  {
+        var disabled = document.getElementById(element.id + ":ajaxDisabled");
+        if (disabled) {
             var disabledArray = disabled.value.split(" ");
             var l = disabledArray.length;
-            for(var i = 1; i < l; i++) {
+            for (var i = 1; i < l; i++) {
                 var name = disabledArray[i];
                 var field = element[name];
-                if ( (field) && (field.value == name ) && (element.nativeSubmit) ) {
+                if ((field) && (field.value == name ) && (element.nativeSubmit)) {
                     element.nativeSubmit();
                     return;
                 }
@@ -168,7 +173,12 @@ var submit;
 
         var viewID = viewIDOf(element);
         var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
-        serializeEventToOptions(event, element, options);
+        var decoratedEvent = $event(event, element);
+
+        cancelBubbling(decoratedEvent);
+        cancelDefaultAction(decoratedEvent);
+
+        serializeEventToOptions(decoratedEvent, options);
         serializeAdditionalParameters(additionalParameters, options);
 
         if (deltaSubmit(element)) {
