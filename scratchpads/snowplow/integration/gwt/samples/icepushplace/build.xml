@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="icepush-place-gwt" default="war">
+<project name="icepushplace-gwt" default="war">
 
-	<property file="local.properties" />
+	<property file="build.properties"/>
 	<property file="../samples.properties" />
 	<property file="${root.offset}/build.properties" />
-	<import file="${root.offset}/build-common.xml" />
+    <property name="server.url" value="http://localhost:8080"/>
+    <property name="replace.file" value="src/org/icepush/integration/icepushplace/client/WorldService.java"/>
+    <property name="replace.token.app" value="${replace.applicationURL}"/>
+    <property name="replace.value.app" value="${server.url}/icepush-place-gwt/"/>
+    <property name="replace.token.ser" value="${replace.webserviceURL}"/>
+    <property name="replace.value.ser" value="${server.url}/icePushPlaceService"/>
 
 	<!-- Configure path to GWT SDK -->
 	<property name="gwt.sdk" location="${root.offset}/integration/gwt/core/lib/gwt" />
+	
+	<import file="${root.offset}/build-common.xml" />
 
 	<path id="project.class.path">
 		<pathelement location="./war/WEB-INF/classes" />
@@ -28,6 +35,7 @@
 
 	<target name="javac" depends="libs" description="Compile java source">
 		<mkdir dir="war/WEB-INF/classes" />
+		<antcall target="-pre.war.replace"/>
 		<javac srcdir="src" includes="**" encoding="utf-8" destdir="war/WEB-INF/classes" source="1.5" target="1.5" nowarn="true" debug="true" debuglevel="lines,vars,source">
 			<classpath refid="project.class.path" />
 		</javac>
@@ -70,7 +78,12 @@
 	<target name="war" depends="build" description="Create a war file">
 		<zip destfile="${ant.project.name}.war" basedir="war" />
 	</target>
-
+	
+    <target name="-pre.war.replace">
+        <replace file="${replace.file}" token="${replace.token.app}" value="${replace.value.app}"/>
+        <replace file="${replace.file}" token="${replace.token.ser}" value="${replace.value.ser}"/>
+    </target>
+	
 	<target name="clean" description="Cleans this project">
 		<delete dir="war/WEB-INF/classes" failonerror="false" />
 		<delete dir="war/WEB-INF/lib" failonerror="false" />
