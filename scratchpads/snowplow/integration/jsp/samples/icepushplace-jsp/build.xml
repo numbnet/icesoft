@@ -31,9 +31,9 @@
     <property name="server.url" value="http://localhost:8080"/>
     <property name="replace.file" value="build/webapp/icepushplace.jsp"/>
     <property name="replace.token.app" value="${replace.applicationURL}"/>
-    <property name="replace.value.app" value="${server.url}/icepushplace-jsp/"/>
+    <property name="replace.value.app" value="${server.url}/icepushplace-jsp"/>
     <property name="replace.token.ser" value="${replace.webserviceURL}"/>
-    <property name="replace.value.ser" value="${server.url}/icePushPlaceService/"/>
+    <property name="replace.value.ser" value="${server.url}/icePushPlaceService"/>
         
     <import file="${root.offset}/build-common.xml"/>
     
