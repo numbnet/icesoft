@@ -162,6 +162,7 @@ public class MainServlet extends HttpServlet {
             }
             //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
+            dispatcher.dispatchOn(".*/ice-static/.*", resourceServer);
             dispatcher.dispatchOn(".*(\\/$|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
