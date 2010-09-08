@@ -186,14 +186,30 @@
 					<include name="**" />
 				</fileset>
 			</copy>
-
+			
+			<antcall target="-pre.war.replace"/>
+			
 			<war basedir="${build.dir}/webapp" destfile="${dist.dir}/@{war.file.name}" webxml="${build.dir}/webapp/WEB-INF/web.xml">
 				<add.filesets />
 			</war>
 
 		</sequential>
 	</macrodef>
-
+	
+	<target name="-check.replace">
+        <condition property="replace.ready">
+            <and>
+                <available file="${replace.file}"/>
+                <isset property="replace.token"/>
+                <isset property="replace.value"/>
+            </and>
+        </condition>
+	</target>
+	
+	<target name="-pre.war.replace" depends="-check.replace" if="replace.ready">
+	    <replace file="${replace.file}" token="${replace.token}" value="${replace.value}"/>
+	</target>
+	
 	<macrodef name="icepush.available">
 		<sequential>			
 			<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.jar.present"/>

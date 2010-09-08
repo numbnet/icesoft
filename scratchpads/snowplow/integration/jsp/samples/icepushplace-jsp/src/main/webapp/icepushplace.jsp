@@ -34,8 +34,8 @@
 <%@taglib prefix="icep" uri="http://www.icepush.org/icepush/jsp/icepush.tld"%>
 
 <jsp:useBean id="world" class="org.icepush.ws.samples.icepushplace.wsclient.ICEpushPlaceWorld" scope="application">
-   <jsp:setProperty name="world" property="webServiceURL" value="http://localhost:8080/icePushPlaceService"/>
-   <jsp:setProperty name="world" property="applicationURL" value="http://localhost:8080/icepush-place/"/>
+   <jsp:setProperty name="world" property="webServiceURL" value="${replace.webserviceURL}"/>
+   <jsp:setProperty name="world" property="applicationURL" value="${replace.applicationURL}"/>
 </jsp:useBean>
 <jsp:useBean id="person" class="org.icepush.ws.samples.icepushplace.PersonType" scope="session">
     <jsp:setProperty name="person" property="*"/>
