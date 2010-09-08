@@ -51,6 +51,7 @@ public class ResourceServer implements Server {
 
     public ResourceServer(Configuration configuration, MimeTypeMatcher mimeTypeMatcher, FileLocator fileLocator) {
         PathDispatcherServer pathDispatcher = new PathDispatcherServer();
+        pathDispatcher.dispatchOn(".*xmlhttp\\/ice-static\\/.*", new CacheControlledServer(new ServeStaticResource(mimeTypeMatcher)));
         pathDispatcher.dispatchOn(".*xmlhttp\\/javascript-blocked$", new RedirectOnJSBlocked(configuration));
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/.*\\.js$", new CacheControlledServer(new ServeJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/css\\/.*", new CacheControlledServer(new ServeCSSResource(mimeTypeMatcher)));
