@@ -103,7 +103,7 @@ var submit;
             var decoratedEvent = $event(event, element);
 
             cancelBubbling(decoratedEvent);
-            cancelDefaultAction(decoratedEvent);
+            if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) cancelDefaultAction(decoratedEvent);
 
             serializeEventToOptions(decoratedEvent, options);
             serializeAdditionalParameters(additionalParameters, options);
@@ -176,7 +176,7 @@ var submit;
         var decoratedEvent = $event(event, element);
 
         cancelBubbling(decoratedEvent);
-        cancelDefaultAction(decoratedEvent);
+        if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) cancelDefaultAction(decoratedEvent);
 
         serializeEventToOptions(decoratedEvent, options);
         serializeAdditionalParameters(additionalParameters, options);
