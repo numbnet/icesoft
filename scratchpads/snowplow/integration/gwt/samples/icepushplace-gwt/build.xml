@@ -7,7 +7,7 @@
     <property name="server.url" value="http://localhost:8080"/>
     <property name="replace.file" value="src/org/icepush/integration/icepushplace/client/WorldService.java"/>
     <property name="replace.token.app" value="${replace.applicationURL}"/>
-    <property name="replace.value.app" value="${server.url}/icepush-place-gwt/"/>
+    <property name="replace.value.app" value="${server.url}/icepushplace-gwt"/>
     <property name="replace.token.ser" value="${replace.webserviceURL}"/>
     <property name="replace.value.ser" value="${server.url}/icePushPlaceService"/>
 
