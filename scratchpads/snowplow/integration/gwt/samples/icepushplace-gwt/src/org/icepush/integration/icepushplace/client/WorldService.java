@@ -13,8 +13,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("world")
 public interface WorldService extends RemoteService {
     // Hardcoded urls used when creating an ICEpushPlaceWorld object
-    public static final String APPLICATION_URL = "http://localhost:18080/icepush-place-gwt";
-    public static final String WEBSERVICE_URL = "http://localhost:18080/icePushPlaceService";
+    public static final String APPLICATION_URL = "${replace.applicationURL}";
+    public static final String WEBSERVICE_URL = "${replace.webserviceURL}";
     // All available moods
     public static final String[] MOODS = {"average",
                                           "shocked",
