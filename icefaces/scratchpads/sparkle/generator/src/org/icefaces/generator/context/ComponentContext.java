@@ -173,6 +173,14 @@ public class ComponentContext {
             }
 			*/
 			
+			// original fields
+			Field[] localFields = clazz.getDeclaredFields();
+			HashSet<Field> localFieldsSet = new HashSet<Field>();
+			
+            for (int i=0; i < localFields.length; i++) {
+				localFieldsSet.add(localFields[i]);
+            }
+			
 			// disinherit properties
 			String[] disinheritProperties = component.disinheritProperties();
 			HashSet<String> disinheritPropertiesSet = new HashSet<String>();
@@ -207,13 +215,18 @@ public class ComponentContext {
                     } else {//annotated properties defined on the component should 
                         //go to the component as well as tag class
                         
-                        
-                        if (!fieldsForComponentClass.containsKey(field.getName())) { 
-                            if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
-                                hasMethodExpression = true;
-                            }
-                            fieldsForComponentClass.put(field.getName(), field);
-                        } 
+						// if it's a local field AND property doesn't exist in ancestor classes or if one of the 4 fields was modified, then add to component class
+                        if (localFieldsSet.contains(field) && (!propertyValues.overrides || property.isMethodExpression() != Expression.UNSET
+							|| !property.methodExpressionArgument().equals(Property.Null)
+							|| !property.defaultValue().equals(Property.Null)
+							|| property.defaultValueIsStringLiteral() != DefaultValueType.UNSET)) {
+							if (!fieldsForComponentClass.containsKey(field.getName())) { 
+								if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+									hasMethodExpression = true;
+								}
+								fieldsForComponentClass.put(field.getName(), field);
+							} 
+						}
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
                         }                           
@@ -252,32 +265,39 @@ public class ComponentContext {
     } 
 	
 	private static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
-		return collectPropertyValues(fieldName, clazz, new PropertyValues());
+		return collectPropertyValues(fieldName, clazz, new PropertyValues(), true);
 	}
 	
-	private static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues) {
+	private static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues, boolean isBaseClass) {
 		Class superClass = clazz.getSuperclass();
 		// /* debug */ System.out.println(clazz.getName());
 		if (superClass != null) {
 			// /* debug */ System.out.println("  go up to " + superClass.getName());
 			boolean inherit = true;
 			try {
-				Field field = clazz.getDeclaredField(fieldName);
-				if (field.isAnnotationPresent(Property.class)) {
-					Property property = (Property) field.getAnnotation(Property.class);
-					inherit = property.inherit() != Inherit.LOCAL_PROPERTY;
+				// if isBaseClass check for inherit()... otherwise, always go up
+				if (isBaseClass) {
+					Field field = clazz.getDeclaredField(fieldName);
+					if (field.isAnnotationPresent(Property.class)) {
+						Property property = (Property) field.getAnnotation(Property.class);
+						inherit = property.inherit() != Inherit.LOCAL_PROPERTY;
+					}
 				}
 			} catch (NoSuchFieldException e) {
 				// do nothing
 			}
 			
 			if (inherit) {
-				collectPropertyValues(fieldName, superClass, propertyValues);
+				collectPropertyValues(fieldName, superClass, propertyValues, false);
 			}
 		}
 		try {
 			Field field = clazz.getDeclaredField(fieldName);
 			if (field.isAnnotationPresent(Property.class)) {
+				// if !isBaseClass... PropertyValues.overrides = true
+				if (!isBaseClass) {
+					propertyValues.overrides = true;
+				}
 				Property property = (Property) field.getAnnotation(Property.class);
 				if (property.isMethodExpression() != Expression.UNSET) {
 					propertyValues.isMethodExpression = property.isMethodExpression();
@@ -349,6 +369,7 @@ public class ComponentContext {
 		return getDeclaredFields(clazz, new HashMap<String, Field>());
 	}
 	
+	// collect all declared fields of a class and all its ancestor classes
 	private static Field[] getDeclaredFields(Class clazz, Map<String, Field> fields) {
 		
 		if (fields == null) {

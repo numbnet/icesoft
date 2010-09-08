@@ -17,4 +17,7 @@ public class PropertyValues {
 	public String javadocSet = Property.Null;
 	public Required required = Required.UNSET;
 	public Inherit inherit = Inherit.UNSET;
+	
+	// flag to indicate that the property in question was first defined in a superclass
+	public boolean overrides = false;
 }
