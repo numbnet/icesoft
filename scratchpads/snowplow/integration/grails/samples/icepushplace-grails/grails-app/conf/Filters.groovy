@@ -7,7 +7,7 @@ class Filters {
        if (!servletContext['world']){
             def world = new ICEpushPlaceWorld()
             world.setWebServiceURL("http://localhost:8080/icePushPlaceService")
-            world.setApplicationURL("http://localhost:8080/icepushplace-grails-0.1")
+            world.setApplicationURL("http://localhost:8080/icepushplace-grails")
             servletContext['world'] = world
        }
        if (request.getSession(false) == null ||
