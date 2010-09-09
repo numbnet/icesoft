@@ -68,7 +68,7 @@ public class InputFileRenderer extends Renderer {
                 options.setMimeType("text/html");
             }
         }).toString();
-        
+        pseudoURL = context.getExternalContext().encodeResourceURL(pseudoURL);
         UploadConfig uploadConfig =
             c.storeContentAndConfig(
                 facesContext, id, iframeContent);

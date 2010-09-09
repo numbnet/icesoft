@@ -230,7 +230,8 @@ public class InputFile extends UICommand implements Serializable {
             }
             writer.write("</head>");
         }
-        String srv = getUploadServletPath(context);
+        String srv = context.getExternalContext().encodeResourceURL(
+                getUploadServletPath(context) );
         writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\"" + srv + "\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
         writer.write("<input type=\"hidden\" name=\"ice.component\" value=\"");
         writer.write(this.getClientId(context));
