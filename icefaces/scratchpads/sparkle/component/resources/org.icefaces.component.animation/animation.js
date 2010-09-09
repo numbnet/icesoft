@@ -52,7 +52,7 @@ ice.yui3.effectHelper = {
 		   div.appendChild(cdiv);
 		   
 	       var field = document.createElement('input'); 
-		   field.setAttribute('type', 'input');
+		   field.setAttribute('type', 'hidden');
 		   field.setAttribute('id', 'styledAnimElement');	   
 		   cdiv.appendChild(field);
 		   node = Y.one('#styledAnimElement');
@@ -206,10 +206,9 @@ YUI().use("anim", "json", function(Y) {
 				      opacity = this.get('node').getStyle('opacity');
 				  }
 				  
-				  if (!opacity) {
-				      opacity = 1;
+				  if (!opacity || Y.UA.ie > 0) {
+				      opacity = 0;
 				  }
-				  
             	  this.set('to', {
             		  'opacity': opacity
             		  });
@@ -226,8 +225,8 @@ YUI().use("anim", "json", function(Y) {
     				  opacity = this.get('node').getStyle('opacity');
     			  }
 				  
-				  if (!opacity) {
-				      opacity = 0;
+				  if (!opacity || Y.UA.ie > 0) {
+				      opacity = 1;
 				  }				  
    
             	  this.set('from', { 
