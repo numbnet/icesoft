@@ -83,7 +83,7 @@ ice.component.tabset = {
                         };
             if (jsfProps.isClientSide){
             	ice.component.clientState.set(clientId, currentIndex);
-                console.info('Client side tab ');
+                //console.info('Client side tab ');
             } else {
                 var targetElement = thiz.getTabIndexField(tbset);
                 if(targetElement) {
@@ -184,23 +184,23 @@ ice.component.tabset = {
        }
        
     
-	   console.info('effect >>> '+ jsfProps.effect );
+	   //console.info('effect >>> '+ jsfProps.effect );
 	   
 	   if (jsfProps.effect) {
-		   console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
+		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
 		   var effect = eval(jsfProps.effect);
-		   tabview.contentTransition = function(newTab, oldTab) {	console.info('1. server side tab ');
+		   tabview.contentTransition = function(newTab, oldTab) {	//console.info('1. server side tab ');
 		        var currentIndex = tabview.getTabIndex(newTab);
 
 					var callback = function(_effect) {
-					    console.info('_EFFEFEFEF '+ _effect);
+					    //console.info('_EFFEFEFEF '+ _effect);
 						
 						var tbset = document.getElementById(clientId);
-					    console.info('3. onend server side tab ');
+					    //console.info('3. onend server side tab ');
 						oldTab.set('contentVisible', false);
 						YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
 						newTab.set('contentVisible', true);
-						console.info('3.a onend server side tab ');
+						//console.info('3.a onend server side tab ');
 						 
 						if (jsfProps.isClientSide){
 							
@@ -208,7 +208,7 @@ ice.component.tabset = {
 							var Effect = new ice.yui3.effects['Appear'](newTab.get('contentEl').id);
 							Effect.setContainerId(clientId);
 							Effect.run();	
-							console.info('Client side tab ');
+							//console.info('Client side tab ');
 							
 							
 						} else {
@@ -223,7 +223,7 @@ ice.component.tabset = {
 							var event ={};
 							            var params = function(parameter) {
                             parameter('onevent', function(data) { 
-                                if (data.status == 'success') {console.info('Sucesssssss');
+                                if (data.status == 'success') {//console.info('Sucesssssss');
                        // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
 						newTab.set('contentVisible', true);
 						         _effect.set('node', '#'+ newTab.get('contentEl').id);
@@ -273,15 +273,16 @@ ice.component.tabset = {
 					//var Effect = new ice.yui3.effects[effect]({node: '#'+  oldTab.get('contentEl').id,  revert:true}, callback);
 					//Effect.setContainerId(clientId);
 					
-					console.info('2. server side tab '+ oldTab.get('contentEl').id);
+					//console.info('2. server side tab '+ oldTab.get('contentEl').id);
 					
 					effect.set('node', '#'+  oldTab.get('contentEl').id);
 					effect.setContainerId(clientId);
 				    effect.revert = true;
 					effect.setPreRevert(callback);
-					try {console.info('run executed. ');
+					try {//console.info('run executed. ');
 					effect.run();
-					} catch(e) {					console.info('run executed. server side tab '+ e);}
+					} catch(e) {					//console.info('run executed. server side tab '+ e);
+					}
 					console.info('run executed. server side tab ');
 		   }
 	   } else { 
