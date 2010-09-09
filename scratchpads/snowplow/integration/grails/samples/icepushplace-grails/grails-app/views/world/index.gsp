@@ -1,8 +1,9 @@
 <html>
-<head>
-	<title>Enter ICEpush Place</title>
+<head> 
+  <title>Grails ICEpush Place</title>
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="-1">
+  <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
   <icep:bridge />
   <script type="text/javascript">//<![CDATA[
     function getXmlHttpRequest() {
@@ -45,28 +46,28 @@
     //]]>
   </script>
 </head>
+
 <body>
-<h2>ICEpush Place</h2>
+<center>
+<h1>Grails - ICEpush Place View</h1>
 
 <form id="settings">
-    <table border="1">
-        <th colspan="2"><h4>ICEpush Place Console&nbsp</h4></th>
+    <table class="inputSet">
+        <tbody>
         <tr>
-            <td>Nickname: </td>
             <td>
-                <input type="text"
-                       value="<%=session["person"].name%>"
-                       id="nickname"
-                       name="nickname"
-                       size="20" />
+                <div class="nameLabel">Nickname:</div>
+            </td>
+            <td>
+                <input type="text" id="nickname" name="nickname" maxlength="15" class="nameInput" value="<%=session["person"].name%>"/>
             </td>
         </tr>
         <tr>
             <td>
-                What mood are you in?:
+                <div class="moodLabel">Mood:</div>
             </td>
             <td>
-                <select id="mood" name="mood" >
+                <select id="mood" name="mood" class="moodInput">
                     <option value="average"
                     <% if(session["person"].mood == "average") {%>
                     selected
@@ -92,27 +93,23 @@
                     selected
                     <% } %>
                     >sad</option>
-                </select>
+                </select>            
             </td>
         </tr>
         <tr>
             <td>
-                What's on your mind?:
+                <div class="thoughtLabel">Thoughts:</div>
             </td>
             <td>
-                <input type="text"
-                       value="<%=session["person"].comment%>"
-                       id="comment"
-                       name="comment"
-                       size="20"/>
+                <input type="text" id="comment" name="comment" maxlength="150" class="thoughtInput" value="<%=session["person"].comment%>"/>
             </td>
         </tr>
         <tr>
             <td>
-                Change your region:
+                <div class="regionLabel">Region:</div>
             </td>
             <td>
-                <select id="region" name="region">
+                <select id="region" name="region" class="regionInput">
                     <option value="4"
                     <% if(session["person"].region == 4) {%>
                     selected
@@ -143,30 +140,38 @@
                     selected
                     <% } %>
                     >Antarctica</option>
-                    </select>
+                </select>
             </td>
         </tr>
-        <tr>
-            <td>
-
-            </td>
-            <td>
-                <input type="submit" 
-                       value="Update"
-                       onclick="click_updateSettings();"/>
-            </td>
-        </tr>
+    </tbody>
     </table>
+    
+    <input type="submit" value="Update" onclick="click_updateSettings();"/>
 </form>
 
-<h2>Regions</h2>
+<table class="worldPanel" cellspacing="0" cellpadding="0">
+<tbody>
+    <tr><td>
+        <icep:region group="Africa" controller="world" action="africa"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Antarctica" controller="world" action="antarctica"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Asia" controller="world" action="asia"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="Europe" controller="world" action="europe"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="North America" controller="world" action="northAmerica"/>
+    </td></tr>
+    <tr><td>
+        <icep:region group="South America" controller="world" action="southAmerica"/>
+    </td></tr>
+</tbody>
+</table>
 
-<icep:region group="North America" controller="world" action="northAmerica"/><br/><br/>
-<icep:region group="Europe" controller="world" action="europe"/><br/><br/>
-<icep:region group="South America" controller="world" action="southAmerica"/><br/><br/>
-<icep:region group="Asia" controller="world" action="asia"/><br/><br/>
-<icep:region group="Africa" controller="world" action="africa"/><br/><br/>
-<icep:region group="Antarctica" controller="world" action="antarctica"/><br/><br/>
-
+</center>
 </body>
 </html>

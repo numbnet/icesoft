@@ -21,43 +21,51 @@
  *
  *
   --%>
-<table border="1">
-    <thead>
-        <tr><td colspan="6"><span style="font-weight: bold; font-size: large;">Asia</span></td></tr>
-    </thead>
+<table cellspacing="0" cellpadding="0" style="width: 100%;">
+<tbody>
     <tr>
-        <th>Nickname</th>
-        <th>Mood</th>
-        <th>What's on your mind?</th>
-        <th>Client Technology</th>
-        <th>Latest Post</th>
-        <th>Post Message</th>
+        <td>
+            <div class="regionPanel" style="width: 100%;">
+                <div class="regionHeader">Asia</div>
+            </div>
+        </td>
     </tr>
     <g:if test="${!asia}">
-    <tr>
-        <td colspan="6">Empty</td>
-    </tr>
+        <tr><td>
+            <table>
+            <tbody>
+                <tr><td>
+                    No users on this continent.
+                </td></tr>
+            </tbody>
+            </table>
+        </td></tr>
     </g:if>
     <g:if test="${asia}">
     <g:each var="elem" in="${asia}" status="row">
-    <tr>
-        <td>${elem.name}</td>
-        <td>${elem.mood}</td>
-        <td>${elem.comment}</td>
-        <td>Grails</td>
-        <td>${elem.messageIn}</td>
-        <td>
-            <form id="msgForm${elem.region}${row}">
-            <input id="msgOut${elem.region}${row}"
-                   type="text"
-                   name="messageOut"
-                    size="20" />&nbsp
-            <input type="submit"
-                   value="Post"
-                   onclick="click_messageOut('${elem.region}',${row},'<%=session["person"].name%>');return false;"/>
-            </form>
-        </td>
-    </tr>
+        <tr><td>
+            <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="images/mood-${elem.mood}.png" style="width: 26px; height: 29px;">
+                    </td>
+                    <td>${elem.name}</td>
+                    <g:if test="${!elem.technology}">
+                    <td>using ${elem.technology}</td>
+                    </g:if>
+                    <td>
+                        thinks '${elem.comment}'
+                    <td>
+                    <g:if test="${!elem.messageIn}">
+                    <td>and<td>
+                    <td>says '${elem.messageIn}'</td>
+                    </g:if>
+                </tr>
+            </tbody>
+            </table>
+        </td></tr>
     </g:each>
     </g:if>
+</tbody>
 </table>

@@ -9,7 +9,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Enter ICEpush Place</title>
+	<title>Grails ICEpush Place</title>
+	<link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}"/>
     <script type="text/javascript">//<![CDATA[
     function getXmlHttpRequest() {
       try {
@@ -52,26 +53,62 @@
     </script>
 </head>
 <body>
-<h2>Enter ICEpush Place</h2>
+<center>
+<h1>Grails - ICEpush Place Login</h1>
+
 <form id="init">
-    Nickname: <input type="text" name="nickname" size="20"/><br/><br/>
-    What mood are you in?: <select name="mood">
-                               <option value="average">average</option>
-                               <option value="shocked">shocked</option>
-                               <option value="angry">angry</option>
-                               <option value="happy">happy</option>
-                               <option value="sad">sad</option>
-                          </select><br/><br/>
-    What's on your mind?: <input type="text" name="comment" size="20"/><br/><br/>
-    Change your region: <select name="region">
-                               <option value="4">North America</option>
-                               <option value="3">Europe</option>
-                               <option value="5">South America</option>
-                               <option value="2">Asia</option>
-                               <option value="0">Africa</option>
-                               <option value="1">Antarctica</option>
-                           </select><br/><br/>
-    <input type="button" value="Enter" onclick="register();" />
+    <table class="inputSet">
+        <tbody>
+        <tr>
+            <td>
+                <div class="nameLabel">Nickname:</div>
+            </td>
+            <td>
+                <input type="text" name="nickname" maxlength="15" class="nameInput"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="moodLabel">Mood:</div>
+            </td>
+            <td>
+                <select name="mood" class="moodInput">
+                    <option>average</option>
+                    <option>shocked</option>
+                    <option>angry</option>
+                    <option>happy</option>
+                    <option>sad</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="thoughtLabel">Thoughts:</div>
+            </td>
+            <td>
+                <input type="text" name="comment" maxlength="150" class="thoughtInput"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="regionLabel">Region:</div>
+            </td>
+            <td>
+                <select name="region" class="regionInput">
+                    <option value="4">North America</option>
+                    <option value="3">Europe</option>
+                    <option value="5">South America</option>
+                    <option value="2">Asia</option>
+                    <option value="0">Africa</option>
+                    <option value="1">Antarctica</option>
+                </select>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    
+    <input type="button" value="Login" onclick="register();" />
 </form>
+</center>
 </body>
 </html>
