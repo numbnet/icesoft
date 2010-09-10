@@ -134,7 +134,7 @@ if (!window.ice.icefaces) {
                 try {
                     form.action = form.action + ';ice.session.donottouch';
                     debug(logger, 'picking updates for view ' + viewID);
-                    jsf.ajax.request(form, null, {render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
+                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
                 } finally {
