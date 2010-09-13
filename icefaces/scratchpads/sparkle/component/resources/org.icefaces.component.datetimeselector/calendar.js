@@ -445,23 +445,28 @@ init: function(params) {
     this.configCal(calendar, params);
     calendar.render();
 	var effect;
-	try {
-		effect = (params['effect']) ? eval (params['effect']): null;
-		if (effect) effect.set('node', '#'+ dialog.id+'_c');	
-    } catch (e) {}
+
  
     var toggleClick = function() {
-	
-	
-        if (this.hasClass("open-popup")) {
+	    if (!effect) {
+			try {
+				effect = (params['effect']) ? eval (params['effect']): null;
+				if (effect) effect.set('node', '#'+ dialog.id+'_c');	
+			} catch (e) {alert(e);}
+		}
+	     thix = this;
+        if (this.hasClass("open-popup")) { 
 				if (effect) {
-					peer = effect.getPeer();
-					peer.set('node', '#'+ dialog.id+'_c');
-					peer.run();
-				}
-            dialog.show();
-            this.replaceClass("open-popup", "close-popup");
-			
+					effect.set('reverse', true);
+					effect.on('end', function() {
+					    dialog.show();
+						thix.replaceClass("open-popup", "close-popup");
+					});
+					effect.run();
+				} else {
+				dialog.show();
+				this.replaceClass("open-popup", "close-popup");
+			}
         } else {
 			if (effect) {
 				thiz = this;
@@ -469,6 +474,7 @@ init: function(params) {
 					dialog.hide();
 					thiz.replaceClass("close-popup", "open-popup");
 				});
+				effect.set('reverse', false);
 				effect.run();
 			} else {
 				dialog.hide();

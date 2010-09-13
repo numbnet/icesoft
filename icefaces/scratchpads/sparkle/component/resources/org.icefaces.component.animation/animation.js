@@ -102,7 +102,8 @@ YUI().use("anim", "json", function(Y) {
         });
         
         this.setDefaults(param);
-		
+		this.on('start', this.beforeStart);
+		this.on('end', this.afterComplete);
 		
 		this.on('end', function() {
 			ice.yui3.effectHelper.serialize(Y, this);	
@@ -131,6 +132,8 @@ YUI().use("anim", "json", function(Y) {
     }
  
     Y.extend(EffectBase, Y.Anim , {
+		beforeStart: function() {},
+		afterComplete: function() {},		
         setDefaults: function() {},
         chain: function(effect, preEffect) {
         	this.chainEffect = function() {
@@ -157,7 +160,8 @@ YUI().use("anim", "json", function(Y) {
 		},
 		
 		run: function() {
-		    console.info('addding classs '+ this.effectClass);
+ 	
+    console.info('addding classs '+ this.effectClass);
 		    this.get('node').addClass(this.effectClass+"From");
 			this.setDefaults();
 			this.orignalRun();
@@ -180,20 +184,29 @@ YUI().use("anim", "json", function(Y) {
 					return this;					
 				 }
               
+		},
+		
+		getEffectClass: function() {
+			return this.effectClass;
 		}
 
 			
     });
 
     function  Fade(param, callback) {
-	     console.info('new Fade '+ param);
     	Fade.superclass.constructor.apply(this, arguments);
 		this.effectClass = "Fade";
-		 
- 
     }
  
     Y.extend(Fade, EffectBase, {
+	    beforeStart:function() {
+			if (this.get("reverse")) {
+				this.get("node").setStyle('visibility', 'visible');		
+				this.get("node").setStyle('opacity', '0');		
+			}
+		},
+		
+		
         setDefaults: function() {
 		      this.setPeerName('Appear');
               if (!this.param['to']) {
@@ -234,7 +247,15 @@ YUI().use("anim", "json", function(Y) {
             		  });
             	  node.removeClass("FadeFrom");
               }             
-        }
+        },
+		
+		getEffectClass: function() {
+			if (this.get("reverse")) {
+				return "Appear";
+			} else {
+				return this.effectClass;
+			}
+		}
     });
 
     function  Appear(param, callback) {
@@ -324,7 +345,6 @@ YUI().use("anim", "json", function(Y) {
 			
 			if (!param['from']) {
 				this.set('from', {height:0});
-			
 			}
     	}        
     });
@@ -366,7 +386,6 @@ YUI().use("anim", "json", function(Y) {
               }              
         }
     });
-    
     ice.yui3.effects['Fade'] = Fade;
     ice.yui3.effects['Appear'] = Appear;
     ice.yui3.effects['BlindUp'] = BlindUp;	
