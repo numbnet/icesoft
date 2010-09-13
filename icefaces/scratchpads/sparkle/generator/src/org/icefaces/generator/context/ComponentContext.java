@@ -196,9 +196,11 @@ public class ComponentContext {
 			Field[] fields = getDeclaredFields(clazz); /* ### added */
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
+				/* // %%% this functionality is suspended for now
 				if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
 					continue;
 				}
+				*/
                 if(field.isAnnotationPresent(Property.class)){
                     Property property = (Property) field.getAnnotation(Property.class); /* @@@ necessary to use annotation at this point */
 					PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz); // collect @Property values from top to bottom
