@@ -156,10 +156,14 @@ public class ComponentArtifact extends Artifact{
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addPropertiesEnumToComponent(writer);
 		}
+		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap(); // %%% added
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
-			writer.append("\t\t");
-			writer.append(generatedComponentProperties.get(i).getName());
-			writer.append(",\n");
+			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i)); // %%% added
+			if (!propertyValues.isDelegatingProperty) { // %%% added
+				writer.append("\t\t");
+				writer.append(generatedComponentProperties.get(i).getName());
+				writer.append(",\n");
+			}
 		}
 		writer.append("\t\t;\n");
 		writer.append("\t\tString toString;\n");
@@ -213,12 +217,15 @@ public class ComponentArtifact extends Artifact{
             }
         }
 
+		String methodName = field.getName().substring(0,1).toUpperCase() + field.getName().substring(1);
+		
 		// writing Setter
 
 		addJavaDoc(field.getName(), true, prop.javadocSet); /* @@@ changed */
 		writer.append("\tpublic void set");
-		writer.append(field.getName().substring(0,1).toUpperCase());
-		writer.append(field.getName().substring(1));
+		//writer.append(field.getName().substring(0,1).toUpperCase()); // %%% removed
+		//writer.append(field.getName().substring(1)); // %%% removed
+		writer.append(methodName); // %%% added
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
@@ -227,44 +234,49 @@ public class ComponentArtifact extends Artifact{
 		writer.append(" ");
 		writer.append(field.getName());
 		writer.append(") {");
+		
+		// %%% added
+		if (!prop.isDelegatingProperty) {
+			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
+			writer.append(field.getName());
+			writer.append(".name() );");
 
-        writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
-        writer.append(field.getName());
-        writer.append(".name() );");
+			writer.append("\n\t\tMap clientValues = null;");
+			writer.append("\n\t\tif (ve != null) {");
+			writer.append("\n\t\t\t// map of style values per clientId");
+			writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
+			writer.append( field.getName() );
+			writer.append(" );");
 
-        writer.append("\n\t\tMap clientValues = null;");
-        writer.append("\n\t\tif (ve != null) {");
-        writer.append("\n\t\t\t// map of style values per clientId");
-        writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
-        writer.append( field.getName() );
-        writer.append(" );");
+			writer.append("\n\t\t} else { ");
 
-        writer.append("\n\t\t} else { ");
+			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+			writer.append("\n\t\t\tclientValues = (Map) sh.get(PropertyKeys.");
+			writer.append(field.getName() );
+			writer.append(");");
 
-        writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-        writer.append("\n\t\t\tclientValues = (Map) sh.get(PropertyKeys.");
-        writer.append(field.getName() );
-        writer.append(");");
+			writer.append("\n\t\t\tif (clientValues == null) {" );
+			writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
+			writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
+			writer.append(field.getName());
+			writer.append(", clientValues ); ");
+			writer.append("\n\t\t\t}");
+			writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
+			writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
+			writer.append("\n\t\t\t\tclientValues.put(\"defValue\",");
+			writer.append(field.getName() );
+			writer.append(");");
+			writer.append("\n\t\t\t} else {");
+			writer.append("\n\t\t\t\tString clientId = getClientId();");
+			writer.append("\n\t\t\t\tclientValues.put(clientId, ");
+			writer.append(field.getName() );
+			writer.append(");" );
 
-        writer.append("\n\t\t\tif (clientValues == null) {" );
-        writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
-        writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
-        writer.append(field.getName());
-        writer.append(", clientValues ); ");
-        writer.append("\n\t\t\t}");
-        writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
-        writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
-        writer.append("\n\t\t\t\tclientValues.put(\"defValue\",");
-        writer.append(field.getName() );
-        writer.append(");");
-        writer.append("\n\t\t\t} else {");
-        writer.append("\n\t\t\t\tString clientId = getClientId();");
-        writer.append("\n\t\t\t\tclientValues.put(clientId, ");
-        writer.append(field.getName() );
-        writer.append(");" );
-
-        writer.append("\n\t\t\t}" );
-        writer.append("\n\t\t}" );
+			writer.append("\n\t\t\t}" );
+			writer.append("\n\t\t}" );
+		} else {
+			writer.append("\n\t\tsuper.set" + methodName + "(" + field.getName() + ");");
+		}
         writer.append("\n\t}\n" );
 
 
@@ -289,73 +301,84 @@ public class ComponentArtifact extends Artifact{
 		} else {
 			writer.append("get");
 		}
-		writer.append(field.getName().substring(0,1).toUpperCase());
-		writer.append(field.getName().substring(1));
-		writer.append("() {\n");
+		//writer.append(field.getName().substring(0,1).toUpperCase()); // %%% removed
+		//writer.append(field.getName().substring(1)); // %%% removed
+		writer.append(methodName); // %%% added
+		writer.append("() {");
 
-        // start of the code
-        writer.append("\n\t\t").append(internalType).append(" retVal = ");
-                                                                                                                              
-        // No defined default value is returned as the string "null". This has to
-        // be handled for various cases. primitives must have a default of some kind
-        // and Strings have to return null (not "null") to work.
-        String defaultValue = prop.defaultValue; /* @@@ changed */
-        Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
-                           isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
+        if (!prop.isDelegatingProperty) {
+			// start of the code
+			writer.append("\n\t\t").append(internalType).append(" retVal = ");
+																																  
+			// No defined default value is returned as the string "null". This has to
+			// be handled for various cases. primitives must have a default of some kind
+			// and Strings have to return null (not "null") to work.
+			String defaultValue = prop.defaultValue; /* @@@ changed */
+			Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+							   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
-        if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
-            defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
-        }
+			if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+				defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+			}
 
-        if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
-            writer.append("\"");
-        }
-        writer.append( defaultValue );
-        if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
-            writer.append("\"");
-        }
-        writer.append(";");
+			if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+				writer.append("\"");
+			}
+			writer.append( defaultValue );
+			if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+				writer.append("\"");
+			}
+			writer.append(";");
 
-        // Start of Value Expression code
-        writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
-        writer.append(field.getName());
-        writer.append(".name() );");
+			// Start of Value Expression code
+			writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
+			writer.append(field.getName());
+			writer.append(".name() );");
 
 
 
-        writer.append("\n\t\tif (ve != null) {" );
-        // For primitives, don't overwrite a default value with a null value obtained from
-        // the value expression. For the stateHelper, we're the ones putting those values
-        // into the map, hence a value wont be found there.
-        if (isPrimitive) {
-            writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
-            writer.append("\n\t\t\tif (o != null) { " );
-            writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-                                       (") o; ");
-            writer.append("\n\t\t\t}"); 
-        } else {
-            writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-                                       (") ve.getValue( getFacesContext().getELContext() ); ");
-        }
-        writer.append("\n\t\t} else {");
-        writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-        writer.append("\n\t\t\tMap clientValues = (Map) sh.get(PropertyKeys.");
+			writer.append("\n\t\tif (ve != null) {" );
+			// For primitives, don't overwrite a default value with a null value obtained from
+			// the value expression. For the stateHelper, we're the ones putting those values
+			// into the map, hence a value wont be found there.
+			if (isPrimitive) {
+				writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
+				writer.append("\n\t\t\tif (o != null) { " );
+				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+										   (") o; ");
+				writer.append("\n\t\t\t}"); 
+			} else {
+				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+										   (") ve.getValue( getFacesContext().getELContext() ); ");
+			}
+			writer.append("\n\t\t} else {");
+			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(PropertyKeys.");
 
-        writer.append(field.getName() );
-        writer.append(");");
-        writer.append("\n\t\t\tif( clientValues != null ) { " );
+			writer.append(field.getName() );
+			writer.append(");");
+			writer.append("\n\t\t\tif( clientValues != null ) { " );
 
-        // differentiate between the case where the map has clientId and it's value is null
-        // verses it not existing in the map at all.
-        writer.append("\n\t\t\t\tString clientId = getClientId();");
-        writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
-        writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
-        writer.append("\n\t\t\t\t} else if (clientValues.containsKey ( \"defValue\" ) ) { ");
-        writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(\"defValue\" ); ");
-        writer.append("\n\t\t\t\t}");
-        writer.append("\n\t\t\t}");
-        writer.append("\n\t\t}");
-        writer.append("\n\t\treturn retVal;");
+			// differentiate between the case where the map has clientId and it's value is null
+			// verses it not existing in the map at all.
+			writer.append("\n\t\t\t\tString clientId = getClientId();");
+			writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+			writer.append("\n\t\t\t\t} else if (clientValues.containsKey ( \"defValue\" ) ) { ");
+			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(\"defValue\" ); ");
+			writer.append("\n\t\t\t\t}");
+			writer.append("\n\t\t\t}");
+			writer.append("\n\t\t}");
+			writer.append("\n\t\treturn retVal;");
+		} else {
+			writer.append("\n\t\treturn super.");
+			if (isBoolean) {
+				writer.append("is");
+			} else {
+				writer.append("get");
+			}
+			writer.append(methodName + "();");
+		}
         writer.append("\n\t}\n");
 	}
 

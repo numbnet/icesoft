@@ -20,4 +20,7 @@ public class PropertyValues {
 	
 	// flag to indicate that the property in question was first defined in a superclass
 	public boolean overrides = false;
+	
+	// flag to indicate that only delegating getter and setter methods should be generated and no state staving code
+	public boolean isDelegatingProperty = false;
 }
