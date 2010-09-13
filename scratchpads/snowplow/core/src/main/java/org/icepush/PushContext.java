@@ -48,15 +48,15 @@ public class PushContext {
         if (browserID == null) {
             String currentBrowserID = (String)
                     request.getAttribute(BrowserIDCookieName);
-//            if (null == currentBrowserID) {
-//                browserID = generateBrowserID();
-//                Cookie cookie = new Cookie(BrowserIDCookieName, browserID);
-//                cookie.setPath("/");
-//                response.addCookie(cookie);
-//                request.setAttribute(BrowserIDCookieName, browserID);
-//            } else {
-            browserID = currentBrowserID;
-//            }
+            if (null == currentBrowserID) {
+                browserID = generateBrowserID();
+                Cookie cookie = new Cookie(BrowserIDCookieName, browserID);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                request.setAttribute(BrowserIDCookieName, browserID);
+            } else {
+                browserID = currentBrowserID;
+            }
         }
 
         String id = browserID + ":" + generateSubID();
