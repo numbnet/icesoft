@@ -22,13 +22,12 @@
 
 package org.icepush;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PushContext {
     private static final Logger log = Logger.getLogger(PushContext.class.getName());
@@ -49,15 +48,15 @@ public class PushContext {
         if (browserID == null) {
             String currentBrowserID = (String)
                     request.getAttribute(BrowserIDCookieName);
-            if (null == currentBrowserID) {
-                browserID = generateBrowserID();
-                Cookie cookie = new Cookie(BrowserIDCookieName, browserID);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-                request.setAttribute(BrowserIDCookieName, browserID);
-            } else {
-                browserID = currentBrowserID;
-            }
+//            if (null == currentBrowserID) {
+//                browserID = generateBrowserID();
+//                Cookie cookie = new Cookie(BrowserIDCookieName, browserID);
+//                cookie.setPath("/");
+//                response.addCookie(cookie);
+//                request.setAttribute(BrowserIDCookieName, browserID);
+//            } else {
+            browserID = currentBrowserID;
+//            }
         }
 
         String id = browserID + ":" + generateSubID();
@@ -96,7 +95,7 @@ public class PushContext {
         return null;
     }
 
-    private synchronized String generateBrowserID() {
+    synchronized String generateBrowserID() {
         return Long.toString(++browserCounter, 36) + Long.toString(System.currentTimeMillis(), 36);
     }
 
