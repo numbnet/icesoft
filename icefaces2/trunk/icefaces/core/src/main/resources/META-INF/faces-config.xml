@@ -36,6 +36,7 @@
     </render-kit>
     <lifecycle>
         <phase-listener>org.icefaces.event.DeltaSubmitPhaseListener</phase-listener>
+        <phase-listener>org.icefaces.event.FacesMessagesPhaseListener</phase-listener>
     </lifecycle>
     <application>
         <resource-handler>org.icefaces.push.servlet.ICEpushResourceHandler</resource-handler>
