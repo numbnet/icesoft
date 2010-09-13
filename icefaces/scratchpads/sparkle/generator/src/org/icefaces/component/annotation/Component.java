@@ -88,7 +88,7 @@ public @interface Component {
    * developer want to use its own handler class.
    * @return facelets handler class.
    */
-  String handlerClass() default "com.icesoft.faces.component.facelets.IceComponentHandler";
+  String handlerClass() default "";
   
   /**
    * javadocs for the component class. Goes into the component class.
