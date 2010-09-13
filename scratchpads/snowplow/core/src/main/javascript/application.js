@@ -62,12 +62,16 @@ if (!window.ice.icepush) {
             append(blockingConnectionLostListeners, callback);
         };
 
+        //constants
+        var PushIDs = 'ice.pushids';
+        var BrowserIDCookieName = 'ice.push.browser';
+        var NotifiedPushIDs = 'ice.notified.pushids';
+
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
         namespace.logger = Logger([ 'icepush' ], handler);
         namespace.info = info;
         var pushIdentifiers = [];
-        var PushIDs = 'ice.pushids';
 
         function enlistPushIDsWithBrowser(ids) {
             try {
@@ -232,8 +236,12 @@ if (!window.ice.icepush) {
 
             register(commandDispatcher, 'noop', NoopCommand);
             register(commandDispatcher, 'parsererror', ParsingError);
+            register(commandDispatcher, 'macro', Macro(commandDispatcher));
             register(commandDispatcher, 'configuration', function(message) {
                 configurationElement = message;
+            });
+            register(commandDispatcher, 'browser', function(message) {
+                document.cookie = BrowserIDCookieName + '=' + message.getAttribute('id');
             });
 
             //purge discarded pushIDs from the notification list
@@ -246,8 +254,8 @@ if (!window.ice.icepush) {
             //todo: factor out cookie & monitor into a communication bus abstraction
             //todo: move notifiedPushIDs out of the bridge to help removing deregistered pushIds from the list of notified pushIds
             //read/create cookie that contains the notified pushID
-            var notifiedPushIDs = lookupCookie('ice.notified.pushids', function() {
-                return Cookie('ice.notified.pushids', '');
+            var notifiedPushIDs = lookupCookie(NotifiedPushIDs, function() {
+                return Cookie(NotifiedPushIDs, '');
             });
 
             //register command that handles the notified-pushids message

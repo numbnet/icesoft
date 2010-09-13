@@ -57,3 +57,9 @@ function ParsingError(message) {
     var sourceNode = errorNode.firstChild;
     logger.error(sourceNode.data);
 }
+
+function Macro(dispatcher) {
+    return function(message) {
+        each(message.childNodes, curry(deserializeAndExecute, dispatcher));
+    };
+}
