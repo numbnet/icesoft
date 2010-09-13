@@ -215,17 +215,33 @@ public class ComponentContext {
                     } else {//annotated properties defined on the component should 
                         //go to the component as well as tag class
                         
-						// if it's a local field AND property doesn't exist in ancestor classes or if one of the 4 fields was modified, then add to component class
-                        if (localFieldsSet.contains(field) && (!propertyValues.overrides || property.isMethodExpression() != Expression.UNSET
-							|| !property.methodExpressionArgument().equals(Property.Null)
-							|| !property.defaultValue().equals(Property.Null)
-							|| property.defaultValueIsStringLiteral() != DefaultValueType.UNSET)) {
-							if (!fieldsForComponentClass.containsKey(field.getName())) { 
-								if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
-									hasMethodExpression = true;
-								}
-								fieldsForComponentClass.put(field.getName(), field);
-							} 
+						// if it's a local field... 
+                        if (localFieldsSet.contains(field)) {
+							boolean modifiesDefaultValueOrMethodExpression = false;
+							boolean modifiesJavadoc = false;
+							if (property.isMethodExpression() != Expression.UNSET
+								|| !property.methodExpressionArgument().equals(Property.Null)
+								|| !property.defaultValue().equals(Property.Null)
+								|| property.defaultValueIsStringLiteral() != DefaultValueType.UNSET) {
+								modifiesDefaultValueOrMethodExpression = true;
+							}
+							if (!property.javadocGet().equals(Property.Null) || !property.javadocSet().equals(Property.Null)) {
+								modifiesJavadoc = true;
+							}
+							
+							// if property doesn't exist in ancestor classes or if one of the 6 fields above was modified, then add to component class
+							if (!propertyValues.overrides || modifiesDefaultValueOrMethodExpression || modifiesJavadoc) {
+								if (!fieldsForComponentClass.containsKey(field.getName())) { 
+									if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+										hasMethodExpression = true;
+									}
+									fieldsForComponentClass.put(field.getName(), field);
+								} 
+							}
+							// if only javadocGet or javadocSet were specified, then simply create delegating getter/setter and do not include in save state
+							if (modifiesDefaultValueOrMethodExpression == false && modifiesJavadoc == true) {
+								propertyValues.isDelegatingProperty = true;
+							}
 						}
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
