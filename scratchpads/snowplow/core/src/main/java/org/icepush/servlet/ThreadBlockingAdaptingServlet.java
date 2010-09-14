@@ -27,6 +27,7 @@ import org.icepush.http.Server;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequest;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -76,6 +77,10 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
                 //Release the semaphore previously acquired.
                 semaphore.release();
             } else {
+                String remoteAddress = "unknown";
+                if( request instanceof ServletRequest ){
+                    remoteAddress = ((ServletRequest)request).getRemoteAddr();
+                }
                 LOG.warning("No response sent to " +
                         "request '" + request.getRequestURI() + "' " +
                         "with ICEfaces ID '" +
