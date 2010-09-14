@@ -84,10 +84,10 @@ import org.icefaces.component.baseMeta.UICommandMeta;
       @Property(tlddoc="style of the component")
       private String style;
 
-      @Property(inherit=Inherit.SUPERCLASS_PROPERTY, isMethodExpression=Expression.METHOD_EXPRESSION)
+      @Property(inherit=Inherit.SUPERCLASS_PROPERTY, expression=Expression.METHOD_EXPRESSION)
     private MethodExpression actionListener;
 
-    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property(expression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY)
     private MethodExpression action;
 
     @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)

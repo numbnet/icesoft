@@ -8,10 +8,10 @@ public class PropertyValues {
 	
 	}
 	
-	public Expression isMethodExpression = Expression.UNSET;
+	public Expression expression = Expression.UNSET;
 	public String methodExpressionArgument = Property.Null;
 	public String defaultValue = Property.Null;
-	public DefaultValueType defaultValueIsStringLiteral = DefaultValueType.UNSET;
+	public DefaultValueType defaultValueType = DefaultValueType.UNSET;
 	public String tlddoc = Property.Null;
 	public String javadocGet = Property.Null;
 	public String javadocSet = Property.Null;

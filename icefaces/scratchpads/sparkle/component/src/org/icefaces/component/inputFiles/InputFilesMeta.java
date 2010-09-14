@@ -63,7 +63,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
     	"InputFilesInfo object from the info property of the InputFiles " +
     	"component, giving access to the status information of the " +
     	"successfully, and unsuccessfully, uploaded files.",
-    	isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
+    	expression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
         "org.icefaces.component.inputFiles.InputFilesEvent")
     private MethodExpression inputFilesListener;
 

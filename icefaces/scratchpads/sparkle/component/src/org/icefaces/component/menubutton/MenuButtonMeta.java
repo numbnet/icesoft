@@ -89,7 +89,7 @@ public class MenuButtonMeta extends UISelectOneMeta {
 			tlddoc="Default is false, means uses full submit")
     private Boolean singleSubmit;
 	
-    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on menu item change value change event can be captured with this listener")
     private MethodExpression menuSelectionListener;
 }

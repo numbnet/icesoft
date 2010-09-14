@@ -11,10 +11,10 @@ import org.icefaces.component.annotation.*;
 public class ActionSourceBehavior extends Behavior{
 //	private final String ACTION_EXPRESSION = "actionExpression";
 	
-	@Property(isMethodExpression=Expression.METHOD_EXPRESSION)
+	@Property(expression=Expression.METHOD_EXPRESSION)
 	private MethodExpression actionExpression;
 	
-	@Property(isMethodExpression=Expression.METHOD_EXPRESSION)
+	@Property(expression=Expression.METHOD_EXPRESSION)
 	private MethodExpression actionListener;
 	
 	public ActionSourceBehavior() {
