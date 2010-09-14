@@ -19,7 +19,8 @@
   ~ Contributor(s): _____________________.
   -->
 
-<f:view xmlns:h="http://java.sun.com/jsf/html"
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -87,7 +88,7 @@
                     <ui:repeat value="#{chatRoom.handles}"
                                var="handle">
                         <h:outputText value="#{handle}"/>
-                        <br/>
+                        <br />
                     </ui:repeat>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"
@@ -109,7 +110,7 @@
                     <ui:repeat value="#{participant.messages}"
                                var="message">
                         <h:outputText value="#{message}"/>
-                        <br/>
+                        <br />
                     </ui:repeat>
                     <h:graphicImage alt="spacer"
                                     url="/images/spacer.png"
