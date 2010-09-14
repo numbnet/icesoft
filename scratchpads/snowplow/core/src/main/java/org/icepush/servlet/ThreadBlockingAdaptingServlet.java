@@ -85,7 +85,7 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
                         "request '" + request.getRequestURI() + "' " +
                         "with ICEfaces ID '" +
                         request.getParameter("ice.session") + "' " +
-                        "from " + request.getRemoteAddr() + " " +
+                        "from " + remoteAddress + " " +
                         "in " + TIMEOUT + " minutes.  " +
                         "Unblocking " +
                         "thread '" + Thread.currentThread().getName() + "'.");
