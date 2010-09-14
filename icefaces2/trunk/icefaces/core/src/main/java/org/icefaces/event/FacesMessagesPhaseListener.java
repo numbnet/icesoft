@@ -54,13 +54,13 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         "org.icefaces.event.saved_component_faces_messages";
     
     public void afterPhase(PhaseEvent phaseEvent) {
-        System.out.println("-------------------------------------");
-        System.out.println("FacesMessagesPhaseListener.afterPhase");
+//System.out.println("-------------------------------------");
+//System.out.println("FacesMessagesPhaseListener.afterPhase");
         // Save away all of the FacesMessage objects, so that next lifecycle,
         // the appropriate ones may be put back into the FacesContext.
         FacesContext facesContext = phaseEvent.getFacesContext();
         List<FacesMessage> globals = facesContext.getMessageList(null);
-        System.out.println("  global FacesMessage(s): " + toStringListOfFacesMessages(globals));
+//System.out.println("  global FacesMessage(s): " + toStringListOfFacesMessages(globals));
         
         Map<String, List<FacesMessage>> components = new HashMap<String, List<FacesMessage>>(6);
         Iterator<String> cids = facesContext.getClientIdsWithMessages();
@@ -162,6 +162,10 @@ public class FacesMessagesPhaseListener implements PhaseListener {
 
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
+    }
+    
+    private static boolean isServerPush(FacesContext facesContext) {
+        return false;
     }
     
     private static String toStringListOfFacesMessages(List<FacesMessage> msgs) {
