@@ -40,6 +40,6 @@
           </fileset>
         </copy>
 
-        <zip destfile="${build.dir}/dist/ice2-portlet-${ant.project.name}.war" basedir="${build.dir}/dist/exploded"/>
+        <zip destfile="${build.dir}/dist/${ant.project.name}-ice2-portlet.war" basedir="${build.dir}/dist/exploded"/>
     </target>
 </project>
