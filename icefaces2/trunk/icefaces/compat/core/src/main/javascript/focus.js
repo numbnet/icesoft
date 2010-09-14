@@ -40,7 +40,12 @@ var currentFocus;
                 if (e) {
                     setFocus(id);
                     if (e.focus) {
-                        e.focus();
+                        try {
+                            e.focus();
+                        } catch (ex) {
+                            //IE throws exception if element is invisible
+                            logger.info(ex.message);
+                        }
                     }
                 }
             }
@@ -74,8 +79,6 @@ var currentFocus;
             });
         });
     }
-
-    ;
 
     onLoad(window, function() {
         captureFocusIn(document);
