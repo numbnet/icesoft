@@ -25,11 +25,9 @@ package org.icefaces.push.servlet;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProxyHttpServletResponse implements HttpServletResponse {
@@ -233,13 +231,13 @@ public class ProxyHttpServletResponse implements HttpServletResponse {
         return null;
     }
 
-    public  java.lang.Iterable getHeaders(java.lang.String name) {
+    public java.util.Collection<String> getHeaders(java.lang.String name) {
         log.severe("ProxyHttpServletResponse unsupported operation");
         if (true) throw new UnsupportedOperationException();
         return null;
     }
 
-    public  java.lang.Iterable getHeaderNames() {
+    public java.util.Collection<String> getHeaderNames() {
         log.severe("ProxyHttpServletResponse unsupported operation");
         if (true) throw new UnsupportedOperationException();
         return null;
