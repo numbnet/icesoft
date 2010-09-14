@@ -23,13 +23,11 @@
 package org.icefaces.push.servlet;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.Part;
 
 import java.util.Map;
-import java.util.logging.Level;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ProxyHttpServletRequest implements HttpServletRequest {
@@ -298,13 +296,13 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
         return facesContext.getExternalContext().getRequestHeaderMap().get(name);
     }
 
-    public  java.util.Enumeration getHeaders(String name) {
+    public  java.util.Enumeration<java.lang.String> getHeaders(String name) {
         log.severe("ProxyHttpServletRequest unsupported operation");
         if (true) throw new UnsupportedOperationException();
         return null;
     }
 
-    public  java.util.Enumeration getHeaderNames() {
+    public  java.util.Enumeration<java.lang.String> getHeaderNames() {
         log.severe("ProxyHttpServletRequest unsupported operation");
         if (true) throw new UnsupportedOperationException();
         return null;
@@ -447,7 +445,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
         return ;
     }
 
-    public  java.lang.Iterable getParts() {
+    public Collection<Part> getParts() {
         log.severe("ProxyHttpServletRequest unsupported operation");
         if (true) throw new UnsupportedOperationException();
         return null;
