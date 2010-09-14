@@ -82,7 +82,7 @@ public class ComponentHandlerArtifact extends Artifact{
             //Property prop = (Property)field.getAnnotation(Property.class); /* @@@ removed */
 			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 			
-            if (prop.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+            if (prop.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
                 generatedComponentHandlerClass.append("\t\tmetaRuleset.addRule( new MethodRule(\"");
                 generatedComponentHandlerClass.append(field.getName());
                 generatedComponentHandlerClass.append("\", null, new Class[");

@@ -133,6 +133,6 @@ public class SliderMeta extends UIComponentBaseMeta {
     // A MethodExpression Property is a special type, that does not generate
     //  the same code, as it does not use a ValueExpression, but instead
     //  describes a method to be called, and the parameter to pass to it.
-    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+    @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
 }

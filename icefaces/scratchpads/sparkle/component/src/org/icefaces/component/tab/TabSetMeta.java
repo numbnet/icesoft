@@ -63,7 +63,7 @@ public class TabSetMeta extends UIComponentBaseMeta {
     @Property (tlddoc="style will be rendered on a root element of this component") 
     private String style;
     
-    @Property(isMethodExpression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
     

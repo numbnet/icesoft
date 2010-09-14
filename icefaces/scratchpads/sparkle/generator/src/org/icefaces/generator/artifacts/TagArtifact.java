@@ -132,7 +132,7 @@ public class TagArtifact extends Artifact{
 			*/
 			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, null); // @@@ to do: only need to remove argument
 
-			String type = (prop.isMethodExpression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression "; /* @@@ changed */
+			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression "; /* @@@ changed */
 
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
@@ -196,21 +196,21 @@ public class TagArtifact extends Artifact{
 			generatedTagClass.append(" != null) {\n\t\t\t");
 			//Property property = (Property) field.getAnnotation(Property.class);            /* @@@ removed */
 			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
-			if (property.isMethodExpression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) { /* @@@ changed */
+			if (property.expression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) { /* @@@ changed */
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.isMethodExpression  == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) { /* @@@ changed */
+			} else if (property.expression == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) { /* @@@ changed */
 				generatedTagClass.append("_component.setActionExpression(action");
 			} else {
 				generatedTagClass.append("_component.set");
 
-				if (property.isMethodExpression  == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+				if (property.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
 					generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
 					generatedTagClass.append(field.getName().substring(1));  
 				} else {
 					generatedTagClass.append("ValueExpression");            
 				}
 				generatedTagClass.append("(");
-				if (property.isMethodExpression == Expression.VALUE_EXPRESSION) { /* @@@ changed */
+				if (property.expression == Expression.VALUE_EXPRESSION) { /* @@@ changed */
 					generatedTagClass.append("\"");
 					generatedTagClass.append(field.getName());
 					generatedTagClass.append("\", ");

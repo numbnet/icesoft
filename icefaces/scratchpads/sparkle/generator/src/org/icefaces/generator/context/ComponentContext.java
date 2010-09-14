@@ -221,10 +221,10 @@ public class ComponentContext {
                         if (localFieldsSet.contains(field)) {
 							boolean modifiesDefaultValueOrMethodExpression = false;
 							boolean modifiesJavadoc = false;
-							if (property.isMethodExpression() != Expression.UNSET
+							if (property.expression() != Expression.UNSET
 								|| !property.methodExpressionArgument().equals(Property.Null)
 								|| !property.defaultValue().equals(Property.Null)
-								|| property.defaultValueIsStringLiteral() != DefaultValueType.UNSET) {
+								|| property.defaultValueType() != DefaultValueType.UNSET) {
 								modifiesDefaultValueOrMethodExpression = true;
 							}
 							if (!property.javadocGet().equals(Property.Null) || !property.javadocSet().equals(Property.Null)) {
@@ -234,7 +234,7 @@ public class ComponentContext {
 							// if property doesn't exist in ancestor classes or if one of the 6 fields above was modified, then add to component class
 							if (!propertyValues.overrides || modifiesDefaultValueOrMethodExpression || modifiesJavadoc) {
 								if (!fieldsForComponentClass.containsKey(field.getName())) { 
-									if (propertyValues.isMethodExpression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+									if (propertyValues.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
 										hasMethodExpression = true;
 									}
 									fieldsForComponentClass.put(field.getName(), field);
@@ -317,8 +317,8 @@ public class ComponentContext {
 					propertyValues.overrides = true;
 				}
 				Property property = (Property) field.getAnnotation(Property.class);
-				if (property.isMethodExpression() != Expression.UNSET) {
-					propertyValues.isMethodExpression = property.isMethodExpression();
+				if (property.expression() != Expression.UNSET) {
+					propertyValues.expression = property.expression();
 				}
 				if (!property.methodExpressionArgument().equals(Property.Null)) {
 					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
@@ -326,8 +326,8 @@ public class ComponentContext {
 				if (!property.defaultValue().equals(Property.Null)) {
 					propertyValues.defaultValue = property.defaultValue();
 				}
-				if (property.defaultValueIsStringLiteral() != DefaultValueType.UNSET) {
-					propertyValues.defaultValueIsStringLiteral = property.defaultValueIsStringLiteral();
+				if (property.defaultValueType() != DefaultValueType.UNSET) {
+					propertyValues.defaultValueType = property.defaultValueType();
 				}
 				if (!property.tlddoc().equals(Property.Null)) {
 					propertyValues.tlddoc = property.tlddoc();
@@ -354,8 +354,8 @@ public class ComponentContext {
 	
 	private static void setDefaultValues(PropertyValues propertyValues) {
 	
-		if (propertyValues.isMethodExpression == Expression.UNSET) {
-			propertyValues.isMethodExpression = Expression.DEFAULT;
+		if (propertyValues.expression == Expression.UNSET) {
+			propertyValues.expression = Expression.DEFAULT;
 		}
 		if (propertyValues.methodExpressionArgument.equals(Property.Null)) {
 			propertyValues.methodExpressionArgument = "";
@@ -363,8 +363,8 @@ public class ComponentContext {
 		if (propertyValues.defaultValue.equals(Property.Null)) {
 			propertyValues.defaultValue = "null";
 		}
-		if (propertyValues.defaultValueIsStringLiteral == DefaultValueType.UNSET) {
-			propertyValues.defaultValueIsStringLiteral = DefaultValueType.DEFAULT;
+		if (propertyValues.defaultValueType == DefaultValueType.UNSET) {
+			propertyValues.defaultValueType = DefaultValueType.DEFAULT;
 		}
 		if (propertyValues.tlddoc.equals(Property.Null)) {
 			propertyValues.tlddoc = "";
@@ -427,10 +427,10 @@ public class ComponentContext {
 	
 		System.out.println();
 		System.out.println("**********");
-		System.out.println("isMethodExpression " + propertyValues.isMethodExpression);
+		System.out.println("isMethodExpression " + propertyValues.expression);
 		System.out.println("methodExpressionArgument " + propertyValues.methodExpressionArgument);
 		System.out.println("defaultValue " + propertyValues.defaultValue);
-		System.out.println("defaultValueIsStringLiteral " + propertyValues.defaultValueIsStringLiteral);
+		System.out.println("defaultValueIsStringLiteral " + propertyValues.defaultValueType);
 		System.out.println("tlddoc " + propertyValues.tlddoc);
 		System.out.println("javadocGet " + propertyValues.javadocGet);
 		System.out.println("javadocSet " + propertyValues.javadocSet);

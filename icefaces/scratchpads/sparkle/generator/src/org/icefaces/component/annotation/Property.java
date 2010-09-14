@@ -22,7 +22,7 @@ public @interface Property {
 	 * </pre>
      * @return boolean value.
      */
-    Expression isMethodExpression() default Expression.UNSET;
+    Expression expression() default Expression.UNSET;
     
     /**
      * Allows to define method expression argument if any.
@@ -54,7 +54,7 @@ public @interface Property {
      * </pre>
      * @return 
      */    
-    DefaultValueType defaultValueIsStringLiteral() default DefaultValueType.UNSET;
+    DefaultValueType defaultValueType() default DefaultValueType.UNSET;
     
     
     /**
