@@ -34,6 +34,7 @@
 package com.icesoft.faces.util.event.servlet;
 
 import java.util.EventObject;
+import java.lang.ref.WeakReference;
 
 /**
  * The <code>AbstractSessionEvent</code> class provides a default implementation
@@ -69,7 +70,7 @@ implements ContextEvent {
     protected AbstractSessionEvent(
         final Object source, final String iceFacesId) {
 
-        super(source);
+        super(new WeakReference(source));
         this.iceFacesId = iceFacesId;
     }
 
@@ -81,7 +82,7 @@ implements ContextEvent {
      * @return the Session.
      */
     public Object getSession() {
-        return source;
+        return ((WeakReference) source).get();
     }
 
     /**

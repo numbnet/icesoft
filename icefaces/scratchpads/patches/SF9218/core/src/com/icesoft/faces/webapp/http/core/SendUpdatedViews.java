@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.lang.ref.WeakReference;
 
 public class SendUpdatedViews implements Server, Runnable {
     private static final Runnable NOOP = new Runnable() {
@@ -37,6 +38,7 @@ public class SendUpdatedViews implements Server, Runnable {
     private final MonitorRunner monitorRunner;
     private long responseTimeoutTime;
     private Server activeServer;
+	private WeakReference pageTestReference;
 
     public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner, Configuration configuration, final PageTest pageTest) {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
@@ -44,6 +46,7 @@ public class SendUpdatedViews implements Server, Runnable {
         this.allUpdatedViews = allUpdatedViews;
         this.synchronouslyUpdatedViews = synchronouslyUpdatedViews;
         this.monitorRunner = monitorRunner;
+		this.pageTestReference = new WeakReference(pageTest);
 
         allUpdatedViews.onPut(new Runnable() {
             public void run() {
@@ -74,10 +77,13 @@ public class SendUpdatedViews implements Server, Runnable {
             public void service(Request request) throws Exception {
                 //after first request switch to blocking server
                 activeServer = blockingServer;
+				//will throw NullPointerException if the session expires
+                //and this service method is somehow invoked
+                PageTest pageTester = (PageTest) pageTestReference.get();
 
                 //ICE-3493 -- test if there was a previous request made for loading the page,
                 //if not assume that this request was meant for a failed cluster node
-                if (pageTest.isLoaded()) {
+                if (pageTester.isLoaded()) {
                     //page was loaded from this node, so use the blocking server
                     super.service(request);
                 } else {
