@@ -141,4 +141,14 @@ function setFocus(id) {
     window.onLoad(function() {
         This.captureFocusIn(document);
     });
+
+    //***
+    //clear registered callbacks to avoid memory leaks
+    window.onBeforeUnload(function() {
+        $enumerate(['select', 'input', 'button', 'a']).each(function(type) {
+            $enumerate(document.body.getElementsByTagName(type)).each(function(element) {
+                element.onfocus = null;
+            });
+        });
+    });
 });
