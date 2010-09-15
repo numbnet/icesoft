@@ -1,4 +1,4 @@
-package org.icefaces.component.effects;
+package org.icefaces.component.animation;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 
 import org.icefaces.component.utils.ScriptWriter;
-@FacesBehavior("org.icefaces.effects.Effect")
+@FacesBehavior("org.icefaces.animation.Animation")
 @ResourceDependencies({
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
@@ -27,8 +27,8 @@ import org.icefaces.component.utils.ScriptWriter;
     @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
     @ResourceDependency(name="animation.css",library="org.icefaces.component.animation")   
 })
-public class EffectBehavior extends ClientBehaviorBase{
-	public final static String BEHAVIOR_ID = "org.icefaces.effects.Effect";
+public class AnimationBehavior extends ClientBehaviorBase{
+	public final static String BEHAVIOR_ID = "org.icefaces.animation.Animation";
     private Map<String, ValueExpression> bindings;
 	private String effectsLib = "ice.yui3.effects";
 	private boolean usingStyleClass;
@@ -124,7 +124,7 @@ public class EffectBehavior extends ClientBehaviorBase{
 	}
  
     
-	public EffectBehavior() {
+	public AnimationBehavior() {
 		System.out.println("EffectBehavior initialized ");
 	}
 	
@@ -272,7 +272,7 @@ public class EffectBehavior extends ClientBehaviorBase{
     }   
  
 	public interface IIterator {
-		public void next (String name, EffectBehavior effectBehavior);
+		public void next (String name, AnimationBehavior effectBehavior);
 	}
 	
 	public static abstract class Iterator implements IIterator {

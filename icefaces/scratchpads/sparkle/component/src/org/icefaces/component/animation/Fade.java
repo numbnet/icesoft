@@ -1,4 +1,4 @@
-package org.icefaces.component.effects;
+package org.icefaces.component.animation;
 
  
 public class Fade extends Effect{
