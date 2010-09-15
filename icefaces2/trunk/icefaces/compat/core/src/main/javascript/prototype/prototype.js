@@ -43,7 +43,7 @@ var Prototype = {
         }
     })(),
 
-    BrowserFeatures: {
+    BrowserFeatures: window.Prototype && window.Prototype.BrowserFeatures ? window.Prototype.BrowserFeatures : {
         XPath: !!document.evaluate,
         SelectorsAPI: !!document.querySelector,
         ElementExtensions: (function() {
@@ -77,6 +77,9 @@ var Prototype = {
         return x
     }
 };
+
+//make public so Prototype reload can be detected
+window.Prototype = { BrowserFeatures: Prototype.BrowserFeatures };
 
 if (Prototype.Browser.MobileSafari)
     Prototype.BrowserFeatures.SpecificElementExtensions = false;
