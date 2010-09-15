@@ -360,6 +360,9 @@ public class PortletExternalContext extends BridgeExternalContext {
         } else {
             requestAttributes = NOOPRequestAttributes;
         }
+
+        requestMap.clear();
+        response = null;
     }
 
     /**

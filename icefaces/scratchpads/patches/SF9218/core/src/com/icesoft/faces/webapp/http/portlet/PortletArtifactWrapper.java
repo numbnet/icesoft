@@ -41,4 +41,9 @@ public class PortletArtifactWrapper {
     public PortletConfig getPortletConfig() {
         return (this.portletConfig);
     }
+    
+    public void release()  {
+        this.request = null;
+        this.response = null;
+    }
 }
