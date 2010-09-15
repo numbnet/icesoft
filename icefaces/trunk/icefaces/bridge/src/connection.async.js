@@ -76,6 +76,11 @@
                     this.logger.error('receive broadcast failed', e);
                 }
             }.bind(this);
+            this.badResponseCallback = function(response) {
+                logger.warn('bad response received\nstatus: [' + response.statusCode() + '] ' + response.statusText() +
+                            '\ncontent:\n' + response.content());
+                this.connectionDownListeners.broadcast(response);
+            }.bind(this);
             this.sendXWindowCookie = Function.NOOP;
             this.receiveXWindowCookie = function (response) {
                 var xWindowCookie = response.getResponseHeader("X-Set-Window-Cookie");
@@ -267,6 +272,7 @@
                 self.sendChannel.postAsynchronously(self.getURI, self.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
                     request.on(Connection.OK, self.receiveCallback);
+                    request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.OK, Connection.Close);
                 });
             }
@@ -311,6 +317,7 @@
                         if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
                         request.on(Connection.OK, onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
+                        request.on(Connection.BadResponse, this.badResponseCallback);
                         request.on(Connection.ServerError, this.serverErrorCallback);
                         request.on(Connection.OK, Connection.Close);
                         this.onSendListeners.broadcast(function(onReceive) {

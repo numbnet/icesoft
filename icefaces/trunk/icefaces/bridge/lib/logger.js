@@ -292,7 +292,7 @@
                     var timestamp = (new Date()).toTimestamp();
                     var categoryName = category.join('.');
                     ('[' + categoryName + '] : ' + message +
-                     (exception ? ('\n' + exception) : '')).split('\n').each(function(line) {
+                     (exception ? ('\n[ ' + exception.name + ' ] ' + exception.message) : '')).split('\n').each(function(line) {
                         if (line.containsWords()) {
                             var eventNode = elementDocument.createElement('div');
                             eventNode.style.padding = '3px';
