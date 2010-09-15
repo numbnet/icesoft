@@ -24,9 +24,9 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
-import com.icesoft.faces.context.effects.CurrentStyle;
 import org.w3c.dom.Element;
 
 import javax.faces.component.EditableValueHolder;
@@ -41,6 +41,7 @@ import java.util.Set;
 
 public class CheckboxRenderer extends DomBasicInputRenderer {
     private static final String[] booleanCheckboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTBOOLEANCHECKBOX);
+
     public boolean getRendersChildren() {
         return true;
     }
@@ -59,8 +60,8 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         if (decodedValue == null) {
             decodedValue = "false";
         } else if (decodedValue.equalsIgnoreCase("on") ||
-                   decodedValue.equalsIgnoreCase("yes") ||
-                   decodedValue.equalsIgnoreCase("true")) {
+                decodedValue.equalsIgnoreCase("yes") ||
+                decodedValue.equalsIgnoreCase("true")) {
             decodedValue = "true";
         }
         ((EditableValueHolder) uiComponent).setSubmittedValue(decodedValue);
@@ -100,6 +101,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         } else {
             input.removeAttribute("checked");
         }
+        input.setAttribute("value", "on");
 
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
@@ -115,7 +117,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
     }
 
 
-    public void renderPassThruAttributes(FacesContext facesContext, 
+    public void renderPassThruAttributes(FacesContext facesContext,
                                          UIComponent uiComponent,
                                          Element input) {
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, booleanCheckboxPassThruAttributes);
@@ -124,7 +126,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
                 facesContext,
                 uiComponent,
                 input,
-                new String[]{}) ;
+                new String[]{});
         // onfocus
         String original = (String) uiComponent.getAttributes().get("onfocus");
         String onfocus = "setFocus(this.id);";
