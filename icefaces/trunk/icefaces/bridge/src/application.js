@@ -150,9 +150,14 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
             var dispose = function() {
-                dispose = Function.NOOP;
-                connection.shutdown();
-                documentSynchronizer.shutdown();
+                try {
+                    dispose = Function.NOOP;
+                    connection.shutdown();
+                    //                    documentSynchronizer.shutdown();
+                } finally {
+                    //clean-up reference to the bridge instance
+                    container.bridge = null;
+                }
             };
 
             var sessionExpiredListeners = [];
@@ -345,4 +350,16 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
 
 window.onKeyPress(function(e) {
     if (e.isEscKey()) e.cancelDefaultAction();
+});
+
+//***
+//clean-up window custom properties and standard event handlers
+window.onUnload(function() {
+    window.logger = null;
+    window.views = null;
+    window.disposeViewsURI = null;
+    window.disposeOnViewRemoval = null;
+    window.$element = null;
+    window.$event = null;
+    window.$enumerate = null;
 });

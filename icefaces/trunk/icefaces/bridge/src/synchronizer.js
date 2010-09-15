@@ -39,10 +39,10 @@
         var tag = container.tagName;
         var c = $element(container);
         var bridge_optimizedJSListenerCleanup =
-            c.findBridge().optimizedJSListenerCleanup;
+                c.findBridge().optimizedJSListenerCleanup;
         c.disconnectEventListeners(bridge_optimizedJSListenerCleanup);
         c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''),
-            bridge_optimizedJSListenerCleanup);
+                bridge_optimizedJSListenerCleanup);
     };
 
     This.Synchronizer = Object.subclass({
@@ -93,6 +93,7 @@
 
         shutdown: function() {
             this.synchronize = Function.NOOP;
+            this.historyFrame = null;
         }
     });
 });

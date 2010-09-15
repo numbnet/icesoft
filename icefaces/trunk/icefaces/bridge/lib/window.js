@@ -57,13 +57,13 @@ window.height = function() {
     }
 });
 
-if(typeof OpenAjax!='undefined'){
-    if(typeof OpenAjax.addOnLoad !='undefined'){
+if (typeof OpenAjax != 'undefined') {
+    if (typeof OpenAjax.addOnLoad != 'undefined') {
         var current = window.onLoad;
         window.onLoad = OpenAjax.addOnLoad;
         OpenAjax.addOnLoad(current);
     }
-    if(typeof OpenAjax.addOnUnLoad !='undefined'){
+    if (typeof OpenAjax.addOnUnLoad != 'undefined') {
         var current = window.onUnload;
         window.onUnload = OpenAjax.addOnUnLoad;
         OpenAjax.addOnLoad(current);
@@ -90,3 +90,24 @@ window.onKeyUp = function(listener) {
         listener(Ice.EventModel.Event.adaptToKeyEvent(e));
     };
 };
+
+//***
+//clean up callback references
+window.onUnload(function() {
+    document.onkeypress = null;
+    document.onKeyPress = null;
+    document.onkeyup = null;
+    document.onKeyUp = null;
+    window.width = null;
+    window.height = null;
+    window.onresize = null;
+    window.onResize = null;
+    window.onscroll = null;
+    window.onScroll = null;
+    window.onbeforeunload = null;
+    window.onBeforeUnload = null;
+    window.onunload = null;
+    window.onUnload = null;
+    window.onload = null;
+    window.onLoad = null;
+});

@@ -130,24 +130,23 @@
     });
 
     This.WindowLogHandler = Object.subclass({
-        initialize: function(logger, parentWindow, lines, thresholdPriority) {
+        initialize: function(logger, lines, thresholdPriority) {
             this.lineOptions = [ 25, 50, 100, 200, 400 ];
             this.logger = logger;
             this.logger.handleWith(this);
-            this.parentWindow = parentWindow;
             this.lines = lines || this.lineOptions[3];
             this.thresholdPriority = thresholdPriority || This.Priority.DEBUG;
             this.categoryMatcher = /.*/;
             this.closeOnExit = true;
             this.toggle();
 
-            this.parentWindow.onKeyUp(function(e) {
+            window.onKeyUp(function(e) {
                 var key = e.keyCode();
                 if ((key == 20 || key == 84) && (e.isCtrlPressed() || e.isAltPressed()) && e.isShiftPressed()) {
                     this.enable();
                 }
             }.bind(this));
-            this.parentWindow.onUnload(function() {
+            window.onUnload(function() {
                 window.logger.info('page unloaded!');
                 this.disable();
             }.bind(this));
@@ -155,7 +154,7 @@
 
         enable: function() {
             try {
-                this.window = this.parentWindow.open('', 'log' + window.identifier, 'scrollbars=1,width=800,height=680');
+                this.window = window.open('', 'log' + window.identifier, 'scrollbars=1,width=800,height=680');
                 var windowDocument = this.window.document;
 
                 this.log = this.window.document.getElementById('log-window');
@@ -256,6 +255,7 @@
             this.logger.threshold(This.Priority.ERROR);
             this.handle = Function.NOOP;
             if (this.closeOnExit && this.window) this.window.close();
+            this.window = null;
         },
 
         toggle: function() {
