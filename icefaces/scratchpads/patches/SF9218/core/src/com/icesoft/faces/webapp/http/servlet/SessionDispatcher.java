@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.lang.ref.WeakReference;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -26,12 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
-    private final Map sessionBoundServers = new HashMap();
+    private final Map sessionBoundServers = new WeakHashMap();
     private final Map activeRequests = new HashMap();
     private ServletContext context;
 
@@ -60,8 +62,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
     public void shutdown() {
         Iterator i = sessionBoundServers.values().iterator();
         while (i.hasNext()) {
-            PseudoServlet pseudoServlet = (PseudoServlet) i.next();
-            pseudoServlet.shutdown();
+            PseudoServlet pseudoServlet = (PseudoServlet) ((WeakReference) i.next()).get();
+            if (null != pseudoServlet) {
+                pseudoServlet.shutdown();
+            }
         }
     }
 
@@ -83,17 +87,21 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         synchronized (sessionBoundServers) {
             if (!sessionBoundServers.containsKey(id)) {
-                sessionBoundServers.put(id, this.newServer(session, monitor, new Authorization() {
+                PseudoServlet pservlet = this.newServer(session, monitor, new Authorization() {
                     public boolean isUserInRole(String role) {
                         return inRole(id, role);
                     }
-                }));
+                });
+                //add to the session so that our WeakHashMap does not ignore the
+                //reference
+                session.setAttribute(id + ":sessionboundserver", pservlet);
+                sessionBoundServers.put(id, new WeakReference(pservlet));
             }
         }
     }
 
     protected PseudoServlet lookupServer(final HttpSession session) {
-        return lookupServer(session.getId());
+        return (PseudoServlet) ((WeakReference) sessionBoundServers.get(session.getId())).get();
     }
 
     protected PseudoServlet lookupServer(final String sessionId) {
@@ -101,8 +109,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private void sessionShutdown(HttpSession session) {
-        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
-        servlet.shutdown();
+        PseudoServlet servlet = (PseudoServlet) ((WeakReference) sessionBoundServers.get(session.getId())).get();
+        if (null != servlet) {
+            servlet.shutdown();
+        }
     }
 
     private void sessionDestroy(HttpSession session) {
