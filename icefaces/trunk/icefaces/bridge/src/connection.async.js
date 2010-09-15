@@ -235,11 +235,13 @@
                 return connectionCookie.loadValue().endsWith(':acquired');
             }
 
-            this.blockingConnectionMonitor = function() {
+            var self = this;
+
+            function blockingConnectionMonitorProcess() {
                 try {
                     if (shouldEstablishBlockingConnection()) {
                         offerCandidature();
-                        this.logger.info('blocking connection not initialized...candidate for its creation');
+                        self.logger.info('blocking connection not initialized...candidate for its creation');
                     } else {
                         if (isWinningCandidate()) {
                             if (!hasOwner()) {
@@ -251,38 +253,42 @@
                         }
                         if (hasOwner() && isLeaseExpired()) {
                             offerCandidature();
-                            this.logger.info('blocking connection lease expired...candidate for its creation');
+                            self.logger.info('blocking connection lease expired...candidate for its creation');
                         }
                     }
                 } catch (e) {
-                    this.logger.info("could not determine the state of the blocking connection...retrying", e);
+                    self.logger.info("could not determine the state of the blocking connection...retrying", e);
                 }
-            }.bind(this).repeatExecutionEvery(pollingPeriod);
+            }
 
-            var pickUpdates = function() {
-                this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
+            this.blockingConnectionMonitor = setInterval(blockingConnectionMonitorProcess, pollingPeriod);
+
+            function pickUpdates() {
+                self.sendChannel.postAsynchronously(self.getURI, self.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
-                    request.on(Connection.OK, this.receiveCallback);
+                    request.on(Connection.OK, self.receiveCallback);
                     request.on(Connection.OK, Connection.Close);
-                }.bind(this));
-            }.bind(this);
+                });
+            }
 
             //pick any updates that might be generated in between bridge re-initialization
             //todo: replace heuristic with more exact solution
-            pickUpdates.delayExecutionFor(pollingPeriod);
-
+            setTimeout(pickUpdates, pollingPeriod);
             //monitor & pick updates for this view
-            this.updatesMonitor = function() {
+
+            function updatesMonitorProcess() {
                 try {
-                    var views = this.updatedViews.loadValue().split(' ');
+                    var views = self.updatedViews.loadValue().split(' ');
                     if (views.include(fullViewID)) {
                         pickUpdates();
-                        this.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
+                        self.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
                     }
                 } catch (e) {
-                    this.logger.warn('failed to listen for updates', e);
+                    self.logger.warn('failed to listen for updates', e);
                 }
-            }.bind(this).repeatExecutionEvery(300);
+            }
+
+            this.updatesMonitor = setInterval(updatesMonitorProcess, 300);
 
             this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
 
@@ -354,7 +360,7 @@
                 this.listener.abort();
 
                 [ this.updatesMonitor, this.blockingConnectionMonitor ].eachWithGuard(function(monitor) {
-                    monitor.cancel();
+                    clearInterval(monitor);
                 });
                 this.listening.remove();
             }
