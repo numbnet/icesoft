@@ -11,7 +11,7 @@ import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
  
-import org.icefaces.component.effects.EffectBehavior;
+import org.icefaces.component.animation.AnimationBehavior;
 
 public class Utils {
     public static void renderChildren(FacesContext facesContext,
@@ -67,12 +67,12 @@ public class Utils {
     }
     
     
-    public static boolean iterateEffects(EffectBehavior.Iterator iterator) {
+    public static boolean iterateEffects(AnimationBehavior.Iterator iterator) {
     	if (!(iterator.getUIComponent() instanceof ClientBehaviorHolder)) return false;
     	for (String effect : ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().keySet()) {
     		for (ClientBehavior behavior: ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().get(effect)) {
-    			if (behavior instanceof EffectBehavior) {
-    				iterator.next(effect, (EffectBehavior)behavior);		
+    			if (behavior instanceof AnimationBehavior) {
+    				iterator.next(effect, (AnimationBehavior)behavior);		
     			}
     		}
     	}

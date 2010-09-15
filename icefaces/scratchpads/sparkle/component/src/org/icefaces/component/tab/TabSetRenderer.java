@@ -14,9 +14,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import org.icefaces.component.effects.ClientBehaviorContextImpl;
-import org.icefaces.component.effects.EffectBehavior;
-import org.icefaces.component.effects.Effect;
+import org.icefaces.component.animation.ClientBehaviorContextImpl;
+import org.icefaces.component.animation.AnimationBehavior;
+import org.icefaces.component.animation.Effect;
 import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
@@ -46,8 +46,8 @@ public class TabSetRenderer extends Renderer{
                 } catch (Exception e) {}
             }
         }
-        Utils.iterateEffects(new EffectBehavior.Iterator(uiComponent) {
-			public void next(String name, EffectBehavior effectBehavior) {
+        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
+			public void next(String name, AnimationBehavior effectBehavior) {
 				effectBehavior.decode(FacesContext.getCurrentInstance(), this.getUIComponent());				
 			}
 		});
@@ -128,8 +128,8 @@ public class TabSetRenderer extends Renderer{
         String onupdate = tabSet.getOnupdate();
         boolean effectOnHover = tabSet.isEffectOnHover();
         final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new EffectBehavior.Iterator(uiComponent) {
-			public void next(String event, EffectBehavior effectBehavior) {
+        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
+			public void next(String event, AnimationBehavior effectBehavior) {
 				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
 				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
 			}
@@ -223,8 +223,8 @@ public class TabSetRenderer extends Renderer{
         } else {
             if (tabSet.getSelectedIndex() == index) {
                 final StringBuilder style = new StringBuilder();
-                Utils.iterateEffects(new EffectBehavior.Iterator(tabSet) {
-        			public void next(String name, EffectBehavior effectBehavior) {
+                Utils.iterateEffects(new AnimationBehavior.Iterator(tabSet) {
+        			public void next(String name, AnimationBehavior effectBehavior) {
         		        if (effectBehavior.getStyle() != null) {
         		        	style.append(effectBehavior.getStyle());
         		        	style.append(";");

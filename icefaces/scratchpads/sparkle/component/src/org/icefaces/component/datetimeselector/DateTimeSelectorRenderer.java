@@ -5,8 +5,8 @@ import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.component.datetimeselector.DateTimeSelector;
-import org.icefaces.component.effects.ClientBehaviorContextImpl;
-import org.icefaces.component.effects.EffectBehavior;
+import org.icefaces.component.animation.ClientBehaviorContextImpl;
+import org.icefaces.component.animation.AnimationBehavior;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -108,8 +108,8 @@ public class DateTimeSelectorRenderer extends Renderer {
         String amPmStr = formatter.format(date);
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
         final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new EffectBehavior.Iterator(component) {
-			public void next(String event, EffectBehavior effectBehavior) {
+        Utils.iterateEffects(new AnimationBehavior.Iterator(component) {
+			public void next(String event, AnimationBehavior effectBehavior) {
 				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
 			}
 		});

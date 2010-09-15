@@ -1,4 +1,4 @@
-package org.icefaces.component.effects;
+package org.icefaces.component.animation;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -14,12 +14,12 @@ import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagException;
 
 
-public class EffectBehaviorHandler extends BehaviorHandler{
+public class AnimationBehaviorHandler extends BehaviorHandler{
     private final TagAttribute run;
     private final TagAttribute name;
     private final TagAttribute effectObject;
     
- 	public EffectBehaviorHandler(BehaviorConfig config) {
+ 	public AnimationBehaviorHandler(BehaviorConfig config) {
 		super(config);
 		run = this.getAttribute("run");
 		name = this.getAttribute("name");
@@ -32,7 +32,7 @@ public class EffectBehaviorHandler extends BehaviorHandler{
  
     private void setAttribute(FaceletContext context, 
             			TagAttribute tagAttribute, 
-            				EffectBehavior behavior,  
+            				AnimationBehavior behavior,  
             					Class type) {
 
     	if (tagAttribute != null) {
@@ -68,14 +68,14 @@ public class EffectBehaviorHandler extends BehaviorHandler{
             }
         }
         
-        EffectBehavior effectBehavior = createEffectBehavior(context, eventName);
+        AnimationBehavior effectBehavior = createEffectBehavior(context, eventName);
         clientBehaviorHolder.addClientBehavior(eventName, effectBehavior);
     }
     
-    private EffectBehavior createEffectBehavior(FaceletContext context, String eventName) {
+    private AnimationBehavior createEffectBehavior(FaceletContext context, String eventName) {
     	
     	Application application = context.getFacesContext().getApplication();
-    	EffectBehavior effectBehavior = (EffectBehavior)application.createBehavior(EffectBehavior.BEHAVIOR_ID);
+    	AnimationBehavior effectBehavior = (AnimationBehavior)application.createBehavior(AnimationBehavior.BEHAVIOR_ID);
     	setAttribute(context, run, effectBehavior, Boolean.class);
     	setAttribute(context, effectObject, effectBehavior, Effect.class);   
     	setAttribute(context, name, effectBehavior, String.class);      	

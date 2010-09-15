@@ -1,4 +1,4 @@
-package org.icefaces.component.effects;
+package org.icefaces.component.animation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import org.icefaces.component.utils.JSONBuilder;
 
 public abstract class Effect{
  
-	private EffectBehavior effectBehavior;
+	private AnimationBehavior effectBehavior;
 	private Map<String, Object> properties = new HashMap(); 
 	private String sourceElement;
 	
@@ -67,11 +67,12 @@ public abstract class Effect{
 		}
         return json.endMap().toString();		
 	}
-	EffectBehavior getEffectBehavior() {
+	
+	AnimationBehavior getEffectBehavior() {
 		return effectBehavior;
 	}
 
-	void setEffectBehavior(EffectBehavior effectBehavior) {
+	void setEffectBehavior(AnimationBehavior effectBehavior) {
 		this.effectBehavior = effectBehavior;
 	}
 
