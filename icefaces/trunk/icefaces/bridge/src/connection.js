@@ -119,7 +119,11 @@
                 }
             }.bind(this);
 
-            this.badResponseCallback = this.connectionDownListeners.broadcaster();
+            this.badResponseCallback = function(response) {
+                logger.warn('bad response received\nstatus: [' + response.statusCode() + '] ' + response.statusText() +
+                            '\ncontent:\n' + response.content());
+                this.connectionDownListeners.broadcast(response);
+            };
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
 
             this.lock = configuration.blockUI ? new Connection.Lock() : new Connection.NOOPLock();
