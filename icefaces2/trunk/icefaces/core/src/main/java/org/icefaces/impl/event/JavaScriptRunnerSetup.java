@@ -20,9 +20,10 @@
  *
  */
 
-package org.icefaces.util;
+package org.icefaces.impl.event;
 
-import org.icefaces.impl.event.UIOutputWriter;
+import org.icefaces.util.EnvUtils;
+import org.icefaces.util.JavaScriptRunner;
 
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
