@@ -24,6 +24,7 @@ package org.icefaces.context;
 
 import org.icefaces.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.JavaScriptRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -417,7 +418,21 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     protected void renderExtensions() {
-        //do nothing.
+        runScripts();
+    }
+
+    private void runScripts() {
+        String scripts = JavaScriptRunner.collateScripts(facesContext);
+        if (!scripts.isEmpty()) {
+            try {
+                PartialResponseWriter partialWriter = getPartialResponseWriter();
+                partialWriter.startEval();
+                partialWriter.write(scripts);
+                partialWriter.endEval();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

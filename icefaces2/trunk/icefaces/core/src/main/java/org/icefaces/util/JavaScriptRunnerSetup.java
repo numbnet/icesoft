@@ -20,11 +20,9 @@
  *
  */
 
-package com.icesoft.faces.component;
+package org.icefaces.util;
 
-import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.event.UIOutputWriter;
-import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -34,9 +32,9 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
 
-public class JavaScriptContextSetup implements SystemEventListener {
+public class JavaScriptRunnerSetup implements SystemEventListener {
 
-    public JavaScriptContextSetup() {
+    public JavaScriptRunnerSetup() {
     }
 
     public boolean isListenerForSource(Object source) {
@@ -49,14 +47,14 @@ public class JavaScriptContextSetup implements SystemEventListener {
             return;
         }
 
-        UIOutput jsContextOutput = new UIOutputWriter() {
+        UIOutput jsOutput = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 writer.startElement("span", this);
-                writer.writeAttribute("id", "dynamic-code-compat", null);
+                writer.writeAttribute("id", "dynamic-code", null);
                 if (!context.getPartialViewContext().isPartialRequest()) {
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
-                    writer.write(JavascriptContext.getJavascriptCalls(context));
+                    writer.write(JavaScriptRunner.collateScripts(context));
                     writer.endElement("script");
                 }
                 writer.endElement("span");
@@ -64,7 +62,7 @@ public class JavaScriptContextSetup implements SystemEventListener {
         };
 
         UIViewRoot root = facesContext.getViewRoot();
-        jsContextOutput.setTransient(true);
-        root.addComponentResource(facesContext, jsContextOutput, "body");
+        jsOutput.setTransient(true);
+        root.addComponentResource(facesContext, jsOutput, "body");
     }
 }
