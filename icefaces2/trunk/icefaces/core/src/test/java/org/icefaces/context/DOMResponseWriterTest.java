@@ -27,7 +27,8 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
+import org.icefaces.impl.context.DOMResponseWriter;
 
 import javax.faces.context.ResponseWriter;
 import java.io.StringWriter;

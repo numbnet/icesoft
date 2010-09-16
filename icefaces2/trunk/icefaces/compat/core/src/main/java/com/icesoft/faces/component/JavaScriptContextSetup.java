@@ -23,7 +23,7 @@
 package com.icesoft.faces.component;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
-import org.icefaces.event.UIOutputWriter;
+import org.icefaces.impl.event.UIOutputWriter;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIOutput;

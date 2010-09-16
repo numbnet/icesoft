@@ -23,7 +23,7 @@ package com.icesoft.faces.component.outputprogress;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;

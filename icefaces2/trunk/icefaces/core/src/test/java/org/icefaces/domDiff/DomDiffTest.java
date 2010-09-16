@@ -25,7 +25,7 @@ package org.icefaces.domDiff;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 import org.junit.Test;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import static org.junit.Assert.*;

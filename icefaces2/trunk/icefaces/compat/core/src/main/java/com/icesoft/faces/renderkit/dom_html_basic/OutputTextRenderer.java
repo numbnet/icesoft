@@ -32,7 +32,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 public class OutputTextRenderer extends BaseRenderer{
     private static final String[] passThruAttributes =

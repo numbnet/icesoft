@@ -23,12 +23,10 @@
 package org.icefaces.application;
 
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -41,6 +39,7 @@ import java.io.IOException;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.Util;
+import org.icefaces.impl.application.WindowScopeManager;
 
 /**
  * <p>

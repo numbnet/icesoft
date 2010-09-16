@@ -22,9 +22,9 @@
 
 package com.icesoft.faces.context;
 
-import org.icefaces.push.DynamicResourceRegistry;
-import org.icefaces.push.http.DynamicResource;
-import org.icefaces.push.http.DynamicResourceLinker;
+import org.icefaces.impl.push.DynamicResourceRegistry;
+import org.icefaces.impl.push.http.DynamicResource;
+import org.icefaces.impl.push.http.DynamicResourceLinker;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
