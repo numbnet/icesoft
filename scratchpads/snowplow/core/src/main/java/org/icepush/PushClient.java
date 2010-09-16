@@ -17,7 +17,6 @@ import org.icepush.client.AddGroupMemberRequest;
 import org.icepush.client.CreatePushIdRequest;
 import org.icepush.client.HttpClient;
 import org.icepush.client.HttpResponse;
-import org.icepush.client.InitialRequest;
 import org.icepush.client.ListenRequest;
 import org.icepush.client.NotifyRequest;
 import org.icepush.client.PushClientException;
@@ -42,11 +41,8 @@ public class PushClient {
      * @param      contextURI
      * @throws     PushClientException
      */
-    public PushClient(final String contextURI)
-    throws PushClientException {
+    public PushClient(final String contextURI) {
         this.contextURI = contextURI;
-        // throws PushClientException
-        initialize();
     }
 
     /**
@@ -110,16 +106,14 @@ public class PushClient {
              */
             listenRequestLock.lock();
             try {
-                if (listenRequest != null) {
-                    client.cancel(listenRequest);
-                    listenRequest = null;
-                }
+                cancelListenRequest();
                 if (pushIdCallbackMap.keySet().size() > 0) {
                     listen();
                 }
             } finally {
                 listenRequestLock.unlock();
             }
+//            listen();
         }
     }
 
@@ -163,14 +157,12 @@ public class PushClient {
                  */
                 listenRequestLock.lock();
                 try {
-                    if (listenRequest != null) {
-                        client.cancel(listenRequest);
-                        listenRequest = null;
-                    }
+                    cancelListenRequest();
                     listen();
                 } finally {
                     listenRequestLock.unlock();
                 }
+//                listen();
             }
         }
     }
@@ -202,10 +194,8 @@ public class PushClient {
     public void shutdown() {
         listenRequestLock.lock();
         try {
-            if (listenRequest != null) {
-                client.cancel(listenRequest);
-                listenRequest = null;
-            }
+            LOGGER.log(Level.INFO, "[Jack] Initiating shutdown...");
+            cancelListenRequest();
             client.shutdown();
         } finally {
             listenRequestLock.unlock();
@@ -217,6 +207,7 @@ public class PushClient {
             listenRequestLock.lock();
             try {
                 if (listenRequest != null) {
+                    LOGGER.log(Level.INFO, "[Jack] Cancelling the ListenRequest...");
                     client.cancel(listenRequest);
                     listenRequest = null;
                 }
@@ -226,25 +217,12 @@ public class PushClient {
         }
     }
 
-    private void initialize()
-    throws PushClientException {
-        try {
-            // throws URISyntaxException, MalformedURLException, IOException
-            sendNow(new InitialRequest(contextURI));
-        } catch (URISyntaxException exception) {
-            throw new PushClientException(exception);
-        }
-    }
-
     private void listen() {
-        Set<String> _pushIdSet = pushIdCallbackMap.keySet();
-        if (!_pushIdSet.isEmpty()) {
-            listenRequestLock.lock();
-            try {
-                if (listenRequest != null) {
-                    client.cancel(listenRequest);
-                    listenRequest = null;
-                }
+        listenRequestLock.lock();
+        try {
+            cancelListenRequest();
+            Set<String> _pushIdSet = pushIdCallbackMap.keySet();
+            if (!_pushIdSet.isEmpty()) {
                 try {
                     listenRequest =
                         // throws URISyntaxException
@@ -305,9 +283,9 @@ public class PushClient {
                             exception);
                     }
                 }
-            } finally {
-                listenRequestLock.unlock();
             }
+        } finally {
+            listenRequestLock.unlock();
         }
     }
 
