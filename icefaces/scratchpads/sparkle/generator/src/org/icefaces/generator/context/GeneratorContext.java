@@ -48,6 +48,7 @@ public class GeneratorContext{
         WrapperTypes.put("java.lang.Long", "long");
         WrapperTypes.put("java.lang.Short", "short");
 
+        // Inverse return types for when someone uses a wrapper class when defining a must-be primitive method
         InvWrapperTypes.put("boolean", "java.lang.Boolean");
         InvWrapperTypes.put("byte", "java.lang.Byte");
         InvWrapperTypes.put("char", "java.lang.Character");
@@ -57,11 +58,13 @@ public class GeneratorContext{
         InvWrapperTypes.put("long", "java.lang.Long");
         InvWrapperTypes.put("short", "java.lang.Short");
 
+        // getters that cannot override superclass signatures
         SpecialReturnSignatures.put("immediate","immediate");
         SpecialReturnSignatures.put("valid", "valid");
         SpecialReturnSignatures.put("required", "required");
         SpecialReturnSignatures.put("localValueSet", "localValueSet");
 
+        // Default values for primitive constants where null wont do
         PrimitiveDefaults.put("boolean", "false");
         PrimitiveDefaults.put("byte", "0");
         PrimitiveDefaults.put("char", "");
