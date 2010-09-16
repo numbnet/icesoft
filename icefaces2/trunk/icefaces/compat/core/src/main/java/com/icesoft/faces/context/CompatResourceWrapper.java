@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
-import org.icefaces.util.Base64;
+import org.icefaces.impl.util.Base64;
 
 public class CompatResourceWrapper extends javax.faces.application.Resource {
     com.icesoft.faces.context.Resource compatResource;

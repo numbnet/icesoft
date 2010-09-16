@@ -24,13 +24,13 @@ package com.icesoft.faces.application;
 
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
-import org.icefaces.application.ExternalContextConfiguration;
-import org.icefaces.event.UIOutputWriter;
-import org.icefaces.push.Configuration;
-import org.icefaces.push.ConfigurationException;
+import org.icefaces.impl.application.ExternalContextConfiguration;
+import org.icefaces.impl.event.UIOutputWriter;
+import org.icefaces.impl.push.Configuration;
+import org.icefaces.impl.push.ConfigurationException;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.util.FormEndRenderer;
-import org.icefaces.util.FormEndRendering;
+import org.icefaces.impl.util.FormEndRenderer;
+import org.icefaces.impl.util.FormEndRendering;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;

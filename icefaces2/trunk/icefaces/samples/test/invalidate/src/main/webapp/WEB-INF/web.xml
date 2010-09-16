@@ -38,7 +38,7 @@
     </error-page>
 
     <error-page>
-        <exception-type>org.icefaces.context.SessionExpiredException</exception-type>
+        <exception-type>org.icefaces.impl.context.SessionExpiredException</exception-type>
         <location>/faces/sessionExpired.xhtml</location>
     </error-page>
 

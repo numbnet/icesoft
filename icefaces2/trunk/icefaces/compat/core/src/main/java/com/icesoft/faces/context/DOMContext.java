@@ -25,11 +25,10 @@
  */
 package com.icesoft.faces.context;
 
-import org.icefaces.context.DOMResponseWriter;
+import org.icefaces.impl.context.DOMResponseWriter;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
@@ -37,13 +36,10 @@ import org.w3c.dom.Text;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.lang.reflect.Method;
 
 /**
  * <p><strong>DOMContext</strong> provides a component specific interface to the

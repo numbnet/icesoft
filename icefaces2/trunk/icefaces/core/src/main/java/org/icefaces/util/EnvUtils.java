@@ -22,6 +22,8 @@
 
 package org.icefaces.util;
 
+import org.icefaces.impl.util.EnvConfig;
+
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIViewRoot;
 import javax.faces.application.Resource;

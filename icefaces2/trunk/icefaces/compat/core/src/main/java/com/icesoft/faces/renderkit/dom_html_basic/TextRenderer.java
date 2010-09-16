@@ -25,7 +25,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.component.AttributeConstants;
 //import com.icesoft.faces.component.UIXhtmlComponent;
 import com.icesoft.faces.context.DOMContext;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;

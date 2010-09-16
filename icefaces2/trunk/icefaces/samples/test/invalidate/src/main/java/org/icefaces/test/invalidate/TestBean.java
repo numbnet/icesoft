@@ -21,14 +21,10 @@
 
 package org.icefaces.test.invalidate;
 
-import org.icefaces.util.EnvUtils;
-
 import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.logging.Logger;

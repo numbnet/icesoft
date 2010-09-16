@@ -35,7 +35,7 @@
     </tag>
     <tag>
         <tag-name>config</tag-name>
-        <handler-class>org.icefaces.facelets.tag.icefaces.core.ConfigHandler</handler-class>
+        <handler-class>org.icefaces.impl.facelets.tag.icefaces.core.ConfigHandler</handler-class>
         <attribute>
             <description>
                 A value of "true" indicates that ICEfaces rendering Direct-to-DOM 

@@ -23,8 +23,8 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
-import org.icefaces.context.DOMPartialViewContext;
-import org.icefaces.context.DOMResponseWriter;
+import org.icefaces.impl.context.DOMPartialViewContext;
+import org.icefaces.impl.context.DOMResponseWriter;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;

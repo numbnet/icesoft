@@ -26,7 +26,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.util.CoreUtils;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

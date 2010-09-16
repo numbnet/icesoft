@@ -30,8 +30,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.icefaces.util.DOMUtils;
-
 import java.io.IOException;
 
 public class TextareaRenderer extends BaseInputRenderer {

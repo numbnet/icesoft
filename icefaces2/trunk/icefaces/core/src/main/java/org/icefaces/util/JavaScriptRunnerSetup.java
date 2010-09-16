@@ -22,7 +22,7 @@
 
 package org.icefaces.util;
 
-import org.icefaces.event.UIOutputWriter;
+import org.icefaces.impl.event.UIOutputWriter;
 
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;

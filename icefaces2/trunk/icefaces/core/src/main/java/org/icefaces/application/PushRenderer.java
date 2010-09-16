@@ -22,9 +22,10 @@
 
 package org.icefaces.application;
 
-import org.icefaces.event.BridgeSetup;
-import org.icefaces.push.SessionViewManager;
+import org.icefaces.impl.event.BridgeSetup;
+import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.application.LazyPushManager;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;

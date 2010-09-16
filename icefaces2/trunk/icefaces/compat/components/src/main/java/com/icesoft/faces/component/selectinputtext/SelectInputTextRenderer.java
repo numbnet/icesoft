@@ -30,7 +30,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icefaces.util.DOMUtils;
+import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
