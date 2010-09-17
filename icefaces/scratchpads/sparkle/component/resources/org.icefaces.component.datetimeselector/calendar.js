@@ -362,6 +362,9 @@ init: function(params) {
     } else {
         calRootEl = new Element(document.createElement("div"), {id:calRootId, className:"ice-calcontainer"});
         calRootEl.appendTo(rootEl);
+        var clearDiv = new Element(document.createElement("div"));
+        Dom.setAttribute(clearDiv, "style", "clear: left;");
+        clearDiv.appendTo(rootEl);
     }
     // hidden field to store date value string
     var calValueId = rootId + "_value";
