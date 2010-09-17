@@ -97,5 +97,7 @@ public @interface Property {
      * and IDEs
      * @return
      */
-    Inherit inherit() default Inherit.UNSET;
+    //Inherit inherit() default Inherit.UNSET;
+	
+	Implementation implementation() default Implementation.UNSET;
 }

@@ -37,7 +37,7 @@ public class LoggerMeta extends UIComponentBaseMeta {
 //    @Property   
 //    private String label;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private String id;
 	
 	@Property
@@ -58,7 +58,7 @@ public class LoggerMeta extends UIComponentBaseMeta {
 //other properties not included here are thresholdMax, thresholdMin,
 //draggable, outputBuffer, newestOnTop, verboseOutput, entryFormat
 	
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
+    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS, defaultValue="true")
     private Boolean rendered;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")

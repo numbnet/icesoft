@@ -210,7 +210,7 @@ public class ComponentContext {
 					propertyValuesMap.put(field, propertyValues);
 					
                    //inherited properties should go to the tag class only
-                    if (propertyValues.inherit == Inherit.SUPERCLASS_PROPERTY) { /* @@@ changed */
+                    if (propertyValues.implementation == Implementation.EXISTS_IN_SUPERCLASS) { /* @@@ changed */
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
                         }                              
@@ -293,12 +293,12 @@ public class ComponentContext {
 			// /* debug */ System.out.println("  go up to " + superClass.getName());
 			boolean inherit = true;
 			try {
-				// if isBaseClass check for inherit()... otherwise, always go up
+				// if isBaseClass check for implementation()... otherwise, always go up
 				if (isBaseClass) {
 					Field field = clazz.getDeclaredField(fieldName);
 					if (field.isAnnotationPresent(Property.class)) {
 						Property property = (Property) field.getAnnotation(Property.class);
-						inherit = property.inherit() != Inherit.LOCAL_PROPERTY;
+						inherit = property.implementation() != Implementation.GENERATE;
 					}
 				}
 			} catch (NoSuchFieldException e) {
@@ -341,8 +341,8 @@ public class ComponentContext {
 				if (property.required() != Required.UNSET) {
 					propertyValues.required = property.required();
 				}
-				if (property.inherit() != Inherit.UNSET) {
-					propertyValues.inherit = property.inherit();
+				if (property.implementation() != Implementation.UNSET) {
+					propertyValues.implementation = property.implementation();
 				}
 				// /* debug */ displayValues(propertyValues);
 			}
@@ -378,8 +378,8 @@ public class ComponentContext {
 		if (propertyValues.required == Required.UNSET) {
 			propertyValues.required = Required.DEFAULT;
 		}
-		if (propertyValues.inherit == Inherit.UNSET) {
-			propertyValues.inherit = Inherit.DEFAULT;
+		if (propertyValues.implementation == Implementation.UNSET) {
+			propertyValues.implementation = Implementation.DEFAULT;
 		}
 	}
 	
@@ -435,7 +435,7 @@ public class ComponentContext {
 		System.out.println("javadocGet " + propertyValues.javadocGet);
 		System.out.println("javadocSet " + propertyValues.javadocSet);
 		System.out.println("required " + propertyValues.required);
-		System.out.println("inherit " + propertyValues.inherit);
+		System.out.println("inherit " + propertyValues.implementation);
 		System.out.println("**********");
 	}
 }
