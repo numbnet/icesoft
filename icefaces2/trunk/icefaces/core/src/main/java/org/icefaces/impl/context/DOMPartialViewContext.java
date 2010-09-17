@@ -24,6 +24,7 @@ package org.icefaces.impl.context;
 
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.util.FocusController;
 import org.icefaces.util.JavaScriptRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -418,7 +419,21 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     }
 
     protected void renderExtensions() {
+        manageFocus();
         runScripts();
+    }
+
+    private void manageFocus() {
+        String focusId = FocusController.getReceivedFocus(facesContext);
+        boolean focusNotYetSet = !FocusController.isFocusSet(facesContext);
+
+        //preserve focus received if not already set by one of the components
+        if (focusNotYetSet && focusId != null) {
+            FocusController.setFocus(facesContext, focusId);
+        }
+        if (FocusController.isFocusSet(facesContext)) {
+            JavaScriptRunner.runScript(facesContext, "ice.applyFocus('" + FocusController.getFocus(facesContext) + "');");
+        }
     }
 
     private void runScripts() {

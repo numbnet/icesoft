@@ -45,7 +45,6 @@
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
         <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
         <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
-        <loadfile property="focus.js" srcFile="${src.dir}/focus.js"/>
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <copy file="${src.dir}/compat.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
@@ -56,7 +55,6 @@
                 <filter token="window" value="${window.js}"/>
                 <filter token="delay" value="${delay.js}"/>
                 <filter token="status" value="${status.js}"/>
-                <filter token="focus" value="${focus.js}"/>
                 <filter token="submit" value="${submit.js}"/>
             </filterset>
         </copy>
