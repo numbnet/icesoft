@@ -51,7 +51,6 @@ var formOf;
             if (Ice.Menu != null && Ice.Menu.menuContext != null) {
                 parameter('ice.menuContext', Ice.Menu.menuContext);
             }
-            parameter('ice.focus', currentFocus);
             parameter('ice.submit.partial', true);
         });
 
@@ -73,7 +72,6 @@ var formOf;
             if (Ice.Menu != null && Ice.Menu.menuContext != null) {
                 parameter('ice.menuContext', Ice.Menu.menuContext);
             }
-            parameter('ice.focus', currentFocus);
         });
         resetHiddenFieldsFor(form);
 

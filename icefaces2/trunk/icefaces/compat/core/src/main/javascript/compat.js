@@ -40,9 +40,7 @@ if (!window.ice.compat) {
         //include status.js
         namespace.DefaultIndicators = DefaultIndicators;
         namespace.ComponentIndicators = ComponentIndicators;
-        //include focus.js
-        window.setFocus = setFocus;
-        namespace.applyFocus = applyFocus;
+        window.setFocus = namespace.setFocus;
         //include submit.js
         window.iceSubmitPartial = iceSubmitPartial;
         window.iceSubmit = iceSubmit;

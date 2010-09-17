@@ -44,7 +44,6 @@ var currentFocus;
                             e.focus();
                         } catch (ex) {
                             //IE throws exception if element is invisible
-                            logger.info(ex.message);
                         }
                     }
                 }
@@ -72,13 +71,26 @@ var currentFocus;
         setFocus(element.id);
     }
 
+    var focusableElements = ['select', 'input', 'button', 'a'];
+
     function captureFocusIn(root) {
-        each(['select', 'input', 'button', 'a'], function(type) {
+        if (contains(focusableElements, root.nodeName)) {
+            registerElementListener(root, 'onfocus', setFocusListener);
+        }
+        each(focusableElements, function(type) {
             each(root.getElementsByTagName(type), function(element) {
                 registerElementListener(element, 'onfocus', setFocusListener);
             });
         });
     }
+
+    namespace.onAfterUpdate(function(updates) {
+        each(updates.getElementsByTagName('update'), function(update) {
+            var id = update.getAttribute('id');
+            var element = lookupElementById(id);
+            if (id != 'javax.faces.ViewState' && element) captureFocusIn(element);
+        });
+    });
 
     onLoad(window, function() {
         captureFocusIn(document);

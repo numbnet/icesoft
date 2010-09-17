@@ -200,7 +200,7 @@ public class CoreComponentUtils {
      * @param focusId Id of component to get the focus
      */
     public static void setFocusId(String focusId) {
-        FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("ice.focus", focusId);
+        //ignore call, dead code 
     }
 
     /**

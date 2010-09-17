@@ -99,7 +99,7 @@ var submit;
             restoreState(element);
 
             event = event || null;
-            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
+            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
             var decoratedEvent = $event(event, element);
 
             cancelBubbling(decoratedEvent);
@@ -172,7 +172,7 @@ var submit;
         }
 
         var viewID = viewIDOf(element);
-        var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID};
+        var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
         var decoratedEvent = $event(event, element);
 
         cancelBubbling(decoratedEvent);

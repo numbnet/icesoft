@@ -25,6 +25,7 @@ package com.icesoft.faces.context.effects;
 
 import com.icesoft.faces.application.StartupTime;
 import com.icesoft.util.CoreComponentUtils;
+import org.icefaces.util.FocusController;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -181,9 +182,7 @@ public class JavascriptContext {
         addtEffectJavascriptCalls(map);
         String code = (String) map.get(REQUEST_KEY);
         map.put(REQUEST_KEY, "");
-        String focus = getFocusCall(map);
-        code = replaceDupes(
-                code == null || "".equals(code) ? focus : code + ';' + focus);
+        code = replaceDupes(code == null || "".equals(code) ? "" : code);
         // Hack so that javascript will be called from both the bridge and the html parser
         // Remove when we have a better way
         if ("".equals(code)) {
@@ -192,27 +191,6 @@ public class JavascriptContext {
             return code + randomComment();
         }
     }
-
-    /**
-     * Get the focus call from the request map
-     *
-     * @param map
-     * @return
-     */
-    private static String getFocusCall(Map map) {
-        String focus = (String) map.get(FOCUS_APP_KEY);
-        if (focus == null) {
-            focus = (String) map.get(FOCUS_COMP_KEY);
-        }
-        if (focus == null) {
-            return "";
-        } else {
-            map.remove(FOCUS_APP_KEY);
-            map.remove(FOCUS_COMP_KEY);
-            return "ice.applyFocus('" + focus + "');";
-        }
-    }
-
 
     /**
      * Wrap the effect in a javascript method to be called later. Returns the
@@ -400,11 +378,7 @@ public class JavascriptContext {
      * @param id
      */
     public static void focus(FacesContext context, String id) {
-        //this method relies on XMLRenderer to create these "script" elements
-        if (!id.equals("")) {
-            Map map = context.getExternalContext().getRequestMap();
-            map.put(FOCUS_COMP_KEY, id);
-        }
+        FocusController.setFocus(context, id);
     }
 
     /**
@@ -414,27 +388,7 @@ public class JavascriptContext {
      * @param id
      */
     public static void applicationFocus(FacesContext facesContext, String id) {
-        if (!id.equals("")) {
-
-            Map map = facesContext.getExternalContext().getRequestMap();
-            map.put(FOCUS_APP_KEY, id);
-        }
-    }
-
-    /**
-     * Get the focus for the current request
-     *
-     * @param context
-     * @return
-     */
-    public static String getFocus(FacesContext context) {
-        String focusId = CoreComponentUtils.getFocusId(context);
-        Map map = context.getExternalContext().getRequestMap();
-        if (map.containsKey(FOCUS_COMP_KEY))
-            focusId = (String) map.get(FOCUS_COMP_KEY);
-        if (map.containsKey(FOCUS_APP_KEY))
-            focusId = (String) map.get(FOCUS_APP_KEY);
-        return focusId;
+        FocusController.setFocus(facesContext, id);
     }
 
     /**

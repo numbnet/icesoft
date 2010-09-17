@@ -28,7 +28,8 @@
 
     <name>ICEfacesCore</name>
     <factory>
-        <partial-view-context-factory>org.icefaces.impl.context.DOMPartialViewContextFactory</partial-view-context-factory>
+        <partial-view-context-factory>org.icefaces.impl.context.DOMPartialViewContextFactory
+        </partial-view-context-factory>
     </factory>
     <render-kit>
         <render-kit-id>HTML_BASIC</render-kit-id>
@@ -49,7 +50,7 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.event.AjaxDisabledList</system-event-listener-class>
+            <system-event-listener-class>org.icefaces.impl.event.AjaxDisabledList</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
@@ -69,11 +70,11 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.event.DebugTagListener</system-event-listener-class>
+            <system-event-listener-class>org.icefaces.impl.event.DebugTagListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.util.JavaScriptRunnerSetup</system-event-listener-class>
+            <system-event-listener-class>org.icefaces.impl.event.JavaScriptRunnerSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
     </application>

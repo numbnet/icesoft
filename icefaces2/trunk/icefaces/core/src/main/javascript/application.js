@@ -27,25 +27,6 @@ if (!window.ice) {
 if (!window.ice.icefaces) {
     (function(namespace) {
         namespace.icefaces = true;
-        //include functional.js
-        //include oo.js
-        //include collection.js
-        //include hashtable.js
-        //include string.js
-        //include delay.js
-        //include window.js
-        namespace.onLoad = curry(onLoad, window);
-        namespace.onUnload = curry(onUnload, window);
-        //include logger.js
-        //include event.js
-        //include element.js
-        //include http.js
-        //include submit.js
-        namespace.se = singleSubmitExecuteThis;
-        namespace.ser = singleSubmitExecuteThisRenderThis;
-        namespace.submit = submit;
-        namespace.s = submit;
-
         namespace.configuration = new Object();
 
         //todo: find better solution for configuring ICEpush
@@ -90,6 +71,47 @@ if (!window.ice.icefaces) {
         function viewIDOf(element) {
             return configurationOf(element).viewID;
         }
+
+        function lookupElementById(id) {
+            var e;
+            if (id == 'javax.faces.ViewRoot') {
+                e = document.documentElement;
+            } else if (id == 'javax.faces.ViewBody') {
+                e = document.body;
+            } else {
+                try {
+                    e = document.getElementById(id);
+                } catch (e) {
+                    //element not found, error thrown only in IE
+                }
+            }
+
+            return e;
+        }
+
+        //include functional.js
+        //include oo.js
+        //include collection.js
+        //include hashtable.js
+        //include string.js
+        //include delay.js
+        //include window.js
+        namespace.onLoad = curry(onLoad, window);
+        namespace.onUnload = curry(onUnload, window);
+        //include logger.js
+        //include event.js
+        //include element.js
+        //include http.js
+        //include focus.js
+        namespace.setFocus = setFocus;
+        namespace.sf = setFocus;
+        namespace.applyFocus = applyFocus;
+        namespace.af = applyFocus;
+        //include submit.js
+        namespace.se = singleSubmitExecuteThis;
+        namespace.ser = singleSubmitExecuteThisRenderThis;
+        namespace.submit = submit;
+        namespace.s = submit;
 
         function appendHiddenInputElement(form, name, value, defaultValue) {
             var hiddenInput = document.createElement('input');
@@ -207,17 +229,10 @@ if (!window.ice.icefaces) {
                 if (id == 'javax.faces.ViewState') {
                     viewState = update.firstChild.data;
                 } else {
-                    var e;
-                    if (id == 'javax.faces.ViewHead') {
+                    var e = lookupElementById(id);
+                    if (!e) {
                         return result;//ignore update
-                    } else if (id == 'javax.faces.ViewRoot') {
-                        e = document.documentElement;
-                    } else if (id == 'javax.faces.ViewBody') {
-                        e = document.body;
-                    } else {
-                        e = document.getElementById(id);
                     }
-
                     if (toLowerCase(e.nodeName) == 'form') {
                         append(result, e);//the form is the updated element
                     } else {
