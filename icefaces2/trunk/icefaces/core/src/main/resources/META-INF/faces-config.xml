@@ -73,9 +73,5 @@
             <system-event-listener-class>org.icefaces.impl.event.DebugTagListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.icefaces.impl.event.JavaScriptRunnerSetup</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
-        </system-event-listener>
     </application>
 </faces-config>
