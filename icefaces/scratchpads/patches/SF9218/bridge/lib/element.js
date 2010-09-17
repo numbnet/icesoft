@@ -145,13 +145,29 @@
 
             var elements = this.element.getElementsByTagName('*');
             var length = elements.length;
-            for (var i = 0; i < length; i++) {
-                var element = elements[i];
-                //todo: avoid wrapping the elements just before disposing them
-                //disconnect listeners
-                $element(element).eachListenerName(function(listenerName) {
-                    element[listenerName.toLowerCase()] = null;
-                });
+			if (this.findBridge().optimizedJSListenerCleanup) {
+                for (var i = 0; i < length; i++) {
+                    var element = elements[i];
+                    element.onkeypress = null;
+                    element.onmousedown = null;
+                    element.onmousemove = null;
+                    element.onmouseout = null;
+                    element.onmouseover = null;
+                    element.onclick = null;
+                    element.oncontextmenu = null;
+                    element.onchange = null;
+                    element.onfocus = null;
+                    element.onblur = null;
+                }
+			} else {
+                for (var i = 0; i < length; i++) {
+                    var element = elements[i];
+                    //todo: avoid wrapping the elements just before disposing them
+                    //disconnect listeners
+                    $element(element).eachListenerName(function(listenerName) {
+                        element[listenerName.toLowerCase()] = null;
+                    });
+                }
             }
         },
 

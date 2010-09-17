@@ -129,6 +129,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
 
     This.Application = Object.subclass({
         initialize: function(configuration, container) {
+			this.optimizedJSListenerCleanup = configuration.optimizedJSListenerCleanup;
             var sessionID = configuration.session;
             var viewID = configuration.view;
             registerView(sessionID, viewID);
