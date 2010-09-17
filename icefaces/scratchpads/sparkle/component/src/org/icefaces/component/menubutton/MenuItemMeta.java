@@ -17,7 +17,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
         componentFamily="com.icesoft.faces.MenuButton"
         )
 public class MenuItemMeta extends UICommandMeta {
-        @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
+        @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS)   
         private String id;
         
 	    @Property  
@@ -28,16 +28,16 @@ public class MenuItemMeta extends UICommandMeta {
 	    @Property   
 	    private Boolean disabled;    
 
-	    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
+	    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS)   
 	    private Boolean rendered;
 	    
-	    @Property(inherit=Inherit.SUPERCLASS_PROPERTY, expression=Expression.METHOD_EXPRESSION)
+	    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, expression=Expression.METHOD_EXPRESSION)
 	    private MethodExpression actionListener;
 	 
-	    @Property(expression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY	)
+	    @Property(expression=Expression.METHOD_EXPRESSION, implementation=Implementation.EXISTS_IN_SUPERCLASS	)
 	    private MethodExpression action;
 	    
-	    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)
+	    @Property(defaultValue="false",implementation=Implementation.EXISTS_IN_SUPERCLASS)
 	    private Boolean immediate;
 }
 

@@ -45,9 +45,9 @@ public class DateTimeSelectorMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to use single or full submit.")
     private Boolean singleSubmit;
 
-    @Property(inherit = Inherit.SUPERCLASS_PROPERTY, tlddoc = "ID of the component.")
+    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "ID of the component.")
     private String id;
 
-    @Property(inherit = Inherit.SUPERCLASS_PROPERTY, tlddoc = "Value of the component as a Date object.")
+    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
     private Object value;
 }

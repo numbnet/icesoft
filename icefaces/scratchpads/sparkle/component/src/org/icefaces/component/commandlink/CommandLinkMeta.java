@@ -38,7 +38,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
       @Property
       private String label;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+      @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
       private String id;
 
       @Property
@@ -66,13 +66,13 @@ import org.icefaces.component.baseMeta.UICommandMeta;
               tlddoc="Default is false, means uses full submit")
       private Boolean singleSubmit;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+      @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
       private UIComponent binding;
 
       @Property (defaultValue="false")
       private Boolean disabled;
 
-      @Property (inherit=Inherit.SUPERCLASS_PROPERTY, defaultValue="true")
+      @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS, defaultValue="true")
       private Boolean rendered;
 
       @Property (defaultValue="0", tlddoc="tabindex of the component")
@@ -84,12 +84,12 @@ import org.icefaces.component.baseMeta.UICommandMeta;
       @Property(tlddoc="style of the component")
       private String style;
 
-      @Property(inherit=Inherit.SUPERCLASS_PROPERTY, expression=Expression.METHOD_EXPRESSION)
+      @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, expression=Expression.METHOD_EXPRESSION)
     private MethodExpression actionListener;
 
-    @Property(expression=Expression.METHOD_EXPRESSION, inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property(expression=Expression.METHOD_EXPRESSION, implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private MethodExpression action;
 
-    @Property(defaultValue="false",inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property(defaultValue="false",implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private Boolean immediate;
   }

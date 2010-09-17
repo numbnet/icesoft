@@ -22,13 +22,13 @@ public class DateTimeMeta extends UIOutputMeta {
     @Property
     private String format;
 
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private String id;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private Boolean rendered;
     
-    @Property (inherit=Inherit.SUPERCLASS_PROPERTY)
+    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private UIComponent binding;    
 
 }

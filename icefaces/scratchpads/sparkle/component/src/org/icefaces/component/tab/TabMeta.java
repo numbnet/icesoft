@@ -25,9 +25,9 @@ public class TabMeta extends UICommandMeta {
     private Boolean cacheData;
     @Property   
     private Boolean disabled;    
-    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
+    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS)   
     private String id;    
-    @Property(inherit=Inherit.SUPERCLASS_PROPERTY)   
+    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS)   
     private Boolean rendered;    
 
     
