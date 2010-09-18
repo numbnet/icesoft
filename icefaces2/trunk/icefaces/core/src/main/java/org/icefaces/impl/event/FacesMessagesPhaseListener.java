@@ -27,11 +27,20 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitResult;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.EnumSet;
 
 /**
  * The purpose of this class is to forward propogate FacesMessage objects
@@ -55,14 +64,18 @@ public class FacesMessagesPhaseListener implements PhaseListener {
     
     public void afterPhase(PhaseEvent phaseEvent) {
 //System.out.println("-------------------------------------");
-//System.out.println("FacesMessagesPhaseListener.afterPhase");
+//System.out.println("FacesMessagesPhaseListener.afterPhase: " + phaseEvent.getPhaseId());
         // Save away all of the FacesMessage objects, so that next lifecycle,
         // the appropriate ones may be put back into the FacesContext.
         FacesContext facesContext = phaseEvent.getFacesContext();
+//dumpMaps(facesContext);
+    }
+    
+    protected void saveFacesMessages(FacesContext facesContext) {
         List<FacesMessage> globals = facesContext.getMessageList(null);
 //System.out.println("  global FacesMessage(s): " + toStringListOfFacesMessages(globals));
         
-        Map<String, List<FacesMessage>> components = new HashMap<String, List<FacesMessage>>(6);
+        Map<String, List<FacesMessage>> components = new LinkedHashMap<String, List<FacesMessage>>(6);
         Iterator<String> cids = facesContext.getClientIdsWithMessages();
         while (cids.hasNext()) {
             String clientId = cids.next();
@@ -75,16 +88,18 @@ public class FacesMessagesPhaseListener implements PhaseListener {
 //System.out.println("      list of FacesMessage(s): " + toStringListOfFacesMessages(msgs));
         }
         
-        phaseEvent.getFacesContext().getViewRoot().getAttributes().put(
+        facesContext.getViewRoot().getAttributes().put(
             SAVED_GLOBAL_FACES_MESSAGES_KEY, globals);
-        phaseEvent.getFacesContext().getViewRoot().getAttributes().put(
+        facesContext.getViewRoot().getAttributes().put(
             SAVED_COMPONENT_FACES_MESSAGES_KEY, components);
+//System.out.println("  After saving away the faces messages");
+//dumpMaps(facesContext);
     }
 
     public void beforePhase(PhaseEvent phaseEvent) {
 //System.out.println("======================================");
 //System.out.println("======================================");
-//System.out.println("FacesMessagesPhaseListener.beforePhase");
+//System.out.println("FacesMessagesPhaseListener.beforePhase: " + phaseEvent.getPhaseId());
         // Restore any previously saved FacesMessage objects, back into the
         // FacesContext, if they meet the following criteria:
         // A. Have a clientId, and so are associated to a component
@@ -93,6 +108,14 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         // B. Global messages, not associated to a component 
         //    A partial execute, not a full execute
         FacesContext facesContext = phaseEvent.getFacesContext();
+//dumpMaps(facesContext);
+////if(!phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE))return;
+        
+        restoreFacesMessages(facesContext);
+        saveFacesMessages(facesContext);
+    }
+    
+    protected void restoreFacesMessages(FacesContext facesContext) {
         List<FacesMessage> globals = (List<FacesMessage>)
             facesContext.getViewRoot().getAttributes().remove(
                 SAVED_GLOBAL_FACES_MESSAGES_KEY);
@@ -130,24 +153,49 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         }
         
         if (components != null && components.size() > 0) {
-            //TODO Handle the case where it isa full execute, but another form was submitted
+//System.out.println("  components.size: " + components.size());
+            //TODO Handle the case where it is a full execute, but another form was submitted
             if (facesContext.getPartialViewContext().isExecuteAll()) {
+//System.out.println("    execute all: " + facesContext.getPartialViewContext().isExecuteAll());
             }
             else {
+                /*
+                char sep = UINamingContainer.getSeparatorChar(facesContext);
+                */
                 Collection<String> executeIds =
                     facesContext.getPartialViewContext().getExecuteIds();
-//System.out.println("  executeIds: " + executeIds);
-                for (String clientId : components.keySet()) {
-//System.out.println("    clientId: " + clientId);
-                    boolean executed = false;
+//System.out.println("    executeIds: " + executeIds);
+                
+                // Determine which components were executed
+                //TODO Possibly check if component still invalid. Hopefully don't have to check this
+                Map<String, Boolean> clientId2Executed =
+                    new HashMap<String, Boolean>(components.size());
+                Set<String> clientIds = components.keySet();
+                EnumSet<VisitHint> hints = EnumSet.of(
+                    VisitHint.SKIP_UNRENDERED);
+                VisitContext visitContext = VisitContext.createVisitContext(
+                    facesContext, clientIds, hints);
+                VisitCallback vcall = new ComponentsExecutedByExecuteId(
+                    executeIds, clientId2Executed);
+                facesContext.getViewRoot().visitTree(
+                    visitContext, vcall);
+                
+                // Re-add the FacesMessage(s) for the unexecuted components
+                for (String clientId : clientIds) {
+//System.out.println("      clientId: " + clientId);
+                    Boolean executedResult = clientId2Executed.get(clientId);
+                    boolean executed = (executedResult != null &&
+                                        executedResult.booleanValue());
+                    /*
                     for (String execId : executeIds) {
-                        if (execId.length() > 0 && clientId.startsWith(execId)) {
-//System.out.println("      clientId startsWith execId: " + execId);
+                        if (execId.length() > 0 &&
+                            (clientId.equals(execId) || clientId.startsWith(execId + sep))) {
+//System.out.println("        clientId startsWith execId: " + execId);
                             executed = true;
                             break;
                         }
                     }
-                    //TODO Possibly check if component still invalid. Hopefully don't have to check this
+                    */
                     if (!executed) {
                         List<FacesMessage> msgs = components.get(clientId);
                         for (FacesMessage fm : msgs) {
@@ -165,6 +213,13 @@ public class FacesMessagesPhaseListener implements PhaseListener {
     }
     
     private static boolean isServerPush(FacesContext facesContext) {
+        Map<String, String> rpm = facesContext.getExternalContext().getRequestParameterMap();
+        if (rpm.containsKey("ice.submit.type")) {
+            String type = rpm.get("ice.submit.type");
+            if (type.equals("ice.push")) {
+                return true;
+            }
+        }
         return false;
     }
     
@@ -217,6 +272,56 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         }
         else {
             return s1.equals(s2);
+        }
+    }
+    
+    private static void dumpMaps(FacesContext facesContext) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        if (viewRoot != null) {
+            List<FacesMessage> globals = (List<FacesMessage>)
+                viewRoot.getAttributes().get(SAVED_GLOBAL_FACES_MESSAGES_KEY);
+            Map<String, List<FacesMessage>> components = (Map<String, List<FacesMessage>>)
+                viewRoot.getAttributes().get(SAVED_COMPONENT_FACES_MESSAGES_KEY);
+//System.out.println("globals: " + globals);
+//System.out.println("components: " + components);
+        }
+    }
+    
+    
+    private static class ComponentsExecutedByExecuteId
+            implements VisitCallback {
+        private Collection<String> executeIds;
+        private Map<String, Boolean> clientId2Executed;
+        
+        ComponentsExecutedByExecuteId(
+            Collection<String> executeIds,
+            Map<String, Boolean> clientId2Executed) {
+            this.executeIds = executeIds;
+            this.clientId2Executed = clientId2Executed;
+        }
+        
+        public VisitResult visit(
+            VisitContext visitContext, UIComponent uiComponent) {
+            FacesContext facesContext = visitContext.getFacesContext();
+            String clientId = uiComponent.getClientId(facesContext);
+            boolean executed = false;
+            
+            UIComponent currComp = uiComponent;
+            String currClientId = clientId;
+            while (true) {
+                if (executeIds.contains(currClientId)) {
+                    executed = true;
+                    break;
+                }
+                currComp = currComp.getParent();
+                if (currComp == null || currComp instanceof UIViewRoot) {
+                    break;
+                }
+                currClientId = currComp.getClientId(facesContext);
+            }
+            
+            clientId2Executed.put(clientId, executed);
+            return VisitResult.ACCEPT;
         }
     }
 }
