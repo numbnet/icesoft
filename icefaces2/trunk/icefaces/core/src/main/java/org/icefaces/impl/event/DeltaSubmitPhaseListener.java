@@ -22,8 +22,6 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.impl.application.ExternalContextConfiguration;
-import org.icefaces.impl.push.Configuration;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,16 +52,13 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
     private static final String PreviousParameters = "previous-parameters";
     private static final String[] StringArray = new String[0];
     private static Logger log = Logger.getLogger("org.icefaces.event");
-    private Configuration configuration;
 
     public DeltaSubmitPhaseListener() {
-        this.configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
-
     }
 
     public void beforePhase(PhaseEvent event) {
         FacesContext facesContext = event.getFacesContext();
-        if (configuration.getAttributeAsBoolean("deltaSubmit", false)) {
+        if (EnvUtils.isDeltaSubmit(facesContext)) {
             reconstructParametersFromDeltaSubmit(facesContext);
         }
     }
