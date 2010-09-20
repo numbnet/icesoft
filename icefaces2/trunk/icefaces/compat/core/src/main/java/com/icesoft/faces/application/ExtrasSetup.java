@@ -24,10 +24,7 @@ package com.icesoft.faces.application;
 
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
-import org.icefaces.impl.application.ExternalContextConfiguration;
 import org.icefaces.impl.event.UIOutputWriter;
-import org.icefaces.impl.push.Configuration;
-import org.icefaces.impl.push.ConfigurationException;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.FormEndRenderer;
 import org.icefaces.impl.util.FormEndRendering;
@@ -61,10 +58,8 @@ public class ExtrasSetup implements SystemEventListener {
         }
     };
     private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
-    private final Configuration configuration;
 
     public ExtrasSetup() {
-        configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
     }
 
     public boolean isListenerForSource(Object source) {
@@ -92,29 +87,22 @@ public class ExtrasSetup implements SystemEventListener {
                     ViewHandler handler = context.getApplication().getViewHandler();
 
                     String connectionLostRedirectURI;
-                    try {
-                        String uri = configuration.getAttribute("connectionLostRedirectURI");
-                        connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
-                    } catch (ConfigurationException e) {
-                        connectionLostRedirectURI = "null";
-                    }
+                    String uri = EnvUtils.getConnectionLostRedirectURI(context);
+                    connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
 
                     String sessionExpiredRedirectURI;
-                    try {
-                        String uri = configuration.getAttribute("sessionExpiredRedirectURI");
-                        sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
-                    } catch (ConfigurationException e) {
-                        sessionExpiredRedirectURI = "null";
-                    }
+                    uri = EnvUtils.getSessionExpiredRedirectURI(context);
+                    sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
 
                     final String contextPath = handler.getResourceURL(context, "/");
-                    final String blockUI = configuration.getAttribute("blockUIOnSubmit", "false");
+                    final boolean blockUI = EnvUtils.isBlockUIOnSubmit(context);
+                    System.out.println("ExtrasSetup.encode: blockUI = " + blockUI + "  toString() = " + Boolean.toString(blockUI));
 
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.write("ice.DefaultIndicators({");
                     writer.write("blockUI: ");
-                    writer.write(blockUI);
+                    writer.write(Boolean.toString(blockUI));
                     writer.write(",");
                     writer.write("connectionLostRedirectURI: ");
                     writer.write(connectionLostRedirectURI);

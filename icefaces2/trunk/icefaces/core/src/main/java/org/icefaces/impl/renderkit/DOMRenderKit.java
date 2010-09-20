@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * "The contents of this file are subject to the Mozilla Public License
+ * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -17,16 +17,13 @@
  * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
 package org.icefaces.impl.renderkit;
 
-import org.icefaces.impl.application.ExternalContextConfiguration;
 import org.icefaces.application.ProductInfo;
 import org.icefaces.impl.context.DOMResponseWriter;
 import org.icefaces.impl.event.MainEventListener;
-import org.icefaces.impl.push.Configuration;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.FormEndRendering;
 
@@ -60,8 +57,7 @@ public class DOMRenderKit extends RenderKitWrapper {
 
     public DOMRenderKit(RenderKit delegate) {
         this.delegate = delegate;
-        Configuration configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
-        deltaSubmit = configuration.getAttributeAsBoolean("deltaSubmit", false);
+        deltaSubmit = EnvUtils.isDeltaSubmit(FacesContext.getCurrentInstance());
         try {
             modifiedMessagesRenderer = 
                     (Renderer) Class.forName(MESSAGES_CLASS).newInstance();

@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * "The contents of this file are subject to the Mozilla Public License
+ * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -17,12 +17,10 @@
  * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
 package org.icefaces.impl.application;
 
-import org.icefaces.impl.push.Configuration;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
@@ -249,7 +247,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
         private void discardIfExpired(FacesContext facesContext) {
             State state = getState(facesContext);
-            new ExternalContextConfiguration("org.icefaces", facesContext.getExternalContext());
             if (System.currentTimeMillis() > timestamp + state.expirationPeriod) {
                 boolean processingEvents = facesContext.isProcessingEvents();
                 try {
@@ -302,18 +299,17 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         Map sessionMap = externalContext.getSessionMap();
         State state = (State) sessionMap.get(WindowScopeManager.class.getName());
         if (state == null) {
-            ExternalContextConfiguration configuration = new ExternalContextConfiguration("org.icefaces", externalContext);
-            state = new State(configuration.getAttributeAsLong("windowScopeExpiration", 1000));
+            state = new State(EnvUtils.getWindowScopeExpiration(context));
             sessionMap.put(WindowScopeManager.class.getName(), state);
         }
 
         return state;
     }
 
-    private static State getState(HttpSession session, Configuration configuration) {
+    private static State getState(HttpSession session) {
         State state = (State) session.getAttribute(WindowScopeManager.class.getName());
         if (state == null) {
-            state = new State(configuration.getAttributeAsLong("windowScopeExpiration", 1000));
+            state = new State(EnvUtils.getWindowScopeExpiration(FacesContext.getCurrentInstance()));
             session.setAttribute(WindowScopeManager.class.getName(), state);
         }
 

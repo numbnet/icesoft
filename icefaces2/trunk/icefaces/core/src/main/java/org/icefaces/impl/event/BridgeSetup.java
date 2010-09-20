@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * "The contents of this file are subject to the Mozilla Public License
+ * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -17,15 +17,12 @@
  * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
 package org.icefaces.impl.event;
 
-import org.icefaces.impl.application.ExternalContextConfiguration;
 import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.application.WindowScopeManager;
-import org.icefaces.impl.push.Configuration;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 
@@ -50,9 +47,9 @@ public class BridgeSetup implements SystemEventListener {
     private boolean deltaSubmit;
 
     public BridgeSetup() {
-        Configuration configuration = new ExternalContextConfiguration("org.icefaces", FacesContext.getCurrentInstance().getExternalContext());
-        deltaSubmit = configuration.getAttributeAsBoolean("deltaSubmit", false);
-        standardFormSerialization = configuration.getAttributeAsBoolean("standardFormSerialization", false);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        deltaSubmit = EnvUtils.isDeltaSubmit(fc);
+        standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
     }
 
     public boolean isListenerForSource(Object source) {
