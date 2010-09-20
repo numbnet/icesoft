@@ -111,7 +111,7 @@ public class StyleBean implements Serializable {
      */
     public String getStyle() {
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" +
-                ((StylePath)styleMap.get(currentStyle)).getCssPath() + "\"></link>";
+                ((StylePath)styleMap.get(currentStyle)).getCssPath() + "\"/>";
     }
 
     /**
