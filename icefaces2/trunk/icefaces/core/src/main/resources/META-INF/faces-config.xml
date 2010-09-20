@@ -40,6 +40,7 @@
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
     </lifecycle>
     <application>
+        <resource-handler>org.icefaces.impl.application.SessionTimeoutMonitor</resource-handler>
         <resource-handler>org.icefaces.impl.push.servlet.ICEpushResourceHandler</resource-handler>
         <resource-handler>org.icefaces.impl.push.DynamicResourceDispatcher</resource-handler>
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
