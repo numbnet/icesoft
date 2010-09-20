@@ -152,22 +152,18 @@ if (!window.ice.icefaces) {
             append(viewIDs, viewID);
             return function() {
                 var form = document.getElementById(viewID);
-                var url = form.action;
                 try {
-                    form.action = form.action + ';ice.session.donottouch';
                     debug(logger, 'picking updates for view ' + viewID);
                     jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
-                } finally {
-                    form.action = url;
                 }
             };
         }
 
         function sessionExpired(sessionExpiredPushID) {
-            namespace.retrieveUpdate = noop;
-            namespace.push.deregister(viewIDs);
+            retrieveUpdate = noop;
+            each(viewIDs, namespace.push.deregister);
             namespace.push.deregister(sessionExpiredPushID);
             broadcast(sessionExpiryListeners);
         }

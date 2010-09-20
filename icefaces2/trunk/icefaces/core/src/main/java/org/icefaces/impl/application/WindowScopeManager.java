@@ -42,8 +42,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -57,11 +55,11 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener, HttpSessionListener {
+public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener {
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
-    private static final String SESSION_EXPIRY_EXTENSION = ":se";
+    private static final String SESSION_EXPIRY_EXTENSION = SessionTimeoutMonitor.SESSION_EXPIRY_EXTENSION;
 
     private ResourceHandler wrapped;
 
@@ -207,20 +205,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             ServletContext servletContext = (ServletContext) externalContext.getContext();
             PushContext pushContext = PushContext.getInstance(servletContext);
             pushContext.removeGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, id + SESSION_EXPIRY_EXTENSION);
-        } catch (NoClassDefFoundError e) {
-            Log.info("ICEpush library missing. Session expiry notification disabled.");
-        }
-    }
-
-    public void sessionCreated(HttpSessionEvent se) {
-    }
-
-    public void sessionDestroyed(HttpSessionEvent se) {
-        try {
-            HttpSession session = se.getSession();
-            ServletContext servletContext = session.getServletContext();
-            PushContext pushContext = PushContext.getInstance(servletContext);
-            pushContext.push(session.getId() + SESSION_EXPIRY_EXTENSION);
         } catch (NoClassDefFoundError e) {
             Log.info("ICEpush library missing. Session expiry notification disabled.");
         }
