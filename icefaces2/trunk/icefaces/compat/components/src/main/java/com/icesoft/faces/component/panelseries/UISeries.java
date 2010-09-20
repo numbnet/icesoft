@@ -22,12 +22,14 @@
 
 package com.icesoft.faces.component.panelseries;
 
+import com.icesoft.util.CoreComponentUtils;
+import com.icesoft.faces.component.datapaginator.DataPaginator;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.model.SetDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
-import com.icesoft.util.CoreComponentUtils;
-import com.icesoft.faces.component.ext.taglib.Util;
+
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -298,10 +300,12 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!keepSaved(context)) {
             savedChildren = new HashMap();
         }
+        synchWithPaginator();
         super.encodeBegin(context);
     }
 
 
+    
     public void processDecodes(FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
@@ -309,7 +313,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isRendered()) {
             return;
         }
-        restoreRequiredAttribute(context);
         dataModel = null;
         if (null == savedChildren || !keepSaved(context)) {
             savedChildren = new HashMap();
@@ -443,7 +446,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     private boolean maximumSeverityAtLeastError(FacesContext facesContext) {
         FacesMessage.Severity maximumSeverity = facesContext.getMaximumSeverity();
         return ( (maximumSeverity != null) &&
-                 (FacesMessage.SEVERITY_ERROR.compareTo(maximumSeverity) >= 0) );
+                 (FacesMessage.SEVERITY_ERROR.compareTo(maximumSeverity) <= 0) );
     }
     
     private boolean isNestedWithinUIData() {
@@ -659,29 +662,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         return true;
     }
     
-    private void restoreRequiredAttribute(FacesContext context) {    
-        Iterator it = savedChildren.keySet().iterator();
-        while (it!= null && it.hasNext()) {
-            String clientId = String.valueOf(it.next());
-            String localRequired = clientId + "$ice-req$";
-            if (!savedChildren.containsKey(clientId)
-                    || !(savedChildren.get(clientId) instanceof ChildState)) continue;
-            ChildState state = (ChildState)savedChildren.get(clientId);
-            if (state != null && !state.isValid()) {
-                UIComponent component = CoreComponentUtils.findComponent(clientId,
-                                        context.getViewRoot());
-                if (component != null && component instanceof UIInput &&
-                        component.getAttributes().get(localRequired)!= null ) {
-                    boolean required = ((Boolean)component.getAttributes()
-                                    .get(localRequired)).booleanValue();
-                    if (required) {
-                               ((UIInput)component).setRequired(true);
-                    }           
-               }
-            }
-        }
-    } 
-
     public void ensureFirstRowInRange() {
         int numRowsTotal = getRowCount(); // could be -1
         int numRowsToShow = getRows();    // always >= 0
@@ -711,6 +691,15 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         }
         return super.isRendered();
     } 
+    
+    protected void synchWithPaginator() {
+        if (!this.getAttributes().containsKey(DataPaginator.class.getName())) return;
+        String dataPaginatorClientId = (String) this.getAttributes().get(DataPaginator.class.getName()); 
+        DataPaginator paginator = (DataPaginator) CoreComponentUtils.findComponent(":" + dataPaginatorClientId, FacesContext.getCurrentInstance().getViewRoot());
+        if (paginator != null) {
+            paginator.getPageIndex();
+        }
+    }
     
     /**
      * <p class="changed_added_2_0">Override the behavior in {@link
