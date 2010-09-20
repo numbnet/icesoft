@@ -96,7 +96,6 @@ public class ExtrasSetup implements SystemEventListener {
 
                     final String contextPath = handler.getResourceURL(context, "/");
                     final boolean blockUI = EnvUtils.isBlockUIOnSubmit(context);
-                    System.out.println("ExtrasSetup.encode: blockUI = " + blockUI + "  toString() = " + Boolean.toString(blockUI));
 
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
