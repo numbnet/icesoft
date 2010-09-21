@@ -22,7 +22,7 @@
 
 package org.icefaces.component.inputFiles;
 
-import org.icefaces.event.FormSubmit;
+import org.icefaces.impl.event.FormSubmit;
 
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
