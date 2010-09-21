@@ -22,7 +22,100 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 		this.anim = ref;
 	}
 	
+	
+	chain.prototype.set = function(name, value) {
+		for (i = this.anim.index; i < this.anim.list.length; i++) {
+			this.anim.list[i].set(name, value);
+		}
+	}
 	 
+	chain.prototype.on = function(name, callback) {
+		if (name == "end") {
+			this.anim.on("chainend", callback);
+		}
+	}	 
+
+
+		/*
+			This method can be used as anim.run(). The difference is that anim.run() would run only 
+			animation on a source anim only while anim.chain.run() would run animation on source and all of 
+			the animations bounded to the same event type. 
+
+			The chain is based on 0 based index. If a chain is being run from index 2 so only 
+			animation on higher indexs will be a part of a chain
+		
+		*/
+	 
+	chain.prototype.run = function(toggleReverse) {
+			starter = this.anim;
+			var currentAnim = this.anim;
+			
+			starter.on("end", function() {
+			    var lastRunningAnim = currentAnim;
+				
+				if (!starter.toggleReverse) {
+					if (!currentAnim){ 
+					   currentAnim = starter.next();
+					} else {
+					   currentAnim = currentAnim.next();
+					}
+				} else {
+				   currentAnim.set("reverse", !currentAnim.get("reverse"));
+				   //chain should be reversed should get previous anim
+				   console.info('revering chain ');
+				   console.info('revering chain current anim '+ currentAnim);
+				   try {
+						currentAnim = currentAnim.previous();
+						if (currentAnim == starter) {
+							//Anim can not go beyond the starting point
+							throw ("finished");
+						}
+				   } catch (e){
+						console.info(e);
+						//END point when toggleReverse
+						return;
+						
+				   }
+				   currentAnim.set("reverse", !currentAnim.get("reverse"));
+				}
+				
+				
+				
+				if (!currentAnim) {
+			
+					if (toggleReverse) {
+						starter.toggleReverse = true;
+					} else {
+					   return;
+					}
+					currentAnim = lastRunningAnim;
+					currentAnim.set("reverse", !currentAnim.get("reverse"));
+					//END point of first run
+					starter.fire("chainend");
+					console.info('Chain list ends...' + lastRunningAnim);
+					
+				} 
+				
+				if (currentAnim) {
+					   console.info( 'going to run '+ currentAnim.effectName);		
+						endhandle = currentAnim.on("end", function() { 
+							   endhandle.detach();
+							   starter.fire("end");
+						});				
+						currentAnim.run();
+					}
+			
+			
+			
+			
+			
+			});
+			
+			
+			console.info( 'going to run '+ starter.effectName);	
+			starter.run();
+		}
+	
 
 	function AnimBase(params) { 
 		this.chain = new chain(this);
@@ -48,8 +141,18 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 			} else {
 				throw ("no more elements");
 			}
-		},
+		}
 
+		/*
+			This method can be used as anim.run(). The difference is that anim.run() would run only 
+			animation on a source anim only while anim.runAsChain() would run animation on source and all of 
+			the animations bounded to the same event type. 
+
+			The chain is based on 0 based index. If a chain is being run from index 2 so only 
+			animation on higher indexs will be a part of a chain
+		
+		*/
+		/*
 		runAsChain: function(toggleReverse) {
 			starter = this;
 			var currentAnim = this;
@@ -70,8 +173,13 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 				   console.info('revering chain current anim '+ currentAnim);
 				   try {
 						currentAnim = currentAnim.previous();
+						if (currentAnim == starter) {
+							//Anim can not go beyond the starting point
+							throw ("finished");
+						}
 				   } catch (e){
 						console.info(e);
+						//END point when toggleReverse
 						return;
 						
 				   }
@@ -89,6 +197,8 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 					}
 					currentAnim = lastRunningAnim;
 					currentAnim.set("reverse", !currentAnim.get("reverse"));
+					//END point of first run
+					starter.fire("chainend");
 					console.info('Chain list ends...' + lastRunningAnim);
 					
 				} 
@@ -112,6 +222,7 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 			console.info( 'going to run '+ starter.effectName);	
 			starter.run();
 		}
+		*/
 	});
 	
 
@@ -174,7 +285,8 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 				effect.index = index;
 				effect.event = event;
 				effect.list = animations[event];
-				animations[event][index] = effect;				
+				animations[event][index] = effect;	
+				return effect;
 		},
 		
 		getAnimation: function(eventName) { 
@@ -195,7 +307,7 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 		   if (!node.animation) {
 				node.plug(AnimPlugin);
 		   }
-		   node.animation.add(args);
+		   return node.animation.add(args);
         },
 		
 		run: function(args) {
