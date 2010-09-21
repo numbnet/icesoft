@@ -37,19 +37,23 @@ public class EnvUtils {
     //The key used to store the current configuration in the application map.
     public static String ICEFACES_ENV_CONFIG = "org.icefaces.env.config";
 
-    //Parameters that are configurable using application init parameters
+    //Parameters configurable using context parameters
     public static String ICEFACES_AUTO = "org.icefaces.render.auto";
     public static String ICEFACES_AUTOID = "org.icefaces.autoid";
-    public static String ICEFACES_RENDER = "org.icefaces.render";
-    public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
-    public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
     public static String COMPRESS_DOM = "org.icefaces.compressDOM";
     public static String COMPRESS_RESOURCES = "org.icefaces.compressResources";
-    public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
     public static String DELTA_SUBMT = "org.icefaces.deltaSubmit";
-    public static String SESSION_EXPIRED_REDIRECT_URI = "org.icefaces.sessionExpiredRedirectURI";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
+
+    //Parameters configurable using context parameters but only in compatibility mode
+    public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
+    public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
+    public static String SESSION_EXPIRED_REDIRECT_URI = "org.icefaces.sessionExpiredRedirectURI";
+
+    //Parameters configurable on a per page-basis as attributes of <ice:config/>
+    public static String ICEFACES_RENDER = "org.icefaces.render";
+    public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
 
     //Other parameters used internally by ICEfaces framework.
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
@@ -57,11 +61,12 @@ public class EnvUtils {
     private static String RESOURCE_PREFIX = "/javax.faces.resource/";
     private static String PATH_TEMPLATE = "org.icefaces.resource.pathTemplate";
     private static String DUMMY_RESOURCE = "bridge.js";
-    private static String[] DEFAULT_TEMPLATE = new String[] {RESOURCE_PREFIX, ".jsf"};
+    private static String[] DEFAULT_TEMPLATE = new String[]{RESOURCE_PREFIX, ".jsf"};
 
     //Use reflection to identify if the Portlet classes are available.
     private static Class PortletSessionClass;
     private static Class PortletRequestClass;
+
     static {
         try {
             PortletSessionClass = Class.forName("javax.portlet.PortletSession");
@@ -73,6 +78,7 @@ public class EnvUtils {
 
     //Use reflection to identify if ICEpush is available.
     private static boolean icepushPresent;
+
     static {
         try {
             Class.forName("org.icepush.PushContext");
@@ -84,6 +90,7 @@ public class EnvUtils {
 
     //Use reflection to identify if JSF implementation is Mojarra.
     private static boolean mojarraPresent = false;
+
     static {
         try {
             Class.forName("com.sun.faces.context.FacesContextImpl");
@@ -93,6 +100,15 @@ public class EnvUtils {
         }
     }
 
+    /**
+     * Returns the value of the context parameter org.icefaces.aria.enabled.  The default value is true and indicates
+     * that views are ARIA (Accessible Rich Internet Applications) enabled.  This context parameter is application-wide
+     * and works together with the 'ariaEnabled' attribute of the ICEfaces configuration tag <ice:config> so that ARIA support
+     * can be turned on and off selectively on a per page basis.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.aria.enabled.  The default is true.
+     */
     public static boolean isAriaEnabled(FacesContext facesContext) {
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
@@ -103,44 +119,130 @@ public class EnvUtils {
         return (Boolean.TRUE.equals(ariaEnabled));
     }
 
+    /**
+     * Returns the value of the context parameter org.icefaces.autoid.  The default value is true and indicates
+     * that the majority of standard JSF components will write their ids to the page markup.  This allows page updates
+     * to be targetted as granularly as possible.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.autoid.  The default is true.
+     */
     public static boolean isAutoId(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).autoId;
     }
 
-    public static boolean isAutoRender(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.render.auto.  The default value is true and indicates
+     * that DOM changes will automatically be applied to each page.  This context parameter is application-wide and works
+     * together with the render attribute of the ICEfaces configuration tag <ice:config> so that DOM updates can be turned on
+     * and off selectively on a per page basis.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.render.auto.  The default is true.
+     */
+    public static boolean isAutoRender(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).autoRender;
     }
 
+    /**
+     * Returns the value of the context parameter org.icefaces.blockUIOnSubmit.  The default value is false and indicates
+     * that the UI will not be blocked after a request has been submitted.  To help deal with the problems with double-submits,
+     * this parameter can be set to true.
+     * <p/>
+     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.blockUIOnSubmit.  The default is false.
+     */
     public static boolean isBlockUIOnSubmit(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).blockUIOnSubmit;
     }
 
+    /**
+     * Returns the value of the context parameter org.icefaces.compressDOM.  The default value is false and indicates
+     * that, between requests, the server-side DOM will be serialized and compressed to save memory.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.compressDOM.  The default is false.
+     */
     public static boolean isCompressDOM(FacesContext facesContext) {
         //consider making this a per-view setting
         return EnvConfig.getEnvConfig(facesContext).compressDOM;
     }
 
-    public static boolean isCompressResources(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.compressResources.  The default value is true and indicates
+     * that, for resource requests, certain resources should be automatically compressed via gzip before being sent.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.compressResources.  The default is true.
+     */
+    public static boolean isCompressResources(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).compressResources;
     }
 
-    public static String getConnectionLostRedirectURI(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.connectionLostRedirectURI.  The default value is the String
+     * "null" and indicates that no URI has been set and the default behaviour is taken when the Ajax Push connection is lost.
+     * Setting a URI value tells ICEfaces to redirect to that view if the Ajax Push connection is lost.
+     * <p/>
+     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.connectionLostRedirectURI.  The default is the String "null".
+     */
+    public static String getConnectionLostRedirectURI(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).connectionLostRedirectURI;
     }
 
-    public static boolean isDeltaSubmit(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.deltaSubmit.  The default value is false and indicates that
+     * the delta submit features is not currently enabled.  When delta submit is enable, form submission is done in a way that
+     * minimizes what is sent across the wire.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.deltaSubmit.  The default is false.
+     */
+    public static boolean isDeltaSubmit(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).deltaSubmit;
     }
 
-    public static String getSessionExpiredRedirectURI(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.sessionExpiredRedirectURI.  The default value is the String
+     * "null" and indicates that no URI has been set and the default behaviour is taken when the session expires.  Setting
+     * a URI value tells ICEfaces to redirect to that view if the Ajax Push connection is lost.
+     * <p/>
+     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.sessionExpiredRedirectURI.  The default is the String "null".
+     */
+    public static String getSessionExpiredRedirectURI(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).connectionLostRedirectURI;
     }
 
-    public static boolean isStandardFormSerialization(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.standardFormSerialization.  The default value is false and indicates
+     * that ICEfaces should do optimized for submission based on the submitting element.  Setting this value to true indicates that
+     * ICEfaces should do a normal, full form submission.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.standardFormSerialization.  The default is false.
+     */
+    public static boolean isStandardFormSerialization(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).standardFormSerialization;
     }
 
-    public static long getWindowScopeExpiration(FacesContext facesContext)  {
+    /**
+     * Returns the value of the context parameter org.icefaces.windowScopeExpiration.  The default value is 1000 milliseconds
+     * and indicates the length of time window-scoped values remain valid in the session after a reload or redirect occurs.
+     * This allows for postbacks that might occur quickly after a reload or redirect to successfully retrieve the relevant
+     * window-scoped values.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.windowScopeExpiration.  The default is 1000 milliseconds.
+     */
+    public static long getWindowScopeExpiration(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).windowScopeExpiration;
     }
 
@@ -162,12 +264,12 @@ public class EnvUtils {
         return icepushPresent;
     }
 
-    public static boolean hasHeadAndBodyComponents(FacesContext facesContext){
+    public static boolean hasHeadAndBodyComponents(FacesContext facesContext) {
         //ICE-5613: ICEfaces must have h:head and h:body tags to render resources into
         //Without these components, ICEfaces is disabled.
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
-        if (!viewMap.containsKey(HEAD_DETECTED) || !viewMap.containsKey(BODY_DETECTED) ) {
+        if (!viewMap.containsKey(HEAD_DETECTED) || !viewMap.containsKey(BODY_DETECTED)) {
             if (log.isLoggable(Level.FINE)) {
                 log.log(Level.FINE, "ICEfaces disabled for view " + viewRoot.getViewId() +
                         "\n  h:head tag available: " + viewMap.containsKey(HEAD_DETECTED) +
@@ -184,32 +286,32 @@ public class EnvUtils {
         return mojarraPresent;
     }
 
-    public static String[] getPathTemplate()  {
+    public static String[] getPathTemplate() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map applicationMap = facesContext.getExternalContext()
                 .getApplicationMap();
         String[] pathTemplate = (String[]) applicationMap.get(PATH_TEMPLATE);
-        if (null != pathTemplate)  {
+        if (null != pathTemplate) {
             return pathTemplate;
         }
         Resource dummyResource = facesContext.getApplication()
                 .getResourceHandler().createResource(DUMMY_RESOURCE);
-        if (null != dummyResource)  {
+        if (null != dummyResource) {
             String dummyPath = dummyResource.getRequestPath();
             pathTemplate = extractPathTemplate(dummyPath);
         }
-        if (null == pathTemplate)  {
+        if (null == pathTemplate) {
             return DEFAULT_TEMPLATE;
         }
         applicationMap.put(PATH_TEMPLATE, pathTemplate);
         return pathTemplate;
     }
 
-    private static String[] extractPathTemplate(String path)  {
+    private static String[] extractPathTemplate(String path) {
         int start = path.indexOf(DUMMY_RESOURCE);
         String pre = path.substring(0, start);
         String post = path.substring(start + DUMMY_RESOURCE.length());
-        return new String[] {pre, post};
+        return new String[]{pre, post};
     }
 
     public static boolean instanceofPortletSession(Object session) {
@@ -230,17 +332,17 @@ class EnvConfig {
     boolean blockUIOnSubmit;
     boolean compressDOM;
     boolean compressResources;
-    String  connectionLostRedirectURI;
+    String connectionLostRedirectURI;
     boolean deltaSubmit;
-    String  sessionExpiredRedirectURI;
+    String sessionExpiredRedirectURI;
     boolean standardFormSerialization;
-    long    windowScopeExpiration;
+    long windowScopeExpiration;
 
-    public EnvConfig(Map initMap)  {
+    public EnvConfig(Map initMap) {
         init(initMap);
     }
 
-    public void init(Map initMap)  {
+    public void init(Map initMap) {
         StringBuilder info = new StringBuilder();
 
         autoRender = decodeBoolean(initMap, EnvUtils.ICEFACES_AUTO, true, info);
@@ -252,13 +354,13 @@ class EnvConfig {
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, "null", info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, "null", info);
-        deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
-        windowScopeExpiration = decodeLong(initMap,EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
-        
+        standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
+        windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
+
         log.info("ICEfaces Configuration: \n" + info);
     }
 
-    public static EnvConfig getEnvConfig(FacesContext facesContext)  {
+    public static EnvConfig getEnvConfig(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map appMap = externalContext.getApplicationMap();
         EnvConfig envConfig = (EnvConfig) appMap.get(EnvUtils.ICEFACES_ENV_CONFIG);
@@ -270,9 +372,9 @@ class EnvConfig {
     }
 
 
-    boolean decodeBoolean(Map map, String name, boolean defaultValue, StringBuilder info)  {
+    boolean decodeBoolean(Map map, String name, boolean defaultValue, StringBuilder info) {
         String paramValue = (String) map.get(name);
-        if (null == paramValue)  {
+        if (null == paramValue) {
             info.append(name).append(": ").append(defaultValue).append(" [default]\n");
             return defaultValue;
         }
@@ -288,9 +390,9 @@ class EnvConfig {
         return defaultValue;
     }
 
-    String decodeString(Map map, String name, String defaultValue, StringBuilder info)  {
+    String decodeString(Map map, String name, String defaultValue, StringBuilder info) {
         String paramValue = (String) map.get(name);
-        if (null == paramValue)  {
+        if (null == paramValue) {
             info.append(name).append(": ").append(defaultValue).append(" [default]\n");
             return defaultValue;
         }
@@ -298,15 +400,15 @@ class EnvConfig {
         return paramValue;
     }
 
-    long decodeLong(Map map, String name, long defaultValue, StringBuilder info)  {
+    long decodeLong(Map map, String name, long defaultValue, StringBuilder info) {
         String paramValue = (String) map.get(name);
-        if (null == paramValue)  {
+        if (null == paramValue) {
             info.append(name).append(" = ").append(defaultValue).append(" [default]  ");
             return defaultValue;
         }
-        try{
+        try {
             return Long.parseLong(paramValue);
-        } catch (Exception e){
+        } catch (Exception e) {
             info.append(name).append(": ").append(defaultValue).append(" [default replacing malformed long value: ").append(paramValue).append("]\n");
         }
         return defaultValue;
