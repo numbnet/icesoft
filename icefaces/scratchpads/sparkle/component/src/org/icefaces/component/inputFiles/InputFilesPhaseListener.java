@@ -22,8 +22,8 @@
 
 package org.icefaces.component.inputFiles;
 
-import org.icefaces.context.DOMPartialViewContext;
-import org.icefaces.util.CoreUtils;
+import org.icefaces.impl.context.DOMPartialViewContext;
+import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.apache.commons.fileupload.FileItemStream;
 import org.icefaces.apache.commons.fileupload.FileItemIterator;
 import org.icefaces.apache.commons.fileupload.ProgressListener;
