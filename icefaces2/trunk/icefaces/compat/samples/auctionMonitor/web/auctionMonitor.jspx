@@ -140,25 +140,28 @@
                         </font>
                     </ice:panelGroup>
                     <ice:commandButton id="image_button_bid" immediate="true"
-                                       action="#{item.pressBidButton}"
+                                       action="#{AuctionBean.pressBidButton}"
                                        image="./images/button_bid.gif"
                                        rendered="#{not item.bidExpanded}"
                                        title="Place a bid on '#{item.title}'"
                                        disabled="#{item.expired}"/>
                     <ice:panelGroup rendered="#{item.bidExpanded}">
                         <ice:inputText id="item_localBid"
+                                       actionListener="#{item.localBid}"
                                        value="#{item.tempLocalBid}" size="6"
-                                       style="text-align:right"/>
+                                       style="text-align:right">
+                            <f:validator validatorId="bidValidator" />
+                        </ice:inputText>
                         <ice:commandButton id="image_button_bid_accept"
                                            image="./images/button_bid_accept.gif"
-                                           action="#{item.setLocalBid}"
+                                           actionListener="#{item.localBid}"
                                            style="border: 0px;width: 15px;height:15px;"/>
                         <ice:commandButton id="image_button_bid_decline"
                                            immediate="true"
                                            image="./images/button_bid_decline.gif"
-                                           action="#{item.pressBidButton}"
+                                           action="#{AuctionBean.pressBidButton}"
                                            style="border: 0px;width: 15px;height:15px"/>
-                        <ice:outputText value="#{item.bidMessage}" escape="false" />
+                        <ice:outputText value="#{item.bidMessage}" escape="false"/>
                     </ice:panelGroup>
                 </ice:panelGrid>
                 <ice:panelGrid columns="3" width="100%"
