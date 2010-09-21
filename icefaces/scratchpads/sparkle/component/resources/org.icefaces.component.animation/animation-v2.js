@@ -20,6 +20,9 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 		
     function chain(ref) {
 		this.anim = ref;
+		this.anim.on("chainend", function() {
+			this.serialize();
+		});
 	}
 	
 	
@@ -37,8 +40,8 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 
 
 		/*
-			This method can be used as anim.run(). The difference is that anim.run() would run only 
-			animation on a source anim only while anim.chain.run() would run animation on source and all of 
+			This method can be used as anim.run(). The difference is that anim.run() would run  
+			animation on source anim only while anim.chain.run() would run animation on source and all of 
 			the animations bounded to the same event type. 
 
 			The chain is based on 0 based index. If a chain is being run from index 2 so only 
@@ -118,13 +121,16 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 	
 
 	function AnimBase(params) { 
-		this.chain = new chain(this);
 		AnimBase.superclass.constructor.apply(this, arguments); 
+		this.chain = new chain(this);
 		this.toggleReverse = false;
-
+		this.containerId = null;
 	}
 	
-	Y.extend(AnimBase, Y.Anim , { 
+	Y.extend(AnimBase, Y.Anim , {
+		/*
+			helper for chain execution
+		*/
 		next: function() {
 			var index = parseInt(this.index);
 		    console.info(''+ index +  ' :  '+ this.list.length);
@@ -135,94 +141,62 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 			}
 		},
 		
+		/*
+			helper for chain execution
+		*/		
 		previous: function() {
 			if (this.index >0) {
 				return this.list[this.index - 1];
 			} else {
 				throw ("no more elements");
 			}
-		}
-
-		/*
-			This method can be used as anim.run(). The difference is that anim.run() would run only 
-			animation on a source anim only while anim.runAsChain() would run animation on source and all of 
-			the animations bounded to the same event type. 
-
-			The chain is based on 0 based index. If a chain is being run from index 2 so only 
-			animation on higher indexs will be a part of a chain
+		},
 		
-		*/
+		getContainerId: function() {
+			return this.containerId;
+		},
+		
 		/*
-		runAsChain: function(toggleReverse) {
-			starter = this;
-			var currentAnim = this;
+			Only required by those components which doesn't apply effect or root element instead a sub element. In that case
+			setting containerId exclusivly helps anim.serialize() to identify source component's clientid.
 			
-			starter.on("end", function() {
-			    var lastRunningAnim = currentAnim;
-				
-				if (!starter.toggleReverse) {
-					if (!currentAnim){ 
-					   currentAnim = starter.next();
-					} else {
-					   currentAnim = currentAnim.next();
-					}
-				} else {
-				   currentAnim.set("reverse", !currentAnim.get("reverse"));
-				   //chain should be reversed should get previous anim
-				   console.info('revering chain ');
-				   console.info('revering chain current anim '+ currentAnim);
-				   try {
-						currentAnim = currentAnim.previous();
-						if (currentAnim == starter) {
-							//Anim can not go beyond the starting point
-							throw ("finished");
-						}
-				   } catch (e){
-						console.info(e);
-						//END point when toggleReverse
-						return;
-						
-				   }
-				   currentAnim.set("reverse", !currentAnim.get("reverse"));
-				}
-				
-				
-				
-				if (!currentAnim) {
-			
-					if (toggleReverse) {
-						starter.toggleReverse = true;
-					} else {
-					   return;
-					}
-					currentAnim = lastRunningAnim;
-					currentAnim.set("reverse", !currentAnim.get("reverse"));
-					//END point of first run
-					starter.fire("chainend");
-					console.info('Chain list ends...' + lastRunningAnim);
-					
-				} 
-				
-				if (currentAnim) {
-					   console.info( 'going to run '+ currentAnim.effectName);		
-						endhandle = currentAnim.on("end", function() { 
-							   endhandle.detach();
-							   starter.fire("end");
-						});				
-						currentAnim.run();
-					}
-			
-			
-			
-			
-			
-			});
-			
-			
-			console.info( 'going to run '+ starter.effectName);	
-			starter.run();
-		}
 		*/
+		setContainerId: function(cid) {
+			this.containerId = cid;
+		},
+		
+		/* 
+		   responsible to set style of anim node to a hidden field, that would be used by AnimationBehavior.decode()
+		   format: effect_style[animation_parent_clientid]
+		*/
+		serialize: function() {
+			var elementId;
+			var element  = this.get('node')._node;
+			if (this.getContainerId() != null) {
+				elementId = this.getContainerId();
+			} else {
+				elementId = element.id;
+
+			}   
+			var _form = formOf(element);
+	        var effectStyleElementId = 'effect_style'+ elementId;
+					
+			var sourceId = Y.Node.getDOMNode(this.get('node')).id;
+			var effectStyleElement = document.getElementById(effectStyleElementId);			
+			  if (!effectStyleElement) {
+				effectStyleElement = this.createHiddenField(_form, effectStyleElementId);
+			  }
+			  effectStyleElement.value = document.getElementById(sourceId).style.cssText ;			
+		},
+		
+		createHiddenField:function(parent, id) {
+		   var field = document.createElement('input'); 
+		   field.setAttribute('type', 'hidden');
+		   field.setAttribute('id', id);
+		   field.setAttribute('name', id);
+		   parent.appendChild(field);
+		   return field;
+	    }	
 	});
 	
 
