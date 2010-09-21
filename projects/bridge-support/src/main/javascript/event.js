@@ -99,11 +99,19 @@ function NetscapeEvent(event, capturingElement) {
         });
 
         method(cancelBubbling, function(self) {
-            event.stopPropagation();
+            try {
+                event.stopPropagation();
+            } catch (e) {
+                //invoking stopPropagation method on a cloned event throws error
+            }
         });
 
         method(cancelDefaultAction, function(self) {
-            event.preventDefault();
+            try {
+                event.preventDefault();
+            } catch (e) {
+                //invoking preventDefault method on a cloned event throws error 
+            }
         });
 
         method(asString, function(self) {
