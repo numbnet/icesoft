@@ -38,7 +38,6 @@
 <!ENTITY ice-ApplyEffect-renderer SYSTEM "ice/renderers/ApplyEffect-renderer.xml">
 <!ENTITY ice-PanelBorder-renderer SYSTEM "ice/renderers/PanelBorder-renderer.xml">
 <!ENTITY ice-DataPaginator-renderer SYSTEM "ice/renderers/DataPaginator-renderer.xml">
-<!ENTITY ice-InputFile-renderer SYSTEM "ice/renderers/InputFile-renderer.xml">
 <!ENTITY ice-GMap-renderer SYSTEM "ice/renderers/GMap-renderer.xml">
 <!ENTITY ice-HtmlCheckbox-renderer SYSTEM "ice/renderers/HtmlCheckbox-renderer.xml">
 <!ENTITY ice-HtmlCommandButton-renderer SYSTEM "ice/renderers/HtmlCommandButton-renderer.xml">
@@ -107,7 +106,6 @@
 <!ENTITY ice-ColumnGroup-component SYSTEM "ice/components/ColumnGroup-component.xml">
 <!ENTITY ice-UIColumns-component SYSTEM "ice/components/UIColumns-component.xml">
 <!ENTITY ice-DataPaginator-component SYSTEM "ice/components/DataPaginator-component.xml">
-<!ENTITY ice-InputFile-component SYSTEM "ice/components/InputFile-component.xml">
 <!ENTITY ice-GMap-component SYSTEM "ice/components/GMap-component.xml">
 <!ENTITY ice-GMapControl-component SYSTEM "ice/components/GMapControl-component.xml">
 <!ENTITY ice-GMapDirection-component SYSTEM "ice/components/GMapDirection-component.xml">
@@ -190,7 +188,6 @@
     &ice-ColumnGroup-component;
     &ice-UIColumns-component;
     &ice-DataPaginator-component;
-    &ice-InputFile-component;
     &ice-GMap-component;
     &ice-GMapControl-component;
     &ice-GMapDirection-component;
@@ -269,7 +266,6 @@
             &ice-ApplyEffect-renderer;
             &ice-PanelBorder-renderer;
             &ice-DataPaginator-renderer;
-            &ice-InputFile-renderer;
             &ice-GMap-renderer;
             &ice-HtmlCheckbox-renderer;
             &ice-HtmlCommandButton-renderer;
