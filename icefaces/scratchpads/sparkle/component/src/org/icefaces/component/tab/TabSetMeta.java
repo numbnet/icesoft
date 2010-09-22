@@ -28,6 +28,11 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     componentFamily="com.icesoft.faces.TabSet"    
 )
 @ResourceDependencies({
+	@ResourceDependency(name="2_8_1/fonts/fonts-min.css",library="yui"),
+	@ResourceDependency(name="2_8_1/yahoo-dom-event/yahoo-dom-event.js",library="yui"),
+	@ResourceDependency(name="2_8_1/connection/connection-min.js",library="yui"),
+	@ResourceDependency(name="2_8_1/element/element-min.js",library="yui"),
+	@ResourceDependency(name="2_8_1/tabview/tabview-min.js",library="yui"),
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),

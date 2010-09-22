@@ -4,6 +4,10 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 version: 2.7.0
 */
+
+/* load core styling from YUI library */
+@import url('#{resource['yui/2_8_1/tabview/assets/tabview-core.css']}');
+
 /* .yui-navset defaults to .yui-navset-top */
 
 .yui-navset button {

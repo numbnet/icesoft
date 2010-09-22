@@ -183,6 +183,9 @@
 		<concatskin name="rime" />
 		<concatskin name="sam" />
 		
+		<!-- add files from the YUI library to the concatenated sam skin -->
+		<antcall target="concatyuisam" />
+		
 	</target>
 	
 	<target name="cssurlmapper" description="Build the CSS URL mapping tool.">
@@ -310,6 +313,26 @@
                   spritepngdepth="${sprite.png.depth}"
                   spritepngie6="${sprite.png.ie6}" />
   </target>
+  
+	<target name="concatyuisam">
+		<!-- concatenate yui files in a temporary file -->
+		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
+			<filelist dir="${resources}">
+				<file name="yui/2_8_1/tabview/assets/skins/sam/tabview-skin.css" />
+			</filelist>
+		</concat>
+		
+		<!-- join with previously concatenated file -->
+		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
+			<filelist files="${resources}/${skins.lib}/sam.css" />
+		</concat>
+
+		<!-- replace previous sam.css file -->
+		<copy file="${resources}/${skins.lib}/temp.css" tofile="${resources}/${skins.lib}/sam.css" overwrite="true" />
+		
+		<!-- remove temp file -->
+		<delete file="${resources}/${skins.lib}/temp.css" />
+	</target>
 
     <macrodef name="gen.tld.doc">
         <attribute name="tld.file"/>
