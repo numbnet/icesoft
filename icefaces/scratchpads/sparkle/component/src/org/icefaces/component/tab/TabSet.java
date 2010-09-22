@@ -17,7 +17,7 @@ import javax.faces.event.ValueChangeEvent;
 public class TabSet extends TabSetBase {
     
     public TabSet() {
-        loadDependency(FacesContext.getCurrentInstance());        
+        //loadDependency(FacesContext.getCurrentInstance());        
     }
 
     public void broadcast(FacesEvent event)
