@@ -24,6 +24,7 @@ package org.icefaces.impl.context;
 
 import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
@@ -429,7 +430,7 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     public void saveOldDocument() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isCompressDOM(facesContext)) {
-            facesContext.getViewRoot().getAttributes().put(OLD_DOM, document);
+            WindowScopeManager.lookupWindowScope(facesContext).put(OLD_DOM, document);
             return;
         }
         byte[] data;
@@ -438,21 +439,19 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         serializer.setOutputStream(out);
         serializer.serialize(document);
         data = out.toByteArray();
-        facesContext.getViewRoot().getAttributes().put(OLD_DOM, data);
+        WindowScopeManager.lookupWindowScope(facesContext).put(OLD_DOM, data);
     }
 
     public Document getOldDocument() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isCompressDOM(facesContext)) {
-            return (Document) facesContext.getViewRoot()
-                    .getAttributes().get(OLD_DOM);
+            return (Document) WindowScopeManager.lookupWindowScope(facesContext).get(OLD_DOM);
         }
         Document document = DOMUtils.getNewDocument();
         //FastInfoset does not tolerate stray xmlns declarations
         document.setStrictErrorChecking(false);
         try {
-            byte[] data = (byte[]) facesContext.getViewRoot()
-                    .getAttributes().get(OLD_DOM);
+            byte[] data = (byte[]) WindowScopeManager.lookupWindowScope(facesContext).get(OLD_DOM);
             DOMDocumentParser parser = new DOMDocumentParser();
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             parser.parse(document, in);
