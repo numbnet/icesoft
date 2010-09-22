@@ -52,68 +52,71 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 	chain.prototype.run = function(toggleReverse) {
 			starter = this.anim;
 			var currentAnim = this.anim;
-			
-			starter.on("end", function() {
-			    var lastRunningAnim = currentAnim;
-				
-				if (!starter.toggleReverse) {
-					if (!currentAnim){ 
-					   currentAnim = starter.next();
-					} else {
-					   currentAnim = currentAnim.next();
-					}
-				} else {
-				   currentAnim.set("reverse", !currentAnim.get("reverse"));
-				   //chain should be reversed should get previous anim
-				   console.info('revering chain ');
-				   console.info('revering chain current anim '+ currentAnim);
-				   try {
-						currentAnim = currentAnim.previous();
-						if (currentAnim == starter) {
-							//Anim can not go beyond the starting point
-							throw ("finished");
-						}
-				   } catch (e){
-						console.info(e);
-						//END point when toggleReverse
-						return;
-						
-				   }
-				   currentAnim.set("reverse", !currentAnim.get("reverse"));
-				}
-				
-				
-				
-				if (!currentAnim) {
-			
-					if (toggleReverse) {
-						starter.toggleReverse = true;
-					} else {
-					   return;
-					}
-					currentAnim = lastRunningAnim;
-					currentAnim.set("reverse", !currentAnim.get("reverse"));
-					//END point of first run
-					starter.fire("chainend");
-					console.info('Chain list ends...' + lastRunningAnim);
+			if(!starter.chainRunEndInstallted) {
+				starter.on("end", function() {
+					starter.chainRunEndInstallted = true;
+					var lastRunningAnim = currentAnim;
 					
-				} 
-				
-				if (currentAnim) {
-					   console.info( 'going to run '+ currentAnim.effectName);		
-						endhandle = currentAnim.on("end", function() { 
-							   endhandle.detach();
-							   starter.fire("end");
-						});				
-						currentAnim.run();
+					if (!starter.toggleReverse) {
+						if (!currentAnim){ 
+						   currentAnim = starter.next();
+						} else {
+						   currentAnim = currentAnim.next();
+						}
+					} else {
+					   currentAnim.set("reverse", !currentAnim.get("reverse"));
+					   //chain should be reversed should get previous anim
+					   console.info('revering chain ');
+					   console.info('revering chain current anim '+ currentAnim);
+					   try {
+							currentAnim = currentAnim.previous();
+							if (currentAnim == starter) {
+								//Anim can not go beyond the starting point
+								throw ("finished");
+							}
+					   } catch (e){
+							console.info(e);
+							//END point when toggleReverse
+							return;
+							
+					   }
+					   currentAnim.set("reverse", !currentAnim.get("reverse"));
 					}
-			
-			
-			
-			
-			
-			});
-			
+					
+					
+					
+					if (!currentAnim) {
+				
+						if (toggleReverse) {
+							starter.toggleReverse = true;
+						} else {
+						   //it means chain only have one 
+						   starter.fire("chainend");
+						   return;
+						}
+						currentAnim = lastRunningAnim;
+						currentAnim.set("reverse", !currentAnim.get("reverse"));
+						//END point of first run
+						starter.fire("chainend");
+						console.info('Chain list ends...' + lastRunningAnim);
+						
+					} 
+					
+					if (currentAnim) {
+						   console.info( 'going to run '+ currentAnim.effectName);		
+							endhandle = currentAnim.on("end", function() { 
+								   endhandle.detach();
+								   starter.fire("end");
+							});				
+							currentAnim.run();
+						}
+				
+				
+				
+				
+				
+				});
+			}
 			
 			console.info( 'going to run '+ starter.effectName);	
 			starter.run();
@@ -125,6 +128,9 @@ YUI().use("plugin", "anim", "json",  function(Y) {
 		this.chain = new chain(this);
 		this.toggleReverse = false;
 		this.containerId = null;
+		this.on("start", function() {
+			this.fire("prerequisite");
+		});
 	}
 	
 	Y.extend(AnimBase, Y.Anim , {
@@ -208,6 +214,12 @@ YUI().use("plugin", "anim", "json",  function(Y) {
  		this.set("to", {opacity:0});
 		this.set("from", {opacity:1});
 		this.cycle = false;
+		this.on("prerequisite", function() {
+			if (this.get("reverse")) {
+				this.get("node").setStyle("visibility", "visible");
+				this.get("node").setStyle("opacity", "0");			
+			}
+		})
 	}
 	
 	Y.extend(Fade, AnimBase , { 
@@ -276,7 +288,7 @@ YUI().use("plugin", "anim", "json",  function(Y) {
  
 	ice.animation = {
 		register: function(args) {
-		   console.info('registering '+ args.name);
+		   console.info(args.node + ' registering '+ args.name);
 		   var node = Y.one(args.node);
 		   if (!node.animation) {
 				node.plug(AnimPlugin);
