@@ -55,15 +55,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         Map requestParameterMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         String componentClientId = uiComponent.getClientId(facesContext);
-        String decodedValue =
-                (String) requestParameterMap.get(componentClientId);
-        if (decodedValue == null) {
-            decodedValue = "false";
-        } else if (decodedValue.equalsIgnoreCase("on") ||
-                decodedValue.equalsIgnoreCase("yes") ||
-                decodedValue.equalsIgnoreCase("true")) {
-            decodedValue = "true";
-        }
+        String decodedValue = requestParameterMap.containsKey(componentClientId) ? "true" : "false";
         ((EditableValueHolder) uiComponent).setSubmittedValue(decodedValue);
     }
 
@@ -83,7 +75,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
                 input = domContext.createElement(HTML.INPUT_ELEM);
                 root.appendChild(input);
             } else {
-                input = (Element) domContext.createRootElement(HTML.INPUT_ELEM);
+                input = domContext.createRootElement(HTML.INPUT_ELEM);
             }
             input.setAttribute("type", "checkbox");
             input.setAttribute("id", clientId);
@@ -101,7 +93,6 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         } else {
             input.removeAttribute("checked");
         }
-        input.setAttribute("value", "on");
 
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
