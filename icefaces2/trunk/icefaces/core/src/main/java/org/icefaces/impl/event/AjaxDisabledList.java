@@ -47,6 +47,7 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.component.behavior.ClientBehavior;
 
 import java.util.Map;
 import java.util.List;
@@ -73,8 +74,9 @@ public class AjaxDisabledList implements SystemEventListener {
         boolean isDisabled = false;
         Iterator theBehaviors = behaviors.values().iterator();
         while (theBehaviors.hasNext())  {
-            AjaxBehavior behavior = (AjaxBehavior) ((List) theBehaviors.next()).get(0);
-            if (behavior.isDisabled())  {
+        	ClientBehavior behavior =   (ClientBehavior)((List) theBehaviors.next()).get(0);
+        	if(!(behavior instanceof AjaxBehavior)) continue;
+            if (((AjaxBehavior)behavior).isDisabled())  {
                 isDisabled = true;
                 break;
             }
