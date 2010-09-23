@@ -28,8 +28,12 @@
 
     <name>ICEfacesCore</name>
     <factory>
-        <partial-view-context-factory>org.icefaces.impl.context.DOMPartialViewContextFactory
+        <partial-view-context-factory>
+            org.icefaces.impl.context.DOMPartialViewContextFactory
         </partial-view-context-factory>
+        <exception-handler-factory>
+            org.icefaces.impl.application.ExtendedExceptionHandlerFactory
+        </exception-handler-factory>
     </factory>
     <render-kit>
         <render-kit-id>HTML_BASIC</render-kit-id>
