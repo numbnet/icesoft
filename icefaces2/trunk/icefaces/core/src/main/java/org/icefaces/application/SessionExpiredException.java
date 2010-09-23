@@ -19,7 +19,7 @@
  * Contributor(s): _____________________.
  */
 
-package org.icefaces.impl.context;
+package org.icefaces.application;
 
 public class SessionExpiredException extends RuntimeException {
 

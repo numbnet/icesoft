@@ -19,7 +19,11 @@
  * Contributor(s): _____________________.
  */
 
-package org.icefaces.impl.context;
+package org.icefaces.impl.application;
+
+import org.icepush.PushContext;
+import org.icefaces.util.EnvUtils;
+import org.icefaces.application.SessionExpiredException;
 
 import javax.faces.FactoryFinder;
 import javax.faces.event.ExceptionQueuedEvent;
@@ -30,38 +34,45 @@ import javax.faces.context.FacesContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 @WebListener
 public class SessionExpiredListener implements HttpSessionListener {
 
     private static Logger log = Logger.getLogger(SessionExpiredListener.class.getName());
-    private Application app;
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 
-        //If there is no FacesContext, then the session likely timed out of it's own accord rather
-        //then being invalidated programmatically.  In that case, we don't handle it here.
         FacesContext fc = FacesContext.getCurrentInstance();
-        if (fc == null) {
-            if (log.isLoggable(Level.FINE)) {
-                log.log(Level.FINE, "session destroyed but FacesContext is not available");
+
+        //If there is no FacesContext, then the session likely timed out of it's own accord rather
+        //then being invalidated programmatically as part of a JSF lifecycle.  In that case,
+        //we can't put an exception into the queue.
+        if (fc != null) {
+            Application app = fc.getApplication();
+            if( app == null ){
+                ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+                app = factory.getApplication();
             }
-            return;
+
+            ExceptionQueuedEventContext ctxt =
+                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired") );
+            app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
         }
 
-        Application app = fc.getApplication();
-        if( app == null ){
-            ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-            app = factory.getApplication();
+        //If the session is destroyed and ICEpush is available, we can request a push request immediately
+        //which should result in a SessionExpiredException being sent to the client.
+        if(EnvUtils.isICEpushPresent()){
+            HttpSession session = httpSessionEvent.getSession();
+            ServletContext servletContext = session.getServletContext();
+            PushContext pushContext = PushContext.getInstance(servletContext);
+            pushContext.push(session.getId());
         }
-
-        ExceptionQueuedEventContext ctxt =
-                new ExceptionQueuedEventContext(fc, new SessionExpiredException("session has expired") );
-        app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
     }
+
 }
