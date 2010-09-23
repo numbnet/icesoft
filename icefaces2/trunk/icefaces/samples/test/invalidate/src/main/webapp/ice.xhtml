@@ -80,6 +80,10 @@
 
             <h:outputText value="Invalidate session by going to logout.jsp:"/>
             <h:outputLink value="/invalidate/logout.jsp">Click here to navigate to logout.jsp.</h:outputLink>
+
+            <h:outputText value="Push active: #{bean.pushOn}"/>
+            <h:commandButton value="Activate Push" actionListener="#{bean.activatePush}"/>
+
         </h:panelGrid>
         
     </h:form>
