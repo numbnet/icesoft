@@ -92,7 +92,10 @@ public class PushButtonRenderer extends Renderer {
 		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
 	    String label = "";
 	    String ifImage = "";
-	    if (null!=pushButton.getLabel() || !pushButton.getLabel().equals(""))label=pushButton.getLabel();
+	    String valueString = String.valueOf(pushButton.getValue());
+	    if (null!=pushButton.getLabel())label=pushButton.getLabel();
+	    else if (label.equals(""))
+	    	label=String.valueOf(pushButton.getValue());
 	   // need to worry if label isn't set?
 	    if (pushButton.getImage()==null){
 	        ifImage = JSONBuilder.create().beginMap().
