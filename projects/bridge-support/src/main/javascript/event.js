@@ -202,7 +202,7 @@ function IEMouseEvent(event, capturingElement) {
         method(asString, function(self) {
             return 'IEMouseEvent[' + type(self) + ']';
         });
-    }, IEEvent(event, capturingElement), MouseEvent(event));
+    }, MouseEvent(event), IEEvent(event, capturingElement));
 }
 
 function NetscapeMouseEvent(event, capturingElement) {
@@ -229,7 +229,7 @@ function NetscapeMouseEvent(event, capturingElement) {
             return 'NetscapeMouseEvent[' + type(self) + ']';
         });
 
-    }, NetscapeEvent(event, capturingElement), MouseEvent(event));
+    }, MouseEvent(event), NetscapeEvent(event, capturingElement));
 }
 
 var keyCharacter = operator();
@@ -268,7 +268,7 @@ function IEKeyEvent(event, capturingElement) {
         method(asString, function(self) {
             return 'IEKeyEvent[' + type(self) + ']';
         });
-    }, IEEvent(event, capturingElement), KeyEvent(event));
+    }, KeyEvent(event), IEEvent(event, capturingElement));
 }
 
 function NetscapeKeyEvent(event, capturingElement) {
@@ -282,7 +282,7 @@ function NetscapeKeyEvent(event, capturingElement) {
         method(asString, function(self) {
             return 'NetscapeKeyEvent[' + type(self) + ']';
         });
-    }, NetscapeEvent(event, capturingElement), KeyEvent(event));
+    }, KeyEvent(event), NetscapeEvent(event, capturingElement));
 }
 
 function isEnterKey(event) {
