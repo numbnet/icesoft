@@ -328,8 +328,8 @@ public class EnvUtils {
         String pathInfo = ec.getRequestPathInfo();
         String reqParam = ec.getRequestParameterMap().get("ice.submit.type");
 
-        if( reqPath.contains("listen.icepush") ||
-            pathInfo.contains("listen.icepush") ||
+        if( reqPath != null && reqPath.contains("listen.icepush") ||
+            pathInfo != null && pathInfo.contains("listen.icepush") ||
             "ice.push".equals(reqParam) ){
             return true;
         }
