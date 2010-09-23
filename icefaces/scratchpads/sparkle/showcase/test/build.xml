@@ -1,7 +1,7 @@
 <project name="test" default="war">
 
     <property name="classes.dir" value="web/WEB-INF/classes"/>
-    <property name="icefaces2.lib.dir" location="../../../../../../ossrepo/icefaces2/trunk/icefaces/lib"/>
+    <property name="icefaces2.lib.dir" location="../../../icefaces2/icefaces/lib"/>
 
     <target name="clean">
         <delete dir="dist"/>
