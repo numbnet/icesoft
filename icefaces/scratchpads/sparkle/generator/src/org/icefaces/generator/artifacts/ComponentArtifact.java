@@ -58,6 +58,7 @@ public class ComponentArtifact extends Artifact{
 		writer.append("import javax.el.ValueExpression;\n\n");
 		writer.append("import javax.faces.event.PhaseId;\n");
 		writer.append("import javax.faces.component.StateHelper;\n\n");
+//        writer.append("import org.icefaces.component.utils.PartialStateHolderImpl;\n\n");
 
 		writer.append("import javax.faces.application.ResourceDependencies;\n");
 		writer.append("import javax.faces.application.ResourceDependency;\n\n");
@@ -218,8 +219,10 @@ public class ComponentArtifact extends Artifact{
         }
 
 		String methodName = field.getName().substring(0,1).toUpperCase() + field.getName().substring(1);
-		
+
+		//-------------------------------------
 		// writing Setter
+        //-------------------------------------
 
 		addJavaDoc(field.getName(), true, prop.javadocSet); /* @@@ changed */
 		writer.append("\tpublic void set");
@@ -234,14 +237,14 @@ public class ComponentArtifact extends Artifact{
 		writer.append(" ");
 		writer.append(field.getName());
 		writer.append(") {");
-		
+
 		// %%% added
 		if (!prop.isDelegatingProperty) {
 			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
 			writer.append(field.getName());
 			writer.append(".name() );");
 
-			writer.append("\n\t\tMap clientValues = null;");
+//			writer.append("\n\t\tMap clientValues = null;");
 			writer.append("\n\t\tif (ve != null) {");
 			writer.append("\n\t\t\t// map of style values per clientId");
 			writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
@@ -250,27 +253,48 @@ public class ComponentArtifact extends Artifact{
 
 			writer.append("\n\t\t} else { ");
 
-			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-			writer.append("\n\t\t\tclientValues = (Map) sh.get(PropertyKeys.");
-			writer.append(field.getName() );
-			writer.append(");");
-
-			writer.append("\n\t\t\tif (clientValues == null) {" );
-			writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
-			writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
-			writer.append(field.getName());
-			writer.append(", clientValues ); ");
-			writer.append("\n\t\t\t}");
+//		    writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
+//
+//			writer.append("\n\t\t\tif (clientValues == null) {" );
+//            writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
+////            writer.append("\n\t\t\t\tmarkInitialState();");
+//            writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
+//			writer.append(field.getName());
+//			writer.append(", clientValues ); ");
+//			writer.append("\n\t\t\t}");
 			writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
+            writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+            
 			writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
-			writer.append("\n\t\t\t\tclientValues.put(\"defValue\",");
-			writer.append(field.getName() );
-			writer.append(");");
+            // Here,
+
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(field.getName()).
+                                append(".toString() + \"_defaultValues\";" );
+            writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
+
+            writer.append("\n\t\t\t\tif (clientDefaults == null) { ");
+            writer.append("\n\t\t\t\t\tclientDefaults = new HashMap(); ");
+            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString()).append(");");
+            writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); "); 
+            writer.append("\n\t\t\t\t} "); 
+
+
 			writer.append("\n\t\t\t} else {");
 			writer.append("\n\t\t\t\tString clientId = getClientId();");
-			writer.append("\n\t\t\t\tclientValues.put(clientId, ");
-			writer.append(field.getName() );
-			writer.append(");" );
+            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append(field.getName().toString() ).
+                    append(" + \"_rowValues\"; ");
+            writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
+            writer.append("\n\t\t\t\tif (clientValues == null) {");
+            writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
+            writer.append("\n\t\t\t\t}");
+            writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
+                    append(");");
+
+            writer.append("\n\t\t\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
+            writer.append("\n\t\t\t\t//and values are not state saved unless they're in the delta map. " );
+
+            writer.append("\n\t\t\t\tsh.put(valuesKey, clientValues);" );
+
 
 			writer.append("\n\t\t\t}" );
 			writer.append("\n\t\t}" );
@@ -279,12 +303,11 @@ public class ComponentArtifact extends Artifact{
 		}
         writer.append("\n\t}\n" );
 
-
-		//getter   
+        //-----------------
+		//getter
+        //-----------------
 
 		addJavaDoc(field.getName(), false, prop.javadocGet); /* @@@ changed */
-
-
 
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
@@ -353,20 +376,30 @@ public class ComponentArtifact extends Artifact{
 			}
 			writer.append("\n\t\t} else {");
 			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(PropertyKeys.");
-
-			writer.append(field.getName() );
-			writer.append(");");
-			writer.append("\n\t\t\tif( clientValues != null ) { " );
-
+			writer.append("\n\t\t\tString valuesKey = \"").append(field.getName().toString()).append("_rowValues\";");
+			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
+            writer.append("\n\t\t\tboolean mapNoValue = false;");
 			// differentiate between the case where the map has clientId and it's value is null
 			// verses it not existing in the map at all.
+            writer.append("\n\t\t\tif (clientValues != null) { ");
+
 			writer.append("\n\t\t\t\tString clientId = getClientId();");
 			writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
 			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
-			writer.append("\n\t\t\t\t} else if (clientValues.containsKey ( \"defValue\" ) ) { ");
-			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(\"defValue\" ); ");
-			writer.append("\n\t\t\t\t}");
+            writer.append("\n\t\t\t\t} else { ");
+            writer.append("\n\t\t\t\t\tmapNoValue=true;");
+            writer.append("\n\t\t\t\t}");
+            writer.append("\n\t\t\t}");
+
+
+			writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
+            writer.append("\n\t\t\t\tString defaultKey = \"").append(field.getName().toString()).append("_defaultValues\";");
+            writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
+            writer.append("\n\t\t\t\tif (defaultValues != null) { ");
+            writer.append("\n\t\t\t\t\tif (defaultValues.containsKey(\"defValue\" )) {");
+            writer.append("\n\t\t\t\t\t\tretVal = (").append(internalType).append(") defaultValues.get(\"defValue\"); ");
+            writer.append("\n\t\t\t\t\t}");
+            writer.append("\n\t\t\t\t}");
 			writer.append("\n\t\t\t}");
 			writer.append("\n\t\t}");
 			writer.append("\n\t\treturn retVal;");
