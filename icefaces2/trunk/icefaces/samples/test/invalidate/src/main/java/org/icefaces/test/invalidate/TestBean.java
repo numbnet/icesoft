@@ -21,6 +21,8 @@
 
 package org.icefaces.test.invalidate;
 
+import org.icefaces.application.PushRenderer;
+
 import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
@@ -41,6 +43,8 @@ public class TestBean implements Serializable {
 
     private String message = "";
     private static String scope = "[unknown]";
+
+    private boolean pushOn = false;
 
     static {
         Annotation[] anns = TestBean.class.getAnnotations();
@@ -116,4 +120,15 @@ public class TestBean implements Serializable {
         ec.invalidateSession();
     }
 
+    public void activatePush(ActionEvent event) {
+        if( !pushOn ){
+            PushRenderer.addCurrentSession(this.getClass().getName());
+            pushOn = true;
+        }
+        log.info("TestBean.togglePush: " + pushOn);
+    }
+
+    public boolean isPushOn() {
+        return pushOn;
+    }
 }
