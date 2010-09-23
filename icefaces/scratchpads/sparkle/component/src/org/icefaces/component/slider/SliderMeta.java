@@ -32,11 +32,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     )
 	
 @ResourceDependencies({
-    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider"),
-	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="yui/yui-later-min.js",library="yui/3_1_1"),
@@ -60,7 +56,13 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="slider/slider-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="intl/intl-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="slider/assets/skins/sam/slider.css",library="yui/3_1_1"),
-	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1")
+	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1"),
+	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_1"),
+	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider")
+	
 })
 
 public class SliderMeta extends UIComponentBaseMeta {
