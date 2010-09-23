@@ -13,7 +13,7 @@
   <property name="doc" location="${build}/doc"/>
   <property name="tld.doc" location="${doc}/tld"/>
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
-  <property name="tld.jar"  location="../../glimmer/lib/"/>
+  <property name="tld.jar"  location="../../icefaces2/icefaces/lib/"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
   
   <path id="compile.run.classpath">
@@ -334,7 +334,7 @@
 		<delete file="${resources}/${skins.lib}/temp.css" />
 	</target>
 
-    <macrodef name="gen.tld.doc">
+    <macrodef name="gen.tld.doc" description="Generate the TLD Doc in human readable form (HTML).">
         <attribute name="tld.file"/>
         <sequential>
             <delete dir="${tld.doc}"/>
@@ -352,7 +352,7 @@
     </macrodef>
 
 
-    <target name="tlddoc">
+    <target name="tlddoc" description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
     </target>
 </project>
