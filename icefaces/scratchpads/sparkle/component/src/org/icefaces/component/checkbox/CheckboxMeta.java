@@ -20,21 +20,23 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
         )
         
 @ResourceDependencies({
-
-	    @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
 	    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
 		@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
 	    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
-        @ResourceDependency(name="checkbox.js",library="org.icefaces.component.checkbox")    
-
+        @ResourceDependency(name="checkbox.js",library="org.icefaces.component.checkbox"),  
+        @ResourceDependency(name="checkbox.css",library="org.icefaces.component.checkbox") 
 })
 
 public class CheckboxMeta extends UISelectBooleanMeta {
     
     @Property   
     private String label;
+    
+    @Property(defaultValue="left",
+    		tlddoc="Default is left, Possible values are on, left")
+    private String labelPosition;
 
     @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private String id;
