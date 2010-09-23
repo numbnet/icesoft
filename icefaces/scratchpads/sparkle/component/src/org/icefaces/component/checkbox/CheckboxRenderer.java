@@ -61,22 +61,36 @@ public class CheckboxRenderer extends Renderer {
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
+	 	//labelling  should be either a label or an image
+
+		String image=this.findCheckboxImage(checkbox);
+		String label=this.findCheckboxLabel(checkbox);
+		String labelPosition = this.findCheckboxLabelPosition(checkbox);
+			
+			// should be either a label or an image as a minimum
+		if (labelPosition.equals("left")&& image.equals("")){
+			writer.startElement(HTML.LABEL_ELEM, uiComponent);
+    		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_button", null );	    		writer.write(label);
+	   		writer.endElement("label");		
+		}
+	
+		System.out.println(" CBR: label="+label);	 	
+	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
-		
-		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
-		if (checkbox.getImage() != null) {
+
+		if (!image.equals("")){
 			writer.startElement(HTML.SPAN_ELEM, uiComponent);
 			writer.write(checkbox.getLabel());
-			writer.endElement(HTML.SPAN_ELEM);
-			
+			writer.endElement(HTML.SPAN_ELEM);		
 			writer.startElement(HTML.IMG_ELEM, uiComponent);
-			writer.writeAttribute(HTML.SRC_ATTR, checkbox.getImage(), null);
+			writer.writeAttribute(HTML.SRC_ATTR, image, null);
 			writer.endElement(HTML.IMG_ELEM);
 		}
+
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -84,6 +98,9 @@ public class CheckboxRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
+		String image=this.findCheckboxImage(checkbox);
+		String label=this.findCheckboxLabel(checkbox);
+		String labelPosition = this.findCheckboxLabelPosition(checkbox);
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);  
 	    
@@ -99,28 +116,27 @@ public class CheckboxRenderer extends Renderer {
      
 		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
 	    //note that ScriptWriter takes care of the span tag surrounding the script
-	    String label = "";
-	    String ifImage = "";
-	    if (null!=checkbox.getLabel() || !checkbox.getLabel().equals(""))label=checkbox.getLabel();
-	   // need to worry if label isn't set?
 	    String boxValue = String.valueOf(checkbox.getValue());
 	    boolean isChecked = false;
+	    String builder="";
 	    if (boxValue.equals("true") || boxValue.equals("on") || boxValue.equals("yes"))isChecked=true;
-	    boolean needLabel = (checkbox.getImage()==null);
 	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
-	    if (needLabel){
-	        ifImage = JSONBuilder.create().beginMap().
+	    if (labelPosition.equals("on")){
+	    	System.out.println("LABEL ON");
+	        builder = JSONBuilder.create().beginMap().
 	        entry("type", "checkbox").
 	        entry("checked", isChecked).
 	        entry("label", label).endMap().toString();
 	    }
 	    else {
-	        ifImage = JSONBuilder.create().beginMap().
+	    	System.out.println("LABEL NOT ON");
+	        builder = JSONBuilder.create().beginMap().
 	        entry("type", "checkbox").
-	        entry("checked", isChecked).endMap().toString();  
+	        entry("checked", isChecked).
+	        entry("label", "").endMap().toString();  
 	    }
 	    String params = "'" + clientId + "'," +
-        ifImage
+        builder
            + "," +
            JSONBuilder.create().
            beginMap().
@@ -136,4 +152,27 @@ public class CheckboxRenderer extends Renderer {
         
        writer.endElement(HTML.DIV_ELEM);
     }
+    
+    private String findCheckboxLabel(Checkbox checkbox){
+    	String label="";
+		if (null!=checkbox.getLabel() && !checkbox.getLabel().equals("")){
+			label=checkbox.getLabel();
+		}
+		return label;
+    }
+    private String findCheckboxLabelPosition(Checkbox checkbox){
+    	String labelPosition="";
+		if (null!=checkbox.getLabelPosition() && !checkbox.getLabelPosition().equals("")){
+			labelPosition=checkbox.getLabelPosition().trim().toLowerCase();
+		}
+		return labelPosition;
+    }
+    private String findCheckboxImage(Checkbox checkbox){
+    	String image="";
+		if (null!=checkbox.getImage() && !checkbox.getImage().equals("")){
+			image=checkbox.getImage();
+		}
+		return image;
+    }
+    
 }
