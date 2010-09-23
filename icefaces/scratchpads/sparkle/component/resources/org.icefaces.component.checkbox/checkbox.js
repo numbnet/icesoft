@@ -9,9 +9,10 @@ ice.component.checkbox = {
        var spanId = clientId+"_span";
 	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type});
 	   
-	   if(jsProps.label) {
-			button.set('label', jsProps.label);
-	    }
+//	   if(jsProps.label) {
+//		   YAHOO.log("label set to "+jsProps.label);
+//			button.set('label', jsProps.label);
+//	    }
 		
 		var hiddenField = Dom.get(clientId+"_hidden");
 		var singleSubmit=jsfProps.singleSubmit;	
