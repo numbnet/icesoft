@@ -130,26 +130,6 @@ if (!window.ice.icefaces) {
             return hiddenInput;
         }
 
-        //wire callbacks into JSF bridge
-        jsf.ajax.addOnEvent(function(e) {
-            switch (e.status) {
-                case 'begin':
-                    broadcast(beforeSubmitListeners, [ e.source ]);
-                    break;
-                case 'complete':
-                    broadcast(beforeUpdateListeners, [ e.responseXML ]);
-                    break;
-                case 'success':
-                    broadcast(afterUpdateListeners, [ e.responseXML ]);
-                    break;
-            }
-        });
-
-        //notify errors captured by JSF bridge
-        jsf.ajax.addOnError(function(e) {
-            if (e.status == 'serverError' || e.status == 'httpError')
-                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
-        });
 
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
@@ -169,16 +149,46 @@ if (!window.ice.icefaces) {
             };
         }
 
-        function sessionExpired(sessionExpiredPushID) {
+        function sessionExpired() {
+            //stop retrieving updates
             retrieveUpdate = noop;
+            //dregister pushIds to stop blocking connection
             each(viewIDs, namespace.push.deregister);
-            namespace.push.deregister(sessionExpiredPushID);
+            //notify listeners
             broadcast(sessionExpiryListeners);
         }
 
-        namespace.setupPush = function(viewID, sessionExpiryPushID) {
+        //wire callbacks into JSF bridge
+        jsf.ajax.addOnEvent(function(e) {
+            switch (e.status) {
+                case 'begin':
+                    broadcast(beforeSubmitListeners, [ e.source ]);
+                    break;
+                case 'complete':
+                    broadcast(beforeUpdateListeners, [ e.responseXML ]);
+                    break;
+                case 'success':
+                    broadcast(afterUpdateListeners, [ e.responseXML ]);
+                    break;
+            }
+        });
+
+        //notify errors captured by JSF bridge
+        jsf.ajax.addOnError(function(e) {
+            if (e.status == 'serverError' || e.status == 'httpError')
+                if (e.responseXML) {
+                    var errorName = e.responseXML.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+                    if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
+                        sessionExpired();
+                        return;
+                    }
+                }
+
+            broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+        });
+
+        namespace.setupPush = function(viewID) {
             ice.push.register([viewID], retrieveUpdate(viewID));
-            ice.push.register([sessionExpiryPushID], sessionExpired);
         };
 
         namespace.captureEnterKey = function(id) {
