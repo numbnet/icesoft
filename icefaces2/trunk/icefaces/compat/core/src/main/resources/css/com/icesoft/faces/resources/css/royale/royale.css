@@ -253,7 +253,7 @@ input {
     min-width: 172px;
 }
 
-.iceSelInpDateOpenPopup {
+.iceSelInpDateOpenPopup, .iceSelInpDateOpenPopup-dis {
     display: inline;
     text-decoration: none;
     background-color: transparent;
