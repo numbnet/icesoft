@@ -141,7 +141,7 @@ fieldset {
     margin: 2px;
 }
 
-input.iceSelInpDateOpenPopup {
+input.iceSelInpDateOpenPopup, input.iceSelInpDateOpenPopup-dis {
     display: inline;
     text-decoration: none;
     background-color: transparent;
