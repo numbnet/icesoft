@@ -184,7 +184,7 @@ table.iceSelInpDate tbody tr td table{
     padding: 1px 0pt 0pt 2px;
 }
 
-.iceSelInpDateOpenPopup {
+.iceSelInpDateOpenPopup, .iceSelInpDateOpenPopup-dis {
     display: inline;
     text-decoration: none;
     background-color: transparent;
