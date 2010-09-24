@@ -10,6 +10,7 @@
 <f:view>
 <h:head>
     <title>Input Files</title>
+    <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body styleClass="yui-skin-sam">
     <h:panelGrid columns="2">
@@ -19,7 +20,7 @@
     <h:form id="justRegular">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form that only has regular input components, and no inputFiles component" />
-            <h:inputText id="text" value="#{fileBean.regularText}"/>
+            <h:inputText id="text" value="#{fileBean.regularText}" required="true"/>
     	    <h:outputText id="textUpper" value="#{fileBean.regularTextUppercase}" />
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.regular}"/>
         </h:panelGrid>
@@ -27,7 +28,7 @@
     <h:form id="alsoFiles">
         <h:panelGrid columns="1"> 
     	    <h:outputText value="Form with inputFiles component" />
-            <h:inputText id="text" value="#{fileBean.mixedText}"/>
+            <h:inputText id="text" value="#{fileBean.mixedText}" required="true"/>
     	    <h:outputText id="textUpper" value="#{fileBean.mixedTextUppercase}" />
     	    <ice:inputFiles />
             <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
@@ -152,6 +153,156 @@
         </h:panelGrid>
     </h:form>
     
+    <h:form id="form13">
+        <h:panelGrid columns="1">
+    	    <h:outputText value="Form13  DataTable of InputFiles" />
+            <h:dataTable value="#{fileBean.tableList}" var="tblItm">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Upload"/>
+                    </f:facet>
+                    <ice:inputFiles id="upload"
+                                    immediate="#{tblItm.immediate}"
+                                    inputFilesListener="#{tblItm.listener}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Saved"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.saved}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Immediate"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.immediate}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="FileName"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.fileName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ClientId"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.clientId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Phase"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.phase}"/>
+                </h:column>
+            </h:dataTable>
+            
+    	    <h:outputText value="Form13  DataTable of InputFiles Info ValueExpression" />
+            <h:dataTable value="#{fileBean.tableList2}" var="tblItm2">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Upload"/>
+                    </f:facet>
+                    <ice:inputFiles id="upload"
+                                    info="#{tblItm2.info}"
+                                    immediate="#{tblItm2.immediate}"
+                                    inputFilesListener="#{tblItm2.listener}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Saved"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.saved}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Immediate"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.immediate}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="InfosEqual"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.infosEqual}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="FileName"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.fileName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ClientId"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.clientId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Phase"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.phase}"/>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="testFacesMessages">
+        <h:panelGrid columns="2"> 
+    	    <h:outputText value="Faces Messages: " />
+            <h:messages id="theMessages"/>
+            
+    	    <h:outputText value="File maxTotalSize 50" />
+    	    <ice:inputFiles id="file"
+                            maxTotalSize="50"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+            
+    	    <h:outputText value="Text required" />
+    	    <h:inputText value="#{fileBean.regularText}" required="true" />
+            
+    	    <h:outputText value="Text back out: " />
+    	    <h:outputText value="#{fileBean.regularTextUppercase}" />
+            
+    	    <h:outputText value="Sub-panel" />
+            <h:panelGroup id="subPanel" style="border:1;">
+                <h:outputText value="Text required" />
+                <h:inputText value="#{fileBean.mixedText}" required="true" />
+
+                <h:outputText value="Text back out: " />
+                <h:outputText value="#{fileBean.mixedTextUppercase}" />
+            </h:panelGroup>
+            
+            <ice:checkboxButton id="check" label="Checkbox" singleSubmit="true" value="#{fileBean.checkValue}"/> 
+            <ice:dateTimeSelector id="date" singleSubmit="true" value="#{fileBean.dateValue}"/> 
+            
+            <h:commandButton id="btnReg" value="Regular Submit" actionListener="#{fileBean.mixed}"/>
+            <h:commandButton id="btnAA" value="f:ajax  exec: all  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@all" render="@all"/>
+            </h:commandButton>
+            <h:commandButton id="btnFF" value="f:ajax  exec: form  render: form" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
+            <h:commandButton id="btnTT" value="f:ajax  exec: this  render: this" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@this"/>
+            </h:commandButton>
+            <h:commandButton id="btnFA" value="f:ajax  exec: form  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@form" render="@all"/>
+            </h:commandButton>
+            <h:commandButton id="btnTA" value="f:ajax  exec: this  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+            
+            <h:commandButton id="btnSS" value="f:ajax  exec: subPanel  render: subPanel" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="testFacesMessages:subPanel" render="testFacesMessages:subPanel"/>
+            </h:commandButton>
+            <h:commandButton id="btnSA" value="f:ajax  exec: subPanel  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="testFacesMessages:subPanel" render="@all"/>
+            </h:commandButton>
+            
+        </h:panelGrid>
+    </h:form>
 </h:body>
 </f:view>
 </html>
