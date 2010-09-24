@@ -167,7 +167,6 @@ public class BridgeSetup implements SystemEventListener {
 
             if (EnvUtils.isICEpushPresent()) {
                 SessionViewManager.addView(context, viewID);
-                final String sessionExpiryPushID = windowID + ":se";
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
                     public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                         //need a span to make sure JSF bridge evaluates included script properly
@@ -176,7 +175,7 @@ public class BridgeSetup implements SystemEventListener {
                         writer.startElement("script", this);
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
-                                "ice.setupPush('" + viewID + "', '" + sessionExpiryPushID + "');" : "");
+                                "ice.setupPush('" + viewID + "');" : "");
                         String[] pathTemplate = EnvUtils.getPathTemplate();
                         String rawURL = pathTemplate[0] + "listen.icepush"
                                 + pathTemplate[1];
