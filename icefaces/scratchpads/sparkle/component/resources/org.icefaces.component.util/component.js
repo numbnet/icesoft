@@ -44,6 +44,36 @@ logger = {
    }
 };
 
+
+
+ice.yui3 = {
+    y : null,
+    modules: {},
+    use :function(callback) {
+	        if(ice.yui3.y == null) {  
+	          logger.info('Loading modules '+  this.getModules());
+	           YUI({combine: true, timeout: 10000}).use('*', function(Y){
+	               ice.yui3.y = Y;
+	               callback(ice.yui3.y);
+	           });
+            } else {
+               callback(ice.yui3.y);
+            }
+    },
+    loadModule: function(module) {
+        if (!this.modules[module])
+             this.modules[module] = module;
+    },
+    getModules: function() {
+        var modules = ''; 
+        for (module in this.modules)
+             modules+= module + ',';
+        return modules.substring(0, modules.length-1);     
+    }
+};
+
+
+
 var JSContext = function(clientId) {this.clientId = clientId};
 JSContext.list = {};
 JSContext.prototype = {
@@ -77,15 +107,17 @@ JSContext.prototype = {
 
 ice.component = {
     updateProperties:function(clientId, jsProps, jsfProps, events, lib) {
-        this.getInstance(clientId, function(yuiComp) {
-            for (prop in jsProps) {
-                var propValue = yuiComp.get(prop);
-                if (propValue != jsProps[prop]) {
-                  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + jsProps[prop]); 
-                  yuiComp.set(prop, jsProps[prop]);        
-                }
-            }
-        }, lib, jsProps, jsfProps);
+		ice.yui3.use(function() {
+			ice.component.getInstance(clientId, function(yuiComp) {
+				for (prop in jsProps) {
+					var propValue = yuiComp.get(prop);
+					if (propValue != jsProps[prop]) {
+					  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + jsProps[prop]); 
+					  yuiComp.set(prop, jsProps[prop]);        
+					}
+				}
+			}, lib, jsProps, jsfProps);
+		});
         
     },
     getInstance:function(clientId, callback, lib, jsProps, jsfProps) {
@@ -148,3 +180,7 @@ ice.component = {
      	}
    }
 };
+
+for (props in ice.component) {
+    ice.yui3[props] = ice.component[props];
+}

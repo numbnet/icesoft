@@ -28,13 +28,21 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     componentFamily="com.icesoft.faces.TabSet"    
 )
 @ResourceDependencies({
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
+    @ResourceDependency(name ="plugin/plugin-min.js",library = "yui/3_1_1"),    
+    @ResourceDependency(name ="pluginhost/pluginhost-min.js",library = "yui/3_1_1"),      
+    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+    @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
+    @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
+    @ResourceDependency(name="animation.css",library="org.icefaces.component.animation") ,	
 	@ResourceDependency(name="2_8_1/fonts/fonts-min.css",library="yui"),
 	@ResourceDependency(name="2_8_1/yahoo-dom-event/yahoo-dom-event.js",library="yui"),
 	@ResourceDependency(name="2_8_1/connection/connection-min.js",library="yui"),
 	@ResourceDependency(name="2_8_1/element/element-min.js",library="yui"),
 	@ResourceDependency(name="2_8_1/tabview/tabview-min.js",library="yui"),
-    @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })

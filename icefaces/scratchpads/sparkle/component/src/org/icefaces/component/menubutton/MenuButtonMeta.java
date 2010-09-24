@@ -28,6 +28,7 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
 	@ResourceDependency(name = "sam/menu/fonts-min.css", library = "org.icefaces.component.sprites"),
     @ResourceDependency(name = "sam/menu/menu.css", library = "org.icefaces.component.sprites"),
     @ResourceDependency(name = "sam/button/button.css", library = "org.icefaces.component.sprites"),
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
     @ResourceDependency(library = "yui/2_8_1", name="yuiloader/yuiloader-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name="yuiloader/dom-min.js"),   
     @ResourceDependency(library = "yui/2_8_1", name = "event/event-min.js"),

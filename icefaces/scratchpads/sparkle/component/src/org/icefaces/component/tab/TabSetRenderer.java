@@ -127,13 +127,6 @@ public class TabSetRenderer extends Renderer{
         int selectedIndex = tabSet.getSelectedIndex();
         String onupdate = tabSet.getOnupdate();
         boolean effectOnHover = tabSet.isEffectOnHover();
-        final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
-			public void next(String event, AnimationBehavior effectBehavior) {
-				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
-				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
-			}
-		});        
         
         StringBuilder call = new StringBuilder();
         call.append("ice.component.tabset.updateProperties('")
@@ -150,7 +143,7 @@ public class TabSetRenderer extends Renderer{
 	        .entry("isClientSide", isClientSide)
 	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
 	        .entry("hover", effectOnHover)
-	        .entry("effect", effect.toString())
+	        .entry("effect", "")
 	        .entry("selectedIndex", selectedIndex).endMap().toString())
         .append(");");
        
@@ -165,6 +158,14 @@ public class TabSetRenderer extends Renderer{
         } else {
             writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR); 
         }
+        final StringBuilder effect = new StringBuilder();
+        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
+			public void next(String event, AnimationBehavior effectBehavior) {
+				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
+				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
+			}
+		});        
+        ScriptWriter.insertScript(facesContext, uiComponent, effect.toString()); 
         writer.endElement(HTML.DIV_ELEM);  
     }    
 

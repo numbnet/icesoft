@@ -20,6 +20,17 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeselector"),
         @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+    	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+    	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+        @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
+        @ResourceDependency(name ="plugin/plugin-min.js",library = "yui/3_1_1"),    
+        @ResourceDependency(name ="pluginhost/pluginhost-min.js",library = "yui/3_1_1"),      
+        @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
+        @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
+        @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
+        @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
+        @ResourceDependency(name="animation.css",library="org.icefaces.component.animation"),          
+        
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "event/event-debug.js"),
@@ -30,8 +41,6 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
-        @ResourceDependency(name = "util.js", library = "org.icefaces.component.util"),
-        @ResourceDependency(name = "component.js", library = "org.icefaces.component.util"),
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeselector")
 })
 @ClientBehaviorHolder 

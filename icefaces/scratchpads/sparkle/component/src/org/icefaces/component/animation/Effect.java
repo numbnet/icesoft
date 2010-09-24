@@ -11,7 +11,7 @@ import org.icefaces.component.utils.JSONBuilder;
 public abstract class Effect{
  
 	private AnimationBehavior effectBehavior;
-	private Map<String, Object> properties = new HashMap(); 
+	private Map<String, Object> properties = new HashMap<String, Object>(); 
 	private String sourceElement;
 	
     String getSourceElement() {
