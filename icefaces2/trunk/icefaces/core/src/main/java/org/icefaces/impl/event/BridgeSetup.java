@@ -64,7 +64,7 @@ public class BridgeSetup implements SystemEventListener {
             return;
         }
 
-        if(!EnvUtils.hasHeadAndBodyComponents(context)){
+        if (!EnvUtils.hasHeadAndBodyComponents(context)) {
             //If ICEfaces is configured for this view, but the h:head and/or h:body components
             //are not available, we cannot process it but we log the reason. 
             if (log.isLoggable(Level.WARNING)) {
@@ -89,13 +89,13 @@ public class BridgeSetup implements SystemEventListener {
 
         try {
             String tempWindowID = "unknownWindow";
-            WindowScopeManager.ScopeMap windowScope = 
+            WindowScopeManager.ScopeMap windowScope =
                     WindowScopeManager.lookupWindowScope(context);
-            if (null != windowScope)  {
-                tempWindowID =  windowScope.getId();
+            if (null != windowScope) {
+                tempWindowID = windowScope.getId();
             } else {
-                log.log(Level.WARNING, "Unable to find WindowScope for view " + 
-                        context.getViewRoot().getViewId() );
+                log.log(Level.WARNING, "Unable to find WindowScope for view " +
+                        context.getViewRoot().getViewId());
             }
             final String windowID = tempWindowID;
             final String viewID = assignViewID(externalContext);
@@ -120,6 +120,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write("',");
                     writer.write("standardFormSerialization: ");
                     writer.write(Boolean.toString(standardFormSerialization));
+                    writer.write(",");
+                    writer.write("blockUIOnSubmit: ");
+                    writer.write(Boolean.toString(EnvUtils.isBlockUIOnSubmit(context)));
                     writer.write("};");
                     //bridge needs the window ID
                     writer.write("window.ice.window = '");
@@ -152,7 +155,7 @@ public class BridgeSetup implements SystemEventListener {
                 }
 
                 //ID is assigned uniquely by ICEpush so no need to prepend
-                public String getClientId(FacesContext context)  {
+                public String getClientId(FacesContext context) {
                     return getId();
                 }
             };
@@ -175,13 +178,13 @@ public class BridgeSetup implements SystemEventListener {
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "', '" + sessionExpiryPushID + "');" : "");
                         String[] pathTemplate = EnvUtils.getPathTemplate();
-                        String rawURL = pathTemplate[0] + "listen.icepush" 
+                        String rawURL = pathTemplate[0] + "listen.icepush"
                                 + pathTemplate[1];
                         String encodedURL = context.getExternalContext()
-                            .encodeResourceURL(rawURL);
-                        if (!rawURL.equals(encodedURL))  {
+                                .encodeResourceURL(rawURL);
+                        if (!rawURL.equals(encodedURL)) {
                             writer.write("ice.push.configuration.uri=\"" +
-                               encodedURL + "\";");
+                                    encodedURL + "\";");
                         }
                         writer.endElement("script");
                         writer.endElement("span");

@@ -22,30 +22,30 @@
 
 package org.icefaces.impl.facelets.tag.icefaces.core;
 
-import java.util.Map;
+import org.icefaces.util.EnvUtils;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
-
 import java.io.IOException;
-
-import org.icefaces.util.EnvUtils;
+import java.util.Map;
 
 
 public class ConfigHandler extends TagHandler {
     private final TagAttribute render;
     private final TagAttribute ariaEnabled;
+    private final TagAttribute blockUIOnSubmit;
 
     public ConfigHandler(TagConfig config) {
         super(config);
         this.render = this.getAttribute("render");
-        this.ariaEnabled = this.getAttribute("ariaEnabled");        
+        this.ariaEnabled = this.getAttribute("ariaEnabled");
+        this.blockUIOnSubmit = this.getAttribute("blockUIOnSubmit");
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
@@ -61,14 +61,18 @@ public class ConfigHandler extends TagHandler {
                 new Boolean("true".equalsIgnoreCase(renderValue)));
 
         if (ariaEnabled != null) {
-            viewMap.put( EnvUtils.ARIA_ENABLED,
-                    new Boolean(ariaEnabled.getValue()) );
+            viewMap.put(EnvUtils.ARIA_ENABLED,
+                    new Boolean(ariaEnabled.getValue()));
+        }
+        if (blockUIOnSubmit != null) {
+            viewMap.put(EnvUtils.BLOCK_UI_ON_SUBMIT,
+                    new Boolean(blockUIOnSubmit.getValue()));
         }
 
         //TODO: ICE-5675 remove when JSF 2.0 Partial State Saving fixed
         //Touch the head and the body to ensure the state
         //saving strategy is chosen correctly.
-        root.addComponentResource( fc,  new UIOutput(), "head" );
-        root.addComponentResource( fc,  new UIOutput(), "body" );
+        root.addComponentResource(fc, new UIOutput(), "head");
+        root.addComponentResource(fc, new UIOutput(), "body");
     }
 }
