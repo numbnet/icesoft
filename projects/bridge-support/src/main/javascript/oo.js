@@ -37,7 +37,7 @@ function isBoolean(s) {
 }
 
 function isIndexed(s) {
-    return !!s.length;
+    return typeof s.length == 'number';
 }
 
 function isObject(o) {

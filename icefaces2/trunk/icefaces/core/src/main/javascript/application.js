@@ -48,6 +48,11 @@ if (!window.ice.icefaces) {
             append(viewDisposedListeners, callback);
         };
 
+        var beforeSubmitListeners = [];
+        namespace.onBeforeSubmit = function(callback) {
+            append(beforeSubmitListeners, callback);
+        };
+
         var beforeUpdateListeners = [];
         namespace.onBeforeUpdate = function(callback) {
             append(beforeUpdateListeners, callback);
@@ -128,6 +133,9 @@ if (!window.ice.icefaces) {
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
             switch (e.status) {
+                case 'begin':
+                    broadcast(beforeSubmitListeners, [ e.source ]);
+                    break;
                 case 'complete':
                     broadcast(beforeUpdateListeners, [ e.responseXML ]);
                     break;
@@ -263,7 +271,8 @@ if (!window.ice.icefaces) {
             if (isEscKey(e)) cancelDefaultAction(e);
         });
 
-        //include status.js        
+        //include status.js
+        //include blockui.js        
     })(window.ice);
 }
 

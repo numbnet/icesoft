@@ -22,10 +22,10 @@
 
 package org.icefaces.util;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.component.UIViewRoot;
 import javax.faces.application.Resource;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,13 +47,13 @@ public class EnvUtils {
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
 
     //Parameters configurable using context parameters but only in compatibility mode
-    public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
     public static String SESSION_EXPIRED_REDIRECT_URI = "org.icefaces.sessionExpiredRedirectURI";
 
     //Parameters configurable on a per page-basis as attributes of <ice:config/>
     public static String ICEFACES_RENDER = "org.icefaces.render";
     public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
+    public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
 
     //Other parameters used internally by ICEfaces framework.
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
@@ -149,13 +149,18 @@ public class EnvUtils {
      * that the UI will not be blocked after a request has been submitted.  To help deal with the problems with double-submits,
      * this parameter can be set to true.
      * <p/>
-     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
      *
      * @param facesContext The current FacesContext instance used to access the application map.
      * @return Returns the current setting of org.icefaces.blockUIOnSubmit.  The default is false.
      */
     public static boolean isBlockUIOnSubmit(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).blockUIOnSubmit;
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        Object blockUIOnSubmit = viewMap.get(BLOCK_UI_ON_SUBMIT);
+        if (null == blockUIOnSubmit) {
+            return EnvConfig.getEnvConfig(facesContext).blockUIOnSubmit;
+        }
+        return (Boolean.TRUE.equals(blockUIOnSubmit));
     }
 
     /**
@@ -322,15 +327,15 @@ public class EnvUtils {
         return PortletRequestClass != null && PortletRequestClass.isInstance(request);
     }
 
-    public static boolean isPushRequest(FacesContext facesContext){
+    public static boolean isPushRequest(FacesContext facesContext) {
         ExternalContext ec = facesContext.getExternalContext();
         String reqPath = ec.getRequestServletPath();
         String pathInfo = ec.getRequestPathInfo();
         String reqParam = ec.getRequestParameterMap().get("ice.submit.type");
 
-        if( reqPath != null && reqPath.contains("listen.icepush") ||
-            pathInfo != null && pathInfo.contains("listen.icepush") ||
-            "ice.push".equals(reqParam) ){
+        if (reqPath != null && reqPath.contains("listen.icepush") ||
+                pathInfo != null && pathInfo.contains("listen.icepush") ||
+                "ice.push".equals(reqParam)) {
             return true;
         }
         return false;
