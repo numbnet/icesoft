@@ -163,7 +163,7 @@ fieldset {
     margin: 2px;
 }
 
-.iceSelInpDateOpenPopup {
+.iceSelInpDateOpenPopup, .iceSelInpDateOpenPopup-dis {
     display: inline;
     text-decoration: none;
     background-color: transparent;
