@@ -185,10 +185,17 @@ ice.component.tabset = {
        
     
 	   //console.info('effect >>> '+ jsfProps.effect );
+  
+	   var node = ice.yui3.y.one('#'+ clientId);
+ 	   
+       var animation = null;
+	   if (node && node["animation"]) {
+		  animation = node.animation.getAnimation("transition");
+	   }
 	   
-	   if (jsfProps.effect) {
+	   if (animation) {
 		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
-		   var effect = eval(jsfProps.effect);
+		//   var effect = eval(jsfProps.effect);
 		   tabview.contentTransition = function(newTab, oldTab) {	//console.info('1. server side tab ');
 		        var currentIndex = tabview.getTabIndex(newTab);
 
@@ -222,50 +229,51 @@ ice.component.tabset = {
 								}            	
 							var event ={};
 							            var params = function(parameter) {
-                            parameter('onevent', function(data) { 
-                                if (data.status == 'success') {//console.info('Sucesssssss');
-                       // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
-						newTab.set('contentVisible', true);
-						         _effect.set('node', '#'+ newTab.get('contentEl').id);
-                              //  	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
-								//	Appear.setContainerId(clientId);
-                                //	Appear.run();
-									/*
-                                        var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
-	                                                                           if (lastKnownSelectedIndex != currentIndex) {
-	                                            tabview.removeListener('activeTabChange'); 
-	                                            tabview.set('activeIndex', lastKnownSelectedIndex);
-	                                            tabview.addListener('activeTabChange', tabChange); 
-	                                            currentIndex = lastKnownSelectedIndex; 
-	                                      }
-                                    */
-                                   /*
-                                       var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
+										parameter('onevent', function(data) { 
+											if (data.status == 'success') {//console.info('Sucesssssss');
+								   // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
+									newTab.set('contentVisible', true);
+									animation.chain.set('node', '#'+  newTab.get('contentEl').id);
+											// _effect.set('node', '#'+ newTab.get('contentEl').id);
+										  //  	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
+											//	Appear.setContainerId(clientId);
+											//	Appear.run();
+												/*
+													var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
+																						   if (lastKnownSelectedIndex != currentIndex) {
+															tabview.removeListener('activeTabChange'); 
+															tabview.set('activeIndex', lastKnownSelectedIndex);
+															tabview.addListener('activeTabChange', tabChange); 
+															currentIndex = lastKnownSelectedIndex; 
+													  }
+												*/
+											   /*
+												   var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
 
-                                        //set the focus back to the selected tab
-                                        if (LIs.length > currentIndex) {
-                                            Dom.getFirstChild(LIs[currentIndex]).focus();
-                                        }        
-                                     */                                    
-                                }
+													//set the focus back to the selected tab
+													if (LIs.length > currentIndex) {
+														Dom.getFirstChild(LIs[currentIndex]).focus();
+													}        
+												 */                                    
+											}
                             });
                         };
 								
-								try {
-									if (jsfProps.isSingleSubmit) {
-										//backup id
-										var elementId = targetElement.id;
-										//replace id with the id of tabset component, so the "execute" property can be set to tabset id
-										targetElement.id = clientId;
-										ice.se(event, targetElement, params);
-										//restore id
-										targetElement.id = elementId;
-									} else {
-										ice.submit(event, targetElement, params);                    
-									}
-								} catch(e) {
-									logger.info(e);
-								} 
+											try {
+												if (jsfProps.isSingleSubmit) {
+													//backup id
+													var elementId = targetElement.id;
+													//replace id with the id of tabset component, so the "execute" property can be set to tabset id
+													targetElement.id = clientId;
+													ice.se(event, targetElement, params);
+													//restore id
+													targetElement.id = elementId;
+												} else {
+													ice.submit(event, targetElement, params);                    
+												}
+											} catch(e) {
+												logger.info(e);
+											} 
 					
 						}
 					};
@@ -274,13 +282,19 @@ ice.component.tabset = {
 					//Effect.setContainerId(clientId);
 					
 					//console.info('2. server side tab '+ oldTab.get('contentEl').id);
-					
-					effect.set('node', '#'+  oldTab.get('contentEl').id);
-					effect.setContainerId(clientId);
-				    effect.revert = true;
-					effect.setPreRevert(callback);
+					animation.setContainerId(clientId);
+					animation.chain.set('node', '#'+  oldTab.get('contentEl').id);
+					animation.chain.on('end', callback);
+					//effect.set('node', '#'+  oldTab.get('contentEl').id);
+					//effect.setContainerId(clientId);
+				   // effect.revert = true;
+					//effect.setPreRevert(callback);
 					try {//console.info('run executed. ');
-					effect.run();
+					//effect.run();
+					//alert(animation.next());
+					
+					animation.chain.run(true);
+		 
 					} catch(e) {					//console.info('run executed. server side tab '+ e);
 					}
 					console.info('run executed. server side tab ');

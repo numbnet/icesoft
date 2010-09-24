@@ -53,7 +53,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="dd/dd-constrain-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="dump/dump-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="substitute/substitute-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="slider/slider-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="slider/slider.js",library="yui/3_1_1"),
 	@ResourceDependency(name="intl/intl-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="slider/assets/skins/sam/slider.css",library="yui/3_1_1"),
 	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1"),

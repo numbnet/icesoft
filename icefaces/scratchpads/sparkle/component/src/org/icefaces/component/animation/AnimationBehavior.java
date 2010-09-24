@@ -9,8 +9,10 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.behavior.FacesBehavior;
  
 import javax.faces.context.FacesContext;
@@ -21,6 +23,8 @@ import org.icefaces.component.utils.ScriptWriter;
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
     @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
+    @ResourceDependency(name ="plugin/plugin-min.js",library = "yui/3_1_1"),    
+    @ResourceDependency(name ="pluginhost/pluginhost-min.js",library = "yui/3_1_1"),      
     @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
     @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
@@ -30,7 +34,7 @@ import org.icefaces.component.utils.ScriptWriter;
 public class AnimationBehavior extends ClientBehaviorBase{
 	public final static String BEHAVIOR_ID = "org.icefaces.animation.Animation";
     private Map<String, ValueExpression> bindings;
-	private String effectsLib = "ice.yui3.effects";
+	private String effectsLib = "ice.animation.";
 	private boolean usingStyleClass;
 	private boolean run;
 	Effect effect = new Fade();
@@ -87,14 +91,14 @@ public class AnimationBehavior extends ClientBehaviorBase{
     }
     
     private void run(FacesContext facesContext, UIComponent uiComponent) {
-    	if (!isRun()) return;
-    		setRun(false);
-	    	try {
-				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent, true) );
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//    	if (!isRun()) return;
+//    		setRun(false);
+//	    	try {
+//				ScriptWriter.insertScript(facesContext, uiComponent, buildScript(uiComponent) );
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
     }
 	private void use(String name) {
 		if ("Fade".equals(name)) {
@@ -137,25 +141,37 @@ public class AnimationBehavior extends ClientBehaviorBase{
 
     }
 
-    public String getScript(ClientBehaviorContext behaviorContext) {
-     	return buildScript(behaviorContext.getComponent(), true);
-    }
+   
     
-    public String getScript(ClientBehaviorContext behaviorContext, boolean execute) {
-     	return buildScript(behaviorContext.getComponent(), execute);
+    public String getScript(ClientBehaviorContext behaviorContext) {
+    	return getScript(behaviorContext, true);
     }
 
-    
-    private String buildScript(UIComponent uiComponent, boolean execute) {
-    	effect.setSourceElement(uiComponent.getClientId());
-    	if (uiComponent.getAttributes().get("styleClass") != null) {
-    		effect.getProperties().put("componentStyleClass", uiComponent.getAttributes().get("styleClass"));
+    public String getScript(ClientBehaviorContext behaviorContext, boolean run) {
+    	if (!effect.getProperties().containsKey("event")) {
+    		effect.getProperties().put("event", behaviorContext.getEventName());
     	}
-    	String call = "new "+ getEffectsLib() + "['" + getName() + "']("+ effect.getPropertiesAsJSON() +")";
-    	if (execute)
-    		call +=".run()";
-    	return call;
+    	if (!effect.getProperties().containsKey("name")) {
+    		effect.getProperties().put("name", getName());
+    	}  
+    	effect.setSourceElement(behaviorContext.getComponent().getClientId());
+    	if (behaviorContext.getComponent().getAttributes().get("styleClass") != null) {
+    		effect.getProperties().put("componentStyleClass", behaviorContext.getComponent().getAttributes().get("styleClass"));
+    	}
+    	StringBuilder call = new StringBuilder();
+    	call.append(getEffectsLib());
+    	if(run) {
+    		call.append("run");
+    	} else {
+    		call.append("register");
+    	}
+    	call.append("(");
+    	call.append(effect.getPropertiesAsJSON());
+    	call.append(");");
+    	return call.toString();
     }
+    
+ 
     
     public void decode(FacesContext context,
             UIComponent component) {
@@ -169,6 +185,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
     }
     
     public void encodeBegin(FacesContext context, UIComponent uiComponent){
+
     	run(context, uiComponent);
     }
     protected Object eval(String propertyName, Object value) {

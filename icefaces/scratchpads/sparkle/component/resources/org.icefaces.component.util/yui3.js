@@ -31,31 +31,4 @@
  *
  */
 
-ice.yui3 = {
-    y : null,
-    modules: {},
-    use :function(callback) {
-	        if(this.yui == null) {  
-	          logger.info('Loading modules '+  this.getModules());
-	           YUI({combine: true, timeout: 10000}).use(this.getModules(), function(Y){
-	               this.y = Y;
-	               callback(this.y);
-	           });
-            } else {
-               callback(this.y);
-            }
-    },
-    loadModule: function(module) {
-        if (!this.modules[module])
-             this.modules[module] = module;
-    },
-    getModules: function() {
-        var modules = ''; 
-        for (module in this.modules)
-             modules+= module + ',';
-        return modules.substring(0, modules.length-1);     
-    }
-};
-for (props in ice.component) {
-    ice.yui3[props] = ice.component[props];
-}
+

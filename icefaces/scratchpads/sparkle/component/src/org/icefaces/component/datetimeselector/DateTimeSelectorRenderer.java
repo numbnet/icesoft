@@ -107,12 +107,6 @@ public class DateTimeSelectorRenderer extends Renderer {
         formatter.applyPattern("a");
         String amPmStr = formatter.format(date);
         String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
-        final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new AnimationBehavior.Iterator(component) {
-			public void next(String event, AnimationBehavior effectBehavior) {
-				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
-			}
-		});
         
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
@@ -133,12 +127,28 @@ public class DateTimeSelectorRenderer extends Renderer {
                     entry("renderAsPopup", dateTimeSelector.isRenderAsPopup()).
                     entry("renderInputField", dateTimeSelector.isRenderInputField()).
                     entry("singleSubmit", dateTimeSelector.isSingleSubmit()).
-                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
-                    entry("effect", effect.toString()).                    
+                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).                    
                 endMap().toString();
         System.out.println("params = " + params);
-        ScriptWriter.insertScript(context, component, "ice.component.calendar.updateProperties(" + params + ");");
+        final UIComponent cal = component;
+        final StringBuilder effect = new StringBuilder();
+        Utils.iterateEffects(new AnimationBehavior.Iterator(component) {
+			public void next(String event, AnimationBehavior effectBehavior) {
+				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), cal);
+				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
+			}
+		});   
+        System.out.println(effect.toString());
+        effect.append(";");
+        effect.append("ice.component.calendar.updateProperties(");
+        effect.append(params);
+        effect.append(");");
+       // ScriptWriter.insertScript(context, component, effect.toString());    
+        
+        ScriptWriter.insertScript(context, component, effect.toString());
+        
         writer.endElement(HTML.DIV_ELEM);
+     
     }
 
     @Override

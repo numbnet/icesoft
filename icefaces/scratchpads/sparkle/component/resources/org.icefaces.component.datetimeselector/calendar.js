@@ -447,44 +447,60 @@ init: function(params) {
     }, params);
     this.configCal(calendar, params);
     calendar.render();
-	var effect;
-
- 
-    var toggleClick = function() {
-	    if (!effect) {
-			try {
-				effect = (params['effect']) ? eval (params['effect']): null;
-				if (effect) effect.set('node', '#'+ dialog.id+'_c');	
-			} catch (e) {alert(e);}
+	
+   thiz = this;
+   var toggleClick = null;
+	ice.yui3.use(function(Y) {
+	
+	var node = Y.one('#'+ params.clientId);
+    var animation = null;
+	  
+	if (node) { 
+	    if(node.animation) {
+			animation = node.animation.getAnimation("transition");
+		} else if (node._node.animation) {
+			animation = node._node.animation.getAnimation("transition");
 		}
+	}
+	
+
+	if (animation) {
+			animation.chain.set('node', '#'+ dialog.id+'_c');	
+			animation.chain.on('end', function() {
+				if (animation.get('reverse')) {
+					dialog.show();
+					toggleBtnEl.replaceClass("open-popup", "close-popup");
+				} else {
+					dialog.hide();
+					toggleBtnEl.replaceClass("close-popup", "open-popup");				
+				}
+			});			
+	} 
+     toggleClick = function() {
+
 	     thix = this;
-        if (this.hasClass("open-popup")) { 
-				if (effect) {
-					effect.set('reverse', true);
-					effect.on('end', function() {
-					    dialog.show();
-						thix.replaceClass("open-popup", "close-popup");
-					});
-					effect.run();
+        if (this.hasClass("open-popup")) {
+				if (animation) {
+					animation.chain.set('reverse', true);
+					animation.chain.run();
 				} else {
 				dialog.show();
 				this.replaceClass("open-popup", "close-popup");
 			}
         } else {
-			if (effect) {
-				thiz = this;
-				effect.on('end', function() {
-					dialog.hide();
-					thiz.replaceClass("close-popup", "open-popup");
-				});
-				effect.set('reverse', false);
-				effect.run();
+			if (animation) {
+				animation.chain.set('reverse', false);
+				animation.chain.run();
 			} else {
 				dialog.hide();
 				this.replaceClass("close-popup", "open-popup");			
 			}
         }
     };
+	
+	
+	});
+
     var inputEnter = function(evType, fireArgs, subscribeObj) {
 //        console.log(this);
 //        for (var i = 0; i < arguments.length; i++) {
