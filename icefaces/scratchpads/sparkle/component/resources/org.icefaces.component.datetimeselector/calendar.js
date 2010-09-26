@@ -452,17 +452,7 @@ init: function(params) {
    var toggleClick = null;
 	ice.yui3.use(function(Y) {
 	
-	var node = Y.one('#'+ params.clientId);
-    var animation = null;
-	  
-	if (node) { 
-	    if(node.animation) {
-			animation = node.animation.getAnimation("transition");
-		} else if (node._node.animation) {
-			animation = node._node.animation.getAnimation("transition");
-		}
-	}
-	
+    var animation = ice.animation.getAnimation(params.clientId, "transition");
 
 	if (animation) {
 			animation.chain.set('node', '#'+ dialog.id+'_c');	

@@ -185,13 +185,8 @@ ice.component.tabset = {
        
     
 	   //console.info('effect >>> '+ jsfProps.effect );
-  
-	   var node = ice.yui3.y.one('#'+ clientId);
- 	   
-       var animation = null;
-	   if (node && node["animation"]) {
-		  animation = node.animation.getAnimation("transition");
-	   }
+ 
+	   var animation = ice.animation.getAnimation(clientId, "transition");
 	   
 	   if (animation) {
 		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
