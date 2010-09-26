@@ -1,11 +1,128 @@
-//----- Set global Y
  
+
+ice.util = {
+	createHiddenField : function(parent, id) {
+	   var inp = document.createElement("input"); 
+	   inp.setAttribute('type', 'hidden');
+	   inp.setAttribute('id', id);
+	   inp.setAttribute('name', id);
+	   parent.appendChild(inp);	   
+	   return inp;
+	},
+	
+	createElement:function(parent, name) {
+		var element = document.createElement(name); 
+		parent.appendChild(element);
+		return element;
+	},
+	
+	removeElement: function(parent, element) {
+		parent.removeChild(element);
+	}
+}
+
+ 
+ice.animation = {
+	events : ["transition", "click", "hover"],
+	animations : ["fade", "highlight"],
+	defaultAnimations:{},
+	loadDefaultAnims: function(Y) {
+		var element = ice.util.createElement(document.body, "div");
+		element.setAttribute("id", "themeElement");
+ 		element.setAttribute("class", "default_display_value");
+		var node = Y.one("#themeElement");
+		
+		node.addClass("default_display_value"); 
+		default_display_value = node.getStyle("display");
+		node.removeClass("default_display_value");
+		if("none" != default_display_value) {
+			console.info("default_display_value must be set to none, to register theme based animations");
+			return;
+		}
+		
+		
+		for (i=0; i< ice.animation.events.length; i++) {
+			for (j=0; j< ice.animation.animations.length; j++) {
+			    var styleClass = 'default_' + ice.animation.events[i] + '_'+  ice.animation.animations[j];
+				node.addClass(styleClass);
+				var display = node.getStyle("display");
+				if (display == "block") {
+					ice.animation.defaultAnimations[ice.animation.events[i]] = ice.animation.animations[j];
+					console.info(ice.animation.animations[j] + " registered for "+ ice.animation.events[i]);
+				}
+				node.removeClass(styleClass);
+			}
+		}
+	},
+	
+	getAnimation: function (clientId, eventName) {
+	    var node = ice.yui3.y.one('#'+ clientId);
+ 	   
+        var animation = null;
+	    if (node) {
+			if (node["animation"]) {
+				animation = node.animation.getAnimation(eventName);
+			} else if (node._node.animation) {//backdoor for IE
+				animation = node._node.animation.getAnimation("transition");
+			} else {//none of the effect has been defined by the developer, return the theme default if any
+			    if (ice.animation.defaultAnimations[eventName]) {
+					animation = ice.animation.register({name: ice.animation.defaultAnimations[eventName], event:eventName, node:'#'+ clientId});
+				}
+				 
+			}
+	    } 
+		return animation;
+	}
+};
+
 
 var anim;
 ice.yui3.effects = {};
 ice.yui3.use(function(Y) {
-	
 	//------ Escape client ID
+
+	function AnimPlugin(config) { 
+			AnimPlugin.superclass.constructor.apply(this, arguments);
+			this.get("host")["animList"] = {}; 
+		}
+		AnimPlugin.NAME = 'AnimPlugin';
+		AnimPlugin.NS = "animation";
+
+
+		Y.extend(AnimPlugin, Y.Plugin.Base, {
+			add: function(args, effect) { 
+			   var event = args.event;
+			   var animations = this.get("host")["animList"];
+			   
+
+
+				var index = -1;
+				if (!animations[event]) {
+					animations[event] = [];
+					index = 0;
+				} else { //more then one effects are define on same event chain them 
+					index = [animations[event].length];
+				}
+				effect.index = index;
+				effect.event = event;
+				effect.list = animations[event];
+				animations[event][index] = effect;	
+				this.get("host")._node.animation = this;								
+				return effect;
+			},
+		
+			getAnimation: function(eventName) { 
+			   for (a in this.get("host").animList) {
+					if (a == eventName) {
+						return this.get("host").animList[a][0]; 
+					}
+				}
+				return null;
+			}
+		});	
+	ice.animation.AnimPlugin = AnimPlugin;
+	ice.animation.loadDefaultAnims(Y);
+	
 	var _one = Y.one;
 	Y.one = function(id) {
 		id = id.replace(':', '\\:');
@@ -185,19 +302,11 @@ ice.yui3.use(function(Y) {
 			var sourceId = Y.Node.getDOMNode(this.get('node')).id;
 			var effectStyleElement = document.getElementById(effectStyleElementId);			
 			  if (!effectStyleElement) {
-				effectStyleElement = this.createHiddenField(_form, effectStyleElementId);
+				effectStyleElement = ice.util.createHiddenField(_form, effectStyleElementId);
 			  }
 			  effectStyleElement.value = document.getElementById(sourceId).style.cssText ;			
-		},
-		
-		createHiddenField:function(parent, id) {
-		   var field = document.createElement('input'); 
-		   field.setAttribute('type', 'hidden');
-		   field.setAttribute('id', id);
-		   field.setAttribute('name', id);
-		   parent.appendChild(field);
-		   return field;
-	    }	
+		}
+	
 	});
 	
 
@@ -236,70 +345,29 @@ ice.yui3.use(function(Y) {
 	});
 	//------ Register Fade effect
 	
-	ice.yui3.effects["Fade"] = Fade;
-	ice.yui3.effects["Highlight"] = Highlight;	
+	ice.yui3.effects["fade"] = Fade;
+	ice.yui3.effects["highlight"] = Highlight;	
  	
 });
 
 
-ice.animation = {
-		register: function(args) {
+ice.animation.register = function(args, callback) {
+		   var effect = new ice.yui3.effects[args.name.toLowerCase()](args); 
 		   ice.yui3.use( function(Y) { 
 	//---- Animation plugin
-			 
-						function AnimPlugin(config) { 
-							AnimPlugin.superclass.constructor.apply(this, arguments);
-							this.get("host")["animList"] = {}; 
-						}
-						AnimPlugin.NAME = 'AnimPlugin';
-						AnimPlugin.NS = "animation";
-
-
-						Y.extend(AnimPlugin, Y.Plugin.Base, {
-							add: function(args) { 
-							   var event = args.event;
-							   var animations = this.get("host")["animList"];
-							   
-	
-								var effect = new ice.yui3.effects[args.name](args); 
-								var index = -1;
-								if (!animations[event]) {
-									animations[event] = [];
-									index = 0;
-								} else { //more then one effects are define on same event chain them 
-									index = [animations[event].length];
-								}
-								effect.index = index;
-								effect.event = event;
-								effect.list = animations[event];
-								animations[event][index] = effect;	
-								this.get("host")._node.animation = this;								
-								return effect;
-							},
-						
-							getAnimation: function(eventName) { 
-							   for (a in this.get("host").animList) {
-									if (a == eventName) {
-										return this.get("host").animList[a][0]; 
-									}
-								}
-								return null;
-							}
-						});			   
- 
 				var node = Y.one(args.node);
+				 
 				if (!node["animation"]) { 
-					node.plug(AnimPlugin);
+					node.plug(ice.animation.AnimPlugin);
 				}
 
-			    node.animation.add(args);
- 
+			    anim = node.animation.add(args, effect);
 		   });
+		   return effect;
 
-        },
+}
 		
-		run: function(args) {
-			new ice.yui3.effects[args.name](args).run();
-		}
-	}    
+ice.animation.run = function(args) {
+	new ice.yui3.effects[args.name.toLowerCase()](args).run();
+}    
 
