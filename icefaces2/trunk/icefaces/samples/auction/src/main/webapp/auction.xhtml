@@ -1,0 +1,200 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+<ui:composition
+        template="/resources/templates/icesoft-sampleapp-1.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:util="http://java.sun.com/jsf/composite/components">
+
+    <!-- Page title -->
+    <ui:define name="title">
+        Auction Monitor - JSF 2.0 Direct-to-DOM (D2D) Version
+    </ui:define>
+
+    <!-- Sample template graphic for auction monitor. -->
+    <ui:define name="sampleGraphic">
+        <h:graphicImage library="css/images"
+                        name="banner_hdr_auction.jpg"
+                        width="463" height="100"
+                        title="Auction Monitor"
+                        alt="Auction Monitor"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <!-- Listens for a push request and updates the daata model as needed -->
+        <f:phaseListener
+                type="org.icefaces.demo.auction.view.controllers.PushDataRefreshListener"/>
+
+        <h:form prependId="false" id="auction">
+            <!--  field to mark the request as a client request, insures that
+                  we can differenciate between a push and client generated request.
+            -->
+            <h:inputHidden id="clientRequest" name="clientRequest"
+                           value="clientRequest"/>
+
+            <!-- auction table dynamically build to show how colspan can be used
+                along with an expandable display
+            -->
+            <div class="auctionMontiorContainer">
+                <table class="auctionMontiorTable"
+                       cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                    <tr>
+                        <th class="spacerColumn"></th>
+                        <util:columnSorter
+                                ascending="#{auctionBean.ascending}"
+                                sortColumn="#{auctionBean.sortColumn}"
+                                columnName="#{auctionBean.itemNameColumn}"
+                                columnLabel="Item Name"
+                                columnClass="nameColumn">
+                            <f:actionListener for="sortColumnEvent"
+                                              type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
+                        </util:columnSorter>
+                        <util:columnSorter
+                                ascending="#{auctionBean.ascending}"
+                                sortColumn="#{auctionBean.sortColumn}"
+                                columnName="#{auctionBean.priceColumn}"
+                                columnLabel="Price"
+                                columnClass="priceColumn">
+                            <f:actionListener for="sortColumnEvent"
+                                              type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
+                        </util:columnSorter>
+                        <util:columnSorter
+                                ascending="#{auctionBean.ascending}"
+                                sortColumn="#{auctionBean.sortColumn}"
+                                columnName="#{auctionBean.bidsColumn}"
+                                columnLabel="Bids"
+                                columnClass="bidsColumn">
+                            <f:actionListener for="sortColumnEvent"
+                                              type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
+                        </util:columnSorter>
+                        <util:columnSorter
+                                ascending="#{auctionBean.ascending}"
+                                sortColumn="#{auctionBean.sortColumn}"
+                                columnName="#{auctionBean.timeLeftColumn}"
+                                columnLabel="Time Left"
+                                columnClass="timeColumn">
+                            <f:actionListener for="sortColumnEvent"
+                                              type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
+                        </util:columnSorter>
+                        <th class="actionColumn">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ui:repeat value="#{auctionBean.auctionItems}"
+                               varStatus="status"
+                               var="auctionItem">
+                        <tr class="#{status.even?'even':'odd'} #{auctionItem.showExtendedDescription?'expanded':''}">
+                            <td valign="top">
+                                <h:commandLink
+                                        actionListener="#{auctionController.toggleExtendedDescription}"
+                                        immediate="true">
+                                    <h:graphicImage library="css/images"
+                                                    name="expanded_#{auctionItem.showExtendedDescription}.gif"/>
+                                </h:commandLink>
+                            </td>
+                            <td valign="top">#{auctionItem.auctionItem.name}</td>
+                            <td align="right" valign="top">
+                                <h:outputText
+                                        value="#{auctionItem.auctionItem.price}"
+                                        styleClass="#{auctionItem.newBidPrice?'newBid':''}">
+                                    <f:convertNumber type="currency"/>
+                                </h:outputText>
+
+                            </td>
+                            <td align="center"
+                                valign="top">#{auctionItem.auctionItem.bids}</td>
+                            <td valign="top">
+                                <h:graphicImage library="css/images"
+                                                name="time_left_#{auctionItem.timeLeftType}.gif"/>
+                                <h:outputText value="#{auctionItem}">
+                                    <f:converter
+                                            converterId="auctionItemDateConverter"/>
+                                </h:outputText>
+                            </td>
+                            <td valign="top">
+                                <!-- command button to enable a auction bid-->
+                                <h:commandLink
+                                        rendered="#{not auctionItem.showBidInput}"
+                                        actionListener="#{auctionController.toggleBidInput}"
+                                        immediate="true">
+                                    <h:graphicImage library="css/images"
+                                                    name="button_bid.gif"
+                                                    alt="Show Bid Input fields"
+                                                    title="Show Bid Input fields"/>
+                                </h:commandLink>
+                                <!-- panel group to wrap the visibility of the bid control buttons.  -->
+                                <ui:fragment
+                                        rendered="#{auctionItem.showBidInput}">
+                                    <h:inputText id="bid" size="6"
+                                                 value="#{auctionItem.bid}">
+                                        <f:validator
+                                                validatorId="bidValidator"/>
+                                    </h:inputText>
+                                    <h:commandLink
+                                            actionListener="#{auctionController.placeBid}">
+                                        <h:graphicImage library="css/images"
+                                                        name="button_bid_accept.gif"
+                                                        alt="Show bid input fields."
+                                                        title="Show bid input fields."/>
+                                    </h:commandLink>
+                                    <h:commandLink immediate="true"
+                                                   actionListener="#{auctionController.toggleBidInput}">
+                                        <h:graphicImage library="css/images"
+                                                        name="button_bid_decline.gif"
+                                                        alt="Hide bid input fields."
+                                                        title="Hide bid input fields."/>
+                                    </h:commandLink>
+                                    <br/>
+                                    <h:message for="bid"/>
+                                </ui:fragment>
+                            </td>
+                        </tr>
+                        <!-- if expanded show detailed view fragement for an auction item. -->
+                        <ui:fragment
+                                rendered="#{auctionItem.showExtendedDescription}">
+                            <tr class="description #{auctionItem.showExtendedDescription?'expanded':''}">
+                                <td></td>
+                                <td colspan="3">
+                                    <h:graphicImage library="css/images"
+                                                    style="float:left;margin-right:3px;"
+                                                    name="#{auctionItem.auctionItem.imageName}"/>
+                                    #{auctionItem.auctionItem.description}
+                                </td>
+                                <td colspan="2">
+                                    Location: #{auctionItem.auctionItem.sellerLocation}
+                                    <br/>
+                                    Seller: #{auctionItem.auctionItem.sellerName}
+                                </td>
+                            </tr>
+                        </ui:fragment>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

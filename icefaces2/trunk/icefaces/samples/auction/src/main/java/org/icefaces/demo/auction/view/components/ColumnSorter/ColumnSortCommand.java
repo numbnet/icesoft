@@ -1,0 +1,79 @@
+/*
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ */
+package org.icefaces.demo.auction.view.components.ColumnSorter;
+
+import org.icefaces.demo.auction.view.beans.AuctionBean;
+import org.icefaces.demo.auction.view.controllers.AuctionController;
+import org.icefaces.demo.auction.view.names.BeanNames;
+import org.icefaces.demo.auction.view.names.ParameterNames;
+import org.icefaces.demo.auction.view.util.FacesUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
+
+/**
+ *
+ */
+public class ColumnSortCommand implements ActionListener {
+    /**
+     * Sorts the list of AuctionItemBeans stored in the AuctionBean for the
+     * column specified by the get param
+     *
+     * @param actionEvent JSF action event.
+     */
+    @Override
+    public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
+        // get request parameter for initial column sort click.
+        String sortColumn =
+                FacesUtils.getRequestParameter(ParameterNames.SORT_COLUMN_NAME);
+
+        // auction model bean.
+        AuctionBean auctionBean = (AuctionBean)
+                FacesUtils.getManagedBean(BeanNames.AUCTION_BEAN);
+
+        // auction controller bean
+        AuctionController auctionController = (AuctionController)
+                FacesUtils.getManagedBean(BeanNames.AUCTION_CONTROLLER);
+
+        // test if we should toggle the sort order,  if the column name is the
+        // same we do but otherwise we leave it the same as we're sorting on
+        // a different column.
+        if (sortColumn.equals(auctionBean.getSortColumn())) {
+            auctionBean.setAscending(!auctionBean.isAscending());
+        } else {
+            // assign sort column name
+            auctionBean.setSortColumn(sortColumn);
+        }
+
+        // call service layer to get new sorted list
+        auctionController.refreshAuctionBean(auctionBean);
+
+        // merge the new list with the current list so we can preserve the view state.
+        // of the auction items.
+        Object tmp = FacesContext.getCurrentInstance().getExternalContext();
+        if (tmp != null) {
+            System.out.println("Client generated Question");
+        }
+    }
+}
