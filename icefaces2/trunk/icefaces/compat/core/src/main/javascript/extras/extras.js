@@ -620,7 +620,9 @@ Ice.StateMon = {
                     } catch(monitorDestroyException) {
                         this.logger.warn('Could not destroy monitor before rebuilding ID[' + monitor.id + '] msg [' + monitorDestroyException + ']');
                     }
+                    monitor.rebuildingMe = true;
                     monitor.rebuild();
+                    monitor.rebuildingMe = false;
                     monitor.rebuildMe = false;
                     monitor.removeMe = true;
                 } else {
@@ -1462,7 +1464,7 @@ Draggable.prototype.initialize = function(C) {
     var B = Ice.StateMon.monitors;
     for (i = 0; i < B.length; i++) {
         A = B[i];
-        if (A.id == C && A.type == "Draggable") {
+        if (A.id == C && A.type == "Draggable" && !A.rebuildingMe) {
             Ice.DnD.logger.debug("Draggable [" + $(C).id + "] has already been created");
             return;
         }
