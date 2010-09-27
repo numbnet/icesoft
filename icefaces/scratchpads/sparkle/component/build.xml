@@ -227,11 +227,13 @@
 		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.slider" dir="src\org\icefaces\component\slider\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.inputFiles" name="src\org\icefaces\component\inputFiles\skins" skin="sam" />
 		
 		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.commandlink" dir="src\org\icefaces\component\commandlink\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.inputFiles" name="src\org\icefaces\component\inputFiles\skins" skin="rime" />
 
 	</target>
 	
@@ -267,9 +269,12 @@
 		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\inputFiles\skins" name="inputfiles" skin="sam" />
 		
 		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\inputFiles\skins" name="inputfiles" skin="rime" />
+		
 		<!-- <includeresources dir="src\org\icefaces\component\commandlink\skins" name="commandlink" skin="rime" /> --> 
 
 		<!-- Specify the names of the skins to process, based on the resources included above. -->
@@ -289,10 +294,12 @@
 		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="sam" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="sam" />
+		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="sam" />
 		
 		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="rime" />
 		<mapsprites library="org.icefaces.component.commandlink" name="calendar" skin="rime" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
+		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="rime" />
 
 		
 		<!-- copy sprite images to the sprites resource library -->

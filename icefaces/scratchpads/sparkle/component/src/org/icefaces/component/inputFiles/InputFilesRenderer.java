@@ -48,6 +48,7 @@ public class InputFilesRenderer extends Renderer {
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
         writer.writeAttribute("name", config.getIdentifier(), "clientId");
+		writer.writeAttribute("class", "iceInpFile", "class");
         writer.endElement("input");
     }
     
