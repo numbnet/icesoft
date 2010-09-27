@@ -175,7 +175,7 @@ if (!window.ice.icefaces) {
 
         //notify errors captured by JSF bridge
         jsf.ajax.addOnError(function(e) {
-            if (e.status == 'serverError' || e.status == 'httpError')
+            if (e.status == 'serverError' || e.status == 'httpError') {
                 if (e.responseXML) {
                     var errorName = e.responseXML.getElementsByTagName("error-name")[0].firstChild.nodeValue;
                     if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
@@ -184,7 +184,8 @@ if (!window.ice.icefaces) {
                     }
                 }
 
-            broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+            }
         });
 
         namespace.setupPush = function(viewID) {

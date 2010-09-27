@@ -182,9 +182,15 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 } else {
                     for (int i = 0; i < diffs.length; i++) {
                         Element element = (Element) diffs[i];
-                        partialWriter.startUpdate(getUpdateId(element));
-                        DOMUtils.printNodeCDATA(element, outputWriter);
-                        partialWriter.endUpdate();
+
+                        //client throws error on receving an update for the 'head' element
+                        //avoid sending 'head' tag to not compromise the other updates
+                        //todo: remove this test once the 'head' updates are applied by the client
+                        if (!"head".equalsIgnoreCase(element.getTagName())) {
+                            partialWriter.startUpdate(getUpdateId(element));
+                            DOMUtils.printNodeCDATA(element, outputWriter);
+                            partialWriter.endUpdate();
+                        }
                     }
                     renderState();
                     renderExtensions();
