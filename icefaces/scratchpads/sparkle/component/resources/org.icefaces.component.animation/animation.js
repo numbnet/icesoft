@@ -16,8 +16,8 @@ ice.util = {
 		return element;
 	},
 	
-	removeElement: function(parent, element) {
-		parent.removeChild(element);
+	removeElement: function(element) {
+		element.parentNode.removeChild(element);
 	}
 }
 
@@ -27,32 +27,34 @@ ice.animation = {
 	animations : ["fade", "highlight"],
 	defaultAnimations:{},
 	loadDefaultAnims: function(Y) {
-		var element = ice.util.createElement(document.body, "div");
-		element.setAttribute("id", "themeElement");
- 		element.setAttribute("class", "default_display_value");
-		var node = Y.one("#themeElement");
-		
-		node.addClass("default_display_value"); 
-		default_display_value = node.getStyle("display");
-		node.removeClass("default_display_value");
-		if("none" != default_display_value) {
-			console.info("default_display_value must be set to none, to register theme based animations");
-			return;
-		}
-		
-		
-		for (i=0; i< ice.animation.events.length; i++) {
-			for (j=0; j< ice.animation.animations.length; j++) {
-			    var styleClass = 'default_' + ice.animation.events[i] + '_'+  ice.animation.animations[j];
-				node.addClass(styleClass);
-				var display = node.getStyle("display");
-				if (display == "block") {
-					ice.animation.defaultAnimations[ice.animation.events[i]] = ice.animation.animations[j];
-					console.info(ice.animation.animations[j] + " registered for "+ ice.animation.events[i]);
-				}
-				node.removeClass(styleClass);
+	 
+		Y.on("domready", function() {
+			var element = ice.util.createElement(document.body, "div");
+			element.setAttribute("id", "themeElement");
+			element.setAttribute("class", "default_display_value");
+			var node = Y.one("#themeElement");
+			
+			node.addClass("default_display_value"); 
+			default_display_value = node.getStyle("display");
+			if("none" != default_display_value) {
+				console.info("default_display_value must be set to none, to register theme based animations");
+				return;
 			}
-		}
+			
+			for (i=0; i< ice.animation.events.length; i++) {
+				for (j=0; j< ice.animation.animations.length; j++) {
+					var styleClass = 'default_' + ice.animation.events[i] + '_'+  ice.animation.animations[j];
+					node.addClass(styleClass);
+					var display = node.getStyle("display");
+					if (display == "block") {
+						ice.animation.defaultAnimations[ice.animation.events[i]] = ice.animation.animations[j];
+						console.info(ice.animation.animations[j] + " registered for "+ ice.animation.events[i]);
+					}
+					node.removeClass(styleClass);
+				}
+			}
+			ice.util.removeElement(element);
+		}, Y);
 	},
 	
 	getAnimation: function (clientId, eventName) {
