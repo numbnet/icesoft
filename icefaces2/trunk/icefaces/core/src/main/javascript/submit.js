@@ -102,8 +102,10 @@ var submit;
             var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
             var decoratedEvent = $event(event, element);
 
-            cancelBubbling(decoratedEvent);
-            if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) cancelDefaultAction(decoratedEvent);
+            if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
+                cancelBubbling(decoratedEvent);
+                cancelDefaultAction(decoratedEvent);
+            }
 
             serializeEventToOptions(decoratedEvent, options);
             serializeAdditionalParameters(additionalParameters, options);
@@ -175,8 +177,10 @@ var submit;
         var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
         var decoratedEvent = $event(event, element);
 
-        cancelBubbling(decoratedEvent);
-        if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) cancelDefaultAction(decoratedEvent);
+        if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
+            cancelBubbling(decoratedEvent);
+            cancelDefaultAction(decoratedEvent);
+        }
 
         serializeEventToOptions(decoratedEvent, options);
         serializeAdditionalParameters(additionalParameters, options);
