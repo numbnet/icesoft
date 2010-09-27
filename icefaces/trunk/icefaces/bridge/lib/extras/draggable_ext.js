@@ -42,7 +42,7 @@ Draggable.prototype.initialize = function(element) {
     var monitors = Ice.StateMon.monitors;
     for (i = 0; i < monitors.length; i++) {
         monitor = monitors[i];
-        if (monitor.id == element && monitor.type == 'Draggable') {
+        if (monitor.id == element && monitor.type == 'Draggable' && !monitor.rebuildingMe) {
         Ice.DnD.logger.debug("Draggable [" + $(element).id + "] has already been created");
             return;
         }

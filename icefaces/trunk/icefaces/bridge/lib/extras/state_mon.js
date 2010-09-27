@@ -129,7 +129,9 @@ Ice.StateMon = {
                     } catch(monitorDestroyException) {
                         this.logger.warn('Could not destroy monitor before rebuilding ID[' + monitor.id + '] msg [' + monitorDestroyException + ']');
                     }
+                    monitor.rebuildingMe = true;
                     monitor.rebuild();
+                    monitor.rebuildingMe = false;
                     monitor.rebuildMe = false;
                     monitor.removeMe = true;
                 } else {
