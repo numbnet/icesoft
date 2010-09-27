@@ -27,12 +27,24 @@ import org.icefaces.demo.auction.services.beans.AuctionItem;
 import java.util.Comparator;
 
 /**
+ * Abstract AuctionItem Comparator insures that every instance can sort ascending
+ * or descending depending on the value provided to create a new instance of
+ * the class.
  *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public abstract class AbstractItemComparator implements Comparator<AuctionItem> {
 
     protected boolean isAscending;
 
+    /**
+     * Creates a new AuctionItem Comparator with sort order specified as a
+     * parameter
+     *
+     * @param ascending true indicates a sort ascending sort order, false a
+     *                  sort descending sort order.
+     */
     public AbstractItemComparator(boolean ascending) {
         isAscending = ascending;
     }
@@ -49,6 +61,5 @@ public abstract class AbstractItemComparator implements Comparator<AuctionItem> 
      *         first argument is less than, equal to, or greater than the
      *         second.
      */
-    @Override
     public abstract int compare(AuctionItem o1, AuctionItem o2);
 }
