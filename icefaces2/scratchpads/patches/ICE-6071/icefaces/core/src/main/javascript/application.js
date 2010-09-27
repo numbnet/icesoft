@@ -234,12 +234,12 @@ if (!window.ice.icefaces) {
         });
 
         var client = Client(true);
-        onBeforeUnload(window, function() {
-            postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
-                addNameValue(query, 'ice.window', namespace.window);
-                each(viewIDs, curry(addNameValue, query, 'ice.view'));
-            }, FormPost, noop);
-        });
+//        onBeforeUnload(window, function() {
+//            postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
+//                addNameValue(query, 'ice.window', namespace.window);
+//                each(viewIDs, curry(addNameValue, query, 'ice.view'));
+//            }, FormPost, noop);
+//        });
 
         onKeyPress(document, function(ev) {
             var e = $event(ev);
