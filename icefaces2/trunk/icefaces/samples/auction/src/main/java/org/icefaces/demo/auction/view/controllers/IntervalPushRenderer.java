@@ -42,6 +42,7 @@ import java.util.logging.Logger;
  * <p/>
  * The timer will shutdown its self when there server shuts down via @PreDestroy.
  *
+ * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
 @ManagedBean(eager = true)
@@ -83,16 +84,8 @@ public class IntervalPushRenderer {
 
         renderTask = new TimerTask() {
             public void run() {
-                // mark the auction cash as dirty so we don't do a query
-                // for each users push request/response, but rather only once
-                // per push cycle.  Major optimization as we should only hit the
-                // cache rather then a full persistence call.
                 try {
-                    // we don't have access to our beans in this thread,
-                    // would we to this through a singleton call?
-//                    AuctionService auctionService = (AuctionService)
-//                            FacesUtils.getManagedBean(BeanNames.AUCTION_SERVICE);
-//                    auctionService.resetAuctionItemCache();
+                    // NOTE: this thread doesn't 
 
                     // make the push call to everyone in the interval group
                     renderer.render(INTERVAL_RENDER_GROUP);

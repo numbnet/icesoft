@@ -42,10 +42,23 @@ import java.util.logging.Logger;
 
 /**
  * AuctionController is a stateless UI controller that handles JSF action
- * event generate from the UI.  The controller interacts with the service layer
- * and various model beans for the current request.
+ * event generate from the auctionUI.  The controller interacts with the service
+ * layer and various model beans for the current request.
+ * <p/>
+ * The Controller is stateless and all model data should be stored in the
+ * {@link org.icefaces.demo.auction.view.beans.AuctionBean} object.  There are
+ * two other controller in the application.  The class
+ * {@link org.icefaces.demo.auction.view.controllers.IntervalPushRenderer} is
+ * responsible for creating and managing a push call that runs at set intervals.
+ * The other controller is a page level PhaseListener
+ * {@link org.icefaces.demo.auction.view.controllers.PushDataRefreshListener}
+ * which is used to identify a regular form request from a push request.  If a
+ * push request is determined then the current model bean is updated so the
+ * render response phase will have the most recent auction data.
  *
  * @author ICEsoft Technologies Inc.
+ * @see org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand
+ *      For more information on how column sorting is executed.
  * @since 2.0
  */
 @ManagedBean
@@ -56,23 +69,24 @@ public class AuctionController {
 
     /**
      * Calls the service layer for new auction data and merges it with the current
-     * state of the auctionBean.
+     * state of the auctionBean.  This method is called from the
+     * {@link org.icefaces.demo.auction.view.controllers.PushDataRefreshListener}
+     * when a push request is send from a client.
      */
     public void refreshAuctionBean() {
         AuctionBean auctionBean = (AuctionBean)
                 FacesUtils.getManagedBean(BeanNames.AUCTION_BEAN);
         refreshAuctionBean(auctionBean);
-
     }
 
     /**
      * Calls the service layer for new auction data and merges it with the current
-     * state of the auctionBean.
+     * view/window specific state of the auctionBean.
      *
      * @param auctionBean model data to update/refresh auction item data.
      */
     public void refreshAuctionBean(AuctionBean auctionBean) {
-
+        // get the service
         AuctionService auctionService = (AuctionService)
                 FacesUtils.getManagedBean(BeanNames.AUCTION_SERVICE);
 
@@ -109,11 +123,12 @@ public class AuctionController {
 
     /**
      * Utility method to do a bruit force merge of current view data with data
-     * retrieved from the service layer.
+     * retrieved from the service layer.  Auction item id's are used to do the
+     * merge and it is assumed that auction list ordering is preserved.
      *
-     * @param newAuctionItems
-     * @param currentAuctionItems
-     * @return merged list of AuctionItems beans.
+     * @param newAuctionItems     list of latest AuctionItems.
+     * @param currentAuctionItems current model to merge with latest AuctionItems.
+     * @return merged list of AuctionItems beans, sort order is preserved.
      */
     private List<AuctionItemBean> mergeAuctionData(
             List<AuctionItem> newAuctionItems, List<AuctionItemBean> currentAuctionItems) {
@@ -122,12 +137,14 @@ public class AuctionController {
                 new ArrayList<AuctionItemBean>(newAuctionItems.size());
         // bruit force merge/sync of the auctionItem data, respect the
         // new auctionItems order as it may have changed.
+        double oldPrice;
+        double newPrice;
         for (AuctionItem auctionItem : newAuctionItems) {
             for (AuctionItemBean auctionItemBean : currentAuctionItems) {
                 if (auctionItemBean.getAuctionItem().getId() ==
                         auctionItem.getId()) {
-                    double oldPrice = auctionItemBean.getAuctionItem().getPrice();
-                    double newPrice = auctionItem.getPrice();
+                    oldPrice = auctionItemBean.getAuctionItem().getPrice();
+                    newPrice = auctionItem.getPrice();
                     auctionItemBean.setAuctionItem(auctionItem);
                     currentAuctionItemBeans.add(auctionItemBean);
                     if (newPrice > oldPrice) {
@@ -183,15 +200,16 @@ public class AuctionController {
         PushRenderer.render(AuctionBean.AUCTION_RENDER_GROUP);
     }
 
-
     /**
      * Toggles visibility state of the bid button for the auctionItem id specified
-     * by the context parameter?....
+     * by the context ParameterNames.AUCTION_ITEM.
      *
      * @param event JSF action event.
      */
     public void toggleBidInput(ActionEvent event) {
-
+        // auctionItem param is actually the var name that was used by the
+        // ui:repeat.  We always get respective value of the row that was
+        // clicked on.
         AuctionItemBean auctionItemBean = (AuctionItemBean)
                 FacesUtils.getRequestMapValue(ParameterNames.AUCTION_ITEM);
         auctionItemBean.setShowBidInput(!auctionItemBean.isShowBidInput());
@@ -212,11 +230,14 @@ public class AuctionController {
 
     /**
      * Toggles visibility state of the extended auction description for the
-     * auctionItem id specified by the context parameter?....
+     * auctionItem id specified by the context ParameterNames.AUCTION_ITEM.
      *
      * @param event JSF action event.
      */
     public void toggleExtendedDescription(ActionEvent event) {
+        // auctionItem param is actually the var name that was used by the
+        // ui:repeat.  We always get respective value of the row that was
+        // clicked on.
         AuctionItemBean auctionItemBean = (AuctionItemBean)
                 FacesUtils.getRequestMapValue(ParameterNames.AUCTION_ITEM);
         auctionItemBean.setShowExtendedDescription(

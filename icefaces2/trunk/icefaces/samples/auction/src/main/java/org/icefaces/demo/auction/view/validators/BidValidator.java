@@ -37,9 +37,10 @@ import javax.faces.validator.ValidatorException;
  * an acceptable bid range.  For demo purposes we don't want to let people make
  * really big bids as well as bids that are smaller then the current bid.
  *
+ * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
-@FacesValidator(value = "bidValidator")
+@FacesValidator(value = "auctionItemBidValidator")
 public class BidValidator implements Validator {
 
     // cap the size of a bid that can be made over the the original bid value.

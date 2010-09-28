@@ -33,16 +33,34 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 /**
+ * This class handles when a users clicks on the composite component's
+ * ColumnSorter.  In short it handles the column sorting.
+ * <p/>
+ * &lt;util:columnSorter<br />
+ *       ascending="#{auctionBean.ascending}"<br />
+ *       sortColumn="#{auctionBean.sortColumn}"<br />
+ *       columnName="#{auctionBean.itemNameColumn}"<br />
+ *       columnLabel="Item Name"<br />
+ *       columnClass="nameColumn"&gt;<br />
+ *   &lt;f:actionListener for="sortColumnEvent"<br />
+ *                     type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/&gt;<br />
+ * &lt;/util:columnSorter&gt;<br />
  *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class ColumnSortCommand implements ActionListener {
+
     /**
      * Sorts the list of AuctionItemBeans stored in the AuctionBean for the
-     * column specified by the get param
+     * column specified by the requestParameter ParameterNames.SORT_COLUMN_NAME.
+     * <p/>
+     * If the column name has not changed then the sort order is toggled.  If the
+     * column name has changed then we leave the sort order the same. The final
+     * state is pushed back into the AuctionBean.
      *
      * @param actionEvent JSF action event.
      */
-    @Override
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         // get request parameter for initial column sort click.
         String sortColumn =

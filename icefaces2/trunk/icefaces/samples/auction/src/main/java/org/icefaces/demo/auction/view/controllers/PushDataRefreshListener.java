@@ -34,16 +34,19 @@ import javax.faces.event.PhaseListener;
 /**
  * This phase listener check to see if the life cycle was generate via
  * a push.  If so the model for each auction is updated with new data
- * from the auction cache.
+ * from the auction cache.  Other wise we don't refresh the data as this would
+ * likely slow down the UI responsiveness if the auction item query took a
+ * long time.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class PushDataRefreshListener implements PhaseListener {
 
-    @Override
     public void afterPhase(PhaseEvent phaseEvent) {
 
     }
 
-    @Override
     public void beforePhase(PhaseEvent phaseEvent) {
         // check to see if this request is a push generated
         ExternalContext externalContext =
@@ -61,10 +64,8 @@ public class PushDataRefreshListener implements PhaseListener {
             // trigger a refresh, which will get latest data from service.
             auctionController.refreshAuctionBean();
         }
-
     }
-
-    @Override
+    
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }

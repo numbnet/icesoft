@@ -27,7 +27,7 @@ import java.util.GregorianCalendar;
  * AuctionItem represents one auction item that is contained in an an auction.
  * An item stores descriptive information about the item being auctioned as
  * well as the bid price and number of bids made on the item.  The last very
- * important piece of information is when the auction will expire for this item.
+ * important piece of information is when the auction will expire.
  * <p/>
  * Most instance variables in the is class are immutable except for the bid
  * count and the bid price.
@@ -47,6 +47,19 @@ public class AuctionItem {
     private int bids;
     private String imageName;
 
+    /**
+     * Creates a new instance an auction item given the new parameter values.
+     *
+     * @param id              id that uniquely identifies the item.
+     * @param name            name of item
+     * @param description     description of item
+     * @param sellerLocation  location of the seller of this item.
+     * @param sellerName      sellers name for this item.
+     * @param expiryDate      date of expiry.
+     * @param currentPidPrice current bid price.
+     * @param bids            number of bids made on item.
+     * @param imageName       item image file name.
+     */
     public AuctionItem(long id, String name, String description,
                        String sellerLocation, String sellerName,
                        GregorianCalendar expiryDate, double currentPidPrice, int bids,
@@ -62,6 +75,17 @@ public class AuctionItem {
         this.imageName = imageName;
     }
 
+    /**
+     * Creates a new instance of AuctionItem containing a copy of the
+     * AuctionItem properties specified as a parameter.
+     * specified
+     * <p/>
+     * The method insures that we have different instances of each auctionItem
+     * for each user of the system. This model is consistent with most
+     * persistence frameworks.
+     *
+     * @param auctionItem auctionTime to copy properties from.
+     */
     public AuctionItem(AuctionItem auctionItem) {
         this.id = auctionItem.id;
         this.name = auctionItem.name;
@@ -73,11 +97,7 @@ public class AuctionItem {
         this.bids = auctionItem.bids;
         this.imageName = auctionItem.imageName;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
+    
     public void setPrice(double price) {
         this.price = price;
     }

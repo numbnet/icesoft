@@ -22,7 +22,10 @@
 package org.icefaces.demo.auction.view.names;
 
 /**
- * Names of beans used in this application
+ * Names of beans used in this application.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class BeanNames {
 
