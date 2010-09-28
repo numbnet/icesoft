@@ -15,9 +15,9 @@ public @interface Property {
     final String Null = "null";
     
     /**
-     * if generated property is a method expression, then this field can be set to true. (e.g.)
+     * If generated property is a method expression, then this field should be set to Expresion.METHOD_EXPRESSION. (e.g.)
 	 * <pre>
-	 * @Property(isMethodExpression=true, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+	 * @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
 	 * public MethodExpression valueChangeListener;
 	 * </pre>
      * @return boolean value.
@@ -46,10 +46,10 @@ public @interface Property {
      * 
      * String type = "Car";
      * 
-     * But what if you want to define some other type then string or a constant, expression etc. You don't want
-     * value to be quoted in that case. So you would set this attribute to false. (e.g)
+     * But what if you want to define some other type than string or a constant, expression etc. You don't want
+     * value to be quoted in that case. So you would set this attribute to DefaultValueType.EXPRESSION. (e.g)
      * 
-     * @Property (value="10", defaultValueIsStringLiteral=false)
+     * @Property (value="10", defaultValueType=DefaultValueType.EXPRESSION)
      * Integer count;      
      * </pre>
      * @return 
@@ -82,22 +82,12 @@ public @interface Property {
     Required required() default Required.UNSET;
     
     /**
-     * the "org.icefaces.component.annotation.PropertyTemplate" class keeps template for 
-     * commonly used properties. Which usually defines javadoc for properties. The PropertyTemplate
-     * can be used by any property annotation by just setting this filed to true.
-     * @return boolean value
-     */
-    boolean useTemplate() default false;
-    
-    /**
-     * Only those attribute goes inside the tag class which are defined in 
-     * Meta class, so if you have to expose some of the parent class attribute in tag 
-     * class then you can set this property to true. inherit true tells generator to 
-     * create setter in tag class as well as add the attribute info in TLD for tlddocs 
-     * and IDEs
+	 * If this property exists in a superclass, and one desires to use such implementation and/or to inherit the settings
+	 * specified in the @Property annotation found in ancestor classes for this property, then one should set this field
+	 * to Implementation.EXISTS_IN_SUPERCLASS. This property will still appear in the TLD and javadocs for this component and in the tag class.
+	 * The default value is Implementation.GENERATE, which will ignore all settings in @Property annotations in ancestor classes
+	 * for this property and will generate all necessary code for this property in this component class.
      * @return
      */
-    //Inherit inherit() default Inherit.UNSET;
-	
 	Implementation implementation() default Implementation.UNSET;
 }

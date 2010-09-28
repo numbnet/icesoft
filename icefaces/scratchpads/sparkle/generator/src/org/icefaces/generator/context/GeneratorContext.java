@@ -25,7 +25,6 @@ public class GeneratorContext{
     private FacesConfigBuilder facesConfigBuilder = new FacesConfigBuilder(); 
     private FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
 	private List<Class> components;
-    // private Map<String, Object> propertyTemplate = new HashMap<String, Object>(); /* ### removed */
     private ComponentContext activeComponentContext;
     public final static String shortName = "ice";    
     public final static String namespace = "http://www.icefaces.org/icefaces/components";
@@ -80,7 +79,6 @@ public class GeneratorContext{
 		getBehaviors().add(new ActionSourceBehavior());
 		getBehaviors().add(new ClientBehaviorHolder());
 		components = FileWriter.getAnnotatedCompsList();
-        // loadPropertyTemplate(); /* ### to do: remove */
 	}
 	
     public TLDBuilder getTldBuilder() {
@@ -118,16 +116,6 @@ public class GeneratorContext{
 	public void setActiveComponentContext(ComponentContext activeComponentContext) {
 		this.activeComponentContext = activeComponentContext;
 	}
-
-	/*
-	public Map<String, Object> getPropertyTemplate() { // ### to do: remove
-		return propertyTemplate;
-	}
-
-	public void setPropertyTemplate(Map<String, Object> propertyTemplate) { // ### to do: remove 
-		this.propertyTemplate = propertyTemplate;
-	}
-	*/
 	
 	public static GeneratorContext getInstance() {
 		if (generatorContext == null) {
@@ -135,27 +123,6 @@ public class GeneratorContext{
 		}
 		return generatorContext;
 	}
-
-	/*
-    //this method loads predefine properties 
-    private void loadPropertyTemplate() { // ### to do: remove 
-        Field[] fields = PropertyTemplate.class.getDeclaredFields();
-        for (int i=0; i < fields.length; i++) {
-            //its mean "public static", must be sun class name and its properties
-            if (fields[i].getModifiers() == 9) {
-                try {
-                    
-                    propertyTemplate.put(fields[i].getName(), fields[i].get(fields[i]));
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }            
-            } else {
-                propertyTemplate.put(fields[i].getName(), fields[i]);   
-            }
-        }
-    }
-	*/
     
     public List<Class> getComponents() {
     	return this.components;

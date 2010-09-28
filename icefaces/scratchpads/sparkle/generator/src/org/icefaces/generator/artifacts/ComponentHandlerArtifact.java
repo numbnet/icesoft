@@ -79,16 +79,15 @@ public class ComponentHandlerArtifact extends Artifact{
         generatedComponentHandlerClass.append("\t\tMetaRuleset metaRuleset = super.createMetaRuleset(type);\n");  
         for (int i = 0; i < fields.size(); i++) {
             Field field = fields.get(i);
-            //Property prop = (Property)field.getAnnotation(Property.class); /* @@@ removed */
 			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 			
-            if (prop.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+            if (prop.expression == Expression.METHOD_EXPRESSION) {
                 generatedComponentHandlerClass.append("\t\tmetaRuleset.addRule( new MethodRule(\"");
                 generatedComponentHandlerClass.append(field.getName());
                 generatedComponentHandlerClass.append("\", null, new Class[");
-                if (prop.methodExpressionArgument.length() > 0) { /* @@@ changed */
+                if (prop.methodExpressionArgument.length() > 0) {
                     generatedComponentHandlerClass.append("] {");
-                    generatedComponentHandlerClass.append(prop.methodExpressionArgument); /* @@@ changed */
+                    generatedComponentHandlerClass.append(prop.methodExpressionArgument);
                     generatedComponentHandlerClass.append(".class}");   
                 } else {
                     generatedComponentHandlerClass.append("0]");  

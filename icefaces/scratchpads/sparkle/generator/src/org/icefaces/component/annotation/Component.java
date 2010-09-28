@@ -108,9 +108,9 @@ public @interface Component {
    */
   String[] includeProperties() default {};
 
-  /**
-   * Name of the properties to be excluded from superclasses.
-   * @return property names.
-   */
-  String[] disinheritProperties() default {};
+  //	
+  //	Name of the properties to be excluded from superclasses.
+  //	@return property names.
+  //
+  //String[] disinheritProperties() default {};
 }

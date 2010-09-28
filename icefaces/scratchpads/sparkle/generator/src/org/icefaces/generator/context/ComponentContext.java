@@ -47,7 +47,7 @@ public class ComponentContext {
 		Iterator<Field> fields = fieldsForComponentClass.values().iterator();
 		while(fields.hasNext()) {
 			Field field = fields.next();
-			if(field.isAnnotationPresent(Property.class)){ /* @@@ maybe not necessary */
+			if(field.isAnnotationPresent(Property.class)){
 				ret.add(field);
 			}
 		}
@@ -137,41 +137,6 @@ public class ComponentContext {
         if (clazz.isAnnotationPresent(Component.class)) {
             Component component = (Component) clazz.getAnnotation(Component.class);
             System.out.println(clazz.getDeclaredClasses());
-            //first get all properties this annotated component wants to include
-            //these properties should go to the component as well as tag class
-            //String[] props = component.includeProperties();
-            
-			/* ### to do: remove all this for block; it's safe to remove, so far no component uses it */
-			/*
-            for (int i=0; i < props.length; i++) {
-                //check if any included property is defined in the property template
-                 Object prop = GeneratorContext.getInstance().getPropertyTemplate().get(props[i]); // @@@ not necessary, this is a string, field map 
-                 
-                 //include property is referencing list of properties add all
-                 if (prop instanceof List) {
-                     Iterator<String> iterator = ((List)prop).iterator(); // @@@ maybe not, we're just dispatching fields for artifacts 
-                     while(iterator.hasNext()) {
-                         String propName = iterator.next();
-                         if (!fieldsForComponentClass.containsKey(propName)) {
-                             fieldsForComponentClass.put(propName, (Field)GeneratorContext.getInstance().getPropertyTemplate().get(propName));
-                         }
-                         if (!fieldsForTagClass.containsKey(propName)) {                       
-                             fieldsForTagClass.put(propName, (Field)GeneratorContext.getInstance().getPropertyTemplate().get(propName));
-                         }                              
-                         
-                     }
-                  //include properties are defining single property   
-                 } else {
-                     Field field = ((Field)prop); // @@@ maybe not necessary 
-                     if (!fieldsForComponentClass.containsKey(field.getName())) {                       
-                         fieldsForComponentClass.put(field.getName(), field);
-                     }                         
-                     if (!fieldsForTagClass.containsKey(field.getName())) {                       
-                         fieldsForTagClass.put(field.getName(), field);
-                     }                      
-                 }
-            }
-			*/
 			
 			// original fields
 			Field[] localFields = clazz.getDeclaredFields();
@@ -182,35 +147,31 @@ public class ComponentContext {
             }
 			
 			// disinherit properties
-			String[] disinheritProperties = component.disinheritProperties();
-			HashSet<String> disinheritPropertiesSet = new HashSet<String>();
+			//String[] disinheritProperties = component.disinheritProperties();
+			//HashSet<String> disinheritPropertiesSet = new HashSet<String>();
 			
-            for (int i=0; i < disinheritProperties.length; i++) {
-				disinheritPropertiesSet.add(disinheritProperties[i]);
-            }
+            //for (int i=0; i < disinheritProperties.length; i++) {
+			//	disinheritPropertiesSet.add(disinheritProperties[i]);
+            //}
 			
-            //now we have done with include properties, now get all properties which 
-            //are define on the annotated component itself.
+            //get all properties which are defined on the annotated component itself.
             
-            //Field[] fields = clazz.getDeclaredFields(); /* ### removed */
-			Field[] fields = getDeclaredFields(clazz); /* ### added */
+			Field[] fields = getDeclaredFields(clazz);
             for (int i=0; i<fields.length; i++) {
                 Field field = fields[i];
-				/* // %%% this functionality is suspended for now
-				if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
-					continue;
-				}
-				*/
+				// this functionality is suspended for now
+				//if (disinheritPropertiesSet.contains(field.getName())) { // skip property if it's in disinheritProperties list
+				//	continue;
+				//}
+				
                 if(field.isAnnotationPresent(Property.class)){
-                    Property property = (Property) field.getAnnotation(Property.class); /* @@@ necessary to use annotation at this point */
+                    Property property = (Property) field.getAnnotation(Property.class);
 					PropertyValues propertyValues = collectPropertyValues(field.getName(), clazz); // collect @Property values from top to bottom
-					// /* debug */ System.out.println("--- Final"); displayValues(propertyValues);
 					setDefaultValues(propertyValues); // if values end up being UNSET, then set them to default
-					// /* debug */ System.out.println("--- Defaults\n> " + field.getName()); displayValues(propertyValues);
 					propertyValuesMap.put(field, propertyValues);
 					
                    //inherited properties should go to the tag class only
-                    if (propertyValues.implementation == Implementation.EXISTS_IN_SUPERCLASS) { /* @@@ changed */
+                    if (propertyValues.implementation == Implementation.EXISTS_IN_SUPERCLASS) {
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
                             fieldsForTagClass.put(field.getName(), field);
                         }                              
@@ -234,7 +195,7 @@ public class ComponentContext {
 							// if property doesn't exist in ancestor classes or if one of the 6 fields above was modified, then add to component class
 							if (!propertyValues.overrides || modifiesDefaultValueOrMethodExpression || modifiesJavadoc) {
 								if (!fieldsForComponentClass.containsKey(field.getName())) { 
-									if (propertyValues.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+									if (propertyValues.expression == Expression.METHOD_EXPRESSION) {
 										hasMethodExpression = true;
 									}
 									fieldsForComponentClass.put(field.getName(), field);
@@ -254,12 +215,6 @@ public class ComponentContext {
                 }
             }
         } 
-      
-	/* // %%% removed 
-      if (clazz.getSuperclass() != null) {
-          processAnnotation(clazz.getSuperclass(), false);
-      }
-	*/
 
       processFacets(clazz);
   }    
@@ -288,9 +243,7 @@ public class ComponentContext {
 	
 	private static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues, boolean isBaseClass) {
 		Class superClass = clazz.getSuperclass();
-		// /* debug */ System.out.println(clazz.getName());
 		if (superClass != null) {
-			// /* debug */ System.out.println("  go up to " + superClass.getName());
 			boolean inherit = true;
 			try {
 				// if isBaseClass check for implementation()... otherwise, always go up
@@ -312,7 +265,6 @@ public class ComponentContext {
 		try {
 			Field field = clazz.getDeclaredField(fieldName);
 			if (field.isAnnotationPresent(Property.class)) {
-				// if !isBaseClass... PropertyValues.overrides = true
 				if (!isBaseClass) {
 					propertyValues.overrides = true;
 				}
@@ -344,7 +296,6 @@ public class ComponentContext {
 				if (property.implementation() != Implementation.UNSET) {
 					propertyValues.implementation = property.implementation();
 				}
-				// /* debug */ displayValues(propertyValues);
 			}
 		} catch (NoSuchFieldException e) {
 			// do nothing
@@ -413,29 +364,5 @@ public class ComponentContext {
 			}
 			return result;
 		}
-	}
-	
-	private static void displayFields(Field[] result) {
-		System.out.println("**********");
-		for (int i = 0; i < result.length; i++) {
-			System.out.println(result[i].getName());
-		}
-		System.out.println("**********");
-	}
-	
-	private static void displayValues(PropertyValues propertyValues) {
-	
-		System.out.println();
-		System.out.println("**********");
-		System.out.println("isMethodExpression " + propertyValues.expression);
-		System.out.println("methodExpressionArgument " + propertyValues.methodExpressionArgument);
-		System.out.println("defaultValue " + propertyValues.defaultValue);
-		System.out.println("defaultValueIsStringLiteral " + propertyValues.defaultValueType);
-		System.out.println("tlddoc " + propertyValues.tlddoc);
-		System.out.println("javadocGet " + propertyValues.javadocGet);
-		System.out.println("javadocSet " + propertyValues.javadocSet);
-		System.out.println("required " + propertyValues.required);
-		System.out.println("inherit " + propertyValues.implementation);
-		System.out.println("**********");
 	}
 }

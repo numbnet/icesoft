@@ -93,17 +93,7 @@ public class TagArtifact extends Artifact{
 		for (int i=0; i<fields.length; i++) {
 			Field field = fields[i];
 			boolean addToTagClass = false;
-			addToTagClass = field.isAnnotationPresent(Property.class); /* @@@ maybe not necessary to remove */
-			
-			/* // ### removed
-			if(!addToTagClass) {
-				if (GeneratorContext.getInstance().getPropertyTemplate().containsKey(clazz.getSimpleName())) {
-					if (((List)GeneratorContext.getInstance().getPropertyTemplate().get(clazz.getSimpleName())).contains(field.getName())) {
-						addToTagClass = true;
-					}
-				}
-			}
-			*/
+			addToTagClass = field.isAnnotationPresent(Property.class);
 
 			if(addToTagClass ){
 				if (!generatedTagProperties.containsKey(field.getName()))
@@ -117,22 +107,11 @@ public class TagArtifact extends Artifact{
 		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			// Property property = field.getAnnotation(Property.class); /* @@@ kept for useTemplate */ /* ### removed */
-			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
+			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 			
-			/* // ### removed
-			//must be inherited property from non-icefaces class
-			if (property == null || property.useTemplate()) { // @@@ kept for now 
-				Field o = (Field)GeneratorContext.getInstance().getPropertyTemplate().get(field.getName());
-				if (null==o){
-					System.out.println("Template field not found: "+field.getName());
-				}
-				property = (Property) o.getAnnotation(Property.class); // @@@ kept
-			}
-			*/
-			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field, null); // @@@ to do: only need to remove argument
+			GeneratorContext.getInstance().getTldBuilder().addAttributeInfo(field);
 
-			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression "; /* @@@ changed */
+			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
 
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
@@ -194,23 +173,22 @@ public class TagArtifact extends Artifact{
 			generatedTagClass.append("\t\tif ("); 
 			generatedTagClass.append(field.getName()); 
 			generatedTagClass.append(" != null) {\n\t\t\t");
-			//Property property = (Property) field.getAnnotation(Property.class);            /* @@@ removed */
-			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field); /* @@@ added */
-			if (property.expression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) { /* @@@ changed */
+			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field);
+			if (property.expression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) {
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.expression == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) { /* @@@ changed */
+			} else if (property.expression == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) {
 				generatedTagClass.append("_component.setActionExpression(action");
 			} else {
 				generatedTagClass.append("_component.set");
 
-				if (property.expression == Expression.METHOD_EXPRESSION) { /* @@@ changed */
+				if (property.expression == Expression.METHOD_EXPRESSION) {
 					generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
 					generatedTagClass.append(field.getName().substring(1));  
 				} else {
 					generatedTagClass.append("ValueExpression");            
 				}
 				generatedTagClass.append("(");
-				if (property.expression == Expression.VALUE_EXPRESSION) { /* @@@ changed */
+				if (property.expression == Expression.VALUE_EXPRESSION) {
 					generatedTagClass.append("\"");
 					generatedTagClass.append(field.getName());
 					generatedTagClass.append("\", ");
