@@ -149,6 +149,20 @@ if (!window.ice.icefaces) {
             };
         }
 
+        function disposeWindow(viewID) {
+            return function() {
+                var form = document.getElementById(viewID);
+                try {
+                    debug(logger, 'dispose window and associated views ' + viewIDs);
+                    //there's no point in cleaning up the appended input elements since the page will be unloaded 
+                    each(viewIDs, curry(appendHiddenInputElement, form, 'ice.view'));
+                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.dispose.window', render: '@all', 'ice.window': namespace.window});
+                } catch (e) {
+                    warn(logger, 'failed to notify window disposal', e);
+                }
+            };
+        }
+
         function sessionExpired() {
             //stop retrieving updates
             retrieveUpdate = noop;
@@ -187,6 +201,15 @@ if (!window.ice.icefaces) {
                 broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
             }
         });
+
+
+        namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
+            var container = document.getElementById(setupID).parentNode;
+            container.configuration = configuration;
+            container.configuration.viewID = viewID;
+            namespace.window = windowID;
+            onBeforeUnload(window, disposeWindow(viewID));
+        };
 
         namespace.setupPush = function(viewID) {
             ice.push.register([viewID], retrieveUpdate(viewID));
@@ -267,14 +290,6 @@ if (!window.ice.icefaces) {
                     }
                 });
             }
-        });
-
-        var client = Client(true);
-        onBeforeUnload(window, function() {
-            postSynchronously(client, 'dispose-window.icefaces.jsf', function(query) {
-                addNameValue(query, 'ice.window', namespace.window);
-                each(viewIDs, curry(addNameValue, query, 'ice.view'));
-            }, FormPost, noop);
         });
 
         onKeyPress(document, function(ev) {
