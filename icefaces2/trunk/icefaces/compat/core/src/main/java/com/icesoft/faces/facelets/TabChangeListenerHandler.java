@@ -37,6 +37,11 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
+ *  !! NOTE: There is a duplicate of the  original class in icefaces/core
+ * Any changes in that file or this one MUST be replicated in both copies.
+ */
+
+/**
  * @author Mark Collette
  * @since 1.1
  */
