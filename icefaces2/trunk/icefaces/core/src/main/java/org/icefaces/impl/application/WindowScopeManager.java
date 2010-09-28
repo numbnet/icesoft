@@ -80,32 +80,30 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         ExternalContext externalContext = facesContext.getExternalContext();
-        String path = externalContext.getRequestServletPath();
-        if (!path.contains("dispose-window")) {
-            wrapped.handleResourceRequest(facesContext);
-            return;
-        }
-        String windowID = externalContext.getRequestParameterMap().get("ice.window");
-        disposeWindow(facesContext, windowID);
-
-        if (EnvUtils.isICEpushPresent()) {
-            try {
-                String[] viewIDs = externalContext
-                        .getRequestParameterValuesMap().get("ice.view");
-                for (int i = 0; i < viewIDs.length; i++) {
-                    SessionViewManager.removeView(facesContext, viewIDs[i]);
+        Map parameters = externalContext.getRequestParameterMap();
+        if (isDisposeWindowRequest(parameters)) {
+            String windowID = (String) parameters.get("ice.window");
+            disposeWindow(facesContext, windowID);
+            if (EnvUtils.isICEpushPresent()) {
+                try {
+                    String[] viewIDs = externalContext.getRequestParameterValuesMap().get("ice.view");
+                    for (int i = 0; i < viewIDs.length; i++) {
+                        SessionViewManager.removeView(facesContext, viewIDs[i]);
+                    }
+                } catch (RuntimeException e) {
+                    //missing ice.view parameters means that none of the views within the page
+                    //was registered with PushRenderer before page unload
                 }
-            } catch (RuntimeException e) {
-                //missing ice.view parameters means that none of the views within the page
-                //was registered with PushRenderer before page unload
             }
+        } else {
+            wrapped.handleResourceRequest(facesContext);
         }
     }
 
     public boolean isResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
-        String path = externalContext.getRequestServletPath();
-        if (path.contains("dispose-window")) {
+        Map parameters = externalContext.getRequestParameterMap();
+        if (isDisposeWindowRequest(parameters)) {
             return true;
         }
         return wrapped.isResourceRequest(facesContext);
@@ -182,6 +180,10 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 throw new RuntimeException("Unknown window scope ID: " + id);
             }
         }
+    }
+
+    private static boolean isDisposeWindowRequest(Map parameters) {
+        return "ice.dispose.window".equals(parameters.get("ice.submit.type"));
     }
 
     private static synchronized String generateID() {

@@ -108,26 +108,22 @@ public class BridgeSetup implements SystemEventListener {
                     writer.writeAttribute("id", clientID, null);
                     writer.startElement("script", this);
                     //define bridge configuration
-                    writer.write("document.getElementById('");
+                    writer.write("ice.setupBridge('");
                     writer.write(clientID);
-                    writer.write("').parentNode.configuration = {");
+                    writer.write("', '");
+                    writer.write(viewID);
+                    writer.write("', '");
+                    writer.write(windowID);
+                    writer.write("', {");
                     writer.write("deltaSubmit: ");
                     writer.write(Boolean.toString(deltaSubmit));
                     writer.write(",");
-                    //associate viewID with its corresponding DOM fragment
-                    writer.write("viewID: '");
-                    writer.write(viewID);
-                    writer.write("',");
                     writer.write("standardFormSerialization: ");
                     writer.write(Boolean.toString(standardFormSerialization));
                     writer.write(",");
                     writer.write("blockUIOnSubmit: ");
                     writer.write(Boolean.toString(EnvUtils.isBlockUIOnSubmit(context)));
-                    writer.write("};");
-                    //bridge needs the window ID
-                    writer.write("window.ice.window = '");
-                    writer.write(windowID);
-                    writer.write("';");
+                    writer.write("});");
                     writer.endElement("script");
                     writer.endElement("span");
                 }
