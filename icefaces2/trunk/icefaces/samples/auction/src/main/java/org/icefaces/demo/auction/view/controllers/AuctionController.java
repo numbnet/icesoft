@@ -37,6 +37,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.validator.ValidatorException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PropertyResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -184,8 +185,11 @@ public class AuctionController {
 
         // someone beat us to it so show the error
         if (!success) {
+            // retrieve our message bundle from the context.
+            PropertyResourceBundle msgs = (PropertyResourceBundle)
+                    FacesUtils.getManagedBean(BeanNames.MSGS_BEAN);
             FacesMessage message = new FacesMessage();
-            message.setDetail("Someone beat you to it, rebid");
+            message.setDetail(msgs.getString("auction.bid.rebid.error"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }

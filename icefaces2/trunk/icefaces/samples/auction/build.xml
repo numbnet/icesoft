@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="auction" default="war.jsf">
+<project name="auction" default="war.jsf.ice.push">
 
     <property file="./build.properties"/>
     

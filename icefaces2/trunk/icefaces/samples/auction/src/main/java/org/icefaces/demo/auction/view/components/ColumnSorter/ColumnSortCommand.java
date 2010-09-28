@@ -86,12 +86,5 @@ public class ColumnSortCommand implements ActionListener {
 
         // call service layer to get new sorted list
         auctionController.refreshAuctionBean(auctionBean);
-
-        // merge the new list with the current list so we can preserve the view state.
-        // of the auction items.
-        Object tmp = FacesContext.getCurrentInstance().getExternalContext();
-        if (tmp != null) {
-            System.out.println("Client generated Question");
-        }
     }
 }
