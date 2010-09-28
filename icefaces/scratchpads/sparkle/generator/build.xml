@@ -22,8 +22,15 @@
     <java classname="org.icefaces.generator.Generator"  classpathref="compile.run.classpath" fork="true"
     	classpath="${build}">
     </java>
+
+    <java classname="org.icefaces.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
+      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
+      <arg value="../../icefaces/compat/core/build/resources/META-INF/icefaces.taglib.xml" />
+      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
+    </java> 
+
   </target>
-    
+
   <target name="compile" description="compile the source " >
     <mkdir dir="${build}"/>
 
@@ -31,9 +38,7 @@
    <!-- compile generator code -->
    <javac srcdir="${src}" destdir="${build}" debug="true">
    <classpath refid="compile.run.classpath"/>
-   </javac> 
- 
-    
+   </javac>    
   </target>
 	
   <target name="dist" depends="compile" 
