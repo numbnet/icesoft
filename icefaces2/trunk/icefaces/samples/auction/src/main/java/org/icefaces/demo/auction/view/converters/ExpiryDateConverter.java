@@ -32,11 +32,13 @@ import javax.faces.convert.FacesConverter;
  * Converts a GregorianCalendar Object stored in a AuctionItem  to a simple
  * formatted String output.  The converter is only for output it does not
  * go the other way back to an object.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 @FacesConverter(value = "auctionItemDateConverter")
 public class ExpiryDateConverter implements Converter {
 
-    @Override
     public String getAsString(FacesContext facesContext, UIComponent
             uiComponent, Object o) {
         if (o instanceof AuctionItemBean) {
@@ -44,7 +46,7 @@ public class ExpiryDateConverter implements Converter {
             AuctionItemBean auctionItemBean = (AuctionItemBean) o;
             long[] countDownTime = auctionItemBean.getTimeLeftBrokenDown();
             if (auctionItemBean.isExpired(countDownTime)) {
-                return " Expired";
+                return "Expired";
             }
             StringBuffer buf = new StringBuffer();
             if (0 != countDownTime[AuctionItemBean.DAY_COMPONENT]) {
@@ -75,7 +77,6 @@ public class ExpiryDateConverter implements Converter {
      *
      * @return null
      */
-    @Override
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
         return null;
     }

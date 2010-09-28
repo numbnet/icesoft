@@ -28,20 +28,47 @@ import java.util.List;
 
 /**
  * The Auction Service is responsible for all auction interactions.  This
- * actions include basic auction actions such as add, remove and view action
- * items and placing bids.  There is also a utility portion that is designed to reset the
- * action items which is purely a maintenance option for demo purposes.
+ * service class can be implemented using a variety of different technologies
+ * such as JPA, Spring, JAXB or JWSDP to name a few.  The main idea beind this
+ * implementation is that we can sub in different system back ends and not
+ * affect the UI code in any way.
  *
  * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
 public interface AuctionService {
 
-    public void resetAuctionItemCache();
-
+    /**
+     * Executes a bid transaction on the specified auctionItem for the specified
+     * amount.
+     *
+     * @param auctionItem auction item being bid on.
+     * @param bid         bid value to execute.
+     * @return true if the bid was successful.  False, if another users beats us
+     *         in making a equal or larger bid before us.
+     */
     public boolean bidOnAuctionItem(AuctionItem auctionItem, double bid);
 
+    /**
+     * Get a snapshot of the auction items in the auction for a given moment
+     * in time.  The method is responsible for sorting the data as well, we
+     * generally don't won't the UI code to to this as most DB's can do this
+     * a lot more effeciently.
+     *
+     * @param sortColumn  column being sorted, should be constant as defined in
+     *                    {@link org.icefaces.demo.auction.view.beans.AuctionBean}
+     * @param isAscending true indicates ascending sort, false indicates
+     *                    descending sort.
+     * @return list of auction items in auction, can be null.
+     */
     public List<AuctionItem> getAllAuctionItems(String sortColumn,
                                                 boolean isAscending);
+
+    /**
+     * Utility method that resets the auction item list.  This used for demo
+     * purposes as the auction items may need to be reset if the bids become
+     * too large or have expired.
+     */
+    public void resetAuctionItemCache();
 
 }

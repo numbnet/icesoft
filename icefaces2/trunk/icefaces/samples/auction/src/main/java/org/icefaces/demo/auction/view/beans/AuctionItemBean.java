@@ -26,8 +26,22 @@ import org.icefaces.demo.auction.services.beans.AuctionItem;
 import java.util.Calendar;
 
 /**
- * Stores a list of AuctionItemBeans that a user can manipulate in view
- * scope, mainly make bid and sort the auction items.
+ * Wraps an instance of the AuctionItem DAO object returned from the service
+ * layer.  This wrapper introduces some view or window level state;
+ * <ul>
+ * <li>bid - bid value that has yet to be submitted to server.</li>
+ * <li>showBidInput - boolean flag to render the bid input
+ * field. This flag is togged by the controller class.</li>
+ * <li>showExtendedDescription - boolean flag to render the extended auctionItem
+ * description information. </li>
+ * <li>newBidPrice - boolean flag to used ot quickly emphasise a AuctionItem
+ * bid value has change by the correct user or a server push.  </li>
+ * </ul>
+ * This class is a model bean and it's state should only be changed by the
+ * {@link org.icefaces.demo.auction.view.controllers.AuctionController}.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class AuctionItemBean {
 
@@ -107,6 +121,17 @@ public class AuctionItemBean {
         this.newBidPrice = newBidPrice;
     }
 
+    /**
+     * Utility to split in the expiry date into number of days, minutes
+     * and seconds.  This method should never be called via JSF value binding.
+     * It should instead be called only from a JSF converter or Auction event
+     * to insure that logic is only called a minimum number of times during
+     * a JSF lifecycle execution.
+     *
+     * @return a long array made up of four elements.  Each index in the array
+     *         is represented by the name value paring constants, DAY_COMPONENT,
+     *         HOUR_COMPONENT, MINUTE_COMPONENT and SECOND_COMPONENT.
+     */
     public long[] getTimeLeftBrokenDown() {
         if (auctionItem.getExpiryDate() != null) {
             long left, days, hours, minutes, seconds;
@@ -125,6 +150,17 @@ public class AuctionItemBean {
         }
     }
 
+    /**
+     * Utility to determine if the countDownTime parameter is paste due or expired.
+     * This method should not be called via regular value binding instead it should
+     * only be called from validator ar converter calls.
+     *
+     * @param countDownTime array of 4 digits representing the number of day,
+     *                      hours, minutes and seconds remaining before the item expires.
+     * @return true if the auction item has expired, otherwise false, the auction
+     *         is still ongoing.
+     * @see #getTimeLeftBrokenDown()
+     */
     public boolean isExpired(long[] countDownTime) {
         return countDownTime[AuctionItemBean.DAY_COMPONENT] <= 0 &&
                 countDownTime[AuctionItemBean.HOUR_COMPONENT] <= 0 &&
@@ -132,10 +168,25 @@ public class AuctionItemBean {
                 countDownTime[AuctionItemBean.SECOND_COMPONENT] <= 0;
     }
 
+    /**
+     * Utility to determine if the expiry date is paste due or expired.  This
+     * method should not be called via regular value binding instead it should
+     * only be called from validator ar converter calls.
+     * @return true if the auction item has expired, otherwise false, the auction
+     *         is still ongoing.
+     */
     public boolean isExpired() {
         return isExpired(getTimeLeftBrokenDown());
     }
 
+    /**
+     * Gets the time left type which can be any class constants starting with
+     * TIME_LEFT_*.  This should only be called via a JSF converter.  The
+     * returned strings are used by the view to show different icons based on
+     * the TIME_LEFT_* type.
+     *
+     * @return string represented the time left constant.  
+     */
     public String getTimeLeftType() {
         // convert the date and subtract the current date.
         if (auctionItem.getExpiryDate() != null) {

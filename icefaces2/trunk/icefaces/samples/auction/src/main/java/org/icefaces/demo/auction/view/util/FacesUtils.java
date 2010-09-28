@@ -42,6 +42,9 @@ import java.util.Properties;
 
 /**
  * JSF utilities.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class FacesUtils {
 
@@ -287,11 +290,6 @@ public class FacesUtils {
      */
     public static void addErrorMessage(String clientId, String msg) {
         FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-    }
-
-    private static Application getApplication() {
-        ApplicationFactory appFactory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-        return appFactory.getApplication();
     }
 
     private static String getJsfEl(String value) {

@@ -36,6 +36,9 @@ import java.util.List;
 
 /**
  * Simple in memory representation of the auction items.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 @ManagedBean(eager = true)
 @ApplicationScoped
@@ -44,8 +47,12 @@ public class AuctionServiceImpl implements AuctionService {
     private ArrayList<AuctionItem> auctionItems;
 
     /**
-     * This initialization procedure is just for this basic service impl.  IN
-     * The real work the data was be fetched from data store.
+     * This initialization procedure is just for this basic service
+     * implementation.  In the real work the data was be fetched from a data
+     * store or via some web service.
+     * <p/>
+     * We build up four AuctionItem object and tweak the expiry date as needed
+     * to give a compelling demo or test case. 
      */
     @PostConstruct
     public void initializeData() {
@@ -98,28 +105,23 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     /**
-     * This implementation of AuctionServiceImpl doesn't use caching. The
-     * principle idea is that we only do one DB call per push, not for every
-     * call to getAllAuctionItems();   This method would be used to effectively
-     * clear the persistence layer cache so new data could be fetched from the
-     * data store.
+     * Utility method that resets the auction item list.  This used for demo
+     * purposes as the auction items may need to be reset if the bids become
+     * too large or have expired.
      */
-    @Override
     public void resetAuctionItemCache() {
         initializeData();
     }
 
-    /**
-     * Attempts to make a pid for a specific auctionItem.  If the auctionItem
-     * being bid on has a price that doesn't match the proposed bid then we likely
-     * got beat out by some competing bidder.
+     /**
+     * Executes a bid transaction on the specified auctionItem for the specified
+     * amount.
      *
-     * @param auctionItem item being bid on.
-     * @param bid         new bid.
-     * @return true if the bid was successfully, false if the bid could not be
-     *         make, likely do to a competing bidder.
+     * @param auctionItem auction item being bid on.
+     * @param bid         bid value to execute.
+     * @return true if the bid was successful.  False, if another users beats us
+     *         in making a equal or larger bid before us.
      */
-    @Override
     public synchronized boolean bidOnAuctionItem(AuctionItem auctionItem, double bid) {
         // check to see if bid is valid, did someone else bid before use?
         for (AuctionItem item : auctionItems) {
@@ -138,14 +140,17 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     /**
-     * Gets all the auction items for the current auction sorted on the
-     * specified column and order.
+     * Get a snapshot of the auction items in the auction for a given moment
+     * in time.  The method is responsible for sorting the data as well, we
+     * generally don't won't the UI code to to this as most DB's can do this
+     * a lot more effeciently.
      *
-     * @param sortColumn  name of column to sort data by.
-     * @param isAscending true to sort data ascending, false specifies descending.
-     * @return list of auction items in list. Can be an empty or null list.
+     * @param sortColumn  column being sorted, should be constant as defined in
+     *                    {@link org.icefaces.demo.auction.view.beans.AuctionBean}
+     * @param isAscending true indicates ascending sort, false indicates
+     *                    descending sort.
+     * @return list of auction items in auction, can be null.
      */
-    @Override
     public List<AuctionItem> getAllAuctionItems(String sortColumn, boolean isAscending) {
 
         // always return a copy of the core object to insure that the data

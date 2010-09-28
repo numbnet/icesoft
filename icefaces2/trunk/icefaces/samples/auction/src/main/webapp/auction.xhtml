@@ -27,7 +27,7 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:util="http://java.sun.com/jsf/composite/components">
 
-    <!-- Page title -->
+    <!-- Page title include -->
     <ui:define name="title">
         Auction Monitor - JSF 2.0 Direct-to-DOM (D2D) Version
     </ui:define>
@@ -55,14 +55,16 @@
                            value="clientRequest"/>
 
             <!-- auction table dynamically build to show how colspan can be used
-                along with an expandable display
+                along with an expandable display to build a datatTablue using
+                <ui:repeat/>
             -->
             <div class="auctionMontiorContainer">
                 <table class="auctionMontiorTable"
                        cellpadding="0" cellspacing="0" border="0">
                     <thead>
                     <tr>
-                        <th class="spacerColumn"></th>
+                        <th class="spacerColumn"> </th>
+                        <!-- Item Name column, sortable  -->
                         <util:columnSorter
                                 ascending="#{auctionBean.ascending}"
                                 sortColumn="#{auctionBean.sortColumn}"
@@ -72,6 +74,7 @@
                             <f:actionListener for="sortColumnEvent"
                                               type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                         </util:columnSorter>
+                        <!-- Price column, sortable  -->
                         <util:columnSorter
                                 ascending="#{auctionBean.ascending}"
                                 sortColumn="#{auctionBean.sortColumn}"
@@ -81,6 +84,7 @@
                             <f:actionListener for="sortColumnEvent"
                                               type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                         </util:columnSorter>
+                        <!-- Bids column, sortable  -->
                         <util:columnSorter
                                 ascending="#{auctionBean.ascending}"
                                 sortColumn="#{auctionBean.sortColumn}"
@@ -90,6 +94,7 @@
                             <f:actionListener for="sortColumnEvent"
                                               type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                         </util:columnSorter>
+                        <!-- Time Left, sortable  -->
                         <util:columnSorter
                                 ascending="#{auctionBean.ascending}"
                                 sortColumn="#{auctionBean.sortColumn}"
@@ -99,14 +104,20 @@
                             <f:actionListener for="sortColumnEvent"
                                               type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                         </util:columnSorter>
+                        <!-- Action column -->
                         <th class="actionColumn">Action</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <!-- Main repeat used to build out each row of the auction dislay, similar to h:dataTable
+                        but give use more flexibility on what we can insert as content and we get to use
+                        colspan and rowspan if needed.
+                    -->
                     <ui:repeat value="#{auctionBean.auctionItems}"
                                varStatus="status"
                                var="auctionItem">
                         <tr class="#{status.even?'even':'odd'} #{auctionItem.showExtendedDescription?'expanded':''}">
+                            <!-- contract/expand arrow graphic, toggles extend auction item decription visiblity -->
                             <td valign="top">
                                 <h:commandLink
                                         actionListener="#{auctionController.toggleExtendedDescription}"
@@ -115,25 +126,30 @@
                                                     name="expanded_#{auctionItem.showExtendedDescription}.gif"/>
                                 </h:commandLink>
                             </td>
+                            <!-- name of the auction item. -->
                             <td valign="top">#{auctionItem.auctionItem.name}</td>
+                            <!-- current price of the auction item. -->
                             <td align="right" valign="top">
                                 <h:outputText
                                         value="#{auctionItem.auctionItem.price}"
                                         styleClass="#{auctionItem.newBidPrice?'newBid':''}">
                                     <f:convertNumber type="currency"/>
                                 </h:outputText>
-
                             </td>
+                            <!-- number of bids made on this item.-->
                             <td align="center"
                                 valign="top">#{auctionItem.auctionItem.bids}</td>
+                            <!-- expires column value,-->
                             <td valign="top">
-                                <h:graphicImage library="css/images"
+                                <h:graphicImage style="margin-right:5px;"
+                                                library="css/images"
                                                 name="time_left_#{auctionItem.timeLeftType}.gif"/>
                                 <h:outputText value="#{auctionItem}">
                                     <f:converter
                                             converterId="auctionItemDateConverter"/>
                                 </h:outputText>
                             </td>
+                            <!-- bid column. -->
                             <td valign="top">
                                 <!-- command button to enable a auction bid-->
                                 <h:commandLink
@@ -148,11 +164,13 @@
                                 <!-- panel group to wrap the visibility of the bid control buttons.  -->
                                 <ui:fragment
                                         rendered="#{auctionItem.showBidInput}">
+                                    <!-- input for making a bid-->
                                     <h:inputText id="bid" size="6"
                                                  value="#{auctionItem.bid}">
                                         <f:validator
-                                                validatorId="bidValidator"/>
+                                                validatorId="auctionItemBidValidator"/>
                                     </h:inputText>
+                                    <!-- palce bid command -->
                                     <h:commandLink
                                             actionListener="#{auctionController.placeBid}">
                                         <h:graphicImage library="css/images"
@@ -160,6 +178,7 @@
                                                         alt="Show bid input fields."
                                                         title="Show bid input fields."/>
                                     </h:commandLink>
+                                    <!-- cancel/hide bid. -->
                                     <h:commandLink immediate="true"
                                                    actionListener="#{auctionController.toggleBidInput}">
                                         <h:graphicImage library="css/images"
@@ -176,7 +195,7 @@
                         <ui:fragment
                                 rendered="#{auctionItem.showExtendedDescription}">
                             <tr class="description #{auctionItem.showExtendedDescription?'expanded':''}">
-                                <td></td>
+                                <td> </td>
                                 <td colspan="3">
                                     <h:graphicImage library="css/images"
                                                     style="float:left;margin-right:3px;"

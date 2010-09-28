@@ -26,6 +26,9 @@ import javax.faces.bean.ManagedBean;
 
 /**
  * Constants class representing context parameters used in the view.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 @ManagedBean
 @ApplicationScoped

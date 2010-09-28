@@ -24,7 +24,11 @@ package org.icefaces.demo.auction.services.Comparator;
 import org.icefaces.demo.auction.services.beans.AuctionItem;
 
 /**
+ * Sorts an AuctionItem using the field "name" in the order specified by the
+ * constructor's ascending attribute.
  *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class ItemNameComparator extends AbstractItemComparator {
 

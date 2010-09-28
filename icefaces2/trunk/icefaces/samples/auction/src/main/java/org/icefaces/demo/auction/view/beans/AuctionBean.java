@@ -37,12 +37,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Extension wraps the dao object with state information stored in window
- * scope.  Every time there call to the service layer to get the current state
- * of the auction items we match up auctionItem state with the current
- * AuctionItemBean state.  If an AuctionItemBean can not be found with the same
- * AuctionItem data a new instance of AuctionItemBean must be inserted.  The
- * UI controller AuctionController takes care of this logic.
+ * This object stores a collection of AuctionItemBean as well as state information
+ * for sort ordering.  The Bean should live in View or Window scope  so that
+ * each browser window can have it's own UI state.  After the bean is initialized
+ * an @PostConstruct call initializes the auctionItemBean collection using
+ * logic stored in the {@link AuctionController}.
+ * <p/>
+ * When a user clicks on the sortable headers on the page the sort order is
+ * stored in this Bean, sort column name and the order of the sort, descending
+ * or ascending.
  *
  * @author ICEsoft Technologies Inc.
  * @since 2.0
@@ -54,6 +57,7 @@ public class AuctionBean implements Serializable {
 
     private static Logger logger = Logger.getLogger(AuctionBean.class.getName());
 
+    // render group this bean is added to for pushes and
     public static final String AUCTION_RENDER_GROUP = "auctionRenderGroup";
 
     // columns that can sorted on
@@ -69,14 +73,10 @@ public class AuctionBean implements Serializable {
     // list of auction items to display on screen
     private List<AuctionItemBean> auctionItems;
 
-    public AuctionBean() {
-        System.out.println("Creating new actionBean");
-    }
-
     /**
      * After the bean is created it calls service layer to refresh its
-     * bit items.  The refresh will preserve the data view only updating
-     * the auction val
+     * auction items.  The refresh will preserve the data view only updating
+     * the auctionItems.
      */
     @PostConstruct
     private void setInitialize() {
@@ -85,23 +85,26 @@ public class AuctionBean implements Serializable {
         AuctionController auctionController = (AuctionController)
                 FacesUtils.getManagedBean(BeanNames.AUCTION_CONTROLLER);
 
-        // use the controller to apply the uPdate logic.
+        // use the controller to apply the update logic.
         auctionController.refreshAuctionBean(this);
 
         // register with bid renderer, used for bid pushes
         PushRenderer.addCurrentSession(AUCTION_RENDER_GROUP);
         if (logger.isLoggable(Level.FINEST)) {
-            logger.finest("added current session to renderer 'auction'");
+            logger.finest("added current session to renderer 'auctionRenderGroup'");
         }
         // Interval render does pushes every x seconds, to refresh time remaining
         // time stamps and graphics. 
         PushRenderer.addCurrentSession(IntervalPushRenderer.INTERVAL_RENDER_GROUP);
         if (logger.isLoggable(Level.FINEST)) {
-            logger.finest("added current session to renderer 'auction'");
+            logger.finest("added current session to renderer 'auctionInterval'");
         }
 
     }
 
+    /**
+     * Remove this object from the two render groups it is registered with.
+     */
     @PreDestroy
     private void destroy() {
         // remove from bid render group

@@ -25,11 +25,11 @@ import org.icefaces.demo.auction.services.beans.AuctionItem;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: pcorless
- * Date: 24-Sep-2010
- * Time: 4:57:40 PM
- * To change this template use File | Settings | File Templates.
+ * Sorts an AuctionItem using the field "bids" in the order specified by the
+ * constructor's ascending attribute.
+ *
+ * @author ICEsoft Technologies Inc.
+ * @since 2.0
  */
 public class ItemBidsComparator extends AbstractItemComparator {
 
