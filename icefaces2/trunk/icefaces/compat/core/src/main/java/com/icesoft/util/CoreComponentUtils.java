@@ -25,6 +25,7 @@ package com.icesoft.util;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.Iterator;
@@ -56,7 +57,8 @@ public class CoreComponentUtils {
         // is absolute (i.e. starts with the delimiter) or 2) the nearest parent
         // NamingContainer if the expression is relative (doesn't start with
         // the delimiter)
-        String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
+        char separatorChar = getSeparatorChar();
+        String delimeter = String.valueOf(separatorChar);
         int count = getNumberOfLeadingNamingContainerSeparators(clientId);
 //System.out.println("      count: " + count);
         if (count == 1) {
@@ -94,12 +96,12 @@ public class CoreComponentUtils {
         String id = null;
         UIComponent result = null;
         while (clientId.length() > 0) {
-            int separator = clientId.indexOf(NamingContainer.SEPARATOR_CHAR);
+            int separator = clientId.indexOf(separatorChar);
             if (base instanceof UIData) {
                 if (separator >= 0) {
                     clientId = clientId.substring(separator + 1);
                 }
-                separator = clientId.indexOf(NamingContainer.SEPARATOR_CHAR);
+                separator = clientId.indexOf(separatorChar);
             }
             if (separator >= 0) {
                 id = clientId.substring(0, separator);
@@ -121,15 +123,17 @@ public class CoreComponentUtils {
         return result;
     }
 
-    private static int getNumberOfLeadingNamingContainerSeparators(
-            String clientId) {
+    private static int getNumberOfLeadingNamingContainerSeparators(String clientId) {
         int count = 0;
-        String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
+        String delimeter = String.valueOf(getSeparatorChar());
         for (int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
             count++;
         return count;
     }
 
+    private static char getSeparatorChar(){
+        return UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
+    }
 
     /**
      * Find a component with a given id, given a starting component
@@ -154,7 +158,7 @@ public class CoreComponentUtils {
                 if (component != null) {
                     break;
                 }
-            } else if (child.getId() != null && componentId.endsWith(child.getId())) {
+            } else if (child.getId() != null && componentId.equals(child.getId())) {
                 component = child;
                 break;
             }
