@@ -11,11 +11,11 @@ import org.icefaces.generator.context.ComponentContext;
 
 
 public abstract class Behavior {
-	private Map<String, Field> properties = new HashMap<String, Field>(); /* @@@ maybe not necessary */
+	private Map<String, Field> properties = new HashMap<String, Field>();
 	
 	public Behavior(Class clazz) {
 		for (Field field: clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(Property.class)) { /* @@@ need to know of it is used, maybe not necessary */
+			if (field.isAnnotationPresent(Property.class)) {
 				getProperties().put(field.getName(), field);
 			}
 		}

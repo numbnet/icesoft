@@ -46,19 +46,17 @@ public class TLDBuilder extends XMLBuilder{
         tag.appendChild(description);
     }
     
-    public void addAttributeInfo(Field field, Property property) { /* @@@ to do: remove property argument, change calls*/
-		/* @@@ added */
+    public void addAttributeInfo(Field field) {
 		ComponentContext component = GeneratorContext.getInstance().getActiveComponentContext();
 		PropertyValues propertyValues = component.getPropertyValuesMap().get(field);
-		/* @@@ to do: check for null? */
 		
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
         addNode(attribute, "name", field.getName());
-        addNode(attribute, "required", String.valueOf(propertyValues.required)); /* @@@ changed */
+        addNode(attribute, "required", String.valueOf(propertyValues.required));
         addNode(attribute, "rtexprvalue", "false");        
         Element description = getDocument().createElement("description");
-        String des = propertyValues.tlddoc; /* @@@ changed */
+        String des = propertyValues.tlddoc;
         if ("null".endsWith(des)) {
         	des = "&nbsp;";
         }

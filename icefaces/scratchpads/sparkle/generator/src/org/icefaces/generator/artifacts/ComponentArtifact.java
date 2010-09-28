@@ -157,10 +157,10 @@ public class ComponentArtifact extends Artifact{
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addPropertiesEnumToComponent(writer);
 		}
-		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap(); // %%% added
+		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
-			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i)); // %%% added
-			if (!propertyValues.isDelegatingProperty) { // %%% added
+			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
+			if (!propertyValues.isDelegatingProperty) {
 				writer.append("\t\t");
 				writer.append(generatedComponentProperties.get(i).getName());
 				writer.append(",\n");
@@ -192,7 +192,6 @@ public class ComponentArtifact extends Artifact{
      * @param field
      */
 	public void addGetterSetter(Field field) {
-		//Property prop = (Property)field.getAnnotation(Property.class); /* @@@ removed*/
 		PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
@@ -224,11 +223,9 @@ public class ComponentArtifact extends Artifact{
 		// writing Setter
         //-------------------------------------
 
-		addJavaDoc(field.getName(), true, prop.javadocSet); /* @@@ changed */
+		addJavaDoc(field.getName(), true, prop.javadocSet);
 		writer.append("\tpublic void set");
-		//writer.append(field.getName().substring(0,1).toUpperCase()); // %%% removed
-		//writer.append(field.getName().substring(1)); // %%% removed
-		writer.append(methodName); // %%% added
+		writer.append(methodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
@@ -238,7 +235,6 @@ public class ComponentArtifact extends Artifact{
 		writer.append(field.getName());
 		writer.append(") {");
 
-		// %%% added
 		if (!prop.isDelegatingProperty) {
 			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
 			writer.append(field.getName());
@@ -307,7 +303,7 @@ public class ComponentArtifact extends Artifact{
 		//getter
         //-----------------
 
-		addJavaDoc(field.getName(), false, prop.javadocGet); /* @@@ changed */
+		addJavaDoc(field.getName(), false, prop.javadocGet);
 
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
@@ -324,9 +320,7 @@ public class ComponentArtifact extends Artifact{
 		} else {
 			writer.append("get");
 		}
-		//writer.append(field.getName().substring(0,1).toUpperCase()); // %%% removed
-		//writer.append(field.getName().substring(1)); // %%% removed
-		writer.append(methodName); // %%% added
+		writer.append(methodName);
 		writer.append("() {");
 
         if (!prop.isDelegatingProperty) {
@@ -336,7 +330,7 @@ public class ComponentArtifact extends Artifact{
 			// No defined default value is returned as the string "null". This has to
 			// be handled for various cases. primitives must have a default of some kind
 			// and Strings have to return null (not "null") to work.
-			String defaultValue = prop.defaultValue; /* @@@ changed */
+			String defaultValue = prop.defaultValue;
 			Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
 							   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
