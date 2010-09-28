@@ -49,7 +49,7 @@ public class BidValidator implements Validator {
     // cap the size of a bid that can be made over the the original bid value.
     public static final int MAX_BID_INCREASE = 1000000;
     // max bid that can be mad, period.
-    public static final long MAX_BID = 100000000;
+    public static final long MAX_BID = 1000000;
 
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object value)
             throws ValidatorException {

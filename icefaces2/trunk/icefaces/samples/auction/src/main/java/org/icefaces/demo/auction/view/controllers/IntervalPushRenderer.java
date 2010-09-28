@@ -53,7 +53,7 @@ public class IntervalPushRenderer {
 
     public static final String INTERVAL_RENDER_GROUP = "auctionInterval";
 
-    private static int POLLING_INTERVAL = 5000;
+    private static int POLLING_INTERVAL = 1000;
 
     static {
         String interval = FacesUtils.getFacesParameter(

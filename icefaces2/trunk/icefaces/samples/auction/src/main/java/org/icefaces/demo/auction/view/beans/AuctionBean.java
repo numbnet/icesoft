@@ -29,8 +29,8 @@ import org.icefaces.demo.auction.view.util.FacesUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -51,8 +51,8 @@ import java.util.logging.Logger;
  * @since 2.0
  */
 @ManagedBean
-//@ViewScoped
-@CustomScoped(value = "#{window}")
+@ViewScoped
+//@CustomScoped(value = "#{window}")
 public class AuctionBean implements Serializable {
 
     private static Logger logger = Logger.getLogger(AuctionBean.class.getName());
