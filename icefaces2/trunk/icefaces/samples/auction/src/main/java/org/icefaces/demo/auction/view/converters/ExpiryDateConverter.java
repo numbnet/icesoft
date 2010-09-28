@@ -62,7 +62,7 @@ public class ExpiryDateConverter implements Converter {
             if (0 != countDownTime[AuctionItemBean.HOUR_COMPONENT]) {
                 buf.append(String.valueOf(countDownTime[AuctionItemBean.HOUR_COMPONENT]));
                 buf.append(":");
-                if (countDownTime[AuctionItemBean.HOUR_COMPONENT] < 10) {
+                if (countDownTime[AuctionItemBean.MINUTE_COMPONENT] < 10) {
                     buf.append("0");
                 }
             }

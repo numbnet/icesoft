@@ -228,8 +228,8 @@ public class AuctionController {
             }
         }
 
-        // assign view scoped bid with the current bid value.
-        auctionItemBean.setBid(auctionItemBean.getAuctionItem().getPrice());
+        // assign view scoped bid with the current bid value plus a little extra
+        auctionItemBean.setBid(auctionItemBean.getAuctionItem().getPrice() + 5);
     }
 
     /**

@@ -36,7 +36,7 @@ public class ParameterNames {
 
     public static final String AUCTION_ITEM = "auctionItem";
 
-    public static final String CLIENT_REQUEST = "clientRequest";
+    public static final String ICE_SUBMIT_TYPE = "ice.submit.type";
 
     public static final String SORT_COLUMN_NAME = "columnName";
 
@@ -45,7 +45,7 @@ public class ParameterNames {
     }
 
     public String getClientRequest() {
-        return CLIENT_REQUEST;
+        return ICE_SUBMIT_TYPE;
     }
 
     public String getSortColumnName() {

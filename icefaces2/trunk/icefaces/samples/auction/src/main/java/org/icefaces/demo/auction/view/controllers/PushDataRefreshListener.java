@@ -43,6 +43,8 @@ import javax.faces.event.PhaseListener;
  */
 public class PushDataRefreshListener implements PhaseListener {
 
+    public static final String ICE_SUBMIT_TYPE_PUSH = "ice.push";
+
     public void afterPhase(PhaseEvent phaseEvent) {
 
     }
@@ -52,7 +54,7 @@ public class PushDataRefreshListener implements PhaseListener {
         ExternalContext externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
         boolean pushRequest = externalContext.getRequestParameterMap().get(
-                ParameterNames.CLIENT_REQUEST) == null;
+                ParameterNames.ICE_SUBMIT_TYPE).equals(ICE_SUBMIT_TYPE_PUSH);
 
         // client users action driven requests will have "clientRequest"
         // request parameter, server pushes won't have the param

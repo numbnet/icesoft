@@ -47,12 +47,7 @@
     <f:phaseListener
             type="org.icefaces.demo.auction.view.controllers.PushDataRefreshListener"/>
 
-    <h:form prependId="false" id="auction">
-        <!--  field to mark the request as a client request, insures that
-              we can differenciate between a push and client generated request.
-        -->
-        <h:inputHidden id="clientRequest" name="clientRequest"
-                       value="clientRequest"/>
+    <h:form prependId="false">
 
         <!-- auction table dynamically build to show how colspan can be used
             along with an expandable display to build a datatTablue using
@@ -172,8 +167,8 @@
                             <!-- panel group to wrap the visibility of the bid control buttons.  -->
                             <ui:fragment
                                     rendered="#{auctionItem.showBidInput}">
-                                <!-- input for making a bid-->
-                                <h:inputText id="bid" size="6"
+                                <!-- input for making a bid, id must match h:messsages for attribute -->
+                                <h:inputText id="bid" size="8"
                                              value="#{auctionItem.bid}">
                                     <f:validator
                                             validatorId="auctionItemBidValidator"/>
