@@ -22,7 +22,9 @@
 package org.icefaces.demo.auction.view.validators;
 
 import org.icefaces.demo.auction.view.beans.AuctionItemBean;
+import org.icefaces.demo.auction.view.names.BeanNames;
 import org.icefaces.demo.auction.view.names.ParameterNames;
+import org.icefaces.demo.auction.view.util.FacesUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -31,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import java.util.PropertyResourceBundle;
 
 /**
  * Pretty simple validator that checks to see if the auction bid is within
@@ -47,9 +50,6 @@ public class BidValidator implements Validator {
     public static final int MAX_BID_INCREASE = 1000000;
     // max bid that can be mad, period.
     public static final long MAX_BID = 100000000;
-
-    public static final String ERROR_BID_LOW = "Bid declined, too low.";
-    public static final String ERROR_BID_HIGH = "Bid declined, too high.";
 
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object value)
             throws ValidatorException {
@@ -75,20 +75,24 @@ public class BidValidator implements Validator {
             throw new ValidatorException(message);
         }
 
+        // retrieve our message bundle from the context.
+        PropertyResourceBundle msgs = (PropertyResourceBundle)
+                        FacesUtils.getManagedBean(BeanNames.MSGS_BEAN);
+
         // we don't use the jsf message system as we are pushing and the messages
         // will be cleared on the next push. However we thought the event
         // to keep the invoke application from running.
         if (newBid <= originalBid) {
             // set the bean message holder.
             FacesMessage message = new FacesMessage();
-            message.setDetail(ERROR_BID_LOW);
+            message.setDetail(msgs.getString("auction.validator.bidLow"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         } else if (newBid >= MAX_BID &&
                 newBid - originalBid >= MAX_BID_INCREASE) {
             // set the bean message holder.
             FacesMessage message = new FacesMessage();
-            message.setDetail(ERROR_BID_HIGH);
+            message.setDetail(msgs.getString("auction.validator.bidHigh"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }

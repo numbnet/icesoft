@@ -32,5 +32,6 @@ public class BeanNames {
     public static final String AUCTION_SERVICE = "auctionServiceImpl";
     public static final String AUCTION_CONTROLLER = "auctionController";
     public static final String AUCTION_BEAN = "auctionBean";
+    public static final String MSGS_BEAN = "msgs";
 
 }

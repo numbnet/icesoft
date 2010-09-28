@@ -22,11 +22,14 @@
 package org.icefaces.demo.auction.view.converters;
 
 import org.icefaces.demo.auction.view.beans.AuctionItemBean;
+import org.icefaces.demo.auction.view.names.BeanNames;
+import org.icefaces.demo.auction.view.util.FacesUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import java.util.PropertyResourceBundle;
 
 /**
  * Converts a GregorianCalendar Object stored in a AuctionItem  to a simple
@@ -41,12 +44,15 @@ public class ExpiryDateConverter implements Converter {
 
     public String getAsString(FacesContext facesContext, UIComponent
             uiComponent, Object o) {
+
         if (o instanceof AuctionItemBean) {
             // convert the date and subtract the current date.
             AuctionItemBean auctionItemBean = (AuctionItemBean) o;
             long[] countDownTime = auctionItemBean.getTimeLeftBrokenDown();
             if (auctionItemBean.isExpired(countDownTime)) {
-                return "Expired";
+                PropertyResourceBundle msgs = (PropertyResourceBundle)
+                        FacesUtils.getManagedBean(BeanNames.MSGS_BEAN);
+                return msgs.getString("auction.converter.timeLeft.expired");
             }
             StringBuffer buf = new StringBuffer();
             if (0 != countDownTime[AuctionItemBean.DAY_COMPONENT]) {
@@ -69,7 +75,9 @@ public class ExpiryDateConverter implements Converter {
 
             return buf.toString();
         }
-        return "N/A";
+        PropertyResourceBundle msgs = (PropertyResourceBundle)
+                        FacesUtils.getManagedBean(BeanNames.MSGS_BEAN);
+        return msgs.getString("auction.converter.timeLeft.na");
     }
 
     /**
