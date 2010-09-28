@@ -37,7 +37,7 @@ ice.animation = {
 			node.addClass("default_display_value"); 
 			default_display_value = node.getStyle("display");
 			if("none" != default_display_value) {
-				console.info("default_display_value must be set to none, to register theme based animations");
+				//console.info("default_display_value must be set to none, to register theme based animations");
 				return;
 			}
 			
@@ -48,7 +48,7 @@ ice.animation = {
 					var display = node.getStyle("display");
 					if (display == "block") {
 						ice.animation.defaultAnimations[ice.animation.events[i]] = ice.animation.animations[j];
-						console.info(ice.animation.animations[j] + " registered for "+ ice.animation.events[i]);
+						//console.info(ice.animation.animations[j] + " registered for "+ ice.animation.events[i]);
 					}
 					node.removeClass(styleClass);
 				}
@@ -67,7 +67,7 @@ ice.animation = {
 			} else if (node._node.animation) {//backdoor for IE
 				animation = node._node.animation.getAnimation("transition");
 			} else {//none of the effect has been defined by the developer, return the theme default if any
-			    if (ice.animation.defaultAnimations[eventName]) {
+			    if (ice.animation.defaultAnimations[eventName]) { 
 					animation = ice.animation.register({name: ice.animation.defaultAnimations[eventName], event:eventName, node:'#'+ clientId});
 				}
 				 
@@ -126,8 +126,10 @@ ice.yui3.use(function(Y) {
 	ice.animation.loadDefaultAnims(Y);
 	
 	var _one = Y.one;
-	Y.one = function(id) {
-		id = id.replace(':', '\\:');
+	Y.one = function(id) { 
+		if (Y.Lang.isString(id)) {
+			id = id.replace(':', '\\:');
+		}
 		return _one(id);
 	}
 
@@ -239,6 +241,14 @@ ice.yui3.use(function(Y) {
 
 	function AnimBase(params) { 
 		AnimBase.superclass.constructor.apply(this, arguments); 
+		//console.info("initializing "+ this.effectName);
+		this.params = params;
+		this.cloneNode = Y.one(params.node).cloneNode(false);
+		this.cloneNode.setStyle("display", "none");
+		var ancestor= Y.one(this.params["node"]).ancestor();
+		ancestor.insert(this.cloneNode); 					
+		this.setInitialValues();
+ 		ancestor.removeChild(this.cloneNode); 	
 		this.chain = new chain(this);
 		this.toggleReverse = false;
 		this.containerId = null;
@@ -307,19 +317,42 @@ ice.yui3.use(function(Y) {
 				effectStyleElement = ice.util.createHiddenField(_form, effectStyleElementId);
 			  }
 			  effectStyleElement.value = document.getElementById(sourceId).style.cssText ;			
+		},
+		
+		setInitialValues: function() {
+			//console.info('setInitialValues is not overriden by the '+ this.effectName);
+		},
+
+		setInitialValue: function (param, prop, initVal, validator) {
+			if (!this.params[param]) {
+					this.cloneNode.addClass(this.effectName + '_'+  param);
+					var val = this.cloneNode.getStyle(prop);
+					this.cloneNode.removeClass(this.effectName + '_'+  param);
+					//console.info(this.effectName + '_'+  param + "  : "+ val);
+					if (!val) {
+						val = initVal;
+					}
+					//console.info('looking for validator ');
+					if (validator) {
+					   
+						val = validator(val);
+					}
+					//console.info('setting color '+ val );
+					var obj = {};
+					obj[prop] = val;
+					this.set(param, obj);
+			}
 		}
-	
 	});
 	
 
 	
 	// create a Fade effect
 	function Fade(params) {//console.info('Fade constructor ');
+		//must be set before calling super class constructor
+		this.effectName = "fade";
 		Fade.superclass.constructor.apply(this, arguments);  
-		this.effectName = "Fade";
- 		this.set("to", {opacity:0});
-		this.set("from", {opacity:1});
-		this.cycle = false;
+ 		this.cycle = false;
 		this.on("prerequisite", function() {
 			if (this.get("reverse")) {
 				this.get("node").setStyle("visibility", "visible");
@@ -329,21 +362,46 @@ ice.yui3.use(function(Y) {
 	}
 	
 	Y.extend(Fade, AnimBase , { 
-
+		setInitialValues: function() {
+			this.setInitialValue("to", "opacity", 0);
+			this.setInitialValue("from", "opacity", 1);
+		}	
 	});
 	
 	
 	// create a Highlight effect
 	function Highlight(params) {//console.info('Highlight constructor ');
+		this.effectName = "highlight";
 		Highlight.superclass.constructor.apply(this, arguments);  
-		this.effectName = "Highlight";
- 		this.set("to", {backgroundColor:"red"});
-		this.set("from", {backgroundColor:"yellow"});
-		this.set("iterations", 1);
+ 		this.set("iterations", 1);
 		this.cycle = false;
 	}
 	
 	Y.extend(Highlight, AnimBase , { 
+		setInitialValues: function() {
+			
+			this.setInitialValue("to", "backgroundColor", "red");
+
+			var node = this.params["node"];
+			this.setInitialValue("from", "backgroundColor", "yellow", function(val) {
+			   //console.info('executring validator');
+			   if (val.toLowerCase() == "transparent") {
+				   val = "white"; //most common case
+				   node = Y.one(node);
+				   pnode = node.ancestor(function(ele) {  
+					if(ele.getStyle("backgroundColor").toLowerCase() != "transparent") 
+						return true;
+					else
+						return false;
+				   }, true);
+				   if(pnode) {
+					  val = pnode.getStyle("backgroundColor");
+				   }
+			   }
+			    
+				return val;
+			});
+		}	
 	});
 	//------ Register Fade effect
 	
@@ -354,8 +412,11 @@ ice.yui3.use(function(Y) {
 
 
 ice.animation.register = function(args, callback) {
-		   var effect = new ice.yui3.effects[args.name.toLowerCase()](args); 
+		   var effect  = null;
 		   ice.yui3.use( function(Y) { 
+		        //console.info("registering "+ args.name);
+				effect = new ice.yui3.effects[args.name.toLowerCase()](args); 
+				
 	//---- Animation plugin
 				var node = Y.one(args.node);
 				 
@@ -364,7 +425,8 @@ ice.animation.register = function(args, callback) {
 				}
 
 			    anim = node.animation.add(args, effect);
-		   });
+			 
+		   }); 
 		   return effect;
 
 }
