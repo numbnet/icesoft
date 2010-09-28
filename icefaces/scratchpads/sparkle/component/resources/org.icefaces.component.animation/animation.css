@@ -1,35 +1,17 @@
-.FadeTo {
-  opacity:0;
-}
 
-.FadeFrom {
-  opacity:1;
-}
-
-.AppearTo {
-  opacity:1;
-  
-}
-
-.AppearFrom {
-  opacity:0;
-  display:block;
-  visibility:visible;
-}
-
-.HighlightTo {
-  background-color:green; 
-}
-
-.HighlightFrom {
-  background-color:#EDF5FF; 
+.fade_from {
+	opacity:1;
 }
 
 
-.myTab .HighlightTo{
-  background-color:#c1cdc1; 
+.fade_to {
+	opacity:0;
 }
 
-.myTab2 .HighlightTo{
-  background-color:#838b83; 
+.highlight_from {
+
+}
+
+.highlight_to {
+	background-color:gray;
 }
