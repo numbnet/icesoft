@@ -34,7 +34,7 @@
     <!-- set the polling interval for the auction IntervalPushRenderer -->
     <context-param>
         <param-name>org.icefaces.sample.auction.interval</param-name>
-        <param-value>5000</param-value>
+        <param-value>1000</param-value>
     </context-param>
 
     <context-param>
