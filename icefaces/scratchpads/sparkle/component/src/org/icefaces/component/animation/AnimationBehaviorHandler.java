@@ -17,16 +17,21 @@ import javax.faces.view.facelets.TagException;
 public class AnimationBehaviorHandler extends BehaviorHandler{
     private final TagAttribute run;
     private final TagAttribute name;
+    private final TagAttribute to;
+    private final TagAttribute from;
+    private final TagAttribute easing;
+    private final TagAttribute iterations;
     private final TagAttribute effectObject;
     
  	public AnimationBehaviorHandler(BehaviorConfig config) {
 		super(config);
 		run = this.getAttribute("run");
 		name = this.getAttribute("name");
+		to = this.getAttribute("to");
+		from = this.getAttribute("from");
+		easing = this.getAttribute("easing");
+		iterations = this.getAttribute("iterations");
 		effectObject = this.getAttribute("effectObject");
-		System.out.println("EffectBehaviorHandler createdddd");
-		
-
 	}
  
  
@@ -79,8 +84,10 @@ public class AnimationBehaviorHandler extends BehaviorHandler{
     	setAttribute(context, run, effectBehavior, Boolean.class);
     	setAttribute(context, effectObject, effectBehavior, Effect.class);   
     	setAttribute(context, name, effectBehavior, String.class);      	
-    	
-    	
+    	setAttribute(context, to, effectBehavior, String.class);
+    	setAttribute(context, from, effectBehavior, String.class);   
+    	setAttribute(context, easing, effectBehavior, String.class);        	
+    	setAttribute(context, iterations, effectBehavior, Integer.class);
     	return effectBehavior;
     }
  

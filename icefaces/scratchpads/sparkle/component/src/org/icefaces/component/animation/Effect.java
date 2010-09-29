@@ -59,7 +59,11 @@ public abstract class Effect{
 							Boolean bolValue = Boolean.parseBoolean(val);
 							json.entry(prop, bolValue);
 						} else {
-							json.entry(prop, value.toString());
+							if (val.startsWith("{")) {
+								json.entry(prop, value.toString(), true);
+							} else {
+								json.entry(prop, value.toString());
+							}
 						}
 					}						
 				}
