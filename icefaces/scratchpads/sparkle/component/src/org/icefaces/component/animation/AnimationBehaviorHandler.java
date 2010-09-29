@@ -21,6 +21,7 @@ public class AnimationBehaviorHandler extends BehaviorHandler{
     private final TagAttribute from;
     private final TagAttribute easing;
     private final TagAttribute iterations;
+    private final TagAttribute duration;    
     private final TagAttribute effectObject;
     
  	public AnimationBehaviorHandler(BehaviorConfig config) {
@@ -32,6 +33,7 @@ public class AnimationBehaviorHandler extends BehaviorHandler{
 		easing = this.getAttribute("easing");
 		iterations = this.getAttribute("iterations");
 		effectObject = this.getAttribute("effectObject");
+		duration = this.getAttribute("duration");
 	}
  
  
@@ -88,6 +90,7 @@ public class AnimationBehaviorHandler extends BehaviorHandler{
     	setAttribute(context, from, effectBehavior, String.class);   
     	setAttribute(context, easing, effectBehavior, String.class);        	
     	setAttribute(context, iterations, effectBehavior, Integer.class);
+    	setAttribute(context, duration, effectBehavior, Double.class);
     	return effectBehavior;
     }
  
