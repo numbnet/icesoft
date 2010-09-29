@@ -40,7 +40,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
 	private String from;
 	private String easing;
 	private Integer iterations;
-	
+	private Double duration;
 	public String getTo() {
 		return to;
 	}
@@ -73,6 +73,14 @@ public class AnimationBehavior extends ClientBehaviorBase{
 		this.iterations = iterations;
 	}
 
+	public Double getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Double duration) {
+		this.duration = duration;
+	}
+	
 	public String getStyle() {
 		return style;
 	}
@@ -189,6 +197,10 @@ public class AnimationBehavior extends ClientBehaviorBase{
     	if (getIterations() != null && !effect.getProperties().containsKey("iterations")) {
     		effect.getProperties().put("iterations", getIterations());
     	}
+    	if (getDuration() != null && !effect.getProperties().containsKey("duration")) {
+    		effect.getProperties().put("duration", getDuration());
+    	}
+    	
     	if (getEasing() != null && !effect.getProperties().containsKey("easing")) {
     		effect.getProperties().put("easing", getEasing());
     	} 
@@ -292,6 +304,9 @@ public class AnimationBehavior extends ClientBehaviorBase{
         		} else if ("iterations".equals(name)) {
         			Integer iterations = ((Integer)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
         			setIterations(iterations);
+        		} else if ("duration".equals(name)) {
+        			Double duration= ((Double)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			setDuration(duration);
         		}
             }
         } else {
@@ -331,6 +346,8 @@ public class AnimationBehavior extends ClientBehaviorBase{
 			setEasing((String)value);
 		} else if ("iterations".equals(propertyName)) {
 			setIterations((Integer)value);
+		} else if ("duration".equals(propertyName)) {
+			setDuration((Double)value);
 		}
     }   
  
