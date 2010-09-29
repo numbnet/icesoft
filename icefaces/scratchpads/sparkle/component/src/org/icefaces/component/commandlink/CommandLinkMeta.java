@@ -30,7 +30,8 @@ import org.icefaces.component.baseMeta.UICommandMeta;
     @ResourceDependency(library = "yui/2_8_1", name = "logger/logger-min.js"),               
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="commandlink.js",library="org.icefaces.component.commandlink")
+    @ResourceDependency(name="commandlink.js",library="org.icefaces.component.commandlink"),
+	@ResourceDependency(name="commandlink.css",library="org.icefaces.component.commandlink")
 })
 
   public class CommandLinkMeta extends UICommandMeta {
