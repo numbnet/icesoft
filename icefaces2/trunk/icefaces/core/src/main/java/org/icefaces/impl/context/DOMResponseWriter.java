@@ -443,7 +443,10 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public Document getOldDocument() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return DOMResponseWriter.getOldDocument(FacesContext.getCurrentInstance());
+    }
+
+    public static Document getOldDocument(FacesContext facesContext) {
         if (!EnvUtils.isCompressDOM(facesContext)) {
             return (Document) WindowScopeManager.lookupWindowScope(facesContext).get(OLD_DOM);
         }

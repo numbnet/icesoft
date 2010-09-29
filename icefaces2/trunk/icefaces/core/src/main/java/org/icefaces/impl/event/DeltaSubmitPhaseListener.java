@@ -22,6 +22,7 @@
 
 package org.icefaces.impl.event;
 
+import org.icefaces.impl.context.DOMResponseWriter;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -87,7 +88,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         Map previousParameters = (Map) formAttributes.get(PreviousParameters);
         if (previousParameters == null) {
             //todo: use a public constant to lookup old DOM document
-            Document oldDOM = (Document) viewRoot.getAttributes().get("org.icefaces.old-dom");
+            Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
             previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
         }
         final Map parameterValuesMap = new HashMap(previousParameters);
