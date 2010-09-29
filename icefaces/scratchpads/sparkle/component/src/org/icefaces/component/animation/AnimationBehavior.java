@@ -1,6 +1,5 @@
 package org.icefaces.component.animation;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,15 +8,13 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import javax.faces.component.behavior.FacesBehavior;
  
 import javax.faces.context.FacesContext;
 
-import org.icefaces.component.utils.ScriptWriter;
 @FacesBehavior("org.icefaces.animation.Animation")
 @ResourceDependencies({
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
@@ -37,10 +34,45 @@ public class AnimationBehavior extends ClientBehaviorBase{
 	private String effectsLib = "ice.animation.";
 	private boolean usingStyleClass;
 	private boolean run;
-	Effect effect = new Fade();
+	Effect effect = new Anim();
 	private String style;
+	private String to;
+	private String from;
+	private String easing;
+	private Integer iterations;
 	
-	 
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
+	public String getEasing() {
+		return easing;
+	}
+
+	public void setEasing(String easing) {
+		this.easing = easing;
+	}
+
+	public Integer getIterations() {
+		return iterations;
+	}
+
+	public void setIterations(Integer iterations) {
+		this.iterations = iterations;
+	}
+
 	public String getStyle() {
 		return style;
 	}
@@ -59,9 +91,6 @@ public class AnimationBehavior extends ClientBehaviorBase{
 
     }
 
-
-    
- 
 	public void setName(String name) {
 		use(name);
         clearInitialState();
@@ -87,7 +116,6 @@ public class AnimationBehavior extends ClientBehaviorBase{
     
     public boolean isRun() {
         return (Boolean) eval("run", run);
-
     }
     
     private void run(FacesContext facesContext, UIComponent uiComponent) {
@@ -100,13 +128,16 @@ public class AnimationBehavior extends ClientBehaviorBase{
 //				e.printStackTrace();
 //			}
     }
+    
 	private void use(String name) {
-		if ("Fade".equals(name)) {
+		if ("Fade".equalsIgnoreCase(name)) {
 			effect = new Fade();
-		} else if ("Appear".equals(name)) {
+		} else if ("Appear".equalsIgnoreCase(name)) {
 			effect = new Appear();
-		} else if ("Highlight".equals(name)) {
+		} else if ("Highlight".equalsIgnoreCase(name)) {
 			effect = new Highlight();
+		} else if("Anim".equalsIgnoreCase(name)) {
+			effect = new Anim();
 		}
 	}
 	
@@ -140,14 +171,27 @@ public class AnimationBehavior extends ClientBehaviorBase{
         return usingStyleClass;
 
     }
-
-   
     
     public String getScript(ClientBehaviorContext behaviorContext) {
     	return getScript(behaviorContext, true);
     }
 
     public String getScript(ClientBehaviorContext behaviorContext, boolean run) {
+    	
+    	if ("Anim".equals(effect.getName())) {
+        	if (getTo() != null && !effect.getProperties().containsKey("to")) {
+        		effect.getProperties().put("to", getTo());
+        	}
+        	if (getFrom() != null && !effect.getProperties().containsKey("from")) {
+        		effect.getProperties().put("from", getFrom());
+        	} 
+    	}
+    	if (getIterations() != null && !effect.getProperties().containsKey("iterations")) {
+    		effect.getProperties().put("iterations", getIterations());
+    	}
+    	if (getEasing() != null && !effect.getProperties().containsKey("easing")) {
+    		effect.getProperties().put("easing", getEasing());
+    	} 
     	if (!effect.getProperties().containsKey("event")) {
     		effect.getProperties().put("event", behaviorContext.getEventName());
     	}
@@ -168,6 +212,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
     	call.append("(");
     	call.append(effect.getPropertiesAsJSON());
     	call.append(");");
+    	System.out.println(call.toString());
     	return call.toString();
     }
     
@@ -212,19 +257,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
         return ((bindings == null) ? null : bindings.get(name));
     }
 
-    /**
-     * <p class="changed_added_2_0">Sets the {@link ValueExpression} 
-     * used to calculate the value for the specified property name.</p>
-     * </p>
-     *
-     * @param name Name of the property for which to set a
-     *  {@link ValueExpression}
-     * @param binding The {@link ValueExpression} to set, or <code>null</code>
-     *  to remove any currently set {@link ValueExpression}
-     *
-     * @throws NullPointerException if <code>name</code>
-     *  is <code>null</code>
-     */
+ 
     public void setValueExpression(String name, ValueExpression binding) {
 
         if (name == null) {
@@ -237,14 +270,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
                 setLiteralValue(name, binding);
             } else {
                 if (bindings == null) {
-
-                    // We use a very small initial capacity on this HashMap.
-                    // The goal is not to reduce collisions, but to keep the
-                    // memory footprint small.  It is very unlikely that an
-                    // an AjaxBehavior would have more than 1 or 2 bound 
-                    // properties - and even if more are present, it's okay
-                    // if we have some collisions - will still be fast.
-                    bindings = new HashMap<String, ValueExpression>(6,1.0f);
+                    bindings = new HashMap<String, ValueExpression>();
                 }
 
                 bindings.put(name, binding);
@@ -254,6 +280,18 @@ public class AnimationBehavior extends ClientBehaviorBase{
         		} else if ("name".equals(name)) {
         			String effectName = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
         			use(effectName);
+        		} else if ("to".equals(name)) {
+        			String to = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			setTo(to);
+        		} else if ("from".equals(name)) {
+        			String from = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			setFrom(from);
+        		} else if ("easing".equals(name)) {
+        			String easing = ((String)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			setEasing(easing);
+        		} else if ("iterations".equals(name)) {
+        			Integer iterations = ((Integer)binding.getValue(FacesContext.getCurrentInstance().getELContext()));
+        			setIterations(iterations);
         		}
             }
         } else {
@@ -285,6 +323,14 @@ public class AnimationBehavior extends ClientBehaviorBase{
 			run = (Boolean)value;
 		} else if ("name".equals(propertyName)){
 			setName((String)value);
+		} else if ("to".equals(propertyName)) {
+			setTo((String)value);
+		} else if ("from".equals(propertyName)) {
+			setFrom((String)value);
+		} else if ("easing".equals(propertyName)) {
+			setEasing((String)value);
+		} else if ("iterations".equals(propertyName)) {
+			setIterations((Integer)value);
 		}
     }   
  

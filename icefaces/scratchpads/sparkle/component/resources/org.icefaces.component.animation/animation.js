@@ -240,8 +240,12 @@ ice.yui3.use(function(Y) {
 	
 
 	function AnimBase(params) { 
+
 		AnimBase.superclass.constructor.apply(this, arguments); 
-		//console.info("initializing "+ this.effectName);
+	    if (params['easing']) { alert('setting easing ');
+			//TODO check for valid names
+			this.set("easing", Y.Easing[params['easing']]);
+		}		
 		this.params = params;
 		this.cloneNode = Y.one(params.node).cloneNode(false);
 		this.cloneNode.setStyle("display", "none");
@@ -403,10 +407,28 @@ ice.yui3.use(function(Y) {
 			});
 		}	
 	});
+	
+	
+
+	
+	// create a Highlight effect
+	function Anim(params) {//console.info('Highlight constructor ');
+		this.effectName = "Anim";
+		Anim.superclass.constructor.apply(this, arguments);  
+	}
+	
+	Y.extend(Anim, AnimBase , { 
+	
+	});
+	
 	//------ Register Fade effect
+	
+	
 	
 	ice.yui3.effects["fade"] = Fade;
 	ice.yui3.effects["highlight"] = Highlight;	
+	ice.yui3.effects["anim"] = Anim;	
+	
  	
 });
 
