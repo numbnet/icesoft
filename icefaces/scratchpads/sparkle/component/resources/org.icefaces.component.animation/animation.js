@@ -242,7 +242,7 @@ ice.yui3.use(function(Y) {
 	function AnimBase(params) { 
 
 		AnimBase.superclass.constructor.apply(this, arguments); 
-	    if (params['easing']) { alert('setting easing ');
+	    if (params['easing']) {  
 			//TODO check for valid names
 			this.set("easing", Y.Easing[params['easing']]);
 		}		
