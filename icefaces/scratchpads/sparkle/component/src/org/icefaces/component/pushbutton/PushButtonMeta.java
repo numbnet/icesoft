@@ -30,7 +30,8 @@ import org.icefaces.component.baseMeta.UICommandMeta;
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
-    @ResourceDependency(name="pushbutton.js",library="org.icefaces.component.pushbutton")
+    @ResourceDependency(name="pushbutton.js",library="org.icefaces.component.pushbutton"),
+	@ResourceDependency(name="pushbutton.css",library="org.icefaces.component.pushbutton")
 })
         
 public class PushButtonMeta extends UICommandMeta {
