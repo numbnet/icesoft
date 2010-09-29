@@ -53,8 +53,8 @@ public class PushDataRefreshListener implements PhaseListener {
         // check to see if this request is a push generated
         ExternalContext externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
-        boolean pushRequest = externalContext.getRequestParameterMap().get(
-                ParameterNames.ICE_SUBMIT_TYPE).equals(ICE_SUBMIT_TYPE_PUSH);
+        String submitType = externalContext.getRequestParameterMap().get(ParameterNames.ICE_SUBMIT_TYPE);
+        boolean pushRequest = ICE_SUBMIT_TYPE_PUSH.equals(submitType);
 
         // client users action driven requests will have "clientRequest"
         // request parameter, server pushes won't have the param
