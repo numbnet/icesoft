@@ -259,18 +259,11 @@ if (!window.ice.icefaces) {
             f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
         };
 
-        //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
-        namespace.onAfterUpdate(function(updates) {
-            var viewState;
-            var forms = inject(updates.getElementsByTagName('update'), [], function(result, update) {
+        function findUpdatedForms(updates) {
+            return inject(updates.getElementsByTagName('update'), [], function(result, update) {
                 var id = update.getAttribute('id');
-                if (id == 'javax.faces.ViewState') {
-                    viewState = update.firstChild.data;
-                } else {
-                    var e = lookupElementById(id);
-                    if (!e) {
-                        return result;//ignore update
-                    }
+                var e = lookupElementById(id);
+                if (e) {
                     if (toLowerCase(e.nodeName) == 'form') {
                         append(result, e);//the form is the updated element
                     } else {
@@ -281,14 +274,43 @@ if (!window.ice.icefaces) {
 
                 return result;
             });
+        }
 
-            if (viewState) {
-                //add hidden input field to the updated forms that don't have it
+        var previousFormParameters = HashTable();
+        namespace.onBeforeUpdate(function(updates) {
+            each(findUpdatedForms(updates), function(form) {
+                if (deltaSubmit(form)) {
+                    putAt(previousFormParameters, form.id, form.previousParameters);
+                }
+            });
+        });
+
+        //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
+        namespace.onAfterUpdate(function(updates) {
+            var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
+                return update.getAttribute('id') == 'javax.faces.ViewState';
+            });
+
+            if (viewStateUpdate) {
+                var viewState = viewStateUpdate.firstChild.data;
+                var forms = findUpdatedForms(updates);
                 each(forms, function(form) {
+                    //add hidden input field to the updated forms that don't have it
                     if (!form['javax.faces.ViewState']) {
                         appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                     }
+
+                    //recalculate previous parameters for the updated forms if necessary
+                    if (deltaSubmit(form)) {
+                        var previousParameters = at(previousFormParameters, form.id);
+                        if (previousParameters) {
+                            form.previousParameters = previousParameters;
+                        } else {
+                            form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
+                        }
+                    }
                 });
+                previousFormParameters = HashTable();
             }
         });
 
