@@ -21,9 +21,6 @@ public class UIDataMeta extends UIComponentBaseMeta {
                                        "display the entire set of available rows" )
     private int rows;
 
-//    @SomeNewAnnotation(defaultValue="", tlddoc="" )
-//    private Map<String, SavedState> saved;
-
     @Property(tlddoc="The DataModel instance representing the data to which this component is bound, or a collection of " +
                      "data for which a DataModel instance is synthesized" )
     private Object value; 
@@ -31,6 +28,4 @@ public class UIDataMeta extends UIComponentBaseMeta {
     @Property( tlddoc="The request-scope attribute (if any) under which the data object for the current row will be exposed when iterating" )
     private String var;
 
-//    @SomeNewAnnotation(defaultValue="0", tlddoc="The last id to be displayed. I don't think this is exposed publicly" )
-//    private Integer lastId;
 }
