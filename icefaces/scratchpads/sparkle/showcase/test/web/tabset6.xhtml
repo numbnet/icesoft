@@ -18,7 +18,7 @@
 </h:head>
 <h:body>
     <h:panelGroup styleClass=" yui-skin-sam">
-       <ice:tabPanel>
+       <ice:tabPanel id="myTabSet">
             <ice:tab label="Tab 1" >
                 <h:form>
 			<h:inputText value="#{tabBean.txt1}"/>    
@@ -39,8 +39,11 @@
              	
                 </h:form>                 	
             </ice:tab>
-        </ice:tabPanel> 
-        
+        </ice:tabPanel>
+ 
+        <h:form>
+			<ice:tabSetController for="myTabSet" />
+		</h:form>
         <h:panelGrid>
         	<h:outputText value="#{tabBean.txt1}"/> 
         	<h:outputText value="#{tabBean.txt2}"/> 
