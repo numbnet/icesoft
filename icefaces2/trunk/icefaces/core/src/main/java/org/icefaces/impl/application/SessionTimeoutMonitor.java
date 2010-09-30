@@ -44,6 +44,9 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
     }
 
     public boolean isResourceRequest(FacesContext context) {
+        if (!EnvUtils.isStrictSessionTimeout(context))  {
+            return handler.isResourceRequest(context);
+        }
         final ExternalContext externalContext = context.getExternalContext();
         Map sessionMap = externalContext.getSessionMap();
         Long lastAccessTime = (Long) sessionMap.get(SessionTimeoutMonitor.class.getName());

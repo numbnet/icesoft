@@ -44,6 +44,7 @@ public class EnvUtils {
     public static String COMPRESS_RESOURCES = "org.icefaces.compressResources";
     public static String DELTA_SUBMT = "org.icefaces.deltaSubmit";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
+    public static String STRICT_SESSION_TIMEOUT = "org.icefaces.strictSessionTimeout";
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -239,6 +240,19 @@ public class EnvUtils {
     }
 
     /**
+     * Returns the value of the context parameter org.icefaces.strictSessionTimeout.  The default value is false and indicates
+     * that ICEfaces should not interfere with container-managed session timeout.  Setting this value to true indicates that 
+     * ICEfaces should attempt to enforce the configured session timeout by ignoring intervening push activity.  Only 
+     * user events result in extending the session lifetime.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.strictSessionTimeout.  The default is false.
+     */
+    public static boolean isStrictSessionTimeout(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).strictSessionTimeout;
+    }
+
+    /**
      * Returns the value of the context parameter org.icefaces.windowScopeExpiration.  The default value is 1000 milliseconds
      * and indicates the length of time window-scoped values remain valid in the session after a reload or redirect occurs.
      * This allows for postbacks that might occur quickly after a reload or redirect to successfully retrieve the relevant
@@ -355,6 +369,7 @@ class EnvConfig {
     boolean deltaSubmit;
     String sessionExpiredRedirectURI;
     boolean standardFormSerialization;
+    boolean strictSessionTimeout;
     long windowScopeExpiration;
 
     public EnvConfig(Map initMap) {
@@ -374,6 +389,7 @@ class EnvConfig {
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, "null", info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
+        strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
 
         log.info("ICEfaces Configuration: \n" + info);
