@@ -43,6 +43,7 @@ public class EnvUtils {
     public static String COMPRESS_DOM = "org.icefaces.compressDOM";
     public static String COMPRESS_RESOURCES = "org.icefaces.compressResources";
     public static String DELTA_SUBMT = "org.icefaces.deltaSubmit";
+    public static String LAZY_PUSH = "org.icefaces.lazyPush";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
     public static String STRICT_SESSION_TIMEOUT = "org.icefaces.strictSessionTimeout";
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
@@ -203,7 +204,7 @@ public class EnvUtils {
 
     /**
      * Returns the value of the context parameter org.icefaces.deltaSubmit.  The default value is false and indicates that
-     * the delta submit features is not currently enabled.  When delta submit is enable, form submission is done in a way that
+     * the delta submit features is not currently enabled.  When delta submit is enabled, form submission is done in a way that
      * minimizes what is sent across the wire.
      *
      * @param facesContext The current FacesContext instance used to access the application map.
@@ -211,6 +212,28 @@ public class EnvUtils {
      */
     public static boolean isDeltaSubmit(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).deltaSubmit;
+    }
+
+    /**
+     * Returns the value of the context parameter org.icefaces.lazyPush.  The default value is true and indicates that
+     * ICEpush will be initially lazily.  In other words, ICEpush will not activate and open a blocking connection
+     * until the first push request is made.  By setting lazyPush to false, ICEpush will be automatically activated for
+     * each ICEfaces page.
+     *
+     * This context parameter is application-wide and works together with the lazyPush attribute of the ICEfaces
+     * configuration tag <ice:config> so that ICEpush can be set to activate lazily on a per-page basis.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.lazyPush.  The default is true.
+     */
+    public static boolean isLazyPush(FacesContext facesContext) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        Object lazyPush = viewMap.get(LAZY_PUSH);
+        if (null == lazyPush) {
+            return EnvConfig.getEnvConfig(facesContext).lazyPush;
+        }
+        return (Boolean.TRUE.equals(lazyPush));
     }
 
     /**
@@ -367,6 +390,8 @@ class EnvConfig {
     boolean compressResources;
     String connectionLostRedirectURI;
     boolean deltaSubmit;
+    boolean lazyPush;
+    boolean pushActive;
     String sessionExpiredRedirectURI;
     boolean standardFormSerialization;
     boolean strictSessionTimeout;
@@ -387,6 +412,7 @@ class EnvConfig {
         compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, true, info);
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, "null", info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
+        lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, "null", info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);

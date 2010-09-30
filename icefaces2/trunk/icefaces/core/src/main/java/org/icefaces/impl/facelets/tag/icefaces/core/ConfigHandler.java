@@ -40,12 +40,14 @@ public class ConfigHandler extends TagHandler {
     private final TagAttribute render;
     private final TagAttribute ariaEnabled;
     private final TagAttribute blockUIOnSubmit;
+    private final TagAttribute lazyPush;
 
     public ConfigHandler(TagConfig config) {
         super(config);
         this.render = this.getAttribute("render");
         this.ariaEnabled = this.getAttribute("ariaEnabled");
         this.blockUIOnSubmit = this.getAttribute("blockUIOnSubmit");
+        this.lazyPush = this.getAttribute("lazyPush");
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
@@ -67,6 +69,11 @@ public class ConfigHandler extends TagHandler {
         if (blockUIOnSubmit != null) {
             viewMap.put(EnvUtils.BLOCK_UI_ON_SUBMIT,
                     new Boolean(blockUIOnSubmit.getValue()));
+        }
+
+        if (lazyPush != null) {
+            viewMap.put(EnvUtils.LAZY_PUSH,
+                    new Boolean(lazyPush.getValue()));
         }
 
         //TODO: ICE-5675 remove when JSF 2.0 Partial State Saving fixed

@@ -22,6 +22,8 @@
 
 package org.icefaces.impl.application;
 
+import org.icefaces.util.EnvUtils;
+
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -30,6 +32,12 @@ import java.util.Map;
 public class LazyPushManager {
 
     public static boolean enablePush(FacesContext context, String viewID) {
+        //If push is configured to be non-lazy either through the context param or the
+        //ice:config attribute, then we enable it.
+        if(!EnvUtils.isLazyPush(context)){
+            return true;
+        }
+
         State state = getState(context);
         if (state.noOfRegistrations > 0) {
             return true;
