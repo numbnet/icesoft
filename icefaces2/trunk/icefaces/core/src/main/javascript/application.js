@@ -159,6 +159,7 @@ if (!window.ice.icefaces) {
                     postSynchronously(client, form.action, function(query) {
                         addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
                         addNameValue(query, 'ice.window', namespace.window);
+                        addNameValue(query, 'javax.faces.ViewState', form['javax.faces.ViewState'].value);
                         each(viewIDs, curry(addNameValue, query, 'ice.view'));
                     }, FormPost, noop);
                 } catch (e) {
