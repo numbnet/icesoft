@@ -329,6 +329,8 @@
 		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
 			<filelist dir="${resources}">
 				<file name="yui/2_8_1/tabview/assets/skins/sam/tabview-skin.css" />
+				<file name="yui/2_8_1/button/assets/skins/sam/button-skin.css" />
+				<file name="yui/2_8_1/menu/assets/skins/sam/menu-skin.css" />
 			</filelist>
 		</concat>
 		

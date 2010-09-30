@@ -31,7 +31,8 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
-    @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton")    
+    @ResourceDependency(name="radiobutton.js",library="org.icefaces.component.radiobutton"),
+	@ResourceDependency(name="radiobutton.css",library="org.icefaces.component.radiobutton")
 })
 
 public class ButtonGroupMeta extends UISelectOneMeta {
