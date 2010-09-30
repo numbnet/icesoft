@@ -223,6 +223,8 @@
 		
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src\org\icefaces\component\menubutton\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src\org\icefaces\component\pushbutton\skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.checkbox" dir="src\org\icefaces\component\checkbox\skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.commandlink" dir="src\org\icefaces\component\commandlink\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.slider" dir="src\org\icefaces\component\slider\skins" skin="sam" />
@@ -230,6 +232,7 @@
 		<mapnosprites library="org.icefaces.component.inputFiles" name="src\org\icefaces\component\inputFiles\skins" skin="sam" />
 		
 		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.checkbox" dir="src\org\icefaces\component\checkbox\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.commandlink" dir="src\org\icefaces\component\commandlink\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\skins" skin="rime" />
@@ -265,6 +268,8 @@
 		-->
 		<includeresources dir="src\org\icefaces\component\menubutton\skins" name="menubutton" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\pushbutton\skins" name="button" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\checkbox\skins" name="checkbox" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\radiobutton\skins" name="radiobutton" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\commandlink\skins" name="commandlink" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="sam" />
@@ -274,6 +279,8 @@
 		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\inputFiles\skins" name="inputfiles" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\checkbox\skins" name="checkbox" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\radiobutton\skins" name="radiobutton" skin="rime" />
 		
 		<!-- <includeresources dir="src\org\icefaces\component\commandlink\skins" name="commandlink" skin="rime" /> --> 
 
@@ -290,6 +297,8 @@
 		-->
 		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="sam" />
+		<mapsprites library="org.icefaces.component.checkbox" name="checkbox" skin="sam" />
+		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.commandlink" name="commandlink" skin="sam" />
 		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="sam" />
@@ -300,7 +309,8 @@
 		<mapsprites library="org.icefaces.component.commandlink" name="calendar" skin="rime" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
 		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="rime" />
-
+		<mapsprites library="org.icefaces.component.checkbox" name="checkbox" skin="rime" />
+		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="rime" />
 		
 		<!-- copy sprite images to the sprites resource library -->
 		<copy todir="${resources}/${sprites.lib}">
