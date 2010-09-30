@@ -151,9 +151,11 @@ public class TaglibMerge {
                 if (handlerClass.endsWith("IceComponentHandler")) {
                     fileBContents.replace(spos + tagTag.length(), epos, "org.icefaces.facelets.tag.icefaces.core.IceComponentHandler");
                     fixCount++;
+                } else if (handlerClass.endsWith("TabChangeListenerHandler")) {
+                    fileBContents.replace(spos + tagTag.length(), epos, "org.icefaces.facelets.tag.icefaces.core.TabChangeListenerHandler");
                 } else {
                     System.out.println("Leaving well enough alone on: " + handlerClass);
-                }
+                }                     
             }
             spos = epos + endTag.length();
         }
