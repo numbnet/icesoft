@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
-    static final String SESSION_EXPIRY_EXTENSION = ":se";
     private static final Logger Log = Logger.getLogger(SessionTimeoutMonitor.class.getName());
     private ResourceHandler handler;
 
@@ -44,7 +43,7 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
     }
 
     public boolean isResourceRequest(FacesContext context) {
-        if (!EnvUtils.isStrictSessionTimeout(context))  {
+        if (!EnvUtils.isStrictSessionTimeout(context)) {
             return handler.isResourceRequest(context);
         }
         final ExternalContext externalContext = context.getExternalContext();

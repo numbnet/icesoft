@@ -23,7 +23,6 @@ package org.icefaces.impl.application;
 
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
-import org.icepush.PushContext;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
@@ -38,9 +37,6 @@ import javax.faces.event.PreDestroyCustomScopeEvent;
 import javax.faces.event.ScopeContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.Externalizable;
 import java.io.IOException;
@@ -59,7 +55,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     public static final String ScopeName = "window";
     private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
-    private static final String SESSION_EXPIRY_EXTENSION = SessionTimeoutMonitor.SESSION_EXPIRY_EXTENSION;
 
     private ResourceHandler wrapped;
 
@@ -192,23 +187,12 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     public static synchronized void disposeWindow(FacesContext context, String id) {
         State state = getState(context);
-        ExternalContext externalContext = context.getExternalContext();
         //TODO remove Servlet dependency
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        String sessionID = session.getId();
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
-        }
-
-        try {
-            ServletContext servletContext = (ServletContext) externalContext.getContext();
-            PushContext pushContext = PushContext.getInstance(servletContext);
-            pushContext.removeGroupMember(sessionID + SESSION_EXPIRY_EXTENSION, id + SESSION_EXPIRY_EXTENSION);
-        } catch (NoClassDefFoundError e) {
-            Log.info("ICEpush library missing. Session expiry notification disabled.");
         }
     }
 
@@ -247,23 +231,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         }
 
         private void activate(State state) {
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            //TODO fix the Servlet dependency here
-            HttpServletRequest request = (HttpServletRequest) context.getRequest();
-            HttpServletResponse response = (HttpServletResponse) context.getResponse();
-            HttpSession session = (HttpSession) context.getSession(true);
             state.windowScopedMaps.put(id, this);
-
-            try {
-                String sessionID = session.getId();
-                PushContext pushContext = PushContext.getInstance(session.getServletContext());
-                //this call will set the browser ID cookie
-                pushContext.createPushId(request, response);
-                pushContext.addGroupMember(sessionID + SESSION_EXPIRY_EXTENSION,
-                        id + SESSION_EXPIRY_EXTENSION);
-            } catch (NoClassDefFoundError e) {
-                Log.info("ICEpush library missing. Session expiry notification disabled.");
-            }
         }
 
         private void disactivate(State state) {
