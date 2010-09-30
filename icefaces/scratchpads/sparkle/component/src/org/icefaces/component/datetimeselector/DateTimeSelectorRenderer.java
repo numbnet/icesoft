@@ -160,6 +160,8 @@ public class DateTimeSelectorRenderer extends Renderer {
         String clientId = component.getClientId(context);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         String dateString = paramMap.get(clientId + "_value");
+        
+        if (null == dateString) return;
         DateTimeConverter converter = dateTimeSelector.resolveDateTimeConverter(context);
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, dateTimeSelector.resolveLocale(context));
