@@ -149,14 +149,18 @@ if (!window.ice.icefaces) {
             };
         }
 
+        var client = Client();
+
         function disposeWindow(viewID) {
             return function() {
                 var form = document.getElementById(viewID);
                 try {
                     debug(logger, 'dispose window and associated views ' + viewIDs);
-                    //there's no point in cleaning up the appended input elements since the page will be unloaded 
-                    each(viewIDs, curry(appendHiddenInputElement, form, 'ice.view'));
-                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.dispose.window', render: '@all', 'ice.window': namespace.window});
+                    postSynchronously(client, form.action, function(query) {
+                        addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
+                        addNameValue(query, 'ice.window', namespace.window);
+                        each(viewIDs, curry(addNameValue, query, 'ice.view'));
+                    }, FormPost, noop);
                 } catch (e) {
                     warn(logger, 'failed to notify window disposal', e);
                 }
