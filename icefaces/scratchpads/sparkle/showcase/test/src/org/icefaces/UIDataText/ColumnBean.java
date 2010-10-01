@@ -19,13 +19,9 @@ import javax.faces.component.UIComponent;
  *
  * @since 1.5
  */
-@ManagedBean (name="columnBean")
+@ManagedBean (name="styleMasterBean")
 @SessionScoped
 public class ColumnBean implements Serializable {
-
-	private String label = "ActionListener";
-
-    private String myStyle;
 
     private String STYLES[] = {
             "text-decoration: overline;",
@@ -36,12 +32,19 @@ public class ColumnBean implements Serializable {
      };
 
     List styleData = new ArrayList();
+    List styleData2 = new ArrayList();
+    List styleData3 = new ArrayList();
+    
     private int styleIndex;
+    private int styleIndex2;
+    private int styleIndex3;
 
     public ColumnBean(){
         for (int idx = 0; idx < STYLES.length; idx ++ ) {
             System.out.println("Adding new style: " + STYLES[idx]);
             styleData.add( new StyleHolder( STYLES[idx] ) );
+            styleData2.add( new StyleHolder( STYLES[idx] ) );
+            styleData3.add( new StyleHolder( STYLES[idx] ) );
         }
    }
     
@@ -49,29 +52,51 @@ public class ColumnBean implements Serializable {
 
         UIComponent uic = e.getComponent();
         CommandLink cl = (CommandLink) uic;
-        //cl.setStyle("black_line");
         int index = styleIndex++ % styleData.size();
         String newStyle = styleData.get( index ).toString();
-
-        System.out.println("--> Setting style to: " + newStyle + " at " + index);
         cl.setStyle( newStyle );
+        System.out.println("------ STYLE DATA -------");
+        dump(styleData);
     }
 
+    public void incrementStyleIndex2(ActionEvent e) {
 
-    public String getMyStyle() {
-        return myStyle;
+        UIComponent uic = e.getComponent();
+        CommandLink cl = (CommandLink) uic;
+        int index = styleIndex2++ % styleData2.size();
+        String newStyle = styleData2.get( index ).toString();
+        cl.setStyle( newStyle );
+        System.out.println("------ STYLE DATA 2-------");
+        dump(styleData2); 
     }
 
-    public void setMyStyle(String style ) {
-        myStyle = style;
-    }
+    public void incrementStyleIndex3(ActionEvent e) {
 
-    public String getStyleClass() {
-        return styleData.get(0).toString();
+        UIComponent uic = e.getComponent();
+        CommandLink cl = (CommandLink) uic;
+        int index = styleIndex3++ % styleData3.size();
+        String newStyle = styleData3.get( index ).toString();
+        cl.setStyle( newStyle );
+         System.out.println("------ STYLE DATA 3  -------");
+        dump(styleData3); 
     }
 
     public List getStyleHolderData() {
         return styleData;
+    }
+
+    public List getStyleHolderData2() {
+        return styleData2;
+    }
+
+    public List getStyleHolderData3() {
+        return styleData3;
+    }
+
+    public void dump(List al) {
+        for (int idx = 0; idx < al.size(); idx ++  ) {
+            System.out.println("   " + al.get(idx) + " idx: " + idx);  
+        }
     }
 }
 
