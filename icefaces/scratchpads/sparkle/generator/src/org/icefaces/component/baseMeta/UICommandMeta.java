@@ -15,11 +15,4 @@ public class UICommandMeta extends UIComponentBaseMeta {
                      " Request Values phase instead of Process Validations phase", defaultValue="false"  )
     private boolean immediate;
 
-    // @SomeNewAnnotation (tlddoc=""   )
-    private Object methodBindingActionListener;
-
-//    @SomeNewAnnotatiopn (tlddoc="a MethodExpression expression that identifies an Application Action method that takes no parameters and returns a" +
-//                     "String."   )
-    private String actionExpression; 
-
 }
