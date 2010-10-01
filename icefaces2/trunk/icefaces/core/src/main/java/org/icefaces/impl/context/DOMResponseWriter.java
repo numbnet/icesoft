@@ -430,7 +430,7 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     public void saveOldDocument() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isCompressDOM(facesContext)) {
-            WindowScopeManager.lookupWindowScope(facesContext).put(OLD_DOM, document);
+            facesContext.getViewRoot().getViewMap().put(OLD_DOM, document);
             return;
         }
         byte[] data;
@@ -439,22 +439,25 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         serializer.setOutputStream(out);
         serializer.serialize(document);
         data = out.toByteArray();
-        WindowScopeManager.lookupWindowScope(facesContext).put(OLD_DOM, data);
+        facesContext.getViewRoot().getViewMap().put(OLD_DOM, document);
     }
 
     public Document getOldDocument() {
-        return DOMResponseWriter.getOldDocument(FacesContext.getCurrentInstance());
+        return DOMResponseWriter.getOldDocument(
+                FacesContext.getCurrentInstance());
     }
 
     public static Document getOldDocument(FacesContext facesContext) {
         if (!EnvUtils.isCompressDOM(facesContext)) {
-            return (Document) WindowScopeManager.lookupWindowScope(facesContext).get(OLD_DOM);
+            return (Document) facesContext.getViewRoot()
+                    .getViewMap().get(OLD_DOM);
         }
         Document document = DOMUtils.getNewDocument();
         //FastInfoset does not tolerate stray xmlns declarations
         document.setStrictErrorChecking(false);
         try {
-            byte[] data = (byte[]) WindowScopeManager.lookupWindowScope(facesContext).get(OLD_DOM);
+            byte[] data = (byte[]) facesContext.getViewRoot()
+                    .getViewMap().get(OLD_DOM);
             DOMDocumentParser parser = new DOMDocumentParser();
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             parser.parse(document, in);
