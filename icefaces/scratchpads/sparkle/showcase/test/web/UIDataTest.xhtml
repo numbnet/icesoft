@@ -24,7 +24,7 @@
      <h:panelGroup>
         <h2>initialValue defined from a ValueExpression. </h2>
         <div class="yui-skin-sam yui3-skin-sam">
-           <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
+           <h:dataTable id="calTable" value="#{styleMasterBean.styleHolderData}" var="styleHolder">
              <h:column>
                  <ice:linkButton  style="#{styleHolder.style}"  actionListener="#{styleMasterBean.incrementStyleIndex}">
                      This is a link</ice:linkButton>
@@ -37,9 +37,9 @@
      <h:panelGroup >
         <h2>These links have state held in the Row data</h2>
         <div class="yui-skin-sam yui3-skin-sam">
-           <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
+           <h:dataTable id="calTable2" value="#{styleMasterBean.styleHolderData2}" var="styleHolder2">
              <h:column>
-                 <ice:linkButton  style="text-decoration: line-through;" actionListener="#{styleMasterBean.incrementStyleIndex}">
+                 <ice:linkButton  style="text-decoration: line-through;" actionListener="#{styleMasterBean.incrementStyleIndex2}">
                      This is a link to </ice:linkButton>
              </h:column>
            </h:dataTable>
@@ -50,9 +50,9 @@
      <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
         <h2>No initial value. Should get the default defined in the component (if any)</h2>
         <div class="yui-skin-sam">
-           <h:dataTable id="calTable" value="#{columnBean.styleHolderData}" var="styleHolder">
+           <h:dataTable id="calTable3" value="#{styleMasterBean.styleHolderData3}" var="styleHolder3">
              <h:column>
-                 <ice:linkButton  label="check me" actionListener="#{styleMasterBean.incrementStyleIndex}">
+                 <ice:linkButton  label="check me" actionListener="#{styleMasterBean.incrementStyleIndex3}">
                      This is a link to </ice:linkButton>
              </h:column>
            </h:dataTable>
