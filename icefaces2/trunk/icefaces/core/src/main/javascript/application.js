@@ -259,6 +259,26 @@ if (!window.ice.icefaces) {
             });
         };
 
+        namespace.enablePartialSubmit = function(id) {
+            var f = document.getElementById(id);
+            var doSubmit = function(ev)  {
+                var e = $event(ev, f);
+                var element = triggeredBy(e);
+                var type = toLowerCase(element.type);
+                if (type == 'submit')  {
+                    return;
+                }
+                ice.se(e, element);
+            }
+            if (f.addEventListener) {
+                f.addEventListener('blur', doSubmit, true);
+                f.addEventListener('change', doSubmit, true);
+            }
+            else {
+                f.onfocusout = doSubmit;
+            }
+        };
+
         namespace.calculateInitialParameters = function(id) {
             var f = document.getElementById(id);
             f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
