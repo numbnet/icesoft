@@ -26,7 +26,6 @@ public class CommandLinkRenderer extends Renderer {
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = link.getClientId();
             if (clientId.equals(source)) {
-                System.out.println("commandLink pressed is "+source+" for clientId="+clientId);
                 try {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
                 } catch (Exception e) {}
