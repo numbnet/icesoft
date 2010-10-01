@@ -28,12 +28,6 @@
                 version="2.0">
     <namespace>http://icefaces.org/core</namespace>
     <tag>
-        <tag-name>push</tag-name>
-        <component>
-            <component-type>ice.push</component-type>
-        </component>
-    </tag>
-    <tag>
         <tag-name>config</tag-name>
         <handler-class>org.icefaces.impl.facelets.tag.icefaces.core.ConfigHandler</handler-class>
         <attribute>
@@ -61,5 +55,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>        
+    <tag>
+        <tag-name>partialSubmit</tag-name>
+        <component>
+            <component-type>javax.faces.Output</component-type>
+            <renderer-type>org.icefaces.partialSubmit</renderer-type>
+        </component>
+    </tag>
     </tag>
 </facelet-taglib>
