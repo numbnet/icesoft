@@ -22,9 +22,20 @@
 
 package org.icefaces.component.inputFiles;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 import java.io.Serializable;
 
 public interface InputFilesStatus extends Serializable {
     public boolean isSuccess();
-    public String getMessageFormat();
+
+    /**
+     * @param facesContext FacesContext
+     * @param inputFiles InputFiles
+     * @param fe InputFilesInfo.FileEntry
+     * @return FacesMessage
+     */
+    public FacesMessage getFacesMessage(FacesContext facesContext,
+            UIComponent inputFiles, InputFilesInfo.FileEntry fe);
 }

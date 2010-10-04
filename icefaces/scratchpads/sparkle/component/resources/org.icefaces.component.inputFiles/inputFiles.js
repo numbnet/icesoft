@@ -73,10 +73,10 @@ var ice_inputFiles = {
         //alert("formOnsubmit()  begin");
         
         var context = {};
-        context.sourceid = "";        // "fileForm:commandSubmit"; //TODO Not sure how to get this
+        context.sourceid = "";             //TODO Not sure how to get this
         context.formid = formElem.id;
-        context.render = "@all";      // "fileForm:testGrid";
-        var context_execute = "@all"; // "fileForm:testGrid";
+        context.render = "@all";
+        var context_execute = formElem.id; // Don't do "@all" or else FacesMessagePhaseListener doesn't work
         
         var oldEncoding;
         if (formElem.encoding) {

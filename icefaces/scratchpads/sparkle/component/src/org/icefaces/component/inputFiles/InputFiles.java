@@ -23,6 +23,7 @@
 package org.icefaces.component.inputFiles;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
@@ -31,10 +32,8 @@ import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import java.util.Map;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.text.MessageFormat;
 
 public class InputFiles extends InputFilesBase {
     private static final String INFO_KEY = "org.icefaces.component.inputFiles.infos";
@@ -42,6 +41,22 @@ public class InputFiles extends InputFilesBase {
     
     public InputFiles() {
         super();
+    }
+    
+    public void setInfo(InputFilesInfo info) {
+        try {
+            super.setInfo(info);
+        }
+        catch(RuntimeException e) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            if (facesContext.isProjectStage(ProjectStage.Development) ||
+                facesContext.isProjectStage(ProjectStage.UnitTest)) {
+                System.out.println("Problem setting info property on " +
+                    "InputFiles component: " + e);
+                e.printStackTrace();
+            }
+            throw e;
+        }
     }
     
     public InputFilesInfo getInfo() {
@@ -155,9 +170,12 @@ public class InputFiles extends InputFilesBase {
      */
     static InputFilesInfo retrieveInfoFromEarlierInLifecycle(
             FacesContext facesContext, String clientId) {
+        InputFilesInfo info = null;
         Map<String,InputFilesInfo> clientId2Info = (Map<String,InputFilesInfo>)
             facesContext.getAttributes().get(INFO_KEY);
-        InputFilesInfo info = clientId2Info.get(clientId);
+        if (clientId2Info != null) {
+            info = clientId2Info.get(clientId);
+        }
         return info;
     }
 
@@ -171,43 +189,28 @@ public class InputFiles extends InputFilesBase {
     }
     
     void addMessagesFromInfo(FacesContext facesContext, String clientId, InputFilesInfo info) {
+//System.out.println("InputFiles.addMessagesFromInfo  info: " + info);
         if (info != null) {
-            Locale locale = facesContext.getViewRoot().getLocale();
             ArrayList<InputFilesInfo.FileEntry> files = info.getFiles();
             for (InputFilesInfo.FileEntry fe : files) {
 //System.out.println("InputFiles.addMessagesFromInfo    FileEntry: " + fe);
                 InputFilesStatus status = fe.getStatus();
-                FacesMessage.Severity sev = status.isSuccess() ?
-                    FacesMessage.SEVERITY_INFO : FacesMessage.SEVERITY_ERROR;
-                String msgFmt = status.getMessageFormat();
-                /*
-                // Add these to the params
-                getMaxTotalSize()
-                getMaxFileSize()
-                getMaxFileCount()
-                isRequired()
-                
-                // Use these to get the message format, if the status doesn't provide one
-                getLabel()
-                getMaxTotalSizeMessage()
-                getMaxFileSizeMessage()
-                getMaxFileCountMessage()
-                getRequiredMessage()                
-                */
-                MessageFormat format = new MessageFormat(msgFmt, locale);
-                Object[] params = new Object[] {
-                    fe.getFileName(),
-                    fe.getContentType(),
-                    fe.getFile(),
-                    fe.getSize()
-                };
-                String summary = format.format(params);
-                String detail = summary;
-                FacesMessage fm = new FacesMessage(sev, summary, detail);
+                FacesMessage fm = status.getFacesMessage(facesContext, this, fe);
 //System.out.println("InputFiles.addMessagesFromInfo    FacesMessage: " + fm);
                 facesContext.addMessage(clientId, fm);
             }
         }
+    }
+
+    /**
+     * @return The label property, if specified, else the clientId
+     */
+    public String getFacesMessageLabel() {
+        String label = getLabel();
+        if (label != null && label.length() > 0) {
+            return label;
+        }
+        return getClientId();
     }
     
     @Override
