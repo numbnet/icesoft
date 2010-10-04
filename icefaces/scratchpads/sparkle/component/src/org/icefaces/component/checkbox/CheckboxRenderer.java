@@ -9,41 +9,45 @@ import java.util.*;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
 import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.component.utils.BasicInputRenderer;
 import org.icefaces.util.EnvUtils;
 
 public class CheckboxRenderer extends Renderer {
+	public CheckboxRenderer(){
+		super();
+	}
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        if (requestParameterMap.containsKey("ice.event.captured")) {
-            Checkbox checkbox = (Checkbox) uiComponent;
-            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-            String clientId = uiComponent.getClientId();
-            //as of code review June 16th, just use the hidden field for update in every instance
-  /*          if (clientId.equals(source)) {
-				Boolean submittedValue = Boolean.valueOf((String.valueOf(requestParameterMap.get(clientId+"_span"+"_value"))));
+    	//only decode if component is rendered
+    	if (uiComponent.isRendered()){
+//	    	renderParamsNotNull(facesContext, uiComponent);
+	        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+	        if (requestParameterMap.containsKey("ice.event.captured")) {
+	            Checkbox checkbox = (Checkbox) uiComponent;
+	            String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
+	            String clientId = uiComponent.getClientId();	
+	            System.out.println("clientId="+clientId+" not same as source="+source);
+	           	//update with hidden field
 				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-				System.out.println("\t\tRenderer:- submittedValue="+submittedValue+" HIDDEN value="+hiddenValue);
-				checkbox.setSubmittedValue(submittedValue);
-            }else{ */
-            	System.out.println("clientId="+clientId+" not same as source="+source);
-            	//update with hidden field
-				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-				System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
-				Boolean submittedValue= Boolean.valueOf(hiddenValue);
+				System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);				
+		//		Boolean submittedValue= Boolean.valueOf(hiddenValue);
+				boolean submittedValue = isChecked(hiddenValue);
 				checkbox.setSubmittedValue(submittedValue);           	
-          //  }
-        }
+	        }
+    	}
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+
+	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
+      if (uiComponent.isRendered()){
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Checkbox checkbox = (Checkbox) uiComponent;
@@ -90,11 +94,12 @@ public class CheckboxRenderer extends Renderer {
 			writer.writeAttribute(HTML.SRC_ATTR, image, null);
 			writer.endElement(HTML.IMG_ELEM);
 		}
-
+      }
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
+      if (uiComponent.isRendered()){
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
@@ -151,6 +156,7 @@ public class CheckboxRenderer extends Renderer {
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);        		  
         
        writer.endElement(HTML.DIV_ELEM);
+      }
     }
     
     private String findCheckboxLabel(Checkbox checkbox){
@@ -173,6 +179,25 @@ public class CheckboxRenderer extends Renderer {
 			image=checkbox.getImage();
 		}
 		return image;
+    }
+    /**
+     * support similar return values as jsf component
+     * so can use strings true/false, on/off, yes/no
+     * @param hiddenValue
+     * @return
+     */
+    private boolean isChecked(String hiddenValue) {
+		return hiddenValue.equalsIgnoreCase("on") ||
+		       hiddenValue.equalsIgnoreCase("yes") ||
+		       hiddenValue.equalsIgnoreCase("true");
+	}
+    
+    //forced converter support. It's either a boolean or string.   
+    @Override
+    public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
+    		                        Object submittedValue) throws ConverterException{
+    	if (submittedValue instanceof Boolean)return submittedValue;
+    	else return Boolean.valueOf(submittedValue.toString());
     }
     
 }
