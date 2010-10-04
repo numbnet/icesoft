@@ -5,6 +5,8 @@
  * existing skin, then leave the core styles below comented out.
  */
 
+@import url('#{resource['yui/3_1_1/slider/assets/skins/sam/slider-skin.css']}');
+ 
 /* ----- BEGIN CORE STYLING ----- */
 
 /*
