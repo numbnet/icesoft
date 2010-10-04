@@ -39,12 +39,16 @@ public class InputFilesRenderer extends Renderer {
         InputFilesConfig config = inputFiles.storeConfigForNextLifecycle(facesContext, clientId);
         
         ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement("div", uiComponent);
+		writer.writeAttribute("class", "iceInpFile", "class");
+        
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
         writer.writeAttribute("name", config.getIdentifier(), "clientId");
-		writer.writeAttribute("class", "iceInpFile", "class");
         writer.endElement("input");
+        
+        writer.endElement("div");
     }
     
     @Override
