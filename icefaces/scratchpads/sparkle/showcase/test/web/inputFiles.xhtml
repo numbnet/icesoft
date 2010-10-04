@@ -7,7 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ice="http://www.icefaces.org/icefaces/components">
-<f:view>
+<f:view locale="#{fileBean.locale}">
 <h:head>
     <title>Input Files</title>
     <h:outputScript name="jsf.js" library="javax.faces" />
@@ -303,6 +303,43 @@
             
         </h:panelGrid>
     </h:form>
+
+    <h:form id="form14">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form14  Localised FacesMessage(s)" />
+            <h:selectOneMenu id="selLocale" value="#{fileBean.locale}">
+                <f:selectItems value="#{fileBean.locales}"/>
+                <f:ajax execute="@this" render="@all"/>
+            </h:selectOneMenu>
+            
+    	    <h:outputText value="Form14  FacesMessage(s)" />
+            <h:messages/>
+            
+            <h:outputText value="Form14  maxTotalSize 50" />
+    	    <ice:inputFiles label="Total50"
+                            maxTotalSize="50"
+                            maxTotalSizeMessage="TAG: maxTotalSizeMessage"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+            
+            <h:outputText value="Form14  maxFileSize 50" />
+    	    <ice:inputFiles label="File50"
+                            maxFileSize="50"
+                            maxFileSizeMessage="TAG: maxFileSize"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+            
+            <h:outputText value="Form14  maxFileCount 0" />
+    	    <ice:inputFiles label="Count0"
+                            maxFileCount="0"
+                            maxFileCountMessage="TAG: maxFileCount"
+                            inputFilesListener="#{fileBean.inputFilesListener}"/>
+            
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+            <h:commandButton id="btnForm" value="Submit Form">
+                <f:ajax execute="@form" render="@all"/>
+            </h:commandButton>
+        </h:panelGrid>
+    </h:form>
+
 	<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
 </h:body>
 </f:view>

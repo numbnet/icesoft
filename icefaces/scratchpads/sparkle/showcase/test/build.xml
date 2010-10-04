@@ -21,6 +21,9 @@
                 </fileset>
             </classpath>
         </javac>
+        <copy todir="${classes.dir}/org/icefaces/demo/resources">
+            <fileset dir="src/org/icefaces/demo/resources" />
+        </copy>
     </target>
 
     <target name="war" depends="compile">
