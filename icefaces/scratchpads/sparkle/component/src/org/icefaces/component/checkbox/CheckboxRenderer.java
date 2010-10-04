@@ -16,7 +16,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
-import org.icefaces.component.utils.BasicInputRenderer;
+
 import org.icefaces.util.EnvUtils;
 
 public class CheckboxRenderer extends Renderer {
