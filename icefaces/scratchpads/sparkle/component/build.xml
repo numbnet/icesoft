@@ -238,6 +238,8 @@
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.inputFiles" name="src\org\icefaces\component\inputFiles\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.slider" dir="src\org\icefaces\component\slider\skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.pushbutton" dir="src\org\icefaces\component\pushbutton\skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.menubutton" dir="src\org\icefaces\component\menubutton\skins" skin="rime" />
 
 	</target>
 	
@@ -283,6 +285,8 @@
 		<includeresources dir="src\org\icefaces\component\checkbox\skins" name="checkbox" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\radiobutton\skins" name="radiobutton" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\menubutton\skins" name="menubutton" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\pushbutton\skins" name="button" skin="rime" />
 		
 		<!-- <includeresources dir="src\org\icefaces\component\commandlink\skins" name="commandlink" skin="rime" /> --> 
 
@@ -314,6 +318,8 @@
 		<mapsprites library="org.icefaces.component.checkbox" name="checkbox" skin="rime" />
 		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="rime" />
+		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="rime" />
+		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="rime" />
 		
 		<!-- copy sprite images to the sprites resource library -->
 		<copy todir="${resources}/${sprites.lib}">
