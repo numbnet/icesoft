@@ -70,6 +70,35 @@ public class InputFilesInfo implements Serializable, Cloneable {
         return pre + mid + post;
     }
     
+    public boolean equals(Object ob) {
+        if (!(ob instanceof InputFilesInfo)) {
+            return false;
+        }
+        InputFilesInfo info = (InputFilesInfo) ob;
+        if (this.viaCallback != info.viaCallback) {
+            return false;
+        }
+        if ((this.fileEntries == null && info.fileEntries != null) ||
+            (this.fileEntries != null && info.fileEntries == null)) {
+            return false;
+        }
+        if (this.fileEntries != null) {
+            int sz = this.fileEntries.size();
+            int isz = info.fileEntries.size();
+            if (sz != isz) {
+                return false;
+            }
+            for (int i = 0; i < sz; i++) {
+                FileEntry fe = this.fileEntries.get(i);
+                FileEntry ife = info.fileEntries.get(i);
+                if (!fe.equals(ife)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     void addCompletedFileEntry(FileEntry fileEntry) {
         fileEntries.add(fileEntry);
         totalSize += fileEntry.getSize();

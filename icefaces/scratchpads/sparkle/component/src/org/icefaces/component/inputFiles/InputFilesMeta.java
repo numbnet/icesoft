@@ -45,9 +45,11 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     @ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
 })
 public class InputFilesMeta extends UIComponentBaseMeta {
+    /*
     @Property(defaultValue="false",
         tlddoc="Default is false, means uses full submit.")
     private Boolean singleSubmit;
+    */
 
     @Property(defaultValue="false", tlddoc="When immediate is true, the " +
         "inputFilesListener will be invoked at the end of the " +
@@ -107,7 +109,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
         "over-written.")
     private Boolean useOriginalFilename;
 
-    @Property
+    @Property(tlddoc="Maintains the results of file upload operations.")
     private InputFilesInfo info;
 
     //TODO

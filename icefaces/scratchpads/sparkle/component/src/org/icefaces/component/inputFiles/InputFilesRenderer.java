@@ -26,12 +26,7 @@ import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
-import javax.faces.application.FacesMessage;
-import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.text.MessageFormat;
 
 public class InputFilesRenderer extends Renderer {
     @Override
@@ -54,22 +49,26 @@ public class InputFilesRenderer extends Renderer {
     
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        InputFiles inputFiles = (InputFiles) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
 //System.out.println("InputFilesRenderer.decode  clientId: " + clientId);
         InputFilesInfo info = InputFiles.retrieveInfoFromEarlierInLifecycle(facesContext, clientId);
         // If no new files have been uploaded, leave the old upload info in-place.
         if (info != null) {
 //System.out.println("InputFilesRenderer.decode    info: " + info);
-            InputFiles inputFiles = (InputFiles) uiComponent;
             inputFiles.setInfo(info);
+//System.out.println("InputFilesRenderer.decode      info ve: " + uiComponent.getValueExpression("info"));
             
             InputFilesEvent event = new InputFilesEvent(inputFiles);
             inputFiles.queueEvent(event);
-            
-            // ICE-5750 deals with re-adding FacesMessages from previous
-            // lifecycles, so this component only deals with initially adding,
-            // not re-adding.
-            inputFiles.addMessagesFromInfo(facesContext, clientId, info);
         }
+        
+        // ICE-5750 deals with re-adding faces messages for components that
+        // have no re-executed. Components that are executing should re-add
+        // their faces messages themselves.
+        if (info == null) {
+            info = inputFiles.getInfo();
+        }
+        inputFiles.addMessagesFromInfo(facesContext, clientId, info);
     }
 }

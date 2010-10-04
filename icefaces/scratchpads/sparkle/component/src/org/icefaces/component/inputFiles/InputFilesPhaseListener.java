@@ -41,6 +41,7 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.component.UIComponent;
+import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.List;
@@ -57,6 +58,7 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class InputFilesPhaseListener implements PhaseListener {
     public void afterPhase(PhaseEvent phaseEvent) {
@@ -142,7 +144,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                 }
             });
             Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[8*1024];
             Map<String,InputFilesInfo> clientId2Info = new HashMap<String,InputFilesInfo>(6);
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
@@ -165,6 +167,9 @@ public class InputFilesPhaseListener implements PhaseListener {
                 }
             }
             catch(Exception e) {
+                FacesMessage fm = InputFilesStatuses.PROBLEM_READING_MULTIPART.
+                    getFacesMessage(phaseEvent.getFacesContext(), null, null);
+                phaseEvent.getFacesContext().addMessage(null, fm);
                 System.out.println("Problem: " + e);
                 e.printStackTrace();
             }
@@ -299,80 +304,50 @@ public class InputFilesPhaseListener implements PhaseListener {
 //System.out.println("File    availableTotalSize: " + availableTotalSize);
                 long availableFileSize = config.getMaxFileSize();
 //System.out.println("File    availableFileSize: " + availableFileSize);
-                
-                String folder = null;
-                // absolutePath takes precedence over relativePath
-                if (config.getAbsolutePath() != null && config.getAbsolutePath().length() > 0) {
-                    folder = config.getAbsolutePath();
-//System.out.println("File    Using absolutePath: " + folder);
+                int maxFileCount = config.getMaxFileCount();
+//System.out.println("File    maxFileCount: " + maxFileCount);
+                if (info.getFiles().size() >= maxFileCount) {
+                    status = InputFilesStatuses.MAX_FILE_COUNT_EXCEEDED;
                 }
                 else {
-                    folder = CoreUtils.getRealPath(facesContext, config.getRelativePath());
-//System.out.println("File    Using relativePath: " + folder);
-                }
-                if (folder == null) {
-//System.out.println("File    folder is null");
-                    folder = "";
-                }
-
-                if (config.isUseSessionSubdir()) {
-                    String sessionId = CoreUtils.getSessionId(facesContext);
-                    if (sessionId != null && sessionId.length() > 0) {
-                        String FILE_SEPARATOR = System.getProperty("file.separator");
-                        if (folder != null && folder.trim().length() > 0) {
-                            folder = folder + FILE_SEPARATOR;
-                        }
-                        folder = folder + sessionId;
-//System.out.println("File    Using sessionSubdir: " + folder);
-                    }
-                }
-
-                File folderFile = new File(folder);
-                if (!folderFile.exists())
-                    folderFile.mkdirs();
-                if (config.isUseOriginalFilename()) {
-                    file = new File(folderFile, fileName);
-//System.out.println("File    original  file: " + file);
-                }
-                else {
-                    file = File.createTempFile("ice_file_", null, folderFile);
-//System.out.println("File    sanitise  file: " + file);
-                }
+                    String folder = calculateFolder(facesContext, config);
+                    file = makeFile(config, folder, fileName);
 //System.out.println("File    file: " + file);
-                InputStream in = item.openStream();
-                OutputStream output = new FileOutputStream(file);
-                try {
-                    boolean overQuota = false;
-                    while (true) {
-                        int read = in.read(buffer);
-                        if (read < 0) {
-                            break;
-                        }
-                        fileSizeRead += read;
-                        if (!overQuota) {
-                            if (fileSizeRead > availableFileSize) {
-                                overQuota = true;
-                                status = InputFilesStatuses.MAX_FILE_SIZE_EXCEEDED;
+                    InputStream in = item.openStream();
+                    OutputStream output = new FileOutputStream(file);
+                    try {
+                        boolean overQuota = false;
+                        while (true) {
+                            int read = in.read(buffer);
+                            if (read < 0) {
+                                break;
                             }
-                            else if (fileSizeRead > availableTotalSize) {
-                                overQuota = true;
-                                status = InputFilesStatuses.MAX_TOTAL_SIZE_EXCEEDED;
-                            }
+                            fileSizeRead += read;
                             if (!overQuota) {
-                                output.write(buffer, 0, read);
+                                if (fileSizeRead > availableFileSize) {
+                                    overQuota = true;
+                                    status = InputFilesStatuses.MAX_FILE_SIZE_EXCEEDED;
+                                }
+                                else if (fileSizeRead > availableTotalSize) {
+                                    overQuota = true;
+                                    status = InputFilesStatuses.MAX_TOTAL_SIZE_EXCEEDED;
+                                }
+                                if (!overQuota) {
+                                    output.write(buffer, 0, read);
+                                }
                             }
                         }
-                    }
 //System.out.println("File    fileSizeRead: " + fileSizeRead);
 //if (overQuota)
 //  System.out.println("File    overQuota  status: " + status);
-                    if (status == InputFilesStatuses.UPLOADING) {
-                        status = InputFilesStatuses.SUCCESS;
+                        if (status == InputFilesStatuses.UPLOADING) {
+                            status = InputFilesStatuses.SUCCESS;
+                        }
                     }
-                }
-                finally {
-                    output.flush();
-                    output.close();
+                    finally {
+                        output.flush();
+                        output.close();
+                    }
                 }
             }
             else { // If no file name specified
@@ -402,6 +377,55 @@ public class InputFilesPhaseListener implements PhaseListener {
 //System.out.println("File    Added completed file");
         }
 //System.out.println("^^^^^^^^^^^^^^^");
+    }
+    
+    protected static String calculateFolder(
+            FacesContext facesContext, InputFilesConfig config) {
+        String folder = null;
+        // absolutePath takes precedence over relativePath
+        if (config.getAbsolutePath() != null && config.getAbsolutePath().length() > 0) {
+            folder = config.getAbsolutePath();
+//System.out.println("File    Using absolutePath: " + folder);
+        }
+        else {
+            folder = CoreUtils.getRealPath(facesContext, config.getRelativePath());
+//System.out.println("File    Using relativePath: " + folder);
+        }
+        if (folder == null) {
+//System.out.println("File    folder is null");
+            folder = "";
+        }
+
+        if (config.isUseSessionSubdir()) {
+            String sessionId = CoreUtils.getSessionId(facesContext);
+            if (sessionId != null && sessionId.length() > 0) {
+                String FILE_SEPARATOR = System.getProperty("file.separator");
+                if (folder != null && folder.trim().length() > 0) {
+                    folder = folder + FILE_SEPARATOR;
+                }
+                folder = folder + sessionId;
+//System.out.println("File    Using sessionSubdir: " + folder);
+            }
+        }
+        return folder;
+    }
+    
+    protected static File makeFile(
+            InputFilesConfig config, String folder, String fileName)
+            throws IOException {
+        File file = null;
+        File folderFile = new File(folder);
+        if (!folderFile.exists())
+            folderFile.mkdirs();
+        if (config.isUseOriginalFilename()) {
+            file = new File(folderFile, fileName);
+//System.out.println("File    original  file: " + file);
+        }
+        else {
+            file = File.createTempFile("ice_file_", null, folderFile);
+//System.out.println("File    sanitise  file: " + file);
+        }
+        return file;
     }
 
     public PhaseId getPhaseId() {
