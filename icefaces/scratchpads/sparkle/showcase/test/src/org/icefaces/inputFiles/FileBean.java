@@ -9,13 +9,48 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
+import javax.faces.model.SelectItem;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Iterator;
 
 @ManagedBean(name="fileBean")
 @SessionScoped
 public class FileBean {
+    
+    private String locale;
+    public String getLocale() {
+        if (locale == null) {
+            Locale lo = FacesContext.getCurrentInstance().getApplication().getDefaultLocale();
+            if (lo == null) {
+                lo = Locale.getDefault();
+            }
+            locale = lo.getLanguage(); 
+        }
+        return locale;
+    }
+    public void setLocale(String locale) { this.locale = locale; }
+    
+    private SelectItem[] locales;
+    public SelectItem[] getLocales() {
+        if (locales == null) {
+            ArrayList<Locale> list = new ArrayList<Locale>();
+            Iterator<Locale> it = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
+            while (it.hasNext()) {
+                Locale locale = it.next();
+                list.add(locale);
+            }
+            int sz = list.size();
+            locales = new SelectItem[sz];
+            for (int i = 0; i < sz; i++) {
+                locales[i] = new SelectItem(list.get(i).getLanguage(), list.get(i).getLanguage());
+            }
+        }
+        return locales;
+    }
+    
     private String regularText = "";
     public String getRegularText() { return regularText; }
     public void setRegularText(String t) { regularText = t; }
