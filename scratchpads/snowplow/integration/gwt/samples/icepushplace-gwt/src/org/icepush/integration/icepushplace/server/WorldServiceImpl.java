@@ -190,11 +190,22 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	 * @see org.icepush.integration.icepushplace.client.WorldService.smartUpdateUser
 	 */
 	@Override
-	public User smartUpdateUser(String oldRegion, User user) throws IllegalArgumentException {
+	public User smartUpdateUser(boolean needUpdate, String oldRegion, User user) throws IllegalArgumentException {
 		if (user != null) {
-			Boolean returnStatus = updateUser(user);
+		    Boolean returnStatus = Boolean.TRUE;
+		    
+		    // Check if we need to perform an update call
+		    if (needUpdate) {
+		        // Use the old region instead of any changed value
+		        // This will ensure we update where the user CURRENTLY is (ie: pre move), instead of where they WILL be (ie: post move)
+                String newRegion = user.getRegion();
+                user.setRegion(oldRegion);
+                returnStatus = updateUser(user);
+                user.setRegion(newRegion);
+            }
 			
 			if (returnStatus) {
+			    // If the region has changed we'll want to move the (potentially updated) user to their new continent
 				if ((oldRegion != null) && (!oldRegion.equals(user.getRegion()))) {
 					return moveUser(oldRegion, user);
 				}
@@ -211,9 +222,11 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	public User moveUser(String oldRegion, User user) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			if (user != null) {
-				PersonType returnPerson = world.movePerson(oldRegion, user.getRegion(), convertUserToPerson(user));
+			    String newRegion = user.getRegion();
+			    user.setRegion(oldRegion);
+				PersonType returnPerson = world.movePerson(user.getRegion(), newRegion, convertUserToPerson(user));
 				
-				System.out.println("INFO - Moved user " + user.getName() + " from " + oldRegion + " to " + user.getRegion() + ".");
+				System.out.println("INFO - Moved user " + user.getName() + " from " + oldRegion + " to " + newRegion + ".");
 				
 				return convertPersonToUser(returnPerson);
 			}

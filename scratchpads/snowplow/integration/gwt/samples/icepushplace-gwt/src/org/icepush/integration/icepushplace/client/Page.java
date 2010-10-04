@@ -89,6 +89,22 @@ public class Page implements EntryPoint, ClosingHandler {
     	Window.addWindowClosingHandler(this);
     }
     
+    /**
+     * Simple method to check if two strings are not null and equal each other
+     *
+     * @param one string to check
+     * @param two string to check
+     * @return true if the strings match, false otherwise 
+     */
+	private boolean doStringsMatch(String one, String two) {
+	    if ((one != null) && (two != null)) {
+	        return one.equals(two);
+	    }
+	    else {
+	        return one == two;
+	    }
+	}    
+    
 	/**
 	 * Entry point method to generate our necessary UI code
 	 * This will default to using the login panel
@@ -464,15 +480,47 @@ public class Page implements EntryPoint, ClosingHandler {
 		// Store our old region so we can update it during a move
 		final String oldRegion = ourUser.getRegion();
 		
-		// Update the user values first
-		ourUser.setName(nameField.getText());
-		ourUser.setMood(moodList.getValue(moodList.getSelectedIndex()));
-		ourUser.setMind(mindField.getText());
-		ourUser.setMessage(messageField.getText());
-		ourUser.setRegion(regionList.getValue(regionList.getSelectedIndex()));
+		// Determine if we need to update the user (necessary when a field besides region changes)
+		boolean needUpdate = false;
+		
+		/*
+		 * Check the name, mood, mind, and message field for changes
+		 * If any of the fields has changed, we'll need to toggle 'needUpdate'
+		 * We'll also set the changed value into our user object
+		 */
+		if (!doStringsMatch(ourUser.getName(), nameField.getText())) {
+		    ourUser.setName(nameField.getText());
+		    if (!needUpdate) {
+		        needUpdate = true;
+		    }
+		}
+		
+		if (!doStringsMatch(ourUser.getMood(), moodList.getValue(moodList.getSelectedIndex()))) {
+		    ourUser.setMood(moodList.getValue(moodList.getSelectedIndex()));
+		    if (!needUpdate) {
+		        needUpdate = true;
+		    }
+		}
+		
+		if (!doStringsMatch(ourUser.getMind(), mindField.getText())) {
+		    ourUser.setMind(mindField.getText());
+		    if (!needUpdate) {
+		        needUpdate = true;
+		    }
+		}
+		
+		if (!doStringsMatch(ourUser.getMessage(), messageField.getText())) {
+		    ourUser.setMessage(messageField.getText());
+		    if (!needUpdate) {
+		        needUpdate = true;
+            }
+		}
+		
+        // Set the region, but we don't need an update on change, since we'll move the person anyways as needed
+        ourUser.setRegion(regionList.getValue(regionList.getSelectedIndex()));
 		
 		// Call our service to try to move/update the user
-		worldService.smartUpdateUser(oldRegion, ourUser, new AsyncCallback<User>() {
+		worldService.smartUpdateUser(needUpdate, oldRegion, ourUser, new AsyncCallback<User>() {
 			public void onFailure(Throwable caught) {
 				errorLabel.setText(caught.getMessage());
 			}

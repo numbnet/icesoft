@@ -35,7 +35,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface WorldServiceAsync {
 	public void addUser(String name, String mood, String mind, String region, String message, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void updateUser(User user, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
-	public void smartUpdateUser(String oldRegion, User user, AsyncCallback<User> callback) throws IllegalArgumentException;
+	public void smartUpdateUser(boolean needUpdate, String oldRegion, User user, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void moveUser(String oldRegion, User user, AsyncCallback<User> callback) throws IllegalArgumentException;
 	public void removeUser(User user, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 	public void getUser(String name, AsyncCallback<User> callback) throws IllegalArgumentException;

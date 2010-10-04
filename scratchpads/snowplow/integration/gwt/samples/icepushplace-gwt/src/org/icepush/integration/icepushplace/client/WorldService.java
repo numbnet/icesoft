@@ -79,12 +79,13 @@ public interface WorldService extends RemoteService {
      * Regardless of whether we move, we'll also perform an updateUser
      * This method saves the user from having to determine this logic themselves
      * 
+     * @param needUpdate if we need to update as well as try to move
      * @param oldRegion the region the user last came from
      * @param user to intelligently update and/or move
      * @return User modified as part of the update
      * @throws IllegalArgumentException on error
      */
-    public User smartUpdateUser(String oldRegion, User user) throws IllegalArgumentException;
+    public User smartUpdateUser(boolean needUpdate, String oldRegion, User user) throws IllegalArgumentException;
     
     /**
      * Method to move a user from one continent to another
