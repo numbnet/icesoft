@@ -37,6 +37,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.icefaces.render.ExternalScript;
 
 public class DOMRenderKit extends RenderKitWrapper {
     private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
@@ -47,6 +51,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES = "javax.faces.Messages";
     private static final String MESSAGES_CLASS = 
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
+    private ArrayList<ExternalScript> customScriptRenderers = new ArrayList<ExternalScript>();
 
     //Announce ICEfaces 2.0
     static {
@@ -70,7 +75,25 @@ public class DOMRenderKit extends RenderKitWrapper {
         return delegate;
     }
 
+    /**
+     * Check if renderer has an annotation for adding custom scripts 
+     * @param family
+     * @param rendererType
+     * @param r
+     */
     public void addRenderer(String family, String rendererType, Renderer r) {
+
+        Class clazz = r.getClass();
+        ExternalScript ec = (ExternalScript) clazz.getAnnotation(ExternalScript.class);
+        if (ec != null) {
+            if (ec.scriptURL() != null) {
+                customScriptRenderers.add(ec);
+            }
+        }
+//        if (!property.methodExpressionArgument().equals(Property.Null)) {
+//					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
+//				}
+
         Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         super.addRenderer(family, rendererType, renderer);
     }
@@ -89,6 +112,10 @@ public class DOMRenderKit extends RenderKitWrapper {
         }
         return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
     }
+
+    public List<ExternalScript> getCustomRenderScripts() {
+        return customScriptRenderers;
+    } 
 
     private class FormBoost extends RendererWrapper {
         private FormBoost(Renderer renderer) {
