@@ -27,6 +27,7 @@ import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.w3c.dom.Element;
 
@@ -55,13 +56,13 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
             Element lib = domContext.createElement(HTML.SCRIPT_ELEM);
             lib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            lib.setAttribute(HTML.SRC_ATTR, viewHandler.getResourceURL(facesContext, "/" + inputRichText.getBaseURI().toString()));
+            lib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, "/" + inputRichText.getBaseURI().toString()));
             root.appendChild(lib);
 
             URI icelibURI = ResourceRegistryLocator.locate(facesContext).loadJavascriptCode(InputRichText.ICE_FCK_EDITOR_JS);
             Element icelib = domContext.createElement(HTML.SCRIPT_ELEM);
             icelib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            icelib.setAttribute(HTML.SRC_ATTR, viewHandler.getResourceURL(facesContext, "/" + icelibURI.toString()));
+            icelib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, "/" + icelibURI.toString()));
             root.appendChild(icelib);
 
             root.appendChild(div);
@@ -69,7 +70,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             StringBuffer call = new StringBuffer();
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage()
-                    + "', '" + inputRichText.getFor() + "', '" + viewHandler.getResourceURL(facesContext, "/" + inputRichText.getBaseURI().getPath()) + "','" + inputRichText.getWidth() +
+                    + "', '" + inputRichText.getFor() + "', '" + CoreUtils.resolveResourceURL(facesContext, "/" + inputRichText.getBaseURI().getPath()) + "','" + inputRichText.getWidth() +
                     "', '" + inputRichText.getHeight() + "', '" + inputRichText.getToolbar() + "', '" + inputRichText.getCustomConfigPath() +
                     "', '" + inputRichText.getSkin() + "'));");
             //ICE-4760    

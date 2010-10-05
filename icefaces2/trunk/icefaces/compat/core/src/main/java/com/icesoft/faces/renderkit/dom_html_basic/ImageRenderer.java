@@ -25,6 +25,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.Debug;
+import com.icesoft.faces.util.CoreUtils;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -97,8 +98,7 @@ public class ImageRenderer extends DomBasicRenderer {
               value = uiGraphic.getUrl();
           }
           if (value != null) {
-              value = facesContext.getApplication().getViewHandler()
-                      .getResourceURL(facesContext, value);
+              value = CoreUtils.resolveResourceURL(facesContext, value);
               return value;
           } else {
               return "";
