@@ -24,7 +24,9 @@ package org.icefaces.impl.event;
 import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
+import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.ExternalScript;
 
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
@@ -35,9 +37,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.faces.render.RenderKit;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
@@ -86,6 +90,30 @@ public class BridgeSetup implements SystemEventListener {
         }
 
         root.addComponentResource(context, new JavascriptResourceOutput("bridge.js" + invalidateHTTPCache), "head");
+
+        RenderKit rk = context.getRenderKit();
+        if (rk instanceof DOMRenderKit) {
+
+            // If the context param is not null then make sure it's true
+            DOMRenderKit drk = (DOMRenderKit) rk;
+            List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
+            String contextParamName;
+            String value; 
+            for (ExternalScript es: scriptRenderers) {
+                contextParamName = es.contextParam();
+                // Shouldn't be possible to have it null, based on annotation declaration
+                if (contextParamName != null && !contextParamName.equals("Null") )  {
+
+                    value = externalContext.getInitParameter( contextParamName );
+                    if (value != null && value.equalsIgnoreCase("true")) {
+                       root.addComponentResource(context,new GenericScriptWriter( es.scriptURL() ), "head");
+                    }
+                }
+            }
+        }
+
+
+
 
         try {
             String tempWindowID = "unknownWindow";
@@ -220,6 +248,25 @@ public class BridgeSetup implements SystemEventListener {
             setRendererType("javax.faces.resource.Script");
             getAttributes().put("name", path);
             setTransient(true);
+        }
+    }
+
+    class GenericScriptWriter extends UIOutputWriter {
+        private String script;
+        public GenericScriptWriter (String script) {
+            super(); 
+            this.script = script;
+        }
+        public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+            String clientID = getClientId(context);
+            writer.startElement("span", this);
+            writer.writeAttribute("id", clientID, null);
+            writer.startElement("script", this);
+            //define potential script entries
+            writer.writeAttribute("src", script, null);
+            writer.writeAttribute("type", "text/javascript" , null);
+            writer.endElement("script");
+            writer.endElement("span");
         }
     }
 }
