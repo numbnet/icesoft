@@ -22,6 +22,7 @@
 package org.icefaces.demo.auction.services.beans;
 
 import java.util.GregorianCalendar;
+import java.io.Serializable;
 
 /**
  * AuctionItem represents one auction item that is contained in an an auction.
@@ -35,7 +36,7 @@ import java.util.GregorianCalendar;
  * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
-public class AuctionItem {
+public class AuctionItem implements Serializable  {
 
     private long id;
     private String name;

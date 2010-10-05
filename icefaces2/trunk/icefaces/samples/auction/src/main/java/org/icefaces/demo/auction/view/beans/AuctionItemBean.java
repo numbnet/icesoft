@@ -24,6 +24,7 @@ package org.icefaces.demo.auction.view.beans;
 import org.icefaces.demo.auction.services.beans.AuctionItem;
 
 import java.util.Calendar;
+import java.io.Serializable;
 
 /**
  * Wraps an instance of the AuctionItem DAO object returned from the service
@@ -43,7 +44,7 @@ import java.util.Calendar;
  * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
-public class AuctionItemBean {
+public class AuctionItemBean implements Serializable  {
 
     // time left constants.
     public static final int TIME_LEFT_5_SEC = 0;
