@@ -15,7 +15,7 @@ ice.yui3.slider = {
         //set a callback to create slider component 
         ice.yui3.use(function(Y){ 
 			   var obj = null;
-		       YUI().use('slider', function(Yui) {
+		       YUI({bootstrap:false}).use('slider', function(Yui) {
 					try {
 			            obj = new Yui.Slider({
 							//following two properties has to be set when initializing componnent
