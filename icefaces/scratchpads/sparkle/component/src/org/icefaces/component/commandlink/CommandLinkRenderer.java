@@ -15,8 +15,11 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.ExternalScript;
 
 
+@ExternalScript(scriptURL="http://maps.google.com/maps/api/js?sensor=false",
+                contextParam="com.icesoft.faces.gmapKey")
 public class CommandLinkRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
