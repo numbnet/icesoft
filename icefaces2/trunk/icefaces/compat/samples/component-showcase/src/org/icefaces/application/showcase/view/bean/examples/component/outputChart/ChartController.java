@@ -70,10 +70,10 @@ public class ChartController implements Serializable {
     };
 
     // map of available chart types, keys should be defined in the chartList
-    private Map chartDataModels;
+    private static Map chartDataModels;
 
     // currently selected data model pointer
-    private AbstractChartData currentChartModel;
+    private transient AbstractChartData currentChartModel;
 
     private String currentChartType;
 
@@ -85,36 +85,37 @@ public class ChartController implements Serializable {
      * Initialize the default models for each chart type.
      */
     private void init() {
+        if (null == chartDataModels)  {
+            chartDataModels = new HashMap();
 
-        chartDataModels = new HashMap();
+            // add default axial type outputChart
+            chartDataModels.put(OutputChart.AREA_CHART_TYPE,
+                    new ChartModelAxial(AREA_CHART_NAME, false, false, true, true));
+            chartDataModels.put(OutputChart.AREA_STACKED_CHART_TYPE,
+                    new ChartModelAxial(AREA_STACKED_CHART_NAME, false, false, true, true));
+            chartDataModels.put(OutputChart.BAR_CHART_TYPE,
+                    new ChartModelAxial(BAR_CHART_NAME, true, true, true, true));
+            chartDataModels.put(OutputChart.BAR_CLUSTERED_CHART_TYPE,
+                    new ChartModelAxial(BAR_CLUSTERED_CHART_NAME, true, true, true, true));
+            chartDataModels.put(OutputChart.BAR_STACKED_CHART_TYPE,
+                    new ChartModelAxial(BAR_STACKED_CHART_NAME, true, false, true, true));
+            chartDataModels.put(OutputChart.LINE_CHART_TYPE,
+                    new ChartModelAxial(LINE_CHART_NAME, true, false, true, true));
+            chartDataModels.put(OutputChart.POINT_CHART_TYPE,
+                    new ChartModelAxial(POINT_CHART_NAME, true, false, true, true));
+    //        chartDataModels.put(OutputChart.STOCK_CHART_TYPE,
+    //                new ChartModelAxial(true, false, true, true));
 
-        // add default axial type outputChart
-        chartDataModels.put(OutputChart.AREA_CHART_TYPE,
-                new ChartModelAxial(AREA_CHART_NAME, false, false, true, true));
-        chartDataModels.put(OutputChart.AREA_STACKED_CHART_TYPE,
-                new ChartModelAxial(AREA_STACKED_CHART_NAME, false, false, true, true));
-        chartDataModels.put(OutputChart.BAR_CHART_TYPE,
-                new ChartModelAxial(BAR_CHART_NAME, true, true, true, true));
-        chartDataModels.put(OutputChart.BAR_CLUSTERED_CHART_TYPE,
-                new ChartModelAxial(BAR_CLUSTERED_CHART_NAME, true, true, true, true));
-        chartDataModels.put(OutputChart.BAR_STACKED_CHART_TYPE,
-                new ChartModelAxial(BAR_STACKED_CHART_NAME, true, false, true, true));
-        chartDataModels.put(OutputChart.LINE_CHART_TYPE,
-                new ChartModelAxial(LINE_CHART_NAME, true, false, true, true));
-        chartDataModels.put(OutputChart.POINT_CHART_TYPE,
-                new ChartModelAxial(POINT_CHART_NAME, true, false, true, true));
-//        chartDataModels.put(OutputChart.STOCK_CHART_TYPE,
-//                new ChartModelAxial(true, false, true, true));
+            // add default pie type outputChart
+            chartDataModels.put(OutputChart.PIE2D_CHART_TYPE,
+                    new ChartModelRadial(PIE2D_CHART_NAME, false, false, false, false));
+            chartDataModels.put(OutputChart.PIE3D_CHART_TYPE,
+                    new ChartModelRadial(PIE3D_CHART_NAME, false, false, false, false));
 
-        // add default pie type outputChart
-        chartDataModels.put(OutputChart.PIE2D_CHART_TYPE,
-                new ChartModelRadial(PIE2D_CHART_NAME, false, false, false, false));
-        chartDataModels.put(OutputChart.PIE3D_CHART_TYPE,
-                new ChartModelRadial(PIE3D_CHART_NAME, false, false, false, false));
-
-        // add the only custom chart model.
-        chartDataModels.put(OutputChart.CUSTOM_CHART_TYPE,
-                new ChartModelCustom(true, false, false, false));
+            // add the only custom chart model.
+            chartDataModels.put(OutputChart.CUSTOM_CHART_TYPE,
+                    new ChartModelCustom(true, false, false, false));
+        }
 
         // set the default dataModel
         currentChartType = OutputChart.PIE2D_CHART_TYPE;
@@ -137,12 +138,19 @@ public class ChartController implements Serializable {
         }
     }
 
+    private void initCurrentChart()  {
+        if (null == currentChartModel)  {
+            currentChartModel = (AbstractChartData) chartDataModels.get(currentChartType);
+        }
+    }
+
     /**
      * Removes a unit of data to the current chart data model.
      *
      * @param event jsf action event.
      */
     public void addChartData(ActionEvent event) {
+        initCurrentChart();
         if (currentChartModel != null) {
             currentChartModel.addData();
         }
@@ -154,6 +162,7 @@ public class ChartController implements Serializable {
      * @param event jsf action event.
      */
     public void removeChartData(ActionEvent event) {
+        initCurrentChart();
         if (currentChartModel != null) {
             currentChartModel.removeData();
         }
@@ -165,6 +174,7 @@ public class ChartController implements Serializable {
      * @param event jsf action event.
      */
     public void resetChartData(ActionEvent event) {
+        initCurrentChart();
         if (currentChartModel != null) {
             currentChartModel.resetData();
         }
@@ -177,6 +187,7 @@ public class ChartController implements Serializable {
      */
     public void chartAreaClicked(ActionEvent event) {
 
+        initCurrentChart();
         if (event.getSource() instanceof OutputChart) {
             OutputChart chart = (OutputChart) event.getSource();
             if (chart.getClickedImageMapArea().getXAxisLabel() != null) {
@@ -193,6 +204,7 @@ public class ChartController implements Serializable {
     }
 
     public AbstractChartData getCurrentChartModel() {
+        initCurrentChart();
         return currentChartModel;
     }
 
