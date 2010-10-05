@@ -45,24 +45,30 @@ function setFocus(id) {
 
     This.setFocus = (function(id) {
         if (id && isValidID(id)) {
-            try {
-                id.asExtendedElement().focus();
-                setFocus(id);
-                var e = document.getElementById(id);
+            try {var e = document.getElementById(id);
                 if (e) {
-                    e.focus();
+                    setFocus(id);
+                    if (e.focus) {
+                        e.focus();
+                        logger.debug('Focus Set on [' + id + "]");
+						if( isIE ){
+                            e.focus();
+                            logger.debug('Focus Set on [' + id + "] twice for IE");
+                        }
+                    } else {
+                        logger.info('Focus cannot be set on [' + id + "]");
+                    }
                 } else {
-                    logger.info('Cannot set focus, no element for id [' + id + "]");
+                    logger.info('Cannot set focus, no element for id [' + id + ']');
                 }
-                logger.debug('Focus Set on [' + id + "]");
             } catch(e) {
-                logger.info('Cannot set focus, no element for id [' + id + ']', e);
+               logger.info('Cannot set focus ', e);
             }
         } else {
             logger.debug('Focus interupted. Not Set on [' + id + ']');
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
-    }).delayFor(500);
+    }).delayFor(100);
 
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
