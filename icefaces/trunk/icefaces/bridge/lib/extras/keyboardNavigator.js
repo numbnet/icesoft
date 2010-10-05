@@ -77,9 +77,10 @@ Ice.KeyNavigator = Class.create({
 });
 
 Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-  initialize: function($super, componentId, displayOnClick) {
+  initialize: function($super, componentId, displayOnClick, scrollableDivMode) {
     $super(componentId);
     this.displayOnClick = displayOnClick;
+    this.scrollableDivMode = scrollableDivMode;
     this.component.onclick = this.hideAll.bindAsEventListener(this);
     document.onclick = this.hideAllDocument.bindAsEventListener(this);    
   
@@ -269,7 +270,7 @@ Ice.MenuBarKeyNavigator.addMethods({
         if (this.vertical) {
             Ice.Menu.show(this.component,submenu,element);
         } else {
-            Ice.Menu.show(element,submenu,null);
+            Ice.Menu.show(element,submenu,null,this.scrollableDivMode);
         }
     }
   },
