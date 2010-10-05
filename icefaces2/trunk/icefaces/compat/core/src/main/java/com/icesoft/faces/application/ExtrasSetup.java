@@ -24,6 +24,7 @@ package com.icesoft.faces.application;
 
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
+import com.icesoft.faces.util.CoreUtils;
 import org.icefaces.impl.event.UIOutputWriter;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.FormEndRenderer;
@@ -88,13 +89,13 @@ public class ExtrasSetup implements SystemEventListener {
 
                     String connectionLostRedirectURI;
                     String uri = EnvUtils.getConnectionLostRedirectURI(context);
-                    connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    connectionLostRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
 
                     String sessionExpiredRedirectURI;
                     uri = EnvUtils.getSessionExpiredRedirectURI(context);
-                    sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    sessionExpiredRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
 
-                    final String contextPath = handler.getResourceURL(context, "/");
+                    final String contextPath = CoreUtils.resolveResourceURL(context, "/");
                     final boolean blockUI = EnvUtils.isBlockUIOnSubmit(context);
 
                     writer.startElement("script", this);

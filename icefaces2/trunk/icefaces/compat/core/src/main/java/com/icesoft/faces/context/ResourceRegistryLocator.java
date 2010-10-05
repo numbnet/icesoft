@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import com.icesoft.faces.util.CoreUtils;
+
 public class ResourceRegistryLocator {
     public static ResourceRegistry locate(FacesContext context) {
         Map applicationMap = context.getExternalContext().getApplicationMap();
@@ -98,7 +100,7 @@ public class ResourceRegistryLocator {
 
         private URI resolve(String uri) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return URI.create(context.getApplication().getViewHandler().getResourceURL(context, uri));
+            return URI.create(CoreUtils.resolveResourceURL(context, uri));
         }
 
         private static class DynamicResourceAdapter implements DynamicResource {

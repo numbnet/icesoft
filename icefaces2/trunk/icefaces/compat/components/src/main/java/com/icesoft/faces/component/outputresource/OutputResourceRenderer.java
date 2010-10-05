@@ -33,6 +33,7 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.util.CoreUtils;
 
 public class OutputResourceRenderer extends DomBasicInputRenderer {
 
@@ -75,9 +76,7 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 					Element img = domContext.createElement(HTML.IMG_ELEM);
 					String image = outputResource.getImage();
 					if (image != null) {
-    					img.setAttribute(HTML.SRC_ATTR, facesContext.
-    					        getApplication().getViewHandler()
-    	                        .getResourceURL(facesContext, image));
+    					img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, image));
 					}
 					resource.appendChild(img);
 					img.setAttribute(HTML.ALT_ATTR, outputResource.getLabel());

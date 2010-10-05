@@ -794,8 +794,7 @@ public abstract class DomBasicRenderer extends Renderer {
     }
 
     public static String getResourceURL(FacesContext context, String path) {
-        return context.getApplication().getViewHandler()
-                .getResourceURL(context, path);
+        return CoreUtils.resolveResourceURL(context, path);
     }
 
     /**

@@ -33,6 +33,7 @@ import javax.faces.event.ActionEvent;
 import com.icesoft.faces.renderkit.dom_html_basic.BaseRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 
 public class DataExporterRenderer extends BaseRenderer {
@@ -85,9 +86,7 @@ public class DataExporterRenderer extends BaseRenderer {
                 writer.writeAttribute(HTML.ONCLICK_ATTR, "var form=formOf(this); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);        
                 if (image !=null) {
                     writer.startElement(HTML.IMG_ELEM, uiComponent);
-                    writer.writeAttribute(HTML.SRC_ATTR, facesContext.
-                            getApplication().getViewHandler()
-                            .getResourceURL(facesContext, image), HTML.SRC_ATTR);  
+                    writer.writeAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, image), HTML.SRC_ATTR);  
                     writer.writeAttribute(HTML.TITLE_ATTR, label, HTML.TITLE_ATTR);
                     writer.writeAttribute(HTML.ALT_ATTR, label, HTML.ALT_ATTR);                
                     writer.endElement(HTML.IMG_ELEM);

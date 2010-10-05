@@ -30,6 +30,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,6 +47,15 @@ public class CoreUtils {
     private static final Log log = LogFactory.getLog(CoreUtils.class);
     
     public static String resolveResourceURL(FacesContext facesContext, String path) {
+        ExternalContext ec = facesContext.getExternalContext();
+        String ctxtPath = ec.getRequestContextPath();
+
+        //ICE-6063: Strip the context path off if it's there because the ViewHandler no
+        //longer includes that bit of logic.
+        if (path.charAt(0) == '/' && path.startsWith(ctxtPath)) {
+            path = path.substring(ctxtPath.length());
+        }
+
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
     
