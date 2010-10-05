@@ -62,7 +62,7 @@ function setFocus(id) {
             logger.debug('Focus interupted. Not Set on [' + id + ']');
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
-    }).delayFor(100);
+    }).delayFor(500);
 
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
