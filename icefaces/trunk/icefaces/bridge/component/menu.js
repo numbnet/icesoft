@@ -81,7 +81,7 @@ Ice.Menu = {
 	    }
 	    return position;
     },
-    show: function(supermenu,submenu,submenuDiv) { 
+    show: function(supermenu,submenu,submenuDiv,scrollableDivMode) {
 	    if (submenu) {
 	        var menu = $(submenu);
 	        //menu is already visible, don't do anything
@@ -144,8 +144,10 @@ Ice.Menu = {
                 if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
                     if (Prototype.Browser.IE) {
                         Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH}, supmVPO);
-                        if (parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE") + 5)) < 8 && supermenu.cumulativeScrollOffset().top > 0) {
-                            submenu.style.top = submenu.offsetTop - supermenu.viewportOffset().top + supermenu.positionedOffset().top;
+                        if (scrollableDivMode) {
+                            if (parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE") + 5)) < 8 && supermenu.cumulativeScrollOffset().top > 0) {
+                                submenu.style.top = submenu.offsetTop - supermenu.viewportOffset().top + supermenu.positionedOffset().top;
+                            }
                         }
                     } else {
                         submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
@@ -158,7 +160,9 @@ Ice.Menu = {
                       
                 }
             }
-            submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
+            if (scrollableDivMode) {
+                submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
+            }
             if (submVPO.top < 0) { // ICE-3658
 //                if(Prototype.Browser.IE)
 //                    Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
