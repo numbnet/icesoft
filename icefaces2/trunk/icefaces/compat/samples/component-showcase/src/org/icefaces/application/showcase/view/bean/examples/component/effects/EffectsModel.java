@@ -26,6 +26,7 @@ import com.icesoft.faces.context.effects.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.ArrayList;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -49,6 +50,7 @@ public class EffectsModel extends BaseBean {
 
     // map of possible effects.
     private HashMap effects;
+    private ArrayList effectKeys;
 
     /**
      * Creates a new instance of the effects model.
@@ -154,6 +156,7 @@ public class EffectsModel extends BaseBean {
                 new EffectWrapper(
                         "page.effect.shrink.title",
                         shrink));
+        effectKeys = new ArrayList(effects.keySet());
     }
 
     public EffectWrapper getCurrentEffectWrapper() {
@@ -173,7 +176,7 @@ public class EffectsModel extends BaseBean {
      * @return collection of EffectWrapper
      */
     public Collection getEffectKeys() {
-        return effects.keySet();
+        return effectKeys;
     }
 
     /**
