@@ -22,6 +22,8 @@
 
 package com.icesoft.faces.component.tree;
 
+import java.io.Serializable;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
@@ -42,8 +44,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * constructor. Then the node's state can be set to the attributes on the
  * IceUserObject. </p>
  */
-public class IceUserObject {
+public class IceUserObject implements Serializable  {
 
+	private static final long serialVersionUID = 1L;
     protected DefaultMutableTreeNode wrapper;
     protected String text;
     protected boolean expanded;
