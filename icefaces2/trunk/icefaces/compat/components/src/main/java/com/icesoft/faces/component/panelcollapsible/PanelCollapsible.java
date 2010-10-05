@@ -357,7 +357,10 @@ public class PanelCollapsible extends UICommand {
         String clientId = getClientId(getFacesContext());
         if (clientId != null && clientId.indexOf(':') >= 0) {
             if (getAttributes().containsKey("expandedState")) {
-                getAttributes().put(clientId, getAttributes().get("expandedState"));
+                Object expandedState  = getAttributes().get("expandedState");
+                if (null != expandedState)  {
+                    getAttributes().put(clientId, expandedState);
+                }
                 getAttributes().remove("expandedState");
             }
             return clientId;
