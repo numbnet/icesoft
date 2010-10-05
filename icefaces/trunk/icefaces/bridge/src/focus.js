@@ -51,6 +51,10 @@ function setFocus(id) {
                     if (e.focus) {
                         e.focus();
                         logger.debug('Focus Set on [' + id + "]");
+                        if( isIE ){
+                            e.focus();
+                            logger.debug('Focus Set on [' + id + "] twice for IE");
+                        }
                     } else {
                         logger.info('Focus cannot be set on [' + id + "]");
                     }
