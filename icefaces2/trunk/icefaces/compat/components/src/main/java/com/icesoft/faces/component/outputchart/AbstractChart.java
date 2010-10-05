@@ -45,8 +45,10 @@ import java.util.Map;
 
 public abstract class AbstractChart implements Serializable {
     private final Log log = LogFactory.getLog(AbstractChart.class);
-    protected Chart chart = null;
-    private Chart userDefinedChart = null;
+    //jcharts.Chart is not Serializable so we may need additional work
+    //in this component to rebuild after state saving
+    protected transient Chart chart = null;
+    private transient Chart userDefinedChart = null;
     private static ColorMap colorMap = new ColorMap();
     private static ShapeMap shapeMap = new ShapeMap();
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
