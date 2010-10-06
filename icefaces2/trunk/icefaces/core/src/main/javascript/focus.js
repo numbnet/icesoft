@@ -33,6 +33,8 @@ var currentFocus;
         return /^\w[\w\-\:]*$/.test(id);
     }
 
+    var isIE = /MSIE/.test(navigator.userAgent);
+
     applyFocus = function(id) {
         runOnce(Delay(function() {
             if (id && isValidID(id)) {
@@ -44,6 +46,15 @@ var currentFocus;
                             e.focus();
                         } catch (ex) {
                             //IE throws exception if element is invisible
+                        } finally {
+                            if(isIE){
+                                //IE sometimes requires that focus() be called again
+                                try{
+                                    e.focus();
+                                } catch (ex2) {
+                                    //IE throws exception if element is invisible
+                                }
+                            }
                         }
                     }
                 }
