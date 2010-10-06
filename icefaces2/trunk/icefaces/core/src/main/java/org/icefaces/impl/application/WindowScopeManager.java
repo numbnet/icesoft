@@ -23,12 +23,16 @@ package org.icefaces.impl.application;
 
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.bean.WindowDisposed;
 
+import javax.annotation.PreDestroy;
+import java.lang.reflect.Method;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIViewRoot;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -42,6 +46,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -53,7 +58,7 @@ import java.util.logging.Logger;
 
 public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener {
     public static final String ScopeName = "window";
-    private static final Logger Log = Logger.getLogger(WindowScopeManager.class.getName());
+    private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
 
     private ResourceHandler wrapped;
@@ -88,6 +93,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 } catch (RuntimeException e) {
                     //missing ice.view parameters means that none of the views within the page
                     //was registered with PushRenderer before page unload
+                    log.log(Level.FINE, "Exception during dispose-window ", e);
                 }
             }
         } else {
@@ -120,7 +126,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             //Object session = externalContext.getSession(true);
             WindowScopeManager.determineWindowID(context);
         } catch (Exception e) {
-            Log.log(Level.WARNING, "Unable to set up WindowScope ", e);
+            log.log(Level.WARNING, "Unable to set up WindowScope ", e);
         }
     }
 
@@ -144,7 +150,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 }
             }
         } catch (Throwable e) {
-            Log.log(Level.FINE, "Failed to remove window scope map", e);
+            log.log(Level.FINE, "Failed to remove window scope map", e);
         }
 
         Map requestMap = externalContext.getRequestMap();
@@ -193,6 +199,54 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
+        }
+        disposeViewScopeBeans(context);
+    }
+
+    private static void disposeViewScopeBeans(FacesContext facesContext)  {
+
+        //Unfortunately we must execute the lifecycle to get to the viewMap
+        LifecycleFactory factory = (LifecycleFactory)
+                FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        Lifecycle lifecycle = factory.getLifecycle(
+                LifecycleFactory.DEFAULT_LIFECYCLE );
+        lifecycle.execute(facesContext);
+
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        if (null == viewRoot)  {
+            return;
+        }
+        Map viewMap = viewRoot.getViewMap();
+        Iterator keys = viewMap.keySet().iterator();
+        while (keys.hasNext())  {
+            Object key = keys.next();
+            Object object = viewMap.get(key);
+            if ( object.getClass().isAnnotationPresent(WindowDisposed.class) )  {
+                keys.remove();
+                callPreDestroy(object);
+                if (log.isLoggable(Level.FINE)) {
+                    log.log(Level.FINE, "Closing window disposed ViewScoped bean " + key);
+                }
+            } 
+        }
+    }
+
+    private static void callPreDestroy(Object object)  {
+        Class theClass = object.getClass();
+        try {
+            while (null != theClass)  {
+                Method[] methods = object.getClass().getDeclaredMethods();
+                for (Method method : methods)  {
+                    if (method.isAnnotationPresent(PreDestroy.class))  {
+                            method.setAccessible(true);
+                            method.invoke(object);
+                            return;
+                    }
+                }
+                theClass = theClass.getSuperclass();
+            }
+        } catch (Exception e)  {
+            log.log(Level.WARNING, "Failed to invoke PreDestroy on " + theClass, e);
         }
     }
 
