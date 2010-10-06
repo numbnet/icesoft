@@ -247,7 +247,7 @@ public class EnvUtils {
      * @return Returns the current setting of org.icefaces.sessionExpiredRedirectURI.  The default is the String "null".
      */
     public static String getSessionExpiredRedirectURI(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).connectionLostRedirectURI;
+        return EnvConfig.getEnvConfig(facesContext).sessionExpiredRedirectURI;
     }
 
     /**

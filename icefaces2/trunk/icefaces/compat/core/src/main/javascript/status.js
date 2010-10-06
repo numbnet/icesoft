@@ -270,8 +270,19 @@ var ComponentIndicators;
     var indctrs;
 
     DefaultIndicators = function(configuration, container) {
-        var connectionLostRedirect = configuration.connectionLostRedirectURI ? RedirectIndicator(configuration.connectionLostRedirectURI) : null;
-        var sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
+
+        var connectionLostURI = configuration.connectionLostRedirectURI;
+        if( connectionLostURI == "null"){
+            connectionLostURI = null;
+        }
+
+        var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
+        if( sessionExpiredURI == "null"){
+            sessionExpiredURI = null;
+        }
+
+        var connectionLostRedirect = connectionLostURI ? RedirectIndicator(connectionLostURI) : null;
+        var sessionExpiredRedirect = sessionExpiredURI ? RedirectIndicator(sessionExpiredURI) : null;
         var messages = configuration.messages;
         var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
         var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
