@@ -52,7 +52,7 @@ ice.yui3 = {
     use :function(callback) {
 	        if(ice.yui3.y == null) {  
 	          logger.info('Loading modules '+  this.getModules());
-	           YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y){
+	           YUI({combine: true, timeout: 10000}).use('*', function(Y){
 	               ice.yui3.y = Y;
 	               callback(ice.yui3.y);
 	           });
