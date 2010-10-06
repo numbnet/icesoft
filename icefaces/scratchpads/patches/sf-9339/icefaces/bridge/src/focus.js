@@ -14,7 +14,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -28,7 +28,6 @@
  * the notice and other provisions required by the LGPL License. If you do
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
- *
  */
 
 //todo: implement focus management!
@@ -43,15 +42,16 @@ function setFocus(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
 
-    This.setFocus = (function(id) {
+    var focusOn = (function(id) {
         if (id && isValidID(id)) {
-            try {var e = document.getElementById(id);
+            try {
+                var e = document.getElementById(id);
                 if (e) {
                     setFocus(id);
                     if (e.focus) {
                         e.focus();
                         logger.debug('Focus Set on [' + id + "]");
-						if( isIE ){
+                        if( isIE ){
                             e.focus();
                             logger.debug('Focus Set on [' + id + "] twice for IE");
                         }
@@ -62,13 +62,57 @@ function setFocus(id) {
                     logger.info('Cannot set focus, no element for id [' + id + ']');
                 }
             } catch(e) {
-               logger.info('Cannot set focus ', e);
+                logger.info('Cannot set focus ', e);
             }
         } else {
             logger.debug('Focus interupted. Not Set on [' + id + ']');
         }
         //ICE-1247 -- delay required for focusing newly rendered components in IE
     }).delayFor(100);
+
+    This.setFocus = focusOn;
+
+    var activeElement;
+    var isIE = /MSIE/.test(navigator.userAgent);
+
+    //initialize activeElement if IE
+    window.onLoad(function() {
+        if (isIE) activeElement = document.activeElement;
+    });
+
+    //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
+    //to avoid bogus 'blur' events in IE the window.onblur behavior is simulated with the help of document.onfocusout
+    //event handler
+    window.onBlur = isIE ? function(callback) {
+        registerElementListener(document, 'onfocusout', function() {
+            if (activeElement == document.activeElement) {
+                callback();
+            } else {
+                activeElement = document.activeElement;
+            }
+        });
+    } : function(callback) {
+        registerElementListener(window, 'onblur', callback);
+    };
+
+    window.onFocus = function(callback) {
+        registerElementListener(window, 'onfocus', callback);
+    };
+
+    //on window blur the ID of the focused element is just saved, not applied
+    window.onBlur(function() {
+        This.setFocus = function(id) {
+            currentFocus = id;
+            logger.debug('save pending focus for ' + id);
+        };
+    });
+
+    //on window focus the saved ID is applied and Ice.Focus.setFocus function is re-enabled
+    window.onFocus(function() {
+        This.setFocus = focusOn;
+        logger.debug('apply saved focus for ' + currentFocus);
+        focusOn(currentFocus);
+    });
 
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
@@ -100,5 +144,15 @@ function setFocus(id) {
 
     window.onLoad(function() {
         This.captureFocusIn(document);
+    });
+
+    //***
+    //clear registered callbacks to avoid memory leaks
+    window.onBeforeUnload(function() {
+        $enumerate(['select', 'input', 'button', 'a']).each(function(type) {
+            $enumerate(document.body.getElementsByTagName(type)).each(function(element) {
+                element.onfocus = null;
+            });
+        });
     });
 });
