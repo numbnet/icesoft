@@ -41,15 +41,18 @@
     <jsp:setProperty name="person" property="*"/>
 </jsp:useBean>
 
-<% 
-if (person.getKey() == 0) {
-   person = world.loginPerson(person.getRegion(), person);
-}
+<%
 if (person.getName() == null){
     person.setName("");
 }
 if (person.getComment() == null){
     person.setComment("");
+}
+if (person.getTechnology() == null){
+    person.setTechnology("JSP");
+}
+if (person.getKey() == 0) {
+   person = world.loginPerson(person.getRegion(), person);
 }
 %>
 <html>
