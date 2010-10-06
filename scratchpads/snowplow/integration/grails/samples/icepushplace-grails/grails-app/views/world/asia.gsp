@@ -51,13 +51,13 @@
                         <img src="images/mood-${elem.mood}.png" style="width: 26px; height: 29px;">
                     </td>
                     <td>${elem.name}</td>
-                    <g:if test="${!elem.technology}">
+                    <g:if test="${elem.technology}">
                     <td>using ${elem.technology}</td>
                     </g:if>
                     <td>
                         thinks '${elem.comment}'
                     <td>
-                    <g:if test="${!elem.messageIn}">
+                    <g:if test="${elem.messageIn}">
                     <td>and<td>
                     <td>says '${elem.messageIn}'</td>
                     </g:if>
