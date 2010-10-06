@@ -97,6 +97,9 @@ public class Cookie {
 
     public static Cookie readCookie(Request request, String cookieName) {
         String cookies = request.getHeader("Cookie");
+        if (null == cookies)  {
+            return null;
+        }
         String[] cookieString = cookies.split("; ");
         for (int i = 0; i < cookieString.length; i++) {
             String[] nameValue = cookieString[i].split("=");
