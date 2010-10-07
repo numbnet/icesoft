@@ -51,7 +51,7 @@
     <target name="clean">
         <clean/>
         <ant dir="./push" target="clean"/>
-        <ant dir="./icepushplace" target="clean"/>
+        <ant dir="./icepushplace-jsp" target="clean"/>
         <ant dir="./region" target="clean"/>
         <ant dir="./register" target="clean"/>
     </target>
