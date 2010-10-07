@@ -17,6 +17,7 @@ class RegisterController {
     def world = servletContext['world']
     thisPerson = world.loginPerson(thisPerson.region, thisPerson)
     session['person'] = thisPerson
+    session['world'] = world
     response.status = 200
     render " "
   }
