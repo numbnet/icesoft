@@ -52,10 +52,9 @@ import java.util.logging.Logger;
  * {@link org.icefaces.demo.auction.view.controllers.IntervalPushRenderer} is
  * responsible for creating and managing a push call that runs at set intervals.
  * The other controller is a page level PhaseListener
- * {@link org.icefaces.demo.auction.view.controllers.PushDataRefreshListener}
- * which is used to identify a regular form request from a push request.  If a
- * push request is determined then the current model bean is updated so the
- * render response phase will have the most recent auction data.
+ * {@link DataRefreshListener} which is used to updated the auction list before
+ * the render response phase.  This is done for every request and it is assumed
+ * that the underlying service layer has an advance caching mechanism.
  *
  * @author ICEsoft Technologies Inc.
  * @see org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand
@@ -71,8 +70,10 @@ public class AuctionController {
     /**
      * Calls the service layer for new auction data and merges it with the current
      * state of the auctionBean.  This method is called from the
-     * {@link org.icefaces.demo.auction.view.controllers.PushDataRefreshListener}
-     * when a push request is send from a client.
+     * {@link DataRefreshListener} for each request/response cycle.
+     * <p/>
+     * It is important that underlying service call has a caching layer to avoid
+     * making costly DB or web services on every call.
      */
     public void refreshAuctionBean() {
         AuctionBean auctionBean = (AuctionBean)
