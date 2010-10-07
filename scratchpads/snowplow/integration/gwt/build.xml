@@ -32,6 +32,7 @@
 	<target name="bin.dist" depends="clean">
 		<echo>Building ICEpush GWT Binary Integration</echo>
 		<ant dir="./core" target="jar"/>
+		<mkdir dir="${dist.dir}"/>
 		<copy file="./core/${dist.dir}/icepush-gwt.jar" todir="${dist.dir}"/>
 	</target>
 	
