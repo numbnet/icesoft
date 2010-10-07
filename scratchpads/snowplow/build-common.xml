@@ -239,6 +239,8 @@
 	
 	<fileset id="icepush.jsp.dist" file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
 	
+	<fileset id="icepush.gwt.dist" file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar"/>
+	
 	<macrodef  name="icepush.gwt.available">
 		<sequential>
 			<available file="${root.offset}/integration/gwt/core/${dist.dir}/icepush-gwt.jar" property="icepush.gwt.available"/>
