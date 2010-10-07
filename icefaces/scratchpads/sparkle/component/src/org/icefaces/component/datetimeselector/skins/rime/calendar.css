@@ -591,3 +591,7 @@ p#clear {
 .ice-skin-rime .yui-calendar tfoot tr {
     height: 30px;
 }
+
+.ice-calcontainer .yui-dialog button {
+    position: static;
+}
