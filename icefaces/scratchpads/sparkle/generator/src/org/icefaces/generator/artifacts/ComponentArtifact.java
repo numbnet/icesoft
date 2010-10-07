@@ -181,8 +181,16 @@ public class ComponentArtifact extends Artifact{
 		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++) {
 			Field field = generatedComponentProperties.get(i);
-			addGetterSetter(field);
+			addGetterSetter(field);			
 		}
+		//since generatedComponentProperties doesn't include inherited properties,
+		//here FieldsForTagClass is used. This part may need re-factor-ed later.
+		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
+		while (iterator.hasNext()){
+			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
+			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
+		}
+
 	}
 
     /**

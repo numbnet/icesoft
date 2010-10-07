@@ -1,11 +1,18 @@
 package org.icefaces.generator.xmlbuilder;
 
+import java.lang.reflect.Field;
+
 import org.icefaces.generator.Generator;
+import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.context.GeneratorContext;
+import org.icefaces.generator.utils.PropertyValues;
 import org.icefaces.generator.utils.Utility;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
 import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.Required;
 
 public class FaceletTagLibBuilder extends XMLBuilder{
     private Element tag;
@@ -55,4 +62,36 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         addNode(behavior, "behavior-id", "org.icefaces.animation."+ name);
         addNode(behavior, "handler-class", "org.icefaces.component.animation.AnimationBehaviorHandler");   
     }
+    
+    public void addAttributeInfo(Field field) {
+		ComponentContext component = GeneratorContext.getInstance().getActiveComponentContext();
+		PropertyValues propertyValues = component.getPropertyValuesMap().get(field);
+		
+        Element attribute = getDocument().createElement("attribute");
+        tag.appendChild(attribute);
+  
+        String des = propertyValues.tlddoc;
+        if (des != Property.Null && des.trim().length() != 0) {
+        	addNode(attribute, "description", des);
+        }
+
+        addNode(attribute, "name", field.getName());
+        
+        String required = "false";
+        if (propertyValues.required == Required.REQUIRED) {
+        	required = "true";
+        }
+        addNode(attribute, "required",required);
+
+        boolean isPrimitive = field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+        String returnAndArgumentType = field.getType().getName();
+
+        if (isPrimitive) {
+            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            }
+        }
+        addNode(attribute, "type", returnAndArgumentType);            
+    }    
 }
