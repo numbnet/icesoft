@@ -43,6 +43,10 @@
 	        <exclude name="jsf-api.jar"   unless="jsf"/>
 	        <exclude name="jsf-impl.jar"  unless="jsf"/>
 	    </patternset>
+            <patternset id="lib.distribute.myfaces" includes="myfaces-*">
+                <exclude name="myfaces-*"   unless="myfaces"/>
+            </patternset>
+
 	    <patternset id="lib.distribute.ice" includes="icefaces.jar icepush.jar">
 	        <exclude name="icefaces.jar" unless="ice"/>
             <exclude name="icepush.jar"  unless="push"/>
