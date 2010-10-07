@@ -34,7 +34,7 @@
         <ant dir="./push" target="war"/>
         <copy.dist.wars fromdir="./push/${dist.dir}"/>
         
-        <ant dir="./icepushplace" target="war"/>
+        <ant dir="./icepushplace-jsp" target="war"/>
         <copy.dist.wars fromdir="./push/${dist.dir}"/>
         
         <ant dir="./region" target="war"/>
