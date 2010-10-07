@@ -160,10 +160,16 @@ public class ICEpushPlaceService {
 		} else if (person.getLastSequenceNo() < oldestUpdate &&
 			   person.getPersonData().getStatus() == DELETE) {
 		    // Person is obsolete;
+		    /*
+		    // TEMPORARY COMMENT OUT TO FIX SINGLE TAB DUPLICATION ISSUE
 		    people.remove(person.getPersonData().getKey());
+		    */
+		    System.out.println("OBSOLETE " + person.getPersonData().getName() + " FOR " + myApp);
+		    /*
 		    System.out.println("Removing obsolete person: " +
 				       person.getPersonData().getName() + 
 				       " key = " + person.getPersonData().getKey());
+            */
 		}
 	    }
 	}
