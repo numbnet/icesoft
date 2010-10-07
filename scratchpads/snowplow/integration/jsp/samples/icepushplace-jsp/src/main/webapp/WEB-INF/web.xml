@@ -32,7 +32,11 @@
     <description>
         ICEpush Place sample
     </description>
-
+    
+    <listener>
+	    <listener-class>org.icepush.integration.icepushplace.listener.SessionListener</listener-class>
+    </listener>
+    
     <servlet>
         <servlet-name>icepush</servlet-name>
         <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
@@ -46,4 +50,8 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    
+    <session-config>
+      <session-timeout>20</session-timeout> 
+    </session-config>
 </web-app>
